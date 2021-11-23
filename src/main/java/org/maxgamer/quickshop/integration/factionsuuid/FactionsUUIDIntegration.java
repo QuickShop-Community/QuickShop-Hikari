@@ -24,6 +24,7 @@ import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.perms.PermissibleAction;
+import com.massivecraft.factions.perms.PermissibleActionRegistry;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -122,7 +123,8 @@ public class FactionsUUIDIntegration extends AbstractQSIntegratedPlugin {
     }
 
     private boolean check(@NotNull Player player, @NotNull Location location, boolean createRequireOpen, boolean createRequireSafeZone, boolean createRequirePermanent, boolean createRequirePeaceful, boolean createRequireWilderness, boolean createRequireWarZone, boolean createRequireNormal, boolean createRequireOwn, List<String> createFlags, boolean whiteList) {
-        Faction faction = Board.getInstance().getFactionAt(new FLocation(location));
+        FLocation fLocation = new FLocation(location);
+        Faction faction = Board.getInstance().getFactionAt(fLocation);
         if (faction == null) {
             return !whiteList;
         }
@@ -151,12 +153,13 @@ public class FactionsUUIDIntegration extends AbstractQSIntegratedPlugin {
             return false;
         }
         if (createRequireOwn
-                && !faction.getOwnerList(new FLocation(location)).contains(player.getName())) {
+                && !faction.getOwnerList(fLocation).contains(player.getName())) {
             return false;
         }
+
         for (String flag : createFlags) {
-            if (!faction.hasAccess(
-                    FPlayers.getInstance().getByPlayer(player), PermissibleAction.fromString(flag))) {
+            PermissibleAction permissibleAction = PermissibleActionRegistry.get(flag);
+            if (permissibleAction != null && !faction.hasAccess(FPlayers.getInstance().getByPlayer(player), permissibleAction, fLocation)) {
                 return false;
             }
         }

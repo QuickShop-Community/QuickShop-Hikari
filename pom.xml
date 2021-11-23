@@ -667,36 +667,12 @@
         <dependency>
             <groupId>com.massivecraft</groupId>
             <artifactId>Factions</artifactId>
-            <version>1.6.9.5-U0.5.21</version>
+            <version>1.6.9.5-U0.6.0</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <artifactId>gson</artifactId>
-                    <groupId>com.google.code.gson</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>fluent-hc</artifactId>
-                    <groupId>org.apache.httpcomponents</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>configurate-core</artifactId>
-                    <groupId>org.spongepowered</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>paste-gg-api</artifactId>
-                    <groupId>org.kitteh</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>paperlib</artifactId>
-                    <groupId>io.papermc</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>particleeffect</artifactId>
-                    <groupId>com.darkblade12</groupId>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
