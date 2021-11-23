@@ -25,8 +25,7 @@ from [KaiKikuchi's QuickShop upstream repository](https://github.com/KaiKikuchi/
 
 | <a href="https://discord.gg/bfefw2E"/> <img src="/.github/icons/Discord.svg" width="100" height="100" />| <a href="https://github.com/PotatoCraft-Studio/QuickShop-Reremake/issues"><img src="/.github/icons/Github.png" width="100" height="100" />|
 | :---: | :---: |
-| [**Discord**](https://discord.gg/bfefw2E) | [**Github
-Issues**](https://github.com/PotatoCraft-Studio/QuickShop-Reremake/issues) |
+| [**Discord**](https://discord.gg/bfefw2E) | [**Github Issues**](https://github.com/PotatoCraft-Studio/QuickShop-Reremake/issues) |
 
 ## Features
 
@@ -55,16 +54,16 @@ Issues**](https://github.com/PotatoCraft-Studio/QuickShop-Reremake/issues) |
 
 ## Contribute
 
-[]()If you're a developer, you can contribute to the QuickShop code! Just make a fork and install the Lombok plugin,
+If you're a developer, you can contribute to the QuickShop code! Just make a fork and install the Lombok plugin,
 then make a pull request when you're done! Please try to
 follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version
 number. Thank you very much!
 
 To compile the QuickShop and debug it by yourself, please follow these steps:
 
-0. Make sure you're using Java16 JDK in your PATH. 1.Compile main-project without signature by using debug
-   proile: `mvn install -Pdebug`
-   2.Start your server with extra flag to skip the QuickShop signature
+0. Make sure you're using Java16 JDK in your PATH.
+1. Compile main-project without signature by using debug profile: `mvn install -Pdebug`
+2. Start your server with extra flag to skip the QuickShop signature
    checks: `-Dorg.maxgamer.quickshop.util.envcheck.skip.SIGNATURE_VERIFY`
 
 ## Maven
