@@ -1,4 +1,4 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
   - name: 'Development Builds'
     about: |-
@@ -7,10 +7,10 @@ contact_links:
     url: 'https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT/'
   - name: 'Feature Requests'
     about: 'Use our discussions page to request changes towards QuickShop.'
-    url: 'https://github.com/Ghost-chu/QuickShop-Reremake/discussions/categories/ideas'
+    url: 'https://github.com/PotatoCraft-Studio/QuickShop-Reremake/discussions/categories/ideas'
   - name: 'Wiki'
     about: 'Find info about QuickShop in our dedicated wiki.'
-    url: 'https://github.com/Ghost-chu/QuickShop-Reremake/wiki'
+    url: 'https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki'
   - name: 'Discord'
     about: 'Join our Discord to ask questions and get fast support.'
     url: 'https://discord.gg/bfefw2E'
