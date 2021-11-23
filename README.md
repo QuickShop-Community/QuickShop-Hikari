@@ -23,9 +23,10 @@ from [KaiKikuchi's QuickShop upstream repository](https://github.com/KaiKikuchi/
 
 ## Support
 
-| <a href="https://discord.gg/bfefw2E"/> <img src="/.github/icons/Discord.svg" width="100" height="100" />
-| <a href="https://github.com/Ghost-chu/QuickShop-Reremake/issues"><img src="/.github/icons/Github.png" width="100" height="100" />
-| | :-: | :-: | | **Discord** | **Github Issues** |
+| <a href="https://discord.gg/bfefw2E"/> <img src="/.github/icons/Discord.svg" width="100" height="100" />| <a href="https://github.com/PotatoCraft-Studio/QuickShop-Reremake/issues"><img src="/.github/icons/Github.png" width="100" height="100" />|
+| :---: | :---: |
+| [**Discord**](https://discord.gg/bfefw2E) | [**Github
+Issues**](https://github.com/PotatoCraft-Studio/QuickShop-Reremake/issues) |
 
 ## Features
 
@@ -49,7 +50,7 @@ from [KaiKikuchi's QuickShop upstream repository](https://github.com/KaiKikuchi/
 ## Downloads
 
 | <a href="https://www.spigotmc.org/resources/62575/"><img src="/.github/icons/Spigot.png" width="100" height="90" /></a> | <a href="https://dev.bukkit.org/projects/quickshop-reremake"><img src="/.github/icons/Bukkit.png" width="100" height="100" /></a></a> | <a href="http://www.mcbbs.net/thread-809496-1-1.html"><img src="/.github/icons/MCBBS.png" width="100" height="100" /></a> | <a href="https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT/"><img src="/.github/icons/Jenkins.svg" width="85" height="100" /></a>
- | --- | --- | --- | --- |
+ | :---: | :---: | :---: | :---: |
 | **Spigot** | **BukkitDev** | **MCBBS** | **Jenkins** |
 
 ## Contribute
@@ -61,10 +62,9 @@ number. Thank you very much!
 
 To compile the QuickShop and debug it by yourself, please follow these steps:
 
-0. Make sure you're using Java16 JDK in your PATH.
-1. Compile sub-project: `cd ./src/integration/plotsquared/5 && mvn install && cd ../../../../`
-2. Compile main-project without signature by using debug proile: `mvn install -Pdebug`
-3. Start your server with extra flag to skip the QuickShop signature
+0. Make sure you're using Java16 JDK in your PATH. 1.Compile main-project without signature by using debug
+   proile: `mvn install -Pdebug`
+   2.Start your server with extra flag to skip the QuickShop signature
    checks: `-Dorg.maxgamer.quickshop.util.envcheck.skip.SIGNATURE_VERIFY`
 
 ## Maven
