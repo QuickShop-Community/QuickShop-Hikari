@@ -1962,6 +1962,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfiguration().remove("plugin.BKCommonLib");
             getConfiguration().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 148) {
+            getConfiguration().set("integration.worldguard.respect-global-region",false);
+            getConfiguration().set("config-version", ++selectedVersion);
+        }
         if (getConfiguration().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }

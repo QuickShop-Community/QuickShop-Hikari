@@ -1,7 +1,7 @@
 # QuickShop-Reremake Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 148
+config-version: 149
 
 #This language will used by Item Name, Enchantment Name,
 #and Potion Effect Name or the text on the shop info sign (nbtapi not installed) and other them related position.
@@ -557,6 +557,8 @@ integration:
     whitelist-mode: false
     #Allow players to create a shop if the player is the owner of in this location or ANY region.
     any-owner: true
+    #Should we respect the global region flag?
+    respect-global-region: true
     #Which checks does a player need to pass to create a shop?
     #You can use multiple checks at the same time.
     #Priority: UP > DOWN
