@@ -1,3 +1,4 @@
+base_path: "/master"
 files:
   - source: /src/main/resources/lang/*.json
     translation: /crowdin/lang/%locale%/%original_file_name%
