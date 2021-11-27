@@ -24,7 +24,6 @@ import de.themoep.minedown.MineDown;
 import de.themoep.minedown.MineDownParser;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import net.md_5.bungee.api.ChatColor;
@@ -353,7 +352,7 @@ public class Util {
      * @return the right side for given blockFace, UP and DOWN will return itself
      */
     @NotNull
-    public static BlockFace getRightSide(@NonNull BlockFace blockFace) {
+    public static BlockFace getRightSide(@NotNull BlockFace blockFace) {
         switch (blockFace) {
             case EAST:
                 return BlockFace.SOUTH;

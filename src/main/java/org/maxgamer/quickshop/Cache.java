@@ -24,7 +24,6 @@ import com.google.common.cache.CacheStats;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.Location;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
@@ -50,7 +49,7 @@ public class Cache {
         this.plugin = plugin;
     }
 
-    public @NonNull CacheStats getStats() {
+    public @NotNull CacheStats getStats() {
         return accessCaching.stats();
     }
 

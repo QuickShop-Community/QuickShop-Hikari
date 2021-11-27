@@ -19,11 +19,11 @@
 
 package org.maxgamer.quickshop.watcher;
 
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 
 import java.io.*;
@@ -106,7 +106,7 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
         }
     }
 
-    public void log(@NonNull String log) {
+    public void log(@NotNull String log) {
         logs.add("[" + DATETIME_FORMATTER.format(Instant.now()) + "] " + log);
     }
 

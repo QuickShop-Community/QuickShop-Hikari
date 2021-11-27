@@ -25,8 +25,8 @@ import me.lucko.helper.gson.typeadapters.BukkitSerializableAdapterFactory;
 import me.lucko.helper.gson.typeadapters.GsonSerializableAdapterFactory;
 import me.lucko.helper.gson.typeadapters.JsonElementTreeSerializer;
 import me.lucko.helper.text3.serializer.gson.GsonComponentSerializer;
+import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.io.Reader;
 import java.util.Objects;
 
@@ -65,7 +65,7 @@ public final class JsonUtil {
         return REGULAR_GSON;
     }
 
-    @Nonnull
+    @NotNull
     public static Gson standard() {
         return STANDARD_GSON;
     }
@@ -74,60 +74,60 @@ public final class JsonUtil {
         return STANDARD_GSON;
     }
 
-    @Nonnull
+    @NotNull
     public static Gson prettyPrinting() {
         return PRETTY_PRINT_GSON;
     }
 
-    @Nonnull
+    @NotNull
     public static JsonParser parser() {
         return PARSER;
     }
 
-    @Nonnull
-    public static JsonObject readObject(@Nonnull Reader reader) {
+    @NotNull
+    public static JsonObject readObject(@NotNull Reader reader) {
         return PARSER.parse(reader).getAsJsonObject();
     }
 
-    @Nonnull
-    public static JsonObject readObject(@Nonnull String s) {
+    @NotNull
+    public static JsonObject readObject(@NotNull String s) {
         return PARSER.parse(s).getAsJsonObject();
     }
 
-    public static void writeObject(@Nonnull Appendable writer, @Nonnull JsonObject object) {
+    public static void writeObject(@NotNull Appendable writer, @NotNull JsonObject object) {
         standard().toJson(object, writer);
     }
 
-    public static void writeObjectPretty(@Nonnull Appendable writer, @Nonnull JsonObject object) {
+    public static void writeObjectPretty(@NotNull Appendable writer, @NotNull JsonObject object) {
         prettyPrinting().toJson(object, writer);
     }
 
-    public static void writeElement(@Nonnull Appendable writer, @Nonnull JsonElement element) {
+    public static void writeElement(@NotNull Appendable writer, @NotNull JsonElement element) {
         standard().toJson(element, writer);
     }
 
-    public static void writeElementPretty(@Nonnull Appendable writer, @Nonnull JsonElement element) {
+    public static void writeElementPretty(@NotNull Appendable writer, @NotNull JsonElement element) {
         prettyPrinting().toJson(element, writer);
     }
 
-    @Nonnull
-    public static String toString(@Nonnull JsonElement element) {
+    @NotNull
+    public static String toString(@NotNull JsonElement element) {
         return Objects.requireNonNull(standard().toJson(element));
     }
 
-    @Nonnull
-    public static String toStringPretty(@Nonnull JsonElement element) {
+    @NotNull
+    public static String toStringPretty(@NotNull JsonElement element) {
         return Objects.requireNonNull(prettyPrinting().toJson(element));
     }
 
 
-    @Nonnull
+    @NotNull
     @Deprecated
     public static Gson get() {
         return standard();
     }
 
-    @Nonnull
+    @NotNull
     @Deprecated
     public static Gson getPrettyPrinting() {
         return prettyPrinting();
