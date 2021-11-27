@@ -134,8 +134,8 @@ public class SubCommand_Find implements CommandHandler<Player> {
                         String.valueOf(location.getBlockZ()),
                         String.valueOf(shopDoubleEntry.getValue().intValue())
                 ).forLocale()).append("\n");
-                MsgUtil.sendDirectMessage(sender, stringBuilder.toString());
             }
+            MsgUtil.sendDirectMessage(sender, stringBuilder.toString());
         }
     }
 }
