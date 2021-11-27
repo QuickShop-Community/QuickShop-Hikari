@@ -19,7 +19,7 @@
 
 package org.maxgamer.quickshop.util.economyformatter;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.MsgUtil;

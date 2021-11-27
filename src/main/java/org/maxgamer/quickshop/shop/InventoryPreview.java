@@ -21,7 +21,7 @@ package org.maxgamer.quickshop.shop;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.HumanEntity;

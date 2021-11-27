@@ -21,7 +21,7 @@ package org.maxgamer.quickshop.util.matcher.item;
 
 import de.tr7zw.nbtapi.NBTItem;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;

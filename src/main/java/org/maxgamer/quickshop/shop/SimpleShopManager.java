@@ -26,7 +26,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

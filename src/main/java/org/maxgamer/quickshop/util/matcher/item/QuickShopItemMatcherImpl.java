@@ -22,7 +22,7 @@ package org.maxgamer.quickshop.util.matcher.item;
 import de.leonhard.storage.sections.FlatFileSection;
 import de.tr7zw.nbtapi.NBTItem;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.enchantments.Enchantment;
