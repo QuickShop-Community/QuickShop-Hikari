@@ -21,11 +21,9 @@ package org.maxgamer.quickshop.watcher;
 
 import lombok.Data;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
-import org.maxgamer.quickshop.api.shop.DisplayType;
-import org.maxgamer.quickshop.api.shop.Shop;
 
 @Data
+@Deprecated
 public class DisplayWatcher {
     private QuickShop plugin;
 
@@ -34,24 +32,7 @@ public class DisplayWatcher {
         registerTask();
     }
 
+
     private void registerTask() {
-        plugin.getLogger().info("Registering DisplayCheck task....");
-        if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
-            return;
-        }
-        if (plugin.isDisplayEnabled() && plugin.getDisplayItemCheckTicks() > 0) {
-            plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
-                if (plugin.getConfiguration().getInt("shop.display-items-check-ticks") < 3000) {
-                    plugin.getLogger().severe("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
-                }
-                for (Shop shop : plugin.getShopManager().getLoadedShops()) {
-                    //Shop may be deleted or unloaded when iterating
-                    if (shop.isDeleted() || !shop.isLoaded()) {
-                        continue;
-                    }
-                    shop.checkDisplay();
-                }
-            }, 1L, plugin.getDisplayItemCheckTicks());
-        }
     }
 }

@@ -166,6 +166,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private int displayItemCheckTicks;
     @Getter
+    @Deprecated
     private DisplayWatcher displayWatcher;
     /**
      * The economy we hook into for transactions
@@ -904,10 +905,25 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         new EconomySetupListener(this).register();
         InternalListener internalListener = new InternalListener(this);
         internalListener.register();
-        ongoingFeeWatcher = new OngoingFeeWatcher(this);
 
         if (this.display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
-            displayWatcher = new DisplayWatcher(this);
+            if (getConfiguration().getInt("shop.display-items-check-ticks") < 3000) {
+                getLogger().severe("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
+            }
+            if (getDisplayItemCheckTicks() > 0) {
+                getLogger().info("Registering DisplayCheck task....");
+                timerTaskList.add(getServer().getScheduler().runTaskTimer(this, () -> {
+                    for (Shop shop : getShopManager().getLoadedShops()) {
+                        //Shop may be deleted or unloaded when iterating
+                        if (shop.isDeleted() || !shop.isLoaded()) {
+                            continue;
+                        }
+                        shop.checkDisplay();
+                    }
+                }, 1L, getDisplayItemCheckTicks()));
+            } else {
+                getLogger().severe("Shop.display-items-check-ticks is invalid! Pick a number > 3000");
+            }
             new DisplayProtectionListener(this, this.shopCache).register();
             if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
                 new ClearLaggListener(this).register();
@@ -945,8 +961,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
         }
         if (getConfiguration().getBoolean("shop.ongoing-fee.enable")) {
-            getLogger().info("Ongoing fee feature is enabled.");
+            ongoingFeeWatcher = new OngoingFeeWatcher(this);
             timerTaskList.add(ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfiguration().getInt("shop.ongoing-fee.ticks")));
+            getLogger().info("Ongoing fee feature is enabled.");
         }
         integrationHelper.searchAndRegisterPlugins();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);
