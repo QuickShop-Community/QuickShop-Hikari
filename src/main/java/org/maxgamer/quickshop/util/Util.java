@@ -411,8 +411,8 @@ public class Util {
         return plugin.getConfiguration().getBoolean("shop.use-enchantment-for-enchanted-book");
     }
 
-    @NotNull
-    public static String getItemStackName(@NotNull ItemStack itemStack) {
+    @Nullable
+    public static String getItemCustomName(@NotNull ItemStack itemStack) {
         if (useEnchantmentForEnchantedBook() && itemStack.getType() == Material.ENCHANTED_BOOK) {
             ItemMeta meta = itemStack.getItemMeta();
             if (meta instanceof EnchantmentStorageMeta && ((EnchantmentStorageMeta) meta).hasStoredEnchants()) {
@@ -424,7 +424,13 @@ public class Util {
                 && !QuickShop.getInstance().getConfiguration().getBoolean("shop.force-use-item-original-name")) {
             return itemStack.getItemMeta().getDisplayName();
         }
-        return MsgUtil.getItemi18n(itemStack.getType().name());
+        return null;
+    }
+
+    @NotNull
+    public static String getItemStackName(@NotNull ItemStack itemStack) {
+        String result = getItemCustomName(itemStack);
+        return result == null ? MsgUtil.getItemi18n(itemStack.getType().name()) : result;
     }
 
     @NotNull
