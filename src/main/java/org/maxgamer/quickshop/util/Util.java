@@ -89,7 +89,7 @@ public class Util {
     private static final ThreadLocal<MineDown> MINEDOWN = ThreadLocal.withInitial(() -> new MineDown(""));
     private static int BYPASSED_CUSTOM_STACKSIZE = -1;
     private static Yaml yaml = null;
-    private static Boolean devMode = null;
+    private volatile static Boolean devMode = null;
     @Setter
     private static QuickShop plugin;
     @Getter
