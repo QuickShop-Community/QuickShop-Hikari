@@ -124,6 +124,10 @@ public class SimpleTextManager implements TextManager, Reloadable {
         distribution.getAvailableLanguages(); // Make a request that loading the manifest to create manifest cache for
         // parallel threads
         List<String> enabledLanguagesRegex = plugin.getConfiguration().getStringList("enabled-languages");
+        //Make sure is a lowercase regex, prevent case-sensitive and underscore issue
+        for (int i = 0; i < enabledLanguagesRegex.size(); i++) {
+            enabledLanguagesRegex.set(i, enabledLanguagesRegex.get(i).toLowerCase(Locale.ROOT).replace("-", "_"));
+        }
         // Multi File and Multi-Language loader
         // Offline Initiated
         mapper.deployBundled("/master/crowdin/lang/%locale%/messages.json", loadBundled("/master/crowdin/lang/%locale%/messages.json"));
