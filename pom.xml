@@ -130,6 +130,14 @@
                             <shadedPattern>org.maxgamer.quickshop.shade.org.checkerframework.</shadedPattern>
                         </relocation>
                         <relocation>
+                            <pattern>org.apache.commons.lang3.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.apache.commons.lang3.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.objectweb.asm.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.objectweb.asm.</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>org.slf4j.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.slf4j.slf4j.</shadedPattern>
                         </relocation>
@@ -192,6 +200,38 @@
                             <shadedPattern>org.maxgamer.quickshop.shade.org.enginehub.squirrelid.</shadedPattern>
                         </relocation>
                         <relocation>
+                            <pattern>kotlin.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.kotlin.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>javax.annotation.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.javax.annotation.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.google.common.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.google.common.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.flowpowered.math.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.flowpowered.math.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>okio.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.okio.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>okhttp3.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.okhttp3.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.minecraft.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.minecraft.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.minidev.asm.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.net.minidev.asm.</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>com.squareup.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.com.squareup.</shadedPattern>
                         </relocation>
@@ -206,6 +246,23 @@
                             <mainClass>org.maxgamer.quickshop.javaw.bootstrap.Bootstrap</mainClass>
                         </transformer>
                     </transformers>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                                <exclude>META-INF/*.kotlin_module</exclude>
+                                <exclude>META-INF/*.txt</exclude>
+                                <exclude>META-INF/proguard/*</exclude>
+                                <exclude>META-INF/services/*</exclude>
+                                <exclude>META-INF/versions/9/*</exclude>
+                                <exclude>*License*</exclude>
+                                <exclude>*LICENSE*</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
                 </configuration>
                 <executions>
                     <execution>
@@ -570,6 +627,12 @@
             <artifactId>spigot-api</artifactId>
             <version>1.17.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>me.vagdedes.spartan</groupId>
