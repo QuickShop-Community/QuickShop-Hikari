@@ -19,34 +19,45 @@
 
 package org.maxgamer.quickshop.shop;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
 
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
-@AllArgsConstructor
-public class ShopPurger extends BukkitRunnable {
+
+public class ShopPurger implements Runnable {
     private final QuickShop plugin;
     private volatile boolean executing;
 
-    @Override
-    public void run() {
-        Util.ensureThread(true);
+    public ShopPurger(QuickShop plugin) {
+        this.plugin = plugin;
+    }
+
+    public void purge() {
+        if (!plugin.getConfiguration().getBoolean("purge.enabled")) {
+            plugin.getLogger().info("[Shop Purger] Purge not enabled!");
+            return;
+        }
         if (executing) {
             plugin.getLogger().info("[Shop Purger] Another purge task still running!");
-            return;
+        } else {
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, this);
         }
+    }
+
+    @Override
+    @Deprecated
+    public void run() {
+        Util.ensureThread(true);
         executing = true;
-        if (!plugin.getConfiguration().getBoolean("purge.enabled")) {
-            return;
-        }
         Util.debugLog("[Shop Purger] Scanning and removing shops");
+        List<Shop> pendingRemovalShops = new ArrayList<>();
         int days = plugin.getConfiguration().getOrDefault("purge.days", 360);
         boolean deleteBanned = plugin.getConfiguration().getBoolean("purge.banned");
         boolean skipOp = plugin.getConfiguration().getBoolean("purge.skip-op");
@@ -76,23 +87,33 @@ public class ShopPurger extends BukkitRunnable {
             if (!markDeletion) {
                 continue;
             }
-            plugin.getLogger().info("[Shop Purger] Shop " + shop + " has been purged.");
-            shop.delete(false);
-            if (returnCreationFee) {
-                EconomyTransaction transaction =
-                        EconomyTransaction.builder()
-                                .amount(plugin.getConfiguration().getDouble("shop.cost"))
-                                .allowLoan(false)
-                                .core(QuickShop.getInstance().getEconomy())
-                                .currency(shop.getCurrency())
-                                .world(shop.getLocation().getWorld())
-                                .to(shop.getOwner())
-                                .build();
-                transaction.failSafeCommit();
-            }
-            executing = false;
-            plugin.getLogger().info("[Shop Purger] Task completed");
+            pendingRemovalShops.add(shop);
         }
-
+        if (pendingRemovalShops.size() > 0) {
+            plugin.getLogger().info("[Shop Purger] Found " + pendingRemovalShops.size() + " need to removed, will remove in the next tick.");
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                for (Shop shop : pendingRemovalShops) {
+                    shop.delete(false);
+                    if (returnCreationFee) {
+                        EconomyTransaction transaction =
+                                EconomyTransaction.builder()
+                                        .amount(plugin.getConfiguration().getDouble("shop.cost"))
+                                        .allowLoan(false)
+                                        .core(QuickShop.getInstance().getEconomy())
+                                        .currency(shop.getCurrency())
+                                        .world(shop.getLocation().getWorld())
+                                        .to(shop.getOwner())
+                                        .build();
+                        transaction.failSafeCommit();
+                    }
+                    plugin.getLogger().info("[Shop Purger] Shop " + shop + " has been purged.");
+                }
+                plugin.getLogger().info("[Shop Purger] Task completed, " + pendingRemovalShops.size() + " shops was purged");
+                executing = false;
+            }, 1L);
+        } else {
+            plugin.getLogger().info("[Shop Purger] Task completed, No shops need to purge.");
+            executing = false;
+        }
     }
 }

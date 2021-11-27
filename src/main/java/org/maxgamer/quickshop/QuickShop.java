@@ -982,8 +982,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         calendarWatcher = new CalendarWatcher(this);
         calendarWatcher.start();
         tpsWatcher.runTaskTimer(this, 1000, 50);
-        this.shopPurger = new ShopPurger(this, false);
-        shopPurger.runTaskAsynchronously(this);
+        this.shopPurger = new ShopPurger(this);
+        shopPurger.purge();
         Util.debugLog("Now using display-type: " + AbstractDisplayItem.getNowUsing().name());
         getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
     }
