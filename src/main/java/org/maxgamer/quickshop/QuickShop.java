@@ -226,6 +226,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private @Deprecated
     DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
     @Getter
+    @Deprecated
     private boolean enabledAsyncDisplayDespawn;
     @Getter
     private Plugin blockHubPlugin;
@@ -839,10 +840,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         permissionManager = new PermissionManager(this);
         // This should be inited before shop manager
         if (this.display && getConfiguration().getBoolean("shop.display-auto-despawn")) {
-            this.enabledAsyncDisplayDespawn = true;
             this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
             //BUKKIT METHOD SHOULD ALWAYS EXECUTE ON THE SERVER MAIN THEAD
-            this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfiguration().getInt("shop.display-check-time")); // not worth async
+            timerTaskList.add(this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfiguration().getInt("shop.display-check-time"))); // not worth async
         }
 
         getLogger().info("Registering commands...");
