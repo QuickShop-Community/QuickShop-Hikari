@@ -179,7 +179,7 @@
       "lock": "상점 잠금 상태 전환",
       "taxaccount": "&e쇼핑에서 사용하는 세금 계정 설정",
       "toggledisplay": "&e상점 표시 항목 상태 전환",
-      "purge": "&eStart the shop purge task in background"
+      "purge": "&a백그라운드에서 상점 정리 작업을 시작합니다"
     },
     "disabled": "&c이 명령어는 비활성화 되어있습니다: &e{0}",
     "feature-not-enabled": "이옵션은 컨피그에서 비활성 상태입니다"
@@ -190,8 +190,8 @@
     "header": "{1}{0}",
     "buying": "&b구매 {0} 개",
     "stack-buying": "&b구매중 {0} 개",
-    "item-left": "",
-    "item-right": "",
+    "item-left": "&f",
+    "item-right": "&f",
     "price": "개당 {0}",
     "stack-price": "아이템 {2}, {1} 개당 {0}원",
     "unlimited": "무제한",
@@ -229,8 +229,8 @@
     "lock-hover": "&e상점 잠금 보호를 활성화/비활성화 합니다. ",
     "freeze": "&e동결 상태: &b{0} &e[&d&l전환&e]",
     "freeze-hover": "&e상점 동결 상태 전환.",
-    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
-    "toggledisplay-hover": "&eToggle the shop's displayitem status"
+    "toggledisplay": "&e아이템 표시: &b{0} &e[&d&l전환&e]",
+    "toggledisplay-hover": "&e상점 표시 항목 상태 전환"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -346,6 +346,6 @@
   "display-turn-on": "&a상점 디스플레이를 성공적으로 켰습니다.",
   "display-turn-off": "&a상점 디스플레이를 성공적으로 껏습니다.",
   "shop-purged-start": "&a상점 정리가 시작되었습니다. 자세한 내용은 콘솔을 확인하십시오.",
-  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
-  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
+  "purchase-out-of-stock": "&c이 상점은 재고가 다 떨어졌으니 주인에게 문의하여 재고보충을 요구해주세요.",
+  "purchase-out-of-space": "&c이 상점은 공간이 부족하니 주인에게 문의하여 상자를 비우라고 요청해주세요."
 }
