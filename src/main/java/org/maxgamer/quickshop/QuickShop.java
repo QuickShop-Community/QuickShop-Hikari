@@ -498,7 +498,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 return false;
             }
             economy = ServiceInjector.getEconomy(economy);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             this.getSentryErrorReporter().ignoreThrow();
             getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);
             getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
