@@ -121,7 +121,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     /* Public QuickShop API */
     private final SimpleCompatibilityManager compatibilityTool = new SimpleCompatibilityManager(this);
     private final Map<String, Integer> limits = new HashMap<>(15);
-    private final GameVersion gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
+    private GameVersion gameVersion;
     /**
      * The shop limites.
      */
@@ -2105,6 +2105,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
     @Override
     public GameVersion getGameVersion() {
+        if (gameVersion == null) {
+            gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
+        }
         return this.gameVersion;
     }
 }

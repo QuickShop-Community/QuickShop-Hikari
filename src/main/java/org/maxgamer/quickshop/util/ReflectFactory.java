@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandMap;
@@ -30,7 +31,11 @@ import org.maxgamer.quickshop.QuickShop;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 /**
  * ReflectFactory is library builtin QuickShop to get/execute stuff that cannot be access with BukkitAPI with reflect way.
@@ -45,12 +50,12 @@ public class ReflectFactory {
     private static Class<?> craftServerClass;
     private static Class<?> cachedNMSClass;
     private static String nmsVersion;
+    private static Method getMinecraftKeyNameMethod;
 //    private static Object serverInstance;
 //    private static Field tpsField;
 
     static {
-        String name = Bukkit.getServer().getClass().getPackage().getName();
-        String nmsVersion = name.substring(name.lastIndexOf('.') + 1);
+        String nmsVersion = getNMSVersion();
 
         try {
             craftItemStack_asNMSCopyMethod =
@@ -61,7 +66,19 @@ public class ReflectFactory {
             if (gameVersion.isNewNmsName()) {
                 // 1.17+
                 nbtTagCompoundClass = Class.forName("net.minecraft.nbt.NBTTagCompound");
-                itemStack_saveMethod = Class.forName("net.minecraft.world.item.ItemStack").getDeclaredMethod("save", nbtTagCompoundClass);
+                List<Method> methodList = Arrays.stream(Class.forName("net.minecraft.world.item.ItemStack").getDeclaredMethods()).filter(method ->
+                        {
+                            Class<?> returnType = method.getReturnType();
+                            Parameter[] parameters = method.getParameters();
+                            //Save method sign is foo(net/minecraft/nbt/NBTTagCompound)L(net/minecraft/nbt/NBTTagCompound)
+                            return !method.isSynthetic() && !method.isBridge() && parameters.length == 1 && returnType.equals(nbtTagCompoundClass) && parameters[0].getType().equals(nbtTagCompoundClass);
+                        }
+                ).collect(Collectors.toList());
+                if (methodList.size() == 1) {
+                    itemStack_saveMethod = methodList.get(0);
+                } else {
+                    throw new RuntimeException("Unable to find correct itemStack save method, got " + methodList + ", please report!");
+                }
             } else {
                 // Before 1.17
                 nbtTagCompoundClass = Class.forName("net.minecraft.server." + nmsVersion + ".NBTTagCompound");
@@ -152,7 +169,13 @@ public class ReflectFactory {
                     console.getClass().getSuperclass().getMethod("getVersion").invoke(console));
             return cachedVersion;
         } catch (Exception e) {
-            cachedVersion = "Unknown";
+            //Fallback to common substring
+            String[] strings = StringUtils.substringsBetween(Bukkit.getServer().getVersion(), "(MC: ", ")");
+            if (strings != null && strings.length == 1) {
+                cachedVersion = strings[0];
+            } else {
+                cachedVersion = "Unknown";
+            }
             return cachedVersion;
         }
     }
@@ -169,7 +192,7 @@ public class ReflectFactory {
      */
     @Nullable
     public static String convertBukkitItemStackToJson(@NotNull ItemStack bStack) throws InvocationTargetException, IllegalAccessException, NoSuchMethodException, InstantiationException {
-        if (bStack.getType() == Material.AIR) {
+        if (bStack.getType() == Material.AIR || craftItemStack_asNMSCopyMethod == null || nbtTagCompoundClass == null) {
             return null;
         }
         Object mcStack = craftItemStack_asNMSCopyMethod.invoke(null, bStack);
@@ -216,6 +239,7 @@ public class ReflectFactory {
         method.invoke(Bukkit.getServer(), (Object[]) null);
     }
 
+
     @Nullable
     public static String getMaterialMinecraftNamespacedKey(Material material) {
         Object nmsItem;
@@ -226,29 +250,30 @@ public class ReflectFactory {
                 Util.debugLog("nmsItem null");
                 return null;
             }
-            Method getName = null;
-            try {
-                getName = nmsItem.getClass().getMethod("getName");
-            } catch (NoSuchMethodException exception) {
-                Util.debugLog("Mapping changed during minecraft update, dynamic searching...");
-                for (Method method : nmsItem.getClass().getMethods()) {
-                    if (method.getReturnType() == String.class) {
-                        if (method.getParameterCount() == 0) {
-                            if (!"toString".equals(method.getName())) {
-                                if (((String) method.invoke(nmsItem)).contains("stone") || ((String) method.invoke(nmsItem)).contains("STONE")) {
-                                    getName = method;
+            if (getMinecraftKeyNameMethod == null) {
+                try {
+                    getMinecraftKeyNameMethod = nmsItem.getClass().getMethod("getName");
+                } catch (NoSuchMethodException exception) {
+                    Util.debugLog("Mapping changed during minecraft update, dynamic searching...");
+                    for (Method method : nmsItem.getClass().getMethods()) {
+                        if (method.getReturnType() == String.class) {
+                            if (method.getParameterCount() == 0) {
+                                if (!"toString".equals(method.getName())) {
+                                    if (((String) method.invoke(nmsItem)).contains("stone") || ((String) method.invoke(nmsItem)).contains("STONE")) {
+                                        getMinecraftKeyNameMethod = method;
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }
                 }
+                if (getMinecraftKeyNameMethod == null) {
+                    Util.debugLog("getMinecraftKeyNameMethod is null");
+                    return null;
+                }
             }
-            if (getName == null) {
-                Util.debugLog("getName is null");
-                return null;
-            }
-            return (String) getName.invoke(nmsItem);
+            return (String) getMinecraftKeyNameMethod.invoke(nmsItem);
         } catch (IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
             return null;
