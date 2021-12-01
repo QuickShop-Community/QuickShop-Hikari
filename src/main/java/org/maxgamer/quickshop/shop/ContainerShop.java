@@ -754,7 +754,7 @@ public class ContainerShop implements Shop {
             } else {
                 // NBTAPI installed
                 String itemName = Util.getItemCustomName(getItem());
-                BaseComponent[] itemComponents = itemName == null ? new BaseComponent[]{new TranslatableComponent(ReflectFactory.getMaterialMinecraftNamespacedKey(getItem().getType()))} : TextComponent.fromLegacyText(itemName);
+                BaseComponent[] itemComponents = itemName == null ? Util.getTranslateComponentForItem(getItem()) : TextComponent.fromLegacyText(itemName);
                 lines.add(new ComponentPackage(new ComponentBuilder()
                         .color(ChatColor.RESET)
                         .append(left)

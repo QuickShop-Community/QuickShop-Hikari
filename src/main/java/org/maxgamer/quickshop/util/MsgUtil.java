@@ -221,7 +221,7 @@ public class MsgUtil {
     }
 
     public static String convertItemStackToTranslateText(Material mat) {
-        return TextSplitter.bakeComponent(new ComponentBuilder().append(new TranslatableComponent(ReflectFactory.getMaterialMinecraftNamespacedKey(mat))).create());
+        return TextSplitter.bakeComponent(new ComponentBuilder().append(Util.getTranslateComponentForMaterial(mat)).create());
     }
 
     @Unstable

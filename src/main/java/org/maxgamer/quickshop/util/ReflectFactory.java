@@ -34,6 +34,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -51,6 +52,7 @@ public class ReflectFactory {
     private static Class<?> cachedNMSClass;
     private static String nmsVersion;
     private static Method getMinecraftKeyNameMethod;
+    private static boolean isMinecraftKeyNameMethodUnavailable = false;
 //    private static Object serverInstance;
 //    private static Field tpsField;
 
@@ -239,7 +241,6 @@ public class ReflectFactory {
         method.invoke(Bukkit.getServer(), (Object[]) null);
     }
 
-
     @Nullable
     public static String getMaterialMinecraftNamespacedKey(Material material) {
         Object nmsItem;
@@ -251,6 +252,9 @@ public class ReflectFactory {
                 return null;
             }
             if (getMinecraftKeyNameMethod == null) {
+                if (isMinecraftKeyNameMethodUnavailable) {
+                    return null;
+                }
                 try {
                     getMinecraftKeyNameMethod = nmsItem.getClass().getMethod("getName");
                 } catch (NoSuchMethodException exception) {
@@ -259,7 +263,7 @@ public class ReflectFactory {
                         if (method.getReturnType() == String.class) {
                             if (method.getParameterCount() == 0) {
                                 if (!"toString".equals(method.getName())) {
-                                    if (((String) method.invoke(nmsItem)).contains("stone") || ((String) method.invoke(nmsItem)).contains("STONE")) {
+                                    if (((String) method.invoke(nmsItem)).toLowerCase().contains(material.name().toLowerCase(Locale.ROOT))) {
                                         getMinecraftKeyNameMethod = method;
                                     }
                                     break;
@@ -269,6 +273,7 @@ public class ReflectFactory {
                     }
                 }
                 if (getMinecraftKeyNameMethod == null) {
+                    isMinecraftKeyNameMethodUnavailable = true;
                     Util.debugLog("getMinecraftKeyNameMethod is null");
                     return null;
                 }

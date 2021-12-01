@@ -28,6 +28,8 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.*;
@@ -409,6 +411,18 @@ public class Util {
 
     public static boolean useEnchantmentForEnchantedBook() {
         return plugin.getConfiguration().getBoolean("shop.use-enchantment-for-enchanted-book");
+    }
+
+    @NotNull
+    public static BaseComponent[] getTranslateComponentForItem(ItemStack stack) {
+        String result = ReflectFactory.getMaterialMinecraftNamespacedKey(stack.getType());
+        return result == null ? TextComponent.fromLegacyText(getItemStackName(stack)) : new BaseComponent[]{new TranslatableComponent(result)};
+    }
+
+    @NotNull
+    public static BaseComponent[] getTranslateComponentForMaterial(Material material) {
+        String result = ReflectFactory.getMaterialMinecraftNamespacedKey(material);
+        return result == null ? TextComponent.fromLegacyText(MsgUtil.getItemi18n(material.name())) : new BaseComponent[]{new TranslatableComponent(result)};
     }
 
     @Nullable
