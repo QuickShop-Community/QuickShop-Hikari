@@ -81,7 +81,7 @@ public class BungeeQuickChat implements QuickChat {
         TextComponent errorComponent = new TextComponent(plugin.text().of(player, "menu.item-holochat-error").forLocale());
         try {
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
-            ComponentBuilder builder = new ComponentBuilder();
+            ComponentBuilder builder = new ComponentBuilder("");
             builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
             TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(text);
             if (spilledString == null) {
@@ -110,7 +110,7 @@ public class BungeeQuickChat implements QuickChat {
             if (json == null) {
                 return new QuickComponentImpl(errorComponent);
             }
-            ComponentBuilder builder = new ComponentBuilder();
+            ComponentBuilder builder = new ComponentBuilder("");
             builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
             TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(message);
             if (spilledString == null) {
