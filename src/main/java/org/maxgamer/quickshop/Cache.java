@@ -21,14 +21,13 @@ package org.maxgamer.quickshop;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.shop.SimpleShopManager;
 
+import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -64,15 +63,20 @@ public class Cache {
     @Nullable
     public Shop find(@NotNull Location location, boolean attached) {
         BoxedShop boxedShop = accessCaching.getIfPresent(location);
-        if (boxedShop == null) {
+        //Cache is invalid, generated a new one
+        if (boxedShop == null || !boxedShop.isValid()) {
+            Shop shop;
             if (attached) {
-                boxedShop = new BoxedShop(((SimpleShopManager) plugin.getShopManager()).findShopIncludeAttached(location, false));
+                shop = ((SimpleShopManager) plugin.getShopManager()).findShopIncludeAttached(location, false);
             } else {
-                boxedShop = new BoxedShop(plugin.getShopManager().getShop(location));
+                shop = plugin.getShopManager().getShop(location);
             }
+            setCache(location, shop);
+            return shop;
+        } else {
+            //Cache is valid
+            return boxedShop.getShop();
         }
-        setCache(location, boxedShop.getShop());
-        return boxedShop.getShop();
     }
 
     /**
@@ -89,13 +93,32 @@ public class Cache {
         accessCaching.invalidate(location);
     }
 
-    @AllArgsConstructor
-    @Data
-    static class BoxedShop {
-        private Shop shop;
 
-        public boolean isPresent() {
-            return shop != null;
+    private static class BoxedShop {
+        @Nullable
+        private final WeakReference<Shop> shopWeakRef;
+
+        public BoxedShop(Shop shop) {
+            if (shop != null) {
+                this.shopWeakRef = new WeakReference<>(shop);
+            } else {
+                shopWeakRef = null;
+            }
+        }
+
+        @Nullable
+        public Shop getShop() {
+            return shopWeakRef == null ? null : shopWeakRef.get();
+        }
+
+        public boolean isValid() {
+            if (shopWeakRef != null) {
+                Shop shop = shopWeakRef.get();
+                if (shop != null) {
+                    return shop.isValid();
+                }
+            }
+            return false;
         }
     }
 }
