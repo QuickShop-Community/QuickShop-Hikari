@@ -52,40 +52,74 @@ public class UpdateWatcher implements Listener {
 
     public void init() {
         cronTask = QuickShop.getInstance().getServer().getScheduler().runTaskTimerAsynchronously(QuickShop.getInstance(), () -> {
-            if (updater.isLatest(VersionType.STABLE)) {
-                return;
-            }
-            QuickShop.getInstance()
-                    .getLogger()
-                    .info(
-                            "A new version of QuickShop has been released! [" + updater.getRemoteServerVersion() + "]");
-            QuickShop.getInstance()
-                    .getLogger()
-                    .info("Update here: https://www.spigotmc.org/resources/62575/");
+            if (!updater.isLatest(getUpdater().getCurrentRunning())) {
+                if (updater.getCurrentRunning() == VersionType.STABLE) {
+                    QuickShop.getInstance()
+                            .getLogger()
+                            .info(
+                                    "A new version of QuickShop has been released! [" + updater.getRemoteServerVersion() + "]");
+                    QuickShop.getInstance()
+                            .getLogger()
+                            .info("Update here: https://www.spigotmc.org/resources/62575/");
 
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if (QuickShop.getPermissionManager()
-                        .hasPermission(player, "quickshop.alerts")) {
-                    List<String> notifys =
-                            QuickShop.getInstance().text().ofList(player, "updatenotify.list").forLocale();
-                    int notifyNum = -1;
-                    if (notifys.size() > 1) {
-                        notifyNum = random.nextInt(notifys.size());
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        if (QuickShop.getPermissionManager()
+                                .hasPermission(player, "quickshop.alerts")) {
+                            List<String> notifys =
+                                    QuickShop.getInstance().text().ofList(player, "updatenotify.list").forLocale();
+                            int notifyNum = -1;
+                            if (notifys.size() > 1) {
+                                notifyNum = random.nextInt(notifys.size());
+                            }
+                            String notify;
+                            if (notifyNum > 0) { // Translate bug.
+                                notify = notifys.get(notifyNum);
+                            } else {
+                                notify = "New update {0} now avaliable! Please update!";
+                            }
+                            notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
+                            player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                            player.sendMessage(ChatColor.GREEN + notify);
+                            player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
+                            player.sendMessage(ChatColor.AQUA + " https://www.spigotmc.org/resources/62575/");
+                            player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                        }
                     }
-                    String notify;
-                    if (notifyNum > 0) { // Translate bug.
-                        notify = notifys.get(notifyNum);
-                    } else {
-                        notify = "New update {0} now avaliable! Please update!";
+                } else {
+                    QuickShop.getInstance()
+                            .getLogger()
+                            .info(
+                                    "A new version of QuickShop snapshot has been released! [" + updater.getRemoteServerVersion() + "]");
+                    QuickShop.getInstance()
+                            .getLogger()
+                            .info("Update here: https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT");
+
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        if (QuickShop.getPermissionManager()
+                                .hasPermission(player, "quickshop.alerts")) {
+                            List<String> notifys =
+                                    QuickShop.getInstance().text().ofList(player, "updatenotify.list").forLocale();
+                            int notifyNum = -1;
+                            if (notifys.size() > 1) {
+                                notifyNum = random.nextInt(notifys.size());
+                            }
+                            String notify;
+                            if (notifyNum > 0) { // Translate bug.
+                                notify = notifys.get(notifyNum);
+                            } else {
+                                notify = "New update {0} now avaliable! Please update!";
+                            }
+                            notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
+                            player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                            player.sendMessage(ChatColor.GREEN + notify);
+                            player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
+                            player.sendMessage(ChatColor.AQUA + " https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT");
+                            player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
+                        }
                     }
-                    notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
-                    player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
-                    player.sendMessage(ChatColor.GREEN + notify);
-                    player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
-                    player.sendMessage(ChatColor.AQUA + " https://www.spigotmc.org/resources/62575/");
-                    player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                 }
             }
+
         }, 1, 20 * 60 * 60);
     }
 
