@@ -35,6 +35,7 @@ import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -241,6 +242,29 @@ public class ReflectFactory {
         method.invoke(Bukkit.getServer(), (Object[]) null);
     }
 
+    private static Method findMethod(Class<?> targetClass, Class<?> returnType, Predicate<Method> filter, Class<?>... args) {
+        FindProcess:
+        for (Method method : targetClass.getMethods()) {
+            if (method.isBridge() && method.isSynthetic()) {
+                continue;
+            }
+            if (method.getReturnType() == returnType) {
+                if (method.getParameterCount() == args.length) {
+                    Parameter[] parameters = method.getParameters();
+                    for (int i = 0; i < args.length; i++) {
+                        if (parameters[i].getType() != args[i]) {
+                            continue FindProcess;
+                        }
+                    }
+                    if (filter.test(method)) {
+                        return method;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     @Nullable
     public static String getMaterialMinecraftNamespacedKey(Material material) {
         Object nmsItem;
@@ -251,34 +275,25 @@ public class ReflectFactory {
                 Util.debugLog("nmsItem null");
                 return null;
             }
-            if (getMinecraftKeyNameMethod == null) {
-                if (isMinecraftKeyNameMethodUnavailable) {
-                    return null;
-                }
-                try {
-                    getMinecraftKeyNameMethod = nmsItem.getClass().getMethod("getName");
-                } catch (NoSuchMethodException exception) {
-                    Util.debugLog("Mapping changed during minecraft update, dynamic searching...");
-                    for (Method method : nmsItem.getClass().getMethods()) {
-                        if (method.getReturnType() == String.class) {
-                            if (method.getParameterCount() == 0) {
-                                if (!"toString".equals(method.getName())) {
-                                    if (((String) method.invoke(nmsItem)).toLowerCase().contains(material.name().toLowerCase(Locale.ROOT))) {
-                                        getMinecraftKeyNameMethod = method;
-                                    }
-                                    break;
-                                }
-                            }
-                        }
+            try {
+                getMinecraftKeyNameMethod = nmsItem.getClass().getMethod("getName");
+            } catch (NoSuchMethodException exception) {
+                Util.debugLog("Mapping changed during minecraft update, dynamic searching...");
+                getMinecraftKeyNameMethod = findMethod(nmsItem.getClass(), String.class, method -> {
+                    try {
+                        return !"toString".equals(method.getName()) && ((String) method.invoke(nmsItem)).toLowerCase().contains(material.getKey().getKey().toLowerCase(Locale.ROOT));
+                    } catch (Throwable throwable) {
+                        return false;
                     }
-                }
-                if (getMinecraftKeyNameMethod == null) {
-                    isMinecraftKeyNameMethodUnavailable = true;
-                    Util.debugLog("getMinecraftKeyNameMethod is null");
-                    return null;
-                }
+                });
             }
-            return (String) getMinecraftKeyNameMethod.invoke(nmsItem);
+
+            if (getMinecraftKeyNameMethod == null) {
+                Util.debugLog("getMinecraftKeyNameMethod is null");
+                return null;
+            } else {
+                return (String) getMinecraftKeyNameMethod.invoke(nmsItem);
+            }
         } catch (IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
             return null;
