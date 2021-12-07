@@ -208,10 +208,6 @@
                             <shadedPattern>org.maxgamer.quickshop.shade.org.javax.annotation.</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>com.google.common.</pattern>
-                            <shadedPattern>org.maxgamer.quickshop.shade.com.google.common.</shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>com.flowpowered.math.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.com.flowpowered.math.</shadedPattern>
                         </relocation>
