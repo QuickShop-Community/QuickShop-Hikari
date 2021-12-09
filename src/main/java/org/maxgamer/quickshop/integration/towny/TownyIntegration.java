@@ -22,7 +22,7 @@ package org.maxgamer.quickshop.integration.towny;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.event.PlotClearEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
-import com.palmergames.bukkit.towny.event.actions.TownyDestroyEvent;
+import com.palmergames.bukkit.towny.event.town.TownUnclaimEvent;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
@@ -137,11 +137,15 @@ public class TownyIntegration extends AbstractQSIntegratedPlugin implements List
     }
 
     public void purgeShops(TownBlock townBlock) {
-        if (townBlock == null) {
+        purgeShops(townBlock.getWorldCoord());
+    }
+
+    public void purgeShops(WorldCoord worldCoord) {
+        if (worldCoord == null) {
             return;
         }
         String worldName;
-        worldName = townBlock.getWorld().getName();
+        worldName = worldCoord.getBukkitWorld().getName();
         //Getting all shop with world-chunk-shop mapping
         for (Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : plugin.getShopManager().getShops().entrySet()) {
             //Matching world
@@ -153,14 +157,9 @@ public class TownyIntegration extends AbstractQSIntegratedPlugin implements List
                         Map<Location, Shop> shopMap = chunkedShopEntry.getValue();
                         for (Shop shop : shopMap.values()) {
                             //Matching Owner
-                            try {
-                                //It should be equal in address
-                                if (WorldCoord.parseWorldCoord(shop.getLocation()).getTownBlock() == townBlock) {
-                                    //delete it
-                                    shop.delete();
-                                }
-                            } catch (NotRegisteredException ignored) {
-                                //Is not in town, continue
+                            if (WorldCoord.parseWorldCoord(shop.getLocation()).equals(worldCoord)) {
+                                //delete it
+                                shop.delete();
                             }
                         }
                     }
@@ -191,14 +190,14 @@ public class TownyIntegration extends AbstractQSIntegratedPlugin implements List
     }
 
     @EventHandler
-    public void onPlotDestroy(TownyDestroyEvent event) {
+    public void onPlotDestroy(TownUnclaimEvent event) {
         if (!deleteShopOnPlotDestroy) {
             return;
         }
         if (Bukkit.isPrimaryThread()) {
-            purgeShops(event.getTownBlock());
+            purgeShops(event.getWorldCoord());
         } else {
-            Util.mainThreadRun(() -> purgeShops(event.getTownBlock()));
+            Util.mainThreadRun(() -> purgeShops(event.getWorldCoord()));
         }
     }
 
