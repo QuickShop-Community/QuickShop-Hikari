@@ -122,6 +122,11 @@ public class SubCommand_Price implements CommandHandler<Player> {
                 return;
             }
 
+            if (checkResult.getStatus() == PriceLimiterStatus.NOT_A_WHOLE_NUMBER) {
+                plugin.text().of(sender, "not-a-integer", price).send();
+                return;
+            }
+
             if (fee > 0) {
                 EconomyTransaction transaction = EconomyTransaction.builder()
                         .allowLoan(plugin.getConfiguration().getOrDefault("shop.allow-economy-loan", false))
