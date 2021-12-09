@@ -787,7 +787,7 @@
         <dependency>
             <groupId>com.songoda</groupId>
             <artifactId>SongodaCore</artifactId>
-            <version>2.5.14</version>
+            <version>2.6.3</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
