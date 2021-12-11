@@ -68,12 +68,12 @@ public class SubCommand_Price implements CommandHandler<Player> {
             return;
         }
 
-        final boolean format = plugin.getConfiguration().getBoolean("use-decimal-format");
+        final boolean format = plugin.getConfig().getBoolean("use-decimal-format");
 
         double fee = 0;
 
         if (plugin.isPriceChangeRequiresFee()) {
-            fee = plugin.getConfiguration().getDouble("shop.fee-for-price-change");
+            fee = plugin.getConfig().getDouble("shop.fee-for-price-change");
         }
 
         final BlockIterator bIt = new BlockIterator(sender, 10);
@@ -84,10 +84,10 @@ public class SubCommand_Price implements CommandHandler<Player> {
         }
 
         SimplePriceLimiter limiter = new SimplePriceLimiter(
-                plugin.getConfiguration().getDouble("shop.minimum-price"),
-                plugin.getConfiguration().getInt("shop.maximum-price"),
-                plugin.getConfiguration().getBoolean("shop.allow-free-shop"),
-                plugin.getConfiguration().getBoolean("whole-number-prices-only"));
+                plugin.getConfig().getDouble("shop.minimum-price"),
+                plugin.getConfig().getInt("shop.maximum-price"),
+                plugin.getConfig().getBoolean("shop.allow-free-shop"),
+                plugin.getConfig().getBoolean("whole-number-prices-only"));
 
         while (bIt.hasNext()) {
             final Block b = bIt.next();
@@ -129,7 +129,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
 
             if (fee > 0) {
                 EconomyTransaction transaction = EconomyTransaction.builder()
-                        .allowLoan(plugin.getConfiguration().getOrDefault("shop.allow-economy-loan", false))
+                        .allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false))
                         .core(plugin.getEconomy())
                         .from(sender.getUniqueId())
                         .amount(fee)

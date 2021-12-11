@@ -231,7 +231,7 @@ public class MsgUtil {
         plugin.getLogger().info("Loading plugin translations files...");
 
         //Load game language i18n
-        loadGameLanguage(plugin.getConfiguration().getOrDefault("game-language", "default"));
+        loadGameLanguage(plugin.getConfig().getString("game-language", "default"));
     }
 
     @Unstable
@@ -377,7 +377,7 @@ public class MsgUtil {
      */
     @Deprecated
     public static void send(@NotNull UUID player, @NotNull TransactionMessage transactionMessage, boolean isUnlimited) {
-        if (isUnlimited && plugin.getConfiguration().getBoolean("shop.ignore-unlimited-shop-messages")) {
+        if (isUnlimited && plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return; // Ignore unlimited shops messages.
         }
         Util.debugLog(transactionMessage.getMessage());
@@ -412,7 +412,7 @@ public class MsgUtil {
      *                           Else, if they're not online, queues them in the database.
      */
     public static void send(@NotNull Shop shop, @NotNull UUID player, @NotNull TransactionMessage transactionMessage) {
-        if (shop.isUnlimited() && plugin.getConfiguration().getBoolean("shop.ignore-unlimited-shop-messages")) {
+        if (shop.isUnlimited() && plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return; // Ignore unlimited shops messages.
         }
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
@@ -470,7 +470,7 @@ public class MsgUtil {
                     plugin.text().of(sender,
                             "controlpanel.setowner",
                             shop.ownerName()
-                                    + ((plugin.getConfiguration().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op")
+                                    + ((plugin.getConfig().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op")
                                     && shop.isUnlimited())
                                     ? (" (" + shop.getOwner() + ")")
                                     : "")).forLocale(),
@@ -517,7 +517,7 @@ public class MsgUtil {
             String text =
                     MsgUtil.fillArgs(
                             plugin.text().of(sender, "controlpanel.price").forLocale(),
-                            (plugin.getConfiguration().getBoolean("use-decimal-format"))
+                            (plugin.getConfig().getBoolean("use-decimal-format"))
                                     ? decimalFormat(shop.getPrice())
                                     : Double.toString(shop.getPrice()));
             String hoverText = plugin.text().of(sender, "controlpanel.price-hover").forLocale();
@@ -581,7 +581,7 @@ public class MsgUtil {
         if (decimalFormat == null) {
             //lazy initialize
             try {
-                String format = plugin.getConfiguration().getString("decimal-format");
+                String format = plugin.getConfig().getString("decimal-format");
                 decimalFormat = format == null ? new DecimalFormat() : new DecimalFormat(format);
             } catch (Exception e) {
                 QuickShop.getInstance().getLogger().log(Level.WARNING, "Error when processing decimal format, using system default: " + e.getMessage());
@@ -645,7 +645,7 @@ public class MsgUtil {
 
 
     public static void printEnchantment(@NotNull Player p, @NotNull Shop shop, ChatSheetPrinter chatSheetPrinter) {
-        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && plugin.getConfiguration().getBoolean("respect-item-flag")) {
+        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && plugin.getConfig().getBoolean("respect-item-flag")) {
             return;
         }
         Map<Enchantment, Integer> enchs = new HashMap<>();

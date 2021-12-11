@@ -63,7 +63,7 @@ public class ConfigurationFixerLightning {
             Object buildInValue = builtInConfig.get(key);
             if (value == null || !value.getClass().getTypeName().equals(Objects.requireNonNull(buildInValue).getClass().getTypeName())) {
                 plugin.getLogger().warning("Fixing configuration use default value: " + key);
-                plugin.getConfiguration().set(key, buildInValue);
+                plugin.getConfig().set(key, buildInValue);
             }
         }
         plugin.getLogger().info("QuickShop fixed the corrupted parts in configuration that we can found. We recommend you restart the server and make fix apply.");

@@ -59,9 +59,9 @@ public class LandsIntegration extends AbstractQSIntegratedPlugin implements List
 
     private void init() {
         landsIntegration = new me.angeschossen.lands.api.integration.LandsIntegration(plugin);
-        ignoreDisabledWorlds = plugin.getConfiguration().getBoolean("integration.lands.ignore-disabled-worlds");
-        whitelist = plugin.getConfiguration().getBoolean("integration.lands.whitelist-mode");
-        deleteWhenLosePermission = plugin.getConfiguration().getBoolean("integration.lands.delete-on-lose-permission");
+        ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.lands.ignore-disabled-worlds");
+        whitelist = plugin.getConfig().getBoolean("integration.lands.whitelist-mode");
+        deleteWhenLosePermission = plugin.getConfig().getBoolean("integration.lands.delete-on-lose-permission");
     }
 
     @Override

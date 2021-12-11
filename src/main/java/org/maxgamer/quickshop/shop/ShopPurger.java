@@ -40,7 +40,7 @@ public class ShopPurger implements Runnable {
     }
 
     public void purge() {
-        if (!plugin.getConfiguration().getBoolean("purge.enabled")) {
+        if (!plugin.getConfig().getBoolean("purge.enabled")) {
             plugin.getLogger().info("[Shop Purger] Purge not enabled!");
             return;
         }
@@ -58,10 +58,10 @@ public class ShopPurger implements Runnable {
         executing = true;
         Util.debugLog("[Shop Purger] Scanning and removing shops");
         List<Shop> pendingRemovalShops = new ArrayList<>();
-        int days = plugin.getConfiguration().getOrDefault("purge.days", 360);
-        boolean deleteBanned = plugin.getConfiguration().getBoolean("purge.banned");
-        boolean skipOp = plugin.getConfiguration().getBoolean("purge.skip-op");
-        boolean returnCreationFee = plugin.getConfiguration().getBoolean("purge.return-create-fee");
+        int days = plugin.getConfig().getInt("purge.days", 360);
+        boolean deleteBanned = plugin.getConfig().getBoolean("purge.banned");
+        boolean skipOp = plugin.getConfig().getBoolean("purge.skip-op");
+        boolean returnCreationFee = plugin.getConfig().getBoolean("purge.return-create-fee");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(shop.getOwner());
             if (!player.hasPlayedBefore()) {
@@ -97,7 +97,7 @@ public class ShopPurger implements Runnable {
                     if (returnCreationFee) {
                         EconomyTransaction transaction =
                                 EconomyTransaction.builder()
-                                        .amount(plugin.getConfiguration().getDouble("shop.cost"))
+                                        .amount(plugin.getConfig().getDouble("shop.cost"))
                                         .allowLoan(false)
                                         .core(QuickShop.getInstance().getEconomy())
                                         .currency(shop.getCurrency())

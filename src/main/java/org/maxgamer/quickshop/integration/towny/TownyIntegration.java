@@ -79,13 +79,13 @@ public class TownyIntegration extends AbstractQSIntegratedPlugin implements List
     }
 
     private void init() {
-        createFlags = TownyFlags.deserialize(plugin.getConfiguration().getStringList("integration.towny.create"));
-        tradeFlags = TownyFlags.deserialize(plugin.getConfiguration().getStringList("integration.towny.trade"));
-        ignoreDisabledWorlds = plugin.getConfiguration().getBoolean("integration.towny.ignore-disabled-worlds");
-        deleteShopOnLeave = plugin.getConfiguration().getBoolean("integration.towny.delete-shop-on-resident-leave");
-        deleteShopOnPlotClear = plugin.getConfiguration().getBoolean("integration.towny.delete-shop-on-plot-clear");
-        deleteShopOnPlotDestroy = plugin.getConfiguration().getBoolean("integration.towny.delete-shop-on-plot-destroy");
-        whiteList = plugin.getConfiguration().getBoolean("integration.towny.whitelist-mode");
+        createFlags = TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.create"));
+        tradeFlags = TownyFlags.deserialize(plugin.getConfig().getStringList("integration.towny.trade"));
+        ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.towny.ignore-disabled-worlds");
+        deleteShopOnLeave = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-resident-leave");
+        deleteShopOnPlotClear = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-plot-clear");
+        deleteShopOnPlotDestroy = plugin.getConfig().getBoolean("integration.towny.delete-shop-on-plot-destroy");
+        whiteList = plugin.getConfig().getBoolean("integration.towny.whitelist-mode");
     }
 
     @Override

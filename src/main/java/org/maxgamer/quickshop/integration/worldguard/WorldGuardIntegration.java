@@ -90,15 +90,15 @@ public class WorldGuardIntegration extends AbstractQSIntegratedPlugin {
     }
 
     private void init() {
-        this.whiteList = plugin.getConfiguration().getBoolean("integration.worldguard.whitelist-mode");
-        this.anyOwner = plugin.getConfiguration().getBoolean("integration.worldguard.any-owner");
-        respectGlobalRegion = plugin.getConfiguration().getBoolean("integration.worldguard.respect-global-region");
+        this.whiteList = plugin.getConfig().getBoolean("integration.worldguard.whitelist-mode");
+        this.anyOwner = plugin.getConfig().getBoolean("integration.worldguard.any-owner");
+        respectGlobalRegion = plugin.getConfig().getBoolean("integration.worldguard.respect-global-region");
         createFlags =
                 WorldGuardFlags.deserialize(
-                        plugin.getConfiguration().getStringList("integration.worldguard.create"));
+                        plugin.getConfig().getStringList("integration.worldguard.create"));
         tradeFlags =
                 WorldGuardFlags.deserialize(
-                        plugin.getConfiguration().getStringList("integration.worldguard.trade"));
+                        plugin.getConfig().getStringList("integration.worldguard.trade"));
     }
 
     @Override

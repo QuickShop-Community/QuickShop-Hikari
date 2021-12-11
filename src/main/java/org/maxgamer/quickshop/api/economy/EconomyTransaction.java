@@ -103,7 +103,7 @@ public class EconomyTransaction {
         //For passing Test
         //noinspection ConstantConditions
         if (QuickShop.getInstance() != null) {
-            this.tryingFixBalanceInsufficient = QuickShop.getInstance().getConfiguration().getBoolean("trying-fix-banlance-insuffient");
+            this.tryingFixBalanceInsufficient = QuickShop.getInstance().getConfig().getBoolean("trying-fix-banlance-insuffient");
         } else {
             this.tryingFixBalanceInsufficient = false;
         }

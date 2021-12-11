@@ -19,12 +19,12 @@
 
 package org.maxgamer.quickshop.util.matcher.item;
 
-import de.leonhard.storage.sections.FlatFileSection;
 import de.tr7zw.nbtapi.NBTItem;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
@@ -58,8 +58,8 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
     }
 
     private void init() {
-        itemMetaMatcher = new ItemMetaMatcher(plugin.getConfiguration().getSection("matcher.item"), this);
-        workType = plugin.getConfiguration().getInt("matcher.work-type");
+        itemMetaMatcher = new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"), this);
+        workType = plugin.getConfig().getInt("matcher.work-type");
     }
 
     /**
@@ -198,7 +198,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
 
         private final List<Matcher> matcherList = new ArrayList<>();
 
-        public ItemMetaMatcher(@NotNull FlatFileSection itemMatcherConfig, @NotNull QuickShopItemMatcherImpl itemMatcher) {
+        public ItemMetaMatcher(@NotNull ConfigurationSection itemMatcherConfig, @NotNull QuickShopItemMatcherImpl itemMatcher) {
 
             addIfEnable(itemMatcherConfig, "damage", (meta1, meta2) -> {
                 if (meta1 instanceof Damageable != meta2 instanceof Damageable) {
@@ -514,7 +514,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
             }
         }
 
-        private void addIfEnable(FlatFileSection itemMatcherConfig, String path, Matcher matcher) {
+        private void addIfEnable(ConfigurationSection itemMatcherConfig, String path, Matcher matcher) {
             if (itemMatcherConfig.getBoolean(path)) {
                 matcherList.add(matcher);
             }

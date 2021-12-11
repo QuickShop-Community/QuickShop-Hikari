@@ -58,7 +58,7 @@ public class Economy_TNE extends AbstractEconomy {
     }
 
     private void init() {
-        this.allowLoan = plugin.getConfiguration().getBoolean("shop.allow-economy-loan");
+        this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
     }
 
     private void setupEconomy() {

@@ -188,7 +188,7 @@ public class Util {
     }
 
     public static boolean isBlacklistWorld(@NotNull World world) {
-        return plugin.getConfiguration().getStringList("shop.blacklist-world").contains(world.getName());
+        return plugin.getConfig().getStringList("shop.blacklist-world").contains(world.getName());
     }
 
     /**
@@ -276,10 +276,10 @@ public class Util {
             if (itemDataVersion > Bukkit.getUnsafe().getDataVersion()) {
                 Util.debugLog("WARNING: DataVersion not matched with ItemStack: " + config);
                 // okay we need some things to do
-                if (plugin.getConfiguration().getBoolean("shop.force-load-downgrade-items.enable")) {
+                if (plugin.getConfig().getBoolean("shop.force-load-downgrade-items.enable")) {
                     // okay it enabled
                     Util.debugLog("QuickShop is trying force loading " + config);
-                    if (plugin.getConfiguration().getInt("shop.force-load-downgrade-items.method") == 0) { // Mode 0
+                    if (plugin.getConfig().getInt("shop.force-load-downgrade-items.method") == 0) { // Mode 0
                         //noinspection deprecation
                         item.put("v", Bukkit.getUnsafe().getDataVersion() - 1);
                     } else { // Mode other
@@ -410,7 +410,7 @@ public class Util {
     }
 
     public static boolean useEnchantmentForEnchantedBook() {
-        return plugin.getConfiguration().getBoolean("shop.use-enchantment-for-enchanted-book");
+        return plugin.getConfig().getBoolean("shop.use-enchantment-for-enchanted-book");
     }
 
     @NotNull
@@ -435,7 +435,7 @@ public class Util {
         }
         if (itemStack.hasItemMeta()
                 && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName()
-                && !QuickShop.getInstance().getConfiguration().getBoolean("shop.force-use-item-original-name")) {
+                && !QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
             return itemStack.getItemMeta().getDisplayName();
         }
         return null;
@@ -569,9 +569,9 @@ public class Util {
         SHOPABLES.clear();
         RESTRICTED_PRICES.clear();
         CUSTOM_STACKSIZE.clear();
-        devMode = plugin.getConfiguration().getBoolean("dev-mode");
+        devMode = plugin.getConfig().getBoolean("dev-mode");
 
-        for (String s : plugin.getConfiguration().getStringList("shop-blocks")) {
+        for (String s : plugin.getConfig().getStringList("shop-blocks")) {
             Material mat = Material.matchMaterial(s.toUpperCase());
             if (mat == null) {
                 mat = Material.matchMaterial(s);
@@ -582,7 +582,7 @@ public class Util {
                 SHOPABLES.add(mat);
             }
         }
-        List<String> configBlacklist = plugin.getConfiguration().getStringList("blacklist");
+        List<String> configBlacklist = plugin.getConfig().getStringList("blacklist");
         for (String s : configBlacklist) {
             Material mat = Material.getMaterial(s.toUpperCase());
             if (mat == null) {
@@ -595,7 +595,7 @@ public class Util {
             BLACKLIST.add(mat);
         }
 
-        for (String s : plugin.getConfiguration().getStringList("shop.price-restriction")) {
+        for (String s : plugin.getConfig().getStringList("shop.price-restriction")) {
             String[] sp = s.split(";");
             if (sp.length == 3) {
                 try {
@@ -610,7 +610,7 @@ public class Util {
                 }
             }
         }
-        for (String material : plugin.getConfiguration().getStringList("custom-item-stacksize")) {
+        for (String material : plugin.getConfig().getStringList("custom-item-stacksize")) {
             String[] data = material.split(":");
             if (data.length != 2) {
                 continue;
@@ -626,13 +626,13 @@ public class Util {
             }
             CUSTOM_STACKSIZE.put(mat, Integer.parseInt(data[1]));
         }
-        disableDebugLogger = plugin.getConfiguration().getOrDefault("debug.disable-debuglogger", false);
+        disableDebugLogger = plugin.getConfig().getBoolean("debug.disable-debuglogger", false);
         try {
-            dyeColor = DyeColor.valueOf(plugin.getConfiguration().getString("shop.sign-dye-color"));
+            dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
         } catch (Exception ignored) {
         }
 
-        InteractUtil.init(plugin.getConfiguration().getSection("shop.interact"));
+        InteractUtil.init(plugin.getConfig().getConfigurationSection("shop.interact"));
     }
 
     /**
@@ -724,7 +724,7 @@ public class Util {
             return false;
         }
         for (String lore : Objects.requireNonNull(stack.getItemMeta().getLore())) {
-            List<String> blacklistLores = plugin.getConfiguration().getStringList("shop.blacklist-lores");
+            List<String> blacklistLores = plugin.getConfig().getStringList("shop.blacklist-lores");
             for (String blacklistLore : blacklistLores) {
                 if (lore.contains(blacklistLore)) {
                     return true;
@@ -1115,7 +1115,7 @@ public class Util {
      */
     @NotNull
     public static Material getSignMaterial() {
-        Material signMaterial = Material.matchMaterial(plugin.getConfiguration().getOrDefault("shop.sign-material", "OAK_WALL_SIGN"));
+        Material signMaterial = Material.matchMaterial(plugin.getConfig().getString("shop.sign-material", "OAK_WALL_SIGN"));
         if (signMaterial != null) {
             return signMaterial;
         }
@@ -1186,13 +1186,13 @@ public class Util {
             return devMode;
         } else {
             if (plugin != null) {
-                devMode = plugin.getConfiguration().getBoolean("dev-mode");
+                devMode = plugin.getConfig().getBoolean("dev-mode");
                 return devMode;
             } else {
                 return false;
             }
         }
-        //F  return devMode != null ? devMode : (devMode = plugin.getConfiguration().getBoolean("dev-mode"));
+        //F  return devMode != null ? devMode : (devMode = plugin.getConfig().getBoolean("dev-mode"));
     }
 
     /**
@@ -1248,7 +1248,7 @@ public class Util {
     @NotNull
     public static List<String> getPlayerList() {
         List<String> tabList;
-        if (plugin.getConfiguration().getBoolean("include-offlineplayer-list")) {
+        if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
             tabList = Arrays.stream(plugin.getServer().getOfflinePlayers()).map(OfflinePlayer::getName).collect(Collectors.toList());
         } else {
             tabList = plugin.getServer().getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());

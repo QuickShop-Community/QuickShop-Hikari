@@ -61,7 +61,7 @@ public class SubCommand_Refill implements CommandHandler<Player> {
             if (StringUtils.isNumeric(cmdArg[0])) {
                 add = Integer.parseInt(cmdArg[0]);
             } else {
-                if (cmdArg[0].equals(plugin.getConfiguration().getString("shop.word-for-trade-all-items"))) {
+                if (cmdArg[0].equals(plugin.getConfig().getString("shop.word-for-trade-all-items"))) {
                     add = shop.getRemainingSpace();
                 } else {
                     plugin.text().of(sender, "thats-not-a-number").send();

@@ -106,7 +106,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     private void init() {
         Util.debugLog("Loading caching tax account...");
-        String taxAccount = plugin.getConfiguration().getOrDefault("tax-account", "tax");
+        String taxAccount = plugin.getConfig().getString("tax-account", "tax");
         if (!taxAccount.isEmpty()) {
             if (Util.isUUID(taxAccount)) {
                 this.cacheTaxAccount = new Trader(taxAccount,
@@ -119,19 +119,19 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             // disable tax account
             cacheTaxAccount = null;
         }
-        String uAccount = plugin.getConfiguration().getOrDefault("unlimited-shop-owner-change-account", "quickshop");
+        String uAccount = plugin.getConfig().getString("unlimited-shop-owner-change-account", "quickshop");
         if (Util.isUUID(uAccount)) {
             cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(UUID.fromString(uAccount)));
         } else {
             cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(uAccount));
         }
         this.priceLimiter = new SimplePriceLimiter(
-                plugin.getConfiguration().getDouble("shop.minimum-price"),
-                plugin.getConfiguration().getInt("shop.maximum-price"),
-                plugin.getConfiguration().getBoolean("shop.allow-free-shop"),
-                plugin.getConfiguration().getBoolean("whole-number-prices-only"));
-        this.useOldCanBuildAlgorithm = plugin.getConfiguration().getBoolean("limits.old-algorithm");
-        this.autoSign = plugin.getConfiguration().getBoolean("shop.auto-sign");
+                plugin.getConfig().getDouble("shop.minimum-price"),
+                plugin.getConfig().getInt("shop.maximum-price"),
+                plugin.getConfig().getBoolean("shop.allow-free-shop"),
+                plugin.getConfig().getBoolean("whole-number-prices-only"));
+        this.useOldCanBuildAlgorithm = plugin.getConfig().getBoolean("limits.old-algorithm");
+        this.autoSign = plugin.getConfig().getBoolean("shop.auto-sign");
     }
 
     @Override
@@ -293,7 +293,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (info.getSignBlock().getType().isAir() || info.getSignBlock().getType() == Material.WATER) {
                 this.processWaterLoggedSign(shop.getLocation().getBlock(), info.getSignBlock());
             } else {
-                if (!plugin.getConfiguration().getBoolean("shop.allow-shop-without-space-for-sign")) {
+                if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                     plugin.text().of(player, "failed-to-put-sign").send();
                     Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
                     return;
@@ -688,7 +688,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 .world(shop.getLocation().getWorld())
                 .to(buyer);
         if (!shop.isUnlimited()
-                || (plugin.getConfiguration().getBoolean("shop.pay-unlimited-shop-owners")
+                || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")
                 && shop.isUnlimited())) {
             transaction = builder.from(shop.getOwner()).build();
         } else {
@@ -718,7 +718,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
         MsgUtil.TransactionMessage transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
 
-        if (plugin.getConfiguration().getBoolean("shop.sending-stock-message-to-staffs")) {
+        if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
             for (UUID staff : shop.getModerator().getStaffs()) {
                 MsgUtil.send(shop, staff, transactionMessage);
             }
@@ -732,7 +732,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     Integer.toString(shop.getLocation().getBlockZ())).forLocale();
             transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
 
-            if (plugin.getConfiguration().getBoolean("shop.sending-stock-message-to-staffs")) {
+            if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
                 for (UUID staff : shop.getModerator().getStaffs()) {
                     MsgUtil.send(shop, staff, transactionMessage);
                 }
@@ -767,7 +767,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     @Override
     public double getTax(@NotNull Shop shop, @NotNull UUID p) {
         Util.ensureThread(false);
-        double tax = plugin.getConfiguration().getDouble("tax");
+        double tax = plugin.getConfig().getDouble("tax");
         Player player = plugin.getServer().getPlayer(p);
         if (player != null) {
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.tax")) {
@@ -839,7 +839,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
         if (autoSign) {
             if (info.getSignBlock() == null) {
-                if (!plugin.getConfiguration().getBoolean("shop.allow-shop-without-space-for-sign")) {
+                if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                     plugin.text().of(p, "failed-to-put-sign").send();
                     return;
                 }
@@ -847,7 +847,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 Material signType = info.getSignBlock().getType();
                 if (signType != Material.WATER
                         && !signType.isAir()
-                        && !plugin.getConfiguration().getBoolean("shop.allow-shop-without-space-for-sign")) {
+                        && !plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                     plugin.text().of(p, "failed-to-put-sign").send();
                     return;
                 }
@@ -866,8 +866,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     .replace(",", ".");
             String[] processedDouble = strFormat.split("\\.");
             if (processedDouble.length > 1) {
-                int maximumDigitsLimit = plugin.getConfiguration()
-                        .getOrDefault("maximum-digits-in-price", -1);
+                int maximumDigitsLimit = plugin.getConfig()
+                        .getInt("maximum-digits-in-price", -1);
                 if (processedDouble[1].length() > maximumDigitsLimit
                         && maximumDigitsLimit != -1) {
                     plugin.text().of(p, "digits-reach-the-limit", String.valueOf(maximumDigitsLimit)).send();
@@ -881,7 +881,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
 
         // Price limit checking
-        boolean decFormat = plugin.getConfiguration().getBoolean("use-decimal-format");
+        boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
 
         PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(info.getItem(), price);
 
@@ -947,7 +947,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // This must be called after the event has been called.
         // Else, if the event is cancelled, they won't get their
         // money back.
-        double createCost = plugin.getConfiguration().getDouble("shop.cost");
+        double createCost = plugin.getConfig().getDouble("shop.cost");
         if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.bypasscreatefee")) {
             createCost = 0;
         }
@@ -978,7 +978,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
         // The shop about successfully created
         createShop(shop, info);
-        if (!plugin.getConfiguration().getBoolean("shop.lock")) {
+        if (!plugin.getConfig().getBoolean("shop.lock")) {
             plugin.text().of(p, "shops-arent-locked").send();
         }
 
@@ -1059,7 +1059,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             taxAccount = this.cacheTaxAccount;
         }
         EconomyTransaction.EconomyTransactionBuilder builder = EconomyTransaction.builder()
-                .allowLoan(plugin.getConfiguration().getOrDefault("shop.allow-economy-loan", false))
+                .allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false))
                 .core(eco)
                 .from(seller)
                 .amount(total)
@@ -1068,7 +1068,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 .world(shop.getLocation().getWorld())
                 .currency(shop.getCurrency());
         if (!shop.isUnlimited()
-                || (plugin.getConfiguration().getBoolean("shop.pay-unlimited-shop-owners")
+                || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")
                 && shop.isUnlimited())) {
             transaction = builder.to(shop.getOwner()).build();
         } else {
@@ -1093,7 +1093,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         String msg;
         // Notify the shop owner //TODO: move to a standalone method
         Player player = plugin.getServer().getPlayer(seller);
-        if (plugin.getConfiguration().getBoolean("show-tax")) {
+        if (plugin.getConfig().getBoolean("show-tax")) {
             msg = plugin.text().of(seller, "player-bought-from-your-store-tax",
                     player != null ? player.getName() : seller.toString(),
                     Integer.toString(amount * shop.getItem().getAmount()),
@@ -1111,7 +1111,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         MsgUtil.TransactionMessage transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
 
         MsgUtil.send(shop, shop.getOwner(), transactionMessage);
-        if (plugin.getConfiguration().getBoolean("shop.sending-stock-message-to-staffs")) {
+        if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
             for (UUID staff : shop.getModerator().getStaffs()) {
                 MsgUtil.send(shop, staff, transactionMessage);
             }
@@ -1126,7 +1126,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
 
             MsgUtil.send(shop, shop.getOwner(), transactionMessage);
-            if (plugin.getConfiguration().getBoolean("shop.sending-stock-message-to-staffs")) {
+            if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
                 for (UUID staff : shop.getModerator().getStaffs()) {
                     MsgUtil.send(shop, staff, transactionMessage);
                 }
@@ -1183,8 +1183,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         Integer.toString(amount),
                         MsgUtil.getTranslateText(shop.getItem()),
                         format(amount * shop.getPrice(), shop)).forLocale());
-        if (plugin.getConfiguration().getBoolean("show-tax")) {
-            double tax = plugin.getConfiguration().getDouble("tax");
+        if (plugin.getConfig().getBoolean("show-tax")) {
+            double tax = plugin.getConfig().getDouble("tax");
             double total = amount * shop.getPrice();
             if (tax != 0) {
                 if (!seller.equals(shop.getOwner())) {
@@ -1306,7 +1306,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.text().of(p, "chest-was-removed").send();
             return;
         }
-        if (p.getGameMode() == GameMode.CREATIVE && plugin.getConfiguration().getBoolean("shop.disable-creative-mode-trading")) {
+        if (p.getGameMode() == GameMode.CREATIVE && plugin.getConfig().getBoolean("shop.disable-creative-mode-trading")) {
             plugin.text().of(p, "trading-in-creative-mode-is-disabled").send();
             return;
         }
@@ -1320,7 +1320,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 amount = Integer.parseInt(message);
             } else {
                 if (message.equalsIgnoreCase(
-                        plugin.getConfiguration().getOrDefault("shop.word-for-trade-all-items", "all"))) {
+                        plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
                     int shopHaveSpaces =
                             Util.countSpace(((ContainerShop) shop).getInventory(), shop.getItem());
                     int invHaveItems = Util.countItems(p.getInventory(), shop.getItem());
@@ -1344,7 +1344,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
                         // true,
                         // the unlimited shop owner should have enough money.
-                        if (plugin.getConfiguration().getBoolean("shop.pay-unlimited-shop-owners")) {
+                        if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
                             amount = Math.min(amount, ownerCanAfford);
                         }
                     }
@@ -1357,7 +1357,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         }
                         if (ownerCanAfford == 0
                                 && (!shop.isUnlimited()
-                                || plugin.getConfiguration().getBoolean("shop.pay-unlimited-shop-owners"))) {
+                                || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners"))) {
                             // when typed 'all' but the shop owner doesn't have enough money to buy at least 1
                             // item (and shop isn't unlimited or pay-unlimited is true)
                             plugin.text().of(p, "the-owner-cant-afford-to-buy-from-you",
@@ -1389,7 +1389,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (StringUtils.isNumeric(message)) {
                 amount = Integer.parseInt(message);
             } else {
-                if (message.equalsIgnoreCase(plugin.getConfiguration().getOrDefault("shop.word-for-trade-all-items", "all"))) {
+                if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
                     int shopHaveItems = shop.getRemainingStock();
                     int invHaveSpaces = Util.countSpace(p.getInventory(), shop.getItem());
                     if (!shop.isUnlimited()) {

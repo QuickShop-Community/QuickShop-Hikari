@@ -482,8 +482,8 @@ public class ContainerShop implements Shop {
             }
             // Delete it from the database
             // Refund if necessary
-            if (plugin.getConfiguration().getBoolean("shop.refund")) {
-                plugin.getEconomy().deposit(this.getOwner(), plugin.getConfiguration().getDouble("shop.cost"),
+            if (plugin.getConfig().getBoolean("shop.refund")) {
+                plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"),
                         Objects.requireNonNull(getLocation().getWorld()), getCurrency());
             }
             plugin.getShopManager().removeShop(this);
@@ -738,7 +738,7 @@ public class ContainerShop implements Shop {
         lines.add(new ComponentPackage(new ComponentBuilder("").appendLegacy(SHOP_SIGN_PREFIX).reset().color(ChatColor.RESET).appendLegacy(line2).create()));
 
         //line 3
-        if (plugin.getConfiguration().getBoolean("shop.force-use-item-original-name") || !this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
+        if (plugin.getConfig().getBoolean("shop.force-use-item-original-name") || !this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
             BaseComponent[] left = TextComponent.fromLegacyText(plugin.text().of("signs.item-left").forLocale());
             BaseComponent[] right = TextComponent.fromLegacyText(plugin.text().of("signs.item-right").forLocale());
             if (plugin.getNbtapi() == null) {
@@ -808,7 +808,7 @@ public class ContainerShop implements Shop {
                 }
             }
             if (plugin.getGameVersion().isSignGlowingSupport()) {
-                boolean isGlowing = plugin.getConfiguration().getBoolean("shop.sign-glowing");
+                boolean isGlowing = plugin.getConfig().getBoolean("shop.sign-glowing");
                 sign.setGlowingText(isGlowing);
             }
             sign.update(true);

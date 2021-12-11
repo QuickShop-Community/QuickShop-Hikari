@@ -57,7 +57,7 @@ public class IridiumSkyblockIntegration extends AbstractQSIntegratedPlugin imple
     }
 
     private void init() {
-        onlyOwnerCanCreateShop = plugin.getConfiguration().getBoolean("integration.iridiumskyblock.owner-create-only");
+        onlyOwnerCanCreateShop = plugin.getConfig().getBoolean("integration.iridiumskyblock.owner-create-only");
     }
 
     /**
@@ -116,7 +116,7 @@ public class IridiumSkyblockIntegration extends AbstractQSIntegratedPlugin imple
      */
     @Override
     public void load() {
-        if (plugin.getConfiguration().getBoolean("integration.iridiumskyblock.delete-shop-on-member-leave")) {
+        if (plugin.getConfig().getBoolean("integration.iridiumskyblock.delete-shop-on-member-leave")) {
             Bukkit.getPluginManager().registerEvents(this, plugin);
         }
     }

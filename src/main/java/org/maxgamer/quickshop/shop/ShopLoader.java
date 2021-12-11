@@ -98,7 +98,7 @@ public class ShopLoader {
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
             Timer timer = new Timer();
             timer.start();
-            boolean deleteCorruptShops = plugin.getConfiguration().getOrDefault("debug.delete-corrupt-shops", false);
+            boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);
             this.plugin.getLogger().info("Loading shops from the database...");
             while (rs.next()) {
                 ++total;

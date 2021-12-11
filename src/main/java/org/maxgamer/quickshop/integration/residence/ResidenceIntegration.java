@@ -52,9 +52,9 @@ public class ResidenceIntegration extends AbstractQSIntegratedPlugin {
     }
 
     private void init() {
-        this.whiteList = plugin.getConfiguration().getBoolean("integration.residence.whitelist-mode");
-        this.createLimits = plugin.getConfiguration().getStringList("integration.residence.create");
-        this.tradeLimits = plugin.getConfiguration().getStringList("integration.residence.trade");
+        this.whiteList = plugin.getConfig().getBoolean("integration.residence.whitelist-mode");
+        this.createLimits = plugin.getConfig().getStringList("integration.residence.create");
+        this.tradeLimits = plugin.getConfig().getStringList("integration.residence.trade");
     }
 
     @Override

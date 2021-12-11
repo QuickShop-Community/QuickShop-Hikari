@@ -63,7 +63,7 @@ public class BlockListener extends AbstractProtectionListener {
     }
 
     private void init() {
-        this.update_sign_when_inventory_moving = super.getPlugin().getConfiguration().getOrDefault("shop.update-sign-when-inventory-moving", true);
+        this.update_sign_when_inventory_moving = super.getPlugin().getConfig().getBoolean("shop.update-sign-when-inventory-moving", true);
     }
 
     /*
@@ -83,7 +83,7 @@ public class BlockListener extends AbstractProtectionListener {
             if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
                 // Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
-                    if (getPlugin().getConfiguration().getBoolean("shop.disable-super-tool")) {
+                    if (getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {
                         e.setCancelled(true);
                         plugin.text().of(p, "supertool-is-disabled").send();
                         return;
@@ -109,8 +109,8 @@ public class BlockListener extends AbstractProtectionListener {
             BlockState state = PaperLib.getBlockState(b, false).getState();
             if (state instanceof Sign) {
                 Sign sign = (Sign) state;
-                if (sign.getLine(0).equals(super.getPlugin().getConfiguration().getString("lockette.private"))
-                        || sign.getLine(0).equals(super.getPlugin().getConfiguration().getString("lockette.more_users"))) {
+                if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
+                        || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                     // Ignore break lockette sign
                     return;
                 }
@@ -126,7 +126,7 @@ public class BlockListener extends AbstractProtectionListener {
             if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
                 // Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
-                    if (getPlugin().getConfiguration().getBoolean("shop.disable-super-tool")) {
+                    if (getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {
                         e.setCancelled(true);
                         plugin.text().of(p, "supertool-is-disabled").send();
                         return;
@@ -142,7 +142,7 @@ public class BlockListener extends AbstractProtectionListener {
                 return;
             }
             //Allow Shop owner break the shop sign(for sign replacement)
-            if (getPlugin().getConfiguration().getBoolean("shop.allow-owner-break-shop-sign") && p.getUniqueId().equals(shop.getOwner())) {
+            if (getPlugin().getConfig().getBoolean("shop.allow-owner-break-shop-sign") && p.getUniqueId().equals(shop.getOwner())) {
                 return;
             }
             Util.debugLog("Player cannot break the shop infomation sign.");

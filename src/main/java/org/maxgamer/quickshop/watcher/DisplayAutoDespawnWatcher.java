@@ -46,7 +46,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
     }
 
     private void init() {
-        this.range = plugin.getConfiguration().getInt("shop.display-despawn-range");
+        this.range = plugin.getConfig().getInt("shop.display-despawn-range");
     }
 
     @Override

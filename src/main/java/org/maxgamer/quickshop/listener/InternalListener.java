@@ -49,8 +49,8 @@ public class InternalListener extends AbstractQSListener {
     }
 
     private void readConfig() {
-        this.loggingBalance = plugin.getConfiguration().getBoolean("logging.log-balance");
-        this.loggingAction = plugin.getConfiguration().getBoolean("logging.log-actions");
+        this.loggingBalance = plugin.getConfig().getBoolean("logging.log-balance");
+        this.loggingAction = plugin.getConfig().getBoolean("logging.log-actions");
     }
 
     public boolean isForbidden(@NotNull Material shopMaterial, @NotNull Material itemMaterial) {

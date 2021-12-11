@@ -81,7 +81,7 @@ public class SimpleIntegrationManager extends QuickShopInstanceHolder implements
         PluginManager pluginManager = plugin.getServer().getPluginManager();
         for (Map.Entry<String, Class<? extends IntegratedPlugin>> entry : INTEGRATION_MAPPING.entrySet()) {
             String pluginName = entry.getKey();
-            if (pluginManager.isPluginEnabled(pluginName) && plugin.getConfiguration().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
+            if (pluginManager.isPluginEnabled(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
                 try {
                     register(entry.getValue());
                 } catch (Exception exception) {

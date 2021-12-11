@@ -61,7 +61,7 @@ public class PlayerListener extends AbstractQSListener {
 
     public PlayerListener(QuickShop plugin) {
         super(plugin);
-        swapBehavior = plugin.getConfiguration().getBoolean("shop.interact.swap-click-behavior");
+        swapBehavior = plugin.getConfig().getBoolean("shop.interact.swap-click-behavior");
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -121,7 +121,7 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     private void playClickSound(@NotNull Player player) {
-        if (plugin.getConfiguration().getBoolean("effect.sound.onclick")) {
+        if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
             player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
         }
     }
@@ -239,7 +239,7 @@ public class PlayerListener extends AbstractQSListener {
                 && p.getGameMode() != GameMode.CREATIVE) {
             if (e.useInteractedBlock() == Event.Result.DENY
                     || !InteractUtil.check(InteractUtil.Action.CREATE, p.isSneaking())
-                    || plugin.getConfiguration().getBoolean("shop.disable-quick-create")
+                    || plugin.getConfig().getBoolean("shop.disable-quick-create")
                     || !plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
                 // As of the new checking system, most plugins will tell the
                 // player why they can't create a shop there.
@@ -316,7 +316,7 @@ public class PlayerListener extends AbstractQSListener {
             items = Math.min(items, shop.getRemainingSpace());
             // Amount check player selling item total cost and the shop owner's balance
             items = Math.min(items, ownerCanAfford);
-        } else if (plugin.getConfiguration().getBoolean("shop.pay-unlimited-shop-owners")) {
+        } else if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
             // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
             // true,
             // the unlimited shop owner should have enough money.
@@ -358,7 +358,7 @@ public class PlayerListener extends AbstractQSListener {
     public void onJoin(PlayerJoinEvent e) {
         Util.debugLog("Player " + e.getPlayer().getName() + " using locale " + e.getPlayer().getLocale() + ": " + plugin.text().of(e.getPlayer(), "file-test").forLocale());
         // Notify the player any messages they were sent
-        if (plugin.getConfiguration().getBoolean("shop.auto-fetch-shop-messages")) {
+        if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
             MsgUtil.flush(e.getPlayer());
         }
     }

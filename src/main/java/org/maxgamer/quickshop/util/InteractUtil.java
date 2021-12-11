@@ -18,7 +18,8 @@
  */
 package org.maxgamer.quickshop.util;
 
-import de.leonhard.storage.sections.FlatFileSection;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.maxgamer.quickshop.QuickShop;
 
 import java.util.EnumMap;
@@ -34,8 +35,11 @@ public class InteractUtil {
     private static Mode mode;
     private static boolean init;
 
-    public static void init(FlatFileSection configuration) {
-        mode = Mode.getMode(configuration.getOrDefault("interact-mode", 0));
+    public static void init(ConfigurationSection configuration) {
+        if (configuration == null) {
+            configuration = new MemoryConfiguration();
+        }
+        mode = Mode.getMode(configuration.getInt("interact-mode", 0));
         SNEAKING_ACTION_MAPPING.put(Action.CREATE, configuration.getBoolean("sneak-to-create"));
         SNEAKING_ACTION_MAPPING.put(Action.TRADE, configuration.getBoolean("sneak-to-trade"));
         SNEAKING_ACTION_MAPPING.put(Action.CONTROL, configuration.getBoolean("sneak-to-control"));
@@ -51,7 +55,7 @@ public class InteractUtil {
      */
     public static boolean check(Action action, boolean isSneaking) {
         if (!init) {
-            init(QuickShop.getInstance().getConfiguration().getSection("shop.interact"));
+            init(QuickShop.getInstance().getConfig().getConfigurationSection("shop.interact"));
         }
         //Hopefully some coders can read this
         boolean sneakAllowed = SNEAKING_ACTION_MAPPING.get(action);

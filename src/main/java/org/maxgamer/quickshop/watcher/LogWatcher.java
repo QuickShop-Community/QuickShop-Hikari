@@ -52,7 +52,7 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
                 //noinspection ResultOfMethodCallIgnored
                 log.createNewFile();
             } else {
-                if ((log.length() / 1024f / 1024f) > plugin.getConfiguration().getDouble("logging.file-size")) {
+                if ((log.length() / 1024f / 1024f) > plugin.getConfig().getDouble("logging.file-size")) {
                     Path logPath = plugin.getDataFolder().toPath().resolve("logs");
                     Files.createDirectories(logPath);
                     //Find a available name

@@ -47,7 +47,7 @@ public class LockListener extends AbstractProtectionListener {
 
     @Override
     public void register() {
-        if (plugin.getConfiguration().getBoolean("shop.lock")) {
+        if (plugin.getConfig().getBoolean("shop.lock")) {
             super.register();
         } else {
             super.unregister();
@@ -74,8 +74,8 @@ public class LockListener extends AbstractProtectionListener {
         BlockState state = PaperLib.getBlockState(b, false).getState();
         if (state instanceof Sign) {
             final Sign sign = (Sign) state;
-            if (sign.getLine(0).equals(super.getPlugin().getConfiguration().getString("lockette.private"))
-                    || sign.getLine(0).equals(super.getPlugin().getConfiguration().getString("lockette.more_users"))) {
+            if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
+                    || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                 // Ignore break lockette sign
                 Util.debugLog("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
                 return;
@@ -100,8 +100,8 @@ public class LockListener extends AbstractProtectionListener {
             if (b instanceof Sign) {
                 final Sign sign = (Sign) b;
 
-                if (sign.getLine(0).equals(super.getPlugin().getConfiguration().getString("lockette.private"))
-                        || sign.getLine(0).equals(super.getPlugin().getConfiguration().getString("lockette.more_users"))) {
+                if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
+                        || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                     // Ignore break lockette sign
                     return;
                 }

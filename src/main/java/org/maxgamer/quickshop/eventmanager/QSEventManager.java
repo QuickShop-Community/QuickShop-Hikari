@@ -66,7 +66,7 @@ public class QSEventManager implements QuickEventManager, Listener {
     private synchronized void rescan() {
         this.ignoredListener.clear();
         plugin
-                .getConfiguration()
+                .getConfig()
                 .getStringList("shop.protection-checking-listener-blacklist")
                 .forEach(
                         input -> {

@@ -78,8 +78,8 @@ public class PlotSquaredIntegrationV6 extends AbstractQSIntegratedPlugin {
     }
 
     private void init() {
-        this.whiteList = plugin.getConfiguration().getBoolean("integration.plotsquared.whitelist-mode");
-        this.deleteUntrusted = plugin.getConfiguration().getBoolean("integration.plotsquared.delete-when-user-untrusted");
+        this.whiteList = plugin.getConfig().getBoolean("integration.plotsquared.whitelist-mode");
+        this.deleteUntrusted = plugin.getConfig().getBoolean("integration.plotsquared.delete-when-user-untrusted");
     }
 
     @Override

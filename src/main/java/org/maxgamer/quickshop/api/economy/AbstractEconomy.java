@@ -43,7 +43,7 @@ public abstract class AbstractEconomy implements EconomyCore, Reloadable {
      * @return Economy type that QuickShop now using
      */
     public static EconomyType getNowUsing() {
-        return EconomyType.fromID(QuickShop.getInstance().getConfiguration().getInt("economy-type"));
+        return EconomyType.fromID(QuickShop.getInstance().getConfig().getInt("economy-type"));
     }
 
     @Override

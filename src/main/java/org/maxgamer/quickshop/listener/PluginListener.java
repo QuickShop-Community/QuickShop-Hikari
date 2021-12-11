@@ -54,7 +54,7 @@ public class PluginListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginDisabled(PluginDisableEvent event) {
         String pluginName = event.getPlugin().getName();
-        if (integrationHelper.isRegistered(pluginName) && plugin.getConfiguration().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
+        if (integrationHelper.isRegistered(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
             IntegratedPlugin integratedPlugin = integrationHelper.getIntegrationMap().get(pluginName);
             if (integratedPlugin != null) {
                 Util.debugLog("[Hot Load] Calling for unloading " + integratedPlugin.getName());
@@ -70,7 +70,7 @@ public class PluginListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginEnabled(PluginEnableEvent event) {
         String pluginName = event.getPlugin().getName();
-        if (integrationHelper.isRegistered(pluginName) && plugin.getConfiguration().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
+        if (integrationHelper.isRegistered(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
             integrationHelper.register(pluginName);
             IntegratedPlugin integratedPlugin = integrationHelper.getIntegrationMap().get(pluginName);
             if (integratedPlugin != null) {
