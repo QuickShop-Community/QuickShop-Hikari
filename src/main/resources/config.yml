@@ -361,6 +361,7 @@ shop:
   #Protection check
   #This will send a FAKE BlockBreakEvent to check if you can break a block.
   #This may conflict with some protection plugins!
+  #Integration checking will be checked after this, so disable it when it's conflicting with integration
   #If you don't want this, then please disable it and use the integration below instead.
   protection-checking: true
 
@@ -517,7 +518,6 @@ matcher:
     #Should the Plugin check the shulkerBox contents?
     shulkerBox: true
 #Integration is under BETA stage, please report any bugs to our Issue Tracker.
-#You must disable protection-checks before enabling integration.
 integration:
   #Towny Integration
   towny:
