@@ -170,11 +170,14 @@ public class MsgUtil {
 
     private static Map.Entry<String, String> cachedGameLanguageCode = null;
 
+    public static String getDefaultGameLanguageCode() {
+        return getGameLanguageCode(plugin.getConfig().getString("game-language", "default"));
+    }
+
     @Unstable
-    public static String processGameLanguageCode(String languageCode) {
+    public static String getGameLanguageCode(String languageCode) {
         if (cachedGameLanguageCode != null && cachedGameLanguageCode.getKey().equals(languageCode)) {
             return cachedGameLanguageCode.getValue();
-
         }
         String copyCode = languageCode;
         if ("default".equalsIgnoreCase(languageCode)) {
@@ -212,7 +215,7 @@ public class MsgUtil {
     }
 
     public static String getTranslateText(ItemStack stack) {
-        if (plugin.getConfiguration().getBoolean("force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
+        if (plugin.getConfig().getBoolean("force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
             return convertItemStackToTranslateText(stack.getType());
         } else {
             return Util.getItemStackName(stack);

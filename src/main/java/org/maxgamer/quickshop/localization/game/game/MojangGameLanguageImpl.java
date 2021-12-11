@@ -70,8 +70,8 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
     public MojangGameLanguageImpl(@NotNull QuickShop plugin, @NotNull String languageCode) {
         super(plugin);
         this.plugin = plugin;
-        languageCode = MsgUtil.processGameLanguageCode(languageCode);
-        switch (plugin.getConfiguration().getOrDefault("mojangapi-mirror", 0)) {
+        languageCode = MsgUtil.getGameLanguageCode(languageCode);
+        switch (plugin.getConfig().getInt("mojangapi-mirror", 0)) {
             case 0:
                 mirror = new MojangApiOfficialMirror();
                 plugin.getLogger().info("Game assets server selected: Mojang API");

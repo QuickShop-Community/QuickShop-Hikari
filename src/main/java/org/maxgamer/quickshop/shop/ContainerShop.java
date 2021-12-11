@@ -825,7 +825,7 @@ public class ContainerShop implements Shop {
         if (!Util.isLoaded(this.location)) {
             return;
         }
-        this.setSignText(getSignText(MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default"))));
+        this.setSignText(getSignText(MsgUtil.getDefaultGameLanguageCode()));
         // this.setSignText(getSignText("en_us"));
     }
 

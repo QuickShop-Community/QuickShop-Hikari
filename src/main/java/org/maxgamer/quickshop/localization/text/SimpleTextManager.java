@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.localization.text;
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -45,6 +46,7 @@ import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -54,12 +56,12 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class SimpleTextManager implements TextManager, Reloadable {
-    private static final String CROWDIN_LANGUAGE_FILE = "/master/crowdin/lang/%locale%/messages.json";
+    private static final String CROWDIN_LANGUAGE_FILE_PATH = "/master/crowdin/lang/%locale%/messages.json";
     public final List<PostProcessor> postProcessors = new ArrayList<>();
     private final QuickShop plugin;
     private final Distribution distribution;
     // <File <Locale, Section>>
-    private final TextMapper mapper = new TextMapper();
+    private final LanguageFilesManager languageFilesManager = new LanguageFilesManager();
 
 
     public SimpleTextManager(QuickShop plugin) {
@@ -93,7 +95,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * Reset everything
      */
     private void reset() {
-        mapper.reset();
+        languageFilesManager.reset();
         postProcessors.clear();
     }
 
@@ -106,11 +108,27 @@ public class SimpleTextManager implements TextManager, Reloadable {
     private JsonConfiguration loadBundled(String file) {
         JsonConfiguration bundledLang = new JsonConfiguration();
         File fileObject = new File(file);
+        String parentStr = fileObject.getParent();
+        String fileName = fileObject.getName();
         try {
-            bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(plugin.getResource("lang/" + fileObject.getName()), StandardCharsets.UTF_8), StandardCharsets.UTF_8)));
+            InputStream stream = null;
+            if (!StringUtils.isEmpty(parentStr)) {
+                //Try to fetch matched i18n resources
+                stream = plugin.getResource("crowdin/" + parentStr + "/" + fileName);
+            }
+            if (stream == null) {
+                //Fallback to default
+                stream = plugin.getResource("lang/" + fileName);
+            }
+            if (stream != null) {
+                bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(stream, StandardCharsets.UTF_8), StandardCharsets.UTF_8)));
+            } else {
+                plugin.getLogger().log(Level.WARNING, "Cannot load bundled language file from jar, bundled language files " + (parentStr == null ? "" : parentStr) + "/" + fileName + " not found.");
+                bundledLang = new JsonConfiguration();
+            }
         } catch (IOException | InvalidConfigurationException ex) {
             bundledLang = new JsonConfiguration();
-            plugin.getLogger().log(Level.SEVERE, "Cannot load bundled language file from Jar, some strings may missing!", ex);
+            plugin.getLogger().log(Level.SEVERE, "Cannot load bundled language file from jar, some strings may missing!", ex);
         }
         return bundledLang;
     }
@@ -121,43 +139,44 @@ public class SimpleTextManager implements TextManager, Reloadable {
     public void load() {
         plugin.getLogger().info("Checking for translation updates, this may need a while...");
         this.reset();
-        distribution.getAvailableLanguages(); // Make a request that loading the manifest to create manifest cache for
-        // parallel threads
-        List<String> enabledLanguagesRegex = plugin.getConfiguration().getStringList("enabled-languages");
+        List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
         //Make sure is a lowercase regex, prevent case-sensitive and underscore issue
         for (int i = 0; i < enabledLanguagesRegex.size(); i++) {
             enabledLanguagesRegex.set(i, enabledLanguagesRegex.get(i).toLowerCase(Locale.ROOT).replace("-", "_"));
         }
-        // Multi File and Multi-Language loader
-        // Offline Initiated
-        mapper.deployBundled("/master/crowdin/lang/%locale%/messages.json", loadBundled("/master/crowdin/lang/%locale%/messages.json"));
-        distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> distribution.getAvailableFiles().parallelStream().forEach(crowdinFile -> {
-            try {
-                // Minecraft client use lowercase wi
-                String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
-                if (!localeEnabled(minecraftCode, enabledLanguagesRegex)) {
-                    Util.debugLog("Locale: " + minecraftCode + " not enabled in configuration.");
-                    return;
-                }
-                Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
-                // Deploy bundled to mapper
-                mapper.deployBundled(crowdinFile, loadBundled(crowdinFile));
-                JsonConfiguration configuration = getDistributionConfiguration(crowdinFile, crowdinCode);
-                // Loading override text (allow user modification the translation)
-                JsonConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
-                applyOverrideConfiguration(configuration, override);
-                // Deploy distribution to mapper
-                mapper.deploy(crowdinFile, minecraftCode, configuration, loadBundled(crowdinFile));
-                Util.debugLog("Locale " + crowdinFile.replace("%locale%", crowdinCode) + " has been successfully loaded");
-            } // Key founds in available locales but not in custom mapping on crowdin platform
-            catch (IOException e) {
-                // Network error
-                plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + " please check your network connection.", e);
-            } catch (Exception e) {
-                // Translation syntax error or other exceptions
-                plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + ".", e);
-            }
-        }));
+        //====Multi File and Multi-Language loader start====
+        //Init offline default file
+        languageFilesManager.deployBundled(CROWDIN_LANGUAGE_FILE_PATH, loadBundled(CROWDIN_LANGUAGE_FILE_PATH));
+        //Get language code first
+        distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode ->
+                //Then load all the files in this language code
+                distribution.getAvailableFiles().forEach(crowdinFile -> {
+                    try {
+                        // Minecraft client use lowercase
+                        String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
+                        if (!localeEnabled(minecraftCode, enabledLanguagesRegex)) {
+                            Util.debugLog("Locale: " + minecraftCode + " not enabled in configuration.");
+                            return;
+                        }
+                        Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
+                        // Deploy bundled to mapper
+                        languageFilesManager.deployBundled(crowdinFile, loadBundled(crowdinFile));
+                        JsonConfiguration configuration = getDistributionConfiguration(crowdinFile, crowdinCode);
+                        // Loading override text (allow user modification the translation)
+                        JsonConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
+                        applyOverrideConfiguration(configuration, override);
+                        // Deploy distribution to mapper
+                        languageFilesManager.deploy(crowdinFile, minecraftCode, configuration, loadBundled(crowdinFile));
+                        Util.debugLog("Locale " + crowdinFile.replace("%locale%", crowdinCode) + " has been successfully loaded");
+                    } // Key founds in available locales but not in custom mapping on crowdin platform
+                    catch (IOException e) {
+                        // Network error
+                        plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + " please check your network connection.", e);
+                    } catch (Exception e) {
+                        // Translation syntax error or other exceptions
+                        plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + ".", e);
+                    }
+                }));
 
         // Register post processor
         postProcessors.add(new FillerProcessor());
@@ -256,7 +275,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull Text of(@NotNull String path, Object... args) {
-        return new Text(this, (CommandSender) null, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
+        return new Text(this, (CommandSender) null, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
     }
 
     /**
@@ -269,7 +288,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull Text of(@Nullable CommandSender sender, @NotNull String path, Object... args) {
-        return new Text(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
+        return new Text(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
     }
 
     /**
@@ -282,7 +301,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull Text of(@Nullable UUID sender, @NotNull String path, Object... args) {
-        return new Text(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
+        return new Text(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
     }
 
     /**
@@ -294,7 +313,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull TextList ofList(@NotNull String path, Object... args) {
-        return new TextList(this, (CommandSender) null, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
+        return new TextList(this, (CommandSender) null, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
     }
 
     /**
@@ -307,7 +326,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull TextList ofList(@Nullable UUID sender, @NotNull String path, Object... args) {
-        return new TextList(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
+        return new TextList(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
     }
 
     /**
@@ -320,7 +339,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull TextList ofList(@Nullable CommandSender sender, @NotNull String path, Object... args) {
-        return new TextList(this, sender, mapper.getDistribution(CROWDIN_LANGUAGE_FILE), mapper.getBundled(CROWDIN_LANGUAGE_FILE), path, args);
+        return new TextList(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
     }
 
     @Override
@@ -332,14 +351,13 @@ public class SimpleTextManager implements TextManager, Reloadable {
     public static class TextList implements org.maxgamer.quickshop.api.localization.text.TextList {
         private final SimpleTextManager manager;
         private final String path;
-        private final QuickShop plugin;
         private final Map<String, JsonConfiguration> mapping;
         private final CommandSender sender;
         private final Object[] args;
+        @Nullable
         private final JsonConfiguration bundled;
 
-        private TextList(SimpleTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
-            this.plugin = manager.plugin;
+        private TextList(SimpleTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Object... args) {
             this.manager = manager;
             this.sender = sender;
             this.mapping = mapping;
@@ -348,8 +366,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             this.args = args;
         }
 
-        private TextList(SimpleTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
-            this.plugin = manager.plugin;
+        private TextList(SimpleTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Object... args) {
             this.manager = manager;
             if (sender != null) {
                 this.sender = Bukkit.getPlayer(sender);
@@ -400,14 +417,15 @@ public class SimpleTextManager implements TextManager, Reloadable {
             JsonConfiguration index = mapping.get(locale);
             if (index == null) {
                 Util.debugLog("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
-                if (MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")).equals(locale)) {
+                String languageCode = MsgUtil.getDefaultGameLanguageCode();
+                if (languageCode.equals(locale)) {
                     List<String> str = fallbackLocal();
                     if (str.isEmpty()) {
                         return Collections.singletonList("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     }
                     return postProcess(str);
                 } else {
-                    return forLocale(MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")));
+                    return forLocale(languageCode);
                 }
             } else {
                 List<String> str = index.getStringList(path);
@@ -434,7 +452,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             if (sender instanceof Player) {
                 return forLocale(((Player) sender).getLocale());
             } else {
-                return forLocale(MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")));
+                return forLocale(MsgUtil.getDefaultGameLanguageCode());
             }
         }
 
@@ -455,14 +473,13 @@ public class SimpleTextManager implements TextManager, Reloadable {
     public static class Text implements org.maxgamer.quickshop.api.localization.text.Text {
         private final SimpleTextManager manager;
         private final String path;
-        private final QuickShop plugin;
         private final Map<String, JsonConfiguration> mapping;
         private final CommandSender sender;
         private final Object[] args;
+        @Nullable
         private final JsonConfiguration bundled;
 
-        private Text(SimpleTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
-            this.plugin = manager.plugin;
+        private Text(SimpleTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Object... args) {
             this.manager = manager;
             this.sender = sender;
             this.mapping = mapping;
@@ -471,8 +488,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             this.args = args;
         }
 
-        private Text(SimpleTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, JsonConfiguration bundled, String path, Object... args) {
-            this.plugin = manager.plugin;
+        private Text(SimpleTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Object... args) {
             this.manager = manager;
             if (sender != null) {
                 this.sender = Bukkit.getPlayer(sender);
@@ -492,7 +508,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
          */
         @Nullable
         private String fallbackLocal() {
-            return this.bundled.getString(path);
+            return this.bundled != null ? this.bundled.getString(path) : null;
         }
 
         /**
@@ -521,14 +537,14 @@ public class SimpleTextManager implements TextManager, Reloadable {
             JsonConfiguration index = mapping.get(locale);
             if (index == null) {
                 Util.debugLog("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
-                if (MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")).equals(locale)) {
+                if (MsgUtil.getDefaultGameLanguageCode().equals(locale)) {
                     String str = fallbackLocal();
                     if (str == null) {
                         return "Fallback Missing Language Key: " + path + ", report to QuickShop!";
                     }
                     return postProcess(str);
                 } else {
-                    return forLocale(MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")));
+                    return forLocale(MsgUtil.getDefaultGameLanguageCode());
                 }
             } else {
                 String str = index.getString(path);
@@ -555,7 +571,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             if (sender instanceof Player) {
                 return forLocale(((Player) sender).getLocale());
             } else {
-                return forLocale(MsgUtil.processGameLanguageCode(plugin.getConfiguration().getOrDefault("game-language", "default")));
+                return forLocale(MsgUtil.getDefaultGameLanguageCode());
             }
         }
 
