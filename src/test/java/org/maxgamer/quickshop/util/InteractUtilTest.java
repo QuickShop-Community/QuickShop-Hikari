@@ -31,7 +31,7 @@ public class InteractUtilTest {
         ConfigurationSection configurationSection = new MemoryConfiguration();
         configurationSection.set("shop.interact.interact-mode", mode);
         configurationSection.set("shop.interact.sneak-to-create", allowSneaking);
-        return configurationSection;
+        return configurationSection.getConfigurationSection("shop.interact");
     }
 
     @Test
@@ -43,14 +43,14 @@ public class InteractUtilTest {
         InteractUtil.init(genConfig(0, false));
         Assert.assertFalse(InteractUtil.check(InteractUtil.Action.CREATE, true));
         Assert.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, false));
-//BOTH
+        //BOTH
         InteractUtil.init(genConfig(1, false));
         Assert.assertFalse(InteractUtil.check(InteractUtil.Action.CREATE, true));
         Assert.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, false));
         InteractUtil.init(genConfig(1, true));
         Assert.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, true));
         Assert.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, false));
-//REVERSED
+        //REVERSED
         InteractUtil.init(genConfig(2, false));
         Assert.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, true));
         Assert.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, false));
