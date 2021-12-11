@@ -368,7 +368,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
          * @return The bundled text
          */
         private @NotNull List<String> fallbackLocal() {
-            return this.bundled.getStringList(path);
+            return this.bundled != null ? this.bundled.getStringList(path) : Collections.emptyList();
         }
 
         /**
