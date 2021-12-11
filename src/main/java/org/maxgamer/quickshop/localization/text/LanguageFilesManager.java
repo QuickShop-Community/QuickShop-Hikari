@@ -53,6 +53,9 @@ public class LanguageFilesManager {
      * @param bundled          The values from bundled file
      */
     public void deploy(@NotNull String distributionPath, @NotNull String locale, @NotNull JsonConfiguration distribution, @NotNull JsonConfiguration bundled) {
+        //Parsed color
+        Util.parseColours(bundled);
+        Util.parseColours(distribution);
         this.bundledFile2ContentMapping.put(distributionPath, bundled);
         this.locale2ContentMapping.computeIfAbsent(distributionPath, e -> new HashMap<>());
         this.locale2ContentMapping.get(distributionPath).put(locale, distribution);
@@ -65,6 +68,8 @@ public class LanguageFilesManager {
      * @param bundled          The values from bundled file
      */
     public void deployBundled(@NotNull String distributionPath, @NotNull JsonConfiguration bundled) {
+        //Parsed color
+        Util.parseColours(bundled);
         this.bundledFile2ContentMapping.put(distributionPath, bundled);
     }
 
