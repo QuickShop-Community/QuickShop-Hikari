@@ -81,6 +81,7 @@ import org.maxgamer.quickshop.shop.VirtualDisplayItem;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.compatibility.SimpleCompatibilityManager;
+import org.maxgamer.quickshop.util.config.ConfigCommentUpdater;
 import org.maxgamer.quickshop.util.config.ConfigProvider;
 import org.maxgamer.quickshop.util.config.ConfigurationFixer;
 import org.maxgamer.quickshop.util.envcheck.*;
@@ -90,10 +91,7 @@ import org.maxgamer.quickshop.util.reload.ReloadManager;
 import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
 import org.maxgamer.quickshop.watcher.*;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -2003,6 +2001,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
         saveConfiguration();
         reloadConfiguration();
+
+        //Add comment for config.yml
+        try (InputStream inputStream = Objects.requireNonNull(getResource("config.yml"))) {
+            new ConfigCommentUpdater(this, inputStream, new File(getDataFolder(), "config.yml")).updateComment();
+        }
 
         //Delete old example configuration files
         Files.deleteIfExists(new File(getDataFolder(), "example.config.yml").toPath());
