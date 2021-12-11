@@ -199,15 +199,14 @@ public class PlayerListener extends AbstractQSListener {
 
             final AbstractEconomy eco = plugin.getEconomy();
             final double price = shop.getPrice();
-            final double money = plugin.getEconomy().getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
             final Inventory playerInventory = p.getInventory();
             if (shop.isSelling()) {
                 if (shop.getRemainingStock() == 0) {
                     plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
                     return;
                 }
-
-                int itemAmount = getPlayerCanBuy(shop, money, price, playerInventory);
+                final double traderBalance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
+                int itemAmount = getPlayerCanBuy(shop, traderBalance, price, playerInventory);
                 if (shop.isStackingShop()) {
                     plugin.text().of(p, "how-many-buy-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(itemAmount)).send();
                 } else {
@@ -218,8 +217,8 @@ public class PlayerListener extends AbstractQSListener {
                     plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
                     return;
                 }
-
-                int items = getPlayerCanSell(shop, money, price, playerInventory);
+                final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
+                int items = getPlayerCanSell(shop, ownerBalance, price, playerInventory);
                 if (shop.isStackingShop()) {
                     plugin.text().of(p, "how-many-sell-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(items)).send();
                 } else {
@@ -291,11 +290,11 @@ public class PlayerListener extends AbstractQSListener {
         }
     }
 
-    private int getPlayerCanBuy(Shop shop, double money, double price, Inventory playerInventory) {
+    private int getPlayerCanBuy(Shop shop, double traderBalance, double price, Inventory playerInventory) {
         if (shop.isFreeShop()) { // Free shop
             return Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop.getItem()));
         }
-        int itemAmount = Math.min(shop.getRemainingSpace(), (int) Math.floor(money / price));
+        int itemAmount = Math.min(shop.getRemainingStock(), (int) Math.floor(traderBalance / price));
         if (!shop.isUnlimited()) {
             itemAmount = Math.min(itemAmount, shop.getRemainingStock());
         }
@@ -305,13 +304,13 @@ public class PlayerListener extends AbstractQSListener {
         return itemAmount;
     }
 
-    private int getPlayerCanSell(Shop shop, double money, double price, Inventory playerInventory) {
+    private int getPlayerCanSell(Shop shop, double ownerBalance, double price, Inventory playerInventory) {
         if (shop.isFreeShop()) {
             return Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop.getItem()));
         }
 
         int items = Util.countItems(playerInventory, shop.getItem());
-        final int ownerCanAfford = (int) (money / price);
+        final int ownerCanAfford = (int) (ownerBalance / price);
         if (!shop.isUnlimited()) {
             // Amount check player amount and shop empty slot
             items = Math.min(items, shop.getRemainingSpace());
