@@ -83,6 +83,13 @@ public interface TextManager {
     TextList ofList(@NotNull String path, Object... args);
 
     /**
+     * Return the set of available Languages
+     *
+     * @return the set of available Languages
+     */
+    List<String> getAvailableLanguages();
+
+    /**
      * Getting the translation with path  with player's locale (if available)
      *
      * @param sender The player unique id

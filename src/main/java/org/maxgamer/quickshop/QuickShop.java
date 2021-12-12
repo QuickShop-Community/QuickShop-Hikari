@@ -612,6 +612,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         this.bootError = null;
         getLogger().info("Loading messages translation over-the-air (this may need take a while).");
         this.textManager = new SimpleTextManager(this);
+        textManager.load();
         getLogger().info("Loading up integration modules.");
         this.integrationHelper = new SimpleIntegrationManager(this);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);

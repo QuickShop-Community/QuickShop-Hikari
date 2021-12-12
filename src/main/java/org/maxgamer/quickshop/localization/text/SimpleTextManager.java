@@ -20,6 +20,8 @@
 package org.maxgamer.quickshop.localization.text;
 
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -50,6 +52,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -68,7 +72,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
         plugin.getReloadManager().register(this);
         plugin.getLogger().info("Translation over-the-air platform selected: Crowdin");
         this.distribution = new CrowdinOTA(plugin);
-        load();
     }
 
     /**
@@ -90,13 +93,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         return moduleFolder;
     }
 
-    /**
-     * Reset everything
-     */
-    private void reset() {
-        languageFilesManager.reset();
-        postProcessors.clear();
-    }
+    private final List<String> availableLanguages = new CopyOnWriteArrayList<>();
 
     /**
      * Loading bundled files from Jar file
@@ -132,58 +129,27 @@ public class SimpleTextManager implements TextManager, Reloadable {
         return bundledLang;
     }
 
-    /**
-     * Loading Crowdin OTA module and i18n system
-     */
-    public void load() {
-        plugin.getLogger().info("Checking for translation updates, this may need a while...");
-        this.reset();
-        List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
-        //Make sure is a lowercase regex, prevent case-sensitive and underscore issue
-        for (int i = 0; i < enabledLanguagesRegex.size(); i++) {
-            enabledLanguagesRegex.set(i, enabledLanguagesRegex.get(i).toLowerCase(Locale.ROOT).replace("-", "_"));
-        }
-        //====Multi File and Multi-Language loader start====
-        //Init offline default file
-        languageFilesManager.deployBundled(CROWDIN_LANGUAGE_FILE_PATH, loadBundled(CROWDIN_LANGUAGE_FILE_PATH));
-        //Get language code first
-        distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode ->
-                //Then load all the files in this language code
-                distribution.getAvailableFiles().forEach(crowdinFile -> {
-                    try {
-                        // Minecraft client use lowercase
-                        String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
-                        if (!localeEnabled(minecraftCode, enabledLanguagesRegex)) {
-                            Util.debugLog("Locale: " + minecraftCode + " not enabled in configuration.");
-                            return;
-                        }
-                        Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
-                        // Deploy bundled to mapper
-                        languageFilesManager.deployBundled(crowdinFile, loadBundled(crowdinFile));
-                        // Loading bundled file (for no internet connection or failed loading)
-                        JsonConfiguration configuration = loadBundled(crowdinFile.replace("%locale%", crowdinCode));
-                        applyOverrideConfiguration(configuration, getDistributionConfiguration(crowdinFile, crowdinCode));
-                        // Loading override text (allow user modification the translation)
-                        JsonConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
-                        applyOverrideConfiguration(configuration, override);
-                        // Deploy distribution to mapper
-                        languageFilesManager.deploy(crowdinFile, minecraftCode, configuration, loadBundled(crowdinFile));
-                        Util.debugLog("Locale " + crowdinFile.replace("%locale%", crowdinCode) + " has been successfully loaded");
-                    } // Key founds in available locales but not in custom mapping on crowdin platform
-                    catch (IOException e) {
-                        // Network error
-                        plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + " please check your network connection.", e);
-                    } catch (Exception e) {
-                        // Translation syntax error or other exceptions
-                        plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + ".", e);
-                    }
-                }));
+    private final Cache<String, String> languagesCache =
+            CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
 
-        // Register post processor
-        postProcessors.add(new FillerProcessor());
-        postProcessors.add(new PlaceHolderApiProcessor());
-        //We done this when deploys language
-        //postProcessors.add(new ColorProcessor());
+    /**
+     * Reset everything
+     */
+    private void reset() {
+        languagesCache.cleanUp();
+        languageFilesManager.reset();
+        postProcessors.clear();
+        availableLanguages.clear();
+    }
+
+    /**
+     * Return the set of available Languages
+     *
+     * @return the set of available Languages
+     */
+    @Override
+    public List<String> getAvailableLanguages() {
+        return Collections.unmodifiableList(availableLanguages);
     }
 
     /**
@@ -247,6 +213,95 @@ public class SimpleTextManager implements TextManager, Reloadable {
             configuration.loadFromString(distribution.getFile(distributionFile, distributionCode, true));
         }
         return configuration;
+    }
+
+    /**
+     * Loading Crowdin OTA module and i18n system
+     */
+    public void load() {
+        plugin.getLogger().info("Checking for translation updates, this may need a while...");
+        this.reset();
+        List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
+        //Make sure is a lowercase regex, prevent case-sensitive and underscore issue
+        for (int i = 0; i < enabledLanguagesRegex.size(); i++) {
+            enabledLanguagesRegex.set(i, enabledLanguagesRegex.get(i).toLowerCase(Locale.ROOT).replace("-", "_"));
+        }
+        //====Multi File and Multi-Language loader start====
+        //Init offline default file
+        languageFilesManager.deployBundled(CROWDIN_LANGUAGE_FILE_PATH, loadBundled(CROWDIN_LANGUAGE_FILE_PATH));
+        //Get language code first
+        distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode ->
+                //Then load all the files in this language code
+                distribution.getAvailableFiles().forEach(crowdinFile -> {
+                    try {
+                        // Minecraft client use lowercase
+                        String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
+                        if (!localeEnabled(minecraftCode, enabledLanguagesRegex)) {
+                            Util.debugLog("Locale: " + minecraftCode + " not enabled in configuration.");
+                            return;
+                        }
+                        availableLanguages.add(crowdinCode);
+                        Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
+                        // Deploy bundled to mapper
+                        languageFilesManager.deployBundled(crowdinFile, loadBundled(crowdinFile));
+                        // Loading bundled file (for no internet connection or failed loading)
+                        JsonConfiguration configuration = loadBundled(crowdinFile.replace("%locale%", crowdinCode));
+                        applyOverrideConfiguration(configuration, getDistributionConfiguration(crowdinFile, crowdinCode));
+                        // Loading override text (allow user modification the translation)
+                        JsonConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
+                        applyOverrideConfiguration(configuration, override);
+                        // Deploy distribution to mapper
+                        languageFilesManager.deploy(crowdinFile, minecraftCode, configuration, loadBundled(crowdinFile));
+                        Util.debugLog("Locale " + crowdinFile.replace("%locale%", crowdinCode) + " has been successfully loaded");
+                    } // Key founds in available locales but not in custom mapping on crowdin platform
+                    catch (IOException e) {
+                        // Network error
+                        plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + " please check your network connection.", e);
+                    } catch (Exception e) {
+                        // Translation syntax error or other exceptions
+                        plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + ".", e);
+                    }
+                }));
+
+        // Register post processor
+        postProcessors.add(new FillerProcessor());
+        postProcessors.add(new PlaceHolderApiProcessor());
+        //We done this when deploys language
+        //postProcessors.add(new ColorProcessor());
+    }
+
+    private String findRelativeLanguages(String langCode) {
+        if (langCode.isEmpty()) {
+            return "en_us";
+        }
+        String result = languagesCache.getIfPresent(langCode);
+        if (result == null) {
+            result = "en_us";
+            if (availableLanguages.contains(langCode)) {
+                result = langCode;
+            } else {
+                String[] splits = langCode.split("_", 2);
+                if (splits.length != 2) {
+                    for (String availableLanguage : availableLanguages) {
+                        if (availableLanguage.startsWith(langCode) || availableLanguage.endsWith(langCode)) {
+                            result = availableLanguage;
+                            break;
+                        }
+                    }
+                } else {
+                    String start = splits[0] + "_";
+                    String end = "_" + splits[1];
+                    for (String availableLanguage : availableLanguages) {
+                        if (availableLanguage.startsWith(start) || availableLanguage.endsWith(end)) {
+                            result = availableLanguage;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        languagesCache.put(langCode, result);
+        return result;
     }
 
     /**
@@ -406,7 +461,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
             }
             return texts;
         }
-
         /**
          * Getting the text that use specify locale
          *
@@ -416,7 +470,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         @Override
         @NotNull
         public List<String> forLocale(@NotNull String locale) {
-            JsonConfiguration index = mapping.get(locale);
+            JsonConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
             if (index == null) {
                 Util.debugLog("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
                 String languageCode = MsgUtil.getDefaultGameLanguageCode();

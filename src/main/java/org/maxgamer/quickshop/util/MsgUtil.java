@@ -168,18 +168,20 @@ public class MsgUtil {
         return raw;
     }
 
-    private static Map.Entry<String, String> cachedGameLanguageCode = null;
+    private volatile static Map.Entry<String, String> cachedGameLanguageCode = null;
 
     public static String getDefaultGameLanguageCode() {
-        return getGameLanguageCode(plugin.getConfig().getString("game-language", "default"));
+        String languageCode = plugin.getConfig().getString("game-language", "default");
+        if (cachedGameLanguageCode != null && cachedGameLanguageCode.getKey().equals(languageCode)) {
+            return cachedGameLanguageCode.getValue();
+        }
+        String result = getGameLanguageCode(languageCode);
+        cachedGameLanguageCode = new AbstractMap.SimpleEntry<>(languageCode, result);
+        return result;
     }
 
     @Unstable
     public static String getGameLanguageCode(String languageCode) {
-        if (cachedGameLanguageCode != null && cachedGameLanguageCode.getKey().equals(languageCode)) {
-            return cachedGameLanguageCode.getValue();
-        }
-        String copyCode = languageCode;
         if ("default".equalsIgnoreCase(languageCode)) {
             Locale locale = Locale.getDefault();
             String language = locale.getLanguage();
@@ -201,7 +203,6 @@ public class MsgUtil {
                 }
             }
             languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
-            cachedGameLanguageCode = new AbstractMap.SimpleEntry<>(copyCode, languageCode);
             return languageCode;
         } else {
             return languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
