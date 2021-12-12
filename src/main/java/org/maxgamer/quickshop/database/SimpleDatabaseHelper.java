@@ -187,11 +187,13 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
                 @Override
                 public void onFailed(SQLException e) {
-                    Util.debugLog("Cannot create column " + columnName + " casued by:" + e.getMessage());
+                    QuickShop.getInstance().getLogger().log(Level.WARNING, "Cannot create column " + columnName, e);
+                    Util.debugLog("Cannot create column " + columnName + ", caused by:" + e.getMessage());
                 }
             }));
             return true;
         } catch (SQLException sqlException) {
+            QuickShop.getInstance().getLogger().log(Level.WARNING, "Cannot create column " + columnName, sqlException);
             Util.debugLog("Cannot create column " + columnName + " casued by:" + sqlException.getMessage());
             return false;
         }
