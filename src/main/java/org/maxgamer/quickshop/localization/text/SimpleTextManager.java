@@ -51,6 +51,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
@@ -104,7 +105,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
     private JsonConfiguration loadBundled(String file) {
         JsonConfiguration bundledLang = new JsonConfiguration();
         File fileObject = new File(file);
-        String parentStr = fileObject.getParent();
+        Path parentPath = fileObject.toPath().getParent();
+        String parentStr = parentPath != null ? parentPath.toFile().getName() : "";
         String fileName = fileObject.getName();
         try {
             InputStream stream = null;
@@ -240,22 +242,25 @@ public class SimpleTextManager implements TextManager, Reloadable {
                             Util.debugLog("Locale: " + minecraftCode + " not enabled in configuration.");
                             return;
                         }
-                        availableLanguages.add(crowdinCode);
+                        //Offline default file
+                        JsonConfiguration defaultFile = loadBundled(crowdinFile);
+                        //Add available language (minecraftCode)
+                        availableLanguages.add(minecraftCode);
                         Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
                         // Deploy bundled to mapper
-                        languageFilesManager.deployBundled(crowdinFile, loadBundled(crowdinFile));
+                        languageFilesManager.deployBundled(crowdinFile, defaultFile);
                         // Loading bundled file (for no internet connection or failed loading)
                         JsonConfiguration configuration = loadBundled(crowdinFile.replace("%locale%", crowdinCode));
                         JsonConfiguration remoteConfiguration = getDistributionConfiguration(crowdinFile, crowdinCode);
                         // Only apply right language-version for client
-                        if (configuration.isSet("language-version") && configuration.getString("language-version", "0").equals(remoteConfiguration.getString("language-version", "0"))) {
+                        if (defaultFile.isSet("language-version") && defaultFile.getString("language-version", "0").equals(remoteConfiguration.getString("language-version", "0"))) {
                             applyOverrideConfiguration(configuration, remoteConfiguration);
                         }
                         // Loading override text (allow user modification the translation)
                         JsonConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
                         applyOverrideConfiguration(configuration, override);
                         // Deploy distribution to mapper
-                        languageFilesManager.deploy(crowdinFile, minecraftCode, configuration, loadBundled(crowdinFile));
+                        languageFilesManager.deploy(crowdinFile, minecraftCode, configuration, defaultFile);
                         Util.debugLog("Locale " + crowdinFile.replace("%locale%", crowdinCode) + " has been successfully loaded");
                     } // Key founds in available locales but not in custom mapping on crowdin platform
                     catch (IOException e) {
