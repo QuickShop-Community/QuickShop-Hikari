@@ -246,7 +246,11 @@ public class SimpleTextManager implements TextManager, Reloadable {
                         languageFilesManager.deployBundled(crowdinFile, loadBundled(crowdinFile));
                         // Loading bundled file (for no internet connection or failed loading)
                         JsonConfiguration configuration = loadBundled(crowdinFile.replace("%locale%", crowdinCode));
-                        applyOverrideConfiguration(configuration, getDistributionConfiguration(crowdinFile, crowdinCode));
+                        JsonConfiguration remoteConfiguration = getDistributionConfiguration(crowdinFile, crowdinCode);
+                        // Only apply right language-version for client
+                        if (configuration.isSet("language-version") && configuration.getString("language-version", "0").equals(remoteConfiguration.getString("language-version", "0"))) {
+                            applyOverrideConfiguration(configuration, remoteConfiguration);
+                        }
                         // Loading override text (allow user modification the translation)
                         JsonConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
                         applyOverrideConfiguration(configuration, override);
