@@ -166,7 +166,6 @@ public class CollectorAdapter {
             perPlugin.put("data_folder", pl.getDataFolder());
             perPlugin.put("api_version", pl.getDescription().getAPIVersion());
             perPlugin.put("authors", Util.list2String(pl.getDescription().getAuthors()));
-            perPlugin.put("contributors", Util.list2String(pl.getDescription().getContributors()));
             perPlugin.put("depend", Util.list2String(pl.getDescription().getDepend()));
             perPlugin.put("soft_depend", Util.list2String(pl.getDescription().getSoftDepend()));
             perPlugin.put("is_addon", pl.getDescription().getDepend().contains("QuickShop") || pl.getDescription().getSoftDepend().contains("QuickShop"));
