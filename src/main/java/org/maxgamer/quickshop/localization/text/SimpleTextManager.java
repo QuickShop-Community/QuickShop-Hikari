@@ -160,7 +160,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
                         Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
                         // Deploy bundled to mapper
                         languageFilesManager.deployBundled(crowdinFile, loadBundled(crowdinFile));
-                        JsonConfiguration configuration = getDistributionConfiguration(crowdinFile, crowdinCode);
+                        // Loading bundled file (for no internet connection or failed loading)
+                        JsonConfiguration configuration = loadBundled(crowdinFile.replace("%locale%", crowdinCode));
+                        applyOverrideConfiguration(configuration, getDistributionConfiguration(crowdinFile, crowdinCode));
                         // Loading override text (allow user modification the translation)
                         JsonConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
                         applyOverrideConfiguration(configuration, override);
@@ -221,7 +223,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             if (content instanceof ConfigurationSection) {
                 continue;
             }
-            Util.debugLog("Override key " + key + " with content: " + content);
+            //Util.debugLog("Override key " + key + " with content: " + content);
             distributionConfiguration.set(key, content);
         }
     }
