@@ -163,12 +163,18 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         return jsonElement.getAsString();
     }
 
+    private static final boolean isPotionSupportMinecraftKey = Util.isMethodAvailable("org.bukkit.potion.PotionEffectType", "getKey");
     @Override
     public @NotNull String getPotion(@NotNull PotionEffectType potionEffectType) {
         if (lang == null) {
             return super.getPotion(potionEffectType);
         }
-        JsonElement jsonElement = lang.get("effect.minecraft." + potionEffectType.getName().toLowerCase());
+        JsonElement jsonElement;
+        if (isPotionSupportMinecraftKey) {
+            jsonElement = lang.get("effect.minecraft." + potionEffectType.getKey().getKey().toLowerCase());
+        } else {
+            jsonElement = lang.get("effect.minecraft." + potionEffectType.getName().toLowerCase());
+        }
         if (jsonElement == null) {
             return super.getPotion(potionEffectType);
         }
