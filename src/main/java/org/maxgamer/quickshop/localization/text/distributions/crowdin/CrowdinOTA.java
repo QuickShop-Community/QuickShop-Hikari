@@ -29,7 +29,6 @@ import lombok.EqualsAndHashCode;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.localization.text.distributions.Distribution;
 import org.maxgamer.quickshop.localization.text.distributions.crowdin.bean.Manifest;
@@ -62,7 +61,7 @@ public class CrowdinOTA implements Distribution {
      * @return The distribution manifest
      */
 
-    @Nullable
+    @NotNull
     public Manifest getManifest() {
         return JsonUtil.regular().fromJson(getManifestJson(), Manifest.class);
     }
@@ -70,12 +69,12 @@ public class CrowdinOTA implements Distribution {
     /**
      * Getting the Crowdin distribution manifest json
      *
-     * @return The distribution manifest json
+     * @return The distribution manifest json, return local one when failed
      */
-    @Nullable
+    @NotNull
     public String getManifestJson() {
         String url = CROWDIN_OTA_HOST + "manifest.json";
-        return HttpUtil.createGet(url);
+        return HttpUtil.createGet(url, "{\"files\":[\"\\/master\\/crowdin\\/lang\\/%locale%\\/messages.json\"],\"languages\":[\"af\",\"ar\",\"ca\",\"zh-CN\",\"zh-TW\",\"zh-HK\",\"cs\",\"da\",\"nl\",\"en\",\"fi\",\"fr\",\"de\",\"el\",\"he\",\"hu\",\"it\",\"ja\",\"ko\",\"no\",\"pl\",\"pt-PT\",\"pt-BR\",\"ro\",\"ru\",\"sr\",\"es-ES\",\"sv-SE\",\"tr\",\"uk\",\"vi\"],\"language_mapping\":{\"ro\":{\"locale\":\"ro-RO\"},\"fr\":{\"locale\":\"fr-FR\"},\"es-ES\":{\"locale\":\"es-ES\"},\"af\":{\"locale\":\"af-ZA\"},\"ar\":{\"locale\":\"ar-SA\"},\"ca\":{\"locale\":\"ca-ES\"},\"cs\":{\"locale\":\"cs-CZ\"},\"da\":{\"locale\":\"da-DK\"},\"de\":{\"locale\":\"de-DE\"},\"el\":{\"locale\":\"el-GR\"},\"fi\":{\"locale\":\"fi-FI\"},\"he\":{\"locale\":\"he-IL\"},\"hu\":{\"locale\":\"hu-HU\"},\"it\":{\"locale\":\"it-IT\"},\"ja\":{\"locale\":\"ja-JP\"},\"ko\":{\"locale\":\"ko-KR\"},\"nl\":{\"locale\":\"nl-NL\"},\"no\":{\"locale\":\"no-NO\"},\"pl\":{\"locale\":\"pl-PL\"},\"pt-PT\":{\"locale\":\"pt-PT\"},\"ru\":{\"locale\":\"ru-RU\"},\"sr\":{\"locale\":\"sr-SP\"},\"sv-SE\":{\"locale\":\"sv-SE\"},\"tr\":{\"locale\":\"tr-TR\"},\"uk\":{\"locale\":\"uk-UA\"},\"zh-CN\":{\"locale\":\"zh-CN\"},\"zh-TW\":{\"locale\":\"zh-TW\"},\"en\":{\"locale\":\"en-US\"},\"vi\":{\"locale\":\"vi-VN\"},\"pt-BR\":{\"locale\":\"pt-BR\"},\"zh-HK\":{\"locale\":\"zh-HK\"}},\"custom_languages\":[],\"timestamp\":1639272930,\"local\":true}");
     }
 
     /**
@@ -85,9 +84,6 @@ public class CrowdinOTA implements Distribution {
      * @return The language mapping
      */
     public Map<String, String> genLanguageMapping() {
-        if (getManifestJson() == null) {
-            return new HashMap<>();
-        }
         Map<String, String> mapping = new HashMap<>();
         JsonElement parser = new JsonParser().parse(getManifestJson());
         for (Map.Entry<String, JsonElement> set : parser.getAsJsonObject().getAsJsonObject("language_mapping").entrySet()) {
@@ -127,9 +123,6 @@ public class CrowdinOTA implements Distribution {
     @NotNull
     public List<String> getAvailableFiles() {
         Manifest manifest = getManifest();
-        if (manifest == null) {
-            return Collections.emptyList();
-        }
         return manifest.getFiles();
     }
 
@@ -143,11 +136,12 @@ public class CrowdinOTA implements Distribution {
     public String getFile(String fileCrowdinPath, String crowdinLocale, boolean forceFlush) throws Exception {
         Manifest manifest = getManifest();
         // Validate
-        if (manifest == null) {
-            throw new IllegalStateException("Failed to get project manifest");
-        }
         if (!manifest.getFiles().contains(fileCrowdinPath)) {
             throw new IllegalArgumentException("The file " + fileCrowdinPath + " not exists on Crowdin");
+        }
+        //Local stub
+        if (manifest.isLocal()) {
+            return "{}";
         }
 //        if (manifest.getCustom_languages() != null && !manifest.getCustom_languages().contains(crowdinLocale)) {
 //            throw new IllegalArgumentException("The locale " + crowdinLocale + " not exists on Crowdin");
@@ -178,10 +172,10 @@ public class CrowdinOTA implements Distribution {
         // Out of the cache
         String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
         plugin.getLogger().info("Updating translation " + crowdinLocale + " from: " + url);
-        String data = HttpUtil.createGet(url);
+        String data = HttpUtil.createGet(url, forceFlush);
         if (data == null) {
             // Failed to grab data
-            throw new OTAException();
+            throw new OTAException("Failed to grab data");
         }
         // Successfully grab the data from the remote server
         otaCacheControl.writeObjectCache(postProcessingPath, data.getBytes(StandardCharsets.UTF_8), manifestTimestamp);
@@ -232,10 +226,11 @@ public class CrowdinOTA implements Distribution {
     }
 
     @EqualsAndHashCode(callSuper = true)
-    @AllArgsConstructor
-    @Builder
     @Data
-    public static class OTAException extends Exception {
+    public static class OTAException extends RuntimeException {
+        public OTAException(String message) {
+            super(message);
+        }
     }
 
     @AllArgsConstructor
