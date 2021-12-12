@@ -338,6 +338,11 @@
                 <filtering>false</filtering>
                 <directory>src/main/resources/lang</directory>
             </resource>
+            <resource>
+                <targetPath>crowdin/lang</targetPath>
+                <filtering>false</filtering>
+                <directory>crowdin/lang</directory>
+            </resource>
         </resources>
     </build>
 
