@@ -599,7 +599,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         @Override
         @NotNull
         public String forLocale(@NotNull String locale) {
-            JsonConfiguration index = mapping.get(locale);
+            JsonConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
             if (index == null) {
                 Util.debugLog("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
                 if (MsgUtil.getDefaultGameLanguageCode().equals(locale)) {
