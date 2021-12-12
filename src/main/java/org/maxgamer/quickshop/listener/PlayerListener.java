@@ -200,6 +200,7 @@ public class PlayerListener extends AbstractQSListener {
             final AbstractEconomy eco = plugin.getEconomy();
             final double price = shop.getPrice();
             final Inventory playerInventory = p.getInventory();
+            final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
             if (shop.isSelling()) {
                 if (shop.getRemainingStock() == 0) {
                     plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
@@ -208,9 +209,9 @@ public class PlayerListener extends AbstractQSListener {
                 final double traderBalance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
                 int itemAmount = getPlayerCanBuy(shop, traderBalance, price, playerInventory);
                 if (shop.isStackingShop()) {
-                    plugin.text().of(p, "how-many-buy-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(itemAmount)).send();
+                    plugin.text().of(p, "how-many-buy-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(itemAmount), tradeAllWord).send();
                 } else {
-                    plugin.text().of(p, "how-many-buy", Integer.toString(itemAmount)).send();
+                    plugin.text().of(p, "how-many-buy", Integer.toString(itemAmount), tradeAllWord).send();
                 }
             } else {
                 if (shop.getRemainingSpace() == 0) {
@@ -220,9 +221,9 @@ public class PlayerListener extends AbstractQSListener {
                 final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
                 int items = getPlayerCanSell(shop, ownerBalance, price, playerInventory);
                 if (shop.isStackingShop()) {
-                    plugin.text().of(p, "how-many-sell-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(items)).send();
+                    plugin.text().of(p, "how-many-sell-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(items), tradeAllWord).send();
                 } else {
-                    plugin.text().of(p, "how-many-sell", Integer.toString(items)).send();
+                    plugin.text().of(p, "how-many-sell", Integer.toString(items), tradeAllWord).send();
                 }
             }
             // Add the new action
