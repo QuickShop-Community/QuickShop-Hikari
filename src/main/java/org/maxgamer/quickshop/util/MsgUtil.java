@@ -211,7 +211,11 @@ public class MsgUtil {
     @Unstable
     @Deprecated
     public static void loadGameLanguage(@NotNull String languageCode) {
-        gameLanguage = ServiceInjector.getGameLanguage(new MojangGameLanguageImpl(plugin, languageCode));
+        gameLanguage = ServiceInjector.getGameLanguage();
+        if (gameLanguage == null) {
+            gameLanguage = new MojangGameLanguageImpl(plugin, languageCode);
+            ((MojangGameLanguageImpl) gameLanguage).load();
+        }
     }
 
     public static String getTranslateText(ItemStack stack) {

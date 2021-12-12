@@ -41,7 +41,10 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CrowdinOTA implements Distribution {
@@ -108,9 +111,6 @@ public class CrowdinOTA implements Distribution {
     @NotNull
     public List<String> getAvailableLanguages() {
         Manifest manifest = getManifest();
-        if (manifest == null) {
-            return Collections.emptyList();
-        }
         List<String> languages = new ArrayList<>();
         Map<String, String> mapping = genLanguageMapping();
         for (String language : manifest.getLanguages()) {

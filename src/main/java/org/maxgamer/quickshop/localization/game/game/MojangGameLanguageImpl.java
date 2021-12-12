@@ -62,15 +62,16 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
     private final static Lock LOCK = new ReentrantLock();
     private static final Condition DOWNLOAD_CONDITION = LOCK.newCondition();
     private final QuickShop plugin;
+    private final String languageCode;
     @Nullable
-    private final JsonObject lang;
+    private volatile JsonObject lang = null;
     private MojangApiMirror mirror;
 
     @SneakyThrows
     public MojangGameLanguageImpl(@NotNull QuickShop plugin, @NotNull String languageCode) {
         super(plugin);
         this.plugin = plugin;
-        languageCode = MsgUtil.getGameLanguageCode(languageCode);
+        this.languageCode = MsgUtil.getGameLanguageCode(languageCode);
         switch (plugin.getConfig().getInt("mojangapi-mirror", 0)) {
             case 0:
                 mirror = new MojangApiOfficialMirror();
@@ -95,8 +96,9 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 plugin.getLogger().warning("You're selected unofficial game assets server, use at your own risk.");
                 break;
         }
+    }
 
-
+    public void load() {
         LOCK.lock();
         try {
             final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode, mirror);
@@ -107,10 +109,11 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 plugin.getLogger().info("No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
             }
             this.lang = loadThread.getLang(); // Get the Lang whatever thread running or died.
+        } catch (InterruptedException exception) {
+            plugin.getLogger().warning("Failed to wait game language thread loading");
         } finally {
             LOCK.unlock();
         }
-
     }
 
     @Override
