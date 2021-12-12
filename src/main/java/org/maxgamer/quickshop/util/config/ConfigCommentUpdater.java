@@ -53,7 +53,7 @@ public class ConfigCommentUpdater extends QuickShopInstanceHolder {
     public void updateComment() {
         boolean hasBackup = false;
         boolean hasWrite = false;
-        Path backupFile = externalConfig.toPath().resolve(UUID.randomUUID() + "-bak.yml");
+        Path backupFile = externalConfig.toPath().getParent().resolve("config-" + UUID.randomUUID() + "-bak.yml");
         try {
             Files.copy(externalConfig.toPath(), backupFile, StandardCopyOption.REPLACE_EXISTING);
             hasBackup = true;
