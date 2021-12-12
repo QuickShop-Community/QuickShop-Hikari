@@ -119,7 +119,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 stream = plugin.getResource("lang/" + fileName);
             }
             if (stream != null) {
-                bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(stream, StandardCharsets.UTF_8), StandardCharsets.UTF_8)));
+                bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(stream, StandardCharsets.UTF_8), StandardCharsets.UTF_8), StandardCharsets.UTF_8));
             } else {
                 plugin.getLogger().log(Level.WARNING, "Cannot load bundled language file from jar, bundled language files " + (parentStr == null ? "" : parentStr) + "/" + fileName + " not found.");
                 bundledLang = new JsonConfiguration();
