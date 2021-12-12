@@ -111,7 +111,7 @@
   "bypassing-lock": "&cOmijanie blokady QuickShop!",
   "that-is-locked": "&cTen sklep jest zablokowany.",
   "how-many-buy": "&aEnter in chat, how many you wish to &bBUY&a. You can buy &e{0}&a. Enter &b{1}&a to buy them all.",
-  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You have &e{0}&a available. Enter &b{1}&a in chat, to sell all.",
+  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You can sell &e{0}&a. Enter &b{1}&a in chat, to sell all.",
   "not-allowed-to-create": "&cTu nie zrobisz sklepu.",
   "blacklisted-item": "&cNie możesz sprzedać tego przedmiotu, ponieważ znajduje się na czarnej liście",
   "how-much-to-trade-for": "&aWpisz na czacie cenę za &e{1}x {0}&a.",
@@ -308,7 +308,7 @@
   "shop-freezed-at-location": "&eTwój sklep {0} w {1} został zamrożony!",
   "denied-put-in-item": "&cNie możesz umieścić tego przedmiotu w swoim sklepie!",
   "how-many-buy-stack": "&eEnter in chat, how many bulks you wish to &bBUY&a. There are &e{0}&a items in each bulk and you can buy &e{1}&a bulks. Enter &b{2}&a in chat to buy all.",
-  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you have &e{1}&a bulks available. Enter &b{2}&a in chat to sell all.",
+  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you can sell &e{1}&a bulks. Enter &b{2}&a in chat to sell all.",
   "language": {
     "name": "&eNazwa: &6{0}",
     "code": "&eKod: &6{0}",

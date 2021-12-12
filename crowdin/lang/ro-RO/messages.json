@@ -111,7 +111,7 @@
   "bypassing-lock": "&cBypassing a QuickShop lock!",
   "that-is-locked": "&cThis shop is locked.",
   "how-many-buy": "&aEnter in chat, how many you wish to &bBUY&a. You can buy &e{0}&a. Enter &b{1}&a to buy them all.",
-  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You have &e{0}&a available. Enter &b{1}&a in chat, to sell all.",
+  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You can sell &e{0}&a. Enter &b{1}&a in chat, to sell all.",
   "not-allowed-to-create": "&cNu poti crea un magazin aici.",
   "blacklisted-item": "&cNu poti vinde acest obiect pentru ca este pe lista neagra",
   "how-much-to-trade-for": "&aIntra in chat, cat de mult doresti sa tranzacționezi &{1}x {0}&a.",
@@ -308,7 +308,7 @@
   "shop-freezed-at-location": "&eYour shop {0} at {1} got frozen!",
   "denied-put-in-item": "&cYou cannot put this item into your shop!",
   "how-many-buy-stack": "&eEnter in chat, how many bulks you wish to &bBUY&a. There are &e{0}&a items in each bulk and you can buy &e{1}&a bulks. Enter &b{2}&a in chat to buy all.",
-  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you have &e{1}&a bulks available. Enter &b{2}&a in chat to sell all.",
+  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you can sell &e{1}&a bulks. Enter &b{2}&a in chat to sell all.",
   "language": {
     "name": "&eName: &6{0}",
     "code": "&eCode: &6{0}",

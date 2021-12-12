@@ -111,7 +111,7 @@
   "bypassing-lock": "Обход блокировки магазина!",
   "that-is-locked": "&cЭтот магазин заперт.",
   "how-many-buy": "&aВведите в чат, сколько вы хотите &bКУПИТЬ&a. Вы можете купить &e{0}&a. Введите &b{1}&a чтобы купить их все.",
-  "how-many-sell": "&aВведите в чат, сколько вы хотите &dПРОДАТЬ&a. У вас есть &e{0}&a. Введите &b{1}&a в чате, чтобы продать все.",
+  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You can sell &e{0}&a. Enter &b{1}&a in chat, to sell all.",
   "not-allowed-to-create": "&cВы не можете создать магазин здесь.",
   "blacklisted-item": "&cВы не можете продать, оно находится в черном списке",
   "how-much-to-trade-for": "&aВводите в чат, сколько вы хотите обменивать &e{1}x {0}&a.",
@@ -308,7 +308,7 @@
   "shop-freezed-at-location": "&eВаш магазин {0} на {1} был заморожен!",
   "denied-put-in-item": "&cВы не можете поместить этот товар в ваш магазин!",
   "how-many-buy-stack": "&eEnter in chat, how many bulks you wish to &bBUY&a. There are &e{0}&a items in each bulk and you can buy &e{1}&a bulks. Enter &b{2}&a in chat to buy all.",
-  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you have &e{1}&a bulks available. Enter &b{2}&a in chat to sell all.",
+  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you can sell &e{1}&a bulks. Enter &b{2}&a in chat to sell all.",
   "language": {
     "name": "&eИмя: &6{0}",
     "code": "&eКод: &6{0}",

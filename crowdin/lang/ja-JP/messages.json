@@ -111,7 +111,7 @@
   "bypassing-lock": "&cQuickShopロックをバイパスします！",
   "that-is-locked": "&cこのショップはロックされています。",
   "how-many-buy": "&aEnter in chat, how many you wish to &bBUY&a. You can buy &e{0}&a. Enter &b{1}&a to buy them all.",
-  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You have &e{0}&a available. Enter &b{1}&a in chat, to sell all.",
+  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You can sell &e{0}&a. Enter &b{1}&a in chat, to sell all.",
   "not-allowed-to-create": "&cあなたはここでショップを作る事ができません",
   "blacklisted-item": "&cブラックリストに載っているので、この商品を販売することはできません",
   "how-much-to-trade-for": "&aチャットで&e{1}個の {0}&aをいくらで取引したいか入力してください。",
@@ -308,7 +308,7 @@
   "shop-freezed-at-location": "&e {0} のショップ {1} が凍結されました！",
   "denied-put-in-item": "&cショップにこのアイテムを入れることはできません！",
   "how-many-buy-stack": "&eEnter in chat, how many bulks you wish to &bBUY&a. There are &e{0}&a items in each bulk and you can buy &e{1}&a bulks. Enter &b{2}&a in chat to buy all.",
-  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you have &e{1}&a bulks available. Enter &b{2}&a in chat to sell all.",
+  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you can sell &e{1}&a bulks. Enter &b{2}&a in chat to sell all.",
   "language": {
     "name": "&e名前: &6{0}",
     "code": "&eコード: &6{0}",

@@ -111,7 +111,7 @@
   "bypassing-lock": "&cObcházíte zámek QuickShopu!",
   "that-is-locked": "&cTento obchod je uzamčen.",
   "how-many-buy": "&aEnter in chat, how many you wish to &bBUY&a. You can buy &e{0}&a. Enter &b{1}&a to buy them all.",
-  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You have &e{0}&a available. Enter &b{1}&a in chat, to sell all.",
+  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You can sell &e{0}&a. Enter &b{1}&a in chat, to sell all.",
   "not-allowed-to-create": "&b▪&8▏ &bSystem &8› &cZde nemůžete vytvořit obchod.",
   "blacklisted-item": "&b▪&8▏ &bSystem &8› &cNemůžete prodat tento item, protože je na černé listině",
   "how-much-to-trade-for": "&7Zadejte do chatu: Cenu za kolik chcete prodávat &b{1}x {0}&7.",
@@ -308,7 +308,7 @@
   "shop-freezed-at-location": "&bVáš obchod {0} v {1} byl zmražen!",
   "denied-put-in-item": "&cTuto položku nelze vložit do vašeho obchodu!",
   "how-many-buy-stack": "&eEnter in chat, how many bulks you wish to &bBUY&a. There are &e{0}&a items in each bulk and you can buy &e{1}&a bulks. Enter &b{2}&a in chat to buy all.",
-  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you have &e{1}&a bulks available. Enter &b{2}&a in chat to sell all.",
+  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you can sell &e{1}&a bulks. Enter &b{2}&a in chat to sell all.",
   "language": {
     "name": "&fJméno: &b{0}",
     "code": "&fKod: &b{0}",
