@@ -57,7 +57,6 @@ public class ShopPurger implements Runnable {
     public void run() {
         Util.ensureThread(true);
         executing = true;
-
         String backupFileName = "shop-purge-backup-" + UUID.randomUUID() + ".txt";
         Util.makeExportBackup(backupFileName);
         plugin.getLogger().info("[Shop Purger] Scanning and removing shops, we have backup shop data as" + backupFileName + ", if you ran into any trouble, please rename it to recovery.txt then use /qs recovery in console to rollback");
