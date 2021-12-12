@@ -203,7 +203,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
         Item item = (Item) entity;
         // Set item protect in the armorstand's hand
 
-        if (PLUGIN.getConfiguration().getBoolean("shop.display-item-use-name")) {
+        if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
             item.setCustomName(Util.getItemStackName(this.originalItemStack));
             item.setCustomNameVisible(true);
         } else {

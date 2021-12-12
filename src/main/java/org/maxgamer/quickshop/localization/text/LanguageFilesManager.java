@@ -22,14 +22,18 @@ package org.maxgamer.quickshop.localization.text;
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.util.Util;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class TextMapper {
+//TODO: Refactor to a localeCode->localeContentBean class mapping
+public class LanguageFilesManager {
+    //distributionPath->[localeCode->OTA files]
     private final Map<String, Map<String, JsonConfiguration>> locale2ContentMapping = new ConcurrentHashMap<>();
+    //distributionPath->bundled files
     private final Map<String, JsonConfiguration> bundledFile2ContentMapping = new ConcurrentHashMap<>();
 
     /**
@@ -49,6 +53,9 @@ public class TextMapper {
      * @param bundled          The values from bundled file
      */
     public void deploy(@NotNull String distributionPath, @NotNull String locale, @NotNull JsonConfiguration distribution, @NotNull JsonConfiguration bundled) {
+        //Parsed color
+        Util.parseColours(bundled);
+        Util.parseColours(distribution);
         this.bundledFile2ContentMapping.put(distributionPath, bundled);
         this.locale2ContentMapping.computeIfAbsent(distributionPath, e -> new HashMap<>());
         this.locale2ContentMapping.get(distributionPath).put(locale, distribution);
@@ -61,6 +68,8 @@ public class TextMapper {
      * @param bundled          The values from bundled file
      */
     public void deployBundled(@NotNull String distributionPath, @NotNull JsonConfiguration bundled) {
+        //Parsed color
+        Util.parseColours(bundled);
         this.bundledFile2ContentMapping.put(distributionPath, bundled);
     }
 

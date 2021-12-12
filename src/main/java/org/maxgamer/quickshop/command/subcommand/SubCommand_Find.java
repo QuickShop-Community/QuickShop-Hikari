@@ -59,11 +59,11 @@ public class SubCommand_Find implements CommandHandler<Player> {
 
 
         final String lookFor = sb.toString().toLowerCase();
-        final double maxDistance = plugin.getConfiguration().getInt("shop.finding.distance");
-        final boolean usingOldLogic = plugin.getConfiguration().getBoolean("shop.finding.oldLogic");
-        final int shopLimit = usingOldLogic ? 1 : plugin.getConfiguration().getInt("shop.finding.limit");
-        final boolean allShops = plugin.getConfiguration().getBoolean("shop.finding.all");
-        final boolean excludeOutOfStock = plugin.getConfiguration().getBoolean("shop.finding.exclude-out-of-stock");
+        final double maxDistance = plugin.getConfig().getInt("shop.finding.distance");
+        final boolean usingOldLogic = plugin.getConfig().getBoolean("shop.finding.oldLogic");
+        final int shopLimit = usingOldLogic ? 1 : plugin.getConfig().getInt("shop.finding.limit");
+        final boolean allShops = plugin.getConfig().getBoolean("shop.finding.all");
+        final boolean excludeOutOfStock = plugin.getConfig().getBoolean("shop.finding.exclude-out-of-stock");
 
         //Rewrite by Ghost_chu - Use vector to replace old chunks finding.
 
@@ -134,8 +134,8 @@ public class SubCommand_Find implements CommandHandler<Player> {
                         String.valueOf(location.getBlockZ()),
                         String.valueOf(shopDoubleEntry.getValue().intValue())
                 ).forLocale()).append("\n");
-                MsgUtil.sendDirectMessage(sender, stringBuilder.toString());
             }
+            MsgUtil.sendDirectMessage(sender, stringBuilder.toString());
         }
     }
 }

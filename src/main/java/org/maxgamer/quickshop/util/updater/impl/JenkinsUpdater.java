@@ -91,6 +91,10 @@ public class JenkinsUpdater implements QuickUpdater {
         if (QuickShop.getInstance().getGameVersion().isEndOfLife()) { // EOL server won't receive future updates
             return true;
         }
+        //Not checking updates for incorrect type
+        if (versionType != getCurrentRunning()) {
+            return true;
+        }
         try (InputStream inputStream = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/BUILDINFO"))
                 .header("User-Agent", "Java-QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
                 .execute()

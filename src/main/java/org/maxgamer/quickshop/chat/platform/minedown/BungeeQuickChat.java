@@ -22,7 +22,7 @@ package org.maxgamer.quickshop.chat.platform.minedown;
 import lombok.AllArgsConstructor;
 import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.chat.ComponentSerializer;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -81,7 +81,7 @@ public class BungeeQuickChat implements QuickChat {
         TextComponent errorComponent = new TextComponent(plugin.text().of(player, "menu.item-holochat-error").forLocale());
         try {
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
-            ComponentBuilder builder = new ComponentBuilder();
+            ComponentBuilder builder = new ComponentBuilder("");
             builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
             TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(text);
             if (spilledString == null) {
@@ -110,7 +110,7 @@ public class BungeeQuickChat implements QuickChat {
             if (json == null) {
                 return new QuickComponentImpl(errorComponent);
             }
-            ComponentBuilder builder = new ComponentBuilder();
+            ComponentBuilder builder = new ComponentBuilder("");
             builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
             TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(message);
             if (spilledString == null) {

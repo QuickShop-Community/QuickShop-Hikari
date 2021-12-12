@@ -406,7 +406,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
             //Create a DataWatcher
             WrappedDataWatcher wpw = new WrappedDataWatcher();
             //https://wiki.vg/index.php?title=Entity_metadata#Entity
-            if (PLUGIN.getConfiguration().getBoolean("shop.display-item-use-name")) {
+            if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
                 String itemName;
                 if (QuickShop.isTesting()) {
                     //Env Testing

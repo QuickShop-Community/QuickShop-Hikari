@@ -19,11 +19,11 @@
 
 package org.maxgamer.quickshop.watcher;
 
-import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 
 import java.io.*;
@@ -52,7 +52,7 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
                 //noinspection ResultOfMethodCallIgnored
                 log.createNewFile();
             } else {
-                if ((log.length() / 1024f / 1024f) > plugin.getConfiguration().getDouble("logging.file-size")) {
+                if ((log.length() / 1024f / 1024f) > plugin.getConfig().getDouble("logging.file-size")) {
                     Path logPath = plugin.getDataFolder().toPath().resolve("logs");
                     Files.createDirectories(logPath);
                     //Find a available name
@@ -106,7 +106,7 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
         }
     }
 
-    public void log(@NonNull String log) {
+    public void log(@NotNull String log) {
         logs.add("[" + DATETIME_FORMATTER.format(Instant.now()) + "] " + log);
     }
 

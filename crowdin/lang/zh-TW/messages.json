@@ -5,7 +5,8 @@
   "translation-version": "支持版本 ： Reremake （重製版）",
   "translation-contributors": "貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言 ： &b&l繁體中文 Chinese Traditional （zh_TW）",
-  "language-version": "62",
+  "language-version": "63",
+  "not-looking-at-valid-shop-block": "&cCould not find a block for creating shop. You need to look at one.",
   "not-looking-at-shop": "&c無法找到儲物箱商店，你需要注視著儲物箱。",
   "no-anythings-in-your-hand": "&c手上沒有任何東西。",
   "no-permission": "&4你沒有使用該指令的權限。",
@@ -68,7 +69,7 @@
   "break-shop-use-supertool": "&e你可以使用超級工具破壞商店。",
   "failed-to-put-sign": "&c你的商店周圍沒有足夠的空間，放置商店的資訊告示牌。",
   "failed-to-paste": "&c無法將資料上傳至 Pastebin ，請檢查你的連線再重試。 （詳見控制台）",
-  "warn-to-paste": "&e正在收集資料並上傳到 Pastebin ，這可能需要一點時間。&c&l警告 ： &c資料上傳後，此連結會公開一星期 ！ 可能會洩漏伺服器中的設定或其它資料。請確保傳送此連結的人是 &l伺服器員工 或 開發者&c。",
+  "warn-to-paste": "&e正在收集資料並上傳到 Pastebin ，這可能需要一點時間。&c&l警告 ： &c資料上傳後，此連結會公開一星期 ！ 可能會洩漏伺服器中的設定或其它資料。請確保傳送此連結的人是 &l伺服器員工或開發者&c。",
   "price-too-high": "&c商店價格太高了 ！ 請設定在 {0} 元以內。",
   "you-cant-create-shop-in-there": "&c你沒有在這個地方建立商店的權限。",
   "unknown-player": "&c找不到相對應的玩家，請檢查你輸入的玩家名稱是否正確。",
@@ -109,8 +110,8 @@
   },
   "bypassing-lock": "&c你繞過了 Quickshop 鎖 ！",
   "that-is-locked": "&c此商店已上鎖。",
-  "how-many-buy": "&a在聊天室中輸入你想要 &b購買 &a的數量，你可以購買 &e{0} &a個。輸入 &bALL &a購買全部。",
-  "how-many-sell": "&a在聊天室中輸入你想要 &d出售 &a的數量，你有 &e{0} &a個可以出售。輸入 &bALL &a賣出全部。",
+  "how-many-buy": "&aEnter in chat, how many you wish to &bBUY&a. You can buy &e{0}&a. Enter &b{1}&a to buy them all.",
+  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You can sell &e{0}&a. Enter &b{1}&a in chat, to sell all.",
   "not-allowed-to-create": "&c你無法在此建立商店。",
   "blacklisted-item": "&c由於這是黑名單的物品，所以你不能賣。",
   "how-much-to-trade-for": "&a請在聊天室中輸入你想買賣 &e{1} 個 {0} &a的價格。",
@@ -179,7 +180,7 @@
       "lock": "&e切換商店上鎖狀態",
       "taxaccount": "&e設定商店使用的稅金帳戶",
       "toggledisplay": "&e切換商店顯示物品狀態",
-      "purge": "&eStart the shop purge task in background"
+      "purge": "&e在背景啟動商店清理任務"
     },
     "disabled": "&c這個指令被停用 ： &e{0}",
     "feature-not-enabled": "該功能沒有在設定檔案中啟用。"
@@ -229,8 +230,8 @@
     "lock-hover": "&e開啟/關閉商店鎖保護。",
     "freeze": "&e凍結模式 ： &b{0} &e[&d&l切換&e]",
     "freeze-hover": "&e切換商店凍結狀態。",
-    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
-    "toggledisplay-hover": "&eToggle the shop's displayitem status"
+    "toggledisplay": "&e懸浮物顯示 ： &b{0} &e[&d&l切換&e]",
+    "toggledisplay-hover": "&e切換商店是否顯示懸浮物"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
@@ -306,8 +307,8 @@
   "shop-cannot-trade-when-freezing": "&c你不能與這間商店交易，因為它已被凍結。",
   "shop-freezed-at-location": "&e你在 {1} 的商店 {0} 被凍結了 ！",
   "denied-put-in-item": "&c你不能將此物品放入你的商店 ！",
-  "how-many-buy-stack": "&a在聊天室中輸入你想 &b購買&a 的數量，每份中有 &e{0}&a 個物品，你目前可以買 &e{1}&a 份。輸入 &bAll&a 來購買所有物品。",
-  "how-many-sell-stack": "&a在聊天室中輸入你想 &b售出&a 的數量，每份中有 &e{0}&a 個物品，你目前可以售出 &e{1}&a 份。輸入 &bAll&a 來售出所有物品。",
+  "how-many-buy-stack": "&eEnter in chat, how many bulks you wish to &bBUY&a. There are &e{0}&a items in each bulk and you can buy &e{1}&a bulks. Enter &b{2}&a in chat to buy all.",
+  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you can sell &e{1}&a bulks. Enter &b{2}&a in chat to sell all.",
   "language": {
     "name": "&e名稱 ： &6{0}",
     "code": "&e代碼 ： &6{0}",
@@ -324,7 +325,7 @@
   "backup-success": "&a備份成功。",
   "console-only": "&c該指令只能在控制台執行。",
   "console-only-danger": "&c由於這個是一個有風險的指令，請你在控制台中執行。",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "clean-warning": "&e該指令將清理&c所有&e在不允許建立商店的世界的──出售/購買不允許的物品，以及&c&l所有在伺服器沒有載入世界的商店，請確保你的商店資料備份完整後繼續使用 &b/qs cleanghost confirm &e。",
   "shop-creation-failed": "&c商店建立失敗，請與伺服器管理員聯繫。",
   "shop-owner-self-trade": "&e你正在跟自己開的商店進行交易 ， 所以你的存款不會改變。",
   "chest-title": "QuickShop 商店",
@@ -333,19 +334,19 @@
   "unlimited-shop-owner-keeped": "&e注意 ： 該商店店主還是屬於無限商店店主類型，你需要自己重新設定新的商店店主。",
   "server-crash-warning": "&c如果你更換或刪除 QuickShop 插件 Jar 檔案後，執行指令 /qs reload 可能導致伺服器崩潰。",
   "reloading-status": {
-    "success": "&aReload completed without any errors.",
-    "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
-    "failed": "&cReload failed, check the server console",
-    "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
+    "success": "&a重新載入且沒有發生任何錯誤。",
+    "require-restart": "&a重新載入完成。&e（一些更改需要重新啟動伺服器後作用）",
+    "failed": "&c無法重新載入，請檢查伺服器控制台",
+    "scheduled": "&a重新載入完成。&e（一些更改需要一段時間後作用）"
   },
-  "client-language-changed": "&aQuickShop detected your client language setting has been changed, we're now using {0} locale for you.",
-  "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now.",
+  "client-language-changed": "&aQuickShop 偵測到你的客戶端語言已切換，我們現在為你切換為 {0}。",
+  "client-language-unsupported": "&eQuickShop 不支援你的客戶端語言，我們現在還原為 {0}。",
   "taxaccount-set": "&a已經設定 &e{0} &a為該商店的稅金帳戶",
   "taxaccount-unset": "&a該商店的稅金帳戶現在按照伺服器全域設定。",
   "taxaccount-invalid": "&c無效的目標帳戶，請輸入有效的玩家名稱或 uuid（須加破折號）。",
-  "display-turn-on": "&aSuccessfully turn on the shop display.",
-  "display-turn-off": "&aSuccessfully turn off the shop display.",
-  "shop-purged-start": "&aShop purge started, check the console for details.",
-  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
-  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
+  "display-turn-on": "&a成功開啟商店懸浮物顯示",
+  "display-turn-off": "&a成功關閉商店懸浮物顯示",
+  "shop-purged-start": "&a已開始商店清理，請查看控制台以獲得詳細資訊。",
+  "purchase-out-of-stock": "&c該商店已缺貨，請聯繫商店商店店主或商店員工補充庫存。",
+  "purchase-out-of-space": "&c該商店空間不足，請聯繫商店商店店主或商店員工清空商店。"
 }

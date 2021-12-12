@@ -20,8 +20,8 @@
 package org.maxgamer.quickshop.database;
 
 
-import lombok.NonNull;
 import lombok.ToString;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -46,7 +46,7 @@ public class DatabaseTask {
     }
 
 
-    public void run(@NonNull Connection connection) {
+    public void run(@NotNull Connection connection) {
         try (PreparedStatement ps = connection.prepareStatement(statement)) { //TODO Use addBatch to improve performance
             task.edit(ps);
             ps.execute();

@@ -19,11 +19,11 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
-import de.leonhard.storage.sections.FlatFileSection;
 import lombok.SneakyThrows;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -73,7 +73,7 @@ public class SubCommand_Convert implements CommandHandler<ConsoleCommandSender> 
                 sender.sendMessage(ChatColor.RED + "Your database is already in MySQL!");
                 return;
             }
-            FlatFileSection dbCfg = plugin.getConfiguration().getSection("database");
+            ConfigurationSection dbCfg = plugin.getConfig().getConfigurationSection("database");
             String user = dbCfg.getString("user");
             String pass = dbCfg.getString("password");
             String host = dbCfg.getString("host");

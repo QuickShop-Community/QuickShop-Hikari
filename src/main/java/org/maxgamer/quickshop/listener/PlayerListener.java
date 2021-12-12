@@ -61,7 +61,7 @@ public class PlayerListener extends AbstractQSListener {
 
     public PlayerListener(QuickShop plugin) {
         super(plugin);
-        swapBehavior = plugin.getConfiguration().getBoolean("shop.interact.swap-click-behavior");
+        swapBehavior = plugin.getConfig().getBoolean("shop.interact.swap-click-behavior");
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -121,7 +121,7 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     private void playClickSound(@NotNull Player player) {
-        if (plugin.getConfiguration().getBoolean("effect.sound.onclick")) {
+        if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
             player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
         }
     }
@@ -199,31 +199,31 @@ public class PlayerListener extends AbstractQSListener {
 
             final AbstractEconomy eco = plugin.getEconomy();
             final double price = shop.getPrice();
-            final double money = plugin.getEconomy().getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
             final Inventory playerInventory = p.getInventory();
+            final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
             if (shop.isSelling()) {
                 if (shop.getRemainingStock() == 0) {
                     plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
                     return;
                 }
-
-                int itemAmount = getPlayerCanBuy(shop, money, price, playerInventory);
+                final double traderBalance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
+                int itemAmount = getPlayerCanBuy(shop, traderBalance, price, playerInventory);
                 if (shop.isStackingShop()) {
-                    plugin.text().of(p, "how-many-buy-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(itemAmount)).send();
+                    plugin.text().of(p, "how-many-buy-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(itemAmount), tradeAllWord).send();
                 } else {
-                    plugin.text().of(p, "how-many-buy", Integer.toString(itemAmount)).send();
+                    plugin.text().of(p, "how-many-buy", Integer.toString(itemAmount), tradeAllWord).send();
                 }
             } else {
                 if (shop.getRemainingSpace() == 0) {
                     plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
                     return;
                 }
-
-                int items = getPlayerCanSell(shop, money, price, playerInventory);
+                final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
+                int items = getPlayerCanSell(shop, ownerBalance, price, playerInventory);
                 if (shop.isStackingShop()) {
-                    plugin.text().of(p, "how-many-sell-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(items)).send();
+                    plugin.text().of(p, "how-many-sell-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(items), tradeAllWord).send();
                 } else {
-                    plugin.text().of(p, "how-many-sell", Integer.toString(items)).send();
+                    plugin.text().of(p, "how-many-sell", Integer.toString(items), tradeAllWord).send();
                 }
             }
             // Add the new action
@@ -240,7 +240,7 @@ public class PlayerListener extends AbstractQSListener {
                 && p.getGameMode() != GameMode.CREATIVE) {
             if (e.useInteractedBlock() == Event.Result.DENY
                     || !InteractUtil.check(InteractUtil.Action.CREATE, p.isSneaking())
-                    || plugin.getConfiguration().getBoolean("shop.disable-quick-create")
+                    || plugin.getConfig().getBoolean("shop.disable-quick-create")
                     || !plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
                 // As of the new checking system, most plugins will tell the
                 // player why they can't create a shop there.
@@ -291,11 +291,11 @@ public class PlayerListener extends AbstractQSListener {
         }
     }
 
-    private int getPlayerCanBuy(Shop shop, double money, double price, Inventory playerInventory) {
+    private int getPlayerCanBuy(Shop shop, double traderBalance, double price, Inventory playerInventory) {
         if (shop.isFreeShop()) { // Free shop
             return Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop.getItem()));
         }
-        int itemAmount = Math.min(shop.getRemainingSpace(), (int) Math.floor(money / price));
+        int itemAmount = Math.min(shop.getRemainingStock(), (int) Math.floor(traderBalance / price));
         if (!shop.isUnlimited()) {
             itemAmount = Math.min(itemAmount, shop.getRemainingStock());
         }
@@ -305,19 +305,19 @@ public class PlayerListener extends AbstractQSListener {
         return itemAmount;
     }
 
-    private int getPlayerCanSell(Shop shop, double money, double price, Inventory playerInventory) {
+    private int getPlayerCanSell(Shop shop, double ownerBalance, double price, Inventory playerInventory) {
         if (shop.isFreeShop()) {
             return Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop.getItem()));
         }
 
         int items = Util.countItems(playerInventory, shop.getItem());
-        final int ownerCanAfford = (int) (money / price);
+        final int ownerCanAfford = (int) (ownerBalance / price);
         if (!shop.isUnlimited()) {
             // Amount check player amount and shop empty slot
             items = Math.min(items, shop.getRemainingSpace());
             // Amount check player selling item total cost and the shop owner's balance
             items = Math.min(items, ownerCanAfford);
-        } else if (plugin.getConfiguration().getBoolean("shop.pay-unlimited-shop-owners")) {
+        } else if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
             // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
             // true,
             // the unlimited shop owner should have enough money.
@@ -359,7 +359,7 @@ public class PlayerListener extends AbstractQSListener {
     public void onJoin(PlayerJoinEvent e) {
         Util.debugLog("Player " + e.getPlayer().getName() + " using locale " + e.getPlayer().getLocale() + ": " + plugin.text().of(e.getPlayer(), "file-test").forLocale());
         // Notify the player any messages they were sent
-        if (plugin.getConfiguration().getBoolean("shop.auto-fetch-shop-messages")) {
+        if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
             MsgUtil.flush(e.getPlayer());
         }
     }

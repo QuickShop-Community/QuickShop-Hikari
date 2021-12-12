@@ -23,6 +23,7 @@ import com.google.common.cache.CacheBuilder;
 import lombok.val;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,10 +44,29 @@ public class HttpUtil {
         return client.newCall(new Request.Builder().get().url(url).build()).execute();
     }
 
+    @NotNull
+    public static String createGet(@NotNull String url, String def) {
+        String result = createGet(url, false);
+        if (result == null) {
+            result = def;
+        }
+        requestCachePool.put(url, result);
+        return result;
+    }
+
+    @Nullable
     public static String createGet(@NotNull String url) {
-        String cache = requestCachePool.getIfPresent(url);
-        if (cache != null) {
-            return cache;
+        return createGet(url, false);
+    }
+
+    @Nullable
+    public static String createGet(@NotNull String url, boolean flushCache) {
+        String cache;
+        if (!flushCache) {
+            cache = requestCachePool.getIfPresent(url);
+            if (cache != null) {
+                return cache;
+            }
         }
         try (Response response = client.newCall(new Request.Builder().get().url(url).build()).execute()) {
             val body = response.body();

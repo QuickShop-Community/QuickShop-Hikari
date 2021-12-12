@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -98,7 +98,7 @@ public class ShopLoader {
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
             Timer timer = new Timer();
             timer.start();
-            boolean deleteCorruptShops = plugin.getConfiguration().getOrDefault("debug.delete-corrupt-shops", false);
+            boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);
             this.plugin.getLogger().info("Loading shops from the database...");
             while (rs.next()) {
                 ++total;

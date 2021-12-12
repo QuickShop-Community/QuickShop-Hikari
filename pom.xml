@@ -25,7 +25,7 @@
     <artifactId>QuickShop</artifactId>
 
     <properties>
-        <pluginver>5.0.0.16</pluginver>
+        <pluginver>5.1.0.0</pluginver>
         <package>org.maxgamer.quickshop</package>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -130,6 +130,14 @@
                             <shadedPattern>org.maxgamer.quickshop.shade.org.checkerframework.</shadedPattern>
                         </relocation>
                         <relocation>
+                            <pattern>org.apache.commons.lang3.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.apache.commons.lang3.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.objectweb.asm.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.objectweb.asm.</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>org.slf4j.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.slf4j.slf4j.</shadedPattern>
                         </relocation>
@@ -192,6 +200,34 @@
                             <shadedPattern>org.maxgamer.quickshop.shade.org.enginehub.squirrelid.</shadedPattern>
                         </relocation>
                         <relocation>
+                            <pattern>kotlin.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.kotlin.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>javax.annotation.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.javax.annotation.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.flowpowered.math.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.flowpowered.math.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>okio.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.okio.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>okhttp3.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.okhttp3.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.minecraft.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.minecraft.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.minidev.asm.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.net.minidev.asm.</shadedPattern>
+                        </relocation>
+                        <relocation>
                             <pattern>com.squareup.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.org.com.squareup.</shadedPattern>
                         </relocation>
@@ -206,6 +242,23 @@
                             <mainClass>org.maxgamer.quickshop.javaw.bootstrap.Bootstrap</mainClass>
                         </transformer>
                     </transformers>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.SF</exclude>
+                                <exclude>META-INF/*.DSA</exclude>
+                                <exclude>META-INF/*.RSA</exclude>
+                                <exclude>META-INF/*.kotlin_module</exclude>
+                                <exclude>META-INF/*.txt</exclude>
+                                <exclude>META-INF/proguard/*</exclude>
+                                <exclude>META-INF/services/*</exclude>
+                                <exclude>META-INF/versions/9/*</exclude>
+                                <exclude>*License*</exclude>
+                                <exclude>*LICENSE*</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
                 </configuration>
                 <executions>
                     <execution>
@@ -284,6 +337,11 @@
                 <targetPath>lang</targetPath>
                 <filtering>false</filtering>
                 <directory>src/main/resources/lang</directory>
+            </resource>
+            <resource>
+                <targetPath>crowdin/lang</targetPath>
+                <filtering>false</filtering>
+                <directory>crowdin/lang</directory>
             </resource>
         </resources>
     </build>
@@ -530,7 +588,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.8.1</version>
+            <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -555,7 +613,7 @@
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.34.0</version>
+            <version>3.36.0.3</version>
             <scope>test</scope>
         </dependency>
         <!-- Database lib for testing-->
@@ -568,8 +626,13 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.17.1-R0.1-SNAPSHOT</version>
+            <version>1.18.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
         </dependency>
         <dependency>
             <groupId>me.vagdedes.spartan</groupId>
@@ -667,36 +730,12 @@
         <dependency>
             <groupId>com.massivecraft</groupId>
             <artifactId>Factions</artifactId>
-            <version>1.6.9.5-U0.5.21</version>
+            <version>1.6.9.5-U0.6.0</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <artifactId>gson</artifactId>
-                    <groupId>com.google.code.gson</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>fluent-hc</artifactId>
-                    <groupId>org.apache.httpcomponents</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>configurate-core</artifactId>
-                    <groupId>org.spongepowered</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>paste-gg-api</artifactId>
-                    <groupId>org.kitteh</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>paperlib</artifactId>
-                    <groupId>io.papermc</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>particleeffect</artifactId>
-                    <groupId>com.darkblade12</groupId>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -747,7 +786,7 @@
         <dependency>
             <groupId>com.songoda</groupId>
             <artifactId>SongodaCore</artifactId>
-            <version>2.5.14</version>
+            <version>2.6.3</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
@@ -773,7 +812,7 @@
         <dependency>
             <groupId>io.papermc</groupId>
             <artifactId>paperlib</artifactId>
-            <version>1.0.6</version>
+            <version>1.0.7</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -813,20 +852,20 @@
         <dependency>
             <groupId>com.github.alex9849</groupId>
             <artifactId>advanced-region-market</artifactId>
-            <version>3.3.5</version>
+            <version>3.3.6</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.iridium</groupId>
             <artifactId>IridiumSkyblock</artifactId>
-            <version>3.1.2</version>
+            <version>3.2.2</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>4.9.2</version>
+            <version>4.9.3</version>
             <scope>compile</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->

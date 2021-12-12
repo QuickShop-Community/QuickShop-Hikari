@@ -55,11 +55,11 @@ public class ServiceInjector {
         }
     }
 
-    public static @NotNull GameLanguage getGameLanguage(@NotNull GameLanguage def) {
+    public static @Nullable GameLanguage getGameLanguage() {
         @Nullable RegisteredServiceProvider<? extends GameLanguage> registeredServiceProvider =
                 Bukkit.getServicesManager().getRegistration(GameLanguage.class);
         if (registeredServiceProvider == null) {
-            return def;
+            return null;
         } else {
             return registeredServiceProvider.getProvider();
         }

@@ -22,7 +22,7 @@ package org.maxgamer.quickshop.api.command;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

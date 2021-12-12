@@ -23,11 +23,13 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.ChatColor;
@@ -54,6 +56,7 @@ public class WorldGuardIntegration extends AbstractQSIntegratedPlugin {
     private List<WorldGuardFlags> tradeFlags;
     private boolean anyOwner;
     private boolean whiteList;
+    private boolean respectGlobalRegion;
     private boolean load = false;
 
     public WorldGuardIntegration(QuickShop plugin) {
@@ -87,14 +90,15 @@ public class WorldGuardIntegration extends AbstractQSIntegratedPlugin {
     }
 
     private void init() {
-        this.whiteList = plugin.getConfiguration().getBoolean("integration.worldguard.whitelist-mode");
-        this.anyOwner = plugin.getConfiguration().getBoolean("integration.worldguard.any-owner");
+        this.whiteList = plugin.getConfig().getBoolean("integration.worldguard.whitelist-mode");
+        this.anyOwner = plugin.getConfig().getBoolean("integration.worldguard.any-owner");
+        respectGlobalRegion = plugin.getConfig().getBoolean("integration.worldguard.respect-global-region");
         createFlags =
                 WorldGuardFlags.deserialize(
-                        plugin.getConfiguration().getStringList("integration.worldguard.create"));
+                        plugin.getConfig().getStringList("integration.worldguard.create"));
         tradeFlags =
                 WorldGuardFlags.deserialize(
-                        plugin.getConfiguration().getStringList("integration.worldguard.trade"));
+                        plugin.getConfig().getStringList("integration.worldguard.trade"));
     }
 
     @Override
@@ -133,38 +137,48 @@ public class WorldGuardIntegration extends AbstractQSIntegratedPlugin {
         }
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
-        if (query.getApplicableRegions(wgLoc).getRegions().isEmpty()) {
+        ApplicableRegionSet applicableRegionSet=query.getApplicableRegions(wgLoc);
+        //Regions not included global one
+        if (applicableRegionSet.getRegions().isEmpty()&&!respectGlobalRegion) {
             return !whiteList;
+        }else {
+            //So check it manually
+            RegionManager worldManger = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(location.getWorld()));
+            if (worldManger != null&&!worldManger.hasRegion("__global__")) {
+                //If not have, just check whitelist
+                return !whiteList;
+            }
         }
+        //Passed, but flag calculation will include the global region
         for (WorldGuardFlags flag : createFlags) {
             switch (flag) {
                 case BUILD:
-                    if (query.queryState(wgLoc, localPlayer, Flags.BUILD) == StateFlag.State.DENY) {
+                    if (!applicableRegionSet.testState(localPlayer,Flags.BUILD)) {
                         return false;
                     }
                     break;
                 case FLAG:
-                    if (query.queryState(wgLoc, localPlayer, this.createFlag) == StateFlag.State.DENY) {
+                    if (!applicableRegionSet.testState(localPlayer, this.createFlag)) {
                         return false;
                     }
                     break;
                 case CHEST_ACCESS:
-                    if (query.queryState(wgLoc, localPlayer, Flags.CHEST_ACCESS) == StateFlag.State.DENY) {
+                    if (!applicableRegionSet.testState(localPlayer, Flags.CHEST_ACCESS)) {
                         return false;
                     }
                     break;
                 case INTERACT:
-                    if (query.queryState(wgLoc, localPlayer, Flags.INTERACT) == StateFlag.State.DENY) {
+                    if (!applicableRegionSet.testState(localPlayer, Flags.INTERACT)) {
                         return false;
                     }
                     break;
                 case OWN:
                     if (anyOwner) {
-                        if (query.getApplicableRegions(wgLoc).getRegions().stream().noneMatch(region -> region.isOwner(localPlayer))) {
+                        if (applicableRegionSet.getRegions().stream().noneMatch(region -> region.isOwner(localPlayer))) {
                             return false;
                         }
                     } else {
-                        if (!query.getApplicableRegions(wgLoc).isOwnerOfAll(localPlayer)) {
+                        if (!applicableRegionSet.isOwnerOfAll(localPlayer)) {
                             return false;
                         }
                     }
@@ -194,36 +208,46 @@ public class WorldGuardIntegration extends AbstractQSIntegratedPlugin {
         }
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
-        if (query.getApplicableRegions(wgLoc).getRegions().isEmpty()) {
+        ApplicableRegionSet applicableRegionSet=query.getApplicableRegions(wgLoc);
+        //Regions not included global one
+        if (applicableRegionSet.getRegions().isEmpty()&&!respectGlobalRegion) {
             return !whiteList;
+        }else {
+            //So check it manually
+            RegionManager worldManger = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(location.getWorld()));
+            if (worldManger != null&&!worldManger.hasRegion("__global__")) {
+                //If not have, just check whitelist
+                return !whiteList;
+            }
         }
+        //Passed, but flag calculation will include the global region
         for (WorldGuardFlags flag : tradeFlags) {
             switch (flag) {
                 case BUILD:
-                    if (!query.testState(wgLoc, localPlayer, Flags.BUILD)) {
+                    if (!applicableRegionSet.testState(localPlayer, Flags.BUILD)) {
                         return false;
                     }
                     break;
                 case FLAG:
-                    if (!query.testState(wgLoc, localPlayer, this.tradeFlag)) {
+                    if (!applicableRegionSet.testState(localPlayer, this.tradeFlag)) {
                         return false;
                     }
                     break;
                 case CHEST_ACCESS:
-                    if (!query.testState(wgLoc, localPlayer, Flags.CHEST_ACCESS)) {
+                    if (!applicableRegionSet.testState(localPlayer, Flags.CHEST_ACCESS)) {
                         return false;
                     }
                     break;
                 case INTERACT:
-                    if (!query.testState(wgLoc, localPlayer, Flags.INTERACT)) {
+                    if (!applicableRegionSet.testState(localPlayer, Flags.INTERACT)) {
                         return false;
                     }
                     break;
                 case OWN:
                     if (anyOwner) {
-                        return query.getApplicableRegions(wgLoc).getRegions().stream().anyMatch(region -> region.isOwner(localPlayer));
+                        return applicableRegionSet.getRegions().stream().anyMatch(region -> region.isOwner(localPlayer));
                     } else {
-                        return query.getApplicableRegions(wgLoc).isOwnerOfAll(localPlayer);
+                        return applicableRegionSet.isOwnerOfAll(localPlayer);
                     }
                 default:
                     // do nothing

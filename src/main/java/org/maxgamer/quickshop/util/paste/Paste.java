@@ -20,10 +20,10 @@
 package org.maxgamer.quickshop.util.paste;
 
 import com.google.common.cache.CacheStats;
-import de.leonhard.storage.sections.FlatFileSection;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -253,8 +253,8 @@ public class Paste {
                     StandardCharsets.UTF_8);
             // Process the data to protect passwords.
             try {
-                FlatFileSection configurationSection =
-                        plugin.getConfiguration().getSection("database");
+                ConfigurationSection configurationSection =
+                        plugin.getConfig().getConfigurationSection("database");
                 config =
                         config.replaceAll(
                                 Objects.requireNonNull(

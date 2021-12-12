@@ -58,9 +58,9 @@ public class OngoingFeeWatcher extends BukkitRunnable {
             return;
         }
 
-        boolean allowLoan = plugin.getConfiguration().getBoolean("shop.allow-economy-loan");
-        boolean ignoreUnlimited = plugin.getConfiguration().getBoolean("shop.ongoing-fee.ignore-unlimited");
-        double gobalCost = plugin.getConfiguration().getDouble("shop.ongoing-fee.cost-per-shop");
+        boolean allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
+        boolean ignoreUnlimited = plugin.getConfig().getBoolean("shop.ongoing-fee.ignore-unlimited");
+        double gobalCost = plugin.getConfig().getDouble("shop.ongoing-fee.cost-per-shop");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             if ((!shop.isUnlimited() || !ignoreUnlimited) && !shop.isDeleted()) {
                 UUID shopOwner = shop.getOwner();

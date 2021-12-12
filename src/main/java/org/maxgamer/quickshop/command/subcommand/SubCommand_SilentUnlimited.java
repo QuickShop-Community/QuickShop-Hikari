@@ -55,14 +55,14 @@ public class SubCommand_SilentUnlimited implements CommandHandler<Player> {
 
         if (shop.isUnlimited()) {
             plugin.text().of(sender, "command.toggle-unlimited.unlimited").send();
-            if (plugin.getConfiguration().getBoolean("unlimited-shop-owner-change")) {
+            if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
                 plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);
                 plugin.text().of(sender, "unlimited-shop-owner-changed", ((SimpleShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount().getName()).send();
             }
             return;
         }
         plugin.text().of(sender, "command.toggle-unlimited.limited").send();
-        if (plugin.getConfiguration().getBoolean("unlimited-shop-owner-change")) {
+        if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
             plugin.text().of(sender, "unlimited-shop-owner-keeped").send();
         }
     }

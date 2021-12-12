@@ -20,7 +20,7 @@
 package org.maxgamer.quickshop.eventmanager;
 
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.*;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -66,7 +66,7 @@ public class QSEventManager implements QuickEventManager, Listener {
     private synchronized void rescan() {
         this.ignoredListener.clear();
         plugin
-                .getConfiguration()
+                .getConfig()
                 .getStringList("shop.protection-checking-listener-blacklist")
                 .forEach(
                         input -> {

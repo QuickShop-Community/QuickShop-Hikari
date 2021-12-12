@@ -19,7 +19,7 @@
 
 package org.maxgamer.quickshop.util.economyformatter;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,10 +54,10 @@ public class EconomyFormatter implements Reloadable {
     @Override
     public ReloadResult reloadModule() {
         CURRENCY_SYMBOL_MAPPING.clear();
-        this.disableVaultFormat = plugin.getConfiguration().getOrDefault("shop.disable-vault-format", false);
-        this.useDecimalFormat = plugin.getConfiguration().getOrDefault("use-decimal-format", false);
-        this.currencySymbolOnRight = plugin.getConfiguration().getOrDefault("shop.currency-symbol-on-right", false);
-        List<String> symbols = plugin.getConfiguration().getStringList("shop.alternate-currency-symbol-list");
+        this.disableVaultFormat = plugin.getConfig().getBoolean("shop.disable-vault-format", false);
+        this.useDecimalFormat = plugin.getConfig().getBoolean("use-decimal-format", false);
+        this.currencySymbolOnRight = plugin.getConfig().getBoolean("shop.currency-symbol-on-right", false);
+        List<String> symbols = plugin.getConfig().getStringList("shop.alternate-currency-symbol-list");
         symbols.forEach(entry -> {
             String[] splits = entry.split(";", 2);
             if (splits.length < 2) {
@@ -119,7 +119,7 @@ public class EconomyFormatter implements Reloadable {
         if (StringUtils.isEmpty(currency)) {
             Util.debugLog("Format: Currency is null");
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
-            return currencySymbolOnRight ? formatted + plugin.getConfiguration().getOrDefault("shop.alternate-currency-symbol", "$") : plugin.getConfiguration().getOrDefault("shop.alternate-currency-symbol", "$") + formatted;
+            return currencySymbolOnRight ? formatted + plugin.getConfig().getString("shop.alternate-currency-symbol", "$") : plugin.getConfig().getString("shop.alternate-currency-symbol", "$") + formatted;
         } else {
             Util.debugLog("Format: Currency is: [" + currency + "]");
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);

@@ -1,7 +1,7 @@
 # QuickShop-Reremake Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 148
+config-version: 149
 
 #This language will used by Item Name, Enchantment Name,
 #and Potion Effect Name or the text on the shop info sign (nbtapi not installed) and other them related position.
@@ -361,6 +361,7 @@ shop:
   #Protection check
   #This will send a FAKE BlockBreakEvent to check if you can break a block.
   #This may conflict with some protection plugins!
+  #Integration checking will be checked after this, so disable it when it's conflicting with integration
   #If you don't want this, then please disable it and use the integration below instead.
   protection-checking: true
 
@@ -517,7 +518,6 @@ matcher:
     #Should the Plugin check the shulkerBox contents?
     shulkerBox: true
 #Integration is under BETA stage, please report any bugs to our Issue Tracker.
-#You must disable protection-checks before enabling integration.
 integration:
   #Towny Integration
   towny:
@@ -557,6 +557,8 @@ integration:
     whitelist-mode: false
     #Allow players to create a shop if the player is the owner of in this location or ANY region.
     any-owner: true
+    #Should we respect the global region flag?
+    respect-global-region: true
     #Which checks does a player need to pass to create a shop?
     #You can use multiple checks at the same time.
     #Priority: UP > DOWN

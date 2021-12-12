@@ -74,7 +74,7 @@ public class DatabaseManager implements Reloadable {
     }
 
     private void init() throws ConnectionException {
-        this.useQueue = plugin.getConfiguration().getBoolean("database.queue");
+        this.useQueue = plugin.getConfig().getBoolean("database.queue");
         if (task != null) {
             task.cancel();
             plugin.getDatabaseManager().runTask();
@@ -93,7 +93,7 @@ public class DatabaseManager implements Reloadable {
                     if (!task.isCancelled()) {
                         plugin.getDatabaseManager().runTask();
                     }
-                }, 1, plugin.getConfiguration().getLong("database.queue-commit-interval") * 20);
+                }, 1, plugin.getConfig().getLong("database.queue-commit-interval") * 20);
             } catch (IllegalPluginAccessException e) {
                 Util.debugLog("Plugin is disabled but trying create database task, move to Main Thread...");
                 plugin.getDatabaseManager().runTask();

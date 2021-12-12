@@ -19,8 +19,8 @@
 
 package org.maxgamer.quickshop.util.config;
 
-import de.leonhard.storage.Yaml;
 import lombok.Getter;
+import org.bukkit.configuration.ConfigurationSection;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.Util;
 
@@ -34,11 +34,11 @@ import java.util.logging.Level;
 public class ConfigurationUpdater {
     private final QuickShop plugin;
     @Getter
-    private final Yaml configuration;
+    private final ConfigurationSection configuration;
 
     public ConfigurationUpdater(QuickShop plugin) {
         this.plugin = plugin;
-        this.configuration = plugin.getConfiguration();
+        this.configuration = plugin.getConfig();
     }
 
     private void writeServerUniqueId() {

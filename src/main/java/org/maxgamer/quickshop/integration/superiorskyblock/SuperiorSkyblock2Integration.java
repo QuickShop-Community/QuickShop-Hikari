@@ -55,8 +55,8 @@ public class SuperiorSkyblock2Integration extends AbstractQSIntegratedPlugin imp
     }
 
     private void init() {
-        onlyOwnerCanCreateShop = plugin.getConfiguration().getBoolean("integration.superiorskyblock.owner-create-only");
-        deleteShopOnMemberLeave = plugin.getConfiguration().getBoolean("integration.superiorskyblock.delete-shop-on-member-leave");
+        onlyOwnerCanCreateShop = plugin.getConfig().getBoolean("integration.superiorskyblock.owner-create-only");
+        deleteShopOnMemberLeave = plugin.getConfig().getBoolean("integration.superiorskyblock.delete-shop-on-member-leave");
     }
 
     /**
@@ -112,7 +112,7 @@ public class SuperiorSkyblock2Integration extends AbstractQSIntegratedPlugin imp
      */
     @Override
     public void load() {
-        if (plugin.getConfiguration().getBoolean("integration.superiorskyblock.delete-shop-on-member-leave")) {
+        if (plugin.getConfig().getBoolean("integration.superiorskyblock.delete-shop-on-member-leave")) {
             Bukkit.getPluginManager().registerEvents(this, plugin);
         }
     }

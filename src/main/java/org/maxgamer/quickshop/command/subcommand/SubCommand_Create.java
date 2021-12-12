@@ -152,7 +152,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
             plugin.getShopManager().handleChat(sender, price);
             return;
         }
-        plugin.text().of(sender, "not-looking-at-shop").send();
+        plugin.text().of(sender, "not-looking-at-valid-shop-block").send();
     }
 
     @NotNull

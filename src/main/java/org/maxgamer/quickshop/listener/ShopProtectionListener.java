@@ -64,8 +64,8 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     }
 
     private void init() {
-        this.sendProtectionAlert = plugin.getConfiguration().getOrDefault("send-shop-protection-alert", false);
-        useEnhanceProtection = plugin.getConfiguration().getBoolean("shop.enchance-shop-protect");
+        this.sendProtectionAlert = plugin.getConfig().getBoolean("send-shop-protection-alert", false);
+        useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-shop-protect");
         scanAndFixPaperListener();
     }
 
@@ -81,7 +81,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     }
 
     public void scanAndFixPaperListener() {
-        if (!plugin.getConfiguration().getBoolean("protect.hopper")) {
+        if (!plugin.getConfig().getBoolean("protect.hopper")) {
             return;
         }
         if (!Util.isClassAvailable("com.destroystokyo.paper.PaperWorldConfig")) {
@@ -139,7 +139,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
                 shop = getShopNextTo(b.getLocation());
             }
             if (shop != null) {
-                if (plugin.getConfiguration().getBoolean("protect.explode")) {
+                if (plugin.getConfig().getBoolean("protect.explode")) {
                     e.setCancelled(true);
                 } else {
                     plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "BlockBreak(explode)", shop.saveToInfoStorage()));
@@ -233,7 +233,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
             if (shop == null) {
                 continue;
             }
-            if (plugin.getConfiguration().getBoolean("protect.explode")) {
+            if (plugin.getConfig().getBoolean("protect.explode")) {
                 e.setCancelled(true);
             } else {
                 plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "BlockBreak(explode)", shop.saveToInfoStorage()));
@@ -244,7 +244,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onInventoryMove(InventoryMoveItemEvent event) {
-        if (!plugin.getConfiguration().getBoolean("protect.hopper")) {
+        if (!plugin.getConfig().getBoolean("protect.hopper")) {
             return;
         }
         final Location loc = event.getSource().getLocation();
@@ -294,7 +294,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
             return;
         }
 
-        if (plugin.getConfiguration().getBoolean("protect.entity")) {
+        if (plugin.getConfig().getBoolean("protect.entity")) {
             event.setCancelled(true);
             return;
         }

@@ -68,7 +68,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
     }
 
     private void init() {
-        this.allowLoan = plugin.getConfiguration().getBoolean("shop.allow-economy-loan");
+        this.allowLoan = plugin.getConfig().getBoolean("shop.allow-economy-loan");
     }
 
     private boolean setupEconomy() {

@@ -27,8 +27,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TranslatableComponent;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -169,15 +168,20 @@ public class MsgUtil {
         return raw;
     }
 
-    private static Map.Entry<String, String> cachedGameLanguageCode = null;
+    private volatile static Map.Entry<String, String> cachedGameLanguageCode = null;
 
-    @Unstable
-    public static String processGameLanguageCode(String languageCode) {
+    public static String getDefaultGameLanguageCode() {
+        String languageCode = plugin.getConfig().getString("game-language", "default");
         if (cachedGameLanguageCode != null && cachedGameLanguageCode.getKey().equals(languageCode)) {
             return cachedGameLanguageCode.getValue();
-
         }
-        String copyCode = languageCode;
+        String result = getGameLanguageCode(languageCode);
+        cachedGameLanguageCode = new AbstractMap.SimpleEntry<>(languageCode, result);
+        return result;
+    }
+
+    @Unstable
+    public static String getGameLanguageCode(String languageCode) {
         if ("default".equalsIgnoreCase(languageCode)) {
             Locale locale = Locale.getDefault();
             String language = locale.getLanguage();
@@ -199,7 +203,6 @@ public class MsgUtil {
                 }
             }
             languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
-            cachedGameLanguageCode = new AbstractMap.SimpleEntry<>(copyCode, languageCode);
             return languageCode;
         } else {
             return languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
@@ -209,11 +212,15 @@ public class MsgUtil {
     @Unstable
     @Deprecated
     public static void loadGameLanguage(@NotNull String languageCode) {
-        gameLanguage = ServiceInjector.getGameLanguage(new MojangGameLanguageImpl(plugin, languageCode));
+        gameLanguage = ServiceInjector.getGameLanguage();
+        if (gameLanguage == null) {
+            gameLanguage = new MojangGameLanguageImpl(plugin, languageCode);
+            ((MojangGameLanguageImpl) gameLanguage).load();
+        }
     }
 
     public static String getTranslateText(ItemStack stack) {
-        if (plugin.getConfiguration().getBoolean("force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
+        if (plugin.getConfig().getBoolean("force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
             return convertItemStackToTranslateText(stack.getType());
         } else {
             return Util.getItemStackName(stack);
@@ -221,7 +228,7 @@ public class MsgUtil {
     }
 
     public static String convertItemStackToTranslateText(Material mat) {
-        return TextSplitter.bakeComponent(new ComponentBuilder().append(new TranslatableComponent(ReflectFactory.getMaterialMinecraftNamespacedKey(mat))).create());
+        return TextSplitter.bakeComponent(new ComponentBuilder("").append(Util.getTranslateComponentForMaterial(mat)).create());
     }
 
     @Unstable
@@ -232,7 +239,7 @@ public class MsgUtil {
         plugin.getLogger().info("Loading plugin translations files...");
 
         //Load game language i18n
-        loadGameLanguage(plugin.getConfiguration().getOrDefault("game-language", "default"));
+        loadGameLanguage(plugin.getConfig().getString("game-language", "default"));
     }
 
     @Unstable
@@ -330,7 +337,7 @@ public class MsgUtil {
                 continue;
             }
             String potionI18n = potioni18n.getString("potioni18n." + potion.getName());
-            if (StringUtils.isEmpty(potionI18n)) {
+            if (potionI18n != null && StringUtils.isEmpty(potionI18n)) {
                 continue;
             }
             String potionName = gameLanguage.getPotion(potion);
@@ -378,7 +385,7 @@ public class MsgUtil {
      */
     @Deprecated
     public static void send(@NotNull UUID player, @NotNull TransactionMessage transactionMessage, boolean isUnlimited) {
-        if (isUnlimited && plugin.getConfiguration().getBoolean("shop.ignore-unlimited-shop-messages")) {
+        if (isUnlimited && plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return; // Ignore unlimited shops messages.
         }
         Util.debugLog(transactionMessage.getMessage());
@@ -413,7 +420,7 @@ public class MsgUtil {
      *                           Else, if they're not online, queues them in the database.
      */
     public static void send(@NotNull Shop shop, @NotNull UUID player, @NotNull TransactionMessage transactionMessage) {
-        if (shop.isUnlimited() && plugin.getConfiguration().getBoolean("shop.ignore-unlimited-shop-messages")) {
+        if (shop.isUnlimited() && plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return; // Ignore unlimited shops messages.
         }
         OfflinePlayer p = Bukkit.getOfflinePlayer(player);
@@ -471,7 +478,7 @@ public class MsgUtil {
                     plugin.text().of(sender,
                             "controlpanel.setowner",
                             shop.ownerName()
-                                    + ((plugin.getConfiguration().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op")
+                                    + ((plugin.getConfig().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op")
                                     && shop.isUnlimited())
                                     ? (" (" + shop.getOwner() + ")")
                                     : "")).forLocale(),
@@ -518,7 +525,7 @@ public class MsgUtil {
             String text =
                     MsgUtil.fillArgs(
                             plugin.text().of(sender, "controlpanel.price").forLocale(),
-                            (plugin.getConfiguration().getBoolean("use-decimal-format"))
+                            (plugin.getConfig().getBoolean("use-decimal-format"))
                                     ? decimalFormat(shop.getPrice())
                                     : Double.toString(shop.getPrice()));
             String hoverText = plugin.text().of(sender, "controlpanel.price-hover").forLocale();
@@ -582,7 +589,7 @@ public class MsgUtil {
         if (decimalFormat == null) {
             //lazy initialize
             try {
-                String format = plugin.getConfiguration().getString("decimal-format");
+                String format = plugin.getConfig().getString("decimal-format");
                 decimalFormat = format == null ? new DecimalFormat() : new DecimalFormat(format);
             } catch (Exception e) {
                 QuickShop.getInstance().getLogger().log(Level.WARNING, "Error when processing decimal format, using system default: " + e.getMessage());
@@ -646,7 +653,7 @@ public class MsgUtil {
 
 
     public static void printEnchantment(@NotNull Player p, @NotNull Shop shop, ChatSheetPrinter chatSheetPrinter) {
-        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && plugin.getConfiguration().getBoolean("respect-item-flag")) {
+        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && plugin.getConfig().getBoolean("respect-item-flag")) {
             return;
         }
         Map<Enchantment, Integer> enchs = new HashMap<>();
@@ -732,7 +739,7 @@ public class MsgUtil {
                 if (spilledString == null) {
                     plugin.getQuickChat().send(sender, msg);
                 } else {
-                    ComponentBuilder builder = new ComponentBuilder();
+                    ComponentBuilder builder = new ComponentBuilder("");
                     builder.appendLegacy(spilledString.getLeft());
                     builder.append(spilledString.getComponents());
                     builder.appendLegacy(spilledString.getRight());

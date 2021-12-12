@@ -22,14 +22,16 @@ package org.maxgamer.quickshop;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import de.leonhard.storage.LightningBuilder;
 import de.leonhard.storage.Yaml;
-import de.leonhard.storage.sections.FlatFileSection;
+import de.leonhard.storage.internal.settings.ConfigSettings;
+import de.leonhard.storage.internal.settings.ReloadSettings;
 import de.tr7zw.nbtapi.plugin.NBTAPI;
 import lombok.Getter;
 import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.PluginCommand;
@@ -79,8 +81,9 @@ import org.maxgamer.quickshop.shop.VirtualDisplayItem;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.compatibility.SimpleCompatibilityManager;
-import org.maxgamer.quickshop.util.config.ConfigProviderLightning;
-import org.maxgamer.quickshop.util.config.ConfigurationFixerLightning;
+import org.maxgamer.quickshop.util.config.ConfigCommentUpdater;
+import org.maxgamer.quickshop.util.config.ConfigProvider;
+import org.maxgamer.quickshop.util.config.ConfigurationFixer;
 import org.maxgamer.quickshop.util.envcheck.*;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
@@ -88,10 +91,7 @@ import org.maxgamer.quickshop.util.reload.ReloadManager;
 import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
 import org.maxgamer.quickshop.watcher.*;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -121,11 +121,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     /* Public QuickShop API */
     private final SimpleCompatibilityManager compatibilityTool = new SimpleCompatibilityManager(this);
     private final Map<String, Integer> limits = new HashMap<>(15);
-    private final GameVersion gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
+    private GameVersion gameVersion;
     /**
      * The shop limites.
      */
-    private final ConfigProviderLightning configProvider = new ConfigProviderLightning(this, new File(getDataFolder(), "config.yml"));
+    private final ConfigProvider configProvider = new ConfigProvider(this, new File(getDataFolder(), "config.yml"));
     private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
     @Getter
     private final ReloadManager reloadManager = new ReloadManager();
@@ -166,6 +166,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private int displayItemCheckTicks;
     @Getter
+    @Deprecated
     private DisplayWatcher displayWatcher;
     /**
      * The economy we hook into for transactions
@@ -226,6 +227,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private @Deprecated
     DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
     @Getter
+    @Deprecated
     private boolean enabledAsyncDisplayDespawn;
     @Getter
     private Plugin blockHubPlugin;
@@ -311,6 +313,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         return integrationHelper;
     }
 
+    @Deprecated
+    private Yaml configurationForCompatibility = null;
+
     /**
      * Get the Player's Shop limit.
      *
@@ -318,7 +323,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      * @return int Player's shop limit
      */
     public int getShopLimit(@NotNull Player p) {
-        int max = getConfiguration().getInt("limits.default");
+        int max = getConfig().getInt("limits.default");
         for (Entry<String, Integer> entry : limits.entrySet()) {
             if (entry.getValue() > max && getPermissionManager().hasPermission(p, entry.getKey())) {
                 max = entry.getValue();
@@ -333,25 +338,25 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private void load3rdParty() {
         // added for compatibility reasons with OpenInv - see
         // https://github.com/KaiKikuchi/QuickShop/issues/139
-        if (getConfiguration().getBoolean("plugin.OpenInv")) {
+        if (getConfig().getBoolean("plugin.OpenInv")) {
             this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
             if (this.openInvPlugin != null) {
                 getLogger().info("Successfully loaded OpenInv support!");
             }
         }
-        if (getConfiguration().getBoolean("plugin.PlaceHolderAPI")) {
+        if (getConfig().getBoolean("plugin.PlaceHolderAPI")) {
             this.placeHolderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
             if (this.placeHolderAPI != null) {
                 getLogger().info("Successfully loaded PlaceHolderAPI support!");
             }
         }
-        if (getConfiguration().getBoolean("plugin.BlockHub")) {
+        if (getConfig().getBoolean("plugin.BlockHub")) {
             this.blockHubPlugin = Bukkit.getPluginManager().getPlugin("BlockHub");
             if (this.blockHubPlugin != null) {
                 getLogger().info("Successfully loaded BlockHub support!");
             }
         }
-        if (getConfiguration().getBoolean("plugin.WorldEdit")) {
+        if (getConfig().getBoolean("plugin.WorldEdit")) {
             //  GameVersion gameVersion = GameVersion.get(nmsVersion);
             this.worldEditPlugin = Bukkit.getPluginManager().getPlugin("WorldEdit");
             if (this.worldEditPlugin != null) {
@@ -361,7 +366,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
         }
 
-        if (getConfiguration().getBoolean("plugin.LWC")) {
+        if (getConfig().getBoolean("plugin.LWC")) {
             this.lwcPlugin = Bukkit.getPluginManager().getPlugin("LWC");
             if (this.lwcPlugin != null) {
                 if (Util.isMethodAvailable("com.griefcraft.lwc.LWC", "findProtection", org.bukkit.Location.class)) {
@@ -372,7 +377,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 }
             }
         }
-        if (getConfiguration().getBoolean("plugin.NBTAPI")) {
+        if (getConfig().getBoolean("plugin.NBTAPI")) {
             this.nbtapi = (NBTAPI) Bukkit.getPluginManager().getPlugin("NBTAPI");
             if (this.nbtapi != null) {
                 if (!this.nbtapi.isCompatible()) {
@@ -394,7 +399,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                     getLogger().info("Successfully loaded ProtocolLib support!");
                 } else {
                     getLogger().warning("Failed to load ProtocolLib support, fallback to real item display");
-                    getConfiguration().set("shop.display-type", 0);
+                    getConfig().set("shop.display-type", 0);
                     saveConfiguration();
                 }
             }
@@ -423,6 +428,31 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
     }
 
+    // /**
+//     * Logs the given string to qs.log, if QuickShop is configured to do so.
+//     *
+//     * @param s The string to log. It will be prefixed with the date and time.
+//     */
+//    public void log(@NotNull String s) {
+//        Util.debugLog("[SHOP LOG] " + s);
+//        if (this.getLogWatcher() == null) {
+//            return;
+//        }
+//        this.getLogWatcher().log(s);
+//    }
+
+    public void logEvent(@NotNull Object eventObject) {
+        if (this.getLogWatcher() == null) {
+            return;
+        }
+        if (loggingLocation == 0) {
+            this.getLogWatcher().log(JsonUtil.getGson().toJson(eventObject));
+        } else {
+            getDatabaseHelper().insertHistoryRecord(eventObject);
+        }
+
+    }
+
     /**
      * Tries to load the economy and its core. If this fails, it will try to use vault. If that fails,
      * it will return false.
@@ -434,16 +464,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     public boolean loadEcon() {
         try {
             // EconomyCore core = new Economy_Vault();
-            switch (EconomyType.fromID(getConfiguration().getInt("economy-type"))) {
+            switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
                 case UNKNOWN:
                     setupBootError(new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml."), true);
                     return false;
                 case VAULT:
                     economy = new Economy_Vault(this);
                     Util.debugLog("Now using the Vault economy system.");
-                    if (getConfiguration().getOrDefault("tax", 0.0d) > 0) {
+                    if (getConfig().getDouble("tax", 0.0d) > 0) {
                         try {
-                            String taxAccount = getConfiguration().getOrDefault("tax-account", "tax");
+                            String taxAccount = getConfig().getString("tax-account", "tax");
                             if (!taxAccount.isEmpty()) {
                                 OfflinePlayer tax;
                                 if (Util.isUUID(taxAccount)) {
@@ -496,7 +526,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 return false;
             }
             economy = ServiceInjector.getEconomy(economy);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             this.getSentryErrorReporter().ignoreThrow();
             getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);
             getLogger().severe("QuickShop could not hook into a economy/Not found Vault or Reserve!");
@@ -508,41 +538,19 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         return true;
     }
 
-    // /**
-//     * Logs the given string to qs.log, if QuickShop is configured to do so.
-//     *
-//     * @param s The string to log. It will be prefixed with the date and time.
-//     */
-//    public void log(@NotNull String s) {
-//        Util.debugLog("[SHOP LOG] " + s);
-//        if (this.getLogWatcher() == null) {
-//            return;
-//        }
-//        this.getLogWatcher().log(s);
-//    }
-
-    public void logEvent(@NotNull Object eventObject) {
-        if (this.getLogWatcher() == null) {
-            return;
-        }
-        if (loggingLocation == 0) {
-            this.getLogWatcher().log(JsonUtil.getGson().toJson(eventObject));
-        } else {
-            getDatabaseHelper().insertHistoryRecord(eventObject);
-        }
-
-    }
-
     @Override
-    @Unstable
-    @Deprecated
     public @NotNull FileConfiguration getConfig() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException("Use QuickShop#getConfiguration to instead.");
-        //return configProvider.get();
+        return configProvider.get();
     }
 
+    @Deprecated
     public @NotNull Yaml getConfiguration() {
-        return this.configProvider.get();
+        return configurationForCompatibility == null ? configurationForCompatibility = LightningBuilder
+                .fromFile(new File(getDataFolder(), "config.yml"))
+                .addInputStreamFromResource("config.yml")
+                .setReloadSettings(ReloadSettings.MANUALLY)
+                .setConfigSettings(ConfigSettings.PRESERVE_COMMENTS)
+                .createYaml() : configurationForCompatibility;
     }
 
     @Unstable
@@ -570,16 +578,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     public void reloadConfiguration() {
         configProvider.reload();
         // Load quick variables
-        this.display = this.getConfiguration().getBoolean("shop.display-items");
-        this.priceChangeRequiresFee = this.getConfiguration().getBoolean("shop.price-change-requires-fee");
-        this.displayItemCheckTicks = this.getConfiguration().getInt("shop.display-items-check-ticks");
-        this.allowStack = this.getConfiguration().getBoolean("shop.allow-stacks");
-        this.currency = this.getConfiguration().getString("currency");
-        this.loggingLocation = this.getConfiguration().getInt("logging.location");
+        this.display = this.getConfig().getBoolean("shop.display-items");
+        this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
+        this.displayItemCheckTicks = this.getConfig().getInt("shop.display-items-check-ticks");
+        this.allowStack = this.getConfig().getBoolean("shop.allow-stacks");
+        this.currency = this.getConfig().getString("currency");
+        this.loggingLocation = this.getConfig().getInt("logging.location");
         if (StringUtils.isEmpty(this.currency)) {
             this.currency = null;
         }
-        if (this.getConfiguration().getBoolean("logging.enable")) {
+        if (this.getConfig().getBoolean("logging.enable")) {
             logWatcher = new LogWatcher(this, new File(getDataFolder(), "qs.log"));
         } else {
             logWatcher = null;
@@ -604,10 +612,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         this.bootError = null;
         getLogger().info("Loading messages translation over-the-air (this may need take a while).");
         this.textManager = new SimpleTextManager(this);
+        textManager.load();
         getLogger().info("Loading up integration modules.");
         this.integrationHelper = new SimpleIntegrationManager(this);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
-        if (getConfiguration().getBoolean("integration.worldguard.enable")) {
+        if (getConfig().getBoolean("integration.worldguard.enable")) {
             Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
             // WG require register flags when onLoad called.
             if (wg != null) {
@@ -744,13 +753,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getLogger().severe("Failed to save config.yml from jar, The binary file of QuickShop may corrupted. Please re-download from our website.");
         }
         reloadConfiguration();
-        if (getConfiguration().getOrDefault("config-version", 0) == 0) {
-            getConfiguration().set("config-version", 1);
+        if (getConfig().getInt("config-version", 0) == 0) {
+            getConfig().set("config-version", 1);
         }
         /* It will generate a new UUID above updateConfig */
-        this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfiguration().getOrDefault("server-uuid", String.valueOf(UUID.randomUUID()))));
+        this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID()))));
         try {
-            updateConfig(getConfiguration().getInt("config-version"));
+            updateConfig(getConfig().getInt("config-version"));
         } catch (IOException exception) {
             getLogger().log(Level.WARNING, "Failed to update configuration", exception);
         }
@@ -803,7 +812,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         metrics = new Metrics(this, 3320);
 
         try {
-            if (!getConfiguration().getBoolean("auto-report-errors")) {
+            if (!getConfig().getBoolean("auto-report-errors")) {
                 Util.debugLog("Error reporter was disabled!");
             } else {
                 sentryErrorReporter = new RollbarErrorReporter(this);
@@ -838,11 +847,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         // Create the shop manager.
         permissionManager = new PermissionManager(this);
         // This should be inited before shop manager
-        if (this.display && getConfiguration().getBoolean("shop.display-auto-despawn")) {
-            this.enabledAsyncDisplayDespawn = true;
+        if (this.display && getConfig().getBoolean("shop.display-auto-despawn")) {
             this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
             //BUKKIT METHOD SHOULD ALWAYS EXECUTE ON THE SERVER MAIN THEAD
-            this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfiguration().getInt("shop.display-check-time")); // not worth async
+            timerTaskList.add(this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfig().getInt("shop.display-check-time"))); // not worth async
         }
 
         getLogger().info("Registering commands...");
@@ -869,11 +877,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
         }
         // Limit end
-        if (getConfiguration().getInt("shop.finding.distance") > 100 && (getConfiguration().getBoolean("shop.finding.exclude-out-of-stock"))) {
+        if (getConfig().getInt("shop.finding.distance") > 100 && (getConfig().getBoolean("shop.finding.exclude-out-of-stock"))) {
             getLogger().severe("Shop find distance is too high with chunk loading feature turned on! It may cause lag! Pick a number under 100!");
         }
 
-        if (getConfiguration().getBoolean("use-caching")) {
+        if (getConfig().getBoolean("use-caching")) {
             this.shopCache = new Cache(this);
         } else {
             this.shopCache = null;
@@ -904,22 +912,37 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         new EconomySetupListener(this).register();
         InternalListener internalListener = new InternalListener(this);
         internalListener.register();
-        ongoingFeeWatcher = new OngoingFeeWatcher(this);
 
         if (this.display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
-            displayWatcher = new DisplayWatcher(this);
+            if (getConfig().getInt("shop.display-items-check-ticks") < 3000) {
+                getLogger().severe("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
+            }
+            if (getDisplayItemCheckTicks() > 0) {
+                getLogger().info("Registering DisplayCheck task....");
+                timerTaskList.add(getServer().getScheduler().runTaskTimer(this, () -> {
+                    for (Shop shop : getShopManager().getLoadedShops()) {
+                        //Shop may be deleted or unloaded when iterating
+                        if (shop.isDeleted() || !shop.isLoaded()) {
+                            continue;
+                        }
+                        shop.checkDisplay();
+                    }
+                }, 1L, getDisplayItemCheckTicks()));
+            } else {
+                getLogger().severe("Shop.display-items-check-ticks is invalid! Pick a number > 3000");
+            }
             new DisplayProtectionListener(this, this.shopCache).register();
             if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
                 new ClearLaggListener(this).register();
             }
         }
-        if (getConfiguration().getBoolean("shop.lock")) {
+        if (getConfig().getBoolean("shop.lock")) {
             new LockListener(this, this.shopCache).register();
         }
         getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();
         MsgUtil.clean();
-        if (this.getConfiguration().getOrDefault("updater", true)) {
+        if (this.getConfig().getBoolean("updater", true)) {
             updateWatcher = new UpdateWatcher();
             updateWatcher.init();
         }
@@ -944,9 +967,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             timerTaskList.add(logWatcher.runTaskTimerAsynchronously(this, 10, 10));
             getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
         }
-        if (getConfiguration().getBoolean("shop.ongoing-fee.enable")) {
+        if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
+            ongoingFeeWatcher = new OngoingFeeWatcher(this);
+            timerTaskList.add(ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks")));
             getLogger().info("Ongoing fee feature is enabled.");
-            timerTaskList.add(ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfiguration().getInt("shop.ongoing-fee.ticks")));
         }
         integrationHelper.searchAndRegisterPlugins();
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);
@@ -965,15 +989,15 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         calendarWatcher = new CalendarWatcher(this);
         calendarWatcher.start();
         tpsWatcher.runTaskTimer(this, 1000, 50);
-        this.shopPurger = new ShopPurger(this, false);
-        shopPurger.runTaskAsynchronously(this);
+        this.shopPurger = new ShopPurger(this);
+        shopPurger.purge();
         Util.debugLog("Now using display-type: " + AbstractDisplayItem.getNowUsing().name());
         getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
     }
 
     private void loadItemMatcher() {
         ItemMatcher defItemMatcher;
-        switch (getConfiguration().getInt("matcher.work-type")) {
+        switch (getConfig().getInt("matcher.work-type")) {
             case 1:
                 defItemMatcher = new BukkitItemMatcherImpl(this);
                 break;
@@ -993,7 +1017,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private boolean setupDatabase() {
         getLogger().info("Setting up database...");
         try {
-            FlatFileSection dbCfg = getConfiguration().getSection("database");
+            ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
             AbstractDatabaseCore dbCore;
             if (Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
                 // MySQL database - Required database be created first.
@@ -1033,7 +1057,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     }
 
     private void submitMeritcs() {
-        if (!getConfiguration().getBoolean("disabled-metrics")) {
+        if (!getConfig().getBoolean("disabled-metrics")) {
             String vaultVer;
             Plugin vault = Bukkit.getPluginManager().getPlugin("Vault");
             if (vault != null) {
@@ -1047,7 +1071,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 economyType = this.getEconomy().getName();
             }
             String eventAdapter;
-            if (getConfiguration().getInt("shop.protection-checking-handler") == 1) {
+            if (getConfig().getInt("shop.protection-checking-handler") == 1) {
                 eventAdapter = "QUICKSHOP";
             } else {
                 eventAdapter = "BUKKIT";
@@ -1056,15 +1080,15 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             metrics.addCustomChart(new Metrics.SimplePie("server_version", Bukkit::getVersion));
             metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", Bukkit::getBukkitVersion));
             metrics.addCustomChart(new Metrics.SimplePie("vault_version", () -> vaultVer));
-            metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> Util.boolean2Status(getConfiguration().getBoolean("shop.display-items"))));
-            metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> Util.boolean2Status(getConfiguration().getBoolean("shop.lock"))));
-            metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> Util.boolean2Status(getConfiguration().getBoolean("shop.interact.sneak-to-create") || getConfiguration().getBoolean("shop.interact.sneak-to-trade") || getConfiguration().getBoolean("shop.interact.sneak-to-control"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> Util.boolean2Status(getConfig().getBoolean("shop.display-items"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> Util.boolean2Status(getConfig().getBoolean("shop.lock"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> Util.boolean2Status(getConfig().getBoolean("shop.interact.sneak-to-create") || getConfig().getBoolean("shop.interact.sneak-to-trade") || getConfig().getBoolean("shop.interact.sneak-to-control"))));
             String finalEconomyType = economyType;
             metrics.addCustomChart(new Metrics.SimplePie("economy_type", () -> finalEconomyType));
-            metrics.addCustomChart(new Metrics.SimplePie("use_display_auto_despawn", () -> String.valueOf(getConfiguration().getBoolean("shop.display-auto-despawn"))));
-            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> String.valueOf(getConfiguration().getBoolean("shop.enchance-display-protect"))));
-            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> String.valueOf(getConfiguration().getBoolean("shop.enchance-shop-protect"))));
-            metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> String.valueOf(getConfiguration().getBoolean("shop.ongoing-fee.enable"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_display_auto_despawn", () -> String.valueOf(getConfig().getBoolean("shop.display-auto-despawn"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"))));
             metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> this.getDatabaseManager().getDatabase().getName()));
             metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> AbstractDisplayItem.getNowUsing().name()));
             metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));
@@ -1080,900 +1104,909 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
     //TODO: Refactor it
     private void updateConfig(int selectedVersion) throws IOException {
-        String serverUUID = getConfiguration().getString("server-uuid");
+        String serverUUID = getConfig().getString("server-uuid");
         if (serverUUID == null || serverUUID.isEmpty()) {
             UUID uuid = UUID.randomUUID();
             serverUUID = uuid.toString();
-            getConfiguration().set("server-uuid", serverUUID);
+            getConfig().set("server-uuid", serverUUID);
         }
         if (selectedVersion == 1) {
-            getConfiguration().set("disabled-metrics", false);
-            getConfiguration().set("config-version", 2);
+            getConfig().set("disabled-metrics", false);
+            getConfig().set("config-version", 2);
             selectedVersion = 2;
         }
         if (selectedVersion == 2) {
-            getConfiguration().set("protect.minecart", true);
-            getConfiguration().set("protect.entity", true);
-            getConfiguration().set("protect.redstone", true);
-            getConfiguration().set("protect.structuregrow", true);
-            getConfiguration().set("protect.explode", true);
-            getConfiguration().set("protect.hopper", true);
-            getConfiguration().set("config-version", 3);
+            getConfig().set("protect.minecart", true);
+            getConfig().set("protect.entity", true);
+            getConfig().set("protect.redstone", true);
+            getConfig().set("protect.structuregrow", true);
+            getConfig().set("protect.explode", true);
+            getConfig().set("protect.hopper", true);
+            getConfig().set("config-version", 3);
             selectedVersion = 3;
         }
         if (selectedVersion == 3) {
-            getConfiguration().set("shop.alternate-currency-symbol", '$');
-            getConfiguration().set("config-version", 4);
+            getConfig().set("shop.alternate-currency-symbol", '$');
+            getConfig().set("config-version", 4);
             selectedVersion = 4;
         }
         if (selectedVersion == 4) {
-            getConfiguration().set("updater", true);
-            getConfiguration().set("config-version", 5);
+            getConfig().set("updater", true);
+            getConfig().set("config-version", 5);
             selectedVersion = 5;
         }
         if (selectedVersion == 5) {
-            getConfiguration().set("config-version", 6);
+            getConfig().set("config-version", 6);
             selectedVersion = 6;
         }
         if (selectedVersion == 6) {
-            getConfiguration().set("shop.sneak-to-control", false);
-            getConfiguration().set("config-version", 7);
+            getConfig().set("shop.sneak-to-control", false);
+            getConfig().set("config-version", 7);
             selectedVersion = 7;
         }
         if (selectedVersion == 7) {
-            getConfiguration().set("database.prefix", "none");
-            getConfiguration().set("config-version", 8);
+            getConfig().set("database.prefix", "none");
+            getConfig().set("config-version", 8);
             selectedVersion = 8;
         }
         if (selectedVersion == 8) {
-            getConfiguration().set("limits.old-algorithm", false);
-            getConfiguration().set("plugin.ProtocolLib", false);
-            getConfiguration().set("shop.ignore-unlimited", false);
-            getConfiguration().set("config-version", 9);
+            getConfig().set("limits.old-algorithm", false);
+            getConfig().set("plugin.ProtocolLib", false);
+            getConfig().set("shop.ignore-unlimited", false);
+            getConfig().set("config-version", 9);
             selectedVersion = 9;
         }
         if (selectedVersion == 9) {
-            getConfiguration().set("shop.enable-enderchest", true);
-            getConfiguration().set("config-version", 10);
+            getConfig().set("shop.enable-enderchest", true);
+            getConfig().set("config-version", 10);
             selectedVersion = 10;
         }
         if (selectedVersion == 10) {
-            getConfiguration().remove("shop.pay-player-from-unlimited-shop-owner"); // Removed
-            getConfiguration().set("config-version", 11);
+            getConfig().set("shop.pay-player-from-unlimited-shop-owner", null); // Removed
+            getConfig().set("config-version", 11);
             selectedVersion = 11;
         }
         if (selectedVersion == 11) {
-            getConfiguration().remove("shop.enable-enderchest"); // Removed
-            getConfiguration().set("plugin.OpenInv", true);
-            List<String> shoppable = getConfiguration().getStringList("shop-blocks");
+            getConfig().set("shop.enable-enderchest", null); // Removed
+            getConfig().set("plugin.OpenInv", true);
+            List<String> shoppable = getConfig().getStringList("shop-blocks");
             shoppable.add("ENDER_CHEST");
-            getConfiguration().set("shop-blocks", shoppable);
-            getConfiguration().set("config-version", 12);
+            getConfig().set("shop-blocks", shoppable);
+            getConfig().set("config-version", 12);
             selectedVersion = 12;
         }
         if (selectedVersion == 12) {
-            getConfiguration().remove("plugin.ProtocolLib"); // Removed
-            getConfiguration().remove("plugin.BKCommonLib"); // Removed
-            getConfiguration().remove("database.use-varchar"); // Removed
-            getConfiguration().remove("database.reconnect"); // Removed
-            getConfiguration().set("display-items-check-ticks", 1200);
-            getConfiguration().remove("shop.bypass-owner-check"); // Removed
-            getConfiguration().set("config-version", 13);
+            getConfig().set("plugin.ProtocolLib", null); // Removed
+            getConfig().set("plugin.BKCommonLib", null); // Removed
+            getConfig().set("database.use-varchar", null); // Removed
+            getConfig().set("database.reconnect", null); // Removed
+            getConfig().set("display-items-check-ticks", 1200);
+            getConfig().set("shop.bypass-owner-check", null); // Removed
+            getConfig().set("config-version", 13);
             selectedVersion = 13;
         }
         if (selectedVersion == 13) {
-            getConfiguration().set("config-version", 14);
+            getConfig().set("config-version", 14);
             selectedVersion = 14;
         }
         if (selectedVersion == 14) {
-            getConfiguration().remove("plugin.AreaShop");
-            getConfiguration().remove("shop.special-region-only");
-            getConfiguration().set("config-version", 15);
+            getConfig().set("plugin.AreaShop", null);
+            getConfig().set("shop.special-region-only", null);
+            getConfig().set("config-version", 15);
             selectedVersion = 15;
         }
         if (selectedVersion == 15) {
-            getConfiguration().remove("ongoingfee");
-            getConfiguration().set("shop.display-item-show-name", false);
-            getConfiguration().set("shop.auto-fetch-shop-messages", true);
-            getConfiguration().set("config-version", 16);
+            getConfig().set("ongoingfee", null);
+            getConfig().set("shop.display-item-show-name", false);
+            getConfig().set("shop.auto-fetch-shop-messages", true);
+            getConfig().set("config-version", 16);
             selectedVersion = 16;
         }
         if (selectedVersion == 16) {
-            getConfiguration().set("config-version", 17);
+            getConfig().set("config-version", 17);
             selectedVersion = 17;
         }
         if (selectedVersion == 17) {
-            getConfiguration().set("ignore-cancel-chat-event", false);
-            getConfiguration().remove("float");
-            getConfiguration().set("config-version", 18);
+            getConfig().set("ignore-cancel-chat-event", false);
+            getConfig().set("float", null);
+            getConfig().set("config-version", 18);
             selectedVersion = 18;
         }
         if (selectedVersion == 18) {
-            getConfiguration().set("shop.disable-vault-format", false);
-            getConfiguration().set("config-version", 19);
+            getConfig().set("shop.disable-vault-format", false);
+            getConfig().set("config-version", 19);
             selectedVersion = 19;
         }
         if (selectedVersion == 19) {
-            getConfiguration().set("shop.allow-shop-without-space-for-sign", true);
-            getConfiguration().set("config-version", 20);
+            getConfig().set("shop.allow-shop-without-space-for-sign", true);
+            getConfig().set("config-version", 20);
             selectedVersion = 20;
         }
         if (selectedVersion == 20) {
-            getConfiguration().set("shop.maximum-price", -1);
-            getConfiguration().set("config-version", 21);
+            getConfig().set("shop.maximum-price", -1);
+            getConfig().set("config-version", 21);
             selectedVersion = 21;
         }
         if (selectedVersion == 21) {
-            getConfiguration().set("shop.sign-material", "OAK_WALL_SIGN");
-            getConfiguration().set("config-version", 22);
+            getConfig().set("shop.sign-material", "OAK_WALL_SIGN");
+            getConfig().set("config-version", 22);
             selectedVersion = 22;
         }
         if (selectedVersion == 22) {
-            getConfiguration().set("include-offlineplayer-list", "false");
-            getConfiguration().set("config-version", 23);
+            getConfig().set("include-offlineplayer-list", "false");
+            getConfig().set("config-version", 23);
             selectedVersion = 23;
         }
         if (selectedVersion == 23) {
-            getConfiguration().remove("lockette.enable");
-            getConfiguration().remove("lockette.item");
-            getConfiguration().remove("lockette.lore");
-            getConfiguration().remove("lockette.displayname");
-            getConfiguration().remove("float");
-            getConfiguration().set("lockette.enable", true);
-            getConfiguration().set("shop.blacklist-world", Lists.newArrayList("disabled_world_name"));
-            getConfiguration().set("config-version", 24);
+            getConfig().set("lockette.enable", null);
+            getConfig().set("lockette.item", null);
+            getConfig().set("lockette.lore", null);
+            getConfig().set("lockette.displayname", null);
+            getConfig().set("float", null);
+            getConfig().set("lockette.enable", true);
+            getConfig().set("shop.blacklist-world", Lists.newArrayList("disabled_world_name"));
+            getConfig().set("config-version", 24);
             selectedVersion = 24;
         }
         if (selectedVersion == 24) {
-            getConfiguration().set("config-version", 25);
+            getConfig().set("config-version", 25);
             selectedVersion = 25;
         }
         if (selectedVersion == 25) {
-            String language = getConfiguration().getString("language");
+            String language = getConfig().getString("language");
             if (language == null || language.isEmpty() || "default".equals(language)) {
-                getConfiguration().set("language", "en");
+                getConfig().set("language", "en");
             }
-            getConfiguration().set("config-version", 26);
+            getConfig().set("config-version", 26);
             selectedVersion = 26;
         }
         if (selectedVersion == 26) {
-            getConfiguration().set("database.usessl", false);
-            getConfiguration().set("config-version", 27);
+            getConfig().set("database.usessl", false);
+            getConfig().set("config-version", 27);
             selectedVersion = 27;
         }
         if (selectedVersion == 27) {
-            getConfiguration().set("queue.enable", true);
-            getConfiguration().set("queue.shops-per-tick", 20);
-            getConfiguration().set("config-version", 28);
+            getConfig().set("queue.enable", true);
+            getConfig().set("queue.shops-per-tick", 20);
+            getConfig().set("config-version", 28);
             selectedVersion = 28;
         }
         if (selectedVersion == 28) {
-            getConfiguration().set("database.queue", true);
-            getConfiguration().set("config-version", 29);
+            getConfig().set("database.queue", true);
+            getConfig().set("config-version", 29);
             selectedVersion = 29;
         }
         if (selectedVersion == 29) {
-            getConfiguration().remove("plugin.Multiverse-Core");
-            getConfiguration().set("shop.protection-checking", true);
-            getConfiguration().set("config-version", 30);
+            getConfig().set("plugin.Multiverse-Core", null);
+            getConfig().set("shop.protection-checking", true);
+            getConfig().set("config-version", 30);
             selectedVersion = 30;
         }
         if (selectedVersion == 30) {
-            getConfiguration().set("auto-report-errors", true);
-            getConfiguration().set("config-version", 31);
+            getConfig().set("auto-report-errors", true);
+            getConfig().set("config-version", 31);
             selectedVersion = 31;
         }
         if (selectedVersion == 31) {
-            getConfiguration().set("shop.display-type", 0);
-            getConfiguration().set("config-version", 32);
+            getConfig().set("shop.display-type", 0);
+            getConfig().set("config-version", 32);
             selectedVersion = 32;
         }
         if (selectedVersion == 32) {
-            getConfiguration().set("effect.sound.ontabcomplete", true);
-            getConfiguration().set("effect.sound.oncommand", true);
-            getConfiguration().set("effect.sound.ononclick", true);
-            getConfiguration().set("config-version", 33);
+            getConfig().set("effect.sound.ontabcomplete", true);
+            getConfig().set("effect.sound.oncommand", true);
+            getConfig().set("effect.sound.ononclick", true);
+            getConfig().set("config-version", 33);
             selectedVersion = 33;
         }
         if (selectedVersion == 33) {
-            getConfiguration().set("matcher.item.damage", true);
-            getConfiguration().set("matcher.item.displayname", true);
-            getConfiguration().set("matcher.item.lores", true);
-            getConfiguration().set("matcher.item.enchs", true);
-            getConfiguration().set("matcher.item.potions", true);
-            getConfiguration().set("matcher.item.attributes", true);
-            getConfiguration().set("matcher.item.itemflags", true);
-            getConfiguration().set("matcher.item.custommodeldata", true);
-            getConfiguration().set("config-version", 34);
+            getConfig().set("matcher.item.damage", true);
+            getConfig().set("matcher.item.displayname", true);
+            getConfig().set("matcher.item.lores", true);
+            getConfig().set("matcher.item.enchs", true);
+            getConfig().set("matcher.item.potions", true);
+            getConfig().set("matcher.item.attributes", true);
+            getConfig().set("matcher.item.itemflags", true);
+            getConfig().set("matcher.item.custommodeldata", true);
+            getConfig().set("config-version", 34);
             selectedVersion = 34;
         }
         if (selectedVersion == 34) {
-            if (getConfiguration().getInt("shop.display-items-check-ticks") == 1200) {
-                getConfiguration().set("shop.display-items-check-ticks", 6000);
+            if (getConfig().getInt("shop.display-items-check-ticks") == 1200) {
+                getConfig().set("shop.display-items-check-ticks", 6000);
             }
-            getConfiguration().set("config-version", 35);
+            getConfig().set("config-version", 35);
             selectedVersion = 35;
         }
         if (selectedVersion == 35) {
-            getConfiguration().remove("queue"); // Close it for everyone
-            getConfiguration().set("config-version", 36);
+            getConfig().set("queue", null); // Close it for everyone
+            getConfig().set("config-version", 36);
             selectedVersion = 36;
         }
         if (selectedVersion == 36) {
-            getConfiguration().set("economy-type", 0); // Close it for everyone
-            getConfiguration().set("config-version", 37);
+            getConfig().set("economy-type", 0); // Close it for everyone
+            getConfig().set("config-version", 37);
             selectedVersion = 37;
         }
         if (selectedVersion == 37) {
-            getConfiguration().set("shop.ignore-cancel-chat-event", true);
-            getConfiguration().set("config-version", 38);
+            getConfig().set("shop.ignore-cancel-chat-event", true);
+            getConfig().set("config-version", 38);
             selectedVersion = 38;
         }
         if (selectedVersion == 38) {
-            getConfiguration().set("protect.inventorymove", true);
-            getConfiguration().set("protect.spread", true);
-            getConfiguration().set("protect.fromto", true);
-            getConfiguration().remove("protect.minecart");
-            getConfiguration().remove("protect.hopper");
-            getConfiguration().set("config-version", 39);
+            getConfig().set("protect.inventorymove", true);
+            getConfig().set("protect.spread", true);
+            getConfig().set("protect.fromto", true);
+            getConfig().set("protect.minecart", null);
+            getConfig().set("protect.hopper", null);
+            getConfig().set("config-version", 39);
             selectedVersion = 39;
         }
         if (selectedVersion == 39) {
-            getConfiguration().set("update-sign-when-inventory-moving", true);
-            getConfiguration().set("config-version", 40);
+            getConfig().set("update-sign-when-inventory-moving", true);
+            getConfig().set("config-version", 40);
             selectedVersion = 40;
         }
         if (selectedVersion == 40) {
-            getConfiguration().set("allow-economy-loan", false);
-            getConfiguration().set("config-version", 41);
+            getConfig().set("allow-economy-loan", false);
+            getConfig().set("config-version", 41);
             selectedVersion = 41;
         }
         if (selectedVersion == 41) {
-            getConfiguration().set("send-display-item-protection-alert", true);
-            getConfiguration().set("config-version", 42);
+            getConfig().set("send-display-item-protection-alert", true);
+            getConfig().set("config-version", 42);
             selectedVersion = 42;
         }
         if (selectedVersion == 42) {
-            getConfiguration().set("config-version", 43);
+            getConfig().set("config-version", 43);
             selectedVersion = 43;
         }
         if (selectedVersion == 43) {
-            getConfiguration().set("config-version", 44);
+            getConfig().set("config-version", 44);
             selectedVersion = 44;
         }
         if (selectedVersion == 44) {
-            getConfiguration().set("matcher.item.repaircost", false);
-            getConfiguration().set("config-version", 45);
+            getConfig().set("matcher.item.repaircost", false);
+            getConfig().set("config-version", 45);
             selectedVersion = 45;
         }
         if (selectedVersion == 45) {
-            getConfiguration().set("shop.display-item-use-name", true);
-            getConfiguration().set("config-version", 46);
+            getConfig().set("shop.display-item-use-name", true);
+            getConfig().set("config-version", 46);
             selectedVersion = 46;
         }
         if (selectedVersion == 46) {
-            getConfiguration().set("shop.max-shops-checks-in-once", 100);
-            getConfiguration().set("config-version", 47);
+            getConfig().set("shop.max-shops-checks-in-once", 100);
+            getConfig().set("config-version", 47);
             selectedVersion = 47;
         }
         if (selectedVersion == 47) {
-            getConfiguration().set("config-version", 48);
+            getConfig().set("config-version", 48);
             selectedVersion = 48;
         }
         if (selectedVersion == 48) {
-            getConfiguration().remove("permission-type");
-            getConfiguration().remove("shop.use-protection-checking-filter");
-            getConfiguration().remove("shop.protection-checking-filter");
-            getConfiguration().set("config-version", 49);
+            getConfig().set("permission-type", null);
+            getConfig().set("shop.use-protection-checking-filter", null);
+            getConfig().set("shop.protection-checking-filter", null);
+            getConfig().set("config-version", 49);
             selectedVersion = 49;
         }
         if (selectedVersion == 49 || selectedVersion == 50) {
-            getConfiguration().set("shop.enchance-display-protect", false);
-            getConfiguration().set("shop.enchance-shop-protect", false);
-            getConfiguration().remove("protect");
-            getConfiguration().set("config-version", 51);
+            getConfig().set("shop.enchance-display-protect", false);
+            getConfig().set("shop.enchance-shop-protect", false);
+            getConfig().set("protect", null);
+            getConfig().set("config-version", 51);
             selectedVersion = 51;
         }
         if (selectedVersion < 60) { // Ahhh fuck versions
-            getConfiguration().set("config-version", 60);
+            getConfig().set("config-version", 60);
             selectedVersion = 60;
         }
         if (selectedVersion == 60) { // Ahhh fuck versions
-            getConfiguration().remove("shop.strict-matches-check");
-            getConfiguration().set("shop.display-auto-despawn", true);
-            getConfiguration().set("shop.display-despawn-range", 10);
-            getConfiguration().set("shop.display-check-time", 10);
-            getConfiguration().set("config-version", 61);
+            getConfig().set("shop.strict-matches-check", null);
+            getConfig().set("shop.display-auto-despawn", true);
+            getConfig().set("shop.display-despawn-range", 10);
+            getConfig().set("shop.display-check-time", 10);
+            getConfig().set("config-version", 61);
             selectedVersion = 61;
         }
         if (selectedVersion == 61) { // Ahhh fuck versions
-            getConfiguration().set("shop.word-for-sell-all-items", "all");
-            getConfiguration().set("plugin.PlaceHolderAPI", true);
-            getConfiguration().set("config-version", 62);
+            getConfig().set("shop.word-for-sell-all-items", "all");
+            getConfig().set("plugin.PlaceHolderAPI", true);
+            getConfig().set("config-version", 62);
             selectedVersion = 62;
         }
         if (selectedVersion == 62) { // Ahhh fuck versions
-            getConfiguration().set("shop.display-auto-despawn", false);
-            getConfiguration().set("shop.word-for-trade-all-items", getConfiguration().getString("shop.word-for-sell-all-items"));
+            getConfig().set("shop.display-auto-despawn", false);
+            getConfig().set("shop.word-for-trade-all-items", getConfig().getString("shop.word-for-sell-all-items"));
 
-            getConfiguration().set("config-version", 63);
+            getConfig().set("config-version", 63);
             selectedVersion = 63;
         }
         if (selectedVersion == 63) { // Ahhh fuck versions
-            getConfiguration().set("shop.ongoing-fee.enable", false);
-            getConfiguration().set("shop.ongoing-fee.ticks", 42000);
-            getConfiguration().set("shop.ongoing-fee.cost-per-shop", 2);
-            getConfiguration().set("shop.ongoing-fee.ignore-unlimited", true);
-            getConfiguration().set("config-version", 64);
+            getConfig().set("shop.ongoing-fee.enable", false);
+            getConfig().set("shop.ongoing-fee.ticks", 42000);
+            getConfig().set("shop.ongoing-fee.cost-per-shop", 2);
+            getConfig().set("shop.ongoing-fee.ignore-unlimited", true);
+            getConfig().set("config-version", 64);
             selectedVersion = 64;
         }
         if (selectedVersion == 64) {
-            getConfiguration().set("shop.allow-free-shop", false);
-            getConfiguration().set("config-version", 65);
+            getConfig().set("shop.allow-free-shop", false);
+            getConfig().set("config-version", 65);
             selectedVersion = 65;
         }
         if (selectedVersion == 65) {
-            getConfiguration().set("shop.minimum-price", 0.01);
-            getConfiguration().set("config-version", 66);
+            getConfig().set("shop.minimum-price", 0.01);
+            getConfig().set("config-version", 66);
             selectedVersion = 66;
         }
         if (selectedVersion == 66) {
-            getConfiguration().set("use-decimal-format", false);
-            getConfiguration().set("decimal-format", "#,###.##");
-            getConfiguration().set("shop.show-owner-uuid-in-controlpanel-if-op", false);
-            getConfiguration().set("config-version", 67);
+            getConfig().set("use-decimal-format", false);
+            getConfig().set("decimal-format", "#,###.##");
+            getConfig().set("shop.show-owner-uuid-in-controlpanel-if-op", false);
+            getConfig().set("config-version", 67);
             selectedVersion = 67;
         }
         if (selectedVersion == 67) {
-            getConfiguration().set("disable-debuglogger", false);
-            getConfiguration().remove("matcher.use-bukkit-matcher");
-            getConfiguration().set("config-version", 68);
+            getConfig().set("disable-debuglogger", false);
+            getConfig().set("matcher.use-bukkit-matcher", null);
+            getConfig().set("config-version", 68);
             selectedVersion = 68;
         }
         if (selectedVersion == 68) {
-            getConfiguration().set("shop.blacklist-lores", Lists.newArrayList("SoulBound"));
-            getConfiguration().set("config-version", 69);
+            getConfig().set("shop.blacklist-lores", Lists.newArrayList("SoulBound"));
+            getConfig().set("config-version", 69);
             selectedVersion = 69;
         }
         if (selectedVersion == 69) {
-            getConfiguration().set("shop.display-item-use-name", false);
-            getConfiguration().set("config-version", 70);
+            getConfig().set("shop.display-item-use-name", false);
+            getConfig().set("config-version", 70);
             selectedVersion = 70;
         }
         if (selectedVersion == 70) {
-            getConfiguration().set("cachingpool.enable", false);
-            getConfiguration().set("cachingpool.maxsize", 100000000);
-            getConfiguration().set("config-version", 71);
+            getConfig().set("cachingpool.enable", false);
+            getConfig().set("cachingpool.maxsize", 100000000);
+            getConfig().set("config-version", 71);
             selectedVersion = 71;
         }
         if (selectedVersion == 71) {
-            if (Objects.equals(getConfiguration().getString("language"), "en")) {
-                getConfiguration().set("language", "en-US");
+            if (Objects.equals(getConfig().getString("language"), "en")) {
+                getConfig().set("language", "en-US");
             }
-            getConfiguration().set("server-platform", 0);
-            getConfiguration().set("config-version", 72);
+            getConfig().set("server-platform", 0);
+            getConfig().set("config-version", 72);
             selectedVersion = 72;
         }
         if (selectedVersion == 72) {
-            if (getConfiguration().getBoolean("use-deciaml-format")) {
-                getConfiguration().set("use-decimal-format", getConfiguration().getBoolean("use-deciaml-format"));
+            if (getConfig().getBoolean("use-deciaml-format")) {
+                getConfig().set("use-decimal-format", getConfig().getBoolean("use-deciaml-format"));
             } else {
-                getConfiguration().set("use-decimal-format", false);
+                getConfig().set("use-decimal-format", false);
             }
-            getConfiguration().remove("use-deciaml-format");
+            getConfig().set("use-deciaml-format", null);
 
-            getConfiguration().set("shop.force-load-downgrade-items.enable", false);
-            getConfiguration().set("shop.force-load-downgrade-items.method", 0);
-            getConfiguration().set("config-version", 73);
+            getConfig().set("shop.force-load-downgrade-items.enable", false);
+            getConfig().set("shop.force-load-downgrade-items.method", 0);
+            getConfig().set("config-version", 73);
             selectedVersion = 73;
         }
         if (selectedVersion == 73) {
-            getConfiguration().set("mixedeconomy.deposit", "eco give {0} {1}");
-            getConfiguration().set("mixedeconomy.withdraw", "eco take {0} {1}");
-            getConfiguration().set("config-version", 74);
+            getConfig().set("mixedeconomy.deposit", "eco give {0} {1}");
+            getConfig().set("mixedeconomy.withdraw", "eco take {0} {1}");
+            getConfig().set("config-version", 74);
             selectedVersion = 74;
         }
         if (selectedVersion == 74) {
-            String langUtilsLanguage = getConfiguration().getOrDefault("langutils-language", "en_us");
-            getConfiguration().remove("langutils-language");
+            String langUtilsLanguage = getConfig().getString("langutils-language", "en_us");
+            getConfig().set("langutils-language", null);
             if ("en_us".equals(langUtilsLanguage)) {
                 langUtilsLanguage = "default";
             }
-            getConfiguration().set("game-language", langUtilsLanguage);
-            getConfiguration().set("maximum-digits-in-price", -1);
-            getConfiguration().set("config-version", 75);
+            getConfig().set("game-language", langUtilsLanguage);
+            getConfig().set("maximum-digits-in-price", -1);
+            getConfig().set("config-version", 75);
             selectedVersion = 75;
         }
         if (selectedVersion == 75) {
-            getConfiguration().remove("langutils-language");
-            if (getConfiguration().get("game-language") == null) {
-                getConfiguration().set("game-language", "default");
+            getConfig().set("langutils-language", null);
+            if (getConfig().get("game-language") == null) {
+                getConfig().set("game-language", "default");
             }
-            getConfiguration().set("config-version", 76);
+            getConfig().set("config-version", 76);
             selectedVersion = 76;
         }
         if (selectedVersion == 76) {
-            getConfiguration().set("database.auto-fix-encoding-issue-in-database", false);
-            getConfiguration().set("send-shop-protection-alert", false);
-            getConfiguration().set("send-display-item-protection-alert", false);
-            getConfiguration().set("shop.use-fast-shop-search-algorithm", false);
-            getConfiguration().set("config-version", 77);
+            getConfig().set("database.auto-fix-encoding-issue-in-database", false);
+            getConfig().set("send-shop-protection-alert", false);
+            getConfig().set("send-display-item-protection-alert", false);
+            getConfig().set("shop.use-fast-shop-search-algorithm", false);
+            getConfig().set("config-version", 77);
             selectedVersion = 77;
         }
         if (selectedVersion == 77) {
-            getConfiguration().set("integration.towny.enable", false);
-            getConfiguration().set("integration.towny.create", new String[]{"SHOPTYPE", "MODIFY"});
-            getConfiguration().set("integration.towny.trade", new String[]{});
-            getConfiguration().set("integration.worldguard.enable", false);
-            getConfiguration().set("integration.worldguard.create", new String[]{"FLAG", "CHEST_ACCESS"});
-            getConfiguration().set("integration.worldguard.trade", new String[]{});
-            getConfiguration().set("integration.plotsquared.enable", false);
-            getConfiguration().set("integration.plotsquared.enable", false);
-            getConfiguration().set("integration.plotsquared.enable", false);
-            getConfiguration().set("integration.residence.enable", false);
-            getConfiguration().set("integration.residence.create", new String[]{"FLAG", "interact", "use"});
-            getConfiguration().set("integration.residence.trade", new String[]{});
+            getConfig().set("integration.towny.enable", false);
+            getConfig().set("integration.towny.create", new String[]{"SHOPTYPE", "MODIFY"});
+            getConfig().set("integration.towny.trade", new String[]{});
+            getConfig().set("integration.worldguard.enable", false);
+            getConfig().set("integration.worldguard.create", new String[]{"FLAG", "CHEST_ACCESS"});
+            getConfig().set("integration.worldguard.trade", new String[]{});
+            getConfig().set("integration.plotsquared.enable", false);
+            getConfig().set("integration.plotsquared.enable", false);
+            getConfig().set("integration.plotsquared.enable", false);
+            getConfig().set("integration.residence.enable", false);
+            getConfig().set("integration.residence.create", new String[]{"FLAG", "interact", "use"});
+            getConfig().set("integration.residence.trade", new String[]{});
 
-            getConfiguration().set("integration.factions.enable", false);
-            getConfiguration().set("integration.factions.create.flag", new String[]{});
-            getConfiguration().set("integration.factions.trade.flag", new String[]{});
-            getConfiguration().set("integration.factions.create.require.open", false);
-            getConfiguration().set("integration.factions.create.require.normal", true);
-            getConfiguration().set("integration.factions.create.require.wilderness", false);
-            getConfiguration().set("integration.factions.create.require.peaceful", true);
-            getConfiguration().set("integration.factions.create.require.permanent", false);
-            getConfiguration().set("integration.factions.create.require.safezone", false);
-            getConfiguration().set("integration.factions.create.require.own", false);
-            getConfiguration().set("integration.factions.create.require.warzone", false);
-            getConfiguration().set("integration.factions.trade.require.open", false);
-            getConfiguration().set("integration.factions.trade.require.normal", true);
-            getConfiguration().set("integration.factions.trade.require.wilderness", false);
-            getConfiguration().set("integration.factions.trade.require.peaceful", false);
-            getConfiguration().set("integration.factions.trade.require.permanent", false);
-            getConfiguration().set("integration.factions.trade.require.safezone", false);
-            getConfiguration().set("integration.factions.trade.require.own", false);
-            getConfiguration().set("integration.factions.trade.require.warzone", false);
-            getConfiguration().remove("anonymous-metrics");
-            getConfiguration().set("shop.ongoing-fee.async", true);
-            getConfiguration().set("config-version", 78);
+            getConfig().set("integration.factions.enable", false);
+            getConfig().set("integration.factions.create.flag", new String[]{});
+            getConfig().set("integration.factions.trade.flag", new String[]{});
+            getConfig().set("integration.factions.create.require.open", false);
+            getConfig().set("integration.factions.create.require.normal", true);
+            getConfig().set("integration.factions.create.require.wilderness", false);
+            getConfig().set("integration.factions.create.require.peaceful", true);
+            getConfig().set("integration.factions.create.require.permanent", false);
+            getConfig().set("integration.factions.create.require.safezone", false);
+            getConfig().set("integration.factions.create.require.own", false);
+            getConfig().set("integration.factions.create.require.warzone", false);
+            getConfig().set("integration.factions.trade.require.open", false);
+            getConfig().set("integration.factions.trade.require.normal", true);
+            getConfig().set("integration.factions.trade.require.wilderness", false);
+            getConfig().set("integration.factions.trade.require.peaceful", false);
+            getConfig().set("integration.factions.trade.require.permanent", false);
+            getConfig().set("integration.factions.trade.require.safezone", false);
+            getConfig().set("integration.factions.trade.require.own", false);
+            getConfig().set("integration.factions.trade.require.warzone", false);
+            getConfig().set("anonymous-metrics", null);
+            getConfig().set("shop.ongoing-fee.async", true);
+            getConfig().set("config-version", 78);
             selectedVersion = 78;
         }
         if (selectedVersion == 78) {
-            getConfiguration().remove("shop.display-type-specifics");
-            getConfiguration().set("config-version", 79);
+            getConfig().set("shop.display-type-specifics", null);
+            getConfig().set("config-version", 79);
             selectedVersion = 79;
         }
         if (selectedVersion == 79) {
-            getConfiguration().set("matcher.item.books", true);
-            getConfiguration().set("config-version", 80);
+            getConfig().set("matcher.item.books", true);
+            getConfig().set("config-version", 80);
             selectedVersion = 80;
         }
         if (selectedVersion == 80) {
-            getConfiguration().set("shop.use-fast-shop-search-algorithm", true);
-            getConfiguration().set("config-version", 81);
+            getConfig().set("shop.use-fast-shop-search-algorithm", true);
+            getConfig().set("config-version", 81);
             selectedVersion = 81;
         }
         if (selectedVersion == 81) {
-            getConfiguration().set("config-version", 82);
+            getConfig().set("config-version", 82);
             selectedVersion = 82;
         }
         if (selectedVersion == 82) {
-            getConfiguration().set("matcher.item.banner", true);
-            getConfiguration().set("config-version", 83);
+            getConfig().set("matcher.item.banner", true);
+            getConfig().set("config-version", 83);
             selectedVersion = 83;
         }
         if (selectedVersion == 83) {
-            getConfiguration().set("matcher.item.banner", true);
-            getConfiguration().set("protect.explode", true);
-            getConfiguration().set("config-version", 84);
+            getConfig().set("matcher.item.banner", true);
+            getConfig().set("protect.explode", true);
+            getConfig().set("config-version", 84);
             selectedVersion = 84;
         }
         if (selectedVersion == 84) {
-            getConfiguration().remove("disable-debuglogger");
-            getConfiguration().set("config-version", 85);
+            getConfig().set("disable-debuglogger", null);
+            getConfig().set("config-version", 85);
             selectedVersion = 85;
         }
         if (selectedVersion == 85) {
-            getConfiguration().set("config-version", 86);
+            getConfig().set("config-version", 86);
             selectedVersion = 86;
         }
         if (selectedVersion == 86) {
-            getConfiguration().set("shop.use-fast-shop-search-algorithm", true);
-            getConfiguration().set("config-version", 87);
+            getConfig().set("shop.use-fast-shop-search-algorithm", true);
+            getConfig().set("config-version", 87);
             selectedVersion = 87;
         }
         if (selectedVersion == 87) {
-            getConfiguration().set("plugin.BlockHub.enable", true);
-            getConfiguration().set("plugin.BlockHub.only", false);
+            getConfig().set("plugin.BlockHub.enable", true);
+            getConfig().set("plugin.BlockHub.only", false);
             if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
-                getConfiguration().set("shop.display-type", 2);
+                getConfig().set("shop.display-type", 2);
             }
-            getConfiguration().set("config-version", 88);
+            getConfig().set("config-version", 88);
             selectedVersion = 88;
         }
         if (selectedVersion == 88) {
-            getConfiguration().set("respect-item-flag", true);
-            getConfiguration().set("config-version", 89);
+            getConfig().set("respect-item-flag", true);
+            getConfig().set("config-version", 89);
             selectedVersion = 89;
         }
         if (selectedVersion == 89) {
-            getConfiguration().set("use-caching", true);
-            getConfiguration().set("config-version", 90);
+            getConfig().set("use-caching", true);
+            getConfig().set("config-version", 90);
             selectedVersion = 90;
         }
         if (selectedVersion == 90) {
-            getConfiguration().set("protect.hopper", true);
-            getConfiguration().set("config-version", 91);
+            getConfig().set("protect.hopper", true);
+            getConfig().set("config-version", 91);
             selectedVersion = 91;
         }
         if (selectedVersion == 91) {
-            getConfiguration().set("database.queue-commit-interval", 2);
-            getConfiguration().set("config-version", 92);
+            getConfig().set("database.queue-commit-interval", 2);
+            getConfig().set("config-version", 92);
             selectedVersion = 92;
         }
         if (selectedVersion == 92) {
-            getConfiguration().set("send-display-item-protection-alert", false);
-            getConfiguration().set("send-shop-protection-alert", false);
-            getConfiguration().set("disable-creative-mode-trading", false);
-            getConfiguration().set("disable-super-tool", false);
-            getConfiguration().set("allow-owner-break-shop-sign", false);
-            getConfiguration().set("matcher.item.skull", true);
-            getConfiguration().set("matcher.item.firework", true);
-            getConfiguration().set("matcher.item.map", true);
-            getConfiguration().set("matcher.item.leatherArmor", true);
-            getConfiguration().set("matcher.item.fishBucket", true);
-            getConfiguration().set("matcher.item.suspiciousStew", true);
-            getConfiguration().set("matcher.item.shulkerBox", true);
-            getConfiguration().set("config-version", 93);
+            getConfig().set("send-display-item-protection-alert", false);
+            getConfig().set("send-shop-protection-alert", false);
+            getConfig().set("disable-creative-mode-trading", false);
+            getConfig().set("disable-super-tool", false);
+            getConfig().set("allow-owner-break-shop-sign", false);
+            getConfig().set("matcher.item.skull", true);
+            getConfig().set("matcher.item.firework", true);
+            getConfig().set("matcher.item.map", true);
+            getConfig().set("matcher.item.leatherArmor", true);
+            getConfig().set("matcher.item.fishBucket", true);
+            getConfig().set("matcher.item.suspiciousStew", true);
+            getConfig().set("matcher.item.shulkerBox", true);
+            getConfig().set("config-version", 93);
             selectedVersion = 93;
         }
         if (selectedVersion == 93) {
-            getConfiguration().remove("disable-creative-mode-trading");
-            getConfiguration().remove("disable-super-tool");
-            getConfiguration().remove("allow-owner-break-shop-sign");
-            getConfiguration().set("shop.disable-creative-mode-trading", true);
-            getConfiguration().set("shop.disable-super-tool", true);
-            getConfiguration().set("shop.allow-owner-break-shop-sign", false);
-            getConfiguration().set("config-version", 94);
+            getConfig().set("disable-creative-mode-trading", null);
+            getConfig().set("disable-super-tool", null);
+            getConfig().set("allow-owner-break-shop-sign", null);
+            getConfig().set("shop.disable-creative-mode-trading", true);
+            getConfig().set("shop.disable-super-tool", true);
+            getConfig().set("shop.allow-owner-break-shop-sign", false);
+            getConfig().set("config-version", 94);
             selectedVersion = 94;
         }
         if (selectedVersion == 94) {
-            if (getConfiguration().get("price-restriction") != null) {
-                getConfiguration().set("shop.price-restriction", getConfiguration().getStringList("price-restriction"));
-                getConfiguration().remove("price-restriction");
+            if (getConfig().get("price-restriction") != null) {
+                getConfig().set("shop.price-restriction", getConfig().getStringList("price-restriction"));
+                getConfig().set("price-restriction", null);
             } else {
-                getConfiguration().set("shop.price-restriction", new ArrayList<>(0));
+                getConfig().set("shop.price-restriction", new ArrayList<>(0));
             }
-            getConfiguration().remove("enable-log4j");
-            getConfiguration().set("config-version", 95);
+            getConfig().set("enable-log4j", null);
+            getConfig().set("config-version", 95);
             selectedVersion = 95;
         }
         if (selectedVersion == 95) {
-            getConfiguration().set("shop.allow-stacks", false);
-            getConfiguration().set("shop.display-allow-stacks", false);
-            getConfiguration().set("custom-item-stacksize", new ArrayList<>(0));
-            getConfiguration().set("config-version", 96);
+            getConfig().set("shop.allow-stacks", false);
+            getConfig().set("shop.display-allow-stacks", false);
+            getConfig().set("custom-item-stacksize", new ArrayList<>(0));
+            getConfig().set("config-version", 96);
             selectedVersion = 96;
         }
         if (selectedVersion == 96) {
-            getConfiguration().set("shop.deny-non-shop-items-to-shop-container", false);
-            getConfiguration().set("config-version", 97);
+            getConfig().set("shop.deny-non-shop-items-to-shop-container", false);
+            getConfig().set("config-version", 97);
             selectedVersion = 97;
         }
         if (selectedVersion == 97) {
-            getConfiguration().set("shop.disable-quick-create", false);
-            getConfiguration().set("config-version", 98);
+            getConfig().set("shop.disable-quick-create", false);
+            getConfig().set("config-version", 98);
             selectedVersion = 98;
         }
         if (selectedVersion == 98) {
-            getConfiguration().set("config-version", 99);
+            getConfig().set("config-version", 99);
             selectedVersion = 99;
         }
         if (selectedVersion == 99) {
-            getConfiguration().set("shop.currency-symbol-on-right", false);
-            getConfiguration().set("config-version", 100);
+            getConfig().set("shop.currency-symbol-on-right", false);
+            getConfig().set("config-version", 100);
             selectedVersion = 100;
         }
         if (selectedVersion == 100) {
-            getConfiguration().set("integration.towny.ignore-disabled-worlds", false);
-            getConfiguration().set("config-version", 101);
+            getConfig().set("integration.towny.ignore-disabled-worlds", false);
+            getConfig().set("config-version", 101);
             selectedVersion = 101;
         }
         if (selectedVersion == 101) {
-            getConfiguration().set("matcher.work-type", 1);
-            getConfiguration().remove("work-type");
-            getConfiguration().set("plugin.LWC", true);
-            getConfiguration().set("config-version", 102);
+            getConfig().set("matcher.work-type", 1);
+            getConfig().set("work-type", null);
+            getConfig().set("plugin.LWC", true);
+            getConfig().set("config-version", 102);
             selectedVersion = 102;
         }
         if (selectedVersion == 102) {
-            getConfiguration().set("protect.entity", true);
-            getConfiguration().set("config-version", 103);
+            getConfig().set("protect.entity", true);
+            getConfig().set("config-version", 103);
             selectedVersion = 103;
         }
         if (selectedVersion == 103) {
-            getConfiguration().set("integration.worldguard.whitelist-mode", false);
-            getConfiguration().set("integration.factions.whitelist-mode", true);
-            getConfiguration().set("integration.plotsquared.whitelist-mode", true);
-            getConfiguration().set("integration.residence.whitelist-mode", true);
-            getConfiguration().set("config-version", 104);
+            getConfig().set("integration.worldguard.whitelist-mode", false);
+            getConfig().set("integration.factions.whitelist-mode", true);
+            getConfig().set("integration.plotsquared.whitelist-mode", true);
+            getConfig().set("integration.residence.whitelist-mode", true);
+            getConfig().set("config-version", 104);
             selectedVersion = 104;
         }
         if (selectedVersion == 104) {
-            getConfiguration().remove("cachingpool");
-            getConfiguration().set("config-version", 105);
+            getConfig().set("cachingpool", null);
+            getConfig().set("config-version", 105);
             selectedVersion = 105;
         }
         if (selectedVersion == 105) {
-            getConfiguration().set("shop.interact.sneak-to-create", getConfiguration().getBoolean("shop.sneak-to-create"));
-            getConfiguration().remove("shop.sneak-to-create");
-            getConfiguration().set("shop.interact.sneak-to-trade", getConfiguration().getBoolean("shop.sneak-to-trade"));
-            getConfiguration().remove("shop.sneak-to-trade");
-            getConfiguration().set("shop.interact.sneak-to-control", getConfiguration().getBoolean("shop.sneak-to-control"));
-            getConfiguration().remove("shop.sneak-to-control");
-            getConfiguration().set("config-version", 106);
+            getConfig().set("shop.interact.sneak-to-create", getConfig().getBoolean("shop.sneak-to-create"));
+            getConfig().set("shop.sneak-to-create", null);
+            getConfig().set("shop.interact.sneak-to-trade", getConfig().getBoolean("shop.sneak-to-trade"));
+            getConfig().set("shop.sneak-to-trade", null);
+            getConfig().set("shop.interact.sneak-to-control", getConfig().getBoolean("shop.sneak-to-control"));
+            getConfig().set("shop.sneak-to-control", null);
+            getConfig().set("config-version", 106);
             selectedVersion = 106;
         }
         if (selectedVersion == 106) {
-            getConfiguration().set("shop.use-enchantment-for-enchanted-book", false);
-            getConfiguration().set("config-version", 107);
+            getConfig().set("shop.use-enchantment-for-enchanted-book", false);
+            getConfig().set("config-version", 107);
             selectedVersion = 107;
         }
         if (selectedVersion == 107) {
-            getConfiguration().set("integration.lands.enable", false);
-            getConfiguration().set("integration.lands.whitelist-mode", false);
-            getConfiguration().set("integration.lands.ignore-disabled-worlds", true);
-            getConfiguration().set("config-version", 108);
+            getConfig().set("integration.lands.enable", false);
+            getConfig().set("integration.lands.whitelist-mode", false);
+            getConfig().set("integration.lands.ignore-disabled-worlds", true);
+            getConfig().set("config-version", 108);
             selectedVersion = 108;
         }
         if (selectedVersion == 108) {
-            getConfiguration().set("debug.shop-deletion", false);
-            getConfiguration().set("config-version", 109);
+            getConfig().set("debug.shop-deletion", false);
+            getConfig().set("config-version", 109);
             selectedVersion = 109;
         }
         if (selectedVersion == 109) {
-            getConfiguration().set("shop.protection-checking-blacklist", Collections.singletonList("disabled_world"));
-            getConfiguration().set("config-version", 110);
+            getConfig().set("shop.protection-checking-blacklist", Collections.singletonList("disabled_world"));
+            getConfig().set("config-version", 110);
             selectedVersion = 110;
         }
         if (selectedVersion == 110) {
-            getConfiguration().set("integration.worldguard.any-owner", true);
-            getConfiguration().set("config-version", 111);
+            getConfig().set("integration.worldguard.any-owner", true);
+            getConfig().set("config-version", 111);
             selectedVersion = 111;
         }
         if (selectedVersion == 111) {
-            getConfiguration().set("logging.enable", getConfiguration().getBoolean("log-actions"));
-            getConfiguration().set("logging.log-actions", getConfiguration().getBoolean("log-actions"));
-            getConfiguration().set("logging.log-balance", true);
-            getConfiguration().set("logging.file-size", 10);
-            getConfiguration().set("debug.disable-debuglogger", false);
-            getConfiguration().set("trying-fix-banlance-insuffient", false);
-            getConfiguration().remove("log-actions");
-            getConfiguration().set("config-version", 112);
+            getConfig().set("logging.enable", getConfig().getBoolean("log-actions"));
+            getConfig().set("logging.log-actions", getConfig().getBoolean("log-actions"));
+            getConfig().set("logging.log-balance", true);
+            getConfig().set("logging.file-size", 10);
+            getConfig().set("debug.disable-debuglogger", false);
+            getConfig().set("trying-fix-banlance-insuffient", false);
+            getConfig().set("log-actions", null);
+            getConfig().set("config-version", 112);
             selectedVersion = 112;
         }
         if (selectedVersion == 112) {
-            getConfiguration().set("integration.lands.delete-on-lose-permission", false);
-            getConfiguration().set("config-version", 113);
+            getConfig().set("integration.lands.delete-on-lose-permission", false);
+            getConfig().set("config-version", 113);
             selectedVersion = 113;
         }
         if (selectedVersion == 113) {
-            getConfiguration().set("config-damaged", false);
-            getConfiguration().set("config-version", 114);
+            getConfig().set("config-damaged", false);
+            getConfig().set("config-version", 114);
             selectedVersion = 114;
         }
         if (selectedVersion == 114) {
-            getConfiguration().set("shop.interact.interact-mode", getConfiguration().getBoolean("shop.interact.switch-mode") ? 0 : 1);
-            getConfiguration().remove("shop.interact.switch-mode");
-            getConfiguration().set("config-version", 115);
+            getConfig().set("shop.interact.interact-mode", getConfig().getBoolean("shop.interact.switch-mode") ? 0 : 1);
+            getConfig().set("shop.interact.switch-mode", null);
+            getConfig().set("config-version", 115);
             selectedVersion = 115;
         }
         if (selectedVersion == 115) {
-            getConfiguration().set("integration.griefprevention.enable", false);
-            getConfiguration().set("integration.griefprevention.whitelist-mode", false);
-            getConfiguration().set("integration.griefprevention.create", Collections.emptyList());
-            getConfiguration().set("integration.griefprevention.trade", Collections.emptyList());
-            getConfiguration().set("config-version", 116);
+            getConfig().set("integration.griefprevention.enable", false);
+            getConfig().set("integration.griefprevention.whitelist-mode", false);
+            getConfig().set("integration.griefprevention.create", Collections.emptyList());
+            getConfig().set("integration.griefprevention.trade", Collections.emptyList());
+            getConfig().set("config-version", 116);
             selectedVersion = 116;
         }
         if (selectedVersion == 116) {
-            getConfiguration().set("shop.sending-stock-message-to-staffs", false);
-            getConfiguration().set("integration.towny.delete-shop-on-resident-leave", false);
-            getConfiguration().set("config-version", 117);
+            getConfig().set("shop.sending-stock-message-to-staffs", false);
+            getConfig().set("integration.towny.delete-shop-on-resident-leave", false);
+            getConfig().set("config-version", 117);
             selectedVersion = 117;
         }
         if (selectedVersion == 117) {
-            getConfiguration().set("shop.finding.distance", getConfiguration().getInt("shop.find-distance"));
-            getConfiguration().set("shop.finding.limit", 10);
-            getConfiguration().remove("shop.find-distance");
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("shop.finding.distance", getConfig().getInt("shop.find-distance"));
+            getConfig().set("shop.finding.limit", 10);
+            getConfig().set("shop.find-distance", null);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 118) {
-            getConfiguration().set("shop.finding.oldLogic", false);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("shop.finding.oldLogic", false);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 119) {
-            getConfiguration().set("debug.adventure", false);
-            getConfiguration().set("shop.finding.all", false);
-            getConfiguration().set("chat-type", 0);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("debug.adventure", false);
+            getConfig().set("shop.finding.all", false);
+            getConfig().set("chat-type", 0);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 120) {
-            getConfiguration().set("shop.finding.exclude-out-of-stock", false);
-            getConfiguration().set("chat-type", 0);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("shop.finding.exclude-out-of-stock", false);
+            getConfig().set("chat-type", 0);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 121) {
-            getConfiguration().set("shop.protection-checking-handler", 0);
-            getConfiguration().set("shop.protection-checking-listener-blacklist", Collections.singletonList("ignored_listener"));
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("shop.protection-checking-handler", 0);
+            getConfig().set("shop.protection-checking-listener-blacklist", Collections.singletonList("ignored_listener"));
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 122) {
-            getConfiguration().set("currency", "");
-            getConfiguration().set("shop.alternate-currency-symbol-list", Arrays.asList("CNY;¥", "USD;$"));
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("currency", "");
+            getConfig().set("shop.alternate-currency-symbol-list", Arrays.asList("CNY;¥", "USD;$"));
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 123) {
-            getConfiguration().set("integration.fabledskyblock.enable", false);
-            getConfiguration().set("integration.fabledskyblock.whitelist-mode", false);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("integration.fabledskyblock.enable", false);
+            getConfig().set("integration.fabledskyblock.whitelist-mode", false);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 124) {
-            getConfiguration().set("plugin.BKCommonLib", true);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("plugin.BKCommonLib", true);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 125) {
-            getConfiguration().set("integration.superiorskyblock.enable", false);
-            getConfiguration().set("integration.superiorskyblock.owner-create-only", false);
-            getConfiguration().set("integration.superiorskyblock.delete-shop-on-member-leave", true);
-            getConfiguration().set("shop.interact.swap-click-behavior", false);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("integration.superiorskyblock.enable", false);
+            getConfig().set("integration.superiorskyblock.owner-create-only", false);
+            getConfig().set("integration.superiorskyblock.delete-shop-on-member-leave", true);
+            getConfig().set("shop.interact.swap-click-behavior", false);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 126) {
-            getConfiguration().set("debug.delete-corrupt-shops", false);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("debug.delete-corrupt-shops", false);
+            getConfig().set("config-version", ++selectedVersion);
         }
 
         if (selectedVersion == 127) {
-            getConfiguration().set("integration.plotsquared.delete-when-user-untrusted", true);
-            getConfiguration().set("integration.towny.delete-shop-on-plot-clear", true);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("integration.plotsquared.delete-when-user-untrusted", true);
+            getConfig().set("integration.towny.delete-shop-on-plot-clear", true);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 128) {
-            getConfiguration().set("shop.force-use-item-original-name", false);
-            getConfiguration().set("integration.griefprevention.delete-on-untrusted", false);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("shop.force-use-item-original-name", false);
+            getConfig().set("integration.griefprevention.delete-on-untrusted", false);
+            getConfig().set("config-version", ++selectedVersion);
         }
 
         if (selectedVersion == 129) {
-            getConfiguration().set("shop.use-global-virtual-item-queue", false);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("shop.use-global-virtual-item-queue", false);
+            getConfig().set("config-version", ++selectedVersion);
         }
 
         if (selectedVersion == 130) {
-            getConfiguration().set("plugin.WorldEdit", true);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("plugin.WorldEdit", true);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 131) {
-            getConfiguration().set("custom-commands", ImmutableList.of("shop", "chestshop", "cshop"));
-            getConfiguration().set("unlimited-shop-owner-change", false);
-            getConfiguration().set("unlimited-shop-owner-change-account", "quickshop");
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("custom-commands", ImmutableList.of("shop", "chestshop", "cshop"));
+            getConfig().set("unlimited-shop-owner-change", false);
+            getConfig().set("unlimited-shop-owner-change-account", "quickshop");
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 132) {
-            getConfiguration().set("shop.sign-glowing", false);
-            getConfiguration().set("shop.sign-dye-color", "null");
-            getConfiguration().set("unlimited-shop-owner-change-account", "quickshop");
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("shop.sign-glowing", false);
+            getConfig().set("shop.sign-dye-color", "null");
+            getConfig().set("unlimited-shop-owner-change-account", "quickshop");
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 133) {
-            getConfiguration().set("integration.griefprevention.delete-on-unclaim", false);
-            getConfiguration().set("integration.griefprevention.delete-on-claim-expired", false);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("integration.griefprevention.delete-on-unclaim", false);
+            getConfig().set("integration.griefprevention.delete-on-claim-expired", false);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 134) {
-            getConfiguration().set("integration.griefprevention.delete-on-claim-resized", false);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("integration.griefprevention.delete-on-claim-resized", false);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 135) {
-            getConfiguration().set("integration.advancedregionmarket.enable", true);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("integration.advancedregionmarket.enable", true);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 136) {
-            getConfiguration().remove("shop.use-global-virtual-item-queue");
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("shop.use-global-virtual-item-queue", null);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 137) {
-            getConfiguration().remove("integration.griefprevention.create");
-            getConfiguration().set("integration.griefprevention.create", "INVENTORY");
+            getConfig().set("integration.griefprevention.create", null);
+            getConfig().set("integration.griefprevention.create", "INVENTORY");
 
-            getConfiguration().remove("integration.griefprevention.trade");
-            getConfiguration().set("integration.griefprevention.trade", Collections.emptyList());
+            getConfig().set("integration.griefprevention.trade", null);
+            getConfig().set("integration.griefprevention.trade", Collections.emptyList());
 
-            boolean oldValueUntrusted = getConfiguration().getOrDefault("integration.griefprevention.delete-on-untrusted", false);
-            getConfiguration().remove("integration.griefprevention.delete-on-untrusted");
-            getConfiguration().set("integration.griefprevention.delete-on-claim-trust-changed", oldValueUntrusted);
+            boolean oldValueUntrusted = getConfig().getBoolean("integration.griefprevention.delete-on-untrusted", false);
+            getConfig().set("integration.griefprevention.delete-on-untrusted", null);
+            getConfig().set("integration.griefprevention.delete-on-claim-trust-changed", oldValueUntrusted);
 
-            boolean oldValueUnclaim = getConfiguration().getOrDefault("integration.griefprevention.delete-on-unclaim", false);
-            getConfiguration().remove("integration.griefprevention.delete-on-unclaim");
-            getConfiguration().set("integration.griefprevention.delete-on-claim-unclaimed", oldValueUnclaim);
+            boolean oldValueUnclaim = getConfig().getBoolean("integration.griefprevention.delete-on-unclaim", false);
+            getConfig().set("integration.griefprevention.delete-on-unclaim", null);
+            getConfig().set("integration.griefprevention.delete-on-claim-unclaimed", oldValueUnclaim);
 
-            getConfiguration().set("integration.griefprevention.delete-on-subclaim-created", false);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("integration.griefprevention.delete-on-subclaim-created", false);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 138) {
-            getConfiguration().set("integration.towny.whitelist-mode", true);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("integration.towny.whitelist-mode", true);
+            getConfig().set("config-version", ++selectedVersion);
         }
 
         if (selectedVersion == 139) {
-            getConfiguration().set("integration.iridiumskyblock.enable", false);
-            getConfiguration().set("integration.iridiumskyblock.owner-create-only", false);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("integration.iridiumskyblock.enable", false);
+            getConfig().set("integration.iridiumskyblock.owner-create-only", false);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 140) {
-            getConfiguration().set("integration.towny.delete-shop-on-plot-destroy", true);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("integration.towny.delete-shop-on-plot-destroy", true);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 141) {
-            getConfiguration().set("disabled-languages", Collections.singletonList("disable_here"));
-            getConfiguration().set("mojangapi-mirror", 0);
-            getConfiguration().set("purge.enabled", false);
-            getConfiguration().set("purge.days", 60);
-            getConfiguration().set("purge.banned", true);
-            getConfiguration().set("purge.skip-op", true);
-            getConfiguration().set("purge.return-create-fee", true);
-            getConfiguration().remove("shop.use-fast-shop-search-algorithm");
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("disabled-languages", Collections.singletonList("disable_here"));
+            getConfig().set("mojangapi-mirror", 0);
+            getConfig().set("purge.enabled", false);
+            getConfig().set("purge.days", 60);
+            getConfig().set("purge.banned", true);
+            getConfig().set("purge.skip-op", true);
+            getConfig().set("purge.return-create-fee", true);
+            getConfig().set("shop.use-fast-shop-search-algorithm", null);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 142) {
-            getConfiguration().remove("disabled-languages");
-            getConfiguration().set("enabled-languages", Collections.singletonList("*"));
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("disabled-languages", null);
+            getConfig().set("enabled-languages", Collections.singletonList("*"));
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 143) {
-//            if (getConfiguration().get("language") == null) {
-//                getConfiguration().set("language", "en-US");
+//            if (getConfig().get("language") == null) {
+//                getConfig().set("language", "en-US");
 //            }
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("config-version", ++selectedVersion);
         }
 
         if (selectedVersion == 144) {
             // Updater set it to true because plugin upgrading
             // Default configuration disable it cause probably fresh install
-            getConfiguration().getOrDefault("legacy-updater.shop-sign", true);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("legacy-updater.shop-sign", true);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 145) {
             // Updater set it to true because plugin upgrading
             // Default configuration disable it cause probably fresh install
-            getConfiguration().set("logger.location", 0);
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("logger.location", 0);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 146) {
             // Updater set it to true because plugin upgrading
             // Default configuration disable it cause probably fresh install
-            getConfiguration().remove("language");
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("language", null);
+            getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 147) {
             // Updater set it to true because plugin upgrading
             // Default configuration disable it cause probably fresh install
-            getConfiguration().remove("plugin.BKCommonLib");
-            getConfiguration().set("config-version", ++selectedVersion);
+            getConfig().set("plugin.BKCommonLib", null);
+            getConfig().set("config-version", ++selectedVersion);
         }
-        if (getConfiguration().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
+        if (selectedVersion == 148) {
+            getConfig().set("integration.worldguard.respect-global-region", false);
+            getConfig().set("config-version", ++selectedVersion);
+        }
+        if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
 
         try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(getResource("config.yml"))), StandardCharsets.UTF_8)) {
-            if (new ConfigurationFixerLightning(this, new File(getDataFolder(), "config.yml"), getConfiguration(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
+            if (new ConfigurationFixer(this, new File(getDataFolder(), "config.yml"), getConfig(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
                 reloadConfiguration();
             }
         }
 
         saveConfiguration();
         reloadConfiguration();
+
+        //Add comment for config.yml
+        try (InputStream inputStream = Objects.requireNonNull(getResource("config.yml"))) {
+            new ConfigCommentUpdater(this, inputStream, new File(getDataFolder(), "config.yml")).updateComment();
+        }
 
         //Delete old example configuration files
         Files.deleteIfExists(new File(getDataFolder(), "example.config.yml").toPath());
@@ -2009,7 +2042,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     }
 
     public void registerCustomCommands() {
-        List<String> customCommands = getConfiguration().getStringList("custom-commands");
+        List<String> customCommands = getConfig().getStringList("custom-commands");
         PluginCommand quickShopCommand = getCommand("qs");
         if (quickShopCommand == null) {
             getLogger().warning("Failed to get QuickShop PluginCommand instance.");
@@ -2084,6 +2117,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
     @Override
     public GameVersion getGameVersion() {
+        if (gameVersion == null) {
+            gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
+        }
         return this.gameVersion;
     }
 }

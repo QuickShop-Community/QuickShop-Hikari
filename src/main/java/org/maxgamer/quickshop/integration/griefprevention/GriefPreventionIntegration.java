@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.integration.griefprevention;
 
-import de.leonhard.storage.sections.FlatFileSection;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -27,6 +26,8 @@ import me.ryanhamshire.GriefPrevention.events.*;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -66,7 +67,10 @@ public class GriefPreventionIntegration extends AbstractQSIntegratedPlugin {
     }
 
     private void init() {
-        FlatFileSection configurationSection = plugin.getConfiguration().getSection("integration.griefprevention");
+        ConfigurationSection configurationSection = plugin.getConfig().getConfigurationSection("integration.griefprevention");
+        if (configurationSection == null) {
+            configurationSection = new MemoryConfiguration();
+        }
         this.whiteList = configurationSection.getBoolean("whitelist-mode");
         this.deleteOnClaimTrustChanged = configurationSection.getBoolean("delete-on-claim-trust-changed");
         this.deleteOnClaimUnclaimed = configurationSection.getBoolean("delete-on-claim-unclaimed");
