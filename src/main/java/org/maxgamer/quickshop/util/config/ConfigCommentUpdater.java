@@ -119,6 +119,7 @@ public class ConfigCommentUpdater extends QuickShopInstanceHolder {
             output.addAll(key2NonKeyContentMap.getOrDefault(FOOTER, Collections.emptySet()));
             hasWrite = true;
             Files.write(externalConfig.toPath(), output, StandardCharsets.UTF_8);
+            backupFile.toFile().delete();
         } catch (Throwable e) {
             if (hasBackup && hasWrite) {
                 plugin.getLogger().log(Level.WARNING, "Failed to update comment for config.yml, rollback...", e);
