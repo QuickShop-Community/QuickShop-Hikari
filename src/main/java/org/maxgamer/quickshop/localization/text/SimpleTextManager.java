@@ -299,8 +299,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     }
                 }
             }
+            languagesCache.put(langCode, result);
         }
-        languagesCache.put(langCode, result);
         return result;
     }
 
