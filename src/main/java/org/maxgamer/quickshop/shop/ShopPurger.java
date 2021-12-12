@@ -29,6 +29,7 @@ import org.maxgamer.quickshop.util.Util;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class ShopPurger implements Runnable {
@@ -56,7 +57,10 @@ public class ShopPurger implements Runnable {
     public void run() {
         Util.ensureThread(true);
         executing = true;
-        Util.debugLog("[Shop Purger] Scanning and removing shops");
+
+        String backupFileName = "shop-purge-backup-" + UUID.randomUUID() + ".txt";
+        Util.makeExportBackup(backupFileName);
+        plugin.getLogger().info("[Shop Purger] Scanning and removing shops, we have backup shop data as" + backupFileName + ", if you ran into any trouble, please rename it to recovery.txt then use /qs recovery in console to rollback");
         List<Shop> pendingRemovalShops = new ArrayList<>();
         int days = plugin.getConfig().getInt("purge.days", 360);
         boolean deleteBanned = plugin.getConfig().getBoolean("purge.banned");
