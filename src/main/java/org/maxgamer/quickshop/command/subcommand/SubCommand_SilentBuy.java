@@ -38,12 +38,19 @@ public class SubCommand_SilentBuy implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+        if (cmdArg.length != 1) {
             Util.debugLog("Exception on command! Canceling!");
             return;
         }
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(cmdArg[0]);
+        } catch (IllegalArgumentException e) {
+            //Not valid, return for doing nothing
+            return;
+        }
 
-        Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
+        Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(uuid);
 
         if (shop == null || !shop.getModerator().isModerator(sender.getUniqueId())) {
             plugin.text().of(sender, "not-looking-at-shop").send();

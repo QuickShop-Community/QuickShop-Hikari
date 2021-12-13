@@ -37,12 +37,20 @@ public class SubCommand_SilentPreview implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+        if (cmdArg.length != 1) {
             Util.debugLog("Exception on command! Canceling!");
             return;
         }
 
-        Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(UUID.fromString(cmdArg[0]));
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(cmdArg[0]);
+        } catch (IllegalArgumentException e) {
+            //Not valid, return for doing nothing
+            return;
+        }
+
+        Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(uuid);
 
 
         if (!(shop instanceof ContainerShop)) {
