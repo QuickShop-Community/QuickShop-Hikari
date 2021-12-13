@@ -975,7 +975,8 @@ public class Util {
         MineDownParser parser = MINEDOWN.get().parser();
         parser.reset();
         StringBuilder builder = new StringBuilder();
-        BaseComponent[] components = parser.enable(MineDownParser.Option.LEGACY_COLORS).parse(text).create();
+        BaseComponent[] components = parser.enable(MineDownParser.Option.LEGACY_COLORS).backwardsCompatibility(true).parse(text).create();
+        BaseComponent lastComponent = null;
         for (BaseComponent component : components) {
             ChatColor color = component.getColorRaw();
             String legacyText = component.toLegacyText();
@@ -983,7 +984,17 @@ public class Util {
                 //Remove redundant §f added by toLegacyText
                 legacyText = legacyText.substring(2);
             }
+            if (lastComponent != null && (
+                    lastComponent.isBold() != component.isBold() ||
+                            lastComponent.isItalic() != component.isItalic() ||
+                            lastComponent.isObfuscated() != component.isObfuscated() ||
+                            lastComponent.isStrikethrough() != component.isStrikethrough() ||
+                            lastComponent.isUnderlined() != lastComponent.isUnderlined()
+            )) {
+                builder.append("§r");
+            }
             builder.append(legacyText);
+            lastComponent = component;
         }
         return builder.toString();
     }
