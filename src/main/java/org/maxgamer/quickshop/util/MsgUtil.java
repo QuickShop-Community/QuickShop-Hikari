@@ -26,7 +26,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,6 +49,7 @@ import org.maxgamer.quickshop.api.database.WarpedResultSet;
 import org.maxgamer.quickshop.api.event.ShopControlPanelOpenEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.chat.QuickComponentImpl;
+import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 import org.maxgamer.quickshop.localization.game.game.GameLanguage;
 import org.maxgamer.quickshop.localization.game.game.MojangGameLanguageImpl;
 import org.maxgamer.quickshop.util.logging.container.PluginGlobalAlertLog;
@@ -228,7 +228,7 @@ public class MsgUtil {
     }
 
     public static String convertItemStackToTranslateText(Material mat) {
-        return TextSplitter.bakeComponent(new ComponentBuilder("").append(Util.getTranslateComponentForMaterial(mat)).create());
+        return TextSplitter.bakeComponent(new BungeeQuickChat.BungeeComponentBuilder().append(Util.getTranslateComponentForMaterial(mat)).create());
     }
 
     @Unstable
@@ -739,7 +739,7 @@ public class MsgUtil {
                 if (spilledString == null) {
                     plugin.getQuickChat().send(sender, msg);
                 } else {
-                    ComponentBuilder builder = new ComponentBuilder("");
+                    BungeeQuickChat.BungeeComponentBuilder builder = new BungeeQuickChat.BungeeComponentBuilder();
                     builder.appendLegacy(spilledString.getLeft());
                     builder.append(spilledString.getComponents());
                     builder.appendLegacy(spilledString.getRight());
