@@ -225,8 +225,8 @@ shop:
   sign-glowing: false
 
   #Sign use dye color  https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html
-  sign-dye-color: null
   #sign-dye-color: WHITE
+  sign-dye-color: ""
 
   #Should we pay/take money to/from unlimited shops owners?
   pay-unlimited-shop-owners: false

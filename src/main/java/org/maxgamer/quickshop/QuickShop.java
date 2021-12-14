@@ -1990,6 +1990,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfig().set("integration.worldguard.respect-global-region", false);
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 149) {
+            //Fix sign-dye-color setting is missing
+            if (!getConfig().isSet("shop.sign-dye-color")) {
+                getConfig().set("shop.sign-dye-color", "");
+            }
+            getConfig().set("config-version", ++selectedVersion);
+        }
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
