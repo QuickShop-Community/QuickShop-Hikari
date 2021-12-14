@@ -111,7 +111,7 @@
   "bypassing-lock": "&cIgnorerar ett butikslås!",
   "that-is-locked": "&cDenna butik är låst.",
   "how-many-buy": "&aAnge i chatten, hur många du vill &bKÖPA&a. Du kan köpa &e{0}&a. Ange &b{1}&a för att köpa alla.",
-  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You can sell &e{0}&a. Enter &b{1}&a in chat, to sell all.",
+  "how-many-sell": "&aAnge i chatten, hur många du vill &dSÄLJA&a. Du har &{0}& tillgängliga. Ange &{1}&a i chatten, för att sälja alla.",
   "not-allowed-to-create": "&cDu får inte skapa en butik här.",
   "blacklisted-item": "&cDu kan inte sälja detta föremål eftersom det finns på svartlistan",
   "how-much-to-trade-for": "&aAnge i chatten, hur mycket du vill sälja &e{1}x {0}&a för.",
@@ -308,7 +308,7 @@
   "shop-freezed-at-location": "&eDin butik {0} vid {1} blev frusen!",
   "denied-put-in-item": "&cDu kan inte lägga in detta objekt i din butik!",
   "how-many-buy-stack": "&eAnge i chatten, hur många paket du vill &bKÖPA&a. Det finns &e{0}&a föremål i varje paket och du kan köpa &e{1}&a paket. Ange &b{2}&a i chatten för att köpa alla.",
-  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you can sell &e{1}&a bulks. Enter &b{2}&a in chat to sell all.",
+  "how-many-sell-stack": "&aAnge i chatten, hur många föremål du vill &dSÄLJA&a per paket. Det finns &e{0}&a föremål per paket och du har &e{1}&a paket tillgängliga. Ange &b{2}&a i chatten för att sälja alla.",
   "language": {
     "name": "&eNamn: &6{0}",
     "code": "&eKod: &6{0}",
