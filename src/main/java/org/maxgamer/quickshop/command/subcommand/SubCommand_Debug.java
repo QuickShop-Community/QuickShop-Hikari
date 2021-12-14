@@ -120,6 +120,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         final boolean debug = plugin.getConfig().getBoolean("dev-mode");
 
         if (debug) {
+            plugin.reloadConfiguration();
             plugin.getConfig().set("dev-mode", false);
             plugin.saveConfiguration();
             plugin.reload();
@@ -127,6 +128,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             return;
         }
 
+        plugin.reloadConfiguration();
         plugin.getConfig().set("dev-mode", true);
         plugin.saveConfiguration();
         plugin.reload();
