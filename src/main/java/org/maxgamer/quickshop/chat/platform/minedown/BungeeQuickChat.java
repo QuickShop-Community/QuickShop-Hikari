@@ -40,6 +40,7 @@ import org.maxgamer.quickshop.util.TextSplitter;
 import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.UUID;
 import java.util.logging.Level;
 
 /**
@@ -52,7 +53,7 @@ public class BungeeQuickChat implements QuickChat {
     private final QuickShop plugin;
 
     public static BaseComponent[] fromLegacyText(String text) {
-        return TextComponent.fromLegacyText(text, null);
+        return TextComponent.fromLegacyText(text, net.md_5.bungee.api.ChatColor.RESET);
     }
 
     @Override
@@ -117,9 +118,7 @@ public class BungeeQuickChat implements QuickChat {
                 Util.debugLog("Spilled string is null");
                 builder.appendLegacy(text);
             } else {
-                builder.appendLegacy(spilledString.getLeft())
-                        .append(spilledString.getComponents())
-                        .appendLegacy(spilledString.getRight());
+                builder.appendLegacyAndItem(spilledString.getLeft(), spilledString.getComponents(), spilledString.getRight());
             }
             BaseComponent[] components = builder.create();
             Util.debugLog("Sending debug: " + ComponentSerializer.toString(components));
@@ -144,12 +143,12 @@ public class BungeeQuickChat implements QuickChat {
             if (spilledString == null) {
                 builder.appendLegacy(message);
             } else {
-                builder.appendLegacy(spilledString.getLeft())
-                        .append(spilledString.getComponents())
-                        .appendLegacy(spilledString.getRight());
+                builder.appendLegacyAndItem(spilledString.getLeft()
+                        , spilledString.getComponents()
+                        , spilledString.getRight());
             }
 
-            builder.append(" ").appendLegacy(plugin.text().of(player, "menu.preview").forLocale());
+            builder.appendLegacy(" ", plugin.text().of(player, "menu.preview").forLocale());
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
                 builder.event(new ClickEvent(
                         ClickEvent.Action.RUN_COMMAND,
@@ -181,11 +180,10 @@ public class BungeeQuickChat implements QuickChat {
             return this;
         }
 
+
         public BungeeComponentBuilder append(BaseComponent[] components) {
-            if (builder.getCursor() == -1) {
-                builder.append(components, ComponentBuilder.FormatRetention.NONE);
-            } else {
-                builder.append(components);
+            for (BaseComponent component : components) {
+                append(component);
             }
             return this;
         }
@@ -199,8 +197,47 @@ public class BungeeQuickChat implements QuickChat {
             return this;
         }
 
+        public BungeeComponentBuilder appendLegacy(String... text) {
+            if (text == null || text.length == 0) {
+                return this;
+            }
+            StringBuilder stringBuilder = new StringBuilder(text[0]);
+            for (int i = 1; i < text.length; i++) {
+                stringBuilder.append(text[i]);
+            }
+            builder.append(fromLegacyText(stringBuilder.toString()), ComponentBuilder.FormatRetention.EVENTS);
+            return this;
+        }
+
+        public BungeeComponentBuilder appendLegacyAndItem(String left, BaseComponent[] itemsComponent, String right) {
+            ;
+            String uuidStr = UUID.randomUUID().toString();
+            BaseComponent[] components = fromLegacyText(left + uuidStr + right);
+            boolean centerFound = false;
+            for (BaseComponent component : components) {
+                //Find center value
+                if (!centerFound && component.toPlainText().contains(uuidStr)) {
+                    centerFound = true;
+                    String[] text = ((TextComponent) component).getText().split(uuidStr, 2);
+                    TextComponent leftComponent = new TextComponent(text[0]);
+                    leftComponent.copyFormatting(component);
+                    TextComponent rightComponent = new TextComponent(text[1]);
+                    rightComponent.copyFormatting(component);
+                    for (BaseComponent baseComponent : itemsComponent) {
+                        leftComponent.addExtra(baseComponent);
+                    }
+                    builder.append(leftComponent, ComponentBuilder.FormatRetention.EVENTS);
+                    builder.append(rightComponent, ComponentBuilder.FormatRetention.EVENTS);
+                } else {
+                    builder.append(component);
+                }
+            }
+            return this;
+        }
+
         public BungeeComponentBuilder appendLegacy(String text) {
-            return append(fromLegacyText(text));
+            builder.append(fromLegacyText(text), ComponentBuilder.FormatRetention.EVENTS);
+            return this;
         }
 
         public BungeeComponentBuilder event(ClickEvent clickEvent) {

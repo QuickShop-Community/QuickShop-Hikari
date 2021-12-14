@@ -736,7 +736,7 @@ public class ContainerShop implements Shop {
         }
 
         // TODO No-longer use SHOP_SIGN_PREFIX since we use modern storage method. Pending for deletion.
-        lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder().appendLegacy(SHOP_SIGN_PREFIX).appendLegacy(line2).create()));
+        lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder().appendLegacy(SHOP_SIGN_PREFIX, line2).create()));
 
         //line 3
         if (plugin.getConfig().getBoolean("shop.force-use-item-original-name") || !this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
@@ -745,24 +745,20 @@ public class ContainerShop implements Shop {
             if (plugin.getNbtapi() == null) {
                 // NBTAPI not installed
                 lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder()
-                        .appendLegacy(left)
-                        .appendLegacy(Util.getItemStackName(getItem()))
-                        .appendLegacy(right)
+                        .appendLegacy(left, Util.getItemStackName(getItem()), right)
                         .create()));
             } else {
                 // NBTAPI installed
                 String itemName = Util.getItemCustomName(getItem());
                 BaseComponent[] itemComponents = itemName == null ? Util.getTranslateComponentForItem(getItem()) : fromLegacyText(itemName);
                 lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder()
-                        .appendLegacy(left)
-                        .append(itemComponents)
-                        .appendLegacy(right)
+                        .appendLegacyAndItem(left,
+                                itemComponents, right)
                         .create()));
             }
         } else {
-            lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder().appendLegacy(plugin.text().of("signs.item-left").forLocale())
-                    .appendLegacy(Util.getItemStackName(getItem()))
-                    .appendLegacy(plugin.text().of("signs.item-right").forLocale()).create()));
+            lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder().appendLegacy(plugin.text().of("signs.item-left").forLocale()
+                    , Util.getItemStackName(getItem()), plugin.text().of("signs.item-right").forLocale()).create()));
         }
 
         //line 4

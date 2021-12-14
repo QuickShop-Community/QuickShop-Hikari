@@ -740,9 +740,8 @@ public class MsgUtil {
                     plugin.getQuickChat().send(sender, msg);
                 } else {
                     BungeeQuickChat.BungeeComponentBuilder builder = new BungeeQuickChat.BungeeComponentBuilder();
-                    builder.appendLegacy(spilledString.getLeft());
-                    builder.append(spilledString.getComponents());
-                    builder.appendLegacy(spilledString.getRight());
+                    builder.appendLegacyAndItem(spilledString.getLeft()
+                            , spilledString.getComponents(), spilledString.getRight());
                     plugin.getQuickChat().send(sender, new QuickComponentImpl(builder.create()));
                 }
             } catch (Throwable throwable) {
