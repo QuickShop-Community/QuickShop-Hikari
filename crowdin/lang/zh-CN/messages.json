@@ -111,7 +111,7 @@
   "bypassing-lock": "&c你绕过了QuickShop的锁！",
   "that-is-locked": "&c这个商店已上锁。",
   "how-many-buy": "&a在聊天中输入您想要&b购买&a的数量。您可以购买&e{0}&a个，输入&b{1}&a以购买全部。",
-  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You can sell &e{0}&a. Enter &b{1}&a in chat, to sell all.",
+  "how-many-sell": "&a聊天栏中输入想 &d出售 &a的物品数量. 您现在可以卖出 &e{0} &a件物品。输入 &b{1}&a 来出售全部物品。",
   "not-allowed-to-create": "&c你不能在这里创建商店",
   "blacklisted-item": "&c这件物品已经被拉黑，你不能出售它",
   "how-much-to-trade-for": "&a请在聊天中输入交易&e{1}个{0}&a所需的价格。",
@@ -308,7 +308,7 @@
   "shop-freezed-at-location": "&e你在 {1} 的商店 {0} 被冻结了！",
   "denied-put-in-item": "&c您不能将此物品放入您的商店！",
   "how-many-buy-stack": "&a聊天栏中输入你想&b买&a的份数. 每份中有 &e{0}&a 个该物品, 你可以买 &e{1}&a 份. 输入 &b{2}&a 以买下所有该物品.",
-  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you can sell &e{1}&a bulks. Enter &b{2}&a in chat to sell all.",
+  "how-many-sell-stack": "&a在聊天栏中输入你想 &d卖&a 的份数. 每份中有 &e{0}&a 个该物品, 你目前可卖出 &e{1}&a 份这样的物品，输入 &b{2}&a 以卖出所有此项物品。",
   "language": {
     "name": "&e名称： &6{0}",
     "code": "&e代码： &6{0}",

@@ -37,6 +37,7 @@ import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.localization.text.postprocessor.PostProcessor;
 import org.maxgamer.quickshop.localization.text.distributions.Distribution;
 import org.maxgamer.quickshop.localization.text.distributions.crowdin.CrowdinOTA;
+import org.maxgamer.quickshop.localization.text.postprocessing.impl.ColorProcessor;
 import org.maxgamer.quickshop.localization.text.postprocessing.impl.FillerProcessor;
 import org.maxgamer.quickshop.localization.text.postprocessing.impl.PlaceHolderApiProcessor;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -273,10 +274,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 }));
 
         // Register post processor
+        postProcessors.add(new ColorProcessor());
         postProcessors.add(new FillerProcessor());
         postProcessors.add(new PlaceHolderApiProcessor());
-        //We done this when deploys language
-        //postProcessors.add(new ColorProcessor());
     }
 
     private String findRelativeLanguages(String langCode) {

@@ -40,6 +40,7 @@ import org.maxgamer.quickshop.util.TextSplitter;
 import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.UUID;
 import java.util.logging.Level;
 
 /**
@@ -51,12 +52,8 @@ import java.util.logging.Level;
 public class BungeeQuickChat implements QuickChat {
     private final QuickShop plugin;
 
-    @Override
-    public void send(@NotNull CommandSender receiver, @Nullable String message) {
-        if (StringUtils.isEmpty(message)) {
-            return;
-        }
-        receiver.spigot().sendMessage(TextComponent.fromLegacyText(message));
+    public static BaseComponent[] fromLegacyText(String text) {
+        return TextComponent.fromLegacyText(text, net.md_5.bungee.api.ChatColor.RESET);
     }
 
     @Override
@@ -76,22 +73,52 @@ public class BungeeQuickChat implements QuickChat {
 
     }
 
+    public static String toLegacyText(BaseComponent[] components) {
+        StringBuilder builder = new StringBuilder();
+        BaseComponent lastComponent = null;
+        for (BaseComponent component : components) {
+            net.md_5.bungee.api.ChatColor color = component.getColorRaw();
+            String legacyText = component.toLegacyText();
+            if (color == null && legacyText.startsWith("§f")) {
+                //Remove redundant §f added by toLegacyText
+                legacyText = legacyText.substring(2);
+            }
+            if (lastComponent != null && (
+                    lastComponent.isBold() != component.isBold() ||
+                            lastComponent.isItalic() != component.isItalic() ||
+                            lastComponent.isObfuscated() != component.isObfuscated() ||
+                            lastComponent.isStrikethrough() != component.isStrikethrough() ||
+                            lastComponent.isUnderlined() != lastComponent.isUnderlined()
+            )) {
+                builder.append("§r");
+            }
+            builder.append(legacyText);
+            lastComponent = component;
+        }
+        return builder.toString();
+    }
+
+    @Override
+    public void send(@NotNull CommandSender receiver, @Nullable String message) {
+        if (StringUtils.isEmpty(message)) {
+            return;
+        }
+        receiver.spigot().sendMessage(fromLegacyText(message));
+    }
+
     @Override
     public void sendItemHologramChat(@NotNull Player player, @NotNull String text, @NotNull ItemStack itemStack) {
         TextComponent errorComponent = new TextComponent(plugin.text().of(player, "menu.item-holochat-error").forLocale());
         try {
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
-            ComponentBuilder builder = new ComponentBuilder("");
+            BungeeComponentBuilder builder = new BungeeComponentBuilder();
             builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
             TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(text);
             if (spilledString == null) {
                 Util.debugLog("Spilled string is null");
                 builder.appendLegacy(text);
             } else {
-                builder.appendLegacy(spilledString.getLeft());
-                net.md_5.bungee.api.ChatColor color = builder.getCurrentComponent().getColorRaw();
-                builder.append(spilledString.getComponents()).color(color);
-                builder.appendLegacy(spilledString.getRight()).color(color);
+                builder.appendLegacyAndItem(spilledString.getLeft(), spilledString.getComponents(), spilledString.getRight());
             }
             BaseComponent[] components = builder.create();
             Util.debugLog("Sending debug: " + ComponentSerializer.toString(components));
@@ -110,19 +137,18 @@ public class BungeeQuickChat implements QuickChat {
             if (json == null) {
                 return new QuickComponentImpl(errorComponent);
             }
-            ComponentBuilder builder = new ComponentBuilder("");
+            BungeeComponentBuilder builder = new BungeeComponentBuilder();
             builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
             TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(message);
             if (spilledString == null) {
                 builder.appendLegacy(message);
             } else {
-                builder.appendLegacy(spilledString.getLeft());
-                net.md_5.bungee.api.ChatColor color = builder.getCurrentComponent().getColorRaw();
-                builder.append(spilledString.getComponents()).color(color);
-                builder.reset().appendLegacy(spilledString.getRight()).color(color);
+                builder.appendLegacyAndItem(spilledString.getLeft()
+                        , spilledString.getComponents()
+                        , spilledString.getRight());
             }
 
-            builder.appendLegacy(" ").appendLegacy(plugin.text().of(player, "menu.preview").forLocale());
+            builder.appendLegacy(" ", plugin.text().of(player, "menu.preview").forLocale());
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.preview")) {
                 builder.event(new ClickEvent(
                         ClickEvent.Action.RUN_COMMAND,
@@ -134,6 +160,107 @@ public class BungeeQuickChat implements QuickChat {
         } catch (Exception t) {
             plugin.getLogger().log(Level.WARNING, "Failed to process chat component", t);
             return new QuickComponentImpl(errorComponent);
+        }
+    }
+
+    public static class BungeeComponentBuilder {
+        private final ComponentBuilder builder;
+
+        public BungeeComponentBuilder() {
+            builder = new ComponentBuilder("");
+            builder.removeComponent(0);
+        }
+
+        public BungeeComponentBuilder append(BaseComponent component) {
+            if (builder.getCursor() == -1) {
+                builder.append(component, ComponentBuilder.FormatRetention.NONE);
+            } else {
+                builder.append(component);
+            }
+            return this;
+        }
+
+
+        public BungeeComponentBuilder append(BaseComponent[] components) {
+            for (BaseComponent component : components) {
+                append(component);
+            }
+            return this;
+        }
+
+        public BungeeComponentBuilder append(String text) {
+            if (builder.getCursor() == -1) {
+                builder.append(text, ComponentBuilder.FormatRetention.NONE);
+            } else {
+                builder.append(text);
+            }
+            return this;
+        }
+
+        public BungeeComponentBuilder appendLegacy(String... text) {
+            if (text == null || text.length == 0) {
+                return this;
+            }
+            StringBuilder stringBuilder = new StringBuilder(text[0]);
+            for (int i = 1; i < text.length; i++) {
+                stringBuilder.append(text[i]);
+            }
+            builder.append(fromLegacyText(stringBuilder.toString()), ComponentBuilder.FormatRetention.EVENTS);
+            return this;
+        }
+
+        public BungeeComponentBuilder appendLegacyAndItem(String left, BaseComponent[] itemsComponent, String right) {
+            ;
+            String uuidStr = UUID.randomUUID().toString();
+            BaseComponent[] components = fromLegacyText(left + uuidStr + right);
+            boolean centerFound = false;
+            for (BaseComponent component : components) {
+                //Find center value
+                if (!centerFound && component.toPlainText().contains(uuidStr)) {
+                    centerFound = true;
+                    String[] text = ((TextComponent) component).getText().split(uuidStr, 2);
+                    TextComponent leftComponent = new TextComponent(text[0]);
+                    leftComponent.copyFormatting(component);
+                    TextComponent rightComponent = new TextComponent(text[1]);
+                    rightComponent.copyFormatting(component);
+                    for (BaseComponent baseComponent : itemsComponent) {
+                        leftComponent.addExtra(baseComponent);
+                    }
+                    builder.append(leftComponent, ComponentBuilder.FormatRetention.EVENTS);
+                    builder.append(rightComponent, ComponentBuilder.FormatRetention.EVENTS);
+                } else {
+                    builder.append(component);
+                }
+            }
+            return this;
+        }
+
+        public BungeeComponentBuilder appendLegacy(String text) {
+            builder.append(fromLegacyText(text), ComponentBuilder.FormatRetention.EVENTS);
+            return this;
+        }
+
+        public BungeeComponentBuilder event(ClickEvent clickEvent) {
+            builder.event(clickEvent);
+            return this;
+        }
+
+        public BungeeComponentBuilder event(HoverEvent hoverEvent) {
+            builder.event(hoverEvent);
+            return this;
+        }
+
+        public BungeeComponentBuilder reset() {
+            builder.reset();
+            return this;
+        }
+
+        public BaseComponent[] create() {
+            return builder.create();
+        }
+
+        public ComponentBuilder color(net.md_5.bungee.api.ChatColor color) {
+            return builder.color(color);
         }
     }
 

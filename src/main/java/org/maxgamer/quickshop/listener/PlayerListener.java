@@ -293,9 +293,9 @@ public class PlayerListener extends AbstractQSListener {
 
     private int getPlayerCanBuy(Shop shop, double traderBalance, double price, Inventory playerInventory) {
         if (shop.isFreeShop()) { // Free shop
-            return Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop.getItem()));
+            return shop.isUnlimited() ? Util.countSpace(playerInventory, shop.getItem()) : Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop.getItem()));
         }
-        int itemAmount = Math.min(shop.getRemainingStock(), (int) Math.floor(traderBalance / price));
+        int itemAmount = Math.min(Util.countSpace(playerInventory, shop.getItem()), (int) Math.floor(traderBalance / price));
         if (!shop.isUnlimited()) {
             itemAmount = Math.min(itemAmount, shop.getRemainingStock());
         }
@@ -307,7 +307,7 @@ public class PlayerListener extends AbstractQSListener {
 
     private int getPlayerCanSell(Shop shop, double ownerBalance, double price, Inventory playerInventory) {
         if (shop.isFreeShop()) {
-            return Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop.getItem()));
+            return shop.isUnlimited() ? Util.countItems(playerInventory, shop.getItem()) : Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop.getItem()));
         }
 
         int items = Util.countItems(playerInventory, shop.getItem());

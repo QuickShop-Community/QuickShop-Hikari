@@ -24,10 +24,7 @@ import de.tr7zw.nbtapi.NBTTileEntity;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import me.lucko.helper.serialize.BlockPosition;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -53,12 +50,16 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.chat.ComponentPackage;
 import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.shop.*;
+import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
 import java.util.*;
 import java.util.logging.Level;
+
+import static org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat.fromLegacyText;
+import static org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat.toLegacyText;
 
 /**
  * ChestShop core
@@ -696,7 +697,7 @@ public class ContainerShop implements Shop {
         List<ComponentPackage> lines = new ArrayList<>();
         //Line 1
         String statusStringKey = inventoryAvailable() ? "signs.status-available" : "signs.status-unavailable";
-        lines.add(new ComponentPackage(TextComponent.fromLegacyText(plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(statusStringKey).forLocale(locale)).forLocale(locale))));
+        lines.add(new ComponentPackage(fromLegacyText(plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(statusStringKey).forLocale(locale)).forLocale(locale))));
 
         //Line 2
         String tradingStringKey;
@@ -735,35 +736,29 @@ public class ContainerShop implements Shop {
         }
 
         // TODO No-longer use SHOP_SIGN_PREFIX since we use modern storage method. Pending for deletion.
-        lines.add(new ComponentPackage(new ComponentBuilder("").appendLegacy(SHOP_SIGN_PREFIX).reset().color(ChatColor.RESET).appendLegacy(line2).create()));
+        lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder().appendLegacy(SHOP_SIGN_PREFIX, line2).create()));
 
         //line 3
         if (plugin.getConfig().getBoolean("shop.force-use-item-original-name") || !this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
-            BaseComponent[] left = TextComponent.fromLegacyText(plugin.text().of("signs.item-left").forLocale());
-            BaseComponent[] right = TextComponent.fromLegacyText(plugin.text().of("signs.item-right").forLocale());
+            String left = plugin.text().of("signs.item-left").forLocale();
+            String right = plugin.text().of("signs.item-right").forLocale();
             if (plugin.getNbtapi() == null) {
                 // NBTAPI not installed
-                lines.add(new ComponentPackage(new ComponentBuilder("")
-                        .color(ChatColor.RESET)
-                        .append(left)
-                        .append(TextComponent.fromLegacyText(Util.getItemStackName(getItem())))
-                        .append(right)
+                lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder()
+                        .appendLegacy(left, Util.getItemStackName(getItem()), right)
                         .create()));
             } else {
                 // NBTAPI installed
                 String itemName = Util.getItemCustomName(getItem());
-                BaseComponent[] itemComponents = itemName == null ? Util.getTranslateComponentForItem(getItem()) : TextComponent.fromLegacyText(itemName);
-                lines.add(new ComponentPackage(new ComponentBuilder("")
-                        .color(ChatColor.RESET)
-                        .append(left)
-                        .append(itemComponents)
-                        .append(right)
+                BaseComponent[] itemComponents = itemName == null ? Util.getTranslateComponentForItem(getItem()) : fromLegacyText(itemName);
+                lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder()
+                        .appendLegacyAndItem(left,
+                                itemComponents, right)
                         .create()));
             }
         } else {
-            lines.add(new ComponentPackage(new ComponentBuilder("").color(ChatColor.RESET).appendLegacy(plugin.text().of("signs.item-left").forLocale())
-                    .append(TextComponent.fromLegacyText(Util.getItemStackName(getItem())))
-                    .appendLegacy(plugin.text().of("signs.item-right").forLocale()).create()));
+            lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder().appendLegacy(plugin.text().of("signs.item-left").forLocale()
+                    , Util.getItemStackName(getItem()), plugin.text().of("signs.item-right").forLocale()).create()));
         }
 
         //line 4
@@ -775,7 +770,7 @@ public class ContainerShop implements Shop {
         } else {
             line4 = plugin.text().of("signs.price", plugin.getShopManager().format(this.getPrice(), this)).forLocale();
         }
-        lines.add(new ComponentPackage(new ComponentBuilder("").color(ChatColor.RESET).appendLegacy(line4).create()));
+        lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder().appendLegacy(line4).create()));
 
         return lines;
     }
@@ -798,7 +793,7 @@ public class ContainerShop implements Shop {
                 if (tileSign != null) {
                     tileSign.setString("Text" + (i + 1), Util.componentsToJson(lines.get(i).getComponents()));
                 } else {
-                    sign.setLine(i, new TextComponent(lines.get(i).getComponents()).toLegacyText());
+                    sign.setLine(i, toLegacyText(lines.get(i).getComponents()));
                 }
             }
             if (plugin.getGameVersion().isSignTextDyeSupport()) {

@@ -26,9 +26,7 @@ import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -76,6 +74,9 @@ import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+
+import static org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat.fromLegacyText;
+import static org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat.toLegacyText;
 
 public class Util {
     private static final EnumSet<Material> BLACKLIST = EnumSet.noneOf(Material.class);
@@ -416,13 +417,13 @@ public class Util {
     @NotNull
     public static BaseComponent[] getTranslateComponentForItem(ItemStack stack) {
         String result = ReflectFactory.getMaterialMinecraftNamespacedKey(stack.getType());
-        return result == null ? TextComponent.fromLegacyText(getItemStackName(stack)) : new BaseComponent[]{new TranslatableComponent(result)};
+        return result == null ? fromLegacyText(getItemStackName(stack)) : new BaseComponent[]{new TranslatableComponent(result)};
     }
 
     @NotNull
     public static BaseComponent[] getTranslateComponentForMaterial(Material material) {
         String result = ReflectFactory.getMaterialMinecraftNamespacedKey(material);
-        return result == null ? TextComponent.fromLegacyText(MsgUtil.getItemi18n(material.name())) : new BaseComponent[]{new TranslatableComponent(result)};
+        return result == null ? fromLegacyText(MsgUtil.getItemi18n(material.name())) : new BaseComponent[]{new TranslatableComponent(result)};
     }
 
     @Nullable
@@ -974,18 +975,9 @@ public class Util {
         }
         MineDownParser parser = MINEDOWN.get().parser();
         parser.reset();
-        StringBuilder builder = new StringBuilder();
-        BaseComponent[] components = parser.enable(MineDownParser.Option.LEGACY_COLORS).parse(text).create();
-        for (BaseComponent component : components) {
-            ChatColor color = component.getColorRaw();
-            String legacyText = component.toLegacyText();
-            if (color == null && legacyText.startsWith("§f")) {
-                //Remove redundant §f added by toLegacyText
-                legacyText = legacyText.substring(2);
-            }
-            builder.append(legacyText);
-        }
-        return builder.toString();
+        //A hack for saving reset character
+        text = text.replace("&r", "&l&r").replace("§r", "§l§r");
+        return toLegacyText(parser.enable(MineDownParser.Option.LEGACY_COLORS).backwardsCompatibility(true).parse(text).create());
     }
 
     /**

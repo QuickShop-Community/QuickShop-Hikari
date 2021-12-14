@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.command.subcommand;
 
 import io.papermc.lib.PaperLib;
 import lombok.AllArgsConstructor;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -35,6 +34,8 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat.toLegacyText;
 
 @AllArgsConstructor
 public class SubCommand_Find implements CommandHandler<Player> {
@@ -127,8 +128,8 @@ public class SubCommand_Find implements CommandHandler<Player> {
                 Location location = shop.getLocation();
                 //  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)"
                 stringBuilder.append(plugin.text().of(sender, "nearby-shop-entry",
-                        new TextComponent(shop.getSignText(sender.getLocale()).get(1).getComponents()).toLegacyText(),
-                        new TextComponent(shop.getSignText(sender.getLocale()).get(3).getComponents()).toLegacyText(),
+                        toLegacyText(shop.getSignText(sender.getLocale()).get(1).getComponents()),
+                        toLegacyText(shop.getSignText(sender.getLocale()).get(3).getComponents()),
                         String.valueOf(location.getBlockX()),
                         String.valueOf(location.getBlockY()),
                         String.valueOf(location.getBlockZ()),
