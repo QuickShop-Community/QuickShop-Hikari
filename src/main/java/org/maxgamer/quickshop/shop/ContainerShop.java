@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.shop;
 
 import com.lishid.openinv.OpenInv;
 import de.tr7zw.nbtapi.NBTTileEntity;
-import de.tr7zw.nbtapi.NbtApiException;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import me.lucko.helper.serialize.BlockPosition;
@@ -791,7 +790,7 @@ public class ContainerShop implements Shop {
                 for (int i = 0; i < lines.size(); i++) {
                     try {
                         tileSign.setString("Text" + (i + 1), Util.componentsToJson(lines.get(i).getComponents()));
-                    } catch (NbtApiException e) {
+                    } catch (Exception e) {
                         plugin.getLogger().log(Level.WARNING, "NBTAPI support is broken, dsiable and fallback... (You can safely ignore this)", e);
                         plugin.disableNBTAPI();
                         Util.debugLog("NBTAPI is broken, error: " + e.getMessage() + "\n stacktrace:  \n" + Arrays.toString(e.getStackTrace()));

@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.util.matcher.item;
 
 import de.tr7zw.nbtapi.NBTItem;
-import de.tr7zw.nbtapi.NbtApiException;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.attribute.Attribute;
@@ -156,7 +155,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (StringUtils.isNotEmpty(tagOriginal) && StringUtils.isNotEmpty(tagTester) && tagOriginal.equals(tagTester)) {
                     return true;
                 }
-            } catch (NbtApiException e) {
+            } catch (Exception e) {
                 plugin.disableNBTAPI();
                 plugin.getLogger().log(Level.WARNING, "NBTAPI support is broken, dsiable and fallback... (You can safely ignore this)", e);
                 Util.debugLog("NBTAPI is broken, error: " + e.getMessage() + "\n stacktrace:  \n" + Arrays.toString(e.getStackTrace()));
