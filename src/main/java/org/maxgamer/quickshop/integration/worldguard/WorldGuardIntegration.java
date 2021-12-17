@@ -137,23 +137,25 @@ public class WorldGuardIntegration extends AbstractQSIntegratedPlugin {
         }
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
-        ApplicableRegionSet applicableRegionSet=query.getApplicableRegions(wgLoc);
+        ApplicableRegionSet applicableRegionSet = query.getApplicableRegions(wgLoc);
         //Regions not included global one
-        if (applicableRegionSet.getRegions().isEmpty()&&!respectGlobalRegion) {
-            return !whiteList;
-        }else {
-            //So check it manually
-            RegionManager worldManger = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(location.getWorld()));
-            if (worldManger != null&&!worldManger.hasRegion("__global__")) {
-                //If not have, just check whitelist
+        if (applicableRegionSet.getRegions().isEmpty()) {
+            if (!respectGlobalRegion) {
                 return !whiteList;
+            } else {
+                //So check it manually
+                RegionManager worldManger = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(location.getWorld()));
+                if (worldManger != null && !worldManger.hasRegion("__global__")) {
+                    //If not have, just check whitelist
+                    return !whiteList;
+                }
             }
         }
         //Passed, but flag calculation will include the global region
         for (WorldGuardFlags flag : createFlags) {
             switch (flag) {
                 case BUILD:
-                    if (!applicableRegionSet.testState(localPlayer,Flags.BUILD)) {
+                    if (!applicableRegionSet.testState(localPlayer, Flags.BUILD)) {
                         return false;
                     }
                     break;
@@ -208,16 +210,18 @@ public class WorldGuardIntegration extends AbstractQSIntegratedPlugin {
         }
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
-        ApplicableRegionSet applicableRegionSet=query.getApplicableRegions(wgLoc);
+        ApplicableRegionSet applicableRegionSet = query.getApplicableRegions(wgLoc);
         //Regions not included global one
-        if (applicableRegionSet.getRegions().isEmpty()&&!respectGlobalRegion) {
-            return !whiteList;
-        }else {
-            //So check it manually
-            RegionManager worldManger = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(location.getWorld()));
-            if (worldManger != null&&!worldManger.hasRegion("__global__")) {
-                //If not have, just check whitelist
+        if (applicableRegionSet.getRegions().isEmpty()) {
+            if (!respectGlobalRegion) {
                 return !whiteList;
+            } else {
+                //So check it manually
+                RegionManager worldManger = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(location.getWorld()));
+                if (worldManger != null && !worldManger.hasRegion("__global__")) {
+                    //If not have, just check whitelist
+                    return !whiteList;
+                }
             }
         }
         //Passed, but flag calculation will include the global region
