@@ -257,9 +257,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private ShopPurger shopPurger;
     @Getter
     @Nullable
-    private NBTAPI nbtapi = null;
+    private volatile NBTAPI nbtapi = null;
 
     private int loggingLocation = 0;
+
+    public void disableNBTAPI() {
+        nbtapi = null;
+    }
 
     /**
      * Use for mock bukkit

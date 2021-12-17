@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.util.matcher.item;
 
 import de.tr7zw.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.NbtApiException;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.attribute.Attribute;
@@ -41,6 +42,7 @@ import org.maxgamer.quickshop.util.reload.ReloadStatus;
 import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.*;
+import java.util.logging.Level;
 
 @AllArgsConstructor
 public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
@@ -146,12 +148,18 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         givenStack = givenStack.clone();
         givenStack.setAmount(1);
         if (plugin.getNbtapi() != null) {
-            NBTItem nbtItemOriginal = new NBTItem(requireStack);
-            NBTItem nbtItemTester = new NBTItem(givenStack);
-            String tagOriginal = nbtItemOriginal.getString("shopItemId");
-            String tagTester = nbtItemTester.getString("shopItemId");
-            if (StringUtils.isNotEmpty(tagOriginal) && StringUtils.isNotEmpty(tagTester) && tagOriginal.equals(tagTester)) {
-                return true;
+            try {
+                NBTItem nbtItemOriginal = new NBTItem(requireStack);
+                NBTItem nbtItemTester = new NBTItem(givenStack);
+                String tagOriginal = nbtItemOriginal.getString("shopItemId");
+                String tagTester = nbtItemTester.getString("shopItemId");
+                if (StringUtils.isNotEmpty(tagOriginal) && StringUtils.isNotEmpty(tagTester) && tagOriginal.equals(tagTester)) {
+                    return true;
+                }
+            } catch (NbtApiException e) {
+                plugin.disableNBTAPI();
+                plugin.getLogger().log(Level.WARNING, "NBTAPI is broken, disabling...(You can safely ignore this)", e);
+                Util.debugLog("NBTAPI is broken, error: " + e.getMessage() + "\n stacktrace:  \n" + Arrays.toString(e.getStackTrace()));
             }
         }
         if (workType == 1) {

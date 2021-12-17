@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.shop;
 
 import com.lishid.openinv.OpenInv;
 import de.tr7zw.nbtapi.NBTTileEntity;
+import de.tr7zw.nbtapi.NbtApiException;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import me.lucko.helper.serialize.BlockPosition;
@@ -785,14 +786,22 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         List<Sign> signs = this.getSigns();
         for (Sign sign : signs) {
-            NBTTileEntity tileSign = null;
             if (this.plugin.getNbtapi() != null) {
-                tileSign = new NBTTileEntity(sign);
-            }
-            for (int i = 0; i < lines.size(); i++) {
-                if (tileSign != null) {
-                    tileSign.setString("Text" + (i + 1), Util.componentsToJson(lines.get(i).getComponents()));
-                } else {
+                NBTTileEntity tileSign = new NBTTileEntity(sign);
+                for (int i = 0; i < lines.size(); i++) {
+                    try {
+                        tileSign.setString("Text" + (i + 1), Util.componentsToJson(lines.get(i).getComponents()));
+                    } catch (NbtApiException e) {
+                        plugin.getLogger().log(Level.WARNING, "NBTAPI is broken, disabling...(You can safely ignore this)", e);
+                        plugin.disableNBTAPI();
+                        Util.debugLog("NBTAPI is broken, error: " + e.getMessage() + "\n stacktrace:  \n" + Arrays.toString(e.getStackTrace()));
+                        //Reset it since we disable nbt api, text need to change
+                        setSignText();
+                        return;
+                    }
+                }
+            } else {
+                for (int i = 0; i < lines.size(); i++) {
                     sign.setLine(i, toLegacyText(lines.get(i).getComponents()));
                 }
             }

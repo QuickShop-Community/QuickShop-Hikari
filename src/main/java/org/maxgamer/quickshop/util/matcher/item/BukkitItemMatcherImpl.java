@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.util.matcher.item;
 
 import de.tr7zw.nbtapi.NBTItem;
+import de.tr7zw.nbtapi.NbtApiException;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.inventory.ItemStack;
@@ -28,6 +29,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.ItemMatcher;
+import org.maxgamer.quickshop.util.Util;
+
+import java.util.Arrays;
+import java.util.logging.Level;
 
 /**
  * A simple impl for ItemMatcher
@@ -85,10 +90,16 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
         if (plugin.getNbtapi() != null) {
             NBTItem nbtItemOriginal = new NBTItem(original);
             NBTItem nbtItemTester = new NBTItem(tester);
-            String tagOriginal = nbtItemOriginal.getString("shopItemId");
-            String tagTester = nbtItemTester.getString("shopItemId");
-            if (StringUtils.isNotEmpty(tagOriginal) && StringUtils.isNotEmpty(tagTester) && tagOriginal.equals(tagTester)) {
-                return true;
+            try {
+                String tagOriginal = nbtItemOriginal.getString("shopItemId");
+                String tagTester = nbtItemTester.getString("shopItemId");
+                if (StringUtils.isNotEmpty(tagOriginal) && StringUtils.isNotEmpty(tagTester) && tagOriginal.equals(tagTester)) {
+                    return true;
+                }
+            } catch (NbtApiException e) {
+                plugin.disableNBTAPI();
+                plugin.getLogger().log(Level.WARNING, "NBTAPI is broken, disabling...(You can safely ignore this)", e);
+                Util.debugLog("NBTAPI is broken, error: " + e.getMessage() + "\n stacktrace:  \n" + Arrays.toString(e.getStackTrace()));
             }
         }
         return tester.isSimilar(original);
