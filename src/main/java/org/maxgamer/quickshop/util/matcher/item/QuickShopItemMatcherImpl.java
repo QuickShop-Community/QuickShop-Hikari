@@ -158,7 +158,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 }
             } catch (NbtApiException e) {
                 plugin.disableNBTAPI();
-                plugin.getLogger().log(Level.WARNING, "NBTAPI is broken, disabling...(You can safely ignore this)", e);
+                plugin.getLogger().log(Level.WARNING, "NBTAPI support is broken, dsiable and fallback... (You can safely ignore this)", e);
                 Util.debugLog("NBTAPI is broken, error: " + e.getMessage() + "\n stacktrace:  \n" + Arrays.toString(e.getStackTrace()));
             }
         }

@@ -792,7 +792,7 @@ public class ContainerShop implements Shop {
                     try {
                         tileSign.setString("Text" + (i + 1), Util.componentsToJson(lines.get(i).getComponents()));
                     } catch (NbtApiException e) {
-                        plugin.getLogger().log(Level.WARNING, "NBTAPI is broken, disabling...(You can safely ignore this)", e);
+                        plugin.getLogger().log(Level.WARNING, "NBTAPI support is broken, dsiable and fallback... (You can safely ignore this)", e);
                         plugin.disableNBTAPI();
                         Util.debugLog("NBTAPI is broken, error: " + e.getMessage() + "\n stacktrace:  \n" + Arrays.toString(e.getStackTrace()));
                         //Reset it since we disable nbt api, text need to change
