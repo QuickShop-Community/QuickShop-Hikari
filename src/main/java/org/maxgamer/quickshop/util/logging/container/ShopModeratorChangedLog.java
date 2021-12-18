@@ -22,12 +22,12 @@ package org.maxgamer.quickshop.util.logging.container;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.maxgamer.quickshop.api.shop.ShopInfoStorage;
-import org.maxgamer.quickshop.shop.SimpleShopModerator;
+import org.maxgamer.quickshop.api.shop.ShopModerator;
 
 @AllArgsConstructor
 @Data
 public class ShopModeratorChangedLog {
     private static int v = 1;
     private ShopInfoStorage shop;
-    private SimpleShopModerator moderator;
+    private ShopModerator moderator;
 }

@@ -84,7 +84,7 @@ public class InternalListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopModeratorChanges(ShopModeratorChangedEvent event) {
         if (loggingAction) {
-            plugin.logEvent(new ShopModeratorChangedEvent(event.getShop(), event.getModerator()));
+            plugin.logEvent(new ShopModeratorChangedLog(event.getShop().saveToInfoStorage(), event.getModerator()));
         }
     }
 
