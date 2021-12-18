@@ -89,7 +89,7 @@ To compile the QuickShop and debug it by yourself, please follow these steps:
 
 ## License
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Reremake?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake?ref=badge_large)
 
 ## Developer API
 
