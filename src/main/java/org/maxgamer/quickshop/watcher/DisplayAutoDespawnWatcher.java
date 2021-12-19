@@ -42,7 +42,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
     public DisplayAutoDespawnWatcher(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
-
+        init();
     }
 
     private void init() {
