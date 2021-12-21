@@ -119,11 +119,17 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             // disable tax account
             cacheTaxAccount = null;
         }
-        String uAccount = plugin.getConfig().getString("unlimited-shop-owner-change-account", "quickshop");
-        if (Util.isUUID(uAccount)) {
-            cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(UUID.fromString(uAccount)));
-        } else {
-            cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(uAccount));
+        if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
+            String uAccount = plugin.getConfig().getString("unlimited-shop-owner-change-account", "");
+            if (uAccount.isEmpty()) {
+                uAccount = "quickshop";
+                plugin.getLogger().log(Level.WARNING, "unlimited-shop-owner-change-account is empty, default to \"quickshop\"");
+            }
+            if (Util.isUUID(uAccount)) {
+                cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(UUID.fromString(uAccount)));
+            } else {
+                cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(uAccount));
+            }
         }
         this.priceLimiter = new SimplePriceLimiter(
                 plugin.getConfig().getDouble("shop.minimum-price"),
