@@ -280,7 +280,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
     }
 
     private String findRelativeLanguages(String langCode) {
-        if (langCode.isEmpty()) {
+        //langCode may null when some plugins providing fake player
+        if (langCode == null || langCode.isEmpty()) {
             return "en_us";
         }
         String result = languagesCache.getIfPresent(langCode);
