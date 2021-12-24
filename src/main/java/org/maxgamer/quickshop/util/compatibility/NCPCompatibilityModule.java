@@ -47,21 +47,21 @@ public class NCPCompatibilityModule extends AbstractQSCompatibilityModule {
     /**
      * Calls CompatibilityModule to toggle the detection status for playerb between on and off
      *
-     * @param player   The player
-     * @param checking On or Off
+     * @param player The player
+     * @param status On or Off
      */
     @Override
-    public void toggle(@NotNull Player player, boolean checking) {
-        if (checking) {
+    public void toggle(@NotNull Player player, boolean status) {
+        if (status) {
+            Util.debugLog(
+                    "Calling NoCheatPlus continue follow " + player.getName() + " cheats detection.");
+            NCPExemptionManager.unexempt(player);
+        } else {
             Util.debugLog(
                     "Calling NoCheatPlus ignore "
                             + player.getName()
                             + " cheats detection until we finished permission checks.");
 
-            NCPExemptionManager.unexempt(player);
-        } else {
-            Util.debugLog(
-                    "Calling NoCheatPlus continue follow " + player.getName() + " cheats detection.");
             NCPExemptionManager.exemptPermanently(player);
         }
     }

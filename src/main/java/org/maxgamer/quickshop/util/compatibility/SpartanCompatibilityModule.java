@@ -40,19 +40,19 @@ public class SpartanCompatibilityModule extends AbstractQSCompatibilityModule {
     }
 
     @Override
-    public void toggle(@NotNull Player player, boolean checking) {
-        if (checking) {
+    public void toggle(@NotNull Player player, boolean status) {
+        if (status) {
             Util.debugLog(
-                    "Calling Spartan ignore "
-                            + player.getName()
-                            + " cheats detection until we finished permission checks.");
+                    "Calling Spartan continue follow " + player.getName() + " cheats detection.");
 
             for (Enums.HackType value : Enums.HackType.values()) {
                 API.startCheck(player, value);
             }
         } else {
             Util.debugLog(
-                    "Calling Spartan continue follow " + player.getName() + " cheats detection.");
+                    "Calling Spartan ignore "
+                            + player.getName()
+                            + " cheats detection until we finished permission checks.");
             for (Enums.HackType value : Enums.HackType.values()) {
                 API.stopCheck(player, value);
             }

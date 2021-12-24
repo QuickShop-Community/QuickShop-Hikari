@@ -41,8 +41,8 @@ public interface CompatibilityModule {
     /**
      * Calls CompatibilityModule to toggle the detection status for player between on and off
      *
-     * @param player   The player
-     * @param checking On or Off
+     * @param player The player
+     * @param status On or Off
      */
-    void toggle(@NotNull Player player, boolean checking);
+    void toggle(@NotNull Player player, boolean status);
 }
