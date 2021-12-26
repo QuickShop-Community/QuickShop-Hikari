@@ -293,8 +293,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .permission("quickshop.create.stacks")
                 .permission("quickshop.create.changeamount")
                 .executor(new SubCommand_Size(plugin))
-                .disabled(!plugin.isAllowStack())
-                // TODO: Check the sender
+                .disabledSupplier(plugin::isAllowStack)
                 .disablePlaceholder(plugin.text().of("command.feature-not-enabled").forLocale())
                 .build());
         registerCmd(CommandContainer.builder()
@@ -407,7 +406,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 if (!container.getPrefix().equalsIgnoreCase(cmdArg[0])) {
                     continue;
                 }
-                if (container.isDisabled()) {
+                if (container.isDisabled() || (container.getDisabledSupplier() != null && container.getDisabledSupplier().get())) {
                     MsgUtil.sendDirectMessage(sender, container.getDisableText(sender));
                     return true;
                 }

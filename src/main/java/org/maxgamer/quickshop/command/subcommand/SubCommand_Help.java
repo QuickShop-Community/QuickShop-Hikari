@@ -79,7 +79,7 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
                         commandDesc = "Error: Subcommand " + container.getPrefix() + " # " + container.getClass().getCanonicalName() + " doesn't register the correct help description.";
                     }
                 }
-                if (container.isDisabled()) {
+                if (container.isDisabled() || (container.getDisabledSupplier() != null && container.getDisabledSupplier().get())) {
                     if (QuickShop.getPermissionManager().hasPermission(s, "quickshop.showdisabled")) {
                         plugin.text().of(s, "command.format", commandLabel, container.getPrefix(), container.getDisableText(s)).send();
                     }

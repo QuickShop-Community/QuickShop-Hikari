@@ -31,6 +31,7 @@ import org.maxgamer.quickshop.QuickShop;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Data
 @Builder
@@ -52,7 +53,8 @@ public class CommandContainer {
     private String description; // Will show in the /qs help
 
     private boolean disabled; //Set command is disabled or not.
-
+    @Nullable
+    private Supplier<Boolean> disabledSupplier; //Set command is disabled or not.
     @Nullable
     private String disablePlaceholder; //Set the text shown if command disabled
     @Nullable

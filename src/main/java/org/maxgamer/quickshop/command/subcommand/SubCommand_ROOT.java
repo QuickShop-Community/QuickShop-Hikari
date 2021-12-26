@@ -71,7 +71,7 @@ public class SubCommand_ROOT implements CommandHandler<CommandSender> {
                 }
             }
 
-            if (!container.isHidden() && !container.isDisabled()) {
+            if (!container.isHidden() && !(container.isDisabled() || (container.getDisabledSupplier() != null))) {
                 candidate.add(container.getPrefix());
             }
         }
