@@ -415,10 +415,11 @@
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
         <!-- IridiumSkyblock  -->
+        <!-- Temporary disable for certificate expired
         <repository>
             <id>IridiumDevelopment</id>
             <url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
-        </repository>
+        </repository>-->
         <repository>
             <id>Sparky</id>
             <url>https://nexus.sparky.ac/repository/Sparky/</url>
@@ -859,7 +860,8 @@
             <groupId>com.iridium</groupId>
             <artifactId>IridiumSkyblock</artifactId>
             <version>3.2.2</version>
-            <scope>provided</scope>
+            <systemPath>${project.basedir}/lib/IridiumSkyblock-3.2.2.jar</systemPath>
+            <scope>system</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->
         <dependency>
