@@ -1098,7 +1098,7 @@ public class ContainerShop implements Shop {
     @Override
     public int getRemainingSpace() {
         Util.ensureThread(false);
-        if (this.unlimited) {
+        if (this.unlimited && !isAlwaysCountingContainer()) {
             return -1;
         }
         int space = Util.countSpace(this.getInventory(), this.getItem());
@@ -1114,7 +1114,7 @@ public class ContainerShop implements Shop {
     @Override
     public int getRemainingStock() {
         Util.ensureThread(false);
-        if (this.unlimited) {
+        if (this.unlimited && !isAlwaysCountingContainer()) {
             return -1;
         }
         int stock = Util.countItems(this.getInventory(), this.getItem());

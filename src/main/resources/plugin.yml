@@ -152,6 +152,9 @@ permissions:
   quickshop.unlimited:
     description: Allows a staff member to use /qs unlimited to make a shop infinite.
     default: op
+  quickshop.alwayscounting:
+    description: Allows a staff member to use /qs alwayscounting to make a shop always counting container.
+    default: op
   quickshop.bypass.<itemID>:
     description: Allows a player to sell blacklisted <itemIDs>.
     default: op
