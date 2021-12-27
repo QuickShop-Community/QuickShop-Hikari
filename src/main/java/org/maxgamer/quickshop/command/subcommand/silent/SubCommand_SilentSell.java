@@ -17,43 +17,24 @@
  *
  */
 
-package org.maxgamer.quickshop.command.subcommand;
+package org.maxgamer.quickshop.command.subcommand.silent;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopType;
 import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.Util;
 
-import java.util.UUID;
+public class SubCommand_SilentSell extends SubCommand_SilentBase {
 
-@AllArgsConstructor
-public class SubCommand_SilentSell implements CommandHandler<Player> {
-
-    private final QuickShop plugin;
+    public SubCommand_SilentSell(QuickShop plugin) {
+        super(plugin);
+    }
 
     @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length != 1) {
-            Util.debugLog("Exception on command! Canceling!");
-            return;
-        }
-
-        UUID uuid;
-        try {
-            uuid = UUID.fromString(cmdArg[0]);
-        } catch (IllegalArgumentException e) {
-            //Not valid, return for doing nothing
-            return;
-        }
-
-        Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(uuid);
-
-        if (shop == null || !shop.getModerator().isModerator(sender.getUniqueId())) {
+    protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull String[] cmdArg) {
+        if (!shop.getModerator().isModerator(sender.getUniqueId())) {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
@@ -63,5 +44,6 @@ public class SubCommand_SilentSell implements CommandHandler<Player> {
         MsgUtil.sendControlPanelInfo(sender, shop);
         plugin.text().of(sender,
                 "command.now-selling", MsgUtil.getTranslateText(shop.getItem())).send();
+
     }
 }

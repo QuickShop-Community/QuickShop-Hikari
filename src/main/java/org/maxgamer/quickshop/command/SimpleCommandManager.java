@@ -33,6 +33,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandContainer;
 import org.maxgamer.quickshop.api.command.CommandManager;
 import org.maxgamer.quickshop.command.subcommand.*;
+import org.maxgamer.quickshop.command.subcommand.silent.*;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 

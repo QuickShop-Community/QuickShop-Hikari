@@ -17,46 +17,23 @@
  *
  */
 
-package org.maxgamer.quickshop.command.subcommand;
+package org.maxgamer.quickshop.command.subcommand.silent;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.shop.SimpleShopManager;
 import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.Util;
 
-import java.util.UUID;
+public class SubCommand_SilentUnlimited extends SubCommand_SilentBase {
 
-@AllArgsConstructor
-public class SubCommand_SilentUnlimited implements CommandHandler<Player> {
-    private final QuickShop plugin;
+    public SubCommand_SilentUnlimited(QuickShop plugin) {
+        super(plugin);
+    }
 
     @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length != 1) {
-            Util.debugLog("Exception on command! Canceling!");
-            return;
-        }
-
-        UUID uuid;
-        try {
-            uuid = UUID.fromString(cmdArg[0]);
-        } catch (IllegalArgumentException e) {
-            //Not valid, return for doing nothing
-            return;
-        }
-
-        Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(uuid);
-
-        if (shop == null) {
-            plugin.text().of(sender, "not-looking-at-shop").send();
-            return;
-        }
-
+    protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull String[] cmdArg) {
         shop.setUnlimited(!shop.isUnlimited());
         shop.update();
         MsgUtil.sendControlPanelInfo(sender, shop);

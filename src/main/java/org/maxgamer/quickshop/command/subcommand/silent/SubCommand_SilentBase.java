@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is SubCommand_SilentRemove.java
+ * This file is a part of project QuickShop, the name is SubCommand_SilentBase.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,31 +17,31 @@
  *
  */
 
-package org.maxgamer.quickshop.command.subcommand;
+package org.maxgamer.quickshop.command.subcommand.silent;
 
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
-public class SubCommand_SilentRemove implements CommandHandler<Player> {
-
-    private final QuickShop plugin;
+public abstract class SubCommand_SilentBase implements CommandHandler<Player> {
+    protected final QuickShop plugin;
 
     @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length != 1) {
             Util.debugLog("Exception on command! Canceling!");
             return;
         }
-
         UUID uuid;
         try {
             uuid = UUID.fromString(cmdArg[0]);
@@ -51,19 +51,17 @@ public class SubCommand_SilentRemove implements CommandHandler<Player> {
         }
 
         Shop shop = plugin.getShopManager().getShopFromRuntimeRandomUniqueId(uuid);
-
-        if (shop == null) {
+        if (shop != null) {
+            doSilentCommand(sender, shop, cmdArg);
+        } else {
             plugin.text().of(sender, "not-looking-at-shop").send();
-            return;
         }
+    }
 
-        if (!shop.getModerator().isModerator(sender.getUniqueId())
-                && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")) {
-            plugin.text().of(sender, "no-permission").send();
-            return;
-        }
+    protected abstract void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull String[] cmdArg);
 
-        plugin.logEvent(new ShopRemoveLog(sender.getUniqueId(), "/qs silentremove command", shop.saveToInfoStorage()));
-        shop.delete();
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return Collections.emptyList();
     }
 }
