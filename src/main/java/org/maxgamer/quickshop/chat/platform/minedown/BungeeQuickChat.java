@@ -229,7 +229,7 @@ public class BungeeQuickChat implements QuickChat {
                     builder.append(leftComponent, ComponentBuilder.FormatRetention.EVENTS);
                     builder.append(rightComponent, ComponentBuilder.FormatRetention.EVENTS);
                 } else {
-                    builder.append(component);
+                    builder.append(component, ComponentBuilder.FormatRetention.EVENTS);
                 }
             }
             return this;
