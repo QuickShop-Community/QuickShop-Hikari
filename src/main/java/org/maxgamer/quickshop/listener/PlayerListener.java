@@ -292,12 +292,12 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     private int getPlayerCanBuy(Shop shop, double traderBalance, double price, Inventory playerInventory) {
-        boolean isShopUnlimited = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
+        boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
         if (shop.isFreeShop()) { // Free shop
-            return isShopUnlimited ? Util.countSpace(playerInventory, shop.getItem()) : Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop.getItem()));
+            return isContainerCountingNeeded ? Util.countSpace(playerInventory, shop.getItem()) : Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop.getItem()));
         }
         int itemAmount = Math.min(Util.countSpace(playerInventory, shop.getItem()), (int) Math.floor(traderBalance / price));
-        if (!isShopUnlimited) {
+        if (!isContainerCountingNeeded) {
             itemAmount = Math.min(itemAmount, shop.getRemainingStock());
         }
         if (itemAmount < 0) {
@@ -307,14 +307,14 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     private int getPlayerCanSell(Shop shop, double ownerBalance, double price, Inventory playerInventory) {
-        boolean isShopUnlimited = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
+        boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
         if (shop.isFreeShop()) {
-            return isShopUnlimited ? Util.countItems(playerInventory, shop.getItem()) : Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop.getItem()));
+            return isContainerCountingNeeded ? Util.countItems(playerInventory, shop.getItem()) : Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop.getItem()));
         }
 
         int items = Util.countItems(playerInventory, shop.getItem());
         final int ownerCanAfford = (int) (ownerBalance / price);
-        if (!isShopUnlimited) {
+        if (!isContainerCountingNeeded) {
             // Amount check player amount and shop empty slot
             items = Math.min(items, shop.getRemainingSpace());
             // Amount check player selling item total cost and the shop owner's balance
