@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is SubCommand_Unlimited.java
+ * This file is a part of project QuickShop, the name is SubCommand_AlwaysCounting.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
