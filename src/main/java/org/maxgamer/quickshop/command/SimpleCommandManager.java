@@ -78,10 +78,17 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .build());
         registerCmd(
                 CommandContainer.builder()
-                        .prefix("slientunlimited")
+                        .prefix("alwayscounting")
                         .hidden(true)
-                        .permission("quickshop.unlimited")
-                        .executor(new SubCommand_SilentUnlimited(plugin))
+                        .permission("quickshop.alwayscounting")
+                        .executor(new SubCommand_AlwaysCounting(plugin))
+                        .build());
+        registerCmd(
+                CommandContainer.builder()
+                        .prefix("slientalwayscounting")
+                        .hidden(true)
+                        .permission("quickshop.alwayscounting")
+                        .executor(new SubCommand_SilentAlwaysCounting(plugin))
                         .build());
         registerCmd(
                 CommandContainer.builder()

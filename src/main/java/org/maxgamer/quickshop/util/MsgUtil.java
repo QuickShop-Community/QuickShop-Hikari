@@ -498,6 +498,17 @@ public class MsgUtil {
                             shop.getRuntimeRandomUniqueId().toString());
             chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
         }
+        // Always Counting
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.alwayscounting")) {
+            String text =
+                    plugin.text().of(sender, "controlpanel.alwayscounting", bool2String(shop.isAlwaysCountingContainer())).forLocale();
+            String hoverText = plugin.text().of(sender, "controlpanel.alwayscounting-hover").forLocale();
+            String clickCommand =
+                    MsgUtil.fillArgs(
+                            "/qs silentalwayscounting {0}",
+                            shop.getRuntimeRandomUniqueId().toString());
+            chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
+        }
         // Buying/Selling Mode
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.buy")
                 && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.sell")) {

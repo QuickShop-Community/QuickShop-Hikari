@@ -132,6 +132,9 @@ public class SimpleInfo implements Info {
         if (this.shop.isUnlimited() != shop.isUnlimited()) {
             return true;
         }
+        if (this.shop.isAlwaysCountingContainer() != shop.isAlwaysCountingContainer()) {
+            return true;
+        }
         if (this.shop.getShopType() != shop.getShopType()) {
             return true;
         }

@@ -80,6 +80,7 @@ public class ContainerShop implements Shop {
     private double price;
     private ShopType shopType;
     private boolean unlimited;
+    private boolean isAlwaysCountingContainer;
     @NotNull
     private ItemStack item;
     @Nullable
@@ -108,7 +109,7 @@ public class ContainerShop implements Shop {
     private boolean disableDisplay;
     private UUID taxAccount;
 
-    @SuppressWarnings("CopyConstructorMissesField")
+
     private ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
         this.shopType = s.shopType;
@@ -127,6 +128,7 @@ public class ContainerShop implements Shop {
         this.currency = s.currency;
         this.disableDisplay = s.disableDisplay;
         this.taxAccount = s.taxAccount;
+        this.isAlwaysCountingContainer = s.isAlwaysCountingContainer;
         initDisplayItem();
     }
 
@@ -184,6 +186,7 @@ public class ContainerShop implements Shop {
         initDisplayItem();
         this.dirty = false;
         updateShopData();
+        isAlwaysCountingContainer = getExtra(plugin).getBoolean("is-always-counting-container", false);
     }
 
     private void updateShopData() {
@@ -193,7 +196,6 @@ public class ContainerShop implements Shop {
             section.set("currency", null);
             Util.debugLog("Shop " + this + " currency data upgrade successful.");
         }
-        setExtra(plugin, section);
         setDirty();
         this.update();
     }
@@ -315,7 +317,7 @@ public class ContainerShop implements Shop {
             return;
         }
         ItemStack[] contents = buyerInventory.getContents();
-        if (this.isUnlimited()) {
+        if (this.isUnlimited() && !isAlwaysCountingContainer) {
             for (int i = 0; amount > 0 && i < contents.length; i++) {
                 ItemStack stack = contents[i];
                 if (stack == null || stack.getType() == Material.AIR) {
@@ -596,6 +598,18 @@ public class ContainerShop implements Shop {
     }
 
     @Override
+    public boolean isAlwaysCountingContainer() {
+        return isAlwaysCountingContainer;
+    }
+
+    public void setAlwaysCountingContainer(boolean value) {
+        isAlwaysCountingContainer = value;
+        getExtra(plugin).set("is-always-counting-container", value);
+        setDirty();
+        update();
+    }
+
+    @Override
     public @NotNull String ownerName() {
         return ownerName(false);
     }
@@ -645,7 +659,7 @@ public class ContainerShop implements Shop {
         // Items to drop on floor
         ArrayList<ItemStack> floor = new ArrayList<>(5);
         int itemMaxStackSize = Util.getItemMaxStackSize(this.item.getType());
-        if (this.isUnlimited()) {
+        if (this.isUnlimited() && !isAlwaysCountingContainer()) {
             ItemStack item = this.item.clone();
             while (amount > 0) {
                 int stackSize = Math.min(amount, itemMaxStackSize);
@@ -691,7 +705,7 @@ public class ContainerShop implements Shop {
     }
 
     public boolean inventoryAvailable() {
-        if (isUnlimited()) {
+        if (isUnlimited() && !isAlwaysCountingContainer()) {
             return true;
         }
         if (isSelling()) {
@@ -1527,6 +1541,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void setExtra(@NotNull Plugin plugin, @NotNull ConfigurationSection data) {
+        extra.set(plugin.getName(), data);
         setDirty();
         update();
     }
