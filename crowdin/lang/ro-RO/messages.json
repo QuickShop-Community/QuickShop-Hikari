@@ -122,6 +122,10 @@
       "unlimited": "&aMagazinul este acum nelimitat",
       "limited": "&aMagazinul este acum limitat"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&aTransferat &{0} &ashop(i) catre{1}",
     "transfer-success-other": "&aTransferat &{0} {1}Magazine ale &lui{2}",
     "some-shops-removed": "&e{0} &ashop(uri) eliminat(e)",
@@ -203,6 +207,8 @@
     "freeze": "Trading disabled"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aOwner: &b{0} &e[&d&lChange&e]",
     "infomation": "&aShop Control panel:",
     "setowner-hover": "&eClick to switch owner.",
