@@ -122,6 +122,10 @@
       "unlimited": "&a商店已更改为无限模式",
       "limited": "&a商店已更改为普通模式。"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&a已将&e {0} &a个商店转移到玩家&e {1}",
     "transfer-success-other": "&a已将玩家&e {1} 的&a {0} 个商店转移到玩家&e {2}",
     "some-shops-removed": "&e{0} &a个商店已被移除",
@@ -203,6 +207,8 @@
     "freeze": "交易已被禁用"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&a所有者: &b{0} &e[&d&l修改&e]",
     "infomation": "&a商店控制面板",
     "setowner-hover": "&e点击来修改店主",
