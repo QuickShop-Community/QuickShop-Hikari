@@ -71,7 +71,7 @@ public class SimpleCompatibilityManager extends QuickShopInstanceHolder implemen
 
     @Override
     public boolean isRegistered(String pluginName) {
-        return MODULE_MAP.containsKey(pluginName);
+        return registeredModules.containsKey(pluginName);
     }
 
     /**
