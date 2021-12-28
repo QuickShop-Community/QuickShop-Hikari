@@ -122,6 +122,10 @@
       "unlimited": "&a상점의 재고를 무제한으로 설정했습니다. (관리자 상점으로 설정됩니다.)",
       "limited": "&a상점의 재고를 제한으로 설정했습니다. (유저 상점으로 설정됩니다.)"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&e{0} &a의 상점(들) 을(를) &e{1}(으) 로 이전",
     "transfer-success-other": "&e{0} {1}&a의 상점(들) 을(를) &e{2}(으) 로 이전",
     "some-shops-removed": "&e{0}의 &a상점(들)이 제거되었습니다.",
@@ -203,6 +207,8 @@
     "freeze": "거래 비활성화"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&a주인: &b{0} &e[&d&l바꾸기&e]",
     "infomation": "&a상점 컨트롤 패널:",
     "setowner-hover": "&e눌러서 주인 변경",
