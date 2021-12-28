@@ -122,6 +122,10 @@
       "unlimited": "&7Obchod je nyní neomezený",
       "limited": "&7Obchod je nyní omezený"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&7Přeneseno &b{0} &7obchodů &b{1}",
     "transfer-success-other": "&7Přeneseno &b{0} &7obchodů &b{1}",
     "some-shops-removed": "&b{0} &7obchod(ů) odstraněno",
@@ -203,6 +207,8 @@
     "freeze": "Obchod je zakázán"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&fVlastník: &b{0} &7[&d&3Změna&7]",
     "infomation": "Ovládací panel &bShop:",
     "setowner-hover": "&bKlikni pro přepnutí vlastníka.",
