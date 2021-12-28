@@ -122,6 +122,10 @@
       "unlimited": "&aSklep jest teraz nieograniczony",
       "limited": "&aSklep jest teraz limitowany"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&aPrzeniesiono &e{0} &asklep(y/ów) do &e{1}",
     "transfer-success-other": "&aPrzeniesiono &{0} sklep(y/ów) {1} do &e{2}",
     "some-shops-removed": "&e{0} &asklep(y/ów) usunięto",
@@ -203,6 +207,8 @@
     "freeze": "Handel wyłączony"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aWłaściciel: &b{0} &e[&d&lZmień&e]",
     "infomation": "&aPanel sterowania sklepu:",
     "setowner-hover": "&eKliknij, aby zmienić właściciela.",
