@@ -122,6 +122,10 @@
       "unlimited": "&aショップは無制限になりました",
       "limited": "&aショップは制限されています"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&e{0} のショップを &e{1} に転送しました",
     "transfer-success-other": "&a{0} {1}&aのショップを&e{2} に転送しました",
     "some-shops-removed": "&e{0} つのショップを削除しました",
@@ -203,6 +207,8 @@
     "freeze": "取引が無効化されました。"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&a店主: &b{0} &e[&d&l変更&e]",
     "infomation": "&aショップコントロールパネル:",
     "setowner-hover": "&eクリックで店主を変更します",
