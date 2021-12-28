@@ -6,7 +6,7 @@
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (en_US)",
   "language-version": "63",
-  "not-looking-at-valid-shop-block": "&cCould not find a block for creating shop. You need to look at one.",
+  "not-looking-at-valid-shop-block": "&cCould not create a shop. Please look a supported block-type and try again.",
   "not-looking-at-shop": "&cCould not find a QuickShop. Make sure you look at one.",
   "no-anythings-in-your-hand": "&cThere is nothing in your hand.",
   "no-permission": "&cYou do not have permission to do that.",
@@ -347,6 +347,6 @@
   "display-turn-on": "&aSuccessfully turn on the shop display.",
   "display-turn-off": "&aSuccessfully turn off the shop display.",
   "shop-purged-start": "&aShop purge started, check the console for details.",
-  "purchase-out-of-stock": "&cThis shop has run out of stock. Contact the shop owner of staff to get it refilled.",
+  "purchase-out-of-stock": "&cThis shop has run out of stock. Contact the shop owner or staff to get it refilled.",
   "purchase-out-of-space": "&cThis shop has run out of space. Contact the shop owner or staff to get it emptied."
 }

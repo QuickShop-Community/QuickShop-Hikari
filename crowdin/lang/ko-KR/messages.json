@@ -111,7 +111,7 @@
   "bypassing-lock": "&a QuickShop의 잠금을 무시합니다!",
   "that-is-locked": "&c이 상점은 잠겨있습니다.",
   "how-many-buy": "&a채팅으로 원하는 &b구매&a 개수를 입력해주세요. 당신은 &e{0}&a개를 구매할 수 있습니다. &b{1}&a을 입력해 전부 구매 가능합니다.",
-  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You can sell &e{0}&a. Enter &b{1}&a in chat, to sell all.",
+  "how-many-sell": "&d판매&a하고 싶은 개수를 채팅에 입력 하세요. &e{0}&a 개를 소유 중 입니다. &b{1}&a로 모두 판매할 수 있습니다",
   "not-allowed-to-create": "&c 당신은 이곳에 상점을 만들수 없습니다.",
   "blacklisted-item": "&c당신은 이아이템을 판매할수 없습니다. 블랙리스트에 등록되어있는 아이템입니다.",
   "how-much-to-trade-for": "&a채팅에 {0}의 {1}개당 가격을 얼마로 할건지 입력해주세요.",
@@ -308,7 +308,7 @@
   "shop-freezed-at-location": "&e당신의 상점 {1} 에 있는 {0} 이 얼었습니다!",
   "denied-put-in-item": "&c당신은 이아이템을 당신에 상점에 넣을수 없습니다!!",
   "how-many-buy-stack": "&e채팅에 입력하세요, 묶음을 얼마나 &b구매&a할것인지 &e{0}&a 개의 아이템의 하나의 묶음마다 들어있으며 당신은 &e{1}&a개의 묶음을 구매할수 있습니다 &b{2}&a을 입력하여 모두 구매할수 있습니다",
-  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you can sell &e{1}&a bulks. Enter &b{2}&a in chat to sell all.",
+  "how-many-sell-stack": "&d판매&a하고 싶은 묶음을 채팅에 입력 하세요. &e{0}&a개의 아이템이 한 묶음 입니다. &e{1}&a 묶음을 소유 중 입니다. &b{2}&a로 모두 판매할 수 있습니다",
   "language": {
     "name": "&e이름: &6{0}",
     "code": "&e코드: &6{0}",
