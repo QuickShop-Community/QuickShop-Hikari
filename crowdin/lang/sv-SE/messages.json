@@ -122,6 +122,10 @@
       "unlimited": "&aButiken är nu obegränsad",
       "limited": "&aButiken är nu begränsad"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&aÖverförde &e{0} &abutik(er) till &e{1}",
     "transfer-success-other": "&aÖverförde &e{0} {1}&a's butik(er) till &e{2}",
     "some-shops-removed": "&{0} &abutik(er) borttagen",
@@ -203,6 +207,8 @@
     "freeze": "Handel inaktiverad"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aÄgare: &b{0} &e[&d&lÄndra&e]",
     "infomation": "&aButiksadministration:",
     "setowner-hover": "&eKlicka för att byta ägare.",
