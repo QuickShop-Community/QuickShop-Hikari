@@ -123,7 +123,7 @@
       "limited": "&aShop is now limited"
     },
     "toggle-always-counting": {
-      "counting": "&aShop is now always counting container even is unlimited",
+      "counting": "&aShop is now always counting the container's content, even when set to unlimited",
       "not-counting": "&aShop is now respect if shop is unlimited"
     },
     "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
@@ -208,7 +208,7 @@
   },
   "controlpanel": {
     "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
-    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
+    "alwayscounting-hover": "&eClick to toggle if the shop should always count the container's content.",
     "setowner": "&aOwner: &b{0} &e[&d&lChange&e]",
     "infomation": "&aShop Control panel:",
     "setowner-hover": "&eClick to switch owner.",
