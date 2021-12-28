@@ -122,6 +122,10 @@
       "unlimited": "&aKaupassa on nyt rajattomasti tavaroita",
       "limited": "&aKauppa ei ole enää rajaton"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&aSiirretty &e{0} &akauppa(a) pelaajalle &e{1}",
     "transfer-success-other": "&aSiirretty &e{0} &apelaajan &e{1}&a kauppa(a) pelaajalle &e{2}",
     "some-shops-removed": "&e{0} &akauppa(a) poistettu",
@@ -203,6 +207,8 @@
     "freeze": "Vaihto jäädytetty"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aOmistaja: &b{0} &e[&d&lVaihda&e]",
     "infomation": "&aKaupan asetukset:",
     "setowner-hover": "&eKlikkaa vaihtaaksesi omistaja.",
