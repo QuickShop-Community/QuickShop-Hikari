@@ -122,6 +122,10 @@
       "unlimited": "&aМагазин теперь неограничен",
       "limited": "&aМагазин теперь ограничен"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&aПеремещено &e{0} &aмагазин(ов) в &e{1}",
     "transfer-success-other": "&aПеремещено &e{0} {1}&a магазин(ов) в &e{2}",
     "some-shops-removed": "&e{0} &aмагазин(ов) удален",
@@ -203,6 +207,8 @@
     "freeze": "Обмен отключен"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aВладелец: &b{0} &e[&d&lИзменить&e]",
     "infomation": "&aПанель управления магазином:",
     "setowner-hover": "&eНажмите для смены владельца.",
