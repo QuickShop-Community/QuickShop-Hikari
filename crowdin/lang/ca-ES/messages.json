@@ -122,6 +122,10 @@
       "unlimited": "&aLa botiga ara és il·limitada.",
       "limited": "&aLa botiga ara és limitada."
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&aS'han transferit &e{0} &abotigues a &e{1}",
     "transfer-success-other": "&aS'han transferit les botigues de &e{0} {1}&a a &e{2}",
     "some-shops-removed": "&e{0} &abotigues eliminades",
@@ -203,6 +207,8 @@
     "freeze": "Intercanvi desactivat"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aPropietari: &b{0} &e[&d&lCanvia&e]",
     "infomation": "&aPanell de control de la botiga:",
     "setowner-hover": "&eFes clic per canviar de propietari.",
