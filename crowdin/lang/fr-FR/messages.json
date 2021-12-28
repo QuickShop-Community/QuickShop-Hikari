@@ -122,6 +122,10 @@
       "unlimited": "&aCe shop est désormais illimité",
       "limited": "&aCe shop est désormais limité"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&aTransfert du shop &e{0} &aà &e{1}",
     "transfer-success-other": "&aTransfert du shop &e{0} &aà &e{1}",
     "some-shops-removed": "&e{0} &ashop(s) supprimé(s)",
@@ -203,6 +207,8 @@
     "freeze": "Echange désactivé"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aPropriétaire: &b{0} &e[&dChanger&e]",
     "infomation": "&aPanneau de contrôle de la boutique :",
     "setowner-hover": "&eCliquez pour changer le propriétaire.",
