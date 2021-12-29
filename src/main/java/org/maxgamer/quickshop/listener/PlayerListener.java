@@ -31,6 +31,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
@@ -38,6 +39,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.shop.Info;
@@ -380,6 +382,22 @@ public class PlayerListener extends AbstractQSListener {
     @EventHandler(ignoreCancelled = true)
     public void onTeleport(PlayerTeleportEvent e) {
         onMove(new PlayerMoveEvent(e.getPlayer(), e.getFrom(), e.getTo()));
+    }
+
+    /*
+     * Cancels the menu for broken shop block
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerBreakShopCreationChest(BlockBreakEvent event) {
+        @Nullable Player player = event.getPlayer();
+        if (player == null) {
+            return;
+        }
+        Map<UUID, Info> actionMap = plugin.getShopManager().getActions();
+        final Info info = actionMap.get(player.getUniqueId());
+        if (info != null && info.getLocation().equals(event.getBlock().getLocation())) {
+            actionMap.remove(player.getUniqueId());
+        }
     }
 
     /*
