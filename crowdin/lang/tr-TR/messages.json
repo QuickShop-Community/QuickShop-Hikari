@@ -122,6 +122,10 @@
       "unlimited": "&aMarket şimdi sınırsız",
       "limited": "&aMarket şimdi sınırlı"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&e{0} &amarket &e{1} &aoyuncusuna devredildi",
     "transfer-success-other": "&e{1} &aoyuncusunun &e{0} &amarketi &e{2} &aoyuncusuna devredildi",
     "some-shops-removed": "&e{0} &amarket kaldırıldı",
@@ -203,6 +207,8 @@
     "freeze": "Takas kapatıldı"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aSahibi: &b{0} &e[&d&lDeğiştir&e]",
     "infomation": "&aMarket Kontrol paneli:",
     "setowner-hover": "&eSahibi değiştirmek için tıkla.",

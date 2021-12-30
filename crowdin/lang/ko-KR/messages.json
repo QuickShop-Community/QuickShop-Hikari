@@ -25,7 +25,7 @@
   "you-cant-afford-a-new-shop": "&c새 상점 생성에 {0} 원이 소모됩니다!",
   "player-bought-from-your-store-tax": "&c{0} 님이 상점 에서 {2} 을(를) {1}개 구입했으며 {3} 원 을(를) 얻으셨습니다! (세금 : {4}원)",
   "you-cant-afford-to-change-price": "&c상점 물품의 가격을 변경할때 {0} 원이 소모됩니다.",
-  "success-created-shop": "&c상점이 정상적으로 생성되었습니다.",
+  "success-created-shop": "&c상점이 생성되었습니다.",
   "success-removed-shop": "&a상점을 제거했습니다.",
   "shops-arent-locked": "&c기억하세요, 상점은 도둑질로부터 보호되지 &4&l않습니다!!! &c도둑질로부터 보호하고 싶으면 잠금 플러그인을 이용하여 상자를 잠궈주세요!",
   "shop-creation-cancelled": "&c상점 생성이 취소되었습니다.",
@@ -45,7 +45,7 @@
   "shop-out-of-space": "&5유저님의 {0}, {1}, {2} 에 있는 상점이 가득 찼습니다. 더 이상 구매할 수 없습니다! 계속 구매를 원하신다면 상자를 비워주세요!",
   "fee-charged-for-price-change": "&a가격 변경비&c{0} 원을 &a지불 하였습니다.",
   "price-is-now": "&a새로운 상점의 가격은 &e{0}&a입니다.",
-  "thats-not-a-number": "&c잘못된 숫자입니다. 확인하시고 다시 입력하세요.",
+  "thats-not-a-number": "&c잘못된 숫자입니다.",
   "forbidden-vanilla-behavior": "&c바닐라 동작과 일치하지 않기 때문에 작업이 금지됩니다.",
   "no-price-given": "&c유효한 가격을 입력해주세요.",
   "average-price-nearby": "&a근처 평균 가격: &e{0} 원",
@@ -121,6 +121,10 @@
     "toggle-unlimited": {
       "unlimited": "&a상점의 재고를 무제한으로 설정했습니다. (관리자 상점으로 설정됩니다.)",
       "limited": "&a상점의 재고를 제한으로 설정했습니다. (유저 상점으로 설정됩니다.)"
+    },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
     },
     "transfer-success": "&e{0} &a의 상점(들) 을(를) &e{1}(으) 로 이전",
     "transfer-success-other": "&e{0} {1}&a의 상점(들) 을(를) &e{2}(으) 로 이전",
@@ -203,6 +207,8 @@
     "freeze": "거래 비활성화"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&a주인: &b{0} &e[&d&l바꾸기&e]",
     "infomation": "&a상점 컨트롤 패널:",
     "setowner-hover": "&e눌러서 주인 변경",

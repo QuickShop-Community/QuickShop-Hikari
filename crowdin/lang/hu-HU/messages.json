@@ -6,12 +6,12 @@
   "translation-contributors": "Közreműködők: Timtower, Netherfoam, KaiNoMood and Mgazul",
   "translation-country": "Nyelv Zóna: Magyar (hu_HU)",
   "language-version": "63",
-  "not-looking-at-valid-shop-block": "&cCould not find a block for creating shop. You need to look at one.",
+  "not-looking-at-valid-shop-block": "&cNem tudtuk létrehozni a boltot, mert nem találtunk blokkot. Nézz egy blokkra.",
   "not-looking-at-shop": "&cEz nem egy bolt amire nézel.",
   "no-anythings-in-your-hand": "&cNincs semmi a kezedben.",
   "no-permission": "&cNincs jogod ehhez!",
-  "integrations-check-failed-create": "&cIntegration {0} denied the shop-creation",
-  "integrations-check-failed-trade": "&cIntegration {0} denied the Shop trading",
+  "integrations-check-failed-create": "A {0} integráció elutasította a bolt-készítést",
+  "integrations-check-failed-trade": "A {0} integráció elutasította a bolttal való kereskedelmet",
   "3rd-plugin-build-check-failed": "&c3rd party plugin &l{0}&r&c denied the permission checks, did you have permission setup in there?",
   "no-creative-break": "&cYou cannot break other players shops in the creative mode, switch to survival mode or try to use supertool {0} instead.",
   "trading-in-creative-mode-is-disabled": "&cYou cannot trade with shop in the creative mode.",
@@ -122,6 +122,10 @@
       "unlimited": "&aA bolt korlátlan",
       "limited": "&aA bolt korlátozott"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&aTransferred &e{0} &ashop(s) to &e{1}",
     "transfer-success-other": "&aTransferred &e{0} {1}&a's shop(s) to &e{2}",
     "some-shops-removed": "&e{0} &ashop removed",
@@ -203,6 +207,8 @@
     "freeze": "Trading disabled"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aTulajdonos: &b{0} &e[&d&lMegváltoztatás&e]",
     "infomation": "&aBolt vezérlőpult:",
     "setowner-hover": "&eKattintson ide, hogy megváltoztassa a tulajdonost.",

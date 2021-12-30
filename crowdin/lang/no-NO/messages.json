@@ -122,6 +122,10 @@
       "unlimited": "&aButikken er nå ubegrenset",
       "limited": "&aButikken er nå begrenset"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&aOverførte &e{0} &abutikk(er) til &e{1}",
     "transfer-success-other": "&aOverførte &e{0} &abutikker tilhørende &e{1}&a til &e{2}",
     "some-shops-removed": "&e{0} &abutikk(er) ble fjernet",
@@ -203,6 +207,8 @@
     "freeze": "Handel deaktivert"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aEier: &b{0} &e[&d&lEndre&e]",
     "infomation": "&aButikkens kontrollpanel:",
     "setowner-hover": "&eKlikk for å bytte eier.",

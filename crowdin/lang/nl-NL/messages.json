@@ -122,6 +122,10 @@
       "unlimited": "&aShop is nu ongelimiteerd",
       "limited": "&aShop is nu beperkt"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&aOvergedragen van{0} &ashop(s) naar &e{1}",
     "transfer-success-other": "&aOverdracht &e{0} {1}&a's winkel(s) naar &e{2}",
     "some-shops-removed": "&e{0} ashop(s) verwijderd",
@@ -203,6 +207,8 @@
     "freeze": "Ruilen uitgeschakeld"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aEigenaar: &b{0} &e[&d&lChange&e]",
     "infomation": "&aShop Control Panel:",
     "setowner-hover": "&eKlik om van eigenaar te wisselen.",

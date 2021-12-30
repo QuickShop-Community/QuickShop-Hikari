@@ -122,6 +122,10 @@
       "unlimited": "&a這個商店現在已沒有數量限制",
       "limited": "&a這個商店現在已恢復數量限制"
     },
+    "toggle-always-counting": {
+      "counting": "&aShop is now always counting container even is unlimited",
+      "not-counting": "&aShop is now respect if shop is unlimited"
+    },
     "transfer-success": "&a將&e {0} &a商店轉移到&e {1}",
     "transfer-success-other": "&a將&e {0} {1}&a的商店轉移到&e {2}",
     "some-shops-removed": "&e{0} &a的商店已刪除",
@@ -203,6 +207,8 @@
     "freeze": "已停用交易"
   },
   "controlpanel": {
+    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&a店主 ： &b{0} &e[&d&l修改&e]",
     "infomation": "&a商店控制面板 ： ",
     "setowner-hover": "&e點擊修改店主。",
