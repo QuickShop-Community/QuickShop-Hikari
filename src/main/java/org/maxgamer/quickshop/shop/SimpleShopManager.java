@@ -1128,7 +1128,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     Integer.toString(shop.getLocation().getBlockX()),
                     Integer.toString(shop.getLocation().getBlockY()),
                     Integer.toString(shop.getLocation().getBlockZ()),
-                    MsgUtil.convertItemStackToTranslateText(shop.getItem().getType())).forLocale();
+                    MsgUtil.getTranslateText(shop.getItem())).forLocale();
             transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
 
             MsgUtil.send(shop, shop.getOwner(), transactionMessage);
