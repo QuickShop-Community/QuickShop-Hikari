@@ -26,7 +26,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -40,6 +42,8 @@ import org.maxgamer.quickshop.util.TextSplitter;
 import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -108,21 +112,47 @@ public class BungeeQuickChat implements QuickChat {
 
     @Override
     public void sendItemHologramChat(@NotNull Player player, @NotNull String text, @NotNull ItemStack itemStack) {
+        sendItemHologramChat(player, text, itemStack, false);
+    }
+
+
+    private void sendItemHologramChat(@NotNull Player player, @NotNull String text, @NotNull ItemStack itemStack, boolean isPlainItemStack) {
         TextComponent errorComponent = new TextComponent(plugin.text().of(player, "menu.item-holochat-error").forLocale());
         try {
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
+            if (json == null) {
+                player.spigot().sendMessage(errorComponent);
+                return;
+            }
             BungeeComponentBuilder builder = new BungeeComponentBuilder();
-            builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
+            HoverEvent itemHoverEvent = new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create());
             TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(text);
             if (spilledString == null) {
                 Util.debugLog("Spilled string is null");
+                builder.event(itemHoverEvent);
                 builder.appendLegacy(text);
+                //Dummy for not included hover event
+                builder.append(new TextComponent());
+                builder.event((HoverEvent) null);
             } else {
+                //Only show item on item name side
+                for (BaseComponent component : spilledString.getComponents()) {
+                    component.setHoverEvent(itemHoverEvent);
+                }
                 builder.appendLegacyAndItem(spilledString.getLeft(), spilledString.getComponents(), spilledString.getRight());
             }
-            BaseComponent[] components = builder.create();
-            Util.debugLog("Sending debug: " + ComponentSerializer.toString(components));
-            player.spigot().sendMessage(components);
+            BaseComponent[] result = builder.create();
+            String resultStr = ComponentSerializer.toString(result);
+            Util.debugLog("Sending debug: " + resultStr);
+            if (resultStr.getBytes(StandardCharsets.UTF_8).length > 32767) {
+                if (isPlainItemStack) {
+                    plugin.text().of(player, "menu.item-holochat-data-too-large").send();
+                } else {
+                    sendItemHologramChat(player, text, getPlainItemStack(itemStack, player.getLocale()));
+                }
+            } else {
+                player.spigot().sendMessage(result);
+            }
         } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException | InstantiationException e) {
             plugin.getLogger().log(Level.WARNING, "Failed to process chat component", e);
             player.spigot().sendMessage(errorComponent);
@@ -131,6 +161,10 @@ public class BungeeQuickChat implements QuickChat {
 
     @Override
     public @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String message) {
+        return getItemHologramChat(shop, itemStack, player, message, false);
+    }
+
+    private @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String message, boolean isPlainItemStack) {
         TextComponent errorComponent = new TextComponent(plugin.text().of(player, "menu.item-holochat-error").forLocale());
         try {
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
@@ -138,11 +172,19 @@ public class BungeeQuickChat implements QuickChat {
                 return new QuickComponentImpl(errorComponent);
             }
             BungeeComponentBuilder builder = new BungeeComponentBuilder();
-            builder.event(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create()));
+            HoverEvent itemHoverEvent = new HoverEvent(HoverEvent.Action.SHOW_ITEM, new ComponentBuilder(json).create());
             TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(message);
             if (spilledString == null) {
+                builder.event(itemHoverEvent);
                 builder.appendLegacy(message);
+                //Dummy for not included hover event
+                builder.append(new TextComponent());
+                builder.event((HoverEvent) null);
             } else {
+                //Only show item on item name side
+                for (BaseComponent component : spilledString.getComponents()) {
+                    component.setHoverEvent(itemHoverEvent);
+                }
                 builder.appendLegacyAndItem(spilledString.getLeft()
                         , spilledString.getComponents()
                         , spilledString.getRight());
@@ -156,11 +198,38 @@ public class BungeeQuickChat implements QuickChat {
                                 "/qs silentpreview {0}",
                                 shop.getRuntimeRandomUniqueId().toString())));
             }
-            return new QuickComponentImpl(builder.create());
+            BaseComponent[] result = builder.create();
+            if (ComponentSerializer.toString(result).getBytes(StandardCharsets.UTF_8).length > 32767) {
+                if (isPlainItemStack) {
+                    return new QuickComponentImpl(plugin.text().of(player, "menu.item-holochat-data-too-large").forLocale());
+                } else
+                    return getItemHologramChat(shop, getPlainItemStack(itemStack, player.getLocale()), player, message, true);
+            } else {
+                return new QuickComponentImpl(result);
+            }
         } catch (Exception t) {
             plugin.getLogger().log(Level.WARNING, "Failed to process chat component", t);
             return new QuickComponentImpl(errorComponent);
         }
+    }
+
+    private ItemStack getPlainItemStack(@NotNull ItemStack itemStack, @Nullable String locale) {
+        if (locale == null) {
+            locale = MsgUtil.getDefaultGameLanguageCode();
+        }
+        ItemStack plainItemStack = new ItemStack(itemStack.getType());
+        plainItemStack.setAmount(itemStack.getAmount());
+        ItemMeta fromMeta = itemStack.getItemMeta();
+        ItemMeta targetMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());
+        if (fromMeta != null && targetMeta != null) {
+            if (fromMeta.hasDisplayName()) {
+                targetMeta.setDisplayName(fromMeta.getDisplayName());
+            }
+            targetMeta.addItemFlags(fromMeta.getItemFlags().toArray(new ItemFlag[]{}));
+            targetMeta.setLore(Collections.singletonList(plugin.text().of("menu.item-holochat-data-too-large").forLocale(locale)));
+        }
+        plainItemStack.setItemMeta(targetMeta);
+        return plainItemStack;
     }
 
     public static class BungeeComponentBuilder {
@@ -173,7 +242,7 @@ public class BungeeQuickChat implements QuickChat {
 
         public BungeeComponentBuilder append(BaseComponent component) {
             if (builder.getCursor() == -1) {
-                builder.append(component, ComponentBuilder.FormatRetention.NONE);
+                builder.append(component, ComponentBuilder.FormatRetention.EVENTS);
             } else {
                 builder.append(component);
             }
@@ -190,7 +259,7 @@ public class BungeeQuickChat implements QuickChat {
 
         public BungeeComponentBuilder append(String text) {
             if (builder.getCursor() == -1) {
-                builder.append(text, ComponentBuilder.FormatRetention.NONE);
+                builder.append(text, ComponentBuilder.FormatRetention.EVENTS);
             } else {
                 builder.append(text);
             }
@@ -210,7 +279,6 @@ public class BungeeQuickChat implements QuickChat {
         }
 
         public BungeeComponentBuilder appendLegacyAndItem(String left, BaseComponent[] itemsComponent, String right) {
-            ;
             String uuidStr = UUID.randomUUID().toString();
             BaseComponent[] components = fromLegacyText(left + uuidStr + right);
             boolean centerFound = false;
