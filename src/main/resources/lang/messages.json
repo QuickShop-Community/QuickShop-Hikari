@@ -278,7 +278,8 @@
       "Ahhhhhhh! New update {0}! Update!",
       "What do you think? {0} has been released! Update!",
       "Doctor, QuickShop has a new update {0}! You should update~",
-      "Ko~ko~da~yo~ QuickShop has a new update {0} ~"
+      "Ko~ko~da~yo~ QuickShop has a new update {0} ~",
+      "Paimon want told you the QuickShop have new update {0}!"
     ],
     "remote-disable-warning": "&cThis version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server's performance.",
     "label": {
