@@ -226,6 +226,8 @@ public class BungeeQuickChat implements QuickChat {
                 targetMeta.setDisplayName(fromMeta.getDisplayName());
             }
             targetMeta.addItemFlags(fromMeta.getItemFlags().toArray(new ItemFlag[]{}));
+        }
+        if (targetMeta != null) {
             targetMeta.setLore(Collections.singletonList(plugin.text().of("menu.item-holochat-data-too-large").forLocale(locale)));
         }
         plainItemStack.setItemMeta(targetMeta);
