@@ -96,6 +96,7 @@
     "owner": "&aWłaściciel: {0}",
     "item": "&aPrzedmiot: &e{0}",
     "item-holochat-error": "&c[Error]",
+    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
     "preview": "&b[Podgląd przedmiotu]",
     "space": "&aMiejsce: &e{0}",
     "stock": "&aIlość &e{0}",
@@ -277,7 +278,8 @@
       "Ahhhhhhh! Nowy update {0}! Pobieraj Teraz!",
       "Co myślisz? {0} został wydany! Aktualizuj!",
       "Lekarz, QuickShop ma nową aktualizację {0}! Powinieneś zaktualizować~",
-      "Ko~ko~da~yo~ QuickShop ma nową aktualizację {0}~"
+      "Ko~ko~da~yo~ QuickShop ma nową aktualizację {0}~",
+      "Paimon want told you the QuickShop have new update {0}!"
     ],
     "remote-disable-warning": "&cTa wersja QuickShop jest oznaczona jako wyłączona przez zdalny serwer, co oznacza, że ta wersja może mieć poważny problem, uzyskaj szczegóły z naszej strony SpigotMC: {0}. To ostrzeżenie będzie wyświetlane dopóki nie przejdziesz do stabilnej wersji, ale nie wpłynie to na wydajność Twojego serwera.",
     "label": {
@@ -354,5 +356,7 @@
   "display-turn-off": "&aPomyślnie wyłączono wyświetlacz sklepu.",
   "shop-purged-start": "&aRozpoczęto czyszczenie sklepu, sprawdź konsolę, aby uzyskać szczegółowe informacje.",
   "purchase-out-of-stock": "&cW tym sklepie skończyły się zapasy, skontaktuj się z właścicielem sklepu lub personelem, aby uzupełnić zapasy.",
-  "purchase-out-of-space": "&cW tym sklepie zabrakło miejsca, skontaktuj się z właścicielem sklepu lub personelem, aby opróżnić sklep."
+  "purchase-out-of-space": "&cW tym sklepie zabrakło miejsca, skontaktuj się z właścicielem sklepu lub personelem, aby opróżnić sklep.",
+  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
 }

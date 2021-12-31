@@ -96,6 +96,7 @@
     "owner": "&r &fVlastník: &b{0}",
     "item": "&r &fItem: &b{0}",
     "item-holochat-error": "&r &c[Error]",
+    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
     "preview": "&r &b[Náhled itemu]",
     "space": "&r &fMezera: &b{0}",
     "stock": "&r &fSkladem: &b{0}",
@@ -277,7 +278,8 @@
       "Ahhhhhh! Nový update {0}! Updatujte plugin!",
       "Co si myslíte? {0} byla vydána! Updatujte plugin!",
       "Doktor, QuickShop má novou aktualizaci {0}! Měl byste aktualizovat~",
-      "Ko~ko~da~yo~ QuickShop má nový update {0}~"
+      "Ko~ko~da~yo~ QuickShop má nový update {0}~",
+      "Paimon want told you the QuickShop have new update {0}!"
     ],
     "remote-disable-warning": "&cTato verze QuickShopu je označena jako zakázaná vzdáleným serverem, což znamená, že tato verze může mít vážný problém, získejte podrobnosti na naší SpigotMC stránce: {0}. Toto varování se bude objevovat dokud nepřepnete na stabilní verzi, ale neovlivní to výkon vašeho serveru.",
     "label": {
@@ -354,5 +356,7 @@
   "display-turn-off": "&aÚspěšně vypnuto zobrazení obchodu.",
   "shop-purged-start": "&aShop čištění začalo, zkontrolujte konzoli pro podrobnosti.",
   "purchase-out-of-stock": "&cTumuto obchodu došli zásoby, kontaktujte majitele obchodu pro doplňování zásob.",
-  "purchase-out-of-space": "&cTomuto obchodu došlo místo, Kontaktuj jeho majitele aby ho vyprázdnil."
+  "purchase-out-of-space": "&cTomuto obchodu došlo místo, Kontaktuj jeho majitele aby ho vyprázdnil.",
+  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
 }

@@ -96,6 +96,7 @@
     "owner": "&aBesitzer: {0}",
     "item": "&aGegenstand: &e{0}",
     "item-holochat-error": "&c[Fehler]",
+    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
     "preview": "&b[Itemvorschau]",
     "space": "&aKapazität: &e{0}",
     "stock": "&aLagerbestand: &e{0}",
@@ -277,7 +278,8 @@
       "Ahhhhhhh! Neues Update {0}! Update!",
       "Was denkst du? {0} wurde veröffentlicht! Aktualisiere!",
       "Doktor, QuickShop hat ein neues Update {0}! Du solltest aktualisieren~",
-      "Ko~ko~da~yo~ QuickShop hat ein neues Update {0} ~"
+      "Ko~ko~da~yo~ QuickShop hat ein neues Update {0} ~",
+      "Paimon want told you the QuickShop have new update {0}!"
     ],
     "remote-disable-warning": "&cDiese Version von QuickShop wurde vom Remote Server als deaktiviert markiert, was bedeutet, dass diese Version eventuell schwere Probleme hat. Erhalte Details von unserer Spigot Seite: {0}. Diese Warnung wird so lange erscheinen, bis du zu einer stabilen Version wechselst, wird die Server-Performance aber nicht beeinflussen.",
     "label": {
@@ -354,5 +356,7 @@
   "display-turn-off": "&aShopanzeige erfolgreich deaktiviert.",
   "shop-purged-start": "&aShop-Löschung gestartet. Überprüfe die Konsole für details.",
   "purchase-out-of-stock": "&cDieser Shop hat keine Items mehr. Kontaktiere den Shopeigentümer oder Shop-Mitarbeiter um den Bestand wieder aufzufüllen.",
-  "purchase-out-of-space": "&cDieser Shop hat keinen Platz mehr. Kontaktiere den Shopeigentümer oder Shop-Mitarbeiter damit er geleert wird."
+  "purchase-out-of-space": "&cDieser Shop hat keinen Platz mehr. Kontaktiere den Shopeigentümer oder Shop-Mitarbeiter damit er geleert wird.",
+  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
 }

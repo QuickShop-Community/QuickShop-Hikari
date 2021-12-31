@@ -96,6 +96,7 @@
     "owner": "&aEier: {0}",
     "item": "&aGjenstand: &e{0}",
     "item-holochat-error": "&c[Error]",
+    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
     "preview": "&b[Forhåndsvisning]",
     "space": "&aPlass: &e{0}",
     "stock": "&aTilgjengelig &e{0}",
@@ -277,7 +278,8 @@
       "Ahhhhhh! Ny oppdatering {0}! Oppdater!",
       "Hva tenker du? {0} har blitt lansert! Oppdater!",
       "Doktor, QuickShop har en ny oppdatering {0}! Du bør oppdatere~",
-      "Ko~ko~da~yo~ QuickShop har en ny oppdatering {0} ~"
+      "Ko~ko~da~yo~ QuickShop har en ny oppdatering {0} ~",
+      "Paimon want told you the QuickShop have new update {0}!"
     ],
     "remote-disable-warning": "&cDenne versjonen av QuickShop er markert som deaktivert av ekstern tjener; som betyr at denne versjonen kan ha alvorlige problemer. Les om detaljer fra SpigotMC siden: {0}. Denne advarselen vil fortsette å vise inntil du bytter til en stabil versjon, men det vil ikke påvirke serverens ytelse.",
     "label": {
@@ -354,5 +356,7 @@
   "display-turn-off": "&aVellykket deaktivering av butikkvisning.",
   "shop-purged-start": "&aShop renset, sjekk konsollen for detaljer.",
   "purchase-out-of-stock": "&cDenne butikken er tom på lager, kontakt butikkeier eller ansatte for å fylle på lageret.",
-  "purchase-out-of-space": "&cDenne butikken er tom for plass, kontakt butikkeier eller ansatte for å tømme butikken."
+  "purchase-out-of-space": "&cDenne butikken er tom for plass, kontakt butikkeier eller ansatte for å tømme butikken.",
+  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
 }

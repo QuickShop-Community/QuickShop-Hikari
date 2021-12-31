@@ -96,6 +96,7 @@
     "owner": "&aPropietari/a: {0}",
     "item": "&aÍtem: &e{0}",
     "item-holochat-error": "&c[Error]",
+    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
     "preview": "&b[Previsualització]",
     "space": "&aEspai: &e{0}",
     "stock": "&aEstoc: &e{0}",
@@ -277,7 +278,8 @@
       "Ahhhhhhh! Nova actualització {0}! ACTUALITZACIÓ!",
       "Què en penses? {0} ha sortit! Actualitza!",
       "Doctor, QuickShop té una nova actualització: {0}! Hauries d'actualitzar...",
-      "Tra~la~la~ QuickShop té una nova actualització {0}~"
+      "Tra~la~la~ QuickShop té una nova actualització {0}~",
+      "Paimon want told you the QuickShop have new update {0}!"
     ],
     "remote-disable-warning": "&cAquesta versió de QuickShop està marcada com a desactivada pel servidor remot, això vol dir que aquesta versió pot tenir un problema greu, pots veure'n més detalls a la nostra pàgina d'SpigotMC: {0}. Aquest aviís continuarà apareixent fins que canviïs a una versió estable, però no afectarà el rendiment del servidor.",
     "label": {
@@ -354,5 +356,7 @@
   "display-turn-off": "&aSuccessfully turn off the shop display.",
   "shop-purged-start": "&aShop purge started, check the console for details.",
   "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
-  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
+  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop.",
+  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
 }

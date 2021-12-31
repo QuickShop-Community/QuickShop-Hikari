@@ -96,6 +96,7 @@
     "owner": "&a店主: {0}",
     "item": "&aアイテム : &e{0}",
     "item-holochat-error": "&c[Error]",
+    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
     "preview": "&b[アイテムプレビュー]",
     "space": "&a空き: &e{0}",
     "stock": "&a在庫: &e{0}",
@@ -277,7 +278,8 @@
       "ああ！ 新しい更新 {0}！ 更新を！",
       "どう思う？{0} がリリースされました！更新しよう！",
       "ドクター！QuickShopに新しいアップデート {0} がやってきました！アップデートした方がいいですよ～",
-      "こ～こ～だ～よ～！QuickShopに新しいアップデート {0} があるよ～"
+      "こ～こ～だ～よ～！QuickShopに新しいアップデート {0} があるよ～",
+      "Paimon want told you the QuickShop have new update {0}!"
     ],
     "remote-disable-warning": "&cこのバージョンのQuickShopは、リモートサーバーによって無効とマークされており、このバージョンには深刻な問題がある可能性があります。{0}. この警告は安定したバージョンに切り替えるまで表示され続けますが、サーバーのパフォーマンスに影響を与えることはありません。",
     "label": {
@@ -354,5 +356,7 @@
   "display-turn-off": "&aショップの表示をオフにしました。",
   "shop-purged-start": "&aショップパージを開始しました。コンソールを確認してください。",
   "purchase-out-of-stock": "&cこのショップは在庫がなくなりました。店主またはショップスタッフにお問い合わせください。",
-  "purchase-out-of-space": "&cこのショップは空き容量がありません。店主またはショップスタッフにお問い合わせください。"
+  "purchase-out-of-space": "&cこのショップは空き容量がありません。店主またはショップスタッフにお問い合わせください。",
+  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
 }

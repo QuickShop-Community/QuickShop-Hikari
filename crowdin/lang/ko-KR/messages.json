@@ -96,6 +96,7 @@
     "owner": "&a주인 : {0}",
     "item": "&a아이템 : &e{0}",
     "item-holochat-error": "&c[오류]",
+    "item-holochat-data-too-large": "&c[Error] 아이템 NBT가 너무 커 표시할수 없습니다!",
     "preview": "&b[아이템 미리보기]",
     "space": "&a빈 공간 : &e{0}",
     "stock": "&a재고품 &e{0}",
@@ -123,8 +124,8 @@
       "limited": "&a상점의 재고를 제한으로 설정했습니다. (유저 상점으로 설정됩니다.)"
     },
     "toggle-always-counting": {
-      "counting": "&aShop is now always counting container even is unlimited",
-      "not-counting": "&aShop is now respect if shop is unlimited"
+      "counting": "&a상점은 지금 항상 컨테이너를 세고 있습니다. 심지어 무제한입니다.",
+      "not-counting": "&a상점이 무제한이라면 이제 상점이 존중받습니다."
     },
     "transfer-success": "&e{0} &a의 상점(들) 을(를) &e{1}(으) 로 이전",
     "transfer-success-other": "&e{0} {1}&a의 상점(들) 을(를) &e{2}(으) 로 이전",
@@ -207,8 +208,8 @@
     "freeze": "거래 비활성화"
   },
   "controlpanel": {
-    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
-    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
+    "alwayscounting": "&a상시 카운트: {0} &e[&d&l변경&e]",
+    "alwayscounting-hover": "&e상시 카운트 할건지 설정합니다",
     "setowner": "&a주인: &b{0} &e[&d&l바꾸기&e]",
     "infomation": "&a상점 컨트롤 패널:",
     "setowner-hover": "&e눌러서 주인 변경",
@@ -277,7 +278,8 @@
       "ㅋㅋㅋㅋㅋㅋㅋㅋ 새로운 {0} 업데이트!",
       "무슨 생각이세요? {0} 버전이 출시됐는데! 업데이트하세요!",
       "닥터, QuickShop에 새로운 업데이트 {0} 이(가) 있어! 업데이트 해야죠~",
-      "Ko~ko~da~yo~ QuickShop에 새로운 업데이트 {0} ~"
+      "Ko~ko~da~yo~ QuickShop에 새로운 업데이트 {0} ~",
+      "Palmon이 당신에게 Quickshop이 최신버전이 나왔다고 말하고 싶데요! {0}"
     ],
     "remote-disable-warning": "이 버전의 QuickShop은 원격 서버에 의해 비활성화되어 있습니다. 이 버전에는 심각한 문제가 있을 수 있습니다. SpigotMC 페이지에서 자세한 내용을 확인하십시오 : {0}.이 경고는 당신이 안정된 버전을 사용할 때까지 뜰 것입니다. 서버 구동에는 영향을 주지 않습니다.",
     "label": {
@@ -354,5 +356,7 @@
   "display-turn-off": "&a상점 디스플레이를 성공적으로 껏습니다.",
   "shop-purged-start": "&a상점 정리가 시작되었습니다. 자세한 내용은 콘솔을 확인하십시오.",
   "purchase-out-of-stock": "&c이 상점은 재고가 다 떨어졌으니 주인에게 문의하여 재고보충을 요구해주세요.",
-  "purchase-out-of-space": "&c이 상점은 공간이 부족하니 주인에게 문의하여 상자를 비우라고 요청해주세요."
+  "purchase-out-of-space": "&c이 상점은 공간이 부족하니 주인에게 문의하여 상자를 비우라고 요청해주세요.",
+  "safe-mode": "이 서버의 QuickShop은 현재 안전 모드로 실행 중이므로 기능이 작동하지 않습니다. 오류를 확인하려면 관리자에게 연락하세요",
+  "safe-mode-admin": "&c&l경고: &c이 서버의 QuickShop은 현재 안전 모드로 실행 중이므로 기능이 작동하지 않습니다. 오류를 확인하려면 &e/qs &c 명령을 입력하십시오."
 }

@@ -96,6 +96,7 @@
     "owner": "&aВладелец: {0}",
     "item": "&aТовар: &e{0}",
     "item-holochat-error": "&c[Ошибка]",
+    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
     "preview": "&b[Просмотреть товар]",
     "space": "&aСвободное место: &e{0}",
     "stock": "&aДоступно: &e{0}",
@@ -277,7 +278,8 @@
       "Аххххх! Новое обновление {0}! Обновитесь!",
       "Что вы думаете? {0} был выпущен! Обновитесь!",
       "Доктор, QuickShop уже есть новое обновление {0}! Вы должны обновить~",
-      "Ко~ко~да~ё~ QuickShop появились новое обновление {0} ~"
+      "Ко~ко~да~ё~ QuickShop появились новое обновление {0} ~",
+      "Paimon want told you the QuickShop have new update {0}!"
     ],
     "remote-disable-warning": "&cТекущая версия QuickShop отмечена как отключенная удалённым сервером, означая, что эта версия может иметь серьезные проблемы, получить подробную информацию с нашей страницы плагина SpigotMC: {0}. Это предупреждение будет отображаться до тех пор, пока вы не переключитесь на стабильную версию, но это не повлияет на перфорирование вашего сервера.",
     "label": {
@@ -354,5 +356,7 @@
   "display-turn-off": "&aОтображение товара успешно выключено.",
   "shop-purged-start": "&aНачато очистки магазина, проверьте консоль для получения подробностей.",
   "purchase-out-of-stock": "&cВ этом магазине закончился запас, свяжитесь с владельцем магазина или сотрудниками для пополнения.",
-  "purchase-out-of-space": "&cВ этом магазине закончилось место, свяжитесь с владельцем магазина или сотрудниками, чтобы освободились место."
+  "purchase-out-of-space": "&cВ этом магазине закончилось место, свяжитесь с владельцем магазина или сотрудниками, чтобы освободились место.",
+  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
 }

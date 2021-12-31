@@ -96,6 +96,7 @@
     "owner": "&aOmistaja: {0}",
     "item": "&aTuote: &e{0}",
     "item-holochat-error": "&c[Error]",
+    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
     "preview": "&b[Tavaran esikatselu]",
     "space": "&aVapaa tila: &e{0}",
     "stock": "&aVarastossa: &e{0}",
@@ -277,7 +278,8 @@
       "Jeeeeeeee! Uusi päivitys {0} on tullut! Päivitä!",
       "Mitä mieltä olet? {0} on julkaistu! Päivitä!",
       "Tohtori, QuickShop sai uuden päivityksen {0}! Sinun pitäisi päivittää~",
-      "Ko~ko~da~yo~ QuickShop on saanut uuden päivityksen {0}~"
+      "Ko~ko~da~yo~ QuickShop on saanut uuden päivityksen {0}~",
+      "Paimon want told you the QuickShop have new update {0}!"
     ],
     "remote-disable-warning": "&cTämä QuickShopin version on merkitty etäpalvelimella poistettavaksi versioksi. Se tarkoittaa, että tällä versiolla saattaa olla vakavia ongelmia. Lisätietoja saat meidän SpigotMC sivuilta: {0}. Tämä varoitus ilmestyy joka kerta kunnes vaihdat pluginin vakaaseen versioon. Tämä varoitus ei vaikuta palvelimesi toimintaan.",
     "label": {
@@ -354,5 +356,7 @@
   "display-turn-off": "&aSuccessfully turn off the shop display.",
   "shop-purged-start": "&aShop purge started, check the console for details.",
   "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
-  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop."
+  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop.",
+  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
 }

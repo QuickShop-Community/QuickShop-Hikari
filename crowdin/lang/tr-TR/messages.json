@@ -96,6 +96,7 @@
     "owner": "&aSahibi: {0}",
     "item": "&aÖğe: &e{0}",
     "item-holochat-error": "&c[Hata]",
+    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
     "preview": "&b[Öğe Önizlemesi]",
     "space": "&aYer: &e{0}",
     "stock": "&aStok &e{0}",
@@ -277,7 +278,8 @@
       "Ahhhhhhh! Yeni güncelleme {0}! Güncelle!",
       "Ne düşünüyürsun? {0} yayınlandı! Güncelle!",
       "Doktor QuickShop'a yeni {0} güncellemesi geldi! Güncellemelisin~",
-      "Ko~ko~da~yo~ QuickShop'a yeni {0} güncellemesi geldi ~"
+      "Ko~ko~da~yo~ QuickShop'a yeni {0} güncellemesi geldi ~",
+      "Paimon want told you the QuickShop have new update {0}!"
     ],
     "remote-disable-warning": "&cQuickShop'un bu sürümü uzak sunucu tarafından devre dışı bırakıldı, bunun anlamı bu versiyonda büyük problemler oluşabilir. Detayları SpigotMC sayfamızdan öğrenebilirsiniz: {0}. Bu uyarı siz versiyonu stabil başka bir sürümle değiştirmedikçe konsolda belirmeye devam edecek. Ama bu sunucu hızınızı etkilemez.",
     "label": {
@@ -354,5 +356,7 @@
   "display-turn-off": "&aSuccessfully turn off the shop display.",
   "shop-purged-start": "&aShop purge started, check the console for details.",
   "purchase-out-of-stock": "&cBu marketin stoğu tükendi, stoğu yeniden doldurmaları için mağaza sahibi ya da personelleri ile iletişime geç.",
-  "purchase-out-of-space": "&cBu markette yer kalmadı, marketi boşaltmaları için mağaza sahibi ya da personelleri ile iletişime geç."
+  "purchase-out-of-space": "&cBu markette yer kalmadı, marketi boşaltmaları için mağaza sahibi ya da personelleri ile iletişime geç.",
+  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
 }
