@@ -83,17 +83,17 @@ public class HttpUtil {
             return null;
         }
     }
-
+    @NotNull
     public static Response makePost(@NotNull String url, @NotNull RequestBody body) throws IOException {
         return client.newCall(new Request.Builder().post(body).url(url).build()).execute();
     }
-
+    @NotNull
     private static File getCacheFolder() {
         File file = new File(Util.getCacheFolder(), "okhttp_tmp");
         file.mkdirs();
         return file;
     }
-
+    @NotNull
     public OkHttpClient getClient() {
         return client;
     }

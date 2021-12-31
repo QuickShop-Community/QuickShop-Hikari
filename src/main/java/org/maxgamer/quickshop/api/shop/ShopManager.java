@@ -25,9 +25,9 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.api.annotations.Unstable;
 
 import java.util.*;
 
@@ -253,7 +253,7 @@ public interface ShopManager {
      * @param shop      Target shop
      * @param amount    Trading item amounts.
      */
-    @Unstable
+    @ApiStatus.Experimental
     void sendPurchaseSuccess(@NotNull UUID purchaser, @NotNull Shop shop, int amount);
 
     /**
@@ -263,7 +263,7 @@ public interface ShopManager {
      * @param shop   Target shop
      * @param amount Trading item amounts.
      */
-    @Unstable
+    @ApiStatus.Experimental
     void sendSellSuccess(@NotNull UUID seller, @NotNull Shop shop, int amount);
 
     /**
@@ -272,7 +272,7 @@ public interface ShopManager {
      * @param p    Target player
      * @param shop The shop
      */
-    @Unstable
+    @ApiStatus.Experimental
     void sendShopInfo(@NotNull Player p, @NotNull Shop shop);
 
 }

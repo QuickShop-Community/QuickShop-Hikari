@@ -46,10 +46,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
-import org.maxgamer.quickshop.api.annotations.Unstable;
 import org.maxgamer.quickshop.api.chat.QuickChat;
 import org.maxgamer.quickshop.api.command.CommandManager;
 import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
@@ -557,7 +557,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 .createYaml() : configurationForCompatibility;
     }
 
-    @Unstable
+    @ApiStatus.ScheduledForRemoval
     @Override
     @Deprecated
     public void saveConfig() {

@@ -25,6 +25,8 @@ import lombok.SneakyThrows;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -32,7 +34,7 @@ import java.util.Base64;
 public class TextSplitter {
     private final static String HEADER = "!-!-!=-=-=-=-=-=";
     private final static String FOOTER = "=-=-=-=-=-=!-!-!";
-
+    @NotNull
     public static String bakeComponent(BaseComponent[] components) {
         return HEADER +
                 Base64.getEncoder().encodeToString(ComponentSerializer.toString(components).getBytes(StandardCharsets.UTF_8)) +
@@ -40,6 +42,7 @@ public class TextSplitter {
     }
 
     @SneakyThrows
+    @Nullable
     public static SpilledString deBakeItem(String src) {
         if (!src.contains(HEADER)) {
            // Util.debugLog(src + " seems not a baked message");

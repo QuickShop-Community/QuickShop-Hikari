@@ -231,7 +231,7 @@ public class Util {
         int space = 0;
         int itemMaxStackSize = getItemMaxStackSize(item.getType());
         ItemStack[] contents = inv.getStorageContents();
-        for (final ItemStack iStack : contents) {
+        for (ItemStack iStack : contents) {
             if (iStack == null || iStack.getType() == Material.AIR) {
                 space += itemMaxStackSize;
             } else if (plugin.getItemMatcher().matches(item, iStack)) {

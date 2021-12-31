@@ -80,6 +80,7 @@ public class PermissionChecker implements Reloadable {
      * @param location Target location
      * @return Result represent if you can build there
      */
+    @NotNull
     public Result canBuild(@NotNull Player player, @NotNull Location location) {
         return canBuild(player, location.getBlock());
     }
@@ -91,6 +92,7 @@ public class PermissionChecker implements Reloadable {
      * @param block  Target block
      * @return Result represent if you can build there
      */
+    @NotNull
     public Result canBuild(@NotNull Player player, @NotNull Block block) {
 
         if (plugin.getConfig().getStringList("shop.protection-checking-blacklist").contains(block.getWorld().getName())) {
