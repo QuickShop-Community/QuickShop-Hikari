@@ -773,13 +773,34 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         testing = true;
         environmentChecker = new org.maxgamer.quickshop.util.envcheck.EnvironmentChecker(this);
         ResultReport resultReport = environmentChecker.run(stage);
+        StringJoiner joiner = new StringJoiner("\n", "", "");
         if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
-            StringJoiner joiner = new StringJoiner("\n", "", "");
             for (Entry<EnvCheckEntry, ResultContainer> result : resultReport.getResults().entrySet()) {
                 if (result.getValue().getResult().ordinal() > CheckResult.WARNING.ordinal()) {
                     joiner.add(String.format("- [%s/%s] %s", result.getValue().getResult().getDisplay(), result.getKey().name(), result.getValue().getResultMessage()));
                 }
             }
+
+            setupBootError(new BootError(this.getLogger(), joiner.toString()), true);
+            //noinspection ConstantConditions
+            Util.mainThreadRun(() -> getCommand("qs").setTabCompleter(this)); //Disable tab completer
+        }
+
+        switch (resultReport.getFinalResult()){
+            case DISABLE_PLUGIN:
+                Bukkit.getPluginManager().disablePlugin(this);
+                break;
+            case KILL_SERVER:
+                getLogger().warning("[Security Risk Detected] QuickShop forcing kill server for security, contact the developer for details.");
+                System.out.println("[Security Risk Detected] QuickShop forcing kill server for security, contact the developer for details.");
+                System.err.println("[Security Risk Detected] QuickShop forcing kill server for security, contact the developer for details.");
+                Runtime.getRuntime().halt(-1);
+                System.exit(-1);
+                Bukkit.shutdown();
+                break;
+        }
+        // Move after halt switch since we found these may throw out exception
+        if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
             setupBootError(new BootError(this.getLogger(), joiner.toString()), true);
             //noinspection ConstantConditions
             Util.mainThreadRun(() -> getCommand("qs").setTabCompleter(this)); //Disable tab completer
