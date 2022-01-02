@@ -517,14 +517,6 @@ public class Paste {
                 } catch (Exception ignore) {
                 }
                 break;
-            case UBUNTU:
-                try {
-                    // Ubuntu Pastebin
-                    paster = new UbuntuPaster();
-                    return paster.pasteTheText(content);
-                } catch (Exception ignore) {
-                }
-                break;
             case HELPCHAT:
                 try {
                     // Ubuntu Pastebin
@@ -533,10 +525,18 @@ public class Paste {
                 } catch (Exception ignore) {
                 }
                 break;
-            default:
+            case LUCKO:
                 try {
                     // Lucko Pastebin
                     paster = new LuckoPastebinPaster();
+                    return paster.pasteTheText(content);
+                } catch (Exception ignore) {
+                }
+                break;
+            default:
+                try {
+                    // Ubuntu Pastebin
+                    paster = new UbuntuPaster();
                     return paster.pasteTheText(content);
                 } catch (Exception ignore) {
                 }

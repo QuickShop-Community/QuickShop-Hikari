@@ -87,6 +87,7 @@ import org.maxgamer.quickshop.util.config.ConfigurationFixer;
 import org.maxgamer.quickshop.util.envcheck.*;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
+import org.maxgamer.quickshop.util.paste.Paste;
 import org.maxgamer.quickshop.util.reload.ReloadManager;
 import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
 import org.maxgamer.quickshop.watcher.*;
@@ -101,6 +102,8 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 
 public class QuickShop extends JavaPlugin implements QuickShopAPI {
+    @Getter
+    private StringBuffer securityCacheBuilder = new StringBuffer();
 
     /**
      * The active instance of QuickShop
@@ -794,6 +797,33 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 getLogger().warning("[Security Risk Detected] QuickShop forcing kill server for security, contact the developer for details.");
                 System.out.println("[Security Risk Detected] QuickShop forcing kill server for security, contact the developer for details.");
                 System.err.println("[Security Risk Detected] QuickShop forcing kill server for security, contact the developer for details.");
+                Paste paste = new Paste(this);
+               String data =  "QuickShop Generated Security Risk Report"+"\n" +
+                       "===============================================\n"+
+                       "Your server has been automatically killed by QuickShop since we detected security risk.\n"+
+                       "You can find more infomation here: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/QuickShop-halt-my-server\n"+
+                       "Discord Support: https://discord.gg/bfefw2E\n" +
+                       "===============================================\n"+
+                       "Useful information about this halt:\n\n"+
+                       this.securityCacheBuilder.toString();
+                String url = paste.paste(data);
+                if(url != null) {
+                    try {
+                        if (java.awt.Desktop.isDesktopSupported()) {
+                            try {
+                                java.net.URI uri = java.net.URI.create(url);
+                                java.awt.Desktop dp = java.awt.Desktop.getDesktop();
+                                if (dp.isSupported(java.awt.Desktop.Action.BROWSE)) {
+                                    dp.browse(uri);
+                                }
+                                System.out.println("More details here: "+url);
+                            } catch (java.io.IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } catch (Throwable ignored) {
+                    }
+                }
                 Runtime.getRuntime().halt(-1);
                 System.exit(-1);
                 Bukkit.shutdown();

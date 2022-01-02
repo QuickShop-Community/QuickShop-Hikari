@@ -191,6 +191,10 @@ public final class EnvironmentChecker {
                  InputStream stream2 = loader.getResourceAsStream("META-INF/SELFSIGN.DSA");
                  InputStream stream3 = loader.getResourceAsStream("META-INF/SELFSIGN.SF")) {
                 if (stream1 == null || stream2 == null || stream3 == null) {
+                    plugin.getSecurityCacheBuilder().append(">> Signature file missing:\n");
+                    plugin.getSecurityCacheBuilder().append("     Missing MANIFEST.MF: ").append(stream1 != null).append("\n");
+                    plugin.getSecurityCacheBuilder().append("     Missing SELFSIGN.DSA: ").append(stream2 != null).append("\n");
+                    plugin.getSecurityCacheBuilder().append("     Missing SELFSIGN.SF: ").append(stream3 != null).append("\n");
                     plugin.getLogger().warning("The signature could not be found! The QuickShop jar has been modified or you're running a custom build.");
                     return new ResultContainer(CheckResult.STOP_WORKING, "Security risk detected, QuickShop jar has been modified.");
                 }
@@ -208,8 +212,9 @@ public final class EnvironmentChecker {
                     plugin.getLogger().warning("Name: " + jarEntry.getName());
                     plugin.getLogger().warning("CRC: " + jarEntry.getCrc());
                     plugin.getLogger().warning(JsonUtil.getGson().toJson(jarEntry));
+                    plugin.getSecurityCacheBuilder().append(">> Class Modified: ").append(jarEntry.getName()).append("\n");
                 });
-                plugin.getLogger().severe("QuickShop detected that the jar has been moCdified! This is usually caused by the file being corrupted or virus infected.");
+                plugin.getLogger().severe("QuickShop detected that the jar has been modified! This is usually caused by the file being corrupted or virus infected.");
                 plugin.getLogger().severe("To prevent severe server failure, QuickShop has been disabled.");
                 plugin.getLogger().severe("For further information, Please join our support Discord server: https://discord.com/invite/bfefw2E.");
                 return new ResultContainer(CheckResult.KILL_SERVER, "Security risk detected, QuickShop jar has been modified.");
@@ -235,6 +240,7 @@ public final class EnvironmentChecker {
             plugin.getLogger().warning("ALERT: Detected main class has been modified!");
             plugin.getLogger().warning("Should be: org.maxgamer.quickshop.QuickShop");
             plugin.getLogger().warning("Actually: "+mainClass);
+            plugin.getSecurityCacheBuilder().append(">> Main class entrypoint Modified: ").append(mainClass).append("\n");
             return new ResultContainer(CheckResult.KILL_SERVER, "Failed to validate main class! Security may be compromised!");
 
         }
@@ -258,6 +264,7 @@ public final class EnvironmentChecker {
                     plugin.getLogger().log(Level.WARNING, "File: "+entry.getName());
                     plugin.getLogger().log(Level.WARNING, "CRC: "+entry.getCrc());
                     plugin.getLogger().log(Level.WARNING, "Time: "+entry.getTime());
+                    plugin.getSecurityCacheBuilder().append(">> Potential Infection Detected: ").append(entry.getName()).append("#").append(entry.getTime()).append("\n");
                 }
                 if(found){
                     plugin.getLogger().log(Level.WARNING, "ALERT: QuickShop detected Potential Infection, this jar may already infected by malware, stop the server and create full server backup immediately, run virus scan and contact the QuickShop support if you need!");
