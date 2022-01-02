@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util.envcheck;
 
+import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
@@ -27,6 +28,7 @@ import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.api.shop.DisplayType;
 import org.maxgamer.quickshop.shop.VirtualDisplayItem;
 import org.maxgamer.quickshop.util.*;
+import org.maxgamer.quickshop.util.paste.Paste;
 import org.maxgamer.quickshop.util.security.JarVerifyTool;
 
 import java.io.IOException;
@@ -44,6 +46,8 @@ import java.util.zip.ZipFile;
 public final class EnvironmentChecker {
     private final QuickShop plugin;
     private final List<Method> tests = new ArrayList<>();
+    @Getter
+    private final SecurityReport reportMaker = new SecurityReport();
 
     public EnvironmentChecker(QuickShop plugin) {
         this.plugin = plugin;
@@ -163,7 +167,6 @@ public final class EnvironmentChecker {
         }
         return new ResultReport(gResult, results);
     }
-
     public boolean isOutdatedJvm() {
         String jvmVersion = System.getProperty("java.version"); //Use java version not jvm version.
         String[] splitVersion = jvmVersion.split("\\.");
@@ -191,12 +194,17 @@ public final class EnvironmentChecker {
                  InputStream stream2 = loader.getResourceAsStream("META-INF/SELFSIGN.DSA");
                  InputStream stream3 = loader.getResourceAsStream("META-INF/SELFSIGN.SF")) {
                 if (stream1 == null || stream2 == null || stream3 == null) {
-                    plugin.getSecurityCacheBuilder().append(">> Signature file missing:\n");
-                    plugin.getSecurityCacheBuilder().append("     Missing MANIFEST.MF: ").append(stream1 != null).append("\n");
-                    plugin.getSecurityCacheBuilder().append("     Missing SELFSIGN.DSA: ").append(stream2 != null).append("\n");
-                    plugin.getSecurityCacheBuilder().append("     Missing SELFSIGN.SF: ").append(stream3 != null).append("\n");
+                    if(stream1 == null){
+                        this.reportMaker.signatureFileMissing("META-INF/MANIFEST.MF");
+                    }
+                    if(stream2 == null){
+                        this.reportMaker.signatureFileMissing("META-INF/SELFSIGN.DSA");
+                    }
+                    if(stream3 == null){
+                        this.reportMaker.signatureFileMissing("META-INF/SELFSIGN.SF");
+                    }
                     plugin.getLogger().warning("The signature could not be found! The QuickShop jar has been modified or you're running a custom build.");
-                    return new ResultContainer(CheckResult.STOP_WORKING, "Security risk detected, QuickShop jar has been modified.");
+                    return new ResultContainer(CheckResult.KILL_SERVER, "Security risk detected, QuickShop jar has been modified.");
                 }
             }
             String jarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
@@ -208,11 +216,11 @@ public final class EnvironmentChecker {
                 return new ResultContainer(CheckResult.PASSED, "The jar is valid. No issues detected.");
             } else {
                 modifiedEntry.forEach(jarEntry -> {
+                    this.reportMaker.signatureVerifyFail(jarEntry);
                     plugin.getLogger().warning(">> Modified Class Detected <<");
                     plugin.getLogger().warning("Name: " + jarEntry.getName());
                     plugin.getLogger().warning("CRC: " + jarEntry.getCrc());
                     plugin.getLogger().warning(JsonUtil.getGson().toJson(jarEntry));
-                    plugin.getSecurityCacheBuilder().append(">> Class Modified: ").append(jarEntry.getName()).append("\n");
                 });
                 plugin.getLogger().severe("QuickShop detected that the jar has been modified! This is usually caused by the file being corrupted or virus infected.");
                 plugin.getLogger().severe("To prevent severe server failure, QuickShop has been disabled.");
@@ -237,10 +245,10 @@ public final class EnvironmentChecker {
     public ResultContainer manifestCheck() {
         String mainClass = plugin.getDescription().getMain();
         if(!mainClass.equals("org.maxgamer.quickshop.QuickShop")){
+            this.reportMaker.manifestModified(plugin.getDescription());
             plugin.getLogger().warning("ALERT: Detected main class has been modified!");
             plugin.getLogger().warning("Should be: org.maxgamer.quickshop.QuickShop");
             plugin.getLogger().warning("Actually: "+mainClass);
-            plugin.getSecurityCacheBuilder().append(">> Main class entrypoint Modified: ").append(mainClass).append("\n");
             return new ResultContainer(CheckResult.KILL_SERVER, "Failed to validate main class! Security may be compromised!");
 
         }
@@ -260,16 +268,16 @@ public final class EnvironmentChecker {
                 ZipEntry entry = zipEntryEnumeration.nextElement();
                 if(entry.getName().startsWith("javassist") || entry.getName().startsWith(".")){
                     found = true;
+                    this.reportMaker.potentialInfected(entry);
                     plugin.getLogger().log(Level.WARNING, "Potential Infection Detected:");
                     plugin.getLogger().log(Level.WARNING, "File: "+entry.getName());
                     plugin.getLogger().log(Level.WARNING, "CRC: "+entry.getCrc());
                     plugin.getLogger().log(Level.WARNING, "Time: "+entry.getTime());
-                    plugin.getSecurityCacheBuilder().append(">> Potential Infection Detected: ").append(entry.getName()).append("#").append(entry.getTime()).append("\n");
                 }
-                if(found){
-                    plugin.getLogger().log(Level.WARNING, "ALERT: QuickShop detected Potential Infection, this jar may already infected by malware, stop the server and create full server backup immediately, run virus scan and contact the QuickShop support if you need!");
-                    return new ResultContainer(CheckResult.KILL_SERVER, "Potential Infection detected, Killing server process...");
-                }
+            }
+            if(found){
+                plugin.getLogger().log(Level.WARNING, "ALERT: QuickShop detected Potential Infection, this jar may already infected by malware, stop the server and create full server backup immediately, run virus scan and contact the QuickShop support if you need!");
+                return new ResultContainer(CheckResult.KILL_SERVER, "Potential Infection detected, Killing server process...");
             }
         } catch (IOException e) {
             plugin.getLogger().log(Level.WARNING, "ALERT: QuickShop cannot validate itself. This may be caused by you having deleted QuickShop's jar while the server is running.", e);

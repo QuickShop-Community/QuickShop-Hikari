@@ -102,9 +102,6 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 
 public class QuickShop extends JavaPlugin implements QuickShopAPI {
-    @Getter
-    private StringBuffer securityCacheBuilder = new StringBuffer();
-
     /**
      * The active instance of QuickShop
      * You shouldn't use this if you really need it.
@@ -782,58 +779,67 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 if (result.getValue().getResult().ordinal() > CheckResult.WARNING.ordinal()) {
                     joiner.add(String.format("- [%s/%s] %s", result.getValue().getResult().getDisplay(), result.getKey().name(), result.getValue().getResultMessage()));
                 }
-                switch (resultReport.getFinalResult()) {
-                    case DISABLE_PLUGIN:
-                        Bukkit.getPluginManager().disablePlugin(this);
-                        break;
-                    case KILL_SERVER:
-                        getLogger().warning("[Security Risk Detected] QuickShop forcing kill server for security, contact the developer for details.");
-                        System.out.println("[Security Risk Detected] QuickShop forcing kill server for security, contact the developer for details.");
-                        System.err.println("[Security Risk Detected] QuickShop forcing kill server for security, contact the developer for details.");
-                        Paste paste = new Paste(this);
-                        String data = "QuickShop Generated Security Risk Report" + "\n" +
-                                "===============================================\n" +
-                                "Your server has been automatically killed by QuickShop since we detected security risk.\n" +
-                                "You can find more infomation here: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/QuickShop-halt-my-server\n" +
-                                "Discord Support: https://discord.gg/bfefw2E\n" +
-                                "===============================================\n" +
-                                "Useful information about this halt:\n\n" +
-                                this.securityCacheBuilder.toString();
-                        String url = paste.paste(data);
-                        if (url != null) {
-                            try {
-                                if (java.awt.Desktop.isDesktopSupported()) {
-                                    try {
-                                        java.net.URI uri = java.net.URI.create(url);
-                                        java.awt.Desktop dp = java.awt.Desktop.getDesktop();
-                                        if (dp.isSupported(java.awt.Desktop.Action.BROWSE)) {
-                                            dp.browse(uri);
-                                        }
-                                        System.out.println("More details here: " + url);
-                                    } catch (java.io.IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            } catch (Throwable ignored) {
-                            }
-                        }
-                        Runtime.getRuntime().halt(-1);
-                        System.exit(-1);
-                        Bukkit.shutdown();
-                        break;
-                    default:
-                        // Move after halt switch since we found these may throw out exception
-                        if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
-                            setupBootError(new BootError(this.getLogger(), joiner.toString()), true);
-                            //noinspection ConstantConditions
-                            Util.mainThreadRun(() -> getCommand("qs").setTabCompleter(this)); //Disable tab completer
-                        }
-                }
             }
         }
+        // Check If we need kill the server or disable plugin
 
-
+        switch (resultReport.getFinalResult()){
+            case DISABLE_PLUGIN:
+                Bukkit.getPluginManager().disablePlugin(this);
+                break;
+            case STOP_WORKING:
+                setupBootError(new BootError(this.getLogger(), joiner.toString()), true);
+                PluginCommand command = getCommand("qs");
+                if (command != null) {
+                    Util.mainThreadRun(() -> command.setTabCompleter(this)); //Disable tab completer
+                }
+                break;
+            case KILL_SERVER:
+                // Workaround - Log4J may logging the logs in async, and it may cannot output to console before process halt.
+                getLogger().warning("[Security Risk Detected] QuickShop forcing crash the server for security, contact the developer for details.");
+                // Create a paste to provide useful data.
+                Paste paste = new Paste(this);
+                String url = paste.paste(environmentChecker.getReportMaker().bake());
+                if(StringUtils.isNotEmpty(url)){
+                    if (java.awt.Desktop.isDesktopSupported()) {
+                        try {
+                            java.net.URI uri = java.net.URI.create(url);
+                            java.awt.Desktop dp = java.awt.Desktop.getDesktop();
+                            if (dp.isSupported(java.awt.Desktop.Action.BROWSE)) {
+                                dp.browse(uri);
+                                getLogger().warning("[Security Risk Detected] To get more details, please check: "+url);
+                                getLogger().warning("[Security Risk Detected] A browser already open for you. ");
+                            }else{
+                                writeToFile();
+                                getLogger().warning("[Security Risk Detected] To get more details, please check: "+url);
+                                Thread.sleep(Integer.MAX_VALUE);
+                            }
+                        } catch (IOException | InterruptedException e) {
+                            writeToFile();
+                        }
+                    }else{
+                        writeToFile();
+                    }
+                }else{
+                    // Failed to create paste, Storage to File
+                    writeToFile();
+                }
+                // Halt the process, kill the server
+                Runtime.getRuntime().halt(-1);
+                System.exit(-1);
+                Bukkit.shutdown();
+                Thread.currentThread().stop();
+                Thread.currentThread().interrupt();
+            default:
+                break;
+        }
         testing = false;
+    }
+
+    private void writeToFile(){
+        try {
+            Files.write(new File(getDataFolder(), UUID.randomUUID() +".security.letter").toPath(),environmentChecker.getReportMaker().bake().getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {e.printStackTrace();}
     }
 
     @Override
