@@ -783,13 +783,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                     joiner.add(String.format("- [%s/%s] %s", result.getValue().getResult().getDisplay(), result.getKey().name(), result.getValue().getResultMessage()));
                 }
             }
-
-            setupBootError(new BootError(this.getLogger(), joiner.toString()), true);
-            //noinspection ConstantConditions
-            Util.mainThreadRun(() -> getCommand("qs").setTabCompleter(this)); //Disable tab completer
         }
 
-        switch (resultReport.getFinalResult()){
+        switch (resultReport.getFinalResult()) {
             case DISABLE_PLUGIN:
                 Bukkit.getPluginManager().disablePlugin(this);
                 break;
@@ -798,16 +794,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 System.out.println("[Security Risk Detected] QuickShop forcing kill server for security, contact the developer for details.");
                 System.err.println("[Security Risk Detected] QuickShop forcing kill server for security, contact the developer for details.");
                 Paste paste = new Paste(this);
-               String data =  "QuickShop Generated Security Risk Report"+"\n" +
-                       "===============================================\n"+
-                       "Your server has been automatically killed by QuickShop since we detected security risk.\n"+
-                       "You can find more infomation here: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/QuickShop-halt-my-server\n"+
-                       "Discord Support: https://discord.gg/bfefw2E\n" +
-                       "===============================================\n"+
-                       "Useful information about this halt:\n\n"+
-                       this.securityCacheBuilder.toString();
+                String data = "QuickShop Generated Security Risk Report" + "\n" +
+                        "===============================================\n" +
+                        "Your server has been automatically killed by QuickShop since we detected security risk.\n" +
+                        "You can find more infomation here: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/QuickShop-halt-my-server\n" +
+                        "Discord Support: https://discord.gg/bfefw2E\n" +
+                        "===============================================\n" +
+                        "Useful information about this halt:\n\n" +
+                        this.securityCacheBuilder.toString();
                 String url = paste.paste(data);
-                if(url != null) {
+                if (url != null) {
                     try {
                         if (java.awt.Desktop.isDesktopSupported()) {
                             try {
@@ -816,7 +812,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                                 if (dp.isSupported(java.awt.Desktop.Action.BROWSE)) {
                                     dp.browse(uri);
                                 }
-                                System.out.println("More details here: "+url);
+                                System.out.println("More details here: " + url);
                             } catch (java.io.IOException e) {
                                 e.printStackTrace();
                             }
@@ -828,13 +824,15 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 System.exit(-1);
                 Bukkit.shutdown();
                 break;
+            default:
+                // Move after halt switch since we found these may throw out exception
+                if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
+                    setupBootError(new BootError(this.getLogger(), joiner.toString()), true);
+                    //noinspection ConstantConditions
+                    Util.mainThreadRun(() -> getCommand("qs").setTabCompleter(this)); //Disable tab completer
+                }
         }
-        // Move after halt switch since we found these may throw out exception
-        if (resultReport.getFinalResult().ordinal() > CheckResult.WARNING.ordinal()) {
-            setupBootError(new BootError(this.getLogger(), joiner.toString()), true);
-            //noinspection ConstantConditions
-            Util.mainThreadRun(() -> getCommand("qs").setTabCompleter(this)); //Disable tab completer
-        }
+
         testing = false;
     }
 
