@@ -96,7 +96,7 @@
     "owner": "&a商店主人 ： {0}",
     "item": "&a商品 ： &e{0}",
     "item-holochat-error": "&c[錯誤]",
-    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
+    "item-holochat-data-too-large": "&c[錯誤] 物品 NBT 太長無法顯示!",
     "preview": "&b[物品預覽]",
     "space": "&a空間 ： &e{0}",
     "stock": "&a庫存 ： &e{0} 個",
@@ -279,7 +279,7 @@
       "你在想什麼呢 ？ QuickShop {0} 已正式發布 ！ 請更新 ！",
       "博士， QuickShop 有一個新的更新 {0} ！ 你應該考慮一下更新了~",
       "Ko~ko~da~yo~ QuickShop 有新的更新 {0} ~",
-      "Paimon want told you the QuickShop have new update {0}!"
+      "派蒙想告訴您 QuickShop 有新的更新{0}！"
     ],
     "remote-disable-warning": "&c該版本的 QuickShop 已被遠端伺服器標記為停用 ， 這意味著該版本可能存在嚴重問題 ， 請從我們的 Spigot 插件頁面取得詳細資訊 ： {0} 。 在你切換到穩定版本之前 ， 該警告將繼續出現 ， 但不會影響伺服器的性能。",
     "label": {
@@ -357,6 +357,6 @@
   "shop-purged-start": "&a已開始商店清理，請查看控制台以獲得詳細資訊。",
   "purchase-out-of-stock": "&c該商店已缺貨，請聯繫商店商店店主或商店員工補充庫存。",
   "purchase-out-of-space": "&c該商店空間不足，請聯繫商店商店店主或商店員工清空商店。",
-  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
+  "safe-mode": "&cQuickShop 現在處於安全模式，您無法打開此商店容器，請與服務器管理員聯繫以修復錯誤!",
+  "safe-mode-admin": "&c&l警告:&c此服務器上的 QuickShop 現在在安全模式下運行，沒有任何功能可用，請輸入 &e/qs &c 命令以檢查任何錯誤!"
 }

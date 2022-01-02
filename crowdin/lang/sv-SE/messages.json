@@ -96,7 +96,7 @@
     "owner": "&aÄgare: {0}",
     "item": "&aFöremål: &e{0}",
     "item-holochat-error": "&c[Fel]",
-    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
+    "item-holochat-data-too-large": "&c[Error] Objektets NBT är för stort för att visa",
     "preview": "&b[Förhandsgranska]",
     "space": "&aUtrymme: &e{0}",
     "stock": "&aLagersaldo &e{0}",
