@@ -301,7 +301,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .permission("quickshop.create.stacks")
                 .permission("quickshop.create.changeamount")
                 .executor(new SubCommand_Size(plugin))
-                .disabledSupplier(plugin::isAllowStack)
+                .disabledSupplier(() -> !plugin.isAllowStack())
                 .disablePlaceholder(plugin.text().of("command.feature-not-enabled").forLocale())
                 .build());
         registerCmd(CommandContainer.builder()
