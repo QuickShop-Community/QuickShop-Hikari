@@ -3,22 +3,31 @@
 #Do not touch this if you don't know what you're doing!
 config-version: 149
 
-#This language will used by Item Name, Enchantment Name,
-#and Potion Effect Name or the text on the shop info sign (nbtapi not installed) and other them related position.
-#Use default will use your system language.
+#Set the default language code the plugin should use, it will apply to:
+#Item Name
+#Enchantment Name,
+#Potion Effect Name
+#The text on the shop info sign (If NBTApi not installed)
+#And other default language related text.
+#Set it to default will use your system language.
+#You can find the valid language code in your client language settings, like en_us
 game-language: default
 
-#Choose which languages should enabled
-#Any client connect to server that using disabled language, will fallback to en-US language
-#Set to -'*' to enable all available languages
-#The language files will automatically update thorough Crowdin OTA system.
-#If you want custom the language file, use language override system.
+#Choose which languages should be enabled
+#Any client connect to server that using disabled language, will fallback to game-language option there
+#Set to - '*' to enable all available languages
+#The language files will automatically update thorough Crowdin OTA system, you can translate it there:
+#https://crowdin.com/project/quickshop-reremake
+#If you want custom the language file, use language override system:
+#https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-translation-override-system
 enabled-languages:
   - '*'
 
+#Setting the game language file download channel, like item name, effect translations etc.
+#We will get those files from mojang resources server:
 #0=Official
 #1=BMCLAPI (Unofficial China Mirror, https://bmclapidoc.bangbang93.com)
-#2=MCBBSMirror (Another OpenBMCLAPI server, https://www.mcbbs.net)
+#2=MCBBSMirror (Another OpenBMCLAPI Mirror, https://www.mcbbs.net)
 #You can choose which one you want to use for downloading resources.
 #By default, QuickShop use Mojang official server to downloading resources.
 mojangapi-mirror: 0
@@ -38,7 +47,8 @@ tax-account: tax
 #It won't affect exists shops, you will need switch to unlimited again to apply it.
 unlimited-shop-owner-change: false
 
-#This account will used for unlimited shop if you have turned on unlimited-shop-owner-change.
+#Set the account used by unlimited-shop-owner-change option
+#Only take effect when unlimited-shop-owner-change enabled
 unlimited-shop-owner-change-account: quickshop
 
 #Whether to show taxes paid when selling to a shop
