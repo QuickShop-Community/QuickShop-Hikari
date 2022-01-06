@@ -519,7 +519,7 @@ public class ContainerShop implements Shop {
         givenItem.setAmount(1);
         ItemStack shopItem = this.item.clone();
         shopItem.setAmount(1);
-        return plugin.getItemMatcher().matches(shopItem, givenItem);
+        return isBuying() ? plugin.getItemMatcher().matches(givenItem, shopItem) : plugin.getItemMatcher().matches(shopItem, givenItem);
     }
 
     @Override
