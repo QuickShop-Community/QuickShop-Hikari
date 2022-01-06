@@ -2069,12 +2069,20 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         saveConfiguration();
         reloadConfiguration();
 
-        //Check if server software support comment
-        if (!Util.isMethodAvailable("org.bukkit.configuration.MemoryConfiguration", "getInlineComments")) {
-            //Add comment for config.yml
-            try (InputStream inputStream = Objects.requireNonNull(getResource("config.yml"))) {
-                new ConfigCommentUpdater(this, inputStream, new File(getDataFolder(), "config.yml")).updateComment();
+        //Check if server software support comment saving
+        if (Util.isMethodAvailable("org.bukkit.configuration.MemoryConfiguration", "getInlineComments")) {
+            //If so, clean the comment
+            ConfigurationSection configurationSection = getConfig();
+            List<String> emptyList = Collections.emptyList();
+            for (String key : configurationSection.getKeys(true)) {
+                configurationSection.setComments(key, emptyList);
+                configurationSection.setInlineComments(key, emptyList);
             }
+        }
+
+        //Re-add comment for config.yml
+        try (InputStream inputStream = Objects.requireNonNull(getResource("config.yml"))) {
+            new ConfigCommentUpdater(this, inputStream, new File(getDataFolder(), "config.yml")).updateComment();
         }
 
         //Delete old example configuration files
