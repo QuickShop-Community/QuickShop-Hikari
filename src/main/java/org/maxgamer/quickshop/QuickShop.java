@@ -2069,7 +2069,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
 
         //Check if server software support comment saving
-        if (Util.isMethodAvailable("org.bukkit.configuration.MemoryConfiguration", "getInlineComments")) {
+        if (Util.isMethodAvailable("org.bukkit.configuration.MemoryConfiguration", "getInlineComments", String.class)) {
             //If so, clean the comment
             ConfigurationSection configurationSection = getConfig();
             List<String> emptyList = Collections.emptyList();
