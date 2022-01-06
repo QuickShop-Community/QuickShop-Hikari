@@ -214,7 +214,15 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1 instanceof Damageable) {
                     Damageable damage1 = (Damageable) meta1;
                     Damageable damage2 = (Damageable) meta2;
-                    // Check them damages, if givenDamage >= requireDamage, allow it.
+                    //Given item damaged but matching item doesn't, allow it
+                    if (damage1.hasDamage() && !damage2.hasDamage()) {
+                        return true;
+                    }
+                    //Given item NOT damaged but matching item damaged, denied it
+                    if (!damage1.hasDamage() && damage2.hasDamage()) {
+                        return false;
+                    }
+                    //last condition: Check them damages, if givenDamage >= requireDamage, allow it.
                     return damage2.getDamage() <= damage1.getDamage();
                 }
                 return true;
@@ -226,12 +234,18 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1 instanceof Repairable) {
                     Repairable repairable1 = (Repairable) meta1;
                     Repairable repairable2 = (Repairable) meta2;
-                    if (repairable1.hasRepairCost() != repairable2.hasRepairCost()) {
+                    boolean hasRepairCost1 = repairable1.hasRepairCost();
+                    boolean hasRepairCost2 = repairable2.hasRepairCost();
+                    //Given item have repair cost but matching item doesn't, allow it
+                    if (hasRepairCost1 && !hasRepairCost2) {
+                        return true;
+                    }
+                    //Given item DOESN'T have repair cost but matching item have, denied it
+                    if (!hasRepairCost1 && hasRepairCost2) {
                         return false;
                     }
-                    if (repairable1.hasRepairCost()) {
-                        return repairable2.getRepairCost() <= repairable1.getRepairCost();
-                    }
+                    //last condition: both having repair cost, so allow items lesser than or equals given item Repair Cost
+                    return repairable2.getRepairCost() <= repairable1.getRepairCost();
                 }
                 return true;
             });

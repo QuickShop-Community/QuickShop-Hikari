@@ -323,7 +323,7 @@ public class ContainerShop implements Shop {
                 if (stack == null || stack.getType() == Material.AIR) {
                     continue; // No item
                 }
-                if (matches(stack, true)) {
+                if (matches(stack)) {
                     int stackSize = Math.min(amount, stack.getAmount());
                     stack.setAmount(stack.getAmount() - stackSize);
                     amount -= stackSize;
@@ -348,7 +348,7 @@ public class ContainerShop implements Shop {
             Inventory chestInv = this.getInventory();
             for (int i = 0; amount > 0 && i < contents.length; i++) {
                 ItemStack item = contents[i];
-                if (item != null && this.matches(item, true)) {
+                if (item != null && this.matches(item)) {
                     // Copy it, we don't want to interfere
                     item = item.clone();
                     // Amount = total, item.getAmount() = how many items in the
@@ -512,26 +512,14 @@ public class ContainerShop implements Shop {
      */
     @Override
     public boolean matches(@Nullable ItemStack item) {
-        return this.matches(item, false);
-    }
-
-    /**
-     * Returns true if the ItemStack matches what this shop is selling/buying
-     *
-     * @param item The ItemStack
-     * @param buying Some matching functions are not symmetric, this decides the order it will check
-     * @return True if the ItemStack is the same (Excludes amounts)
-     */
-    public boolean matches(@Nullable ItemStack item, boolean buying) {
         if (item == null) {
             return false;
         }
-        ItemStack guest = item.clone();
-        guest.setAmount(1);
-        ItemStack owner = this.item.clone();
-        owner.setAmount(1);
-        return buying ? plugin.getItemMatcher().matches(guest, owner) : 
-            plugin.getItemMatcher().matches(owner, guest);
+        ItemStack givenItem = item.clone();
+        givenItem.setAmount(1);
+        ItemStack shopItem = this.item.clone();
+        shopItem.setAmount(1);
+        return plugin.getItemMatcher().matches(shopItem, givenItem);
     }
 
     @Override
@@ -672,7 +660,7 @@ public class ContainerShop implements Shop {
             for (int i = 0; amount > 0 && i < chestContents.length; i++) {
                 // Can't clone it here, it could be null
                 ItemStack item = chestContents[i];
-                if (item != null && item.getType() != Material.AIR && this.matches(item, false)) {
+                if (item != null && item.getType() != Material.AIR && this.matches(item)) {
                     // Copy it, we don't want to interfere
                     item = item.clone();
                     // Amount = total, item.getAmount() = how many items in the
@@ -1101,7 +1089,7 @@ public class ContainerShop implements Shop {
         if (this.unlimited && !isAlwaysCountingContainer()) {
             return -1;
         }
-        int space = Util.countSpace(this.getInventory(), this.getItem());
+        int space = Util.countSpace(this.getInventory(), this);
         new ShopInventoryCalculateEvent(this, space, -1).callEvent();
         return space;
     }
@@ -1117,7 +1105,7 @@ public class ContainerShop implements Shop {
         if (this.unlimited && !isAlwaysCountingContainer()) {
             return -1;
         }
-        int stock = Util.countItems(this.getInventory(), this.getItem());
+        int stock = Util.countItems(this.getInventory(), this);
         new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
         return stock;
     }

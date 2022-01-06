@@ -296,9 +296,9 @@ public class PlayerListener extends AbstractQSListener {
     private int getPlayerCanBuy(Shop shop, double traderBalance, double price, Inventory playerInventory) {
         boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
         if (shop.isFreeShop()) { // Free shop
-            return isContainerCountingNeeded ? Util.countSpace(playerInventory, shop.getItem()) : Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop.getItem()));
+            return isContainerCountingNeeded ? Util.countSpace(playerInventory, shop) : Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop));
         }
-        int itemAmount = Math.min(Util.countSpace(playerInventory, shop.getItem()), (int) Math.floor(traderBalance / price));
+        int itemAmount = Math.min(Util.countSpace(playerInventory, shop), (int) Math.floor(traderBalance / price));
         if (!isContainerCountingNeeded) {
             itemAmount = Math.min(itemAmount, shop.getRemainingStock());
         }
@@ -311,10 +311,10 @@ public class PlayerListener extends AbstractQSListener {
     private int getPlayerCanSell(Shop shop, double ownerBalance, double price, Inventory playerInventory) {
         boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
         if (shop.isFreeShop()) {
-            return isContainerCountingNeeded ? Util.countItems(playerInventory, shop.getItem()) : Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop.getItem()));
+            return isContainerCountingNeeded ? Util.countItems(playerInventory, shop) : Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop));
         }
 
-        int items = Util.countItems(playerInventory, shop.getItem());
+        int items = Util.countItems(playerInventory, shop);
         final int ownerCanAfford = (int) (ownerBalance / price);
         if (!isContainerCountingNeeded) {
             // Amount check player amount and shop empty slot

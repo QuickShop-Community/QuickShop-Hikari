@@ -199,7 +199,9 @@ public class Util {
      * @param inv  The inventory to search
      * @param item The ItemStack to search for
      * @return The number of items that match in this inventory.
+     * @Deprecated Deprecated for different order will result different result
      */
+    @Deprecated
     public static int countItems(@Nullable Inventory inv, @NotNull ItemStack item) {
         if (inv == null) {
             return 0;
@@ -217,13 +219,65 @@ public class Util {
     }
 
     /**
+     * Counts the number of shop items in the given inventory where Util.matches(inventory item, item) is
+     * true.
+     *
+     * @param inv  The inventory to search
+     * @param shop The Shop for matching
+     * @return The number of shop items that match in this inventory.
+     */
+    public static int countItems(@Nullable Inventory inv, @NotNull Shop shop) {
+        if (inv == null) {
+            return 0;
+        }
+        int items = 0;
+        for (final ItemStack iStack : inv.getStorageContents()) {
+            if (iStack == null || iStack.getType() == Material.AIR) {
+                continue;
+            }
+            if (shop.matches(iStack)) {
+                items += iStack.getAmount();
+            }
+        }
+        return items / shop.getItem().getAmount();
+    }
+
+    /**
+     * Returns the number of shop items that can be given to the inventory safely.
+     *
+     * @param inv  The inventory to count
+     * @param shop The shop containing item prototype. Material, durabiltiy and enchants must match for 'stackability'
+     *             to occur.
+     * @return The number of shop items that can be given to the inventory safely.
+     */
+    public static int countSpace(@Nullable Inventory inv, @NotNull Shop shop) {
+        if (inv == null) {
+            return 0;
+        }
+        ItemStack item = shop.getItem();
+        int space = 0;
+        int itemMaxStackSize = getItemMaxStackSize(item.getType());
+        ItemStack[] contents = inv.getStorageContents();
+        for (ItemStack iStack : contents) {
+            if (iStack == null || iStack.getType() == Material.AIR) {
+                space += itemMaxStackSize;
+            } else if (shop.matches(iStack)) {
+                space += iStack.getAmount() >= itemMaxStackSize ? 0 : itemMaxStackSize - iStack.getAmount();
+            }
+        }
+        return space / item.getAmount();
+    }
+
+    /**
      * Returns the number of items that can be given to the inventory safely.
      *
      * @param inv  The inventory to count
      * @param item The item prototype. Material, durabiltiy and enchants must match for 'stackability'
      *             to occur.
      * @return The number of items that can be given to the inventory safely.
+     * @Deprecated Deprecated for different order will result different result
      */
+    @Deprecated
     public static int countSpace(@Nullable Inventory inv, @NotNull ItemStack item) {
         if (inv == null) {
             return 0;
