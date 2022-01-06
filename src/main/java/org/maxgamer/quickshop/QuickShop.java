@@ -257,7 +257,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private ShopPurger shopPurger;
     @Getter
     @Nullable
-    private volatile NBTAPI nbtapi = null;
+    private NBTAPI nbtapi = null;
 
     private int loggingLocation = 0;
 
@@ -783,7 +783,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         // Check If we need kill the server or disable plugin
 
-        switch (resultReport.getFinalResult()){
+        switch (resultReport.getFinalResult()) {
             case DISABLE_PLUGIN:
                 Bukkit.getPluginManager().disablePlugin(this);
                 break;
@@ -800,27 +800,27 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 // Create a paste to provide useful data.
                 Paste paste = new Paste(this);
                 String url = paste.paste(environmentChecker.getReportMaker().bake());
-                if(StringUtils.isNotEmpty(url)){
+                if (StringUtils.isNotEmpty(url)) {
                     if (java.awt.Desktop.isDesktopSupported()) {
                         try {
                             java.net.URI uri = java.net.URI.create(url);
                             java.awt.Desktop dp = java.awt.Desktop.getDesktop();
                             if (dp.isSupported(java.awt.Desktop.Action.BROWSE)) {
                                 dp.browse(uri);
-                                getLogger().warning("[Security Risk Detected] To get more details, please check: "+url);
+                                getLogger().warning("[Security Risk Detected] To get more details, please check: " + url);
                                 getLogger().warning("[Security Risk Detected] A browser already open for you. ");
-                            }else{
+                            } else {
                                 writeToFile();
-                                getLogger().warning("[Security Risk Detected] To get more details, please check: "+url);
+                                getLogger().warning("[Security Risk Detected] To get more details, please check: " + url);
                                 Thread.sleep(Integer.MAX_VALUE);
                             }
                         } catch (IOException | InterruptedException e) {
                             writeToFile();
                         }
-                    }else{
+                    } else {
                         writeToFile();
                     }
-                }else{
+                } else {
                     // Failed to create paste, Storage to File
                     writeToFile();
                 }
@@ -836,10 +836,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         testing = false;
     }
 
-    private void writeToFile(){
+    private void writeToFile() {
         try {
-            Files.write(new File(getDataFolder(), UUID.randomUUID() +".security.letter").toPath(),environmentChecker.getReportMaker().bake().getBytes(StandardCharsets.UTF_8));
-        } catch (IOException e) {e.printStackTrace();}
+            Files.write(new File(getDataFolder(), UUID.randomUUID() + ".security.letter").toPath(), environmentChecker.getReportMaker().bake().getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -2066,9 +2068,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
         }
 
-        saveConfiguration();
-        reloadConfiguration();
-
         //Check if server software support comment saving
         if (Util.isMethodAvailable("org.bukkit.configuration.MemoryConfiguration", "getInlineComments")) {
             //If so, clean the comment
@@ -2079,6 +2078,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 configurationSection.setInlineComments(key, emptyList);
             }
         }
+
+        saveConfiguration();
+        reloadConfiguration();
 
         //Re-add comment for config.yml
         try (InputStream inputStream = Objects.requireNonNull(getResource("config.yml"))) {
