@@ -975,10 +975,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         internalListener.register();
 
         if (this.display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
-            if (getConfig().getInt("shop.display-items-check-ticks") < 3000) {
-                getLogger().severe("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
-            }
             if (getDisplayItemCheckTicks() > 0) {
+                if (getConfig().getInt("shop.display-items-check-ticks") < 3000) {
+                    getLogger().severe("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
+                }
                 getLogger().info("Registering DisplayCheck task....");
                 timerTaskList.add(getServer().getScheduler().runTaskTimer(this, () -> {
                     for (Shop shop : getShopManager().getLoadedShops()) {
@@ -990,7 +990,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                     }
                 }, 1L, getDisplayItemCheckTicks()));
             } else {
-                getLogger().severe("Shop.display-items-check-ticks is invalid! Pick a number > 3000");
+                if (getDisplayItemCheckTicks() != 0) {
+                    getLogger().severe("Shop.display-items-check-ticks is invalid! Pick a number > 3000");
+                } else {
+                    getLogger().severe("Shop.display-items-check-ticks is zero, display check is disabled");
+                }
             }
             new DisplayProtectionListener(this, this.shopCache).register();
             if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
