@@ -627,5 +627,7 @@ public interface Shop {
      * @param value is always counting space or stocks
      */
     default void setAlwaysCountingContainer(boolean value) {
+        //For back-ward compatibility
+        throw new UnsupportedOperationException("setAlwaysCountingContainer is not implemented");
     }
 }
