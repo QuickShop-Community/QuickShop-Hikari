@@ -340,7 +340,7 @@ public class MsgUtil {
                 continue;
             }
             String potionI18n = potioni18n.getString("potioni18n." + potion.getName());
-            if (potionI18n != null && StringUtils.isEmpty(potionI18n)) {
+            if (potionI18n != null && !StringUtils.isEmpty(potionI18n)) {
                 continue;
             }
             String potionName = gameLanguage.getPotion(potion);
