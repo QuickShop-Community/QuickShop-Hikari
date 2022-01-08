@@ -40,17 +40,16 @@ public class SubCommand_AlwaysCounting implements CommandHandler<Player> {
         while (bIt.hasNext()) {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop == null) {
-                continue;
+            if (shop != null) {
+                shop.setAlwaysCountingContainer(!shop.isAlwaysCountingContainer());
+                shop.update();
+                if (shop.isAlwaysCountingContainer()) {
+                    plugin.text().of(sender, "command.toggle-always-counting.counting").send();
+                } else {
+                    plugin.text().of(sender, "command.toggle-always-counting.not-counting").send();
+                }
+                return;
             }
-            shop.setAlwaysCountingContainer(!shop.isAlwaysCountingContainer());
-            shop.update();
-            if (shop.isAlwaysCountingContainer()) {
-                plugin.text().of(sender, "command.toggle-always-counting.counting").send();
-            } else {
-                plugin.text().of(sender, "command.toggle-always-counting.not-counting").send();
-            }
-            return;
         }
         plugin.text().of(sender, "not-looking-at-shop").send();
     }
