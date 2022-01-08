@@ -87,12 +87,12 @@ import org.maxgamer.quickshop.util.config.ConfigurationFixer;
 import org.maxgamer.quickshop.util.envcheck.*;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
-import org.maxgamer.quickshop.util.paste.Paste;
 import org.maxgamer.quickshop.util.reload.ReloadManager;
 import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
 import org.maxgamer.quickshop.watcher.*;
 
 import java.io.*;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -795,53 +795,57 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 }
                 break;
             case KILL_SERVER:
-                // Workaround - Log4J may logging the logs in async, and it may cannot output to console before process halt.
-                getLogger().warning("[Security Risk Detected] QuickShop forcing crash the server for security, contact the developer for details.");
-                // Create a paste to provide useful data.
-                Paste paste = new Paste(this);
-                String url = paste.paste(environmentChecker.getReportMaker().bake());
-                if (StringUtils.isNotEmpty(url)) {
-                    if (java.awt.Desktop.isDesktopSupported()) {
-                        try {
-                            java.net.URI uri = java.net.URI.create(url);
+                getLogger().severe("[Security Risk Detected] QuickShop forcing crash the server for security, contact the developer for details.");
+                String result = environmentChecker.getReportMaker().bake();
+                File reportFile = writeSecurityReportToFile();
+                URI uri = null;
+                if (reportFile != null) {
+                    uri = reportFile.toURI();
+                }
+                if (uri != null) {
+                    getLogger().warning("[Security Risk Detected] To get more details, please check: " + uri);
+                    try {
+                        if (java.awt.Desktop.isDesktopSupported()) {
                             java.awt.Desktop dp = java.awt.Desktop.getDesktop();
                             if (dp.isSupported(java.awt.Desktop.Action.BROWSE)) {
                                 dp.browse(uri);
-                                getLogger().warning("[Security Risk Detected] To get more details, please check: " + url);
                                 getLogger().warning("[Security Risk Detected] A browser already open for you. ");
-                            } else {
-                                writeToFile();
-                                getLogger().warning("[Security Risk Detected] To get more details, please check: " + url);
-                                Thread.sleep(Integer.MAX_VALUE);
                             }
-                        } catch (IOException | InterruptedException e) {
-                            writeToFile();
                         }
-                    } else {
-                        writeToFile();
+                    } catch (Throwable ignored) {
+                        //If failed, write directly to console
+                        getLogger().severe(result);
                     }
                 } else {
-                    // Failed to create paste, Storage to File
-                    writeToFile();
+                    //If write failed, write directly to console
+                    getLogger().severe(result);
+                }
+                //Wait for a while for user and logger outputting
+                try {
+                    //10 seconds
+                    Thread.yield();
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
                 // Halt the process, kill the server
                 Runtime.getRuntime().halt(-1);
-                System.exit(-1);
-                Bukkit.shutdown();
-                Thread.currentThread().stop();
-                Thread.currentThread().interrupt();
             default:
                 break;
         }
         testing = false;
     }
 
-    private void writeToFile() {
+    private File writeSecurityReportToFile() {
+        File file = new File(getDataFolder(), UUID.randomUUID() + ".security.letter.txt");
         try {
-            Files.write(new File(getDataFolder(), UUID.randomUUID() + ".security.letter").toPath(), environmentChecker.getReportMaker().bake().getBytes(StandardCharsets.UTF_8));
+            Files.write(new File(getDataFolder(), UUID.randomUUID() + ".security.letter.txt").toPath(), environmentChecker.getReportMaker().bake().getBytes(StandardCharsets.UTF_8));
+            file = file.getCanonicalFile();
         } catch (IOException e) {
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, "Failed to security report!", e);
+            return null;
         }
+        return file;
     }
 
     @Override
