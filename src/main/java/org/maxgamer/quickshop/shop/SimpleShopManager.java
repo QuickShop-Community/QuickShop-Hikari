@@ -895,12 +895,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             case REACHED_PRICE_MIN_LIMIT:
                 plugin.text().of(p, "price-too-cheap",
                         (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
-                                : Double.toString(this.priceLimiter.getMinPrice()));
+                                : Double.toString(this.priceLimiter.getMinPrice())).send();
                 return;
             case REACHED_PRICE_MAX_LIMIT:
                 plugin.text().of(p, "price-too-high",
                         (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
-                                : Double.toString(this.priceLimiter.getMinPrice()));
+                                : Double.toString(this.priceLimiter.getMinPrice())).send();
                 return;
             case PRICE_RESTRICTED:
                 plugin.text().of(p, "restricted-prices",
