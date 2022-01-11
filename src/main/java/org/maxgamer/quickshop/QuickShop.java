@@ -842,7 +842,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             Files.write(new File(getDataFolder(), UUID.randomUUID() + ".security.letter.txt").toPath(), environmentChecker.getReportMaker().bake().getBytes(StandardCharsets.UTF_8));
             file = file.getCanonicalFile();
         } catch (IOException e) {
-            getLogger().log(Level.SEVERE, "Failed to security report!", e);
+            getLogger().log(Level.SEVERE, "Failed to write security report!", e);
             return null;
         }
         return file;
