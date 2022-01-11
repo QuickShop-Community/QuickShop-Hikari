@@ -124,15 +124,15 @@
       "limited": "&aButiken är nu begränsad"
     },
     "toggle-always-counting": {
-      "counting": "&aShop is now always counting container even is unlimited",
-      "not-counting": "&aShop is now respect if shop is unlimited"
+      "counting": "&aButiken räknar nu alltid behållarens kapacitet även om den är obegränsad",
+      "not-counting": "&aButiken tar nu hänsyn till huruvida den är obegränsad"
     },
     "transfer-success": "&aÖverförde &e{0} &abutik(er) till &e{1}",
     "transfer-success-other": "&aÖverförde &e{0} {1}&a's butik(er) till &e{2}",
     "some-shops-removed": "&{0} &abutik(er) borttagen",
     "no-owner-given": "&cIngen ägare angiven",
     "new-owner": "&aNy ägare: &e{0}",
-    "now-buying": "&dBUYING&a numera&e{0}",
+    "now-buying": "&dKÖPER&a numera &e{0}",
     "now-selling": "&bSÄLJER &anumera &e{0}",
     "cleaning": "&aTar bort tomma butiker...",
     "reloading": "&aKonfiguration laddad. &eVissa ändringar kan kräva omstart för att påverka. \n&7(Notis: Laddningsbeteende har ändrats efter 4.. 9.10, vi nu bara ladda om konfigurationen men inte hela plugin för att säkerställa att servern inte kraschar.)",
@@ -171,7 +171,7 @@
       "amount": "&eFör att ställa in antal (Användbar när du har chattproblem)",
       "about": "&eVisar QuickShop-info",
       "help": "&eVisar QuickShop-hjälp",
-      "item": "&Ändra föremålet i en butik",
+      "item": "&eÄndra föremålet i en butik",
       "size": "&eÄndra paketmängd i en butik",
       "supercreate": "&eSkapa en butik genom att kringgå alla skyddskontroller",
       "language": "&eÄndra det språk som används för nuvarande",
@@ -185,7 +185,7 @@
       "lock": "&eVäxla butikens låsstatus",
       "taxaccount": "&eAnge skattekontot som butiken använder",
       "toggledisplay": "&eVäxla butikens status för visningsobjekt",
-      "purge": "&aStarta rensningsuppgifter för butiker i bakgrunden"
+      "purge": "&eStarta rensningsuppgifter för butiker i bakgrunden"
     },
     "disabled": "&cDetta kommando är inaktiverat: &e{0}",
     "feature-not-enabled": "Funktionen är inte aktiverad i konfigurationsfilen."
@@ -200,7 +200,7 @@
     "item-right": "",
     "price": "{0} st",
     "stack-price": "{0} per {1}x {2}",
-    "unlimited": "Obegränsad",
+    "unlimited": "Obegränsat",
     "status-available": "&a",
     "status-unavailable": "&c",
     "out-of-stock": "Slut i Lager",
@@ -208,8 +208,8 @@
     "freeze": "Handel inaktiverad"
   },
   "controlpanel": {
-    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
-    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
+    "alwayscounting": "&aRäknar alltid: {0} &e[&d&lÄndra&e]",
+    "alwayscounting-hover": "&eKlicka för att växla om butiken alltid räknar behållarens utrymme.",
     "setowner": "&aÄgare: &b{0} &e[&d&lÄndra&e]",
     "infomation": "&aButiksadministration:",
     "setowner-hover": "&eKlicka för att byta ägare.",
@@ -279,7 +279,7 @@
       "Vad tror du? {0} har släppts! Uppdatera!",
       "Läkare, QuickShop har en ny uppdatering {0}! Du bör uppdatera~",
       "Ko~ko~da~yo~ QuickShop har en ny uppdatering {0}~",
-      "Paimon want told you the QuickShop have new update {0}!"
+      "Paimon vill berätta för dig att QuickShop har en ny uppdatering {0}!"
     ],
     "remote-disable-warning": "&cDenna version av QuickShop har markerats som inaktiverad av fjärrservern. Det innebär att denna version kan ha allvarliga problem. Få information från vår SpigotMC-sida: {0}. Denna varning kommer att visas och spammas i din konsol tills du växlar till en icke inaktiverad version. Detta kommer dock inte att påverka din server.",
     "label": {
@@ -357,6 +357,6 @@
   "shop-purged-start": "&aShop rensning startade, kontrollera konsolen för detaljer.",
   "purchase-out-of-stock": "&cDenna butik har slut på lagret, Kontakta butiksägare eller personal för att fylla på lagret.",
   "purchase-out-of-space": "&cDenna butik har slut på tillgängligt utrymme, Kontakta butiksägare eller personal för att tömma butiken.",
-  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
+  "safe-mode": "&cQuickShop är nu i säkert läge, du kan inte öppna den här butiksbehållaren, kontakta serveradministratören för att åtgärda felen.",
+  "safe-mode-admin": "&c&lVARNING: &cQuickShop på denna server som körs nu under safe-mode, inga funktioner kommer att fungera, skriv &e/qs &c kommandot för att kontrollera eventuella fel."
 }
