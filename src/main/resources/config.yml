@@ -1,7 +1,7 @@
 # QuickShop-Reremake Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 149
+config-version: 151
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -754,6 +754,10 @@ custom-item-stacksize: [ ]
 # Will purge all shops that owner offline x days while use command or server startup
 purge:
   enabled: false
+  #Whether to purge shops automatically when server started
+  at-server-startup: true
+  #Whether to export a backup file for recovery before each purge
+  backup: true
   days: 60
   # At this moment, QuickShop only compatible with Vanilla banning system (e.g Essentials using)
   banned: true

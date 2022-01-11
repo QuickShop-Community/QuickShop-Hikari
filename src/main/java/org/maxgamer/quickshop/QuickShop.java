@@ -1059,7 +1059,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         calendarWatcher.start();
         tpsWatcher.runTaskTimer(this, 1000, 50);
         this.shopPurger = new ShopPurger(this);
-        shopPurger.purge();
+        if (getConfig().getBoolean("purge.at-server-startup")) {
+            shopPurger.purge();
+        }
         Util.debugLog("Now using display-type: " + AbstractDisplayItem.getNowUsing().name());
         getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
     }
@@ -2064,6 +2066,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             if (!getConfig().isSet("shop.sign-dye-color")) {
                 getConfig().set("shop.sign-dye-color", "");
             }
+            getConfig().set("config-version", ++selectedVersion);
+        }
+        if (selectedVersion == 150) {
+            getConfig().set("purge.at-server-startup", true);
+            getConfig().set("purge.backup", true);
             getConfig().set("config-version", ++selectedVersion);
         }
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {

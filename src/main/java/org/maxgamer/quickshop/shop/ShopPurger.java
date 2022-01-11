@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class ShopPurger implements Runnable {
+public class ShopPurger {
     private final QuickShop plugin;
     private volatile boolean executing;
 
@@ -48,18 +48,19 @@ public class ShopPurger implements Runnable {
         if (executing) {
             plugin.getLogger().info("[Shop Purger] Another purge task still running!");
         } else {
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, this);
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, this::run);
         }
     }
 
-    @Override
-    @Deprecated
-    public void run() {
+    private void run() {
         Util.ensureThread(true);
         executing = true;
-        String backupFileName = "shop-purge-backup-" + UUID.randomUUID() + ".txt";
-        Util.makeExportBackup(backupFileName);
-        plugin.getLogger().info("[Shop Purger] Scanning and removing shops, we have backup shop data as" + backupFileName + ", if you ran into any trouble, please rename it to recovery.txt then use /qs recovery in console to rollback");
+        if (plugin.getConfig().getBoolean("purge.backup")) {
+            String backupFileName = "shop-purge-backup-" + UUID.randomUUID() + ".txt";
+            Util.makeExportBackup(backupFileName);
+            plugin.getLogger().info("[Shop Purger] we have backup shop data as" + backupFileName + ", if you ran into any trouble, please rename it to recovery.txt then use /qs recovery in console to rollback!");
+        }
+        plugin.getLogger().info("[Shop Purger] Scanning and removing shops....");
         List<Shop> pendingRemovalShops = new ArrayList<>();
         int days = plugin.getConfig().getInt("purge.days", 360);
         boolean deleteBanned = plugin.getConfig().getBoolean("purge.banned");

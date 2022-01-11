@@ -338,6 +338,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         registerCmd(CommandContainer.builder()
                 .prefix("purge")
                 .permission("quickshop.purge")
+                .disabledSupplier(() -> !plugin.getConfig().getBoolean("purge.enabled"))
                 .executor(new SubCommand_Purge(plugin))
                 .build());
     }
