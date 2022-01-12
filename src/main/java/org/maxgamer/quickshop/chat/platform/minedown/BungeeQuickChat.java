@@ -144,7 +144,7 @@ public class BungeeQuickChat implements QuickChat {
             BaseComponent[] result = builder.create();
             String resultStr = ComponentSerializer.toString(result);
             Util.debugLog("Sending debug: " + resultStr);
-            if (resultStr.getBytes(StandardCharsets.UTF_8).length > 32767) {
+            if (resultStr.getBytes(StandardCharsets.UTF_8).length > Short.MAX_VALUE) {
                 if (isPlainItemStack) {
                     plugin.text().of(player, "menu.item-holochat-data-too-large").send();
                 } else {
