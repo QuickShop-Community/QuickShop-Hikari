@@ -51,10 +51,7 @@ import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.integration.SimpleIntegrationManager;
-import org.maxgamer.quickshop.util.CalculateUtil;
-import org.maxgamer.quickshop.util.ChatSheetPrinter;
-import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.economyformatter.EconomyFormatter;
 import org.maxgamer.quickshop.util.holder.Result;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
@@ -113,7 +110,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         plugin.getServer().getOfflinePlayer(UUID.fromString(taxAccount)));
             } else {
                 this.cacheTaxAccount = new Trader(taxAccount,
-                        plugin.getServer().getOfflinePlayer(taxAccount));
+                        PlayerFinder.findOfflinePlayerByName(taxAccount));
             }
         } else {
             // disable tax account
@@ -128,7 +125,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (Util.isUUID(uAccount)) {
                 cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(UUID.fromString(uAccount)));
             } else {
-                cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(uAccount));
+                cacheUnlimitedShopAccount = new Trader(uAccount, PlayerFinder.findOfflinePlayerByName(uAccount));
             }
         }
         this.priceLimiter = new SimplePriceLimiter(

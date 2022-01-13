@@ -481,9 +481,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                             if (!taxAccount.isEmpty()) {
                                 OfflinePlayer tax;
                                 if (Util.isUUID(taxAccount)) {
-                                    tax = Bukkit.getOfflinePlayer(UUID.fromString(taxAccount));
+                                    tax = PlayerFinder.findOfflinePlayerByUUID(UUID.fromString(taxAccount));
                                 } else {
-                                    tax = Bukkit.getOfflinePlayer(Objects.requireNonNull(taxAccount));
+                                    tax = PlayerFinder.findOfflinePlayerByName((Objects.requireNonNull(taxAccount)));
                                 }
                                 Economy_Vault vault = (Economy_Vault) economy;
                                 if (vault.isValid()) {

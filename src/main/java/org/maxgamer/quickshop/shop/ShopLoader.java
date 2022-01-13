@@ -40,6 +40,7 @@ import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopModerator;
 import org.maxgamer.quickshop.api.shop.ShopType;
 import org.maxgamer.quickshop.util.JsonUtil;
+import org.maxgamer.quickshop.util.PlayerFinder;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.Util;
 
@@ -470,8 +471,7 @@ public class ShopLoader {
                     shopModerator = SimpleShopModerator.deserialize(moderatorJson);
                 } catch (JsonSyntaxException ex) {
                     Util.debugLog("Updating old shop data... for " + moderatorJson);
-                    //noinspection deprecation
-                    moderatorJson = plugin.getServer().getOfflinePlayer(moderatorJson).getUniqueId().toString();
+                    moderatorJson = PlayerFinder.findUUIDByName(moderatorJson).toString();
                     shopModerator = new SimpleShopModerator(UUID.fromString(moderatorJson)); // New one
                     needUpdate.set(true);
                 }
