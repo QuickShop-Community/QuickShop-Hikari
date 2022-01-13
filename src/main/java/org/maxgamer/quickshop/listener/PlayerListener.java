@@ -397,6 +397,11 @@ public class PlayerListener extends AbstractQSListener {
         final Info info = actionMap.get(player.getUniqueId());
         if (info != null && info.getLocation().equals(event.getBlock().getLocation())) {
             actionMap.remove(player.getUniqueId());
+            if (info.getAction() == ShopAction.BUY) {
+                plugin.text().of(player, "shop-purchase-cancelled").send();
+            } else if (info.getAction() == ShopAction.CREATE) {
+                plugin.text().of(player, "shop-creation-cancelled").send();
+            }
         }
     }
 
