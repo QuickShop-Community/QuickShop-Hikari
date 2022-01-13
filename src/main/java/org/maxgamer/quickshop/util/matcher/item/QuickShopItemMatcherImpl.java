@@ -552,7 +552,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
             }
             ItemMeta meta1 = requireStack.getItemMeta();
             ItemMeta meta2 = givenStack.getItemMeta();
-            //If givenStack don't have meta, try to genrate one
+            //If givenStack don't have meta, try to generate one
             if (meta2 == null) {
                 meta2 = Bukkit.getItemFactory().getItemMeta(givenStack.getType());
                 if (meta2 == null) {
