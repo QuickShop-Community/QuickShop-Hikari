@@ -19,7 +19,7 @@
 
 package org.maxgamer.quickshop.shop;
 
-import com.lishid.openinv.OpenInv;
+import com.lishid.openinv.IOpenInv;
 import de.tr7zw.nbtapi.NBTTileEntity;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
@@ -1316,7 +1316,7 @@ public class ContainerShop implements Shop {
         try {
             if (state.getType() == Material.ENDER_CHEST
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
-                OpenInv openInv = ((OpenInv) plugin.getOpenInvPlugin());
+                IOpenInv openInv = ((IOpenInv) plugin.getOpenInvPlugin());
                 inv = openInv.getSpecialEnderChest(
                         Objects.requireNonNull(
                                 openInv.loadPlayer(
