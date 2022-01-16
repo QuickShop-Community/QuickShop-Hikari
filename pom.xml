@@ -25,7 +25,7 @@
     <artifactId>QuickShop</artifactId>
 
     <properties>
-        <pluginver>5.1.0.3</pluginver>
+        <pluginver>5.1.0.4</pluginver>
         <package>org.maxgamer.quickshop</package>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

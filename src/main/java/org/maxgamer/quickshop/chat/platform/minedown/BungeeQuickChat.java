@@ -224,8 +224,13 @@ public class BungeeQuickChat implements QuickChat {
         ItemMeta fromMeta = itemStack.getItemMeta();
         ItemMeta targetMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());
         if (fromMeta != null && targetMeta != null) {
-            if (fromMeta.hasDisplayName()) {
-                targetMeta.setDisplayName(fromMeta.getDisplayName());
+            try {
+                if (fromMeta.hasDisplayName()) {
+                    targetMeta.setDisplayName(fromMeta.getDisplayName());
+                }
+                //It may result in StackOverflowError when hitting LARGE display name using components
+            } catch (StackOverflowError error) {
+                targetMeta.setDisplayName(plugin.text().of("menu.item-holochat-data-too-large").forLocale(locale));
             }
             targetMeta.addItemFlags(fromMeta.getItemFlags().toArray(new ItemFlag[]{}));
         }
