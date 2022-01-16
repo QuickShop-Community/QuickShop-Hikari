@@ -96,7 +96,7 @@
     "owner": "&aEier: {0}",
     "item": "&aGjenstand: &e{0}",
     "item-holochat-error": "&c[Error]",
-    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
+    "item-holochat-data-too-large": "&c[Error] NBT informasjonen på gjenstanden er for stor til å vise",
     "preview": "&b[Forhåndsvisning]",
     "space": "&aPlass: &e{0}",
     "stock": "&aTilgjengelig &e{0}",
@@ -124,8 +124,8 @@
       "limited": "&aButikken er nå begrenset"
     },
     "toggle-always-counting": {
-      "counting": "&aShop is now always counting container even is unlimited",
-      "not-counting": "&aShop is now respect if shop is unlimited"
+      "counting": "&aButikken teller nå alltid beholderen, selv om den er ubegrenset",
+      "not-counting": "&aButikken respekterer nå ubegrenset istedet for antall"
     },
     "transfer-success": "&aOverførte &e{0} &abutikk(er) til &e{1}",
     "transfer-success-other": "&aOverførte &e{0} &abutikker tilhørende &e{1}&a til &e{2}",
@@ -208,8 +208,8 @@
     "freeze": "Handel deaktivert"
   },
   "controlpanel": {
-    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
-    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
+    "alwayscounting": "&aTeller alltid: {0} &e[&d&lEndre&e]",
+    "alwayscounting-hover": "&eKlikk for å veksle om butikken skal alltid telle beholderen.",
     "setowner": "&aEier: &b{0} &e[&d&lEndre&e]",
     "infomation": "&aButikkens kontrollpanel:",
     "setowner-hover": "&eKlikk for å bytte eier.",
@@ -279,7 +279,7 @@
       "Hva tenker du? {0} har blitt lansert! Oppdater!",
       "Doktor, QuickShop har en ny oppdatering {0}! Du bør oppdatere~",
       "Ko~ko~da~yo~ QuickShop har en ny oppdatering {0} ~",
-      "Paimon want told you the QuickShop have new update {0}!"
+      "Paimon vil fortelle deg at QuickShop har en ny oppdatering {0}!"
     ],
     "remote-disable-warning": "&cDenne versjonen av QuickShop er markert som deaktivert av ekstern tjener; som betyr at denne versjonen kan ha alvorlige problemer. Les om detaljer fra SpigotMC siden: {0}. Denne advarselen vil fortsette å vise inntil du bytter til en stabil versjon, men det vil ikke påvirke serverens ytelse.",
     "label": {
@@ -357,6 +357,6 @@
   "shop-purged-start": "&aShop renset, sjekk konsollen for detaljer.",
   "purchase-out-of-stock": "&cDenne butikken er tom på lager, kontakt butikkeier eller ansatte for å fylle på lageret.",
   "purchase-out-of-space": "&cDenne butikken er tom for plass, kontakt butikkeier eller ansatte for å tømme butikken.",
-  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
+  "safe-mode": "&cQuickShop er nå i sikkerhetsmodus, du kan derfor ikke åpne denne butikkbeholderen. Ta kontakt med serveradministrator for å fikse feilene.",
+  "safe-mode-admin": "&c&lADVARSEL: &cQuickShop på denne serveren kjører nå i sikkerhetsmodus, ingen funksjoner vil fungere. Vennligst skriv inn &e/qs &ckommando for å sjekke eventuelle feil."
 }

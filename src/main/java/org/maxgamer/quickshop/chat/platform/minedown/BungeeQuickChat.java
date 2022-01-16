@@ -144,7 +144,8 @@ public class BungeeQuickChat implements QuickChat {
             BaseComponent[] result = builder.create();
             String resultStr = ComponentSerializer.toString(result);
             Util.debugLog("Sending debug: " + resultStr);
-            if (resultStr.getBytes(StandardCharsets.UTF_8).length > Short.MAX_VALUE) {
+            //The limit in vanilla server is 32767
+            if (resultStr.getBytes(StandardCharsets.UTF_8).length > 32767) {
                 if (isPlainItemStack) {
                     plugin.text().of(player, "menu.item-holochat-data-too-large").send();
                 } else {
@@ -199,6 +200,7 @@ public class BungeeQuickChat implements QuickChat {
                                 shop.getRuntimeRandomUniqueId().toString())));
             }
             BaseComponent[] result = builder.create();
+            //The limit in vanilla server is 32767
             if (ComponentSerializer.toString(result).getBytes(StandardCharsets.UTF_8).length > 32767) {
                 if (isPlainItemStack) {
                     return new QuickComponentImpl(plugin.text().of(player, "menu.item-holochat-data-too-large").forLocale());

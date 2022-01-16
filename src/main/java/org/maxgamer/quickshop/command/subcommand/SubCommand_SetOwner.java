@@ -28,6 +28,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.util.PlayerFinder;
 
 import java.util.Collections;
 import java.util.List;
@@ -57,7 +58,7 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
                 continue;
             }
 
-            @SuppressWarnings("deprecation") final OfflinePlayer newShopOwner = plugin.getServer().getOfflinePlayer(cmdArg[0]);
+            final OfflinePlayer newShopOwner = PlayerFinder.findOfflinePlayerByName(cmdArg[0]);
             if (newShopOwner.getName() == null) {
                 plugin.text().of(sender, "unknown-player").send();
                 return;

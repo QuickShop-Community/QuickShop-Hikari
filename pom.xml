@@ -101,7 +101,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.9.0</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -415,7 +415,7 @@
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
         <!-- IridiumSkyblock  -->
-        <!-- Temporary disable for certificate expired
+        <!-- Temporary disable for downed website
         <repository>
             <id>IridiumDevelopment</id>
             <url>https://nexus.iridiumdevelopment.net/repository/maven-releases/</url>
@@ -522,11 +522,9 @@
         <!--            </exclusions>-->
         <!--        </dependency>-->
         <dependency>
-            <groupId>com.lishid</groupId>
-            <artifactId>OpenInv</artifactId>
-            <version>3.3.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/OpenInv.jar</systemPath>
+            <groupId>com.github.jikoo.OpenInv</groupId>
+            <artifactId>openinvapi</artifactId>
+            <version>4.1.9</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -550,9 +548,9 @@
         <dependency>
             <groupId>me.minebuilders</groupId>
             <artifactId>clearlag</artifactId>
-            <version>3.0.6</version>
+            <version>3.2.2</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/Clearlag.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Clearlag-3.2.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>me.lucko.luckperms</groupId>
@@ -724,9 +722,9 @@
         <dependency>
             <groupId>com.bekvon.bukkit.residence</groupId>
             <artifactId>Residence</artifactId>
-            <version>4.4.8.2</version>
+            <version>5.0.1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/Residence4.8.8.2.jar</systemPath>
+            <systemPath>${project.basedir}/lib/Residence5.0.1.0.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.massivecraft</groupId>
@@ -743,9 +741,9 @@
         <dependency>
             <groupId>org.primesoft.blockshub</groupId>
             <artifactId>BlockHub</artifactId>
-            <version>3.1.1</version>
+            <version>3.2.1</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/BlocksHub-3.1.1.jar</systemPath>
+            <systemPath>${project.basedir}/lib/BlocksHub-3.2.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.rollbar</groupId>
@@ -769,8 +767,8 @@
             <groupId>tne.tne</groupId>
             <artifactId>TheNewEconomy</artifactId>
             <scope>system</scope>
-            <version>4.9.2</version>
-            <systemPath>${project.basedir}/lib/TNE.jar</systemPath>
+            <version>0.1.1.17-PRE-2</version>
+            <systemPath>${project.basedir}/lib/TNE-0.1.1.17-PRE-2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.songoda</groupId>
@@ -859,8 +857,8 @@
         <dependency>
             <groupId>com.iridium</groupId>
             <artifactId>IridiumSkyblock</artifactId>
-            <version>3.2.2</version>
-            <systemPath>${project.basedir}/lib/IridiumSkyblock-3.2.2.jar</systemPath>
+            <version>3.2.3</version>
+            <systemPath>${project.basedir}/lib/IridiumSkyblock-3.2.3.jar</systemPath>
             <scope>system</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp -->

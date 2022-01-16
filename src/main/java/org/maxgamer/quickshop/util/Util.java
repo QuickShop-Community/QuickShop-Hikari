@@ -1293,11 +1293,9 @@ public class Util {
      */
     @NotNull
     public static List<String> getPlayerList() {
-        List<String> tabList;
+        List<String> tabList = plugin.getServer().getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
         if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
-            tabList = Arrays.stream(plugin.getServer().getOfflinePlayers()).map(OfflinePlayer::getName).collect(Collectors.toList());
-        } else {
-            tabList = plugin.getServer().getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
+            tabList.addAll(Arrays.stream(plugin.getServer().getOfflinePlayers()).map(OfflinePlayer::getName).filter(Objects::nonNull).collect(Collectors.toList()));
         }
         return tabList;
     }

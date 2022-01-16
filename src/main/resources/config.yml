@@ -168,7 +168,8 @@ limits:
   #You can create as many as you like!
   ranks:
     quickshop:
-      example: 20 #Players with the quickshop.example permission can create 20 shops.
+      #Players with the quickshop.example permission can create 20 shops.
+      example: 20
 
 #The list of blocks that can be used to create shops.
 #By default, chests are added to this list.
@@ -451,7 +452,7 @@ shop:
 blacklist:
   - Bedrock
 
-#Fix Quickshop not canceling a break lock sign event (Making it impossible to break a locked chest).
+#A fix for lockette plugin with Quickshop, because we are not canceling a break lock sign event (Making it impossible to break a locked chest).
 lockette:
   enable: true
   private: "[Private]"
@@ -734,11 +735,13 @@ integration:
   #AdvanvedRegionMarket shop deletion Integration
   advancedregionmarket:
     enable: true
+
 #The protection that a shop should check.
 protect:
   explode: true
   hopper: true
   entity: true
+
 #This option allows you to set custom item max stacksizes.
 #If nothing matches, then all items (*) will be used.
 #* means all items.
@@ -782,12 +785,13 @@ debug:
 legacy-updater:
   shop-sign: false
 
+#Set the command alias for qs main command
+# - playershop
+# - pshop
 custom-commands:
   - shop
   - chestshop
   - cshop
-# - playershop
-# - pshop
 
 #Let this stay false, DO NOT TOUCH IT!
 config-damaged: false

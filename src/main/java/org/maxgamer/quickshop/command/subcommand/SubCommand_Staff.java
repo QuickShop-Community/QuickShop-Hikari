@@ -31,6 +31,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.PlayerFinder;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.Arrays;
@@ -85,8 +86,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                             return;
                     }
                 case 2:
-                    //noinspection deprecation
-                    final OfflinePlayer offlinePlayer = plugin.getServer().getOfflinePlayer(cmdArg[1]);
+                    final OfflinePlayer offlinePlayer = PlayerFinder.findOfflinePlayerByName(cmdArg[1]);
                     String offlinePlayerName = offlinePlayer.getName();
 
                     if (offlinePlayerName == null) {

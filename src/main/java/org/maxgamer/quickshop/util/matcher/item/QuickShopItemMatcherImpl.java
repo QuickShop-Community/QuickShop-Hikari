@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.util.matcher.item;
 import de.tr7zw.nbtapi.NBTItem;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.configuration.ConfigurationSection;
@@ -175,10 +176,10 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         if (requireStack.isSimilar(givenStack)) {
             return true;
         }
-
+        /* If they are the same type, they should also have item meta
         if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
             return false;
-        }
+        }*/
         if (requireStack.hasItemMeta()) {
             return itemMetaMatcher.matches(requireStack, givenStack);
         }
@@ -542,14 +543,22 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         }
 
         boolean matches(ItemStack requireStack, ItemStack givenStack) {
+            /* If they are the same type, they should also have item meta
             if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
                 return false;
-            }
+            }*/
             if (!requireStack.hasItemMeta()) {
                 return true; // Passed check. no meta need to check.
             }
             ItemMeta meta1 = requireStack.getItemMeta();
             ItemMeta meta2 = givenStack.getItemMeta();
+            //If givenStack don't have meta, try to generate one
+            if (meta2 == null) {
+                meta2 = Bukkit.getItemFactory().getItemMeta(givenStack.getType());
+                if (meta2 == null) {
+                    return true; // Passed check. givenStack still have no meta need to check.
+                }
+            }
             for (Matcher matcher : matcherList) {
                 if (!matcher.match(meta1, meta2)) {
                     return false;

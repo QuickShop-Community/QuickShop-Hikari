@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
@@ -28,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.util.PlayerFinder;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.List;
@@ -54,7 +54,7 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
                 if (Util.isUUID(cmdArg[0])) {
                     shop.setTaxAccount(UUID.fromString(cmdArg[0]));
                 } else {
-                    shop.setTaxAccount(Bukkit.getOfflinePlayer(cmdArg[0]).getUniqueId());
+                    shop.setTaxAccount(PlayerFinder.findUUIDByName(cmdArg[0]));
                 }
                 plugin.text().of(sender, "taxaccount-set", cmdArg[0]).send();
                 return;

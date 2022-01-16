@@ -28,12 +28,10 @@ import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.api.shop.DisplayType;
 import org.maxgamer.quickshop.shop.VirtualDisplayItem;
 import org.maxgamer.quickshop.util.*;
-import org.maxgamer.quickshop.util.paste.Paste;
 import org.maxgamer.quickshop.util.security.JarVerifyTool;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.*;
@@ -341,7 +339,7 @@ public final class EnvironmentChecker {
                 plugin.getServer().spigot();
                 String nmsVersion = ReflectFactory.getNMSVersion();
                 plugin.getLogger().info("Running QuickShop-" + QuickShop.getFork() + " on NMS version " + nmsVersion + " For Minecraft version " + ReflectFactory.getServerVersion());
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 return failed;
             }
             return success;

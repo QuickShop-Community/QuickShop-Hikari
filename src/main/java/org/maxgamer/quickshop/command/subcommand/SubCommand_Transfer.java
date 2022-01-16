@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.util.PlayerFinder;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.Collections;
@@ -44,7 +45,7 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length == 1) {
-            final OfflinePlayer targetPlayer = plugin.getServer().getOfflinePlayer(cmdArg[0]);
+            final OfflinePlayer targetPlayer = PlayerFinder.findOfflinePlayerByName(cmdArg[0]);
             String targetPlayerName = targetPlayer.getName();
             if (targetPlayerName == null) {
                 targetPlayerName = "null";
@@ -60,15 +61,14 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                 plugin.text().of(sender, "no-permission").send();
                 return;
             }
-            //noinspection deprecation
-            final OfflinePlayer fromPlayer = plugin.getServer().getOfflinePlayer(cmdArg[0]);
+
+            final OfflinePlayer fromPlayer = PlayerFinder.findOfflinePlayerByName(cmdArg[0]);
             String fromPlayerName = fromPlayer.getName();
             if (fromPlayerName == null) {
                 fromPlayerName = "null";
             }
             //FIXME: Update this when drop 1.15 supports
-            //noinspection deprecation
-            final OfflinePlayer targetPlayer = plugin.getServer().getOfflinePlayer(cmdArg[1]);
+            final OfflinePlayer targetPlayer = PlayerFinder.findOfflinePlayerByName(cmdArg[1]);
             String targetPlayerName = targetPlayer.getName();
             if (targetPlayerName == null) {
                 targetPlayerName = "null";
