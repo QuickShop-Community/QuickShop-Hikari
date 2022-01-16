@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&aSuccessfully disabled Developer mode. Reloading QuickShop...",
     "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
     "description": {
+      "alwayscounting": "&eSet if shop always counting container even is unlimited",
       "title": "&aQuickShop help",
       "unlimited": "&eGives a shop unlimited stock.",
       "setowner": "&eChanges the ownership of a shop.",
