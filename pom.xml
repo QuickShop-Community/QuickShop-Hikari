@@ -760,7 +760,7 @@
             <groupId>me.xanium</groupId>
             <artifactId>GemsEconomy</artifactId>
             <scope>system</scope>
-            <version>4.9.3-BCRemake-1.4</version>
+            <version>4.9.3-BCRemake-1.5</version>
             <systemPath>${project.basedir}/lib/GemsEconomy-4.9.2.jar</systemPath>
         </dependency>
         <dependency>
