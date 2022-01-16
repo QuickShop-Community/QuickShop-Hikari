@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&aУспешно выключен режим разработчика. Перезагружаю...",
     "wrong-args": "&cНеверный аргумент. Используйте &l/qs help &cчтобы узнать список командов.",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aQuickShop справка",
       "unlimited": "&eДает магазину неограниченный товар.",
       "setowner": "&eУстанавливает владельца магазина.",

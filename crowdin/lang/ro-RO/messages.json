@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&aMod dezvoltator dezactivat cu succes. Reîncărcare cu quickhop...",
     "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aAjutor QuickShop",
       "unlimited": "&fOfera magazinului un stoc nelimitat.",
       "setowner": "&eSchimba proprietarul unui magazin.",

@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&aOnnistuneesti siirrytty käyttötilaan. QuickShop ladataan uudelleen...",
     "wrong-args": "&cVirheellinen argumentti. Kirjoita &l/qs help &cnähdäksesi lista komennoista.",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aQuickShop apu",
       "unlimited": "&eAntaa kaupalle loputtoman varaston.",
       "setowner": "&eVaihtaa kaupan omistajaa.",

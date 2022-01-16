@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&aModo desarrollador deshabilitado. Recargando QuickShop...",
     "wrong-args": "&cArgumento no válido. Usa la ayuda &l/qs &cpara ver una lista de comandos.",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aAyuda de QuickShop",
       "unlimited": "&eDa un stock ilimitado a una tienda.",
       "setowner": "&eCambia al propietario de la tienda.",

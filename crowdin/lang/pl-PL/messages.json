@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&aPomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...",
     "wrong-args": "&cNieprawidłowy argument. Użyj &l/qs help &caby zobaczyć listę poleceń.",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aPomoc Sklepu",
       "unlimited": "&eDaje sklepowi nieograniczone zapasy.",
       "setowner": "&eZmienia właściciela sklepu.",

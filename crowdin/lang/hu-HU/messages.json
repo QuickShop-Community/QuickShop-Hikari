@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&aSikeresen átváltottál gyártás módba. Gyorsbolt újratöltése...",
     "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aGyorsbolt segítség",
       "unlimited": "&eA bolt korlátlanná tétele",
       "setowner": "&eMegváltoztatja a bolt tulajdonosát",

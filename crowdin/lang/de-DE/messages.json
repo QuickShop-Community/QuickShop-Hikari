@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&aEntwicklermodus erfolgreich deaktiviert. Lade QuickShop neu...",
     "wrong-args": "&cUngültiges Argument. Verwende &l/qs help &cum eine Liste aller Befehle zu sehen.",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aQuickShop Hilfe",
       "unlimited": "&eGibt einen Shop einen unbegrenzten Vorrat.",
       "setowner": "&eÄndert den Besitzer eines Shops.",

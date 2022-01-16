@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&aFramgångsrikt inaktiverat utvecklarläge. Laddar om QuickShop...",
     "wrong-args": "&cOgiltiga argument. Använd &l/qs help &rför att se en lista över kommandon.",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aQuickShop-hjälp",
       "unlimited": "&eGer en butik obegränsat lager.",
       "setowner": "&eÄndrar ägare av en butik.",

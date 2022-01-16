@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&a개발자 모드 비활성화 완료. Quickshop 리로드 중...",
     "wrong-args": "&c명령어가 올바르지 않습니다. &l/qs help &r를 사용하여 명령어 목록을 확인해주세요.",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aQuickshop 도움말",
       "unlimited": "&a상점의 개수제한을 무제한으로 설정합니다.",
       "setowner": "&e상점의 주인을 설정합니다.",

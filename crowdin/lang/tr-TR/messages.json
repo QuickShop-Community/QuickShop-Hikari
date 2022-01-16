@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&aGeliştirici modu başarıyla devre dışı bırakıldı. QuickShop yeniden yükleniyor...",
     "wrong-args": "&cGeçersiz argüman. Komutların listesini görüntülemek için &l/qs help &ckomudunu kullan.",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aQuickShop yardım",
       "unlimited": "&eBir markete sınırsız stok sağlar.",
       "setowner": "&eBir marketin sahibini değiştirir.",

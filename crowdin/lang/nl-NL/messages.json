@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&aOntwikkelaarsmodus uitgeschakeld. QuickShop herladen...",
     "wrong-args": "&cOngeldige argumenten. Gebruik &l/qs help &cvoor een lijst met commando's.",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aQuickShop help",
       "unlimited": "&eGeeft een winkel onbeperkt voorraad.",
       "setowner": "Verandert de eigendom van een winkel.",

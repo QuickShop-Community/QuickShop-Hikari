@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&a成功關閉開發者模式，插件重新載入中……",
     "wrong-args": "&c無效的參數，使用 &l/qs help &c查看指令列表。",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aQuickShop 說明",
       "unlimited": "&e將商店設為無限庫存。",
       "setowner": "&e為商店設置新的店主。",

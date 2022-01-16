@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&a開発者モードを無効化しました。QuickShopをリロードしています。",
     "wrong-args": "&c無効な引数です。コマンドを&l/qs help &rで確認して下さい。",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aQuickShop ヘルプ",
       "unlimited": "&eショップに無制限の在庫を与えます",
       "setowner": "&eショップの所有権を変更します",

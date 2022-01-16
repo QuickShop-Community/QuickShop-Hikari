@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&aModalità sviluppatore disabilitata con successo. Ricaricando QuickShop...",
     "wrong-args": "&cArgomento non valido. Usa &l/qs help &cper vedere un elenco di comandi.",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aAiuto di QuickShop",
       "unlimited": "&eDà a un negozio scorte illimitate.",
       "setowner": "&eCambia la proprietà di un negozio.",

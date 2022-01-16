@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&7Úspěšně zakázán vývojářský režim. Reloaduji QuickShop...",
     "wrong-args": "&cNeplatné argumenty. Použij &l/qs help &cpro zobrazení seznamu příkazů.",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&bNápověda pro QuickShop",
       "unlimited": "&fDá obchodu neomezený sklad.",
       "setowner": "&fZmění vlastnictví obchodu.",

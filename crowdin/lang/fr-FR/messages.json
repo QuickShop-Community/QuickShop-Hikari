@@ -149,6 +149,7 @@
     "now-nolonger-debuging": "&aPassage réussi en mode développeur. Actualisation de QuickShop...",
     "wrong-args": "&cCommande invalide. Utilisez &l/qs help &cpour voir une liste de commandes.",
     "description": {
+      "alwayscounting": "&eSet the shop alwayscounting status",
       "title": "&aAide QuickShop",
       "unlimited": "&eDonne à une boutique un stock illimité.",
       "setowner": "&eModifie le propriétaire d'une boutique.",
