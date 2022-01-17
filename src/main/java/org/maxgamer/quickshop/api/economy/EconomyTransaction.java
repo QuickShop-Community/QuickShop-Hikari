@@ -176,19 +176,19 @@ public class EconomyTransaction {
         }
         steps = TransactionSteps.WITHDRAW;
         if (from != null && !core.withdraw(from, amount, world, currency)) {
-            this.lastError = "Failed to withdraw " + amount + " from player " + from + " account: " + core.getLastError();
+            this.lastError = "Failed to withdraw " + amount + " from player " + from + " account. LastError: " + core.getLastError();
             callback.onFailed(this);
             return false;
         }
         steps = TransactionSteps.DEPOSIT;
         if (to != null && !core.deposit(to, actualAmount, world, currency)) {
-            this.lastError = "Failed to deposit " + actualAmount + " to player " + to + " account: " + core.getLastError();
+            this.lastError = "Failed to deposit " + actualAmount + " to player " + to + " account. LastError: " + core.getLastError();
             callback.onFailed(this);
             return false;
         }
         steps = TransactionSteps.TAX;
         if (tax > 0 && taxer != null && !core.deposit(taxer, tax, world, currency)) {
-            this.lastError = "Failed to deposit tax account: " + tax + " error:" + core.getLastError();
+            this.lastError = "Failed to deposit tax account: " + tax + ". LastError: " + core.getLastError();
             callback.onTaxFailed(this);
             //Tax never should failed.
         }
