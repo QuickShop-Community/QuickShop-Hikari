@@ -70,7 +70,7 @@ public class PermissionChecker implements Reloadable {
     private void init() {
         usePermissionChecker = this.plugin.getConfig().getBoolean("shop.protection-checking");
         List<String> listenerBlacklist = plugin.getConfig().getStringList("shop.protection-checking-blacklist");
-        listenerBlacklist.removeIf(rule -> rule.equals("ignored_listener")); // Remove default demo rule
+        listenerBlacklist.removeIf(rule -> rule.equalsIgnoreCase("ignored_listener")); // Remove default demo rule
         if(listenerBlacklist.isEmpty()){
             this.eventManager = new BukkitEventManager();
         }else{
