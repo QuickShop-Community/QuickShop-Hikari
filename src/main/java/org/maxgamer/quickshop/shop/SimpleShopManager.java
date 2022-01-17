@@ -744,8 +744,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
 
 
-
-
         shop.buy(buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
         sendSellSuccess(buyer, shop, amount);
         ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, taxModifier);
@@ -815,8 +813,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             Result result = plugin.getPermissionChecker().canBuild(p, info.getLocation());
             if (!result.isSuccess()) {
                 plugin.text().of(p, "3rd-plugin-build-check-failed", result.getMessage()).send();
-                if(p.hasPermission("quickshop.alert")){
-                    plugin.text().of(p,"3rd-plugin-build-check-failed-admin",result.getMessage(),result.getListener()).send();
+                if (p.hasPermission("quickshop.alert")) {
+                    plugin.text().of(p, "3rd-plugin-build-check-failed-admin", result.getMessage(), result.getListener()).send();
                 }
                 Util.debugLog("Failed to create shop because protection check failed, found:" + result.getMessage());
                 return;
