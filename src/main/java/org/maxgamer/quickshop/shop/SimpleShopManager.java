@@ -816,7 +816,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (!result.isSuccess()) {
                 plugin.text().of(p, "3rd-plugin-build-check-failed", result.getMessage()).send();
                 if(p.hasPermission("quickshop.alert")){
-                    plugin.text().of(p,"3rd-plugin-build-check-failed-admin",result.getMessage(),result.getListener());
+                    plugin.text().of(p,"3rd-plugin-build-check-failed-admin",result.getMessage(),result.getListener()).send();
                 }
                 Util.debugLog("Failed to create shop because protection check failed, found:" + result.getMessage());
                 return;
