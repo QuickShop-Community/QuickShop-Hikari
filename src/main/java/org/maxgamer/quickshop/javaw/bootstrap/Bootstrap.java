@@ -17,7 +17,7 @@
  *
  */
 
-package org.maxgamer.quickshop.integration.residence.bootstrap;
+package org.maxgamer.quickshop.javaw.bootstrap;
 
 import javax.swing.*;
 
