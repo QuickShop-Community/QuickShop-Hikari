@@ -217,6 +217,11 @@ public class Economy_TNE extends AbstractEconomy {
         return true;
     }
 
+    @Override
+    public @Nullable String getLastError() {
+        return "Cannot provide: TNE not supports enhanced error tracing.";
+    }
+
     /**
      * Checks that this economy is valid. Returns false if it is not valid.
      *

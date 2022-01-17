@@ -133,6 +133,13 @@ public interface EconomyCore {
      */
     boolean supportCurrency();
 
+    /**
+     * Gets the economy processor last error message
+     * @return Error message or null if never happens
+     */
+    @Nullable
+    String getLastError();
+
 
     /**
      * Checks that this economy is valid. Returns false if it is not valid.

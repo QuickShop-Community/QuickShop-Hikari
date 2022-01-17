@@ -23,6 +23,7 @@ package org.maxgamer.quickshop.economy;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -56,6 +57,8 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
     @Setter
     @Nullable
     private net.milkbowl.vault.economy.Economy vault;
+    @Nullable
+    private String lastError = null;
 
 
     public Economy_Vault(@NotNull QuickShop plugin) {
@@ -139,7 +142,12 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
             return false;
         }
         try {
-            return Objects.requireNonNull(this.vault).depositPlayer(trader, amount).transactionSuccess();
+            EconomyResponse response = Objects.requireNonNull(this.vault).depositPlayer(trader, amount);
+            if(response.transactionSuccess())
+                return true;
+            this.lastError = response.errorMessage;
+            Util.debugLog("Deposit player "+trader.getUniqueId()+" failed, Vault response: "+response.errorMessage);
+            return false;
         } catch (Exception t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             if (trader.getName() == null) {
@@ -220,7 +228,12 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
             if ((!allowLoan) && (getBalance(trader, world, currency) < amount)) {
                 return false;
             }
-            return Objects.requireNonNull(this.vault).withdrawPlayer(trader, amount).transactionSuccess();
+            EconomyResponse response = Objects.requireNonNull(this.vault).withdrawPlayer(trader, amount);
+            if(response.transactionSuccess())
+                return true;
+            this.lastError = response.errorMessage;
+            Util.debugLog("Withdraw player "+trader.getUniqueId()+" failed, Vault response: "+response.errorMessage);
+            return false;
         } catch (Exception t) {
             plugin.getSentryErrorReporter().ignoreThrow();
             if (trader.getName() == null) {
@@ -251,6 +264,11 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
     @Override
     public boolean supportCurrency() {
         return false;
+    }
+
+    @Override
+    public @Nullable String getLastError() {
+        return this.lastError;
     }
 
     @Override

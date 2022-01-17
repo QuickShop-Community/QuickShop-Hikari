@@ -227,6 +227,11 @@ public class Economy_Reserve extends AbstractEconomy {
         return true;
     }
 
+    @Override
+    public @Nullable String getLastError() {
+        return "Cannot provide: Reserve api doesn't support enhanced error tracing.";
+    }
+
     /**
      * Checks that this economy is valid. Returns false if it is not valid.
      *
