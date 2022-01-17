@@ -45,6 +45,9 @@ import org.maxgamer.quickshop.util.reload.ReloadStatus;
 import org.maxgamer.quickshop.util.reload.Reloadable;
 import org.primesoft.blockshub.BlocksHubBukkit;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A helper to resolve issue around other plugins with BlockBreakEvent
  *
@@ -57,6 +60,7 @@ public class PermissionChecker implements Reloadable {
 
     private QuickEventManager eventManager;
 
+
     public PermissionChecker(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
@@ -65,10 +69,13 @@ public class PermissionChecker implements Reloadable {
 
     private void init() {
         usePermissionChecker = this.plugin.getConfig().getBoolean("shop.protection-checking");
-        if (plugin.getConfig().getInt("shop.protection-checking-handler") == 1) {
-            this.eventManager = new QSEventManager(plugin);
-        } else {
+        List<String> listenerBlacklist = plugin.getConfig().getStringList("shop.protection-checking-blacklist");
+        listenerBlacklist.removeIf(rule -> rule.equals("ignored_listener")); // Remove default demo rule
+        if(listenerBlacklist.isEmpty()){
             this.eventManager = new BukkitEventManager();
+        }else{
+            this.eventManager = new QSEventManager(plugin);
+            plugin.getLogger().info("Loaded "+ listenerBlacklist.size()+" rules for listener blacklist.");
         }
         plugin.getLogger().info("EventManager selected: " + this.eventManager.getClass().getSimpleName());
     }

@@ -2073,6 +2073,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfig().set("purge.backup", true);
             getConfig().set("config-version", ++selectedVersion);
         }
+        if (selectedVersion == 151){
+            getConfig().set("shop.protection-checking-handler",null);
+            getConfig().set("config-version", ++selectedVersion);
+
+        }
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(ReflectFactory.getServerVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }

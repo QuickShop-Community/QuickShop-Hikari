@@ -34,18 +34,28 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.eventmanager.QuickEventManager;
 import org.maxgamer.quickshop.util.Util;
+import org.maxgamer.quickshop.util.reload.ReloadResult;
+import org.maxgamer.quickshop.util.reload.ReloadStatus;
+import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-public class QSEventManager implements QuickEventManager, Listener {
+public class QSEventManager implements QuickEventManager, Listener, Reloadable {
     private final QuickShop plugin;
     private final List<ListenerContainer> ignoredListener = new ArrayList<>();
 
     public QSEventManager(QuickShop plugin) {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        this.rescan();
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        rescan();
+        return new ReloadResult(ReloadStatus.SUCCESS,null,null);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

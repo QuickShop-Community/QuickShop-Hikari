@@ -1,7 +1,7 @@
 # QuickShop-Reremake Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 151
+config-version: 152
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -379,11 +379,6 @@ shop:
   #The list of worlds in which protection checking is disabled.
   protection-checking-blacklist:
     - disabled_world
-
-  #Choose which handler QS should use for protection checking.
-  #0=Bukkit defaults
-  #1=QuickShop (May have compatibility issues but allows you to use protection-checking-listener-blacklist)
-  protection-checking-handler: 0
 
   #The listener list to skip when protection-checking.
   #Requires "protection-checking-handler" set to 1.
