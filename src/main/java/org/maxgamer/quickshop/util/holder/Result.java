@@ -46,12 +46,20 @@ public class Result {
         @Override
         public void setResult(boolean result) {
         }
+
+        @Override
+        public String getListener() {
+            return "";
+        }
     };
     @Setter
     private boolean result = false;
     @Setter
     @Getter
     private String message;
+    @Getter
+    @Setter
+    private String listener;
 
 
     public Result() {
