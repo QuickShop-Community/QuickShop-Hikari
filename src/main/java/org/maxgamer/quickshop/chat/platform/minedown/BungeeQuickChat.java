@@ -188,7 +188,7 @@ public class BungeeQuickChat implements QuickChat {
             }
             BaseComponent[] result = builder.create();
             //The limit in vanilla server is 32767
-            if (ComponentSerializer.toString(result).getBytes(StandardCharsets.UTF_8).length > 32767) {
+            if (ComponentSerializer.toString(result).getBytes(StandardCharsets.UTF_8).length > 32767 - 300) {
                 return new QuickComponentImpl(plugin.text().of(player, "menu.item-holochat-data-too-large").forLocale());
             } else {
                 return new QuickComponentImpl(result);
