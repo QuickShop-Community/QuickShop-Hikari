@@ -153,10 +153,6 @@ public class BungeeQuickChat implements QuickChat {
 
     @Override
     public @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String message) {
-        return getItemHologramChat(shop, itemStack, player, message, false);
-    }
-
-    private @NotNull QuickComponent getItemHologramChat(@NotNull Shop shop, @NotNull ItemStack itemStack, @NotNull Player player, @NotNull String message, boolean isPlainItemStack) {
         TextComponent errorComponent = new TextComponent(plugin.text().of(player, "menu.item-holochat-error").forLocale());
         try {
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
@@ -193,10 +189,7 @@ public class BungeeQuickChat implements QuickChat {
             BaseComponent[] result = builder.create();
             //The limit in vanilla server is 32767
             if (ComponentSerializer.toString(result).getBytes(StandardCharsets.UTF_8).length > 32767) {
-                if (isPlainItemStack) {
-                    return new QuickComponentImpl(plugin.text().of(player, "menu.item-holochat-data-too-large").forLocale());
-                } else
-                    return getItemHologramChat(shop, itemStack, player, message, true);
+                return new QuickComponentImpl(plugin.text().of(player, "menu.item-holochat-data-too-large").forLocale());
             } else {
                 return new QuickComponentImpl(result);
             }
