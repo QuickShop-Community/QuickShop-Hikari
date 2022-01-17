@@ -360,6 +360,11 @@ public class EconomyTransactionTest {
         }
 
         @Override
+        public @Nullable String getLastError() {
+            return "ErrorTracing: Unit Test";
+        }
+
+        @Override
         public boolean isValid() {
             return true;
         }
