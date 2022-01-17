@@ -149,7 +149,7 @@ public class BungeeQuickChat implements QuickChat {
                 if (isPlainItemStack) {
                     plugin.text().of(player, "menu.item-holochat-data-too-large").send();
                 } else {
-                    sendItemHologramChat(player, text, getPlainItemStack(itemStack, player.getLocale()));
+                    sendItemHologramChat(player, text, getPlainItemStack(itemStack, player.getLocale()), true);
                 }
             } else {
                 player.spigot().sendMessage(result);
