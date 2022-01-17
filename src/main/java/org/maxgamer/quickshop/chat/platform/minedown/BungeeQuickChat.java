@@ -112,11 +112,6 @@ public class BungeeQuickChat implements QuickChat {
 
     @Override
     public void sendItemHologramChat(@NotNull Player player, @NotNull String text, @NotNull ItemStack itemStack) {
-        sendItemHologramChat(player, text, itemStack, false);
-    }
-
-
-    private void sendItemHologramChat(@NotNull Player player, @NotNull String text, @NotNull ItemStack itemStack, boolean isPlainItemStack) {
         TextComponent errorComponent = new TextComponent(plugin.text().of(player, "menu.item-holochat-error").forLocale());
         try {
             String json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
@@ -146,11 +141,7 @@ public class BungeeQuickChat implements QuickChat {
             Util.debugLog("Sending debug: " + resultStr);
             //The limit in vanilla server is 32767
             if (resultStr.getBytes(StandardCharsets.UTF_8).length > 32767) {
-                if (isPlainItemStack) {
-                    plugin.text().of(player, "menu.item-holochat-data-too-large").send();
-                } else {
-                    sendItemHologramChat(player, text, getPlainItemStack(itemStack, player.getLocale()));
-                }
+                plugin.text().of(player, "menu.item-holochat-data-too-large").send();
             } else {
                 player.spigot().sendMessage(result);
             }
@@ -205,7 +196,7 @@ public class BungeeQuickChat implements QuickChat {
                 if (isPlainItemStack) {
                     return new QuickComponentImpl(plugin.text().of(player, "menu.item-holochat-data-too-large").forLocale());
                 } else
-                    return getItemHologramChat(shop, getPlainItemStack(itemStack, player.getLocale()), player, message, true);
+                    return getItemHologramChat(shop, itemStack, player, message, true);
             } else {
                 return new QuickComponentImpl(result);
             }
@@ -213,32 +204,6 @@ public class BungeeQuickChat implements QuickChat {
             plugin.getLogger().log(Level.WARNING, "Failed to process chat component", t);
             return new QuickComponentImpl(errorComponent);
         }
-    }
-
-    private ItemStack getPlainItemStack(@NotNull ItemStack itemStack, @Nullable String locale) {
-        if (locale == null) {
-            locale = MsgUtil.getDefaultGameLanguageCode();
-        }
-        ItemStack plainItemStack = new ItemStack(itemStack.getType());
-        plainItemStack.setAmount(itemStack.getAmount());
-        ItemMeta fromMeta = itemStack.getItemMeta();
-        ItemMeta targetMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());
-        if (fromMeta != null && targetMeta != null) {
-            try {
-                if (fromMeta.hasDisplayName()) {
-                    targetMeta.setDisplayName(fromMeta.getDisplayName());
-                }
-                //It may result in StackOverflowError when hitting LARGE display name using components
-            } catch (StackOverflowError error) {
-                targetMeta.setDisplayName(plugin.text().of("menu.item-holochat-data-too-large").forLocale(locale));
-            }
-            targetMeta.addItemFlags(fromMeta.getItemFlags().toArray(new ItemFlag[]{}));
-        }
-        if (targetMeta != null) {
-            targetMeta.setLore(Collections.singletonList(plugin.text().of("menu.item-holochat-data-too-large").forLocale(locale)));
-        }
-        plainItemStack.setItemMeta(targetMeta);
-        return plainItemStack;
     }
 
     public static class BungeeComponentBuilder {
