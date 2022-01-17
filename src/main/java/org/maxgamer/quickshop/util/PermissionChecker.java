@@ -158,6 +158,7 @@ public class PermissionChecker implements Reloadable {
                             if (listener.getListener().getClass().getName().equals(element.getClassName())) {
                                 isCanBuild.setResult(false);
                                 isCanBuild.setMessage(listener.getPlugin().getName());
+                                isCanBuild.setListener(listener.getListener().getClass().toString());
                                 break out;
                             }
                         }
