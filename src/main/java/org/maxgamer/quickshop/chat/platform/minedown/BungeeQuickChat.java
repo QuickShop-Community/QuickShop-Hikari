@@ -140,7 +140,7 @@ public class BungeeQuickChat implements QuickChat {
             String resultStr = ComponentSerializer.toString(result);
             Util.debugLog("Sending debug: " + resultStr);
             //The limit in vanilla server is 32767
-            if (resultStr.getBytes(StandardCharsets.UTF_8).length > 32767) {
+            if (resultStr.getBytes(StandardCharsets.UTF_8).length > 32767 - 300) {
                 plugin.text().of(player, "menu.item-holochat-data-too-large").send();
             } else {
                 player.spigot().sendMessage(result);
