@@ -13,6 +13,7 @@
   "integrations-check-failed-create": "통합 {0} 이(가) 상점 생성을 거부(취소)시켰습니다.",
   "integrations-check-failed-trade": "통합 {0} 이(가) 상점 거래를 거부(취소)시켰습니다.",
   "3rd-plugin-build-check-failed": "&c플러그인 &l{0}&r&c가 권한 검사를 거부하였습니다., 권한 설정을 하셨나요?",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&c크리에이티브 모드 상태론 다른 플레이어의 상점을 파괴할 수 없습니다, 서바이벌 모드로 전환하거나 슈퍼툴 {0} 을(를) 사용해주세요.",
   "trading-in-creative-mode-is-disabled": "&c크리에이티브 모드 상태에서는 상점에서 거래할 수 없습니다.",
   "supertool-is-disabled": "&c슈퍼툴이 비활성화 되어있습니다. 어느 상점도 부술 수 없습니다.",
@@ -149,7 +150,7 @@
     "now-nolonger-debuging": "&a개발자 모드 비활성화 완료. Quickshop 리로드 중...",
     "wrong-args": "&c명령어가 올바르지 않습니다. &l/qs help &r를 사용하여 명령어 목록을 확인해주세요.",
     "description": {
-      "alwayscounting": "&eSet the shop alwayscounting status",
+      "alwayscounting": "&eSet if shop always counting container even is unlimited",
       "title": "&aQuickshop 도움말",
       "unlimited": "&a상점의 개수제한을 무제한으로 설정합니다.",
       "setowner": "&e상점의 주인을 설정합니다.",

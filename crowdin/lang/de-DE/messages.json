@@ -13,6 +13,7 @@
   "integrations-check-failed-create": "&cIntegrierung {0} hat die Shop-Erstellung verweigert",
   "integrations-check-failed-trade": "&cIntegrierung {0} hat das Shop-handeln verweigert",
   "3rd-plugin-build-check-failed": "&cDas Drittanbieter Plugin &l{0}&r&c hat die Berechtigungsprüfung abgelehnt, hast du die richtigen Rechte eingerichtet?",
+  "3rd-plugin-build-check-failed-admin": "&7(Nur für Admins) &{0} &8hat die Berechtigungsprüfungen verweigert. Falls dies nicht beabsichtigt ist, sollte &{1} &8zu der Listener Blacklist hinzugefügt werden. &7Konfigurationsguide (Englisch): https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cDu kannst Shops anderere Spieler nicht im Kreativmodus zerstören. Wechsle zum Überlebensmodus oder verwende das Supertool {0}.",
   "trading-in-creative-mode-is-disabled": "&cDu kannst mit dem Shop nicht handeln während du im Kreativmodus bist.",
   "supertool-is-disabled": "&cSupertool ist deaktiviert. Kann keine Shops zersören.",
@@ -96,7 +97,7 @@
     "owner": "&aBesitzer: {0}",
     "item": "&aGegenstand: &e{0}",
     "item-holochat-error": "&c[Fehler]",
-    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
+    "item-holochat-data-too-large": "&c[Error] Item NBT ist zu gross zum Anzeigen",
     "preview": "&b[Itemvorschau]",
     "space": "&aKapazität: &e{0}",
     "stock": "&aLagerbestand: &e{0}",
@@ -149,7 +150,7 @@
     "now-nolonger-debuging": "&aEntwicklermodus erfolgreich deaktiviert. Lade QuickShop neu...",
     "wrong-args": "&cUngültiges Argument. Verwende &l/qs help &cum eine Liste aller Befehle zu sehen.",
     "description": {
-      "alwayscounting": "&eSet the shop alwayscounting status",
+      "alwayscounting": "&eÄndere, ob der Schop immer Container zählen soll, selbst wenn unlimitiert",
       "title": "&aQuickShop Hilfe",
       "unlimited": "&eGibt einen Shop einen unbegrenzten Vorrat.",
       "setowner": "&eÄndert den Besitzer eines Shops.",
@@ -280,7 +281,7 @@
       "Was denkst du? {0} wurde veröffentlicht! Aktualisiere!",
       "Doktor, QuickShop hat ein neues Update {0}! Du solltest aktualisieren~",
       "Ko~ko~da~yo~ QuickShop hat ein neues Update {0} ~",
-      "Paimon want told you the QuickShop have new update {0}!"
+      "Paimont möchte dir sagen, dass QuickShop ein neues Update {0} hat!"
     ],
     "remote-disable-warning": "&cDiese Version von QuickShop wurde vom Remote Server als deaktiviert markiert, was bedeutet, dass diese Version eventuell schwere Probleme hat. Erhalte Details von unserer Spigot Seite: {0}. Diese Warnung wird so lange erscheinen, bis du zu einer stabilen Version wechselst, wird die Server-Performance aber nicht beeinflussen.",
     "label": {
@@ -358,6 +359,6 @@
   "shop-purged-start": "&aShop-Löschung gestartet. Überprüfe die Konsole für details.",
   "purchase-out-of-stock": "&cDieser Shop hat keine Items mehr. Kontaktiere den Shopeigentümer oder Shop-Mitarbeiter um den Bestand wieder aufzufüllen.",
   "purchase-out-of-space": "&cDieser Shop hat keinen Platz mehr. Kontaktiere den Shopeigentümer oder Shop-Mitarbeiter damit er geleert wird.",
-  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
+  "safe-mode": "&cQuickShop ist nun im sicheren Modus, du kannst diesen Shop-Container nicht öffnen. Bitte kontaktiere den Server Administrator um diesen Fehler zu beheben.",
+  "safe-mode-admin": "&c&lWARNUNG: &cQuickShop ist nun im sicheren Modus auf diesem Server und keiner seiner funktionen wird funktionieren. Bitte schreib den &e/qs &cBefehl um nach Fehlern zu schauen."
 }

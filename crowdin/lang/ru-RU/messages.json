@@ -13,6 +13,7 @@
   "integrations-check-failed-create": "&cИнтеграция {0} отказалась от создание магазина",
   "integrations-check-failed-trade": "&cИнтеграция {0} отказалась от обменников в магазине",
   "3rd-plugin-build-check-failed": "&cСторонний плагин &l{0}&r&c отказался в проверке прав доступа, у вас ли здесь есть права установки?",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cВы не можете сломать чужой магазин в творческом режиме, переключитесь на режим выживания или попробуйте использовать супер-инструментом {0}.",
   "trading-in-creative-mode-is-disabled": "&cВы не можете торговать в творческом режиме.",
   "supertool-is-disabled": "&cСупер-инструмент отключен, вы не можете сломать чужой магазин.",
@@ -149,7 +150,7 @@
     "now-nolonger-debuging": "&aУспешно выключен режим разработчика. Перезагружаю...",
     "wrong-args": "&cНеверный аргумент. Используйте &l/qs help &cчтобы узнать список командов.",
     "description": {
-      "alwayscounting": "&eSet the shop alwayscounting status",
+      "alwayscounting": "&eSet if shop always counting container even is unlimited",
       "title": "&aQuickShop справка",
       "unlimited": "&eДает магазину неограниченный товар.",
       "setowner": "&eУстанавливает владельца магазина.",

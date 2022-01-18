@@ -13,6 +13,7 @@
   "integrations-check-failed-create": "&cIntegration {0} nekade butiksskapande",
   "integrations-check-failed-trade": "&cIntegration {0} nekade butiksbytet",
   "3rd-plugin-build-check-failed": "&c3:e parts plugin &l{0}&r&c nekade behörighetskontroller, har du konfigurerat behörigheter där?",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8nekade behörighetskontrollerna, Om detta inte är förväntat, försök lägga till &d{1} &7till svartlistan med lyssnare. &7Konfigurationsguide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cDu kan inte förstöra andra spelarbutiker i kreativt läge, byt till överlevnadsläge eller försök använda superverktyget {0} istället.",
   "trading-in-creative-mode-is-disabled": "&cDu kan inte handla med den här butiken när du är i kreativt läge.",
   "supertool-is-disabled": "&cSuperredskapet är inaktiverat. Du kan inte förstöra någon butik.",
@@ -149,7 +150,7 @@
     "now-nolonger-debuging": "&aFramgångsrikt inaktiverat utvecklarläge. Laddar om QuickShop...",
     "wrong-args": "&cOgiltiga argument. Använd &l/qs help &rför att se en lista över kommandon.",
     "description": {
-      "alwayscounting": "&eSet the shop alwayscounting status",
+      "alwayscounting": "&aAnge om butiken alltid räknar behållarens kapacitet även om den är obegränsad",
       "title": "&aQuickShop-hjälp",
       "unlimited": "&eGer en butik obegränsat lager.",
       "setowner": "&eÄndrar ägare av en butik.",

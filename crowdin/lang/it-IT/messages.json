@@ -13,6 +13,7 @@
   "integrations-check-failed-create": "&cL'integrazione {0} ha negato la creazione del negozio",
   "integrations-check-failed-trade": "&cL'ntegrazione {0} ha negato lo scambio del negozio",
   "3rd-plugin-build-check-failed": "&cIl plugin di terze parti &l{0}&r&c ha negato i controlli dei permessi, hai già i permessi impostati?",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cNon puoi rompere i negozi degli altri giocatori in modalità creativa, passa alla modalità Sopravvivenza o prova ad usare il supertool {0}.",
   "trading-in-creative-mode-is-disabled": "&cNon puoi scambiare con questo negozio mentre sei in modalità creativa.",
   "supertool-is-disabled": "&cSupertool è disabilitato. Impossibile rompere alcun negozio.",
@@ -149,7 +150,7 @@
     "now-nolonger-debuging": "&aModalità sviluppatore disabilitata con successo. Ricaricando QuickShop...",
     "wrong-args": "&cArgomento non valido. Usa &l/qs help &cper vedere un elenco di comandi.",
     "description": {
-      "alwayscounting": "&eSet the shop alwayscounting status",
+      "alwayscounting": "&eSet if shop always counting container even is unlimited",
       "title": "&aAiuto di QuickShop",
       "unlimited": "&eDà a un negozio scorte illimitate.",
       "setowner": "&eCambia la proprietà di un negozio.",

@@ -6,13 +6,14 @@
   "translation-contributors": "Contribuidores: Randall_Rut, Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken y Andre_601",
   "translation-country": "&c&lZona de idioma: &b&lEspañol (es_ES)",
   "language-version": "63",
-  "not-looking-at-valid-shop-block": "&cCould not find a block for creating shop. You need to look at one.",
+  "not-looking-at-valid-shop-block": "&cNo se pudo encontrar un bloque para crear una tienda. Tienes que mirar uno.",
   "not-looking-at-shop": "&cNo se pudo encontrar ninguna tienda. Tienes que mirar hacia una.",
   "no-anythings-in-your-hand": "&cNo hay nada en tu mano.",
   "no-permission": "&cNo tienes permiso para hacer eso.",
   "integrations-check-failed-create": "La integración {0} impide la creación de la tienda",
   "integrations-check-failed-trade": "La integración {0} impide la creación de la tienda",
   "3rd-plugin-build-check-failed": "&cEl complemento de terceros: &l{0}&r&c ha denegado la comprobación de permisos, ¿has ajustado los permisos?",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cNo puedes romper las tiendas de otros jugadores en modo Creativo. Cambia a modo Supervivencia o intenta usar superherramienta {0} en su lugar.",
   "trading-in-creative-mode-is-disabled": "&cNo puedes comerciar con esta tienda mientras estás en modo creativo.",
   "supertool-is-disabled": "&cSuperherramienta deshabilitada. No se puede romper ninguna tienda.",
@@ -96,7 +97,7 @@
     "owner": "&aPropietario: {0}",
     "item": "&aArticulo: &e{0}",
     "item-holochat-error": "&c[Error]",
-    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
+    "item-holochat-data-too-large": "&c[Error] El elemento NBT es demasiado grande para mostrarlo",
     "preview": "&b[Vista previa del artículo]",
     "space": "&aEspacio: &e{0}",
     "stock": "&aExistencias &e{0}",
@@ -111,8 +112,8 @@
   },
   "bypassing-lock": "&c¡Omitiendo el bloqueo de una QuickShop!",
   "that-is-locked": "&cEsta tienda está bloqueada.",
-  "how-many-buy": "&aEnter in chat, how many you wish to &bBUY&a. You can buy &e{0}&a. Enter &b{1}&a to buy them all.",
-  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You can sell &e{0}&a. Enter &b{1}&a in chat, to sell all.",
+  "how-many-buy": "&aIngrese en el chat, cuantos desea &bCOMPRAR&a. Puede comprar &e{0}&a. Introduce &b{1}&a para comprarlos todos.",
+  "how-many-sell": "&aIngrese en el chat, cuánto desea &dVENDER&a. Puede vender &e{0}&a. Introduce &b{1}&a en el chat para vender todo.",
   "not-allowed-to-create": "&cNo puedes crear una tienda aquí.",
   "blacklisted-item": "&cNo puedes vender esto porque está en la lista negra",
   "how-much-to-trade-for": "&aIngresa en el chat, por cuánto deseas intercambiar &e{1}x {0}&a.",
@@ -124,8 +125,8 @@
       "limited": "&aLa tienda ahora es limitada."
     },
     "toggle-always-counting": {
-      "counting": "&aShop is now always counting container even is unlimited",
-      "not-counting": "&aShop is now respect if shop is unlimited"
+      "counting": "&aShop ahora siempre cuenta contenedores, incluso es ilimitado",
+      "not-counting": "&aShop ahora es respeto si la tienda es ilimitada"
     },
     "transfer-success": "&aTransferido &e{0} &ashop(s) a &e{1}",
     "transfer-success-other": "&aTransferidas &e{0} {1}&a tienda(s) a &e{2}",
@@ -149,7 +150,7 @@
     "now-nolonger-debuging": "&aModo desarrollador deshabilitado. Recargando QuickShop...",
     "wrong-args": "&cArgumento no válido. Usa la ayuda &l/qs &cpara ver una lista de comandos.",
     "description": {
-      "alwayscounting": "&eSet the shop alwayscounting status",
+      "alwayscounting": "&eEstablecer si la tienda siempre cuenta el contenedor incluso es ilimitado",
       "title": "&aAyuda de QuickShop",
       "unlimited": "&eDa un stock ilimitado a una tienda.",
       "setowner": "&eCambia al propietario de la tienda.",
@@ -209,8 +210,8 @@
     "freeze": "Comercio desactivado"
   },
   "controlpanel": {
-    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
-    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
+    "alwayscounting": "&aSiempre contando: {0} &e[&d&lChange&e]",
+    "alwayscounting-hover": "&eHaga clic para alternar si la tienda siempre está contando contenedores.",
     "setowner": "&aPropietario: &b{0} &e[&d&lCambiar&e]",
     "infomation": "&aPanel de Control de la tienda:",
     "setowner-hover": "&eClick para cambiar el dueño.",
@@ -280,7 +281,7 @@
       "¿Qué piensas? ¡{0} ha sido lanzada! ¡Actualiza!",
       "¡Doctor, QuickShop tiene una nueva actualización {0}! Debería actualizar~",
       "Ko~ko~da~yo~ QuickShop tiene una nueva actualización {0} ~",
-      "Paimon want told you the QuickShop have new update {0}!"
+      "¡Paimon quiere decirte que QuickShop tiene una nueva actualización {0}!"
     ],
     "remote-disable-warning": "&cEsta versión de QuickShop ha sido marcada como deshabilitada por el servidor remoto. Esto significa que esta versión puede tener serios problemas. Más detalles en nuestra página de SpigotMC: {0}. Este aviso aparecerá y te advertirá en tu consola hasta que cambies a una versión aceptada. Sin embargo, esto no tiene por qué afectar al rendimiento de tu servidor.",
     "label": {
@@ -316,8 +317,8 @@
   "shop-cannot-trade-when-freezing": "&cNo puedes comerciar con esta tienda porque se encuentra congelada.",
   "shop-freezed-at-location": "&eTú tienda {0} en {1} se ha congelado!",
   "denied-put-in-item": "&c¡No puedes poner este ítem en tu tienda!",
-  "how-many-buy-stack": "&eEnter in chat, how many bulks you wish to &bBUY&a. There are &e{0}&a items in each bulk and you can buy &e{1}&a bulks. Enter &b{2}&a in chat to buy all.",
-  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you can sell &e{1}&a bulks. Enter &b{2}&a in chat to sell all.",
+  "how-many-buy-stack": "&eIngrese en el chat, cuantos bultos desea &bCOMPRAR&a. Hay elementos &e{0}&a en cada lote y puede comprar &e{1}&a lote. Ingresa &b{2}&a en el chat para comprar todo.",
+  "how-many-sell-stack": "&aIngrese en el chat, cuántos lotes desea &dVENDER&a. Hay artículos &e{0}&a por volumen y puede vender &e{1}&a por volumen. Introduce &b{2}&a en el chat para vender todo.",
   "language": {
     "name": "&eNombre: &6{0}",
     "code": "&eCódigo: &6{0}",
@@ -358,6 +359,6 @@
   "shop-purged-start": "&aLa purga de la tienda ha comenzado, revisa la consola para más detalles.",
   "purchase-out-of-stock": "&cEsta tienda se quedó sin stock, Contacte con el propietario o personal de la tienda para rellenar el stock.",
   "purchase-out-of-space": "&cEsta tienda se quedó sin espacio, Contacte con el propietario o personal de la tienda para vaciar la tienda.",
-  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
+  "safe-mode": "&cQuickShop ahora en modo seguro, no puede abrir este contenedor de la tienda, comuníquese con el administrador del servidor para corregir los errores.",
+  "safe-mode-admin": "&c&lADVERTENCIA: &cEl QuickShop en este servidor ahora se ejecuta en modo seguro, no funcionará ninguna característica, escriba el comando &e/qs &c para verificar cualquier error."
 }

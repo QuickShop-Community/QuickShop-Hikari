@@ -13,6 +13,7 @@
   "integrations-check-failed-create": "&cIntegration {0} denied the shop-creation",
   "integrations-check-failed-trade": "&cIntegration {0} denied the Shop trading",
   "3rd-plugin-build-check-failed": "&c3rd party plugin &l{0}&r&c denied the permission checks, did you have permission setup in there?",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cYou cannot break other players shops in creative mode, switch to survival mode or try to use the supertool {0} instead.",
   "trading-in-creative-mode-is-disabled": "&cคุณไม่สามารถแลกเปลี่ยนกับร้านค้านี้ได้ในขณะที่อยู่ในโหมดสร้างสรรค์",
   "supertool-is-disabled": "&cSupertool is disabled. Cannot break any shops.",
@@ -149,7 +150,7 @@
     "now-nolonger-debuging": "&aSuccessfully disabled Developer mode. Reloading QuickShop...",
     "wrong-args": "&cInvalid argument. Use &l/qs help &cto see a list of commands.",
     "description": {
-      "alwayscounting": "&eSet the shop alwayscounting status",
+      "alwayscounting": "&eSet if shop always counting container even is unlimited",
       "title": "&aQuickShop help",
       "unlimited": "&eGives a shop unlimited stock.",
       "setowner": "&eChanges the ownership of a shop.",

@@ -13,6 +13,7 @@
   "integrations-check-failed-create": "&c集成模块 {0} 拒绝了创建商店操作。",
   "integrations-check-failed-trade": "&c集成模块 {0} 拒绝了商店交易操作。",
   "3rd-plugin-build-check-failed": "&c第三方插件 &l{0}&r&c 拒绝了权限检查操作，您在那里有建造权限吗？",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&c你不能在创造模式破坏其他玩家的商店, 请使用生存模式或用超级工具 {0} 来破坏。",
   "trading-in-creative-mode-is-disabled": "&c你不能在创造模式下进行交易操作。",
   "supertool-is-disabled": "&c超级工具已被禁用，现已不能使用超级工具破坏任何商店。",
@@ -149,7 +150,7 @@
     "now-nolonger-debuging": "&a成功切换到了生产模式，插件重载中...",
     "wrong-args": "&c无效参数。使用 &l/qs help &c来查看命令帮助。",
     "description": {
-      "alwayscounting": "&eSet the shop alwayscounting status",
+      "alwayscounting": "&a设置商店是否总会计算容器物品（即使是无限商店）",
       "title": "&aQuickShop 帮助",
       "unlimited": "&e将商店设置为无限库存。",
       "setowner": "&e为商店设置新的所有者。",

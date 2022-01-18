@@ -13,6 +13,7 @@
   "integrations-check-failed-create": "&cIntegracja {0} odmówiła utworzenia sklepu",
   "integrations-check-failed-trade": "&cIntegracja {0} odmówiła handlu ze sklepem",
   "3rd-plugin-build-check-failed": "&cWtyczka firm trzecich &l{0}&r&c odmówiła sprawdzenia uprawnień, czy masz tam skonfigurowane uprawnienia?",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cNie możesz zniszczyć sklepów innych graczy w trybie kreatywnym, przełącz się na tryb przetrwania lub zamiast tego spróbuj użyć SuperTool {0}.",
   "trading-in-creative-mode-is-disabled": "&cNie możesz handlować z tym sklepem, będąc w trybie kreatywnym.",
   "supertool-is-disabled": "&cSupertool jest wyłączone. Nie można zniszczyć żadnych sklepów.",
@@ -149,7 +150,7 @@
     "now-nolonger-debuging": "&aPomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...",
     "wrong-args": "&cNieprawidłowy argument. Użyj &l/qs help &caby zobaczyć listę poleceń.",
     "description": {
-      "alwayscounting": "&eSet the shop alwayscounting status",
+      "alwayscounting": "&eSet if shop always counting container even is unlimited",
       "title": "&aPomoc Sklepu",
       "unlimited": "&eDaje sklepowi nieograniczone zapasy.",
       "setowner": "&eZmienia właściciela sklepu.",
