@@ -13,7 +13,7 @@
   "integrations-check-failed-create": "&cIntegracja {0} odmówiła utworzenia sklepu",
   "integrations-check-failed-trade": "&cIntegracja {0} odmówiła handlu ze sklepem",
   "3rd-plugin-build-check-failed": "&cWtyczka firm trzecich &l{0}&r&c odmówiła sprawdzenia uprawnień, czy masz tam skonfigurowane uprawnienia?",
-  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&7(Tylko dla Adminów) &d{0} &8odmówił sprawdzenia uprawnień. Jeśli jest to nie wyłączone, spróbuj dodać &d{1} &7aby zwracał uwagę na Blacklistę. &7Przewodnik Konfiguracji: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cNie możesz zniszczyć sklepów innych graczy w trybie kreatywnym, przełącz się na tryb przetrwania lub zamiast tego spróbuj użyć SuperTool {0}.",
   "trading-in-creative-mode-is-disabled": "&cNie możesz handlować z tym sklepem, będąc w trybie kreatywnym.",
   "supertool-is-disabled": "&cSupertool jest wyłączone. Nie można zniszczyć żadnych sklepów.",
@@ -97,7 +97,7 @@
     "owner": "&aWłaściciel: {0}",
     "item": "&aPrzedmiot: &e{0}",
     "item-holochat-error": "&c[Error]",
-    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
+    "item-holochat-data-too-large": "&c[Error] Element NBT jest zbyt duży, aby go pokazać",
     "preview": "&b[Podgląd przedmiotu]",
     "space": "&aMiejsce: &e{0}",
     "stock": "&aIlość &e{0}",
@@ -125,8 +125,8 @@
       "limited": "&aSklep jest teraz limitowany"
     },
     "toggle-always-counting": {
-      "counting": "&aShop is now always counting container even is unlimited",
-      "not-counting": "&aShop is now respect if shop is unlimited"
+      "counting": "&aSklep zawsze liczy pojemnik nawet jeśli jest nieograniczony",
+      "not-counting": "&aSklep jest teraz respektowany, jeśli jest nieograniczony"
     },
     "transfer-success": "&aPrzeniesiono &e{0} &asklep(y/ów) do &e{1}",
     "transfer-success-other": "&aPrzeniesiono &{0} sklep(y/ów) {1} do &e{2}",
@@ -150,7 +150,7 @@
     "now-nolonger-debuging": "&aPomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...",
     "wrong-args": "&cNieprawidłowy argument. Użyj &l/qs help &caby zobaczyć listę poleceń.",
     "description": {
-      "alwayscounting": "&eSet if shop always counting container even is unlimited",
+      "alwayscounting": "&eUstaw jeśli sklep zawsze liczy pojemnik nawet jeśli jest nieograniczony",
       "title": "&aPomoc Sklepu",
       "unlimited": "&eDaje sklepowi nieograniczone zapasy.",
       "setowner": "&eZmienia właściciela sklepu.",
@@ -210,8 +210,8 @@
     "freeze": "Handel wyłączony"
   },
   "controlpanel": {
-    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
-    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
+    "alwayscounting": "&aZawsze liczy: {0} &e[&d&lZmień&e]",
+    "alwayscounting-hover": "&eKliknij, aby przełączyć, jeśli sklep zawsze liczy pojemnik.",
     "setowner": "&aWłaściciel: &b{0} &e[&d&lZmień&e]",
     "infomation": "&aPanel sterowania sklepu:",
     "setowner-hover": "&eKliknij, aby zmienić właściciela.",
@@ -281,7 +281,7 @@
       "Co myślisz? {0} został wydany! Aktualizuj!",
       "Lekarz, QuickShop ma nową aktualizację {0}! Powinieneś zaktualizować~",
       "Ko~ko~da~yo~ QuickShop ma nową aktualizację {0}~",
-      "Paimon want told you the QuickShop have new update {0}!"
+      "Paimon chce Ci powiedzieć, że QuickShop ma nową aktualizację {0}!"
     ],
     "remote-disable-warning": "&cTa wersja QuickShop jest oznaczona jako wyłączona przez zdalny serwer, co oznacza, że ta wersja może mieć poważny problem, uzyskaj szczegóły z naszej strony SpigotMC: {0}. To ostrzeżenie będzie wyświetlane dopóki nie przejdziesz do stabilnej wersji, ale nie wpłynie to na wydajność Twojego serwera.",
     "label": {
@@ -317,8 +317,8 @@
   "shop-cannot-trade-when-freezing": "&cNie możesz handlować z tym sklepem, ponieważ jest zamrożony.",
   "shop-freezed-at-location": "&eTwój sklep {0} w {1} został zamrożony!",
   "denied-put-in-item": "&cNie możesz umieścić tego przedmiotu w swoim sklepie!",
-  "how-many-buy-stack": "&eEnter in chat, how many bulks you wish to &bBUY&a. There are &e{0}&a items in each bulk and you can buy &e{1}&a bulks. Enter &b{2}&a in chat to buy all.",
-  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you can sell &e{1}&a bulks. Enter &b{2}&a in chat to sell all.",
+  "how-many-buy-stack": "&aWpisz, ile stacków chcesz &bKUPIĆ&a na czacie. W każdym stacku jest &e{0}&a przedmiotów. Możesz kupić &e{1}&a stacków. Wpisz &b{2}&a by zakupić wszystkie.",
+  "how-many-sell-stack": "&aWpisz, ile stacków chcesz &dSPRZEDAĆ&a na czacie. W każdym stacku jest &e{0}&a przedmiotów. Możesz sprzedać &e{1}&a stacków. Wpisz &b{2}&a by sprzedać wszystkie.",
   "language": {
     "name": "&eNazwa: &6{0}",
     "code": "&eKod: &6{0}",
@@ -359,6 +359,6 @@
   "shop-purged-start": "&aRozpoczęto czyszczenie sklepu, sprawdź konsolę, aby uzyskać szczegółowe informacje.",
   "purchase-out-of-stock": "&cW tym sklepie skończyły się zapasy, skontaktuj się z właścicielem sklepu lub personelem, aby uzupełnić zapasy.",
   "purchase-out-of-space": "&cW tym sklepie zabrakło miejsca, skontaktuj się z właścicielem sklepu lub personelem, aby opróżnić sklep.",
-  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
+  "safe-mode": "&cQuickShop jest teraz w trybie bezpiecznym, nie możesz otworzyć pojemnika tego sklepu, skontaktuj się z administratorem serwera, aby naprawić błędy.",
+  "safe-mode-admin": "&c&lUWAGA: &cQuickShop na tym serwerze działa teraz w trybie bezpiecznym, żadne funkcje nie będą działać, wpisz &e/qs &c, aby sprawdzić błędy."
 }
