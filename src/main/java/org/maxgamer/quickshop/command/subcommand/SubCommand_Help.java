@@ -49,7 +49,7 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
                 boolean passed = false;
                 //selectivePermissions
                 final List<String> selectivePermissions = container.getSelectivePermissions();
-                if (selectivePermissions != null) {
+                if (selectivePermissions != null && !selectivePermissions.isEmpty()) {
                     for (String selectivePermission : container.getSelectivePermissions()) {
                         if (selectivePermission != null && !selectivePermission.isEmpty()) {
                             if (QuickShop.getPermissionManager().hasPermission(s, selectivePermission)) {
@@ -61,7 +61,7 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
                 }
                 //requirePermissions
                 final List<String> requirePermissions = container.getPermissions();
-                if (requirePermissions != null) {
+                if (requirePermissions != null && !requirePermissions.isEmpty()) {
                     for (String requirePermission : requirePermissions) {
                         if (requirePermission != null && !requirePermission.isEmpty() && !QuickShop.getPermissionManager().hasPermission(s, requirePermission)) {
                             continue commandPrintingLoop;
