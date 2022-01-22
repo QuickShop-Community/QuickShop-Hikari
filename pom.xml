@@ -25,7 +25,7 @@
     <artifactId>QuickShop</artifactId>
 
     <properties>
-        <pluginver>5.1.0.4</pluginver>
+        <pluginver>6.0.0.0-BETA</pluginver>
         <package>org.maxgamer.quickshop</package>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -751,9 +751,9 @@
             <artifactId>rollbar-java</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.Ghost-chu</groupId>
-            <artifactId>MineDown</artifactId>
-            <version>master-SNAPSHOT</version>
+            <groupId>de.themoep</groupId>
+            <artifactId>minedown</artifactId>
+            <version>1.7.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
