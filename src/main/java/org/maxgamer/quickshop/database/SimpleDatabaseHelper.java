@@ -145,8 +145,8 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
         createColumn("shops", "currency", new DataType(DataTypeMapping.TEXT));
         createColumn("shops", "disableDisplay", new DataType(DataTypeMapping.INT, null, -1));
         createColumn("shops", "taxAccount", new DataType(DataTypeMapping.VARCHAR, 255));
-
-
+        createColumn("shops", "inventorywrapper", new DataType(DataTypeMapping.VARCHAR, 255));
+        createColumn("shops", "symbollink", new DataType(DataTypeMapping.TEXT));
         if (manager.getDatabase() instanceof MySQLCore) {
             manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
                     .getDbPrefix() + "messages MODIFY COLUMN message text CHARACTER SET utf8mb4 NOT NULL AFTER owner", checkTask));
@@ -215,7 +215,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     @Override
     public void createShop(@NotNull Shop shop, @Nullable Runnable onSuccess, @Nullable Consumer<SQLException> onFailed) {
         removeShop(shop); //First purge old exist shop before create new shop.
-        String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type, extra) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type, extra, inventorywrapper, symbollink) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         manager.addDelayTask(new DatabaseTask(sqlString, new DatabaseTask.Task() {
             @Override
             public void edit(PreparedStatement ps) throws SQLException {
@@ -237,6 +237,8 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 ps.setInt(8, shop.isUnlimited() ? 1 : 0);
                 ps.setInt(9, shop.getShopType().toID());
                 ps.setString(10, shop.saveExtraToYaml());
+                ps.setString(11, shop.getInventoryWrapperProvider());
+                ps.setString(12, shop.saveToSymbolLink());
             }
 
             @Override
@@ -381,10 +383,11 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     @Override
     public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
                            double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
-                           @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount) {
+                           @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
+                           @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName) {
         String sqlString = "UPDATE " + plugin
                 .getDbPrefix() + "shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ?," +
-                " extra = ?, currency = ?, disableDisplay = ?, taxAccount = ?" +
+                " extra = ?, currency = ?, disableDisplay = ?, taxAccount = ?, inventorywrapper = ?, symbollink = ?" +
                 " WHERE x = ? AND y = ? and z = ? and world = ?";
         manager.addDelayTask(new DatabaseTask(sqlString, ps -> {
             ps.setString(1, owner);
@@ -396,10 +399,12 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
             ps.setString(7, currency);
             ps.setInt(8, disableDisplay ? 1 : 0);
             ps.setString(9, taxAccount);
-            ps.setInt(10, x);
-            ps.setInt(11, y);
-            ps.setInt(12, z);
-            ps.setString(13, world);
+            ps.setString(10, inventoryWrapperName);
+            ps.setString(11, inventorySymbolLink);
+            ps.setInt(12, x);
+            ps.setInt(13, y);
+            ps.setInt(14, z);
+            ps.setString(15, world);
         }));
         //db.execute(q, owner, Util.serialize(item), unlimited, shopType, price, x, y, z, world);
 

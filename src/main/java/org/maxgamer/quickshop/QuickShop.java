@@ -61,6 +61,7 @@ import org.maxgamer.quickshop.api.integration.IntegrateStage;
 import org.maxgamer.quickshop.api.integration.IntegrationManager;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.shop.*;
+import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapperManager;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 import org.maxgamer.quickshop.command.SimpleCommandManager;
 import org.maxgamer.quickshop.database.*;
@@ -78,6 +79,8 @@ import org.maxgamer.quickshop.shop.ShopLoader;
 import org.maxgamer.quickshop.shop.ShopPurger;
 import org.maxgamer.quickshop.shop.SimpleShopManager;
 import org.maxgamer.quickshop.shop.VirtualDisplayItem;
+import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapperManager;
+import org.maxgamer.quickshop.shop.inventory.InventoryWrapperRegistry;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.compatibility.SimpleCompatibilityManager;
@@ -142,6 +145,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private SimpleShopManager shopManager;
     private SimpleTextManager textManager;
     private boolean priceChangeRequiresFee = false;
+    @Getter
+    private final InventoryWrapperManager inventoryWrapperManager = new BukkitInventoryWrapperManager();
+    private final InventoryWrapperRegistry inventoryWrapperRegistry = new InventoryWrapperRegistry(this);
     /**
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
      */
@@ -283,6 +289,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @NotNull
     public static QuickShop getInstance() {
         return instance;
+    }
+
+    @NotNull
+    @Override
+    public InventoryWrapperRegistry getInventoryWrapperRegistry() {
+        return inventoryWrapperRegistry;
     }
 
     /**
@@ -617,6 +629,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         getLogger().info("Loading messages translation over-the-air (this may need take a while).");
         this.textManager = new SimpleTextManager(this);
         textManager.load();
+        getLogger().info("Registering InventoryWrapper...");
+        this.inventoryWrapperRegistry.register(this,this.inventoryWrapperManager);
         getLogger().info("Loading up integration modules.");
         this.integrationHelper = new SimpleIntegrationManager(this);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);

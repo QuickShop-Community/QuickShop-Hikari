@@ -34,6 +34,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.chat.ComponentPackage;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
+import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapperManager;
 import org.maxgamer.quickshop.shop.ShopSignPersistentDataType;
 import org.maxgamer.quickshop.shop.ShopSignStorage;
 
@@ -554,6 +555,13 @@ public interface Shop {
     void claimShopSign(@NotNull Sign sign);
 
     /**
+     * Gets the shop Inventory
+     * @return Inventory
+     */
+    @NotNull
+    InventoryWrapper getInventory();
+
+    /**
      * Checks if a Sign is a ShopSign
      *
      * @param sign Target sign
@@ -630,4 +638,25 @@ public interface Shop {
         //For back-ward compatibility
         throw new UnsupportedOperationException("setAlwaysCountingContainer is not implemented");
     }
+
+    /**
+     * Gets the InventoryWrapper provider name (the plugin name who register it), usually is QuickShop
+     * @return InventoryWrapper
+     */
+    @NotNull
+    String getInventoryWrapperProvider();
+
+    /**
+     * Gets the symbol link that created by InventoryWrapperManager
+     * @return InventoryWrapper
+     */
+    @NotNull
+    String saveToSymbolLink();
+
+    /**
+     * Sets shop's Inventory to a new Inventory
+     * @param wrapper Inventory
+     * @param manager InventoryWrapperManager
+     */
+    void setInventory(@NotNull InventoryWrapper wrapper, @NotNull InventoryWrapperManager manager);
 }

@@ -526,4 +526,12 @@ public interface InventoryWrapper {
      */
     @NotNull InventoryWrapperManager getWrapperManager();
 
+    /**
+     * Do valid check, check if this Inventory is valid.
+     * @return valid
+     */
+    default boolean isValid(){
+        return true;
+    }
+
 }

@@ -19,12 +19,14 @@
 
 package org.maxgamer.quickshop.api;
 
+import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.api.command.CommandManager;
 import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.api.database.DatabaseHelper;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.shop.ItemMatcher;
 import org.maxgamer.quickshop.api.shop.ShopManager;
+import org.maxgamer.quickshop.shop.inventory.InventoryWrapperRegistry;
 import org.maxgamer.quickshop.util.GameVersion;
 
 import java.util.Map;
@@ -117,5 +119,12 @@ public interface QuickShopAPI {
      * @return Game version
      */
     GameVersion getGameVersion();
+
+    /**
+     * Gets registry of InventoryWrappers
+     * @return registry
+     */
+    @NotNull
+    InventoryWrapperRegistry getInventoryWrapperRegistry();
 
 }

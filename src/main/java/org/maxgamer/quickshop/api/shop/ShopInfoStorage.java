@@ -44,4 +44,6 @@ public class ShopInfoStorage {
     private final String currency;
     private final boolean disableDisplay;
     private final UUID taxAccount;
+    private final String inventoryWrapperName;
+    private final String symbolLink;
 }

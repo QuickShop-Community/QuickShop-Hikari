@@ -29,6 +29,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.Container;
+import org.bukkit.block.EnderChest;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -39,6 +42,9 @@ import org.maxgamer.quickshop.api.database.WarpedResultSet;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopModerator;
 import org.maxgamer.quickshop.api.shop.ShopType;
+import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
+import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapperManager;
+import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapper;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.PlayerFinder;
 import org.maxgamer.quickshop.util.Timer;
@@ -130,7 +136,9 @@ public class ShopLoader {
                                 data.getExtra(),
                                 data.getCurrency(),
                                 data.isDisableDisplay(),
-                                data.getTaxAccount());
+                                data.getTaxAccount(),
+                                data.getInventoryWrapperProvider(),
+                                data.getInventory());
                 if (data.needUpdate.get()) {
                     shop.setDirty();
                 }
@@ -217,6 +225,14 @@ public class ShopLoader {
         }
         if (plugin.getServer().getOfflinePlayer(shop.getOwner()).getName() == null) {
             Util.debugLog("Shop owner not exist on this server, did you have reset the playerdata?");
+        }
+        if(shop.getInventoryWrapperProvider() == null || shop.getInventoryWrapperProvider().isEmpty()){
+            Util.debugLog("InventoryWrapperProvider not exists. The data not successfully upgrading?");
+            return true;
+        }
+        if(shop.getInventory() == null){
+            Util.debugLog("InventoryWrapper invalid.");
+            return true;
         }
         return false;
     }
@@ -309,7 +325,9 @@ public class ShopLoader {
                                 data.getExtra(),
                                 data.getCurrency(),
                                 data.isDisableDisplay(),
-                                data.getTaxAccount());
+                                data.getTaxAccount(),
+                                data.getInventoryWrapperProvider(),
+                                data.getInventory());
                 if (shopNullCheck(shop)) {
                     continue;
                 }
@@ -329,7 +347,7 @@ public class ShopLoader {
         errors = 0;
         List<ShopRawDatabaseInfo> shopRawDatabaseInfoList = new ArrayList<>();
         try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
-           // this.plugin.getLogger().info("Getting shops from the database...");
+            // this.plugin.getLogger().info("Getting shops from the database...");
             while (rs.next()) {
                 ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
                 shopRawDatabaseInfoList.add(origin);
@@ -370,6 +388,10 @@ public class ShopLoader {
 
         private String taxAccount;
 
+        private String inventoryWrapperProvider;
+
+        private String symbolLink;
+
         ShopRawDatabaseInfo(ResultSet rs) throws SQLException {
             this.x = rs.getInt("x");
             this.y = rs.getInt("y");
@@ -388,6 +410,8 @@ public class ShopLoader {
             this.currency = rs.getString("currency");
             this.disableDisplay = rs.getInt("disableDisplay") != 0;
             this.taxAccount = rs.getString("taxAccount");
+            this.symbolLink = rs.getString("symbollink");
+            this.inventoryWrapperProvider = rs.getString("inventorywrapper");
         }
 
         @Override
@@ -429,6 +453,10 @@ public class ShopLoader {
 
         private boolean disableDisplay;
 
+        private String inventoryWrapperProvider;
+
+        private InventoryWrapper inventory;
+
         ShopDatabaseInfo(ShopRawDatabaseInfo origin) {
             try {
                 this.x = origin.getX();
@@ -445,8 +473,38 @@ public class ShopLoader {
                 this.currency = origin.getCurrency();
                 this.disableDisplay = origin.isDisableDisplay();
                 this.taxAccount = origin.getTaxAccount() != null ? UUID.fromString(origin.getTaxAccount()) : null;
+                this.inventoryWrapperProvider = origin.getInventoryWrapperProvider();
+                this.inventory = locateInventory(origin.getSymbolLink());
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
+            }
+        }
+
+        private @Nullable InventoryWrapper locateInventory(@Nullable String symbolLink) {
+            if (symbolLink == null || symbolLink.isEmpty()) {
+                // Upgrading data
+                Util.debugLog("Upgrading old shop data: " + this);
+                Block block = getLocation().getBlock();
+                if (block instanceof Container) {
+                    return new BukkitInventoryWrapper(((Container) block).getInventory());
+                } else {
+                    if (block instanceof EnderChest) {
+                        plugin.getLogger().warning("Failed to load ender chest shop: You need install QuickShop EnderChest addon to make it works.");
+                        return null;
+                    }
+                    Util.debugLog("Upgrading failed: Target block not a Container.");
+                }
+            }
+            InventoryWrapperManager manager = plugin.getInventoryWrapperRegistry().get(getInventoryWrapperProvider());
+            if (manager == null) {
+                plugin.getLogger().log(Level.WARNING, "Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " invalid or failed to load!");
+                return null;
+            }
+            try {
+                return manager.locate(symbolLink);
+            } catch (IllegalArgumentException e) {
+                plugin.getLogger().log(Level.WARNING, "Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage());
+                return null;
             }
         }
 

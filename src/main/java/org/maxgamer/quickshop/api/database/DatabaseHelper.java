@@ -154,7 +154,8 @@ public interface DatabaseHelper {
      */
     void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
                     double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
-                    @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount);
+                    @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
+                    @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName);
 
     /**
      * Insert a history record into logs table

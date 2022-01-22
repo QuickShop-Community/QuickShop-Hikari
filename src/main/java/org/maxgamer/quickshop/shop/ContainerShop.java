@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.shop;
 
-import com.lishid.openinv.IOpenInv;
 import de.tr7zw.nbtapi.NBTTileEntity;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
@@ -38,7 +37,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -50,8 +48,8 @@ import org.maxgamer.quickshop.api.chat.ComponentPackage;
 import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
+import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapperManager;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
-import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapper;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
@@ -109,6 +107,7 @@ public class ContainerShop implements Shop {
     private String currency;
     private boolean disableDisplay;
     private UUID taxAccount;
+    private String inventoryWrapperProvider;
     private InventoryWrapper inventory;
 
 
@@ -132,6 +131,7 @@ public class ContainerShop implements Shop {
         this.taxAccount = s.taxAccount;
         this.isAlwaysCountingContainer = s.isAlwaysCountingContainer;
         this.inventory = s.inventory;
+        this.inventoryWrapperProvider = s.inventoryWrapperProvider;
         initDisplayItem();
     }
 
@@ -160,7 +160,9 @@ public class ContainerShop implements Shop {
             @NotNull YamlConfiguration extra,
             @Nullable String currency,
             boolean disableDisplay,
-            @Nullable UUID taxAccount) {
+            @Nullable UUID taxAccount,
+            @NotNull String inventoryWrapperProvider,
+            @NotNull InventoryWrapper inventory) {
         Util.ensureThread(false);
         this.location = location;
         this.price = price;
@@ -186,10 +188,12 @@ public class ContainerShop implements Shop {
         this.currency = currency;
         this.disableDisplay = disableDisplay;
         this.taxAccount = taxAccount;
-        initDisplayItem();
         this.dirty = false;
+        this.isAlwaysCountingContainer = getExtra(plugin).getBoolean("is-always-counting-container", false);
+        this.inventory = inventory;
+        this.inventoryWrapperProvider = inventoryWrapperProvider;
+        initDisplayItem();
         updateShopData();
-        isAlwaysCountingContainer = getExtra(plugin).getBoolean("is-always-counting-container", false);
     }
 
     private void updateShopData() {
@@ -874,7 +878,7 @@ public class ContainerShop implements Shop {
             plugin.getDatabaseHelper()
                     .updateShop(SimpleShopModerator.serialize(this.moderator), this.getItem(),
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
-                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString());
+                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(),this.inventoryWrapperProvider,saveToSymbolLink());
             this.dirty = false;
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING,
@@ -882,6 +886,28 @@ public class ContainerShop implements Shop {
         } finally {
             updating = false;
         }
+    }
+
+    @NotNull
+    public String saveToSymbolLink(){
+        try {
+            return plugin.getInventoryWrapperRegistry().get(this.inventoryWrapperProvider).mklink(this.inventory);
+        }catch (Exception exception){
+            plugin.getLogger().log(Level.WARNING,"Failed to create shop symbol link, Shop data may lose!",exception);
+            return plugin.getInventoryWrapperRegistry().get(plugin.getName()).mklink(this.inventory);
+        }
+    }
+
+    @Override
+    public void setInventory(@NotNull InventoryWrapper wrapper, @NotNull InventoryWrapperManager manager) {
+        String provider = plugin.getInventoryWrapperRegistry().find(manager);
+        if(provider == null){
+            throw new IllegalArgumentException("The manager "+manager.getClass().getName()+" not registered in registry.");
+        }
+        this.inventory = wrapper;
+        this.inventoryWrapperProvider = provider;
+        setDirty();
+        update();
     }
 
     private void notifyDisplayItemChange() {
@@ -1314,44 +1340,58 @@ public class ContainerShop implements Shop {
      */
     public @Nullable InventoryWrapper getInventory() {
         Util.ensureThread(false);
-        if(this.inventory != null)
-            return this.inventory;
-        BlockState state = PaperLib.getBlockState(location.getBlock(), false).getState();
-        try {
-            if (state.getType() == Material.ENDER_CHEST
-                    && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
-                IOpenInv openInv = ((IOpenInv) plugin.getOpenInvPlugin());
-               this.inventory =  new BukkitInventoryWrapper(openInv.getSpecialEnderChest(
-                                Objects.requireNonNull(
-                                        openInv.loadPlayer(
-                                                plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
-                                plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
-                        .getBukkitInventory());
-               return this.inventory;
+        if (this.inventory != null) {
+            if (this.inventory.isValid()) {
+                return this.inventory;
             }
-        } catch (Exception e) {
-            Util.debugLog(e.getMessage());
-            return null;
         }
-        InventoryHolder container;
-        try {
-            container = (InventoryHolder) state;
-            this.inventory = new BukkitInventoryWrapper(container.getInventory());
-            return this.inventory;
-        } catch (Exception e) {
-            if (!createBackup) {
-                createBackup = Util.backupDatabase();
-                if (createBackup) {
-                    this.delete(false);
-                }
-            } else {
-                this.delete(true);
+        if (!createBackup) {
+            createBackup = Util.backupDatabase();
+            if (createBackup) {
+                this.delete(false);
             }
-            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
-            Util.debugLog(
-                    "Inventory doesn't exist anymore: " + this + " shop was removed.");
-            return null;
+        } else {
+            this.delete(true);
         }
+        plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
+        Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
+        return null;
+//        BlockState state = PaperLib.getBlockState(location.getBlock(), false).getState();
+//        try {
+//            if (state.getType() == Material.ENDER_CHEST
+//                    && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
+//                IOpenInv openInv = ((IOpenInv) plugin.getOpenInvPlugin());
+//               this.inventory =  new BukkitInventoryWrapper(openInv.getSpecialEnderChest(
+//                                Objects.requireNonNull(
+//                                        openInv.loadPlayer(
+//                                                plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
+//                                plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
+//                        .getBukkitInventory());
+//               return this.inventory;
+//            }
+//        } catch (Exception e) {
+//            Util.debugLog(e.getMessage());
+//            return null;
+//        }
+//        InventoryHolder container;
+//        try {
+//            container = (InventoryHolder) state;
+//            this.inventory = new BukkitInventoryWrapper(container.getInventory());
+//            return this.inventory;
+//        } catch (Exception e) {
+//            if (!createBackup) {
+//                createBackup = Util.backupDatabase();
+//                if (createBackup) {
+//                    this.delete(false);
+//                }
+//            } else {
+//                this.delete(true);
+//            }
+//            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
+//            Util.debugLog(
+//                    "Inventory doesn't exist anymore: " + this + " shop was removed.");
+//            return null;
+//        }
     }
 
     /**
@@ -1590,6 +1630,11 @@ public class ContainerShop implements Shop {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(getLocation().getWorld().getName(), BlockPosition.of(getLocation()), SimpleShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount());
+        return new ShopInfoStorage(getLocation().getWorld().getName(), BlockPosition.of(getLocation()), SimpleShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount(),inventoryWrapperProvider,saveToSymbolLink());
+    }
+
+    @Override
+    public @NotNull String getInventoryWrapperProvider() {
+        return inventoryWrapperProvider;
     }
 }
