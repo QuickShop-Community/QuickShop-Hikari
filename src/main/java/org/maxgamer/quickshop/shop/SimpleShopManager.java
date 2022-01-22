@@ -37,7 +37,6 @@ import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
@@ -49,8 +48,10 @@ import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.shop.*;
+import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.integration.SimpleIntegrationManager;
+import org.maxgamer.quickshop.shop.inventory.BukkitInventory;
 import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.economyformatter.EconomyFormatter;
 import org.maxgamer.quickshop.util.holder.Result;
@@ -633,7 +634,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     public void actionBuy(
             @NotNull UUID buyer,
-            @NotNull Inventory buyerInventory,
+            @NotNull InventoryWrapper buyerInventory,
             @NotNull AbstractEconomy eco,
             @NotNull Info info,
             @NotNull Shop shop,
@@ -756,7 +757,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     public void actionBuy(@NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info,
                           @NotNull Shop shop, int amount) {
         Util.ensureThread(false);
-        actionBuy(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
+        actionBuy(p.getUniqueId(), new BukkitInventory(p.getInventory()), eco, info, shop, amount);
     }
 
     @Override
@@ -1010,12 +1011,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             @NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info, @NotNull Shop shop,
             int amount) {
         Util.ensureThread(false);
-        actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
+        actionSell(p.getUniqueId(), new BukkitInventory(p.getInventory()), eco, info, shop, amount);
     }
 
     public void actionSell(
             @NotNull UUID seller,
-            @NotNull Inventory sellerInventory,
+            @NotNull InventoryWrapper sellerInventory,
             @NotNull AbstractEconomy eco,
             @NotNull Info info,
             @NotNull Shop shop,
@@ -1327,7 +1328,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
                     int shopHaveSpaces =
                             Util.countSpace(((ContainerShop) shop).getInventory(), shop);
-                    int invHaveItems = Util.countItems(p.getInventory(), shop);
+                    int invHaveItems = Util.countItems(new BukkitInventory(p.getInventory()), shop);
                     // Check if shop owner has enough money
                     double ownerBalance = eco
                             .getBalance(shop.getOwner(), shop.getLocation().getWorld(),
@@ -1344,7 +1345,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         amount = Math.min(shopHaveSpaces, invHaveItems);
                         amount = Math.min(amount, ownerCanAfford);
                     } else {
-                        amount = Util.countItems(p.getInventory(), shop);
+                        amount = Util.countItems(new BukkitInventory(p.getInventory()), shop);
                         // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
                         // true,
                         // the unlimited shop owner should have enough money.
@@ -1388,20 +1389,20 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     return;
                 }
             }
-            actionBuy(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
+            actionBuy(p.getUniqueId(), new BukkitInventory(p.getInventory()), eco, info, shop, amount);
         } else if (shop.isSelling()) {
             if (StringUtils.isNumeric(message)) {
                 amount = Integer.parseInt(message);
             } else {
                 if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
                     int shopHaveItems = shop.getRemainingStock();
-                    int invHaveSpaces = Util.countSpace(p.getInventory(), shop);
+                    int invHaveSpaces = Util.countSpace(new BukkitInventory(p.getInventory()), shop);
                     if (shop.isAlwaysCountingContainer() || !shop.isUnlimited()) {
                         amount = Math.min(shopHaveItems, invHaveSpaces);
                     } else {
                         // should check not having items but having empty slots, cause player is trying to buy
                         // items from the shop.
-                        amount = Util.countSpace(p.getInventory(), shop);
+                        amount = Util.countSpace(new BukkitInventory(p.getInventory()), shop);
                     }
                     // typed 'all', check if player has enough money than price * amount
                     double price = shop.getPrice();
@@ -1441,7 +1442,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     return;
                 }
             }
-            actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
+            actionSell(p.getUniqueId(), new BukkitInventory(p.getInventory()), eco, info, shop, amount);
         } else {
             plugin.text().of(p, "shop-purchase-cancelled").send();
             plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation());

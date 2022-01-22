@@ -39,6 +39,7 @@ import org.maxgamer.quickshop.Cache;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.api.shop.DisplayType;
+import org.maxgamer.quickshop.shop.inventory.BukkitInventory;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
@@ -98,7 +99,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryOpenEvent event) {
-        Util.inventoryCheck(event.getInventory());
+        Util.inventoryCheck(new BukkitInventory(event.getInventory()));
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
@@ -119,7 +120,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
                         + " at "
                         + loc
                         + " trying pickup the DisplayItem,  you should teleport to that location and to check detail..");
-        Util.inventoryCheck(event.getInventory());
+        Util.inventoryCheck(new BukkitInventory(event.getInventory()));
     }
 
 
@@ -161,7 +162,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
                 "[DisplayGuard] Player "
                         + event.getPlayer().getName()
                         + " trying hook item use Fishing Rod, QuickShop already removed it.");
-        Util.inventoryCheck(event.getPlayer().getInventory());
+        Util.inventoryCheck(new BukkitInventory(event.getPlayer().getInventory()));
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
@@ -173,7 +174,7 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
             return;
         }
         event.setCancelled(true);
-        Util.inventoryCheck(event.getPlayer().getInventory());
+        Util.inventoryCheck(new BukkitInventory(event.getPlayer().getInventory()));
         sendAlert(
                 "[DisplayGuard] Player  "
                         + event.getPlayer().getName()

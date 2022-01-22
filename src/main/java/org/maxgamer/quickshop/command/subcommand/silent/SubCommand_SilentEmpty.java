@@ -20,10 +20,10 @@
 package org.maxgamer.quickshop.command.subcommand.silent;
 
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -43,7 +43,7 @@ public class SubCommand_SilentEmpty extends SubCommand_SilentBase {
         }
 
         final ContainerShop cs = (ContainerShop) shop;
-        final Inventory inventory = cs.getInventory();
+        final InventoryWrapper inventory = cs.getInventory();
 
         if (inventory == null) {
             Util.debugLog("Inventory is empty! " + cs);

@@ -22,10 +22,10 @@ package org.maxgamer.quickshop.api.event;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
 
 import java.util.UUID;
 
@@ -47,7 +47,7 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements Cancell
     private final Player player;
 
     @NotNull
-    private final Inventory purchaserInventory;
+    private final InventoryWrapper purchaserInventory;
 
     private final double tax;
 
@@ -68,7 +68,7 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements Cancell
      * @param total              The money in this purchase
      */
     public ShopSuccessPurchaseEvent(
-            @NotNull Shop shop, @NotNull UUID purchaser, @NotNull Inventory purchaserInventory, int amount, double total, double tax) {
+            @NotNull Shop shop, @NotNull UUID purchaser, @NotNull InventoryWrapper purchaserInventory, int amount, double total, double tax) {
         this.shop = shop;
         this.purchaser = purchaser;
         this.purchaserInventory = purchaserInventory;
@@ -151,7 +151,7 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements Cancell
      *
      * @return The inventory
      */
-    public @NotNull Inventory getPurchaserInventory() {
+    public @NotNull InventoryWrapper getPurchaserInventory() {
         return this.purchaserInventory;
     }
 

@@ -44,6 +44,7 @@ import org.maxgamer.quickshop.Cache;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.shop.inventory.BukkitInventory;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
@@ -171,7 +172,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
             if (state instanceof Furnace) {
                 Furnace furnace1 = (Furnace) furnace.getState();
                 sendAlert("[DisplayGuard] Block  " + event.getBlock().getLocation() + " trying burn with DisplayItem.");
-                Util.inventoryCheck(furnace1.getInventory());
+                Util.inventoryCheck(new BukkitInventory(furnace1.getInventory()));
             }
         }
     }
@@ -188,7 +189,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
                         "[DisplayGuard] Block  "
                                 + event.getBlock().getLocation()
                                 + " trying smelt with DisplayItem.");
-                Util.inventoryCheck(furnace1.getInventory());
+                Util.inventoryCheck(new BukkitInventory(furnace1.getInventory()));
             }
             return;
         }
@@ -201,7 +202,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
                         "[DisplayGuard] Block  "
                                 + event.getBlock().getLocation()
                                 + " trying smelt with DisplayItem.");
-                Util.inventoryCheck(furnace1.getInventory());
+                Util.inventoryCheck(new BukkitInventory(furnace1.getInventory()));
             }
         }
     }
@@ -224,7 +225,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
 
         Entity entity = e.getEntity();
         if (entity instanceof InventoryHolder) {
-            Util.inventoryCheck(((InventoryHolder) entity).getInventory());
+            Util.inventoryCheck(new BukkitInventory(((InventoryHolder) entity).getInventory()));
         }
     }
 
@@ -249,7 +250,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
                         + " was clicked the displayItem, QuickShop already removed it.");
         event.getCurrentItem().setType(Material.AIR);
         event.setResult(Event.Result.DENY);
-        Util.inventoryCheck(event.getInventory());
+        Util.inventoryCheck(new BukkitInventory(event.getInventory()));
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
@@ -257,7 +258,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
         ItemStack itemStack = event.getCursor();
         if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
-            Util.inventoryCheck(event.getInventory());
+            Util.inventoryCheck(new BukkitInventory(event.getInventory()));
             sendAlert(
                     "[DisplayGuard] Player  "
                             + event.getWhoClicked().getName()
@@ -267,7 +268,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
         itemStack = event.getOldCursor();
         if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
-            Util.inventoryCheck(event.getInventory());
+            Util.inventoryCheck(new BukkitInventory(event.getInventory()));
             sendAlert(
                     "[DisplayGuard] Player  "
                             + event.getWhoClicked().getName()
@@ -280,7 +281,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
         ItemStack itemStack = event.getCursor();
         if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
-            Util.inventoryCheck(event.getInventory());
+            Util.inventoryCheck(new BukkitInventory(event.getInventory()));
             sendAlert(
                     "[DisplayGuard] Player  "
                             + event.getWhoClicked().getName()
@@ -290,7 +291,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
         itemStack = event.getCurrentItem();
         if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
-            Util.inventoryCheck(event.getInventory());
+            Util.inventoryCheck(new BukkitInventory(event.getInventory()));
             sendAlert(
                     "[DisplayGuard] Player  "
                             + event.getWhoClicked().getName()
@@ -310,7 +311,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
                             + e.getPlayer().getName()
                             + " helded the displayItem, QuickShop already cancelled and removed it.");
             e.setCancelled(true);
-            Util.inventoryCheck(e.getPlayer().getInventory());
+            Util.inventoryCheck(new BukkitInventory(e.getPlayer().getInventory()));
         }
         if (AbstractDisplayItem.checkIsGuardItemStack(stackOffHand)) {
             e.getPlayer().getInventory().setItemInOffHand(new ItemStack(Material.AIR, 0));
@@ -320,7 +321,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
                             + e.getPlayer().getName()
                             + " helded the displayItem, QuickShop already cancelled and removed it.");
             e.setCancelled(true);
-            Util.inventoryCheck(e.getPlayer().getInventory());
+            Util.inventoryCheck(new BukkitInventory(e.getPlayer().getInventory()));
         }
     }
 
@@ -330,7 +331,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
         itemStack = event.getCurrentItem();
         if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
-            Util.inventoryCheck(event.getInventory());
+            Util.inventoryCheck(new BukkitInventory(event.getInventory()));
             sendAlert(
                     "[DisplayGuard] Player  "
                             + event.getWhoClicked().getName()
@@ -340,7 +341,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
         itemStack = event.getCursor();
         if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
-            Util.inventoryCheck(event.getInventory());
+            Util.inventoryCheck(new BukkitInventory(event.getInventory()));
             sendAlert(
                     "[DisplayGuard] Player  "
                             + event.getWhoClicked().getName()
