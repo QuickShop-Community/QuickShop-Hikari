@@ -45,7 +45,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -56,6 +55,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.database.MySQLCore;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -202,7 +202,7 @@ public class Util {
      * @Deprecated Deprecated for different order will result different result
      */
     @Deprecated
-    public static int countItems(@Nullable Inventory inv, @NotNull ItemStack item) {
+    public static int countItems(@Nullable InventoryWrapper inv, @NotNull ItemStack item) {
         if (inv == null) {
             return 0;
         }
@@ -226,7 +226,7 @@ public class Util {
      * @param shop The Shop for matching
      * @return The number of shop items that match in this inventory.
      */
-    public static int countItems(@Nullable Inventory inv, @NotNull Shop shop) {
+    public static int countItems(@Nullable InventoryWrapper inv, @NotNull Shop shop) {
         if (inv == null) {
             return 0;
         }
@@ -250,7 +250,7 @@ public class Util {
      *             to occur.
      * @return The number of shop items that can be given to the inventory safely.
      */
-    public static int countSpace(@Nullable Inventory inv, @NotNull Shop shop) {
+    public static int countSpace(@Nullable InventoryWrapper inv, @NotNull Shop shop) {
         if (inv == null) {
             return 0;
         }
@@ -278,7 +278,7 @@ public class Util {
      * @Deprecated Deprecated for different order will result different result
      */
     @Deprecated
-    public static int countSpace(@Nullable Inventory inv, @NotNull ItemStack item) {
+    public static int countSpace(@Nullable InventoryWrapper inv, @NotNull ItemStack item) {
         if (inv == null) {
             return 0;
         }
@@ -735,7 +735,7 @@ public class Util {
      *
      * @param inv inv
      */
-    public static void inventoryCheck(@Nullable Inventory inv) {
+    public static void inventoryCheck(@Nullable InventoryWrapper inv) {
         if (inv == null) {
             return;
         }

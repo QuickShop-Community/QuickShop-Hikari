@@ -38,7 +38,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -50,7 +49,9 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.chat.ComponentPackage;
 import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.shop.*;
+import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
+import org.maxgamer.quickshop.shop.inventory.BukkitInventory;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
@@ -108,6 +109,7 @@ public class ContainerShop implements Shop {
     private String currency;
     private boolean disableDisplay;
     private UUID taxAccount;
+    private InventoryWrapper inventory;
 
 
     private ContainerShop(@NotNull ContainerShop s) {
@@ -129,6 +131,7 @@ public class ContainerShop implements Shop {
         this.disableDisplay = s.disableDisplay;
         this.taxAccount = s.taxAccount;
         this.isAlwaysCountingContainer = s.isAlwaysCountingContainer;
+        this.inventory = s.inventory;
         initDisplayItem();
     }
 
@@ -275,7 +278,7 @@ public class ContainerShop implements Shop {
         }
         item = item.clone();
         int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
-        Inventory inv = this.getInventory();
+        InventoryWrapper inv = this.getInventory();
         int remains = amount;
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
@@ -308,7 +311,7 @@ public class ContainerShop implements Shop {
      * @param amount         The amount to buy
      */
     @Override
-    public void buy(@NotNull UUID buyer, @NotNull Inventory buyerInventory,
+    public void buy(@NotNull UUID buyer, @NotNull InventoryWrapper buyerInventory,
                     @NotNull Location loc2Drop, int amount) {
         Util.ensureThread(false);
         amount = amount * item.getAmount();
@@ -345,7 +348,7 @@ public class ContainerShop implements Shop {
                                 + "!");
             }
         } else {
-            Inventory chestInv = this.getInventory();
+            InventoryWrapper chestInv = this.getInventory();
             for (int i = 0; amount > 0 && i < contents.length; i++) {
                 ItemStack item = contents[i];
                 if (item != null && this.matches(item)) {
@@ -616,7 +619,7 @@ public class ContainerShop implements Shop {
         }
         item = item.clone();
         int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
-        Inventory inv = this.getInventory();
+        InventoryWrapper inv = this.getInventory();
         int remains = amount;
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
@@ -636,7 +639,7 @@ public class ContainerShop implements Shop {
      * @param amount          The amount to sell
      */
     @Override
-    public void sell(@NotNull UUID seller, @NotNull Inventory sellerInventory,
+    public void sell(@NotNull UUID seller, @NotNull InventoryWrapper sellerInventory,
                      @NotNull Location loc2Drop, int amount) {
         Util.ensureThread(false);
         amount = item.getAmount() * amount;
@@ -1309,20 +1312,22 @@ public class ContainerShop implements Shop {
     /**
      * @return The chest this shop is based on.
      */
-    public @Nullable Inventory getInventory() {
+    public @Nullable InventoryWrapper getInventory() {
         Util.ensureThread(false);
+        if(this.inventory != null)
+            return this.inventory;
         BlockState state = PaperLib.getBlockState(location.getBlock(), false).getState();
-        Inventory inv = null;
         try {
             if (state.getType() == Material.ENDER_CHEST
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 IOpenInv openInv = ((IOpenInv) plugin.getOpenInvPlugin());
-                inv = openInv.getSpecialEnderChest(
-                        Objects.requireNonNull(
-                                openInv.loadPlayer(
-                                        plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
-                        plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
-                        .getBukkitInventory();
+               this.inventory =  new BukkitInventory(openInv.getSpecialEnderChest(
+                                Objects.requireNonNull(
+                                        openInv.loadPlayer(
+                                                plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
+                                plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
+                        .getBukkitInventory());
+               return this.inventory;
             }
         } catch (Exception e) {
             Util.debugLog(e.getMessage());
@@ -1331,7 +1336,8 @@ public class ContainerShop implements Shop {
         InventoryHolder container;
         try {
             container = (InventoryHolder) state;
-            inv = container.getInventory();
+            this.inventory = new BukkitInventory(container.getInventory());
+            return this.inventory;
         } catch (Exception e) {
             if (!createBackup) {
                 createBackup = Util.backupDatabase();
@@ -1346,10 +1352,6 @@ public class ContainerShop implements Shop {
                     "Inventory doesn't exist anymore: " + this + " shop was removed.");
             return null;
         }
-
-        ShopInventoryEvent event = new ShopInventoryEvent(this, inv);
-        event.callEvent();
-        return event.getInventory();
     }
 
     /**

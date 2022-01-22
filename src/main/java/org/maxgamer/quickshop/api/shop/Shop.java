@@ -26,7 +26,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.chat.ComponentPackage;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
+import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.shop.ShopSignPersistentDataType;
 import org.maxgamer.quickshop.shop.ShopSignStorage;
 
@@ -71,7 +71,7 @@ public interface Shop {
      * @param loc2Drop       The location to drops items if player inventory are full
      * @param paramInt       How many buyed?
      */
-    void buy(@NotNull UUID buyer, @NotNull Inventory buyerInventory, @NotNull Location loc2Drop, int paramInt);
+    void buy(@NotNull UUID buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int paramInt);
 
     /**
      * Check the display location, and teleport, respawn if needs.
@@ -175,7 +175,7 @@ public interface Shop {
      * @param loc2Drop        The location to be drop if buyer inventory full ( if player enter a number that < 0, it will turn to buying item)
      * @param paramInt        How many sold?
      */
-    void sell(@NotNull UUID seller, @NotNull Inventory sellerInventory, @NotNull Location loc2Drop, int paramInt);
+    void sell(@NotNull UUID seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int paramInt);
 
     /**
      * Generate new sign texts on shop's sign.
