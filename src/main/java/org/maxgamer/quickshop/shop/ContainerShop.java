@@ -51,7 +51,7 @@ import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
-import org.maxgamer.quickshop.shop.inventory.BukkitInventory;
+import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapper;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
@@ -1321,7 +1321,7 @@ public class ContainerShop implements Shop {
             if (state.getType() == Material.ENDER_CHEST
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 IOpenInv openInv = ((IOpenInv) plugin.getOpenInvPlugin());
-               this.inventory =  new BukkitInventory(openInv.getSpecialEnderChest(
+               this.inventory =  new BukkitInventoryWrapper(openInv.getSpecialEnderChest(
                                 Objects.requireNonNull(
                                         openInv.loadPlayer(
                                                 plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
@@ -1336,7 +1336,7 @@ public class ContainerShop implements Shop {
         InventoryHolder container;
         try {
             container = (InventoryHolder) state;
-            this.inventory = new BukkitInventory(container.getInventory());
+            this.inventory = new BukkitInventoryWrapper(container.getInventory());
             return this.inventory;
         } catch (Exception e) {
             if (!createBackup) {

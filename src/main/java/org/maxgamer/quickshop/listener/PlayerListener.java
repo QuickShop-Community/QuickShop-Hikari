@@ -46,7 +46,7 @@ import org.maxgamer.quickshop.api.shop.Info;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopAction;
 import org.maxgamer.quickshop.shop.SimpleInfo;
-import org.maxgamer.quickshop.shop.inventory.BukkitInventory;
+import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapper;
 import org.maxgamer.quickshop.util.InteractUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -297,9 +297,9 @@ public class PlayerListener extends AbstractQSListener {
     private int getPlayerCanBuy(Shop shop, double traderBalance, double price, Inventory playerInventory) {
         boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
         if (shop.isFreeShop()) { // Free shop
-            return isContainerCountingNeeded ? Util.countSpace(new BukkitInventory(playerInventory), shop) : Math.min(shop.getRemainingStock(), Util.countSpace(new BukkitInventory(playerInventory), shop));
+            return isContainerCountingNeeded ? Util.countSpace(new BukkitInventoryWrapper(playerInventory), shop) : Math.min(shop.getRemainingStock(), Util.countSpace(new BukkitInventoryWrapper(playerInventory), shop));
         }
-        int itemAmount = Math.min(Util.countSpace(new BukkitInventory(playerInventory), shop), (int) Math.floor(traderBalance / price));
+        int itemAmount = Math.min(Util.countSpace(new BukkitInventoryWrapper(playerInventory), shop), (int) Math.floor(traderBalance / price));
         if (!isContainerCountingNeeded) {
             itemAmount = Math.min(itemAmount, shop.getRemainingStock());
         }
@@ -312,10 +312,10 @@ public class PlayerListener extends AbstractQSListener {
     private int getPlayerCanSell(Shop shop, double ownerBalance, double price, Inventory playerInventory) {
         boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
         if (shop.isFreeShop()) {
-            return isContainerCountingNeeded ? Util.countItems(new BukkitInventory(playerInventory), shop) : Math.min(shop.getRemainingSpace(), Util.countItems(new BukkitInventory(playerInventory), shop));
+            return isContainerCountingNeeded ? Util.countItems(new BukkitInventoryWrapper(playerInventory), shop) : Math.min(shop.getRemainingSpace(), Util.countItems(new BukkitInventoryWrapper(playerInventory), shop));
         }
 
-        int items = Util.countItems(new BukkitInventory(playerInventory), shop);
+        int items = Util.countItems(new BukkitInventoryWrapper(playerInventory), shop);
         final int ownerCanAfford = (int) (ownerBalance / price);
         if (!isContainerCountingNeeded) {
             // Amount check player amount and shop empty slot

@@ -516,7 +516,14 @@ public interface InventoryWrapper {
 
     /**
      * Gets the Inventory Type
-     * @return
+     * @return The Inventory Type
      */
     @NotNull InventoryWrapperType getInventoryType();
+
+    /**
+     * Gets the Inventory Wrapper Manager
+     * @return Wrapper Manager
+     */
+    @NotNull InventoryWrapperManager getWrapperManager();
+
 }
