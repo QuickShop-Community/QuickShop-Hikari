@@ -1102,14 +1102,14 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     player != null ? player.getName() : seller.toString(),
                     Integer.toString(amount * shop.getItem().getAmount()),
                     MsgUtil.getTranslateText(shop.getItem()),
-                    Double.toString(total),
+                    this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop),
                     this.formatter.format(CalculateUtil.multiply(taxModifier, total), shop)).forLocale();
         } else {
             msg = plugin.text().of(seller, "player-bought-from-your-store",
                     player != null ? player.getName() : seller.toString(),
                     Integer.toString(amount * shop.getItem().getAmount()),
                     MsgUtil.getTranslateText(shop.getItem()),
-                    Double.toString(total)).forLocale();
+                    this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop)).forLocale();
         }
 
         MsgUtil.TransactionMessage transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
