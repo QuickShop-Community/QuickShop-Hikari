@@ -107,7 +107,9 @@ public class ContainerShop implements Shop {
     private String currency;
     private boolean disableDisplay;
     private UUID taxAccount;
+    @NotNull
     private String inventoryWrapperProvider;
+    @NotNull
     private InventoryWrapper inventory;
 
 
@@ -204,7 +206,6 @@ public class ContainerShop implements Shop {
             Util.debugLog("Shop " + this + " currency data upgrade successful.");
         }
         setDirty();
-        this.update();
     }
 
     @Override

@@ -215,7 +215,8 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     @Override
     public void createShop(@NotNull Shop shop, @Nullable Runnable onSuccess, @Nullable Consumer<SQLException> onFailed) {
         removeShop(shop); //First purge old exist shop before create new shop.
-        String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type, extra, inventorywrapper, symbollink) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "shops (owner, price, itemConfig, x, y, z, world, unlimited, type, extra, inventorywrapper, symbollink) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
         manager.addDelayTask(new DatabaseTask(sqlString, new DatabaseTask.Task() {
             @Override
             public void edit(PreparedStatement ps) throws SQLException {
@@ -384,11 +385,12 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
                            double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
                            @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
-                           @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName) {
+                           @NotNull String inventoryWrapperProvider, @NotNull String inventorySymbolLink) {
         String sqlString = "UPDATE " + plugin
                 .getDbPrefix() + "shops SET owner = ?, itemConfig = ?, unlimited = ?, type = ?, price = ?," +
                 " extra = ?, currency = ?, disableDisplay = ?, taxAccount = ?, inventorywrapper = ?, symbollink = ?" +
                 " WHERE x = ? AND y = ? and z = ? and world = ?";
+        Util.debugLog("CREATE->DB: ");
         manager.addDelayTask(new DatabaseTask(sqlString, ps -> {
             ps.setString(1, owner);
             ps.setString(2, Util.serialize(item));
@@ -399,7 +401,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
             ps.setString(7, currency);
             ps.setInt(8, disableDisplay ? 1 : 0);
             ps.setString(9, taxAccount);
-            ps.setString(10, inventoryWrapperName);
+            ps.setString(10, inventoryWrapperProvider);
             ps.setString(11, inventorySymbolLink);
             ps.setInt(12, x);
             ps.setInt(13, y);

@@ -37,6 +37,8 @@ import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.BlockInventoryHolder;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
@@ -919,8 +921,18 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (!plugin.isAllowStack()) {
             info.getItem().setAmount(1);
         }
+        Inventory inv;
+        BlockState state = info.getLocation().getBlock().getState();
+        if(state instanceof BlockInventoryHolder){
+            inv = ((BlockInventoryHolder) state).getInventory();
+        }else{
+            plugin.text().of(p, "chest-was-removed").send();
+            return;
+        }
+
 
         // Create the sample shop
+        //noinspection ConstantConditions
         ContainerShop shop = new ContainerShop(
                 plugin,
                 info.getLocation(),
@@ -932,7 +944,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 new YamlConfiguration(),
                 null,
                 false,
-                null);
+                null,
+                plugin.getName(),
+                new BukkitInventoryWrapper(inv));
         if (!info.isBypassed()) {
             Result result = ((SimpleIntegrationManager) plugin.getIntegrationHelper()).callIntegrationsCanCreate(p, info.getLocation());
             if (!result.isSuccess()) {

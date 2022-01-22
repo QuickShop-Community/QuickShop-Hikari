@@ -145,9 +145,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private SimpleShopManager shopManager;
     private SimpleTextManager textManager;
     private boolean priceChangeRequiresFee = false;
+    private final InventoryWrapperRegistry inventoryWrapperRegistry = new InventoryWrapperRegistry(this);
     @Getter
     private final InventoryWrapperManager inventoryWrapperManager = new BukkitInventoryWrapperManager();
-    private final InventoryWrapperRegistry inventoryWrapperRegistry = new InventoryWrapperRegistry(this);
+
     /**
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
      */

@@ -29,11 +29,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.Container;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.EnderChest;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -226,11 +226,11 @@ public class ShopLoader {
         if (plugin.getServer().getOfflinePlayer(shop.getOwner()).getName() == null) {
             Util.debugLog("Shop owner not exist on this server, did you have reset the playerdata?");
         }
-        if(shop.getInventoryWrapperProvider() == null || shop.getInventoryWrapperProvider().isEmpty()){
+        if (shop.getInventoryWrapperProvider() == null || shop.getInventoryWrapperProvider().isEmpty()) {
             Util.debugLog("InventoryWrapperProvider not exists. The data not successfully upgrading?");
             return true;
         }
-        if(shop.getInventory() == null){
+        if (shop.getInventory() == null) {
             Util.debugLog("InventoryWrapper invalid.");
             return true;
         }
@@ -480,31 +480,30 @@ public class ShopLoader {
             }
         }
 
-        private @Nullable InventoryWrapper locateInventory(@Nullable String symbolLink) {
+        private @NotNull InventoryWrapper locateInventory(@Nullable String symbolLink) {
             if (symbolLink == null || symbolLink.isEmpty()) {
                 // Upgrading data
                 Util.debugLog("Upgrading old shop data: " + this);
-                Block block = getLocation().getBlock();
-                if (block instanceof Container) {
-                    return new BukkitInventoryWrapper(((Container) block).getInventory());
+                BlockState block = getLocation().getBlock().getState();
+                if (block instanceof BlockInventoryHolder) {
+                    this.inventoryWrapperProvider = plugin.getInventoryWrapperRegistry().find(plugin.getInventoryWrapperManager());
+                    this.inventory = new BukkitInventoryWrapper(((BlockInventoryHolder) block).getInventory());
+                    return this.inventory;
                 } else {
                     if (block instanceof EnderChest) {
-                        plugin.getLogger().warning("Failed to load ender chest shop: You need install QuickShop EnderChest addon to make it works.");
-                        return null;
+                        throw new IllegalStateException("Failed to load ender chest shop: You need install QuickShop EnderChest addon to make it works.");
                     }
-                    Util.debugLog("Upgrading failed: Target block not a Container.");
+                    throw new IllegalArgumentException("Failed to load shop: Target block not a Container, Skipping...");
                 }
             }
             InventoryWrapperManager manager = plugin.getInventoryWrapperRegistry().get(getInventoryWrapperProvider());
             if (manager == null) {
-                plugin.getLogger().log(Level.WARNING, "Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " invalid or failed to load!");
-                return null;
+                throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " invalid or failed to load!");
             }
             try {
                 return manager.locate(symbolLink);
             } catch (IllegalArgumentException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage());
-                return null;
+                throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage());
             }
         }
 
