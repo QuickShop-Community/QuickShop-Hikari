@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is ShopTransactionMessageHolder.java
+ * This file is a part of project QuickShop, the name is ShopTransactionMessageContainer.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -19,18 +19,37 @@
 
 package org.maxgamer.quickshop.shop;
 
-import com.google.gson.Gson;
+import com.google.gson.*;
+import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.localization.LocalizedMessagePair;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 
+import java.lang.reflect.Type;
+
 public class ShopTransactionMessageContainer {
+    private static final Gson gson = new GsonBuilder().registerTypeAdapter(ShopTransactionMessageContainer.class, new Deserializer()).create();
+    @Getter
+    //Version for deserializing
+    private final int version;
     private final ShopTransactionMessage shopTransactionMessage;
 
     private ShopTransactionMessageContainer(@NotNull ShopTransactionMessage holder) {
         this.shopTransactionMessage = holder;
+        version = holder.getVersion();
+    }
+
+    public static ShopTransactionMessageContainer fromJson(String json) {
+        try {
+            if (MsgUtil.isJson(json)) {
+                return gson.fromJson(json, ShopTransactionMessageContainer.class);
+            }
+        } catch (Exception ignored) {
+        }
+        //Plain V1 message
+        return new ShopTransactionMessageContainer(new ShopTransactionMessage.V1(json));
     }
 
     public static ShopTransactionMessageContainer ofPlainStr(String message) {
@@ -45,23 +64,35 @@ public class ShopTransactionMessageContainer {
         return new ShopTransactionMessageContainer(new ShopTransactionMessage.V3(message, hoverItem, hoverText));
     }
 
-    public static ShopTransactionMessageContainer fromJson(String json) {
-        try {
-            if (MsgUtil.isJson(json)) {
-                Gson gson = JsonUtil.getGson();
-                ShopTransactionMessageContainer holder = gson.fromJson(json, ShopTransactionMessageContainer.class);
-                //Plain V2 message
-                if (holder.shopTransactionMessage == null) {
-                    return new ShopTransactionMessageContainer(gson.fromJson(json, ShopTransactionMessage.V2.class));
+    private static class Deserializer implements JsonDeserializer<ShopTransactionMessageContainer> {
+
+        @Override
+        public ShopTransactionMessageContainer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            JsonObject jsonObject = json.getAsJsonObject();
+            //Modern format
+            if (jsonObject.has("shopTransactionMessage")) {
+                if (jsonObject.has("version")) {
+                    int version = jsonObject.get("version").getAsInt();
+                    JsonObject message = jsonObject.getAsJsonObject("shopTransactionMessage");
+                    switch (version) {
+                        case 1:
+                            return new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V1.class));
+                        case 2:
+                            return new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V2.class));
+                        case 3:
+                            return new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V3.class));
+                        default:
+                            throw new JsonParseException("Unknown ShopTransactionMessage version +" + version + "+!");
+                    }
                 } else {
-                    //Modern message proxy
-                    return holder;
+                    //Some users may use snapshot, this time is V3 message
+                    return new ShopTransactionMessageContainer(context.deserialize(json, ShopTransactionMessage.V3.class));
                 }
+            } else {
+                //Plain V2 message
+                return new ShopTransactionMessageContainer(context.deserialize(json, ShopTransactionMessage.V2.class));
             }
-        } catch (Exception ignored) {
         }
-        //Plain V1 message
-        return new ShopTransactionMessageContainer(new ShopTransactionMessage.V1(json));
     }
 
     public @NotNull String getMessage(@Nullable String locale) {
