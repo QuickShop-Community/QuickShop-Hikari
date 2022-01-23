@@ -1375,13 +1375,13 @@ public class ContainerShop implements Shop {
         if (!createBackup) {
             createBackup = Util.backupDatabase();
             if (createBackup) {
-                this.delete(true);
+                this.delete(false);
             }
         } else {
             this.delete(true);
         }
         plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
-        Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was unloaded.");
+        Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was deleted.");
         return null;
 //        BlockState state = PaperLib.getBlockState(location.getBlock(), false).getState();
 //        try {
