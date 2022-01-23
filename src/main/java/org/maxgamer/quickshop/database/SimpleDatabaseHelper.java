@@ -146,7 +146,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
         createColumn("shops", "disableDisplay", new DataType(DataTypeMapping.INT, null, -1));
         createColumn("shops", "taxAccount", new DataType(DataTypeMapping.VARCHAR, 255));
         createColumn("shops", "inventorywrapper", new DataType(DataTypeMapping.VARCHAR, 255));
-        createColumn("shops", "symbollink", new DataType(DataTypeMapping.TEXT));
+        createColumn("shops", "symbollink", new DataType(DataTypeMapping.LONGTEXT));
         if (manager.getDatabase() instanceof MySQLCore) {
             manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
                     .getDbPrefix() + "messages MODIFY COLUMN message text CHARACTER SET utf8mb4 NOT NULL AFTER owner", checkTask));
