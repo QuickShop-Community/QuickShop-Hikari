@@ -558,7 +558,7 @@ public interface Shop {
      * Gets the shop Inventory
      * @return Inventory
      */
-    @NotNull
+    @Nullable
     InventoryWrapper getInventory();
 
     /**

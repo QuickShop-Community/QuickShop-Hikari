@@ -1119,6 +1119,9 @@ public class ContainerShop implements Shop {
         if (this.unlimited && !isAlwaysCountingContainer()) {
             return -1;
         }
+        if(this.getInventory() == null){
+            return 0;
+        }
         int space = this.getInventory().countSpace(this);
         new ShopInventoryCalculateEvent(this, space, -1).callEvent();
         return space;
@@ -1134,6 +1137,9 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         if (this.unlimited && !isAlwaysCountingContainer()) {
             return -1;
+        }
+        if(this.getInventory() == null){
+            return 0;
         }
         int stock = this.getInventory().countItems(this);
         new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
@@ -1341,10 +1347,8 @@ public class ContainerShop implements Shop {
      */
     public @Nullable InventoryWrapper getInventory() {
         Util.ensureThread(false);
-        if (this.inventory != null) {
-            if (this.inventory.isValid()) {
-                return this.inventory;
-            }
+        if (this.inventory.isValid()) {
+            return this.inventory;
         }
         if (!createBackup) {
             createBackup = Util.backupDatabase();
