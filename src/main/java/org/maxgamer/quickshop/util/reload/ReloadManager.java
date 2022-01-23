@@ -137,7 +137,7 @@ public class ReloadManager {
                 if (reloadable.getReloadable() != null) {
                     Reloadable rable = reloadable.getReloadable().get();
                     if (rable != null) {
-                        if (!clazz.equals(reloadable.getReloadable().getClass())) {
+                        if (!clazz.equals(rable.getClass())) {
                             continue;
                         }
                     } else {
