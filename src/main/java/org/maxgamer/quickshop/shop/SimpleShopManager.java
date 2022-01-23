@@ -653,7 +653,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.text().of(buyer, "shop-has-no-space", Integer.toString(space), MsgUtil.getTranslateText(shop.getItem())).send();
             return;
         }
-        int count = Util.countItems(buyerInventory, shop);
+        int count = buyerInventory.countItems(shop);
         // Not enough items
         if (amount > count) {
             plugin.text().of(buyer,
@@ -1053,7 +1053,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.text().of(seller, "negative-amount").send();
             return;
         }
-        int pSpace = Util.countSpace(sellerInventory, shop);
+        int pSpace = sellerInventory.countSpace(shop);
         if (amount > pSpace) {
             plugin.text().of(seller, "not-enough-space", String.valueOf(pSpace)).send();
             return;
@@ -1340,9 +1340,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             } else {
                 if (message.equalsIgnoreCase(
                         plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
-                    int shopHaveSpaces =
-                            Util.countSpace(((ContainerShop) shop).getInventory(), shop);
-                    int invHaveItems = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
+
+                    int shopHaveSpaces = ((ContainerShop) shop).getInventory().countSpace(shop);
+                    int invHaveItems = new BukkitInventoryWrapper(p.getInventory()).countItems(shop);
                     // Check if shop owner has enough money
                     double ownerBalance = eco
                             .getBalance(shop.getOwner(), shop.getLocation().getWorld(),
@@ -1359,7 +1359,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         amount = Math.min(shopHaveSpaces, invHaveItems);
                         amount = Math.min(amount, ownerCanAfford);
                     } else {
-                        amount = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
+                        amount = new BukkitInventoryWrapper(p.getInventory()).countItems(shop);
                         // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
                         // true,
                         // the unlimited shop owner should have enough money.
@@ -1410,13 +1410,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             } else {
                 if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
                     int shopHaveItems = shop.getRemainingStock();
-                    int invHaveSpaces = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
+                    int invHaveSpaces = new BukkitInventoryWrapper(p.getInventory()).countSpace(shop);
                     if (shop.isAlwaysCountingContainer() || !shop.isUnlimited()) {
                         amount = Math.min(shopHaveItems, invHaveSpaces);
                     } else {
                         // should check not having items but having empty slots, cause player is trying to buy
                         // items from the shop.
-                        amount = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
+                        amount = new BukkitInventoryWrapper(p.getInventory()).countSpace(shop);
                     }
                     // typed 'all', check if player has enough money than price * amount
                     double price = shop.getPrice();

@@ -50,6 +50,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -199,15 +200,15 @@ public class Util {
      * @param inv  The inventory to search
      * @param item The ItemStack to search for
      * @return The number of items that match in this inventory.
-     * @Deprecated Deprecated for different order will result different result
      */
-    @Deprecated
+    @ApiStatus.Experimental
     public static int countItems(@Nullable InventoryWrapper inv, @NotNull ItemStack item) {
         if (inv == null) {
             return 0;
         }
         int items = 0;
         for (final ItemStack iStack : inv.getStorageContents()) {
+            //noinspection ConstantConditions
             if (iStack == null || iStack.getType() == Material.AIR) {
                 continue;
             }
@@ -232,6 +233,7 @@ public class Util {
         }
         int items = 0;
         for (final ItemStack iStack : inv.getStorageContents()) {
+            //noinspection ConstantConditions
             if (iStack == null || iStack.getType() == Material.AIR) {
                 continue;
             }
@@ -275,9 +277,8 @@ public class Util {
      * @param item The item prototype. Material, durabiltiy and enchants must match for 'stackability'
      *             to occur.
      * @return The number of items that can be given to the inventory safely.
-     * @Deprecated Deprecated for different order will result different result
      */
-    @Deprecated
+    @ApiStatus.Experimental
     public static int countSpace(@Nullable InventoryWrapper inv, @NotNull ItemStack item) {
         if (inv == null) {
             return 0;

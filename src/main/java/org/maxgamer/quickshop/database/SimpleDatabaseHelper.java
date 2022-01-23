@@ -313,7 +313,6 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
     @Override
     public void saveOfflineTransactionMessage(@NotNull UUID player, @NotNull String message, long time) {
-
         String sqlString = "INSERT INTO " + plugin.getDbPrefix() + "messages (owner, message, time) VALUES (?, ?, ?)";
         manager.addDelayTask(
                 new DatabaseTask(

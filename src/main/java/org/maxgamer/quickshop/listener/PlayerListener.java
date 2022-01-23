@@ -297,9 +297,9 @@ public class PlayerListener extends AbstractQSListener {
     private int getPlayerCanBuy(Shop shop, double traderBalance, double price, Inventory playerInventory) {
         boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
         if (shop.isFreeShop()) { // Free shop
-            return isContainerCountingNeeded ? Util.countSpace(new BukkitInventoryWrapper(playerInventory), shop) : Math.min(shop.getRemainingStock(), Util.countSpace(new BukkitInventoryWrapper(playerInventory), shop));
+            return isContainerCountingNeeded ? new BukkitInventoryWrapper(playerInventory).countSpace(shop) : Math.min(shop.getRemainingStock(), new BukkitInventoryWrapper(playerInventory).countSpace(shop));
         }
-        int itemAmount = Math.min(Util.countSpace(new BukkitInventoryWrapper(playerInventory), shop), (int) Math.floor(traderBalance / price));
+        int itemAmount = Math.min(new BukkitInventoryWrapper(playerInventory).countSpace(shop), (int) Math.floor(traderBalance / price));
         if (!isContainerCountingNeeded) {
             itemAmount = Math.min(itemAmount, shop.getRemainingStock());
         }
@@ -312,10 +312,10 @@ public class PlayerListener extends AbstractQSListener {
     private int getPlayerCanSell(Shop shop, double ownerBalance, double price, Inventory playerInventory) {
         boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
         if (shop.isFreeShop()) {
-            return isContainerCountingNeeded ? Util.countItems(new BukkitInventoryWrapper(playerInventory), shop) : Math.min(shop.getRemainingSpace(), Util.countItems(new BukkitInventoryWrapper(playerInventory), shop));
+            return isContainerCountingNeeded ? new BukkitInventoryWrapper(playerInventory).countItems(shop) : Math.min(shop.getRemainingSpace(), new BukkitInventoryWrapper(playerInventory).countItems(shop));
         }
 
-        int items = Util.countItems(new BukkitInventoryWrapper(playerInventory), shop);
+        int items = new BukkitInventoryWrapper(playerInventory).countItems(shop);
         final int ownerCanAfford = (int) (ownerBalance / price);
         if (!isContainerCountingNeeded) {
             // Amount check player amount and shop empty slot

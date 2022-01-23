@@ -7,6 +7,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.util.Util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,6 +66,22 @@ public interface InventoryWrapper {
 
     default int getMaxStackSize() {
         return 64;
+    }
+
+    default int countItems(@NotNull ItemStack stack){
+        return Util.countItems(this,stack);
+    }
+
+    default int countSpace(@NotNull ItemStack stack){
+        return Util.countSpace(this,stack);
+    }
+
+    default int countItems(@NotNull Shop shop){
+        return Util.countItems(this,shop);
+    }
+
+    default int countSpace(@NotNull Shop shop){
+        return Util.countSpace(this,shop);
     }
 
     /**
