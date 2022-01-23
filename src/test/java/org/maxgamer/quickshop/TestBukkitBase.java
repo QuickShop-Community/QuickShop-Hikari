@@ -1,8 +1,8 @@
 package org.maxgamer.quickshop;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 
 /**
  * Use for testing related to bukkit api
@@ -10,13 +10,15 @@ import org.junit.BeforeClass;
  * If you are writing test which using runtime stuff, just extend it
  */
 public abstract class TestBukkitBase {
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         MockBukkit.mock();
+        System.getProperties().setProperty("org.maxgamer.quickshop.util.envcheck.skip.SIGNATURE_VERIFY", "true");
+        System.getProperties().setProperty("org.maxgamer.quickshop.util.envcheck.skip.POTENTIAL_INFECTION_CHARACTERISTICS_CHECK", "true");
         MockBukkit.load(QuickShop.class);
     }
 
-    @AfterClass
+    @AfterAll
     public static void tearDown() {
         MockBukkit.unmock();
     }

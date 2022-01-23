@@ -277,7 +277,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      */
     protected QuickShop(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
         super(loader, description, dataFolder, file);
-        System.getProperties().setProperty("org.maxgamer.quickshop.util.envcheck.skip.SIGNATURE_VERIFY", "true");
     }
 
     @NotNull

@@ -25,12 +25,12 @@ public class UpdaterTest {
 //    @Test
 //    //TODO: Apply to new updater.
 //    public void TestUpdateVer() {
-////        Assert.assertTrue(Updater.hasUpdate("3", "4"));
-////        Assert.assertFalse(Updater.hasUpdate("3.2.3", "3.2.3"));
-////        Assert.assertTrue(Updater.hasUpdate("3.2.0", "3.2.3"));
-////        Assert.assertTrue(Updater.hasUpdate("3.2.3", "3.2.3.1"));
-////        Assert.assertTrue(Updater.hasUpdate("3.2.3", "3.2.3.0"));
-////        Assert.assertTrue(Updater.hasUpdate("3.2.3.0", "3.2.3.1"));
-////        Assert.assertFalse(Updater.hasUpdate("3.2.3.1.3", "3.2.3.1"));
+////        Assertions.assertTrue(Updater.hasUpdate("3", "4"));
+////        Assertions.assertFalse(Updater.hasUpdate("3.2.3", "3.2.3"));
+////        Assertions.assertTrue(Updater.hasUpdate("3.2.0", "3.2.3"));
+////        Assertions.assertTrue(Updater.hasUpdate("3.2.3", "3.2.3.1"));
+////        Assertions.assertTrue(Updater.hasUpdate("3.2.3", "3.2.3.0"));
+////        Assertions.assertTrue(Updater.hasUpdate("3.2.3.0", "3.2.3.1"));
+////        Assertions.assertFalse(Updater.hasUpdate("3.2.3.1.3", "3.2.3.1"));
 //    }
 }
