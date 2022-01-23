@@ -48,7 +48,8 @@ import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CrowdinOTA implements Distribution {
-    protected static final String CROWDIN_OTA_HOST = "https://distributions.crowdin.net/daf1a8db40f132ce157c457xrm4/";
+    //DO NOT final it! Unit-test needs to change it to prevent network flow
+    protected static String CROWDIN_OTA_HOST = "https://distributions.crowdin.net/daf1a8db40f132ce157c457xrm4/";
     private final QuickShop plugin;
     private final OTACacheControl otaCacheControl = new OTACacheControl();
 
