@@ -584,7 +584,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.7.2</version>
+            <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
@@ -623,7 +623,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>[8.0.16,)</version>
+            <version>8.0.25</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -751,7 +751,7 @@
         </dependency>
         <dependency>
             <groupId>com.rollbar</groupId>
-            <version>[1.0,)</version>
+            <version>1.8.1</version>
             <artifactId>rollbar-java</artifactId>
         </dependency>
         <dependency>
@@ -803,7 +803,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
-            <version>1.7.32</version>
+            <version>1.7.33</version>
             <scope>compile</scope>
         </dependency>
         <!--        <dependency>-->
