@@ -150,7 +150,7 @@
     "now-nolonger-debuging": "&a成功切换到了生产模式，插件重载中...",
     "wrong-args": "&c无效参数。使用 &l/qs help &c来查看命令帮助。",
     "description": {
-      "alwayscounting": "&a设置商店是否总会计算容器物品（即使是无限商店）",
+      "alwayscounting": "&e设置商店是否总会计算容器物品（即使是无限商店）",
       "title": "&aQuickShop 帮助",
       "unlimited": "&e将商店设置为无限库存。",
       "setowner": "&e为商店设置新的所有者。",
