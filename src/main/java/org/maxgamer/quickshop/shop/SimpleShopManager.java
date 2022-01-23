@@ -51,6 +51,7 @@ import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.integration.SimpleIntegrationManager;
+import org.maxgamer.quickshop.localization.LocalizedMessagePair;
 import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.economyformatter.EconomyFormatter;
 import org.maxgamer.quickshop.util.holder.Result;
@@ -714,33 +715,33 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         Player player = plugin.getServer().getPlayer(buyer);
 
 
-        String msg = plugin.text().of(buyer, "player-sold-to-your-store",
+        LocalizedMessagePair msg = LocalizedMessagePair.of("player-sold-to-your-store",
                 player != null ? player.getName() : buyer.toString(),
                 String.valueOf(amount),
-                MsgUtil.getTranslateText(shop.getItem())).forLocale();
+                MsgUtil.getTranslateText(shop.getItem()));
 
-        MsgUtil.TransactionMessage transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
+        ShopTransactionMessageContainer shopTransactionMessage = ShopTransactionMessageContainer.ofLocalizedMessageWithItem(msg, Util.serialize(shop.getItem()), null);
 
         if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
             for (UUID staff : shop.getModerator().getStaffs()) {
-                MsgUtil.send(shop, staff, transactionMessage);
+                MsgUtil.send(shop, staff, shopTransactionMessage);
             }
         }
-        MsgUtil.send(shop, shop.getOwner(), transactionMessage);
+        MsgUtil.send(shop, shop.getOwner(), shopTransactionMessage);
 
         if (space == amount) {
-            msg = plugin.text().of(buyer, "shop-out-of-space",
+            msg = LocalizedMessagePair.of("shop-out-of-space",
                     Integer.toString(shop.getLocation().getBlockX()),
                     Integer.toString(shop.getLocation().getBlockY()),
-                    Integer.toString(shop.getLocation().getBlockZ())).forLocale();
-            transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
+                    Integer.toString(shop.getLocation().getBlockZ()));
+            shopTransactionMessage = ShopTransactionMessageContainer.ofLocalizedMessageWithItem(msg, Util.serialize(shop.getItem()), null);
 
             if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
                 for (UUID staff : shop.getModerator().getStaffs()) {
-                    MsgUtil.send(shop, staff, transactionMessage);
+                    MsgUtil.send(shop, staff, shopTransactionMessage);
                 }
             }
-            MsgUtil.send(shop, shop.getOwner(), transactionMessage);
+            MsgUtil.send(shop, shop.getOwner(), shopTransactionMessage);
         }
 
 
@@ -1094,45 +1095,45 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return;
         }
 
-        String msg;
+        LocalizedMessagePair msg;
         // Notify the shop owner //TODO: move to a standalone method
         Player player = plugin.getServer().getPlayer(seller);
         if (plugin.getConfig().getBoolean("show-tax")) {
-            msg = plugin.text().of(seller, "player-bought-from-your-store-tax",
+            msg = LocalizedMessagePair.of("player-bought-from-your-store-tax",
                     player != null ? player.getName() : seller.toString(),
                     Integer.toString(amount * shop.getItem().getAmount()),
                     MsgUtil.getTranslateText(shop.getItem()),
                     this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop),
-                    this.formatter.format(CalculateUtil.multiply(taxModifier, total), shop)).forLocale();
+                    this.formatter.format(CalculateUtil.multiply(taxModifier, total), shop));
         } else {
-            msg = plugin.text().of(seller, "player-bought-from-your-store",
+            msg = LocalizedMessagePair.of("player-bought-from-your-store",
                     player != null ? player.getName() : seller.toString(),
                     Integer.toString(amount * shop.getItem().getAmount()),
                     MsgUtil.getTranslateText(shop.getItem()),
-                    this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop)).forLocale();
+                    this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop));
         }
 
-        MsgUtil.TransactionMessage transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
+        ShopTransactionMessageContainer shopTransactionMessage = ShopTransactionMessageContainer.ofLocalizedMessageWithItem(msg, Util.serialize(shop.getItem()), null);
 
-        MsgUtil.send(shop, shop.getOwner(), transactionMessage);
+        MsgUtil.send(shop, shop.getOwner(), shopTransactionMessage);
         if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
             for (UUID staff : shop.getModerator().getStaffs()) {
-                MsgUtil.send(shop, staff, transactionMessage);
+                MsgUtil.send(shop, staff, shopTransactionMessage);
             }
         }
         // Transfers the item from A to B
         if (stock == amount) {
-            msg = plugin.text().of(seller, "shop-out-of-stock",
+            msg = LocalizedMessagePair.of("shop-out-of-stock",
                     Integer.toString(shop.getLocation().getBlockX()),
                     Integer.toString(shop.getLocation().getBlockY()),
                     Integer.toString(shop.getLocation().getBlockZ()),
-                    MsgUtil.getTranslateText(shop.getItem())).forLocale();
-            transactionMessage = new MsgUtil.TransactionMessage(msg, Util.serialize(shop.getItem()), null);
+                    MsgUtil.getTranslateText(shop.getItem()));
+            shopTransactionMessage = ShopTransactionMessageContainer.ofLocalizedMessageWithItem(msg, Util.serialize(shop.getItem()), null);
 
-            MsgUtil.send(shop, shop.getOwner(), transactionMessage);
+            MsgUtil.send(shop, shop.getOwner(), shopTransactionMessage);
             if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
                 for (UUID staff : shop.getModerator().getStaffs()) {
-                    MsgUtil.send(shop, staff, transactionMessage);
+                    MsgUtil.send(shop, staff, shopTransactionMessage);
                 }
             }
         }

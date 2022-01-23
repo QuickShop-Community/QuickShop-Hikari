@@ -29,6 +29,8 @@ import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 import org.maxgamer.quickshop.api.event.ShopOngoingFeeEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.economy.Trader;
+import org.maxgamer.quickshop.localization.LocalizedMessagePair;
+import org.maxgamer.quickshop.shop.ShopTransactionMessageContainer;
 import org.maxgamer.quickshop.shop.SimpleShopManager;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -118,15 +120,16 @@ public class OngoingFeeWatcher extends BukkitRunnable {
     public void removeShop(@NotNull Shop shop) {
         Util.mainThreadRun(shop::delete);
 
-        MsgUtil.send(shop, shop.getOwner(), new MsgUtil.TransactionMessage(
-                plugin.text().of("shop-removed-cause-ongoing-fee", "World:"
+        MsgUtil.send(shop, shop.getOwner(), ShopTransactionMessageContainer.ofLocalizedMessageWithItem(
+                LocalizedMessagePair.of("shop-removed-cause-ongoing-fee", "World:"
                         + Objects.requireNonNull(shop.getLocation().getWorld()).getName()
                         + " X:"
                         + shop.getLocation().getBlockX()
                         + " Y:"
                         + shop.getLocation().getBlockY()
                         + " Z:"
-                        + shop.getLocation().getBlockZ()).forLocale()
+                        + shop.getLocation().getBlockZ()
+                )
                 , null, null));
     }
 
