@@ -1341,7 +1341,14 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 if (message.equalsIgnoreCase(
                         plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
 
-                    int shopHaveSpaces = shop.getInventory().countSpace(shop);
+                    int shopHaveSpaces;
+                    if(shop.getInventory() == null){
+                        shopHaveSpaces = 0;
+                        plugin.getLogger().warning("Shop "+shop+" has null Inventory, failed to check spaces.");
+                        Util.debugLog("Shop "+shop+" has null Inventory, failed to check spaces.");
+                    }else{
+                        shopHaveSpaces = shop.getInventory().countSpace(shop);
+                    }
                     int invHaveItems = new BukkitInventoryWrapper(p.getInventory()).countItems(shop);
                     // Check if shop owner has enough money
                     double ownerBalance = eco

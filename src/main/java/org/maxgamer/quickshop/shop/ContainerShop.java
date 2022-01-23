@@ -284,6 +284,11 @@ public class ContainerShop implements Shop {
         item = item.clone();
         int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
         InventoryWrapper inv = this.getInventory();
+        if(inv == null){
+            plugin.getLogger().warning("Failed to add item "+item+" x"+amount+" to shop "+this+": Inventory null.");
+            Util.debugLog("Failed to add item "+item+" x"+amount+" to shop "+this+": Inventory null. Provider: "+inventoryWrapperProvider);
+            return;
+        }
         int remains = amount;
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
@@ -354,6 +359,11 @@ public class ContainerShop implements Shop {
             }
         } else {
             InventoryWrapper chestInv = this.getInventory();
+            if(chestInv == null){
+                plugin.getLogger().warning("Failed to process buy, reason: "+item+" x"+amount+" to shop "+this+": Inventory null.");
+                Util.debugLog("Failed to process buy, reason: "+item+" x"+amount+" to shop "+this+": Inventory null.");
+                return;
+            }
             for (int i = 0; amount > 0 && i < contents.length; i++) {
                 ItemStack item = contents[i];
                 if (item != null && this.matches(item)) {
@@ -625,6 +635,11 @@ public class ContainerShop implements Shop {
         item = item.clone();
         int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
         InventoryWrapper inv = this.getInventory();
+        if(inv == null){
+            plugin.getLogger().warning("Failed to process item remove, reason: "+item+" x"+amount+" to shop "+this+": Inventory null.");
+            Util.debugLog("Failed to process item remove, reason: "+item+" x"+amount+" to shop "+this+": Inventory null.");
+            return;
+        }
         int remains = amount;
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
@@ -664,7 +679,12 @@ public class ContainerShop implements Shop {
                 amount -= stackSize;
             }
         } else {
-            ItemStack[] chestContents = Objects.requireNonNull(this.getInventory()).getContents();
+            if(this.getInventory() == null){
+                plugin.getLogger().warning("Failed to process sell, reason: "+item+" x"+amount+" to shop "+this+": Inventory null.");
+                Util.debugLog("Failed to process sell, reason: "+item+" x"+amount+" to shop "+this+": Inventory null.");
+                return;
+            }
+            ItemStack[] chestContents = this.getInventory().getContents();
             for (int i = 0; amount > 0 && i < chestContents.length; i++) {
                 // Can't clone it here, it could be null
                 ItemStack item = chestContents[i];
@@ -1120,6 +1140,7 @@ public class ContainerShop implements Shop {
             return -1;
         }
         if(this.getInventory() == null){
+            Util.debugLog("Failed to calc RemainingSpace for shop "+this+": Inventory null.");
             return 0;
         }
         int space = this.getInventory().countSpace(this);
@@ -1139,6 +1160,7 @@ public class ContainerShop implements Shop {
             return -1;
         }
         if(this.getInventory() == null){
+            Util.debugLog("Failed to calc RemainingStock for shop "+this+": Inventory null.");
             return 0;
         }
         int stock = this.getInventory().countItems(this);
@@ -1353,13 +1375,13 @@ public class ContainerShop implements Shop {
         if (!createBackup) {
             createBackup = Util.backupDatabase();
             if (createBackup) {
-                this.delete(false);
+                this.delete(true);
             }
         } else {
             this.delete(true);
         }
         plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
-        Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was removed.");
+        Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was unloaded.");
         return null;
 //        BlockState state = PaperLib.getBlockState(location.getBlock(), false).getState();
 //        try {
