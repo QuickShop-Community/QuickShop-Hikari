@@ -109,7 +109,7 @@ public interface InventoryWrapper {
      * @throws IllegalArgumentException if items or any element in it is null or ItemStack doesn't get support.
      */
     default @NotNull Map<Integer, ItemStack> addItem(@NotNull ItemStack... items) throws IllegalArgumentException{
-        Map<Integer, ItemStack> leftover = new HashMap<Integer, ItemStack>();
+        Map<Integer, ItemStack> leftover = new HashMap<>();
 
         /* TODO: some optimization
          *  - Create a 'firstPartial' with a 'fromIndex'

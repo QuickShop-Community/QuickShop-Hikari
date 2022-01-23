@@ -1341,7 +1341,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 if (message.equalsIgnoreCase(
                         plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
 
-                    int shopHaveSpaces = ((ContainerShop) shop).getInventory().countSpace(shop);
+                    int shopHaveSpaces = shop.getInventory().countSpace(shop);
                     int invHaveItems = new BukkitInventoryWrapper(p.getInventory()).countItems(shop);
                     // Check if shop owner has enough money
                     double ownerBalance = eco
@@ -1512,7 +1512,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     @Override
-    public PriceLimiter getPriceLimiter() {
+    public @NotNull PriceLimiter getPriceLimiter() {
         return this.priceLimiter;
     }
 

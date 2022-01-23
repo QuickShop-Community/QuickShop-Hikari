@@ -48,7 +48,7 @@ public class SimpleShopChunk implements ShopChunk {
     }
 
     @Override
-    public String getWorld() {
+    public @NotNull String getWorld() {
         return world;
     }
 

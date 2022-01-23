@@ -45,7 +45,6 @@ import org.maxgamer.quickshop.util.reload.ReloadStatus;
 import org.maxgamer.quickshop.util.reload.Reloadable;
 import org.primesoft.blockshub.BlocksHubBukkit;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

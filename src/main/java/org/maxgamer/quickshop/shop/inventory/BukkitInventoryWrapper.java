@@ -16,7 +16,7 @@ import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapperType;
 import java.util.Map;
 
 public class BukkitInventoryWrapper implements InventoryWrapper {
-    private Inventory inventory;
+    private final Inventory inventory;
 
     public BukkitInventoryWrapper(@NotNull Inventory inventory){
         this.inventory = inventory;

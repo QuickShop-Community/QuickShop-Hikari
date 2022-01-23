@@ -3,7 +3,6 @@ package org.maxgamer.quickshop.util.envcheck;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 
 public class SecurityReport {
