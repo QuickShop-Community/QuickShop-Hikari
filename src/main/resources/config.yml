@@ -251,8 +251,8 @@ shop:
   display-items-check-ticks: 6000
 
   #The display type you want use.
+  #Old mode, ArmorStand (display-type=1) is Outdated and could not be used
   #0=Normal Dropped Item
-  #1=ArmorStand
   #2=Virtual Item (Requires ProtocolLib, fallback to type 0 if ProtocolLib is not installed)
   display-type: 2
 

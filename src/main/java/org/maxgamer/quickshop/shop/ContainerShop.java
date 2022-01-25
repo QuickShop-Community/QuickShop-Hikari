@@ -254,8 +254,12 @@ public class ContainerShop implements Shop {
                     this.displayItem = new VirtualDisplayItem(this);
                     break;
                 default:
-                    Util.debugLog("Warning: Failed to create a ContainerShop displayItem, the type we didn't know, fallback to VirualDisplayItem");
-                    this.displayItem = new VirtualDisplayItem(this);
+                    //Tips will be raised in AbstractDisplayItem#getNowUsing
+                    if (AbstractDisplayItem.isNotSupportVirtualItem()) {
+                        this.displayItem = new RealDisplayItem(this);
+                    } else {
+                        this.displayItem = new VirtualDisplayItem(this);
+                    }
                     break;
             }
         }
