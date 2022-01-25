@@ -71,9 +71,9 @@ public class ShopTransactionMessageContainer {
             JsonObject jsonObject = json.getAsJsonObject();
             //Modern format
             if (jsonObject.has("shopTransactionMessage")) {
+                JsonObject message = jsonObject.getAsJsonObject("shopTransactionMessage");
                 if (jsonObject.has("version")) {
                     int version = jsonObject.get("version").getAsInt();
-                    JsonObject message = jsonObject.getAsJsonObject("shopTransactionMessage");
                     switch (version) {
                         case 1:
                             return new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V1.class));
@@ -86,7 +86,7 @@ public class ShopTransactionMessageContainer {
                     }
                 } else {
                     //Some users may use snapshot, this time is V3 message
-                    return new ShopTransactionMessageContainer(context.deserialize(json, ShopTransactionMessage.V3.class));
+                    return new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V3.class));
                 }
             } else {
                 //Plain V2 message
