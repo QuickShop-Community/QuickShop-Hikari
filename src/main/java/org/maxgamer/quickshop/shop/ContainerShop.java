@@ -382,10 +382,10 @@ public class ContainerShop implements Shop {
                     // If Amount is item.getAmount(), then this sets the amount
                     // to 0
                     // Else it sets it to the remainder
-                    originalItem.setAmount(clonedItem.getAmount() - stackSize);
+                    originalItem.setAmount(originalItem.getAmount() - stackSize);
                     // We can modify this, it is a copy.
                     clonedItem.setAmount(stackSize);
-                    iterator.setCurrent(originalItem);
+                    iterator1.setCurrent(originalItem);
                     // Add the items to the players inventory
                     Objects.requireNonNull(chestInv).addItem(clonedItem);
                     amount -= stackSize;
