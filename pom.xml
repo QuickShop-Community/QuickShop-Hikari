@@ -428,6 +428,11 @@
             <id>songoda</id>
             <url>https://repo.songoda.com/repository/public/</url>
         </repository>
+        <!--MineDown -->
+        <repository>
+            <id>minebench-repo</id>
+            <url>https://repo.minebench.de/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -747,13 +752,13 @@
         </dependency>
         <dependency>
             <groupId>com.rollbar</groupId>
-            <version>[1.0,)</version>
+            <version>1.8.1</version>
             <artifactId>rollbar-java</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.Ghost-chu</groupId>
-            <artifactId>MineDown</artifactId>
-            <version>master-SNAPSHOT</version>
+            <groupId>de.themoep</groupId>
+            <artifactId>minedown</artifactId>
+            <version>1.7.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -785,7 +790,7 @@
         <dependency>
             <groupId>com.songoda</groupId>
             <artifactId>SongodaCore</artifactId>
-            <version>2.6.10</version>
+            <version>2.6.11</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
