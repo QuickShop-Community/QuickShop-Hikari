@@ -707,6 +707,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             } else {
                 plugin.text().of(buyer, "purchase-failed").send();
                 plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
+                plugin.getLogger().severe("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
             }
             return;
         }
@@ -976,6 +977,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 } else {
                     plugin.text().of(p, "purchase-failed").send();
                     plugin.getLogger().severe("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
+                    plugin.getLogger().severe("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
+
                 }
                 return;
             }
