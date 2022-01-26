@@ -334,10 +334,10 @@ public class ContainerShop implements Shop {
             this.sell(buyer, buyerInventory, loc2Drop, -amount);
             return;
         }
-        InventoryWrapperIterator iterator = buyerInventory.iterator();
+        InventoryWrapperIterator buyerIterator = buyerInventory.iterator();
         if (this.isUnlimited() && !isAlwaysCountingContainer) {
-            while (amount > 0 && iterator.hasNext()) {
-                ItemStack stack = iterator.next();
+            while (amount > 0 && buyerIterator.hasNext()) {
+                ItemStack stack = buyerIterator.next();
                 if (stack == null || stack.getType() == Material.AIR) {
                     continue; // No item
                 }
@@ -345,7 +345,7 @@ public class ContainerShop implements Shop {
                     int stackSize = Math.min(amount, stack.getAmount());
                     stack.setAmount(stack.getAmount() - stackSize);
                     amount -= stackSize;
-                    iterator.setCurrent(stack);
+                    buyerIterator.setCurrent(stack);
                 }
             }
             // Send the players new inventory to them
@@ -370,9 +370,8 @@ public class ContainerShop implements Shop {
                 Util.debugLog("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
                 return;
             }
-            InventoryWrapperIterator iterator1 = chestInv.iterator();
-            while (amount > 0 && iterator1.hasNext()) {
-                ItemStack originalItem = iterator1.next();
+            while (amount > 0 && buyerIterator.hasNext()) {
+                ItemStack originalItem = buyerIterator.next();
                 if (originalItem != null && this.matches(originalItem)) {
                     // Copy it, we don't want to interfere
                     ItemStack clonedItem = originalItem.clone();
@@ -385,7 +384,7 @@ public class ContainerShop implements Shop {
                     originalItem.setAmount(originalItem.getAmount() - stackSize);
                     // We can modify this, it is a copy.
                     clonedItem.setAmount(stackSize);
-                    iterator1.setCurrent(originalItem);
+                    buyerIterator.setCurrent(originalItem);
                     // Add the items to the players inventory
                     Objects.requireNonNull(chestInv).addItem(clonedItem);
                     amount -= stackSize;
