@@ -57,6 +57,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
+import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapperIterator;
 import org.maxgamer.quickshop.database.MySQLCore;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -207,7 +208,7 @@ public class Util {
             return 0;
         }
         int items = 0;
-        for (final ItemStack iStack : inv.getStorageContents()) {
+        for (final ItemStack iStack : inv) {
             //noinspection ConstantConditions
             if (iStack == null || iStack.getType() == Material.AIR) {
                 continue;
@@ -232,7 +233,7 @@ public class Util {
             return 0;
         }
         int items = 0;
-        for (final ItemStack iStack : inv.getStorageContents()) {
+        for (final ItemStack iStack : inv) {
             //noinspection ConstantConditions
             if (iStack == null || iStack.getType() == Material.AIR) {
                 continue;
@@ -259,8 +260,7 @@ public class Util {
         ItemStack item = shop.getItem();
         int space = 0;
         int itemMaxStackSize = getItemMaxStackSize(item.getType());
-        ItemStack[] contents = inv.getStorageContents();
-        for (ItemStack iStack : contents) {
+        for (ItemStack iStack : inv) {
             if (iStack == null || iStack.getType() == Material.AIR) {
                 space += itemMaxStackSize;
             } else if (shop.matches(iStack)) {
@@ -285,8 +285,7 @@ public class Util {
         }
         int space = 0;
         int itemMaxStackSize = getItemMaxStackSize(item.getType());
-        ItemStack[] contents = inv.getStorageContents();
-        for (ItemStack iStack : contents) {
+        for (ItemStack iStack : inv) {
             if (iStack == null || iStack.getType() == Material.AIR) {
                 space += itemMaxStackSize;
             } else if (plugin.getItemMatcher().matches(item, iStack)) {
@@ -740,13 +739,14 @@ public class Util {
         if (inv == null) {
             return;
         }
-        if (inv.getHolder() == null) {
+        if (!inv.hasHolder()) {
             Util.debugLog("Skipped plugin gui inventory check.");
             return;
         }
+        InventoryWrapperIterator iterator = inv.iterator();
         try {
-            for (int i = 0; i < inv.getSize(); i++) {
-                ItemStack itemStack = inv.getItem(i);
+            while (iterator.hasNext()) {
+                ItemStack itemStack = iterator.next();
                 if (itemStack == null) {
                     continue;
                 }
@@ -756,7 +756,7 @@ public class Util {
                     if (location == null) {
                         return; // Virtual GUI
                     }
-                    inv.setItem(i, new ItemStack(Material.AIR));
+                    iterator.remove();
                     Util.debugLog("Found shop display item in an inventory, Removing...");
                     MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location + ", Item is " + itemStack.getType().name());
                 }

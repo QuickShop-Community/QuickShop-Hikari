@@ -48,6 +48,7 @@ import org.maxgamer.quickshop.api.chat.ComponentPackage;
 import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
+import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapperIterator;
 import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapperManager;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -333,10 +334,10 @@ public class ContainerShop implements Shop {
             this.sell(buyer, buyerInventory, loc2Drop, -amount);
             return;
         }
-        ItemStack[] contents = buyerInventory.getContents();
+        InventoryWrapperIterator iterator = buyerInventory.iterator();
         if (this.isUnlimited() && !isAlwaysCountingContainer) {
-            for (int i = 0; amount > 0 && i < contents.length; i++) {
-                ItemStack stack = contents[i];
+            for (int i = 0; amount > 0 && iterator.hasNext(); i++) {
+                ItemStack stack = iterator.next();
                 if (stack == null || stack.getType() == Material.AIR) {
                     continue; // No item
                 }
@@ -347,7 +348,7 @@ public class ContainerShop implements Shop {
                 }
             }
             // Send the players new inventory to them
-            buyerInventory.setContents(contents);
+            //buyerInventory.setContents(contents);
             this.setSignText();
             // This should not happen.
             if (amount > 0) {
@@ -363,32 +364,33 @@ public class ContainerShop implements Shop {
             }
         } else {
             InventoryWrapper chestInv = this.getInventory();
-            if(chestInv == null){
-                plugin.getLogger().warning("Failed to process buy, reason: "+item+" x"+amount+" to shop "+this+": Inventory null.");
-                Util.debugLog("Failed to process buy, reason: "+item+" x"+amount+" to shop "+this+": Inventory null.");
+            if (chestInv == null) {
+                plugin.getLogger().warning("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
+                Util.debugLog("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
                 return;
             }
-            for (int i = 0; amount > 0 && i < contents.length; i++) {
-                ItemStack item = contents[i];
-                if (item != null && this.matches(item)) {
+            InventoryWrapperIterator iterator1 = chestInv.iterator();
+            for (int i = 0; amount > 0 && iterator1.hasNext(); i++) {
+                ItemStack originalItem = iterator1.next();
+                if (originalItem != null && this.matches(originalItem)) {
                     // Copy it, we don't want to interfere
-                    item = item.clone();
+                    ItemStack clonedItem = originalItem.clone();
                     // Amount = total, item.getAmount() = how many items in the
                     // stack
-                    int stackSize = Math.min(amount, item.getAmount());
+                    int stackSize = Math.min(amount, clonedItem.getAmount());
                     // If Amount is item.getAmount(), then this sets the amount
                     // to 0
                     // Else it sets it to the remainder
-                    contents[i].setAmount(contents[i].getAmount() - stackSize);
+                    originalItem.setAmount(clonedItem.getAmount() - stackSize);
                     // We can modify this, it is a copy.
-                    item.setAmount(stackSize);
+                    clonedItem.setAmount(stackSize);
                     // Add the items to the players inventory
-                    Objects.requireNonNull(chestInv).addItem(item);
+                    Objects.requireNonNull(chestInv).addItem(clonedItem);
                     amount -= stackSize;
                 }
             }
             // Now update the players inventory.
-            buyerInventory.setContents(contents);
+            //buyerInventory.setContents(contents);
 
             //Update sign
             this.setSignText();
@@ -683,34 +685,34 @@ public class ContainerShop implements Shop {
                 amount -= stackSize;
             }
         } else {
-            if(this.getInventory() == null){
-                plugin.getLogger().warning("Failed to process sell, reason: "+item+" x"+amount+" to shop "+this+": Inventory null.");
-                Util.debugLog("Failed to process sell, reason: "+item+" x"+amount+" to shop "+this+": Inventory null.");
+            if (this.getInventory() == null) {
+                plugin.getLogger().warning("Failed to process sell, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
+                Util.debugLog("Failed to process sell, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
                 return;
             }
-            ItemStack[] chestContents = this.getInventory().getContents();
-            for (int i = 0; amount > 0 && i < chestContents.length; i++) {
+            Iterator<ItemStack> iterator = this.getInventory().iterator();
+            for (int i = 0; amount > 0 && iterator.hasNext(); i++) {
                 // Can't clone it here, it could be null
-                ItemStack item = chestContents[i];
-                if (item != null && item.getType() != Material.AIR && this.matches(item)) {
+                ItemStack originalItem = iterator.next();
+                if (originalItem != null && originalItem.getType() != Material.AIR && this.matches(originalItem)) {
                     // Copy it, we don't want to interfere
-                    item = item.clone();
+                    ItemStack clonedItem = originalItem.clone();
                     // Amount = total, item.getAmount() = how many items in the
                     // stack
-                    int stackSize = Math.min(amount, item.getAmount());
+                    int stackSize = Math.min(amount, clonedItem.getAmount());
                     // If Amount is item.getAmount(), then this sets the amount
                     // to 0
                     // Else it sets it to the remainder
-                    chestContents[i].setAmount(chestContents[i].getAmount() - stackSize);
+                    originalItem.setAmount(originalItem.getAmount() - stackSize);
                     // We can modify this, it is a copy.
-                    item.setAmount(stackSize);
+                    clonedItem.setAmount(stackSize);
                     // Add the items to the players inventory
-                    floor.addAll(sellerInventory.addItem(item).values());
+                    floor.addAll(sellerInventory.addItem(clonedItem).values());
                     amount -= stackSize;
                 }
             }
             // We now have to update the chests inventory manually.
-            this.getInventory().setContents(chestContents);
+            //this.getInventory().setContents(chestContents);
             //Update sign
             this.setSignText();
             if (attachedShop != null) {
@@ -1147,7 +1149,7 @@ public class ContainerShop implements Shop {
             Util.debugLog("Failed to calc RemainingSpace for shop "+this+": Inventory null.");
             return 0;
         }
-        int space = this.getInventory().countSpace(this);
+        int space = Util.countSpace(this.getInventory(), this);
         new ShopInventoryCalculateEvent(this, space, -1).callEvent();
         return space;
     }
@@ -1167,7 +1169,7 @@ public class ContainerShop implements Shop {
             Util.debugLog("Failed to calc RemainingStock for shop "+this+": Inventory null.");
             return 0;
         }
-        int stock = this.getInventory().countItems(this);
+        int stock = Util.countItems(this.getInventory(), this);
         new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
         return stock;
     }
