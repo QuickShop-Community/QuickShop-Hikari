@@ -23,6 +23,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Container;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -47,7 +48,7 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
     }
 
     @Override
-    public Map<Integer, ItemStack> addItem(ItemStack... itemStacks) {
+    public @NotNull Map<Integer, ItemStack> addItem(ItemStack... itemStacks) {
         return inventory.addItem(itemStacks);
     }
 
@@ -72,8 +73,8 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
     }
 
     @Override
-    public boolean hasHolder() {
-        return inventory.getHolder() != null;
+    public InventoryHolder getHolder() {
+        return inventory.getHolder();
     }
 
     static class BukkitInventoryWrapperIterator implements InventoryWrapperIterator {

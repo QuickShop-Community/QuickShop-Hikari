@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.api.shop.inventory;
 
 import org.bukkit.Location;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,6 +55,7 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
      * @param itemStacks items to remove
      * @return The map of containing item index and itemStack itself which is not fit
      */
+    @NotNull
     default Map<Integer, ItemStack> removeItem(ItemStack... itemStacks) {
         if (itemStacks.length == 0) {
             return Collections.emptyMap();
@@ -89,6 +91,7 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
      * @param itemStacks items to add
      * @return The map of containing item index and itemStack itself which is not fit
      */
+    @NotNull
     default Map<Integer, ItemStack> addItem(ItemStack... itemStacks) {
         if (itemStacks.length == 0) {
             return Collections.emptyMap();
@@ -144,11 +147,11 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
     void clear();
 
     /**
-     * If the inventory has the holder
+     * Gets the block or entity belonging to the open inventory
      *
-     * @return If it has the holder
+     * @return The holder of the inventory; null if it has no holder.
      */
-    boolean hasHolder();
+    @Nullable InventoryHolder getHolder();
 
     /**
      * Do valid check, check if this Inventory is valid.

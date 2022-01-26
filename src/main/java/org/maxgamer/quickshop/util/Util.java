@@ -739,7 +739,7 @@ public class Util {
         if (inv == null) {
             return;
         }
-        if (!inv.hasHolder()) {
+        if (inv.getHolder() == null) {
             Util.debugLog("Skipped plugin gui inventory check.");
             return;
         }
