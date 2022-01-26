@@ -92,7 +92,7 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
 
         @Override
         public boolean hasNext() {
-            return currentIndex < inventory.getSize();
+            return currentIndex + 1 < inventory.getSize();
         }
 
         @Override
