@@ -73,6 +73,7 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
                     itemStack.setAmount(itemStack.getAmount() - actuallyRemove);
                     int needsNow = itemStackToRemove.getAmount() - actuallyRemove;
                     itemStackToRemove.setAmount(needsNow);
+                    iterator.setCurrent(itemStack);
                     if (needsNow == 0) {
                         continue RemoveProcess;
                     }
@@ -114,6 +115,7 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
                         itemStack.setAmount(itemStack.getAmount() + actuallyAdd);
                         int needsNow = itemStackToAdd.getAmount() - actuallyAdd;
                         itemStackToAdd.setAmount(needsNow);
+                        iterator.setCurrent(itemStack);
                         if (needsNow == 0) {
                             continue AddProcess;
                         }

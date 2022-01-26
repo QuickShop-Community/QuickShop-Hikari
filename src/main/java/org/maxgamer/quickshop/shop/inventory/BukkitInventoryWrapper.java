@@ -79,7 +79,7 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
 
     static class BukkitInventoryWrapperIterator implements InventoryWrapperIterator {
 
-        int currentIndex = 0;
+        int currentIndex = -1;
         Inventory inventory;
 
         BukkitInventoryWrapperIterator(Inventory inventory) {
@@ -98,7 +98,7 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
 
         @Override
         public ItemStack next() {
-            return inventory.getItem(currentIndex);
+            return inventory.getItem(++currentIndex);
         }
     }
 

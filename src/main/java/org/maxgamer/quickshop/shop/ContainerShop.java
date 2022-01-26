@@ -336,7 +336,7 @@ public class ContainerShop implements Shop {
         }
         InventoryWrapperIterator iterator = buyerInventory.iterator();
         if (this.isUnlimited() && !isAlwaysCountingContainer) {
-            for (int i = 0; amount > 0 && iterator.hasNext(); i++) {
+            while (amount > 0 && iterator.hasNext()) {
                 ItemStack stack = iterator.next();
                 if (stack == null || stack.getType() == Material.AIR) {
                     continue; // No item
@@ -345,6 +345,7 @@ public class ContainerShop implements Shop {
                     int stackSize = Math.min(amount, stack.getAmount());
                     stack.setAmount(stack.getAmount() - stackSize);
                     amount -= stackSize;
+                    iterator.setCurrent(stack);
                 }
             }
             // Send the players new inventory to them
@@ -370,7 +371,7 @@ public class ContainerShop implements Shop {
                 return;
             }
             InventoryWrapperIterator iterator1 = chestInv.iterator();
-            for (int i = 0; amount > 0 && iterator1.hasNext(); i++) {
+            while (amount > 0 && iterator1.hasNext()) {
                 ItemStack originalItem = iterator1.next();
                 if (originalItem != null && this.matches(originalItem)) {
                     // Copy it, we don't want to interfere
@@ -384,6 +385,7 @@ public class ContainerShop implements Shop {
                     originalItem.setAmount(clonedItem.getAmount() - stackSize);
                     // We can modify this, it is a copy.
                     clonedItem.setAmount(stackSize);
+                    iterator.setCurrent(originalItem);
                     // Add the items to the players inventory
                     Objects.requireNonNull(chestInv).addItem(clonedItem);
                     amount -= stackSize;
@@ -690,8 +692,8 @@ public class ContainerShop implements Shop {
                 Util.debugLog("Failed to process sell, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
                 return;
             }
-            Iterator<ItemStack> iterator = this.getInventory().iterator();
-            for (int i = 0; amount > 0 && iterator.hasNext(); i++) {
+            InventoryWrapperIterator iterator = this.getInventory().iterator();
+            while (amount > 0 && iterator.hasNext()) {
                 // Can't clone it here, it could be null
                 ItemStack originalItem = iterator.next();
                 if (originalItem != null && originalItem.getType() != Material.AIR && this.matches(originalItem)) {
@@ -704,6 +706,7 @@ public class ContainerShop implements Shop {
                     // to 0
                     // Else it sets it to the remainder
                     originalItem.setAmount(originalItem.getAmount() - stackSize);
+                    iterator.setCurrent(originalItem);
                     // We can modify this, it is a copy.
                     clonedItem.setAmount(stackSize);
                     // Add the items to the players inventory
