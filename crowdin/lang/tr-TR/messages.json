@@ -360,5 +360,6 @@
   "purchase-out-of-stock": "&cBu marketin stoğu tükendi, stoğu yeniden doldurmaları için mağaza sahibi ya da personelleri ile iletişime geç.",
   "purchase-out-of-space": "&cBu markette yer kalmadı, marketi boşaltmaları için mağaza sahibi ya da personelleri ile iletişime geç.",
   "safe-mode": "&cQuickShop şimdi güvenli modda, bu mağaza kapsayıcısını açamazsınız, hataları düzeltmek için lütfen sunucu yöneticisi ile iletişime geçin.",
-  "safe-mode-admin": "&c&lUYARI: &cBu sunucudaki QuickShop artık güvenli modda çalışıyor, hiçbir özellik çalışmayacak, hataları kontrol etmek için lütfen &e/qs &c komutunu yazın."
+  "safe-mode-admin": "&c&lUYARI: &cBu sunucudaki QuickShop artık güvenli modda çalışıyor, hiçbir özellik çalışmayacak, hataları kontrol etmek için lütfen &e/qs &c komutunu yazın.",
+  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
 }

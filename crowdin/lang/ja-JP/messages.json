@@ -360,5 +360,6 @@
   "purchase-out-of-stock": "&cこのショップは在庫がなくなりました。店主またはショップスタッフにお問い合わせください。",
   "purchase-out-of-space": "&cこのショップは空き容量がありません。店主またはショップスタッフにお問い合わせください。",
   "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors.",
+  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
 }

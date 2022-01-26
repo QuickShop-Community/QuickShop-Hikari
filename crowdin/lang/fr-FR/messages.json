@@ -360,5 +360,6 @@
   "purchase-out-of-stock": "&cCette boutique est en rupture de stock, contactez le propriétaire ou le personnel de la boutique pour recharger le stock.",
   "purchase-out-of-space": "&cCette boutique est à court d'espace, contactez le propriétaire ou le personnel de la boutique pour vider la boutique.",
   "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors.",
+  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
 }

@@ -360,5 +360,6 @@
   "purchase-out-of-stock": "&cQuesto negozio ha esaurito le scorte, contatta il proprietario del negozio o il personale per rifornire le scorte.",
   "purchase-out-of-space": "&cQuesto negozio ha esaurito lo spazio, contatta il proprietario del negozio o il personale per svuotare il negozio.",
   "safe-mode": "&cQuickShop ora in modalità provvisoria, non puoi aprire questo contenitore del negozio, contatta l'amministratore del server per correggere gli errori.",
-  "safe-mode-admin": "&c&lATTENZIONE: &cIl QuickShop su questo server ora funziona in modalità provvisoria, nessuna funzione funzionerà, per favore digita il comando &e/qs &c per controllare eventuali errori."
+  "safe-mode-admin": "&c&lATTENZIONE: &cIl QuickShop su questo server ora funziona in modalità provvisoria, nessuna funzione funzionerà, per favore digita il comando &e/qs &c per controllare eventuali errori.",
+  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
 }

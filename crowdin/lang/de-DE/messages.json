@@ -360,5 +360,6 @@
   "purchase-out-of-stock": "&cDieser Shop hat keine Items mehr. Kontaktiere den Shopeigentümer oder Shop-Mitarbeiter um den Bestand wieder aufzufüllen.",
   "purchase-out-of-space": "&cDieser Shop hat keinen Platz mehr. Kontaktiere den Shopeigentümer oder Shop-Mitarbeiter damit er geleert wird.",
   "safe-mode": "&cQuickShop ist nun im sicheren Modus, du kannst diesen Shop-Container nicht öffnen. Bitte kontaktiere den Server Administrator um diesen Fehler zu beheben.",
-  "safe-mode-admin": "&c&lWARNUNG: &cQuickShop ist nun im sicheren Modus auf diesem Server und keiner seiner funktionen wird funktionieren. Bitte schreib den &e/qs &cBefehl um nach Fehlern zu schauen."
+  "safe-mode-admin": "&c&lWARNUNG: &cQuickShop ist nun im sicheren Modus auf diesem Server und keiner seiner funktionen wird funktionieren. Bitte schreib den &e/qs &cBefehl um nach Fehlern zu schauen.",
+  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
 }

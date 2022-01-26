@@ -360,5 +360,6 @@
   "purchase-out-of-stock": "&cW tym sklepie skończyły się zapasy, skontaktuj się z właścicielem sklepu lub personelem, aby uzupełnić zapasy.",
   "purchase-out-of-space": "&cW tym sklepie zabrakło miejsca, skontaktuj się z właścicielem sklepu lub personelem, aby opróżnić sklep.",
   "safe-mode": "&cQuickShop jest teraz w trybie bezpiecznym, nie możesz otworzyć pojemnika tego sklepu, skontaktuj się z administratorem serwera, aby naprawić błędy.",
-  "safe-mode-admin": "&c&lUWAGA: &cQuickShop na tym serwerze działa teraz w trybie bezpiecznym, żadne funkcje nie będą działać, wpisz &e/qs &c, aby sprawdzić błędy."
+  "safe-mode-admin": "&c&lUWAGA: &cQuickShop na tym serwerze działa teraz w trybie bezpiecznym, żadne funkcje nie będą działać, wpisz &e/qs &c, aby sprawdzić błędy.",
+  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
 }

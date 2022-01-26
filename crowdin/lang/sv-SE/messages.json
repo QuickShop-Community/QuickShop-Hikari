@@ -360,5 +360,6 @@
   "purchase-out-of-stock": "&cDenna butik har slut på lagret, Kontakta butiksägare eller personal för att fylla på lagret.",
   "purchase-out-of-space": "&cDenna butik har slut på tillgängligt utrymme, Kontakta butiksägare eller personal för att tömma butiken.",
   "safe-mode": "&cQuickShop är nu i säkert läge, du kan inte öppna den här butiksbehållaren, kontakta serveradministratören för att åtgärda felen.",
-  "safe-mode-admin": "&c&lVARNING: &cQuickShop på denna server som körs nu under safe-mode, inga funktioner kommer att fungera, skriv &e/qs &c kommandot för att kontrollera eventuella fel."
+  "safe-mode-admin": "&c&lVARNING: &cQuickShop på denna server som körs nu under safe-mode, inga funktioner kommer att fungera, skriv &e/qs &c kommandot för att kontrollera eventuella fel.",
+  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
 }

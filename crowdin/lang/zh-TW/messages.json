@@ -40,7 +40,7 @@
   "player-bought-from-your-store": "&c{0} 從你的商店購買了 {1} {2}，你總共賺了 {3}。",
   "shop-out-of-stock": "&5你在 X ： {0} Y ： {1} Z ： {2} 出售 {3} 的商店已售罄一空 ！",
   "shop-has-no-space": "&c這個商店只能再收購 {0} 個 {1} 而已。",
-  "you-dont-have-that-many-items": "&c你的身上只有 {0} 個 {1}。",
+  "you-dont-have-that-many-items": "&c你的身上只有 {0} 個 {1}!",
   "the-owner-cant-afford-to-buy-from-you": "&c這個商店只能再收購 {0} 個 {1}。",
   "player-sold-to-your-store": "&a{0} 在你的商店賣出了 {1} 個 {2}。",
   "shop-out-of-space": "&5你在 {0}, {1}, {2} 的商店已滿了。",
@@ -360,5 +360,6 @@
   "purchase-out-of-stock": "&c該商店已缺貨，請聯繫商店商店店主或商店員工補充庫存。",
   "purchase-out-of-space": "&c該商店空間不足，請聯繫商店商店店主或商店員工清空商店。",
   "safe-mode": "&cQuickShop 現在處於安全模式，您無法打開此商店容器，請與服務器管理員聯繫以修復錯誤!",
-  "safe-mode-admin": "&c&l警告:&c此服務器上的 QuickShop 現在在安全模式下運行，沒有任何功能可用，請輸入 &e/qs &c 命令以檢查任何錯誤!"
+  "safe-mode-admin": "&c&l警告:&c此服務器上的 QuickShop 現在在安全模式下運行，沒有任何功能可用，請輸入 &e/qs &c 命令以檢查任何錯誤!",
+  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
 }

@@ -360,5 +360,6 @@
   "purchase-out-of-stock": "&c这个商店已缺货，请联系商店所有者或助手补充库存",
   "purchase-out-of-space": "&c这个商店空间已不足，请联系商店所有者或助手清空商店",
   "safe-mode": "&cQuickShop 现在处于安全模式，您不能打开这个商店容器，请与服务器管理员联系以修复错误。",
-  "safe-mode-admin": "&c&l警告: &c此服务器上的QuickShop正在安全模式下运行，任何功能都无法工作，请输入&e/qs &c 命令来检查错误。"
+  "safe-mode-admin": "&c&l警告: &c此服务器上的QuickShop正在安全模式下运行，任何功能都无法工作，请输入&e/qs &c 命令来检查错误。",
+  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
 }

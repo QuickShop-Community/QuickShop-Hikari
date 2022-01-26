@@ -13,7 +13,7 @@
   "integrations-check-failed-create": "&cIntegrasjon {0} nektet opprettelse av butikken",
   "integrations-check-failed-trade": "&cIntegrasjon {0} avviste handelen",
   "3rd-plugin-build-check-failed": "&cTredjeparts plugin &l{0}&r&c nektet sjekk av tillatelser. Har du satt opp korrekt tillatelser for tredjeparts pluginen?",
-  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8avviste tillatelseskontrollen. Hvis dette ikke var forventet, prøv å legge til &d{1} &7i svartelisten. &7Konfigurasjonsveiledning: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cDu kan ikke ødelegge andre spillere sine butikker i kreativ modus. Bytt til overlevelsesmodus eller prøv å bruke superverktøyet {0} i stedet.",
   "trading-in-creative-mode-is-disabled": "&cDu kan ikke handle med denne butikken mens du er i kreativ modus.",
   "supertool-is-disabled": "&cSuperverktøyet er deaktivert. Kan ikke ødelegge butikker.",
@@ -360,5 +360,6 @@
   "purchase-out-of-stock": "&cDenne butikken er tom på lager, kontakt butikkeier eller ansatte for å fylle på lageret.",
   "purchase-out-of-space": "&cDenne butikken er tom for plass, kontakt butikkeier eller ansatte for å tømme butikken.",
   "safe-mode": "&cQuickShop er nå i sikkerhetsmodus, du kan derfor ikke åpne denne butikkbeholderen. Ta kontakt med serveradministrator for å fikse feilene.",
-  "safe-mode-admin": "&c&lADVARSEL: &cQuickShop på denne serveren kjører nå i sikkerhetsmodus, ingen funksjoner vil fungere. Vennligst skriv inn &e/qs &ckommando for å sjekke eventuelle feil."
+  "safe-mode-admin": "&c&lADVARSEL: &cQuickShop på denne serveren kjører nå i sikkerhetsmodus, ingen funksjoner vil fungere. Vennligst skriv inn &e/qs &ckommando for å sjekke eventuelle feil.",
+  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
 }
