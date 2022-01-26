@@ -19,8 +19,8 @@
 
 package org.maxgamer.quickshop.util.mojangapi;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
@@ -29,19 +29,19 @@ public class MojangAPITest {
     public void testMojangMetaApi() {
         MojangAPI api = new MojangAPI(new MojangApiOfficialMirror());
         Optional<String> metaData = api.getMetaAPI("1.16.5").get();
-        Assert.assertTrue(metaData.isPresent());
-        Assert.assertFalse(metaData.get().isEmpty());
+        Assertions.assertTrue(metaData.isPresent());
+        Assertions.assertFalse(metaData.get().isEmpty());
     }
 
     @Test
     public void testMojangAssetsApi() {
         MojangAPI api = new MojangAPI(new MojangApiOfficialMirror());
         MojangAPI.AssetsAPI assetsAPI = api.getAssetsAPI("1.16.5");
-        Assert.assertTrue(assetsAPI.isAvailable());
+        Assertions.assertTrue(assetsAPI.isAvailable());
         Optional<MojangAPI.AssetsFileData> assetsFileData = assetsAPI.getGameAssetsFile();
-        Assert.assertTrue(assetsFileData.isPresent());
-        Assert.assertFalse(assetsFileData.get().getContent().isEmpty());
-        Assert.assertFalse(assetsFileData.get().getId().isEmpty());
-        Assert.assertFalse(assetsFileData.get().getSha1().isEmpty());
+        Assertions.assertTrue(assetsFileData.isPresent());
+        Assertions.assertFalse(assetsFileData.get().getContent().isEmpty());
+        Assertions.assertFalse(assetsFileData.get().getId().isEmpty());
+        Assertions.assertFalse(assetsFileData.get().getSha1().isEmpty());
     }
 }

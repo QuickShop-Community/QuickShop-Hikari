@@ -1,19 +1,19 @@
 {
   "_comment": "Merhaba çevirmen! Eğer bunu Github'tan ya da kaynak kodundan çeviriyorsan, https://crowdin.com/project/quickshop-reremake adresine gitmelisin",
   "file-test": "Bu bir deneme metin dosyası. Bu dosyası messages.json dosyasının bozuk mu diye kontrol etmek için kullanıyoruz. Bu dosyaya istediğin gibi sevdiğin easter egg'leri koyabilirsin :)",
-  "translation-author": "Çevirmen: Cazcez, NOYB",
+  "translation-author": "Çevirmen: Cazcez, NOYB, ZOYTRK#4529",
   "translation-version": "Destek Versiyonu: Reremake",
-  "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
+  "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken Andre_601 and ZOYTRK#4529",
   "translation-country": "Dil Bölgesi: Türkçe (tr_TR)",
   "language-version": "63",
-  "not-looking-at-valid-shop-block": "&cCould not find a block for creating shop. You need to look at one.",
-  "not-looking-at-shop": "&sHiç QuickShop bulunamadı. Birine bakman lazım.",
+  "not-looking-at-valid-shop-block": "&cHiç Mağza bulunamadı. Birine bakman lazım.",
+  "not-looking-at-shop": "&sHiç Mağza bulunamadı. Birine bakman lazım.",
   "no-anythings-in-your-hand": "&cElinde hiçbir şey yok.",
   "no-permission": "&cBunu yapmaya iznin yok.",
   "integrations-check-failed-create": "&c{0} entegrasyonu market oluşumunu reddetti",
   "integrations-check-failed-trade": "&c{0} entegrasyonu market ticaretini reddetti",
   "3rd-plugin-build-check-failed": "&c3. parti &l{0}&r&c eklentisi yetki kontrollerini reddetti, orada yetkiniz var mıydı?",
-  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&7(Yalnızca Yönetici) &d{0} &8izin kontrollerini reddetti, Bu istisna değilse, &d{1} &7'yi dinleyici kara listesine eklemeyi deneyin. &7Yapılandırma Kılavuzu: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&sYaratıcı modda diğer oyuncuların marketlerini kıramazsın, hayatta kalma moduna geçin veya yerine {0} supertool aletini kullanın.",
   "trading-in-creative-mode-is-disabled": "&cYaratıcı modda iken bu marketle ticaret yapamazsın.",
   "supertool-is-disabled": "&sSupertool devre dışı. Hiçbir marketi kıramazsın.",
@@ -58,7 +58,7 @@
   "no-nearby-shop": "&cYakınlarda {0} ile uyuşan market yok.",
   "buying-more-than-selling": "&cUYARI: Sattığınızdan fazla öğe satın alıyorsunuz!",
   "not-enough-space": "&cSadece {0} için daha fazla yerin var!",
-  "refill-success": "&aDoldurma başarılı",
+  "refill-success": "&aYeniden doldurma başarılı",
   "empty-success": "&aMarket boşaltma başarılı",
   "admin-shop": "AdminMarketi",
   "unknown-owner": "Bilinmiyor",
@@ -97,7 +97,7 @@
     "owner": "&aSahibi: {0}",
     "item": "&aÖğe: &e{0}",
     "item-holochat-error": "&c[Hata]",
-    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
+    "item-holochat-data-too-large": "&c[Error] Öğe NBT'si gösterilemeyecek kadar büyük",
     "preview": "&b[Öğe Önizlemesi]",
     "space": "&aYer: &e{0}",
     "stock": "&aStok &e{0}",
@@ -112,8 +112,8 @@
   },
   "bypassing-lock": "&cBir QuickShop kilidi atlanıyor!",
   "that-is-locked": "&cBu market kilitli.",
-  "how-many-buy": "&aEnter in chat, how many you wish to &bBUY&a. You can buy &e{0}&a. Enter &b{1}&a to buy them all.",
-  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You can sell &e{0}&a. Enter &b{1}&a in chat, to sell all.",
+  "how-many-buy": "&aSohbete kaç tane &bSatın almak&a istediğinizi yazın. &e{0}&a tane alabilirsiniz. Hepsini satın almak için &b{1}&a yazın.",
+  "how-many-sell": "&aSohbete kaç tane &bSATMAK&a istediğinizi yazın. &e{0}&a tane satabilirsiniz. Hepsini satmak için &b{1}&a yazın.",
   "not-allowed-to-create": "&cBurada bir market oluşturamazsın.",
   "blacklisted-item": "&cBu öğeyi satamazsın çünkü kara listede",
   "how-much-to-trade-for": "&e{1} &atane &e{0} &aiçin ne kadar ticaret yapmak istediğini sohbete yaz.",
@@ -125,8 +125,8 @@
       "limited": "&aMarket şimdi sınırlı"
     },
     "toggle-always-counting": {
-      "counting": "&aShop is now always counting container even is unlimited",
-      "not-counting": "&aShop is now respect if shop is unlimited"
+      "counting": "&aShop artık her zaman konteyner sayıyor, hatta sınırsız",
+      "not-counting": "&aShop artık mağaza sınırsızsa saygı görüyor"
     },
     "transfer-success": "&e{0} &amarket &e{1} &aoyuncusuna devredildi",
     "transfer-success-other": "&e{1} &aoyuncusunun &e{0} &amarketi &e{2} &aoyuncusuna devredildi",
@@ -150,7 +150,7 @@
     "now-nolonger-debuging": "&aGeliştirici modu başarıyla devre dışı bırakıldı. QuickShop yeniden yükleniyor...",
     "wrong-args": "&cGeçersiz argüman. Komutların listesini görüntülemek için &l/qs help &ckomudunu kullan.",
     "description": {
-      "alwayscounting": "&eSet if shop always counting container even is unlimited",
+      "alwayscounting": "&eSet, eğer dükkan her zaman konteyner sayıyorsa bile sınırsızdır",
       "title": "&aQuickShop yardım",
       "unlimited": "&eBir markete sınırsız stok sağlar.",
       "setowner": "&eBir marketin sahibini değiştirir.",
@@ -186,7 +186,7 @@
       "freeze": "&eMarket takasını devre dışı bırak ya da aktifleştir",
       "lock": "&eMarketin kilit statüsünü değiştir",
       "taxaccount": "&eAlışveriş yapılırken verginin aktarılacağı hesabı ayarlar",
-      "toggledisplay": "&eToggle the shop display item status",
+      "toggledisplay": "&eMağazadaki öğe durumunu değiştir",
       "purge": "&eMarket temizleme görevini arka planda başlatır"
     },
     "disabled": "&cBu komut aktif değil: &e{0}",
@@ -210,8 +210,8 @@
     "freeze": "Takas kapatıldı"
   },
   "controlpanel": {
-    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
-    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
+    "alwayscounting": "&aHer zaman sayıyor: {0} &e[&d&lDeğiştir&e]",
+    "alwayscounting-hover": "Dükkan her zaman konteyner sayıyorsa geçiş yapmak için &etıklayın.",
     "setowner": "&aSahibi: &b{0} &e[&d&lDeğiştir&e]",
     "infomation": "&aMarket Kontrol paneli:",
     "setowner-hover": "&eSahibi değiştirmek için tıkla.",
@@ -239,12 +239,12 @@
     "lock-hover": "&eMarketin kilit korumasını aktif/deaktif et.",
     "freeze": "&eDondurma modu: &b{0} &e[&d&lDurum&e]",
     "freeze-hover": "&eMarketin dondurulma durumunu değiştir.",
-    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
-    "toggledisplay-hover": "&eToggle the shop's displayitem status"
+    "toggledisplay": "&eGösterilen Eşya: &b{0} &e[&d&lDeğiştir&e]",
+    "toggledisplay-hover": "&eMağazanın hologramının durumunu değiştir"
   },
   "tableformat": {
     "full_line": "+---------------------------------------------------+",
-    "left_half_line": "+--------------------",
+    "left_half_line": "+---------------------------------------------------+",
     "right_half_line": "--------------------+",
     "left_begin": "| "
   },
@@ -281,7 +281,7 @@
       "Ne düşünüyürsun? {0} yayınlandı! Güncelle!",
       "Doktor QuickShop'a yeni {0} güncellemesi geldi! Güncellemelisin~",
       "Ko~ko~da~yo~ QuickShop'a yeni {0} güncellemesi geldi ~",
-      "Paimon want told you the QuickShop have new update {0}!"
+      "Paimon, QuickShop'un yeni güncellemesi {0} olduğunu size söylemek istiyor!"
     ],
     "remote-disable-warning": "&cQuickShop'un bu sürümü uzak sunucu tarafından devre dışı bırakıldı, bunun anlamı bu versiyonda büyük problemler oluşabilir. Detayları SpigotMC sayfamızdan öğrenebilirsiniz: {0}. Bu uyarı siz versiyonu stabil başka bir sürümle değiştirmedikçe konsolda belirmeye devam edecek. Ama bu sunucu hızınızı etkilemez.",
     "label": {
@@ -317,8 +317,8 @@
   "shop-cannot-trade-when-freezing": "&cBu markette ticaret yapamazsın çünkü donmuş.",
   "shop-freezed-at-location": "{1} yerindeki {0} marketiniz donduruldu!",
   "denied-put-in-item": "&cBu öğeyi marketine koyamazsın!",
-  "how-many-buy-stack": "&eEnter in chat, how many bulks you wish to &bBUY&a. There are &e{0}&a items in each bulk and you can buy &e{1}&a bulks. Enter &b{2}&a in chat to buy all.",
-  "how-many-sell-stack": "&aEnter in chat, how many bulk you wish to &dSELL&a. There are &e{0}&a items per bulk and you can sell &e{1}&a bulks. Enter &b{2}&a in chat to sell all.",
+  "how-many-buy-stack": "&eSohbete kaç tane toplu satın almak istediğinizi girin. Her toplu üründe &e{0}&öğeleri vardır ve &e{1}&ye toplu olarak satın alabilirsiniz. Tümünü satın almak için sohbete &b{2}&a yazın.",
+  "how-many-sell-stack": "&aSohbete Kaç tane toplu satış yapmak istediğinizi yazın. Toplu olarak &e{0}'ın öğesi vardır ve &e{1}'ın toplu olarak satabilirsiniz. Tümünü satmak için sohbete &b{2}&a yazın.",
   "language": {
     "name": "&eİsim: &6{0}",
     "code": "&eKod: &6{0}",
@@ -335,7 +335,7 @@
   "backup-success": "&aYedekleme başarılı.",
   "console-only": "&cBu komut sadece konsolda kullanabilir.",
   "console-only-danger": "&cBu tehlikeli bir komut, yani sadece konsol tarafından kullanılabilir.",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "clean-warning": "&eBu komut, mağaza bozulursa, izin verilmeyen dünyalarda oluşturulduysa, izin verilmeyen öğeleri satıyorsa/satın alıyorsa veya YÜKLENMEMİŞ BİR DÜNYADA &c& lVAR OLARAK &c&lVarsa &eshops'u temizler. Önce mağaza verilerinizin tam bir yedeğini oluşturduğunuzdan emin olun ve devam etmek için &b/qs cleanghost onayını &eto kullanın.",
   "shop-creation-failed": "&cMarket oluşturulurken hata meydana geldi, lütfen sunucu yöneticisi ile iletişime geçiniz.",
   "shop-owner-self-trade": "&eKendi marketinde alışveriş yapıyorsun, bu nedenle herhangi bir kazan elde edemeyebilirsiniz.",
   "chest-title": "QuickShop Marketi",
@@ -346,19 +346,19 @@
   "reloading-status": {
     "success": "&aYeniden yükleme hata olmadan tamamlandı.",
     "require-restart": "&aYeniden yükleme tamamlandı. &e(Bazı değişikliklerin etkilenmesi için sunucuyu yeniden başlatmak gerekebilir)",
-    "failed": "&cReload failed, check the server console",
-    "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
+    "failed": "&cYeniden yükleme başarısız, sunucu konsolunu kontrol edin",
+    "scheduled": "&aYeniden yükleme tamamlandı. &7(Bazı değişikliklerin etki etmesi biraz zaman aldı)"
   },
-  "client-language-changed": "&aQuickShop detected your client language setting has been changed, we're now using {0} locale for you.",
-  "client-language-unsupported": "&eQuickShop doesn't support your client language, we're fallback to {0} locale now.",
-  "taxaccount-set": "&aThis shop's tax account has been set to &e{0}",
-  "taxaccount-unset": "&aThis shop's tax account now following server global setting.",
-  "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
-  "display-turn-on": "&aSuccessfully turn on the shop display.",
-  "display-turn-off": "&aSuccessfully turn off the shop display.",
-  "shop-purged-start": "&aShop purge started, check the console for details.",
+  "client-language-changed": "&aQuickShop, istemci dil ayarınızın değiştirildiğini algıladı, şimdi sizin için {0} yerel ayarını kullanıyoruz.",
+  "client-language-unsupported": "&eQuickShop, istemci dilinizi desteklemiyor, artık {0} yerel ayarına geri döndük.",
+  "taxaccount-set": "&aBu dükkanın vergi hesabı &e{0} olarak ayarlandı",
+  "taxaccount-unset": "&aBu dükkanın vergi hesabı artık sunucu genel ayarını takip ediyor.",
+  "taxaccount-invalid": "&cTarget hesabı geçersiz değil, lütfen geçerli bir oyuncu adı veya uuid(çizgili) girin.",
+  "display-turn-on": "&aMağaza ekranını başarıyla açın.",
+  "display-turn-off": "&aMağaza ekranını başarıyla kapatın.",
+  "shop-purged-start": "&aShop tasfiyesi başladı, ayrıntılar için konsolu kontrol edin.",
   "purchase-out-of-stock": "&cBu marketin stoğu tükendi, stoğu yeniden doldurmaları için mağaza sahibi ya da personelleri ile iletişime geç.",
   "purchase-out-of-space": "&cBu markette yer kalmadı, marketi boşaltmaları için mağaza sahibi ya da personelleri ile iletişime geç.",
-  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
+  "safe-mode": "&cQuickShop şimdi güvenli modda, bu mağaza kapsayıcısını açamazsınız, hataları düzeltmek için lütfen sunucu yöneticisi ile iletişime geçin.",
+  "safe-mode-admin": "&c&lUYARI: &cBu sunucudaki QuickShop artık güvenli modda çalışıyor, hiçbir özellik çalışmayacak, hataları kontrol etmek için lütfen &e/qs &c komutunu yazın."
 }

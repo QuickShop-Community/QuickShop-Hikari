@@ -31,8 +31,8 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginLoader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.InputStream;
@@ -172,8 +172,8 @@ public class ListenerContainerTest {
         };
         ListenerContainer listenerContainerA = new ListenerContainer(null, "@QuickTest");
         ListenerContainer listenerContainerB = new ListenerContainer(null, "@QuickTestBad");
-        Assert.assertTrue(listenerContainerA.matches(this.getClass(), testPlugin));
-        Assert.assertFalse(listenerContainerB.matches(this.getClass(), testPlugin));
+        Assertions.assertTrue(listenerContainerA.matches(this.getClass(), testPlugin));
+        Assertions.assertFalse(listenerContainerB.matches(this.getClass(), testPlugin));
     }
 
 }

@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.api.shop;
 
 import com.google.common.collect.Lists;
 import com.google.gson.JsonSyntaxException;
+import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -50,6 +51,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
 
     private static boolean DISPLAY_ALLOW_STACKS;
     @Setter
+    @Getter
     private static volatile boolean isNotSupportVirtualItem = false;
     protected final ItemStack originalItemStack;
     protected final Shop shop;
@@ -180,8 +182,21 @@ public abstract class AbstractDisplayItem implements Reloadable {
         if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
             PLUGIN.getConfig().set("shop.display-type", 0);
             PLUGIN.saveConfiguration();
-            PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because VirtualDisplayItem is unsupported");
+            PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because " + displayType.name() + " type is unsupported");
             return DisplayType.REALITEM;
+        }
+        if (displayType == DisplayType.UNKNOWN) {
+            if (isNotSupportVirtualItem) {
+                PLUGIN.getConfig().set("shop.display-type", 0);
+                PLUGIN.saveConfiguration();
+                PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because " + displayType.name() + " type is unsupported");
+                return DisplayType.REALITEM;
+            } else {
+                PLUGIN.getConfig().set("shop.display-type", 2);
+                PLUGIN.saveConfiguration();
+                PLUGIN.getLogger().log(Level.WARNING, "Falling back to VirtualDisplayItem because " + displayType.name() + " type is unsupported");
+                return DisplayType.VIRTUALITEM;
+            }
         }
         return displayType;
     }

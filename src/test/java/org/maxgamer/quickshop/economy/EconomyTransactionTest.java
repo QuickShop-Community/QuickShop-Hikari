@@ -25,8 +25,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.maxgamer.quickshop.api.economy.EconomyCore;
 import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 
@@ -239,9 +239,9 @@ public class EconomyTransactionTest {
                 }
             });
         }
-        Assert.assertEquals((Double) (20 * 1000 * 0.06D), (Double) economy.getBalance(taxAccount, null, null));
+        Assertions.assertEquals((Double) (20 * 1000 * 0.06D), (Double) economy.getBalance(taxAccount, null, null));
 
-        Assert.assertEquals((Double) (1000 * 0.94D), (Double) economy.getBalance(UUIDList.get(0), null, null));
+        Assertions.assertEquals((Double) (1000 * 0.94D), (Double) economy.getBalance(UUIDList.get(0), null, null));
 
 //        genTransaction(UUIDList.get(5), null, 1000, 0.0, true).commit(new EconomyTransaction.TransactionCallback() {
 //            @Override

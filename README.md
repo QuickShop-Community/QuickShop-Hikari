@@ -15,8 +15,8 @@
 ![Rating](https://img.shields.io/spiget/rating/62575?label=rating)
 ---
 
-QuickShop is a shop plugin that allows players to easily sell/buy any items from a chest without any commands. In fact,
-none of the commands that QuickShop provides are ever needed by a player. QuickShop-Reremake is a fork of QuickShop
+QuickShop is a **FREE** shop plugin that allows players to easily sell/buy any items from a chest without any commands. In fact,
+none of the commands that QuickShop provides are ever needed by a player. QuickShop-Reremake is a **FREE** fork of QuickShop
 NotLikeMe with more features, bug fixes and other improvements.  
 QuickShop-Reremake is made by PotatoCraft Studio
 from [KaiKikuchi's QuickShop upstream repository](https://github.com/KaiKikuchi/QuickShop).

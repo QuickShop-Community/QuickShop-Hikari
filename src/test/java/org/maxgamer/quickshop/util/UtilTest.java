@@ -19,8 +19,8 @@
 
 package org.maxgamer.quickshop.util;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -30,37 +30,37 @@ public class UtilTest {
     @Test
     public void array2String() {
         String sample = "A, B, C";
-        Assert.assertEquals(sample, Util.array2String(new String[]{"A", "B", "C"}));
+        Assertions.assertEquals(sample, Util.array2String(new String[]{"A", "B", "C"}));
     }
 
     @Test
     public void boolean2Status() {
-        Assert.assertEquals(Util.boolean2Status(true), "Enabled");
-        Assert.assertEquals(Util.boolean2Status(false), "Disabled");
+        Assertions.assertEquals(Util.boolean2Status(true), "Enabled");
+        Assertions.assertEquals(Util.boolean2Status(false), "Disabled");
     }
 
     @Test
     public void isClassAvailable() {
-        Assert.assertTrue(Util.isClassAvailable(getClass().getName()));
-        Assert.assertFalse(Util.isClassAvailable("random.Class"));
+        Assertions.assertTrue(Util.isClassAvailable(getClass().getName()));
+        Assertions.assertFalse(Util.isClassAvailable("random.Class"));
     }
 
     @Test
     public void isUUID() {
-        Assert.assertTrue(Util.isUUID("b188beda-8bfb-ed66-65e5-25147a4617cf"));
-        Assert.assertFalse(Util.isUUID("b188beda8bfbed6665e525147a4617cf"));
-        Assert.assertFalse(Util.isUUID("?"));
+        Assertions.assertTrue(Util.isUUID("b188beda-8bfb-ed66-65e5-25147a4617cf"));
+        Assertions.assertFalse(Util.isUUID("b188beda8bfbed6665e525147a4617cf"));
+        Assertions.assertFalse(Util.isUUID("?"));
     }
 
     @Test
     public void list2String() {
         String sample = "1, 2, 3, 4, 5";
-        Assert.assertEquals(sample, Util.list2String(Arrays.asList("1", "2", "3", "4", "5")));
+        Assertions.assertEquals(sample, Util.list2String(Arrays.asList("1", "2", "3", "4", "5")));
     }
 
     @Test
     public void firstUppercase() {
-        Assert.assertEquals("Quickshop", Util.firstUppercase("quickshop"));
+        Assertions.assertEquals("Quickshop", Util.firstUppercase("quickshop"));
     }
 
     @Test
@@ -69,43 +69,43 @@ public class UtilTest {
         args[0] = "yaa";
         args[1] = "hoo";
         args[2] = "woo";
-        Assert.assertEquals("yaa hoo woo", Util.mergeArgs(args));
+        Assertions.assertEquals("yaa hoo woo", Util.mergeArgs(args));
     }
 
     @Test
     public void testArray2String() {
         String[] array = new String[]{"aaa", "bbb", "ccc", "ddd"};
-        Assert.assertEquals("aaa, bbb, ccc, ddd", Util.array2String(array));
+        Assertions.assertEquals("aaa, bbb, ccc, ddd", Util.array2String(array));
     }
 
     @Test
     public void testIsClassAvailable() {
-        Assert.assertTrue(Util.isClassAvailable("java.lang.String"));
-        Assert.assertFalse(Util.isClassAvailable("java.lang.NotExistedClassLoL"));
+        Assertions.assertTrue(Util.isClassAvailable("java.lang.String"));
+        Assertions.assertFalse(Util.isClassAvailable("java.lang.NotExistedClassLoL"));
     }
 
     @Test
     public void isMethodAvailable() {
-        Assert.assertTrue(Util.isMethodAvailable(String.class.getName(), "toLowerCase"));
-        Assert.assertFalse(Util.isMethodAvailable(String.class.getName(), "P90 RUSH B"));
+        Assertions.assertTrue(Util.isMethodAvailable(String.class.getName(), "toLowerCase"));
+        Assertions.assertFalse(Util.isMethodAvailable(String.class.getName(), "P90 RUSH B"));
     }
 
     @Test
     public void testIsUUID() {
         UUID uuid = UUID.randomUUID();
-        Assert.assertTrue(Util.isUUID(uuid.toString()));
-        Assert.assertTrue(Util.isUUID(Util.getNilUniqueId().toString()));
-        Assert.assertFalse(Util.isUUID(uuid.toString().replace("-", "")));
+        Assertions.assertTrue(Util.isUUID(uuid.toString()));
+        Assertions.assertTrue(Util.isUUID(Util.getNilUniqueId().toString()));
+        Assertions.assertFalse(Util.isUUID(uuid.toString().replace("-", "")));
     }
 
     @Test
     public void prettifyText() {
-        Assert.assertEquals("Diamond", Util.prettifyText("DIAMOND"));
+        Assertions.assertEquals("Diamond", Util.prettifyText("DIAMOND"));
     }
 
     @Test
     public void testFirstUppercase() {
-        Assert.assertEquals("Foobar", Util.firstUppercase("foobar"));
+        Assertions.assertEquals("Foobar", Util.firstUppercase("foobar"));
     }
 
     @Test
@@ -114,6 +114,6 @@ public class UtilTest {
 
     @Test
     public void getNilUniqueId() {
-        Assert.assertEquals(new UUID(0, 0), Util.getNilUniqueId());
+        Assertions.assertEquals(new UUID(0, 0), Util.getNilUniqueId());
     }
 }

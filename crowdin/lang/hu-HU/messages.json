@@ -112,8 +112,8 @@
   },
   "bypassing-lock": "&cA &agyorsbolt&c zárva van",
   "that-is-locked": "&cEz a bolt le van zárva.",
-  "how-many-buy": "&aEnter in chat, how many you wish to &bBUY&a. You can buy &e{0}&a. Enter &b{1}&a to buy them all.",
-  "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You can sell &e{0}&a. Enter &b{1}&a in chat, to sell all.",
+  "how-many-buy": "&aÍrd be a chatbe, hogy mennyit szeretnél vásárolni. Maximum &e{0}&a db-ot tudsz venni. Ha az összeset megvennéd, írd be, hogy &b{1}&a.",
+  "how-many-sell": "&aÍrd be a chatbe, hogy mennyit szeretnél eladni. Maximum &e{0}&a db-ot tudsz eladni. Ha az összeset eladnád, írd be, hogy &b{1}&a.",
   "not-allowed-to-create": "&cNem tudsz boltot létrehozni itt.",
   "blacklisted-item": "&cEz a tárgy a feketelistán van! Nem tudod eladni!",
   "how-much-to-trade-for": "&aEnter in chat, how much you wish to trade &e{1}x {0}&a for.",
@@ -357,8 +357,8 @@
   "display-turn-on": "&aSuccessfully turn on the shop display.",
   "display-turn-off": "&aSuccessfully turn off the shop display.",
   "shop-purged-start": "&aShop purge started, check the console for details.",
-  "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
-  "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop.",
+  "purchase-out-of-stock": "&cNincs több item készleten, Egyesztess a bolt tulajdonosával.",
+  "purchase-out-of-space": "&cNincs több item készleten, Egyeztess a bolt tulajdonosával.",
   "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
   "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
 }

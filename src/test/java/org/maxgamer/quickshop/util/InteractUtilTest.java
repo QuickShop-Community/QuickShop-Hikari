@@ -21,8 +21,8 @@ package org.maxgamer.quickshop.util;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class InteractUtilTest {
 
@@ -38,25 +38,25 @@ public class InteractUtilTest {
     public void testInteractBoolean() {
         //ONLY
         InteractUtil.init(genConfig(0, true));
-        Assert.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, true));
-        Assert.assertFalse(InteractUtil.check(InteractUtil.Action.CREATE, false));
+        Assertions.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, true));
+        Assertions.assertFalse(InteractUtil.check(InteractUtil.Action.CREATE, false));
         InteractUtil.init(genConfig(0, false));
-        Assert.assertFalse(InteractUtil.check(InteractUtil.Action.CREATE, true));
-        Assert.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, false));
+        Assertions.assertFalse(InteractUtil.check(InteractUtil.Action.CREATE, true));
+        Assertions.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, false));
         //BOTH
         InteractUtil.init(genConfig(1, false));
-        Assert.assertFalse(InteractUtil.check(InteractUtil.Action.CREATE, true));
-        Assert.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, false));
+        Assertions.assertFalse(InteractUtil.check(InteractUtil.Action.CREATE, true));
+        Assertions.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, false));
         InteractUtil.init(genConfig(1, true));
-        Assert.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, true));
-        Assert.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, false));
+        Assertions.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, true));
+        Assertions.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, false));
         //REVERSED
         InteractUtil.init(genConfig(2, false));
-        Assert.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, true));
-        Assert.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, false));
+        Assertions.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, true));
+        Assertions.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, false));
         InteractUtil.init(genConfig(2, true));
-        Assert.assertFalse(InteractUtil.check(InteractUtil.Action.CREATE, true));
-        Assert.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, false));
+        Assertions.assertFalse(InteractUtil.check(InteractUtil.Action.CREATE, true));
+        Assertions.assertTrue(InteractUtil.check(InteractUtil.Action.CREATE, false));
 
     }
 }
