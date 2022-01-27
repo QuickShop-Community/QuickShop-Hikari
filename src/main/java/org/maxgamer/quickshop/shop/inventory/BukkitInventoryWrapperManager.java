@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.shop.inventory;
 
+import io.papermc.lib.PaperLib;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -37,10 +38,11 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     public @NotNull String mklink(@NotNull InventoryWrapper wrapper) throws IllegalArgumentException {
         if (wrapper.getLocation() != null) {
             Block block = wrapper.getLocation().getBlock();
-            if (!(block instanceof Container))
+            BlockState state = PaperLib.getBlockState(wrapper.getLocation().getBlock(), false).getState();
+            if (!(state instanceof Container))
                 throw new IllegalArgumentException("Target reporting it self not a valid Container.");
             String holder = JsonUtil.standard().toJson(new BlockHolder(block.getWorld().getName(), block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ()));
-            return JsonUtil.standard().toJson(new CommonHolder(HolderType.BLOCK,holder));
+            return JsonUtil.standard().toJson(new CommonHolder(HolderType.BLOCK, holder));
         }
         throw new IllegalArgumentException("Target is invalid.");
     }
@@ -56,7 +58,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
                     World world = Bukkit.getWorld(blockHolder.getWorld());
                     if(world == null)
                         throw new IllegalArgumentException("Invalid symbol link: invalid world name.");
-                    BlockState block = world.getBlockAt(blockHolder.getX(),blockHolder.getY(),blockHolder.getZ()).getState();
+                    BlockState block = PaperLib.getBlockState(world.getBlockAt(blockHolder.getX(), blockHolder.getY(), blockHolder.getZ()), false).getState();
                     if(!(block instanceof Container))
                         throw new IllegalArgumentException("Invalid symbol link: target block not a Container");
                     return new BukkitInventoryWrapper(((Container) block).getInventory());
