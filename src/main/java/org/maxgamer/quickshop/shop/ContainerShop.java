@@ -947,6 +947,9 @@ public class ContainerShop implements Shop {
 
     @NotNull
     public String saveToSymbolLink() {
+        if (!isLoaded) {
+            return symbolLink == null ? "" : symbolLink;
+        }
         try {
             return plugin.getInventoryWrapperRegistry().get(this.inventoryWrapperProvider).mklink(getInventory());
         } catch (Exception exception) {
