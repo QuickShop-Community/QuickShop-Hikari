@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.api.shop.inventory;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -43,18 +44,25 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
 
     /**
      * Change items in the inventory by index
+     * Set the item-stack type to air or amount to zero will remove it
+     * <p>
      * It's not thread-safe, please use that in main-thread
      *
      * @see ItemChanger
      */
-    default void changeItems(ItemChanger itemChanger) {
+    default void changeItem(ItemChanger itemChanger) {
         InventoryWrapperIterator iterator = iterator();
         int index = 0;
         boolean shouldContinue = true;
         while (shouldContinue && iterator.hasNext()) {
             ItemStack itemStack = iterator.next();
             shouldContinue = itemChanger.changeItem(index, itemStack);
-            iterator.setCurrent(itemStack);
+            if (itemStack.getAmount() == 0 || itemStack.getType() == Material.AIR) {
+                iterator.setCurrent(null);
+
+            } else {
+                iterator.setCurrent(itemStack);
+            }
             index++;
         }
     }
@@ -183,6 +191,13 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
      * @return The holder of the inventory; null if it has no holder.
      */
     @Nullable InventoryHolder getHolder();
+
+    /**
+     * Set the contents of inventory
+     *
+     * @param itemStacks the contents you want to set
+     */
+    void setContents(ItemStack[] itemStacks);
 
     /**
      * Do valid check, check if this Inventory is valid.

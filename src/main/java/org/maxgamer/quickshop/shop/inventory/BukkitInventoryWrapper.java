@@ -44,7 +44,7 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
 
     @Override
     public @NotNull InventoryWrapperIterator iterator() {
-        return new BukkitInventoryWrapperIterator(inventory);
+        return InventoryWrapperIterator.ofBukkitInventory(inventory);
     }
 
     @Override
@@ -77,29 +77,9 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
         return inventory.getHolder();
     }
 
-    static class BukkitInventoryWrapperIterator implements InventoryWrapperIterator {
-
-        int currentIndex = -1;
-        Inventory inventory;
-
-        BukkitInventoryWrapperIterator(Inventory inventory) {
-            this.inventory = inventory;
-        }
-
-        @Override
-        public void setCurrent(ItemStack stack) {
-            inventory.setItem(currentIndex, stack);
-        }
-
-        @Override
-        public boolean hasNext() {
-            return currentIndex + 1 < inventory.getSize();
-        }
-
-        @Override
-        public ItemStack next() {
-            return inventory.getItem(++currentIndex);
-        }
+    @Override
+    public void setContents(ItemStack[] itemStacks) {
+        inventory.setContents(itemStacks);
     }
 
     @Override
