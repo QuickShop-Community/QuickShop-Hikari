@@ -1405,10 +1405,10 @@ public class ContainerShop implements Shop {
      * @return The chest this shop is based on.
      */
     public @Nullable InventoryWrapper getInventory() {
+        Util.ensureThread(false);
         if (inventory == null) {
             inventory = locateInventory(symbolLink);
         }
-        Util.ensureThread(false);
         if (this.inventory.isValid()) {
             return this.inventory;
         }
