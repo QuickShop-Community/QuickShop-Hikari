@@ -13,7 +13,7 @@
   "integrations-check-failed-create": "&c集成模块 {0} 拒绝了创建商店操作。",
   "integrations-check-failed-trade": "&c集成模块 {0} 拒绝了商店交易操作。",
   "3rd-plugin-build-check-failed": "&c第三方插件 &l{0}&r&c 拒绝了权限检查操作，您在那里有建造权限吗？",
-  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&d{0} &8拒绝了权限检查。如果不例外，请尝试添加 &d{1} &7进监听器黑名单。&7配置指南：https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&c你不能在创造模式破坏其他玩家的商店, 请使用生存模式或用超级工具 {0} 来破坏。",
   "trading-in-creative-mode-is-disabled": "&c你不能在创造模式下进行交易操作。",
   "supertool-is-disabled": "&c超级工具已被禁用，现已不能使用超级工具破坏任何商店。",
@@ -361,5 +361,5 @@
   "purchase-out-of-space": "&c这个商店空间已不足，请联系商店所有者或助手清空商店",
   "safe-mode": "&cQuickShop 现在处于安全模式，您不能打开这个商店容器，请与服务器管理员联系以修复错误。",
   "safe-mode-admin": "&c&l警告: &c此服务器上的QuickShop正在安全模式下运行，任何功能都无法工作，请输入&e/qs &c 命令来检查错误。",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
+  "internal-error": "&c发生内部错误，详细信息已记录到控制台。请再试一次，如果仍然存在，请与服务器管理员联系。"
 }
