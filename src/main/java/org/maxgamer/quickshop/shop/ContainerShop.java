@@ -28,15 +28,13 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
+import org.bukkit.block.*;
 import org.bukkit.block.data.type.Chest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -51,6 +49,7 @@ import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapperIterator;
 import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapperManager;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
+import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapper;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
@@ -110,9 +109,10 @@ public class ContainerShop implements Shop {
     private UUID taxAccount;
     @NotNull
     private String inventoryWrapperProvider;
-    @NotNull
+    @Nullable
     private InventoryWrapper inventory;
-
+    @Nullable
+    private String symbolLink;
 
     private ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
@@ -135,6 +135,7 @@ public class ContainerShop implements Shop {
         this.isAlwaysCountingContainer = s.isAlwaysCountingContainer;
         this.inventory = s.inventory;
         this.inventoryWrapperProvider = s.inventoryWrapperProvider;
+        this.symbolLink = s.symbolLink;
         initDisplayItem();
     }
 
@@ -165,7 +166,7 @@ public class ContainerShop implements Shop {
             boolean disableDisplay,
             @Nullable UUID taxAccount,
             @NotNull String inventoryWrapperProvider,
-            @NotNull InventoryWrapper inventory) {
+            @NotNull String symbolLink) {
         Util.ensureThread(false);
         this.location = location;
         this.price = price;
@@ -193,10 +194,37 @@ public class ContainerShop implements Shop {
         this.taxAccount = taxAccount;
         this.dirty = false;
         this.isAlwaysCountingContainer = getExtra(plugin).getBoolean("is-always-counting-container", false);
-        this.inventory = inventory;
+        this.symbolLink = symbolLink;
         this.inventoryWrapperProvider = inventoryWrapperProvider;
         initDisplayItem();
         updateShopData();
+    }
+
+    private @NotNull InventoryWrapper locateInventory(@Nullable String symbolLink) {
+        if (symbolLink == null || symbolLink.isEmpty()) {
+            // Upgrading data
+            Util.debugLog("Upgrading old shop data: " + this);
+            BlockState block = getLocation().getBlock().getState();
+            if (block instanceof BlockInventoryHolder) {
+                this.inventoryWrapperProvider = plugin.getInventoryWrapperRegistry().find(plugin.getInventoryWrapperManager());
+                this.inventory = new BukkitInventoryWrapper(((BlockInventoryHolder) block).getInventory());
+                return this.inventory;
+            } else {
+                if (block instanceof EnderChest) {
+                    throw new IllegalStateException("Failed to load ender chest shop: You need install QuickShop EnderChest addon to make it works.");
+                }
+                throw new IllegalArgumentException("Failed to load shop: Target block not a Container, Skipping...");
+            }
+        }
+        InventoryWrapperManager manager = plugin.getInventoryWrapperRegistry().get(getInventoryWrapperProvider());
+        if (manager == null) {
+            throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " invalid or failed to load!");
+        }
+        try {
+            return manager.locate(symbolLink);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage());
+        }
     }
 
     private void updateShopData() {
@@ -289,9 +317,9 @@ public class ContainerShop implements Shop {
         item = item.clone();
         int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
         InventoryWrapper inv = this.getInventory();
-        if(inv == null){
-            plugin.getLogger().warning("Failed to add item "+item+" x"+amount+" to shop "+this+": Inventory null.");
-            Util.debugLog("Failed to add item "+item+" x"+amount+" to shop "+this+": Inventory null. Provider: "+inventoryWrapperProvider);
+        if (inv == null) {
+            plugin.getLogger().warning("Failed to add item " + item + " x" + amount + " to shop " + this + ": Inventory null.");
+            Util.debugLog("Failed to add item " + item + " x" + amount + " to shop " + this + ": Inventory null. Provider: " + inventoryWrapperProvider);
             return;
         }
         int remains = amount;
@@ -642,9 +670,9 @@ public class ContainerShop implements Shop {
         item = item.clone();
         int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
         InventoryWrapper inv = this.getInventory();
-        if(inv == null){
-            plugin.getLogger().warning("Failed to process item remove, reason: "+item+" x"+amount+" to shop "+this+": Inventory null.");
-            Util.debugLog("Failed to process item remove, reason: "+item+" x"+amount+" to shop "+this+": Inventory null.");
+        if (inv == null) {
+            plugin.getLogger().warning("Failed to process item remove, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
+            Util.debugLog("Failed to process item remove, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
             return;
         }
         int remains = amount;
@@ -907,7 +935,7 @@ public class ContainerShop implements Shop {
             plugin.getDatabaseHelper()
                     .updateShop(SimpleShopModerator.serialize(this.moderator), this.getItem(),
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
-                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(),this.inventoryWrapperProvider,saveToSymbolLink());
+                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), this.inventoryWrapperProvider, saveToSymbolLink());
             this.dirty = false;
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING,
@@ -918,20 +946,20 @@ public class ContainerShop implements Shop {
     }
 
     @NotNull
-    public String saveToSymbolLink(){
+    public String saveToSymbolLink() {
         try {
-            return plugin.getInventoryWrapperRegistry().get(this.inventoryWrapperProvider).mklink(this.inventory);
-        }catch (Exception exception){
-            plugin.getLogger().log(Level.WARNING,"Failed to create shop symbol link, Shop data may lose!",exception);
-            return plugin.getInventoryWrapperRegistry().get(plugin.getName()).mklink(this.inventory);
+            return plugin.getInventoryWrapperRegistry().get(this.inventoryWrapperProvider).mklink(getInventory());
+        } catch (Exception exception) {
+            plugin.getLogger().log(Level.WARNING, "Failed to create shop symbol link, Shop data may lose!", exception);
+            return plugin.getInventoryWrapperRegistry().get(plugin.getName()).mklink(getInventory());
         }
     }
 
     @Override
     public void setInventory(@NotNull InventoryWrapper wrapper, @NotNull InventoryWrapperManager manager) {
         String provider = plugin.getInventoryWrapperRegistry().find(manager);
-        if(provider == null){
-            throw new IllegalArgumentException("The manager "+manager.getClass().getName()+" not registered in registry.");
+        if (provider == null) {
+            throw new IllegalArgumentException("The manager " + manager.getClass().getName() + " not registered in registry.");
         }
         this.inventory = wrapper;
         this.inventoryWrapperProvider = provider;
@@ -1031,6 +1059,7 @@ public class ContainerShop implements Shop {
             return;
         }
         this.isLoaded = true;
+        inventory = locateInventory(symbolLink);
         //Shop manger done this already
         //plugin.getShopManager().loadShop(this.getLocation().getWorld().getName(), this);
         plugin.getShopManager().getLoadedShops().add(this);
@@ -1147,8 +1176,8 @@ public class ContainerShop implements Shop {
         if (this.unlimited && !isAlwaysCountingContainer()) {
             return -1;
         }
-        if(this.getInventory() == null){
-            Util.debugLog("Failed to calc RemainingSpace for shop "+this+": Inventory null.");
+        if (this.getInventory() == null) {
+            Util.debugLog("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
             return 0;
         }
         int space = Util.countSpace(this.getInventory(), this);
@@ -1167,8 +1196,8 @@ public class ContainerShop implements Shop {
         if (this.unlimited && !isAlwaysCountingContainer()) {
             return -1;
         }
-        if(this.getInventory() == null){
-            Util.debugLog("Failed to calc RemainingStock for shop "+this+": Inventory null.");
+        if (this.getInventory() == null) {
+            Util.debugLog("Failed to calc RemainingStock for shop " + this + ": Inventory null.");
             return 0;
         }
         int stock = Util.countItems(this.getInventory(), this);
@@ -1376,6 +1405,9 @@ public class ContainerShop implements Shop {
      * @return The chest this shop is based on.
      */
     public @Nullable InventoryWrapper getInventory() {
+        if (inventory == null) {
+            inventory = locateInventory(symbolLink);
+        }
         Util.ensureThread(false);
         if (this.inventory.isValid()) {
             return this.inventory;
@@ -1665,7 +1697,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(getLocation().getWorld().getName(), BlockPosition.of(getLocation()), SimpleShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount(),inventoryWrapperProvider,saveToSymbolLink());
+        return new ShopInfoStorage(getLocation().getWorld().getName(), BlockPosition.of(getLocation()), SimpleShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount(), inventoryWrapperProvider, saveToSymbolLink());
     }
 
     @Override

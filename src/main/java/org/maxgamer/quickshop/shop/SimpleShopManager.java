@@ -948,7 +948,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 false,
                 null,
                 plugin.getName(),
-                new BukkitInventoryWrapper(inv));
+                null);
         if (!info.isBypassed()) {
             Result result = ((SimpleIntegrationManager) plugin.getIntegrationHelper()).callIntegrationsCanCreate(p, info.getLocation());
             if (!result.isSuccess()) {

@@ -29,11 +29,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.EnderChest;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -42,9 +39,6 @@ import org.maxgamer.quickshop.api.database.WarpedResultSet;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopModerator;
 import org.maxgamer.quickshop.api.shop.ShopType;
-import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
-import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapperManager;
-import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapper;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.PlayerFinder;
 import org.maxgamer.quickshop.util.Timer;
@@ -138,7 +132,7 @@ public class ShopLoader {
                                 data.isDisableDisplay(),
                                 data.getTaxAccount(),
                                 data.getInventoryWrapperProvider(),
-                                data.getInventory());
+                                data.symbolLink);
                 if (data.needUpdate.get()) {
                     shop.setDirty();
                 }
@@ -327,7 +321,7 @@ public class ShopLoader {
                                 data.isDisableDisplay(),
                                 data.getTaxAccount(),
                                 data.getInventoryWrapperProvider(),
-                                data.getInventory());
+                                data.getSymbolLink());
                 if (shopNullCheck(shop)) {
                     continue;
                 }
@@ -455,7 +449,7 @@ public class ShopLoader {
 
         private String inventoryWrapperProvider;
 
-        private InventoryWrapper inventory;
+        private String symbolLink;
 
         ShopDatabaseInfo(ShopRawDatabaseInfo origin) {
             try {
@@ -474,38 +468,12 @@ public class ShopLoader {
                 this.disableDisplay = origin.isDisableDisplay();
                 this.taxAccount = origin.getTaxAccount() != null ? UUID.fromString(origin.getTaxAccount()) : null;
                 this.inventoryWrapperProvider = origin.getInventoryWrapperProvider();
-                this.inventory = locateInventory(origin.getSymbolLink());
+                this.symbolLink = origin.getSymbolLink();
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }
         }
 
-        private @NotNull InventoryWrapper locateInventory(@Nullable String symbolLink) {
-            if (symbolLink == null || symbolLink.isEmpty()) {
-                // Upgrading data
-                Util.debugLog("Upgrading old shop data: " + this);
-                BlockState block = getLocation().getBlock().getState();
-                if (block instanceof BlockInventoryHolder) {
-                    this.inventoryWrapperProvider = plugin.getInventoryWrapperRegistry().find(plugin.getInventoryWrapperManager());
-                    this.inventory = new BukkitInventoryWrapper(((BlockInventoryHolder) block).getInventory());
-                    return this.inventory;
-                } else {
-                    if (block instanceof EnderChest) {
-                        throw new IllegalStateException("Failed to load ender chest shop: You need install QuickShop EnderChest addon to make it works.");
-                    }
-                    throw new IllegalArgumentException("Failed to load shop: Target block not a Container, Skipping...");
-                }
-            }
-            InventoryWrapperManager manager = plugin.getInventoryWrapperRegistry().get(getInventoryWrapperProvider());
-            if (manager == null) {
-                throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " invalid or failed to load!");
-            }
-            try {
-                return manager.locate(symbolLink);
-            } catch (IllegalArgumentException e) {
-                throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage());
-            }
-        }
 
         private @Nullable ItemStack deserializeItem(@NotNull String itemConfig) {
             try {
