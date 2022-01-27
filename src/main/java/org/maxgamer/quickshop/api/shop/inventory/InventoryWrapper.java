@@ -42,6 +42,35 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
     InventoryWrapperIterator iterator();
 
     /**
+     * Change items in the inventory by index
+     * It's not thread-safe, please use that in main-thread
+     *
+     * @see ItemChanger
+     */
+    default void changeItems(ItemChanger itemChanger) {
+        InventoryWrapperIterator iterator = iterator();
+        int index = 0;
+        boolean shouldContinue = true;
+        while (shouldContinue && iterator.hasNext()) {
+            ItemStack itemStack = iterator.next();
+            shouldContinue = itemChanger.changeItem(index, itemStack);
+            iterator.setCurrent(itemStack);
+            index++;
+        }
+    }
+
+    interface ItemChanger {
+        /**
+         * Do item change action in the inventory
+         *
+         * @param index     the item index in the inventory, start from zero
+         * @param itemStack the item in this index
+         * @return If continue to change items in the next index
+         */
+        boolean changeItem(int index, ItemStack itemStack);
+    }
+
+    /**
      * Get the location of the block or entity which corresponds to this inventory. May return null if this container
      * was custom created or is a virtual / subcontainer.
      *
