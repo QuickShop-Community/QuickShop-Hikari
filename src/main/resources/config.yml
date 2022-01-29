@@ -1,7 +1,7 @@
 # QuickShop-Reremake Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 153
+config-version: 154
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
