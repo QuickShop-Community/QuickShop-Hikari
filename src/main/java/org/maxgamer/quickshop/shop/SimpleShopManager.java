@@ -40,6 +40,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -1257,13 +1258,17 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         MsgUtil.printEnchantment(p, shop, chatSheetPrinter);
         if (items.getItemMeta() instanceof PotionMeta) {
             PotionMeta potionMeta = (PotionMeta) items.getItemMeta();
-            PotionEffectType potionEffectType = potionMeta.getBasePotionData().getType().getEffectType();
+            PotionData potionData = potionMeta.getBasePotionData();
+            PotionEffectType potionEffectType = potionData.getType().getEffectType();
             if (potionEffectType != null) {
                 chatSheetPrinter.printLine(plugin.text().of(p, "menu.effects").forLocale());
-                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffectType));
+                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffectType) + (potionData.isUpgraded() ? " II" : " I"));
             }
-            for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
-                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffect.getType()));
+            if (potionMeta.hasCustomEffects()) {
+                for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
+                    int level = potionEffect.getAmplifier();
+                    chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffect.getType()) + " " + (level <= 10 ? RomanNumber.toRoman(potionEffect.getAmplifier()) : level));
+                }
             }
         }
         chatSheetPrinter.printFooter();
