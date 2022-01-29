@@ -499,7 +499,8 @@ public class Util {
                 PotionData potionData = potionMeta.getBasePotionData();
                 PotionEffectType potionEffectType = potionData.getType().getEffectType();
                 if (potionEffectType != null) {
-                    return MsgUtil.getPotioni18n(potionEffectType) + (potionData.getType().getMaxLevel() > 1 && potionData.isUpgraded() ? " II" : " I");
+                    //Because the bukkit API limit, we can't get the actual effect level
+                    return MsgUtil.getPotioni18n(potionEffectType);
                 } else if (potionMeta.hasCustomEffects()) {
                     PotionEffect potionEffect = potionMeta.getCustomEffects().get(0);
                     if (potionEffect != null) {

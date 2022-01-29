@@ -1262,7 +1262,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             PotionEffectType potionEffectType = potionData.getType().getEffectType();
             if (potionEffectType != null) {
                 chatSheetPrinter.printLine(plugin.text().of(p, "menu.effects").forLocale());
-                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffectType) + (potionData.isUpgraded() ? " II" : " I"));
+                //Because the bukkit API limit, we can't get the actual effect level
+                chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getPotioni18n(potionEffectType));
             }
             if (potionMeta.hasCustomEffects()) {
                 for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
