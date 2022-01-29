@@ -51,6 +51,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
@@ -486,6 +490,23 @@ public class Util {
             ItemMeta meta = itemStack.getItemMeta();
             if (meta instanceof EnchantmentStorageMeta && ((EnchantmentStorageMeta) meta).hasStoredEnchants()) {
                 return getFirstEnchantmentName((EnchantmentStorageMeta) meta);
+            }
+        }
+        if (plugin.getConfig().getBoolean("shop.use-effect-for-potion-item") && itemStack.getType().name().endsWith("POTION")) {
+            ItemMeta meta = itemStack.getItemMeta();
+            if (meta instanceof PotionMeta) {
+                PotionMeta potionMeta = (PotionMeta) meta;
+                PotionData potionData = potionMeta.getBasePotionData();
+                PotionEffectType potionEffectType = potionData.getType().getEffectType();
+                if (potionEffectType != null) {
+                    return MsgUtil.getPotioni18n(potionEffectType) + (potionData.getType().getMaxLevel() > 1 && potionData.isUpgraded() ? " II" : " I");
+                } else if (potionMeta.hasCustomEffects()) {
+                    PotionEffect potionEffect = potionMeta.getCustomEffects().get(0);
+                    if (potionEffect != null) {
+                        int level = potionEffect.getAmplifier();
+                        return MsgUtil.getPotioni18n(potionEffect.getType()) + " " + (level <= 10 ? RomanNumber.toRoman(potionEffect.getAmplifier()) : level);
+                    }
+                }
             }
         }
         if (itemStack.hasItemMeta()

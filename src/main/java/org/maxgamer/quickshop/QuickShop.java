@@ -2072,8 +2072,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfig().set("purge.backup", true);
             getConfig().set("config-version", ++selectedVersion);
         }
-        if (selectedVersion == 151){
-            getConfig().set("shop.protection-checking-handler",null);
+        if (selectedVersion == 151) {
+            getConfig().set("shop.protection-checking-handler", null);
+            getConfig().set("config-version", ++selectedVersion);
+
+        }
+        if (selectedVersion == 152) {
+            getConfig().set("shop.shop.use-effect-for-potion-item", false);
             getConfig().set("config-version", ++selectedVersion);
 
         }

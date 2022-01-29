@@ -1,7 +1,7 @@
 # QuickShop-Reremake Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 152
+config-version: 153
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -359,7 +359,10 @@ shop:
   #in the sign instead of "Enchanted Book".
   #NOTE: Only one enchantment is shown and is randomly chosen.
   use-enchantment-for-enchanted-book: false
-
+  #If this is enabled, the effect name will be shown
+  #in the sign instead of "Potion".
+  #NOTE: Only one effect is shown and is randomly chosen.
+  use-effect-for-potion-item: false
   #The list of worlds in which creating new shops is disabled.
   blacklist-world:
     - disabled_world_name
