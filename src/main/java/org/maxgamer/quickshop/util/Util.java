@@ -55,7 +55,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
+import org.maxgamer.quickshop.api.shop.ItemMatcher;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.api.shop.inventory.CountableInventoryWrapper;
 import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.api.shop.inventory.InventoryWrapperIterator;
 import org.maxgamer.quickshop.database.MySQLCore;
@@ -207,17 +209,22 @@ public class Util {
         if (inv == null) {
             return 0;
         }
-        int items = 0;
-        for (final ItemStack iStack : inv) {
-            //noinspection ConstantConditions
-            if (iStack == null || iStack.getType() == Material.AIR) {
-                continue;
+        ItemMatcher matcher = plugin.getItemMatcher();
+        if (inv instanceof CountableInventoryWrapper) {
+
+            return ((CountableInventoryWrapper) inv).countItem(input -> matcher.matches(item, input));
+        } else {
+            int items = 0;
+            for (final ItemStack iStack : inv) {
+                if (iStack == null || iStack.getType() == Material.AIR) {
+                    continue;
+                }
+                if (matcher.matches(item, iStack)) {
+                    items += iStack.getAmount();
+                }
             }
-            if (plugin.getItemMatcher().matches(item, iStack)) {
-                items += iStack.getAmount();
-            }
+            return items / item.getAmount();
         }
-        return items / item.getAmount();
     }
 
     /**
@@ -232,17 +239,20 @@ public class Util {
         if (inv == null) {
             return 0;
         }
-        int items = 0;
-        for (final ItemStack iStack : inv) {
-            //noinspection ConstantConditions
-            if (iStack == null || iStack.getType() == Material.AIR) {
-                continue;
+        if (inv instanceof CountableInventoryWrapper) {
+            return ((CountableInventoryWrapper) inv).countItem(shop::matches);
+        } else {
+            int items = 0;
+            for (final ItemStack iStack : inv) {
+                if (iStack == null || iStack.getType() == Material.AIR) {
+                    continue;
+                }
+                if (shop.matches(iStack)) {
+                    items += iStack.getAmount();
+                }
             }
-            if (shop.matches(iStack)) {
-                items += iStack.getAmount();
-            }
+            return items / shop.getItem().getAmount();
         }
-        return items / shop.getItem().getAmount();
     }
 
     /**
@@ -257,17 +267,21 @@ public class Util {
         if (inv == null) {
             return 0;
         }
-        ItemStack item = shop.getItem();
-        int space = 0;
-        int itemMaxStackSize = getItemMaxStackSize(item.getType());
-        for (ItemStack iStack : inv) {
-            if (iStack == null || iStack.getType() == Material.AIR) {
-                space += itemMaxStackSize;
-            } else if (shop.matches(iStack)) {
-                space += iStack.getAmount() >= itemMaxStackSize ? 0 : itemMaxStackSize - iStack.getAmount();
+        if (inv instanceof CountableInventoryWrapper) {
+            return ((CountableInventoryWrapper) inv).countSpace(shop::matches);
+        } else {
+            ItemStack item = shop.getItem();
+            int space = 0;
+            int itemMaxStackSize = getItemMaxStackSize(item.getType());
+            for (ItemStack iStack : inv) {
+                if (iStack == null || iStack.getType() == Material.AIR) {
+                    space += itemMaxStackSize;
+                } else if (shop.matches(iStack)) {
+                    space += iStack.getAmount() >= itemMaxStackSize ? 0 : itemMaxStackSize - iStack.getAmount();
+                }
             }
+            return space / item.getAmount();
         }
-        return space / item.getAmount();
     }
 
     /**
@@ -283,16 +297,21 @@ public class Util {
         if (inv == null) {
             return 0;
         }
-        int space = 0;
-        int itemMaxStackSize = getItemMaxStackSize(item.getType());
-        for (ItemStack iStack : inv) {
-            if (iStack == null || iStack.getType() == Material.AIR) {
-                space += itemMaxStackSize;
-            } else if (plugin.getItemMatcher().matches(item, iStack)) {
-                space += iStack.getAmount() >= itemMaxStackSize ? 0 : itemMaxStackSize - iStack.getAmount();
+        ItemMatcher matcher = plugin.getItemMatcher();
+        if (inv instanceof CountableInventoryWrapper) {
+            return ((CountableInventoryWrapper) inv).countSpace(input -> matcher.matches(item, input));
+        } else {
+            int space = 0;
+            int itemMaxStackSize = getItemMaxStackSize(item.getType());
+            for (ItemStack iStack : inv) {
+                if (iStack == null || iStack.getType() == Material.AIR) {
+                    space += itemMaxStackSize;
+                } else if (matcher.matches(item, iStack)) {
+                    space += iStack.getAmount() >= itemMaxStackSize ? 0 : itemMaxStackSize - iStack.getAmount();
+                }
             }
+            return space / item.getAmount();
         }
-        return space / item.getAmount();
     }
 
     /**
