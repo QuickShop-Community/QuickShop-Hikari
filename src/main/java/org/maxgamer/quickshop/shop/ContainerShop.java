@@ -112,7 +112,7 @@ public class ContainerShop implements Shop {
     @Nullable
     private InventoryWrapper inventory;
     @Nullable
-    private String symbolLink;
+    private final String symbolLink;
 
     private ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
@@ -165,8 +165,8 @@ public class ContainerShop implements Shop {
             @Nullable String currency,
             boolean disableDisplay,
             @Nullable UUID taxAccount,
-            @NotNull String inventoryWrapperProvider,
-            @NotNull String symbolLink) {
+            @Nullable String inventoryWrapperProvider,
+            @Nullable String symbolLink) {
         Util.ensureThread(false);
         this.location = location;
         this.price = price;
@@ -195,7 +195,7 @@ public class ContainerShop implements Shop {
         this.dirty = false;
         this.isAlwaysCountingContainer = getExtra(plugin).getBoolean("is-always-counting-container", false);
         this.symbolLink = symbolLink;
-        this.inventoryWrapperProvider = inventoryWrapperProvider;
+        this.inventoryWrapperProvider = inventoryWrapperProvider == null ? "" : inventoryWrapperProvider;
         initDisplayItem();
         updateShopData();
     }

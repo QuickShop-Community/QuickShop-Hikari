@@ -146,6 +146,10 @@ public class ShopLoader {
                     }
                     continue;
                 }
+                if (shop.getInventoryWrapperProvider() != null && !shop.getInventoryWrapperProvider().isEmpty() && plugin.getInventoryWrapperRegistry().get(shop.getInventoryWrapperProvider()) == null) {
+                    Util.debugLog("InventoryWrapperProvider not exists! Shop won't be loaded!");
+                    continue;
+                }
                 ++valid;
 
                 Location shopLocation = shop.getLocation();
@@ -219,14 +223,6 @@ public class ShopLoader {
         }
         if (plugin.getServer().getOfflinePlayer(shop.getOwner()).getName() == null) {
             Util.debugLog("Shop owner not exist on this server, did you have reset the playerdata?");
-        }
-        if (shop.getInventoryWrapperProvider() == null || shop.getInventoryWrapperProvider().isEmpty()) {
-            Util.debugLog("InventoryWrapperProvider not exists. The data not successfully upgrading?");
-            return true;
-        }
-        if (shop.getInventory() == null) {
-            Util.debugLog("InventoryWrapper invalid.");
-            return true;
         }
         return false;
     }
