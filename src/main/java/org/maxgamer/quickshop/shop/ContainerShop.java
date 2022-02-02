@@ -108,11 +108,11 @@ public class ContainerShop implements Shop {
     private boolean disableDisplay;
     private UUID taxAccount;
     @NotNull
-    private String inventoryWrapperProvider;
+    private volatile String inventoryWrapperProvider;
     @Nullable
-    private InventoryWrapper inventory;
+    private volatile InventoryWrapper inventory;
     @Nullable
-    private final String symbolLink;
+    private volatile String symbolLink;
 
     private ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
@@ -208,6 +208,7 @@ public class ContainerShop implements Shop {
             if (block instanceof BlockInventoryHolder) {
                 this.inventoryWrapperProvider = plugin.getInventoryWrapperRegistry().find(plugin.getInventoryWrapperManager());
                 this.inventory = new BukkitInventoryWrapper(((BlockInventoryHolder) block).getInventory());
+                this.symbolLink = plugin.getInventoryWrapperManager().mklink(inventory);
                 return this.inventory;
             } else {
                 if (block instanceof EnderChest) {
@@ -221,7 +222,9 @@ public class ContainerShop implements Shop {
             throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " invalid or failed to load!");
         }
         try {
-            return manager.locate(symbolLink);
+            InventoryWrapper inventoryWrapper = manager.locate(symbolLink);
+            this.symbolLink = manager.mklink(inventoryWrapper);
+            return inventoryWrapper;
         } catch (IllegalArgumentException e) {
             throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage());
         }
@@ -947,15 +950,7 @@ public class ContainerShop implements Shop {
 
     @NotNull
     public String saveToSymbolLink() {
-        if (!isLoaded) {
-            return symbolLink == null ? "" : symbolLink;
-        }
-        try {
-            return plugin.getInventoryWrapperRegistry().get(this.inventoryWrapperProvider).mklink(getInventory());
-        } catch (Exception exception) {
-            plugin.getLogger().log(Level.WARNING, "Failed to create shop symbol link, Shop data may lose!", exception);
-            return plugin.getInventoryWrapperRegistry().get(plugin.getName()).mklink(getInventory());
-        }
+        return symbolLink == null ? "" : symbolLink;
     }
 
     @Override
@@ -966,6 +961,7 @@ public class ContainerShop implements Shop {
         }
         this.inventory = wrapper;
         this.inventoryWrapperProvider = provider;
+        this.symbolLink = manager.mklink(wrapper);
         setDirty();
         update();
     }
@@ -1408,8 +1404,8 @@ public class ContainerShop implements Shop {
      * @return The chest this shop is based on.
      */
     public @Nullable InventoryWrapper getInventory() {
-        Util.ensureThread(false);
         if (inventory == null) {
+            Util.ensureThread(false);
             inventory = locateInventory(symbolLink);
         }
         if (this.inventory.isValid()) {
