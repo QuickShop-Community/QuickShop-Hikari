@@ -13,7 +13,7 @@
  *  for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *  along with this program. If not, see <http:www.gnu.org/licenses/>.
  *
  */
 
@@ -24,7 +24,7 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.maxgamer.quickshop.TestBukkitBase;
 import org.maxgamer.quickshop.api.economy.EconomyCore;
@@ -37,13 +37,18 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class EconomyTransactionTest extends TestBukkitBase {
 
 
-    static final EconomyCore economy = new TestEconomy();
-    static final Trader taxAccount = Trader.adapt(plugin.getServer().getOfflinePlayer("Tax"));
+    static EconomyCore economy;
+    static Trader taxAccount;
 
-    static {
+    @BeforeAll
+    public static void setUp() {
+        economy = new TestEconomy();
+        taxAccount = Trader.adapt(plugin.getServer().getOfflinePlayer("Tax"));
         economy.getBalance(taxAccount, null, null);
     }
 
@@ -77,36 +82,35 @@ public class EconomyTransactionTest extends TestBukkitBase {
                 }
             });
         }
-        Assertions.assertEquals((Double) (20 * 1000 * 0.06D), (Double) economy.getBalance(taxAccount, null, null));
+        assertEquals((Double) (20 * 1000 * 0.06D), (Double) economy.getBalance(taxAccount, null, null));
 
-        Assertions.assertEquals((Double) (1000 * 0.94D), (Double) economy.getBalance(UUIDList.get(0), null, null));
+        assertEquals((Double) (1000 * 0.94D), (Double) economy.getBalance(UUIDList.get(0), null, null));
 
-//        genTransaction(UUIDList.get(5), null, 1000, 0.0, true).commit(new EconomyTransaction.TransactionCallback() {
-//            @Override
-//            public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
-//                assertEquals(-1000 * 0.06D, economy.getBalance(economyTransaction.getFrom(), null, null));
-//            }
-//
-//            @Override
-//            public void onFailed(@NotNull EconomyTransaction economyTransaction) {
-//                throw new RuntimeException("Loan Test Failed");
-//            }
-//        });
-//
-//        genTransaction(UUIDList.get(4), UUIDList.get(5), 1000, 0.06, true).commit(new EconomyTransaction.TransactionCallback() {
-//            @Override
-//            public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
-//                assertEquals(-1000 * 0.06D, economy.getBalance(economyTransaction.getFrom(), null, null));
-//                assertEquals(-1000 * 0.06D + 1000 * 0.94D, economy.getBalance(economyTransaction.getTo(), null, null));
-//                assertEquals(20 * 1000 * 0.06D + (1000 * 0.06D), economy.getBalance(taxAccount, null, null));
-//            }
-//
-//            @Override
-//            public void onFailed(@NotNull EconomyTransaction economyTransaction) {
-//                throw new RuntimeException("Transfer Test Failed");
-//            }
-//        });
-//    }
+        genTransaction(UUIDList.get(5), null, 1000, 0.0, true).commit(new EconomyTransaction.TransactionCallback() {
+            @Override
+            public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
+                assertEquals(-1000 * 0.06D, economy.getBalance(economyTransaction.getFrom(), null, null));
+            }
+
+            @Override
+            public void onFailed(@NotNull EconomyTransaction economyTransaction) {
+                throw new RuntimeException("Loan Test Failed");
+            }
+        });
+
+        genTransaction(UUIDList.get(4), UUIDList.get(5), 1000, 0.06, true).commit(new EconomyTransaction.TransactionCallback() {
+            @Override
+            public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
+                assertEquals(-1000 * 0.06D, economy.getBalance(economyTransaction.getFrom(), null, null));
+                assertEquals(-1000 * 0.06D + 1000 * 0.94D, economy.getBalance(economyTransaction.getTo(), null, null));
+                assertEquals(20 * 1000 * 0.06D + (1000 * 0.06D), economy.getBalance(taxAccount, null, null));
+            }
+
+            @Override
+            public void onFailed(@NotNull EconomyTransaction economyTransaction) {
+                throw new RuntimeException("Transfer Test Failed");
+            }
+        });
     }
 
     @Test
