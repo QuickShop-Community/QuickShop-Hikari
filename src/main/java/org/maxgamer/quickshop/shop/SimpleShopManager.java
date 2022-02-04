@@ -343,22 +343,22 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      * Format the price use economy system
      *
      * @param d price
-     * @return formated price
+     * @return formatted price
      */
     @Override
     public @Nullable String format(double d, @NotNull World world, @Nullable String currency) {
-        return plugin.getEconomy().format(d, world, currency);
+        return formatter.format(d, world, currency);
     }
 
     /**
      * Format the price use economy system
      *
      * @param d price
-     * @return formated price
+     * @return formatted price
      */
     @Override
     public @Nullable String format(double d, @NotNull Shop shop) {
-        return plugin.getEconomy().format(d, shop.getLocation().getWorld(), shop.getCurrency());
+        return formatter.format(d, shop);
     }
 
     /**

@@ -72,15 +72,22 @@ public class EconomyFormatter implements Reloadable {
     /**
      * Formats the given number according to how vault would like it. E.g. $50 or 5 dollars.
      *
+     * @param n price
+     * @return The formatted string.
+     */
+    public @Nullable String format(double n, @NotNull World world, @Nullable String currency) {
+        return format(n, disableVaultFormat, world, currency);
+    }
+
+    /**
+     * Formats the given number according to how vault would like it. E.g. $50 or 5 dollars.
+     *
      * @param n    price
      * @param shop shop
      * @return The formatted string.
      */
     @NotNull
-    public String format(double n, @Nullable Shop shop) {
-        if (shop == null) {
-            return "Error: Shop null";
-        }
+    public String format(double n, @NotNull Shop shop) {
         return format(n, disableVaultFormat, shop.getLocation().getWorld(), shop);
     }
 
