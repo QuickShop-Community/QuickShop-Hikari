@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.economy;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
@@ -42,7 +41,7 @@ public class EconomyTransactionTest extends TestBukkitBase {
 
 
     static final EconomyCore economy = new TestEconomy();
-    static final Trader taxAccount = Trader.adapt(Bukkit.getOfflinePlayer("Tax"));
+    static final Trader taxAccount = Trader.adapt(plugin.getServer().getOfflinePlayer("Tax"));
 
     static {
         economy.getBalance(taxAccount, null, null);
