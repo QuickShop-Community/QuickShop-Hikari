@@ -26,6 +26,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.profile.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,6 +58,12 @@ public class Trader implements OfflinePlayer {
     @Override
     public @NotNull UUID getUniqueId() {
         return offlinePlayer.getUniqueId();
+    }
+
+    @NotNull
+    @Override
+    public PlayerProfile getPlayerProfile() {
+        return offlinePlayer.getPlayerProfile();
     }
 
     @Override
