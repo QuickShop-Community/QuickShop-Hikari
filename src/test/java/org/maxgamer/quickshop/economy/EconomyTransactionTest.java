@@ -24,8 +24,8 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.TestBukkitBase;
 import org.maxgamer.quickshop.api.economy.EconomyCore;
 import org.maxgamer.quickshop.api.economy.EconomyTransaction;
@@ -42,20 +42,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class EconomyTransactionTest extends TestBukkitBase {
 
 
-    static EconomyCore economy;
+    static EconomyCore economy = new TestEconomy();
     static Trader taxAccount;
 
     public static Trader getTaxAccount() {
         if (taxAccount == null) {
-            taxAccount = Trader.adapt(plugin.getServer().getOfflinePlayer("Tax"));
+            taxAccount = Trader.adapt(QuickShop.getInstance().getServer().getOfflinePlayer("Tax"));
             economy.getBalance(taxAccount, null, null);
         }
         return taxAccount;
-    }
-
-    @BeforeAll
-    public static void setUp() {
-        economy = new TestEconomy();
     }
 
     private static EconomyTransaction genTransaction(UUID from, UUID to, double amount, double taxModifier, boolean allowLoan) {

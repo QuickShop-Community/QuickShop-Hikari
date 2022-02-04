@@ -12,7 +12,6 @@ import java.lang.reflect.Field;
  * If you are writing test which using runtime stuff, just extend it
  */
 public abstract class TestBukkitBase {
-    static protected QuickShop plugin;
     @BeforeAll
     public static void setUp() {
         MockBukkit.mock();
@@ -26,7 +25,7 @@ public abstract class TestBukkitBase {
         } catch (NoSuchFieldException | IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        plugin = MockBukkit.load(QuickShop.class);
+        MockBukkit.load(QuickShop.class);
     }
 
     @AfterAll
