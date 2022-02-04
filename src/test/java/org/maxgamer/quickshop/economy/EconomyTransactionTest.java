@@ -45,15 +45,21 @@ public class EconomyTransactionTest extends TestBukkitBase {
     static EconomyCore economy;
     static Trader taxAccount;
 
+    public static Trader getTaxAccount() {
+        if (taxAccount == null) {
+            taxAccount = Trader.adapt(plugin.getServer().getOfflinePlayer("Tax"));
+            economy.getBalance(taxAccount, null, null);
+        }
+        return taxAccount;
+    }
+
     @BeforeAll
     public static void setUp() {
         economy = new TestEconomy();
-        taxAccount = Trader.adapt(plugin.getServer().getOfflinePlayer("Tax"));
-        economy.getBalance(taxAccount, null, null);
     }
 
     private static EconomyTransaction genTransaction(UUID from, UUID to, double amount, double taxModifier, boolean allowLoan) {
-        return EconomyTransaction.builder().core(economy).from(from).to(to).amount(amount).taxAccount(taxAccount).taxModifier(taxModifier).allowLoan(allowLoan).build();
+        return EconomyTransaction.builder().core(economy).from(from).to(to).amount(amount).taxAccount(getTaxAccount()).taxModifier(taxModifier).allowLoan(allowLoan).build();
     }
 
     @Test
