@@ -340,7 +340,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     /**
-     * Format the price use economy system
+     * Format the price use formatter
      *
      * @param d price
      * @return formatted price
@@ -351,7 +351,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     /**
-     * Format the price use economy system
+     * Format the price use formatter
      *
      * @param d price
      * @return formatted price

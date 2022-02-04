@@ -96,7 +96,7 @@ public interface ShopManager {
     void createShop(@NotNull Shop shop, @NotNull Info info);
 
     /**
-     * Format the price use economy system
+     * Format the price use formatter
      *
      * @param d        price
      * @param currency currency
@@ -106,7 +106,7 @@ public interface ShopManager {
     @Nullable String format(double d, @NotNull World world, @Nullable String currency);
 
     /**
-     * Format the price use economy system
+     * Format the price use formatter
      *
      * @param d    price
      * @param shop The shop
