@@ -357,6 +357,8 @@ public interface Shop {
      */
     boolean isSelling();
 
+    boolean isBothSellingAndBuying();
+
     /**
      * Get shop is or not in Unlimited Mode (Admin Shop)
      *
