@@ -1360,7 +1360,14 @@ public class ContainerShop implements Shop {
             container = (InventoryHolder) state;
             inv = container.getInventory();
         } catch (Exception e) {
-            this.delete(createBackup);
+            if (!createBackup) {
+                createBackup = Util.backupDatabase();
+                if (createBackup) {
+                    this.delete(false);
+                }
+            } else {
+                this.delete(true);
+            }
             plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
             Util.debugLog(
                     "Inventory doesn't exist anymore: " + this + " shop was removed.");

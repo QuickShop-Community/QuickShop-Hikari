@@ -25,7 +25,7 @@ public enum ShopType {
     // SELLING = SELLMODE BUYING = BUY MODE
     SELLING(0),
     BUYING(1),
-    BUYINGANDSELLING(2);
+    BUYINGANDSELLING(2),
     private final int id;
 
     ShopType(int id) {
