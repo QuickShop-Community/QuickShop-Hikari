@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.integration.towny;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.event.PlotClearEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
@@ -43,8 +45,6 @@ import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopChunk;
 import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.List;
 import java.util.Map;

@@ -25,6 +25,8 @@ import com.bgsoftware.superiorskyblock.api.events.IslandKickEvent;
 import com.bgsoftware.superiorskyblock.api.events.IslandQuitEvent;
 import com.bgsoftware.superiorskyblock.api.island.Island;
 import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -38,8 +40,6 @@ import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.Map;
 

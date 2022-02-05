@@ -21,6 +21,9 @@ package org.maxgamer.quickshop.database;
 
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.SQLQuery;
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
+import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -31,9 +34,6 @@ import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopModerator;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.sql.*;
 import java.util.UUID;

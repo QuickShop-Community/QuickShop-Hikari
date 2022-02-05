@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.integration.advancedregionmarket;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import net.alex9849.arm.events.RemoveRegionEvent;
 import net.alex9849.arm.events.RestoreRegionEvent;
 import net.alex9849.arm.regions.Region;
@@ -35,8 +37,6 @@ import org.maxgamer.quickshop.api.integration.IntegrateStage;
 import org.maxgamer.quickshop.api.integration.IntegrationStage;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.HashMap;
 import java.util.HashSet;

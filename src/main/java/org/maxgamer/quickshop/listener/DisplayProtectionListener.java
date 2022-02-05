@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.listener;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -41,8 +43,6 @@ import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.api.shop.DisplayType;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 public class DisplayProtectionListener extends AbstractProtectionListener {
 

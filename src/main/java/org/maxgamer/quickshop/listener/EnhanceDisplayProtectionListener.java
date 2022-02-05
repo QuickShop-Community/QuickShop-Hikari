@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.listener;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -46,8 +48,6 @@ import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 public class EnhanceDisplayProtectionListener extends AbstractProtectionListener implements Listener {
 

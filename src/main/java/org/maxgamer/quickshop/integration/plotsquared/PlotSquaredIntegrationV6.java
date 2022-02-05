@@ -36,6 +36,8 @@ package org.maxgamer.quickshop.integration.plotsquared;/*
  *
  */
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.google.common.eventbus.Subscribe;
 import com.plotsquared.core.PlotSquared;
 import com.plotsquared.core.configuration.caption.Caption;
@@ -55,8 +57,6 @@ import org.maxgamer.quickshop.api.integration.IntegrationStage;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -19,10 +19,10 @@
 
 package org.maxgamer.quickshop.listener;
 
+import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 public abstract class AbstractQSListener implements Listener, Reloadable {
     protected final QuickShop plugin;

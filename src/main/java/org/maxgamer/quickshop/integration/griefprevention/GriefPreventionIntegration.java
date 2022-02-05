@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.integration.griefprevention;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -39,8 +41,6 @@ import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.ArrayList;
 import java.util.Collections;

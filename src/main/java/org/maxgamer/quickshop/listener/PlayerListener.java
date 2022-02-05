@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.listener;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import me.lucko.helper.cooldown.Cooldown;
 import me.lucko.helper.cooldown.CooldownMap;
 import org.bukkit.GameMode;
@@ -49,8 +51,6 @@ import org.maxgamer.quickshop.shop.InteractionController;
 import org.maxgamer.quickshop.shop.SimpleInfo;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.AbstractMap;
 import java.util.Map;

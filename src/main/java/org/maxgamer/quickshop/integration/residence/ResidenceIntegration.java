@@ -23,6 +23,8 @@ import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -30,8 +32,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.integration.IntegrateStage;
 import org.maxgamer.quickshop.api.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.List;
 import java.util.Map;

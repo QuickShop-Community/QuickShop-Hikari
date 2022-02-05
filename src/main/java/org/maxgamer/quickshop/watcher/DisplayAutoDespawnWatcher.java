@@ -19,6 +19,9 @@
 
 package org.maxgamer.quickshop.watcher;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
+import com.ghostchu.simplereloadlib.Reloadable;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -30,9 +33,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 @AllArgsConstructor
 public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloadable {

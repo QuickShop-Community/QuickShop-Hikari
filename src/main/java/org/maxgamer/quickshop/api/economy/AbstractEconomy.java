@@ -19,13 +19,13 @@
 
 package org.maxgamer.quickshop.api.economy;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
+import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.UUID;
 

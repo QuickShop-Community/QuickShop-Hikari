@@ -26,7 +26,7 @@
 //import org.maxgamer.quickshop.api.integration.IntegrateStage;
 //import org.maxgamer.quickshop.api.integration.IntegrationStage;
 //import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
-//import org.maxgamer.quickshop.util.reload.ReloadResult;
+//import com.ghostchu.simplereloadlib.ReloadResult;
 //
 //@IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 //public class PlotSquaredIntegrationProxy extends AbstractQSIntegratedPlugin {

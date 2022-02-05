@@ -19,6 +19,9 @@
 
 package org.maxgamer.quickshop.shop;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
+import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.MapMaker;
@@ -55,9 +58,6 @@ import org.maxgamer.quickshop.localization.LocalizedMessagePair;
 import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.economyformatter.EconomyFormatter;
 import org.maxgamer.quickshop.util.holder.Result;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.text.DecimalFormat;
 import java.util.*;

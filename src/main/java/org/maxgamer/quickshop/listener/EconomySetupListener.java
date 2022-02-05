@@ -19,11 +19,11 @@
 
 package org.maxgamer.quickshop.listener;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 public class EconomySetupListener extends AbstractQSListener {
     public EconomySetupListener(QuickShop plugin) {

@@ -23,6 +23,7 @@ import cc.carm.lib.easysql.EasySQL;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.hikari.HikariConfig;
 import cc.carm.lib.easysql.manager.SQLManagerImpl;
+import com.ghostchu.simplereloadlib.ReloadManager;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
@@ -88,7 +89,6 @@ import org.maxgamer.quickshop.util.config.ConfigurationFixer;
 import org.maxgamer.quickshop.util.envcheck.*;
 import org.maxgamer.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
-import org.maxgamer.quickshop.util.reload.ReloadManager;
 import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
 import org.maxgamer.quickshop.watcher.*;
 

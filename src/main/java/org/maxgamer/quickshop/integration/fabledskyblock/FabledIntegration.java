@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.integration.fabledskyblock;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.songoda.skyblock.api.SkyBlockAPI;
 import com.songoda.skyblock.api.island.Island;
 import com.songoda.skyblock.api.island.IslandRole;
@@ -29,8 +31,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.integration.IntegrateStage;
 import org.maxgamer.quickshop.api.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class FabledIntegration extends AbstractQSIntegratedPlugin {

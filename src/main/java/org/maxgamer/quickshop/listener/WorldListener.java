@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.listener;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -29,8 +31,6 @@ import org.bukkit.event.world.WorldUnloadEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopChunk;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.Map;
 import java.util.Map.Entry;

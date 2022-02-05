@@ -1,10 +1,10 @@
 package org.maxgamer.quickshop.shop;
 
+import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.io.File;
 import java.io.IOException;

@@ -19,6 +19,9 @@
 
 package org.maxgamer.quickshop.util.economyformatter;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
+import com.ghostchu.simplereloadlib.Reloadable;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -28,9 +31,6 @@ import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.HashMap;
 import java.util.List;

@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.listener;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.server.PluginDisableEvent;
@@ -29,8 +31,6 @@ import org.maxgamer.quickshop.api.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.api.integration.IntegrationManager;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.compatibility.SimpleCompatibilityManager;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.Set;
 

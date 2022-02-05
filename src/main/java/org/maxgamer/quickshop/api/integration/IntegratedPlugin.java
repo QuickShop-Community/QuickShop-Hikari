@@ -19,10 +19,10 @@
 
 package org.maxgamer.quickshop.api.integration;
 
+import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 /**
  * Integration module

@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.listener;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import io.papermc.lib.PaperLib;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -46,8 +48,6 @@ import org.maxgamer.quickshop.api.shop.ShopAction;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 /**
  * BlockListener to listening events about block events

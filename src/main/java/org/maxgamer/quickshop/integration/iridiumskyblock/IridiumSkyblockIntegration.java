@@ -20,6 +20,8 @@
 
 package org.maxgamer.quickshop.integration.iridiumskyblock;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.iridium.iridiumskyblock.api.IridiumSkyblockAPI;
 import com.iridium.iridiumskyblock.api.IslandDeleteEvent;
 import com.iridium.iridiumskyblock.api.IslandRegenEvent;
@@ -39,8 +41,6 @@ import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.List;
 import java.util.Optional;

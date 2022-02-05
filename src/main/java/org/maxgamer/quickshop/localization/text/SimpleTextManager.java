@@ -20,6 +20,9 @@
 package org.maxgamer.quickshop.localization.text;
 
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
+import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.SneakyThrows;
@@ -42,9 +45,6 @@ import org.maxgamer.quickshop.localization.text.postprocessing.impl.FillerProces
 import org.maxgamer.quickshop.localization.text.postprocessing.impl.PlaceHolderApiProcessor;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.io.File;
 import java.io.IOException;

@@ -239,6 +239,11 @@
                             <pattern>cc.carm.lib.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.cc.carm.lib.</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>com.ghostchu.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.com.ghostchu.</shadedPattern>
+                        </relocation>
+
                     </relocations>
                     <transformers>
                         <transformer
@@ -912,6 +917,11 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>2.1.210</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>simplereloadlib</artifactId>
+            <version>1.1.0</version>
         </dependency>
     </dependencies>
 </project>

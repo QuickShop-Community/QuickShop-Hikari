@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.integration.worldguard;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
@@ -41,8 +43,6 @@ import org.maxgamer.quickshop.api.integration.IntegrateStage;
 import org.maxgamer.quickshop.api.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.List;
 import java.util.logging.Level;

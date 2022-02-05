@@ -20,6 +20,8 @@
 package org.maxgamer.quickshop.economy;
 
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -38,8 +40,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.economyformatter.BuiltInEconomyFormatter;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
 import java.util.Objects;
 import java.util.UUID;

@@ -19,6 +19,9 @@
 
 package org.maxgamer.quickshop.eventmanager;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
+import com.ghostchu.simplereloadlib.Reloadable;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -34,9 +37,6 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.eventmanager.QuickEventManager;
 import org.maxgamer.quickshop.util.Util;
-import org.maxgamer.quickshop.util.reload.ReloadResult;
-import org.maxgamer.quickshop.util.reload.ReloadStatus;
-import org.maxgamer.quickshop.util.reload.Reloadable;
 
 import java.util.ArrayList;
 import java.util.List;
