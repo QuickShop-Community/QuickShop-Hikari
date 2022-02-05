@@ -2088,6 +2088,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfig().set("config-version", ++selectedVersion);
 
         }
+        // shop.interact has been removed in Apollo
+        // require migrate code while merge into master.
         if (getConfig().isSet("shop.shop")) {
             getConfig().set("shop.shop", null);
         }
@@ -2134,12 +2136,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         } catch (Exception ignore) {
         }
 
-//        // Path exampleConfigFile = new File(getDataFolder(), "example-configuration.yml").toPath();
-//        try {
-//            Files.copy(Objects.requireNonNull(getResource("config.yml")), exampleConfigFile, REPLACE_EXISTING);
-//        } catch (IOException ioe) {
-//            getLogger().warning("Error when creating the example config file: " + ioe.getMessage());
-//        }
     }
 
     /**

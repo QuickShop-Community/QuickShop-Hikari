@@ -216,19 +216,6 @@ shop:
   #To quickly create a shop click a chest with an Item.
   disable-quick-create: false
 
-  #Interaction settings.
-  interact:
-    #Interaction mode
-    #0=Only interaction with sneak OR normal.
-    #1=Interaction with sneak (if enabled) AND normal.
-    #2=Disables interaction with sneak.
-    interact-mode: 0
-    sneak-to-create: false
-    sneak-to-trade: false
-    sneak-to-control: false
-    #Swap left and right click behavior.
-    swap-click-behavior: false
-
   #Should we automatically create the sign for the chest?
   auto-sign: true
 
