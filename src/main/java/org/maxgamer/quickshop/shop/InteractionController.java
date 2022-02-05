@@ -75,8 +75,7 @@ public class InteractionController implements Reloadable {
      * CONTROL_PANEL will show up a Shop Control Panel which will allow the user to change the shop's settings.
      */
     public enum InteractionBehavior {
-        BUY_INTERACTION,
-        SELL_INTERACTION,
+        TRADE_INTERACTION,
         BUY_DIRECT,
         SELL_DIRECT,
         CONTROL_PANEL,
