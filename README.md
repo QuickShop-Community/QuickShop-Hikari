@@ -1,4 +1,4 @@
-# QuickShop-Apollo
+# QuickShop-Reremake
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/e33e2fafe3ac4d4eb9048d154bbd874e)](https://www.codacy.com/gh/PotatoCraft-Studio/QuickShop-Reremake/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=PotatoCraft-Studio/QuickShop-Reremake&amp;utm_campaign=Badge_Grade)
 [![CodeFactor](https://www.codefactor.io/repository/github/potatocraft-studio/quickshop-reremake/badge)](https://www.codefactor.io/repository/github/potatocraft-studio/quickshop-reremake)
@@ -15,13 +15,6 @@
 ![Rating](https://img.shields.io/spiget/rating/62575?label=rating)
 ---
 
-## What is Apollo?
-QuickShop-Apollo is a highly experimental, with breaking changes branch.
-
-We use this branch to develop new major features and test it.  
-In most case, this branch's content and features need 1-2 years to merge into master.
-
----
 QuickShop is a **FREE** shop plugin that allows players to easily sell/buy any items from a chest without any commands. In fact,
 none of the commands that QuickShop provides are ever needed by a player. QuickShop-Reremake is a **FREE** fork of QuickShop
 NotLikeMe with more features, bug fixes and other improvements.  
