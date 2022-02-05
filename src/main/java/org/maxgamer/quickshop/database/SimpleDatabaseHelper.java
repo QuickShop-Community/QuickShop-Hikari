@@ -32,7 +32,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.database.DatabaseHelper;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopModerator;
-import org.maxgamer.quickshop.api.shop.ShopPrice;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -304,14 +303,14 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
     @Override
     public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
-                           @NotNull ShopPrice price, int x, int y, int z, @NotNull String world, @NotNull String extra,
+                           double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
                            @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount) {
         manager.createUpdate(plugin.getDbPrefix() + "shops")
                 .setColumnValues("owner", owner)
                 .setColumnValues("itemConfig", Util.serialize(item))
                 .setColumnValues("unlimited", unlimited)
                 .setColumnValues("type", shopType)
-                .setColumnValues("price", JsonUtil.getGson().toJson(price))
+                .setColumnValues("price", price)
                 .setColumnValues("extra", extra)
                 .setColumnValues("disableDisplay", disableDisplay ? 1 : 0)
                 .setColumnValues("taxAccount", taxAccount)

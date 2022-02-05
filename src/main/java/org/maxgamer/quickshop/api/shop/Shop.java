@@ -282,15 +282,14 @@ public interface Shop {
      *
      * @return Price
      */
-    @NotNull
-    ShopPrice getPrice();
+    double getPrice();
 
     /**
      * Set shop's new price
      *
      * @param paramDouble New price
      */
-    void setPrice(double paramDouble, @NotNull ShopType type);
+    void setPrice(double paramDouble);
 
     /**
      * Get shop remaining space.
@@ -617,7 +616,7 @@ public interface Shop {
      *
      * @return Free Shop
      */
-    boolean isFreeShop(@Nullable ShopType type);
+    boolean isFreeShop();
 
     /**
      * If this shop is always counting space or stocks, even is unlimited

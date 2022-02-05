@@ -24,7 +24,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.api.shop.ShopPrice;
 
 import java.sql.SQLException;
 import java.util.UUID;
@@ -145,7 +144,7 @@ public interface DatabaseHelper {
      * @param taxAccount     Shop specific tax account
      */
     void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
-                    ShopPrice price, int x, int y, int z, @NotNull String world, @NotNull String extra,
+                    double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
                     @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount);
 
     /**
