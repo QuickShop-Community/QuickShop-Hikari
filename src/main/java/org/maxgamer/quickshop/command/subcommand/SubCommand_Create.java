@@ -148,7 +148,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
 
             // Send creation menu.
             plugin.getShopManager().getActions().put(sender.getUniqueId(),
-                    new SimpleInfo(b.getLocation(), ShopAction.CREATE, item, b.getRelative(sender.getFacing().getOppositeFace()), false));
+                    new SimpleInfo(b.getLocation(), ShopAction.CREATE_SELL, item, b.getRelative(sender.getFacing().getOppositeFace()), false));
             plugin.getShopManager().handleChat(sender, price);
             return;
         }
