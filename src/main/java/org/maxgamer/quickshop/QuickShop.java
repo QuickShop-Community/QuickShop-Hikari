@@ -304,12 +304,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     }
 
     /**
-     * Return the QSRR's fork edition name, you can modify this if you want create yourself fork.
+     * Return the QuickShop fork name.
      *
      * @return The fork name.
      */
     public static String getFork() {
-        return "Reremake";
+        return "Apollo";
     }
 
     public IntegrationManager getIntegrationHelper() {
