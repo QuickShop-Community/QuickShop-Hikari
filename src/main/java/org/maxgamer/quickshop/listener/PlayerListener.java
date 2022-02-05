@@ -164,7 +164,7 @@ public class PlayerListener extends AbstractQSListener {
             return;
         }
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
-        Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BOTH, null, null, shop, false);
+        Info info = new SimpleInfo(shop.getLocation(), ShopAction.CREATE_SELL, null, null, shop, false);
         actions.put(player.getUniqueId(), info);
         final double ownerBalance = eco.getBalance(shop.getOwner(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
         int itemsSell = getPlayerCanSell(shop, ownerBalance, price, playerInventory);
@@ -196,7 +196,7 @@ public class PlayerListener extends AbstractQSListener {
             return;
         }
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
-        Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BUY, null, null, shop, false);
+        Info info = new SimpleInfo(shop.getLocation(), ShopAction.CREATE_SELL, null, null, shop, false);
         actions.put(player.getUniqueId(), info);
         if (!direct) {
             final double ownerBalance = eco.getBalance(shop.getOwner(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
