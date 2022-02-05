@@ -51,6 +51,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.h2.Driver;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -1124,7 +1125,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 this.sqlManager = new SQLManagerImpl(config.getDataSource());
             } else {
                 // SQLite database - Doing this handles file creation
-                Class.forName("org.h2.Driver");
+                Driver.load();
                 config.setJdbcUrl("jdbc:h2:file:" + new File(this.getDataFolder(), "shops.h2.db"));
                 this.sqlManager = new SQLManagerImpl(config.getDataSource());
             }
