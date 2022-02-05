@@ -114,7 +114,6 @@
   "that-is-locked": "&cThis shop is locked.",
   "how-many-buy": "&aEnter in chat, how many you wish to &bBUY&a. You can buy &e{0}&a. Enter &b{1}&a to buy them all.",
   "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You can sell &e{0}&a. Enter &b{1}&a in chat, to sell all.",
-  "how-many-buyandsell-stacks": "&aEnter in chat, how many you wish to &eTRADE&a. There are &e{0}&a items per bulk.\nYou can sell &e{1}&a or buy &e{2} stacks.\n&aEnter &b{3} S&a to sell all or &b{3} B&ato buy them all.",
   "how-many-buyandsell": "&aEnter in chat, how many you wish to &eTRADE&a. You can sell &e{0}&a or buy %e{1}.\n&aEnter &b{2} S&a to sell all or &b{2} B&ato buy them all.",
   "not-allowed-to-create": "&cYou may not create a shop here.",
   "blacklisted-item": "&cYou cannot sell this item because it is on the blacklist",

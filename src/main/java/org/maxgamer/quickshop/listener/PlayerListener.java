@@ -116,23 +116,16 @@ public class PlayerListener extends AbstractQSListener {
                 e.setUseInteractedBlock(Event.Result.DENY);
                 e.setUseItemInHand(Event.Result.DENY);
             case TRADE_INTERACTION:
-                if (shopSearched.getKey().isBothSellingAndBuying()) {
+                if(shopSearched.getKey().isBuying()){
                     e.setCancelled(true);
                     e.setUseInteractedBlock(Event.Result.DENY);
                     e.setUseItemInHand(Event.Result.DENY);
-                    tradeShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey());
-                } else {
-                    if (shopSearched.getKey().isBuying()) {
-                        e.setCancelled(true);
-                        e.setUseInteractedBlock(Event.Result.DENY);
-                        e.setUseItemInHand(Event.Result.DENY);
-                        buyShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), false);
-                    } else if (shopSearched.getKey().isSelling()) {
-                        e.setCancelled(true);
-                        e.setUseInteractedBlock(Event.Result.DENY);
-                        e.setUseItemInHand(Event.Result.DENY);
-                        sellShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), false);
-                    }
+                    buyShop(e.getPlayer(),e.getClickedBlock(),shopSearched.getKey(),false);
+                }else if (shopSearched.getKey().isSelling()){
+                    e.setCancelled(true);
+                    e.setUseInteractedBlock(Event.Result.DENY);
+                    e.setUseItemInHand(Event.Result.DENY);
+                    sellShop(e.getPlayer(),e.getClickedBlock(),shopSearched.getKey(),false);
                 }
             case SELL_DIRECT:
                 sellShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), true);
@@ -144,44 +137,12 @@ public class PlayerListener extends AbstractQSListener {
         }
     }
 
-    private void tradeShop(@NotNull Player player, @NotNull Block clickedBlock, @NotNull Shop shop) {
-        if (shop == null) {
-            createShop(player, clickedBlock);
-            return;
-        }
-        if (!shop.isBuying())
-            return;
-        shop.onClick();
-        this.playClickSound(player);
-        plugin.getShopManager().sendShopInfo(player, shop);
-        shop.setSignText();
-        final AbstractEconomy eco = plugin.getEconomy();
-        final double price = shop.getPrice();
-        final Inventory playerInventory = player.getInventory();
-        final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
-        if (shop.getRemainingSpace() == 0 && shop.getRemainingStock() == 0) {
-            plugin.text().of(player, "purchase-out-of-space", shop.ownerName()).send();
-            return;
-        }
-        Map<UUID, Info> actions = plugin.getShopManager().getActions();
-        Info info = new SimpleInfo(shop.getLocation(), ShopAction.CREATE_SELL, null, null, shop, false);
-        actions.put(player.getUniqueId(), info);
-        final double ownerBalance = eco.getBalance(shop.getOwner(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
-        int itemsSell = getPlayerCanSell(shop, ownerBalance, price, playerInventory);
-        int itemsBuy = getPlayerCanBuy(shop, ownerBalance, price, playerInventory);
-        if (shop.isStackingShop()) {
-            plugin.text().of(player, "how-many-buyandsell-stacks", shop.getShopStackingAmount(), itemsSell, itemsBuy, tradeAllWord).send();
-        } else {
-            plugin.text().of(player, "how-many-buyandsell", itemsSell, itemsBuy, tradeAllWord).send();
-        }
-    }
-
     public void buyShop(@NotNull Player player, @Nullable Block block, @Nullable Shop shop, boolean direct) {
         if (shop == null) {
             createShop(player, block);
             return;
         }
-        if (!shop.isBuying())
+        if(!shop.isBuying())
             return;
         shop.onClick();
         this.playClickSound(player);
@@ -220,7 +181,7 @@ public class PlayerListener extends AbstractQSListener {
             createShop(player, block);
             return;
         }
-        if (!shop.isSelling())
+        if(!shop.isSelling())
             return;
         shop.onClick();
         this.playClickSound(player);
