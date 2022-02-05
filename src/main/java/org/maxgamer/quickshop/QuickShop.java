@@ -19,6 +19,10 @@
 
 package org.maxgamer.quickshop;
 
+import cc.carm.lib.easysql.EasySQL;
+import cc.carm.lib.easysql.api.SQLManager;
+import cc.carm.lib.easysql.hikari.HikariConfig;
+import cc.carm.lib.easysql.manager.SQLManagerImpl;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
@@ -63,7 +67,7 @@ import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 import org.maxgamer.quickshop.command.SimpleCommandManager;
-import org.maxgamer.quickshop.database.*;
+import org.maxgamer.quickshop.database.SimpleDatabaseHelper;
 import org.maxgamer.quickshop.economy.Economy_GemsEconomy;
 import org.maxgamer.quickshop.economy.Economy_TNE;
 import org.maxgamer.quickshop.economy.Economy_Vault;
@@ -146,11 +150,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     @Setter
     private BootError bootError;
-    /**
-     * Queued database manager
-     */
-    @Getter
-    private DatabaseManager databaseManager;
     /**
      * Default database prefix, can overwrite by config
      */
@@ -259,6 +258,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private int loggingLocation = 0;
     @Getter
     private InteractionController interactionController;
+
+    @Getter
+    private SQLManager sqlManager;
 
     public void disableNBTAPI() {
         nbtapi = null;
@@ -668,8 +670,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
 
         Util.debugLog("Cleaning up database queues...");
-        if (this.getDatabaseManager() != null) {
-            this.getDatabaseManager().unInit();
+        if (this.getSqlManager() != null) {
+            EasySQL.shutdownManager(this.getSqlManager());
         }
 
         Util.debugLog("Unregistering tasks...");
@@ -1086,9 +1088,24 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      */
     private boolean setupDatabase() {
         getLogger().info("Setting up database...");
+
+        HikariConfig config = new HikariConfig();
+
+        config.addDataSourceProperty("connection-timeout", "60000");
+        config.addDataSourceProperty("validation-timeout", "3000");
+        config.addDataSourceProperty("idle-timeout", "60000");
+        config.addDataSourceProperty("login-timeout", "5");
+        config.addDataSourceProperty("maxLifeTime", "60000");
+        config.addDataSourceProperty("maximum-pool-size", "8");
+        config.addDataSourceProperty("minimum-idle", "10");
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.addDataSourceProperty("useUnicode", "true");
+        config.addDataSourceProperty("characterEncoding", "utf8");
+
         try {
             ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
-            AbstractDatabaseCore dbCore;
             if (Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
                 // MySQL database - Required database be created first.
                 dbPrefix = dbCfg.getString("prefix");
@@ -1101,29 +1118,26 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 String port = dbCfg.getString("port");
                 String database = dbCfg.getString("database");
                 boolean useSSL = dbCfg.getBoolean("usessl");
-                dbCore = new MySQLCore(this, Objects.requireNonNull(host, "MySQL host can't be null"), Objects.requireNonNull(user, "MySQL username can't be null"), Objects.requireNonNull(pass, "MySQL password can't be null"), Objects.requireNonNull(database, "MySQL database name can't be null"), Objects.requireNonNull(port, "MySQL port can't be null"), useSSL);
+                config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=" + useSSL);
+                config.setUsername(user);
+                config.setPassword(pass);
+                this.sqlManager = new SQLManagerImpl(config.getDataSource());
             } else {
                 // SQLite database - Doing this handles file creation
-                dbCore = new SQLiteCore(this, new File(this.getDataFolder(), "shops.db"));
+                Class.forName("org.h2.Driver");
+                config.setJdbcUrl("jdbc:h2:file:" + new File(this.getDataFolder(), "shops.h2.db"));
+                this.sqlManager = new SQLManagerImpl(config.getDataSource());
             }
-            this.databaseManager = new DatabaseManager(this, ServiceInjector.getDatabaseCore(dbCore));
             // Make the database up to date
-            this.databaseHelper = new SimpleDatabaseHelper(this, this.databaseManager);
-        } catch (DatabaseManager.ConnectionException e) {
+            this.databaseHelper = new SimpleDatabaseHelper(this, this.sqlManager);
+            return true;
+        } catch (Exception e) {
             getLogger().log(Level.SEVERE, "Error when connecting to the database", e);
             if (setupDBonEnableding) {
                 bootError = BuiltInSolution.databaseError();
             }
             return false;
-        } catch (Exception e) {
-            getLogger().log(Level.SEVERE, "Error when setup database", e);
-            getServer().getPluginManager().disablePlugin(this);
-            if (setupDBonEnableding) {
-                bootError = BuiltInSolution.databaseError();
-            }
-            return false;
         }
-        return true;
     }
 
     private void submitMeritcs() {
@@ -1159,7 +1173,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"))));
             metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"))));
             metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"))));
-            metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> this.getDatabaseManager().getDatabase().getName()));
             metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> AbstractDisplayItem.getNowUsing().name()));
             metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));
             metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> String.valueOf(this.isAllowStack())));

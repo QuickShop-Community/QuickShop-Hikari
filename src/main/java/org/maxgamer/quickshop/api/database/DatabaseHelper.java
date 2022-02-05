@@ -19,26 +19,17 @@
 
 package org.maxgamer.quickshop.api.database;
 
+import cc.carm.lib.easysql.api.SQLQuery;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.database.DataType;
 
 import java.sql.SQLException;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 public interface DatabaseHelper {
-    /**
-     * Creates a column with specific name and data type
-     *
-     * @param tableName  The table name
-     * @param columnName The column name
-     * @param type       The data type
-     * @return Create result
-     */
-    boolean createColumn(@NotNull String tableName, @NotNull String columnName, @NotNull DataType type);
 
     /**
      * Cleanup transaction messages that saved in database
@@ -86,7 +77,7 @@ public interface DatabaseHelper {
      * @return Query result set
      * @throws SQLException Any errors related to SQL Errors
      */
-    WarpedResultSet selectAllMessages() throws SQLException;
+    SQLQuery selectAllMessages() throws SQLException;
 
     /**
      * Select specific table content
@@ -94,7 +85,7 @@ public interface DatabaseHelper {
      * @return Query result set
      * @throws SQLException Any errors related to SQL Errors
      */
-    WarpedResultSet selectTable(String table) throws SQLException;
+    SQLQuery selectTable(String table) throws SQLException;
 
     /**
      * Select all shops that saved in the database
@@ -102,7 +93,7 @@ public interface DatabaseHelper {
      * @return Query result set
      * @throws SQLException Any errors related to SQL Errors
      */
-    WarpedResultSet selectAllShops() throws SQLException;
+    SQLQuery selectAllShops() throws SQLException;
 
     /**
      * Create a transaction message record and save into database
