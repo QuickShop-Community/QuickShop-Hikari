@@ -1207,7 +1207,6 @@ public class ContainerShop implements Shop {
 
     @Override
     public boolean isBuying() {
-        if (isBothSellingAndBuying()) return true;
         return this.shopType == ShopType.BUYING;
     }
 
@@ -1218,13 +1217,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public boolean isSelling() {
-        if (isBothSellingAndBuying()) return true;
         return this.shopType == ShopType.SELLING;
-    }
-
-    @Override
-    public boolean isBothSellingAndBuying() {
-        return this.shopType == ShopType.BUYINGANDSELLING;
     }
 
     @Override
