@@ -235,6 +235,10 @@
                             <pattern>de.leonhard.storage.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.de.leonhard.storage.</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>cc.carm.lib.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.cc.carm.lib.</shadedPattern>
+                        </relocation>
                     </relocations>
                     <transformers>
                         <transformer
@@ -896,6 +900,12 @@
             <artifactId>Reserve</artifactId>
             <version>0.1.5.4</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>cc.carm.lib</groupId>
+            <artifactId>easysql-hikaricp</artifactId>
+            <version>0.3.6</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
