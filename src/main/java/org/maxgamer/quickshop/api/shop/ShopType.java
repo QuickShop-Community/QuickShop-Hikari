@@ -26,7 +26,6 @@ public enum ShopType {
     SELLING(0),
     BUYING(1),
     BUYINGANDSELLING(2),
-    LOTTO(3),;
     private final int id;
 
     ShopType(int id) {

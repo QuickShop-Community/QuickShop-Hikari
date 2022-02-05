@@ -733,6 +733,11 @@ public class ContainerShop implements Shop {
                 tradingStringKey = isStackingShop() ? "signs.stack-selling" : "signs.selling";
                 noRemainingStringKey = "signs.out-of-stock";
                 break;
+            case BUYINGANDSELLING:
+                tradingStringKey = "signs.selling-and-buying";
+                shopRemaining = getRemainingSpace() + getRemainingStock();
+                noRemainingStringKey = "signs.out-of-inventory";
+                break;
             default:
                 shopRemaining = 0;
                 tradingStringKey = "MissingKey for shop type:" + shopType;
