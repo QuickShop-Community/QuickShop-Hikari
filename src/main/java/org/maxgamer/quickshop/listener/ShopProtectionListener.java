@@ -241,6 +241,16 @@ public class ShopProtectionListener extends AbstractProtectionListener {
             }
         }
     }
+//
+//    private final NamespacedKey hopperIndexKey = new NamespacedKey(plugin,"qs_hopper_placer");
+//    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+//    public void onPlaceHopper(BlockPlaceEvent e) {
+//        if(e.getBlockPlaced().getState() instanceof Hopper){
+//            Hopper hopper = (Hopper) e.getBlockPlaced().getState();
+//            hopper.getPersistentDataContainer().set(hopperIndexKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
+//        }
+//    }
+
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onInventoryMove(InventoryMoveItemEvent event) {
