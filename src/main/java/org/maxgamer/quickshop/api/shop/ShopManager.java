@@ -25,9 +25,11 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 
 import java.util.*;
 
@@ -225,6 +227,14 @@ public interface ShopManager {
      */
     @NotNull List<Shop> getShopsInWorld(@NotNull World world);
 
+    void actionBuy(
+            @NotNull UUID buyer,
+            @NotNull Inventory buyerInventory,
+            @NotNull AbstractEconomy eco,
+            @NotNull Info info,
+            @NotNull Shop shop,
+            int amount);
+
     @Deprecated
     double getTax(@NotNull Shop shop, @NotNull Player p);
 
@@ -245,6 +255,16 @@ public interface ShopManager {
      */
     @NotNull
     PriceLimiter getPriceLimiter();
+
+    void actionCreate(@NotNull Player p, Info info, @NotNull String message);
+
+    void actionSell(
+            @NotNull UUID seller,
+            @NotNull Inventory sellerInventory,
+            @NotNull AbstractEconomy eco,
+            @NotNull Info info,
+            @NotNull Shop shop,
+            int amount);
 
     /**
      * Send a purchaseSuccess message for a player.

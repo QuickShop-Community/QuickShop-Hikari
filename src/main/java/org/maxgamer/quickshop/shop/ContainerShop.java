@@ -908,6 +908,17 @@ public class ContainerShop implements Shop {
         return item;
     }
 
+    /**
+     * Getting the item stacking amount of the shop.
+     * @return The item stacking amount of the shop.
+     */
+    @Override
+    public int getShopStackingAmount(){
+        if(isStackingShop())
+            return item.getAmount();
+        return 1;
+    }
+
     @Override
     public void setItem(@NotNull ItemStack item) {
         Util.ensureThread(false);

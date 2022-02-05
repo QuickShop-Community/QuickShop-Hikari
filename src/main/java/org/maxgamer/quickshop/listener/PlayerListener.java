@@ -170,11 +170,7 @@ public class PlayerListener extends AbstractQSListener {
                 plugin.text().of(player, "purchase-out-of-space", shop.ownerName()).send();
                 return;
             }
-            if (shop.isStackingShop()) {
-                plugin.getShopManager().handleChat(player,String.valueOf(shop.getItem().getAmount()));
-            }else{
-                plugin.getShopManager().handleChat(player,String.valueOf(1));
-            }
+            plugin.getShopManager().actionSell(player.getUniqueId(), player.getInventory(), eco, info, shop, shop.getShopStackingAmount());
         }
     }
 
@@ -207,11 +203,7 @@ public class PlayerListener extends AbstractQSListener {
                 plugin.text().of(player, "how-many-buy", Integer.toString(itemAmount), tradeAllWord).send();
             }
         } else {
-            if (shop.isStackingShop()) {
-                plugin.getShopManager().handleChat(player,String.valueOf(shop.getItem().getAmount()));
-            }else{
-                plugin.getShopManager().handleChat(player,String.valueOf(1));
-            }
+            plugin.getShopManager().actionBuy(player.getUniqueId(), player.getInventory(), eco, info, shop, shop.getShopStackingAmount());
         }
     }
 

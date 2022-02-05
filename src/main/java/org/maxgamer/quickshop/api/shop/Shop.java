@@ -225,6 +225,8 @@ public interface Shop {
     @NotNull
     ItemStack getItem();
 
+    int getShopStackingAmount();
+
     /**
      * Set shop item's ItemStack
      *

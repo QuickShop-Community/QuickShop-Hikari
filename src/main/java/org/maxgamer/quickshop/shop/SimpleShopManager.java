@@ -488,10 +488,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 plugin.text().of(p, "not-looking-at-shop").send();
                 return;
             }
-            if (info.getAction() == ShopAction.CREATE) {
+            if (info.getAction().isCreating()) {
                 actionCreate(p, info, finalMessage);
             }
-            if (info.getAction() == ShopAction.BUY) {
+            if (info.getAction().isTrading()) {
                 actionTrade(p, info, finalMessage);
             }
         });
@@ -632,7 +632,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         return worldShops;
     }
-
+    @Override
     public void actionBuy(
             @NotNull UUID buyer,
             @NotNull Inventory buyerInventory,
@@ -797,7 +797,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         taxEvent.callEvent();
         return taxEvent.getTax();
     }
-
+    @Override
     public void actionCreate(@NotNull Player p, Info info, @NotNull String message) {
         Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
@@ -1017,7 +1017,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         Util.ensureThread(false);
         actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
     }
-
+    @Override
     public void actionSell(
             @NotNull UUID seller,
             @NotNull Inventory sellerInventory,
