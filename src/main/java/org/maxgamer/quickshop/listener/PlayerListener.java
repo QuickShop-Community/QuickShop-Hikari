@@ -535,11 +535,6 @@ public class PlayerListener extends AbstractQSListener {
         Util.debugLog("Disallow " + e.getPlayer().getName() + " dye the shop sign.");
     }
 
-//    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-//    public void onLocaleChanges(PlayerLocaleChangeEvent event) {
-//        MsgUtil.sendDirectMessage(event.getPlayer(), plugin.text().of(event.getPlayer(), "client-language-changed", event.getLocale()).forLocale(event.getLocale()));
-//    }
-
     /**
      * Callback for reloading
      *

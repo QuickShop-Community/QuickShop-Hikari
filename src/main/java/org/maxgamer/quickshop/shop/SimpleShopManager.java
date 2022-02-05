@@ -1140,8 +1140,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 }
             }
         }
-
-
         shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
         sendPurchaseSuccess(seller, shop, amount);
         ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, taxModifier);
@@ -1314,30 +1312,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 shop.getCurrency());
         amount = Math.min(amount, (int) Math.floor(balance / price));
         return amount;
-//        if (amount < 1) { // typed 'all' but the auto set amount is 0
-//            // when typed 'all' but player can't buy any items
-//            if ((shop.isAlwaysCountingContainer() || !shop.isUnlimited()) && shopHaveItems < 1) {
-//                // but also the shop's stock is 0
-//                plugin.text().of(p, "shop-stock-too-low",
-//                        Integer.toString(shop.getRemainingStock()),
-//                        MsgUtil.getTranslateText(shop.getItem())).send();
-//            } else {
-//                // when if player's inventory is full
-//                if (invHaveSpaces <= 0) {
-//                    plugin.text().of(p, "not-enough-space",
-//                            String.valueOf(invHaveSpaces)).send();
-//                    return;
-//                }
-//                plugin.text().of(p, "you-cant-afford-to-buy",
-//                        Objects.requireNonNull(
-//                                format(price, shop.getLocation().getWorld(),
-//                                        shop.getCurrency())),
-//                        Objects.requireNonNull(
-//                                format(balance, shop.getLocation().getWorld(),
-//                                        shop.getCurrency()))).send();
-//            }
-//            return;
-//        }
     }
 
     private int allCalcBuy(@NotNull Player p, @NotNull Shop shop, @NotNull AbstractEconomy eco) {
@@ -1356,7 +1330,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         } else {
             ownerCanAfford = Integer.MAX_VALUE;
         }
-
         if (shop.isAlwaysCountingContainer() || !shop.isUnlimited()) {
             amount = Math.min(shopHaveSpaces, invHaveItems);
             amount = Math.min(amount, ownerCanAfford);
@@ -1370,33 +1343,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
         return amount;
-//        if (amount < 1) { // typed 'all' but the auto set amount is 0
-//            if (shopHaveSpaces == 0) {
-//                // when typed 'all' but the shop doesn't have any empty space
-//                plugin.text().of(p, "shop-has-no-space", Integer.toString(shopHaveSpaces),
-//                        MsgUtil.getTranslateText(shop.getItem())).send();
-//                return;
-//            }
-//            if (ownerCanAfford == 0
-//                    && (!shop.isUnlimited()
-//                    || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners"))) {
-//                // when typed 'all' but the shop owner doesn't have enough money to buy at least 1
-//                // item (and shop isn't unlimited or pay-unlimited is true)
-//                plugin.text().of(p, "the-owner-cant-afford-to-buy-from-you",
-//                        Objects.requireNonNull(
-//                                format(shop.getPrice(), shop.getLocation().getWorld(),
-//                                        shop.getCurrency())),
-//                        Objects.requireNonNull(
-//                                format(ownerBalance, shop.getLocation().getWorld(),
-//                                        shop.getCurrency()))).send();
-//                return;
-//            }
-//            // when typed 'all' but player doesn't have any items to sell
-//            plugin.text().of(p, "you-dont-have-that-many-items",
-//                    Integer.toString(amount),
-//                    MsgUtil.getTranslateText(shop.getItem())).send();
-//            return;
-//        }
     }
 
     private void actionTrade(@NotNull Player p, Info info, @NotNull String message) {
@@ -1435,8 +1381,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.text().of(p, "mode-identifier-required").send();
             return;
         }
-
-
         if (shop.isBothSellingAndBuying()) {
             if (inputArgs[0].startsWith("S") || inputArgs[0].startsWith("s")) {
                 // Selling process
@@ -1446,7 +1390,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 else
                     amount = Integer.parseInt(inputArgs[0]);
                 actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
-                return;
             } else if (inputArgs[0].startsWith("B") || inputArgs[0].startsWith("b")) {
                 // Buying process
                 int amount;
@@ -1455,10 +1398,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 else
                     amount = Integer.parseInt(inputArgs[0]);
                 actionBuy(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
-                return;
             } else {
                 plugin.text().of(p, "mode-identifier-wrong").send();
-                return;
             }
         } else {
             // Regular shop process.
@@ -1483,43 +1424,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.text().of(p, "shop-purchase-cancelled").send();
             plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation());
         }
-//        if (shop.isBuying()) {
-//            if (StringUtils.isNumeric(message)) {
-//                amount = Integer.parseInt(message);
-//            } else {
-//                if (message.equalsIgnoreCase(
-//                        plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
-//
-//                } else {
-//                    // instead of output cancelled message (when typed neither integer or 'all'), just let
-//                    // player know that there should be positive number or 'all'
-//                    plugin.text().of(p, "not-a-integer", message).send();
-//                    Util.debugLog(
-//                            "Receive the chat " + message + " and it format failed: " + message);
-//                    return;
-//                }
-//            }
-//            actionBuy(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
-//        } else if (shop.isSelling()) {
-//            if (StringUtils.isNumeric(message)) {
-//                amount = Integer.parseInt(message);
-//            } else {
-//                if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
-//
-//                } else {
-//                    // instead of output cancelled message, just let player know that there should be positive
-//                    // number or 'all'
-//                    plugin.text().of(p, "not-a-integer", message).send();
-//                    Util.debugLog(
-//                            "Receive the chat " + message + " and it format failed: " + message);
-//                    return;
-//                }
-//            }
-//            actionSell(p.getUniqueId(), p.getInventory(), eco, info, shop, amount);
-//        } else {
-//            plugin.text().of(p, "shop-purchase-cancelled").send();
-//            plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation());
-//        }
     }
 
     @Nullable
