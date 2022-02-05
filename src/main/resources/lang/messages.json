@@ -199,7 +199,6 @@
     "stack-selling": "Selling {0}",
     "header": "{1}{0}",
     "buying": "Buying {0}",
-    "selling-and-buying": "Selling & Buying",
     "stack-buying": "Buying {0}",
     "item-left": "",
     "item-right": "",
@@ -210,7 +209,6 @@
     "status-unavailable": "&c",
     "out-of-stock": "Out of Stock",
     "out-of-space": "Out of Space",
-    "out-of-inventory": "Unavailable",
     "freeze": "Trading disabled"
   },
   "controlpanel": {
