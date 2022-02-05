@@ -133,32 +133,29 @@ public class Util {
         }
     }
 
-    /**
-     * Backup shops.db
-     *
-     * @return The result for backup
-     */
-    // TODO: MySQL support
-    public static boolean backupDatabase() {
-        if (plugin.getDatabaseManager().getDatabase() instanceof MySQLCore) {
-            return true; // Backup and logs by MySQL
-        }
-        File dataFolder = plugin.getDataFolder();
-        File sqlfile = new File(dataFolder, "shops.db");
-        if (!sqlfile.exists()) {
-            plugin.getLogger().warning("Failed to backup! (File not found)");
-            return false;
-        }
-        String uuid = UUID.randomUUID().toString().replaceAll("_", "");
-        File bksqlfile = new File(dataFolder, "/shops_backup_" + uuid + ".db");
-        try {
-            Files.copy(sqlfile.toPath(), bksqlfile.toPath());
-        } catch (Exception e1) {
-            plugin.getLogger().log(Level.WARNING, "Failed to backup the database", e1);
-            return false;
-        }
-        return true;
-    }
+//    /**
+//     * Backup shops.db
+//     *
+//     * @return The result for backup
+//     */
+//    // TODO: MySQL support
+//    public static boolean backupDatabase() {
+//        File dataFolder = plugin.getDataFolder();
+//        File sqlfile = new File(dataFolder, "shops.db");
+//        if (!sqlfile.exists()) {
+//            plugin.getLogger().warning("Failed to backup! (File not found)");
+//            return false;
+//        }
+//        String uuid = UUID.randomUUID().toString().replaceAll("_", "");
+//        File bksqlfile = new File(dataFolder, "/shops_backup_" + uuid + ".db");
+//        try {
+//            Files.copy(sqlfile.toPath(), bksqlfile.toPath());
+//        } catch (Exception e1) {
+//            plugin.getLogger().log(Level.WARNING, "Failed to backup the database", e1);
+//            return false;
+//        }
+//        return true;
+//    }
 
     /**
      * Returns true if the given block could be used to make a shop out of.
@@ -707,8 +704,6 @@ public class Util {
             dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
         } catch (Exception ignored) {
         }
-
-        InteractUtil.init(plugin.getConfig().getConfigurationSection("shop.interact"));
     }
 
     /**
