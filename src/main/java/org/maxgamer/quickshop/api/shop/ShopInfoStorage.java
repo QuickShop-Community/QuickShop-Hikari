@@ -36,7 +36,7 @@ public class ShopInfoStorage {
     private final String world;
     private final BlockPosition position;
     private final String moderator;
-    private final double price;
+    private final String price;
     private final String item;
     private final int unlimited;
     private final int shopType;

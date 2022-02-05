@@ -22,15 +22,16 @@ package org.maxgamer.quickshop.api.event;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.api.shop.ShopPrice;
 
 /**
  * Calling when shop price was changed
  */
 public class ShopPriceChangeEvent extends AbstractQSEvent implements Cancellable {
 
-    private final double newPrice;
+    private final ShopPrice newPrice;
 
-    private final double oldPrice;
+    private final ShopPrice oldPrice;
 
     @NotNull
     private final Shop shop;
@@ -44,7 +45,7 @@ public class ShopPriceChangeEvent extends AbstractQSEvent implements Cancellable
      * @param oldPrice The old shop price
      * @param newPrice The new shop price
      */
-    public ShopPriceChangeEvent(@NotNull Shop shop, double oldPrice, double newPrice) {
+    public ShopPriceChangeEvent(@NotNull Shop shop, @NotNull ShopPrice oldPrice, @NotNull ShopPrice newPrice) {
         this.shop = shop;
         this.oldPrice = oldPrice;
         this.newPrice = newPrice;
@@ -65,7 +66,7 @@ public class ShopPriceChangeEvent extends AbstractQSEvent implements Cancellable
      *
      * @return new price
      */
-    public double getNewPrice() {
+    public ShopPrice getNewPrice() {
         return this.newPrice;
     }
 
@@ -74,7 +75,7 @@ public class ShopPriceChangeEvent extends AbstractQSEvent implements Cancellable
      *
      * @return old price
      */
-    public double getOldPrice() {
+    public ShopPrice getOldPrice() {
         return this.oldPrice;
     }
 

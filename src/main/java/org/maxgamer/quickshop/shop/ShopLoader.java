@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.shop;
 
+import cc.carm.lib.easysql.api.SQLQuery;
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -35,9 +36,9 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.database.WarpedResultSet;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopModerator;
+import org.maxgamer.quickshop.api.shop.ShopPrice;
 import org.maxgamer.quickshop.api.shop.ShopType;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.PlayerFinder;
@@ -96,7 +97,7 @@ public class ShopLoader {
         int valid = 0;
         List<Shop> pendingLoading = new ArrayList<>();
 
-        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
+        try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
             Timer timer = new Timer();
             timer.start();
             boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);
@@ -329,8 +330,8 @@ public class ShopLoader {
     public List<ShopRawDatabaseInfo> getOriginShopsInDatabase() {
         errors = 0;
         List<ShopRawDatabaseInfo> shopRawDatabaseInfoList = new ArrayList<>();
-        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
-           // this.plugin.getLogger().info("Getting shops from the database...");
+        try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
+            // this.plugin.getLogger().info("Getting shops from the database...");
             while (rs.next()) {
                 ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
                 shopRawDatabaseInfoList.add(origin);
@@ -349,7 +350,7 @@ public class ShopLoader {
 
         private String moderators;
 
-        private double price;
+        private String price;
 
         private int type;
 
@@ -378,7 +379,7 @@ public class ShopLoader {
             this.world = rs.getString("world");
             this.item = rs.getString("itemConfig");
             this.moderators = rs.getString("owner");
-            this.price = rs.getDouble("price");
+            this.price = rs.getString("price");
             this.type = rs.getInt("type");
             this.unlimited = rs.getBoolean("unlimited");
             this.extra = rs.getString("extra");
@@ -406,7 +407,7 @@ public class ShopLoader {
 
         private ShopModerator moderators;
 
-        private double price;
+        private ShopPrice price;
 
         private ShopType type;
 
@@ -437,7 +438,7 @@ public class ShopLoader {
                 this.z = origin.getZ();
                 this.world = plugin.getServer().getWorld(origin.getWorld());
                 this.location = new Location(world, x, y, z);
-                this.price = origin.getPrice();
+                this.price = JsonUtil.getGson().fromJson(origin.getPrice(), SimpleShopPrice.class);
                 this.unlimited = origin.isUnlimited();
                 this.moderators = deserializeModerator(origin.getModerators(), needUpdate);
                 this.type = ShopType.fromID(origin.getType());

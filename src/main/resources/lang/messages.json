@@ -205,6 +205,7 @@
     "item-right": "",
     "price": "{0} each",
     "stack-price": "{0} per {1}x {2}",
+    "price-both": "S{0}/{1}B",
     "unlimited": "Unlimited",
     "status-available": "&a",
     "status-unavailable": "&c",

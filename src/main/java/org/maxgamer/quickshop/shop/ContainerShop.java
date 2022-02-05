@@ -51,6 +51,7 @@ import org.maxgamer.quickshop.api.chat.ComponentPackage;
 import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
+import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
@@ -77,7 +78,9 @@ public class ContainerShop implements Shop {
     @EqualsAndHashCode.Exclude
     private final UUID runtimeRandomUniqueId = UUID.randomUUID();
     private ShopModerator moderator;
-    private double price;
+    @NotNull
+    private ShopPrice price;
+    @NotNull
     private ShopType shopType;
     private boolean unlimited;
     private boolean isAlwaysCountingContainer;
@@ -149,7 +152,7 @@ public class ContainerShop implements Shop {
     public ContainerShop(
             @NotNull QuickShop plugin,
             @NotNull Location location,
-            double price,
+            @NotNull ShopPrice price,
             @NotNull ItemStack item,
             @NotNull ShopModerator moderator,
             boolean unlimited,
@@ -585,8 +588,27 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public boolean isFreeShop() {
-        return this.price == 0.0d;
+    public boolean isFreeShop(@Nullable ShopType type) throws IllegalArgumentException {
+        if (type == null) {
+            if (this.price.getBuyingPrice() == 0.0d && this.price.getSellingPrice() == 0.0d)
+                return true;
+            if (this.isBothSellingAndBuying())
+                throw new IllegalArgumentException("ShopType is null, but shop is selling and buying, must provide a valid shop type in this moment.");
+            if (this.isSelling())
+                return this.price.getSellingPrice() == 0.0d;
+            if (this.isBuying())
+                return this.price.getBuyingPrice() == 0.0d;
+            throw new IllegalStateException("ShopType is null, but shop is neither selling nor buying, Internal error!");
+        }
+        switch (type) {
+            case BUYING:
+                return this.price.getBuyingPrice() == 0.0d;
+            case SELLING:
+                return this.price.getSellingPrice() == 0.0d;
+            case BUYINGANDSELLING:
+                throw new IllegalArgumentException("ShopType cannot be BUYINGANDSELLING, must provide a valid shop type in this moment.");
+        }
+        throw new IllegalArgumentException("ShopType cannot be " + type.name() + ", must provide a valid shop type in this moment.");
     }
 
     @Override
@@ -788,14 +810,29 @@ public class ContainerShop implements Shop {
         String line4;
         if (this.isStackingShop()) {
             line4 = plugin.text().of("signs.stack-price",
-                    plugin.getShopManager().format(this.getPrice(), this), Integer.toString(item.getAmount()),
+                    getPriceText(locale), Integer.toString(item.getAmount()),
                     Util.getItemStackName(item)).forLocale();
         } else {
-            line4 = plugin.text().of("signs.price", plugin.getShopManager().format(this.getPrice(), this)).forLocale();
+            line4 = plugin.text().of("signs.price", getPriceText(locale)).forLocale();
         }
         lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder().appendLegacy(line4).create()));
 
         return lines;
+    }
+
+    @Nullable
+    private String getPriceText(@NotNull String locale) {
+        switch (shopType) {
+            case BUYING:
+                return plugin.getShopManager().format(this.getPrice().getBuyingPrice(), this);
+            case SELLING:
+                return plugin.getShopManager().format(this.getPrice().getSellingPrice(), this);
+            case BUYINGANDSELLING:
+                String selling = plugin.getShopManager().format(this.getPrice().getSellingPrice(), this);
+                String buying = plugin.getShopManager().format(this.getPrice().getBuyingPrice(), this);
+                return plugin.text().of("signs.price-buying-selling", selling, buying).forLocale(locale);
+        }
+        return null;
     }
 
     /**
@@ -915,11 +952,12 @@ public class ContainerShop implements Shop {
 
     /**
      * Getting the item stacking amount of the shop.
+     *
      * @return The item stacking amount of the shop.
      */
     @Override
-    public int getShopStackingAmount(){
-        if(isStackingShop())
+    public int getShopStackingAmount() {
+        if (isStackingShop())
             return item.getAmount();
         return 1;
     }
@@ -999,32 +1037,35 @@ public class ContainerShop implements Shop {
         plugin.getShopContainerWatcher().scheduleCheck(this);
 
         // check price restriction
-        PriceLimiterCheckResult priceRestriction = plugin.getShopManager().getPriceLimiter().check(item, price);
-        boolean markUpdate = false;
-        if (priceRestriction.getStatus() != PriceLimiterStatus.PASS) {
-            if (priceRestriction.getStatus() == PriceLimiterStatus.NOT_A_WHOLE_NUMBER) {
-                setDirty();
-                price = Math.floor(price);
-                markUpdate = true;
-            } else if (priceRestriction.getStatus() == PriceLimiterStatus.NOT_VALID) {
-                setDirty();
-                price = priceRestriction.getMin();
-                markUpdate = true;
-            }
-            if (price < priceRestriction.getMin()) {
-                setDirty();
-                price = priceRestriction.getMin();
-                markUpdate = true;
-            } else if (price > priceRestriction.getMax()) {
-                setDirty();
-                price = priceRestriction.getMax();
-                markUpdate = true;
-            }
-            if (markUpdate) {
-                update();
-            }
+        double sellingPrice = getPrice().getSellingPrice();
+        double buyingPrice = getPrice().getBuyingPrice();
+        double newSellingPrice = priceRestrictionCheck(sellingPrice);
+        double newBuyingPrice = priceRestrictionCheck(buyingPrice);
+        if (newBuyingPrice != buyingPrice || newSellingPrice != sellingPrice) {
+            this.price = new SimpleShopPrice(newSellingPrice, newBuyingPrice);
+            setDirty();
+        }
+        if (isDirty()) {
+            update();
         }
         checkDisplay();
+    }
+
+    private double priceRestrictionCheck(double price) {
+        PriceLimiterCheckResult priceRestriction = plugin.getShopManager().getPriceLimiter().check(item, price);
+        if (priceRestriction.getStatus() != PriceLimiterStatus.PASS) {
+            if (priceRestriction.getStatus() == PriceLimiterStatus.NOT_A_WHOLE_NUMBER) {
+                price = Math.floor(price);
+            } else if (priceRestriction.getStatus() == PriceLimiterStatus.NOT_VALID) {
+                price = priceRestriction.getMin();
+            }
+            if (price < priceRestriction.getMin()) {
+                price = priceRestriction.getMin();
+            } else if (price > priceRestriction.getMax()) {
+                price = priceRestriction.getMax();
+            }
+        }
+        return price;
     }
 
     /**
@@ -1075,7 +1116,7 @@ public class ContainerShop implements Shop {
      * @return The price per item this shop is selling
      */
     @Override
-    public double getPrice() {
+    public @NotNull ShopPrice getPrice() {
         return this.price;
     }
 
@@ -1085,15 +1126,27 @@ public class ContainerShop implements Shop {
      * @param price The new price of the shop.
      */
     @Override
-    public void setPrice(double price) {
+    public void setPrice(double price, @NotNull ShopType type) {
         Util.ensureThread(false);
-        ShopPriceChangeEvent event = new ShopPriceChangeEvent(this, this.price, price);
+        ShopPrice newPrice = null;
+        switch (type) {
+            case BUYINGANDSELLING:
+                newPrice = new SimpleShopPrice(price, price);
+                break;
+            case BUYING:
+                newPrice = new SimpleShopPrice(this.price.getSellingPrice(), price);
+                break;
+            case SELLING:
+                newPrice = new SimpleShopPrice(price, this.price.getBuyingPrice());
+        }
+        if (newPrice == null) throw new IllegalStateException("newPrice is null");
+        ShopPriceChangeEvent event = new ShopPriceChangeEvent(this, this.price, newPrice);
         if (Util.fireCancellableEvent(event)) {
             Util.debugLog("A plugin cancelled the price change event.");
             return;
         }
         setDirty();
-        this.price = price;
+        this.price = newPrice;
         setSignText();
         update();
     }
@@ -1345,10 +1398,10 @@ public class ContainerShop implements Shop {
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 IOpenInv openInv = ((IOpenInv) plugin.getOpenInvPlugin());
                 inv = openInv.getSpecialEnderChest(
-                        Objects.requireNonNull(
-                                openInv.loadPlayer(
-                                        plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
-                        plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
+                                Objects.requireNonNull(
+                                        openInv.loadPlayer(
+                                                plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
+                                plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
                         .getBukkitInventory();
             }
         } catch (Exception e) {
@@ -1608,6 +1661,6 @@ public class ContainerShop implements Shop {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(getLocation().getWorld().getName(), BlockPosition.of(getLocation()), SimpleShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount());
+        return new ShopInfoStorage(getLocation().getWorld().getName(), BlockPosition.of(getLocation()), SimpleShopModerator.serialize(getModerator()), JsonUtil.getGson().toJson(getPrice()), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount());
     }
 }
