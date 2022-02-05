@@ -21,7 +21,17 @@ package org.maxgamer.quickshop.api.shop;
 
 public enum ShopAction {
     // buy = trading create = creating shop cancelled = stopped
-    BUY(),
-    CREATE(),
-    CANCELLED()
+    PURCHASE_BUY,
+    PURCHASE_SELL,
+    CREATE_SELL,
+    CREATE_BUY,
+    CREATE_LOTTO,
+    CANCELLED;
+
+    public boolean isTrading(){
+        return this == PURCHASE_BUY || this == PURCHASE_SELL;
+    }
+    public boolean isCreating(){
+        return this == CREATE_SELL || this == CREATE_BUY || this == CREATE_LOTTO;
+    }
 }

@@ -45,13 +45,14 @@ import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.shop.Info;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopAction;
+import org.maxgamer.quickshop.shop.InteractionController;
 import org.maxgamer.quickshop.shop.SimpleInfo;
-import org.maxgamer.quickshop.util.InteractUtil;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.reload.ReloadResult;
 import org.maxgamer.quickshop.util.reload.ReloadStatus;
 
+import java.util.AbstractMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -78,22 +79,237 @@ public class PlayerListener extends AbstractQSListener {
             cooldownMap.test(e.getPlayer());
         }
         // ----Adventure dupe click workaround end----
-        if (!e.getAction().equals(Action.LEFT_CLICK_BLOCK) && b != null) {
-            if (e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-                if (!swapBehavior) {
-                    postControlPanel(e);
-                } else {
-                    postTrade(e);
-                }
-                return;
-            }
-        }
-        if (!swapBehavior) {
-            postTrade(e);
-        } else {
-            postControlPanel(e);
+
+        Map.Entry<Shop, ClickType> shopSearched = searchShop(e.getClickedBlock(), e.getPlayer());
+
+        if (shopSearched.getKey() == null && shopSearched.getValue() == ClickType.AIR) {
+            return;
         }
 
+
+        InteractionController.Interaction interaction = null;
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (e.getPlayer().isSneaking()) {
+                interaction = shopSearched.getValue() == ClickType.SIGN ? InteractionController.Interaction.SNEAKING_RIGHT_CLICK_SIGN : InteractionController.Interaction.SNEAKING_RIGHT_CLICK_SHOPBLOCK;
+            } else {
+                interaction = shopSearched.getValue() == ClickType.SIGN ? InteractionController.Interaction.STANDING_RIGHT_CLICK_SIGN : InteractionController.Interaction.STANDING_RIGHT_CLICK_SHOPBLOCK;
+            }
+        } else if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
+            if (e.getPlayer().isSneaking()) {
+                interaction = shopSearched.getValue() == ClickType.SIGN ? InteractionController.Interaction.SNEAKING_LEFT_CLICK_SIGN : InteractionController.Interaction.SNEAKING_LEFT_CLICK_SHOPBLOCK;
+            } else {
+                interaction = shopSearched.getValue() == ClickType.SIGN ? InteractionController.Interaction.STANDING_LEFT_CLICK_SIGN : InteractionController.Interaction.STANDING_LEFT_CLICK_SHOPBLOCK;
+            }
+        }
+        if (interaction == null) {
+            return;
+        }
+
+        switch (plugin.getInteractionController().getBehavior(interaction)) {
+            case CONTROL_PANEL:
+                openControlPanel(e.getPlayer(), shopSearched.getKey());
+                e.setCancelled(true);
+                e.setUseInteractedBlock(Event.Result.DENY);
+                e.setUseItemInHand(Event.Result.DENY);
+                break;
+            case BUY_INTERACTION:
+                buyShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), false);
+                e.setCancelled(true);
+                e.setUseInteractedBlock(Event.Result.DENY);
+                e.setUseItemInHand(Event.Result.DENY);
+            case BUY_DIRECT:
+                buyShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), true);
+                e.setCancelled(true);
+                e.setUseInteractedBlock(Event.Result.DENY);
+                e.setUseItemInHand(Event.Result.DENY);
+            case SELL_INTERACTION:
+                sellShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), false);
+                e.setCancelled(true);
+                e.setUseInteractedBlock(Event.Result.DENY);
+                e.setUseItemInHand(Event.Result.DENY);
+            case SELL_DIRECT:
+                sellShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), true);
+                e.setCancelled(true);
+                e.setUseInteractedBlock(Event.Result.DENY);
+                e.setUseItemInHand(Event.Result.DENY);
+            case NONE:
+                break;
+        }
+    }
+
+    public void buyShop(@NotNull Player player, @Nullable Block block, @Nullable Shop shop, boolean direct) {
+        if (shop == null) {
+            createShop(player, block);
+            return;
+        }
+        shop.onClick();
+        this.playClickSound(player);
+        plugin.getShopManager().sendShopInfo(player, shop);
+        shop.setSignText();
+        final AbstractEconomy eco = plugin.getEconomy();
+        final double price = shop.getPrice();
+        final Inventory playerInventory = player.getInventory();
+        final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
+        if (shop.getRemainingSpace() == 0) {
+            plugin.text().of(player, "purchase-out-of-space", shop.ownerName()).send();
+            return;
+        }
+        Map<UUID, Info> actions = plugin.getShopManager().getActions();
+        Info info = new SimpleInfo(shop.getLocation(), ShopAction.CREATE_SELL, null, null, shop, false);
+        actions.put(player.getUniqueId(), info);
+        if (!direct) {
+            final double ownerBalance = eco.getBalance(shop.getOwner(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
+            int items = getPlayerCanSell(shop, ownerBalance, price, playerInventory);
+            if (shop.isStackingShop()) {
+                plugin.text().of(player, "how-many-sell-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(items), tradeAllWord).send();
+            } else {
+                plugin.text().of(player, "how-many-sell", Integer.toString(items), tradeAllWord).send();
+            }
+        } else {
+            if (shop.getRemainingSpace() == 0) {
+                plugin.text().of(player, "purchase-out-of-space", shop.ownerName()).send();
+                return;
+            }
+            if (shop.isStackingShop()) {
+                plugin.getShopManager().handleChat(player,String.valueOf(shop.getItem().getAmount()));
+            }else{
+                plugin.getShopManager().handleChat(player,String.valueOf(1));
+            }
+        }
+    }
+
+    public void sellShop(@NotNull Player player, @Nullable Block block, @Nullable Shop shop, boolean direct) {
+        if (shop == null) {
+            createShop(player, block);
+            return;
+        }
+        shop.onClick();
+        this.playClickSound(player);
+        plugin.getShopManager().sendShopInfo(player, shop);
+        shop.setSignText();
+        final AbstractEconomy eco = plugin.getEconomy();
+        final double price = shop.getPrice();
+        final Inventory playerInventory = player.getInventory();
+        final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
+        if (shop.getRemainingSpace() == 0) {
+            plugin.text().of(player, "purchase-out-of-space", shop.ownerName()).send();
+            return;
+        }
+        Map<UUID, Info> actions = plugin.getShopManager().getActions();
+        Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
+        actions.put(player.getUniqueId(), info);
+        if (!direct) {
+            final double traderBalance = eco.getBalance(player.getUniqueId(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
+            int itemAmount = getPlayerCanBuy(shop, traderBalance, price, playerInventory);
+            if (shop.isStackingShop()) {
+                plugin.text().of(player, "how-many-buy-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(itemAmount), tradeAllWord).send();
+            } else {
+                plugin.text().of(player, "how-many-buy", Integer.toString(itemAmount), tradeAllWord).send();
+            }
+        } else {
+            if (shop.isStackingShop()) {
+                plugin.getShopManager().handleChat(player,String.valueOf(shop.getItem().getAmount()));
+            }else{
+                plugin.getShopManager().handleChat(player,String.valueOf(1));
+            }
+        }
+    }
+
+    public void createShop(@NotNull Player player, @Nullable Block block) {
+        if (block == null) return; // This shouldn't happen because we have checked action type.
+        if (player.getGameMode() != GameMode.SURVIVAL) return; // Only survival :)
+        if (player.getInventory().getItemInMainHand().getType().isAir()) return; // Air cannot be used for trade
+        ItemStack stack = player.getInventory().getItemInMainHand();
+        ShopAction action = null;
+        if (player.hasPermission("quickshop.create.sell"))
+            action = ShopAction.CREATE_SELL;
+        else if (player.hasPermission("quickshop.create.buy"))
+            action = ShopAction.CREATE_BUY;
+        else if (player.hasPermission("quickshop.create.lotto"))
+            action = ShopAction.CREATE_LOTTO;
+        if (action == null) {
+            // No permission
+            return;
+        }
+        // Double chest creation permission check
+        if (Util.isDoubleChest(block.getBlockData()) &&
+                !QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.double")) {
+            plugin.text().of(player, "no-double-chests").send();
+            return;
+        }
+        // Blacklist check
+        if (Util.isBlacklisted(stack)
+                && !QuickShop.getPermissionManager()
+                .hasPermission(player, "quickshop.bypass." + stack.getType().name())) {
+            plugin.text().of(player, "blacklisted-item").send();
+            return;
+        }
+        // Check if had enderchest shop creation permission
+        if (block.getType() == Material.ENDER_CHEST
+                && !QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.enderchest")) {
+            return;
+        }
+        // Check if block is a wall sign
+        if (Util.isWallSign(block.getType())) {
+            return;
+        }
+        // Finds out where the sign should be placed for the shop
+        Block last = null;
+        final Location from = player.getLocation().clone();
+        from.setY(block.getY());
+        from.setPitch(0);
+        final BlockIterator bIt = new BlockIterator(from, 0, 7);
+        while (bIt.hasNext()) {
+            final Block n = bIt.next();
+            if (n.equals(block)) {
+                break;
+            }
+            last = n;
+        }
+        // Send creation menu.
+        final SimpleInfo info = new SimpleInfo(block.getLocation(), action, stack, last, false);
+        plugin.getShopManager().getActions().put(player.getUniqueId(), info);
+        plugin.text().of(player, "how-much-to-trade-for", MsgUtil.getTranslateText(stack), Integer.toString(
+                plugin.isAllowStack() &&
+                        QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.stacks")
+                        ? stack.getAmount() : 1)).send();
+    }
+
+    @NotNull
+    public Map.Entry<@Nullable Shop, @NotNull ClickType> searchShop(@Nullable Block b, @NotNull Player p) {
+        if (b == null) {
+            return new AbstractMap.SimpleEntry<>(null, ClickType.AIR);
+        }
+        Shop shop = plugin.getShopManager().getShop(b.getLocation());
+        // If that wasn't a shop, search nearby shops
+        if (shop == null) {
+            final Block attached;
+            if (Util.isWallSign(b.getType())) {
+                attached = Util.getAttached(b);
+                if (attached != null) {
+                    shop = plugin.getShopManager().getShop(attached.getLocation());
+                    return new AbstractMap.SimpleImmutableEntry<>(shop, ClickType.SIGN);
+                }
+            } else if (Util.isDoubleChest(b.getBlockData())) {
+                attached = Util.getSecondHalf(b);
+                if (attached != null) {
+                    Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
+                    if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner())) {
+                        // If player not the owner of the shop, make him select the second half of the
+                        // shop
+                        // Otherwise owner will be able to create new double chest shop
+                        shop = secondHalfShop;
+                    }
+                }
+            }
+        }
+        return new AbstractMap.SimpleImmutableEntry<>(shop, ClickType.SHOPBLOCK);
+    }
+
+    enum ClickType {
+        SHOPBLOCK,
+        SIGN,
+        AIR
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -113,13 +329,7 @@ public class PlayerListener extends AbstractQSListener {
                 event.getPlayer().getInventory().getItemInMainHand(),
                 focused,
                 event.getPlayer().getFacing().getOppositeFace());
-
-        if (!swapBehavior) {
-            postTrade(interactEvent);
-        } else {
-            postControlPanel(interactEvent);
-        }
-
+        onClick(interactEvent);
     }
 
     private void playClickSound(@NotNull Player player) {
@@ -128,168 +338,11 @@ public class PlayerListener extends AbstractQSListener {
         }
     }
 
-    private void postControlPanel(PlayerInteractEvent e) {
-        final Block b = e.getClickedBlock();
-        final Player p = e.getPlayer();
-        if (Util.isWallSign(b.getType())) {
-            final Block block;
-            if (Util.isWallSign(b.getType())) {
-                block = Util.getAttached(b);
-            } else {
-                block = e.getClickedBlock();
-            }
-            Shop controlPanelShop = plugin.getShopManager().getShop(Objects.requireNonNull(block).getLocation());
-            if (controlPanelShop != null && (controlPanelShop.getOwner().equals(p.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.control"))) {
-                MsgUtil.sendControlPanelInfo(p, Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())));
-                this.playClickSound(e.getPlayer());
-                Objects.requireNonNull(plugin.getShopManager().getShop(block.getLocation())).setSignText();
-                //Prevent use item by ancient
-                if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                    e.setUseItemInHand(Event.Result.DENY);
-                }
-            }
-        }
-    }
-
-    private void postTrade(PlayerInteractEvent e) {
-        final Block b = e.getClickedBlock();
-        final Player p = e.getPlayer();
-        if (b == null) {
-            return;
-        }
-        if (!Util.canBeShop(b) && !Util.isWallSign(b.getType())) {
-            return;
-        }
-
-        final Location loc = b.getLocation();
-        final ItemStack item = e.getItem();
-        // Get the shop
-        Shop shop = plugin.getShopManager().getShop(loc);
-        // If that wasn't a shop, search nearby shops
-        if (shop == null) {
-            final Block attached;
-            if (Util.isWallSign(b.getType())) {
-                attached = Util.getAttached(b);
-                if (attached != null) {
-                    shop = plugin.getShopManager().getShop(attached.getLocation());
-                }
-            } else if (Util.isDoubleChest(b.getBlockData())) {
-                attached = Util.getSecondHalf(b);
-                if (attached != null) {
-                    Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
-                    if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner())) {
-                        // If player not the owner of the shop, make him select the second half of the
-                        // shop
-                        // Otherwise owner will be able to create new double chest shop
-                        shop = secondHalfShop;
-                    }
-                }
-            }
-        }
-        // Purchase handling
-        if (shop != null && QuickShop.getPermissionManager().hasPermission(p, "quickshop.use")) {
-            if (!InteractUtil.check(InteractUtil.Action.TRADE, p.isSneaking())) {
-                return;
-            }
-            //Prevent use item by ancient
-            e.setUseItemInHand(Event.Result.DENY);
-            shop.onClick();
-            this.playClickSound(e.getPlayer());
-            // Text menu
-            plugin.getShopManager().sendShopInfo(p, shop);
+    private void openControlPanel(@NotNull Player p, @NotNull Shop shop) {
+        if (shop.getOwner().equals(p.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.control")) {
+            MsgUtil.sendControlPanelInfo(p, shop);
+            this.playClickSound(p);
             shop.setSignText();
-
-            final AbstractEconomy eco = plugin.getEconomy();
-            final double price = shop.getPrice();
-            final Inventory playerInventory = p.getInventory();
-            final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
-            if (shop.isSelling()) {
-                if (shop.getRemainingStock() == 0) {
-                    plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
-                    return;
-                }
-                final double traderBalance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
-                int itemAmount = getPlayerCanBuy(shop, traderBalance, price, playerInventory);
-                if (shop.isStackingShop()) {
-                    plugin.text().of(p, "how-many-buy-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(itemAmount), tradeAllWord).send();
-                } else {
-                    plugin.text().of(p, "how-many-buy", Integer.toString(itemAmount), tradeAllWord).send();
-                }
-            } else {
-                if (shop.getRemainingSpace() == 0) {
-                    plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
-                    return;
-                }
-                final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
-                int items = getPlayerCanSell(shop, ownerBalance, price, playerInventory);
-                if (shop.isStackingShop()) {
-                    plugin.text().of(p, "how-many-sell-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(items), tradeAllWord).send();
-                } else {
-                    plugin.text().of(p, "how-many-sell", Integer.toString(items), tradeAllWord).send();
-                }
-            }
-            // Add the new action
-            Map<UUID, Info> actions = plugin.getShopManager().getActions();
-            Info info = new SimpleInfo(shop.getLocation(), ShopAction.BUY, null, null, shop, false);
-            actions.put(p.getUniqueId(), info);
-        }
-        // Handles creating shops
-        else if (e.useInteractedBlock() == Event.Result.ALLOW
-                && shop == null
-                && item != null
-                && item.getType() != Material.AIR
-                && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.sell")
-                && p.getGameMode() != GameMode.CREATIVE) {
-            if (e.useInteractedBlock() == Event.Result.DENY
-                    || !InteractUtil.check(InteractUtil.Action.CREATE, p.isSneaking())
-                    || plugin.getConfig().getBoolean("shop.disable-quick-create")
-                    || !plugin.getShopManager().canBuildShop(p, b, e.getBlockFace())) {
-                // As of the new checking system, most plugins will tell the
-                // player why they can't create a shop there.
-                // So telling them a message would cause spam etc.
-                return;
-            }
-            if (Util.isDoubleChest(b.getBlockData())
-                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
-                plugin.text().of(p, "no-double-chests").send();
-                return;
-            }
-            if (Util.isBlacklisted(item)
-                    && !QuickShop.getPermissionManager()
-                    .hasPermission(p, "quickshop.bypass." + item.getType().name())) {
-                plugin.text().of(p, "blacklisted-item").send();
-                return;
-            }
-            if (b.getType() == Material.ENDER_CHEST //FIXME: Need a better impl
-                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.enderchest")) {
-                return;
-            }
-            if (Util.isWallSign(b.getType())) {
-                return;
-            }
-            // Finds out where the sign should be placed for the shop
-            Block last = null;
-            final Location from = p.getLocation().clone();
-
-            from.setY(b.getY());
-            from.setPitch(0);
-            final BlockIterator bIt = new BlockIterator(from, 0, 7);
-
-            while (bIt.hasNext()) {
-                final Block n = bIt.next();
-                if (n.equals(b)) {
-                    break;
-                }
-                last = n;
-            }
-            // Send creation menu.
-            final SimpleInfo info = new SimpleInfo(b.getLocation(), ShopAction.CREATE, e.getItem(), last, false);
-            plugin.getShopManager().getActions().put(p.getUniqueId(), info);
-            plugin.text().of(p, "how-much-to-trade-for", MsgUtil.getTranslateText(Objects.requireNonNull(e.getItem())), Integer.toString(plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks") ? item.getAmount() : 1)).send();
-            //Prevent use item by ancient
-            if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                e.setUseItemInHand(Event.Result.DENY);
-            }
         }
     }
 
@@ -397,9 +450,9 @@ public class PlayerListener extends AbstractQSListener {
         final Info info = actionMap.get(player.getUniqueId());
         if (info != null && info.getLocation().equals(event.getBlock().getLocation())) {
             actionMap.remove(player.getUniqueId());
-            if (info.getAction() == ShopAction.BUY) {
+            if (info.getAction().isTrading()) {
                 plugin.text().of(player, "shop-purchase-cancelled").send();
-            } else if (info.getAction() == ShopAction.CREATE) {
+            } else if (info.getAction().isCreating()) {
                 plugin.text().of(player, "shop-creation-cancelled").send();
             }
         }
@@ -418,9 +471,9 @@ public class PlayerListener extends AbstractQSListener {
         final Location loc1 = info.getLocation();
         final Location loc2 = p.getLocation();
         if (loc1.getWorld() != loc2.getWorld() || loc1.distanceSquared(loc2) > 25) {
-            if (info.getAction() == ShopAction.BUY) {
+            if (info.getAction().isTrading()) {
                 plugin.text().of(p, "shop-purchase-cancelled").send();
-            } else if (info.getAction() == ShopAction.CREATE) {
+            } else if (info.getAction().isCreating()) {
                 plugin.text().of(p, "shop-creation-cancelled").send();
             }
             Util.debugLog(p.getName() + " too far with the shop location.");

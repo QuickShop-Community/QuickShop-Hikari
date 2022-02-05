@@ -74,10 +74,7 @@ import org.maxgamer.quickshop.listener.worldedit.WorldEditAdapter;
 import org.maxgamer.quickshop.localization.text.SimpleTextManager;
 import org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.PluginUtil;
 import org.maxgamer.quickshop.permission.PermissionManager;
-import org.maxgamer.quickshop.shop.ShopLoader;
-import org.maxgamer.quickshop.shop.ShopPurger;
-import org.maxgamer.quickshop.shop.SimpleShopManager;
-import org.maxgamer.quickshop.shop.VirtualDisplayItem;
+import org.maxgamer.quickshop.shop.*;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.compatibility.SimpleCompatibilityManager;
@@ -260,6 +257,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private NBTAPI nbtapi = null;
 
     private int loggingLocation = 0;
+    @Getter
+    private InteractionController interactionController;
 
     public void disableNBTAPI() {
         nbtapi = null;
@@ -962,6 +961,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         shopLoader.loadShops();
 
         getLogger().info("Registering listeners...");
+        this.interactionController = new InteractionController(this);
         // Register events
         // Listeners (These don't)
         new BlockListener(this, this.shopCache).register();

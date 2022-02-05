@@ -56,7 +56,7 @@ public class InteractionController implements Reloadable {
         return behaviorMap.getOrDefault(interaction, InteractionBehavior.NONE);
     }
 
-    enum Interaction{
+    public enum Interaction{
         STANDING_LEFT_CLICK_SIGN,
         STANDING_RIGHT_CLICK_SIGN,
         STANDING_LEFT_CLICK_SHOPBLOCK,
@@ -74,9 +74,11 @@ public class InteractionController implements Reloadable {
      *
      * CONTROL_PANEL will show up a Shop Control Panel which will allow the user to change the shop's settings.
      */
-    enum InteractionBehavior {
-        BUY,
-        SELL,
+    public enum InteractionBehavior {
+        BUY_INTERACTION,
+        SELL_INTERACTION,
+        BUY_DIRECT,
+        SELL_DIRECT,
         CONTROL_PANEL,
         NONE
     }
