@@ -39,6 +39,9 @@ public class InteractionController implements Reloadable {
         for (Interaction value : Interaction.values()) {
             try {
                 behaviorMap.put(value, InteractionBehavior.valueOf(config.getString(value.name())));
+                if (value.isRightLick() && value.isShopBlock() && InteractionBehavior.valueOf(config.getString(value.name())) != InteractionBehavior.NONE) {
+                    plugin.getLogger().log(Level.WARNING, "Define a action for right shopblock clicking may prevent player from opening the shop container!");
+                }
             } catch (IllegalArgumentException e) {
                 plugin.getLogger().log(Level.WARNING,"Failed to load interaction behavior for " + value.name() + "! Using NONE behavior!");
                 behaviorMap.put(value, InteractionBehavior.NONE);
@@ -56,7 +59,7 @@ public class InteractionController implements Reloadable {
         return behaviorMap.getOrDefault(interaction, InteractionBehavior.NONE);
     }
 
-    public enum Interaction{
+    public enum Interaction {
         STANDING_LEFT_CLICK_SIGN,
         STANDING_RIGHT_CLICK_SIGN,
         STANDING_LEFT_CLICK_SHOPBLOCK,
@@ -64,19 +67,39 @@ public class InteractionController implements Reloadable {
         SNEAKING_LEFT_CLICK_SIGN,
         SNEAKING_RIGHT_CLICK_SIGN,
         SNEAKING_LEFT_CLICK_SHOPBLOCK,
-        SNEAKING_RIGHT_CLICK_SHOPBLOCK
+        SNEAKING_RIGHT_CLICK_SHOPBLOCK;
+
+        public boolean isSneaking() {
+            return this.name().startsWith("SNEAKING");
+        }
+
+        public boolean isLeftClick() {
+            return this.name().contains("_LEFT_CLICK_");
+        }
+
+        public boolean isRightLick() {
+            return this.name().contains("_RIGHT_CLICK_");
+        }
+
+        public boolean isSign() {
+            return this.name().endsWith("SIGN");
+        }
+
+        public boolean isShopBlock() {
+            return this.name().endsWith("SHOPBLOCK");
+        }
     }
+
     /**
      * The shop that this controller is controlling
      * In normal interaction trade, BUY and SELL have same behavior which ask the user what they want to do.
      * In direct trade mode, BUY will use execute buying directly and SELL will use execute selling directly.
      * In direct trade case, the user will not be asked anything.
-     *
+     * <p>
      * CONTROL_PANEL will show up a Shop Control Panel which will allow the user to change the shop's settings.
      */
     public enum InteractionBehavior {
-        BUY_INTERACTION,
-        SELL_INTERACTION,
+        TRADE_INTERACTION,
         BUY_DIRECT,
         SELL_DIRECT,
         CONTROL_PANEL,

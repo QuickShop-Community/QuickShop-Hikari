@@ -112,21 +112,23 @@ public class PlayerListener extends AbstractQSListener {
                 e.setUseInteractedBlock(Event.Result.DENY);
                 e.setUseItemInHand(Event.Result.DENY);
                 break;
-            case BUY_INTERACTION:
-                buyShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), false);
-                e.setCancelled(true);
-                e.setUseInteractedBlock(Event.Result.DENY);
-                e.setUseItemInHand(Event.Result.DENY);
             case BUY_DIRECT:
                 buyShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), true);
                 e.setCancelled(true);
                 e.setUseInteractedBlock(Event.Result.DENY);
                 e.setUseItemInHand(Event.Result.DENY);
-            case SELL_INTERACTION:
-                sellShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), false);
-                e.setCancelled(true);
-                e.setUseInteractedBlock(Event.Result.DENY);
-                e.setUseItemInHand(Event.Result.DENY);
+            case TRADE_INTERACTION:
+                if(shopSearched.getKey().isBuying()){
+                    e.setCancelled(true);
+                    e.setUseInteractedBlock(Event.Result.DENY);
+                    e.setUseItemInHand(Event.Result.DENY);
+                    buyShop(e.getPlayer(),e.getClickedBlock(),shopSearched.getKey(),false);
+                }else if (shopSearched.getKey().isSelling()){
+                    e.setCancelled(true);
+                    e.setUseInteractedBlock(Event.Result.DENY);
+                    e.setUseItemInHand(Event.Result.DENY);
+                    sellShop(e.getPlayer(),e.getClickedBlock(),shopSearched.getKey(),false);
+                }
             case SELL_DIRECT:
                 sellShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), true);
                 e.setCancelled(true);
@@ -142,6 +144,8 @@ public class PlayerListener extends AbstractQSListener {
             createShop(player, block);
             return;
         }
+        if(!shop.isBuying())
+            return;
         shop.onClick();
         this.playClickSound(player);
         plugin.getShopManager().sendShopInfo(player, shop);
@@ -179,6 +183,8 @@ public class PlayerListener extends AbstractQSListener {
             createShop(player, block);
             return;
         }
+        if(!shop.isSelling())
+            return;
         shop.onClick();
         this.playClickSound(player);
         plugin.getShopManager().sendShopInfo(player, shop);
