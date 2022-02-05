@@ -289,13 +289,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .permission("quickshop.export")
                         .executor(new SubCommand_Export())
                         .build());
-        registerCmd(
-                CommandContainer.builder()
-                        .prefix("convert")
-                        .hidden(true)
-                        .permission("quickshop.convert")
-                        .executor(new SubCommand_Convert(plugin))
-                        .build());
+//        registerCmd(
+//                CommandContainer.builder()
+//                        .prefix("convert")
+//                        .hidden(true)
+//                        .permission("quickshop.convert")
+//                        .executor(new SubCommand_Convert(plugin))
+//                        .build());
         registerCmd(CommandContainer.builder()
                 .prefix("size")
                 .permission("quickshop.create.stacks")

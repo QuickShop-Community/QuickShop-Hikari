@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util.paste;
 
+import cc.carm.lib.easysql.api.SQLQuery;
 import com.google.common.cache.CacheStats;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -28,7 +29,6 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.database.WarpedResultSet;
 import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.economy.EconomyCore;
 import org.maxgamer.quickshop.economy.Economy_Vault;
@@ -157,7 +157,7 @@ public class Paste {
         } else {
             finalReport.append("\tEconomyCore: ").append(plugin.getEconomy().getName()).append("@").append(plugin.getEconomy().getPlugin().getName()).append("\n");
         }
-        finalReport.append("\tDatabaseCore: ").append(plugin.getDatabaseManager().getDatabase().getName()).append("@").append(plugin.getDatabaseManager().getDatabase().getPlugin().getName()).append("\n");
+        // finalReport.append("\tDatabaseCore: ").append(plugin.getDatabaseManager().getDatabase().getName()).append("@").append(plugin.getDatabaseManager().getDatabase().getPlugin().getName()).append("\n");
         finalReport.append("\tGameLanguage Processor: ").append(MsgUtil.gameLanguage.getName()).append("@").append(MsgUtil.gameLanguage.getPlugin().getName()).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Active shops on the server:\n");
@@ -448,7 +448,7 @@ public class Paste {
         finalReport.append("================================================\n");
         int totalDB = 0;
 
-        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops()) {
+        try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllShops()) {
             while (warpRS.getResultSet().next()) {
                 totalDB++;
             }

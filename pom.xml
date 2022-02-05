@@ -25,7 +25,7 @@
     <artifactId>QuickShop</artifactId>
 
     <properties>
-        <pluginver>5.1.0.4</pluginver>
+        <pluginver>0.0.0.1-Apollo</pluginver>
         <package>org.maxgamer.quickshop</package>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -321,9 +321,9 @@
                     <keystore>${project.basedir}/keystore.jks</keystore>
                     <alias>selfsigned</alias>
                     <!--suppress UnresolvedMavenProperty -->
-                    <storepass>${env.quickshop-signer-pwd}</storepass>
+                    <storepass>QuickShopRSA</storepass>
                     <!--suppress UnresolvedMavenProperty -->
-                    <keypass>${env.quickshop-signer-pwd}</keypass>
+                    <keypass>QuickShopRSA</keypass>
                 </configuration>
             </plugin>
         </plugins>

@@ -221,8 +221,6 @@ public class PlayerListener extends AbstractQSListener {
             action = ShopAction.CREATE_SELL;
         else if (player.hasPermission("quickshop.create.buy"))
             action = ShopAction.CREATE_BUY;
-        else if (player.hasPermission("quickshop.create.lotto"))
-            action = ShopAction.CREATE_LOTTO;
         if (action == null) {
             // No permission
             return;

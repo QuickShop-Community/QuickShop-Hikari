@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.shop;
 
+import cc.carm.lib.easysql.api.SQLQuery;
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -35,7 +36,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.database.WarpedResultSet;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopModerator;
 import org.maxgamer.quickshop.api.shop.ShopType;
@@ -96,7 +96,7 @@ public class ShopLoader {
         int valid = 0;
         List<Shop> pendingLoading = new ArrayList<>();
 
-        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
+        try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
             Timer timer = new Timer();
             timer.start();
             boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);
@@ -329,8 +329,8 @@ public class ShopLoader {
     public List<ShopRawDatabaseInfo> getOriginShopsInDatabase() {
         errors = 0;
         List<ShopRawDatabaseInfo> shopRawDatabaseInfoList = new ArrayList<>();
-        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
-           // this.plugin.getLogger().info("Getting shops from the database...");
+        try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
+            // this.plugin.getLogger().info("Getting shops from the database...");
             while (rs.next()) {
                 ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
                 shopRawDatabaseInfoList.add(origin);

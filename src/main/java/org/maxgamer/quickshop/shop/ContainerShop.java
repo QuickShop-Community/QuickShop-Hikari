@@ -1349,7 +1349,7 @@ public class ContainerShop implements Shop {
             inv = container.getInventory();
         } catch (Exception e) {
             if (!createBackup) {
-                createBackup = Util.backupDatabase();
+                //createBackup = Util.backupDatabase();
                 if (createBackup) {
                     this.delete(false);
                 }

@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.util;
 
+import cc.carm.lib.easysql.api.SQLQuery;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonParseException;
 import lombok.Getter;
@@ -41,7 +42,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
-import org.maxgamer.quickshop.api.database.WarpedResultSet;
 import org.maxgamer.quickshop.api.event.ShopControlPanelOpenEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.chat.QuickComponentImpl;
@@ -354,7 +354,7 @@ public class MsgUtil {
      */
     public static void loadTransactionMessages() {
         OUTGOING_MESSAGES.clear(); // Delete old messages
-        try (WarpedResultSet warpRS = plugin.getDatabaseHelper().selectAllMessages(); ResultSet rs = warpRS.getResultSet()) {
+        try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllMessages(); ResultSet rs = warpRS.getResultSet()) {
             while (rs.next()) {
                 String owner = rs.getString("owner");
                 UUID ownerUUID;
@@ -460,8 +460,7 @@ public class MsgUtil {
     public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
         if ((sender instanceof Player)
                 && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")
-                && (shop.getOwner().equals(((Player) sender).getUniqueId()) || !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control"))
-                && !InteractUtil.check(InteractUtil.Action.CONTROL, ((Player) sender).isSneaking())) {
+                && (shop.getOwner().equals(((Player) sender).getUniqueId()) || !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control"))) {
 
             return;
         }

@@ -44,7 +44,7 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
         }
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
-                Util.backupDatabase();
+                //Util.backupDatabase();
                 plugin.getShopLoader().recoverFromFile(Util.readToString(file));
             } catch (Exception e) {
                 plugin.getLogger().log(Level.WARNING, "Failed to recover the data because of the following error:", e);

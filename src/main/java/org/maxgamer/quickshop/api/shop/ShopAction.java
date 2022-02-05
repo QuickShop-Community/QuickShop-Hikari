@@ -25,13 +25,12 @@ public enum ShopAction {
     PURCHASE_SELL,
     CREATE_SELL,
     CREATE_BUY,
-    CREATE_LOTTO,
     CANCELLED;
 
     public boolean isTrading(){
         return this == PURCHASE_BUY || this == PURCHASE_SELL;
     }
     public boolean isCreating(){
-        return this == CREATE_SELL || this == CREATE_BUY || this == CREATE_LOTTO;
+        return this == CREATE_SELL || this == CREATE_BUY;
     }
 }

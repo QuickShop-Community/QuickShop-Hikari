@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.shop.ItemMatcher;
-import org.maxgamer.quickshop.database.AbstractDatabaseCore;
 import org.maxgamer.quickshop.localization.game.game.GameLanguage;
 
 /**
@@ -60,16 +59,6 @@ public class ServiceInjector {
                 Bukkit.getServicesManager().getRegistration(GameLanguage.class);
         if (registeredServiceProvider == null) {
             return null;
-        } else {
-            return registeredServiceProvider.getProvider();
-        }
-    }
-
-    public static @NotNull AbstractDatabaseCore getDatabaseCore(@NotNull AbstractDatabaseCore def) {
-        @Nullable RegisteredServiceProvider<? extends AbstractDatabaseCore> registeredServiceProvider =
-                Bukkit.getServicesManager().getRegistration(AbstractDatabaseCore.class);
-        if (registeredServiceProvider == null) {
-            return def;
         } else {
             return registeredServiceProvider.getProvider();
         }
