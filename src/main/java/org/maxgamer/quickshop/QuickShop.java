@@ -1163,7 +1163,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> AbstractDisplayItem.getNowUsing().name()));
             metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));
             metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> String.valueOf(this.isAllowStack())));
-            metrics.addCustomChart(new Metrics.SimplePie("chat_adapter", () -> "Hardcoded Adventure"));
+            metrics.addCustomChart(new Metrics.SimplePie("chat_adapter", () -> "Hardcoded BungeeChat with MineDown Syntax Parser"));
             metrics.addCustomChart(new Metrics.SimplePie("event_adapter", () -> eventAdapter));
             metrics.addCustomChart(new Metrics.SingleLineChart("shops_created_on_all_servers", () -> this.getShopManager().getAllShops().size()));
         } else {
