@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-//TODO: Refactor to a localeCode->localeContentBean class mapping
+// No to-do anymore! This used for not only messages.json! Keep the extent ability!
 public class LanguageFilesManager {
     //distributionPath->[localeCode->OTA files]
     private final Map<String, Map<String, JsonConfiguration>> locale2ContentMapping = new ConcurrentHashMap<>();
