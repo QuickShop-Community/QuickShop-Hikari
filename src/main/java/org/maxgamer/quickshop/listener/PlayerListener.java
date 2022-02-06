@@ -137,7 +137,7 @@ public class PlayerListener extends AbstractQSListener {
                     }
                 }
             case TRADE_DIRECT:
-                if (shopSearched.getKey().isBuying()) {
+                if (shopSearched.getKey().isSelling()) {
                     if (buyShop(e.getPlayer(), shopSearched.getKey(), true)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
@@ -145,7 +145,7 @@ public class PlayerListener extends AbstractQSListener {
                     }
                     break;
                 }
-                if (shopSearched.getKey().isSelling()) {
+                if (shopSearched.getKey().isBuying()) {
                     if (sellShop(e.getPlayer(), shopSearched.getKey(), true)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
