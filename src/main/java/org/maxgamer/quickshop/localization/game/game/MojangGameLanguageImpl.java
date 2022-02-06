@@ -44,7 +44,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -73,11 +72,11 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         this.plugin = plugin;
         this.languageCode = MsgUtil.getGameLanguageCode(languageCode);
         switch (plugin.getConfig().getInt("mojangapi-mirror", 0)) {
-            case 0:
+            case 0 -> {
                 mirror = new MojangApiOfficialMirror();
                 plugin.getLogger().info("Game assets server selected: Mojang API");
-                break;
-            case 1:
+            }
+            case 1 -> {
                 mirror = new MojangApiBmclApiMirror();
                 plugin.getLogger().info("Game assets server selected: BMCLAPI");
                 plugin.getLogger().info("===Mirror description===");
@@ -85,8 +84,8 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 plugin.getLogger().info("Donate BMCLAPI or get details about BMCLAPI, check here: https://bmclapidoc.bangbang93.com");
                 plugin.getLogger().info("You should only use this mirror if your server in China mainland or have connection trouble with Mojang server, otherwise use Mojang Official server");
                 plugin.getLogger().warning("You're selected unofficial game assets server, use at your own risk.");
-                break;
-            case 2:
+            }
+            case 2 -> {
                 mirror = new MojangApiMcbbsApiMirror();
                 plugin.getLogger().info("Game assets server selected: BMCLAPI");
                 plugin.getLogger().info("===Mirror description===");
@@ -94,7 +93,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 plugin.getLogger().info("Donate BMCLAPI or get details about BMCLAPI (includes MCBBSAPI), check here: https://bmclapidoc.bangbang93.com");
                 plugin.getLogger().info("You should only use this mirror if your server in China mainland or have connection trouble with Mojang server, otherwise use Mojang Official server");
                 plugin.getLogger().warning("You're selected unofficial game assets server, use at your own risk.");
-                break;
+            }
         }
     }
 
@@ -286,7 +285,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 }
                 //Download AssetsIndex
                 Optional<MojangAPI.AssetsFileData> assetsFileData = assetsAPI.getGameAssetsFile();
-                if (!assetsFileData.isPresent()) {
+                if (assetsFileData.isEmpty()) {
                     Util.debugLog("AssetsAPI returns nothing about required game asset file, This may caused by Mojang servers down or connection issue.");
                     plugin.getLogger().warning("Failed to update game assets from MojangAPI server, This may caused by Mojang servers down, connection issue or invalid language code.");
                     return;
@@ -308,7 +307,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 }
 
                 try {
-                    Files.write(new File(Util.getCacheFolder(), indexSha1Hex).toPath(), assetsFileData.get().getContent().getBytes(StandardCharsets.UTF_8));
+                    Files.writeString(new File(Util.getCacheFolder(), indexSha1Hex).toPath(), assetsFileData.get().getContent());
                 } catch (IOException ioException) {
                     plugin.getLogger().log(Level.WARNING, "Failed save file to local drive, game language system caches will stop work, we will try download again in next reboot. skipping...", ioException);
                 }
@@ -332,13 +331,13 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
 
                 String langHash = langElement.getAsJsonObject().get("hash").getAsString();
                 Optional<String> langContent = mojangAPI.getResourcesAPI().get(langHash);
-                if (!langContent.isPresent()) {
+                if (langContent.isEmpty()) {
                     plugin.getLogger().warning("Failed to update game assets from MojangAPI server because network connection issue.");
                     return;
                 }
 
                 try {
-                    Files.write(new File(Util.getCacheFolder(), langHash).toPath(), langContent.get().getBytes(StandardCharsets.UTF_8));
+                    Files.writeString(new File(Util.getCacheFolder(), langHash).toPath(), langContent.get());
                 } catch (IOException ioException) {
                     plugin.getLogger().log(Level.WARNING, "Failed save file to local drive, game language system caches will stop work, we will try download again in next reboot. skipping...", ioException);
                 }

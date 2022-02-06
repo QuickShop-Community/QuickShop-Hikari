@@ -107,8 +107,7 @@ public class BlockListener extends AbstractProtectionListener {
             plugin.text().of(p, "success-removed-shop").send();
         } else if (Util.isWallSign(b.getType())) {
             BlockState state = PaperLib.getBlockState(b, false).getState();
-            if (state instanceof Sign) {
-                Sign sign = (Sign) state;
+            if (state instanceof Sign sign) {
                 if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
                         || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                     // Ignore break lockette sign

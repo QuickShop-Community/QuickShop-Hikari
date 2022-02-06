@@ -182,8 +182,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
         BlockState furnace = PaperLib.getBlockState(event.getBlock(), false).getState();
         if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
-            if (furnace instanceof Furnace) {
-                Furnace furnace1 = (Furnace) furnace;
+            if (furnace instanceof Furnace furnace1) {
                 sendAlert(
                         "[DisplayGuard] Block  "
                                 + event.getBlock().getLocation()
@@ -195,8 +194,7 @@ public class EnhanceDisplayProtectionListener extends AbstractProtectionListener
         itemStack = event.getResult();
         if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
-            if (furnace instanceof Furnace) {
-                Furnace furnace1 = (Furnace) furnace;
+            if (furnace instanceof Furnace furnace1) {
                 sendAlert(
                         "[DisplayGuard] Block  "
                                 + event.getBlock().getLocation()

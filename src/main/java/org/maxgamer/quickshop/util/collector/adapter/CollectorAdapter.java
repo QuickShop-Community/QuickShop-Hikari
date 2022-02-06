@@ -52,17 +52,18 @@ public class CollectorAdapter {
             EconomyCore economyCore = plugin.getEconomy();
             //noinspection SwitchStatementWithTooFewBranches
             switch (AbstractEconomy.getNowUsing()) {
-                case VAULT:
+                case VAULT -> {
                     economy.put("core", "Vault");
                     economy.put("provider", ((Economy_Vault) economyCore).getProviderName());
-                    break;
+                }
 //                case RESERVE:
 //                    economy.put("core", "Reserve");
 //                    economy.put("provider", "No details");
 //                    break;
-                default:
+                default -> {
                     economy.put("core", economyCore.getName());
                     economy.put("provider", economyCore.getPlugin().getName());
+                }
             }
         } catch (Exception e) {
             economy.put("core", "Unknown");

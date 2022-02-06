@@ -53,9 +53,9 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
     }
 
     @Override
-    public ReloadResult reloadModule() throws Exception {
+    public ReloadResult reloadModule() {
         rescan();
-        return new ReloadResult(ReloadStatus.SUCCESS,null,null);
+        return new ReloadResult(ReloadStatus.SUCCESS, null, null);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

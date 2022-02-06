@@ -33,7 +33,6 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat.toLegacyText;
 
@@ -111,8 +110,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
 
         //Okay now all shops is our wanted shop in Map
 
-        List<Map.Entry<Shop, Double>> sortedShops = aroundShops.entrySet().stream().sorted(Map.Entry.<Shop, Double>comparingByValue(Double::compare).reversed())
-                .collect(Collectors.toList());
+        List<Map.Entry<Shop, Double>> sortedShops = aroundShops.entrySet().stream().sorted(Map.Entry.<Shop, Double>comparingByValue(Double::compare).reversed()).toList();
 
         //Function
         if (usingOldLogic) {

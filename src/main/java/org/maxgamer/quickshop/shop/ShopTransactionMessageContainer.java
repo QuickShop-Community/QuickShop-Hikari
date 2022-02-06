@@ -74,16 +74,12 @@ public class ShopTransactionMessageContainer {
                 JsonObject message = jsonObject.getAsJsonObject("shopTransactionMessage");
                 if (jsonObject.has("version")) {
                     int version = jsonObject.get("version").getAsInt();
-                    switch (version) {
-                        case 1:
-                            return new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V1.class));
-                        case 2:
-                            return new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V2.class));
-                        case 3:
-                            return new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V3.class));
-                        default:
-                            throw new JsonParseException("Unknown ShopTransactionMessage version +" + version + "+!");
-                    }
+                    return switch (version) {
+                        case 1 -> new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V1.class));
+                        case 2 -> new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V2.class));
+                        case 3 -> new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V3.class));
+                        default -> throw new JsonParseException("Unknown ShopTransactionMessage version +" + version + "+!");
+                    };
                 } else {
                     //Some users may use snapshot, this time is V3 message
                     return new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V3.class));
@@ -96,28 +92,22 @@ public class ShopTransactionMessageContainer {
     }
 
     public @NotNull String getMessage(@Nullable String locale) {
-        switch (shopTransactionMessage.getVersion()) {
-            case 1:
-                return ((ShopTransactionMessage.V1) shopTransactionMessage).getMessage();
-            case 2:
-                return ((ShopTransactionMessage.V2) shopTransactionMessage).getMessage();
-            case 3:
-                return ((ShopTransactionMessage.V3) shopTransactionMessage).getMessage().getLocalizedMessage(locale);
-            default:
-                return "";
-        }
+        return switch (shopTransactionMessage.getVersion()) {
+            case 1 -> ((ShopTransactionMessage.V1) shopTransactionMessage).getMessage();
+            case 2 -> ((ShopTransactionMessage.V2) shopTransactionMessage).getMessage();
+            case 3 -> ((ShopTransactionMessage.V3) shopTransactionMessage).getMessage().getLocalizedMessage(locale);
+            default -> "";
+        };
     }
 
     public @Nullable String getHoverItemStr() {
-        switch (shopTransactionMessage.getVersion()) {
-            case 2:
-                return ((ShopTransactionMessage.V2) shopTransactionMessage).getHoverItem();
-            case 3:
-                return ((ShopTransactionMessage.V3) shopTransactionMessage).getHoverItem();
-            default:
-                //V1 does not have hover item
-                return null;
-        }
+        return switch (shopTransactionMessage.getVersion()) {
+            case 2 -> ((ShopTransactionMessage.V2) shopTransactionMessage).getHoverItem();
+            case 3 -> ((ShopTransactionMessage.V3) shopTransactionMessage).getHoverItem();
+            default ->
+                    //V1 does not have hover item
+                    null;
+        };
     }
 
     public @Nullable String getHoverText(@Nullable String locale) {

@@ -320,10 +320,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @param overrideFile The distribution
      * @param locale       the locale
      * @return The override configuration
-     * @throws IOException                   IOException
-     * @throws InvalidConfigurationException File invalid
+     * @throws IOException IOException
      */
-    private JsonConfiguration getOverrideConfiguration(@NotNull String overrideFile, @NotNull String locale) throws IOException, InvalidConfigurationException {
+    private JsonConfiguration getOverrideConfiguration(@NotNull String overrideFile, @NotNull String locale) throws IOException {
         File localOverrideFile = new File(getOverrideFilesFolder(overrideFile.replace("%locale%", locale)), new File(overrideFile.replace("%locale%", locale)).getName());
         if (!localOverrideFile.exists()) {
             Util.debugLog("Creating locale override file: " + localOverrideFile);

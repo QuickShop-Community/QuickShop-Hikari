@@ -109,10 +109,9 @@ public class RealDisplayItem extends AbstractDisplayItem {
         Util.ensureThread(false);
         for (Entity entity : Objects.requireNonNull(this.shop.getLocation().getWorld())
                 .getEntities()) {
-            if (!(entity instanceof Item)) {
+            if (!(entity instanceof Item eItem)) {
                 continue;
             }
-            Item eItem = (Item) entity;
             if (eItem.getUniqueId().equals(Objects.requireNonNull(this.item).getUniqueId())) {
                 if (shop.isLeftShop()) {
                     return;
@@ -195,12 +194,11 @@ public class RealDisplayItem extends AbstractDisplayItem {
     @Override
     public void safeGuard(@NotNull Entity entity) {
         Util.ensureThread(false);
-        if (!(entity instanceof Item)) {
+        if (!(entity instanceof Item item)) {
             Util.debugLog(
                     "Failed to safeGuard " + entity.getLocation() + ", cause target not a Item");
             return;
         }
-        Item item = (Item) entity;
         // Set item protect in the armorstand's hand
 
         if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
@@ -290,8 +288,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
         // If it's a left shop, check the attached shop's item instead.
         if (shop.isLeftShop()) {
             Shop attachedShop = shop.getAttachedShop();
-            if (attachedShop instanceof ContainerShop) {
-                ContainerShop shop = (ContainerShop) attachedShop;
+            if (attachedShop instanceof ContainerShop shop) {
                 if (shop.getDisplayItem() == null) {
                     return false;
                 }

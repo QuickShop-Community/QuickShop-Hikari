@@ -34,7 +34,6 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.PlayerFinder;
 import org.maxgamer.quickshop.util.Util;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -43,9 +42,7 @@ import java.util.UUID;
 public class SubCommand_Staff implements CommandHandler<Player> {
 
     private final QuickShop plugin;
-    private final List<String> tabCompleteList = Collections.unmodifiableList(
-            Arrays.asList("add", "del", "list", "clear")
-    );
+    private final List<String> tabCompleteList = List.of("add", "del", "list", "clear");
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
@@ -59,11 +56,12 @@ public class SubCommand_Staff implements CommandHandler<Player> {
             switch (cmdArg.length) {
                 case 1:
                     switch (cmdArg[0]) {
-                        case "clear":
+                        case "clear" -> {
                             shop.clearStaffs();
                             plugin.text().of(sender, "shop-staff-cleared").send();
                             return;
-                        case "list":
+                        }
+                        case "list" -> {
                             final List<UUID> staffs = shop.getStaffs();
                             if (staffs.isEmpty()) {
                                 MsgUtil.sendDirectMessage(sender,
@@ -79,11 +77,11 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                                                 + Bukkit.getOfflinePlayer(uuid).getName());
                             }
                             return;
-                        case "add":
-                        case "del":
-                        default:
+                        }
+                        case "add", "del", default -> {
                             plugin.text().of(sender, "command.wrong-args").send();
                             return;
+                        }
                     }
                 case 2:
                     final OfflinePlayer offlinePlayer = PlayerFinder.findOfflinePlayerByName(cmdArg[1]);
@@ -93,18 +91,21 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                         offlinePlayerName = "null";
                     }
                     switch (cmdArg[0]) {
-                        case "add":
+                        case "add" -> {
                             shop.addStaff(offlinePlayer.getUniqueId());
                             plugin.text().of(sender, "shop-staff-added", offlinePlayerName).send();
                             return;
-                        case "del":
+                        }
+                        case "del" -> {
                             shop.delStaff(offlinePlayer.getUniqueId());
                             plugin.text().of(sender,
                                     "shop-staff-deleted", offlinePlayerName).send();
                             return;
-                        default:
+                        }
+                        default -> {
                             plugin.text().of(sender, "command.wrong-args").send();
                             return;
+                        }
                     }
                 default:
                     plugin.text().of(sender, "command.wrong-args").send();

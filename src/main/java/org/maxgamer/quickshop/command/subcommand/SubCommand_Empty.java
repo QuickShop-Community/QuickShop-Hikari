@@ -47,8 +47,7 @@ public class SubCommand_Empty implements CommandHandler<Player> {
                 continue;
             }
 
-            if (shop instanceof ContainerShop) {
-                final ContainerShop cs = (ContainerShop) shop;
+            if (shop instanceof final ContainerShop cs) {
                 final Inventory inventory = cs.getInventory();
 
                 if (inventory == null) {

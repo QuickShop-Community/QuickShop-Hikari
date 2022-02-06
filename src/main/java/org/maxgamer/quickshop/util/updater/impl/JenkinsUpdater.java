@@ -50,18 +50,13 @@ public class JenkinsUpdater implements QuickUpdater {
 
     @Override
     public @NotNull VersionType getCurrentRunning() {
-        switch (pluginBuildInfo.getGitBranch()) {
-            case "release":
-                return VersionType.STABLE;
-            case "rc":
-                return VersionType.RC;
-            case "beta":
-                return VersionType.BETA;
-            case "lts":
-                return VersionType.LTS;
-            default:
-                return VersionType.SNAPSHOT;
-        }
+        return switch (pluginBuildInfo.getGitBranch()) {
+            case "release" -> VersionType.STABLE;
+            case "rc" -> VersionType.RC;
+            case "beta" -> VersionType.BETA;
+            case "lts" -> VersionType.LTS;
+            default -> VersionType.SNAPSHOT;
+        };
     }
 
     @Override

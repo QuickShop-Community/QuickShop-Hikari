@@ -51,7 +51,7 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                 targetPlayerName = "null";
             }
             final UUID targetPlayerUUID = targetPlayer.getUniqueId();
-            List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(((Player) sender).getUniqueId());
+            List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(sender.getUniqueId());
             for (Shop shop : shopList) {
                 shop.setOwner(targetPlayerUUID);
             }

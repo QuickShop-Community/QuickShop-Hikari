@@ -365,11 +365,12 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
 //                            .write(7, 1);
 //                    break;
                 //int data to mark
-                default:
+                default -> {
                     //For 1.14+, we should use EntityType
                     fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
                     //int data to mark
                     fakeItemPacket.getIntegers().write(6, 1);
+                }
             }
 //        if (version == 13) {
 //            //for 1.13, we should use type id to represent the EntityType

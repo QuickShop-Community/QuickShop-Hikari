@@ -72,8 +72,7 @@ public class LockListener extends AbstractProtectionListener {
     public void onBreak(BlockBreakEvent e) {
         Block b = e.getBlock();
         BlockState state = PaperLib.getBlockState(b, false).getState();
-        if (state instanceof Sign) {
-            final Sign sign = (Sign) state;
+        if (state instanceof final Sign sign) {
             if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
                     || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
                 // Ignore break lockette sign
@@ -97,8 +96,7 @@ public class LockListener extends AbstractProtectionListener {
                 plugin.text().of(p, "no-permission").send();
             }
         } else if (Util.isWallSign(b.getType())) {
-            if (b instanceof Sign) {
-                final Sign sign = (Sign) b;
+            if (b instanceof final Sign sign) {
 
                 if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
                         || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {

@@ -74,7 +74,7 @@ public class SimpleIntegrationManager extends QuickShopInstanceHolder implements
 
     @Override
     public List<IntegratedPlugin> getIntegrations() {
-        return Collections.unmodifiableList(new ArrayList<>(integrations.values()));
+        return List.copyOf(integrations.values());
     }
 
     @Override

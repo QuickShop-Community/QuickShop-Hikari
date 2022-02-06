@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class EconomyTransactionTest extends TestBukkitBase {
 
 
-    static EconomyCore economy = new TestEconomy();
+    static final EconomyCore economy = new TestEconomy();
     static Trader taxAccount;
 
     public static Trader getTaxAccount() {
@@ -59,7 +58,7 @@ public class EconomyTransactionTest extends TestBukkitBase {
 
     @Test
     public void testTransaction() {
-        List<UUID> UUIDList = Stream.generate(UUID::randomUUID).limit(20).collect(Collectors.toList());
+        List<UUID> UUIDList = Stream.generate(UUID::randomUUID).limit(20).toList();
         for (UUID account : UUIDList) {
             genTransaction(null, account, 1000, 0.06, false).commit(new EconomyTransaction.TransactionCallback() {
                 @Override

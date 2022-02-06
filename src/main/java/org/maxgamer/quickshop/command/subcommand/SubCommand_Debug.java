@@ -37,16 +37,16 @@ import org.maxgamer.quickshop.util.Util;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 @AllArgsConstructor
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
-    private final List<String> tabCompleteList = Collections.unmodifiableList(
-            Arrays.asList("debug", "dev", "devmode", "handlerlist", "jvm", "signs")
-    );
+    private final List<String> tabCompleteList = List.of("debug", "dev", "devmode", "handlerlist", "jvm", "signs");
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
@@ -56,22 +56,16 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         }
 
         switch (cmdArg[0]) {
-            case "debug":
-            case "dev":
-            case "devmode":
-                switchDebug(sender);
-                break;
-            case "handlerlist":
+            case "debug", "dev", "devmode" -> switchDebug(sender);
+            case "handlerlist" -> {
                 if (cmdArg.length < 2) {
                     MsgUtil.sendDirectMessage(sender, "You must enter an event class");
                     break;
                 }
-
                 printHandlerList(sender, cmdArg[1]);
-                break;
-            case "jvm":
+            }
+            case "jvm" -> {
                 RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
-
                 List<String> arguments = runtimeMxBean.getInputArguments();
                 MsgUtil.sendDirectMessage(sender,
                         ChatColor.GOLD + "Arguments: " + ChatColor.AQUA + Util.list2String(arguments));
@@ -87,8 +81,8 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                 sys.keySet().forEach(key -> sysData.add(key + "=" + sys.get(key)));
                 MsgUtil.sendDirectMessage(sender,
                         ChatColor.GOLD + "Sys Pro: " + ChatColor.AQUA + Util.list2String(sysData));
-                break;
-            case "signs":
+            }
+            case "signs" -> {
                 final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
                 if (!bIt.hasNext()) {
                     plugin.text().of(sender, "not-looking-at-shop").send();
@@ -102,10 +96,8 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                         break;
                     }
                 }
-                break;
-            default:
-                MsgUtil.sendDirectMessage(sender, "Error! No correct arguments were entered!.");
-                break;
+            }
+            default -> MsgUtil.sendDirectMessage(sender, "Error! No correct arguments were entered!.");
         }
     }
 

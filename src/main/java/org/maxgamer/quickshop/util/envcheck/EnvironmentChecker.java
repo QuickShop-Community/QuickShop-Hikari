@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -206,7 +207,7 @@ public final class EnvironmentChecker {
                 }
             }
             String jarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-            jarPath = URLDecoder.decode(jarPath, "UTF-8");
+            jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
             Util.debugLog("JarPath selected: " + jarPath);
             jarFile = new JarFile(jarPath);
             List<JarEntry> modifiedEntry = tool.verify(jarFile);
@@ -257,7 +258,7 @@ public final class EnvironmentChecker {
     public ResultContainer potentialCheck() {
         String jarPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
         try {
-            jarPath = URLDecoder.decode(jarPath, "UTF-8");
+            jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
             Util.debugLog("JarPath selected: " + jarPath);
             ZipFile zipFile = new ZipFile(jarPath);
             Enumeration<? extends ZipEntry> zipEntryEnumeration = zipFile.entries();

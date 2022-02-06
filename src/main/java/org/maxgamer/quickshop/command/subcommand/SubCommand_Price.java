@@ -155,11 +155,9 @@ public class SubCommand_Price implements CommandHandler<Player> {
             plugin.text().of(sender,
                     "price-is-now", plugin.getEconomy().format(shop.getPrice(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency())).send();
             // Chest shops can be double shops.
-            if (!(shop instanceof ContainerShop)) {
+            if (!(shop instanceof final ContainerShop cs)) {
                 return;
             }
-
-            final ContainerShop cs = (ContainerShop) shop;
 
             if (!cs.isDoubleShop()) {
                 return;

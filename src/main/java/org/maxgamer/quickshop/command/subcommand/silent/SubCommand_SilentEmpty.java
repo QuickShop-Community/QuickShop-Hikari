@@ -37,12 +37,11 @@ public class SubCommand_SilentEmpty extends SubCommand_SilentBase {
 
     @Override
     protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull String[] cmdArg) {
-        if (!(shop instanceof ContainerShop)) {
+        if (!(shop instanceof final ContainerShop cs)) {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
 
-        final ContainerShop cs = (ContainerShop) shop;
         final Inventory inventory = cs.getInventory();
 
         if (inventory == null) {

@@ -56,7 +56,12 @@
             <url>https://repo.codemc.io/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
-
+    <pluginRepositories>
+        <pluginRepository>
+            <id>apache.snapshots</id>
+            <url>https://repository.apache.org/snapshots/</url>
+        </pluginRepository>
+    </pluginRepositories>
     <profiles>
         <profile>
             <id>debug</id>
@@ -103,8 +108,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.9.0</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>16</source>
+                    <target>16</target>
                     <encoding>UTF-8</encoding>
                     <!--Use this comments args when compiler is NullPointerException-->
                     <!--<forceJavacCompilerUse>true</forceJavacCompilerUse>-->
@@ -113,7 +118,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.3.0-SNAPSHOT</version>
                 <configuration>
                     <finalName>${artifactId}</finalName>
                     <minimizeJar>true</minimizeJar>

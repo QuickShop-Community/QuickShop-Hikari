@@ -86,7 +86,7 @@ public class Util {
     private static final EnumMap<Material, Entry<Double, Double>> RESTRICTED_PRICES = new EnumMap<>(Material.class);
     private static final EnumMap<Material, Integer> CUSTOM_STACKSIZE = new EnumMap<>(Material.class);
     private static final EnumSet<Material> SHOPABLES = EnumSet.noneOf(Material.class);
-    private static final List<BlockFace> VERTICAL_FACING = Collections.unmodifiableList(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
+    private static final List<BlockFace> VERTICAL_FACING = List.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
     @SuppressWarnings("UnstableApiUsage")
     private static final EvictingQueue<String> DEBUG_LOGS = EvictingQueue.create(500);
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
@@ -443,8 +443,7 @@ public class Util {
     @Nullable
     public static Block getAttached(@NotNull Block b) {
         final BlockData blockData = b.getBlockData();
-        if (blockData instanceof Directional) {
-            final Directional directional = (Directional) blockData;
+        if (blockData instanceof final Directional directional) {
             return b.getRelative(directional.getFacing().getOppositeFace());
         } else {
             return null;
@@ -490,8 +489,7 @@ public class Util {
         }
         if (plugin.getConfig().getBoolean("shop.use-effect-for-potion-item") && itemStack.getType().name().endsWith("POTION")) {
             ItemMeta meta = itemStack.getItemMeta();
-            if (meta instanceof PotionMeta) {
-                PotionMeta potionMeta = (PotionMeta) meta;
+            if (meta instanceof PotionMeta potionMeta) {
                 PotionData potionData = potionMeta.getBasePotionData();
                 PotionEffectType potionEffectType = potionData.getType().getEffectType();
                 if (potionEffectType != null) {
@@ -564,10 +562,9 @@ public class Util {
     }
 
     public static boolean isDoubleChest(@Nullable BlockData blockData) {
-        if (!(blockData instanceof org.bukkit.block.data.type.Chest)) {
+        if (!(blockData instanceof org.bukkit.block.data.type.Chest chestBlockData)) {
             return false;
         }
-        org.bukkit.block.data.type.Chest chestBlockData = (org.bukkit.block.data.type.Chest) blockData;
         return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
     }
 
@@ -903,10 +900,9 @@ public class Util {
      */
     public static Block getSecondHalf(@NotNull Block block) {
         BlockData blockData = block.getBlockData();
-        if (!(blockData instanceof org.bukkit.block.data.type.Chest)) {
+        if (!(blockData instanceof org.bukkit.block.data.type.Chest chest)) {
             return null;
         }
-        org.bukkit.block.data.type.Chest chest = (org.bukkit.block.data.type.Chest) blockData;
         if (!isDoubleChest(chest)) {
             return null;
         }
@@ -1311,7 +1307,7 @@ public class Util {
     public static List<String> getPlayerList() {
         List<String> tabList = plugin.getServer().getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
         if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
-            tabList.addAll(Arrays.stream(plugin.getServer().getOfflinePlayers()).map(OfflinePlayer::getName).filter(Objects::nonNull).collect(Collectors.toList()));
+            tabList.addAll(Arrays.stream(plugin.getServer().getOfflinePlayers()).map(OfflinePlayer::getName).filter(Objects::nonNull).toList());
         }
         return tabList;
     }

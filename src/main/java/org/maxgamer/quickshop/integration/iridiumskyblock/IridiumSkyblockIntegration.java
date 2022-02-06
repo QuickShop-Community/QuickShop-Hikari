@@ -84,7 +84,7 @@ public class IridiumSkyblockIntegration extends AbstractQSIntegratedPlugin imple
             return false;
         }
         Optional<Island> island = IridiumSkyblockAPI.getInstance().getIslandViaLocation(location);
-        if (!island.isPresent()) {
+        if (island.isEmpty()) {
             return false;
         }
         if (onlyOwnerCanCreateShop) {

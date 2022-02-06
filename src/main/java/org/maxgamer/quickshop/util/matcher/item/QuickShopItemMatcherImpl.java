@@ -212,8 +212,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1 instanceof Damageable != meta2 instanceof Damageable) {
                     return false;
                 }
-                if (meta1 instanceof Damageable) {
-                    Damageable damage1 = (Damageable) meta1;
+                if (meta1 instanceof Damageable damage1) {
                     Damageable damage2 = (Damageable) meta2;
                     //Given item damaged but matching item doesn't, allow it
                     if (damage1.hasDamage() && !damage2.hasDamage()) {
@@ -232,8 +231,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1 instanceof Repairable != meta2 instanceof Repairable) {
                     return false;
                 }
-                if (meta1 instanceof Repairable) {
-                    Repairable repairable1 = (Repairable) meta1;
+                if (meta1 instanceof Repairable repairable1) {
                     Repairable repairable2 = (Repairable) meta2;
                     boolean hasRepairCost1 = repairable1.hasRepairCost();
                     boolean hasRepairCost2 = repairable2.hasRepairCost();
@@ -302,8 +300,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1 instanceof PotionMeta != meta2 instanceof PotionMeta) {
                     return false;
                 }
-                if (meta1 instanceof PotionMeta) {
-                    PotionMeta potion1 = (PotionMeta) meta1;
+                if (meta1 instanceof PotionMeta potion1) {
                     PotionMeta potion2 = (PotionMeta) meta2;
 
                     if (potion1.hasColor() != potion2.hasColor()) {
@@ -361,8 +358,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1 instanceof BookMeta != meta2 instanceof BookMeta) {
                     return false;
                 }
-                if (meta1 instanceof BookMeta) {
-                    BookMeta book1 = (BookMeta) meta1;
+                if (meta1 instanceof BookMeta book1) {
                     BookMeta book2 = (BookMeta) meta2;
                     if (book1.hasTitle() != book2.hasTitle()) {
                         return false;
@@ -396,8 +392,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1 instanceof BannerMeta != meta2 instanceof BannerMeta) {
                     return false;
                 }
-                if (meta1 instanceof BannerMeta) {
-                    BannerMeta bannerMeta1 = (BannerMeta) meta1;
+                if (meta1 instanceof BannerMeta bannerMeta1) {
                     BannerMeta bannerMeta2 = (BannerMeta) meta2;
                     if (bannerMeta1.numberOfPatterns() != bannerMeta2.numberOfPatterns()) {
                         return false;
@@ -423,8 +418,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1 instanceof MapMeta != meta2 instanceof MapMeta) {
                     return false;
                 }
-                if (meta1 instanceof MapMeta) {
-                    MapMeta mapMeta1 = ((MapMeta) meta1);
+                if (meta1 instanceof MapMeta mapMeta1) {
                     MapMeta mapMeta2 = ((MapMeta) meta2);
                     if (mapMeta1.hasMapView() != mapMeta2.hasMapView()) {
                         return false;
@@ -451,8 +445,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if ((meta1 instanceof FireworkMeta) != (meta2 instanceof FireworkMeta)) {
                     return false;
                 }
-                if (meta1 instanceof FireworkMeta) {
-                    FireworkMeta fireworkMeta1 = ((FireworkMeta) meta1);
+                if (meta1 instanceof FireworkMeta fireworkMeta1) {
                     FireworkMeta fireworkMeta2 = ((FireworkMeta) meta2);
                     if (fireworkMeta1.hasEffects() != fireworkMeta2.hasEffects()) {
                         return false;
@@ -477,8 +470,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if ((meta1 instanceof TropicalFishBucketMeta) != (meta2 instanceof TropicalFishBucketMeta)) {
                     return false;
                 }
-                if (meta1 instanceof TropicalFishBucketMeta) {
-                    TropicalFishBucketMeta fishBucketMeta1 = ((TropicalFishBucketMeta) meta1);
+                if (meta1 instanceof TropicalFishBucketMeta fishBucketMeta1) {
                     TropicalFishBucketMeta fishBucketMeta2 = ((TropicalFishBucketMeta) meta2);
                     if (fishBucketMeta1.hasVariant() != fishBucketMeta2.hasVariant()) {
                         return false;
@@ -520,8 +512,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                         if ((meta1 instanceof SuspiciousStewMeta) != (meta2 instanceof SuspiciousStewMeta)) {
                             return false;
                         }
-                        if (meta1 instanceof SuspiciousStewMeta) {
-                            SuspiciousStewMeta stewMeta1 = ((SuspiciousStewMeta) meta1);
+                        if (meta1 instanceof SuspiciousStewMeta stewMeta1) {
                             SuspiciousStewMeta stewMeta2 = ((SuspiciousStewMeta) meta2);
                             if (stewMeta1.hasCustomEffects() != stewMeta2.hasCustomEffects()) {
                                 return false;

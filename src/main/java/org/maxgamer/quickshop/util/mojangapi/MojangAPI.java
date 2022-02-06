@@ -114,7 +114,7 @@ public class MojangAPI {
          */
         public Optional<AssetsFileData> getGameAssetsFile() {
             Optional<GameInfoAPI.DataBean> bean = getAssetsJson();
-            if (!bean.isPresent()) {
+            if (bean.isEmpty()) {
                 return Optional.empty();
             }
             GameInfoAPI.DataBean.AssetIndexBean assetIndexBean = bean.get().getAssetIndex();
@@ -131,7 +131,7 @@ public class MojangAPI {
                 return Optional.empty();
             }
             Optional<String> content = this.metaAPI.get();
-            if (!content.isPresent()) {
+            if (content.isEmpty()) {
                 return Optional.empty();
             }
             GameInfoAPI gameInfoAPI = new GameInfoAPI(content.get());

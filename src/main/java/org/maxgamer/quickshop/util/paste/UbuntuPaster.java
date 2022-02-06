@@ -62,7 +62,7 @@ public class UbuntuPaster implements PasteInterface {
                         + "&syntax=text"
                         + "&expiration=week"
                         + "&content="
-                        + URLEncoder.encode(text, "UTF-8");
+                        + URLEncoder.encode(text, StandardCharsets.UTF_8);
         out.print(builder);
         out.flush(); // Drop
 

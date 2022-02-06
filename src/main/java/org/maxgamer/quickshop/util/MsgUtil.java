@@ -677,8 +677,7 @@ public class MsgUtil {
             chatSheetPrinter.printCenterLine(plugin.text().of(p, "menu.enchants").forLocale());
             printEnchantment(chatSheetPrinter, enchs);
         }
-        if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta) {
-            EnchantmentStorageMeta stor = (EnchantmentStorageMeta) shop.getItem().getItemMeta();
+        if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta stor) {
             stor.getStoredEnchants();
             enchs = stor.getStoredEnchants();
             if (!enchs.isEmpty()) {

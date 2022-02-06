@@ -28,8 +28,6 @@ import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,9 +35,7 @@ import java.util.Objects;
 public class SubCommand_Reset implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
-    private final List<String> tabCompleteList = Collections.unmodifiableList(
-            Arrays.asList("lang", "config", "messages")
-    );
+    private final List<String> tabCompleteList = List.of("lang", "config", "messages");
 
 
     @Override
@@ -51,7 +47,7 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
         }
 
         switch (cmdArg[0]) {
-            case "lang":
+            case "lang" -> {
                 File cache = new File(plugin.getDataFolder(), "cache");
                 File item = new File(plugin.getDataFolder(), "itemi18n.yml");
                 File ench = new File(plugin.getDataFolder(), "enchi18n.yml");
@@ -65,8 +61,8 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
                 MsgUtil.loadEnchi18n();
                 MsgUtil.loadPotioni18n();
                 plugin.text().of(sender, "complete").send();
-                break;
-            case "config":
+            }
+            case "config" -> {
                 File config = new File(plugin.getDataFolder(), "config.yml");
                 config.delete();
                 plugin.saveDefaultConfig();
@@ -74,15 +70,14 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
                 plugin.getServer().getPluginManager().disablePlugin(plugin);
                 plugin.getServer().getPluginManager().enablePlugin(plugin);
                 plugin.text().of(sender, "complete").send();
-                break;
-            case "messages":
+            }
+            case "messages" -> {
                 File msgs = new File(plugin.getDataFolder(), "messages.json");
                 msgs.delete();
                 MsgUtil.loadI18nFile();
                 plugin.text().of(sender, "complete").send();
-                break;
-            default:
-                plugin.text().of(sender, "command.wrong-args").send();
+            }
+            default -> plugin.text().of(sender, "command.wrong-args").send();
         }
     }
 

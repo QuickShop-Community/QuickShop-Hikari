@@ -88,18 +88,15 @@ public class Paste {
             EconomyCore economyCore = plugin.getEconomy();
             //noinspection SwitchStatementWithTooFewBranches
             switch (AbstractEconomy.getNowUsing()) {
-                case VAULT:
-                    finalReport
-                            .append("Vault")
-                            .append("%")
-                            .append(((Economy_Vault) economyCore).getProviderName());
-                    break;
+                case VAULT -> finalReport
+                        .append("Vault")
+                        .append("%")
+                        .append(((Economy_Vault) economyCore).getProviderName());
+
 //                case RESERVE:
 //                    finalReport.append("Reserve").append("%").append("No details");
 //                    break;
-                default:
-                    finalReport.append("Unknown").append("%").append("Unknown error");
-                    break;
+                default -> finalReport.append("Unknown").append("%").append("Unknown error");
             }
         } catch (Exception e) {
             finalReport.append("Unknown").append("%").append("Unknown error");

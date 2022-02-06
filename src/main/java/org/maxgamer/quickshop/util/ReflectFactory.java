@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Predicate;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * ReflectFactory is library builtin QuickShop to get/execute stuff that cannot be access with BukkitAPI with reflect way.
@@ -53,7 +52,7 @@ public class ReflectFactory {
     private static Class<?> cachedNMSClass;
     private static String nmsVersion;
     private static Method getMinecraftKeyNameMethod;
-    private static boolean isMinecraftKeyNameMethodUnavailable = false;
+    private static final boolean isMinecraftKeyNameMethodUnavailable = false;
 //    private static Object serverInstance;
 //    private static Field tpsField;
 
@@ -76,7 +75,7 @@ public class ReflectFactory {
                             //Save method sign is foo(net/minecraft/nbt/NBTTagCompound)L(net/minecraft/nbt/NBTTagCompound)
                             return !method.isSynthetic() && !method.isBridge() && parameters.length == 1 && returnType.equals(nbtTagCompoundClass) && parameters[0].getType().equals(nbtTagCompoundClass);
                         }
-                ).collect(Collectors.toList());
+                ).toList();
                 if (methodList.size() == 1) {
                     itemStack_saveMethod = methodList.get(0);
                 } else {

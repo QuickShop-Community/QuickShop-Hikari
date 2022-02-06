@@ -24,7 +24,6 @@ import org.maxgamer.quickshop.QuickShop;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public enum WorldGuardFlags {
     FLAG,
@@ -35,7 +34,7 @@ public enum WorldGuardFlags {
 
     public static List<WorldGuardFlags> deserialize(List<String> list) {
         List<WorldGuardFlags> result = new ArrayList<>();
-        List<String> flags = Arrays.stream(WorldGuardFlags.values()).map(Enum::name).collect(Collectors.toList());
+        List<String> flags = Arrays.stream(WorldGuardFlags.values()).map(Enum::name).toList();
         for (String v : list) {
             if (!flags.contains(v)) {
                 QuickShop.getInstance().getLogger().warning("Ignoring invalid flag " + v);

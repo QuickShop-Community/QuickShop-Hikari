@@ -1174,10 +1174,9 @@ public class ContainerShop implements Shop {
                 continue;
             }
             BlockState state = PaperLib.getBlockState(b, false).getState();
-            if (!(state instanceof Sign)) {
+            if (!(state instanceof Sign sign)) {
                 continue;
             }
-            Sign sign = (Sign) state;
             if (isShopSign(sign)) {
                 claimShopSign(sign);
                 signs.add(sign);
@@ -1327,7 +1326,7 @@ public class ContainerShop implements Shop {
     public @Nullable Inventory getInventory() {
         Util.ensureThread(false);
         BlockState state = PaperLib.getBlockState(location.getBlock(), false).getState();
-        Inventory inv = null;
+        Inventory inv;
         try {
             if (state.getType() == Material.ENDER_CHEST
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl

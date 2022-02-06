@@ -261,12 +261,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         signBlock.setType(Util.getSignMaterial());
         BlockState signBlockState = signBlock.getState();
         BlockData signBlockData = signBlockState.getBlockData();
-        if (signIsWatered && (signBlockData instanceof Waterlogged)) {
-            Waterlogged waterable = (Waterlogged) signBlockData;
+        if (signIsWatered && (signBlockData instanceof Waterlogged waterable)) {
             waterable.setWaterlogged(true); // Looks like sign directly put in water
         }
-        if (signBlockData instanceof WallSign) {
-            WallSign wallSignBlockData = (WallSign) signBlockData;
+        if (signBlockData instanceof WallSign wallSignBlockData) {
             BlockFace bf = container.getFace(signBlock);
             if (bf != null) {
                 wallSignBlockData.setFacing(bf);
@@ -895,28 +893,33 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(info.getItem(), price);
 
         switch (priceCheckResult.getStatus()) {
-            case REACHED_PRICE_MIN_LIMIT:
+            case REACHED_PRICE_MIN_LIMIT -> {
                 plugin.text().of(p, "price-too-cheap",
                         (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
                                 : Double.toString(this.priceLimiter.getMinPrice())).send();
                 return;
-            case REACHED_PRICE_MAX_LIMIT:
+            }
+            case REACHED_PRICE_MAX_LIMIT -> {
                 plugin.text().of(p, "price-too-high",
                         (decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
                                 : Double.toString(this.priceLimiter.getMinPrice())).send();
                 return;
-            case PRICE_RESTRICTED:
+            }
+            case PRICE_RESTRICTED -> {
                 plugin.text().of(p, "restricted-prices",
                         MsgUtil.getTranslateText(info.getItem()),
                         String.valueOf(priceCheckResult.getMin()),
                         String.valueOf(priceCheckResult.getMax())).send();
                 return;
-            case NOT_VALID:
+            }
+            case NOT_VALID -> {
                 plugin.text().of(p, "not-a-number", message).send();
                 return;
-            case NOT_A_WHOLE_NUMBER:
+            }
+            case NOT_A_WHOLE_NUMBER -> {
                 plugin.text().of(p, "not-a-integer", message).send();
                 return;
+            }
         }
 
         // Set to 1 when disabled stacking shop
@@ -1259,8 +1262,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             chatSheetPrinter.printLine(plugin.text().of(p, "menu.this-shop-is-selling").forLocale());
         }
         MsgUtil.printEnchantment(p, shop, chatSheetPrinter);
-        if (items.getItemMeta() instanceof PotionMeta) {
-            PotionMeta potionMeta = (PotionMeta) items.getItemMeta();
+        if (items.getItemMeta() instanceof PotionMeta potionMeta) {
             PotionData potionData = potionMeta.getBasePotionData();
             PotionEffectType potionEffectType = potionData.getType().getEffectType();
             if (potionEffectType != null) {
@@ -1521,7 +1523,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     @Override
-    public PriceLimiter getPriceLimiter() {
+    public @NotNull PriceLimiter getPriceLimiter() {
         return this.priceLimiter;
     }
 

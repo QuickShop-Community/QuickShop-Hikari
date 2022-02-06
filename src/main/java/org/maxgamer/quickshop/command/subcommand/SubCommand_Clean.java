@@ -50,8 +50,7 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
                 if (Util.isLoaded(shop.getLocation())
                         && shop.isSelling()
                         && shop.getRemainingStock() == 0
-                        && shop instanceof ContainerShop) {
-                    ContainerShop cs = (ContainerShop) shop;
+                        && shop instanceof ContainerShop cs) {
                     if (cs.isDoubleShop()) {
                         continue;
                     }

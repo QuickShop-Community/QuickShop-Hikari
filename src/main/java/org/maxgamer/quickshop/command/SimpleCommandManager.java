@@ -397,8 +397,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 return true;
             }
         }
-        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.oncommand")) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player && plugin.getConfig().getBoolean("effect.sound.oncommand")) {
             ((Player) sender)
                     .playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
         }
@@ -509,8 +508,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         if (plugin.getBootError() != null) {
             return Collections.emptyList();
         }
-        if (sender instanceof Player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
             ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
         }
         if (cmdArg.length <= 1) {

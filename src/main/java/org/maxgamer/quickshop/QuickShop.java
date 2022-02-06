@@ -162,9 +162,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private boolean display = true;
     @Getter
     private int displayItemCheckTicks;
-    @Getter
-    @Deprecated
-    private DisplayWatcher displayWatcher;
     /**
      * The economy we hook into for transactions
      */
@@ -851,7 +848,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private File writeSecurityReportToFile() {
         File file = new File(getDataFolder(), UUID.randomUUID() + ".security.letter.txt");
         try {
-            Files.write(new File(getDataFolder(), UUID.randomUUID() + ".security.letter.txt").toPath(), environmentChecker.getReportMaker().bake().getBytes(StandardCharsets.UTF_8));
+            Files.writeString(new File(getDataFolder(), UUID.randomUUID() + ".security.letter.txt").toPath(), environmentChecker.getReportMaker().bake());
             file = file.getCanonicalFile();
         } catch (IOException e) {
             getLogger().log(Level.SEVERE, "Failed to write security report!", e);

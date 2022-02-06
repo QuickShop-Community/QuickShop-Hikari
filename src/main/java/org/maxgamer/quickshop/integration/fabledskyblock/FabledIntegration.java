@@ -125,7 +125,7 @@ public class FabledIntegration extends AbstractQSIntegratedPlugin {
     }
 
     @Override
-    public ReloadResult reloadModule() throws Exception {
+    public ReloadResult reloadModule() {
         loadConfiguration();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
