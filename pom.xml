@@ -659,7 +659,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>[8.0.16,)</version>
+            <version>[8.0.25,)</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -759,7 +759,7 @@
         <dependency>
             <groupId>com.plotsquared</groupId>
             <artifactId>PlotSquared-Core</artifactId>
-            <version>6.3.0</version>
+            <version>6.4.0</version>
             <scope>provided</scope>
             <!--We just need the core jar-->
             <exclusions>
@@ -897,7 +897,8 @@
         <dependency>
             <groupId>io.papermc</groupId>
             <artifactId>paperlib</artifactId>
-            <version>1.0.7</version>
+            <!--suppress MavenPackageUpdate -->
+            <version>LATEST</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -915,7 +916,8 @@
         <dependency>
             <groupId>me.lucko</groupId>
             <artifactId>helper</artifactId>
-            <version>5.6.9</version>
+            <!--suppress MavenPackageUpdate -->
+            <version>LATEST</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
