@@ -81,10 +81,8 @@ public class PlayerListener extends AbstractQSListener {
         Map.Entry<Shop, ClickType> shopSearched = searchShop(e.getClickedBlock(), e.getPlayer());
 
         if (shopSearched.getKey() == null && shopSearched.getValue() == ClickType.AIR) {
-            Util.debugLog("PlayerListener", "onClick", "Player " + e.getPlayer().getName() + " clicked air");
             return;
         }
-
 
         InteractionController.Interaction interaction = null;
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -101,11 +99,10 @@ public class PlayerListener extends AbstractQSListener {
             }
         }
         if (interaction == null) {
-            Util.debugLog("PlayerListener", "onClick", "Player " + e.getPlayer().getName() + " clicked with " + e.getAction().name() + " // Null");
             return;
         }
         Util.debugLog("Click: " + interaction.name());
-        Util.debugLog("Mapping: " + plugin.getInteractionController().getBehavior(interaction).name());
+        Util.debugLog("Behavior Mapping: " + plugin.getInteractionController().getBehavior(interaction).name());
         switch (plugin.getInteractionController().getBehavior(interaction)) {
             case CONTROL_PANEL:
                 openControlPanel(e.getPlayer(), shopSearched.getKey());
@@ -143,10 +140,11 @@ public class PlayerListener extends AbstractQSListener {
                 }
 
             case SELL_DIRECT:
-                e.setCancelled(true);
-                e.setUseInteractedBlock(Event.Result.DENY);
-                e.setUseItemInHand(Event.Result.DENY);
-                sellShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), true);
+                if (sellShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), true)) {
+                    e.setCancelled(true);
+                    e.setUseInteractedBlock(Event.Result.DENY);
+                    e.setUseItemInHand(Event.Result.DENY);
+                }
             case NONE:
                 break;
         }
