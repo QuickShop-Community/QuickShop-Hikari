@@ -110,18 +110,13 @@ public class PlayerListener extends AbstractQSListener {
                 e.setUseInteractedBlock(Event.Result.DENY);
                 e.setUseItemInHand(Event.Result.DENY);
                 break;
-            case BUY_DIRECT:
-                if (buyShop(e.getPlayer(), shopSearched.getKey(), true)) {
-                    e.setCancelled(true);
-                    e.setUseInteractedBlock(Event.Result.DENY);
-                    e.setUseItemInHand(Event.Result.DENY);
-                }
             case TRADE_INTERACTION:
                 if (shopSearched.getKey() == null) {
                     if (createShop(e.getPlayer(), e.getClickedBlock())) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
+                        break;
                     }
                 } else {
                     if (shopSearched.getKey().isBuying()) {
@@ -130,20 +125,33 @@ public class PlayerListener extends AbstractQSListener {
                             e.setUseInteractedBlock(Event.Result.DENY);
                             e.setUseItemInHand(Event.Result.DENY);
                         }
-                    } else if (shopSearched.getKey().isSelling()) {
-                        if (sellShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), false)) {
+                        break;
+                    }
+                    if (shopSearched.getKey().isSelling()) {
+                        if (sellShop(e.getPlayer(), shopSearched.getKey(), false)) {
                             e.setCancelled(true);
                             e.setUseInteractedBlock(Event.Result.DENY);
                             e.setUseItemInHand(Event.Result.DENY);
                         }
+                        break;
                     }
                 }
-
-            case SELL_DIRECT:
-                if (sellShop(e.getPlayer(), e.getClickedBlock(), shopSearched.getKey(), true)) {
-                    e.setCancelled(true);
-                    e.setUseInteractedBlock(Event.Result.DENY);
-                    e.setUseItemInHand(Event.Result.DENY);
+            case TRADE_DIRECT:
+                if (shopSearched.getKey().isBuying()) {
+                    if (buyShop(e.getPlayer(), shopSearched.getKey(), true)) {
+                        e.setCancelled(true);
+                        e.setUseInteractedBlock(Event.Result.DENY);
+                        e.setUseItemInHand(Event.Result.DENY);
+                    }
+                    break;
+                }
+                if (shopSearched.getKey().isSelling()) {
+                    if (sellShop(e.getPlayer(), shopSearched.getKey(), true)) {
+                        e.setCancelled(true);
+                        e.setUseInteractedBlock(Event.Result.DENY);
+                        e.setUseItemInHand(Event.Result.DENY);
+                    }
+                    break;
                 }
             case NONE:
                 break;
@@ -190,7 +198,7 @@ public class PlayerListener extends AbstractQSListener {
         return true;
     }
 
-    public boolean sellShop(@NotNull Player player, @Nullable Block block, @Nullable Shop shop, boolean direct) {
+    public boolean sellShop(@NotNull Player player, @Nullable Shop shop, boolean direct) {
         if (shop == null) {
             Util.debugLog("Shop null");
             return false;

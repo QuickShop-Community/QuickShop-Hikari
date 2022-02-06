@@ -24,9 +24,7 @@ import org.jetbrains.annotations.NotNull;
 public enum ShopType {
     // SELLING = SELLMODE BUYING = BUY MODE
     SELLING(0),
-    BUYING(1),
-    BUYINGANDSELLING(2),
-    LOTTO(3),;
+    BUYING(1);
     private final int id;
 
     ShopType(int id) {

@@ -107,8 +107,8 @@ public class InteractionController implements Reloadable {
      */
     public enum InteractionBehavior {
         TRADE_INTERACTION,
-        BUY_DIRECT,
-        SELL_DIRECT,
+        TRADE_DIRECT,
+        TADE_DIRECT_ALL,
         CONTROL_PANEL,
         NONE
     }
