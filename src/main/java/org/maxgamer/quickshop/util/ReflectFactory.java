@@ -270,22 +270,23 @@ public class ReflectFactory {
         Object nmsItem;
         try {
             nmsItem = Class.forName("org.bukkit.craftbukkit." + getNMSVersion() + ".util.CraftMagicNumbers").getMethod("getItem", Material.class).invoke(null, material);
-
             if (nmsItem == null) {
                 Util.debugLog("nmsItem null");
                 return null;
             }
-            try {
-                getMinecraftKeyNameMethod = nmsItem.getClass().getMethod("getName");
-            } catch (NoSuchMethodException exception) {
-                Util.debugLog("Mapping changed during minecraft update, dynamic searching...");
-                getMinecraftKeyNameMethod = findMethod(nmsItem.getClass(), String.class, method -> {
-                    try {
-                        return !"toString".equals(method.getName()) && ((String) method.invoke(nmsItem)).toLowerCase().contains(material.getKey().getKey().toLowerCase(Locale.ROOT));
-                    } catch (Throwable throwable) {
-                        return false;
-                    }
-                });
+            if (getMinecraftKeyNameMethod == null) {
+                try {
+                    getMinecraftKeyNameMethod = nmsItem.getClass().getMethod("getName");
+                } catch (NoSuchMethodException exception) {
+                    Util.debugLog("Mapping changed during minecraft update, dynamic searching...");
+                    getMinecraftKeyNameMethod = findMethod(nmsItem.getClass(), String.class, method -> {
+                        try {
+                            return !"toString".equals(method.getName()) && ((String) method.invoke(nmsItem)).toLowerCase().contains(material.getKey().getKey().toLowerCase(Locale.ROOT));
+                        } catch (Throwable throwable) {
+                            return false;
+                        }
+                    });
+                }
             }
 
             if (getMinecraftKeyNameMethod == null) {
