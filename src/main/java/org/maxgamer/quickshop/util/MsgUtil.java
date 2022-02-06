@@ -247,7 +247,11 @@ public class MsgUtil {
         File enchi18nFile = new File(plugin.getDataFolder(), "enchi18n.yml");
         if (!enchi18nFile.exists()) {
             plugin.getLogger().info("Creating enchi18n.yml");
-            plugin.saveResource("enchi18n.yml", false);
+            try {
+                enchi18nFile.createNewFile();
+            } catch (IOException e) {
+                plugin.getLogger().log(Level.WARNING, "Failed to create enchi18n.yml", e);
+            }
         }
         // Store it
         enchi18n = YamlConfiguration.loadConfiguration(enchi18nFile);
@@ -284,7 +288,11 @@ public class MsgUtil {
         File itemi18nFile = new File(plugin.getDataFolder(), "itemi18n.yml");
         if (!itemi18nFile.exists()) {
             plugin.getLogger().info("Creating itemi18n.yml");
-            plugin.saveResource("itemi18n.yml", false);
+            try {
+                itemi18nFile.createNewFile();
+            } catch (IOException e) {
+                plugin.getLogger().log(Level.WARNING, "Failed to create itemi18n.yml", e);
+            }
         }
         // Store it
         itemi18n = YamlConfiguration.loadConfiguration(itemi18nFile);
@@ -320,7 +328,11 @@ public class MsgUtil {
         File potioni18nFile = new File(plugin.getDataFolder(), "potioni18n.yml");
         if (!potioni18nFile.exists()) {
             plugin.getLogger().info("Creating potioni18n.yml");
-            plugin.saveResource("potioni18n.yml", false);
+            try {
+                potioni18nFile.createNewFile();
+            } catch (IOException e) {
+                plugin.getLogger().log(Level.WARNING, "Failed to create potioni18n.yml", e);
+            }
         }
         // Store it
         potioni18n = YamlConfiguration.loadConfiguration(potioni18nFile);
