@@ -137,6 +137,8 @@ public class PlayerListener extends AbstractQSListener {
                     }
                 }
             case TRADE_DIRECT:
+                if (shopSearched.getKey() == null) // No shop here
+                    return;
                 if (shopSearched.getKey().isBuying()) {
                     if (buyShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
                         e.setCancelled(true);
@@ -153,7 +155,7 @@ public class PlayerListener extends AbstractQSListener {
                     }
                     break;
                 }
-            case TADE_DIRECT_ALL:
+            case TRADE_DIRECT_ALL:
                 if (shopSearched.getKey().isSelling()) {
                     if (sellShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
                         e.setCancelled(true);
