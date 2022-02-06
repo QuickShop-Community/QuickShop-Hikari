@@ -137,7 +137,7 @@ public class PlayerListener extends AbstractQSListener {
                     }
                 }
             case TRADE_DIRECT:
-                if (shopSearched.getKey().isSelling()) {
+                if (shopSearched.getKey().isBuying()) {
                     if (buyShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
@@ -145,7 +145,7 @@ public class PlayerListener extends AbstractQSListener {
                     }
                     break;
                 }
-                if (shopSearched.getKey().isBuying()) {
+                if (shopSearched.getKey().isSelling()) {
                     if (sellShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
@@ -155,7 +155,7 @@ public class PlayerListener extends AbstractQSListener {
                 }
             case TADE_DIRECT_ALL:
                 if (shopSearched.getKey().isSelling()) {
-                    if (buyShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
+                    if (sellShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
@@ -163,7 +163,7 @@ public class PlayerListener extends AbstractQSListener {
                     break;
                 }
                 if (shopSearched.getKey().isBuying()) {
-                    if (sellShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
+                    if (buyShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
@@ -175,12 +175,12 @@ public class PlayerListener extends AbstractQSListener {
         }
     }
 
-    public boolean buyShop(@NotNull Player player, @Nullable Shop shop, boolean direct, boolean all) {
+    public boolean sellShop(@NotNull Player player, @Nullable Shop shop, boolean direct, boolean all) {
         if (shop == null) {
             Util.debugLog("Shop null");
             return false;
         }
-        if (!shop.isBuying())
+        if (!shop.isSelling())
             return false;
         shop.onClick();
         this.playClickSound(player);
@@ -190,12 +190,12 @@ public class PlayerListener extends AbstractQSListener {
         final double price = shop.getPrice();
         final Inventory playerInventory = player.getInventory();
         final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
-        if (shop.getRemainingSpace() == 0) {
-            plugin.text().of(player, "purchase-out-of-space", shop.ownerName()).send();
+        if (shop.getRemainingStock() == 0) {
+            plugin.text().of(player, "purchase-out-of-stock", shop.ownerName()).send();
             return false;
         }
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
-        Info info = new SimpleInfo(shop.getLocation(), ShopAction.CREATE_SELL, null, null, shop, false);
+        Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
         actions.put(player.getUniqueId(), info);
         final double ownerBalance = eco.getBalance(shop.getOwner(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
         int items = getPlayerCanSell(shop, ownerBalance, price, playerInventory);
@@ -219,12 +219,12 @@ public class PlayerListener extends AbstractQSListener {
         return true;
     }
 
-    public boolean sellShop(@NotNull Player player, @Nullable Shop shop, boolean direct, boolean all) {
+    public boolean buyShop(@NotNull Player player, @Nullable Shop shop, boolean direct, boolean all) {
         if (shop == null) {
             Util.debugLog("Shop null");
             return false;
         }
-        if (!shop.isSelling())
+        if (!shop.isBuying())
             return false;
         shop.onClick();
         this.playClickSound(player);
@@ -235,11 +235,11 @@ public class PlayerListener extends AbstractQSListener {
         final Inventory playerInventory = player.getInventory();
         final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
         if (shop.getRemainingStock() == 0) {
-            plugin.text().of(player, "purchase-out-of-stock", shop.ownerName()).send();
+            plugin.text().of(player, "purchase-out-of-space", shop.ownerName()).send();
             return true;
         }
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
-        Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
+        Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BUY, null, null, shop, false);
         actions.put(player.getUniqueId(), info);
         final double traderBalance = eco.getBalance(player.getUniqueId(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
         int itemAmount = getPlayerCanBuy(shop, traderBalance, price, playerInventory);
