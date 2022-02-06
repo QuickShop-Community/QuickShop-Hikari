@@ -4,5 +4,5 @@ STANDING_LEFT_CLICK_SHOPBLOCK: TRADE_INTERACTION
 STANDING_RIGHT_CLICK_SHOPBLOCK: NONE # Reserve for give player ability to open the chest, change this will prevent player to opening the chest!!
 SNEAKING_LEFT_CLICK_SIGN: TRADE_DIRECT
 SNEAKING_RIGHT_CLICK_SIGN: TRADE_DIRECT_ALL
-SNEAKING_LEFT_CLICK_SHOPBLOCK: NONE
+SNEAKING_LEFT_CLICK_SHOPBLOCK: TRADE_DIRECT
 SNEAKING_RIGHT_CLICK_SHOPBLOCK: NONE # Reserve for give player ability to open the chest, change this will prevent player to opening the chest!!
