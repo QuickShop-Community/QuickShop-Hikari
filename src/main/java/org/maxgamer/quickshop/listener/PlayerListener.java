@@ -205,8 +205,8 @@ public class PlayerListener extends AbstractQSListener {
         final double price = shop.getPrice();
         final Inventory playerInventory = player.getInventory();
         final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
-        if (shop.getRemainingSpace() == 0) {
-            plugin.text().of(player, "purchase-out-of-space", shop.ownerName()).send();
+        if (shop.getRemainingStock() == 0) {
+            plugin.text().of(player, "purchase-out-of-stock", shop.ownerName()).send();
             return true;
         }
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
