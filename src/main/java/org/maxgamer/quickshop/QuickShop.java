@@ -31,6 +31,7 @@ import de.leonhard.storage.Yaml;
 import de.leonhard.storage.internal.settings.ConfigSettings;
 import de.leonhard.storage.internal.settings.ReloadSettings;
 import de.tr7zw.nbtapi.plugin.NBTAPI;
+import kong.unirest.Unirest;
 import lombok.Getter;
 import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
@@ -614,6 +615,17 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
         this.bootError = null;
+        getLogger().info("Initialing Unirest http request library...");
+        Unirest.config()
+                .followRedirects(true)
+                .cacheResponses(true)
+                .socketTimeout(10 * 1000)
+                .connectTimeout(30 * 1000)
+                .concurrency(10, 5)
+                .setDefaultHeader("User-Agent", "Java QuickShop-" + getFork() + "/" + getDescription().getVersion())
+                .followRedirects(true)
+                .enableCookieManagement(true)
+                .automaticRetries(true);
         getLogger().info("Loading messages translation over-the-air (this may need take a while).");
         this.textManager = new SimpleTextManager(this);
         textManager.load();
@@ -637,7 +649,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         if (sentryErrorReporter != null) {
             sentryErrorReporter.unregister();
         }
-
         if (this.integrationHelper != null) {
             this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
         }
@@ -713,6 +724,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         Util.debugLog("Unregistering plugin services...");
         getServer().getServicesManager().unregisterAll(this);
         Util.debugLog("Cleanup...");
+        Unirest.shutDown(true);
         Util.debugLog("All shutdown work is finished.");
 
     }

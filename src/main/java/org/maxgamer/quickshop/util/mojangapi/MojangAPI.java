@@ -24,12 +24,13 @@ import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.maxgamer.quickshop.util.HttpUtil;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -86,7 +87,11 @@ public class MojangAPI {
 
         public Optional<String> get(@NotNull String hash) {
             String url = apiMirror.getResourcesDownloadRoot() + "/" + hash.substring(0, 2) + "/" + hash;
-            return Optional.ofNullable(HttpUtil.createGet(url));
+            HttpResponse<String> response = Unirest.get(url).asString();
+            if (!response.isSuccess()) {
+                return Optional.empty();
+            }
+            return Optional.ofNullable(response.getBody());
         }
     }
 
@@ -116,7 +121,7 @@ public class MojangAPI {
             if (assetIndexBean == null || assetIndexBean.getUrl() == null || assetIndexBean.getId() == null) {
                 return Optional.empty();
             }
-            String data = HttpUtil.createGet(assetIndexBean.getUrl());
+            String data = Unirest.get(assetIndexBean.getUrl()).asString().getBody();
             return Optional.of(new AssetsFileData(data, assetIndexBean.getSha1(), assetIndexBean.getId()));
         }
 
@@ -198,12 +203,12 @@ public class MojangAPI {
          */
         @SneakyThrows
         public Optional<String> get() {
-
-            String result = HttpUtil.createGet(this.metaEndpoint);
-            if (result == null) {
+            HttpResponse<String> response = Unirest.get(metaEndpoint).asString();
+            if (!response.isSuccess()) {
                 Util.debugLog("Request Meta Endpoint failed.");
                 return Optional.empty();
             }
+            String result = response.getBody();
             try {
                 JsonElement index = new JsonParser().parse(result);
                 if (!index.isJsonObject()) {
@@ -218,7 +223,11 @@ public class MojangAPI {
                         JsonElement gameId = gameVersionData.getAsJsonObject().get("id");
                         JsonElement gameIndexUrl = gameVersionData.getAsJsonObject().get("url");
                         if (Objects.equals(gameId.getAsString(), version)) {
-                            return Optional.ofNullable(HttpUtil.createGet(gameIndexUrl.getAsString()));
+                            HttpResponse<String> response1 = Unirest.get(gameIndexUrl.getAsString()).asString();
+                            if (!response1.isSuccess()) {
+                                return Optional.empty();
+                            }
+                            return Optional.ofNullable(response1.getBody());
                         }
                     }
                 }
