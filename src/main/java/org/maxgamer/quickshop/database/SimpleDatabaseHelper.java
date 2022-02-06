@@ -100,9 +100,6 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                     return i;
                     // Do nothing
                 }, ((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed while trying create the shop table! SQL: " + sqlAction.getSQLContent(), exception)));
-        manager.alterTable(plugin.getDbPrefix() + "shops")
-                .modifyColumn("itemConfig", "CHARACTER SET utf8mb4 NOT NULL")
-                .execute(null);
     }
 
     /**
