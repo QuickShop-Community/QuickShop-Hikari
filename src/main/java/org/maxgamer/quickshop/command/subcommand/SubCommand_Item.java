@@ -28,10 +28,10 @@ import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
+import org.maxgamer.quickshop.api.shop.PriceLimiter;
 import org.maxgamer.quickshop.api.shop.PriceLimiterCheckResult;
 import org.maxgamer.quickshop.api.shop.PriceLimiterStatus;
 import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.shop.SimplePriceLimiter;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -64,11 +64,7 @@ public class SubCommand_Item implements CommandHandler<Player> {
                 if (!plugin.isAllowStack() && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stacks")) {
                     itemStack.setAmount(1);
                 }
-                SimplePriceLimiter limiter = new SimplePriceLimiter(
-                        plugin.getConfig().getDouble("shop.minimum-price"),
-                        plugin.getConfig().getInt("shop.maximum-price"),
-                        plugin.getConfig().getBoolean("shop.allow-free-shop"),
-                        plugin.getConfig().getBoolean("whole-number-prices-only"));
+                PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
                 PriceLimiterCheckResult checkResult = limiter.check(itemStack, shop.getPrice());
                 if (checkResult.getStatus() != PriceLimiterStatus.PASS) {
                     plugin.text().of(sender, "restricted-prices", MsgUtil.getTranslateText(shop.getItem()),

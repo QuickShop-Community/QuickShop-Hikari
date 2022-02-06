@@ -723,35 +723,30 @@ public class ContainerShop implements Shop {
         int shopRemaining;
 
         switch (shopType) {
-            case BUYING:
+            case BUYING -> {
                 shopRemaining = getRemainingSpace();
                 tradingStringKey = isStackingShop() ? "signs.stack-buying" : "signs.buying";
                 noRemainingStringKey = "signs.out-of-space";
-                break;
-            case SELLING:
+            }
+            case SELLING -> {
                 shopRemaining = getRemainingStock();
                 tradingStringKey = isStackingShop() ? "signs.stack-selling" : "signs.selling";
                 noRemainingStringKey = "signs.out-of-stock";
-                break;
-            default:
+            }
+            default -> {
                 shopRemaining = 0;
                 tradingStringKey = "MissingKey for shop type:" + shopType;
                 noRemainingStringKey = "MissingKey for shop type:" + shopType;
+            }
         }
-        String line2;
-        switch (shopRemaining) {
+        String line2 = switch (shopRemaining) {
             //Unlimited
-            case -1:
-                line2 = plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale)).forLocale(locale);
-                break;
+            case -1 -> plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale)).forLocale(locale);
             //No remaining
-            case 0:
-                line2 = plugin.text().of(noRemainingStringKey).forLocale(locale);
-                break;
+            case 0 -> plugin.text().of(noRemainingStringKey).forLocale(locale);
             //Has remaining
-            default:
-                line2 = plugin.text().of(tradingStringKey, Integer.toString(shopRemaining)).forLocale(locale);
-        }
+            default -> plugin.text().of(tradingStringKey, Integer.toString(shopRemaining)).forLocale(locale);
+        };
 
         // TODO No-longer use SHOP_SIGN_PREFIX since we use modern storage method. Pending for deletion.
         lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder().appendLegacy(SHOP_SIGN_PREFIX, line2).create()));
@@ -1434,24 +1429,19 @@ public class ContainerShop implements Shop {
         boolean previousValue = isLeftShop;
 
         switch (((Chest) getLocation().getBlock().getBlockData()).getFacing()) {
-            case WEST:
-                // left block has a smaller z value
-                isLeftShop = getLocation().getZ() < attachedShop.getLocation().getZ();
-                break;
-            case EAST:
-                // left block has a greater z value
-                isLeftShop = getLocation().getZ() > attachedShop.getLocation().getZ();
-                break;
-            case NORTH:
-                // left block has greater x value
-                isLeftShop = getLocation().getX() > attachedShop.getLocation().getX();
-                break;
-            case SOUTH:
-                // left block has a smaller x value
-                isLeftShop = getLocation().getX() < attachedShop.getLocation().getX();
-                break;
-            default:
-                isLeftShop = false;
+            case WEST ->
+                    // left block has a smaller z value
+                    isLeftShop = getLocation().getZ() < attachedShop.getLocation().getZ();
+            case EAST ->
+                    // left block has a greater z value
+                    isLeftShop = getLocation().getZ() > attachedShop.getLocation().getZ();
+            case NORTH ->
+                    // left block has greater x value
+                    isLeftShop = getLocation().getX() > attachedShop.getLocation().getX();
+            case SOUTH ->
+                    // left block has a smaller x value
+                    isLeftShop = getLocation().getX() < attachedShop.getLocation().getX();
+            default -> isLeftShop = false;
         }
         if (isLeftShop != previousValue) {
             notifyDisplayItemChange();

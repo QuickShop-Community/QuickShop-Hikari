@@ -475,10 +475,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         try {
             // EconomyCore core = new Economy_Vault();
             switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
-                case UNKNOWN:
+                case UNKNOWN -> {
                     setupBootError(new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml."), true);
                     return false;
-                case VAULT:
+                }
+                case VAULT -> {
                     economy = new Economy_Vault(this);
                     Util.debugLog("Now using the Vault economy system.");
                     if (getConfig().getDouble("tax", 0.0d) > 0) {
@@ -515,18 +516,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                             Util.debugLog("Failed to fix account issue.");
                         }
                     }
-                    break;
-                case GEMS_ECONOMY:
+                }
+                case GEMS_ECONOMY -> {
                     economy = new Economy_GemsEconomy(this);
                     Util.debugLog("Now using the GemsEconomy economy system.");
-                    break;
-                case TNE:
+                }
+                case TNE -> {
                     economy = new Economy_TNE(this);
                     Util.debugLog("Now using the TNE economy system.");
-                    break;
-                default:
-                    Util.debugLog("No any economy provider selected.");
-                    break;
+                }
+                default -> Util.debugLog("No any economy provider selected.");
             }
             if (economy == null) {
                 return false;
@@ -1096,16 +1095,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     }
 
     private void loadItemMatcher() {
-        ItemMatcher defItemMatcher;
-        switch (getConfig().getInt("matcher.work-type")) {
-            case 1:
-                defItemMatcher = new BukkitItemMatcherImpl(this);
-                break;
-            case 0:
-            default:
-                defItemMatcher = new QuickShopItemMatcherImpl(this);
-                break;
-        }
+        ItemMatcher defItemMatcher = switch (getConfig().getInt("matcher.work-type")) {
+            case 1 -> new BukkitItemMatcherImpl(this);
+            case 0 -> new QuickShopItemMatcherImpl(this);
+            default -> throw new IllegalStateException("Unexpected value: " + getConfig().getInt("matcher.work-type"));
+        };
         this.itemMatcher = ServiceInjector.getItemMatcher(defItemMatcher);
     }
 

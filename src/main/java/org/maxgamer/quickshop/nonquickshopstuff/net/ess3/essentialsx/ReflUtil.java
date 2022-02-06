@@ -174,10 +174,9 @@ public final class ReflUtil {
             if (o == this) {
                 return true;
             }
-            if (!(o instanceof MethodParams)) {
+            if (!(o instanceof final MethodParams that)) {
                 return false;
             }
-            final MethodParams that = (MethodParams) o;
             if (!that.canEqual(this)) {
                 return false;
             }

@@ -151,11 +151,7 @@ public final class EnvironmentChecker {
                     default:
                         plugin.getLogger().warning("[UNDEFINED] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                 }
-                if (executeResult != null) {
-                    results.put(envCheckEntry, executeResult);
-                } else {
-                    results.put(envCheckEntry, new ResultContainer(CheckResult.SKIPPED, "Startup flag mark this check should be skipped."));
-                }
+                results.put(envCheckEntry, Objects.requireNonNullElseGet(executeResult, () -> new ResultContainer(CheckResult.SKIPPED, "Startup flag mark this check should be skipped.")));
                 if (result.ordinal() > gResult.ordinal()) { //set bad result if its worse than the latest one.
                     gResult = result;
                 }

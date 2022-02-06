@@ -199,7 +199,7 @@ public class Util {
      * @param inv  The inventory to search
      * @param item The ItemStack to search for
      * @return The number of items that match in this inventory.
-     * @Deprecated Deprecated for different order will result different result
+     * @deprecated Deprecated for different order will result different result
      */
     @Deprecated
     public static int countItems(@Nullable Inventory inv, @NotNull ItemStack item) {
@@ -275,7 +275,7 @@ public class Util {
      * @param item The item prototype. Material, durabiltiy and enchants must match for 'stackability'
      *             to occur.
      * @return The number of items that can be given to the inventory safely.
-     * @Deprecated Deprecated for different order will result different result
+     * @deprecated Deprecated for different order will result different result
      */
     @Deprecated
     public static int countSpace(@Nullable Inventory inv, @NotNull ItemStack item) {
@@ -410,18 +410,13 @@ public class Util {
      */
     @NotNull
     public static BlockFace getRightSide(@NotNull BlockFace blockFace) {
-        switch (blockFace) {
-            case EAST:
-                return BlockFace.SOUTH;
-            case NORTH:
-                return BlockFace.EAST;
-            case SOUTH:
-                return BlockFace.WEST;
-            case WEST:
-                return BlockFace.NORTH;
-            default:
-                return blockFace;
-        }
+        return switch (blockFace) {
+            case EAST -> BlockFace.SOUTH;
+            case NORTH -> BlockFace.EAST;
+            case SOUTH -> BlockFace.WEST;
+            case WEST -> BlockFace.NORTH;
+            default -> blockFace;
+        };
     }
 
     /**
@@ -1385,20 +1380,11 @@ public class Util {
         for (int i = 0; i < glob.length(); ++i) {
             final char c = glob.charAt(i);
             switch (c) {
-                case '*':
-                    out.append(".*");
-                    break;
-                case '?':
-                    out.append('.');
-                    break;
-                case '.':
-                    out.append("\\.");
-                    break;
-                case '\\':
-                    out.append("\\\\");
-                    break;
-                default:
-                    out.append(c);
+                case '*' -> out.append(".*");
+                case '?' -> out.append('.');
+                case '.' -> out.append("\\.");
+                case '\\' -> out.append("\\\\");
+                default -> out.append(c);
             }
         }
         out.append('$');

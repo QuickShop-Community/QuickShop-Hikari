@@ -42,10 +42,7 @@ import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class GriefPreventionIntegration extends AbstractQSIntegratedPlugin {
@@ -121,11 +118,7 @@ public class GriefPreventionIntegration extends AbstractQSIntegratedPlugin {
             return;
         }
         for (Claim claim : event.getClaims()) {
-            if (claim.parent != null) {
-                handleClaimTrustChanged(claim.parent, event);
-            } else {
-                handleClaimTrustChanged(claim, event);
-            }
+            handleClaimTrustChanged(Objects.requireNonNullElse(claim.parent, claim), event);
         }
     }
 
