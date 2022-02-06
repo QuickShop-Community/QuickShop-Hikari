@@ -24,17 +24,17 @@ import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.block.*;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.block.BlockRedstoneEvent;
+import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
@@ -48,7 +48,6 @@ import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
 import java.io.File;
 import java.lang.reflect.Field;
-import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 
@@ -290,61 +289,4 @@ public class ShopProtectionListener extends AbstractProtectionListener {
             MsgUtil.sendGlobalAlert("[DisplayGuard] Defend a item steal action at" + location);
         }
     }
-
-    // Protect Entity pickup shop
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onMobChangeBlock(EntityChangeBlockEvent event) {
-        if (!useEnhanceProtection) {
-            return;
-        }
-
-        final Shop shop = getShopNature(event.getBlock().getLocation(), true);
-
-        if (shop == null) {
-            return;
-        }
-
-        if (plugin.getConfig().getBoolean("protect.entity")) {
-            event.setCancelled(true);
-            return;
-        }
-        plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "EntityChanges", shop.saveToInfoStorage()));
-        shop.delete();
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onStructureGrow(StructureGrowEvent event) {
-        if (!useEnhanceProtection) {
-            return;
-        }
-
-        for (BlockState blockstate : event.getBlocks()) {
-            final Shop shop = getShopNature(blockstate.getLocation(), true);
-
-            if (shop == null) {
-                continue;
-            }
-
-            event.setCancelled(true);
-            return;
-            // plugin.getLogger().warning("[Exploit Alert] a StructureGrowing tried to break the shop of "
-            // + shop);
-            // Util.sendMessageToOps(ChatColor.RED + "[QuickShop][Exploit alert] A StructureGrowing tried
-            // to break the shop of " + shop);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onSponging(SpongeAbsorbEvent event) {
-        if (!useEnhanceProtection) {
-            return;
-        }
-        List<BlockState> blocks = event.getBlocks();
-        for (BlockState block : blocks) {
-            if (getShopNature(block.getLocation(), true) != null) {
-                event.setCancelled(true);
-            }
-        }
-    }
-
 }
