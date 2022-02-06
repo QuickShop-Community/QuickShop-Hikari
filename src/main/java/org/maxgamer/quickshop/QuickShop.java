@@ -83,6 +83,7 @@ import org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.Plugin
 import org.maxgamer.quickshop.nonquickshopstuff.net.ess3.essentialsx.PaperServerStateProvider;
 import org.maxgamer.quickshop.nonquickshopstuff.net.ess3.essentialsx.ReflServerStateProvider;
 import org.maxgamer.quickshop.nonquickshopstuff.net.ess3.essentialsx.ServerStateProvider;
+import org.maxgamer.quickshop.papi.QuickShopPAPI;
 import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
 import org.maxgamer.quickshop.util.Timer;
@@ -256,14 +257,14 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     @Nullable
     private NBTAPI nbtapi = null;
-
     private int loggingLocation = 0;
     @Getter
     private InteractionController interactionController;
-
     @Getter
     private SQLManager sqlManager;
     private ServerStateProvider serverStateProvider;
+    @Nullable
+    private QuickShopPAPI quickShopPAPI;
 
     public void disableNBTAPI() {
         nbtapi = null;
@@ -354,6 +355,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         if (getConfig().getBoolean("plugin.PlaceHolderAPI")) {
             this.placeHolderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
             if (this.placeHolderAPI != null) {
+                this.quickShopPAPI = new QuickShopPAPI();
+                this.quickShopPAPI.register();
                 getLogger().info("Successfully loaded PlaceHolderAPI support!");
             }
         }
@@ -659,47 +662,50 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
         if (sentryErrorReporter != null) {
+            getLogger().info("Shutting down error reporter...");
             sentryErrorReporter.unregister();
         }
-        getLogger().info("Calling for shutting down to integration modules...");
+        if (this.quickShopPAPI != null) {
+            getLogger().info("Unregistering PlaceHolderAPI hooks...");
+            this.quickShopPAPI.unregister();
+        }
         if (this.integrationHelper != null) {
+            getLogger().info("Calling for shutting down to integration modules...");
             this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
         }
-        getLogger().info("Unloading all loaded shops...");
         try {
             if (getShopManager() != null) {
+                getLogger().info("Unloading all loaded shops...");
                 getShopManager().getLoadedShops().forEach(Shop::onUnload);
             }
         } catch (Exception ignored) {
         }
-        getLogger().info("Unregistering adapters...");
         if (worldEditAdapter != null) {
+            getLogger().info("Unregistering adapters...");
             worldEditAdapter.unregister();
         }
-
-        getLogger().info("Unregistering integrations...");
         if (integrationHelper != null) {
+            getLogger().info("Unregistering integrations...");
             integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
             integrationHelper.unregisterAll();
         }
         getLogger().info("Unregistering compatibility hooks...");
         compatibilityTool.unregisterAll();
-
-        Util.debugLog("Cleaning up shop manager...");
         /* Remove all display items, and any dupes we can find */
         if (shopManager != null) {
+            Util.debugLog("Cleaning up shop manager...");
             shopManager.clear();
         }
-        getLogger().info("Cleaning up display manager...");
         if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+            getLogger().info("Cleaning up display manager...");
             VirtualDisplayItem.VirtualDisplayItemManager.unload();
         }
-        getLogger().info("Shutting down database connections...");
         if (this.getSqlManager() != null) {
+            getLogger().info("Shutting down database connections...");
             EasySQL.shutdownManager(this.getSqlManager());
         }
-        getLogger().info("Stopping log watcher...");
         if (logWatcher != null) {
+            getLogger().info("Stopping log watcher...");
             logWatcher.close();
         }
         getLogger().info("Shutting down scheduled timers...");
@@ -711,18 +717,18 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
             taskIterator.remove();
         }
-        getLogger().info("Shutting down event calendar watcher...");
         if (calendarWatcher != null) {
+            getLogger().info("Shutting down event calendar watcher...");
             calendarWatcher.stop();
         }
-        getLogger().info("Shutting down tps monitor...");
         try {
+            getLogger().info("Shutting down tps monitor...");
             tpsWatcher.cancel();
         } catch (IllegalStateException ignored) {
         }
-        getLogger().info("Shutting down update watcher...");
         /* Unload UpdateWatcher */
         if (this.updateWatcher != null) {
+            getLogger().info("Shutting down update watcher...");
             this.updateWatcher.uninit();
         }
         getLogger().info("Cleanup scheduled tasks...");
