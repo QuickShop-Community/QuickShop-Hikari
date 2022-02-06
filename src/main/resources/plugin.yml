@@ -69,7 +69,7 @@ softdepend:
   - FabledSkyblock
   - NBTAPI
 
-api-version: 1.15
+api-version: 1.16
 
 commands:
   qs:
