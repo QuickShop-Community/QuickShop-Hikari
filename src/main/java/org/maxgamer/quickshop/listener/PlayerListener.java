@@ -47,6 +47,7 @@ import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.shop.Info;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopAction;
+import org.maxgamer.quickshop.shop.ContainerShop;
 import org.maxgamer.quickshop.shop.InteractionController;
 import org.maxgamer.quickshop.shop.SimpleInfo;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -200,7 +201,8 @@ public class PlayerListener extends AbstractQSListener {
         Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
         actions.put(player.getUniqueId(), info);
         final double ownerBalance = eco.getBalance(shop.getOwner(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
-        int items = getPlayerCanSell(shop, ownerBalance, price, playerInventory);
+        //int items = getPlayerCanSell(shop, ownerBalance, price, playerInventory);
+        int items = sellingShopAllCalc(eco, shop, player);
         if (!direct) {
             if (shop.isStackingShop()) {
                 plugin.text().of(player, "how-many-sell-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(items), tradeAllWord).send();
@@ -219,6 +221,107 @@ public class PlayerListener extends AbstractQSListener {
             }
         }
         return true;
+    }
+
+    private int sellingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
+        int amount;
+        int shopHaveItems = shop.getRemainingStock();
+        int invHaveSpaces = Util.countSpace(p.getInventory(), shop);
+        if (shop.isAlwaysCountingContainer() || !shop.isUnlimited()) {
+            amount = Math.min(shopHaveItems, invHaveSpaces);
+        } else {
+            // should check not having items but having empty slots, cause player is trying to buy
+            // items from the shop.
+            amount = Util.countSpace(p.getInventory(), shop);
+        }
+        // typed 'all', check if player has enough money than price * amount
+        double price = shop.getPrice();
+        double balance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(),
+                shop.getCurrency());
+        amount = Math.min(amount, (int) Math.floor(balance / price));
+        if (amount < 1) { // typed 'all' but the auto set amount is 0
+            // when typed 'all' but player can't buy any items
+            if ((shop.isAlwaysCountingContainer() || !shop.isUnlimited()) && shopHaveItems < 1) {
+                // but also the shop's stock is 0
+                plugin.text().of(p, "shop-stock-too-low",
+                        Integer.toString(shop.getRemainingStock()),
+                        MsgUtil.getTranslateText(shop.getItem())).send();
+                return 0;
+            } else {
+                // when if player's inventory is full
+                if (invHaveSpaces <= 0) {
+                    plugin.text().of(p, "not-enough-space",
+                            String.valueOf(invHaveSpaces)).send();
+                    return 0;
+                }
+                plugin.text().of(p, "you-cant-afford-to-buy",
+                        Objects.requireNonNull(
+                                plugin.getShopManager().format(price, shop.getLocation().getWorld(),
+                                        shop.getCurrency())),
+                        Objects.requireNonNull(
+                                plugin.getShopManager().format(balance, shop.getLocation().getWorld(),
+                                        shop.getCurrency()))).send();
+            }
+            return 0;
+        }
+        return amount;
+    }
+
+    private int buyingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
+        int amount;
+        int shopHaveSpaces =
+                Util.countSpace(((ContainerShop) shop).getInventory(), shop);
+        int invHaveItems = Util.countItems(p.getInventory(), shop);
+        // Check if shop owner has enough money
+        double ownerBalance = eco
+                .getBalance(shop.getOwner(), shop.getLocation().getWorld(),
+                        shop.getCurrency());
+        int ownerCanAfford;
+        if (shop.getPrice() != 0) {
+            ownerCanAfford = (int) (ownerBalance / shop.getPrice());
+        } else {
+            ownerCanAfford = Integer.MAX_VALUE;
+        }
+        if (shop.isAlwaysCountingContainer() || !shop.isUnlimited()) {
+            amount = Math.min(shopHaveSpaces, invHaveItems);
+            amount = Math.min(amount, ownerCanAfford);
+        } else {
+            amount = Util.countItems(p.getInventory(), shop);
+            // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
+            // true,
+            // the unlimited shop owner should have enough money.
+            if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
+                amount = Math.min(amount, ownerCanAfford);
+            }
+        }
+        if (amount < 1) { // typed 'all' but the auto set amount is 0
+            if (shopHaveSpaces == 0) {
+                // when typed 'all' but the shop doesn't have any empty space
+                plugin.text().of(p, "shop-has-no-space", Integer.toString(shopHaveSpaces),
+                        MsgUtil.getTranslateText(shop.getItem())).send();
+                return 0;
+            }
+            if (ownerCanAfford == 0
+                    && (!shop.isUnlimited()
+                    || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners"))) {
+                // when typed 'all' but the shop owner doesn't have enough money to buy at least 1
+                // item (and shop isn't unlimited or pay-unlimited is true)
+                plugin.text().of(p, "the-owner-cant-afford-to-buy-from-you",
+                        Objects.requireNonNull(
+                                plugin.getShopManager().format(shop.getPrice(), shop.getLocation().getWorld(),
+                                        shop.getCurrency())),
+                        Objects.requireNonNull(
+                                plugin.getShopManager().format(ownerBalance, shop.getLocation().getWorld(),
+                                        shop.getCurrency()))).send();
+                return 0;
+            }
+            // when typed 'all' but player doesn't have any items to sell
+            plugin.text().of(p, "you-dont-have-that-many-items",
+                    Integer.toString(amount),
+                    MsgUtil.getTranslateText(shop.getItem())).send();
+            return 0;
+        }
+        return amount;
     }
 
     public boolean buyShop(@NotNull Player player, @Nullable Shop shop, boolean direct, boolean all) {
@@ -244,7 +347,8 @@ public class PlayerListener extends AbstractQSListener {
         Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BUY, null, null, shop, false);
         actions.put(player.getUniqueId(), info);
         final double traderBalance = eco.getBalance(player.getUniqueId(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
-        int itemAmount = getPlayerCanBuy(shop, traderBalance, price, playerInventory);
+        //int itemAmount = getPlayerCanBuy(shop, traderBalance, price, playerInventory);
+        int itemAmount = buyingShopAllCalc(eco, shop, player);
         if (!direct) {
             if (shop.isStackingShop()) {
                 plugin.text().of(player, "how-many-buy-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(itemAmount), tradeAllWord).send();
