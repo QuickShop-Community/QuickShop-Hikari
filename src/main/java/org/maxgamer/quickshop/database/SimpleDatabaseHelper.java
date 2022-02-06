@@ -149,52 +149,53 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
      */
     private void checkColumns() {
         plugin.getLogger().info("Checking and updating database columns, it may take a while...");
-        manager.alterTable(plugin.getDbPrefix() + "shops")
-                .addColumn("currency", "TEXT NULL")
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create extra column! SQL:" + sqlAction.getSQLContent(), exception)
-                ));
-        manager.alterTable(plugin.getDbPrefix() + "shops")
-                .addColumn("extra", "LONGTEXT NULL")
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create currency column! SQL:" + sqlAction.getSQLContent(), exception)
-                ));
-        manager.alterTable(plugin.getDbPrefix() + "shops")
-                .addColumn("disableDisplay", "int NULL DEFAULT -1")
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create currency column! SQL:" + sqlAction.getSQLContent(), exception)
-                ));
-        manager.alterTable(plugin.getDbPrefix() + "shops")
-                .addColumn("taxAccount", "VARCHAR(255) NULL")
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create currency column! SQL:" + sqlAction.getSQLContent(), exception)
-                ));
-
-        // V3.4.2
-        manager.alterTable(plugin.getDbPrefix() + "shops")
-                .modifyColumn("price", "double(32) NOT NULL AFTER owner")
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to update price column! SQL:" + sqlAction.getSQLContent(), exception)
-                ));
-        // V3.4.3
-        manager.alterTable(plugin.getDbPrefix() + "message")
-                .modifyColumn("time", "BIGINT(32) NOT NULL AFTER message")
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to update time column! SQL:" + sqlAction.getSQLContent(), exception)
-                ));
-        //Extra column
-        // Alter table, migrate from boolean to int to storage more types
-        manager.alterTable(plugin.getDbPrefix() + "shops")
-                .modifyColumn("type", "INTEGER(8) NOT NULL")
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to update type column! SQL:" + sqlAction.getSQLContent(), exception)
-                ));
+        // We have moved to H2 and those things already doesn't need anymore
+//        manager.alterTable(plugin.getDbPrefix() + "shops")
+//                .addColumn("currency", "TEXT NULL")
+//                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create extra column! SQL:" + sqlAction.getSQLContent(), exception)
+//                ));
+//        manager.alterTable(plugin.getDbPrefix() + "shops")
+//                .addColumn("extra", "LONGTEXT NULL")
+//                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create currency column! SQL:" + sqlAction.getSQLContent(), exception)
+//                ));
+//        manager.alterTable(plugin.getDbPrefix() + "shops")
+//                .addColumn("disableDisplay", "int NULL DEFAULT -1")
+//                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create currency column! SQL:" + sqlAction.getSQLContent(), exception)
+//                ));
+//        manager.alterTable(plugin.getDbPrefix() + "shops")
+//                .addColumn("taxAccount", "VARCHAR(255) NULL")
+//                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create currency column! SQL:" + sqlAction.getSQLContent(), exception)
+//                ));
 //
-//        if (manager.getDatabase() instanceof MySQLCore) {
-//            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
-//                    .getDbPrefix() + "messages MODIFY COLUMN message text CHARACTER SET utf8mb4 NOT NULL AFTER owner", checkTask));
-//            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
-//                    .getDbPrefix() + "shops MODIFY COLUMN itemConfig text CHARACTER SET utf8mb4 NOT NULL AFTER price", checkTask));
-//            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
-//                    .getDbPrefix() + "shops TO CHARACTER SET uft8mb4 COLLATE utf8mb4_general_ci", checkTask));
-//            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
-//                    .getDbPrefix() + "messages TO CHARACTER SET uft8mb4 COLLATE utf8mb4_general_ci", checkTask));
-//            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
-//                    .getDbPrefix() + "history TO CHARACTER SET uft8mb4 COLLATE utf8mb4_general_ci", checkTask));
-//        }
+//        // V3.4.2
+//        manager.alterTable(plugin.getDbPrefix() + "shops")
+//                .modifyColumn("price", "double(32) NOT NULL AFTER owner")
+//                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to update price column! SQL:" + sqlAction.getSQLContent(), exception)
+//                ));
+//        // V3.4.3
+//        manager.alterTable(plugin.getDbPrefix() + "message")
+//                .modifyColumn("time", "BIGINT(32) NOT NULL AFTER message")
+//                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to update time column! SQL:" + sqlAction.getSQLContent(), exception)
+//                ));
+//        //Extra column
+//        // Alter table, migrate from boolean to int to storage more types
+//        manager.alterTable(plugin.getDbPrefix() + "shops")
+//                .modifyColumn("type", "INTEGER(8) NOT NULL")
+//                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to update type column! SQL:" + sqlAction.getSQLContent(), exception)
+//                ));
+////
+////        if (manager.getDatabase() instanceof MySQLCore) {
+////            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
+////                    .getDbPrefix() + "messages MODIFY COLUMN message text CHARACTER SET utf8mb4 NOT NULL AFTER owner", checkTask));
+////            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
+////                    .getDbPrefix() + "shops MODIFY COLUMN itemConfig text CHARACTER SET utf8mb4 NOT NULL AFTER price", checkTask));
+////            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
+////                    .getDbPrefix() + "shops TO CHARACTER SET uft8mb4 COLLATE utf8mb4_general_ci", checkTask));
+////            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
+////                    .getDbPrefix() + "messages TO CHARACTER SET uft8mb4 COLLATE utf8mb4_general_ci", checkTask));
+////            manager.runInstantTask(new DatabaseTask("ALTER TABLE " + plugin
+////                    .getDbPrefix() + "history TO CHARACTER SET uft8mb4 COLLATE utf8mb4_general_ci", checkTask));
+////        }
         plugin.getLogger().info("Finished!");
     }
 
