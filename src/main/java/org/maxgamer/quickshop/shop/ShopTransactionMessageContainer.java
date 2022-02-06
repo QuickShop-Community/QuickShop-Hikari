@@ -64,33 +64,6 @@ public class ShopTransactionMessageContainer {
         return new ShopTransactionMessageContainer(new ShopTransactionMessage.V3(message, hoverItem, hoverText));
     }
 
-    private static class Deserializer implements JsonDeserializer<ShopTransactionMessageContainer> {
-
-        @Override
-        public ShopTransactionMessageContainer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            JsonObject jsonObject = json.getAsJsonObject();
-            //Modern format
-            if (jsonObject.has("shopTransactionMessage")) {
-                JsonObject message = jsonObject.getAsJsonObject("shopTransactionMessage");
-                if (jsonObject.has("version")) {
-                    int version = jsonObject.get("version").getAsInt();
-                    return switch (version) {
-                        case 1 -> new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V1.class));
-                        case 2 -> new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V2.class));
-                        case 3 -> new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V3.class));
-                        default -> throw new JsonParseException("Unknown ShopTransactionMessage version +" + version + "+!");
-                    };
-                } else {
-                    //Some users may use snapshot, this time is V3 message
-                    return new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V3.class));
-                }
-            } else {
-                //Plain V2 message
-                return new ShopTransactionMessageContainer(context.deserialize(json, ShopTransactionMessage.V2.class));
-            }
-        }
-    }
-
     public @NotNull String getMessage(@Nullable String locale) {
         return switch (shopTransactionMessage.getVersion()) {
             case 1 -> ((ShopTransactionMessage.V1) shopTransactionMessage).getMessage();
@@ -130,5 +103,32 @@ public class ShopTransactionMessageContainer {
     @NotNull
     public String toJson() {
         return JsonUtil.getGson().toJson(this);
+    }
+
+    private static class Deserializer implements JsonDeserializer<ShopTransactionMessageContainer> {
+
+        @Override
+        public ShopTransactionMessageContainer deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            JsonObject jsonObject = json.getAsJsonObject();
+            //Modern format
+            if (jsonObject.has("shopTransactionMessage")) {
+                JsonObject message = jsonObject.getAsJsonObject("shopTransactionMessage");
+                if (jsonObject.has("version")) {
+                    int version = jsonObject.get("version").getAsInt();
+                    return switch (version) {
+                        case 1 -> new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V1.class));
+                        case 2 -> new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V2.class));
+                        case 3 -> new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V3.class));
+                        default -> throw new JsonParseException("Unknown ShopTransactionMessage version +" + version + "+!");
+                    };
+                } else {
+                    //Some users may use snapshot, this time is V3 message
+                    return new ShopTransactionMessageContainer(context.deserialize(message, ShopTransactionMessage.V3.class));
+                }
+            } else {
+                //Plain V2 message
+                return new ShopTransactionMessageContainer(context.deserialize(json, ShopTransactionMessage.V2.class));
+            }
+        }
     }
 }

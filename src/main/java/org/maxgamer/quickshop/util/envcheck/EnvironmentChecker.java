@@ -162,6 +162,7 @@ public final class EnvironmentChecker {
         }
         return new ResultReport(gResult, results);
     }
+
     public boolean isOutdatedJvm() {
         String jvmVersion = System.getProperty("java.version"); //Use java version not jvm version.
         String[] splitVersion = jvmVersion.split("\\.");
@@ -189,13 +190,13 @@ public final class EnvironmentChecker {
                  InputStream stream2 = loader.getResourceAsStream("META-INF/SELFSIGN.DSA");
                  InputStream stream3 = loader.getResourceAsStream("META-INF/SELFSIGN.SF")) {
                 if (stream1 == null || stream2 == null || stream3 == null) {
-                    if(stream1 == null){
+                    if (stream1 == null) {
                         this.reportMaker.signatureFileMissing("META-INF/MANIFEST.MF");
                     }
-                    if(stream2 == null){
+                    if (stream2 == null) {
                         this.reportMaker.signatureFileMissing("META-INF/SELFSIGN.DSA");
                     }
-                    if(stream3 == null){
+                    if (stream3 == null) {
                         this.reportMaker.signatureFileMissing("META-INF/SELFSIGN.SF");
                     }
                     plugin.getLogger().warning("The signature could not be found! The QuickShop jar has been modified or you're running a custom build.");
@@ -239,11 +240,11 @@ public final class EnvironmentChecker {
     @EnvCheckEntry(name = "Plugin Manifest Check", priority = 1, stage = {EnvCheckEntry.Stage.ON_LOAD, EnvCheckEntry.Stage.ON_ENABLE})
     public ResultContainer manifestCheck() {
         String mainClass = plugin.getDescription().getMain();
-        if(!mainClass.equals("org.maxgamer.quickshop.QuickShop")){
+        if (!mainClass.equals("org.maxgamer.quickshop.QuickShop")) {
             this.reportMaker.manifestModified(plugin.getDescription());
             plugin.getLogger().warning("ALERT: Detected main class has been modified!");
             plugin.getLogger().warning("Should be: org.maxgamer.quickshop.QuickShop");
-            plugin.getLogger().warning("Actually: "+mainClass);
+            plugin.getLogger().warning("Actually: " + mainClass);
             return new ResultContainer(CheckResult.KILL_SERVER, "Failed to validate main class! Security may be compromised!");
 
         }
@@ -259,18 +260,18 @@ public final class EnvironmentChecker {
             ZipFile zipFile = new ZipFile(jarPath);
             Enumeration<? extends ZipEntry> zipEntryEnumeration = zipFile.entries();
             boolean found = false;
-            while(zipEntryEnumeration.hasMoreElements()){
+            while (zipEntryEnumeration.hasMoreElements()) {
                 ZipEntry entry = zipEntryEnumeration.nextElement();
-                if(entry.getName().startsWith("javassist") || entry.getName().startsWith(".")){
+                if (entry.getName().startsWith("javassist") || entry.getName().startsWith(".")) {
                     found = true;
                     this.reportMaker.potentialInfected(entry);
                     plugin.getLogger().log(Level.WARNING, "Potential Infection Detected:");
-                    plugin.getLogger().log(Level.WARNING, "File: "+entry.getName());
-                    plugin.getLogger().log(Level.WARNING, "CRC: "+entry.getCrc());
-                    plugin.getLogger().log(Level.WARNING, "Time: "+entry.getTime());
+                    plugin.getLogger().log(Level.WARNING, "File: " + entry.getName());
+                    plugin.getLogger().log(Level.WARNING, "CRC: " + entry.getCrc());
+                    plugin.getLogger().log(Level.WARNING, "Time: " + entry.getTime());
                 }
             }
-            if(found){
+            if (found) {
                 plugin.getLogger().log(Level.WARNING, "ALERT: QuickShop detected Potential Infection, this jar may already infected by malware, stop the server and create full server backup immediately, run virus scan and contact the QuickShop support if you need!");
                 return new ResultContainer(CheckResult.KILL_SERVER, "Potential Infection detected, Killing server process...");
             }

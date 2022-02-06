@@ -135,6 +135,7 @@ public interface EconomyCore {
 
     /**
      * Gets the economy processor last error message
+     *
      * @return Error message or null if never happens
      */
     @Nullable

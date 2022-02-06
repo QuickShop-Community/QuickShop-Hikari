@@ -455,12 +455,6 @@ public class PlayerListener extends AbstractQSListener {
         return new AbstractMap.SimpleImmutableEntry<>(shop, ClickType.SHOPBLOCK);
     }
 
-    enum ClickType {
-        SHOPBLOCK,
-        SIGN,
-        AIR
-    }
-
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onAdventureClick(PlayerAnimationEvent event) {
         if (event.getPlayer().getGameMode() != GameMode.ADVENTURE) {
@@ -655,5 +649,11 @@ public class PlayerListener extends AbstractQSListener {
     @Override
     public ReloadResult reloadModule() {
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
+
+    enum ClickType {
+        SHOPBLOCK,
+        SIGN,
+        AIR
     }
 }

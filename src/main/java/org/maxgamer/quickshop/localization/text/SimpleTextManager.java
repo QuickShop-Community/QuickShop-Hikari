@@ -67,7 +67,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
     private final Distribution distribution;
     // <File <Locale, Section>>
     private final LanguageFilesManager languageFilesManager = new LanguageFilesManager();
-
+    private final List<String> availableLanguages = new CopyOnWriteArrayList<>();
+    private final Cache<String, String> languagesCache =
+            CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
 
     public SimpleTextManager(QuickShop plugin) {
         this.plugin = plugin;
@@ -94,8 +96,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
             Files.deleteIfExists(fileFolder.toPath()); //TODO Workaround for v5 beta stage a bug, delete it in future
         return moduleFolder;
     }
-
-    private final List<String> availableLanguages = new CopyOnWriteArrayList<>();
 
     /**
      * Loading bundled files from Jar file
@@ -131,9 +131,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
         }
         return bundledLang;
     }
-
-    private final Cache<String, String> languagesCache =
-            CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
 
     /**
      * Reset everything
@@ -476,6 +473,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             }
             return texts;
         }
+
         /**
          * Getting the text that use specify locale
          *

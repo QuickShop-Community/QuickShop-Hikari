@@ -128,7 +128,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     /* Public QuickShop API */
     private final SimpleCompatibilityManager compatibilityTool = new SimpleCompatibilityManager(this);
     private final Map<String, Integer> limits = new HashMap<>(15);
-    private GameVersion gameVersion;
     /**
      * The shop limites.
      */
@@ -142,6 +141,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private final TpsWatcher tpsWatcher = new TpsWatcher();
     boolean onLoadCalled = false;
+    private GameVersion gameVersion;
     private SimpleIntegrationManager integrationHelper;
     private SimpleDatabaseHelper databaseHelper;
     private SimpleCommandManager commandManager;
@@ -265,10 +265,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private ServerStateProvider serverStateProvider;
     @Nullable
     private QuickShopPAPI quickShopPAPI;
-
-    public void disableNBTAPI() {
-        nbtapi = null;
-    }
+    @Deprecated
+    private Yaml configurationForCompatibility = null;
 
     /**
      * Use for mock bukkit
@@ -317,12 +315,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         return "Apollo";
     }
 
+    public void disableNBTAPI() {
+        nbtapi = null;
+    }
+
     public IntegrationManager getIntegrationHelper() {
         return integrationHelper;
     }
-
-    @Deprecated
-    private Yaml configurationForCompatibility = null;
 
     /**
      * Get the Player's Shop limit.

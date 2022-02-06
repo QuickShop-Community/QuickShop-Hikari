@@ -50,7 +50,7 @@ public class InteractionController implements Reloadable {
                     plugin.getLogger().log(Level.WARNING, "Define a action for right shopblock clicking may prevent player from opening the shop container!");
                 }
             } catch (IllegalArgumentException e) {
-                plugin.getLogger().log(Level.WARNING,"Failed to load interaction behavior for " + value.name() + "! Using NONE behavior!");
+                plugin.getLogger().log(Level.WARNING, "Failed to load interaction behavior for " + value.name() + "! Using NONE behavior!");
                 behaviorMap.put(value, InteractionBehavior.NONE);
             }
         }
@@ -58,6 +58,7 @@ public class InteractionController implements Reloadable {
 
     /**
      * Getting the behavior of the interaction
+     *
      * @param interaction the interaction
      * @return the behavior
      */

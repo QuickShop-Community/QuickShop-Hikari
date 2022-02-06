@@ -60,6 +60,7 @@ import java.util.logging.Level;
 public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements GameLanguage {
     private final static Lock LOCK = new ReentrantLock();
     private static final Condition DOWNLOAD_CONDITION = LOCK.newCondition();
+    private static final boolean isPotionSupportMinecraftKey = Util.isMethodAvailable("org.bukkit.potion.PotionEffectType", "getKey");
     private final QuickShop plugin;
     private final String languageCode;
     @Nullable
@@ -162,7 +163,6 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         return jsonElement.getAsString();
     }
 
-    private static final boolean isPotionSupportMinecraftKey = Util.isMethodAvailable("org.bukkit.potion.PotionEffectType", "getKey");
     @Override
     public @NotNull String getPotion(@NotNull PotionEffectType potionEffectType) {
         if (lang == null) {

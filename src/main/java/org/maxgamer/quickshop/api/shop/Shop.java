@@ -225,14 +225,14 @@ public interface Shop {
     @NotNull
     ItemStack getItem();
 
-    int getShopStackingAmount();
-
     /**
      * Set shop item's ItemStack
      *
      * @param item ItemStack to set
      */
     void setItem(@NotNull ItemStack item);
+
+    int getShopStackingAmount();
 
     /**
      * Refresh shop sign and display item

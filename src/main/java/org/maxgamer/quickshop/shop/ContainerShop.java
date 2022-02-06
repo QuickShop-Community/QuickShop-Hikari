@@ -903,17 +903,6 @@ public class ContainerShop implements Shop {
         return item;
     }
 
-    /**
-     * Getting the item stacking amount of the shop.
-     * @return The item stacking amount of the shop.
-     */
-    @Override
-    public int getShopStackingAmount(){
-        if(isStackingShop())
-            return item.getAmount();
-        return 1;
-    }
-
     @Override
     public void setItem(@NotNull ItemStack item) {
         Util.ensureThread(false);
@@ -926,6 +915,18 @@ public class ContainerShop implements Shop {
         notifyDisplayItemChange();
         update();
         refresh();
+    }
+
+    /**
+     * Getting the item stacking amount of the shop.
+     *
+     * @return The item stacking amount of the shop.
+     */
+    @Override
+    public int getShopStackingAmount() {
+        if (isStackingShop())
+            return item.getAmount();
+        return 1;
     }
 
     @Override
@@ -1327,10 +1328,10 @@ public class ContainerShop implements Shop {
                     && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
                 IOpenInv openInv = ((IOpenInv) plugin.getOpenInvPlugin());
                 inv = openInv.getSpecialEnderChest(
-                        Objects.requireNonNull(
-                                openInv.loadPlayer(
-                                        plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
-                        plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
+                                Objects.requireNonNull(
+                                        openInv.loadPlayer(
+                                                plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
+                                plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
                         .getBukkitInventory();
             }
         } catch (Exception e) {

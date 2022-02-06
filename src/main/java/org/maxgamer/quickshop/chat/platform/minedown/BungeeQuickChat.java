@@ -57,23 +57,6 @@ public class BungeeQuickChat implements QuickChat {
         return TextComponent.fromLegacyText(text, net.md_5.bungee.api.ChatColor.RESET);
     }
 
-    @Override
-    public void send(@NotNull CommandSender receiver, @Nullable QuickComponent component) {
-        if (component == null) {
-            return;
-        }
-        if (component.get() instanceof BaseComponent[]) {
-            receiver.spigot().sendMessage((BaseComponent[]) component.get());
-            return;
-        }
-        if (component.get() instanceof BaseComponent) {
-            receiver.spigot().sendMessage((BaseComponent) component.get());
-            return;
-        }
-        Util.debugLog("Illegal component " + component.get().getClass().getName() + " sending to " + this.getClass().getName() + " processor, trying force sending.");
-
-    }
-
     public static String toLegacyText(BaseComponent[] components) {
         StringBuilder builder = new StringBuilder();
         BaseComponent lastComponent = null;
@@ -97,6 +80,23 @@ public class BungeeQuickChat implements QuickChat {
             lastComponent = component;
         }
         return builder.toString();
+    }
+
+    @Override
+    public void send(@NotNull CommandSender receiver, @Nullable QuickComponent component) {
+        if (component == null) {
+            return;
+        }
+        if (component.get() instanceof BaseComponent[]) {
+            receiver.spigot().sendMessage((BaseComponent[]) component.get());
+            return;
+        }
+        if (component.get() instanceof BaseComponent) {
+            receiver.spigot().sendMessage((BaseComponent) component.get());
+            return;
+        }
+        Util.debugLog("Illegal component " + component.get().getClass().getName() + " sending to " + this.getClass().getName() + " processor, trying force sending.");
+
     }
 
     @Override
@@ -214,6 +214,47 @@ public class BungeeQuickChat implements QuickChat {
         }
     }
 
+    @Override
+    public @NotNull QuickComponent getItemTextComponent(@NotNull Player player, @NotNull ItemStack itemStack, @NotNull String normalText) {
+        TextComponent errorComponent = new TextComponent(plugin.text().of(player, "menu.item-holochat-error").forLocale());
+
+        String json;
+        try {
+            json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
+        } catch (Exception throwable) {
+            plugin.getLogger().log(Level.SEVERE, "Failed to saving item to json for holochat", throwable);
+            return new QuickComponentImpl(errorComponent);
+        }
+        if (json == null) {
+            return new QuickComponentImpl(errorComponent);
+        }
+
+        TextComponent component = new TextComponent(normalText + " " + plugin.text().of(player, "menu.preview").forLocale());
+        ComponentBuilder cBuilder = new ComponentBuilder(json);
+        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
+        return new QuickComponentImpl(component);
+
+    }
+
+    @Override
+    public void sendExecutableChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command) {
+        TextComponent component =
+                new TextComponent(ChatColor.DARK_PURPLE + plugin.text().of(receiver, "tableformat.left_begin").forLocale() + message);
+        component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+        component.setHoverEvent(
+                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create())); //FIXME: Update this when drop 1.15 supports
+        receiver.spigot().sendMessage(component);
+    }
+
+    @Override
+    public void sendSuggestedChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command) {
+        TextComponent component =
+                new TextComponent(ChatColor.DARK_PURPLE + plugin.text().of(receiver, "tableformat.left_begin").forLocale() + message);
+        component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
+        component.setHoverEvent(
+                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create())); //FIXME: Update this when drop 1.15 supports
+        receiver.spigot().sendMessage(component);
+    }
 
     public static class BungeeComponentBuilder {
         private final ComponentBuilder builder;
@@ -313,47 +354,5 @@ public class BungeeQuickChat implements QuickChat {
         public ComponentBuilder color(net.md_5.bungee.api.ChatColor color) {
             return builder.color(color);
         }
-    }
-
-    @Override
-    public @NotNull QuickComponent getItemTextComponent(@NotNull Player player, @NotNull ItemStack itemStack, @NotNull String normalText) {
-        TextComponent errorComponent = new TextComponent(plugin.text().of(player, "menu.item-holochat-error").forLocale());
-
-        String json;
-        try {
-            json = ReflectFactory.convertBukkitItemStackToJson(itemStack);
-        } catch (Exception throwable) {
-            plugin.getLogger().log(Level.SEVERE, "Failed to saving item to json for holochat", throwable);
-            return new QuickComponentImpl(errorComponent);
-        }
-        if (json == null) {
-            return new QuickComponentImpl(errorComponent);
-        }
-
-        TextComponent component = new TextComponent(normalText + " " + plugin.text().of(player, "menu.preview").forLocale());
-        ComponentBuilder cBuilder = new ComponentBuilder(json);
-        component.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, cBuilder.create()));
-        return new QuickComponentImpl(component);
-
-    }
-
-    @Override
-    public void sendExecutableChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command) {
-        TextComponent component =
-                new TextComponent(ChatColor.DARK_PURPLE + plugin.text().of(receiver, "tableformat.left_begin").forLocale() + message);
-        component.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
-        component.setHoverEvent(
-                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create())); //FIXME: Update this when drop 1.15 supports
-        receiver.spigot().sendMessage(component);
-    }
-
-    @Override
-    public void sendSuggestedChat(@NotNull CommandSender receiver, @NotNull String message, @NotNull String hoverText, @NotNull String command) {
-        TextComponent component =
-                new TextComponent(ChatColor.DARK_PURPLE + plugin.text().of(receiver, "tableformat.left_begin").forLocale() + message);
-        component.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
-        component.setHoverEvent(
-                new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create())); //FIXME: Update this when drop 1.15 supports
-        receiver.spigot().sendMessage(component);
     }
 }

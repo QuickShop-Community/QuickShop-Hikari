@@ -34,6 +34,7 @@ import java.util.Base64;
 public class TextSplitter {
     private final static String HEADER = "!-!-!=-=-=-=-=-=";
     private final static String FOOTER = "=-=-=-=-=-=!-!-!";
+
     @NotNull
     public static String bakeComponent(BaseComponent[] components) {
         return HEADER +
@@ -45,7 +46,7 @@ public class TextSplitter {
     @Nullable
     public static SpilledString deBakeItem(String src) {
         if (!src.contains(HEADER)) {
-           // Util.debugLog(src + " seems not a baked message");
+            // Util.debugLog(src + " seems not a baked message");
             return null;
         }
         String base64 = StringUtils.substringBetween(src, HEADER, FOOTER);

@@ -35,6 +35,7 @@ import java.nio.charset.StandardCharsets;
  */
 @Data
 public class BuildInfo {
+    private static final String UNKNOWN = "Unknown";
     private final int buildId;
     private final String buildTag;
     private final String buildUrl;
@@ -44,7 +45,6 @@ public class BuildInfo {
     private final String pomGroupId;
     private final String pomArtifactId;
     private final String jobName;
-    private static final String UNKNOWN = "Unknown";
 
     public BuildInfo(@Nullable InputStream inputStream) {
         if (inputStream == null) {

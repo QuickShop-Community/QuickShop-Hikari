@@ -58,7 +58,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
 
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "Starting async thread, please wait...");
-         //   Util.backupDatabase(); // Already warn the user, don't care about backup result.
+            //   Util.backupDatabase(); // Already warn the user, don't care about backup result.
             for (Shop shop : plugin.getShopManager().getAllShops()) {
                 MsgUtil.sendDirectMessage(sender,
                         ChatColor.GRAY

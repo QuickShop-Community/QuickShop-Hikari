@@ -7,32 +7,37 @@ import java.util.zip.ZipEntry;
 
 public class SecurityReport {
     private final StringBuffer buffer = new StringBuffer();
-    public void signatureFileMissing(String name){
+
+    public void signatureFileMissing(String name) {
         buffer.append("META-INF signature missing: ")
                 .append("name=").append(name).append("\n");
     }
-    public void signatureVerifyFail(ZipEntry zipEntry){
+
+    public void signatureVerifyFail(ZipEntry zipEntry) {
         buffer.append("Signature Fail: ")
                 .append("name=").append(zipEntry.getName()).append(", ")
                 .append("crc=").append(zipEntry.getCrc()).append(", ")
                 .append("time=").append(zipEntry.getTime()).append(", ")
                 .append("method=").append(zipEntry.getMethod()).append("\n");
     }
-    public void potentialInfected(ZipEntry zipEntry){
+
+    public void potentialInfected(ZipEntry zipEntry) {
         buffer.append("Potential Infected: ")
                 .append("name=").append(zipEntry.getName()).append(", ")
                 .append("crc=").append(zipEntry.getCrc()).append(", ")
                 .append("time=").append(zipEntry.getTime()).append(", ")
                 .append("method=").append(zipEntry.getMethod()).append("\n");
     }
-    public void manifestModified(PluginDescriptionFile desc){
+
+    public void manifestModified(PluginDescriptionFile desc) {
         buffer.append("Invalid Plugin Description: ")
                 .append("name=").append(desc.getName()).append(", ")
                 .append("main=").append(desc.getMain()).append(", ")
                 .append("libraries=[").append(Util.list2String(desc.getLibraries())).append("], ")
                 .append("provides=[").append(Util.list2String(desc.getProvides())).append("]\n");
     }
-    public String bake(){
+
+    public String bake() {
         return "=============================\n" +
                 "  QuickShop Security Report\n" +
                 "=============================\n" +
@@ -66,6 +71,6 @@ public class SecurityReport {
                 "----------------------------------\n" +
                 "Important information related to this issue.\n" +
                 "When you ask for support, please provide this paste to the support staffs:\n" +
-                "\n"+ buffer;
+                "\n" + buffer;
     }
 }

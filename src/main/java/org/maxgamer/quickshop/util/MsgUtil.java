@@ -74,6 +74,7 @@ public class MsgUtil {
     private static YamlConfiguration itemi18n;
     @Getter
     private static YamlConfiguration potioni18n;
+    private volatile static Map.Entry<String, String> cachedGameLanguageCode = null;
 
     /**
      * Deletes any messages that are older than a week in the database, to save on space.
@@ -111,7 +112,7 @@ public class MsgUtil {
                         } catch (InvalidConfigurationException e) {
                             MsgUtil.sendDirectMessage(p.getPlayer(), msg.getMessage(player.getLocale()));
                         }
-                        }
+                    }
                 }
                 plugin.getDatabaseHelper().cleanMessageForPlayer(pName);
                 msgs.clear();
@@ -163,8 +164,6 @@ public class MsgUtil {
         }
         return raw;
     }
-
-    private volatile static Map.Entry<String, String> cachedGameLanguageCode = null;
 
     @NotNull
     public static String getDefaultGameLanguageCode() {
