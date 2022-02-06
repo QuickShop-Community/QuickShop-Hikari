@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.shop;
 
+import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,20 +19,26 @@ public class InteractionController implements Reloadable {
     private final QuickShop plugin;
     private final Map<Interaction, InteractionBehavior> behaviorMap = new HashMap<>();
 
-    public InteractionController(@NotNull QuickShop plugin){
+    public InteractionController(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         loadInteractionConfig();
         plugin.getReloadManager().register(this);
     }
 
-    public void loadInteractionConfig(){
-        File configFile = new File(plugin.getDataFolder(),"interaction.yml");
-        if(!configFile.exists()){
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        loadInteractionConfig();
+        return Reloadable.super.reloadModule();
+    }
+
+    public void loadInteractionConfig() {
+        File configFile = new File(plugin.getDataFolder(), "interaction.yml");
+        if (!configFile.exists()) {
             try {
                 //noinspection ConstantConditions
                 Files.copy(plugin.getResource("interaction.yml"), configFile.toPath());
             } catch (IOException e) {
-                plugin.getLogger().log(Level.WARNING,"Failed to copy interaction.yml to plugin folder!",e);
+                plugin.getLogger().log(Level.WARNING, "Failed to copy interaction.yml to plugin folder!", e);
             }
         }
         FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
