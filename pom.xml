@@ -247,6 +247,14 @@
                             <pattern>com.konghq.</pattern>
                             <shadedPattern>org.maxgamer.quickshop.shade.com.konghq.</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>kong.unirest.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.kong.unirest.</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.h2.</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.org.h2.</shadedPattern>
+                        </relocation>
                     </relocations>
                     <transformers>
                         <transformer
@@ -460,12 +468,8 @@
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jsr305</artifactId>
-                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -476,16 +480,8 @@
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>com.sk89q.worldedit</groupId>
-                    <artifactId>worldedit-bukkit</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.sk89q</groupId>
-                    <artifactId>worldguard</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>net.milkbowl.vault</groupId>
-                    <artifactId>VaultAPI</artifactId>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -509,20 +505,8 @@
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>snakeyaml</artifactId>
-                    <groupId>org.yaml</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>junit</artifactId>
-                    <groupId>junit</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>bukkit</artifactId>
-                    <groupId>org.bukkit</groupId>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -542,6 +526,12 @@
             <groupId>com.github.jikoo.OpenInv</groupId>
             <artifactId>openinvapi</artifactId>
             <version>4.1.9</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -561,6 +551,12 @@
             <artifactId>nocheatplus</artifactId>
             <version>3.16.1-SNAPSHOT</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>me.minebuilders</groupId>
@@ -568,12 +564,24 @@
             <version>3.2.2</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/Clearlag-3.2.2.jar</systemPath>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>me.lucko.luckperms</groupId>
             <artifactId>luckperms-api</artifactId>
             <version>5</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.clerezza.ext/org.json.simple -->
         <dependency>
@@ -583,8 +591,8 @@
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <artifactId>annotations</artifactId>
-                    <groupId>org.jetbrains</groupId>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -593,6 +601,12 @@
             <artifactId>LandsAPI</artifactId>
             <version>5.15.2</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -623,6 +637,10 @@
                     <artifactId>annotations</artifactId>
                     <groupId>org.jetbrains</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>junit-jupiter</artifactId>
+                    <groupId>org.junit.jupiter</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <!-- Database lib for testing-->
@@ -644,6 +662,12 @@
             <artifactId>spigot-api</artifactId>
             <version>1.18.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-lang</groupId>
+                    <artifactId>commons-lang</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -655,6 +679,12 @@
             <artifactId>SpartanAPI</artifactId>
             <version>2.0</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--New towny version, As we support 1.13+, so we choose 0.96.2.0 according their README-->
         <dependency>
@@ -662,6 +692,12 @@
             <artifactId>Towny</artifactId>
             <version>0.97.0.5</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
@@ -670,56 +706,48 @@
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <artifactId>annotations</artifactId>
-                    <groupId>com.google.code.findbugs</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>truecommons-logging</artifactId>
-                    <groupId>net.java.truecommons</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jcl-over-slf4j</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>bstats-bukkit</artifactId>
-                    <groupId>org.bstats</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>bukkit</artifactId>
-                    <groupId>org.bukkit</groupId>
-                </exclusion>
-                <exclusion>
                     <artifactId>guava</artifactId>
                     <groupId>com.google.guava</groupId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
+                    <artifactId>gson</artifactId>
+                    <groupId>com.google.code.gson</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>fastutil</artifactId>
+                    <groupId>it.unimi.dsi</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>antlr4</artifactId>
+                    <groupId>org.antlr</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>antlr4-runtime</artifactId>
+                    <groupId>org.antlr</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j-api</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>rhino-runtime</artifactId>
+                    <groupId>org.mozilla</groupId>
                 </exclusion>
                 <exclusion>
                     <artifactId>snakeyaml</artifactId>
                     <groupId>org.yaml</groupId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>jsr305</artifactId>
-                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>flyway-core</artifactId>
+                    <groupId>org.flywaydb</groupId>
                 </exclusion>
                 <exclusion>
                     <artifactId>spigot-api</artifactId>
                     <groupId>org.spigotmc</groupId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>httpclient</artifactId>
-                    <groupId>org.apache.httpcomponents</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>truevfs-comp-zip</artifactId>
-                    <groupId>net.java.truevfs</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>truevfs-comp-tardriver</artifactId>
-                    <groupId>net.java.truevfs</groupId>
+                    <artifactId>jsr305</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -742,6 +770,12 @@
             <version>5.0.1.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/Residence5.0.1.0.jar</systemPath>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.massivecraft</groupId>
@@ -761,11 +795,23 @@
             <version>3.2.1</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/BlocksHub-3.2.1.jar</systemPath>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.rollbar</groupId>
             <version>1.8.1</version>
             <artifactId>rollbar-java</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>de.themoep</groupId>
@@ -779,6 +825,12 @@
             <scope>system</scope>
             <version>4.9.3-BCRemake-1.5</version>
             <systemPath>${project.basedir}/lib/GemsEconomy-4.9.2.jar</systemPath>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>tne.tne</groupId>
@@ -786,6 +838,12 @@
             <scope>system</scope>
             <version>0.1.1.17-PRE-2</version>
             <systemPath>${project.basedir}/lib/TNE-0.1.1.17-PRE-2.jar</systemPath>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.songoda</groupId>
@@ -794,8 +852,8 @@
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <artifactId>MVdWPlaceholderAPI</artifactId>
-                    <groupId>be.maximvdw</groupId>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -804,6 +862,12 @@
             <artifactId>SongodaCore</artifactId>
             <version>2.6.11</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <dependency>
@@ -836,26 +900,30 @@
             <artifactId>SuperiorSkyblockAPI</artifactId>
             <version>1.8.3</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>me.lucko</groupId>
             <artifactId>helper</artifactId>
             <version>5.6.9</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>me.lucko</groupId>
-            <artifactId>helper-profiles</artifactId>
-            <version>1.2.0</version>
-            <scope>compile</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>com.destroystokyo.paper</groupId>
-                    <artifactId>paper-api</artifactId>
+                    <artifactId>checker-qual</artifactId>
+                    <groupId>org.checkerframework</groupId>
                 </exclusion>
                 <exclusion>
-                    <groupId>com.google.guava</groupId>
                     <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jsr305</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -870,6 +938,44 @@
             <artifactId>advanced-region-market</artifactId>
             <version>3.3.6</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>wg7adapter</artifactId>
+                    <groupId>com.github.alex9849.advanced-region-market</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>wg6_2adapter</artifactId>
+                    <groupId>com.github.alex9849.advanced-region-market</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>wg6_1adapter</artifactId>
+                    <groupId>com.github.alex9849.advanced-region-market</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>we7adapter</artifactId>
+                    <groupId>com.github.alex9849.advanced-region-market</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>we6faweadapter</artifactId>
+                    <groupId>com.github.alex9849.advanced-region-market</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>we6adapter</artifactId>
+                    <groupId>com.github.alex9849.advanced-region-market</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>mc1-14adapter</artifactId>
+                    <groupId>com.github.alex9849.advanced-region-market</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>mc1-13adapter</artifactId>
+                    <groupId>com.github.alex9849.advanced-region-market</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>mc1-12adapter</artifactId>
+                    <groupId>com.github.alex9849.advanced-region-market</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.iridium</groupId>
@@ -877,6 +983,12 @@
             <version>3.2.3</version>
             <systemPath>${project.basedir}/lib/IridiumSkyblock-3.2.3.jar</systemPath>
             <scope>system</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
         <dependency>
@@ -889,18 +1001,36 @@
             <groupId>org.maxgamer.storage</groupId>
             <artifactId>simplixstorage</artifactId>
             <version>3.2.3.3</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>annotations</artifactId>
+                    <groupId>org.jetbrains</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api-plugin</artifactId>
             <version>2.9.0</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>Reserve</artifactId>
             <version>0.1.5.4</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>*</artifactId>
+                    <groupId>*</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>cc.carm.lib</groupId>
@@ -923,6 +1053,16 @@
             <groupId>com.konghq</groupId>
             <artifactId>unirest-java</artifactId>
             <version>3.13.6</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-codec</artifactId>
+                    <groupId>commons-codec</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>gson</artifactId>
+                    <groupId>com.google.code.gson</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>
