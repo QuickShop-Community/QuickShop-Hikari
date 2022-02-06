@@ -120,7 +120,7 @@ public class PlayerListener extends AbstractQSListener {
                     }
                 } else {
                     if (shopSearched.getKey().isBuying()) {
-                        if (buyShop(e.getPlayer(), shopSearched.getKey(), false)) {
+                        if (buyShop(e.getPlayer(), shopSearched.getKey(), false, false)) {
                             e.setCancelled(true);
                             e.setUseInteractedBlock(Event.Result.DENY);
                             e.setUseItemInHand(Event.Result.DENY);
@@ -128,7 +128,7 @@ public class PlayerListener extends AbstractQSListener {
                         break;
                     }
                     if (shopSearched.getKey().isSelling()) {
-                        if (sellShop(e.getPlayer(), shopSearched.getKey(), false)) {
+                        if (sellShop(e.getPlayer(), shopSearched.getKey(), false, false)) {
                             e.setCancelled(true);
                             e.setUseInteractedBlock(Event.Result.DENY);
                             e.setUseItemInHand(Event.Result.DENY);
@@ -138,7 +138,7 @@ public class PlayerListener extends AbstractQSListener {
                 }
             case TRADE_DIRECT:
                 if (shopSearched.getKey().isSelling()) {
-                    if (buyShop(e.getPlayer(), shopSearched.getKey(), true)) {
+                    if (buyShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
@@ -146,7 +146,24 @@ public class PlayerListener extends AbstractQSListener {
                     break;
                 }
                 if (shopSearched.getKey().isBuying()) {
-                    if (sellShop(e.getPlayer(), shopSearched.getKey(), true)) {
+                    if (sellShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
+                        e.setCancelled(true);
+                        e.setUseInteractedBlock(Event.Result.DENY);
+                        e.setUseItemInHand(Event.Result.DENY);
+                    }
+                    break;
+                }
+            case TADE_DIRECT_ALL:
+                if (shopSearched.getKey().isSelling()) {
+                    if (buyShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
+                        e.setCancelled(true);
+                        e.setUseInteractedBlock(Event.Result.DENY);
+                        e.setUseItemInHand(Event.Result.DENY);
+                    }
+                    break;
+                }
+                if (shopSearched.getKey().isBuying()) {
+                    if (sellShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
@@ -158,7 +175,7 @@ public class PlayerListener extends AbstractQSListener {
         }
     }
 
-    public boolean buyShop(@NotNull Player player, @Nullable Shop shop, boolean direct) {
+    public boolean buyShop(@NotNull Player player, @Nullable Shop shop, boolean direct, boolean all) {
         if (shop == null) {
             Util.debugLog("Shop null");
             return false;
@@ -180,9 +197,9 @@ public class PlayerListener extends AbstractQSListener {
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
         Info info = new SimpleInfo(shop.getLocation(), ShopAction.CREATE_SELL, null, null, shop, false);
         actions.put(player.getUniqueId(), info);
+        final double ownerBalance = eco.getBalance(shop.getOwner(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
+        int items = getPlayerCanSell(shop, ownerBalance, price, playerInventory);
         if (!direct) {
-            final double ownerBalance = eco.getBalance(shop.getOwner(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
-            int items = getPlayerCanSell(shop, ownerBalance, price, playerInventory);
             if (shop.isStackingShop()) {
                 plugin.text().of(player, "how-many-sell-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(items), tradeAllWord).send();
             } else {
@@ -193,12 +210,16 @@ public class PlayerListener extends AbstractQSListener {
                 plugin.text().of(player, "purchase-out-of-space", shop.ownerName()).send();
                 return true;
             }
-            plugin.getShopManager().actionSell(player.getUniqueId(), player.getInventory(), eco, info, shop, shop.getShopStackingAmount());
+            if (all) {
+                plugin.getShopManager().actionSell(player.getUniqueId(), player.getInventory(), eco, info, shop, items);
+            } else {
+                plugin.getShopManager().actionSell(player.getUniqueId(), player.getInventory(), eco, info, shop, shop.getShopStackingAmount());
+            }
         }
         return true;
     }
 
-    public boolean sellShop(@NotNull Player player, @Nullable Shop shop, boolean direct) {
+    public boolean sellShop(@NotNull Player player, @Nullable Shop shop, boolean direct, boolean all) {
         if (shop == null) {
             Util.debugLog("Shop null");
             return false;
@@ -220,16 +241,20 @@ public class PlayerListener extends AbstractQSListener {
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
         Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
         actions.put(player.getUniqueId(), info);
+        final double traderBalance = eco.getBalance(player.getUniqueId(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
+        int itemAmount = getPlayerCanBuy(shop, traderBalance, price, playerInventory);
         if (!direct) {
-            final double traderBalance = eco.getBalance(player.getUniqueId(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
-            int itemAmount = getPlayerCanBuy(shop, traderBalance, price, playerInventory);
             if (shop.isStackingShop()) {
                 plugin.text().of(player, "how-many-buy-stack", Integer.toString(shop.getItem().getAmount()), Integer.toString(itemAmount), tradeAllWord).send();
             } else {
                 plugin.text().of(player, "how-many-buy", Integer.toString(itemAmount), tradeAllWord).send();
             }
         } else {
-            plugin.getShopManager().actionBuy(player.getUniqueId(), player.getInventory(), eco, info, shop, shop.getShopStackingAmount());
+            if (all) {
+                plugin.getShopManager().actionBuy(player.getUniqueId(), player.getInventory(), eco, info, shop, itemAmount);
+            } else {
+                plugin.getShopManager().actionBuy(player.getUniqueId(), player.getInventory(), eco, info, shop, shop.getShopStackingAmount());
+            }
         }
         return true;
     }
