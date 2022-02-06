@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.listener;
 
 import com.ghostchu.simplereloadlib.ReloadResult;
-import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -46,14 +45,8 @@ import org.maxgamer.quickshop.util.Util;
 
 public class DisplayProtectionListener extends AbstractProtectionListener {
 
-    private final boolean useEnhanceProtection;
-
     public DisplayProtectionListener(QuickShop plugin, Cache cache) {
         super(plugin, cache);
-        useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-display-protect");
-        if (useEnhanceProtection) {
-            plugin.getServer().getPluginManager().registerEvents(new EnhanceDisplayProtectionListener(plugin, cache), plugin);
-        }
     }
 
     /**
@@ -62,11 +55,8 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
      * @return Reloading success
      */
     @Override
-    public ReloadResult reloadModule() {
-        if (useEnhanceProtection == plugin.getConfig().getBoolean("shop.enchance-display-protect")) {
-            return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
-        }
-        return ReloadResult.builder().status(ReloadStatus.REQUIRE_RESTART).build();
+    public ReloadResult reloadModule() throws Exception {
+        return super.reloadModule();
     }
 
 

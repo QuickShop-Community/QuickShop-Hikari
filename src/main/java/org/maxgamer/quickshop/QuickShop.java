@@ -31,6 +31,7 @@ import de.leonhard.storage.Yaml;
 import de.leonhard.storage.internal.settings.ConfigSettings;
 import de.leonhard.storage.internal.settings.ReloadSettings;
 import de.tr7zw.nbtapi.plugin.NBTAPI;
+import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
 import lombok.Getter;
 import lombok.Setter;
@@ -79,6 +80,9 @@ import org.maxgamer.quickshop.listener.*;
 import org.maxgamer.quickshop.listener.worldedit.WorldEditAdapter;
 import org.maxgamer.quickshop.localization.text.SimpleTextManager;
 import org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.PluginUtil;
+import org.maxgamer.quickshop.nonquickshopstuff.net.ess3.essentialsx.PaperServerStateProvider;
+import org.maxgamer.quickshop.nonquickshopstuff.net.ess3.essentialsx.ReflServerStateProvider;
+import org.maxgamer.quickshop.nonquickshopstuff.net.ess3.essentialsx.ServerStateProvider;
 import org.maxgamer.quickshop.permission.PermissionManager;
 import org.maxgamer.quickshop.shop.*;
 import org.maxgamer.quickshop.util.Timer;
@@ -259,6 +263,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
     @Getter
     private SQLManager sqlManager;
+    private ServerStateProvider serverStateProvider;
 
     public void disableNBTAPI() {
         nbtapi = null;
@@ -637,55 +642,67 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
         }
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadAfter);
+        if (PaperLib.isPaper()) {
+            this.serverStateProvider = new PaperServerStateProvider();
+        } else {
+            this.serverStateProvider = new ReflServerStateProvider();
+        }
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Complete");
     }
 
     @Override
     public final void onDisable() {
+        if (this.serverStateProvider != null) {
+            if (!this.serverStateProvider.isStopping()) {
+                getLogger().log(Level.WARNING, "/reload command is unsupported, don't expect any support from QuickShop support team after you execute this command.", new IllegalStateException("/reload command is unsupported, restart your server!"));
+            }
+        }
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
         if (sentryErrorReporter != null) {
             sentryErrorReporter.unregister();
         }
+        getLogger().info("Calling for shutting down to integration modules...");
         if (this.integrationHelper != null) {
             this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
         }
-        Util.debugLog("Unloading all shops...");
+        getLogger().info("Unloading all loaded shops...");
         try {
             if (getShopManager() != null) {
                 getShopManager().getLoadedShops().forEach(Shop::onUnload);
             }
         } catch (Exception ignored) {
         }
-        Util.debugLog("Unregister hooks...");
+        getLogger().info("Unregistering adapters...");
         if (worldEditAdapter != null) {
             worldEditAdapter.unregister();
         }
 
-        Util.debugLog("Calling integrations...");
+        getLogger().info("Unregistering integrations...");
         if (integrationHelper != null) {
             integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
             integrationHelper.unregisterAll();
         }
+        getLogger().info("Unregistering compatibility hooks...");
         compatibilityTool.unregisterAll();
 
-        Util.debugLog("Cleaning up resources and unloading all shops...");
+        Util.debugLog("Cleaning up shop manager...");
         /* Remove all display items, and any dupes we can find */
         if (shopManager != null) {
             shopManager.clear();
         }
+        getLogger().info("Cleaning up display manager...");
         if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
             VirtualDisplayItem.VirtualDisplayItemManager.unload();
         }
-
-        Util.debugLog("Cleaning up database queues...");
+        getLogger().info("Shutting down database connections...");
         if (this.getSqlManager() != null) {
             EasySQL.shutdownManager(this.getSqlManager());
         }
-
-        Util.debugLog("Unregistering tasks...");
+        getLogger().info("Stopping log watcher...");
         if (logWatcher != null) {
             logWatcher.close();
         }
+        getLogger().info("Shutting down scheduled timers...");
         Iterator<BukkitTask> taskIterator = timerTaskList.iterator();
         while (taskIterator.hasNext()) {
             BukkitTask task = taskIterator.next();
@@ -694,36 +711,32 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
             taskIterator.remove();
         }
+        getLogger().info("Shutting down event calendar watcher...");
         if (calendarWatcher != null) {
             calendarWatcher.stop();
         }
-
+        getLogger().info("Shutting down tps monitor...");
         try {
             tpsWatcher.cancel();
         } catch (IllegalStateException ignored) {
         }
-
+        getLogger().info("Shutting down update watcher...");
         /* Unload UpdateWatcher */
         if (this.updateWatcher != null) {
             this.updateWatcher.uninit();
         }
-
-        Util.debugLog("Cleanup tasks...");
-
+        getLogger().info("Cleanup scheduled tasks...");
         try {
             Bukkit.getScheduler().cancelTasks(this);
         } catch (Throwable ignored) {
         }
-
-        Util.debugLog("Cleanup listeners...");
-
+        getLogger().info("Cleanup listeners...");
         HandlerList.unregisterAll(this);
-        Util.debugLog("Unregistering plugin services...");
+        getLogger().info("Unregistering plugin services...");
         getServer().getServicesManager().unregisterAll(this);
-        Util.debugLog("Cleanup...");
+        getLogger().info("Shutting down Unirest instances...");
         Unirest.shutDown(true);
-        Util.debugLog("All shutdown work is finished.");
-
+        getLogger().info("All shutdown work is finished.");
     }
 
     public void reload() {

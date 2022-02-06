@@ -78,7 +78,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                             }
                             return;
                         }
-                        case "add", "del", default -> {
+                        default -> {
                             plugin.text().of(sender, "command.wrong-args").send();
                             return;
                         }
