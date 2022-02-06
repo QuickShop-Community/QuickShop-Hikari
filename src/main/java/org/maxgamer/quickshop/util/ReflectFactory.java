@@ -52,7 +52,7 @@ public class ReflectFactory {
     private static Class<?> cachedNMSClass;
     private static String nmsVersion;
     private static Method getMinecraftKeyNameMethod;
-    private static final boolean isMinecraftKeyNameMethodUnavailable = false;
+//    private static final boolean isMinecraftKeyNameMethodUnavailable = false;
 //    private static Object serverInstance;
 //    private static Field tpsField;
 
