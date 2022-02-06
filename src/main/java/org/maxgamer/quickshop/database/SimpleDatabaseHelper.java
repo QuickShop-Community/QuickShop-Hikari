@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.database;
 
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.SQLQuery;
+import cc.carm.lib.easysql.api.enums.IndexType;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -82,18 +83,19 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     private void createShopsTable() {
         manager.createTable(plugin.getDbPrefix() + "shops")
                 .addColumn("owner", "VARCHAR(255) NOT NULL")
-                .addColumn("price", "DOUBLE(32,2) NOT NULL")
+                .addColumn("price", "DOUBLE(32) NOT NULL")
                 .addColumn("itemConfig", "LONGTEXT NOT NULL")
-                .addColumn("x", "INTEGER(32) NOT NULL PRIMARY KEY")
-                .addColumn("y", "INTEGER(32) NOT NULL PRIMARY KEY")
-                .addColumn("z", "INTEGER(32) NOT NULL PRIMARY KEY")
-                .addColumn("world", "VARCHAR(255) NOT NULL PRIMARY KEY")
+                .addColumn("x", "INTEGER(32) NOT NULL")
+                .addColumn("y", "INTEGER(32) NOT NULL")
+                .addColumn("z", "INTEGER(32) NOT NULL")
+                .addColumn("world", "VARCHAR(255) NOT NULL")
                 .addColumn("unlimited", "BOOLEAN NOT NULL")
                 .addColumn("type", "INTEGER(8) NOT NULL")
                 .addColumn("extra", "LONGTEXT NULL")
                 .addColumn("currency", "TEXT NULL")
                 .addColumn("disableDisplay", "INTEGER NULL DEFAULT -1")
                 .addColumn("taxAccount", "VARCHAR(255) NULL")
+                .setIndex(IndexType.PRIMARY_KEY, null, "x", "y", "z", "world")
                 .build().execute((i) -> {
                     return i;
                     // Do nothing
@@ -129,15 +131,14 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     }
 
     private void createExternalCacheTable() {
-        String createTable = "CREATE TABLE " + plugin.getDbPrefix()
-                + "external_cache  (x INTEGER(32) NOT NULL, y  INTEGER(32) NOT NULL, z  INTEGER(32) NOT NULL, world VARCHAR(32) NOT NULL, PRIMARY KEY (x, y, z, world));";
         manager.createTable(plugin.getDbPrefix() + "external_cache")
-                .addColumn("x", "INTEGER(32) NOT NULL PRIMARY KEY")
-                .addColumn("y", "INTEGER(32) NOT NULL PRIMARY KEY")
-                .addColumn("z", "INTEGER(32) NOT NULL PRIMARY KEY")
-                .addColumn("world", "VARCHAR(32) NOT NULL PRIMARY KEY")
+                .addColumn("x", "INTEGER(32) NOT NULL")
+                .addColumn("y", "INTEGER(32) NOT NULL")
+                .addColumn("z", "INTEGER(32) NOT NULL")
+                .addColumn("world", "VARCHAR(32) NOT NULL")
                 .addColumn("space", "INTEGER NULL")
                 .addColumn("stock", "INTEGER NULL")
+                .setIndex(IndexType.PRIMARY_KEY, null, "x", "y", "z", "world")
                 .build()
                 .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create extrenal_cache table! SQL:" + sqlAction.getSQLContent(), exception)));
     }
@@ -167,7 +168,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
         // V3.4.2
         manager.alterTable(plugin.getDbPrefix() + "shops")
-                .modifyColumn("price", "double(32,2) NOT NULL AFTER owner")
+                .modifyColumn("price", "double(32) NOT NULL AFTER owner")
                 .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to update price column! SQL:" + sqlAction.getSQLContent(), exception)
                 ));
         // V3.4.3

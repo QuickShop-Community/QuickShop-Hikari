@@ -1125,12 +1125,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             } else {
                 // SQLite database - Doing this handles file creation
                 Driver.load();
-                config.setJdbcUrl("jdbc:h2:" + new File(this.getDataFolder(), "shops").getCanonicalFile().getAbsolutePath() + ";DB_CLOSE_DELAY=-1");
+                config.setJdbcUrl("jdbc:h2:" + new File(this.getDataFolder(), "shops").getCanonicalFile().getAbsolutePath() + ";DB_CLOSE_DELAY=-1;MODE=MYSQL");
                 this.sqlManager = EasySQL.createManager(config);
                 this.sqlManager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode
             }
             // Make the database up to date
-
             this.databaseHelper = new SimpleDatabaseHelper(this, this.sqlManager);
             return true;
         } catch (Exception e) {
