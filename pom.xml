@@ -321,9 +321,9 @@
                     <keystore>${project.basedir}/keystore.jks</keystore>
                     <alias>selfsigned</alias>
                     <!--suppress UnresolvedMavenProperty -->
-                    <storepass>QuickShopRSA</storepass>
+                    <storepass>${env.QUICKSHOP-SIGNER-PWD}</storepass>
                     <!--suppress UnresolvedMavenProperty -->
-                    <keypass>QuickShopRSA</keypass>
+                    <keypass>${env.QUICKSHOP-SIGNER-PWD}</keypass>
                 </configuration>
             </plugin>
         </plugins>

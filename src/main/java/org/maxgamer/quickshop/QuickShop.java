@@ -22,7 +22,6 @@ package org.maxgamer.quickshop;
 import cc.carm.lib.easysql.EasySQL;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.hikari.HikariConfig;
-import cc.carm.lib.easysql.manager.SQLManagerImpl;
 import com.ghostchu.simplereloadlib.ReloadManager;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -1122,14 +1121,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=" + useSSL);
                 config.setUsername(user);
                 config.setPassword(pass);
-                this.sqlManager = new SQLManagerImpl(config.getDataSource());
+                this.sqlManager = EasySQL.createManager(config);
             } else {
                 // SQLite database - Doing this handles file creation
                 Driver.load();
-                config.setJdbcUrl("jdbc:h2:file:" + new File(this.getDataFolder(), "shops.h2.db"));
-                this.sqlManager = new SQLManagerImpl(config.getDataSource());
+                config.setJdbcUrl("jdbc:h2:" + new File(this.getDataFolder(), "shops").getCanonicalFile().getAbsolutePath() + ";DB_CLOSE_DELAY=-1");
+                this.sqlManager = EasySQL.createManager(config);
+                this.sqlManager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode
             }
             // Make the database up to date
+
             this.databaseHelper = new SimpleDatabaseHelper(this, this.sqlManager);
             return true;
         } catch (Exception e) {

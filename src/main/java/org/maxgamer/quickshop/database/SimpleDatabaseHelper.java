@@ -90,7 +90,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .addColumn("world", "VARCHAR(255) NOT NULL PRIMARY KEY")
                 .addColumn("unlimited", "BOOLEAN NOT NULL")
                 .addColumn("type", "INTEGER(8) NOT NULL")
-                .addColumn("extra", "LONGTEXT NULL DEFAULT \"\"")
+                .addColumn("extra", "LONGTEXT NULL")
                 .addColumn("currency", "TEXT NULL")
                 .addColumn("disableDisplay", "INTEGER NULL DEFAULT -1")
                 .addColumn("taxAccount", "VARCHAR(255) NULL")
@@ -122,8 +122,8 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     private void createLogsTable() {
         manager.createTable(plugin.getDbPrefix() + "logs")
                 .addColumn("time", "BIGINT(32) NOT NULL")
-                .addColumn("classname", "TEXT NULL DEFAULT \"\"")
-                .addColumn("data", "LONGTEXT NULL DEFAULT \"\"")
+                .addColumn("classname", "TEXT NULL")
+                .addColumn("data", "LONGTEXT NULL")
                 .build()
                 .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create logs table! SQL:" + sqlAction.getSQLContent(), exception)));
     }
@@ -153,7 +153,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create extra column! SQL:" + sqlAction.getSQLContent(), exception)
                 ));
         manager.alterTable(plugin.getDbPrefix() + "shops")
-                .addColumn("extra", "LONGTEXT NULL DEFAULT \"\"")
+                .addColumn("extra", "LONGTEXT NULL")
                 .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create currency column! SQL:" + sqlAction.getSQLContent(), exception)
                 ));
         manager.alterTable(plugin.getDbPrefix() + "shops")
