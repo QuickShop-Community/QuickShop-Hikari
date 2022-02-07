@@ -1,0 +1,4 @@
+name: QuickShop
+version: '${project.version}'
+main: org.maxgamer.quickshop.QuickShop
+api-version: 1.18
