@@ -869,7 +869,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         Timer enableTimer = new Timer(true);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
-
         getLogger().info("QuickShop " + getFork());
         getLogger().info("Chat processor selected: Hardcorded Adventure Library.");
         this.audience = BukkitAudiences.create(this);

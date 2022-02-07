@@ -1,0 +1,779 @@
+# QuickShop-Reremake Plugin Configuration
+
+#Do not touch this if you don't know what you're doing!
+config-version: 154
+
+#Set the default language code the plugin should use, it will apply to:
+#Item Name
+#Enchantment Name,
+#Potion Effect Name
+#The text on the shop info sign (If NBTApi not installed)
+#And other default language related text.
+#Set it to default will use your system language.
+#You can find the valid language code in your client language settings, like en_us
+game-language: default
+
+#Choose which languages should be enabled
+#Any client connect to server that using disabled language, will fallback to game-language option there
+#Set to - '*' to enable all available languages
+#The language files will automatically update thorough Crowdin OTA system, you can translate it there:
+#https://crowdin.com/project/quickshop-reremake
+#If you want custom the language file, use language override system:
+#https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-translation-override-system
+enabled-languages:
+  - '*'
+
+#Setting the game language file download channel, like item name, effect translations etc.
+#We will get those files from mojang resources server:
+#0=Official
+#1=BMCLAPI (Unofficial China Mirror, https://bmclapidoc.bangbang93.com)
+#2=MCBBSMirror (Another OpenBMCLAPI Mirror, https://www.mcbbs.net)
+#You can choose which one you want to use for downloading resources.
+#By default, QuickShop use Mojang official server to downloading resources.
+mojangapi-mirror: 0
+
+#This enables the developer mode, do not touch this if you don't not know what it does!
+dev-mode: false
+
+#Tax amount (decimal)
+#Example: P1 buys $50 worth of stuff from P2.  Therefore, P1 loses $50, P2 gains $(1-0.05)*50, and the tax-account gains $(0.05)*50.
+tax: 0.05
+
+#The fake player where the tax money goes to.
+#Set this to "" to disable it (Taxing will still work but not deposit to any account)
+tax-account: tax
+
+#Turn on this option will migrate shop owner to specified account when you set a shop to unlimited.
+#It won't affect exists shops, you will need switch to unlimited again to apply it.
+unlimited-shop-owner-change: false
+
+#Set the account used by unlimited-shop-owner-change option
+#Only take effect when unlimited-shop-owner-change enabled
+unlimited-shop-owner-change-account: quickshop
+
+#Whether to show taxes paid when selling to a shop
+show-tax: false
+
+#Whether to respect item flags (e.g. hide the enchantment info when item have HIDE_ENCHANTS flag).
+respect-item-flag: true
+
+#The currency used to create shops.
+#Set this to "" to use default currency.
+#Only required if you use multiple currencies.
+currency: ""
+
+logging:
+  #Enable logging?
+  #The log file is located at "plugins\QuickShop\qs.log".
+  enable: true
+  #Should QuickShop log shop trading/creations?
+  log-actions: true
+  #Should QuickShop log balance before and after when trading?
+  log-balance: true
+  #The target size (in MB) to split log files to the "plugins\QuickShop\logs" folder.
+  file-size: 10.0
+  #Log data storage location (0 to file, 1 to database)
+  location: 0
+#Some economy plugins cache player balances, this sometimes causes insufficient balance when trying to use a shop
+#This workaround uses getBalance to refresh it, but its time costing.
+#So ONLY turn this on when you have this problem!
+trying-fix-banlance-insuffient: false
+
+#For item-item based economies that don't use virtual coins.
+whole-number-prices-only: false
+
+#Force bukkit chat handler (https://github.com/KaiKikuchi/QuickShop/issues/10)
+force-bukkit-chat-handler: false
+
+#Disallow QuickShop to send metrics data to bStats (https://bstats.org/plugin/bukkit/QuickShop-Reremake/3320).
+#Please let the metrics enabled, it helps the author :).
+disabled-metrics: false
+
+#Should QS be allowed to check for updates on SpigotMC.org?
+updater: true
+
+#Should QS be allowed to automatically report errors to the author?
+#It will also create a paste for data-recovery or debug when the server boots up.
+auto-report-errors: true
+
+#Should QS use OfflinePlayer list for TabComplete?
+#This might improve player experience, but may cause lag due to searching what can be a long list.
+#false = Only use the OnlinePlayer list.
+#true = A list of all players that have ever joined your server.
+include-offlineplayer-list: false
+
+#What economy provider should QuickShop use?
+#0=Vault
+#3=GemsEconomy with Multi-Currency on
+#4=TNE with Multi-Currency on
+#DO NOT TOUCH THIS IF YOU DON'T KNOW WHAT IT DOES. ASK FOR SUPPORT BEFORE TOUCHING THIS!
+economy-type: 0
+
+#Whether to use decimal format to display money.
+use-decimal-format: false
+
+#The decimal format to display money in.
+#The default is #,###.##
+decimal-format: "#,###.##"
+
+#Allow QuickShop to send alerts when someone tries to make a displayItem exploit.
+send-display-item-protection-alert: false
+
+#Allow QuickShop to send alerts when someone tries to steal from a shop.
+send-shop-protection-alert: false
+
+#Still WIP
+server-platform: 0
+
+#Use caching to find shops to optimize performance if possible.
+use-caching: true
+
+#Select which chat system QuickShop should use.
+#0=BungeeChat (Spigot default)
+#1=Adventure (Removed In Current Version)
+chat-type: 0
+
+#MySQL database settings.
+database:
+  #false = use local SQLite database.
+  #true = use local/remote MySQL database.
+  mysql: false
+  host: localhost
+  port: 3306
+  database: quickshop
+  user: root
+  password: passwd
+  #Set prefix to "none" to remove prefix
+  prefix: "qs_"
+  usessl: false
+  #Whether to use async queue?
+  queue: true
+  #How long should the interval between each commit be when using queue (in seconds)?
+  queue-commit-interval: 2
+  #Auto set table encoding to utf8mb4 (beta)
+  auto-fix-encoding-issue-in-database: false
+
+#Limits the number of shops a person can create and own at a time.
+limits:
+  #Disable these if you're not using them! If this is false, the rest of this section gets ignored.
+  use: false
+
+  #The default number of shops a players can make.
+  default: 10
+
+  #Use old algorithm to calculate unlimited shops into limits.
+  old-algorithm: false
+
+  #Here you can setup shop amount limits with permissions.
+  #You can create as many as you like!
+  ranks:
+    quickshop:
+      #Players with the quickshop.example permission can create 20 shops.
+      example: 20
+
+#The list of blocks that can be used to create shops.
+#By default, chests are added to this list.
+#This will only work for blocks that implement an InventoryHolder!
+#In other words, You cannot create shops with normal blocks like dirt or stone.
+#Enderchests can only be used as shop blocks when the "openinv" plugin is installed!
+#May cause unexpected behavior with some blocks...eg:
+#-Hopper shops suck the display item in,
+#-Furnace shops allow players whatever item they want in all 3 slots,
+#-Dispenser shops aren't protected from redstone,
+#-Etc...
+shop-blocks:
+  - CHEST
+  - TRAPPED_CHEST
+  - ENDER_CHEST
+
+shop:
+  #The cost to make a shop.
+  cost: 10
+  #Should QS refund the player when their shops are deleted/removed/broken?
+  refund: false
+  #Should QS send stock messages to staffs?
+  sending-stock-message-to-staffs: false
+  #Should QS disable trading in creative mode?
+  disable-creative-mode-trading: false
+  #Should QS disable the super tool?
+  #The Super Tool is a Golden Axe that allows creative mode players to break shops.
+  disable-super-tool: false
+  #Should QS allow the owner of a shop to break the sign to let players replace the sign?
+  #This may cause a sign dupe when auto-sign is true!
+  allow-owner-break-shop-sign: false
+
+  #Should there be a fee for changing shop prices?
+  #This can help with endless price undercutting.
+  price-change-requires-fee: true
+  #The amount of this fee.
+  fee-for-price-change: 50
+
+  #Should QS try to lock shops for other players?
+  #This prevents players from stealing from them.
+  lock: true
+
+  #Should QS disable the quick creation of shop?
+  #To quickly create a shop click a chest with an Item.
+  disable-quick-create: false
+
+  #Should we automatically create the sign for the chest?
+  auto-sign: true
+
+  #Sign use glowing effects
+  sign-glowing: false
+
+  #Sign use dye color  https://hub.spigotmc.org/javadocs/spigot/org/bukkit/DyeColor.html
+  #sign-dye-color: WHITE
+  sign-dye-color: ""
+
+  #Should we pay/take money to/from unlimited shops owners?
+  pay-unlimited-shop-owners: false
+
+  #Should we place display items on the chests?
+  #This may cause duped items, especially for modded servers!
+  display-items: true
+
+  #QuickShop will check if the display item is in a valid position every specified amount of ticks.
+  #Set to 0 to disable it.
+  display-items-check-ticks: 6000
+
+  #The display type you want use.
+  #Old mode, ArmorStand (display-type=1) is Outdated and could not be used
+  #0=Normal Dropped Item
+  #2=Virtual Item (Requires ProtocolLib, fallback to type 0 if ProtocolLib is not installed)
+  display-type: 2
+
+  #Allow QuickShop to automatically despawn displays when no players are in range of the shop.
+  display-auto-despawn: false
+
+  #The range at which displays will despawn.
+  display-despawn-range: 20
+
+  #The interval (in ticks) at which QS checks the shops range to despawn/spawn displays.
+  display-check-time: 40
+
+  #Allow displays to show stack effects when stack creation is turned on.
+  display-allow-stacks: false
+
+  #/qs find <itemName> command settings.
+  #This command lets users shop quickly without wasting time searching.
+  finding:
+    #Should QS use the old logic? (looking for closest shop and let players look at it)
+    oldLogic: false
+    #How far should QS search? (in blocks)
+    distance: 45
+    #How many nearby shop should be displayed?
+    limit: 10
+    #Should non-loaded shops be incuded in the search?
+    all: true
+    #Should QS exclude out-of-stock/space shops?
+    #This may improve performance.
+    exclude-out-of-stock: false
+
+  #If vault doesn't return a currency symbol, QuickShop will use this symbol.
+  alternate-currency-symbol: '$'
+
+  #This setting is for multi-currency setups.
+  #If nothing matches in this list, it falls back to the name of currency itself.
+  alternate-currency-symbol-list:
+    - USD;$
+    - CNY;￥
+
+  #This should fix Vault or an economy plugin incorrectly processing the price and returning a "0" result.
+  #If you enable this setting, then QS will force use the "alternate-currency-symbol".
+  disable-vault-format: false
+
+  #If the currency symbol should be displayed on the right side (eg 1234$).
+  #By default, it is on the left side (eg $1234).
+  #Only works when disable-vault-format is true.
+  currency-symbol-on-right: false
+
+  #Ignore trade messages if the shop is unlimited.
+  ignore-unlimited-shop-messages: false
+
+  #Allow auto fetching of player shops.
+  #If you disable this, then the players need to use "/qs fetchmessage" to fetch the shops history messages.
+  #Disabling it may cause database issues!
+  auto-fetch-shop-messages: true
+
+  #Ignore cancelled chat event, can sometimes improve compatibility with some chat plugins.
+  ignore-cancel-chat-event: false
+
+  #Allow shops to be created in places where a sign cannot be placed?
+  #(e.g There are blocks on all sides of the shop / The player doesn't have permission to put down a sign at that location)
+  allow-shop-without-space-for-sign: false
+
+  #The minimum price for a shop.
+  #The default is 0.01
+  #This will not affect existing shops!
+  minimum-price: 0.01
+
+  #The maximum price for a shop.
+  #Set this to -1 to disable it. (Unlimited maximum shop price)
+  #This will not affect existing shops!
+  maximum-price: -1
+
+  #Per item price restrictions.
+  #Format: <itemname>;<minprice>;<maxprice>
+  #e.g:
+  # - DIAMOND;100;200
+  price-restriction: [ ]
+
+  #The maximum number of digits after the decimal.
+  #Set this to -1 to disable it. (Unlimited maximum digits)
+  maximum-digits-in-price: -1
+
+  #If a player that has quickshop.setowner permission changes the owner of an adminshop,
+  #should the owner's uuid get printed in the control panel?
+  show-owner-uuid-in-controlpanel-if-op: false
+
+  #The wall sign material.
+  #ACACIA_WALL_SIGN
+  #BIRCH_WALL_SIGN
+  #DARK_OAK_WALL_SIGN
+  #JUNGLE_WALL_SIGN
+  #OAK_WALL_SIGN
+  #SPRUCE_WALL_SIGN
+  sign-material: OAK_WALL_SIGN
+
+  #If this is enabled, the enchantment name will be shown
+  #in the sign instead of "Enchanted Book".
+  #NOTE: Only one enchantment is shown and is randomly chosen.
+  use-enchantment-for-enchanted-book: false
+  #If this is enabled, the effect name will be shown
+  #in the sign instead of "Potion".
+  #NOTE: Only one effect is shown and is randomly chosen.
+  use-effect-for-potion-item: false
+  #The list of worlds in which creating new shops is disabled.
+  blacklist-world:
+    - disabled_world_name
+
+  #The list of lore keywords that are blocked from being sold.
+  #This will not affect existing shops!
+  blacklist-lores:
+    - "SoulBound"
+
+  #Protection check
+  #This will send a FAKE BlockBreakEvent to check if you can break a block.
+  #This may conflict with some protection plugins!
+  #Integration checking will be checked after this, so disable it when it's conflicting with integration
+  #If you don't want this, then please disable it and use the integration below instead.
+  protection-checking: true
+
+  #The list of worlds in which protection checking is disabled.
+  protection-checking-blacklist:
+    - disabled_world
+
+  #The listener list to skip when protection-checking.
+  #Requires "protection-checking-handler" set to 1.
+  #Examples:
+  #- xx.xxx.xxx.xxxxx.BlockBreakListenerClass
+  #  This will skip calling the xx.xxx.xxx.xxxxx.BlockBreakListenerClass.
+  #  This can improve performance because its not string based.
+  #
+  #- xx.xx.xxx.xxxxx
+  #  This will skip calling all classes that start with xx.xx.xxx.xxxxx.
+  #
+  #- @PluginName
+  #  This will skip calling all listeners registered by this plugin.
+  #
+  #- REGEX
+  #  It also supports regex.
+  protection-checking-listener-blacklist:
+    - ignored_listener
+
+  #How many shops should at max be checked at once for existance?
+  max-shops-checks-in-once: 100
+
+  #Add display name to the spawned DisplayItem entity?
+  display-item-use-name: false
+
+  #Update the signs when something (eg Hoppers) triggers InventoryMoveItemEvent?
+  #Disable this if you think that it impacts your server performance.
+  update-sign-when-inventory-moving: false
+
+  #Allow player loans? (Requires an economy plugin with support)
+  allow-economy-loan: false
+
+  #The word to trade all items in player inventory.
+  word-for-trade-all-items: "all"
+
+  #Allow players to create 0$ (free) shops?
+  #THIS MAY BREAK SOMETHING!
+  allow-free-shop: false
+
+  #The shop ongoing fee.
+  #If the shop owner doesn't have enough money, the shop will automatically be removed.
+  ongoing-fee:
+    enable: false
+    #How often should the ongoing fee be due for payment?
+    ticks: 42000
+    #How much should the ongoing fee be?
+    cost-per-shop: 2
+    #Should we ignore unlimited shops?
+    ignore-unlimited: true
+  #Allow QuickShop to use a hack util to force-load shops from higher Minecraft versions.
+  #WARNING: This may destroy your server data and QuickShop shops, backup before enabling it!
+  force-load-downgrade-items:
+    enable: false
+    #WorkMode
+    #0=Call Bukkit to try to update the ItemStack
+    #1=Call Bukkit to directly load the ItemStack
+    method: 0
+  #If a block/entity has trigged the protection, should QuickShop break/kill it?
+  remove-protection-trigger: true
+  #Allow QuickShop to sell/buy multiple items in one transaction?
+  allow-stacks: false
+  #This setting controls if QuickShop should ignore the item's custom display name.
+  force-use-item-original-name: false
+#List of items that can't be sold in shops.
+#Anyone with the quickshop.bypass.<itemID> permission can bypass it.
+blacklist:
+  - Bedrock
+
+#A fix for lockette plugin with Quickshop, because we are not canceling a break lock sign event (Making it impossible to break a locked chest).
+lockette:
+  enable: true
+  private: "[Private]"
+  more_users: "[More Users]"
+#Enable or disable plugin support.
+plugin:
+  #If you have Multiverse-Core, QuickShop will try to load worlds when the shop's world doesn't exist.
+  #This will throw an exception and automatically repair the shops.
+  Multiverse-Core: true
+  #If you have OpenInv, QuickShop will enable the EnderChest feature for shop-blocks.
+  OpenInv: true
+  #If you have PlaceHolderAPI, QuickShop will use it to process all messages.
+  PlaceHolderAPI: true
+  #If you have LWC/LWCX, QuickShop will check access.
+  LWC: true
+  #If you use BlockHub, Should QuickShop use BlockHub to check region access for players?
+  BlockHub:
+    enable: true
+    #Should BlockHub only be used for permission checks?
+    only: false
+  #If you have WorldEdit, QuickShop will try migrating shops in EditSession. [BETA]
+  WorldEdit: true
+  #Allow us use NBTAPI to direct modify the blockstate data
+  NBTAPI: true
+effect:
+  sound:
+    ontabcomplete: true
+    oncommand: true
+    onclick: true
+#Item matcher.
+#Do not touch it if you don't know what you're doing!
+matcher:
+  #Matcher type
+  #0= QuickShop item matcher with configurable options below.
+  #1= Bukkit item matcher, can be more accurate.
+  #2= Stricter Bukkit matcher, equals method.
+  work-type: 0
+  #For Item (Only works under QuickShop ItemMatcher)
+  item:
+    #Should the Plugin check the item damage?
+    damage: true
+    #Should the Plugin check the item repair cost?
+    repaircost: false
+    #Should the Plugin check the item display name?
+    displayname: true
+    #Should the Plugin check the item lores?
+    lores: true
+    #Should the Plugin check the item enchs?
+    enchs: true
+    #Should the Plugin check the item potions?
+    potions: true
+    #Should the Plugin check the item attributes?
+    attributes: true
+    #Should the Plugin check the item itemflags?
+    itemflags: true
+    #Should the Plugin check the item custommodeldata?
+    custommodeldata: true
+    #Should the Plugin check the item bookmetas?
+    books: true
+    #Should the Plugin check the banner meta?
+    banner: true
+    #Should the Plugin check the skull meta?
+    skull: true
+    #Should the Plugin check the firework meta?
+    firework: true
+    #Should the Plugin check the map meta?
+    map: true
+    #Should the Plugin check the leather armor meta?
+    leatherArmor: true
+    #Should the Plugin check the fishBucket meta?
+    fishBucket: true
+    #Should the Plugin check the suspiciousStew meta?
+    suspiciousStew: true
+    #Should the Plugin check the shulkerBox contents?
+    shulkerBox: true
+#Integration is under BETA stage, please report any bugs to our Issue Tracker.
+integration:
+  #Towny Integration
+  towny:
+    enable: false
+    #If QS should ignore disabled worlds.
+    ignore-disabled-worlds: true
+    #Which checks does a player need to pass to create a shop?
+    #You can use multiple checks at the same time.
+    #Priority: UP > DOWN
+    #
+    #Available fields:
+    #OWN = The player must own the plot to create a shop.
+    #MODIFY = The player must have the ability to build on the target plot to create a shop.
+    #SHOPTYPE = The player must create the shop on a SHOP type plot.
+    create:
+      - SHOPTYPE
+      - MODIFY
+    #Which checks does a player need to pass to trade with a shop?
+    #You can use multiple checks at the same time.
+    #Priority: UP > DOWN
+    #
+    #Available fields:
+    #OWN = The player must own the plot to trade with a shop.
+    #MODIFY = The player must have the ability to build on the target plot to trade with a shop.
+    #SHOPTYPE = The player must trade with the shop on a SHOP type plot.
+    trade: [ ]
+    delete-shop-on-resident-leave: false
+    delete-shop-on-plot-clear: true
+    delete-shop-on-plot-destroy: true
+    #Should we prevent the creation of a shop or trade with a shop outside Towny's area
+    whitelist-mode: true
+  #WorldGuard Integration
+  #CHANGES REQUIRE A SERVER RESTART!
+  worldguard:
+    enable: false
+    #Should we prevent the creation of a shop or trade with a shop outside of WorldGuard regions?
+    whitelist-mode: false
+    #Allow players to create a shop if the player is the owner of in this location or ANY region.
+    any-owner: true
+    #Should we respect the global region flag?
+    respect-global-region: true
+    #Which checks does a player need to pass to create a shop?
+    #You can use multiple checks at the same time.
+    #Priority: UP > DOWN
+    #
+    #Available fields:
+    #FLAG = The region must have the quickshop-create flag set.
+    #BUILD = The player must have the ability to build in the target region.
+    #CHEST_ACCESS = The player must be able to access chests.
+    #INTERACT = The player must have the ability to interact in the target region.
+    #OWN = The player must owns this region.
+    create:
+      - FLAG
+      - CHEST_ACCESS
+    #Which checks does a player need to pass to trade with a shop?
+    #You can use multiple checks at the same time.
+    #Priority: UP > DOWN
+    #
+    #Available fields:
+    #FLAG = The region must have the quickshop-trade flag set.
+    #BUILD = The player must have the ability to build in the target region.
+    #CHEST_ACCESS = The player must be able to access chests.
+    #INTERACT = The player must have the ability to interact in the target region.
+    trade: [ ]
+  #PlotSquared Integration
+  plotsquared:
+    #If a player wants to create a shop, the player must have the quickshop-create flag.
+    #If a player wants to trade with a shop, the player must have the quickshop-trade flag.
+    enable: false
+    #Should we prevent the creation of a shop or trade with a shop outside PlotSquared's area?
+    whitelist-mode: true
+    #Should we delete shops that were created by players that get untrusted?
+    delete-when-user-untrusted: true
+  #Lands Integration
+  lands:
+    #If a player wants to create a shop, the player must be owner or be trusted.
+    #Players can always trade with a shop.
+    enable: false
+    #Should we prevent the creation of a shop or trade with a shop outside Land's area?
+    whitelist-mode: false
+    #If QS should ignore disabled worlds.
+    ignore-disabled-worlds: true
+    #Should we delete the shop in a land when the shop owner loses the permission for this land?
+    delete-on-lose-permission: false
+  #FabledSkyblock Integration
+  fabledskyblock:
+    # If a player wants to create a shop, the player must have the quickshop-create flag.
+    # If a player wants to trade a shop, the player must have the quickshop-trade flag.
+    enable: false
+    #Should we prevent the creation of a shop or trade with a shop outside FabledSkyblock's area?
+    whitelist-mode: false
+  #IridumSkyblock Integration:
+  iridiumskyblock:
+    enable: false
+    #Is only the island owner allowed to create shops?
+    owner-create-only: false
+  #GriefPrevention Integration
+  griefprevention:
+    enable: false
+    #Should we prevent the creation of a shop or trade with a shop outside GriefPrevention's area?
+    whitelist-mode: true
+    #Which check does a player need to pass to create a shop?
+    #Available fields:
+    #BUILD = The player must have the ability to build in the target claim.
+    #INVENTORY = The player must be able to access containers.
+    #ACCESS = The Player must have the ability to access the target claim.
+    create: INVENTORY
+    #Which checks does a player need to pass to trade with a shop?
+    #You can use multiple checks at the same time.
+    #Priority: UP > DOWN
+    #Available fields:
+    #BUILD = The player must have the ability to build in the target claim.
+    #INVENTORY = The player must be able to access containers.
+    #ACCESS = The Player must have the ability to access the target claim.
+    trade: [ ]
+    #Should QuickShop delete shops if the trust permission of the shop owner has been changed on the claim/subclaim?
+    #Removes a shop if the shop owner no longer has permission to build a shop there.
+    #Never removes a shop of the claim owner.
+    delete-on-claim-trust-changed: true
+    #Should QuickShop delete shops if the claim/subclaim has been unclaimed?
+    #Removes all the shops that were inside the claim/subclaim that was unclaimed.
+    #Never removes a shop of the claim owner when unclaiming a subclaim.
+    delete-on-claim-unclaimed: true
+    #Should QuickShop delete shops if the claim has been expired?
+    #Removes all the shops that were inside the claim.
+    delete-on-claim-expired: true
+    #Should QuickShop delete shops if claim/subclaim has been resized?
+    #Removes a shop that the old claim contains but the new claim doesn't.
+    #Removes a shop if the shop was inside the subclaim but now it is outside the subclaim.
+    #Removes a shop if the shop was outside the subclaim but now it is inside the subclaim.
+    #Never removes a shop of the claim owner when resizing a subclaim.
+    delete-on-claim-resized: true
+    #Should Quickshop delete shops if a subclaim has been created?
+    #If a subclaim is created that will contain, initially, shops from others players, then we will remove them.
+    #Because they won't have, initially, permission to create a shop in that subclaim.
+    #Never removes a shop of the claim owner.
+    delete-on-subclaim-created: true
+  #Residence Integration
+  residence:
+    enable: false
+    #Should we prevent the creation of a shop or trade with a shop outside Residence's area?
+    whitelist-mode: true
+    #Which checks does a player need to pass to create a shop?
+    #You can use multiple checks at the same time.
+    #Priority: UP > DOWN
+    #
+    #Available fields:
+    #FLAG = The region must have the quickshop.create flag set.
+    #<OTHER> = Other available registered flags in the Residence plugin or addons.
+    create:
+      - FLAG
+      - interact
+      - use
+      #Which checks does a player need to pass to trade with a shop?
+      #You can use multiple checks at the same time.
+      #Priority: UP > DOWN
+      #
+    #Available fields:
+    #FLAG = The region must have the quickshop.trade flag set.
+    #<OTHER> = Other available registered flags in the Residence plugin or addons.
+    trade: [ ]
+  #Factions Integration
+  factions:
+    enable: false
+    #Should we prevent the creation of a shop or trade with a shop outside Factions's area?
+    whitelist-mode: true
+    #Which checks does a player need to pass to create a shop?
+    create:
+      #Factions requires the status to match with these:
+      require:
+        open: false
+        normal: true
+        wilderness: false
+        peaceful: true
+        permanent: false
+        safezone: false
+        own: false
+        warzone: false
+        #The player must have these flags in the faction:
+      flags:
+        - CONTAINER
+        - ECONOMY
+    #Which checks does a player need to pass to trade with a shop?
+    trade:
+      #Factions requires the status to match with these:
+      require:
+        open: false
+        normal: true
+        wilderness: false
+        peaceful: false
+        permanent: false
+        safezone: false
+        own: false
+        warzone: false
+        #The player must have these flags in the faction:
+      flags: [ ]
+  #Superior Skyblock Integration
+  superiorskyblock:
+    enable: false
+    #Is only the island owner allowed to create shops?
+    owner-create-only: false
+    #Delete shops when the shop owner got kicked/quited from the island.
+    delete-shop-on-member-leave: true
+  #AdvanvedRegionMarket shop deletion Integration
+  advancedregionmarket:
+    enable: true
+
+#The protection that a shop should check.
+protect:
+  explode: true
+  hopper: true
+  entity: true
+
+#This option allows you to set custom item max stacksizes.
+#If nothing matches, then all items (*) will be used.
+#* means all items.
+#Examples:
+#
+#custom-item-stacksize:
+# - "*:128"
+# - STONE:128
+#
+custom-item-stacksize: [ ]
+
+# Shops purger
+# Will purge all shops that owner offline x days while use command or server startup
+purge:
+  enabled: false
+  #Whether to purge shops automatically when server started
+  at-server-startup: true
+  #Whether to export a backup file for recovery before each purge
+  backup: true
+  days: 60
+  # At this moment, QuickShop only compatible with Vanilla banning system (e.g Essentials using)
+  banned: true
+  # At this moment, QuickShop only compatible with Vanilla OP system, LuckPerms may need add in future.
+  skip-op: true
+  return-create-fee: true
+
+debug:
+  #Should we disable the debug logger?
+  #This will save a lot of execution time but will make reporting bugs
+  #and getting support harder because of the lack of information.
+  disable-debuglogger: false
+  #Log stacktrace when deleting shop?
+  shop-deletion: false
+  #Delete corrupt shops while loading?
+  #Setting this to false will disable the loading of corrupt shops!
+  delete-corrupt-shops: false
+
+# Legacy data updater
+# Turn on this will make QuickShop to execute extra checks and may affect performance.
+# Only turn it on when you updating from old versions.
+legacy-updater:
+  shop-sign: false
+
+#Set the command alias for qs main command
+# - playershop
+# - pshop
+custom-commands:
+  - shop
+  - chestshop
+  - cshop
+
+#Let this stay false, DO NOT TOUCH IT!
+config-damaged: false
+
+
+
