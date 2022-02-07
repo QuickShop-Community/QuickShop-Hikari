@@ -25,6 +25,7 @@ import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import de.themoep.minedown.adventure.MineDownParser;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.io.IOUtils;
@@ -211,6 +212,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         } catch (InvalidConfigurationException exception) {
             // Force loading the locale file form remote server because file not valid.
             configuration.loadFromString(distribution.getFile(distributionFile, distributionCode, true));
+            plugin.getLogger().log(Level.WARNING, "Cannot load language file from distribution platform, some strings may missing!", exception);
         }
         return configuration;
     }
@@ -491,7 +493,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     if (str.isEmpty()) {
                         return Collections.singletonList(Component.text("Fallback Missing Language Key: " + path + ", report to QuickShop!"));
                     }
-                    List<Component> components = str.stream().map(s -> QuickShop.getInstance().getMineDownParser().parse(s).build().compact()).toList();
+                    List<Component> components = str.stream().map(s -> new MineDownParser().parse(s).build().compact()).toList();
                     return postProcess(components);
                 } else {
                     return forLocale(languageCode);
@@ -506,7 +508,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 if (str.isEmpty()) {
                     return Collections.singletonList(Component.text("Fallback Missing Language Key: " + path + ", report to QuickShop!"));
                 }
-                List<Component> components = str.stream().map(s -> QuickShop.getInstance().getMineDownParser().parse(s).build().compact()).toList();
+                List<Component> components = str.stream().map(s -> new MineDownParser().parse(s).build().compact()).toList();
                 return postProcess(components);
             }
         }
@@ -612,7 +614,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     if (str == null) {
                         return Component.text("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     }
-                    Component component = QuickShop.getInstance().getMineDownParser().parse(str).build().compact();
+                    Component component = new MineDownParser().parse(str).build().compact();
                     return postProcess(component);
                 } else {
                     return forLocale(MsgUtil.getDefaultGameLanguageCode());
@@ -627,7 +629,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 if (str == null) {
                     return Component.text("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                 }
-                Component component = QuickShop.getInstance().getMineDownParser().parse(str).build().compact();
+                Component component = new MineDownParser().parse(str).build().compact();
                 return postProcess(component);
             }
         }

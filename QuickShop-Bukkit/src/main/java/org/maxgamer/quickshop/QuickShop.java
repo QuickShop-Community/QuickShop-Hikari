@@ -262,7 +262,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private Yaml configurationForCompatibility = null;
     @Getter
     private Platform platform;
-    private final ThreadLocal<MineDownParser> parser = ThreadLocal.withInitial(MineDownParser::new);
     @Getter
     private BukkitAudiences audience;
 
@@ -2250,10 +2249,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
         }
         return this.gameVersion;
-    }
-     @NotNull
-    public MineDownParser getMineDownParser(){
-        return this.parser.get();
     }
     @NotNull
     public BukkitAudiences getAudience() {

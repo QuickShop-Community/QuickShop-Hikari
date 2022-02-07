@@ -39,6 +39,11 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
+            <resource>
+                <targetPath>/crowdin</targetPath>
+                <directory>${project.basedir}${file.separator}..${file.separator}crowdin</directory>
+                <filtering>false</filtering>
+            </resource>
         </resources>
     </build>
 

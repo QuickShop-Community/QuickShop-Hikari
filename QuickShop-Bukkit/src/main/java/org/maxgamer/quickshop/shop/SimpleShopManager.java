@@ -27,6 +27,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import de.themoep.minedown.adventure.MineDownParser;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -1272,7 +1273,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 //Because the bukkit API limit, we can't get the actual effect level
                 chatSheetPrinter.printLine(Component.empty()
                         .color(NamedTextColor.YELLOW)
-                        .append(plugin.getMineDownParser().parse(MsgUtil.getPotioni18n(potionEffectType)))
+                        .append(new MineDownParser().parse(MsgUtil.getPotioni18n(potionEffectType)))
                 );
             }
             if (potionMeta.hasCustomEffects()) {

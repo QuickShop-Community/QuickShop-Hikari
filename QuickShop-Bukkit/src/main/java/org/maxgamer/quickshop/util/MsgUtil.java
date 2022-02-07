@@ -24,7 +24,6 @@ import com.google.common.collect.Maps;
 import com.google.gson.JsonParseException;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -54,8 +53,6 @@ import org.maxgamer.quickshop.util.logging.container.PluginGlobalAlertLog;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -162,10 +159,11 @@ public class MsgUtil {
      * @return filled component
      */
     @NotNull
-    public static Component fillArgs(@NotNull Component origin, @Nullable ComponentLike... args) {
+    public static Component fillArgs(@NotNull Component origin, @Nullable Component... args) {
+        plugin.getLogger().info("Received: "+ GsonComponentSerializer.gson().serialize(origin));
         for (int i = 0; i < args.length; i++) {
             origin = origin.replaceText(TextReplacementConfig.builder()
-                    .match("{" + i + "}")
+                    .matchLiteral("{" + i + "}")
                     .replacement(args[i] == null ? Component.empty() : args[i])
                     .build());
         }
@@ -258,10 +256,6 @@ public class MsgUtil {
         // Store it
         enchi18n = YamlConfiguration.loadConfiguration(enchi18nFile);
         enchi18n.options().copyDefaults(false);
-        YamlConfiguration enchi18nYAML =
-                YamlConfiguration.loadConfiguration(
-                        new InputStreamReader(Objects.requireNonNull(plugin.getResource("enchi18n.yml")), StandardCharsets.UTF_8));
-        enchi18n.setDefaults(enchi18nYAML);
         Enchantment[] enchsi18n = Enchantment.values();
         for (Enchantment ench : enchsi18n) {
             String enchi18nString = enchi18n.getString("enchi18n." + ench.getKey().getKey().trim());
@@ -298,10 +292,6 @@ public class MsgUtil {
         // Store it
         itemi18n = YamlConfiguration.loadConfiguration(itemi18nFile);
         itemi18n.options().copyDefaults(false);
-        YamlConfiguration itemi18nYAML =
-                YamlConfiguration.loadConfiguration(
-                        new InputStreamReader(Objects.requireNonNull(plugin.getResource("itemi18n.yml")), StandardCharsets.UTF_8));
-        itemi18n.setDefaults(itemi18nYAML);
         Material[] itemsi18n = Material.values();
         for (Material material : itemsi18n) {
             String itemi18nString = itemi18n.getString("itemi18n." + material.name());
@@ -337,10 +327,6 @@ public class MsgUtil {
         // Store it
         potioni18n = YamlConfiguration.loadConfiguration(potioni18nFile);
         potioni18n.options().copyDefaults(false);
-        YamlConfiguration potioni18nYAML =
-                YamlConfiguration.loadConfiguration(
-                        new InputStreamReader(Objects.requireNonNull(plugin.getResource("potioni18n.yml")), StandardCharsets.UTF_8));
-        potioni18n.setDefaults(potioni18nYAML);
         for (PotionEffectType potion : PotionEffectType.values()) {
             if (potion == null) {
                 continue;
