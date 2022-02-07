@@ -594,7 +594,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     public final void onLoad() {
         instance = this;
         Util.setPlugin(this);
-        this.audience = BukkitAudiences.create(this);
         this.onLoadCalled = true;
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up");
         //BEWARE THESE ONLY RUN ONCE
@@ -872,7 +871,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
 
         getLogger().info("QuickShop " + getFork());
-
+        getLogger().info("Chat processor selected: Hardcorded Adventure Library.");
+        this.audience = BukkitAudiences.create(this);
         /* Check the running envs is support or not. */
         getLogger().info("Starting plugin self-test, please wait...");
         runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);

@@ -238,7 +238,7 @@
                                     </relocation>
                                     <relocation>
                                         <pattern>net.kyori.examination</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.net..kyori.examination</shadedPattern>
+                                        <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.examination</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>net.kyori.adventure</pattern>
