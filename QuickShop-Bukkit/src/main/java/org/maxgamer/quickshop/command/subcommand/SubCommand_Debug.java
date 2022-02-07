@@ -20,6 +20,9 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -32,14 +35,9 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.Util;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 
 @AllArgsConstructor
@@ -59,28 +57,10 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "debug", "dev", "devmode" -> switchDebug(sender);
             case "handlerlist" -> {
                 if (cmdArg.length < 2) {
-                    MsgUtil.sendDirectMessage(sender, "You must enter an event class");
+                    MsgUtil.sendDirectMessage(sender, Component.text("You must enter an event class"));
                     break;
                 }
                 printHandlerList(sender, cmdArg[1]);
-            }
-            case "jvm" -> {
-                RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
-                List<String> arguments = runtimeMxBean.getInputArguments();
-                MsgUtil.sendDirectMessage(sender,
-                        ChatColor.GOLD + "Arguments: " + ChatColor.AQUA + Util.list2String(arguments));
-                MsgUtil.sendDirectMessage(sender, ChatColor.GOLD + "Name: " + ChatColor.AQUA + runtimeMxBean.getName());
-                MsgUtil.sendDirectMessage(sender,
-                        ChatColor.GOLD + "VM Name: " + ChatColor.AQUA + runtimeMxBean.getVmName());
-                MsgUtil.sendDirectMessage(sender,
-                        ChatColor.GOLD + "Uptime: " + ChatColor.AQUA + runtimeMxBean.getUptime());
-                MsgUtil.sendDirectMessage(sender,
-                        ChatColor.GOLD + "JVM Ver: " + ChatColor.AQUA + runtimeMxBean.getVmVersion());
-                Map<String, String> sys = runtimeMxBean.getSystemProperties();
-                List<String> sysData = new ArrayList<>();
-                sys.keySet().forEach(key -> sysData.add(key + "=" + sys.get(key)));
-                MsgUtil.sendDirectMessage(sender,
-                        ChatColor.GOLD + "Sys Pro: " + ChatColor.AQUA + Util.list2String(sysData));
             }
             case "signs" -> {
                 final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
@@ -92,12 +72,12 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                     final Block b = bIt.next();
                     final Shop shop = plugin.getShopManager().getShop(b.getLocation());
                     if (shop != null) {
-                        shop.getSigns().forEach(sign -> MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "Sign located at: " + sign.getLocation()));
+                        shop.getSigns().forEach(sign -> MsgUtil.sendDirectMessage(sender, Component.text( "Sign located at: " + sign.getLocation()).color(NamedTextColor.GREEN)));
                         break;
                     }
                 }
             }
-            default -> MsgUtil.sendDirectMessage(sender, "Error! No correct arguments were entered!.");
+            default -> MsgUtil.sendDirectMessage(sender, Component.text("Error! No correct arguments were entered!."));
         }
     }
 
@@ -136,15 +116,15 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
             for (RegisteredListener listener1 : list.getRegisteredListeners()) {
                 MsgUtil.sendDirectMessage(sender,
-                        ChatColor.AQUA
+                        LegacyComponentSerializer.legacySection().deserialize(  ChatColor.AQUA
                                 + listener1.getPlugin().getName()
                                 + ChatColor.YELLOW
                                 + " # "
                                 + ChatColor.GREEN
-                                + listener1.getListener().getClass().getCanonicalName());
+                                + listener1.getListener().getClass().getCanonicalName()));
             }
         } catch (Exception th) {
-            MsgUtil.sendDirectMessage(sender, "ERR " + th.getMessage());
+            MsgUtil.sendDirectMessage(sender, Component.text("ERR " + th.getMessage()).color(NamedTextColor.RED));
             plugin.getLogger().log(Level.WARNING, "An error has occurred while getting the HandlerList", th);
         }
     }

@@ -19,6 +19,8 @@
 
 package org.maxgamer.quickshop.watcher;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -65,21 +67,21 @@ public class UpdateWatcher implements Listener {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (QuickShop.getPermissionManager()
                                 .hasPermission(player, "quickshop.alerts")) {
-                            List<String> notifys =
+                            List<Component> notifys =
                                     QuickShop.getInstance().text().ofList(player, "updatenotify.list").forLocale();
                             int notifyNum = -1;
                             if (notifys.size() > 1) {
                                 notifyNum = random.nextInt(notifys.size());
                             }
-                            String notify;
+                            Component notify;
                             if (notifyNum > 0) { // Translate bug.
                                 notify = notifys.get(notifyNum);
                             } else {
-                                notify = "New update {0} now avaliable! Please update!";
+                                notify = Component.text("New update {0} now avaliable! Please update!");
                             }
-                            notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
+                            notify = MsgUtil.fillArgs(notify, Component.text(updater.getRemoteServerVersion()), Component.text(QuickShop.getInstance().getBuildInfo().getBuildTag()));
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
-                            player.sendMessage(ChatColor.GREEN + notify);
+                            player.sendMessage(ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(notify));
                             player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
                             player.sendMessage(ChatColor.AQUA + " https://www.spigotmc.org/resources/62575/");
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
@@ -97,21 +99,21 @@ public class UpdateWatcher implements Listener {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (QuickShop.getPermissionManager()
                                 .hasPermission(player, "quickshop.alerts")) {
-                            List<String> notifys =
+                            List<Component> notifys =
                                     QuickShop.getInstance().text().ofList(player, "updatenotify.list").forLocale();
                             int notifyNum = -1;
                             if (notifys.size() > 1) {
                                 notifyNum = random.nextInt(notifys.size());
                             }
-                            String notify;
+                            Component notify;
                             if (notifyNum > 0) { // Translate bug.
                                 notify = notifys.get(notifyNum);
                             } else {
-                                notify = "New update {0} now avaliable! Please update!";
+                                notify = Component.text( "New update {0} now avaliable! Please update!");
                             }
-                            notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
+                            notify = MsgUtil.fillArgs(notify, Component.text(updater.getRemoteServerVersion()), Component.text(QuickShop.getInstance().getBuildInfo().getBuildTag()));
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
-                            player.sendMessage(ChatColor.GREEN + notify);
+                            player.sendMessage(ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(notify));
                             player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
                             player.sendMessage(ChatColor.AQUA + " https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT");
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
@@ -137,13 +139,13 @@ public class UpdateWatcher implements Listener {
             if (!QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.alerts") || getUpdater().isLatest(getUpdater().getCurrentRunning())) {
                 return;
             }
-            List<String> notifys = QuickShop.getInstance().text().ofList(e.getPlayer(), "updatenotify.list").forLocale();
+            List<Component> notifys = QuickShop.getInstance().text().ofList(e.getPlayer(), "updatenotify.list").forLocale();
             int notifyNum = random.nextInt(notifys.size());
-            String notify = notifys.get(notifyNum);
-            notify = MsgUtil.fillArgs(notify, updater.getRemoteServerVersion(), QuickShop.getInstance().getBuildInfo().getBuildTag());
+            Component notify = notifys.get(notifyNum);
+            notify = MsgUtil.fillArgs(notify, Component.text(updater.getRemoteServerVersion()), Component.text( QuickShop.getInstance().getBuildInfo().getBuildTag()));
 
             e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");
-            e.getPlayer().sendMessage(ChatColor.GREEN + notify);
+            e.getPlayer().sendMessage(ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(notify));
             e.getPlayer().sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
             e.getPlayer().sendMessage(ChatColor.AQUA + " https://www.spigotmc.org/resources/62575/");
             e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");

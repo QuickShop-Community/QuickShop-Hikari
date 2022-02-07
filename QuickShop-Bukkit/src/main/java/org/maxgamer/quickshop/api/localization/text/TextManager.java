@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.api.localization.text;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,7 +49,7 @@ public interface TextManager {
      * @return The text object
      */
     @NotNull
-    Text of(@NotNull String path, Object... args);
+    Text of(@NotNull String path, Component... args);
 
     /**
      * Getting the translation with path with player's locale (if available)
@@ -59,7 +60,7 @@ public interface TextManager {
      * @return The text object
      */
     @NotNull
-    Text of(@Nullable CommandSender sender, @NotNull String path, Object... args);
+    Text of(@Nullable CommandSender sender, @NotNull String path, Component... args);
 
     /**
      * Getting the translation with path with player's locale (if available)
@@ -70,7 +71,7 @@ public interface TextManager {
      * @return The text object
      */
     @NotNull
-    Text of(@Nullable UUID sender, @NotNull String path, Object... args);
+    Text of(@Nullable UUID sender, @NotNull String path, Component... args);
 
     /**
      * Getting the translation with path with default locale (if available)
@@ -80,7 +81,7 @@ public interface TextManager {
      * @return The text object
      */
     @NotNull
-    TextList ofList(@NotNull String path, Object... args);
+    TextList ofList(@NotNull String path, Component... args);
 
     /**
      * Return the set of available Languages
@@ -98,7 +99,7 @@ public interface TextManager {
      * @return The text object
      */
     @NotNull
-    TextList ofList(@Nullable UUID sender, @NotNull String path, Object... args);
+    TextList ofList(@Nullable UUID sender, @NotNull String path, Component... args);
 
     /**
      * Getting the translation with path with player's locale (if available)
@@ -109,5 +110,5 @@ public interface TextManager {
      * @return The text object
      */
     @NotNull
-    TextList ofList(@Nullable CommandSender sender, @NotNull String path, Object... args);
+    TextList ofList(@Nullable CommandSender sender, @NotNull String path, Component... args);
 }

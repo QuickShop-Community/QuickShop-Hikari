@@ -1,5 +1,6 @@
 package org.maxgamer.quickshop.api.localization.text;
 
+import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 
 public interface Text {
@@ -9,14 +10,14 @@ public interface Text {
      * @param locale The minecraft locale code (like en_us)
      * @return The text
      */
-    @NotNull String forLocale(@NotNull String locale);
+    @NotNull Component forLocale(@NotNull String locale);
 
     /**
      * Getting the text for player locale
      *
      * @return Getting the text for player locale
      */
-    @NotNull String forLocale();
+    @NotNull Component forLocale();
 
     /**
      * Send text to the player

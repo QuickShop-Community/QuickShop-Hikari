@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
@@ -56,7 +57,7 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
                 } else {
                     shop.setTaxAccount(PlayerFinder.findUUIDByName(cmdArg[0]));
                 }
-                plugin.text().of(sender, "taxaccount-set", cmdArg[0]).send();
+                plugin.text().of(sender, "taxaccount-set", LegacyComponentSerializer.legacySection().deserialize( cmdArg[0])).send();
                 return;
             }
         }

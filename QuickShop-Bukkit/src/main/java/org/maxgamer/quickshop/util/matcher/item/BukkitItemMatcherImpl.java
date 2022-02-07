@@ -19,19 +19,13 @@
 
 package org.maxgamer.quickshop.util.matcher.item;
 
-import de.tr7zw.nbtapi.NBTItem;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.ItemMatcher;
-import org.maxgamer.quickshop.util.Util;
-
-import java.util.Arrays;
-import java.util.logging.Level;
 
 /**
  * A simple impl for ItemMatcher
@@ -85,22 +79,22 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
         original.setAmount(1);
         tester = tester.clone();
         tester.setAmount(1);
-
-        if (plugin.getNbtapi() != null) {
-            NBTItem nbtItemOriginal = new NBTItem(original);
-            NBTItem nbtItemTester = new NBTItem(tester);
-            try {
-                String tagOriginal = nbtItemOriginal.getString("shopItemId");
-                String tagTester = nbtItemTester.getString("shopItemId");
-                if (StringUtils.isNotEmpty(tagOriginal) && StringUtils.isNotEmpty(tagTester) && tagOriginal.equals(tagTester)) {
-                    return true;
-                }
-            } catch (Exception e) {
-                plugin.disableNBTAPI();
-                plugin.getLogger().log(Level.WARNING, "NBTAPI support is broken, dsiable and fallback... (You can safely ignore this)", e);
-                Util.debugLog("NBTAPI is broken, error: " + e.getMessage() + "\n stacktrace:  \n" + Arrays.toString(e.getStackTrace()));
-            }
-        }
+//
+//        if (plugin.getNbtapi() != null) {
+//            NBTItem nbtItemOriginal = new NBTItem(original);
+//            NBTItem nbtItemTester = new NBTItem(tester);
+//            try {
+//                String tagOriginal = nbtItemOriginal.getString("shopItemId");
+//                String tagTester = nbtItemTester.getString("shopItemId");
+//                if (StringUtils.isNotEmpty(tagOriginal) && StringUtils.isNotEmpty(tagTester) && tagOriginal.equals(tagTester)) {
+//                    return true;
+//                }
+//            } catch (Exception e) {
+//                plugin.disableNBTAPI();
+//                plugin.getLogger().log(Level.WARNING, "NBTAPI support is broken, dsiable and fallback... (You can safely ignore this)", e);
+//                Util.debugLog("NBTAPI is broken, error: " + e.getMessage() + "\n stacktrace:  \n" + Arrays.toString(e.getStackTrace()));
+//            }
+//        }
         return tester.isSimilar(original);
     }
 }

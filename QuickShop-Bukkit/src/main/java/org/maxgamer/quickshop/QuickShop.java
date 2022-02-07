@@ -30,12 +30,14 @@ import de.leonhard.storage.LightningBuilder;
 import de.leonhard.storage.Yaml;
 import de.leonhard.storage.internal.settings.ConfigSettings;
 import de.leonhard.storage.internal.settings.ReloadSettings;
+import de.themoep.minedown.adventure.MineDownParser;
 import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
 import lombok.Getter;
 import lombok.Setter;
 import me.minebuilders.clearlag.Clearlag;
 import me.minebuilders.clearlag.listeners.ItemMergeListener;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -260,6 +262,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private Yaml configurationForCompatibility = null;
     @Getter
     private Platform platform;
+    private final ThreadLocal<MineDownParser> parser = ThreadLocal.withInitial(MineDownParser::new);
+    @Getter
+    private BukkitAudiences audience;
 
     /**
      * Use for mock bukkit
@@ -589,6 +594,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     public final void onLoad() {
         instance = this;
         Util.setPlugin(this);
+        this.audience = BukkitAudiences.create(this);
         this.onLoadCalled = true;
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up");
         //BEWARE THESE ONLY RUN ONCE
@@ -2245,5 +2251,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
         }
         return this.gameVersion;
+    }
+     @NotNull
+    public MineDownParser getMineDownParser(){
+        return this.parser.get();
+    }
+    @NotNull
+    public BukkitAudiences getAudience() {
+        return audience;
     }
 }

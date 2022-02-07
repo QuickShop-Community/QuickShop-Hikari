@@ -26,6 +26,7 @@ import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.SneakyThrows;
+import net.kyori.adventure.text.Component;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -40,7 +41,6 @@ import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.localization.text.postprocessor.PostProcessor;
 import org.maxgamer.quickshop.localization.text.distributions.Distribution;
 import org.maxgamer.quickshop.localization.text.distributions.crowdin.CrowdinOTA;
-import org.maxgamer.quickshop.localization.text.postprocessing.impl.ColorProcessor;
 import org.maxgamer.quickshop.localization.text.postprocessing.impl.FillerProcessor;
 import org.maxgamer.quickshop.localization.text.postprocessing.impl.PlaceHolderApiProcessor;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -271,7 +271,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 }));
 
         // Register post processor
-        postProcessors.add(new ColorProcessor());
         postProcessors.add(new FillerProcessor());
         postProcessors.add(new PlaceHolderApiProcessor());
     }
@@ -343,7 +342,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull Text of(@NotNull String path, Object... args) {
+    public @NotNull Text of(@NotNull String path, Component... args) {
         return new Text(this, (CommandSender) null, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
     }
 
@@ -356,7 +355,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull Text of(@Nullable CommandSender sender, @NotNull String path, Object... args) {
+    public @NotNull Text of(@Nullable CommandSender sender, @NotNull String path, Component... args) {
         return new Text(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
     }
 
@@ -369,7 +368,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull Text of(@Nullable UUID sender, @NotNull String path, Object... args) {
+    public @NotNull Text of(@Nullable UUID sender, @NotNull String path, Component... args) {
         return new Text(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
     }
 
@@ -381,7 +380,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull TextList ofList(@NotNull String path, Object... args) {
+    public @NotNull TextList ofList(@NotNull String path, Component... args) {
         return new TextList(this, (CommandSender) null, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
     }
 
@@ -394,7 +393,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull TextList ofList(@Nullable UUID sender, @NotNull String path, Object... args) {
+    public @NotNull TextList ofList(@Nullable UUID sender, @NotNull String path, Component... args) {
         return new TextList(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
     }
 
@@ -407,7 +406,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull TextList ofList(@Nullable CommandSender sender, @NotNull String path, Object... args) {
+    public @NotNull TextList ofList(@Nullable CommandSender sender, @NotNull String path, Component... args) {
         return new TextList(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
     }
 
@@ -422,11 +421,11 @@ public class SimpleTextManager implements TextManager, Reloadable {
         private final String path;
         private final Map<String, JsonConfiguration> mapping;
         private final CommandSender sender;
-        private final Object[] args;
+        private final Component[] args;
         @Nullable
         private final JsonConfiguration bundled;
 
-        private TextList(SimpleTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Object... args) {
+        private TextList(SimpleTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Component... args) {
             this.manager = manager;
             this.sender = sender;
             this.mapping = mapping;
@@ -435,7 +434,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             this.args = args;
         }
 
-        private TextList(SimpleTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Object... args) {
+        private TextList(SimpleTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Component... args) {
             this.manager = manager;
             if (sender != null) {
                 this.sender = Bukkit.getPlayer(sender);
@@ -464,10 +463,10 @@ public class SimpleTextManager implements TextManager, Reloadable {
          * @return The text that processed
          */
         @NotNull
-        private List<String> postProcess(@NotNull List<String> text) {
-            List<String> texts = new ArrayList<>();
+        private List<Component> postProcess(@NotNull List<Component> text) {
+            List<Component> texts = new ArrayList<>();
             for (PostProcessor postProcessor : this.manager.postProcessors) {
-                for (String s : text) {
+                for (Component s : text) {
                     texts.add(postProcessor.process(s, sender, args));
                 }
             }
@@ -482,7 +481,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
          */
         @Override
         @NotNull
-        public List<String> forLocale(@NotNull String locale) {
+        public List<Component> forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
             if (index == null) {
                 Util.debugLog("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
@@ -490,9 +489,10 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 if (languageCode.equals(locale)) {
                     List<String> str = fallbackLocal();
                     if (str.isEmpty()) {
-                        return Collections.singletonList("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                        return Collections.singletonList(Component.text("Fallback Missing Language Key: " + path + ", report to QuickShop!"));
                     }
-                    return postProcess(str);
+                    List<Component> components = str.stream().map(s -> QuickShop.getInstance().getMineDownParser().parse(s).build().compact()).toList();
+                    return postProcess(components);
                 } else {
                     return forLocale(languageCode);
                 }
@@ -502,11 +502,12 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     // Fallback
                     Util.debugLog("Fallback " + path + " to bundle translation caused OTA & User's override file doesn't contains this key");
                     str = fallbackLocal();
-                    if (str.isEmpty()) {
-                        return Collections.singletonList("Fallback Missing Language Key: " + path + ", report to QuickShop!");
-                    }
                 }
-                return postProcess(str);
+                if (str.isEmpty()) {
+                    return Collections.singletonList(Component.text("Fallback Missing Language Key: " + path + ", report to QuickShop!"));
+                }
+                List<Component> components = str.stream().map(s -> QuickShop.getInstance().getMineDownParser().parse(s).build().compact()).toList();
+                return postProcess(components);
             }
         }
 
@@ -517,7 +518,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
          */
         @Override
         @NotNull
-        public List<String> forLocale() {
+        public List<Component> forLocale() {
             if (sender instanceof Player) {
                 return forLocale(((Player) sender).getLocale());
             } else {
@@ -533,7 +534,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             if (sender == null) {
                 return;
             }
-            for (String s : forLocale()) {
+            for (Component s : forLocale()) {
                 MsgUtil.sendDirectMessage(sender, s);
             }
         }
@@ -544,11 +545,11 @@ public class SimpleTextManager implements TextManager, Reloadable {
         private final String path;
         private final Map<String, JsonConfiguration> mapping;
         private final CommandSender sender;
-        private final Object[] args;
+        private final Component[] args;
         @Nullable
         private final JsonConfiguration bundled;
 
-        private Text(SimpleTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Object... args) {
+        private Text(SimpleTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Component... args) {
             this.manager = manager;
             this.sender = sender;
             this.mapping = mapping;
@@ -557,7 +558,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             this.args = args;
         }
 
-        private Text(SimpleTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Object... args) {
+        private Text(SimpleTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Component... args) {
             this.manager = manager;
             if (sender != null) {
                 this.sender = Bukkit.getPlayer(sender);
@@ -587,7 +588,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
          * @return The text that processed
          */
         @NotNull
-        private String postProcess(@NotNull String text) {
+        private Component postProcess(@NotNull Component text) {
             for (PostProcessor postProcessor : this.manager.postProcessors) {
                 text = postProcessor.process(text, sender, args);
             }
@@ -602,16 +603,17 @@ public class SimpleTextManager implements TextManager, Reloadable {
          */
         @Override
         @NotNull
-        public String forLocale(@NotNull String locale) {
+        public Component forLocale(@NotNull String locale) {
             JsonConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
             if (index == null) {
                 Util.debugLog("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
                 if (MsgUtil.getDefaultGameLanguageCode().equals(locale)) {
                     String str = fallbackLocal();
                     if (str == null) {
-                        return "Fallback Missing Language Key: " + path + ", report to QuickShop!";
+                        return Component.text("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     }
-                    return postProcess(str);
+                    Component component = QuickShop.getInstance().getMineDownParser().parse(str).build().compact();
+                    return postProcess(component);
                 } else {
                     return forLocale(MsgUtil.getDefaultGameLanguageCode());
                 }
@@ -621,11 +623,12 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     // Fallback
                     Util.debugLog("Fallback " + path + " to bundle translation caused OTA & User's override file doesn't contains this key");
                     str = fallbackLocal();
-                    if (str == null) {
-                        return "Fallback Missing Language Key: " + path + ", report to QuickShop!";
-                    }
                 }
-                return postProcess(str);
+                if (str == null) {
+                    return Component.text("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                }
+                Component component = QuickShop.getInstance().getMineDownParser().parse(str).build().compact();
+                return postProcess(component);
             }
         }
 
@@ -636,7 +639,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
          */
         @Override
         @NotNull
-        public String forLocale() {
+        public Component forLocale() {
             if (sender instanceof Player) {
                 return forLocale(((Player) sender).getLocale());
             } else {
@@ -652,7 +655,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             if (sender == null) {
                 return;
             }
-            String lang = forLocale();
+            Component lang = forLocale();
             MsgUtil.sendDirectMessage(sender, lang);
             // plugin.getQuickChat().send(sender, lang);
         }

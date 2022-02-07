@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
@@ -50,7 +51,7 @@ public class SubCommand_Unlimited implements CommandHandler<Player> {
                 plugin.text().of(sender, "command.toggle-unlimited.unlimited").send();
                 if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
                     plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);
-                    plugin.text().of(sender, "unlimited-shop-owner-changed", ((SimpleShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount().getName()).send();
+                    plugin.text().of(sender, "unlimited-shop-owner-changed", Component.text(((SimpleShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount().getName())).send();
                 }
                 return;
             }

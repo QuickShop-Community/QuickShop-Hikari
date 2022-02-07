@@ -20,10 +20,12 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.BootError;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -40,39 +42,35 @@ public class SubCommand_Update implements CommandHandler<CommandSender> {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            MsgUtil.sendDirectMessage(sender, ChatColor.YELLOW + "Checking for updates...");
+            MsgUtil.sendDirectMessage(sender, Component.text("Checking for updates...").color(NamedTextColor.YELLOW));
 
             if (plugin.getUpdateWatcher() == null) {
-                MsgUtil.sendDirectMessage(sender, ChatColor.RED + "It seems like the Updater has been disabled.");
+                MsgUtil.sendDirectMessage(sender, Component.text( "It seems like the Updater has been disabled.").color(NamedTextColor.RED));
                 return;
             }
             QuickUpdater updater = plugin.getUpdateWatcher().getUpdater();
             VersionType versionType = updater.getCurrentRunning();
             if (updater.isLatest(versionType)) {
-                MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "You're running the latest version!");
+                MsgUtil.sendDirectMessage(sender, Component.text( "You're running the latest version!").color(NamedTextColor.GREEN));
                 return;
             }
 
             if (cmdArg.length == 0 || !"confirm".equalsIgnoreCase(cmdArg[0])) {
-                MsgUtil.sendDirectMessage(sender, ChatColor.RED + "You will need to restart the server to complete the update of plugin! Before restarting plugin will stop working!");
-                MsgUtil.sendDirectMessage(sender, ChatColor.RED + "Type " + ChatColor.BOLD + "/qs update confirm" + ChatColor.RESET + ChatColor.RED + " to confirm update");
+                MsgUtil.sendDirectMessage(sender, Component.text( "You will need to restart the server to complete the update of plugin! Before restarting plugin will stop working!").color(NamedTextColor.RED));
+                MsgUtil.sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize( ChatColor.RED + "Type " + ChatColor.BOLD + "/qs update confirm" + ChatColor.RESET + ChatColor.RED + " to confirm update"));
                 return;
             }
-            MsgUtil.sendDirectMessage(sender, ChatColor.YELLOW + "Downloading update! This may take a while...");
+            MsgUtil.sendDirectMessage(sender, Component.text( "Downloading update! This may take a while...").color(NamedTextColor.YELLOW));
             try {
                 updater.install(updater.update(versionType));
             } catch (Exception e) {
-                MsgUtil.sendDirectMessage(sender, ChatColor.RED + "Update failed! Please check your console for more information.");
+                MsgUtil.sendDirectMessage(sender, Component.text( "Update failed! Please check your console for more information.").color(NamedTextColor.RED));
                 plugin.getSentryErrorReporter().ignoreThrow();
                 plugin.getLogger().log(Level.WARNING, "Failed to update QuickShop because of the following error:", e);
                 return;
             }
-
-            MsgUtil.sendDirectMessage(sender,
-                    ChatColor.GREEN + "Successful! Please restart your server to apply the updated version!");
-            MsgUtil.sendDirectMessage(sender,
-                    ChatColor.RED + "Before you restarting the server, QuickShop won't working again.");
-            plugin.setupBootError(new BootError(plugin.getLogger(), "Reboot required after update the plugin."), true);
+            MsgUtil.sendDirectMessage(sender, Component.text( "Successful! Please restart your server to apply the updated version!").color(NamedTextColor.GREEN));
+            MsgUtil.sendDirectMessage(sender, Component.text( "Please restart the server as soon as possible.").color(NamedTextColor.GREEN));
 
         });
     }

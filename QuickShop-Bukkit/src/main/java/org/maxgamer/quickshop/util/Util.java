@@ -20,13 +20,12 @@
 package org.maxgamer.quickshop.util;
 
 import com.google.common.collect.EvictingQueue;
-import de.themoep.minedown.MineDown;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
+
+import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -84,8 +83,6 @@ public class Util {
     @SuppressWarnings("UnstableApiUsage")
     private static final EvictingQueue<String> DEBUG_LOGS = EvictingQueue.create(500);
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
-
-    private static final ThreadLocal<MineDown> MINEDOWN = ThreadLocal.withInitial(() -> new MineDown(""));
     private static int BYPASSED_CUSTOM_STACKSIZE = -1;
     private static Yaml yaml = null;
     private volatile static Boolean devMode = null;
@@ -765,6 +762,13 @@ public class Util {
         } catch (Exception ignored) {
         }
     }
+    public static boolean isEmptyComponent(@Nullable Component component){
+        if(component == null)
+            return true;
+        if(component.equals(Component.empty()))
+            return true;
+        return component.equals(Component.text(""));
+    }
 
     /**
      * @param stack The ItemStack to check if it is blacklisted
@@ -1169,15 +1173,15 @@ public class Util {
         return Material.OAK_WALL_SIGN;
     }
 
-    /**
-     * Convert component to json
-     *
-     * @param components Chat Component
-     * @return Json
-     */
-    public static String componentsToJson(BaseComponent[] components) {
-        return ComponentSerializer.toString(components);
-    }
+//    /**
+//     * Convert component to json
+//     *
+//     * @param components Chat Component
+//     * @return Json
+//     */
+//    public static String componentsToJson(BaseComponent[] components) {
+//        return ComponentSerializer.toString(components);
+//    }
 
     @SneakyThrows
     public static void makeExportBackup(@Nullable String backupName) {

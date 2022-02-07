@@ -20,6 +20,8 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
@@ -59,12 +61,12 @@ public class SubCommand_Price implements CommandHandler<Player> {
         } catch (NumberFormatException ex) {
             // No number input
             Util.debugLog(ex.getMessage());
-            plugin.text().of(sender, "not-a-number", cmdArg[0]).send();
+            plugin.text().of(sender, "not-a-number", LegacyComponentSerializer.legacySection().deserialize(cmdArg[0])).send();
             return;
         }
         // No number input
         if (Double.isInfinite(price) || Double.isNaN(price)) {
-            plugin.text().of(sender, "not-a-number", cmdArg[0]).send();
+            plugin.text().of(sender, "not-a-number",LegacyComponentSerializer.legacySection().deserialize(cmdArg[0])).send();
             return;
         }
 
@@ -108,22 +110,22 @@ public class SubCommand_Price implements CommandHandler<Player> {
 
             PriceLimiterCheckResult checkResult = limiter.check(shop.getItem(), price);
             if (checkResult.getStatus() == PriceLimiterStatus.REACHED_PRICE_MIN_LIMIT) {
-                plugin.text().of(sender, "price-too-cheap", (format) ? MsgUtil.decimalFormat(checkResult.getMin()) : Double.toString(checkResult.getMin())).send();
+                plugin.text().of(sender, "price-too-cheap", LegacyComponentSerializer.legacySection().deserialize((format) ? MsgUtil.decimalFormat(checkResult.getMin()) : Double.toString(checkResult.getMin()))).send();
                 return;
             }
             if (checkResult.getStatus() == PriceLimiterStatus.REACHED_PRICE_MAX_LIMIT) {
-                plugin.text().of(sender, "price-too-high", (format) ? MsgUtil.decimalFormat(checkResult.getMax()) : Double.toString(checkResult.getMax())).send();
+                plugin.text().of(sender, "price-too-high", LegacyComponentSerializer.legacySection().deserialize((format) ? MsgUtil.decimalFormat(checkResult.getMax()) : Double.toString(checkResult.getMax()))).send();
                 return;
             }
             if (checkResult.getStatus() == PriceLimiterStatus.PRICE_RESTRICTED) {
                 plugin.text().of(sender, "restricted-prices", MsgUtil.getTranslateText(shop.getItem()),
-                        String.valueOf(checkResult.getMin()),
-                        String.valueOf(checkResult.getMax())).send();
+                        Component.text(checkResult.getMin()),
+                        Component.text(checkResult.getMax())).send();
                 return;
             }
 
             if (checkResult.getStatus() == PriceLimiterStatus.NOT_A_WHOLE_NUMBER) {
-                plugin.text().of(sender, "not-a-integer", price).send();
+                plugin.text().of(sender, "not-a-integer", Component.text(price)).send();
                 return;
             }
 
@@ -140,10 +142,10 @@ public class SubCommand_Price implements CommandHandler<Player> {
                     EconomyTransaction.TransactionSteps steps = transaction.getSteps();
                     if (steps == EconomyTransaction.TransactionSteps.CHECK) {
                         plugin.text().of(sender,
-                                "you-cant-afford-to-change-price", plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency())).send();
+                                "you-cant-afford-to-change-price", LegacyComponentSerializer.legacySection().deserialize(plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency()))).send();
                     } else {
                         plugin.text().of(sender,
-                                "fee-charged-for-price-change", plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency())).send();
+                                "fee-charged-for-price-change", LegacyComponentSerializer.legacySection().deserialize(plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency()))).send();
                         plugin.getLogger().log(Level.WARNING, "QuickShop can't pay taxes to the configured tax account! Please set the tax account name in the config.yml to an existing player: " + transaction.getLastError());
                     }
                     return;
@@ -153,7 +155,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
             shop.setPrice(price);
             shop.update();
             plugin.text().of(sender,
-                    "price-is-now", plugin.getEconomy().format(shop.getPrice(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency())).send();
+                    "price-is-now",LegacyComponentSerializer.legacySection().deserialize( plugin.getEconomy().format(shop.getPrice(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency()))).send();
             // Chest shops can be double shops.
             if (!(shop instanceof final ContainerShop cs)) {
                 return;
@@ -189,7 +191,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
     @Override
     public List<String> onTabComplete(
             @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length == 1 ? Collections.singletonList(QuickShop.getInstance().text().of(sender, "tabcomplete.price").forLocale()) : Collections.emptyList();
+        return cmdArg.length == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(QuickShop.getInstance().text().of(sender, "tabcomplete.price").forLocale())) : Collections.emptyList();
     }
 
 }

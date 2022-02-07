@@ -21,6 +21,8 @@ package org.maxgamer.quickshop.command.subcommand;
 
 import io.papermc.lib.PaperLib;
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -33,8 +35,6 @@ import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.util.*;
-
-import static org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat.toLegacyText;
 
 @AllArgsConstructor
 public class SubCommand_Find implements CommandHandler<Player> {
@@ -104,7 +104,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
         }
         //Check if no shops found
         if (aroundShops.isEmpty()) {
-            plugin.text().of(sender, "no-nearby-shop", lookFor).send();
+            plugin.text().of(sender, "no-nearby-shop", Component.text(lookFor)).send();
             return;
         }
 
@@ -118,23 +118,24 @@ public class SubCommand_Find implements CommandHandler<Player> {
             Location lookAt = closest.getKey().getLocation().clone().add(0.5, 0.5, 0.5);
             PaperLib.teleportAsync(sender, Util.lookAt(sender.getEyeLocation(), lookAt).add(0, -1.62, 0),
                     PlayerTeleportEvent.TeleportCause.UNKNOWN);
-            plugin.text().of(sender, "nearby-shop-this-way", String.valueOf(closest.getValue().intValue())).send();
+            plugin.text().of(sender, "nearby-shop-this-way", Component.text(closest.getValue().intValue())).send();
         } else {
-            StringBuilder stringBuilder = new StringBuilder(plugin.text().of(sender, "nearby-shop-header", lookFor).forLocale()).append("\n");
+            Component stringBuilder = plugin.text().of(sender, "nearby-shop-header", LegacyComponentSerializer.legacySection().deserialize(lookFor)).forLocale()
+                    .append(Component.newline());
             for (Map.Entry<Shop, Double> shopDoubleEntry : sortedShops) {
                 Shop shop = shopDoubleEntry.getKey();
                 Location location = shop.getLocation();
                 //  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)"
-                stringBuilder.append(plugin.text().of(sender, "nearby-shop-entry",
-                        toLegacyText(shop.getSignText(sender.getLocale()).get(1).getComponents()),
-                        toLegacyText(shop.getSignText(sender.getLocale()).get(3).getComponents()),
-                        String.valueOf(location.getBlockX()),
-                        String.valueOf(location.getBlockY()),
-                        String.valueOf(location.getBlockZ()),
-                        String.valueOf(shopDoubleEntry.getValue().intValue())
-                ).forLocale()).append("\n");
+                stringBuilder = stringBuilder.append(plugin.text().of(sender, "nearby-shop-entry",
+                        shop.getSignText(sender.getLocale()).get(1),
+                        shop.getSignText(sender.getLocale()).get(3),
+                        Component.text(location.getBlockX()),
+                        Component.text(location.getBlockY()),
+                        Component.text(location.getBlockZ()),
+                        Component.text(shopDoubleEntry.getValue().intValue())
+                ).forLocale()).append(Component.newline());
             }
-            MsgUtil.sendDirectMessage(sender, stringBuilder.toString());
+            MsgUtil.sendDirectMessage(sender, stringBuilder.compact());
         }
     }
 }

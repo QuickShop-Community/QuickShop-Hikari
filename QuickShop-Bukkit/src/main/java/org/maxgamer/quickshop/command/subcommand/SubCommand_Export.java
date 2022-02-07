@@ -21,6 +21,8 @@ package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.api.command.CommandHandler;
@@ -34,7 +36,7 @@ public class SubCommand_Export implements CommandHandler<ConsoleCommandSender> {
     @SneakyThrows
     public synchronized void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         Util.makeExportBackup(null);
-        MsgUtil.sendDirectMessage(sender, "Done.");
+        MsgUtil.sendDirectMessage(sender, Component.text("Done.").color(NamedTextColor.GREEN));
     }
 
 

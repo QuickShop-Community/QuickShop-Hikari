@@ -22,11 +22,12 @@ package org.maxgamer.quickshop.api.command;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
-import org.apache.commons.lang3.StringUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.Util;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -50,15 +51,15 @@ public class CommandContainer {
     @NotNull
     private String prefix; // E.g /qs <prefix>
     @Nullable
-    private String description; // Will show in the /qs help
+    private Component description; // Will show in the /qs help
 
     private boolean disabled; //Set command is disabled or not.
     @Nullable
     private Supplier<Boolean> disabledSupplier; //Set command is disabled or not.
     @Nullable
-    private String disablePlaceholder; //Set the text shown if command disabled
+    private Component disablePlaceholder; //Set the text shown if command disabled
     @Nullable
-    private Function<@Nullable CommandSender, @NotNull String> disableCallback; //Set the callback that should return a text to shown
+    private Function<@Nullable CommandSender, @NotNull Component> disableCallback; //Set the callback that should return a text to shown
 
     private Class<?> executorType;
 
@@ -83,10 +84,10 @@ public class CommandContainer {
         executorType = Object.class;
     }
 
-    public final @NotNull String getDisableText(@NotNull CommandSender sender) {
+    public final @NotNull Component getDisableText(@NotNull CommandSender sender) {
         if (this.getDisableCallback() != null) {
             return this.getDisableCallback().apply(sender);
-        } else if (StringUtils.isNotEmpty(this.getDisablePlaceholder())) {
+        } else if (Util.isEmptyComponent(this.getDisablePlaceholder())) {
             return this.getDisablePlaceholder();
         } else {
             return QuickShop.getInstance().text().of(sender, "command.feature-not-enabled").forLocale();

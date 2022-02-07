@@ -20,8 +20,9 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -64,17 +65,13 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                         case "list" -> {
                             final List<UUID> staffs = shop.getStaffs();
                             if (staffs.isEmpty()) {
-                                MsgUtil.sendDirectMessage(sender,
-                                        ChatColor.GREEN
-                                                + plugin.text().of(sender, "tableformat.left_begin").forLocale()
-                                                + "Empty");
+                                MsgUtil.sendDirectMessage(sender, plugin.text().of(sender, "tableformat.left_begin").forLocale()
+                                        .append(Component.text("Empty").color(NamedTextColor.GRAY)));
                                 return;
                             }
                             for (UUID uuid : staffs) {
-                                MsgUtil.sendDirectMessage(sender,
-                                        ChatColor.GREEN
-                                                + plugin.text().of(sender, "tableformat.left_begin").forLocale()
-                                                + Bukkit.getOfflinePlayer(uuid).getName());
+                                MsgUtil.sendDirectMessage(sender, plugin.text().of(sender, "tableformat.left_begin").forLocale()
+                                        .append(Component.text( Bukkit.getOfflinePlayer(uuid).getName()).color(NamedTextColor.GRAY)));
                             }
                             return;
                         }
@@ -93,13 +90,12 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                     switch (cmdArg[0]) {
                         case "add" -> {
                             shop.addStaff(offlinePlayer.getUniqueId());
-                            plugin.text().of(sender, "shop-staff-added", offlinePlayerName).send();
+                            plugin.text().of(sender, "shop-staff-added", Component.text(offlinePlayerName)).send();
                             return;
                         }
                         case "del" -> {
                             shop.delStaff(offlinePlayer.getUniqueId());
-                            plugin.text().of(sender,
-                                    "shop-staff-deleted", offlinePlayerName).send();
+                            plugin.text().of(sender, "shop-staff-deleted", Component.text(offlinePlayerName)).send();
                             return;
                         }
                         default -> {

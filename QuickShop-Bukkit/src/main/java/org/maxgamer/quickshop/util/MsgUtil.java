@@ -23,13 +23,17 @@ import cc.carm.lib.easysql.api.SQLQuery;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonParseException;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -44,11 +48,8 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.ServiceInjector;
 import org.maxgamer.quickshop.api.event.ShopControlPanelOpenEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.chat.QuickComponentImpl;
-import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 import org.maxgamer.quickshop.localization.game.game.GameLanguage;
 import org.maxgamer.quickshop.localization.game.game.MojangGameLanguageImpl;
-import org.maxgamer.quickshop.shop.ShopTransactionMessageContainer;
 import org.maxgamer.quickshop.util.logging.container.PluginGlobalAlertLog;
 
 import java.io.File;
@@ -64,7 +65,7 @@ import java.util.logging.Level;
 
 
 public class MsgUtil {
-    private static final Map<UUID, List<ShopTransactionMessageContainer>> OUTGOING_MESSAGES = Maps.newConcurrentMap();
+    private static final Map<UUID, List<String>> OUTGOING_MESSAGES = Maps.newConcurrentMap();
     public static GameLanguage gameLanguage;
     private static DecimalFormat decimalFormat;
     private static QuickShop plugin = QuickShop.getInstance();
@@ -97,22 +98,10 @@ public class MsgUtil {
         Player player = p.getPlayer();
         if (player != null) {
             UUID pName = player.getUniqueId();
-            List<ShopTransactionMessageContainer> msgs = OUTGOING_MESSAGES.get(pName);
+            List<String> msgs = OUTGOING_MESSAGES.get(pName);
             if (msgs != null) {
-                for (ShopTransactionMessageContainer msg : msgs) {
-                    Util.debugLog("Accepted the msg for player " + player.getName() + " : " + msg);
-                    if (msg.getHoverItemStr() != null) {
-                        try {
-                            ItemStack data = Util.deserialize(msg.getHoverItemStr());
-                            if (data == null) {
-                                MsgUtil.sendDirectMessage(player, msg.getMessage(player.getLocale()));
-                            } else {
-                                plugin.getQuickChat().sendItemHologramChat(player, msg.getMessage(player.getLocale()), data);
-                            }
-                        } catch (InvalidConfigurationException e) {
-                            MsgUtil.sendDirectMessage(p.getPlayer(), msg.getMessage(player.getLocale()));
-                        }
-                    }
+                for (String msg : msgs) {
+                    plugin.getAudience().player(player).sendMessage(GsonComponentSerializer.gson().deserialize(msg));
                 }
                 plugin.getDatabaseHelper().cleanMessageForPlayer(pName);
                 msgs.clear();
@@ -163,6 +152,24 @@ public class MsgUtil {
             }
         }
         return raw;
+    }
+
+    /**
+     * Replace args in origin to args
+     *
+     * @param origin origin
+     * @param args   args
+     * @return filled component
+     */
+    @NotNull
+    public static Component fillArgs(@NotNull Component origin, @Nullable ComponentLike... args) {
+        for (int i = 0; i < args.length; i++) {
+            origin = origin.replaceText(TextReplacementConfig.builder()
+                    .match("{" + i + "}")
+                    .replacement(args[i] == null ? Component.empty() : args[i])
+                    .build());
+        }
+        return origin.compact();
     }
 
     @NotNull
@@ -216,17 +223,13 @@ public class MsgUtil {
         }
     }
 
-    public static String getTranslateText(ItemStack stack) {
-        if (plugin.getConfig().getBoolean("force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
-            return convertItemStackToTranslateText(stack.getType());
-        } else {
-            return Util.getItemStackName(stack);
-        }
-    }
-
-    public static String convertItemStackToTranslateText(Material mat) {
-        return TextSplitter.bakeComponent(new BungeeQuickChat.BungeeComponentBuilder().append(Util.getTranslateComponentForMaterial(mat)).create());
-    }
+//    public static String getTranslateText(ItemStack stack) {
+//        if (plugin.getConfig().getBoolean("force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
+//            return convertItemStackToTranslateText(stack.getType());
+//        } else {
+//            return Util.getItemStackName(stack);
+//        }
+//    }
 
     @ApiStatus.ScheduledForRemoval
     @Deprecated
@@ -259,7 +262,6 @@ public class MsgUtil {
                 YamlConfiguration.loadConfiguration(
                         new InputStreamReader(Objects.requireNonNull(plugin.getResource("enchi18n.yml")), StandardCharsets.UTF_8));
         enchi18n.setDefaults(enchi18nYAML);
-        Util.parseColours(enchi18n);
         Enchantment[] enchsi18n = Enchantment.values();
         for (Enchantment ench : enchsi18n) {
             String enchi18nString = enchi18n.getString("enchi18n." + ench.getKey().getKey().trim());
@@ -300,7 +302,6 @@ public class MsgUtil {
                 YamlConfiguration.loadConfiguration(
                         new InputStreamReader(Objects.requireNonNull(plugin.getResource("itemi18n.yml")), StandardCharsets.UTF_8));
         itemi18n.setDefaults(itemi18nYAML);
-        Util.parseColours(itemi18n);
         Material[] itemsi18n = Material.values();
         for (Material material : itemsi18n) {
             String itemi18nString = itemi18n.getString("itemi18n." + material.name());
@@ -340,7 +341,6 @@ public class MsgUtil {
                 YamlConfiguration.loadConfiguration(
                         new InputStreamReader(Objects.requireNonNull(plugin.getResource("potioni18n.yml")), StandardCharsets.UTF_8));
         potioni18n.setDefaults(potioni18nYAML);
-        Util.parseColours(potioni18n);
         for (PotionEffectType potion : PotionEffectType.values()) {
             if (potion == null) {
                 continue;
@@ -375,8 +375,8 @@ public class MsgUtil {
                     ownerUUID = PlayerFinder.findUUIDByName(owner);
                 }
                 String message = rs.getString("message");
-                List<ShopTransactionMessageContainer> msgs = OUTGOING_MESSAGES.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
-                msgs.add(ShopTransactionMessageContainer.fromJson(message));
+                List<String> msgs = OUTGOING_MESSAGES.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
+                msgs.add(message);
             }
         } catch (SQLException e) {
             plugin.getLogger().log(Level.WARNING, "Could not load transaction messages from database. Skipping.", e);
@@ -391,74 +391,32 @@ public class MsgUtil {
      *                               <p>
      *                               Deprecated for always use for bukkit deserialize method (costing ~145ms)
      */
-    @Deprecated
-    public static void send(@NotNull UUID uuid, @NotNull ShopTransactionMessageContainer shopTransactionMessage, boolean isUnlimited) {
+    public static void send(@NotNull UUID uuid, @NotNull Component shopTransactionMessage, boolean isUnlimited) {
         if (isUnlimited && plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return; // Ignore unlimited shops messages.
         }
-        Util.debugLog(shopTransactionMessage.getMessage(null));
+        String serialized = GsonComponentSerializer.gson().serialize(shopTransactionMessage);
+        Util.debugLog(serialized);
         OfflinePlayer p = Bukkit.getOfflinePlayer(uuid);
         if (!p.isOnline()) {
-            List<ShopTransactionMessageContainer> msgs = OUTGOING_MESSAGES.getOrDefault(uuid, new LinkedList<>());
-            msgs.add(shopTransactionMessage);
+            List<String> msgs = OUTGOING_MESSAGES.getOrDefault(uuid, new LinkedList<>());
+            msgs.add(serialized);
             OUTGOING_MESSAGES.put(uuid, msgs);
-            plugin.getDatabaseHelper().saveOfflineTransactionMessage(uuid, shopTransactionMessage.toJson(), System.currentTimeMillis());
+            plugin.getDatabaseHelper().saveOfflineTransactionMessage(uuid, serialized, System.currentTimeMillis());
         } else {
             Player player = p.getPlayer();
             if (player != null) {
-                String locale = player.getLocale();
-                String hoverItemStr = shopTransactionMessage.getHoverItemStr();
-                if (hoverItemStr != null) {
-                    try {
-                        plugin.getQuickChat().sendItemHologramChat(player, shopTransactionMessage.getMessage(locale), Objects.requireNonNull(Util.deserialize(hoverItemStr)));
-                    } catch (Exception any) {
-                        Util.debugLog("Unknown error, send by plain text.");
-                        // Normal msg
-                        MsgUtil.sendDirectMessage(player, shopTransactionMessage.getMessage(locale));
-                    }
-                } else {
-                    // Normal msg
-                    MsgUtil.sendDirectMessage(player, shopTransactionMessage.getMessage(locale));
-                }
+                plugin.getAudience().player(player).sendMessage(shopTransactionMessage);
             }
         }
     }
 
     /**
-     * @param shop                            The shop purchased
-     * @param uuid                            The uuid of the player to message
-     * @param shopTransactionMessageContainer The message to send, if the given player are online it will be send immediately,
-     *                                        Else, if they're not online, queues them in the database.
+     * @param shop The shop purchased
+     * @param uuid The uuid of the player to message
      */
-    public static void send(@NotNull Shop shop, @NotNull UUID uuid, @NotNull ShopTransactionMessageContainer shopTransactionMessageContainer) {
-        if (shop.isUnlimited() && plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
-            return; // Ignore unlimited shops messages.
-        }
-        OfflinePlayer p = Bukkit.getOfflinePlayer(uuid);
-        if (!p.isOnline()) {
-            List<ShopTransactionMessageContainer> msgs = OUTGOING_MESSAGES.getOrDefault(uuid, new LinkedList<>());
-            msgs.add(shopTransactionMessageContainer);
-            OUTGOING_MESSAGES.put(uuid, msgs);
-            plugin.getDatabaseHelper().saveOfflineTransactionMessage(uuid, shopTransactionMessageContainer.toJson(), System.currentTimeMillis());
-        } else {
-            Player player = p.getPlayer();
-            if (player != null) {
-                String locale = player.getLocale();
-                String hoverItemStr = shopTransactionMessageContainer.getHoverItemStr();
-                if (hoverItemStr != null) {
-                    try {
-                        plugin.getQuickChat().sendItemHologramChat(p.getPlayer(), shopTransactionMessageContainer.getMessage(locale), Objects.requireNonNull(Util.deserialize(hoverItemStr)));
-                    } catch (Exception any) {
-                        Util.debugLog("Unknown error, send by plain text.");
-                        // Normal msg
-                        MsgUtil.sendDirectMessage(p.getPlayer(), shopTransactionMessageContainer.getMessage(locale));
-                    }
-                } else {
-                    // Normal msg
-                    MsgUtil.sendDirectMessage(p.getPlayer(), shopTransactionMessageContainer.getMessage(locale));
-                }
-            }
-        }
+    public static void send(@NotNull Shop shop, @NotNull UUID uuid, @NotNull Component shopTransactionMessage) {
+        send(uuid, shopTransactionMessage, shop.isUnlimited());
     }
     // TODO: No hardcode
 
@@ -490,11 +448,11 @@ public class MsgUtil {
             chatSheetPrinter.printSuggestedCmdLine(
                     plugin.text().of(sender,
                             "controlpanel.setowner",
-                            shop.ownerName()
+                            LegacyComponentSerializer.legacySection().deserialize(shop.ownerName()
                                     + ((plugin.getConfig().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op")
                                     && shop.isUnlimited())
                                     ? (" (" + shop.getOwner() + ")")
-                                    : "")).forLocale(),
+                                    : ""))).forLocale(),
                     plugin.text().of(sender, "controlpanel.setowner-hover").forLocale(),
                     "/qs setowner ");
         }
@@ -502,9 +460,8 @@ public class MsgUtil {
 
         // Unlimited
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.unlimited")) {
-            String text =
-                    plugin.text().of(sender, "controlpanel.unlimited", bool2String(shop.isUnlimited())).forLocale();
-            String hoverText = plugin.text().of(sender, "controlpanel.unlimited-hover").forLocale();
+            Component text = plugin.text().of(sender, "controlpanel.unlimited", bool2String(shop.isUnlimited())).forLocale();
+            Component hoverText = plugin.text().of(sender, "controlpanel.unlimited-hover").forLocale();
             String clickCommand =
                     MsgUtil.fillArgs(
                             "/qs silentunlimited {0}",
@@ -513,9 +470,8 @@ public class MsgUtil {
         }
         // Always Counting
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.alwayscounting")) {
-            String text =
-                    plugin.text().of(sender, "controlpanel.alwayscounting", bool2String(shop.isAlwaysCountingContainer())).forLocale();
-            String hoverText = plugin.text().of(sender, "controlpanel.alwayscounting-hover").forLocale();
+            Component text = plugin.text().of(sender, "controlpanel.alwayscounting", bool2String(shop.isAlwaysCountingContainer())).forLocale();
+            Component hoverText = plugin.text().of(sender, "controlpanel.alwayscounting-hover").forLocale();
             String clickCommand =
                     MsgUtil.fillArgs(
                             "/qs silentalwayscounting {0}",
@@ -526,16 +482,16 @@ public class MsgUtil {
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.buy")
                 && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.sell")) {
             if (shop.isSelling()) {
-                String text = plugin.text().of(sender, "controlpanel.mode-selling").forLocale();
-                String hoverText = plugin.text().of(sender, "controlpanel.mode-selling-hover").forLocale();
+                Component text = plugin.text().of(sender, "controlpanel.mode-selling").forLocale();
+                Component hoverText = plugin.text().of(sender, "controlpanel.mode-selling-hover").forLocale();
                 String clickCommand =
                         MsgUtil.fillArgs(
                                 "/qs silentbuy {0}",
                                 shop.getRuntimeRandomUniqueId().toString());
                 chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
             } else if (shop.isBuying()) {
-                String text = plugin.text().of(sender, "controlpanel.mode-buying").forLocale();
-                String hoverText = plugin.text().of(sender, "controlpanel.mode-buying-hover").forLocale();
+                Component text = plugin.text().of(sender, "controlpanel.mode-buying").forLocale();
+                Component hoverText = plugin.text().of(sender, "controlpanel.mode-buying-hover").forLocale();
                 String clickCommand =
                         MsgUtil.fillArgs(
                                 "/qs silentsell {0}",
@@ -546,21 +502,22 @@ public class MsgUtil {
         // Set Price
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price")
                 || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
-            String text =
-                    MsgUtil.fillArgs(
+            Component text = MsgUtil.fillArgs(
                             plugin.text().of(sender, "controlpanel.price").forLocale(),
-                            (plugin.getConfig().getBoolean("use-decimal-format"))
-                                    ? decimalFormat(shop.getPrice())
-                                    : Double.toString(shop.getPrice()));
-            String hoverText = plugin.text().of(sender, "controlpanel.price-hover").forLocale();
+                            LegacyComponentSerializer.legacySection().deserialize(
+                                    (plugin.getConfig().getBoolean("use-decimal-format"))
+                                            ? decimalFormat(shop.getPrice())
+                                            : Double.toString(shop.getPrice()))
+                            );
+            Component hoverText = plugin.text().of(sender, "controlpanel.price-hover").forLocale();
             String clickCommand = "/qs price ";
             chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
         }
         //Set amount per bulk
         if (QuickShop.getInstance().isAllowStack()) {
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount") || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeamount")) {
-                String text = plugin.text().of(sender, "controlpanel.stack", Integer.toString(shop.getItem().getAmount())).forLocale();
-                String hoverText = plugin.text().of(sender, "controlpanel.stack-hover").forLocale();
+                Component text = plugin.text().of(sender, "controlpanel.stack", LegacyComponentSerializer.legacySection().deserialize(Integer.toString(shop.getItem().getAmount()))).forLocale();
+                Component hoverText = plugin.text().of(sender, "controlpanel.stack-hover").forLocale();
                 String clickCommand = "/qs size ";
                 chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
 
@@ -569,16 +526,16 @@ public class MsgUtil {
         if (!shop.isUnlimited()) {
             // Refill
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.refill")) {
-                String text =
-                        plugin.text().of(sender, "controlpanel.refill", String.valueOf(shop.getPrice())).forLocale();
-                String hoverText = plugin.text().of(sender, "controlpanel.refill-hover").forLocale();
+                Component text =
+                        plugin.text().of(sender, "controlpanel.refill", Component.text(shop.getPrice())).forLocale();
+                Component hoverText = plugin.text().of(sender, "controlpanel.refill-hover").forLocale();
                 String clickCommand = "/qs refill ";
                 chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
             }
             // Empty
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.empty")) {
-                String text = plugin.text().of(sender, "controlpanel.empty", String.valueOf(shop.getPrice())).forLocale();
-                String hoverText = plugin.text().of(sender, "controlpanel.empty-hover").forLocale();
+                Component text = plugin.text().of(sender, "controlpanel.empty",Component.text(shop.getPrice())).forLocale();
+                Component hoverText = plugin.text().of(sender, "controlpanel.empty-hover").forLocale();
                 String clickCommand = MsgUtil.fillArgs("/qs silentempty {0}", shop.getRuntimeRandomUniqueId().toString());
                 chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
             }
@@ -586,8 +543,8 @@ public class MsgUtil {
         // Remove
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")
                 || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
-            String text = plugin.text().of(sender, "controlpanel.remove", String.valueOf(shop.getPrice())).forLocale();
-            String hoverText = plugin.text().of(sender, "controlpanel.remove-hover").forLocale();
+            Component text = plugin.text().of(sender, "controlpanel.remove", Component.text(shop.getPrice())).forLocale();
+            Component hoverText = plugin.text().of(sender, "controlpanel.remove-hover").forLocale();
             String clickCommand = MsgUtil.fillArgs("/qs silentremove {0}", shop.getRuntimeRandomUniqueId().toString());
             chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
         }
@@ -601,7 +558,7 @@ public class MsgUtil {
      * @param bool The boolean value
      * @return The result of translate.
      */
-    public static String bool2String(boolean bool) {
+    public static Component bool2String(boolean bool) {
         if (bool) {
             return QuickShop.getInstance().text().of("booleanformat.success").forLocale();
         } else {
@@ -649,7 +606,7 @@ public class MsgUtil {
     public static void sendMessageToOps(@NotNull String message) {
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
-                MsgUtil.sendDirectMessage(player, message);
+                MsgUtil.sendDirectMessage(player, LegacyComponentSerializer.legacySection().deserialize(message));
             }
         }
     }
@@ -702,7 +659,7 @@ public class MsgUtil {
         for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
             //Use boxed object to avoid NPE
             Integer level = entries.getValue();
-            chatSheetPrinter.printLine(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(level == null ? 1 : level));
+            chatSheetPrinter.printLine(LegacyComponentSerializer.legacySection().deserialize(ChatColor.YELLOW + MsgUtil.getEnchi18n(entries.getKey()) + " " + RomanNumber.toRoman(level == null ? 1 : level)));
         }
     }
 
@@ -740,11 +697,11 @@ public class MsgUtil {
         }
     }
 
-    public static void sendDirectMessage(@NotNull UUID sender, @Nullable String... messages) {
+    public static void sendDirectMessage(@NotNull UUID sender, @Nullable Component... messages) {
         sendDirectMessage(Bukkit.getPlayer(sender), messages);
     }
 
-    public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable String... messages) {
+    public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable Component... messages) {
         if (messages == null) {
             Util.debugLog("INFO: null messages trying to be sent.");
             return;
@@ -753,26 +710,12 @@ public class MsgUtil {
             Util.debugLog("INFO: Sending message to null sender.");
             return;
         }
-        for (String msg : messages) {
-            try {
-                if (StringUtils.isEmpty(msg)) {
-                    continue;
-                }
-                TextSplitter.SpilledString spilledString = TextSplitter.deBakeItem(msg);
-                if (spilledString == null) {
-                    plugin.getQuickChat().send(sender, msg);
-                } else {
-                    BungeeQuickChat.BungeeComponentBuilder builder = new BungeeQuickChat.BungeeComponentBuilder();
-                    builder.appendLegacyAndItem(spilledString.getLeft()
-                            , spilledString.getComponents(), spilledString.getRight());
-                    plugin.getQuickChat().send(sender, new QuickComponentImpl(builder.create()));
-                }
-            } catch (Throwable throwable) {
-                Util.debugLog("Failed to send formatted text.");
-                if (!StringUtils.isEmpty(msg)) {
-                    sender.sendMessage(msg);
-                }
-            }
+        for (Component msg : messages) {
+            if (msg == null)
+                return;
+            if (Util.isEmptyComponent(msg))
+                return;
+            plugin.getAudience().sender(sender).sendMessage(msg);
         }
     }
 
@@ -782,6 +725,15 @@ public class MsgUtil {
             return true;
         } catch (JsonParseException exception) {
             return false;
+        }
+    }
+
+    public static Component getTranslateText(@NotNull ItemStack stack) {
+        if (plugin.getConfig().getBoolean("force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
+            return plugin.getPlatform().getItemTranslationKey(stack.getType());
+        } else {
+            return LegacyComponentSerializer.legacySection().deserialize(Util.getItemStackName(stack));
+
         }
     }
 }

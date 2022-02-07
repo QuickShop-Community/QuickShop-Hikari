@@ -19,35 +19,16 @@
 
 package org.maxgamer.quickshop.localization.text.postprocessing.impl;
 
-import net.md_5.bungee.api.chat.BaseComponent;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.localization.text.postprocessor.PostProcessor;
 import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.TextSplitter;
 
 public class FillerProcessor implements PostProcessor {
     @Override
-    public @NotNull String process(@NotNull String text, @Nullable CommandSender sender, Object... args) {
-        String[] strings = new String[args.length];
-        boolean hit = false;
-        for (int i = 0; i < args.length; i++) {
-
-            if (args[i] instanceof String) {
-                strings[i] = (String) args[i];
-                continue;
-            }
-
-            if (args[i] instanceof BaseComponent[]) {
-                if (hit) {
-                    throw new IllegalStateException("Only one BaseComponent[] can be applied into text");
-                }
-                strings[i] = TextSplitter.bakeComponent((BaseComponent[]) args[i]);
-                hit = true;
-            }
-            strings[i] = String.valueOf(args[i]);
-        }
-        return MsgUtil.fillArgs(text, strings);
+    public @NotNull Component process(@NotNull Component text, @Nullable CommandSender sender, Component... args) {
+        return MsgUtil.fillArgs(text,args);
     }
 }

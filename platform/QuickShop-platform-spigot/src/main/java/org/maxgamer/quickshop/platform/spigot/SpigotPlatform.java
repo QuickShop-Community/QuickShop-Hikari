@@ -2,14 +2,19 @@ package org.maxgamer.quickshop.platform.spigot;
 
 import de.tr7zw.nbtapi.NBTTileEntity;
 import de.tr7zw.nbtapi.plugin.NBTAPI;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Sign;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.platform.Platform;
 
@@ -38,8 +43,20 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
+    public @NotNull Component getLine(@NotNull Sign sign, int line) {
+        return LegacyComponentSerializer.legacySection().deserialize(sign.getLine(line));
+    }
+
+    @Override
     public @NotNull TranslatableComponent getItemTranslationKey(@NotNull Material material) {
         return Component.translatable(ReflectFactory.getMaterialMinecraftNamespacedKey(material));
+    }
+
+    @Override
+    public @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack) {
+        NamespacedKey namespacedKey = stack.getType().getKey();
+        Key key = Key.key(namespacedKey.toString());
+        return HoverEvent.showItem(key,stack.getAmount(), BinaryTagHolder.of(ReflectFactory.getMaterialMinecraftNamespacedKey(stack.getType())));
     }
 
     @Override

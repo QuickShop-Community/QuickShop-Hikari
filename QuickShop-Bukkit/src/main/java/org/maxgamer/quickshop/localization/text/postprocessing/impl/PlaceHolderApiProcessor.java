@@ -20,6 +20,8 @@
 package org.maxgamer.quickshop.localization.text.postprocessing.impl;
 
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -29,10 +31,12 @@ import org.maxgamer.quickshop.api.localization.text.postprocessor.PostProcessor;
 
 public class PlaceHolderApiProcessor implements PostProcessor {
     @Override
-    public @NotNull String process(@NotNull String text, @Nullable CommandSender sender, Object... args) {
+    public @NotNull Component process(@NotNull Component text, @Nullable CommandSender sender, Component... args) {
         if (sender instanceof OfflinePlayer) {
             if (Bukkit.getPluginManager().isPluginEnabled("PlaceHolderAPI")) {
-                return PlaceholderAPI.setPlaceholders((OfflinePlayer) sender, text);
+                String json = GsonComponentSerializer.gson().serialize(text);
+                json = PlaceholderAPI.setPlaceholders((OfflinePlayer) sender, json);
+                return GsonComponentSerializer.gson().deserialize(json);
             }
         }
         return text;

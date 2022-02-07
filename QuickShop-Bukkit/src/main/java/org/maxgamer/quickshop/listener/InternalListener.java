@@ -28,6 +28,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.*;
 

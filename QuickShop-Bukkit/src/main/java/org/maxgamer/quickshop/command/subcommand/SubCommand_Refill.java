@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -78,7 +79,7 @@ public class SubCommand_Refill implements CommandHandler<Player> {
     @NotNull
     @Override
     public List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length == 1 ? Collections.singletonList(QuickShop.getInstance().text().of(sender, "tabcomplete.amount").forLocale()) : Collections.emptyList();
+        return cmdArg.length == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(QuickShop.getInstance().text().of(sender, "tabcomplete.amount").forLocale())) : Collections.emptyList();
     }
 
 }

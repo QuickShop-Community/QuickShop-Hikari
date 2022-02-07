@@ -20,6 +20,8 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -44,7 +46,7 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
         }
         World world = Bukkit.getWorld(cmdArg[0]);
         if (world == null) {
-            plugin.text().of(sender, "world-not-exists", cmdArg[0]).send();
+            plugin.text().of(sender, "world-not-exists", LegacyComponentSerializer.legacySection().deserialize( cmdArg[0])).send();
             return;
         }
         int shopsDeleted = 0;
@@ -55,8 +57,7 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
             }
         }
         Util.debugLog("Successfully deleted all shops in world " + cmdArg[0] + "!");
-
-        plugin.text().of(sender, "shops-removed-in-world", String.valueOf(shopsDeleted), world.getName()).send();
+        plugin.text().of(sender, "shops-removed-in-world", Component.text(shopsDeleted), LegacyComponentSerializer.legacySection().deserialize(world.getName())).send();
     }
 
 }

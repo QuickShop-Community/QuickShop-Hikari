@@ -20,6 +20,8 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -52,7 +54,7 @@ public class SubCommand_Size implements CommandHandler<Player> {
         try {
             amount = Integer.parseInt(cmdArg[0]);
         } catch (NumberFormatException e) {
-            plugin.text().of(sender, "not-a-integer", cmdArg[0]).send();
+            plugin.text().of(sender, "not-a-integer", LegacyComponentSerializer.legacySection().deserialize(cmdArg[0])).send();
             return;
         }
         final BlockIterator bIt = new BlockIterator(sender, 10);
@@ -63,7 +65,7 @@ public class SubCommand_Size implements CommandHandler<Player> {
             if (shop != null) {
                 if (shop.getModerator().isModerator(sender.getUniqueId()) || sender.hasPermission("quickshop.other.amount")) {
                     if (amount <= 0 || amount > Util.getItemMaxStackSize(shop.getItem().getType())) {
-                        plugin.text().of(sender, "command.invalid-bulk-amount", Integer.toString(amount)).send();
+                        plugin.text().of(sender, "command.invalid-bulk-amount", Component.text(amount)).send();
                         return;
                     }
                     ItemStack pendingItemStack = shop.getItem().clone();
@@ -76,12 +78,12 @@ public class SubCommand_Size implements CommandHandler<Player> {
                     PriceLimiterCheckResult checkResult = limiter.check(pendingItemStack, shop.getPrice());
                     if (checkResult.getStatus() != PriceLimiterStatus.PASS) {
                         plugin.text().of(sender, "restricted-prices", MsgUtil.getTranslateText(shop.getItem()),
-                                String.valueOf(checkResult.getMin()),
-                                String.valueOf(checkResult.getMax())).send();
+                                Component.text(checkResult.getMin()),
+                                Component.text(checkResult.getMax())).send();
                         return;
                     }
                     shop.setItem(pendingItemStack);
-                    plugin.text().of(sender, "command.bulk-size-now", Integer.toString(shop.getItem().getAmount()), MsgUtil.getTranslateText(shop.getItem())).send();
+                    plugin.text().of(sender, "command.bulk-size-now",  Component.text(shop.getItem().getAmount()), MsgUtil.getTranslateText(shop.getItem())).send();
                     return;
                 } else {
                     plugin.text().of(sender, "not-managed-shop").send();
@@ -95,6 +97,6 @@ public class SubCommand_Size implements CommandHandler<Player> {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length == 1 ? Collections.singletonList(QuickShop.getInstance().text().of(sender, "tabcomplete.amount").forLocale()) : Collections.emptyList();
+        return cmdArg.length == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(QuickShop.getInstance().text().of(sender, "tabcomplete.amount").forLocale())) : Collections.emptyList();
     }
 }

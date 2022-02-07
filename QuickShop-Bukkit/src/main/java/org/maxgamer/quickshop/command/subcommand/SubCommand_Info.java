@@ -20,7 +20,8 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -65,23 +66,19 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
             }
         }
 
-        MsgUtil.sendDirectMessage(sender, ChatColor.RED + "QuickShop Statistics...");
-        MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "Server UniqueID: " + plugin.getServerUniqueID());
-        MsgUtil.sendDirectMessage(sender,
-                ChatColor.GREEN
-                        + ""
-                        + (buying + selling)
-                        + " shops in "
-                        + chunks
-                        + " chunks spread over "
-                        + worlds
-                        + " worlds.");
-        MsgUtil.sendDirectMessage(sender,
-                ChatColor.GREEN
-                        + ""
-                        + nostock
-                        + " out-of-stock loaded shops (excluding doubles) which will be removed by /qs clean.");
-        MsgUtil.sendDirectMessage(sender, ChatColor.GREEN + "QuickShop " + QuickShop.getVersion());
+        MsgUtil.sendDirectMessage(sender, Component.text("QuickShop Statistics...").color(NamedTextColor.GOLD));
+        MsgUtil.sendDirectMessage(sender,  Component.text("Server UniqueId: "+plugin.getServerUniqueID()).color(NamedTextColor.GREEN));
+        MsgUtil.sendDirectMessage(sender, Component.text(""
+                + (buying + selling)
+                + " shops in "
+                + chunks
+                + " chunks spread over "
+                + worlds
+                + " worlds.").color(NamedTextColor.GREEN));
+        MsgUtil.sendDirectMessage(sender, Component.text(""
+                + nostock
+                + " out-of-stock loaded shops (excluding doubles) which will be removed by /qs clean.").color(NamedTextColor.GREEN));
+        MsgUtil.sendDirectMessage(sender, Component.text("QuickShop " + QuickShop.getVersion()).color(NamedTextColor.GREEN));
     }
 
 

@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -72,19 +73,19 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
                 if (!passed) {
                     continue;
                 }
-                String commandDesc = plugin.text().of(s, "command.description." + container.getPrefix()).forLocale();
+                Component commandDesc = plugin.text().of(s, "command.description." + container.getPrefix()).forLocale();
                 if (container.getDescription() != null) {
                     commandDesc = container.getDescription();
                     if (commandDesc == null) {
-                        commandDesc = "Error: Subcommand " + container.getPrefix() + " # " + container.getClass().getCanonicalName() + " doesn't register the correct help description.";
+                        commandDesc = Component.text("Error: Subcommand " + container.getPrefix() + " # " + container.getClass().getCanonicalName() + " doesn't register the correct help description.");
                     }
                 }
                 if (container.isDisabled() || (container.getDisabledSupplier() != null && container.getDisabledSupplier().get())) {
                     if (QuickShop.getPermissionManager().hasPermission(s, "quickshop.showdisabled")) {
-                        plugin.text().of(s, "command.format", commandLabel, container.getPrefix(), container.getDisableText(s)).send();
+                        plugin.text().of(s, "command.format", Component.text(commandLabel), Component.text(container.getPrefix()), container.getDisableText(s)).send();
                     }
                 } else {
-                    plugin.text().of(s, "command.format", commandLabel, container.getPrefix(), commandDesc).send();
+                    plugin.text().of(s, "command.format", Component.text(commandLabel), Component.text(container.getPrefix()), commandDesc).send();
                 }
             }
         }

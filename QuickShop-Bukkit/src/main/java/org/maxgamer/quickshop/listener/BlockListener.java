@@ -45,7 +45,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.Info;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopAction;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
@@ -92,7 +91,7 @@ public class BlockListener extends AbstractProtectionListener {
                     return;
                 }
                 e.setCancelled(true);
-                plugin.text().of(p, "no-creative-break", MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())).send();
+                plugin.text().of(p, "no-creative-break", plugin.getPlatform().getItemTranslationKey(Material.GOLDEN_AXE)).send();
                 return;
             }
 
@@ -137,7 +136,7 @@ public class BlockListener extends AbstractProtectionListener {
                     return;
                 }
                 e.setCancelled(true);
-                plugin.text().of(p, "no-creative-break", MsgUtil.getItemi18n(Material.GOLDEN_AXE.name())).send();
+                plugin.text().of(p, "no-creative-break",plugin.getPlatform().getItemTranslationKey(Material.GOLDEN_AXE)).send();
                 return;
             }
             //Allow Shop owner break the shop sign(for sign replacement)

@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.watcher;
 
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -29,8 +30,6 @@ import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 import org.maxgamer.quickshop.api.event.ShopOngoingFeeEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.economy.Trader;
-import org.maxgamer.quickshop.localization.LocalizedMessagePair;
-import org.maxgamer.quickshop.shop.ShopTransactionMessageContainer;
 import org.maxgamer.quickshop.shop.SimpleShopManager;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -119,18 +118,14 @@ public class OngoingFeeWatcher extends BukkitRunnable {
      */
     public void removeShop(@NotNull Shop shop) {
         Util.mainThreadRun(shop::delete);
-
-        MsgUtil.send(shop, shop.getOwner(), ShopTransactionMessageContainer.ofLocalizedMessageWithItem(
-                LocalizedMessagePair.of("shop-removed-cause-ongoing-fee", "World:"
-                        + Objects.requireNonNull(shop.getLocation().getWorld()).getName()
-                        + " X:"
-                        + shop.getLocation().getBlockX()
-                        + " Y:"
-                        + shop.getLocation().getBlockY()
-                        + " Z:"
-                        + shop.getLocation().getBlockZ()
-                )
-                , null, null));
+        MsgUtil.send(shop, shop.getOwner(), plugin.text().of("shop-removed-cause-ongoing-fee", LegacyComponentSerializer.legacySection().deserialize("World:"
+                + Objects.requireNonNull(shop.getLocation().getWorld()).getName()
+                + " X:"
+                + shop.getLocation().getBlockX()
+                + " Y:"
+                + shop.getLocation().getBlockY()
+                + " Z:"
+                + shop.getLocation().getBlockZ())).forLocale());
     }
 
 }

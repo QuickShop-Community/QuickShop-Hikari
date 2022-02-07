@@ -1,6 +1,7 @@
 package org.maxgamer.quickshop.api.event;
 
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
 import org.maxgamer.quickshop.api.shop.Shop;
 
 import java.util.UUID;
@@ -9,7 +10,7 @@ import java.util.UUID;
 public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
     private final Shop shop;
     private final UUID owner;
-    private String name;
+    private Component name;
 
     /**
      * Getting the shop that trying getting the shop owner name
@@ -34,7 +35,7 @@ public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
      *
      * @return The shop owner display name
      */
-    public String getName() {
+    public Component getName() {
         return name;
     }
 
@@ -43,7 +44,7 @@ public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
      *
      * @param name New shop owner display name, just display, won't change actual shop owner
      */
-    public void setName(String name) {
+    public void setName(Component name) {
         this.name = name;
     }
 }

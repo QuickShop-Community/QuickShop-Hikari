@@ -20,6 +20,8 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -39,7 +41,7 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
     public void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         File file = new File(plugin.getDataFolder(), "recovery.txt");
         if (!file.exists()) {
-            MsgUtil.sendDirectMessage(sender, "recovery.txt doesn't exist! Do not execute this command unless you know what are you doing.");
+            MsgUtil.sendDirectMessage(sender, Component.text("recovery.txt doesn't exist! Do not execute this command unless you know what are you doing.").color(NamedTextColor.RED));
             return;
         }
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {

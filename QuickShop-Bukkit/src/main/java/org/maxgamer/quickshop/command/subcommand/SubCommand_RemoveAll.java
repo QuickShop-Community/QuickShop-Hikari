@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -89,7 +90,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
                     }
                 }
             }
-            plugin.text().of(sender, "command.some-shops-removed", Integer.toString(i)).send();
+            plugin.text().of(sender, "command.some-shops-removed", Component.text(i)).send();
         } else {
             plugin.text().of(sender, "command.no-owner-given").send();
         }

@@ -20,12 +20,11 @@
 package org.maxgamer.quickshop.shop;
 
 import com.lishid.openinv.IOpenInv;
-import de.tr7zw.nbtapi.NBTTileEntity;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import me.lucko.helper.serialize.BlockPosition;
 import net.kyori.adventure.text.Component;
-import net.md_5.bungee.api.chat.BaseComponent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -48,19 +47,14 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.chat.ComponentPackage;
 import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.shop.*;
-import org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
 import java.util.*;
 import java.util.logging.Level;
-
-import static org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat.fromLegacyText;
-import static org.maxgamer.quickshop.chat.platform.minedown.BungeeQuickChat.toLegacyText;
 
 /**
  * ChestShop core
@@ -570,10 +564,10 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public @NotNull String ownerName(boolean forceUsername) {
+    public @NotNull Component ownerName(boolean forceUsername) {
         OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
-        String name = player.getName();
-        if (name == null || name.isEmpty()) {
+        Component name = Component.empty();
+        if (player.getName() == null || player.getName().isEmpty()) {
             name = plugin.text().of("unknown-owner").forLocale();
         }
         if (!forceUsername && isUnlimited()) {
@@ -603,7 +597,7 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public @NotNull String ownerName() {
+    public @NotNull Component ownerName() {
         return ownerName(false);
     }
 
@@ -711,12 +705,12 @@ public class ContainerShop implements Shop {
     }
 
     @Override
-    public List<ComponentPackage> getSignText(@NotNull String locale) {
+    public List<Component> getSignText(@NotNull String locale) {
         Util.ensureThread(false);
-        List<ComponentPackage> lines = new ArrayList<>();
+        List<Component> lines = new ArrayList<>();
         //Line 1
         String statusStringKey = inventoryAvailable() ? "signs.status-available" : "signs.status-unavailable";
-        lines.add(new ComponentPackage(fromLegacyText(plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(statusStringKey).forLocale(locale)).forLocale(locale))));
+        lines.add(plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(statusStringKey).forLocale(locale)).forLocale(locale));
 
         //Line 2
         String tradingStringKey;
@@ -740,51 +734,40 @@ public class ContainerShop implements Shop {
                 noRemainingStringKey = "MissingKey for shop type:" + shopType;
             }
         }
-        String line2 = switch (shopRemaining) {
+        Component line2 = switch (shopRemaining) {
             //Unlimited
             case -1 -> plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale)).forLocale(locale);
             //No remaining
             case 0 -> plugin.text().of(noRemainingStringKey).forLocale(locale);
             //Has remaining
-            default -> plugin.text().of(tradingStringKey, Integer.toString(shopRemaining)).forLocale(locale);
+            default -> plugin.text().of(tradingStringKey, Component.text(shopRemaining)).forLocale(locale);
         };
-
-        // TODO No-longer use SHOP_SIGN_PREFIX since we use modern storage method. Pending for deletion.
-        lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder().appendLegacy(SHOP_SIGN_PREFIX, line2).create()));
+        lines.add(line2);
 
         //line 3
         if (plugin.getConfig().getBoolean("shop.force-use-item-original-name") || !this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
-            String left = plugin.text().of("signs.item-left").forLocale();
-            String right = plugin.text().of("signs.item-right").forLocale();
-            if (plugin.getNbtapi() == null) {
-                // NBTAPI not installed
-                lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder()
-                        .appendLegacy(left, Util.getItemStackName(getItem()), right)
-                        .create()));
-            } else {
-                // NBTAPI installed
-                String itemName = Util.getItemCustomName(getItem());
-                BaseComponent[] itemComponents = itemName == null ? Util.getTranslateComponentForItem(getItem()) : fromLegacyText(itemName);
-                lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder()
-                        .appendLegacyAndItem(left,
-                                itemComponents, right)
-                        .create()));
-            }
+            Component left = plugin.text().of("signs.item-left").forLocale();
+            Component right = plugin.text().of("signs.item-right").forLocale();
+
+            // NBTAPI installed
+            String itemName = Util.getItemCustomName(getItem());
+            Component itemComponents = itemName == null ? plugin.getPlatform().getItemTranslationKey(getItem().getType()) :LegacyComponentSerializer.legacySection().deserialize(itemName);
+            lines.add(left.append(itemComponents).append(right));
         } else {
-            lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder().appendLegacy(plugin.text().of("signs.item-left").forLocale()
-                    , Util.getItemStackName(getItem()), plugin.text().of("signs.item-right").forLocale()).create()));
+            lines.add(plugin.text().of("signs.item-left").forLocale().append(LegacyComponentSerializer.legacySection().deserialize(Util.getItemStackName(getItem())).append(plugin.text().of("signs.item-right").forLocale())));
         }
 
         //line 4
-        String line4;
+        Component line4;
         if (this.isStackingShop()) {
             line4 = plugin.text().of("signs.stack-price",
-                    plugin.getShopManager().format(this.getPrice(), this), Integer.toString(item.getAmount()),
-                    Util.getItemStackName(item)).forLocale();
+                   LegacyComponentSerializer.legacySection().deserialize(plugin.getShopManager().format(this.getPrice(), this)),
+                    Component.text(item.getAmount()),
+                    LegacyComponentSerializer.legacySection().deserialize(Util.getItemStackName(item))).forLocale();
         } else {
-            line4 = plugin.text().of("signs.price", plugin.getShopManager().format(this.getPrice(), this)).forLocale();
+            line4 = plugin.text().of("signs.price", LegacyComponentSerializer.legacySection().deserialize(plugin.getShopManager().format(this.getPrice(), this))).forLocale();
         }
-        lines.add(new ComponentPackage(new BungeeQuickChat.BungeeComponentBuilder().appendLegacy(line4).create()));
+        lines.add(line4);
 
         return lines;
     }
@@ -1276,7 +1259,7 @@ public class ContainerShop implements Shop {
                 ", " +
                 location.getBlockZ() +
                 ")" +
-                " Owner: " + this.ownerName(false) + " - " + getOwner() +
+                " Owner: " + LegacyComponentSerializer.legacySection().serialize(this.ownerName(false)) + " - " + getOwner() +
                 ", Unlimited: " + isUnlimited() +
                 " Price: " + getPrice();
     }

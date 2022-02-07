@@ -19,7 +19,7 @@
 
 package org.maxgamer.quickshop.api.shop;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
@@ -32,10 +32,9 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
-import org.maxgamer.quickshop.api.chat.ComponentPackage;
-import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.shop.ShopSignPersistentDataType;
 import org.maxgamer.quickshop.shop.ShopSignStorage;
+import org.maxgamer.quickshop.util.Util;
 
 import java.util.List;
 import java.util.UUID;
@@ -45,7 +44,6 @@ import java.util.UUID;
  */
 public interface Shop {
     NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShop.getInstance(), "shopsign");
-    String SHOP_SIGN_PATTERN = "§d§o ";
 
     /**
      * Add x ItemStack to the shop inventory
@@ -149,7 +147,7 @@ public interface Shop {
      * @return owner name
      */
     @NotNull
-    String ownerName(boolean forceUsername);
+    Component ownerName(boolean forceUsername);
 
     /**
      * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
@@ -157,7 +155,7 @@ public interface Shop {
      * @return owner name
      */
     @NotNull
-    String ownerName();
+    Component ownerName();
 
     /**
      * Remove x ItemStack from the shop inventory
@@ -193,7 +191,7 @@ public interface Shop {
      * Line 2: Shop Item Name
      * Line 3: Price
      */
-    default List<ComponentPackage> getSignText(String locale) {
+    default List<Component> getSignText(@NotNull String locale) {
         //backward support
         throw new UnsupportedOperationException();
     }
@@ -203,7 +201,7 @@ public interface Shop {
      *
      * @param paramArrayOfString The texts you want set
      */
-    void setSignText(@NotNull List<ComponentPackage> paramArrayOfString);
+    void setSignText(@NotNull List<Component> paramArrayOfString);
 
     /**
      * Update shop data to database
@@ -563,9 +561,21 @@ public interface Shop {
      */
     default boolean isShopSign(@NotNull Sign sign) {
         // Check for new shop sign
-        String[] lines = sign.getLines();
+        Component[] lines = new Component[sign.getLines().length];
+        for (int i = 0; i < sign.getLines().length; i++) {
+            lines[i] = QuickShop.getInstance().getPlatform().getLine(sign, i);
+        }
         // Can be claim
-        if (lines[0].isEmpty() && lines[1].isEmpty() && lines[2].isEmpty() && lines[3].isEmpty()) {
+
+        boolean empty = true;
+        for (Component line : lines) {
+            if (!Util.isEmptyComponent(line)) {
+                empty = false;
+                break;
+            }
+        }
+
+        if (empty) {
             return true;
         }
 
@@ -574,39 +584,7 @@ public interface Shop {
         if (shopSignStorage != null) {
             return shopSignStorage.equals(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ());
         }
-
-        // Check for exists shop sign (legacy upgrade)
-        //Check if attached with the shop block
-        if (!isAttached(sign.getBlock())) {
-            return false;
-        }
-        //Check sign content
-        if (lines[1].startsWith(SHOP_SIGN_PATTERN)) {
-            return true;
-        } else {
-            if (!QuickShop.getInstance().getConfig().getBoolean("legacy-updater.shop-sign", false)) {
-                return false;
-            }
-            String header = lines[0];
-            TextManager textManager = QuickShop.getInstance().text();
-            String ownerName = this.ownerName(true);
-            //Raw text matching
-            String adminShopHeader = textManager.of("signs.header", textManager.of("admin-shop").forLocale()).forLocale();
-            String userShopHeader = textManager.of("signs.header", ownerName).forLocale();
-            if (header.contains(adminShopHeader) || header.contains(userShopHeader)) {
-                return true;
-                //TEXT SIGN
-                //continue
-            } else {
-                //Try no color matching
-                //arg[0] is name, arg[1] is color code
-                adminShopHeader = textManager.of("signs.header", textManager.of("admin-shop").forLocale(), "").forLocale();
-                userShopHeader = textManager.of("signs.header", ownerName, "").forLocale();
-                adminShopHeader = ChatColor.stripColor(adminShopHeader);
-                userShopHeader = ChatColor.stripColor(userShopHeader);
-                return header.contains(adminShopHeader) || header.contains(userShopHeader);
-            }
-        }
+        return false;
     }
 
     /**

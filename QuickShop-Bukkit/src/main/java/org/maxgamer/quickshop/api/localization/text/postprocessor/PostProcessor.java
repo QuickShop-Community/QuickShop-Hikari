@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.api.localization.text.postprocessor;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -33,5 +34,5 @@ public interface PostProcessor {
      * @return The string that processed
      */
     @NotNull
-    String process(@NotNull String text, @Nullable CommandSender sender, Object... args);
+    Component process(@NotNull Component text, @Nullable CommandSender sender, Component... args);
 }

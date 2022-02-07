@@ -21,6 +21,7 @@ package org.maxgamer.quickshop.shop;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
@@ -70,7 +71,7 @@ public class InventoryPreview implements Listener {
         } else {
             itemMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());
         }
-        previewStr = plugin.text().of("quickshop-gui-preview").forLocale(locale);
+        previewStr = LegacyComponentSerializer.legacySection().serialize(plugin.text().of("quickshop-gui-preview").forLocale(locale));
         if (StringUtils.isEmpty(previewStr)) {
             previewStr = ChatColor.RED + "FIXME: Do not set quickshop-gui-preview to null or empty string.";
         }
@@ -113,7 +114,7 @@ public class InventoryPreview implements Listener {
         }
         if (inventory == null) {
             final int size = 9;
-            inventory = plugin.getServer().createInventory(new QuickShopPreviewGUIHolder(), size, plugin.text().of(player, "menu.preview").forLocale());
+            inventory = plugin.getServer().createInventory(new QuickShopPreviewGUIHolder(), size, LegacyComponentSerializer.legacySection().serialize(plugin.text().of(player, "menu.preview").forLocale()));
             for (int i = 0; i < size; i++) {
                 inventory.setItem(i, itemStack);
             }

@@ -19,6 +19,7 @@
 
 package org.maxgamer.quickshop.command.subcommand;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -55,7 +56,7 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
             for (Shop shop : shopList) {
                 shop.setOwner(targetPlayerUUID);
             }
-            plugin.text().of(sender, "command.transfer-success", Integer.toString(shopList.size()), targetPlayerName).send();
+            plugin.text().of(sender, "command.transfer-success", Component.text(shopList.size()), Component.text(targetPlayerName)).send();
         } else if (cmdArg.length == 2) {
             if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.transfer.other")) {
                 plugin.text().of(sender, "no-permission").send();
@@ -78,7 +79,7 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
             for (Shop shop : shopList) {
                 shop.setOwner(targetPlayerUUID);
             }
-            plugin.text().of(sender, "command.transfer-success-other", Integer.toString(shopList.size()), fromPlayerName, targetPlayerName).send();
+            plugin.text().of(sender, "command.transfer-success-other", Component.text(shopList.size()), Component.text(fromPlayerName), Component.text(targetPlayerName)).send();
 
         } else {
             plugin.text().of(sender, "command.wrong-args").send();
