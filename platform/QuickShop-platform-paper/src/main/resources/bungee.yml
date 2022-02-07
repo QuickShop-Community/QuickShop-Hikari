@@ -1,3 +1,0 @@
-name: QuickShop
-version: '${project.version}'
-main: org.maxgamer.quickshop.QuickShopBungeeCord
