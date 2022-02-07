@@ -160,7 +160,6 @@ public class MsgUtil {
      */
     @NotNull
     public static Component fillArgs(@NotNull Component origin, @Nullable Component... args) {
-        plugin.getLogger().info("Received: "+ GsonComponentSerializer.gson().serialize(origin));
         for (int i = 0; i < args.length; i++) {
             origin = origin.replaceText(TextReplacementConfig.builder()
                     .matchLiteral("{" + i + "}")
