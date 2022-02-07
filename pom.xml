@@ -303,7 +303,7 @@
                 <version>3.0.0</version>
                 <executions>
                     <execution>
-                        <phase>${mvn.sign.phrase}</phase>
+                        <phase>verify</phase>
                         <id>sign</id>
                         <goals>
                             <goal>sign</goal>
@@ -311,8 +311,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <archive>${project.basedir}/target/${artifactId}.jar</archive>
-                    <keystore>${project.basedir}/keystore.jks</keystore>
+                    <archive>${project.basedir}${file.separator}target${file.separator}${artifactId}.jar</archive>
+                    <keystore>${project.basedir}${file.separator}..${file.separator}keystore.jks</keystore>
                     <alias>selfsigned</alias>
                     <!--suppress UnresolvedMavenProperty -->
                     <storepass>${env.QUICKSHOP-SIGNER-PWD}</storepass>
