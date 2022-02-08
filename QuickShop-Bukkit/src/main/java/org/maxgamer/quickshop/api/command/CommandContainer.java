@@ -72,7 +72,7 @@ public class CommandContainer {
     }
 
     public void bakeExecutorType() {
-        for (Method declaredMethod : getExecutor().getClass().getDeclaredMethods()) {
+        for (Method declaredMethod : getExecutor().getClass().getMethods()) {
             if ("onCommand".equals(declaredMethod.getName()) || "onTabComplete".equals(declaredMethod.getName())) {
                 if (declaredMethod.getParameterCount() != 3 || declaredMethod.isSynthetic() || declaredMethod.isBridge()) {
                     continue;
