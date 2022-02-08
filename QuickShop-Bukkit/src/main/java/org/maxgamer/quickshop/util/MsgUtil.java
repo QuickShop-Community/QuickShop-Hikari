@@ -20,7 +20,10 @@
 package org.maxgamer.quickshop.util;
 
 import cc.carm.lib.easysql.api.SQLQuery;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import lombok.Getter;
@@ -381,6 +384,18 @@ public class MsgUtil {
             msgs.add(serialized);
             OUTGOING_MESSAGES.put(uuid, msgs);
             plugin.getDatabaseHelper().saveOfflineTransactionMessage(uuid, serialized, System.currentTimeMillis());
+            try {
+                if (p.getName() != null) {
+                    Component csmMessage = plugin.text().of("bungee-cross-server-msg", shopTransactionMessage).forLocale();
+                    ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                    out.writeUTF("MessageRaw");
+                    out.writeUTF(p.getName());
+                    out.writeUTF(GsonComponentSerializer.gson().serialize(csmMessage));
+                    Iterables.getFirst(Bukkit.getOnlinePlayers(), null).sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+                }
+            } catch (Exception e) {
+                Util.debugLog("Could not send shop transaction message to player " + p.getName() + " via BungeeCord: " + e.getMessage());
+            }
         } else {
             Player player = p.getPlayer();
             if (player != null) {

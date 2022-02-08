@@ -13,7 +13,7 @@
     <artifactId>quickshop-bukkit</artifactId>
     <packaging>jar</packaging>
 
-    <name>QuickShop-Bukkit</name>
+    <name>quickshop-bukkit</name>
 
     <build>
         <plugins>
