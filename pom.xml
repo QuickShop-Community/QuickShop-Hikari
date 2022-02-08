@@ -236,6 +236,18 @@
                                         <pattern>org.h2.</pattern>
                                         <shadedPattern>org.maxgamer.quickshop.shade.org.h2.</shadedPattern>
                                     </relocation>
+                                    <relocation>
+                                        <pattern>org.apache.</pattern>
+                                        <shadedPattern>org.maxgamer.quickshop.shade.org.apache.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>net.kyori.examination.</pattern>
+                                        <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.examination.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>net.kyori.adventure</pattern>
+                                        <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.adventure.</shadedPattern>
+                                    </relocation>
                                 </relocations>
                                 <transformers>
                                     <transformer
@@ -245,7 +257,6 @@
                                 </transformers>
                                 <filters>
                                     <filter>
-                                        <artifact>*:*</artifact>
                                         <excludes>
                                             <exclude>META-INF/*.SF</exclude>
                                             <exclude>META-INF/*.DSA</exclude>

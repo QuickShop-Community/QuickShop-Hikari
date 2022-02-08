@@ -69,7 +69,20 @@ softdepend:
   - FabledSkyblock
   - NBTAPI
 
-api-version: 1.15
+api-version: 1.16
+
+libraries:
+  - org.apache.commons:commons-compress:1.21
+  - org.apache.commons:commons-lang3:3.12.0
+  - com.rollbar:rollbar-java:1.8.1
+  - commons-codec:commons-codec:1.15
+  - org.slf4j:slf4j-nop:1.7.35
+  - commons-io:commons-io:2.11.0
+  - cc.carm.lib:easysql-hikaricp:0.3.6
+  - com.h2database:h2:2.1.210
+  - com.ghostchu:simplereloadlib:1.1.0
+  - com.konghq:unirest-java:3.13.6
+  - net.kyori:adventure-platform-bukkit:4.0.1
 
 commands:
   qs:
