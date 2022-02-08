@@ -77,7 +77,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
         if (!hasTable(plugin.getDbPrefix() + "external_cache")) {
             createExternalCacheTable();
         }
-        if (!hasTable(plugin.getDbPrefix() + "player")) {
+        if (!hasTable(plugin.getDbPrefix() + "players")) {
             createPlayerTable();
         }
         checkColumns();
@@ -108,7 +108,21 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                     // Do nothing
                 }, ((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed while trying create the shop table! SQL: " + sqlAction.getSQLContent(), exception)));
     }
-
+    /**
+     * Creates the database table 'messages'
+     */
+    private void createMetricsTable() {
+        manager.createTable(plugin.getDbPrefix() + "metrics")
+                .addColumn("owner", "VARCHAR(255) NOT NULL")
+                .addColumn("message", "TEXT NOT NULL")
+                .addColumn("time", "BIGINT(32) NOT NULL")
+                .build()
+                .execute(((exception, sqlAction) -> {
+                    if (exception != null) {
+                        plugin.getLogger().log(Level.WARNING, "Failed to create messages table! SQL:" + sqlAction.getSQLContent(), exception);
+                    }
+                }));
+    }
     /**
      * Creates the database table 'messages'
      */
@@ -157,7 +171,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     }
 
     private void createPlayerTable() {
-        manager.createTable(plugin.getDbPrefix() + "player")
+        manager.createTable(plugin.getDbPrefix() + "players")
                 .addColumn("uuid", "VARCHAR(255) NOT NULL")
                 .addColumn("locale", "TEXT NOT NULL")
                 .setIndex(IndexType.PRIMARY_KEY, null, "uuid")
@@ -167,7 +181,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
     @Override
     public void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
-        manager.createReplace(plugin.getDbPrefix() + "player")
+        manager.createReplace(plugin.getDbPrefix() + "players")
                 .setColumnNames("uuid", "locale")
                 .setParams(uuid.toString(), locale)
                 .executeAsync();
@@ -176,7 +190,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     @Override
     public void getPlayerLocale(@NotNull UUID uuid, @NotNull Consumer<Optional<String>> callback) {
         manager.createQuery()
-                .inTable(plugin.getDbPrefix() + "player")
+                .inTable(plugin.getDbPrefix() + "players")
                 .addCondition("uuid", uuid.toString())
                 .selectColumns("locale")
                 .build()
