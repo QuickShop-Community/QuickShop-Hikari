@@ -382,7 +382,6 @@ public class Util {
             return;
         }
 
-
         StackWalker stackWalker = StackWalker.getInstance(Set.of(),2);
         List<StackWalker.StackFrame> caller = stackWalker.walk(
                 frames -> frames
@@ -462,18 +461,6 @@ public class Util {
     public static boolean useEnchantmentForEnchantedBook() {
         return plugin.getConfig().getBoolean("shop.use-enchantment-for-enchanted-book");
     }
-
-//    @NotNull
-//    public static BaseComponent[] getTranslateComponentForItem(ItemStack stack) {
-//        String result = ReflectFactory.getMaterialMinecraftNamespacedKey(stack.getType());
-//        return result == null ? fromLegacyText(getItemStackName(stack)) : new BaseComponent[]{new TranslatableComponent(result)};
-//    }
-//
-//    @NotNull
-//    public static BaseComponent[] getTranslateComponentForMaterial(Material material) {
-//        String result = ReflectFactory.getMaterialMinecraftNamespacedKey(material);
-//        return result == null ? fromLegacyText(MsgUtil.getItemi18n(material.name())) : new BaseComponent[]{new TranslatableComponent(result)};
-//    }
 
     @Nullable
     public static String getItemCustomName(@NotNull ItemStack itemStack) {
@@ -1001,71 +988,6 @@ public class Util {
         return loc;
     }
 
-//    /**
-//     * Parse colors for the YamlConfiguration.
-//     *
-//     * @param config yaml config
-//     */
-//    @Deprecated
-//    public static void parseColours(@NotNull YamlConfiguration config) {
-//        parseColours((ConfigurationSection) config);
-//    }
-
-//    /**
-//     * Parse colors for the YamlConfiguration.
-//     *
-//     * @param config yaml config
-//     */
-//    public static void parseColours(@NotNull ConfigurationSection config) {
-//        Set<String> keys = config.getKeys(true);
-//        for (String key : keys) {
-//            String filtered = config.getString(key);
-//            if (filtered == null) {
-//                continue;
-//            }
-//            if (filtered.startsWith("MemorySection")) {
-//                continue;
-//            }
-//            filtered = parseColours(filtered);
-//            config.set(key, filtered);
-//        }
-//    }
-
-//    /**
-//     * Parse colors for the Text.
-//     *
-//     * @param text the text
-//     * @return parsed text
-//     */
-//    @NotNull
-//    public static String parseColours(@Nullable String text) {
-//        if (StringUtils.isEmpty(text)) {
-//            return "";
-//        }
-//        MineDownParser parser = MINEDOWN.get().parser();
-//        parser.reset();
-//        //A hack for saving reset character
-//        text = text.replace("&r", "&l&r").replace("§r", "§l§r");
-//        return toLegacyText(parser.enable(MineDownParser.Option.LEGACY_COLORS).backwardsCompatibility(true).parse(text).create());
-//    }
-
-//    /**
-//     * Parse colors for the List.
-//     *
-//     * @param list the list
-//     * @return parsed list
-//     */
-//    @NotNull
-//    public static List<String> parseColours(@NotNull List<String> list) {
-//        final List<String> newList = new ArrayList<>();
-//
-//        for (String s : list) {
-//            newList.add(parseColours(s));
-//        }
-//
-//        return newList;
-//    }
-
     /**
      * Converts a name like IRON_INGOT into Iron Ingot to improve readability
      *
@@ -1182,16 +1104,6 @@ public class Util {
         }
         return Material.OAK_WALL_SIGN;
     }
-
-//    /**
-//     * Convert component to json
-//     *
-//     * @param components Chat Component
-//     * @return Json
-//     */
-//    public static String componentsToJson(BaseComponent[] components) {
-//        return ComponentSerializer.toString(components);
-//    }
 
     @SneakyThrows
     public static void makeExportBackup(@Nullable String backupName) {
