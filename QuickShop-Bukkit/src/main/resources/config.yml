@@ -1,7 +1,7 @@
 # QuickShop-Reremake Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 154
+config-version: 155
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -602,6 +602,10 @@ integration:
     enable: false
     #Should we prevent the creation of a shop or trade with a shop outside FabledSkyblock's area?
     whitelist-mode: false
+    create:
+      - MEMBER
+      - OWNER
+      - OPERATOR
   #IridumSkyblock Integration:
   iridiumskyblock:
     enable: false

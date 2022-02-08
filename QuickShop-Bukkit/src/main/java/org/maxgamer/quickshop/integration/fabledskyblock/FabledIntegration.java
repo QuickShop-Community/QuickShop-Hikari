@@ -32,11 +32,16 @@ import org.maxgamer.quickshop.api.integration.IntegrateStage;
 import org.maxgamer.quickshop.api.integration.IntegrationStage;
 import org.maxgamer.quickshop.integration.AbstractQSIntegratedPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 @IntegrationStage(loadStage = IntegrateStage.onEnableAfter)
 public class FabledIntegration extends AbstractQSIntegratedPlugin {
 
     private boolean ignoreDisabledWorlds;
     private boolean whitelist;
+    private List<IslandRole> islandRoleList = new ArrayList<>();
 
     public FabledIntegration(QuickShop plugin) {
         super(plugin);
@@ -45,9 +50,19 @@ public class FabledIntegration extends AbstractQSIntegratedPlugin {
         registerListener();
     }
 
+
     private void loadConfiguration() {
         ignoreDisabledWorlds = plugin.getConfig().getBoolean("integration.fabledskyblock.ignore-disabled-worlds");
         whitelist = plugin.getConfig().getBoolean("integration.fabledskyblock.whitelist-mode");
+        this.islandRoleList = new ArrayList<>();
+        for (String roleStr : plugin.getConfig().getStringList("integration.fabledskyblock.create")) {
+            try {
+                IslandRole role = IslandRole.valueOf(roleStr.toLowerCase(Locale.ROOT));
+                this.islandRoleList.add(role);
+            }catch (IllegalArgumentException e){
+                plugin.getLogger().warning("Invalid FabledSkyBlock setting role in config: " + roleStr);
+            }
+        }
     }
 
     /**
@@ -72,8 +87,7 @@ public class FabledIntegration extends AbstractQSIntegratedPlugin {
     public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
         Island island = SkyBlockAPI.getIslandManager().getIslandAtLocation(location);
         if (island == null) return whitelist;
-        return island.getRole(player).equals(IslandRole.MEMBER) || island.getRole(player).equals(IslandRole.OWNER)
-                || island.getRole(player).equals(IslandRole.OPERATOR);
+        return this.islandRoleList.contains(island.getRole(player));
     }
 
     /**
@@ -102,8 +116,7 @@ public class FabledIntegration extends AbstractQSIntegratedPlugin {
     public boolean canDeleteShopHere(@NotNull Player player, @NotNull Location location) {
         Island island = SkyBlockAPI.getIslandManager().getIslandAtLocation(location);
         if (island == null) return whitelist;
-        return island.getRole(player).equals(IslandRole.MEMBER) || island.getRole(player).equals(IslandRole.OWNER)
-                || island.getRole(player).equals(IslandRole.OPERATOR);
+        return this.islandRoleList.contains(island.getRole(player));
     }
 
     /**
