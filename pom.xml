@@ -103,150 +103,26 @@
                                 <createTestSourcesJar>false</createTestSourcesJar>
                                 <relocations>
                                     <relocation>
-                                        <pattern>com.google.errorprone.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.com.google.errorprone.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>org.checkerframework.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.org.checkerframework.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>org.apache.commons.lang3.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.org.apache.commons.lang3.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>org.objectweb.asm.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.org.objectweb.asm.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>org.slf4j.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.org.slf4j.slf4j.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>net.minidev.json.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.net.minidev.json.minidev.json.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>com.fasterxml.jackson.core.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.com.fasterxml.jackson.jackson.core.
-                                        </shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>me.lucko.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.me.lucko.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>com.rollbar.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.com.rollbar.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
                                         <pattern>com.dumptruckman.bukkit.configuration.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.com.dumptruckman.bukkit.configuration.
-                                        </shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>org.apache.commons.compress.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.org.apache.commons.compress.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>org.apache.commons.codec.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.org.apache.commons.codec.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>me.lucko.helper.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.me.lucko.helper.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>org.slf4j.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.org.slf4j.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>com.github.SparklingComet.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.com.github.SparklingComet.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>de.themoep.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.de.themoep.</shadedPattern>
+                                        <shadedPattern>org.maxgamer.quickshop.shade.com.dumptruckman.bukkit.configuration.</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>io.papermc.lib.</pattern>
                                         <shadedPattern>org.maxgamer.quickshop.shade.io.papermc.lib.</shadedPattern>
                                     </relocation>
                                     <relocation>
-                                        <pattern>com.github.ben-manes.caffeine.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.com.github.ben-manes.caffeine.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>org.enginehub.squirrelid.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.org.enginehub.squirrelid.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>kotlin.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.org.kotlin.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>javax.annotation.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.org.javax.annotation.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>com.flowpowered.math.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.com.flowpowered.math.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>okio.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.okio.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>okhttp3.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.okhttp3.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>net.kyori.minecraft.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.minecraft.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>net.minidev.asm.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.net.minidev.asm.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>com.squareup.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.org.com.squareup.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
                                         <pattern>de.leonhard.storage.</pattern>
                                         <shadedPattern>org.maxgamer.quickshop.shade.de.leonhard.storage.</shadedPattern>
                                     </relocation>
+                                    <!-- MineDown -->
                                     <relocation>
-                                        <pattern>cc.carm.lib.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.cc.carm.lib.</shadedPattern>
+                                        <pattern>de.themoep.</pattern>
+                                        <shadedPattern>org.maxgamer.quickshop.shade.de.themoep.</shadedPattern>
                                     </relocation>
+                                    <!-- JsonConfiguration Related -->
                                     <relocation>
-                                        <pattern>com.ghostchu.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.com.ghostchu.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>com.konghq.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.com.konghq.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>kong.unirest.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.kong.unirest.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>org.h2.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.org.h2.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>org.apache.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.org.apache.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>net.kyori.examination.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.examination.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>net.kyori.adventure</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.adventure.</shadedPattern>
+                                        <pattern>net.minidev.json.</pattern>
+                                        <shadedPattern>org.maxgamer.quickshop.shade.net.minidev.json.minidev.json.</shadedPattern>
                                     </relocation>
                                 </relocations>
                                 <transformers>

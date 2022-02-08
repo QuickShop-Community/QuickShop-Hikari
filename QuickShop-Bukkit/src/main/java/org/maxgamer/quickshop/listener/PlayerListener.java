@@ -21,8 +21,8 @@ package org.maxgamer.quickshop.listener;
 
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
-import me.lucko.helper.cooldown.Cooldown;
-import me.lucko.helper.cooldown.CooldownMap;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.GameMode;
@@ -62,7 +62,10 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class PlayerListener extends AbstractQSListener {
-    private final CooldownMap<Player> cooldownMap = CooldownMap.create(Cooldown.of(1, TimeUnit.SECONDS));
+    private final Cache<UUID, Long> cooldownMap = CacheBuilder
+            .newBuilder()
+            .expireAfterWrite(1,TimeUnit.SECONDS)
+            .build();
 
     public PlayerListener(QuickShop plugin) {
         super(plugin);
@@ -77,7 +80,9 @@ public class PlayerListener extends AbstractQSListener {
 
         // ----Adventure dupe click workaround start----
         if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-            cooldownMap.test(e.getPlayer());
+            if(cooldownMap.getIfPresent(e.getPlayer().getUniqueId())!= null)
+             return;
+            cooldownMap.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
         }
         // ----Adventure dupe click workaround end----
 
@@ -465,8 +470,10 @@ public class PlayerListener extends AbstractQSListener {
             return;
         }
         // ----Adventure dupe click workaround start----
-        if (!cooldownMap.test(event.getPlayer())) {
-            return;
+        if (event.getPlayer().getGameMode() == GameMode.ADVENTURE) {
+            if(cooldownMap.getIfPresent(event.getPlayer().getUniqueId())!= null)
+                return;
+            cooldownMap.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
         }
         // ----Adventure dupe click workaround end----
         Block focused = event.getPlayer().getTargetBlock(null, 5);

@@ -20,11 +20,6 @@
 package org.maxgamer.quickshop.util;
 
 import com.google.gson.*;
-import me.lucko.helper.datatree.DataTree;
-import me.lucko.helper.gson.typeadapters.BukkitSerializableAdapterFactory;
-import me.lucko.helper.gson.typeadapters.GsonSerializableAdapterFactory;
-import me.lucko.helper.gson.typeadapters.JsonElementTreeSerializer;
-import me.lucko.helper.text3.serializer.gson.GsonComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Reader;
@@ -38,20 +33,14 @@ import java.util.Objects;
  */
 public final class JsonUtil {
     private static final Gson REGULAR_GSON = new Gson();
-    private static final Gson STANDARD_GSON = GsonComponentSerializer.populate(new GsonBuilder())
-            .registerTypeHierarchyAdapter(DataTree.class, JsonElementTreeSerializer.INSTANCE)
-            .registerTypeAdapterFactory(GsonSerializableAdapterFactory.INSTANCE)
-            .registerTypeAdapterFactory(BukkitSerializableAdapterFactory.INSTANCE)
+    private static final Gson STANDARD_GSON = new GsonBuilder()
             .enableComplexMapKeySerialization()
             .setExclusionStrategies(new HiddenAnnotationExclusionStrategy())
             .serializeNulls()
             .disableHtmlEscaping()
             .create();
 
-    private static final Gson PRETTY_PRINT_GSON = GsonComponentSerializer.populate(new GsonBuilder())
-            .registerTypeHierarchyAdapter(DataTree.class, JsonElementTreeSerializer.INSTANCE)
-            .registerTypeAdapterFactory(GsonSerializableAdapterFactory.INSTANCE)
-            .registerTypeAdapterFactory(BukkitSerializableAdapterFactory.INSTANCE)
+    private static final Gson PRETTY_PRINT_GSON = new GsonBuilder()
             .enableComplexMapKeySerialization()
             .setExclusionStrategies(new HiddenAnnotationExclusionStrategy())
             .serializeNulls()

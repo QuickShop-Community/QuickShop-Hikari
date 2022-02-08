@@ -22,7 +22,6 @@ package org.maxgamer.quickshop.shop;
 import com.lishid.openinv.IOpenInv;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
-import me.lucko.helper.serialize.BlockPosition;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.DyeColor;
@@ -1563,6 +1562,6 @@ public class ContainerShop implements Shop {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(getLocation().getWorld().getName(), BlockPosition.of(getLocation()), SimpleShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount());
+        return new ShopInfoStorage(getLocation().getWorld().getName(), getLocation(), SimpleShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount());
     }
 }
