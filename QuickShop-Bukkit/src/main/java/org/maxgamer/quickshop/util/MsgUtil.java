@@ -386,15 +386,20 @@ public class MsgUtil {
             plugin.getDatabaseHelper().saveOfflineTransactionMessage(uuid, serialized, System.currentTimeMillis());
             try {
                 if (p.getName() != null && plugin.getConfig().getBoolean("bungee-cross-server-msg", true)) {
-                    Component csmMessage = plugin.text().of("bungee-cross-server-msg", shopTransactionMessage).forLocale();
-                    ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                    out.writeUTF("MessageRaw");
-                    out.writeUTF(p.getName());
-                    out.writeUTF(GsonComponentSerializer.gson().serialize(csmMessage));
-                    Player player = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
-                    if(player != null) {
-                        player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
-                    }
+                    plugin.getDatabaseHelper().getPlayerLocale(uuid, (locale) -> {
+                        if (locale.isPresent()) {
+                            Component csmMessage = plugin.text().of("bungee-cross-server-msg", shopTransactionMessage).forLocale(locale.get());
+                            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                            out.writeUTF("MessageRaw");
+                            out.writeUTF(p.getName());
+                            out.writeUTF(GsonComponentSerializer.gson().serialize(csmMessage));
+                            Player player = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
+                            if (player != null) {
+                                player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+                            }
+                        }
+                    });
+
                 }
             } catch (Exception e) {
                 Util.debugLog("Could not send shop transaction message to player " + p.getName() + " via BungeeCord: " + e.getMessage());

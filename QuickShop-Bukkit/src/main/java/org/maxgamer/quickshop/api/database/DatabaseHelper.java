@@ -26,10 +26,15 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
 
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 public interface DatabaseHelper {
+
+    void getPlayerLocale(@NotNull UUID uuid, @NotNull Consumer<Optional<String>> callback);
+
+    void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale);
 
     /**
      * Cleanup transaction messages that saved in database

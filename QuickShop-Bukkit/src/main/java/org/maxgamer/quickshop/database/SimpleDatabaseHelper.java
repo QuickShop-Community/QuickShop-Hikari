@@ -37,6 +37,7 @@ import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.sql.*;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -75,6 +76,9 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
         }
         if (!hasTable(plugin.getDbPrefix() + "external_cache")) {
             createExternalCacheTable();
+        }
+        if (!hasTable(plugin.getDbPrefix() + "player")) {
+            createPlayerTable();
         }
         checkColumns();
     }
@@ -149,16 +153,52 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .addColumn("value", "TEXT NOT NULL")
                 .setIndex(IndexType.PRIMARY_KEY, null, "key")
                 .build()
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create extrenal_cache table! SQL:" + sqlAction.getSQLContent(), exception)));
+                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create metadata table! SQL:" + sqlAction.getSQLContent(), exception)));
     }
 
+    private void createPlayerTable() {
+        manager.createTable(plugin.getDbPrefix() + "player")
+                .addColumn("uuid", "VARCHAR(255) NOT NULL")
+                .addColumn("locale", "TEXT NOT NULL")
+                .setIndex(IndexType.PRIMARY_KEY, null, "uuid")
+                .build()
+                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create players table! SQL:" + sqlAction.getSQLContent(), exception)));
+    }
+
+    @Override
+    public void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
+        manager.createReplace(plugin.getDbPrefix() + "player")
+                .setColumnNames("uuid", "locale")
+                .setParams(uuid.toString(), locale)
+                .executeAsync();
+    }
+
+    @Override
+    public void getPlayerLocale(@NotNull UUID uuid, @NotNull Consumer<Optional<String>> callback) {
+        manager.createQuery()
+                .inTable(plugin.getDbPrefix() + "player")
+                .addCondition("uuid", uuid.toString())
+                .selectColumns("locale")
+                .build()
+                .executeAsync(sqlQuery -> {
+                            try (ResultSet set = sqlQuery.getResultSet()) {
+                                if (set.next()) {
+                                    callback.accept(Optional.of(set.getString("locale")));
+                                }
+                            }
+                        }, (exception, sqlAction) -> {
+                            callback.accept(Optional.empty());
+                            plugin.getLogger().log(Level.WARNING, "Failed to get player locale! SQL:" + sqlAction.getSQLContent(), exception);
+                        }
+                );
+    }
 
     /**
      * Verifies that all required columns exist.
      */
     private void checkColumns() {
         plugin.getLogger().info("Checking and updating database columns, it may take a while...");
-        if(getDatabaseVersion() == 0){
+        if (getDatabaseVersion() == 0) {
             // QuickShop v4/v5 upgrade
             // Call updater
             setDatabaseVersion(1);
@@ -167,7 +207,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
         plugin.getLogger().info("Finished!");
     }
 
-    private void setDatabaseVersion(int version){
+    private void setDatabaseVersion(int version) {
         manager.createReplace(plugin.getDbPrefix() + "metadata")
                 .setColumnNames("key", "value")
                 .setParams("database_version", version)
