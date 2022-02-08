@@ -30,7 +30,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.GameVersion;
-import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.paste.Paste;
 
@@ -200,7 +199,7 @@ public class RollbarErrorReporter {
         if (!plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) { // We only receive latest reports.
             return false;
         }
-        if (!GameVersion.get(ReflectFactory.getServerVersion()).isCoreSupports()) { // Ignore errors if user install quickshop on unsupported
+        if (!GameVersion.get(plugin.getPlatform().getMinecraftVersion()).isCoreSupports()) { // Ignore errors if user install quickshop on unsupported
             // version.
             return false;
         }
