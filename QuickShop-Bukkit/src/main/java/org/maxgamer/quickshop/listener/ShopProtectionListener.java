@@ -24,6 +24,7 @@ import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Hopper;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
@@ -42,6 +43,8 @@ import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Cache;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.shop.HopperPersistentData;
+import org.maxgamer.quickshop.shop.HopperPersistentDataType;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
@@ -265,6 +268,15 @@ public class ShopProtectionListener extends AbstractProtectionListener {
 
         if (shop == null) {
             return;
+        }
+
+        if(loc.getBlock().getState() instanceof Hopper hopper){
+            HopperPersistentData hopperPersistentData = hopper.getPersistentDataContainer().get(plugin.getMetadata().getHopperPersistentDataKey(), HopperPersistentDataType.INSTANCE);
+            if(hopperPersistentData != null){
+                if(!hopperPersistentData.getPlayer().equals(shop.getOwner())){
+                    return;
+                }
+            }
         }
 
         event.setCancelled(true);

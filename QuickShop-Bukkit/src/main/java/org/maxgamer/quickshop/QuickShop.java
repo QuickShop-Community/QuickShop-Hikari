@@ -261,8 +261,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private Yaml configurationForCompatibility = null;
     @Getter
     private Platform platform;
-    @Getter
     private BukkitAudiences audience;
+    @Getter
+    private final Metadata metadata = new Metadata();
 
     /**
      * Use for mock bukkit

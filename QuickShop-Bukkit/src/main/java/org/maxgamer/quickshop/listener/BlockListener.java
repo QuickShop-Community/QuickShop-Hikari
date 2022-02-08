@@ -25,10 +25,7 @@ import io.papermc.lib.PaperLib;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
+import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
@@ -45,6 +42,8 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.Info;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopAction;
+import org.maxgamer.quickshop.shop.HopperPersistentData;
+import org.maxgamer.quickshop.shop.HopperPersistentDataType;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
@@ -208,7 +207,12 @@ public class BlockListener extends AbstractProtectionListener {
             event.setCancelled(true);
         }
     }
-
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onPlaceHopper(BlockPlaceEvent e) {
+        if(e.getBlockPlaced().getState() instanceof Hopper hopper){
+            hopper.getPersistentDataContainer().set(plugin.getMetadata().getHopperPersistentDataKey(), HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
+        }
+    }
     /*
      * Listens for chest placement, so a doublechest shop can't be created.
      */
