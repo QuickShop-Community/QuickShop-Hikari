@@ -391,7 +391,10 @@ public class MsgUtil {
                     out.writeUTF("MessageRaw");
                     out.writeUTF(p.getName());
                     out.writeUTF(GsonComponentSerializer.gson().serialize(csmMessage));
-                    Iterables.getFirst(Bukkit.getOnlinePlayers(), null).sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+                    Player player = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
+                    if(player != null) {
+                        player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+                    }
                 }
             } catch (Exception e) {
                 Util.debugLog("Could not send shop transaction message to player " + p.getName() + " via BungeeCord: " + e.getMessage());
