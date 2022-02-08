@@ -381,10 +381,20 @@ public class Util {
             LOCK.writeLock().unlock();
             return;
         }
-        final StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];
-        final String className = stackTraceElement.getClassName();
-        final String methodName = stackTraceElement.getMethodName();
-        final int codeLine = stackTraceElement.getLineNumber();
+
+
+        StackWalker stackWalker = StackWalker.getInstance(Set.of(),2);
+        List<StackWalker.StackFrame> caller = stackWalker.walk(
+                frames -> frames
+                        .limit(2)
+                        .collect(Collectors.toList()));
+        StackWalker.StackFrame frame = caller.get(1);
+
+       //final StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];
+        final String className = frame.getClassName();
+        final String methodName = frame.getMethodName();
+        final int codeLine = frame.getLineNumber();
+
         for (String log : logs) {
             DEBUG_LOGS.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
             QuickShop.getInstance().getLogger().info("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
