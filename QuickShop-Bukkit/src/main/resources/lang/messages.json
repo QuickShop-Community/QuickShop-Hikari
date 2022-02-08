@@ -190,7 +190,7 @@
       "purge": "&eStart the shop purge task in background"
     },
     "disabled": "&cThis command is disabled: &e{0}",
-    "feature-not-enabled": "This feature is not enabled in the config file."
+    "feature-not-enabled": "&7This feature is not enabled in the config file."
   },
   "signs": {
     "selling": "Selling {0}",
@@ -243,10 +243,10 @@
     "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
-    "full_line": "+---------------------------------------------------+",
-    "left_half_line": "+--------------------",
-    "right_half_line": "--------------------+",
-    "left_begin": "| "
+    "full_line": "&5+---------------------------------------------------+",
+    "left_half_line": "&5+--------------------",
+    "right_half_line": "&5--------------------+",
+    "left_begin": "&5| "
   },
   "booleanformat": {
     "success": "&a✔",
