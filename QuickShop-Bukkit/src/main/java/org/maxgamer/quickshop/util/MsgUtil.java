@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.util;
 import cc.carm.lib.easysql.api.SQLQuery;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
@@ -584,7 +585,6 @@ public class MsgUtil {
         }
     }
 
-
     /**
      * Get Enchantment's i18n name.
      *
@@ -694,7 +694,7 @@ public class MsgUtil {
 
     public static boolean isJson(String str) {
         try {
-            JsonUtil.parser().parse(str);
+            JsonParser.parseString(str);
             return true;
         } catch (JsonParseException exception) {
             return false;
