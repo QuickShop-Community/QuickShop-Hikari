@@ -5,6 +5,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 /**
  * @author EssentialsX
+ * https://github.com/EssentialsX/Essentials/blob/2.x/providers/NMSReflectionProvider/src/main/java/net/ess3/nms/refl/providers/ReflServerStateProvider.java
  */
 public class ReflServerStateProvider {
     private final Object nmsServer;

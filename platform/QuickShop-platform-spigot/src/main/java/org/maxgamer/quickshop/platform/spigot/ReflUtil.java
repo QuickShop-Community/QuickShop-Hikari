@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 
 /**
  * @author EssentialsX
+ * https://github.com/EssentialsX/Essentials/blob/2.x/providers/NMSReflectionProvider/src/main/java/net/ess3/nms/refl/ReflUtil.java
  */
 public final class ReflUtil {
     private static final Map<String, Class<?>> classCache = new HashMap<>();
