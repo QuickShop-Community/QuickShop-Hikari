@@ -265,7 +265,6 @@ public interface ShopManager {
             @NotNull Info info,
             @NotNull Shop shop,
             int amount);
-
     /**
      * Send a purchaseSuccess message for a player.
      *
@@ -274,8 +273,7 @@ public interface ShopManager {
      * @param amount    Trading item amounts.
      */
     @ApiStatus.Experimental
-    void sendPurchaseSuccess(@NotNull UUID purchaser, @NotNull Shop shop, int amount);
-
+    void sendPurchaseSuccess(@NotNull UUID purchaser, @NotNull Shop shop, int amount, double total, double tax);
     /**
      * Send a sellSuccess message for a player.
      *
@@ -284,7 +282,7 @@ public interface ShopManager {
      * @param amount Trading item amounts.
      */
     @ApiStatus.Experimental
-    void sendSellSuccess(@NotNull UUID seller, @NotNull Shop shop, int amount);
+    void sendSellSuccess(@NotNull UUID seller, @NotNull Shop shop, int amount, double total, double tax);
 
     /**
      * Send a shop infomation to a player.

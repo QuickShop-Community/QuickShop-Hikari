@@ -705,8 +705,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
                 plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you",
                         LegacyComponentSerializer.legacySection().deserialize(Objects.requireNonNull(format(total, shop.getLocation().getWorld(), shop.getCurrency()))),
-                       LegacyComponentSerializer.legacySection().deserialize( Objects.requireNonNull(format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(),
-                               shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())))).send();
+                        LegacyComponentSerializer.legacySection().deserialize(Objects.requireNonNull(format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(),
+                                shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())))).send();
             } else {
                 plugin.text().of(buyer, "purchase-failed").send();
                 plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
@@ -719,9 +719,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         Player player = plugin.getServer().getPlayer(buyer);
 
 
-        Component msg = plugin.text().of(player,"player-sold-to-your-store", LegacyComponentSerializer.legacySection().deserialize(player != null ? player.getName() : buyer.toString()),
-                Component.text(amount),
-                MsgUtil.getTranslateText(shop.getItem())).forLocale()
+        Component msg = plugin.text().of(player, "player-sold-to-your-store", LegacyComponentSerializer.legacySection().deserialize(player != null ? player.getName() : buyer.toString()),
+                        Component.text(amount),
+                        MsgUtil.getTranslateText(shop.getItem())).forLocale()
                 .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
 
         if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
@@ -732,10 +732,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         MsgUtil.send(shop, shop.getOwner(), msg);
 
         if (space == amount) {
-            msg = plugin.text().of(player,"shop-out-of-space",
-                    Component.text(shop.getLocation().getBlockX()),
-                    Component.text(shop.getLocation().getBlockY()),
-                    Component.text(shop.getLocation().getBlockZ())).forLocale()
+            msg = plugin.text().of(player, "shop-out-of-space",
+                            Component.text(shop.getLocation().getBlockX()),
+                            Component.text(shop.getLocation().getBlockY()),
+                            Component.text(shop.getLocation().getBlockZ())).forLocale()
                     .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
             if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
                 for (UUID staff : shop.getModerator().getStaffs()) {
@@ -747,7 +747,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
 
         shop.buy(buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
-        sendSellSuccess(buyer, shop, amount);
+        sendSellSuccess(buyer, shop, amount, total, CalculateUtil.subtract(1, taxModifier));
         ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, taxModifier);
         plugin.getServer().getPluginManager().callEvent(se);
         shop.setSignText(); // Update the signs count
@@ -817,7 +817,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (!result.isSuccess()) {
                 plugin.text().of(p, "3rd-plugin-build-check-failed", LegacyComponentSerializer.legacySection().deserialize(result.getMessage())).send();
                 if (p.hasPermission("quickshop.alert")) {
-                    plugin.text().of(p, "3rd-plugin-build-check-failed-admin",LegacyComponentSerializer.legacySection().deserialize(result.getMessage()), Component.text(result.getListener())).send();
+                    plugin.text().of(p, "3rd-plugin-build-check-failed-admin", LegacyComponentSerializer.legacySection().deserialize(result.getMessage()), Component.text(result.getListener())).send();
                 }
                 Util.debugLog("Failed to create shop because protection check failed, found:" + result.getMessage());
                 return;
@@ -895,8 +895,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         switch (priceCheckResult.getStatus()) {
             case REACHED_PRICE_MIN_LIMIT -> {
                 plugin.text().of(p, "price-too-cheap",
-                       Component.text((decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
-                               : Double.toString(this.priceLimiter.getMinPrice()))).send();
+                        Component.text((decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
+                                : Double.toString(this.priceLimiter.getMinPrice()))).send();
                 return;
             }
             case REACHED_PRICE_MAX_LIMIT -> {
@@ -1092,8 +1092,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (!transaction.failSafeCommit()) {
             if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
                 plugin.text().of(seller, "you-cant-afford-to-buy",
-                      LegacyComponentSerializer.legacySection().deserialize( Objects.requireNonNull(
-                              format(total, shop.getLocation().getWorld(), shop.getCurrency()))),
+                        LegacyComponentSerializer.legacySection().deserialize(Objects.requireNonNull(
+                                format(total, shop.getLocation().getWorld(), shop.getCurrency()))),
                         LegacyComponentSerializer.legacySection().deserialize(Objects.requireNonNull(format(
                                 eco.getBalance(seller, shop.getLocation().getWorld(),
                                         shop.getCurrency()), shop.getLocation().getWorld(),
@@ -1109,19 +1109,19 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // Notify the shop owner //TODO: move to a standalone method
         Player player = plugin.getServer().getPlayer(seller);
         if (plugin.getConfig().getBoolean("show-tax")) {
-            msg = plugin.text().of(player,"player-bought-from-your-store-tax",
-                   LegacyComponentSerializer.legacySection().deserialize( player != null ? player.getName() : seller.toString()),
-                   Component.text(amount * shop.getItem().getAmount()),
-                    MsgUtil.getTranslateText(shop.getItem()),
-                    Component.text(this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop)),
-                    Component.text(this.formatter.format(CalculateUtil.multiply(taxModifier, total), shop))).forLocale()
+            msg = plugin.text().of(player, "player-bought-from-your-store-tax",
+                            LegacyComponentSerializer.legacySection().deserialize(player != null ? player.getName() : seller.toString()),
+                            Component.text(amount * shop.getItem().getAmount()),
+                            MsgUtil.getTranslateText(shop.getItem()),
+                            Component.text(this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop)),
+                            Component.text(this.formatter.format(CalculateUtil.multiply(taxModifier, total), shop))).forLocale()
                     .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
         } else {
-            msg = plugin.text().of(player,"player-bought-from-your-store",
-                   LegacyComponentSerializer.legacySection().deserialize(player != null ? player.getName() : seller.toString()),
-                    Component.text(amount * shop.getItem().getAmount()),
-                    MsgUtil.getTranslateText(shop.getItem()),
-                    LegacyComponentSerializer.legacySection().deserialize(this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop))).forLocale()
+            msg = plugin.text().of(player, "player-bought-from-your-store",
+                            LegacyComponentSerializer.legacySection().deserialize(player != null ? player.getName() : seller.toString()),
+                            Component.text(amount * shop.getItem().getAmount()),
+                            MsgUtil.getTranslateText(shop.getItem()),
+                            LegacyComponentSerializer.legacySection().deserialize(this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop))).forLocale()
                     .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
         }
 
@@ -1133,11 +1133,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         // Transfers the item from A to B
         if (stock == amount) {
-            msg =  plugin.text().of(player,"shop-out-of-stock",
-                    Component.text(shop.getLocation().getBlockX()),
-                    Component.text(shop.getLocation().getBlockY()),
-                    Component.text(shop.getLocation().getBlockZ()),
-                    MsgUtil.getTranslateText(shop.getItem())).forLocale()
+            msg = plugin.text().of(player, "shop-out-of-stock",
+                            Component.text(shop.getLocation().getBlockX()),
+                            Component.text(shop.getLocation().getBlockY()),
+                            Component.text(shop.getLocation().getBlockZ()),
+                            MsgUtil.getTranslateText(shop.getItem())).forLocale()
                     .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
 
             MsgUtil.send(shop, shop.getOwner(), msg);
@@ -1150,7 +1150,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
 
         shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
-        sendPurchaseSuccess(seller, shop, amount);
+        sendPurchaseSuccess(seller, shop, amount, total, CalculateUtil.subtract(1, taxModifier));
         ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, taxModifier);
         plugin.getServer().getPluginManager().callEvent(se);
     }
@@ -1163,7 +1163,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      * @param amount    Trading item amounts.
      */
     @Override
-    public void sendPurchaseSuccess(@NotNull UUID purchaser, @NotNull Shop shop, int amount) {
+    public void sendPurchaseSuccess(@NotNull UUID purchaser, @NotNull Shop shop, int amount, double total, double tax) {
         Player sender = Bukkit.getPlayer(purchaser);
         if (sender == null) {
             return;
@@ -1171,7 +1171,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(plugin.text().of(sender, "menu.successful-purchase").forLocale());
-        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price", Component.text(amount * shop.getItem().getAmount()), MsgUtil.getTranslateText(shop.getItem()), LegacyComponentSerializer.legacySection().deserialize(Objects.requireNonNull(format(amount * shop.getPrice(), shop)))).forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price", Component.text(amount * shop.getItem().getAmount()), MsgUtil.getTranslateText(shop.getItem()), LegacyComponentSerializer.legacySection().deserialize(Objects.requireNonNull(format(total, shop)))).forLocale());
         MsgUtil.printEnchantment(sender, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
@@ -1184,7 +1184,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      * @param amount Trading item amounts.
      */
     @Override
-    public void sendSellSuccess(@NotNull UUID seller, @NotNull Shop shop, int amount) {
+    public void sendSellSuccess(@NotNull UUID seller, @NotNull Shop shop, int amount, double total, double tax) {
         Player sender = Bukkit.getPlayer(seller);
         if (sender == null) {
             return;
@@ -1199,8 +1199,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         MsgUtil.getTranslateText(shop.getItem()),
                         LegacyComponentSerializer.legacySection().deserialize(Objects.requireNonNull(format(amount * shop.getPrice(), shop)))).forLocale());
         if (plugin.getConfig().getBoolean("show-tax")) {
-            double tax = plugin.getConfig().getDouble("tax");
-            double total = amount * shop.getPrice();
             if (tax != 0) {
                 if (!seller.equals(shop.getOwner())) {
                     chatSheetPrinter.printLine(
@@ -1232,7 +1230,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         plugin.text().of(p, "tableformat.left_begin").forLocale()
                 .append(plugin.text().of(p, "menu.item", MsgUtil.getTranslateText(shop.getItem())).forLocale()
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem())))
-                .append(  Component.text("  "));
+                .append(Component.text("  "));
         if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(
                     plugin.text().of(p, "menu.damage-percent-remaining", Component.text(Util.getToolPercentage(items))).forLocale());
@@ -1251,13 +1249,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         plugin.text().of(p, "menu.space", plugin.text().of(p, "signs.unlimited").forLocale()).forLocale());
             } else {
                 chatSheetPrinter.printLine(
-                        plugin.text().of(p, "menu.space",  Component.text(shop.getRemainingSpace())).forLocale());
+                        plugin.text().of(p, "menu.space", Component.text(shop.getRemainingSpace())).forLocale());
             }
         }
         if (shop.getItem().getAmount() == 1) {
             chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per", MsgUtil.getTranslateText(shop.getItem()), LegacyComponentSerializer.legacySection().deserialize(format(shop.getPrice(), shop))).forLocale());
         } else {
-            chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per-stack", MsgUtil.getTranslateText(shop.getItem()),LegacyComponentSerializer.legacySection().deserialize( format(shop.getPrice(), shop)), Component.text(shop.getItem().getAmount())).forLocale());
+            chatSheetPrinter.printLine(plugin.text().of(p, "menu.price-per-stack", MsgUtil.getTranslateText(shop.getItem()), LegacyComponentSerializer.legacySection().deserialize(format(shop.getPrice(), shop)), Component.text(shop.getItem().getAmount())).forLocale());
         }
         if (shop.isBuying()) {
             chatSheetPrinter.printLine(plugin.text().of(p, "menu.this-shop-is-buying").forLocale());
@@ -1280,8 +1278,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
                     int level = potionEffect.getAmplifier();
                     chatSheetPrinter.printLine(Component.empty()
-                                    .color(NamedTextColor.YELLOW)
-                                    .append(Component.text(MsgUtil.getPotioni18n(potionEffect.getType()) + " " + (level <= 10 ? RomanNumber.toRoman(potionEffect.getAmplifier()) : level))));
+                            .color(NamedTextColor.YELLOW)
+                            .append(Component.text(MsgUtil.getPotioni18n(potionEffect.getType()) + " " + (level <= 10 ? RomanNumber.toRoman(potionEffect.getAmplifier()) : level))));
                 }
             }
         }
@@ -1296,7 +1294,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     private boolean shopIsNotValid(@Nullable Player p, @NotNull Info info, @NotNull Shop shop) {
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendDirectMessage(p, Component.text( "Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
+            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
             return true;
         }
         if (!Util.canBeShop(info.getLocation().getBlock())) {
@@ -1313,13 +1311,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     private void actionTrade(@NotNull Player p, Info info, @NotNull String message) {
         Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
-            MsgUtil.sendDirectMessage(p, Component.text( "Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
+            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
             return;
         }
         Result result = ((SimpleIntegrationManager) plugin.getIntegrationHelper())
                 .callIntegrationsCanTrade(p, info.getLocation());
         if (!result.isSuccess()) {
-            plugin.text().of(p, "integrations-check-failed-trade",LegacyComponentSerializer.legacySection().deserialize( result.getMessage())).send();
+            plugin.text().of(p, "integrations-check-failed-trade", LegacyComponentSerializer.legacySection().deserialize(result.getMessage())).send();
             Util.debugLog("Cancel by integrations.");
             return;
         }
@@ -1450,12 +1448,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     return 0;
                 }
                 plugin.text().of(p, "you-cant-afford-to-buy",
-                       LegacyComponentSerializer.legacySection().deserialize(  Objects.requireNonNull(
-                               plugin.getShopManager().format(price, shop.getLocation().getWorld(),
-                                       shop.getCurrency()))),
-                       LegacyComponentSerializer.legacySection().deserialize( Objects.requireNonNull(
-                               plugin.getShopManager().format(balance, shop.getLocation().getWorld(),
-                                       shop.getCurrency())))).send();
+                        LegacyComponentSerializer.legacySection().deserialize(Objects.requireNonNull(
+                                plugin.getShopManager().format(price, shop.getLocation().getWorld(),
+                                        shop.getCurrency()))),
+                        LegacyComponentSerializer.legacySection().deserialize(Objects.requireNonNull(
+                                plugin.getShopManager().format(balance, shop.getLocation().getWorld(),
+                                        shop.getCurrency())))).send();
             }
             return 0;
         }
