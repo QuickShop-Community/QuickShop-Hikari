@@ -47,4 +47,9 @@ public class PaperPlatform implements Platform {
     public boolean isServerStopping() {
         return Bukkit.isStopping();
     }
+
+    @Override
+    public @NotNull String getMinecraftVersion() {
+        return Bukkit.getMinecraftVersion();
+    }
 }

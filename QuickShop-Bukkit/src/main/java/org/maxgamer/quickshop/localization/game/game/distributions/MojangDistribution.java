@@ -31,7 +31,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.localization.game.game.distributions.bean.GameManifest;
 import org.maxgamer.quickshop.localization.game.game.distributions.bean.VersionManifest;
 import org.maxgamer.quickshop.util.JsonUtil;
-import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.mojangapi.MojangApiMirror;
 
@@ -91,7 +90,7 @@ public class MojangDistribution {
         if (versionManifest == null) {
             return Collections.emptyList();
         }
-        GameManifest gameManifest = getGameManifest(versionManifest, ReflectFactory.getServerVersion());
+        GameManifest gameManifest = getGameManifest(versionManifest, plugin.getPlatform().getMinecraftVersion());
         if (gameManifest == null) {
             return Collections.emptyList();
         }

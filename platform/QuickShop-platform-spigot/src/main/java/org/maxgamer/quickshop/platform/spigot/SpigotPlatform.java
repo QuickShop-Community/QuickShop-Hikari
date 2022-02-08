@@ -73,4 +73,9 @@ public class SpigotPlatform implements Platform {
     public boolean isServerStopping() {
         return this.provider.isStopping();
     }
+
+    @Override
+    public @NotNull String getMinecraftVersion() {
+        return ReflectFactory.getServerVersion();
+    }
 }

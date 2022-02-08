@@ -36,7 +36,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.util.MsgUtil;
-import org.maxgamer.quickshop.util.ReflectFactory;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.mojangapi.*;
 
@@ -256,7 +255,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                         try (FileInputStream cacheFileInputSteam = new FileInputStream(cachedFile)) {
                             if (DigestUtils.sha1Hex(cacheFileInputSteam).equals(cacheSha1)) { //Check if file broken
                                 Util.debugLog("MojangAPI in-game translation digest check passed.");
-                                if (cacheVersion.equals(ReflectFactory.getServerVersion())) {
+                                if (cacheVersion.equals(plugin.getPlatform().getMinecraftVersion())) {
                                     isLatest = true;
                                     try (FileReader reader = new FileReader(cachedFile)) {
                                         lang = new JsonParser().parse(reader).getAsJsonObject();
@@ -277,7 +276,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
 
                 //Download new things from Mojang launcher meta site
                 MojangAPI mojangAPI = new MojangAPI(mirror);
-                MojangAPI.AssetsAPI assetsAPI = mojangAPI.getAssetsAPI(ReflectFactory.getServerVersion());
+                MojangAPI.AssetsAPI assetsAPI = mojangAPI.getAssetsAPI(plugin.getPlatform().getMinecraftVersion());
                 if (!assetsAPI.isAvailable()) { //This version no meta can be found, bug?
                     Util.debugLog("AssetsAPI returns not available, This may caused by Mojang servers down or connection issue.");
                     plugin.getLogger().warning("Failed to update game assets from MojangAPI server, This may caused by Mojang servers down, connection issue or invalid language code.");
@@ -314,7 +313,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
 
                 //Download language json
 
-                JsonElement indexJson = new JsonParser().parse(assetsFileData.get().getContent());
+                JsonElement indexJson = JsonParser.parseString(assetsFileData.get().getContent());
                 if (!indexJson.isJsonObject()) {
                     plugin.getLogger().warning("Failed to update game assets from MojangAPI server because the json structure seems invalid, please try again later.");
                     return;
@@ -343,8 +342,8 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 }
 
                 //Save the caches
-                lang = new JsonParser().parse(langContent.get()).getAsJsonObject();
-                yamlConfiguration.set("ver", ReflectFactory.getServerVersion());
+                lang = JsonParser.parseString(langContent.get()).getAsJsonObject();
+                yamlConfiguration.set("ver", plugin.getPlatform().getMinecraftVersion());
                 yamlConfiguration.set("sha1", langHash);
                 yamlConfiguration.set("lang", languageCode);
                 yamlConfiguration.save(cacheFile);

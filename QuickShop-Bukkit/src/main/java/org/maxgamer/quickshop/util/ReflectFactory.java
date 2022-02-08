@@ -19,11 +19,8 @@
 
 package org.maxgamer.quickshop.util;
 
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
-
-import java.lang.reflect.Field;
 
 /**
  * ReflectFactory is library builtin QuickShop to get/execute stuff that cannot be access with BukkitAPI with reflect way.
@@ -31,7 +28,6 @@ import java.lang.reflect.Field;
  * @author Ghost_chu
  */
 public class ReflectFactory {
-    private static String cachedVersion = null;
     private static String nmsVersion;
 
     @NotNull
@@ -42,31 +38,4 @@ public class ReflectFactory {
         }
         return nmsVersion;
     }
-
-    @NotNull
-    public static String getServerVersion() {
-        if (cachedVersion != null) {
-            return cachedVersion;
-        }
-        try {
-            Field consoleField = Bukkit.getServer().getClass().getDeclaredField("console");
-            // protected
-            consoleField.setAccessible(true);
-            // dedicated server
-            Object console = consoleField.get(Bukkit.getServer());
-            cachedVersion = String.valueOf(
-                    console.getClass().getSuperclass().getMethod("getVersion").invoke(console));
-            return cachedVersion;
-        } catch (Exception e) {
-            //Fallback to common substring
-            String[] strings = StringUtils.substringsBetween(Bukkit.getServer().getVersion(), "(MC: ", ")");
-            if (strings != null && strings.length == 1) {
-                cachedVersion = strings[0];
-            } else {
-                cachedVersion = "Unknown";
-            }
-            return cachedVersion;
-        }
-    }
-
 }

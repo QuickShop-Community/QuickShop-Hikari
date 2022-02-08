@@ -384,10 +384,10 @@ public final class EnvironmentChecker {
         String nmsVersion = ReflectFactory.getNMSVersion();
         GameVersion gameVersion = GameVersion.get(nmsVersion);
         if (!gameVersion.isCoreSupports()) {
-            return new ResultContainer(CheckResult.STOP_WORKING, "Your Minecraft version is no longer supported: " + ReflectFactory.getServerVersion() + " (" + nmsVersion + ")");
+            return new ResultContainer(CheckResult.STOP_WORKING, "Your Minecraft version is no longer supported: " + plugin.getPlatform().getMinecraftVersion() + " (" + nmsVersion + ")");
         }
         if (gameVersion == GameVersion.UNKNOWN) {
-            return new ResultContainer(CheckResult.WARNING, "QuickShop may not fully support version " + nmsVersion + "/" + ReflectFactory.getServerVersion() + ", Some features may not work.");
+            return new ResultContainer(CheckResult.WARNING, "QuickShop may not fully support version " + nmsVersion + "/" + plugin.getPlatform().getMinecraftVersion() + ", Some features may not work.");
         }
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }

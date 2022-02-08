@@ -18,8 +18,9 @@ public interface Platform {
     @NotNull
     HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack);
     void registerCommand(@NotNull String prefix, @NotNull PluginCommand command);
-
     boolean isServerStopping();
+    @NotNull
+    String getMinecraftVersion();
 //    @NotNull
 //    Component getLine(@NotNull Sign sign, int line);
 }
