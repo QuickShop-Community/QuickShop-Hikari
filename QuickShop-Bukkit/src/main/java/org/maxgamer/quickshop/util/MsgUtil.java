@@ -405,6 +405,11 @@ public class MsgUtil {
     }
     // TODO: No hardcode
 
+    @NotNull
+    private static Component addLeftLine(@NotNull CommandSender sender, @NotNull Component component){
+        return plugin.text().of(sender, "tableformat.left_begin").forLocale().append(component);
+    }
+
     /**
      * Send controlPanel infomation to sender
      *
@@ -430,14 +435,16 @@ public class MsgUtil {
         if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.setowner")) {
             chatSheetPrinter.printLine(plugin.text().of(sender, "menu.owner", shop.ownerName()).forLocale());
         } else {
-            chatSheetPrinter.printSuggestedCmdLine(
-                    plugin.text().of(sender,
-                            "controlpanel.setowner",
-                            LegacyComponentSerializer.legacySection().deserialize(shop.ownerName()
-                                    + ((plugin.getConfig().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op")
-                                    && shop.isUnlimited())
-                                    ? (" (" + shop.getOwner() + ")")
-                                    : ""))).forLocale(),
+            Component text = plugin.text().of(sender,
+                    "controlpanel.setowner",
+                    LegacyComponentSerializer.legacySection().deserialize(LegacyComponentSerializer.legacySection().serialize(shop.ownerName())
+                            + ((plugin.getConfig().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op")
+                            && shop.isUnlimited())
+                            ? (" (" + shop.getOwner() + ")")
+                            : ""))).forLocale();
+            text = addLeftLine(sender, text);
+
+            chatSheetPrinter.printSuggestedCmdLine(text,
                     plugin.text().of(sender, "controlpanel.setowner-hover").forLocale(),
                     "/qs setowner ");
         }
@@ -446,6 +453,7 @@ public class MsgUtil {
         // Unlimited
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.unlimited")) {
             Component text = plugin.text().of(sender, "controlpanel.unlimited", bool2String(shop.isUnlimited())).forLocale();
+            text = addLeftLine(sender, text);
             Component hoverText = plugin.text().of(sender, "controlpanel.unlimited-hover").forLocale();
             String clickCommand =
                     MsgUtil.fillArgs(
@@ -456,6 +464,7 @@ public class MsgUtil {
         // Always Counting
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.alwayscounting")) {
             Component text = plugin.text().of(sender, "controlpanel.alwayscounting", bool2String(shop.isAlwaysCountingContainer())).forLocale();
+            text = addLeftLine(sender, text);
             Component hoverText = plugin.text().of(sender, "controlpanel.alwayscounting-hover").forLocale();
             String clickCommand =
                     MsgUtil.fillArgs(
@@ -468,6 +477,7 @@ public class MsgUtil {
                 && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.sell")) {
             if (shop.isSelling()) {
                 Component text = plugin.text().of(sender, "controlpanel.mode-selling").forLocale();
+                text = addLeftLine(sender, text);
                 Component hoverText = plugin.text().of(sender, "controlpanel.mode-selling-hover").forLocale();
                 String clickCommand =
                         MsgUtil.fillArgs(
@@ -476,6 +486,7 @@ public class MsgUtil {
                 chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
             } else if (shop.isBuying()) {
                 Component text = plugin.text().of(sender, "controlpanel.mode-buying").forLocale();
+                text = addLeftLine(sender, text);
                 Component hoverText = plugin.text().of(sender, "controlpanel.mode-buying-hover").forLocale();
                 String clickCommand =
                         MsgUtil.fillArgs(
@@ -494,6 +505,7 @@ public class MsgUtil {
                                             ? decimalFormat(shop.getPrice())
                                             : Double.toString(shop.getPrice()))
                             );
+            text = addLeftLine(sender, text);
             Component hoverText = plugin.text().of(sender, "controlpanel.price-hover").forLocale();
             String clickCommand = "/qs price ";
             chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
@@ -502,6 +514,7 @@ public class MsgUtil {
         if (QuickShop.getInstance().isAllowStack()) {
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount") || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeamount")) {
                 Component text = plugin.text().of(sender, "controlpanel.stack", LegacyComponentSerializer.legacySection().deserialize(Integer.toString(shop.getItem().getAmount()))).forLocale();
+                text = addLeftLine(sender, text);
                 Component hoverText = plugin.text().of(sender, "controlpanel.stack-hover").forLocale();
                 String clickCommand = "/qs size ";
                 chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
@@ -513,6 +526,7 @@ public class MsgUtil {
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.refill")) {
                 Component text =
                         plugin.text().of(sender, "controlpanel.refill", Component.text(shop.getPrice())).forLocale();
+                text = addLeftLine(sender, text);
                 Component hoverText = plugin.text().of(sender, "controlpanel.refill-hover").forLocale();
                 String clickCommand = "/qs refill ";
                 chatSheetPrinter.printSuggestedCmdLine(text, hoverText, clickCommand);
@@ -520,6 +534,7 @@ public class MsgUtil {
             // Empty
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.empty")) {
                 Component text = plugin.text().of(sender, "controlpanel.empty",Component.text(shop.getPrice())).forLocale();
+                text = addLeftLine(sender, text);
                 Component hoverText = plugin.text().of(sender, "controlpanel.empty-hover").forLocale();
                 String clickCommand = MsgUtil.fillArgs("/qs silentempty {0}", shop.getRuntimeRandomUniqueId().toString());
                 chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);
@@ -529,6 +544,7 @@ public class MsgUtil {
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")
                 || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
             Component text = plugin.text().of(sender, "controlpanel.remove", Component.text(shop.getPrice())).forLocale();
+            text = addLeftLine(sender, text);
             Component hoverText = plugin.text().of(sender, "controlpanel.remove-hover").forLocale();
             String clickCommand = MsgUtil.fillArgs("/qs silentremove {0}", shop.getRuntimeRandomUniqueId().toString());
             chatSheetPrinter.printExecutableCmdLine(text, hoverText, clickCommand);

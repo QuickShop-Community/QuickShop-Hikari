@@ -108,10 +108,12 @@ public class PlayerListener extends AbstractQSListener {
         Util.debugLog("Behavior Mapping: " + plugin.getInteractionController().getBehavior(interaction).name());
         switch (plugin.getInteractionController().getBehavior(interaction)) {
             case CONTROL_PANEL:
-                openControlPanel(e.getPlayer(), shopSearched.getKey());
-                e.setCancelled(true);
-                e.setUseInteractedBlock(Event.Result.DENY);
-                e.setUseItemInHand(Event.Result.DENY);
+                if(shopSearched.getKey() !=null) {
+                    openControlPanel(e.getPlayer(), shopSearched.getKey());
+                    e.setCancelled(true);
+                    e.setUseInteractedBlock(Event.Result.DENY);
+                    e.setUseItemInHand(Event.Result.DENY);
+                }
                 break;
             case TRADE_INTERACTION:
                 if (shopSearched.getKey() == null) {

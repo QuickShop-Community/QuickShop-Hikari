@@ -566,9 +566,11 @@ public class ContainerShop implements Shop {
     @Override
     public @NotNull Component ownerName(boolean forceUsername) {
         OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
-        Component name = Component.empty();
+        Component name;
         if (player.getName() == null || player.getName().isEmpty()) {
             name = plugin.text().of("unknown-owner").forLocale();
+        }else{
+            name = Component.text(player.getName());
         }
         if (!forceUsername && isUnlimited()) {
             name = plugin.text().of("admin-shop").forLocale();

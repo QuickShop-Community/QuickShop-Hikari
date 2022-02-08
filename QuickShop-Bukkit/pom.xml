@@ -24,6 +24,18 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <configuration>
+                    <relocations>
+                        <relocation>
+                            <pattern>net.kyori.examination</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.examination</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.kyori.adventure</pattern>
+                            <shadedPattern>org.maxgamer.quickshop.shade.net.kyori.adventure</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
