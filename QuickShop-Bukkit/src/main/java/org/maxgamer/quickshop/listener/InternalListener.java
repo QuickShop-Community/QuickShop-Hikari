@@ -79,6 +79,9 @@ public class InternalListener extends AbstractQSListener {
         if (loggingAction) {
             plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Shop removed", event.getShop().saveToInfoStorage()));
         }
+        if(plugin.getShopCache() != null){
+            plugin.getShopCache().invalidate(event.getShop().getLocation());
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
