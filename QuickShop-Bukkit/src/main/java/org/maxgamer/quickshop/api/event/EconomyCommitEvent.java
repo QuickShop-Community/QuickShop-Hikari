@@ -19,16 +19,18 @@
 
 package org.maxgamer.quickshop.api.event;
 
-import org.bukkit.event.Cancellable;
+import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 
 /**
  * Calling when transaction will commit
  */
-public class EconomyCommitEvent extends AbstractQSEvent implements Cancellable {
+public class EconomyCommitEvent extends AbstractQSEvent implements QSCancellable {
     private final EconomyTransaction transaction;
     private boolean cancelled;
+    private @Nullable Component cancelReason;
 
     /**
      * Calling when transaction will commit
@@ -59,14 +61,15 @@ public class EconomyCommitEvent extends AbstractQSEvent implements Cancellable {
         return cancelled;
     }
 
-    /**
-     * Sets the cancellation state of this event. A cancelled event will not
-     * be executed in the server, but will still pass to other plugins.
-     *
-     * @param cancel true if you wish to cancel this event
-     */
+
     @Override
-    public void setCancelled(boolean cancel) {
+    public void setCancelled(boolean cancel, @Nullable Component reason) {
         this.cancelled = cancel;
+        this.cancelReason = reason;
+    }
+
+    @Override
+    public @Nullable Component getReason() {
+        return this.cancelReason;
     }
 }

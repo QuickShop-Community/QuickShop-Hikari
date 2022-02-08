@@ -19,16 +19,17 @@
 
 package org.maxgamer.quickshop.api.event;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This event is called before the shop creation request is sent. E.g. A player clicks a chest, this
  * event is thrown, if successful, the player is asked how much they wish to trade for.
  */
-public class ShopPreCreateEvent extends AbstractQSEvent implements Cancellable {
+public class ShopPreCreateEvent extends AbstractQSEvent implements QSCancellable {
 
     @NotNull
     private final Location location;
@@ -37,6 +38,7 @@ public class ShopPreCreateEvent extends AbstractQSEvent implements Cancellable {
     private final Player player;
 
     private boolean cancelled;
+    private @Nullable Component cancelReason;
 
     /**
      * Calling when shop pre-creating. Shop won't one-percent will create after this event, if you
@@ -56,8 +58,14 @@ public class ShopPreCreateEvent extends AbstractQSEvent implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setCancelled(boolean cancel, @Nullable Component reason) {
+        this.cancelled = cancel;
+        this.cancelReason = reason;
+    }
+
+    @Override
+    public @Nullable Component getReason() {
+        return this.cancelReason;
     }
 
     /**

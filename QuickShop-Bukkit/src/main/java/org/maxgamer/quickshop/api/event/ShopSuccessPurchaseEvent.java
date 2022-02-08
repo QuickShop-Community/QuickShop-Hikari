@@ -19,9 +19,9 @@
 
 package org.maxgamer.quickshop.api.event;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +32,7 @@ import java.util.UUID;
 /**
  * Calling when success purchase in shop
  */
-public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements Cancellable {
+public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements QSCancellable {
 
     @NotNull
     private final Shop shop;
@@ -55,6 +55,7 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements Cancell
             total; // Don't use getter, we have important notice need told dev in javadoc.
 
     private boolean cancelled;
+    private @Nullable Component cancelReason;
 
     /**
      * Builds a new shop purchase event
@@ -104,8 +105,14 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements Cancell
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setCancelled(boolean cancel, @Nullable Component reason) {
+        this.cancelled = cancel;
+        this.cancelReason = reason;
+    }
+
+    @Override
+    public @Nullable Component getReason() {
+        return this.cancelReason;
     }
 
     /**

@@ -19,18 +19,20 @@
 
 package org.maxgamer.quickshop.api.event;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
 
 /**
  * Calling when control panel opened for
  */
-public class ShopControlPanelOpenEvent extends AbstractQSEvent implements Cancellable {
+public class ShopControlPanelOpenEvent extends AbstractQSEvent implements QSCancellable {
     private final Shop shop;
     private final CommandSender sender;
     private boolean cancelled = false;
+    private @Nullable Component cancelReason;
 
     /**
      * Called before shop control panel message.
@@ -49,8 +51,14 @@ public class ShopControlPanelOpenEvent extends AbstractQSEvent implements Cancel
     }
 
     @Override
-    public void setCancelled(boolean b) {
-        this.cancelled = b;
+    public void setCancelled(boolean cancel, @Nullable Component reason) {
+        this.cancelled = cancel;
+        this.cancelReason = reason;
+    }
+
+    @Override
+    public @Nullable Component getReason() {
+        return this.cancelReason;
     }
 
     /**

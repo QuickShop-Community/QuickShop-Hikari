@@ -19,15 +19,16 @@
 
 package org.maxgamer.quickshop.api.event;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Calling when previewing Shop
  */
-public class ShopInventoryPreviewEvent extends AbstractQSEvent implements Cancellable {
+public class ShopInventoryPreviewEvent extends AbstractQSEvent implements QSCancellable {
 
     @NotNull
     private final ItemStack itemStack;
@@ -36,6 +37,7 @@ public class ShopInventoryPreviewEvent extends AbstractQSEvent implements Cancel
     private final Player player;
 
     private boolean cancelled;
+    private @Nullable Component cancelReason;
 
     /**
      * Called when player using GUI preview
@@ -54,8 +56,14 @@ public class ShopInventoryPreviewEvent extends AbstractQSEvent implements Cancel
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setCancelled(boolean cancel, @Nullable Component reason) {
+        this.cancelled = cancel;
+        this.cancelReason = reason;
+    }
+
+    @Override
+    public @Nullable Component getReason() {
+        return this.cancelReason;
     }
 
     /**

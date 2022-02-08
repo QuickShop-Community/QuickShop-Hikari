@@ -19,14 +19,15 @@
 
 package org.maxgamer.quickshop.api.event;
 
-import org.bukkit.event.Cancellable;
+import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
 
 /**
  * Calling when shop deleting
  */
-public class ShopDeleteEvent extends AbstractQSEvent implements Cancellable {
+public class ShopDeleteEvent extends AbstractQSEvent implements QSCancellable {
 
     private final boolean fromMemory;
 
@@ -34,6 +35,7 @@ public class ShopDeleteEvent extends AbstractQSEvent implements Cancellable {
     private final Shop shop;
 
     private boolean cancelled;
+    private @Nullable Component cancelReason;
 
     /**
      * Call the event when shop is deleting. The ShopUnloadEvent will call after ShopDeleteEvent
@@ -52,10 +54,15 @@ public class ShopDeleteEvent extends AbstractQSEvent implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setCancelled(boolean cancel, @Nullable Component reason) {
+        this.cancelled = cancel;
+        this.cancelReason = reason;
     }
 
+    @Override
+    public @Nullable Component getReason() {
+        return this.cancelReason;
+    }
     /**
      * Gets the delete is from memory or also database
      *

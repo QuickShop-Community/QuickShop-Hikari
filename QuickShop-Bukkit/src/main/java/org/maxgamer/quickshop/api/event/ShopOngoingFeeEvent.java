@@ -19,18 +19,20 @@
 
 package org.maxgamer.quickshop.api.event;
 
-import org.bukkit.event.Cancellable;
+import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
 
 import java.util.UUID;
 
-public class ShopOngoingFeeEvent extends AbstractQSEvent implements Cancellable {
+public class ShopOngoingFeeEvent extends AbstractQSEvent implements QSCancellable {
     private final UUID player;
 
     private final Shop shop;
 
     private double cost;
     private boolean cancelled;
+    private @Nullable Component cancelReason;
 
     public ShopOngoingFeeEvent(Shop shop, UUID player, double cost) {
         this.shop = shop;
@@ -80,7 +82,13 @@ public class ShopOngoingFeeEvent extends AbstractQSEvent implements Cancellable 
     }
 
     @Override
-    public void setCancelled(boolean b) {
-        this.cancelled = b;
+    public void setCancelled(boolean cancel, @Nullable Component reason) {
+        this.cancelled = cancel;
+        this.cancelReason = reason;
+    }
+
+    @Override
+    public @Nullable Component getReason() {
+        return this.cancelReason;
     }
 }

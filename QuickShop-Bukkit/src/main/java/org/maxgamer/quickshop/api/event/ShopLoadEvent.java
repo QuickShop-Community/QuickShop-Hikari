@@ -19,19 +19,21 @@
 
 package org.maxgamer.quickshop.api.event;
 
-import org.bukkit.event.Cancellable;
+import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
 
 /**
  * Call when loading shop
  */
-public class ShopLoadEvent extends AbstractQSEvent implements Cancellable {
+public class ShopLoadEvent extends AbstractQSEvent implements QSCancellable {
 
     @NotNull
     private final Shop shop;
 
     private boolean cancelled;
+    private @Nullable Component cancelReason;
 
     /**
      * Calling when shop loading
@@ -48,8 +50,14 @@ public class ShopLoadEvent extends AbstractQSEvent implements Cancellable {
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setCancelled(boolean cancel, @Nullable Component reason) {
+        this.cancelled = cancel;
+        this.cancelReason = reason;
+    }
+
+    @Override
+    public @Nullable Component getReason() {
+        return this.cancelReason;
     }
 
     /**

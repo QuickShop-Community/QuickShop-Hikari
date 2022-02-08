@@ -19,15 +19,16 @@
 
 package org.maxgamer.quickshop.api.event;
 
-import org.bukkit.event.Cancellable;
+import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopType;
 
 /**
  * Calling when shop item was changed
  */
-public class ShopTypeChangeEvent extends AbstractQSEvent implements Cancellable {
+public class ShopTypeChangeEvent extends AbstractQSEvent implements QSCancellable {
     private final ShopType oldType;
 
     private final ShopType newType;
@@ -36,6 +37,7 @@ public class ShopTypeChangeEvent extends AbstractQSEvent implements Cancellable 
     private final Shop shop;
 
     private boolean cancelled;
+    private @Nullable Component cancelReason;
 
     /**
      * Will call when shop type was changed.
@@ -56,10 +58,15 @@ public class ShopTypeChangeEvent extends AbstractQSEvent implements Cancellable 
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setCancelled(boolean cancel, @Nullable Component reason) {
+        this.cancelled = cancel;
+        this.cancelReason = reason;
     }
 
+    @Override
+    public @Nullable Component getReason() {
+        return this.cancelReason;
+    }
     /**
      * The shop old ShopType
      *
