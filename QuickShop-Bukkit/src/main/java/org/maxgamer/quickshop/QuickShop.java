@@ -134,8 +134,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private final ReloadManager reloadManager = new ReloadManager();
     /* Public QuickShop API End */
-    @Getter
-    private final TpsWatcher tpsWatcher = new TpsWatcher();
     boolean onLoadCalled = false;
     private GameVersion gameVersion;
     private SimpleIntegrationManager integrationHelper;
@@ -702,11 +700,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getLogger().info("Shutting down event calendar watcher...");
             calendarWatcher.stop();
         }
-        try {
-            getLogger().info("Shutting down tps monitor...");
-            tpsWatcher.cancel();
-        } catch (IllegalStateException ignored) {
-        }
         /* Unload UpdateWatcher */
         if (this.updateWatcher != null) {
             getLogger().info("Shutting down update watcher...");
@@ -1069,7 +1062,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         calendarWatcher = new CalendarWatcher(this);
         calendarWatcher.start();
-        tpsWatcher.runTaskTimer(this, 1000, 50);
         this.shopPurger = new ShopPurger(this);
         if (getConfig().getBoolean("purge.at-server-startup")) {
             shopPurger.purge();
