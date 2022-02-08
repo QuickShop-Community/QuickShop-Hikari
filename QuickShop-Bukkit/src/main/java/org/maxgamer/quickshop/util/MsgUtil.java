@@ -385,7 +385,7 @@ public class MsgUtil {
             OUTGOING_MESSAGES.put(uuid, msgs);
             plugin.getDatabaseHelper().saveOfflineTransactionMessage(uuid, serialized, System.currentTimeMillis());
             try {
-                if (p.getName() != null) {
+                if (p.getName() != null && plugin.getConfig().getBoolean("bungee-cross-server-msg", true)) {
                     Component csmMessage = plugin.text().of("bungee-cross-server-msg", shopTransactionMessage).forLocale();
                     ByteArrayDataOutput out = ByteStreams.newDataOutput();
                     out.writeUTF("MessageRaw");

@@ -57,6 +57,9 @@ show-tax: false
 #Whether to respect item flags (e.g. hide the enchantment info when item have HIDE_ENCHANTS flag).
 respect-item-flag: true
 
+#Should we try to send cross-server message for the player?
+bungee-cross-server-msg: true
+
 #The currency used to create shops.
 #Set this to "" to use default currency.
 #Only required if you use multiple currencies.
