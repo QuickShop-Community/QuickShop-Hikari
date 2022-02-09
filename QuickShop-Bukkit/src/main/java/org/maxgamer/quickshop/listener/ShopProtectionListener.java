@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.listener;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Hopper;
@@ -243,7 +244,8 @@ public class ShopProtectionListener extends AbstractProtectionListener {
             }
         }
     }
-//
+
+    //
 //    private final NamespacedKey hopperIndexKey = new NamespacedKey(plugin,"qs_hopper_placer");
 //    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 //    public void onPlaceHopper(BlockPlaceEvent e) {
@@ -252,7 +254,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
 //            hopper.getPersistentDataContainer().set(hopperIndexKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
 //        }
 //    }
-
+    private final NamespacedKey hopperKey = new NamespacedKey(QuickShop.getInstance(), "hopper-persistent-data");
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onInventoryMove(InventoryMoveItemEvent event) {
@@ -270,10 +272,10 @@ public class ShopProtectionListener extends AbstractProtectionListener {
             return;
         }
 
-        if(loc.getBlock().getState() instanceof Hopper hopper){
-            HopperPersistentData hopperPersistentData = hopper.getPersistentDataContainer().get(plugin.getMetadata().getHopperPersistentDataKey(), HopperPersistentDataType.INSTANCE);
-            if(hopperPersistentData != null){
-                if(!hopperPersistentData.getPlayer().equals(shop.getOwner())){
+        if (loc.getBlock().getState() instanceof Hopper hopper) {
+            HopperPersistentData hopperPersistentData = hopper.getPersistentDataContainer().get(hopperKey, HopperPersistentDataType.INSTANCE);
+            if (hopperPersistentData != null) {
+                if (!hopperPersistentData.getPlayer().equals(shop.getOwner())) {
                     return;
                 }
             }

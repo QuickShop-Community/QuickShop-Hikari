@@ -260,9 +260,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private Platform platform;
     private BukkitAudiences audience;
-    @Getter
-    private final Metadata metadata = new Metadata();
-
     /**
      * Use for mock bukkit
      */

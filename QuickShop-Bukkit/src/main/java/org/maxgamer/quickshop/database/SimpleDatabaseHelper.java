@@ -112,13 +112,23 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 }, ((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed while trying create the shop table! SQL: " + sqlAction.getSQLContent(), exception)));
     }
     /**
-     * Creates the database table 'messages'
+     * Creates the database table 'metrics'
      */
     private void createMetricsTable() {
         manager.createTable(plugin.getDbPrefix() + "metrics")
-                .addColumn("owner", "VARCHAR(255) NOT NULL")
-                .addColumn("message", "TEXT NOT NULL")
                 .addColumn("time", "BIGINT(32) NOT NULL")
+                .addColumn("x", "INTEGER(32) NOT NULL")
+                .addColumn("y", "INTEGER(32) NOT NULL")
+                .addColumn("z", "INTEGER(32) NOT NULL")
+                .addColumn("world", "VARCHAR(255) NOT NULL")
+                .addColumn("type", "VARCHAR(255) NOT NULL")
+                .addColumn("total", "DOUBLE(32) NOT NULL")
+                .addColumn("tax", "DOUBLE(32) NOT NULL")
+                .addColumn("amount", "INTEGER(32) NOT NULL")
+                .addColumn("player", "VARCHAR(255) NOT NULL")
+                .setIndex(IndexType.PRIMARY_KEY,null,"time")
+                .setIndex(IndexType.INDEX,"player_based","time","x","y","z","world","player")
+                .setIndex(IndexType.INDEX,"type_based","time","x","y","z","world","type")
                 .build()
                 .execute(((exception, sqlAction) -> {
                     if (exception != null) {

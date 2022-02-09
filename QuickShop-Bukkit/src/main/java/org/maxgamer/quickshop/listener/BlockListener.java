@@ -25,6 +25,7 @@ import io.papermc.lib.PaperLib;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
@@ -207,10 +208,11 @@ public class BlockListener extends AbstractProtectionListener {
             event.setCancelled(true);
         }
     }
+    private final NamespacedKey hopperKey =  new NamespacedKey(QuickShop.getInstance(), "hopper-persistent-data");
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlaceHopper(BlockPlaceEvent e) {
         if(e.getBlockPlaced().getState() instanceof Hopper hopper){
-            hopper.getPersistentDataContainer().set(plugin.getMetadata().getHopperPersistentDataKey(), HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
+            hopper.getPersistentDataContainer().set(hopperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
         }
     }
     /*
