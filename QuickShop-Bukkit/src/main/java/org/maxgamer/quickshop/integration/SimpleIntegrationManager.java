@@ -22,6 +22,7 @@ package org.maxgamer.quickshop.integration;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.integration.*;
@@ -43,7 +44,11 @@ import org.maxgamer.quickshop.util.holder.Result;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.logging.Level;
-
+/**
+ * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
+ */
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public class SimpleIntegrationManager extends QuickShopInstanceHolder implements IntegrationManager {
     private static final Map<String, Class<? extends IntegratedPlugin>> INTEGRATION_MAPPING = new HashMap<>(7);
 
@@ -62,21 +67,37 @@ public class SimpleIntegrationManager extends QuickShopInstanceHolder implements
     }
 
     private final Map<String, IntegratedPlugin> integrations = new HashMap<>(7);
-
+    /**
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
+     */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     public SimpleIntegrationManager(QuickShop plugin) {
         super(plugin);
     }
-
+    /**
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
+     */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     @Override
     public Map<String, IntegratedPlugin> getIntegrationMap() {
         return Collections.unmodifiableMap(integrations);
     }
-
+    /**
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
+     */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     @Override
     public List<IntegratedPlugin> getIntegrations() {
         return List.copyOf(integrations.values());
     }
-
+    /**
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
+     */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     @Override
     public void searchAndRegisterPlugins() {
         PluginManager pluginManager = plugin.getServer().getPluginManager();
@@ -93,10 +114,10 @@ public class SimpleIntegrationManager extends QuickShopInstanceHolder implements
     }
 
     /**
-     * Register custom integrated module to QuickShop integration system
-     *
-     * @param integratedPlugin custom integrated module
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     @Override
     public void register(@NotNull IntegratedPlugin integratedPlugin) {
         if (!isIntegrationClass(integratedPlugin.getClass())) {
@@ -109,10 +130,10 @@ public class SimpleIntegrationManager extends QuickShopInstanceHolder implements
     }
 
     /**
-     * Register custom integrated module to QuickShop integration system from a class
-     *
-     * @param integratedPluginClass custom integrated module class
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     @Override
     public void register(@NotNull Class<? extends IntegratedPlugin> integratedPluginClass) {
         IntegratedPlugin integratedPlugin;
@@ -125,10 +146,10 @@ public class SimpleIntegrationManager extends QuickShopInstanceHolder implements
     }
 
     /**
-     * Register custom integrated module to QuickShop integration system from a plugin name
-     *
-     * @param integratedPluginName custom integrated module name
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     @Override
     public void register(@NotNull String integratedPluginName) {
         Class<? extends IntegratedPlugin> integratedPluginClass = INTEGRATION_MAPPING.get(integratedPluginName);
@@ -145,10 +166,10 @@ public class SimpleIntegrationManager extends QuickShopInstanceHolder implements
     }
 
     /**
-     * Unregister integrated plugin from Integration system
-     *
-     * @param integratedPluginName plugin name
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     @Override
     public void unregister(@NotNull String integratedPluginName) {
         IntegratedPlugin integratedPlugin = integrations.get(integratedPluginName);
@@ -158,8 +179,10 @@ public class SimpleIntegrationManager extends QuickShopInstanceHolder implements
     }
 
     /**
-     * Unregister all integrated plugin from Integration system
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     @Override
     public void unregisterAll() {
         for (IntegratedPlugin integratedPlugin : new ArrayList<>(integrations.values())) {
@@ -168,10 +191,10 @@ public class SimpleIntegrationManager extends QuickShopInstanceHolder implements
     }
 
     /**
-     * Unregister integrated plugin from Integration system
-     *
-     * @param integratedPlugin plugin
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     @Override
     public void unregister(@NotNull IntegratedPlugin integratedPlugin) {
         if (!isIntegrationClass(integratedPlugin.getClass())) {

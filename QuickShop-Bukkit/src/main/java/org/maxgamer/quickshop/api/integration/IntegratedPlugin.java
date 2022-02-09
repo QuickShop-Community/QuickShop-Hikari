@@ -22,58 +22,55 @@ package org.maxgamer.quickshop.api.integration;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Integration module
+ * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
  */
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public interface IntegratedPlugin extends Reloadable {
     /**
-     * Return the integrated plugin name.
-     * For example, Residence
-     *
-     * @return integrated plugin
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     @NotNull String getName();
 
     /**
-     * Check if a player can create shop here
-     *
-     * @param player   the player want to create shop
-     * @param location shop location
-     * @return If you can create shop here
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     boolean canCreateShopHere(@NotNull Player player, @NotNull Location location);
 
     /**
-     * Check if a player can trade with shop here
-     *
-     * @param player   the player want to trade with shop
-     * @param location shop location
-     * @return If you can trade with shop here
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     boolean canTradeShopHere(@NotNull Player player, @NotNull Location location);
 
     /**
-     * Check if a player can delete a shop here
-     *
-     * @param player   the player want to delete the shop
-     * @param location shop location
-     * @return If you can delete the shop here
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     default boolean canDeleteShopHere(@NotNull Player player, @NotNull Location location) {
         return false;
     }
-
     /**
-     * Loading logic
-     * Execute Stage defined by IntegrationStage
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     void load();
 
     /**
-     * Unloding logic
-     * Will execute when Quickshop unloading
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     void unload();
 }

@@ -22,12 +22,17 @@ package org.maxgamer.quickshop.integration;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.ApiStatus;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.integration.IntegratedPlugin;
 import org.maxgamer.quickshop.api.integration.IntegrationStage;
 import org.maxgamer.quickshop.util.holder.QuickShopInstanceHolder;
 
-
+/**
+ * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
+ */
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 @IntegrationStage
 public abstract class AbstractQSIntegratedPlugin extends QuickShopInstanceHolder implements IntegratedPlugin, Listener {
 

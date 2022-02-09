@@ -19,8 +19,14 @@
 
 package org.maxgamer.quickshop.api.integration;
 
-import java.lang.annotation.*;
+import org.jetbrains.annotations.ApiStatus;
 
+import java.lang.annotation.*;
+/**
+ * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
+ */
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

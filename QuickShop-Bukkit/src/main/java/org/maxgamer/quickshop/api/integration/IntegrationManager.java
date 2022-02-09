@@ -19,87 +19,94 @@
 
 package org.maxgamer.quickshop.api.integration;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
-
+/**
+ * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
+ */
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 public interface IntegrationManager {
     /**
-     * Check if a class is Integration module
-     *
-     * @param clazz The class
-     * @return Is Integration module
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     static boolean isIntegrationClass(@NotNull Class<?> clazz) {
         return clazz.getDeclaredAnnotation(IntegrationStage.class) != null;
     }
 
     /**
-     * Getting read-only mapping for all registered modules
-     *
-     * @return All registered modules
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     Map<String, IntegratedPlugin> getIntegrationMap();
 
     /**
-     * Getting all registered Integration modules
-     *
-     * @return All registered Integration
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     List<IntegratedPlugin> getIntegrations();
 
     /**
-     * Re-execute a search task to register available modules if possible
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     void searchAndRegisterPlugins();
 
     /**
-     * Register custom integrated module to QuickShop integration system
-     *
-     * @param integratedPlugin custom integrated module
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     void register(@NotNull IntegratedPlugin integratedPlugin);
 
     /**
-     * Register custom integrated module to QuickShop integration system from a class
-     *
-     * @param integratedPluginClass custom integrated module class
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     void register(@NotNull Class<? extends IntegratedPlugin> integratedPluginClass);
 
     /**
-     * Register custom integrated module to QuickShop integration system from a plugin name
-     *
-     * @param integratedPluginName custom integrated module name
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     void register(@NotNull String integratedPluginName);
 
     /**
-     * Unregister integrated plugin from Integration system
-     *
-     * @param integratedPluginName plugin name
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     void unregister(@NotNull String integratedPluginName);
 
     /**
-     * Unregister all integrated plugin from Integration system
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     void unregisterAll();
 
     /**
-     * Unregister integrated plugin from Integration system
-     *
-     * @param integratedPlugin plugin
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     void unregister(@NotNull IntegratedPlugin integratedPlugin);
 
     /**
-     * Check if a integration has been registered
-     *
-     * @param integrationName The integration
-     * @return Registered
+     * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
      */
+    @Deprecated
+    @ApiStatus.ScheduledForRemoval
     boolean isRegistered(@NotNull String integrationName);
 }
