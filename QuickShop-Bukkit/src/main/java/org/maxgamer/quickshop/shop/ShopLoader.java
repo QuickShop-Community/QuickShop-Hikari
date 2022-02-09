@@ -401,8 +401,8 @@ public class ShopLoader {
             this.currency = rs.getString("currency");
             this.disableDisplay = rs.getInt("disableDisplay") != 0;
             this.taxAccount = rs.getString("taxAccount");
-            this.symbolLink = rs.getString("symbollink");
-            this.inventoryWrapperProvider = rs.getString("inventorywrapper");
+            this.symbolLink = rs.getString("inventorySymbolLink");
+            this.inventoryWrapperProvider = rs.getString("inventoryWrapperName");
         }
 
         @Override
