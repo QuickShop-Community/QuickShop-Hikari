@@ -35,7 +35,7 @@ import java.util.logging.Logger;
 
 public class ApolloConverter {
     private final QuickShop plugin;
-    private final Logger logger = Logger.getLogger("ApolloConverter");
+    private final Logger logger = Logger.getLogger("QuickShop-ApolloConverter");
 
     public ApolloConverter(QuickShop plugin) {
         this.plugin = plugin;
@@ -203,6 +203,7 @@ public class ApolloConverter {
                         });
             }
             logger.info("Completed. Total " + failCount.get() + " failed.");
+            EasySQL.shutdownManager(sqlManager);
         } catch (SQLException e) {
             logger.log(Level.WARNING, "Couldn't create database helper!", e);
         }
@@ -251,6 +252,7 @@ public class ApolloConverter {
                         });
             }
             logger.info("Completed. Total " + failCount.get() + " failed.");
+            EasySQL.shutdownManager(sqlManager);
         } catch (SQLException e) {
             logger.log(Level.WARNING, "Couldn't create database helper!", e);
         }
