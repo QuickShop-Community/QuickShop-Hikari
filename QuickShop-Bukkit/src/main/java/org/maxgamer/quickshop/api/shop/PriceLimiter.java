@@ -19,21 +19,23 @@
 
 package org.maxgamer.quickshop.api.shop;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Utility used for shop price validating
  */
 public interface PriceLimiter {
     /**
-     * Checks a stack with a price is allowed
+     * Check the price restriction rules
      *
-     * @param stack The item
-     * @param price The price
-     * @return Allowed
+     * @param sender    the sender
+     * @param stack the item to check
+     * @param currency  the currency
+     * @param price     the price
+     * @return the result
      */
-    @NotNull
-    PriceLimiterCheckResult check(@NotNull ItemStack stack, double price);
-
+    @NotNull PriceLimiterCheckResult check(@NotNull CommandSender sender, @NotNull ItemStack stack, @Nullable String currency, double price);
 }

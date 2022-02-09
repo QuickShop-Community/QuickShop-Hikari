@@ -20,6 +20,7 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -27,7 +28,11 @@ import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
+import org.maxgamer.quickshop.api.shop.PriceLimiter;
+import org.maxgamer.quickshop.api.shop.PriceLimiterCheckResult;
+import org.maxgamer.quickshop.api.shop.PriceLimiterStatus;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.util.MsgUtil;
 
 import java.util.Collections;
 import java.util.List;
@@ -60,6 +65,15 @@ public class SubCommand_Currency implements CommandHandler<Player> {
                     }
                     if (!plugin.getEconomy().hasCurrency(Objects.requireNonNull(shop.getLocation().getWorld()), cmdArg[0])) {
                         plugin.text().of(sender, "currency-not-exists").send();
+                        return;
+                    }
+
+                    PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
+                    PriceLimiterCheckResult checkResult = limiter.check(sender, shop.getItem(), cmdArg[0], shop.getPrice());
+                    if (checkResult.getStatus() != PriceLimiterStatus.PASS) {
+                        plugin.text().of(sender, "restricted-prices", MsgUtil.getTranslateText(shop.getItem()),
+                                Component.text(checkResult.getMin()),
+                                Component.text(checkResult.getMax())).send();
                         return;
                     }
                     shop.setCurrency(cmdArg[0]);

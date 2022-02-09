@@ -67,7 +67,7 @@ public class SubCommand_Item implements CommandHandler<Player> {
                     itemStack.setAmount(1);
                 }
                 PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
-                PriceLimiterCheckResult checkResult = limiter.check(itemStack, shop.getPrice());
+                PriceLimiterCheckResult checkResult = limiter.check(sender, itemStack, shop.getCurrency(), shop.getPrice());
                 if (checkResult.getStatus() != PriceLimiterStatus.PASS) {
                     plugin.text().of(sender, "restricted-prices", MsgUtil.getTranslateText(shop.getItem()),
                             Component.text(checkResult.getMin()),

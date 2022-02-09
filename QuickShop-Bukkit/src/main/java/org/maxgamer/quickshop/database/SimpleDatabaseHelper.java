@@ -80,6 +80,9 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
         if (!hasTable(plugin.getDbPrefix() + "players")) {
             createPlayerTable();
         }
+        if (!hasTable(plugin.getDbPrefix() + "metrics")) {
+            createMetricsTable();
+        }
         checkColumns();
     }
 

@@ -29,11 +29,11 @@ import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
 import org.maxgamer.quickshop.api.economy.EconomyTransaction;
+import org.maxgamer.quickshop.api.shop.PriceLimiter;
 import org.maxgamer.quickshop.api.shop.PriceLimiterCheckResult;
 import org.maxgamer.quickshop.api.shop.PriceLimiterStatus;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.shop.ContainerShop;
-import org.maxgamer.quickshop.shop.SimplePriceLimiter;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -85,11 +85,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
             return;
         }
 
-        SimplePriceLimiter limiter = new SimplePriceLimiter(
-                plugin.getConfig().getDouble("shop.minimum-price"),
-                plugin.getConfig().getInt("shop.maximum-price"),
-                plugin.getConfig().getBoolean("shop.allow-free-shop"),
-                plugin.getConfig().getBoolean("whole-number-prices-only"));
+        PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
 
         while (bIt.hasNext()) {
             final Block b = bIt.next();
@@ -108,7 +104,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
                 return;
             }
 
-            PriceLimiterCheckResult checkResult = limiter.check(shop.getItem(), price);
+            PriceLimiterCheckResult checkResult = limiter.check(sender,shop.getItem(),plugin.getCurrency(),price);
             if (checkResult.getStatus() == PriceLimiterStatus.REACHED_PRICE_MIN_LIMIT) {
                 plugin.text().of(sender, "price-too-cheap", LegacyComponentSerializer.legacySection().deserialize((format) ? MsgUtil.decimalFormat(checkResult.getMin()) : Double.toString(checkResult.getMin()))).send();
                 return;

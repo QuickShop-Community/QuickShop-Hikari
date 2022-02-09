@@ -30,10 +30,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.command.CommandHandler;
+import org.maxgamer.quickshop.api.shop.PriceLimiter;
 import org.maxgamer.quickshop.api.shop.PriceLimiterCheckResult;
 import org.maxgamer.quickshop.api.shop.PriceLimiterStatus;
 import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.shop.SimplePriceLimiter;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -70,12 +70,8 @@ public class SubCommand_Size implements CommandHandler<Player> {
                     }
                     ItemStack pendingItemStack = shop.getItem().clone();
                     pendingItemStack.setAmount(amount);
-                    SimplePriceLimiter limiter = new SimplePriceLimiter(
-                            plugin.getConfig().getDouble("shop.minimum-price"),
-                            plugin.getConfig().getInt("shop.maximum-price"),
-                            plugin.getConfig().getBoolean("shop.allow-free-shop"),
-                            plugin.getConfig().getBoolean("whole-number-prices-only"));
-                    PriceLimiterCheckResult checkResult = limiter.check(pendingItemStack, shop.getPrice());
+                    PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
+                    PriceLimiterCheckResult checkResult = limiter.check(sender, pendingItemStack, shop.getCurrency(), shop.getPrice());
                     if (checkResult.getStatus() != PriceLimiterStatus.PASS) {
                         plugin.text().of(sender, "restricted-prices", MsgUtil.getTranslateText(shop.getItem()),
                                 Component.text(checkResult.getMin()),
@@ -83,7 +79,7 @@ public class SubCommand_Size implements CommandHandler<Player> {
                         return;
                     }
                     shop.setItem(pendingItemStack);
-                    plugin.text().of(sender, "command.bulk-size-now",  Component.text(shop.getItem().getAmount()), MsgUtil.getTranslateText(shop.getItem())).send();
+                    plugin.text().of(sender, "command.bulk-size-now", Component.text(shop.getItem().getAmount()), MsgUtil.getTranslateText(shop.getItem())).send();
                     return;
                 } else {
                     plugin.text().of(sender, "not-managed-shop").send();

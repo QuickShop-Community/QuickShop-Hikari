@@ -133,11 +133,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 cacheUnlimitedShopAccount = new Trader(uAccount, PlayerFinder.findOfflinePlayerByName(uAccount));
             }
         }
-        this.priceLimiter = new SimplePriceLimiter(
-                plugin.getConfig().getDouble("shop.minimum-price"),
-                plugin.getConfig().getInt("shop.maximum-price"),
-                plugin.getConfig().getBoolean("shop.allow-free-shop"),
-                plugin.getConfig().getBoolean("whole-number-prices-only"));
+        this.priceLimiter = new SimplePriceLimiter(plugin);
         this.useOldCanBuildAlgorithm = plugin.getConfig().getBoolean("limits.old-algorithm");
         this.autoSign = plugin.getConfig().getBoolean("shop.auto-sign");
     }
@@ -890,19 +886,19 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // Price limit checking
         boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
 
-        PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(info.getItem(), price);
+        PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(p,info.getItem(),plugin.getCurrency(), price);
 
         switch (priceCheckResult.getStatus()) {
             case REACHED_PRICE_MIN_LIMIT -> {
                 plugin.text().of(p, "price-too-cheap",
-                        Component.text((decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
-                                : Double.toString(this.priceLimiter.getMinPrice()))).send();
+                        Component.text((decFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax())
+                                : Double.toString(priceCheckResult.getMin()))).send();
                 return;
             }
             case REACHED_PRICE_MAX_LIMIT -> {
                 plugin.text().of(p, "price-too-high",
-                        Component.text((decFormat) ? MsgUtil.decimalFormat(this.priceLimiter.getMaxPrice())
-                                : Double.toString(this.priceLimiter.getMinPrice()))).send();
+                        Component.text((decFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax())
+                                : Double.toString(priceCheckResult.getMin()))).send();
                 return;
             }
             case PRICE_RESTRICTED -> {
@@ -1528,7 +1524,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     @Override
-    public @NotNull PriceLimiter getPriceLimiter() {
+    public @NotNull SimplePriceLimiter getPriceLimiter() {
         return this.priceLimiter;
     }
 
