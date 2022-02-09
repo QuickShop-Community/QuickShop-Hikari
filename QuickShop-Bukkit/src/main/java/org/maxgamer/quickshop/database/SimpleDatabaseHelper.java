@@ -104,7 +104,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .addColumn("type", "INTEGER(8) NOT NULL")
                 .addColumn("extra", "LONGTEXT NULL")
                 .addColumn("currency", "TEXT NULL")
-                .addColumn("disableDisplay", "INTEGER NULL DEFAULT -1")
+                .addColumn("disableDisplay", "INTEGER NULL DEFAULT 0")
                 .addColumn("taxAccount", "VARCHAR(255) NULL")
                 .addColumn("inventorySymbolLink", "TEXT NULL")
                 .addColumn("inventoryWrapperName", "VARCHAR(255) NULL")
