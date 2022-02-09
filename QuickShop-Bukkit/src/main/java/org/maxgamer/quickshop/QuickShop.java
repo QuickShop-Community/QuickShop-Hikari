@@ -261,6 +261,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private Platform platform;
     private BukkitAudiences audience;
+    @Getter
+    private ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
     /**
      * Use for mock bukkit
      */
@@ -981,6 +983,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         new MetricListener(this).register();
         InternalListener internalListener = new InternalListener(this);
         internalListener.register();
+
+        this.shopControlPanelManager.register(new SimpleShopControlPanel());
 
         if (this.display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             if (getDisplayItemCheckTicks() > 0) {
