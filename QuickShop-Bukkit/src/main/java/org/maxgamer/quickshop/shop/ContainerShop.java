@@ -46,6 +46,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.util.MsgUtil;
@@ -486,6 +487,18 @@ public class ContainerShop implements Shop {
             if (plugin.getConfig().getBoolean("shop.refund")) {
                 plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"),
                         Objects.requireNonNull(getLocation().getWorld()), getCurrency());
+                EconomyTransaction transaction =
+                        EconomyTransaction.builder()
+                                .amount(plugin.getConfig().getDouble("shop.cost"))
+                                .allowLoan(false)
+                                .core(QuickShop.getInstance().getEconomy())
+                                .currency(this.getCurrency())
+                                .world(this.getLocation().getWorld())
+                                .to(this.getOwner())
+                                .build();
+                if(!transaction.failSafeCommit()){
+                    plugin.getLogger().warning("Shop deletion refund failed. Reason: "+transaction.getLastError());
+                }
             }
             plugin.getShopManager().removeShop(this);
             plugin.getDatabaseHelper().removeShop(this);
