@@ -106,6 +106,8 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .addColumn("currency", "TEXT NULL")
                 .addColumn("disableDisplay", "INTEGER NULL DEFAULT -1")
                 .addColumn("taxAccount", "VARCHAR(255) NULL")
+                .addColumn("inventorySymbolLink", "TEXT NULL")
+                .addColumn("inventoryWrapperName", "VARCHAR(255) NULL")
                 .setIndex(IndexType.PRIMARY_KEY, null, "x", "y", "z", "world")
                 .build().execute((i) -> {
                     return i;
@@ -362,10 +364,12 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .executeAsync();
     }
 
+
     @Override
     public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
                            double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
-                           @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount) {
+                           @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
+                           @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName) {
         manager.createUpdate(plugin.getDbPrefix() + "shops")
                 .setColumnValues("owner", owner)
                 .setColumnValues("itemConfig", Util.serialize(item))
@@ -375,6 +379,8 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .setColumnValues("extra", extra)
                 .setColumnValues("disableDisplay", disableDisplay ? 1 : 0)
                 .setColumnValues("taxAccount", taxAccount)
+                .setColumnValues("inventorySymbolLink",inventorySymbolLink)
+                .setColumnValues("inventoryWrapperName",inventoryWrapperName)
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)

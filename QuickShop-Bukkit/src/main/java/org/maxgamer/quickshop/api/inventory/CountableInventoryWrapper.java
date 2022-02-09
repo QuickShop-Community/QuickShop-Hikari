@@ -1,5 +1,5 @@
 /*
- * This file is a part of project QuickShop, the name is InventoryEditContainer.java
+ * This file is a part of project QuickShop, the name is CountableInventoryWrapper.java
  *  Copyright (C) PotatoCraft Studio and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,24 +17,22 @@
  *
  */
 
-package org.maxgamer.quickshop.watcher;
+package org.maxgamer.quickshop.api.inventory;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-@Data
-@Builder
-@AllArgsConstructor
-public class InventoryEditContainer {
-    private Inventory inventory;
+public interface CountableInventoryWrapper extends InventoryWrapper {
+    int countSpace(ItemPredicate predicate);
 
-    private int slot;
+    int countItem(ItemPredicate predicate);
 
-    private ItemStack oldItemStack;
-
-    private ItemStack newItemStack;
-
+    interface ItemPredicate {
+        /**
+         * Check if the item match the predicate
+         *
+         * @param input the item want to check
+         * @return if the item match the predicate
+         */
+        boolean isMatch(ItemStack input);
+    }
 }

@@ -25,11 +25,11 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.economy.AbstractEconomy;
+import org.maxgamer.quickshop.api.inventory.InventoryWrapper;
 
 import java.util.*;
 
@@ -229,7 +229,7 @@ public interface ShopManager {
 
     void actionBuy(
             @NotNull UUID buyer,
-            @NotNull Inventory buyerInventory,
+            @NotNull InventoryWrapper buyerInventory,
             @NotNull AbstractEconomy eco,
             @NotNull Info info,
             @NotNull Shop shop,
@@ -260,7 +260,7 @@ public interface ShopManager {
 
     void actionSell(
             @NotNull UUID seller,
-            @NotNull Inventory sellerInventory,
+            @NotNull InventoryWrapper sellerInventory,
             @NotNull AbstractEconomy eco,
             @NotNull Info info,
             @NotNull Shop shop,

@@ -130,7 +130,9 @@ public class ShopLoader {
                                 data.getExtra(),
                                 data.getCurrency(),
                                 data.isDisableDisplay(),
-                                data.getTaxAccount());
+                                data.getTaxAccount(),
+                                data.getInventoryWrapperProvider(),
+                                data.symbolLink);
                 if (data.needUpdate.get()) {
                     shop.setDirty();
                 }
@@ -142,6 +144,10 @@ public class ShopLoader {
                         Util.debugLog("Trouble database loading debug: " + data);
                         Util.debugLog("Somethings gone wrong, skipping the loading...");
                     }
+                    continue;
+                }
+                if (shop.getInventoryWrapperProvider() != null && !shop.getInventoryWrapperProvider().isEmpty() && plugin.getInventoryWrapperRegistry().get(shop.getInventoryWrapperProvider()) == null) {
+                    Util.debugLog("InventoryWrapperProvider not exists! Shop won't be loaded!");
                     continue;
                 }
                 ++valid;
@@ -310,7 +316,9 @@ public class ShopLoader {
                                 data.getExtra(),
                                 data.getCurrency(),
                                 data.isDisableDisplay(),
-                                data.getTaxAccount());
+                                data.getTaxAccount(),
+                                data.getInventoryWrapperProvider(),
+                                data.getSymbolLink());
                 if (shopNullCheck(shop)) {
                     continue;
                 }
@@ -371,6 +379,10 @@ public class ShopLoader {
 
         private String taxAccount;
 
+        private String inventoryWrapperProvider;
+
+        private String symbolLink;
+
         ShopRawDatabaseInfo(ResultSet rs) throws SQLException {
             this.x = rs.getInt("x");
             this.y = rs.getInt("y");
@@ -389,6 +401,8 @@ public class ShopLoader {
             this.currency = rs.getString("currency");
             this.disableDisplay = rs.getInt("disableDisplay") != 0;
             this.taxAccount = rs.getString("taxAccount");
+            this.symbolLink = rs.getString("symbollink");
+            this.inventoryWrapperProvider = rs.getString("inventorywrapper");
         }
 
         @Override
@@ -430,6 +444,10 @@ public class ShopLoader {
 
         private boolean disableDisplay;
 
+        private String inventoryWrapperProvider;
+
+        private String symbolLink;
+
         ShopDatabaseInfo(ShopRawDatabaseInfo origin) {
             try {
                 this.x = origin.getX();
@@ -446,10 +464,13 @@ public class ShopLoader {
                 this.currency = origin.getCurrency();
                 this.disableDisplay = origin.isDisableDisplay();
                 this.taxAccount = origin.getTaxAccount() != null ? UUID.fromString(origin.getTaxAccount()) : null;
+                this.inventoryWrapperProvider = origin.getInventoryWrapperProvider();
+                this.symbolLink = origin.getSymbolLink();
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }
         }
+
 
         private @Nullable ItemStack deserializeItem(@NotNull String itemConfig) {
             try {

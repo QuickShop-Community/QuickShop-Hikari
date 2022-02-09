@@ -24,7 +24,6 @@ import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
-
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.*;
@@ -41,7 +40,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -51,10 +49,15 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.api.inventory.CountableInventoryWrapper;
+import org.maxgamer.quickshop.api.inventory.InventoryWrapper;
+import org.maxgamer.quickshop.api.inventory.InventoryWrapperIterator;
 import org.maxgamer.quickshop.api.shop.AbstractDisplayItem;
+import org.maxgamer.quickshop.api.shop.ItemMatcher;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -192,21 +195,27 @@ public class Util {
      * @return The number of items that match in this inventory.
      * @deprecated Deprecated for different order will result different result
      */
-    @Deprecated
-    public static int countItems(@Nullable Inventory inv, @NotNull ItemStack item) {
+    @ApiStatus.Experimental
+    public static int countItems(@Nullable InventoryWrapper inv, @NotNull ItemStack item) {
         if (inv == null) {
             return 0;
         }
-        int items = 0;
-        for (final ItemStack iStack : inv.getStorageContents()) {
-            if (iStack == null || iStack.getType() == Material.AIR) {
-                continue;
+        ItemMatcher matcher = plugin.getItemMatcher();
+        if (inv instanceof CountableInventoryWrapper) {
+
+            return ((CountableInventoryWrapper) inv).countItem(input -> matcher.matches(item, input));
+        } else {
+            int items = 0;
+            for (final ItemStack iStack : inv) {
+                if (iStack == null || iStack.getType() == Material.AIR) {
+                    continue;
+                }
+                if (matcher.matches(item, iStack)) {
+                    items += iStack.getAmount();
+                }
             }
-            if (plugin.getItemMatcher().matches(item, iStack)) {
-                items += iStack.getAmount();
-            }
+            return items / item.getAmount();
         }
-        return items / item.getAmount();
     }
 
     /**
@@ -217,20 +226,24 @@ public class Util {
      * @param shop The Shop for matching
      * @return The number of shop items that match in this inventory.
      */
-    public static int countItems(@Nullable Inventory inv, @NotNull Shop shop) {
+    public static int countItems(@Nullable InventoryWrapper inv, @NotNull Shop shop) {
         if (inv == null) {
             return 0;
         }
-        int items = 0;
-        for (final ItemStack iStack : inv.getStorageContents()) {
-            if (iStack == null || iStack.getType() == Material.AIR) {
-                continue;
+        if (inv instanceof CountableInventoryWrapper) {
+            return ((CountableInventoryWrapper) inv).countItem(shop::matches);
+        } else {
+            int items = 0;
+            for (final ItemStack iStack : inv) {
+                if (iStack == null || iStack.getType() == Material.AIR) {
+                    continue;
+                }
+                if (shop.matches(iStack)) {
+                    items += iStack.getAmount();
+                }
             }
-            if (shop.matches(iStack)) {
-                items += iStack.getAmount();
-            }
+            return items / shop.getItem().getAmount();
         }
-        return items / shop.getItem().getAmount();
     }
 
     /**
@@ -241,22 +254,25 @@ public class Util {
      *             to occur.
      * @return The number of shop items that can be given to the inventory safely.
      */
-    public static int countSpace(@Nullable Inventory inv, @NotNull Shop shop) {
+    public static int countSpace(@Nullable InventoryWrapper inv, @NotNull Shop shop) {
         if (inv == null) {
             return 0;
         }
-        ItemStack item = shop.getItem();
-        int space = 0;
-        int itemMaxStackSize = getItemMaxStackSize(item.getType());
-        ItemStack[] contents = inv.getStorageContents();
-        for (ItemStack iStack : contents) {
-            if (iStack == null || iStack.getType() == Material.AIR) {
-                space += itemMaxStackSize;
-            } else if (shop.matches(iStack)) {
-                space += iStack.getAmount() >= itemMaxStackSize ? 0 : itemMaxStackSize - iStack.getAmount();
+        if (inv instanceof CountableInventoryWrapper) {
+            return ((CountableInventoryWrapper) inv).countSpace(shop::matches);
+        } else {
+            ItemStack item = shop.getItem();
+            int space = 0;
+            int itemMaxStackSize = getItemMaxStackSize(item.getType());
+            for (ItemStack iStack : inv) {
+                if (iStack == null || iStack.getType() == Material.AIR) {
+                    space += itemMaxStackSize;
+                } else if (shop.matches(iStack)) {
+                    space += iStack.getAmount() >= itemMaxStackSize ? 0 : itemMaxStackSize - iStack.getAmount();
+                }
             }
+            return space / item.getAmount();
         }
-        return space / item.getAmount();
     }
 
     /**
@@ -268,22 +284,26 @@ public class Util {
      * @return The number of items that can be given to the inventory safely.
      * @deprecated Deprecated for different order will result different result
      */
-    @Deprecated
-    public static int countSpace(@Nullable Inventory inv, @NotNull ItemStack item) {
+    @ApiStatus.Experimental
+    public static int countSpace(@Nullable InventoryWrapper inv, @NotNull ItemStack item) {
         if (inv == null) {
             return 0;
         }
-        int space = 0;
-        int itemMaxStackSize = getItemMaxStackSize(item.getType());
-        ItemStack[] contents = inv.getStorageContents();
-        for (ItemStack iStack : contents) {
-            if (iStack == null || iStack.getType() == Material.AIR) {
-                space += itemMaxStackSize;
-            } else if (plugin.getItemMatcher().matches(item, iStack)) {
-                space += iStack.getAmount() >= itemMaxStackSize ? 0 : itemMaxStackSize - iStack.getAmount();
+        ItemMatcher matcher = plugin.getItemMatcher();
+        if (inv instanceof CountableInventoryWrapper) {
+            return ((CountableInventoryWrapper) inv).countSpace(input -> matcher.matches(item, input));
+        } else {
+            int space = 0;
+            int itemMaxStackSize = getItemMaxStackSize(item.getType());
+            for (ItemStack iStack : inv) {
+                if (iStack == null || iStack.getType() == Material.AIR) {
+                    space += itemMaxStackSize;
+                } else if (matcher.matches(item, iStack)) {
+                    space += iStack.getAmount() >= itemMaxStackSize ? 0 : itemMaxStackSize - iStack.getAmount();
+                }
             }
+            return space / item.getAmount();
         }
-        return space / item.getAmount();
     }
 
     /**
@@ -731,7 +751,7 @@ public class Util {
      *
      * @param inv inv
      */
-    public static void inventoryCheck(@Nullable Inventory inv) {
+    public static void inventoryCheck(@Nullable InventoryWrapper inv) {
         if (inv == null) {
             return;
         }
@@ -739,9 +759,10 @@ public class Util {
             Util.debugLog("Skipped plugin gui inventory check.");
             return;
         }
+        InventoryWrapperIterator iterator = inv.iterator();
         try {
-            for (int i = 0; i < inv.getSize(); i++) {
-                ItemStack itemStack = inv.getItem(i);
+            while (iterator.hasNext()) {
+                ItemStack itemStack = iterator.next();
                 if (itemStack == null) {
                     continue;
                 }
@@ -751,7 +772,7 @@ public class Util {
                     if (location == null) {
                         return; // Virtual GUI
                     }
-                    inv.setItem(i, new ItemStack(Material.AIR));
+                    iterator.remove();
                     Util.debugLog("Found shop display item in an inventory, Removing...");
                     MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location + ", Item is " + itemStack.getType().name());
                 }

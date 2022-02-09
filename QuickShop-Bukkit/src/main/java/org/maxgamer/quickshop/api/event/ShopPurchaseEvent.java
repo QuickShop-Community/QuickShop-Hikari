@@ -22,9 +22,9 @@ package org.maxgamer.quickshop.api.event;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.maxgamer.quickshop.api.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.api.shop.Shop;
 
 import java.util.UUID;
@@ -45,7 +45,7 @@ public class ShopPurchaseEvent extends AbstractQSEvent implements QSCancellable 
     private final Player player;
 
     @NotNull
-    private final Inventory purchaserInventory;
+    private final InventoryWrapper purchaserInventory;
 
     private final int amount;
     private double total;
@@ -64,7 +64,7 @@ public class ShopPurchaseEvent extends AbstractQSEvent implements QSCancellable 
      * @param amount             The amount they're buying
      * @param total              The total balance in this purchase
      */
-    public ShopPurchaseEvent(@NotNull Shop shop, @NotNull UUID purchaser, @NotNull Inventory purchaserInventory, int amount, double total) {
+    public ShopPurchaseEvent(@NotNull Shop shop, @NotNull UUID purchaser, @NotNull InventoryWrapper purchaserInventory, int amount, double total) {
         this.shop = shop;
         this.purchaser = purchaser;
         this.purchaserInventory = purchaserInventory;
@@ -123,7 +123,7 @@ public class ShopPurchaseEvent extends AbstractQSEvent implements QSCancellable 
      *
      * @return The inventory
      */
-    public @NotNull Inventory getPurchaserInventory() {
+    public @NotNull InventoryWrapper getPurchaserInventory() {
         return this.purchaserInventory;
     }
 
