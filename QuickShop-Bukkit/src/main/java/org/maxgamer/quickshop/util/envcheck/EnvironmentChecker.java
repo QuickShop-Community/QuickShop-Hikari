@@ -283,51 +283,6 @@ public final class EnvironmentChecker {
         return new ResultContainer(CheckResult.PASSED, "Check passed.");
     }
 
-
-    @SneakyThrows
-    @EnvCheckEntry(name = "Java Runtime Environment Version Test", priority = 1, stage = EnvCheckEntry.Stage.ON_ENABLE)
-    public ResultContainer jrevTest() {
-        if (isOutdatedJvm()) {
-            String jvmWarning = "\n" +
-                    "============================================================\n" +
-                    "    Warning! You're running an outdated version of Java!\n" +
-                    "============================================================\n" +
-                    "* QuickShop will stop being compatible with your current Java version in the future!\n" +
-                    "*\n" +
-                    "* You should schedule a Java upgrade on your server,\n" +
-                    "* because we will drop support for any Java versions lower than Java 16.\n" +
-                    "*\n" +
-                    "* That means:\n" +
-                    "* 1) Future QuickShop builds will no longer work on your server.\n" +
-                    "* 2) No support for QuickShop builds that run on outdated Java versions will be given.\n" +
-                    "* \n" +
-                    "* Why:\n" +
-                    "* 1) We don't want to keep compatibility with outdated software\n" +
-                    "*    and systems. As Paper upgraded, we did too.\n" +
-                    "* 2) Java is downward compatible, so most legacy (Java 8+) Plugins should still work.\n" +
-                    "* 3) Newer Java APIs allow accessing resources and processing them\n" +
-                    "*    faster than before, meaning a performance improvement.\n" +
-                    "* \n" +
-                    "* What should I do?\n" +
-                    "* You should update your server's Java version\n" +
-                    "* as soon as you can to Java 16 or higher.\n" +
-                    "*\n" +
-                    "* Most plugins can run on Java 16+ without problems\n" +
-                    "* unless their code is really outdated.\n" +
-                    "* If a Plugin is not compatible with Java 16 and the developer\n" +
-                    "* doesn't update it, then you should replace them.\n" +
-                    "*\n" +
-                    "* You can get Java 16 here:\n" +
-                    "* https://www.oracle.com/java/technologies/javase-downloads.html\n" +
-                    "*\n" +
-                    String.format("* Current Java version: %s", System.getProperty("java.version"));
-            plugin.getLogger().warning(jvmWarning);
-            Thread.sleep(5000);
-            return new ResultContainer(CheckResult.WARNING, "Unsupported outdated JRE version detected.");
-        }
-        return new ResultContainer(CheckResult.PASSED, "Java is up-to-date: " + System.getProperty("java.version"));
-    }
-
     @EnvCheckEntry(name = "Spigot Based Server Test", priority = 2)
     public ResultContainer spigotBasedServer() {
         ResultContainer success = new ResultContainer(CheckResult.PASSED, "Server");
