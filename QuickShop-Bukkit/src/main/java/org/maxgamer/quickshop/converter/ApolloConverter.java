@@ -1,18 +1,35 @@
 package org.maxgamer.quickshop.converter;
 
+import cc.carm.lib.easysql.EasySQL;
+import cc.carm.lib.easysql.api.SQLManager;
+import cc.carm.lib.easysql.hikari.HikariConfig;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.h2.Driver;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.database.SimpleDatabaseHelper;
 import org.maxgamer.quickshop.shop.InteractionController;
+import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapperManager;
+import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,18 +41,260 @@ public class ApolloConverter {
         this.plugin = plugin;
     }
 
-    public void upgradeConfiguration() {
+    public void upgrade() {
         int selectedVersion = plugin.getConfig().getInt("config-version");
         if (selectedVersion >= 157) {
             Util.debugLog("Skipping configuration upgrading...");
             return;
         }
+
+        logger.info("Warning! High Risk Operation alert!");
+        logger.info("!! BACKUP YOUR DATA BEFORE CONTINUE !!");
+        logger.info("");
+        logger.info("QuickShop need upgrade your database and configuration to continue.");
+        logger.info("If you don't backup your data, You have huge chance will lose all your data.");
+        logger.info("If you hadn't backup your data yet, please close the server and backup immediately.");
+        logger.info("**Include your map, datafolder, plugins, database, EVERYTHING!**");
+        logger.info("");
+        logger.info("When you get ready, create a file named 'continue.txt' in the quickshop data folder.");
+
+        while(true){
+            File file = new File(plugin.getDataFolder(), "continue.txt");
+            if(file.exists())break;
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
+
         logger.info("You configuration version at " + selectedVersion + "...");
         logger.info("You are on " + (156 - selectedVersion) + " version(s) behind...");
         logger.info("We will execute legacy upgrade script to make sure you configuration up-to-date...");
         upgradeLegacyConfig(selectedVersion);
         logger.info("Converting configuration to Apollo...");
         convertApolloConfig();
+        logger.info("Converting database to Apollo...");
+        convertDatabase();
+    }
+
+    private void convertDatabase() {
+        logger.info("Convert -> Getting database...");
+        ConfigurationSection dbCfg = plugin.getConfig().getConfigurationSection("database");
+        if(dbCfg == null){
+            logger.warning("No database configuration found!");
+            return;
+        }
+        String dbPrefix = dbCfg.getString("prefix");
+        if (dbPrefix == null || "none".equals(dbPrefix)) {
+            dbPrefix = "";
+        }
+
+        if (plugin.getConfig().getBoolean("database.mysql")) {
+            logger.info("Convert -> MySQL database upgrade...");
+            migrateMySQL(dbPrefix);
+        }else{
+            logger.info("Convert -> SQLite database upgrade...");
+            migrateSQLite(dbPrefix);
+        }
+    }
+
+    @Nullable
+    private SQLManager getLiveDatabase() {
+        HikariConfig config = new HikariConfig();
+        config.addDataSourceProperty("connection-timeout", "60000");
+        config.addDataSourceProperty("validation-timeout", "3000");
+        config.addDataSourceProperty("idle-timeout", "60000");
+        config.addDataSourceProperty("login-timeout", "5");
+        config.addDataSourceProperty("maxLifeTime", "60000");
+        config.addDataSourceProperty("maximum-pool-size", "8");
+        config.addDataSourceProperty("minimum-idle", "10");
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.addDataSourceProperty("useUnicode", "true");
+        config.addDataSourceProperty("characterEncoding", "utf8");
+
+        try {
+            ConfigurationSection dbCfg = plugin.getConfig().getConfigurationSection("database");
+            if (Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
+                // MySQL database - Required database be created first.
+                String dbPrefix = dbCfg.getString("prefix");
+                if (dbPrefix == null || "none".equals(dbPrefix)) {
+                    dbPrefix = "";
+                }
+                String user = dbCfg.getString("user");
+                String pass = dbCfg.getString("password");
+                String host = dbCfg.getString("host");
+                String port = dbCfg.getString("port");
+                String database = dbCfg.getString("database");
+                boolean useSSL = dbCfg.getBoolean("usessl");
+                config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=" + useSSL);
+                config.setUsername(user);
+                config.setPassword(pass);
+                return EasySQL.createManager(config);
+            } else {
+                // SQLite database - Doing this handles file creation
+                Driver.load();
+                config.setJdbcUrl("jdbc:h2:" + new File(plugin.getDataFolder(), "shops").getCanonicalFile().getAbsolutePath() + ";DB_CLOSE_DELAY=-1;MODE=MYSQL");
+                SQLManager manager = EasySQL.createManager(config);
+                manager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode
+                return manager;
+            }
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.WARNING, "Failed connect to live database!", e);
+            return null;
+        }
+    }
+
+    @SuppressWarnings("SqlResolve")
+    private void migrateSQLite(String prefix) {
+        File sqliteFile = new File(plugin.getDataFolder(), "shops.db");
+        if (!sqliteFile.exists()) return; // Skip!
+        logger.info("Detecting SQLite JDBC driver...");
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            logger.log(Level.WARNING, "Couldn't found SQLite JDBC driver! Upgrade failed, Skipping...", e);
+            return;
+        }
+        logger.info("Please standby, connecting to SQLite database...");
+        List<ShopStorageUnit> shopStorageUnits;
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:" + sqliteFile);
+             ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM " + prefix + "shops")) {
+            logger.info("Reading shops data...");
+            shopStorageUnits = pullShops(resultSet);
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Couldn't connect to SQLite database! Upgrade failed, Skipping...", e);
+            return;
+        }
+
+        SQLManager sqlManager = getLiveDatabase();
+        try {
+            SimpleDatabaseHelper helper = new SimpleDatabaseHelper(plugin, sqlManager);
+            logger.info("Migrating SQLite data to live database...");
+            // Empty the remote database exists tables...
+            logger.info("Dropping live database old tables...");
+            logger.info("Dropping shops...");
+            sqlManager.executeSQL("DROP TABLE IF EXISTS " + prefix + "shops");
+            logger.info("Dropping messages...");
+            sqlManager.executeSQL("DROP TABLE IF EXISTS " + prefix + "messages");
+            logger.info("Dropping external_cache...");
+            sqlManager.executeSQL("DROP TABLE IF EXISTS " + prefix + "external_cache");
+            logger.info("Creating shops table...");
+            helper.createShopsTable();
+            logger.info("Copying data to live database...");
+            AtomicInteger failCount = new AtomicInteger(0);
+            for (int i = 0; i < shopStorageUnits.size(); i++) {
+                ShopStorageUnit unit = shopStorageUnits.get(i);
+                logger.info("Copying " + i+1 + "/" + shopStorageUnits.size() + "...");
+                sqlManager.createInsert(prefix + "shops")
+                        .setColumnNames("owner", "price", "itemConfig", "x", "y", "z", "world", "unlimited",
+                                "type", "extra", "currency", "disableDisplay", "taxAccount", "inventorySymbolLink", "inventoryWrapperName")
+                        .setParams(unit.getOwner(), unit.getPrice(), unit.getItemConfig(), unit.getX(), unit.getY(), unit.getZ(), unit.getWorld(), unit.getUnlimited(),
+                                unit.getType(), unit.getExtra(), unit.getCurrency(), unit.getDisableDisplay(), unit.getTaxAccount(), unit.getInventorySymbolLink(), unit.getInventoryWrapperName())
+                        .execute((exception, sqlAction) -> {
+                            logger.log(Level.WARNING, "Couldn't copy data to live database! SQL:" + sqlAction, exception);
+                            failCount.incrementAndGet();
+                        });
+            }
+            logger.info("Completed. Total " + failCount.get() + " failed.");
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Couldn't create database helper!", e);
+        }
+    }
+
+    @SuppressWarnings("SqlResolve")
+    private void migrateMySQL(String prefix) {
+        logger.info("Please standby, connecting to MySQL database...");
+        List<ShopStorageUnit> shopStorageUnits;
+        try (Connection connection = getLiveDatabase().getConnection();
+             ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM " + prefix + "shops")) {
+            logger.info("Reading shops data...");
+            shopStorageUnits = pullShops(resultSet);
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Couldn't connect to MySQL database! Upgrade failed, Skipping...", e);
+            return;
+        }
+
+        SQLManager sqlManager = getLiveDatabase();
+        try {
+            SimpleDatabaseHelper helper = new SimpleDatabaseHelper(plugin, sqlManager);
+            logger.info("Migrating MySQL data to live database...");
+            // Empty the remote database exists tables...
+            logger.info("Dropping live database old tables...");
+            logger.info("Dropping shops...");
+            sqlManager.executeSQL("DROP TABLE IF EXISTS " + prefix + "shops");
+            logger.info("Dropping messages...");
+            sqlManager.executeSQL("DROP TABLE IF EXISTS " + prefix + "messages");
+            logger.info("Dropping external_cache...");
+            sqlManager.executeSQL("DROP TABLE IF EXISTS " + prefix + "external_cache");
+            logger.info("Creating shops table...");
+            helper.createShopsTable();
+            logger.info("Copying data to live database...");
+            AtomicInteger failCount = new AtomicInteger(1);
+            for (int i = 0; i < shopStorageUnits.size(); i++) {
+                ShopStorageUnit unit = shopStorageUnits.get(i);
+                logger.info("Copying " + i + "/" + shopStorageUnits.size() + "...");
+                sqlManager.createInsert(prefix + "shops")
+                        .setColumnNames("owner", "price", "itemConfig", "x", "y", "z", "world", "unlimited",
+                                "type", "extra", "currency", "disableDisplay", "taxAccount", "inventorySymbolLink", "inventoryWrapperName")
+                        .setParams(unit.getOwner(), unit.getPrice(), unit.getItemConfig(), unit.getX(), unit.getY(), unit.getZ(), unit.getWorld(), unit.getUnlimited(),
+                                unit.getType(), unit.getExtra(), unit.getCurrency(), unit.getDisableDisplay(), unit.getTaxAccount(), unit.getInventorySymbolLink(), unit.getInventoryWrapperName())
+                        .execute((exception, sqlAction) -> {
+                            logger.log(Level.WARNING, "Couldn't copy data to live database! SQL:" + sqlAction, exception);
+                            failCount.incrementAndGet();
+                        });
+            }
+            logger.info("Completed. Total " + failCount.get() + " failed.");
+        } catch (SQLException e) {
+            logger.log(Level.WARNING, "Couldn't create database helper!", e);
+        }
+    }
+
+    @NotNull
+    private List<ShopStorageUnit> pullShops(ResultSet resultSet) throws SQLException {
+        List<ShopStorageUnit> units = new ArrayList<>();
+        int count = 0;
+        while (resultSet.next()) {
+            ++count;
+            logger.info("Pulling #" +count+ " shop...");
+            ShopStorageUnit.ShopStorageUnitBuilder builder = ShopStorageUnit.builder();
+            builder.owner(resultSet.getString("owner"));
+            builder.price(resultSet.getDouble("price"));
+            builder.itemConfig(resultSet.getString("itemConfig"));
+            builder.x(resultSet.getInt("x"));
+            builder.y(resultSet.getInt("y"));
+            builder.z(resultSet.getInt("z"));
+            builder.world(resultSet.getString("world"));
+            builder.unlimited(resultSet.getInt("unlimited"));
+            builder.type(resultSet.getInt("type"));
+            try {
+                builder.currency(resultSet.getString("currency"));
+            } catch (SQLException ignored) {
+            }
+            try {
+                builder.extra(resultSet.getString("extra"));
+            } catch (SQLException ignored) {
+                builder.currency("QuickShop: {}");
+            }
+            try {
+                builder.disableDisplay(resultSet.getInt("disableDisplay"));
+            } catch (SQLException ignored) {
+                builder.disableDisplay(0);
+            }
+            try {
+                builder.taxAccount(resultSet.getString("taxAccount"));
+            } catch (SQLException ignored) {
+            }
+            units.add(builder.build());
+        }
+        return units;
+
     }
 
     private void convertApolloConfig() {
@@ -74,19 +333,19 @@ public class ApolloConverter {
         config.set("enable", true);
         for (String rule : oldRules) {
             String[] split = rule.split(" ");
-            if(split.length != 3)
+            if (split.length != 3)
                 continue;
             try {
                 Material item = Material.matchMaterial(split[0]);
                 if (item == null) continue;
                 double min = Double.parseDouble(split[1]);
                 double max = Double.parseDouble(split[2]);
-                config.set("rules.auto-upgrade-" + item.name()+".materials", ImmutableList.of(item.name()));
-                config.set("rules.auto-upgrade-" + item.name()+".currency", ImmutableList.of("*"));
-                config.set("rules.auto-upgrade-" + item.name()+".min", min);
-                config.set("rules.auto-upgrade-" + item.name()+".min", max);
-            }catch (Exception e){
-                logger.log(Level.WARNING, "Failed to parse rule: " + rule+", skipping...", e);
+                config.set("rules.auto-upgrade-" + item.name() + ".materials", ImmutableList.of(item.name()));
+                config.set("rules.auto-upgrade-" + item.name() + ".currency", ImmutableList.of("*"));
+                config.set("rules.auto-upgrade-" + item.name() + ".min", min);
+                config.set("rules.auto-upgrade-" + item.name() + ".min", max);
+            } catch (Exception e) {
+                logger.log(Level.WARNING, "Failed to parse rule: " + rule + ", skipping...", e);
             }
         }
         try {
@@ -100,10 +359,14 @@ public class ApolloConverter {
         plugin.getConfig().set("shop.enchance-display-protect", null);
         plugin.getConfig().set("shop.enchance-shop-protect", null);
         plugin.getConfig().set("shop.interact", null);
-        plugin.getConfig().set("shop.whole-number-prices-only",null);
-        plugin.getConfig().set("shop.minimum-price",null);
-        plugin.getConfig().set("shop.maximum-price",null);
-        plugin.getConfig().set("shop.price-restriction",null);
+        plugin.getConfig().set("shop.whole-number-prices-only", null);
+        plugin.getConfig().set("shop.minimum-price", null);
+        plugin.getConfig().set("shop.maximum-price", null);
+        plugin.getConfig().set("shop.price-restriction", null);
+        plugin.getConfig().set("database.queue", null);
+        plugin.getConfig().set("database.queue-commit-interval", null);
+        plugin.getConfig().set("database.auto-fix-encoding-issue-in-database", null);
+        plugin.getConfig().set("config-version",157);
     }
 
     private void legacyInteractConfig() {
@@ -183,14 +446,14 @@ public class ApolloConverter {
             SNEAKING_RIGHT_CLICK_SIGN = tmp;
         }
 
-        config.set("STANDING_LEFT_CLICK_SIGN", STANDING_LEFT_CLICK_SIGN);
-        config.set("STANDING_RIGHT_CLICK_SIGN", STANDING_RIGHT_CLICK_SIGN);
-        config.set("STANDING_LEFT_CLICK_SHOPBLOCK", STANDING_LEFT_CLICK_SHOPBLOCK);
-        config.set("STANDING_RIGHT_CLICK_SHOPBLOCK", STANDING_RIGHT_CLICK_SHOPBLOCK);
-        config.set("SNEAKING_LEFT_CLICK_SIGN", SNEAKING_LEFT_CLICK_SIGN);
-        config.set("SNEAKING_RIGHT_CLICK_SIGN", SNEAKING_RIGHT_CLICK_SIGN);
-        config.set("SNEAKING_LEFT_CLICK_SHOPBLOCK", SNEAKING_LEFT_CLICK_SHOPBLOCK);
-        config.set("SNEAKING_RIGHT_CLICK_SHOPBLOCK", SNEAKING_RIGHT_CLICK_SHOPBLOCK);
+        config.set("STANDING_LEFT_CLICK_SIGN", STANDING_LEFT_CLICK_SIGN.name());
+        config.set("STANDING_RIGHT_CLICK_SIGN", STANDING_RIGHT_CLICK_SIGN.name());
+        config.set("STANDING_LEFT_CLICK_SHOPBLOCK", STANDING_LEFT_CLICK_SHOPBLOCK.name());
+        config.set("STANDING_RIGHT_CLICK_SHOPBLOCK", STANDING_RIGHT_CLICK_SHOPBLOCK.name());
+        config.set("SNEAKING_LEFT_CLICK_SIGN", SNEAKING_LEFT_CLICK_SIGN.name());
+        config.set("SNEAKING_RIGHT_CLICK_SIGN", SNEAKING_RIGHT_CLICK_SIGN.name());
+        config.set("SNEAKING_LEFT_CLICK_SHOPBLOCK", SNEAKING_LEFT_CLICK_SHOPBLOCK.name());
+        config.set("SNEAKING_RIGHT_CLICK_SHOPBLOCK", SNEAKING_RIGHT_CLICK_SHOPBLOCK.name());
 
         try {
             config.save(file);
@@ -1124,5 +1387,35 @@ public class ApolloConverter {
         }
         plugin.saveConfiguration();
         plugin.getLogger().info("[ApolloConverter] Legacy upgrade script executed.");
+    }
+
+    @Builder
+    @AllArgsConstructor
+    @Getter
+    static class ShopStorageUnit {
+        private final String owner;
+        private final double price;
+        private final String itemConfig;
+        private final int x;
+        private final int y;
+        private final int z;
+        private final String world;
+        private final int unlimited;
+        private final int type;
+        private final String extra;
+        private final String currency;
+        private final int disableDisplay;
+        private final String taxAccount;
+
+        @NotNull
+        public String getInventoryWrapperName() {
+            return QuickShop.getInstance().getDescription().getName();
+        }
+
+        @NotNull
+        public String getInventorySymbolLink() {
+            String holder = JsonUtil.standard().toJson(new BukkitInventoryWrapperManager.BlockHolder(world, x, y, z));
+            return JsonUtil.standard().toJson(new BukkitInventoryWrapperManager.CommonHolder(BukkitInventoryWrapperManager.HolderType.BLOCK, holder));
+        }
     }
 }

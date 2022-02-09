@@ -71,6 +71,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     }
 
     @AllArgsConstructor
+    public
     enum HolderType {
         BLOCK("block"), UNKNOWN("unknown");
         private final String typeString;
@@ -92,7 +93,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     @Data
     @AllArgsConstructor
     @Builder
-    static class CommonHolder {
+    public static class CommonHolder {
         private HolderType holder;
         private String content;
     }
@@ -101,7 +102,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     @Data
     @AllArgsConstructor
     @Builder
-    static class BlockHolder {
+    public static class BlockHolder {
         private String world;
         private int x;
         int y;

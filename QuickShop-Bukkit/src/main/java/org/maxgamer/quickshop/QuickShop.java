@@ -67,6 +67,7 @@ import org.maxgamer.quickshop.api.inventory.InventoryWrapperManager;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.command.SimpleCommandManager;
+import org.maxgamer.quickshop.converter.ApolloConverter;
 import org.maxgamer.quickshop.database.SimpleDatabaseHelper;
 import org.maxgamer.quickshop.economy.Economy_GemsEconomy;
 import org.maxgamer.quickshop.economy.Economy_TNE;
@@ -1210,6 +1211,18 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfig().set("server-uuid", serverUUID);
         }
 
+        if(selectedVersion < 157){
+            new ApolloConverter(this).upgrade();
+            getLogger().info("Upgrading completed!");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Runtime.getRuntime().halt(0);
+        }
+
+
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(platform.getMinecraftVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
@@ -1233,6 +1246,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
         saveConfiguration();
         reloadConfiguration();
+
 
         //Re-add comment for config.yml
         try (InputStream inputStream = Objects.requireNonNull(getResource("config.yml"))) {

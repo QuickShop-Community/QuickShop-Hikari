@@ -91,7 +91,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
      * Creates the database table 'shops'.
      */
 
-    private void createShopsTable() {
+    public void createShopsTable() {
         manager.createTable(plugin.getDbPrefix() + "shops")
                 .addColumn("owner", "VARCHAR(255) NOT NULL")
                 .addColumn("price", "DOUBLE(32) NOT NULL")
@@ -118,7 +118,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     /**
      * Creates the database table 'metrics'
      */
-    private void createMetricsTable() {
+    public void createMetricsTable() {
         manager.createTable(plugin.getDbPrefix() + "metrics")
                 .addColumn("time", "BIGINT(32) NOT NULL")
                 .addColumn("x", "INTEGER(32) NOT NULL")
@@ -144,7 +144,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     /**
      * Creates the database table 'messages'
      */
-    private void createMessagesTable() {
+    public void createMessagesTable() {
         manager.createTable(plugin.getDbPrefix() + "messages")
                 .addColumn("owner", "VARCHAR(255) NOT NULL")
                 .addColumn("message", "TEXT NOT NULL")
@@ -157,7 +157,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 }));
     }
 
-    private void createLogsTable() {
+    public void createLogsTable() {
         manager.createTable(plugin.getDbPrefix() + "logs")
                 .addColumn("time", "BIGINT(32) NOT NULL")
                 .addColumn("classname", "TEXT NULL")
@@ -166,7 +166,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create logs table! SQL:" + sqlAction.getSQLContent(), exception)));
     }
 
-    private void createExternalCacheTable() {
+    public void createExternalCacheTable() {
         manager.createTable(plugin.getDbPrefix() + "external_cache")
                 .addColumn("x", "INTEGER(32) NOT NULL")
                 .addColumn("y", "INTEGER(32) NOT NULL")
@@ -179,7 +179,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create extrenal_cache table! SQL:" + sqlAction.getSQLContent(), exception)));
     }
 
-    private void createMetadataTable() {
+    public void createMetadataTable() {
         manager.createTable(plugin.getDbPrefix() + "metadata")
                 .addColumn("key", "VARCHAR(255) NOT NULL")
                 .addColumn("value", "TEXT NOT NULL")
@@ -188,7 +188,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create metadata table! SQL:" + sqlAction.getSQLContent(), exception)));
     }
 
-    private void createPlayerTable() {
+    public void createPlayerTable() {
         manager.createTable(plugin.getDbPrefix() + "players")
                 .addColumn("uuid", "VARCHAR(255) NOT NULL")
                 .addColumn("locale", "TEXT NOT NULL")
@@ -228,7 +228,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     /**
      * Verifies that all required columns exist.
      */
-    private void checkColumns() {
+    public void checkColumns() {
         plugin.getLogger().info("Checking and updating database columns, it may take a while...");
         if (getDatabaseVersion() == 0) {
             // QuickShop v4/v5 upgrade
@@ -239,14 +239,14 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
         plugin.getLogger().info("Finished!");
     }
 
-    private void setDatabaseVersion(int version) {
+    public void setDatabaseVersion(int version) {
         manager.createReplace(plugin.getDbPrefix() + "metadata")
                 .setColumnNames("key", "value")
                 .setParams("database_version", version)
                 .executeAsync();
     }
 
-    private int getDatabaseVersion() {
+    public int getDatabaseVersion() {
         try (SQLQuery query = manager.createQuery().inTable(plugin.getDbPrefix() + "metadata")
                 .addCondition("key", "database_version")
                 .selectColumns("value")
