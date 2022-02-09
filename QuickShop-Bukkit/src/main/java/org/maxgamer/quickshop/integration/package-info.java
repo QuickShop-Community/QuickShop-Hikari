@@ -18,6 +18,10 @@
  */
 
 /**
- * The interface allow addons register their protection processor in there
+ * @deprecated Please listen the (ShopCreateEvent and ShopPurchaseEvent) events to instead
  */
+@Deprecated
+@ApiStatus.ScheduledForRemoval
 package org.maxgamer.quickshop.integration;
+
+import org.jetbrains.annotations.ApiStatus;
