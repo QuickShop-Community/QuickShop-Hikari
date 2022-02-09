@@ -40,7 +40,7 @@ public class HttpCacheLoader extends CacheLoader<URL, Optional<String>> {
      * @return the value associated with {@code key}; <b>must not be null</b>
      */
     @Override
-    public Optional<String> load(@NotNull URL key) {
+    public @NotNull Optional<String> load(@NotNull URL key) {
         try {
             return Optional.ofNullable(HttpRequest.get(key)
                     .execute()

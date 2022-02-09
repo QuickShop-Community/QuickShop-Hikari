@@ -44,8 +44,6 @@ import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.BlockInventoryHolder;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
@@ -57,10 +55,10 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 import org.maxgamer.quickshop.api.event.*;
+import org.maxgamer.quickshop.api.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.integration.SimpleIntegrationManager;
-import org.maxgamer.quickshop.api.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapper;
 import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.economyformatter.EconomyFormatter;
@@ -925,18 +923,16 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (!plugin.isAllowStack()) {
             info.getItem().setAmount(1);
         }
-        Inventory inv;
-        BlockState state = info.getLocation().getBlock().getState();
-        if(state instanceof BlockInventoryHolder){
-            inv = ((BlockInventoryHolder) state).getInventory();
-        }else{
-            plugin.text().of(p, "chest-was-removed").send();
-            return;
-        }
-
+//        Inventory inv;
+//        BlockState state = info.getLocation().getBlock().getState();
+//        if(state instanceof BlockInventoryHolder){
+//            inv = ((BlockInventoryHolder) state).getInventory();
+//        }else{
+//            plugin.text().of(p, "chest-was-removed").send();
+//            return;
+//        }
 
         // Create the sample shop
-        //noinspection ConstantConditions
         ContainerShop shop = new ContainerShop(
                 plugin,
                 info.getLocation(),
