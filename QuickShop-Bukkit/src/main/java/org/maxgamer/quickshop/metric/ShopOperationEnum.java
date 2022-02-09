@@ -4,4 +4,5 @@ public enum ShopOperationEnum {
     PURCHASE,
     CREATE,
     DELETE,
+    ONGOING_FEE
 }

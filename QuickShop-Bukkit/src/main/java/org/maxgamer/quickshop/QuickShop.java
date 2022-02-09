@@ -77,6 +77,7 @@ import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 import org.maxgamer.quickshop.listener.*;
 import org.maxgamer.quickshop.listener.worldedit.WorldEditAdapter;
 import org.maxgamer.quickshop.localization.text.SimpleTextManager;
+import org.maxgamer.quickshop.metric.MetricListener;
 import org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.PluginUtil;
 import org.maxgamer.quickshop.papi.QuickShopPAPI;
 import org.maxgamer.quickshop.permission.PermissionManager;
@@ -977,6 +978,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         new ShopProtectionListener(this, this.shopCache).register();
         new PluginListener(this).register();
         new EconomySetupListener(this).register();
+        new MetricListener(this).register();
         InternalListener internalListener = new InternalListener(this);
         internalListener.register();
 

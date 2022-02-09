@@ -24,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.metric.ShopMetricRecord;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -159,4 +160,5 @@ public interface DatabaseHelper {
      */
     void insertHistoryRecord(Object rec);
 
+    void insertMetricRecord(@NotNull ShopMetricRecord record);
 }
