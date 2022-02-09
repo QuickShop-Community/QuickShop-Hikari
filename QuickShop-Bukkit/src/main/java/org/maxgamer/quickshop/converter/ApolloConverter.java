@@ -191,7 +191,7 @@ public class ApolloConverter {
             AtomicInteger failCount = new AtomicInteger(0);
             for (int i = 0; i < shopStorageUnits.size(); i++) {
                 ShopStorageUnit unit = shopStorageUnits.get(i);
-                logger.info("Copying " + i+1 + "/" + shopStorageUnits.size() + "...");
+                logger.info("Copying " + (i+1) + "/" + shopStorageUnits.size() + "...");
                 sqlManager.createInsert(prefix + "shops")
                         .setColumnNames("owner", "price", "itemConfig", "x", "y", "z", "world", "unlimited",
                                 "type", "extra", "currency", "disableDisplay", "taxAccount", "inventorySymbolLink", "inventoryWrapperName")
@@ -239,7 +239,7 @@ public class ApolloConverter {
             AtomicInteger failCount = new AtomicInteger(1);
             for (int i = 0; i < shopStorageUnits.size(); i++) {
                 ShopStorageUnit unit = shopStorageUnits.get(i);
-                logger.info("Copying " + i + "/" + shopStorageUnits.size() + "...");
+                logger.info("Copying " + (i+1) + "/" + shopStorageUnits.size() + "...");
                 sqlManager.createInsert(prefix + "shops")
                         .setColumnNames("owner", "price", "itemConfig", "x", "y", "z", "world", "unlimited",
                                 "type", "extra", "currency", "disableDisplay", "taxAccount", "inventorySymbolLink", "inventoryWrapperName")
