@@ -60,17 +60,17 @@ public class ApolloConverter {
 
         while(true){
             File file = new File(plugin.getDataFolder(), "continue.txt");
-            if(file.exists())break;
+            if(file.exists()){
+                //noinspection ResultOfMethodCallIgnored
+                file.delete();
+                break;
+            }
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
-
-
-
 
         logger.info("You configuration version at " + selectedVersion + "...");
         logger.info("You are on " + (156 - selectedVersion) + " version(s) behind...");
