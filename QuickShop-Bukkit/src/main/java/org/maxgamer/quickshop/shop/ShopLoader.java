@@ -132,7 +132,7 @@ public class ShopLoader {
                                 data.isDisableDisplay(),
                                 data.getTaxAccount(),
                                 data.getInventoryWrapperProvider(),
-                                data.symbolLink);
+                                data.getSymbolLink());
                 if (data.needUpdate.get()) {
                     shop.setDirty();
                 }

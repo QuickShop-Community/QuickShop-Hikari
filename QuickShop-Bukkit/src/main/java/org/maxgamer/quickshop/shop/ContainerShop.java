@@ -916,7 +916,7 @@ public class ContainerShop implements Shop {
             plugin.getDatabaseHelper()
                     .updateShop(SimpleShopModerator.serialize(this.moderator), this.getItem(),
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
-                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), this.inventoryWrapperProvider, saveToSymbolLink());
+                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), saveToSymbolLink(), this.inventoryWrapperProvider);
             this.dirty = false;
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING,
