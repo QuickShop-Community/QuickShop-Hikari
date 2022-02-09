@@ -140,6 +140,13 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
             return false; // One of them is null (Can't be both, see above)
         }
 
+        String shopIdOrigin = plugin.getPlatform().getItemShopId(requireStack);
+        if(shopIdOrigin != null){
+            String shopIdTester = plugin.getPlatform().getItemShopId(givenStack);
+            if(shopIdOrigin.equals(shopIdTester))
+                return true;
+        }
+
         requireStack = requireStack.clone();
         requireStack.setAmount(1);
         givenStack = givenStack.clone();

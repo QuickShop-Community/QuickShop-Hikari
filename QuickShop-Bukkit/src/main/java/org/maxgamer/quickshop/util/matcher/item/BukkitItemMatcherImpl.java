@@ -79,22 +79,13 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
         original.setAmount(1);
         tester = tester.clone();
         tester.setAmount(1);
-//
-//        if (plugin.getNbtapi() != null) {
-//            NBTItem nbtItemOriginal = new NBTItem(original);
-//            NBTItem nbtItemTester = new NBTItem(tester);
-//            try {
-//                String tagOriginal = nbtItemOriginal.getString("shopItemId");
-//                String tagTester = nbtItemTester.getString("shopItemId");
-//                if (StringUtils.isNotEmpty(tagOriginal) && StringUtils.isNotEmpty(tagTester) && tagOriginal.equals(tagTester)) {
-//                    return true;
-//                }
-//            } catch (Exception e) {
-//                plugin.disableNBTAPI();
-//                plugin.getLogger().log(Level.WARNING, "NBTAPI support is broken, dsiable and fallback... (You can safely ignore this)", e);
-//                Util.debugLog("NBTAPI is broken, error: " + e.getMessage() + "\n stacktrace:  \n" + Arrays.toString(e.getStackTrace()));
-//            }
-//        }
+
+        String shopIdOrigin = plugin.getPlatform().getItemShopId(original);
+        if(shopIdOrigin != null){
+            String shopIdTester = plugin.getPlatform().getItemShopId(tester);
+            if(shopIdOrigin.equals(shopIdTester))
+                return true;
+        }
         return tester.isSimilar(original);
     }
 }
