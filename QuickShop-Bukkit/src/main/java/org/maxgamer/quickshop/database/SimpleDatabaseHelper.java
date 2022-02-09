@@ -283,7 +283,10 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
         if (shop.getLocation().getWorld() != null)
             worldName = shop.getLocation().getWorld().getName();
         manager.createReplace(plugin.getDbPrefix() + "shops")
-                .setColumnNames("owner", "price", "itemConfig", "x", "y", "z", "world", "unlimited", "type", "extra")
+                .setColumnNames("owner", "price", "itemConfig",
+                        "x", "y", "z", "world", "unlimited", "type", "extra",
+                        "currency","disableDisplay","taxAccount","inventorySymbolLink","inventoryWrapperName"
+                )
                 .setParams(ShopModerator.serialize(shop.getModerator()), shop.getPrice(), Util.serialize(shop.getItem()),
                         location.getBlockX(),
                         location.getBlockY(),
@@ -291,7 +294,12 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                         worldName,
                         shop.isUnlimited() ? 1 : 0,
                         shop.getShopType().toID(),
-                        shop.saveExtraToYaml()
+                        shop.saveExtraToYaml(),
+                        shop.getCurrency(),
+                        shop.isDisableDisplay(),
+                        shop.getTaxAccountActual(),
+                        plugin.getInventoryWrapperManager().mklink(shop.getInventory()),
+                        shop.getInventoryWrapperProvider()
                 )
                 .executeAsync(integer -> {
                     if (integer <= 0) {
