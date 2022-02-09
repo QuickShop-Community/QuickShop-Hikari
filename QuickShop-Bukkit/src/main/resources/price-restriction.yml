@@ -2,7 +2,7 @@ version: 1
 whole-number-only: false  # This option not control by enable option, always enabled
 undefined: # This option not control by enable option, always enabled
   min: 0.01 # Can be zero if you want player create a free shop
-  max: 2147483647 # Actually this can be up to 1.7976931348623157E308
+  max: -1 # Actually this can be up to 1.7976931348623157E308
 enable: false
 rules: # Rules set
   example: # Rules name, used for identifier and permission node (quickshop.price.restriction.bypass.<name>)
