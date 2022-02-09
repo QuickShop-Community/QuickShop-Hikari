@@ -21,8 +21,8 @@ package org.maxgamer.quickshop.util.logging.container;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.bukkit.Location;
 import org.maxgamer.quickshop.api.shop.ShopInfoStorage;
+import org.maxgamer.quickshop.util.serialize.BlockPos;
 
 import java.util.UUID;
 
@@ -32,5 +32,5 @@ public class ShopCreationLog {
     private static int v = 1;
     private UUID creator;
     private ShopInfoStorage shop;
-    private Location location;
+    private BlockPos location;
 }
