@@ -22,7 +22,7 @@ package org.maxgamer.quickshop.api.shop;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import org.bukkit.Location;
+import org.maxgamer.quickshop.util.serialize.BlockPos;
 
 import java.util.UUID;
 
@@ -34,7 +34,7 @@ import java.util.UUID;
 @Builder
 public class ShopInfoStorage {
     private final String world;
-    private final Location position;
+    private final BlockPos position;
     private final String moderator;
     private final double price;
     private final String item;
