@@ -422,7 +422,7 @@ public class MsgUtil {
     // TODO: No hardcode
 
     @NotNull
-    private static Component addLeftLine(@NotNull CommandSender sender, @NotNull Component component) {
+    public static Component addLeftLine(@NotNull CommandSender sender, @NotNull Component component) {
         return plugin.text().of(sender, "tableformat.left_begin").forLocale().append(component);
     }
 
