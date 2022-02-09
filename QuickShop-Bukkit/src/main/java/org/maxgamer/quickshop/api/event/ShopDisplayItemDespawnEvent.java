@@ -81,7 +81,7 @@ public class ShopDisplayItemDespawnEvent extends AbstractQSEvent implements QSCa
     }
 
     @Override
-    public @Nullable Component getReason() {
+    public @Nullable Component getCancelReason() {
         return this.cancelReason;
     }
 

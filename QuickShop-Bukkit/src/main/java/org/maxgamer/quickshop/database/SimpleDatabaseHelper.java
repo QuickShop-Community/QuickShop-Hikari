@@ -33,6 +33,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.database.DatabaseHelper;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopModerator;
+import org.maxgamer.quickshop.metric.ShopMetricRecord;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 
@@ -111,6 +112,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                     // Do nothing
                 }, ((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed while trying create the shop table! SQL: " + sqlAction.getSQLContent(), exception)));
     }
+
     /**
      * Creates the database table 'metrics'
      */
@@ -126,9 +128,9 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .addColumn("tax", "DOUBLE(32) NOT NULL")
                 .addColumn("amount", "INTEGER(32) NOT NULL")
                 .addColumn("player", "VARCHAR(255) NOT NULL")
-                .setIndex(IndexType.PRIMARY_KEY,null,"time")
-                .setIndex(IndexType.INDEX,"player_based","time","x","y","z","world","player")
-                .setIndex(IndexType.INDEX,"type_based","time","x","y","z","world","type")
+                .setIndex(IndexType.PRIMARY_KEY, null, "time")
+                .setIndex(IndexType.INDEX, "player_based", "time", "x", "y", "z", "world", "player")
+                .setIndex(IndexType.INDEX, "type_based", "time", "x", "y", "z", "world", "type")
                 .build()
                 .execute(((exception, sqlAction) -> {
                     if (exception != null) {
@@ -136,6 +138,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                     }
                 }));
     }
+
     /**
      * Creates the database table 'messages'
      */
@@ -386,10 +389,26 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     }
 
     @Override
-    public void insertHistoryRecord(Object rec) {
+    public void insertHistoryRecord(@NotNull Object rec) {
         manager.createInsert(plugin.getDbPrefix() + "logs")
                 .setColumnNames("time", "classname", "data")
                 .setParams(System.currentTimeMillis(), rec.getClass().getName(), JsonUtil.getGson().toJson(rec))
+                .executeAsync();
+    }
+    @Override
+    public void insertMetricRecord(@NotNull ShopMetricRecord record) {
+        manager.createInsert(plugin.getDbPrefix() + "metrics")
+                .setColumnNames("time", "x", "y", "z", "world", "type", "total", "tax", "amount", "player")
+                .setParams(record.getTime(),
+                        record.getX(),
+                        record.getY(),
+                        record.getZ(),
+                        record.getWorld(),
+                        record.getType().name(),
+                        record.getTotal(),
+                        record.getTax(),
+                        record.getAmount(),
+                        record.getPlayer().toString())
                 .executeAsync();
     }
 

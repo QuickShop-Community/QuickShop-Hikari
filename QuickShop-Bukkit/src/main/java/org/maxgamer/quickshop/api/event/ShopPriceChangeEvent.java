@@ -64,7 +64,7 @@ public class ShopPriceChangeEvent extends AbstractQSEvent implements QSCancellab
     }
 
     @Override
-    public @Nullable Component getReason() {
+    public @Nullable Component getCancelReason() {
         return this.cancelReason;
     }
 

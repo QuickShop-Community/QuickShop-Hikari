@@ -22,5 +22,5 @@ public interface QSCancellable extends Cancellable {
     void setCancelled(boolean cancel, @Nullable Component reason);
 
     @Nullable
-    Component getReason();
+    Component getCancelReason();
 }

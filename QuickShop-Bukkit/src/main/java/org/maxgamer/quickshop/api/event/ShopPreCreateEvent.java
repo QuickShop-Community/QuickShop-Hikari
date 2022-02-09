@@ -64,7 +64,7 @@ public class ShopPreCreateEvent extends AbstractQSEvent implements QSCancellable
     }
 
     @Override
-    public @Nullable Component getReason() {
+    public @Nullable Component getCancelReason() {
         return this.cancelReason;
     }
 

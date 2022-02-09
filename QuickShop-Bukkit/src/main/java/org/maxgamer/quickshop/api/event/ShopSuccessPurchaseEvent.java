@@ -111,7 +111,7 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements QSCance
     }
 
     @Override
-    public @Nullable Component getReason() {
+    public @Nullable Component getCancelReason() {
         return this.cancelReason;
     }
 
