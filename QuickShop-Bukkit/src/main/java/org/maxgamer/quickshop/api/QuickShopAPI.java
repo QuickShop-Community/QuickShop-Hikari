@@ -24,6 +24,7 @@ import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.api.database.DatabaseHelper;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.shop.ItemMatcher;
+import org.maxgamer.quickshop.api.shop.ShopControlPanelManager;
 import org.maxgamer.quickshop.api.shop.ShopManager;
 import org.maxgamer.quickshop.util.GameVersion;
 
@@ -117,5 +118,11 @@ public interface QuickShopAPI {
      * @return Game version
      */
     GameVersion getGameVersion();
+
+    /**
+     * Getting the control panel manager
+     * @return Shop control panel manager
+     */
+    ShopControlPanelManager getShopControlPanelManager();
 
 }

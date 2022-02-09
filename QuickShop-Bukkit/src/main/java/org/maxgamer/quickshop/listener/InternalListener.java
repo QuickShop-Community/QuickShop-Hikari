@@ -31,6 +31,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.*;
+import org.maxgamer.quickshop.util.serialize.BlockPos;
 
 import java.util.Objects;
 
@@ -69,7 +70,7 @@ public class InternalListener extends AbstractQSListener {
         }
         if (loggingAction) {
             //Player creator = plugin.getServer().getPlayer(event.getCreator());
-            plugin.logEvent(new ShopCreationLog(event.getCreator(), event.getShop().saveToInfoStorage(), event.getShop().getLocation()));
+            plugin.logEvent(new ShopCreationLog(event.getCreator(), event.getShop().saveToInfoStorage(), new BlockPos(event.getShop().getLocation())));
 
         }
     }
