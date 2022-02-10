@@ -24,7 +24,6 @@ import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.Hopper;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -32,9 +31,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockExplodeEvent;
-import org.bukkit.event.block.BlockFromToEvent;
-import org.bukkit.event.block.BlockRedstoneEvent;
-import org.bukkit.event.block.BlockSpreadEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.WorldLoadEvent;
@@ -57,8 +54,6 @@ import java.util.logging.Level;
 
 public class ShopProtectionListener extends AbstractProtectionListener {
 
-    private boolean useEnhanceProtection;
-
     private boolean sendProtectionAlert;
 
     public ShopProtectionListener(@NotNull QuickShop plugin, @Nullable Cache cache) {
@@ -68,7 +63,6 @@ public class ShopProtectionListener extends AbstractProtectionListener {
 
     private void init() {
         this.sendProtectionAlert = plugin.getConfig().getBoolean("send-shop-protection-alert", false);
-        useEnhanceProtection = plugin.getConfig().getBoolean("shop.enchance-shop-protect");
         scanAndFixPaperListener();
     }
 
@@ -169,60 +163,6 @@ public class ShopProtectionListener extends AbstractProtectionListener {
         return getShopNature(b.getLocation(), false);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockFromTo(BlockFromToEvent e) {
-        if (!useEnhanceProtection) {
-            return;
-        }
-
-        final Shop shop = getShopNature(e.getToBlock().getLocation(), true);
-
-        if (shop == null) {
-            return;
-        }
-
-        e.setCancelled(true);
-    }
-
-    // Protect Redstone active shop
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockRedstoneChange(BlockRedstoneEvent event) {
-        if (!useEnhanceProtection) {
-            return;
-        }
-
-        final Shop shop = getShopRedstone(event.getBlock().getLocation(), true);
-
-        if (shop == null) {
-            return;
-        }
-
-        event.setNewCurrent(event.getOldCurrent());
-        // plugin.getLogger().warning("[Exploit Alert] a Redstone tried to active of " + shop);
-        // Util.debugLog(ChatColor.RED + "[QuickShop][Exploit alert] Redstone was activated on the
-        // following shop " + shop);
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockSpread(BlockSpreadEvent e) {
-        if (!useEnhanceProtection) {
-            return;
-        }
-
-        final Block newBlock = e.getNewState().getBlock();
-        final Shop thisBlockShop = getShopNature(newBlock.getLocation(), true);
-
-        if (thisBlockShop == null) {
-            return;
-        }
-        final Shop underBlockShop =
-                getShopNature(newBlock.getRelative(BlockFace.DOWN).getLocation(), true);
-        if (underBlockShop == null) {
-            return;
-        }
-        e.setCancelled(true);
-    }
-
     /*
      * Handles shops breaking through explosions
      */
@@ -246,14 +186,13 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     }
 
     //
-//    private final NamespacedKey hopperIndexKey = new NamespacedKey(plugin,"qs_hopper_placer");
-//    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-//    public void onPlaceHopper(BlockPlaceEvent e) {
-//        if(e.getBlockPlaced().getState() instanceof Hopper){
-//            Hopper hopper = (Hopper) e.getBlockPlaced().getState();
-//            hopper.getPersistentDataContainer().set(hopperIndexKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
-//        }
-//    }
+    private final NamespacedKey hopperIndexKey = new NamespacedKey(plugin,"qs_hopper_placer");
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onPlaceHopper(BlockPlaceEvent e) {
+        if(e.getBlockPlaced().getState() instanceof Hopper hopper){
+            hopper.getPersistentDataContainer().set(hopperIndexKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
+        }
+    }
     private final NamespacedKey hopperKey = new NamespacedKey(QuickShop.getInstance(), "hopper-persistent-data");
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
