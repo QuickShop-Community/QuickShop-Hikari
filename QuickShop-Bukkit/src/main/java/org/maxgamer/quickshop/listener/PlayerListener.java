@@ -77,7 +77,6 @@ public class PlayerListener extends AbstractQSListener {
         if (e.getHand() != EquipmentSlot.HAND) {
             return;
         }
-        final Block b = e.getClickedBlock();
 
         // ----Adventure dupe click workaround start----
         if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
