@@ -277,25 +277,37 @@ public class CrowdinOTA implements Distribution {
         }
 
         public long readManifestTimestamp() {
+            long l;
             LOCK.lock();
-            long l = this.metadata.getLong("manifest.timestamp", -1);
-            LOCK.unlock();
+            try {
+                l = this.metadata.getLong("manifest.timestamp", -1);
+            }finally {
+                LOCK.unlock();
+            }
             return l;
         }
 
         public void writeManifestTimestamp(long timestamp) {
             LOCK.lock();
-            this.metadata.set("manifest.timestamp", timestamp);
-            LOCK.unlock();
+            try {
+                this.metadata.set("manifest.timestamp", timestamp);
+            }finally {
+                LOCK.unlock();
+            }
+
             save();
         }
 
         public long readCachedObjectTimestamp(String path) {
             String cacheKey = hash(path);
+            long l;
             LOCK.lock();
-            long l = this.metadata.getLong("objects." + cacheKey + ".time", -1);
-            LOCK.unlock();
-            return l;
+            try {
+                l = this.metadata.getLong("objects." + cacheKey + ".time", -1);
+            }finally {
+                LOCK.unlock();
+            }
+           return l;
         }
 
         public boolean isCachedObjectOutdated(String path, long manifestTimestamp) {
@@ -311,9 +323,13 @@ public class CrowdinOTA implements Distribution {
             String cacheKey = hash(path);
             Files.write(new File(Util.getCacheFolder(), cacheKey).toPath(), data);
             LOCK.lock();
-            this.metadata.set("objects." + cacheKey + ".time", manifestTimestamp);
-            LOCK.unlock();
-            save();
+            try {
+                this.metadata.set("objects." + cacheKey + ".time", manifestTimestamp);
+            }finally {
+                LOCK.unlock();
+                save();
+            }
+
         }
 
 
