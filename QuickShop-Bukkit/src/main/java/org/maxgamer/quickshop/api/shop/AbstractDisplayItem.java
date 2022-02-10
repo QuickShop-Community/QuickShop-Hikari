@@ -182,19 +182,19 @@ public abstract class AbstractDisplayItem implements Reloadable {
         if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
             PLUGIN.getConfig().set("shop.display-type", 0);
             PLUGIN.saveConfiguration();
-            PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because {0} type is unsupported", displayType.name());
+            PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because " + displayType.name() + " type is unsupported");
             return DisplayType.REALITEM;
         }
         if (displayType == DisplayType.UNKNOWN) {
             if (isNotSupportVirtualItem) {
                 PLUGIN.getConfig().set("shop.display-type", 0);
                 PLUGIN.saveConfiguration();
-                PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because {0} type is unsupported",displayType.name());
+                PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because " + displayType.name() + " type is unsupported");
                 return DisplayType.REALITEM;
             } else {
                 PLUGIN.getConfig().set("shop.display-type", 2);
                 PLUGIN.saveConfiguration();
-                PLUGIN.getLogger().log(Level.WARNING, "Falling back to VirtualDisplayItem because {0} type is unsupported",displayType.name());
+                PLUGIN.getLogger().log(Level.WARNING, "Falling back to VirtualDisplayItem because " + displayType.name() + " type is unsupported");
                 return DisplayType.VIRTUALITEM;
             }
         }
@@ -216,7 +216,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
             iMeta = PLUGIN.getServer().getItemFactory().getItemMeta(itemStack.getType());
         }
         if (iMeta == null) {
-            Util.debugLog("ItemStack {0} cannot getting or creating ItemMeta, failed to create guarded ItemStack.",itemStack);
+            Util.debugLog("ItemStack " + itemStack + " cannot getting or creating ItemMeta, failed to create guarded ItemStack.");
             return itemStack;
         }
         if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
