@@ -289,7 +289,7 @@ shop:
   currency-symbol-on-right: false
 
   #Ignore trade messages if the shop is unlimited.
-  ignore-unlimited-shop-messages: false
+  ignore-unlimited-shop-messages: true
 
   #Allow auto fetching of player shops.
   #If you disable this, then the players need to use "/qs fetchmessage" to fetch the shops history messages.
