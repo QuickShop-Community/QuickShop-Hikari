@@ -142,6 +142,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
 
         String shopIdOrigin = plugin.getPlatform().getItemShopId(requireStack);
         if(shopIdOrigin != null){
+            Util.debugLog("ShopId compare -> Origin: "+shopIdOrigin+"  Given: "+plugin.getPlatform().getItemShopId(givenStack));
             String shopIdTester = plugin.getPlatform().getItemShopId(givenStack);
             if(shopIdOrigin.equals(shopIdTester))
                 return true;

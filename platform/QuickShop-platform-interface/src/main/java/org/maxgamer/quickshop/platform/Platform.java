@@ -29,7 +29,10 @@ public interface Platform {
         if(!Bukkit.getPluginManager().isPluginEnabled("NBTAPI"))
             return null;
         NBTItem nbtItem = new NBTItem(stack);
-        return nbtItem.getString("shopId");
+        String shopId = nbtItem.getString("shopId");
+        if(shopId == null || shopId.isEmpty() || shopId.isBlank())
+            return null;
+        return shopId;
     }
 //    @NotNull
 //    Component getLine(@NotNull Sign sign, int line);
