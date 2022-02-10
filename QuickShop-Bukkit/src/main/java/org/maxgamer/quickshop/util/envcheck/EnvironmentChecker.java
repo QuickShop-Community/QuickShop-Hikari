@@ -241,7 +241,7 @@ public final class EnvironmentChecker {
     @EnvCheckEntry(name = "Plugin Manifest Check", priority = 1, stage = {EnvCheckEntry.Stage.ON_LOAD, EnvCheckEntry.Stage.ON_ENABLE})
     public ResultContainer manifestCheck() {
         String mainClass = plugin.getDescription().getMain();
-        if (!mainClass.equals("org.maxgamer.quickshop.QuickShop")) {
+        if (!"org.maxgamer.quickshop.QuickShop".equals(mainClass)) {
             this.reportMaker.manifestModified(plugin.getDescription());
             plugin.getLogger().warning("ALERT: Detected main class has been modified!");
             plugin.getLogger().warning("Should be: org.maxgamer.quickshop.QuickShop");
@@ -287,8 +287,9 @@ public final class EnvironmentChecker {
     public ResultContainer spigotBasedServer() {
         ResultContainer success = new ResultContainer(CheckResult.PASSED, "Server");
         ResultContainer failed = new ResultContainer(CheckResult.STOP_WORKING, "Server must be Spigot based, Don't use CraftBukkit!");
-        if(!PaperLib.isSpigot())
+        if(!PaperLib.isSpigot()) {
             return failed;
+        }
         return success;
     }
 

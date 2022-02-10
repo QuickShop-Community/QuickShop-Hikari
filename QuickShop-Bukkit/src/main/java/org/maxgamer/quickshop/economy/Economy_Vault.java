@@ -143,8 +143,9 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
         }
         try {
             EconomyResponse response = Objects.requireNonNull(this.vault).depositPlayer(trader, amount);
-            if (response.transactionSuccess())
+            if (response.transactionSuccess()) {
                 return true;
+            }
             this.lastError = getProviderName() + ": " + response.type.name() + " - " + response.errorMessage;
             Util.debugLog("Deposit player " + trader.getUniqueId() + " failed, Vault response: " + response.errorMessage);
             return false;
@@ -229,8 +230,9 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
                 return false;
             }
             EconomyResponse response = Objects.requireNonNull(this.vault).withdrawPlayer(trader, amount);
-            if (response.transactionSuccess())
+            if (response.transactionSuccess()) {
                 return true;
+            }
             this.lastError = getProviderName() + ": " + response.type.name() + " - " + response.errorMessage;
             Util.debugLog("Withdraw player " + trader.getUniqueId() + " failed, Vault response: " + response.errorMessage);
             return false;

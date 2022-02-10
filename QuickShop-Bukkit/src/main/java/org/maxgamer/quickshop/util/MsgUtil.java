@@ -433,8 +433,9 @@ public class MsgUtil {
      * @param shop   Target shop
      */
     public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
-        if(!(sender instanceof Player))
+        if(!(sender instanceof Player)) {
             return;
+        }
         if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use") && (shop.getOwner().equals(((Player) sender).getUniqueId()) || !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control"))) {
             return;
         }
@@ -606,10 +607,12 @@ public class MsgUtil {
             return;
         }
         for (Component msg : messages) {
-            if (msg == null)
+            if (msg == null) {
                 return;
-            if (Util.isEmptyComponent(msg))
+            }
+            if (Util.isEmptyComponent(msg)) {
                 return;
+            }
             plugin.getAudience().sender(sender).sendMessage(msg);
         }
     }

@@ -220,8 +220,12 @@ public final class ReflUtil {
 
         @Override
         public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
             final ConstructorParams that = (ConstructorParams) o;
 
@@ -255,7 +259,7 @@ public final class ReflUtil {
             Preconditions.checkNotNull(string, "string cannot be null.");
             Matcher matcher = VERSION_PATTERN.matcher(string);
             if (!matcher.matches()) {
-                if (!Bukkit.getName().equals("Essentials Fake Server")) {
+                if (!"Essentials Fake Server".equals(Bukkit.getName())) {
                     throw new IllegalArgumentException(string + " is not in valid version format. e.g. v1_10_R1");
                 }
                 matcher = VERSION_PATTERN.matcher(V1_12_R1.toString());

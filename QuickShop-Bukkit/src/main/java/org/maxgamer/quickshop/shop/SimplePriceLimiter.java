@@ -131,7 +131,9 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
     @Nullable
     @Contract("_,null -> null")
     private RuleSet readRule(@NotNull String ruleName, @Nullable ConfigurationSection section) {
-        if (section == null) return null;
+        if (section == null) {
+            return null;
+        }
         String bypassPermission = "quickshop.price.restriction.bypass." + ruleName;
         List<Material> materials = new ArrayList<>();
         double min = section.getDouble("min", 0d);
@@ -180,9 +182,15 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
          * @return true if the rule is allowed to apply
          */
         public boolean isApply(@NotNull CommandSender sender, @NotNull Material item, @Nullable String currency) {
-            if (sender.hasPermission(this.bypassPermission)) return false;
-            if (!this.materials.contains(item)) return false;
-            if (currency == null) return true;
+            if (sender.hasPermission(this.bypassPermission)) {
+                return false;
+            }
+            if (!this.materials.contains(item)) {
+                return false;
+            }
+            if (currency == null) {
+                return true;
+            }
             return this.currency.stream().anyMatch(pattern -> pattern.matcher(currency).matches());
         }
 
@@ -194,7 +202,9 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
          */
         public boolean isAllowed(double price) {
             if (this.max != -1) {
-                if (price > this.max) return false;
+                if (price > this.max) {
+                    return false;
+                }
             }
             if (this.min != -1) {
                 return !(price < this.min);

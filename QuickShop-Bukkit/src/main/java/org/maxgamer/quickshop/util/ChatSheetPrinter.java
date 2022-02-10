@@ -40,8 +40,9 @@ public class ChatSheetPrinter {
     private final CommandSender p;
 
     public void printCenterLine(@NotNull Component text) {
-        if (Util.isEmptyComponent(text))
+        if (Util.isEmptyComponent(text)) {
             return;
+        }
 
         MsgUtil.sendDirectMessage(p,
                 QuickShop.getInstance().text().of(p, "tableformat.left_half_line").forLocale()
@@ -71,8 +72,9 @@ public class ChatSheetPrinter {
     }
 
     public void printLine(@NotNull Component component) {
-        if (Util.isEmptyComponent(component))
+        if (Util.isEmptyComponent(component)) {
             return;
+        }
         MsgUtil.sendDirectMessage(p, QuickShop.getInstance().text().of(p, "tableformat.left_begin").forLocale()
                 .append(component));
     }

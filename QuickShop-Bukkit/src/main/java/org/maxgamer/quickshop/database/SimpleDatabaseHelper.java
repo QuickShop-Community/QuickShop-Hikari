@@ -280,8 +280,9 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     public void createShop(@NotNull Shop shop, @Nullable Runnable onSuccess, @Nullable Consumer<SQLException> onFailed) {
         Location location = shop.getLocation();
         String worldName = null;
-        if (shop.getLocation().getWorld() != null)
+        if (shop.getLocation().getWorld() != null) {
             worldName = shop.getLocation().getWorld().getName();
+        }
         manager.createReplace(plugin.getDbPrefix() + "shops")
                 .setColumnNames("owner", "price", "itemConfig",
                         "x", "y", "z", "world", "unlimited", "type", "extra",

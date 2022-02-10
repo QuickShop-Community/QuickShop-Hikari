@@ -52,8 +52,9 @@ public class QuickShopPAPI extends PlaceholderExpansion {
     @Override
     public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
         String[] args = params.split("_");
-        if (args.length < 1)
+        if (args.length < 1) {
             return null;
+        }
         switch (args[0]) {
             case "server-total" -> {
                 return String.valueOf(plugin.getShopManager().getAllShops().size());

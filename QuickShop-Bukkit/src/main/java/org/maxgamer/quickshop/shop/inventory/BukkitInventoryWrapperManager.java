@@ -39,8 +39,9 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
         if (wrapper.getLocation() != null) {
             Block block = wrapper.getLocation().getBlock();
             BlockState state = PaperLib.getBlockState(wrapper.getLocation().getBlock(), false).getState();
-            if (!(state instanceof Container))
+            if (!(state instanceof Container)) {
                 throw new IllegalArgumentException("Target reporting it self not a valid Container.");
+            }
             String holder = JsonUtil.standard().toJson(new BlockHolder(block.getWorld().getName(), block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ()));
             return JsonUtil.standard().toJson(new CommonHolder(HolderType.BLOCK, holder));
         }
@@ -56,11 +57,13 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
                 case BLOCK -> {
                     BlockHolder blockHolder = JsonUtil.standard().fromJson(commonHolder.getContent(), BlockHolder.class);
                     World world = Bukkit.getWorld(blockHolder.getWorld());
-                    if (world == null)
+                    if (world == null) {
                         throw new IllegalArgumentException("Invalid symbol link: invalid world name.");
+                    }
                     BlockState block = PaperLib.getBlockState(world.getBlockAt(blockHolder.getX(), blockHolder.getY(), blockHolder.getZ()), false).getState();
-                    if (!(block instanceof Container))
+                    if (!(block instanceof Container)) {
                         throw new IllegalArgumentException("Invalid symbol link: target block not a Container");
+                    }
                     return new BukkitInventoryWrapper(((Container) block).getInventory());
                 }
                 default -> throw new IllegalArgumentException("Invalid symbol link: invalid holder type.");
@@ -79,8 +82,9 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
         @NotNull
         public HolderType fromType(@NotNull String str) {
             for (HolderType value : values()) {
-                if (value.typeString.equals(str))
+                if (value.typeString.equals(str)) {
                     return value;
+                }
             }
             return UNKNOWN;
         }

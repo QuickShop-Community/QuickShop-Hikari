@@ -155,7 +155,9 @@ public class ApolloConverter {
     @SuppressWarnings("SqlResolve")
     private void migrateSQLite(String prefix) {
         File sqliteFile = new File(plugin.getDataFolder(), "shops.db");
-        if (!sqliteFile.exists()) return; // Skip!
+        if (!sqliteFile.exists()) {
+            return; // Skip!
+        }
         logger.info("Detecting SQLite JDBC driver...");
         try {
             Class.forName("org.sqlite.JDBC");
@@ -330,16 +332,20 @@ public class ApolloConverter {
         config.set("undefined.min", globalMin);
         config.set("undefined.max", globalMax);
         config.set("rules.example", null);
-        if (oldRules.isEmpty())
+        if (oldRules.isEmpty()) {
             return;
+        }
         config.set("enable", true);
         for (String rule : oldRules) {
             String[] split = rule.split(" ");
-            if (split.length != 3)
+            if (split.length != 3) {
                 continue;
+            }
             try {
                 Material item = Material.matchMaterial(split[0]);
-                if (item == null) continue;
+                if (item == null) {
+                    continue;
+                }
                 double min = Double.parseDouble(split[1]);
                 double max = Double.parseDouble(split[2]);
                 config.set("rules.auto-upgrade-" + item.name() + ".materials", ImmutableList.of(item.name()));

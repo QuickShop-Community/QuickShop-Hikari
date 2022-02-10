@@ -24,8 +24,9 @@ public class SpigotPlatform implements Platform {
 
     public SpigotPlatform() {
         this.provider = new ReflServerStateProvider();
-        if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI"))
+        if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
             nbtapi = NBTAPI.getInstance();
+        }
     }
 
     @Override

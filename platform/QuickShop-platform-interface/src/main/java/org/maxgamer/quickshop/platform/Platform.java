@@ -26,12 +26,14 @@ public interface Platform {
     String getMinecraftVersion();
     @Nullable
     default String getItemShopId(@NotNull ItemStack stack) {
-        if(!Bukkit.getPluginManager().isPluginEnabled("NBTAPI"))
+        if(!Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
             return null;
+        }
         NBTItem nbtItem = new NBTItem(stack);
         String shopId = nbtItem.getString("shopId");
-        if(shopId == null || shopId.isEmpty() || shopId.isBlank())
+        if(shopId == null || shopId.isEmpty() || shopId.isBlank()) {
             return null;
+        }
         return shopId;
     }
 //    @NotNull

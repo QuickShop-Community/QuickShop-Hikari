@@ -25,8 +25,9 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager {
     private final Map<ShopControlPanel, Integer> registry = new LinkedHashMap<>();
 
     private void resort() {
-        if (!LOCK.tryLock())
+        if (!LOCK.tryLock()) {
             throw new IllegalStateException("Cannot resort while another thread is sorting");
+        }
         LOCK.lock();
         List<Map.Entry<ShopControlPanel, Integer>> list = new ArrayList<>(registry.entrySet());
         list.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));

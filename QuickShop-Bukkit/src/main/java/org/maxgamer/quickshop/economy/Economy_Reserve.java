@@ -212,8 +212,9 @@ public class Economy_Reserve extends AbstractEconomy {
      */
     @Override
     public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
-        if (!isValid())
+        if (!isValid()) {
             return false;
+        }
         return reserve.hasCurrency(currency, world.getName());
     }
 

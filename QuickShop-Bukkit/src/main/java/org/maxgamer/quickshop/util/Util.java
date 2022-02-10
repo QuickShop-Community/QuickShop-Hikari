@@ -781,10 +781,12 @@ public class Util {
         }
     }
     public static boolean isEmptyComponent(@Nullable Component component){
-        if(component == null)
+        if(component == null) {
             return true;
-        if(component.equals(Component.empty()))
+        }
+        if(component.equals(Component.empty())) {
             return true;
+        }
         return component.equals(Component.text(""));
     }
 

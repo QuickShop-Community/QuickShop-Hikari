@@ -93,8 +93,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
         File moduleFolder = new File(new File(plugin.getDataFolder(), "overrides"), module);
         moduleFolder.mkdirs();
         File fileFolder = new File(moduleFolder, file.getName());
-        if (fileFolder.isDirectory())
+        if (fileFolder.isDirectory()) {
             Files.deleteIfExists(fileFolder.toPath()); //TODO Workaround for v5 beta stage a bug, delete it in future
+        }
         return moduleFolder;
     }
 

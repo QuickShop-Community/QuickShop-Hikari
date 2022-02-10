@@ -1262,8 +1262,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         Files.deleteIfExists(new File(getDataFolder(), "example-configuration.yml").toPath());
 
         try {
-            if (new File(getDataFolder(), "messages.json").exists())
+            if (new File(getDataFolder(), "messages.json").exists()) {
                 Files.move(new File(getDataFolder(), "messages.json").toPath(), new File(getDataFolder(), "messages.json.outdated").toPath());
+            }
             if (new File(getDataFolder(), "messages.json.outdated").exists()) {
                 Files.write(new File(getDataFolder(), "about-messages.json.outdated.txt").toPath(), Collections.singletonList("Please read v4 migrate guide there, after migration you can delete messages.json.outdated and this file: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Migrate:-v4-to-v5"));
             }

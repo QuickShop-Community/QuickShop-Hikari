@@ -48,7 +48,6 @@ public abstract class AbstractProtectionListener extends AbstractQSListener {
      * @param includeAttached whether to include the attached shop
      * @return The shop object
      */
-    @SuppressWarnings("SpellCheckingInspection")
     @Nullable
     public Shop getShopRedstone(@NotNull Location location, boolean includeAttached) {
         if (cache != null) {

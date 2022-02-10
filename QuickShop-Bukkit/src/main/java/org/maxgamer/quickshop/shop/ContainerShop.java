@@ -988,8 +988,9 @@ public class ContainerShop implements Shop {
      */
     @Override
     public int getShopStackingAmount() {
-        if (isStackingShop())
+        if (isStackingShop()) {
             return item.getAmount();
+        }
         return 1;
     }
 

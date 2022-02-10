@@ -86,7 +86,9 @@ public class FabledIntegration extends AbstractQSIntegratedPlugin {
     @Override
     public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
         Island island = SkyBlockAPI.getIslandManager().getIslandAtLocation(location);
-        if (island == null) return whitelist;
+        if (island == null) {
+            return whitelist;
+        }
         return this.islandRoleList.contains(island.getRole(player));
     }
 
@@ -115,7 +117,9 @@ public class FabledIntegration extends AbstractQSIntegratedPlugin {
     @Override
     public boolean canDeleteShopHere(@NotNull Player player, @NotNull Location location) {
         Island island = SkyBlockAPI.getIslandManager().getIslandAtLocation(location);
-        if (island == null) return whitelist;
+        if (island == null) {
+            return whitelist;
+        }
         return this.islandRoleList.contains(island.getRole(player));
     }
 

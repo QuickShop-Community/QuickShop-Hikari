@@ -83,8 +83,9 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
         String shopIdOrigin = plugin.getPlatform().getItemShopId(original);
         if(shopIdOrigin != null){
             String shopIdTester = plugin.getPlatform().getItemShopId(tester);
-            if(shopIdOrigin.equals(shopIdTester))
+            if(shopIdOrigin.equals(shopIdTester)) {
                 return true;
+            }
         }
         return tester.isSimilar(original);
     }

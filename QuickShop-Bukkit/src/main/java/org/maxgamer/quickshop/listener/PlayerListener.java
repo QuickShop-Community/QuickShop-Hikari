@@ -80,8 +80,9 @@ public class PlayerListener extends AbstractQSListener {
 
         // ----Adventure dupe click workaround start----
         if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-            if(cooldownMap.getIfPresent(e.getPlayer().getUniqueId())!= null)
-             return;
+            if(cooldownMap.getIfPresent(e.getPlayer().getUniqueId())!= null) {
+                return;
+            }
             cooldownMap.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
         }
         // ----Adventure dupe click workaround end----
@@ -148,7 +149,9 @@ public class PlayerListener extends AbstractQSListener {
                 }
             case TRADE_DIRECT:
                 if (shopSearched.getKey() == null) // No shop here
+                {
                     return;
+                }
                 if (shopSearched.getKey().isBuying()) {
                     if (sellToShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
                         e.setCancelled(true);
@@ -192,8 +195,9 @@ public class PlayerListener extends AbstractQSListener {
             Util.debugLog("Shop null");
             return false;
         }
-        if (!shop.isBuying())
+        if (!shop.isBuying()) {
             return false;
+        }
         if (shop.getRemainingSpace() == 0) {
             plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
             return true;
@@ -332,8 +336,9 @@ public class PlayerListener extends AbstractQSListener {
             Util.debugLog("Shop null");
             return false;
         }
-        if (!shop.isSelling())
+        if (!shop.isSelling()) {
             return false;
+        }
         if (shop.getRemainingStock() == 0) {
             plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
             return true;
@@ -367,15 +372,22 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     public boolean createShop(@NotNull Player player, @Nullable Block block) {
-        if (block == null) return false; // This shouldn't happen because we have checked action type.
-        if (player.getGameMode() != GameMode.SURVIVAL) return false; // Only survival :)
-        if (player.getInventory().getItemInMainHand().getType().isAir()) return false; // Air cannot be used for trade
+        if (block == null) {
+            return false; // This shouldn't happen because we have checked action type.
+        }
+        if (player.getGameMode() != GameMode.SURVIVAL) {
+            return false; // Only survival :)
+        }
+        if (player.getInventory().getItemInMainHand().getType().isAir()) {
+            return false; // Air cannot be used for trade
+        }
         ItemStack stack = player.getInventory().getItemInMainHand();
         ShopAction action = null;
-        if (player.hasPermission("quickshop.create.sell"))
+        if (player.hasPermission("quickshop.create.sell")) {
             action = ShopAction.CREATE_SELL;
-        else if (player.hasPermission("quickshop.create.buy"))
+        } else if (player.hasPermission("quickshop.create.buy")) {
             action = ShopAction.CREATE_BUY;
+        }
         if (action == null) {
             // No permission
             return false;
@@ -463,8 +475,9 @@ public class PlayerListener extends AbstractQSListener {
         }
         // ----Adventure dupe click workaround start----
         if (event.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-            if(cooldownMap.getIfPresent(event.getPlayer().getUniqueId())!= null)
+            if(cooldownMap.getIfPresent(event.getPlayer().getUniqueId())!= null) {
                 return;
+            }
             cooldownMap.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
         }
         // ----Adventure dupe click workaround end----
