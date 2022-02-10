@@ -105,7 +105,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     public static class BlockHolder {
         private String world;
         private int x;
-        int y;
-        int z;
+        private int y;
+        private int z;
     }
 }
