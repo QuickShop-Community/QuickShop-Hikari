@@ -1171,6 +1171,7 @@ public class ContainerShop implements Shop {
         }
         int space = Util.countSpace(this.getInventory(), this);
         new ShopInventoryCalculateEvent(this, space, -1).callEvent();
+        Util.debugLog("Space count is: "+space);
         return space;
     }
 

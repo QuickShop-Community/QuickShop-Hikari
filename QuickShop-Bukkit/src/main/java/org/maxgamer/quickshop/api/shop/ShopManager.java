@@ -227,7 +227,7 @@ public interface ShopManager {
      */
     @NotNull List<Shop> getShopsInWorld(@NotNull World world);
 
-    void actionBuy(
+    void actionBuying(
             @NotNull UUID buyer,
             @NotNull InventoryWrapper buyerInventory,
             @NotNull AbstractEconomy eco,
@@ -258,7 +258,7 @@ public interface ShopManager {
 
     void actionCreate(@NotNull Player p, Info info, @NotNull String message);
 
-    void actionSell(
+    void actionSelling(
             @NotNull UUID seller,
             @NotNull InventoryWrapper sellerInventory,
             @NotNull AbstractEconomy eco,

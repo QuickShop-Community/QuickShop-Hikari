@@ -46,6 +46,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.economy.AbstractEconomy;
+import org.maxgamer.quickshop.api.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.api.shop.Info;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.api.shop.ShopAction;
@@ -130,7 +131,7 @@ public class PlayerListener extends AbstractQSListener {
                     }
                 } else {
                     if (shopSearched.getKey().isBuying()) {
-                        if (buyShop(e.getPlayer(), shopSearched.getKey(), false, false)) {
+                        if (sellToShop(e.getPlayer(), shopSearched.getKey(), false, false)) {
                             e.setCancelled(true);
                             e.setUseInteractedBlock(Event.Result.DENY);
                             e.setUseItemInHand(Event.Result.DENY);
@@ -138,7 +139,7 @@ public class PlayerListener extends AbstractQSListener {
                         break;
                     }
                     if (shopSearched.getKey().isSelling()) {
-                        if (sellShop(e.getPlayer(), shopSearched.getKey(), false, false)) {
+                        if (buyFromShop(e.getPlayer(), shopSearched.getKey(), false, false)) {
                             e.setCancelled(true);
                             e.setUseInteractedBlock(Event.Result.DENY);
                             e.setUseItemInHand(Event.Result.DENY);
@@ -150,7 +151,7 @@ public class PlayerListener extends AbstractQSListener {
                 if (shopSearched.getKey() == null) // No shop here
                     return;
                 if (shopSearched.getKey().isBuying()) {
-                    if (buyShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
+                    if (sellToShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
@@ -158,7 +159,7 @@ public class PlayerListener extends AbstractQSListener {
                     break;
                 }
                 if (shopSearched.getKey().isSelling()) {
-                    if (sellShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
+                    if (sellToShop(e.getPlayer(), shopSearched.getKey(), true, false)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
@@ -167,7 +168,7 @@ public class PlayerListener extends AbstractQSListener {
                 }
             case TRADE_DIRECT_ALL:
                 if (shopSearched.getKey().isSelling()) {
-                    if (sellShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
+                    if (buyFromShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
@@ -175,7 +176,7 @@ public class PlayerListener extends AbstractQSListener {
                     break;
                 }
                 if (shopSearched.getKey().isBuying()) {
-                    if (buyShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
+                    if (buyFromShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
@@ -187,46 +188,37 @@ public class PlayerListener extends AbstractQSListener {
         }
     }
 
-    public boolean sellShop(@NotNull Player player, @Nullable Shop shop, boolean direct, boolean all) {
+    public boolean sellToShop(@NotNull Player p, @Nullable Shop shop, boolean direct, boolean all) {
         if (shop == null) {
             Util.debugLog("Shop null");
             return false;
         }
-        if (!shop.isSelling())
+        if (!shop.isBuying())
             return false;
-        shop.onClick();
-        this.playClickSound(player);
-        plugin.getShopManager().sendShopInfo(player, shop);
-        shop.setSignText();
+        if (shop.getRemainingSpace() == 0) {
+            plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
+            return true;
+        }
         final AbstractEconomy eco = plugin.getEconomy();
         final double price = shop.getPrice();
-        final Inventory playerInventory = player.getInventory();
+        final Inventory playerInventory = p.getInventory();
         final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
-        if (shop.getRemainingStock() == 0) {
-            plugin.text().of(player, "purchase-out-of-stock", shop.ownerName()).send();
-            return false;
-        }
+        final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
+        int items = getPlayerCanSell(shop, ownerBalance, price, new BukkitInventoryWrapper(playerInventory));
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
         Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
-        actions.put(player.getUniqueId(), info);
-        final double ownerBalance = eco.getBalance(shop.getOwner(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
-        //int items = getPlayerCanSell(shop, ownerBalance, price, playerInventory);
-        int items = sellingShopAllCalc(eco, shop, player);
-        if (!direct) {
+        actions.put(p.getUniqueId(), info);
+        if(!direct) {
             if (shop.isStackingShop()) {
-                plugin.text().of(player, "how-many-sell-stack", Component.text(shop.getItem().getAmount()), Component.text(items), Component.text(tradeAllWord)).send();
+                plugin.text().of(p, "how-many-sell-stack", Component.text(shop.getItem().getAmount()), Component.text(items), Component.text(tradeAllWord)).send();
             } else {
-                plugin.text().of(player, "how-many-sell", Component.text(items), Component.text(tradeAllWord)).send();
+                plugin.text().of(p, "how-many-sell", Component.text(items), Component.text(tradeAllWord)).send();
             }
-        } else {
-            if (shop.getRemainingSpace() == 0) {
-                plugin.text().of(player, "purchase-out-of-space", shop.ownerName()).send();
-                return true;
-            }
-            if (all) {
-                plugin.getShopManager().actionSell(player.getUniqueId(), new BukkitInventoryWrapper(player.getInventory()), eco, info, shop, items);
-            } else {
-                plugin.getShopManager().actionSell(player.getUniqueId(), new BukkitInventoryWrapper(player.getInventory()), eco, info, shop, shop.getShopStackingAmount());
+        }else{
+            if(all){
+                plugin.getShopManager().actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, shop.getShopStackingAmount());
+            }else{
+                plugin.getShopManager().actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, buyingShopAllCalc(eco, shop,p));
             }
         }
         return true;
@@ -333,42 +325,37 @@ public class PlayerListener extends AbstractQSListener {
         return amount;
     }
 
-    public boolean buyShop(@NotNull Player player, @Nullable Shop shop, boolean direct, boolean all) {
+    public boolean buyFromShop(@NotNull Player p, @Nullable Shop shop, boolean direct, boolean all) {
         if (shop == null) {
             Util.debugLog("Shop null");
             return false;
         }
-        if (!shop.isBuying())
+        if (!shop.isSelling())
             return false;
-        shop.onClick();
-        this.playClickSound(player);
-        plugin.getShopManager().sendShopInfo(player, shop);
-        shop.setSignText();
-        final AbstractEconomy eco = plugin.getEconomy();
-        final double price = shop.getPrice();
-        final Inventory playerInventory = player.getInventory();
-        final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
         if (shop.getRemainingStock() == 0) {
-            plugin.text().of(player, "purchase-out-of-space", shop.ownerName()).send();
+            plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
             return true;
         }
+        final AbstractEconomy eco = plugin.getEconomy();
+        final double price = shop.getPrice();
+        final Inventory playerInventory = p.getInventory();
+        final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
         Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BUY, null, null, shop, false);
-        actions.put(player.getUniqueId(), info);
-        final double traderBalance = eco.getBalance(player.getUniqueId(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency());
-        //int itemAmount = getPlayerCanBuy(shop, traderBalance, price, playerInventory);
-        int itemAmount = buyingShopAllCalc(eco, shop, player);
-        if (!direct) {
+        actions.put(p.getUniqueId(), info);
+        final double traderBalance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
+        int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
+        if(!direct) {
             if (shop.isStackingShop()) {
-                plugin.text().of(player, "how-many-buy-stack",Component.text(shop.getItem().getAmount()), Component.text(itemAmount), Component.text(tradeAllWord)).send();
+                plugin.text().of(p, "how-many-buy-stack", Component.text(shop.getItem().getAmount()), Component.text(itemAmount), Component.text(tradeAllWord)).send();
             } else {
-                plugin.text().of(player, "how-many-buy", Component.text(itemAmount), Component.text(tradeAllWord)).send();
+                plugin.text().of(p, "how-many-buy", Component.text(itemAmount), Component.text(tradeAllWord)).send();
             }
-        } else {
-            if (all) {
-                plugin.getShopManager().actionBuy(player.getUniqueId(), new BukkitInventoryWrapper(player.getInventory()), eco, info, shop, itemAmount);
-            } else {
-                plugin.getShopManager().actionBuy(player.getUniqueId(), new BukkitInventoryWrapper(player.getInventory()), eco, info, shop, shop.getShopStackingAmount());
+        }else{
+            if(all){
+                plugin.getShopManager().actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, sellingShopAllCalc(eco, shop,p));
+            }else{
+                plugin.getShopManager().actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, shop.getShopStackingAmount());
             }
         }
         return true;
@@ -500,45 +487,45 @@ public class PlayerListener extends AbstractQSListener {
         }
     }
 
-//    private int getPlayerCanBuy(Shop shop, double traderBalance, double price, Inventory playerInventory) {
-//        boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
-//        if (shop.isFreeShop()) { // Free shop
-//            return isContainerCountingNeeded ? Util.countSpace(new BukkitInventoryWrapper(playerInventory), shop) : Math.min(shop.getRemainingStock(), Util.countSpace(new BukkitInventoryWrapper(playerInventory), shop));
-//        }
-//        int itemAmount = Math.min(Util.countSpace(new BukkitInventoryWrapper(playerInventory), shop), (int) Math.floor(traderBalance / price));
-//        if (!isContainerCountingNeeded) {
-//            itemAmount = Math.min(itemAmount, shop.getRemainingStock());
-//        }
-//        if (itemAmount < 0) {
-//            itemAmount = 0;
-//        }
-//        return itemAmount;
-//    }
-//
-//    private int getPlayerCanSell(Shop shop, double ownerBalance, double price, Inventory playerInventory) {
-//        boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
-//        if (shop.isFreeShop()) {
-//            return isContainerCountingNeeded ? Util.countItems(new BukkitInventoryWrapper(playerInventory), shop) : Math.min(shop.getRemainingSpace(), Util.countItems(new BukkitInventoryWrapper(playerInventory), shop));
-//        }
-//
-//        int items = Util.countItems(new BukkitInventoryWrapper(playerInventory), shop);
-//        final int ownerCanAfford = (int) (ownerBalance / price);
-//        if (!isContainerCountingNeeded) {
-//            // Amount check player amount and shop empty slot
-//            items = Math.min(items, shop.getRemainingSpace());
-//            // Amount check player selling item total cost and the shop owner's balance
-//            items = Math.min(items, ownerCanAfford);
-//        } else if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
-//            // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
-//            // true,
-//            // the unlimited shop owner should have enough money.
-//            items = Math.min(items, ownerCanAfford);
-//        }
-//        if (items < 0) {
-//            items = 0;
-//        }
-//        return items;
-//    }
+    private int getPlayerCanBuy( @NotNull Shop shop, double traderBalance, double price, @NotNull InventoryWrapper playerInventory) {
+        boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
+        if (shop.isFreeShop()) { // Free shop
+            return isContainerCountingNeeded ? Util.countSpace(playerInventory, shop) : Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop));
+        }
+        int itemAmount = Math.min(Util.countSpace(playerInventory, shop), (int) Math.floor(traderBalance / price));
+        if (!isContainerCountingNeeded) {
+            itemAmount = Math.min(itemAmount, shop.getRemainingStock());
+        }
+        if (itemAmount < 0) {
+            itemAmount = 0;
+        }
+        return itemAmount;
+    }
+
+    private int getPlayerCanSell( @NotNull Shop shop, double ownerBalance, double price, @NotNull  InventoryWrapper playerInventory) {
+        boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
+        if (shop.isFreeShop()) {
+            return isContainerCountingNeeded ? Util.countItems(playerInventory, shop) : Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop));
+        }
+
+        int items = Util.countItems(playerInventory, shop);
+        final int ownerCanAfford = (int) (ownerBalance / price);
+        if (!isContainerCountingNeeded) {
+            // Amount check player amount and shop empty slot
+            items = Math.min(items, shop.getRemainingSpace());
+            // Amount check player selling item total cost and the shop owner's balance
+            items = Math.min(items, ownerCanAfford);
+        } else if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
+            // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
+            // true,
+            // the unlimited shop owner should have enough money.
+            items = Math.min(items, ownerCanAfford);
+        }
+        if (items < 0) {
+            items = 0;
+        }
+        return items;
+    }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {

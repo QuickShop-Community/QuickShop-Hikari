@@ -632,7 +632,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     @Override
-    public void actionBuy(
+    public void actionBuying(
             @NotNull UUID buyer,
             @NotNull InventoryWrapper buyerInventory,
             @NotNull AbstractEconomy eco,
@@ -752,10 +752,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
 
     @Deprecated
-    public void actionBuy(@NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info,
+    public void actionBuying(@NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info,
                           @NotNull Shop shop, int amount) {
         Util.ensureThread(false);
-        actionBuy(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
+        actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
     }
 
     @Override
@@ -1023,15 +1023,15 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     @Deprecated
-    public void actionSell(
+    public void actionSelling(
             @NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info, @NotNull Shop shop,
             int amount) {
         Util.ensureThread(false);
-        actionSell(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
+        actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
     }
 
     @Override
-    public void actionSell(
+    public void actionSelling(
             @NotNull UUID seller,
             @NotNull InventoryWrapper sellerInventory,
             @NotNull AbstractEconomy eco,
@@ -1362,7 +1362,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     return;
                 }
             }
-            actionBuy(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
+            actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
         } else if (shop.isSelling()) {
             if (StringUtils.isNumeric(message)) {
                 amount = Integer.parseInt(message);
@@ -1378,7 +1378,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     return;
                 }
             }
-            actionSell(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
+            actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
         } else {
             plugin.text().of(p, "shop-purchase-cancelled").send();
             plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation());
