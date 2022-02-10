@@ -1263,6 +1263,7 @@ public class ContainerShop implements Shop {
     @Override
     public void claimShopSign(@NotNull Sign sign) {
         sign.getPersistentDataContainer().set(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE, saveToShopSignStorage());
+        sign.update();
     }
 
     /**

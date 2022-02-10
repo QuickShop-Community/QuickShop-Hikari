@@ -555,7 +555,7 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent e) {
-        Util.debugLog("Player " + e.getPlayer().getName() + " using locale " + e.getPlayer().getLocale() + ": " + plugin.text().of(e.getPlayer(), "file-test").forLocale());
+        Util.debugLog("Player " + e.getPlayer().getName() + " using new locale " + e.getPlayer().getLocale() + ": " + LegacyComponentSerializer.legacySection().serialize(plugin.text().of(e.getPlayer(), "file-test").forLocale(e.getPlayer().getLocale())));
         plugin.getDatabaseHelper().setPlayerLocale(e.getPlayer().getUniqueId(), e.getPlayer().getLocale());
         // Notify the player any messages they were sent
         if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {

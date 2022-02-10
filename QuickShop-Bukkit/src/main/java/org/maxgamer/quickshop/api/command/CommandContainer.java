@@ -23,6 +23,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -90,7 +91,7 @@ public class CommandContainer {
         } else if (!Util.isEmptyComponent(this.getDisablePlaceholder())) {
             return this.getDisablePlaceholder();
         } else {
-            return QuickShop.getInstance().text().of(sender, "command.feature-not-enabled").forLocale();
+            return Component.empty().color(NamedTextColor.GRAY).append(QuickShop.getInstance().text().of(sender, "command.feature-not-enabled").forLocale());
         }
     }
 }

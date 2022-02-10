@@ -51,8 +51,8 @@ import java.util.logging.Level;
 
 public class ShopProtectionListener extends AbstractProtectionListener {
 
-    private boolean sendProtectionAlert;
     private boolean hopperProtect;
+    private boolean hopperOwnerExclude;
 
     public ShopProtectionListener(@NotNull QuickShop plugin, @Nullable Cache cache) {
         super(plugin, cache);
@@ -60,8 +60,8 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     }
 
     private void init() {
-        this.sendProtectionAlert = plugin.getConfig().getBoolean("send-shop-protection-alert", false);
         this.hopperProtect = plugin.getConfig().getBoolean("protect.hopper",true);
+        this.hopperOwnerExclude = plugin.getConfig().getBoolean("protect.hopper-owner-exclude",false);
         scanAndFixPaperListener();
     }
 
@@ -188,6 +188,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     public void onPlaceHopper(BlockPlaceEvent e) {
         if(e.getBlockPlaced().getState() instanceof Hopper hopper){
             hopper.getPersistentDataContainer().set(hopperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
+            hopper.update();
         }
     }
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
@@ -205,16 +206,17 @@ public class ShopProtectionListener extends AbstractProtectionListener {
         if (shop == null) {
             return;
         }
+        if(this.hopperOwnerExclude) {
+            if(event.getDestination().getHolder() instanceof Hopper hopper){
+                HopperPersistentData hopperPersistentData = hopper.getPersistentDataContainer().get(hopperKey, HopperPersistentDataType.INSTANCE);
+                if (hopperPersistentData != null) {
+                    if (hopperPersistentData.getPlayer().equals(shop.getOwner())) {
 
-        if (loc.getBlock().getState() instanceof Hopper hopper) {
-            HopperPersistentData hopperPersistentData = hopper.getPersistentDataContainer().get(hopperKey, HopperPersistentDataType.INSTANCE);
-            if (hopperPersistentData != null) {
-                if (hopperPersistentData.getPlayer().equals(shop.getOwner())) {
-                    return;
+                        return;
+                    }
                 }
             }
         }
-
         event.setCancelled(true);
     }
 }

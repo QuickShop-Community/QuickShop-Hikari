@@ -709,6 +709,7 @@ integration:
 protect:
   explode: true
   hopper: true
+  hopper-owner-exclude: false
   entity: true
 
 #This option allows you to set custom item max stacksizes.
