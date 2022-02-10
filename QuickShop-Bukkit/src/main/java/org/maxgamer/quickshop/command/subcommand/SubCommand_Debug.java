@@ -95,7 +95,6 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             plugin.reloadConfiguration();
             plugin.getConfig().set("dev-mode", false);
             plugin.saveConfiguration();
-            plugin.reload();
             plugin.text().of(sender, "command.now-nolonger-debuging").send();
             return;
         }
@@ -103,7 +102,6 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         plugin.reloadConfiguration();
         plugin.getConfig().set("dev-mode", true);
         plugin.saveConfiguration();
-        plugin.reload();
         plugin.text().of(sender, "command.now-debuging").send();
     }
 
