@@ -24,6 +24,7 @@ import org.maxgamer.quickshop.util.Util;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -300,8 +301,8 @@ public class ApolloConverter {
     }
 
     private void convertApolloConfig() {
-        logger.info("Convert -> InteractionController");
-        legacyInteractConfig();
+        // logger.info("Convert -> InteractionController");
+        // legacyInteractConfig();
         logger.info("Convert -> PriceLimiter");
         legacyPriceLimiter();
         logger.info("Convert -> Removing old configs...");
@@ -314,17 +315,16 @@ public class ApolloConverter {
         globalMin = plugin.getConfig().getBoolean("allow-free-shop", false) ? 0.0d : globalMin;
         double globalMax = plugin.getConfig().getDouble("shop.maximum-price", -1d);
         List<String> oldRules = plugin.getConfig().getStringList("shop.price-restriction");
-        File file = new File(plugin.getDataFolder(), "price-restriction.yml");
-        if (!file.exists()) {
+        File configFile = new File(plugin.getDataFolder(), "price-restriction.yml");
+        if (!configFile.exists()) {
             try {
-                //noinspection ResultOfMethodCallIgnored
-                file.createNewFile();
+                //noinspection ConstantConditions
+                Files.copy(plugin.getResource("price-restriction.yml"), configFile.toPath());
             } catch (IOException e) {
-                logger.log(Level.WARNING, "Failed to create price-restriction.yml, upgrade failed, skipping...", e);
-                return;
+                plugin.getLogger().log(Level.WARNING, "Failed to copy price-restriction.yml.yml to plugin folder!", e);
             }
         }
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
         config.set("version", 1);
         config.set("whole-number-only", wholeNumbersOnly);
         config.set("undefined.min", globalMin);
@@ -351,7 +351,7 @@ public class ApolloConverter {
             }
         }
         try {
-            config.save(file);
+            config.save(configFile);
         } catch (IOException e) {
             logger.log(Level.WARNING, "Failed to save price-restriction.yml, upgrade failed, skipping...", e);
         }
