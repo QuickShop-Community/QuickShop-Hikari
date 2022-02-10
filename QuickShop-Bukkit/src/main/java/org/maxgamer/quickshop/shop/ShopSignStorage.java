@@ -32,7 +32,7 @@ import java.util.Objects;
 @Data
 @Builder
 public class ShopSignStorage {
-    private final static boolean shopSign = true;
+    private static final boolean SHOP_SIGN = true;
     private String world;
     private int x;
     private int y;

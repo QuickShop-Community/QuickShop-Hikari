@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
  * @author EssentialsX
  * https://github.com/EssentialsX/Essentials/blob/2.x/providers/NMSReflectionProvider/src/main/java/net/ess3/nms/refl/ReflUtil.java
  */
+@SuppressWarnings("all")
 public final class ReflUtil {
     private static final Map<String, Class<?>> classCache = new HashMap<>();
     public static final NMSVersion V1_12_R1 = NMSVersion.fromString("v1_12_R1");

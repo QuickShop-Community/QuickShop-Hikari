@@ -656,6 +656,7 @@ public class ContainerShop implements Shop {
         return isAlwaysCountingContainer;
     }
 
+    @Override
     public void setAlwaysCountingContainer(boolean value) {
         isAlwaysCountingContainer = value;
         getExtra(plugin).set("is-always-counting-container", value);
@@ -926,6 +927,7 @@ public class ContainerShop implements Shop {
         }
     }
 
+    @Override
     @NotNull
     public String saveToSymbolLink() {
         return symbolLink == null ? "" : symbolLink;
@@ -1395,6 +1397,7 @@ public class ContainerShop implements Shop {
     /**
      * @return The chest this shop is based on.
      */
+    @Override
     public @Nullable InventoryWrapper getInventory() {
         if (inventory == null) {
             Util.ensureThread(false);

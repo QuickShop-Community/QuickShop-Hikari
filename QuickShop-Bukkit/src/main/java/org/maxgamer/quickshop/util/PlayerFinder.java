@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class PlayerFinder {
 
-    private static final Cache<String, UUID> string2UUIDCache = CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
+    private static final Cache<String, UUID> NAME2UUID_CACHE = CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
 
     private PlayerFinder() {
     }
@@ -61,7 +61,7 @@ public final class PlayerFinder {
 
     public static OfflinePlayer findOfflinePlayerByName(String name) {
         OfflinePlayer result;
-        UUID uuid = string2UUIDCache.getIfPresent(name.toLowerCase(Locale.ROOT));
+        UUID uuid = NAME2UUID_CACHE.getIfPresent(name.toLowerCase(Locale.ROOT));
         if (uuid != null) {
             return Bukkit.getOfflinePlayer(uuid);
         } else {
@@ -73,7 +73,7 @@ public final class PlayerFinder {
             if (result == null) {
                 result = Bukkit.getServer().getOfflinePlayer(name);
             }
-            string2UUIDCache.put(name.toLowerCase(Locale.ROOT), result.getUniqueId());
+            NAME2UUID_CACHE.put(name.toLowerCase(Locale.ROOT), result.getUniqueId());
         }
         return result;
     }
