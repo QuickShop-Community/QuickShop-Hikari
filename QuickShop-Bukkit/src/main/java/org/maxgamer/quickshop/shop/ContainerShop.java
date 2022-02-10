@@ -222,7 +222,7 @@ public class ContainerShop implements Shop {
             this.symbolLink = manager.mklink(inventoryWrapper);
             return inventoryWrapper;
         } catch (IllegalArgumentException e) {
-            throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage());
+            throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage(),e);
         }
     }
 
