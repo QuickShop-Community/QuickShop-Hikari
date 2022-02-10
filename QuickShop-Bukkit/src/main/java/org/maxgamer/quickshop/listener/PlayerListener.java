@@ -565,7 +565,7 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onJoin(PlayerLocaleChangeEvent e) {
-        Util.debugLog("Player " + e.getPlayer().getName() + " using new locale " + e.getLocale() + ": " + plugin.text().of(e.getPlayer(), "file-test").forLocale(e.getLocale()));
+        Util.debugLog("Player " + e.getPlayer().getName() + " using new locale " + e.getLocale() + ": " + LegacyComponentSerializer.legacySection().serialize(plugin.text().of(e.getPlayer(), "file-test").forLocale(e.getLocale())));
         plugin.getDatabaseHelper().setPlayerLocale(e.getPlayer().getUniqueId(), e.getPlayer().getLocale());
     }
 
