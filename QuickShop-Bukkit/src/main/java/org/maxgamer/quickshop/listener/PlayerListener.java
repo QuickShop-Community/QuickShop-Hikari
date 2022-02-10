@@ -199,6 +199,9 @@ public class PlayerListener extends AbstractQSListener {
             plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
             return true;
         }
+        this.playClickSound(p);
+        plugin.getShopManager().sendShopInfo(p, shop);
+        shop.setSignText();
         final AbstractEconomy eco = plugin.getEconomy();
         final double price = shop.getPrice();
         final Inventory playerInventory = p.getInventory();
@@ -336,6 +339,9 @@ public class PlayerListener extends AbstractQSListener {
             plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
             return true;
         }
+        this.playClickSound(p);
+        plugin.getShopManager().sendShopInfo(p, shop);
+        shop.setSignText();
         final AbstractEconomy eco = plugin.getEconomy();
         final double price = shop.getPrice();
         final Inventory playerInventory = p.getInventory();
