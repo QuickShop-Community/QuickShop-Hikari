@@ -87,7 +87,7 @@ public class CommandContainer {
     public final @NotNull Component getDisableText(@NotNull CommandSender sender) {
         if (this.getDisableCallback() != null) {
             return this.getDisableCallback().apply(sender);
-        } else if (Util.isEmptyComponent(this.getDisablePlaceholder())) {
+        } else if (!Util.isEmptyComponent(this.getDisablePlaceholder())) {
             return this.getDisablePlaceholder();
         } else {
             return QuickShop.getInstance().text().of(sender, "command.feature-not-enabled").forLocale();
