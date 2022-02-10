@@ -30,7 +30,7 @@ public abstract class AbstractQSEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
-    public AbstractQSEvent() {
+    protected AbstractQSEvent() {
         super(!Bukkit.isPrimaryThread());
     }
 
