@@ -372,7 +372,7 @@ public class Util {
             yamlConfiguration.loadFromString(config);
             return yamlConfiguration.getItemStack("item");
         } catch (Exception e) {
-            throw new InvalidConfigurationException("Exception in deserialize item", e);
+            throw new InvalidConfigurationException("Exception in deserialize item: "+config, e);
         }
     }
 
