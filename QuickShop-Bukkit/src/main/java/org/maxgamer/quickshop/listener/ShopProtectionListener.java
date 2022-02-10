@@ -27,7 +27,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Hopper;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockExplodeEvent;
@@ -35,7 +34,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.WorldLoadEvent;
-import org.bukkit.inventory.InventoryHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.Cache;
@@ -43,7 +41,6 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.shop.Shop;
 import org.maxgamer.quickshop.shop.HopperPersistentData;
 import org.maxgamer.quickshop.shop.HopperPersistentDataType;
-import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
 
@@ -55,6 +52,7 @@ import java.util.logging.Level;
 public class ShopProtectionListener extends AbstractProtectionListener {
 
     private boolean sendProtectionAlert;
+    private boolean hopperProtect;
 
     public ShopProtectionListener(@NotNull QuickShop plugin, @Nullable Cache cache) {
         super(plugin, cache);
@@ -63,6 +61,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
 
     private void init() {
         this.sendProtectionAlert = plugin.getConfig().getBoolean("send-shop-protection-alert", false);
+        this.hopperProtect = plugin.getConfig().getBoolean("protect.hopper",true);
         scanAndFixPaperListener();
     }
 
@@ -197,7 +196,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onInventoryMove(InventoryMoveItemEvent event) {
-        if (!plugin.getConfig().getBoolean("protect.hopper")) {
+        if (!this.hopperProtect) {
             return;
         }
         final Location loc = event.getSource().getLocation();
@@ -221,25 +220,5 @@ public class ShopProtectionListener extends AbstractProtectionListener {
         }
 
         event.setCancelled(true);
-
-        final Location location = event.getInitiator().getLocation();
-
-        if (location == null) {
-            return;
-        }
-
-        final InventoryHolder holder = event.getInitiator().getHolder();
-
-        if (holder instanceof Entity) {
-            ((Entity) holder).remove();
-        } else if (holder instanceof Block) {
-            location.getBlock().breakNaturally();
-        } else {
-            Util.debugLog("Unknown location = " + loc);
-        }
-
-        if (sendProtectionAlert) {
-            MsgUtil.sendGlobalAlert("[DisplayGuard] Defend a item steal action at" + location);
-        }
     }
 }
