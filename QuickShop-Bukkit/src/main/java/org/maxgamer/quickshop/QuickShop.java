@@ -1213,11 +1213,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
         if(selectedVersion < 157){
             new ApolloConverter(this).upgrade();
+            saveConfiguration();
             getLogger().info("Upgrading completed!");
             getLogger().info("The interaction behavior won't be migrated, please check that in interaction.yml!");
             getLogger().info("Restart the server to enjoy QuickShop v6 :)");
             try {
-                Thread.sleep(1000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
