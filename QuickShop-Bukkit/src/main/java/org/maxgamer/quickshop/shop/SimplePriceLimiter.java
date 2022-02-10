@@ -20,12 +20,15 @@ import org.maxgamer.quickshop.api.shop.PriceLimiterStatus;
 import org.maxgamer.quickshop.util.Util;
 
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -93,7 +96,16 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
 
     public void loadConfiguration() {
         this.rules.clear();
-        FileConfiguration configuration = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder(), "price-restriction.yml"));
+        File configFile = new File(plugin.getDataFolder(), "price-restriction.yml");
+        if (!configFile.exists()) {
+            try {
+                //noinspection ConstantConditions
+                Files.copy(plugin.getResource("price-restriction.yml"), configFile.toPath());
+            } catch (IOException e) {
+                plugin.getLogger().log(Level.WARNING, "Failed to copy price-restriction.yml.yml to plugin folder!", e);
+            }
+        }
+        FileConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
         this.undefinedMax = configuration.getDouble("undefined.max", Double.MAX_VALUE);
         this.undefinedMin = configuration.getDouble("undefined.min", 0.0d);
         this.wholeNumberOnly = configuration.getBoolean("whole-number-only", false);
