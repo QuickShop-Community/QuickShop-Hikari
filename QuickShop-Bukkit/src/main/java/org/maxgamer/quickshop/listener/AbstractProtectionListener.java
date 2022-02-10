@@ -31,7 +31,7 @@ import org.maxgamer.quickshop.api.shop.Shop;
 public abstract class AbstractProtectionListener extends AbstractQSListener {
     private final Cache cache;
 
-    public AbstractProtectionListener(@NotNull QuickShop plugin, @Nullable Cache cache) {
+    protected AbstractProtectionListener(@NotNull QuickShop plugin, @Nullable Cache cache) {
         super(plugin);
         plugin.getReloadManager().register(this);
         this.cache = cache;

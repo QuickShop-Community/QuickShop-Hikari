@@ -34,7 +34,7 @@ import java.util.UUID;
  */
 public abstract class AbstractEconomy implements EconomyCore, Reloadable {
 
-    public AbstractEconomy() {
+    protected AbstractEconomy() {
     }
 
     /**

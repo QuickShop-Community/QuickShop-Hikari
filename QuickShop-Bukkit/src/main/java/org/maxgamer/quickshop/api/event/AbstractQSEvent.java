@@ -34,7 +34,7 @@ public abstract class AbstractQSEvent extends Event {
         super(!Bukkit.isPrimaryThread());
     }
 
-    public AbstractQSEvent(boolean async) {
+    protected AbstractQSEvent(boolean async) {
         super(async);
     }
 

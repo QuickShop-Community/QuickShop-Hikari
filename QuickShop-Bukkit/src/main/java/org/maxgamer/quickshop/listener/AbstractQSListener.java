@@ -27,7 +27,7 @@ import org.maxgamer.quickshop.QuickShop;
 public abstract class AbstractQSListener implements Listener, Reloadable {
     protected final QuickShop plugin;
 
-    public AbstractQSListener(QuickShop plugin) {
+    protected AbstractQSListener(QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
     }

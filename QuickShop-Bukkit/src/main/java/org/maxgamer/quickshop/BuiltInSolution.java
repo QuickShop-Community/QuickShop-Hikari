@@ -26,6 +26,8 @@ import org.bukkit.ChatColor;
  */
 public class BuiltInSolution {
 
+    private BuiltInSolution(){}
+
     /**
      * Call îf database failed to load. This checks the failure reason.
      *
