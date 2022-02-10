@@ -183,17 +183,13 @@ public class ShopProtectionListener extends AbstractProtectionListener {
             }
         }
     }
-
-    //
-    private final NamespacedKey hopperIndexKey = new NamespacedKey(plugin,"qs_hopper_placer");
+    private final NamespacedKey hopperKey = new NamespacedKey(QuickShop.getInstance(), "hopper-persistent-data");
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlaceHopper(BlockPlaceEvent e) {
         if(e.getBlockPlaced().getState() instanceof Hopper hopper){
-            hopper.getPersistentDataContainer().set(hopperIndexKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
+            hopper.getPersistentDataContainer().set(hopperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
         }
     }
-    private final NamespacedKey hopperKey = new NamespacedKey(QuickShop.getInstance(), "hopper-persistent-data");
-
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onInventoryMove(InventoryMoveItemEvent event) {
         if (!this.hopperProtect) {
@@ -213,7 +209,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
         if (loc.getBlock().getState() instanceof Hopper hopper) {
             HopperPersistentData hopperPersistentData = hopper.getPersistentDataContainer().get(hopperKey, HopperPersistentDataType.INSTANCE);
             if (hopperPersistentData != null) {
-                if (!hopperPersistentData.getPlayer().equals(shop.getOwner())) {
+                if (hopperPersistentData.getPlayer().equals(shop.getOwner())) {
                     return;
                 }
             }
