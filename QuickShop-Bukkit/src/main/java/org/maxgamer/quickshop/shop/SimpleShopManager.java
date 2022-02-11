@@ -1235,10 +1235,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.shop-information").forLocale());
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.owner", shop.ownerName()).forLocale());
         // Enabled
-        plugin.text().of(p, "tableformat.left_begin").forLocale()
-                .append(plugin.text().of(p, "menu.item", MsgUtil.getTranslateText(shop.getItem())).forLocale()
-                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem())))
-                .append(Component.text("  "));
+        chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", MsgUtil.getTranslateText(shop.getItem())).forLocale()
+                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()))
+                .append(Component.text("  ")));
         if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(
                     plugin.text().of(p, "menu.damage-percent-remaining", Component.text(Util.getToolPercentage(items))).forLocale());
