@@ -105,7 +105,7 @@ public class ApolloConverter {
         }catch (InterruptedException ignore){}
 
         for (ApolloConverterInterface converter : this.converters) {
-            logger.info("POST: "+converter.getClass());
+            logger.info("POST: "+converter.getClass().getName());
             try {
                 converter.migrate(uuid);
             } catch (Exception e) {
