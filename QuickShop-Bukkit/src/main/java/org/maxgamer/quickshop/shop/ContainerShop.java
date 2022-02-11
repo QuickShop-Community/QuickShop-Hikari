@@ -62,9 +62,9 @@ import java.util.logging.Level;
  */
 @EqualsAndHashCode
 public class ContainerShop implements Shop {
-    @EqualsAndHashCode.Exclude
-    @Deprecated
-    private static final String SHOP_SIGN_PREFIX = "§d§o §r";
+//    @EqualsAndHashCode.Exclude
+//    @Deprecated
+//    private static final String SHOP_SIGN_PREFIX = "§d§o §r";
     @NotNull
     private final Location location;
     private final YamlConfiguration extra;
@@ -197,7 +197,6 @@ public class ContainerShop implements Shop {
         if (this.symbolLink == null)
             throw new IllegalArgumentException("SymbolLink cannot be null");
         initDisplayItem();
-        Util.debugLog("ContainerShop-SymbolLink: " + this.symbolLink + ", wrapper provider:" + inventoryWrapperProvider);
         updateShopData();
     }
 
@@ -650,6 +649,11 @@ public class ContainerShop implements Shop {
         return name;
     }
 
+    /**
+     * Check if this shop is free shop
+     *
+     * @return Free Shop
+     */
     @Override
     public boolean isFreeShop() {
         return this.price == 0.0d;
@@ -1061,33 +1065,6 @@ public class ContainerShop implements Shop {
         //plugin.getShopManager().loadShop(this.getLocation().getWorld().getName(), this);
         plugin.getShopManager().getLoadedShops().add(this);
         plugin.getShopContainerWatcher().scheduleCheck(this);
-
-//        // check price restriction
-//        PriceLimiterCheckResult priceRestriction = plugin.getShopManager().getPriceLimiter().check(item, price);
-//        boolean markUpdate = false;
-//        if (priceRestriction.getStatus() != PriceLimiterStatus.PASS) {
-//            if (priceRestriction.getStatus() == PriceLimiterStatus.NOT_A_WHOLE_NUMBER) {
-//                setDirty();
-//                price = Math.floor(price);
-//                markUpdate = true;
-//            } else if (priceRestriction.getStatus() == PriceLimiterStatus.NOT_VALID) {
-//                setDirty();
-//                price = priceRestriction.getMin();
-//                markUpdate = true;
-//            }
-//            if (price < priceRestriction.getMin()) {
-//                setDirty();
-//                price = priceRestriction.getMin();
-//                markUpdate = true;
-//            } else if (price > priceRestriction.getMax()) {
-//                setDirty();
-//                price = priceRestriction.getMax();
-//                markUpdate = true;
-//            }
-//            if (markUpdate) {
-//                update();
-//            }
-//        }
         checkDisplay();
     }
 

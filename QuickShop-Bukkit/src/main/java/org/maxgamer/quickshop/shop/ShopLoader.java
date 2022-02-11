@@ -466,7 +466,6 @@ public class ShopLoader {
                 this.taxAccount = origin.getTaxAccount() != null ? UUID.fromString(origin.getTaxAccount()) : null;
                 this.inventoryWrapperProvider = origin.getInventoryWrapperProvider();
                 this.symbolLink = origin.getSymbolLink();
-                Util.debugLog("ShopLoader-SymbolLink: "+this.symbolLink+", wrapper:"+inventoryWrapperProvider);
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }
