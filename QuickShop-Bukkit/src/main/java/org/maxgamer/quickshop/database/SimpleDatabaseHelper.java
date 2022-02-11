@@ -38,6 +38,7 @@ import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
 
 import java.sql.*;
+import java.util.LinkedHashMap;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -325,7 +326,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .addCondition("z", z)
                 .addCondition("world", world)
                 .build()
-                .executeAsync();
+                .executeAsync((handler) -> Util.debugLog("Operation completed, Remove shop for w:" + world + "x:" + x + ",y:" + y + ",z:" + z + ", " + handler + " lines affected"));
     }
 
     @Override
@@ -351,7 +352,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
         manager.createInsert(plugin.getDbPrefix() + "messages")
                 .setColumnNames("owner", "message", "time")
                 .setParams(player.toString(), message, time)
-                .executeAsync();
+                .executeAsync((handler) -> Util.debugLog("Operation completed, saveOfflineTransaction for " + player + ", " + handler + " lines affected"));
     }
 
     @Override
@@ -362,7 +363,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .addCondition("y", y)
                 .addCondition("z", z)
                 .addCondition("world", worldName)
-                .build().executeAsync();
+                .build().executeAsync((handler) -> Util.debugLog("Operation completed, updateOwner2UUID " + ownerUUID + ", " + handler + "lines affected"));
     }
 
     @Override
@@ -380,17 +381,18 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                            @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
                            @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName) {
         Util.debugLog("Shop updating: " + x + "," + y + "," + z + "," + world + ", " + inventorySymbolLink + ", " + inventoryWrapperName);
+        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+        map.put("owner", owner);
+        map.put("itemConfig", Util.serialize(item));
+        map.put("unlimited", unlimited);
+        map.put("type", shopType);
+        map.put("extra", extra);
+        map.put("disableDisplay", disableDisplay ? 1 : 0);
+        map.put("taxAccount", taxAccount);
+        map.put("inventorySymbolLink", inventorySymbolLink);
+        map.put("inventoryWrapperName", inventoryWrapperName);
         manager.createUpdate(plugin.getDbPrefix() + "shops")
-                .setColumnValues("owner", owner)
-                .setColumnValues("itemConfig", Util.serialize(item))
-                .setColumnValues("unlimited", unlimited)
-                .setColumnValues("type", shopType)
-                .setColumnValues("price", price)
-                .setColumnValues("extra", extra)
-                .setColumnValues("disableDisplay", disableDisplay ? 1 : 0)
-                .setColumnValues("taxAccount", taxAccount)
-                .setColumnValues("inventorySymbolLink", inventorySymbolLink)
-                .setColumnValues("inventoryWrapperName", inventoryWrapperName)
+                .setColumnValues(map)
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)

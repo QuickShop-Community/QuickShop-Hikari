@@ -196,8 +196,6 @@ public class ContainerShop implements Shop {
         this.inventoryWrapperProvider = inventoryWrapperProvider;
         if (this.symbolLink == null)
             throw new IllegalArgumentException("SymbolLink cannot be null");
-        if (this.inventoryWrapper == null)
-            throw new IllegalArgumentException("InventoryWrapper cannot be null");
         initDisplayItem();
         Util.debugLog("ContainerShop-SymbolLink: " + this.symbolLink + ", wrapper provider:" + inventoryWrapperProvider);
         updateShopData();
