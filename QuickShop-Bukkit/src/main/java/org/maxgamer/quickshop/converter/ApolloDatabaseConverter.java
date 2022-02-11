@@ -53,73 +53,73 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
         // Initialze drivers
         Driver.load();
         Class.forName("org.sqlite.JDBC");
-        getLiveDatabase().getConnection().close(); // Test connection
-        if (!config.isMysql())
-            getSQLiteDatabase().close(); // Test connection
-        if (!config.isMysql()) {
-            if (hasTable(config.getPrefix() + "shops", getLiveDatabase().getConnection()))
-                throw new IllegalStateException("The target database has exists shops data!");
-            if (hasTable(config.getPrefix() + "messages", getLiveDatabase().getConnection()))
-                throw new IllegalStateException("The target database has exists messages data!");
-            if (hasTable(config.getPrefix() + "external_cache", getLiveDatabase().getConnection()))
-                throw new IllegalStateException("The target database has external_data data!");
-            if (!hasTable(config.getPrefix() + "shops", getSQLiteDatabase()))
-                throw new IllegalStateException("The sources database had no exists shops data! shops.db file data missing!");
-            if (!hasTable(config.getPrefix() + "messages", getSQLiteDatabase()))
-                throw new IllegalStateException("The sources database had no exists messages data! shops.db file data missing!");
-            if (!hasTable(config.getPrefix() + "external_cache", getSQLiteDatabase()))
-                throw new IllegalStateException("The sources database had no external_data data! shops.db file data missing!");
-            if (!hasColumn(config.getPrefix() + "shops", "owner", getSQLiteDatabase()))
-                entries.add(Component.text("The sources database has not exists owner column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "price", getSQLiteDatabase()))
-                throw new IllegalStateException("The sources database has not exists price column!");
-            if (!hasColumn(config.getPrefix() + "shops", "itemConfig", getSQLiteDatabase()))
-                entries.add(Component.text("The sources database has not exists itemConfig column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "x", getSQLiteDatabase()))
-                entries.add(Component.text("The sources database has not exists x column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "y", getSQLiteDatabase()))
-                entries.add(Component.text("The sources database has not exists y column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "z", getSQLiteDatabase()))
-                entries.add(Component.text("The sources database has not exists z column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "world", getSQLiteDatabase()))
-                entries.add(Component.text("The sources database has not exists world column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "unlimited", getSQLiteDatabase()))
-                entries.add(Component.text("The sources database has not exists unlimited column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "type", getSQLiteDatabase()))
-                entries.add(Component.text("The sources database has not exists type column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "extra", getSQLiteDatabase()))
-                entries.add(Component.text("The sources database has not exists extra column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "disableDisplay", getSQLiteDatabase()))
-                entries.add(Component.text("The sources database has not exists disableDisplay column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "taxAccount", getSQLiteDatabase()))
-                entries.add(Component.text("The sources database has not exists taxAccount column!"));
-        }else{
-            // mysql
-
-            if (!hasColumn(config.getPrefix() + "shops", "owner", getLiveDatabase().getConnection()))
-                entries.add(Component.text("The sources database has not exists owner column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "price", getLiveDatabase().getConnection()))
-                throw new IllegalStateException("The sources database has not exists price column!");
-            if (!hasColumn(config.getPrefix() + "shops", "itemConfig", getLiveDatabase().getConnection()))
-                entries.add(Component.text("The sources database has not exists itemConfig column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "x", getLiveDatabase().getConnection()))
-                entries.add(Component.text("The sources database has not exists x column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "y", getLiveDatabase().getConnection()))
-                entries.add(Component.text("The sources database has not exists y column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "z", getLiveDatabase().getConnection()))
-                entries.add(Component.text("The sources database has not exists z column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "world", getLiveDatabase().getConnection()))
-                entries.add(Component.text("The sources database has not exists world column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "unlimited", getLiveDatabase().getConnection()))
-                entries.add(Component.text("The sources database has not exists unlimited column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "type",getLiveDatabase().getConnection()))
-                entries.add(Component.text("The sources database has not exists type column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "extra", getLiveDatabase().getConnection()))
-                entries.add(Component.text("The sources database has not exists extra column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "disableDisplay",getLiveDatabase().getConnection()))
-                entries.add(Component.text("The sources database has not exists disableDisplay column!"));
-            if (!hasColumn(config.getPrefix() + "shops", "taxAccount", getLiveDatabase().getConnection()))
-                entries.add(Component.text("The sources database has not exists taxAccount column!"));
+        try(Connection liveDatabase = getLiveDatabase().getConnection()) {
+            if (!config.isMysql()) {
+                try(Connection sqliteDatabase = getSQLiteDatabase()) {
+                    if (hasTable(config.getPrefix() + "shops", liveDatabase))
+                        throw new IllegalStateException("The target database has exists shops data!");
+                    if (hasTable(config.getPrefix() + "messages", liveDatabase))
+                        throw new IllegalStateException("The target database has exists messages data!");
+                    if (hasTable(config.getPrefix() + "external_cache", liveDatabase))
+                        throw new IllegalStateException("The target database has external_data data!");
+                    if (!hasTable(config.getPrefix() + "shops", sqliteDatabase))
+                        throw new IllegalStateException("The sources database had no exists shops data! shops.db file data missing!");
+                    if (!hasTable(config.getPrefix() + "messages", sqliteDatabase))
+                        throw new IllegalStateException("The sources database had no exists messages data! shops.db file data missing!");
+                    if (!hasTable(config.getPrefix() + "external_cache", sqliteDatabase))
+                        throw new IllegalStateException("The sources database had no external_data data! shops.db file data missing!");
+                    if (!hasColumn(config.getPrefix() + "shops", "owner", sqliteDatabase))
+                        entries.add(Component.text("The sources database has not exists owner column!"));
+                    if (!hasColumn(config.getPrefix() + "shops", "price", sqliteDatabase))
+                        throw new IllegalStateException("The sources database has not exists price column!");
+                    if (!hasColumn(config.getPrefix() + "shops", "itemConfig", sqliteDatabase))
+                        entries.add(Component.text("The sources database has not exists itemConfig column!"));
+                    if (!hasColumn(config.getPrefix() + "shops", "x", sqliteDatabase))
+                        entries.add(Component.text("The sources database has not exists x column!"));
+                    if (!hasColumn(config.getPrefix() + "shops", "y", sqliteDatabase))
+                        entries.add(Component.text("The sources database has not exists y column!"));
+                    if (!hasColumn(config.getPrefix() + "shops", "z", sqliteDatabase))
+                        entries.add(Component.text("The sources database has not exists z column!"));
+                    if (!hasColumn(config.getPrefix() + "shops", "world", sqliteDatabase))
+                        entries.add(Component.text("The sources database has not exists world column!"));
+                    if (!hasColumn(config.getPrefix() + "shops", "unlimited", sqliteDatabase))
+                        entries.add(Component.text("The sources database has not exists unlimited column!"));
+                    if (!hasColumn(config.getPrefix() + "shops", "type", sqliteDatabase))
+                        entries.add(Component.text("The sources database has not exists type column!"));
+                    if (!hasColumn(config.getPrefix() + "shops", "extra", sqliteDatabase))
+                        entries.add(Component.text("The sources database has not exists extra column!"));
+                    if (!hasColumn(config.getPrefix() + "shops", "disableDisplay", sqliteDatabase))
+                        entries.add(Component.text("The sources database has not exists disableDisplay column!"));
+                    if (!hasColumn(config.getPrefix() + "shops", "taxAccount", sqliteDatabase))
+                        entries.add(Component.text("The sources database has not exists taxAccount column!"));
+                }
+            } else {
+                // mysql
+                if (!hasColumn(config.getPrefix() + "shops", "owner", liveDatabase))
+                    entries.add(Component.text("The sources database has not exists owner column!"));
+                if (!hasColumn(config.getPrefix() + "shops", "price", liveDatabase))
+                    throw new IllegalStateException("The sources database has not exists price column!");
+                if (!hasColumn(config.getPrefix() + "shops", "itemConfig", liveDatabase))
+                    entries.add(Component.text("The sources database has not exists itemConfig column!"));
+                if (!hasColumn(config.getPrefix() + "shops", "x", liveDatabase))
+                    entries.add(Component.text("The sources database has not exists x column!"));
+                if (!hasColumn(config.getPrefix() + "shops", "y", liveDatabase))
+                    entries.add(Component.text("The sources database has not exists y column!"));
+                if (!hasColumn(config.getPrefix() + "shops", "z", liveDatabase))
+                    entries.add(Component.text("The sources database has not exists z column!"));
+                if (!hasColumn(config.getPrefix() + "shops", "world", liveDatabase))
+                    entries.add(Component.text("The sources database has not exists world column!"));
+                if (!hasColumn(config.getPrefix() + "shops", "unlimited", liveDatabase))
+                    entries.add(Component.text("The sources database has not exists unlimited column!"));
+                if (!hasColumn(config.getPrefix() + "shops", "type", liveDatabase))
+                    entries.add(Component.text("The sources database has not exists type column!"));
+                if (!hasColumn(config.getPrefix() + "shops", "extra", liveDatabase))
+                    entries.add(Component.text("The sources database has not exists extra column!"));
+                if (!hasColumn(config.getPrefix() + "shops", "disableDisplay", liveDatabase))
+                    entries.add(Component.text("The sources database has not exists disableDisplay column!"));
+                if (!hasColumn(config.getPrefix() + "shops", "taxAccount", liveDatabase))
+                    entries.add(Component.text("The sources database has not exists taxAccount column!"));
+            }
         }
 
         return entries;
@@ -159,13 +159,18 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
         instance.getLogger().info("Offline Messages and External Caches won't be migrated because they are have totally different syntax and cache need regenerate after migrated.");
         instance.getLogger().info("Downloading old data from database connection...");
         List<ShopStorageUnit> units;
-        if (config.isMysql()) {
-            units = pullShops(config.getPrefix(), shopsTmpTable, actionId, getLiveDatabase().getConnection());
-        } else {
-            units = pullShops(config.getPrefix(), shopsTmpTable, actionId, getSQLiteDatabase());
+        SQLManager liveDatabase = getLiveDatabase();
+        try (Connection liveDatabaseConnection = liveDatabase.getConnection()){
+            if (config.isMysql()) {
+                units = pullShops(config.getPrefix(), shopsTmpTable, actionId, liveDatabaseConnection);
+            } else {
+                try(Connection sqliteDatabase = getSQLiteDatabase()) {
+                    units = pullShops(config.getPrefix(), shopsTmpTable, actionId, sqliteDatabase);
+                }
+            }
+            instance.getLogger().info("Migrating old data to new database...");
+            pushShops(units, config.getPrefix(), liveDatabase);
         }
-        instance.getLogger().info("Migrating old data to new database...");
-        pushShops(units, config.getPrefix(), getLiveDatabase());
         instance.getLogger().info("Database migration completed!");
     }
 
