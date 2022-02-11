@@ -27,13 +27,15 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Sign;
 import org.bukkit.block.data.type.Chest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -47,7 +49,6 @@ import org.maxgamer.quickshop.api.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.api.inventory.InventoryWrapperIterator;
 import org.maxgamer.quickshop.api.inventory.InventoryWrapperManager;
 import org.maxgamer.quickshop.api.shop.*;
-import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapper;
 import org.maxgamer.quickshop.util.MsgUtil;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.logging.container.ShopRemoveLog;
@@ -192,27 +193,31 @@ public class ContainerShop implements Shop {
         this.dirty = false;
         this.isAlwaysCountingContainer = getExtra(plugin).getBoolean("is-always-counting-container", false);
         this.symbolLink = symbolLink;
-        this.inventoryWrapperProvider = inventoryWrapperProvider == null ? "" : inventoryWrapperProvider;
+        this.inventoryWrapperProvider = inventoryWrapperProvider;
+        if (this.symbolLink == null)
+            throw new IllegalArgumentException("SymbolLink cannot be null");
+        if (this.inventoryWrapper == null)
+            throw new IllegalArgumentException("InventoryWrapper cannot be null");
         initDisplayItem();
+        Util.debugLog("ContainerShop-SymbolLink: " + this.symbolLink + ", wrapper provider:" + inventoryWrapperProvider);
         updateShopData();
     }
 
     private @NotNull InventoryWrapper locateInventory(@Nullable String symbolLink) {
         if (symbolLink == null || symbolLink.isEmpty()) {
-            // Upgrading data
-            Util.debugLog("Upgrading old shop data: " + this);
-            BlockState block = getLocation().getBlock().getState();
-            if (block instanceof BlockInventoryHolder) {
-                this.inventoryWrapperProvider = plugin.getInventoryWrapperRegistry().find(plugin.getInventoryWrapperManager());
-                this.inventoryWrapper = new BukkitInventoryWrapper(((BlockInventoryHolder) block).getInventory());
-                this.symbolLink = plugin.getInventoryWrapperManager().mklink(inventoryWrapper);
-                return this.inventoryWrapper;
-            } else {
-                if (block instanceof EnderChest) {
-                    throw new IllegalStateException("Failed to load ender chest shop: You need install QuickShop EnderChest addon to make it works.");
-                }
-                throw new IllegalArgumentException("Failed to load shop: Target block not a Container, Skipping...");
-            }
+            throw new IllegalStateException("Symbol link is empty, that's not right bro.");
+//            BlockState block = getLocation().getBlock().getState();
+//            if (block instanceof BlockInventoryHolder) {
+//                this.inventoryWrapperProvider = plugin.getInventoryWrapperRegistry().find(plugin.getInventoryWrapperManager());
+//                this.inventoryWrapper = new BukkitInventoryWrapper(((BlockInventoryHolder) block).getInventory());
+//                this.symbolLink = plugin.getInventoryWrapperManager().mklink(inventoryWrapper);
+//                return this.inventoryWrapper;
+//            } else {
+//                if (block instanceof EnderChest) {
+//                    throw new IllegalStateException("Failed to load ender chest shop: You need install QuickShop EnderChest addon to make it works.");
+//                }
+//                throw new IllegalArgumentException("Failed to load shop: Target block not a Container, Skipping...");
+//            }
         }
         InventoryWrapperManager manager = plugin.getInventoryWrapperRegistry().get(getInventoryWrapperProvider());
         if (manager == null) {
@@ -223,7 +228,7 @@ public class ContainerShop implements Shop {
             this.symbolLink = manager.mklink(inventoryWrapper);
             return inventoryWrapper;
         } catch (IllegalArgumentException e) {
-            throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage(),e);
+            throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage(), e);
         }
     }
 
@@ -550,8 +555,8 @@ public class ContainerShop implements Shop {
                                 .world(this.getLocation().getWorld())
                                 .to(this.getOwner())
                                 .build();
-                if(!transaction.failSafeCommit()){
-                    plugin.getLogger().warning("Shop deletion refund failed. Reason: "+transaction.getLastError());
+                if (!transaction.failSafeCommit()) {
+                    plugin.getLogger().warning("Shop deletion refund failed. Reason: " + transaction.getLastError());
                 }
             }
             plugin.getShopManager().removeShop(this);
@@ -635,7 +640,7 @@ public class ContainerShop implements Shop {
         Component name;
         if (player.getName() == null || player.getName().isEmpty()) {
             name = plugin.text().of("unknown-owner").forLocale();
-        }else{
+        } else {
             name = Component.text(player.getName());
         }
         if (!forceUsername && isUnlimited()) {
@@ -831,7 +836,7 @@ public class ContainerShop implements Shop {
 
             // NBTAPI installed
             String itemName = Util.getItemCustomName(getItem());
-            Component itemComponents = itemName == null ? plugin.getPlatform().getItemTranslationKey(getItem().getType()) :LegacyComponentSerializer.legacySection().deserialize(itemName);
+            Component itemComponents = itemName == null ? plugin.getPlatform().getItemTranslationKey(getItem().getType()) : LegacyComponentSerializer.legacySection().deserialize(itemName);
             lines.add(left.append(itemComponents).append(right));
         } else {
             lines.add(plugin.text().of("signs.item-left").forLocale().append(LegacyComponentSerializer.legacySection().deserialize(Util.getItemStackName(getItem())).append(plugin.text().of("signs.item-right").forLocale())));
@@ -841,7 +846,7 @@ public class ContainerShop implements Shop {
         Component line4;
         if (this.isStackingShop()) {
             line4 = plugin.text().of("signs.stack-price",
-                   LegacyComponentSerializer.legacySection().deserialize(plugin.getShopManager().format(this.getPrice(), this)),
+                    LegacyComponentSerializer.legacySection().deserialize(plugin.getShopManager().format(this.getPrice(), this)),
                     Component.text(item.getAmount()),
                     LegacyComponentSerializer.legacySection().deserialize(Util.getItemStackName(item))).forLocale();
         } else {
@@ -943,6 +948,7 @@ public class ContainerShop implements Shop {
         this.inventoryWrapper = wrapper;
         this.inventoryWrapperProvider = provider;
         this.symbolLink = manager.mklink(wrapper);
+        Util.debugLog("Inventory changed: " + this.symbolLink + ", wrapper provider:" + inventoryWrapperProvider);
         setDirty();
         update();
     }
@@ -1175,7 +1181,7 @@ public class ContainerShop implements Shop {
         }
         int space = Util.countSpace(this.getInventory(), this);
         new ShopInventoryCalculateEvent(this, space, -1).callEvent();
-        Util.debugLog("Space count is: "+space);
+        Util.debugLog("Space count is: " + space);
         return space;
     }
 
@@ -1402,7 +1408,7 @@ public class ContainerShop implements Shop {
     public @Nullable InventoryWrapper getInventory() {
         if (inventoryWrapper == null) {
             Util.ensureThread(false);
-            Util.debugLog("SymbolLink Applying: "+symbolLink);
+            Util.debugLog("SymbolLink Applying: " + symbolLink);
             inventoryWrapper = locateInventory(symbolLink);
         }
         if (this.inventoryWrapper.isValid()) {

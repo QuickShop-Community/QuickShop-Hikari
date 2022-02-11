@@ -44,6 +44,7 @@ import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionData;
@@ -946,7 +947,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 false,
                 null,
                 plugin.getName(),
-                null);
+                plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper(((InventoryHolder)info.getLocation().getBlock().getState()).getInventory())));
         if (!info.isBypassed()) {
             Result result = ((SimpleIntegrationManager) plugin.getIntegrationHelper()).callIntegrationsCanCreate(p, info.getLocation());
             if (!result.isSuccess()) {
