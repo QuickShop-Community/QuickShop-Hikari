@@ -12,6 +12,7 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.database.SimpleDatabaseHelper;
 import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import org.maxgamer.quickshop.util.JsonUtil;
+import org.maxgamer.quickshop.util.Util;
 
 import java.io.File;
 import java.net.ConnectException;
@@ -125,45 +126,46 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
             throw new IllegalStateException("Not ready!");
         DatabaseConfig config = getDatabaseConfig();
         instance.getLogger().info("Renaming tables...");
-        String shopsTmpTable = renameTables(actionId,config);
+        String shopsTmpTable = renameTables(actionId, config);
         instance.getLogger().info("Offline Messages and External Caches won't be migrated because they are have totally different syntax and cache need regenerate after migrated.");
         instance.getLogger().info("Downloading old data from database connection...");
         List<ShopStorageUnit> units;
-        if(config.isMysql()){
-            units = pullShops(config.getPrefix(),shopsTmpTable,actionId,getLiveDatabase().getConnection());
-        }else{
-            units = pullShops(config.getPrefix(),shopsTmpTable,actionId,getSQLiteDatabase());
+        if (config.isMysql()) {
+            units = pullShops(config.getPrefix(), shopsTmpTable, actionId, getLiveDatabase().getConnection());
+        } else {
+            units = pullShops(config.getPrefix(), shopsTmpTable, actionId, getSQLiteDatabase());
         }
         instance.getLogger().info("Migrating old data to new database...");
-        pushShops(units,config.getPrefix(),getLiveDatabase());
+        pushShops(units, config.getPrefix(), getLiveDatabase());
         instance.getLogger().info("Database migration completed!");
     }
 
     /**
      * Rename tables
+     *
      * @param actionId ActionID
-     * @param config DatabaseConfig
+     * @param config   DatabaseConfig
      * @return The shops table name
      * @throws Exception Any error happens
      */
     @NotNull
-    private String renameTables(@NotNull UUID actionId,@NotNull DatabaseConfig config) throws Exception {
+    private String renameTables(@NotNull UUID actionId, @NotNull DatabaseConfig config) throws Exception {
         if (config.isMysql()) {
             SQLManager manager = getLiveDatabase();
             int lines = manager.alterTable(config.getPrefix() + "shops")
-                    .renameTo(config.getPrefix() + "shop_" + actionId.toString().replace("-",""))
+                    .renameTo(config.getPrefix() + "shop_" + actionId.toString().replace("-", ""))
                     .execute();
             manager.alterTable(config.getPrefix() + "messages")
-                    .renameTo(config.getPrefix() + "messages_" + actionId.toString().replace("-",""))
+                    .renameTo(config.getPrefix() + "messages_" + actionId.toString().replace("-", ""))
                     .execute();
             manager.alterTable(config.getPrefix() + "external_cache")
-                    .renameTo(config.getPrefix() + "external_cache_" +actionId.toString().replace("-",""))
+                    .renameTo(config.getPrefix() + "external_cache_" + actionId.toString().replace("-", ""))
                     .execute();
-            if(lines < 1)
+            if (lines < 1)
                 throw new IllegalStateException("Table rename failed!");
-            return config.getPrefix()+"shop_"+ actionId.toString().replace("-","");
+            return config.getPrefix() + "shop_" + actionId.toString().replace("-", "");
         } else {
-            return config.getPrefix()+"shops";
+            return config.getPrefix() + "shops";
         }
     }
 
@@ -255,7 +257,7 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
         if (!dbCfg.isSet("prefix"))
             throw new IllegalStateException("Database configuration section -> prefix not set!");
         boolean mysql = dbCfg.getBoolean("mysql");
-        if(mysql) {
+        if (mysql) {
             if (!dbCfg.isSet("host"))
                 throw new IllegalStateException("Database configuration section -> host not set!");
             if (!dbCfg.isSet("port"))
@@ -270,13 +272,13 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
                 throw new IllegalStateException("Database configuration section -> SSL not set!");
         }
 
-        String user = dbCfg.getString("user","mc");
-        String pass = dbCfg.getString("password","minecraft");
-        String host = dbCfg.getString("host","localhost");
-        int port = dbCfg.getInt("port",3306);
-        String database = dbCfg.getString("database","mc");
-        boolean useSSL = dbCfg.getBoolean("usessl",false);
-        String dbPrefix = dbCfg.getString("prefix","");
+        String user = dbCfg.getString("user", "mc");
+        String pass = dbCfg.getString("password", "minecraft");
+        String host = dbCfg.getString("host", "localhost");
+        int port = dbCfg.getInt("port", 3306);
+        String database = dbCfg.getString("database", "mc");
+        boolean useSSL = dbCfg.getBoolean("usessl", false);
+        String dbPrefix = dbCfg.getString("prefix", "");
         if ("none".equals(dbPrefix)) {
             dbPrefix = "";
         }
@@ -303,8 +305,7 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
                         .execute();
             } catch (Exception e) {
                 ++fails;
-                e.printStackTrace();
-                instance.getLogger().warning("Failed to push shop " + unit + " into database! " + e.getMessage() + ", skipping...");
+                instance.getLogger().log(Level.WARNING, "Failed to push shop " + unit + " into database! " + e.getMessage() + ", skipping...",e);
             }
         }
         instance.getLogger().info("Pushed " + count + " shops into database. " + fails + " shops failed to push.");
@@ -337,7 +338,7 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
                 builder.taxAccount(resultSet.getString("taxAccount"));
                 units.add(builder.build());
             } catch (SQLException exception) {
-                instance.getLogger().warning("Error while pulling shop from database: " + exception.getMessage() + ", skipping...");
+                instance.getLogger().log(Level.WARNING,"Error while pulling shop from database: " + exception.getMessage() + ", skipping...",exception);
                 ++fails;
             }
         }
@@ -430,7 +431,9 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
         @NotNull
         public String getInventorySymbolLink() {
             String holder = JsonUtil.standard().toJson(new BukkitInventoryWrapperManager.BlockHolder(world, x, y, z));
-            return JsonUtil.standard().toJson(new BukkitInventoryWrapperManager.CommonHolder(BukkitInventoryWrapperManager.HolderType.BLOCK, holder));
+            String link = JsonUtil.standard().toJson(new BukkitInventoryWrapperManager.CommonHolder(BukkitInventoryWrapperManager.HolderType.BLOCK, holder));
+            Util.debugLog("Generating SymbolLink: " + link + ", InventoryHolder: BukkitInventoryWrapper, Holder:" + holder);
+            return link;
         }
     }
 }
