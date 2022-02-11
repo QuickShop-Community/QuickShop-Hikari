@@ -5,9 +5,11 @@ import com.google.common.collect.Lists;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -1004,6 +1006,10 @@ public class ApolloConfigConverter implements ApolloConverterInterface {
         globalMin = plugin.getConfig().getBoolean("allow-free-shop", false) ? 0.0d : globalMin;
         double globalMax = plugin.getConfig().getDouble("shop.maximum-price", -1d);
         List<String> oldRules = plugin.getConfig().getStringList("shop.price-restriction");
+        if (oldRules.isEmpty()) {
+            Util.debugLog("Rules is empty, skipping");
+            return;
+        }
         File configFile = new File(plugin.getDataFolder(), "price-restriction.yml");
         if (!configFile.exists()) {
             try {
@@ -1013,16 +1019,13 @@ public class ApolloConfigConverter implements ApolloConverterInterface {
                 plugin.getLogger().log(Level.WARNING, "Failed to copy price-restriction.yml.yml to plugin folder!", e);
             }
         }
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+        YamlConfiguration config = new YamlConfiguration();
         config.set("version", 1);
         config.set("whole-number-only", wholeNumbersOnly);
         config.set("undefined.min", globalMin);
         config.set("undefined.max", globalMax);
-        config.set("rules.example", null);
-        if (oldRules.isEmpty()) {
-            return;
-        }
         config.set("enable", true);
+        ConfigurationSection rulesSection = config.createSection("rules");
         for (String rule : oldRules) {
             String[] split = rule.split(" ");
             if (split.length != 3) {
@@ -1033,17 +1036,21 @@ public class ApolloConfigConverter implements ApolloConverterInterface {
                 if (item == null) {
                     continue;
                 }
+                ConfigurationSection section = rulesSection.createSection("upgrade-"+ item.name());
                 double min = Double.parseDouble(split[1]);
                 double max = Double.parseDouble(split[2]);
-                config.set("rules.auto-upgrade-" + item.name() + ".materials", List.of(item.name()));
-                config.set("rules.auto-upgrade-" + item.name() + ".currency", List.of("*"));
-                config.set("rules.auto-upgrade-" + item.name() + ".min", min);
-                config.set("rules.auto-upgrade-" + item.name() + ".max", max);
+                section.set("materials", List.of(item.name()));
+                section.set("currency", new ArrayList<>());
+                section.set("min", min);
+                section.set("max", max);
+                rulesSection.set("upgrade-"+ item.name(), section);
             } catch (Exception e) {
                 logger.log(Level.WARNING, "Failed to parse rule: " + rule + ", skipping...", e);
             }
         }
+        config.set("rules",rulesSection);
         try {
+            Util.debugLog(config.saveToString());
             config.save(configFile);
         } catch (IOException e) {
             logger.log(Level.WARNING, "Failed to save price-restriction.yml, upgrade failed, skipping...", e);
