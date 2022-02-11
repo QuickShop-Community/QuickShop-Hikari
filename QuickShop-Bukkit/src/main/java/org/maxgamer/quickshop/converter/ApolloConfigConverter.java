@@ -1050,7 +1050,6 @@ public class ApolloConfigConverter implements ApolloConverterInterface {
         }
         config.set("rules",rulesSection);
         try {
-            Util.debugLog(config.saveToString());
             config.save(configFile);
         } catch (IOException e) {
             logger.log(Level.WARNING, "Failed to save price-restriction.yml, upgrade failed, skipping...", e);

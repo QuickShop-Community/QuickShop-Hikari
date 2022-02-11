@@ -198,13 +198,14 @@ public class PlayerListener extends AbstractQSListener {
         if (!shop.isBuying()) {
             return false;
         }
+
+        this.playClickSound(p);
+        plugin.getShopManager().sendShopInfo(p, shop);
+        shop.setSignText();
         if (shop.getRemainingSpace() == 0) {
             plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
             return true;
         }
-        this.playClickSound(p);
-        plugin.getShopManager().sendShopInfo(p, shop);
-        shop.setSignText();
         final AbstractEconomy eco = plugin.getEconomy();
         final double price = shop.getPrice();
         final Inventory playerInventory = p.getInventory();
@@ -339,13 +340,13 @@ public class PlayerListener extends AbstractQSListener {
         if (!shop.isSelling()) {
             return false;
         }
+        this.playClickSound(p);
+        plugin.getShopManager().sendShopInfo(p, shop);
+        shop.setSignText();
         if (shop.getRemainingStock() == 0) {
             plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
             return true;
         }
-        this.playClickSound(p);
-        plugin.getShopManager().sendShopInfo(p, shop);
-        shop.setSignText();
         final AbstractEconomy eco = plugin.getEconomy();
         final double price = shop.getPrice();
         final Inventory playerInventory = p.getInventory();
