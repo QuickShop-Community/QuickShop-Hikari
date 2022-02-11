@@ -1027,7 +1027,7 @@ public class ApolloConfigConverter implements ApolloConverterInterface {
         config.set("enable", true);
         ConfigurationSection rulesSection = config.createSection("rules");
         for (String rule : oldRules) {
-            String[] split = rule.split(" ");
+            String[] split = rule.split(";");
             if (split.length != 3) {
                 continue;
             }
@@ -1040,7 +1040,7 @@ public class ApolloConfigConverter implements ApolloConverterInterface {
                 double min = Double.parseDouble(split[1]);
                 double max = Double.parseDouble(split[2]);
                 section.set("materials", List.of(item.name()));
-                section.set("currency", new ArrayList<>());
+                section.set("currency", List.of("*"));
                 section.set("min", min);
                 section.set("max", max);
                 rulesSection.set("upgrade-"+ item.name(), section);
