@@ -106,6 +106,7 @@ public class ContainerShop implements Shop {
     @NotNull
     private volatile String inventoryWrapperProvider;
     @Nullable
+    @EqualsAndHashCode.Exclude
     private volatile InventoryWrapper inventoryWrapper;
     @Nullable
     private volatile String symbolLink;
@@ -1401,6 +1402,7 @@ public class ContainerShop implements Shop {
     public @Nullable InventoryWrapper getInventory() {
         if (inventoryWrapper == null) {
             Util.ensureThread(false);
+            Util.debugLog("SymbolLink Applying: "+symbolLink);
             inventoryWrapper = locateInventory(symbolLink);
         }
         if (this.inventoryWrapper.isValid()) {
