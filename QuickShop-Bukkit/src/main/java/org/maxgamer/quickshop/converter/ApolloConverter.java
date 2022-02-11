@@ -32,14 +32,6 @@ public class ApolloConverter {
             return;
         }
 
-        logger.info("Warning! High Risk Operation alert!");
-        logger.info("!! BACKUP YOUR DATA BEFORE CONTINUE !!");
-        logger.info("");
-        logger.info("QuickShop need upgrade your database and configuration to continue.");
-        logger.info("If you don't backup your data, You have huge chance will lose all your data.");
-        logger.info("If you hadn't backup your data yet, please close the server and backup immediately.");
-        logger.info("**Include your map, datafolder, plugins, database, EVERYTHING!**");
-        logger.info("");
         logger.info("Please wait, configuring converter...");
         this.converters.clear();
         this.converters.add(new ApolloConfigConverter(this));
@@ -86,10 +78,17 @@ public class ApolloConverter {
                 requireContinue();
             }
         }
-
+        logger.info("Warning! High Risk Operation alert!");
+        logger.info("!! BACKUP YOUR DATA BEFORE CONTINUE !!");
+        logger.info("");
+        logger.info("QuickShop need upgrade your database and configuration to continue.");
+        logger.info("If you don't backup your data, You will have chance will lose all your data.");
+        logger.info("If you hadn't backup your data yet, please close the server and backup immediately.");
+        logger.info("**Include your map, datafolder, plugins, database, EVERYTHING!**");
+        logger.info("");
         logger.info("Perfect! Everything seems get ready for converting, Do you want start the converting right now?");
         logger.info("Once you confirm, the converting process will start, and you can't stop it.");
-        logger.info("Create a `continue`.txt in QuickShop data folder to start the converting!");
+        logger.info("Create a 'continue.txt' in QuickShop data folder to start the converting!");
         requireContinue();
         logger.info("Starting converting...");
         logger.info("");
