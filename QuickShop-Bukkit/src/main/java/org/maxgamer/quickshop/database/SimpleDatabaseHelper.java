@@ -22,9 +22,6 @@ package org.maxgamer.quickshop.database;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.SQLQuery;
 import cc.carm.lib.easysql.api.enums.IndexType;
-import com.ghostchu.simplereloadlib.ReloadResult;
-import com.ghostchu.simplereloadlib.ReloadStatus;
-import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -47,7 +44,7 @@ import java.util.logging.Level;
 /**
  * A Util to execute all SQLs.
  */
-public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
+public class SimpleDatabaseHelper implements DatabaseHelper {
 
 
     @NotNull
@@ -56,36 +53,43 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     @NotNull
     private final QuickShop plugin;
 
+    @NotNull
+    private String prefix;
+
     public SimpleDatabaseHelper(@NotNull QuickShop plugin, @NotNull SQLManager manager) throws SQLException {
         this.plugin = plugin;
         this.manager = manager;
-        plugin.getReloadManager().register(this);
-        init();
+        this.prefix = plugin.getDbPrefix();
     }
 
-    private void init() throws SQLException {
-        if (!hasTable(plugin.getDbPrefix() + "metadata")) {
+    public void init(@NotNull String prefix) throws SQLException {
+        this.prefix = prefix;
+        checkTables();
+        checkColumns();
+    }
+
+    public void checkTables() throws SQLException {
+        if (!hasTable(prefix + "metadata")) {
             createMetadataTable();
         }
-        if (!hasTable(plugin.getDbPrefix() + "shops")) {
+        if (!hasTable(prefix + "shops")) {
             createShopsTable();
         }
-        if (!hasTable(plugin.getDbPrefix() + "messages")) {
+        if (!hasTable(prefix + "messages")) {
             createMessagesTable();
         }
-        if (!hasTable(plugin.getDbPrefix() + "logs")) {
+        if (!hasTable(prefix + "logs")) {
             createLogsTable();
         }
-        if (!hasTable(plugin.getDbPrefix() + "external_cache")) {
+        if (!hasTable(prefix + "external_cache")) {
             createExternalCacheTable();
         }
-        if (!hasTable(plugin.getDbPrefix() + "players")) {
+        if (!hasTable(prefix + "players")) {
             createPlayerTable();
         }
-        if (!hasTable(plugin.getDbPrefix() + "metrics")) {
+        if (!hasTable(prefix + "metrics")) {
             createMetricsTable();
         }
-        checkColumns();
     }
 
     /**
@@ -93,7 +97,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
      */
 
     public void createShopsTable() {
-        manager.createTable(plugin.getDbPrefix() + "shops")
+        manager.createTable(prefix + "shops")
                 .addColumn("owner", "MEDIUMTEXT NOT NULL")
                 .addColumn("price", "DECIMAL(32,2) NOT NULL")
                 .addColumn("itemConfig", "LONGTEXT NOT NULL")
@@ -120,7 +124,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
      * Creates the database table 'metrics'
      */
     public void createMetricsTable() {
-        manager.createTable(plugin.getDbPrefix() + "metrics")
+        manager.createTable(prefix+ "metrics")
                 .addColumn("time", "BIGINT NOT NULL")
                 .addColumn("x", "INT NOT NULL")
                 .addColumn("y", "INT NOT NULL")
@@ -146,7 +150,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
      * Creates the database table 'messages'
      */
     public void createMessagesTable() {
-        manager.createTable(plugin.getDbPrefix() + "messages")
+        manager.createTable(prefix + "messages")
                 .addColumn("owner", "VARCHAR(255) NOT NULL")
                 .addColumn("message", "TEXT NOT NULL")
                 .addColumn("time", "BIGINT(32) NOT NULL")
@@ -159,7 +163,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     }
 
     public void createLogsTable() {
-        manager.createTable(plugin.getDbPrefix() + "logs")
+        manager.createTable(prefix + "logs")
                 .addColumn("time", "BIGINT(32) NOT NULL")
                 .addColumn("classname", "TEXT NULL")
                 .addColumn("data", "LONGTEXT NULL")
@@ -168,7 +172,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     }
 
     public void createExternalCacheTable() {
-        manager.createTable(plugin.getDbPrefix() + "external_cache")
+        manager.createTable(prefix + "external_cache")
                 .addColumn("x", "INT(32) NOT NULL")
                 .addColumn("y", "INT(32) NOT NULL")
                 .addColumn("z", "INT(32) NOT NULL")
@@ -181,7 +185,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     }
 
     public void createMetadataTable() {
-        manager.createTable(plugin.getDbPrefix() + "metadata")
+        manager.createTable(prefix + "metadata")
                 .addColumn("key", "VARCHAR(255) NOT NULL")
                 .addColumn("value", "LONGTEXT NOT NULL")
                 .setIndex(IndexType.PRIMARY_KEY, null, "key")
@@ -190,7 +194,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     }
 
     public void createPlayerTable() {
-        manager.createTable(plugin.getDbPrefix() + "players")
+        manager.createTable(prefix + "players")
                 .addColumn("uuid", "VARCHAR(255) NOT NULL")
                 .addColumn("locale", "TEXT NOT NULL")
                 .setIndex(IndexType.PRIMARY_KEY, null, "uuid")
@@ -200,7 +204,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
     @Override
     public void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
-        manager.createReplace(plugin.getDbPrefix() + "players")
+        manager.createReplace(prefix + "players")
                 .setColumnNames("uuid", "locale")
                 .setParams(uuid.toString(), locale)
                 .executeAsync();
@@ -209,7 +213,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     @Override
     public void getPlayerLocale(@NotNull UUID uuid, @NotNull Consumer<Optional<String>> callback) {
         manager.createQuery()
-                .inTable(plugin.getDbPrefix() + "players")
+                .inTable(prefix + "players")
                 .addCondition("uuid", uuid.toString())
                 .selectColumns("locale")
                 .build()
@@ -241,14 +245,14 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     }
 
     public void setDatabaseVersion(int version) {
-        manager.createReplace(plugin.getDbPrefix() + "metadata")
+        manager.createReplace(prefix+ "metadata")
                 .setColumnNames("key", "value")
                 .setParams("database_version", version)
                 .executeAsync();
     }
 
     public int getDatabaseVersion() {
-        try (SQLQuery query = manager.createQuery().inTable(plugin.getDbPrefix() + "metadata")
+        try (SQLQuery query = manager.createQuery().inTable(prefix + "metadata")
                 .addCondition("key", "database_version")
                 .selectColumns("value")
                 .build().execute(); ResultSet result = query.getResultSet()) {
@@ -263,7 +267,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
     @Override
     public void cleanMessage(long weekAgo) {
-        manager.createDelete(plugin.getDbPrefix() + "messages")
+        manager.createDelete(prefix+ "messages")
                 .addCondition("time", "<", weekAgo)
                 .build()
                 .executeAsync();
@@ -272,7 +276,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
     @Override
     public void cleanMessageForPlayer(@NotNull UUID player) {
-        manager.createDelete(plugin.getDbPrefix() + "messages")
+        manager.createDelete(prefix + "messages")
                 .addCondition("owner", player.toString())
                 .build().executeAsync();
     }
@@ -284,7 +288,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
         if (shop.getLocation().getWorld() != null) {
             worldName = shop.getLocation().getWorld().getName();
         }
-        manager.createReplace(plugin.getDbPrefix() + "shops")
+        manager.createReplace(prefix + "shops")
                 .setColumnNames("owner", "price", "itemConfig",
                         "x", "y", "z", "world", "unlimited", "type", "extra",
                         "currency", "disableDisplay", "taxAccount", "inventorySymbolLink", "inventoryWrapperName"
@@ -320,7 +324,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
     @Override
     public void removeShop(String world, int x, int y, int z) {
-        manager.createDelete(plugin.getDbPrefix() + "shops")
+        manager.createDelete(prefix+ "shops")
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)
@@ -337,7 +341,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
     @Override
     public SQLQuery selectTable(String table) throws SQLException {
         return manager.createQuery()
-                .inTable(plugin.getDbPrefix() + table)
+                .inTable(prefix+ table)
                 .build()
                 .execute();
     }
@@ -349,7 +353,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
     @Override
     public void saveOfflineTransactionMessage(@NotNull UUID player, @NotNull String message, long time) {
-        manager.createInsert(plugin.getDbPrefix() + "messages")
+        manager.createInsert(prefix + "messages")
                 .setColumnNames("owner", "message", "time")
                 .setParams(player.toString(), message, time)
                 .executeAsync((handler) -> Util.debugLog("Operation completed, saveOfflineTransaction for " + player + ", " + handler + " lines affected"));
@@ -357,7 +361,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
     @Override
     public void updateOwner2UUID(@NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName) {
-        manager.createUpdate(plugin.getDbPrefix() + "shops")
+        manager.createUpdate(prefix + "shops")
                 .setColumnValues("owner", ownerUUID)
                 .addCondition("x", x)
                 .addCondition("y", y)
@@ -368,7 +372,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
     @Override
     public void updateExternalInventoryProfileCache(@NotNull Shop shop, int space, int stock) {
-        manager.createReplace(plugin.getDbPrefix() + "external_cache")
+        manager.createReplace(prefix + "external_cache")
                 .setColumnNames("x", "y", "z", "world", "space", "stock")
                 .setParams(shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ(), shop.getLocation().getWorld().getName(), space, stock)
                 .executeAsync();
@@ -391,7 +395,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
         map.put("taxAccount", taxAccount);
         map.put("inventorySymbolLink", inventorySymbolLink);
         map.put("inventoryWrapperName", inventoryWrapperName);
-        manager.createUpdate(plugin.getDbPrefix() + "shops")
+        manager.createUpdate(prefix + "shops")
                 .setColumnValues(map)
                 .addCondition("x", x)
                 .addCondition("y", y)
@@ -408,7 +412,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
     @Override
     public void insertHistoryRecord(@NotNull Object rec) {
-        manager.createInsert(plugin.getDbPrefix() + "logs")
+        manager.createInsert(prefix + "logs")
                 .setColumnNames("time", "classname", "data")
                 .setParams(System.currentTimeMillis(), rec.getClass().getName(), JsonUtil.getGson().toJson(rec))
                 .executeAsync();
@@ -416,7 +420,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
 
     @Override
     public void insertMetricRecord(@NotNull ShopMetricRecord record) {
-        manager.createInsert(plugin.getDbPrefix() + "metrics")
+        manager.createInsert(prefix + "metrics")
                 .setColumnNames("time", "x", "y", "z", "world", "type", "total", "tax", "amount", "player")
                 .setParams(record.getTime(),
                         record.getX(),
@@ -429,17 +433,6 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                         record.getAmount(),
                         record.getPlayer().toString())
                 .executeAsync();
-    }
-
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        init();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 
     /**

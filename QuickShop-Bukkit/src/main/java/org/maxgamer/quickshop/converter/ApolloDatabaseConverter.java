@@ -53,9 +53,9 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
         // Initialze drivers
         Driver.load();
         Class.forName("org.sqlite.JDBC");
-        try(Connection liveDatabase = getLiveDatabase().getConnection()) {
+        try (Connection liveDatabase = getLiveDatabase().getConnection()) {
             if (!config.isMysql()) {
-                try(Connection sqliteDatabase = getSQLiteDatabase()) {
+                try (Connection sqliteDatabase = getSQLiteDatabase()) {
                     if (hasTable(config.getPrefix() + "shops", liveDatabase))
                         throw new IllegalStateException("The target database has exists shops data!");
                     if (hasTable(config.getPrefix() + "messages", liveDatabase))
@@ -160,14 +160,16 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
         instance.getLogger().info("Downloading old data from database connection...");
         List<ShopStorageUnit> units;
         SQLManager liveDatabase = getLiveDatabase();
-        try (Connection liveDatabaseConnection = liveDatabase.getConnection()){
+        try (Connection liveDatabaseConnection = liveDatabase.getConnection()) {
             if (config.isMysql()) {
-                units = pullShops(config.getPrefix(), shopsTmpTable, actionId, liveDatabaseConnection);
+                units = pullShops(shopsTmpTable, liveDatabaseConnection);
             } else {
-                try(Connection sqliteDatabase = getSQLiteDatabase()) {
-                    units = pullShops(config.getPrefix(), shopsTmpTable, actionId, sqliteDatabase);
+                try (Connection sqliteDatabase = getSQLiteDatabase()) {
+                    units = pullShops(shopsTmpTable, sqliteDatabase);
                 }
             }
+            instance.getLogger().info("Checking and creating for database tables... ");
+            new SimpleDatabaseHelper(plugin, liveDatabase).init(config.getPrefix());
             instance.getLogger().info("Migrating old data to new database...");
             pushShops(units, config.getPrefix(), liveDatabase);
         }
@@ -186,18 +188,28 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
     private String renameTables(@NotNull UUID actionId, @NotNull DatabaseConfig config) throws Exception {
         if (config.isMysql()) {
             SQLManager manager = getLiveDatabase();
-            int lines = manager.alterTable(config.getPrefix() + "shops")
-                    .renameTo(config.getPrefix() + "shop_" + actionId.toString().replace("-", ""))
+            manager.alterTable(config.getPrefix() + "shops")
+                    .renameTo(config.getPrefix() + "shops_" + actionId.toString().replace("-", ""))
                     .execute();
-            manager.alterTable(config.getPrefix() + "messages")
-                    .renameTo(config.getPrefix() + "messages_" + actionId.toString().replace("-", ""))
-                    .execute();
-            manager.alterTable(config.getPrefix() + "external_cache")
-                    .renameTo(config.getPrefix() + "external_cache_" + actionId.toString().replace("-", ""))
-                    .execute();
-            if (lines < 1)
-                throw new IllegalStateException("Table rename failed!");
-            return config.getPrefix() + "shop_" + actionId.toString().replace("-", "");
+            try {
+                manager.alterTable(config.getPrefix() + "messages")
+                        .renameTo(config.getPrefix() + "messages_" + actionId.toString().replace("-", ""))
+                        .execute();
+                manager.alterTable(config.getPrefix() + "logs")
+                        .renameTo(config.getPrefix() + "logs_" + actionId.toString().replace("-", ""))
+                        .execute();
+                manager.alterTable(config.getPrefix() + "external_cache")
+                        .renameTo(config.getPrefix() + "external_cache_" + actionId.toString().replace("-", ""))
+                        .execute();
+            } catch (SQLException ignored) {
+                instance.getLogger().log(Level.INFO, "Error while rename tables! CHECK:Recoverable + Skip-able, Skipping...");
+            }
+            try (Connection connection = manager.getConnection()) {
+                if (!hasTable(config.getPrefix() + "shops_" + actionId.toString().replace("-", ""), connection)) {
+                    throw new IllegalStateException("Failed to rename tables!");
+                }
+            }
+            return config.getPrefix() + "shops_" + actionId.toString().replace("-", "");
         } else {
             return config.getPrefix() + "shops";
         }
@@ -324,7 +336,6 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
         instance.getLogger().info("Preparing to pushing shops into database...");
         instance.getLogger().info("Statistics: Total " + units.size() + " shops waiting for pushing.");
         instance.getLogger().info("Initializing target database...");
-        new SimpleDatabaseHelper(plugin, manager);
         int count = 0;
         int fails = 0;
         for (ShopStorageUnit unit : units) {
@@ -346,7 +357,7 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
     }
 
     @NotNull
-    private List<ShopStorageUnit> pullShops(@NotNull String prefix, @NotNull String shopsTable, @NotNull UUID actionId, @NotNull Connection connection) throws SQLException {
+    private List<ShopStorageUnit> pullShops(@NotNull String shopsTable, @NotNull Connection connection) throws SQLException {
         instance.getLogger().info("Preparing for pulling shops from database...");
         ResultSet resultSet = connection.createStatement().executeQuery("SELECT * FROM " + shopsTable);
         List<ShopStorageUnit> units = new ArrayList<>();
@@ -403,7 +414,7 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
      */
     public boolean hasTable(@NotNull String table, @NotNull Connection connection) throws SQLException {
         boolean match = false;
-        try (connection; ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {
+        try (ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {
             while (rs.next()) {
                 if (table.equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
                     match = true;
@@ -421,10 +432,10 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
      * @param column The column
      * @return True if the given table has the given column
      */
-    public boolean hasColumn(@NotNull String table, @NotNull String column, @NotNull Connection connection) {
+    public boolean hasColumn(@NotNull String table, @NotNull String column, @NotNull Connection connection) throws SQLException {
         String query = "SELECT * FROM " + table + " LIMIT 1";
         boolean match = false;
-        try (connection; PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+        try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
             ResultSetMetaData metaData = rs.getMetaData();
             for (int i = 1; i <= metaData.getColumnCount(); i++) {
                 if (metaData.getColumnLabel(i).equals(column)) {
@@ -432,8 +443,6 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
                     break;
                 }
             }
-        } catch (SQLException e) {
-            return match;
         }
         return match; // Uh, wtf.
     }

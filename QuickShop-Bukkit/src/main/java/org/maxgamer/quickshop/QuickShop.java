@@ -1147,6 +1147,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
             // Make the database up to date
             this.databaseHelper = new SimpleDatabaseHelper(this, this.sqlManager);
+            this.databaseHelper.init(this.getDbPrefix());
             return true;
         } catch (Exception e) {
             getLogger().log(Level.SEVERE, "Error when connecting to the database", e);
