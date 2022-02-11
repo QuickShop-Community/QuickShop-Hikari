@@ -286,7 +286,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
         manager.createReplace(plugin.getDbPrefix() + "shops")
                 .setColumnNames("owner", "price", "itemConfig",
                         "x", "y", "z", "world", "unlimited", "type", "extra",
-                        "currency","disableDisplay","taxAccount","inventorySymbolLink","inventoryWrapperName"
+                        "currency", "disableDisplay", "taxAccount", "inventorySymbolLink", "inventoryWrapperName"
                 )
                 .setParams(ShopModerator.serialize(shop.getModerator()), shop.getPrice(), Util.serialize(shop.getItem()),
                         location.getBlockX(),
@@ -379,6 +379,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                            double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
                            @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
                            @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName) {
+        Util.debugLog("Shop updating: " + x + "," + y + "," + z + "," + world + ", " + inventorySymbolLink + ", " + inventoryWrapperName);
         manager.createUpdate(plugin.getDbPrefix() + "shops")
                 .setColumnValues("owner", owner)
                 .setColumnValues("itemConfig", Util.serialize(item))
@@ -388,8 +389,8 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .setColumnValues("extra", extra)
                 .setColumnValues("disableDisplay", disableDisplay ? 1 : 0)
                 .setColumnValues("taxAccount", taxAccount)
-                .setColumnValues("inventorySymbolLink",inventorySymbolLink)
-                .setColumnValues("inventoryWrapperName",inventoryWrapperName)
+                .setColumnValues("inventorySymbolLink", inventorySymbolLink)
+                .setColumnValues("inventoryWrapperName", inventoryWrapperName)
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)
@@ -410,6 +411,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper, Reloadable {
                 .setParams(System.currentTimeMillis(), rec.getClass().getName(), JsonUtil.getGson().toJson(rec))
                 .executeAsync();
     }
+
     @Override
     public void insertMetricRecord(@NotNull ShopMetricRecord record) {
         manager.createInsert(plugin.getDbPrefix() + "metrics")

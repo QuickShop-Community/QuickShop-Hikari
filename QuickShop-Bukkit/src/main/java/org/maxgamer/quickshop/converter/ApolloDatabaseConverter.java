@@ -55,12 +55,14 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
         getLiveDatabase().getConnection().close(); // Test connection
         if (!config.isMysql())
             getSQLiteDatabase().close(); // Test connection
-        if (hasTable(config.getPrefix() + "shops", getLiveDatabase().getConnection()))
-            throw new IllegalStateException("The target database has exists shops data!");
-        if (hasTable(config.getPrefix() + "messages", getLiveDatabase().getConnection()))
-            throw new IllegalStateException("The target database has exists messages data!");
-        if (hasTable(config.getPrefix() + "external_cache", getLiveDatabase().getConnection()))
-            throw new IllegalStateException("The target database has external_data data!");
+        if (!config.isMysql()) {
+            if (hasTable(config.getPrefix() + "shops", getLiveDatabase().getConnection()))
+                throw new IllegalStateException("The target database has exists shops data!");
+            if (hasTable(config.getPrefix() + "messages", getLiveDatabase().getConnection()))
+                throw new IllegalStateException("The target database has exists messages data!");
+            if (hasTable(config.getPrefix() + "external_cache", getLiveDatabase().getConnection()))
+                throw new IllegalStateException("The target database has external_data data!");
+        }
         if (!hasTable(config.getPrefix() + "shops", getSQLiteDatabase()))
             throw new IllegalStateException("The sources database has exists shops data!");
         if (!hasTable(config.getPrefix() + "messages", getSQLiteDatabase()))
@@ -305,7 +307,7 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
                         .execute();
             } catch (Exception e) {
                 ++fails;
-                instance.getLogger().log(Level.WARNING, "Failed to push shop " + unit + " into database! " + e.getMessage() + ", skipping...",e);
+                instance.getLogger().log(Level.WARNING, "Failed to push shop " + unit + " into database! " + e.getMessage() + ", skipping...", e);
             }
         }
         instance.getLogger().info("Pushed " + count + " shops into database. " + fails + " shops failed to push.");
@@ -338,7 +340,7 @@ public class ApolloDatabaseConverter implements ApolloConverterInterface {
                 builder.taxAccount(resultSet.getString("taxAccount"));
                 units.add(builder.build());
             } catch (SQLException exception) {
-                instance.getLogger().log(Level.WARNING,"Error while pulling shop from database: " + exception.getMessage() + ", skipping...",exception);
+                instance.getLogger().log(Level.WARNING, "Error while pulling shop from database: " + exception.getMessage() + ", skipping...", exception);
                 ++fails;
             }
         }
