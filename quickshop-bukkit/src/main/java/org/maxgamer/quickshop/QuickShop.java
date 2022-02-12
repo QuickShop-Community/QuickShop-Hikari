@@ -326,12 +326,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private void load3rdParty() {
         // added for compatibility reasons with OpenInv - see
         // https://github.com/KaiKikuchi/QuickShop/issues/139
-        if (getConfig().getBoolean("plugin.OpenInv")) {
-            this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
-            if (this.openInvPlugin != null) {
-                getLogger().info("Successfully loaded OpenInv support!");
-            }
-        }
+//        if (getConfig().getBoolean("plugin.OpenInv")) {
+//            this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
+//            if (this.openInvPlugin != null) {
+//                getLogger().info("Successfully loaded OpenInv support!");
+//            }
+//        }
         if (getConfig().getBoolean("plugin.PlaceHolderAPI")) {
             this.placeHolderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
             if (this.placeHolderAPI != null) {
@@ -344,18 +344,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             this.blockHubPlugin = Bukkit.getPluginManager().getPlugin("BlockHub");
             if (this.blockHubPlugin != null) {
                 getLogger().info("Successfully loaded BlockHub support!");
-            }
-        }
-
-        if (getConfig().getBoolean("plugin.LWC")) {
-            this.lwcPlugin = Bukkit.getPluginManager().getPlugin("LWC");
-            if (this.lwcPlugin != null) {
-                if (Util.isMethodAvailable("com.griefcraft.lwc.LWC", "findProtection", org.bukkit.Location.class)) {
-                    getLogger().info("Successfully loaded LWC support!");
-                } else {
-                    getLogger().warning("Unsupported LWC version, please make sure you are using the modern version of LWC!");
-                    this.lwcPlugin = null;
-                }
             }
         }
 
@@ -374,19 +362,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
         }
     }
-
-    // /**
-//     * Logs the given string to qs.log, if QuickShop is configured to do so.
-//     *
-//     * @param s The string to log. It will be prefixed with the date and time.
-//     */
-//    public void log(@NotNull String s) {
-//        Util.debugLog("[SHOP LOG] " + s);
-//        if (this.getLogWatcher() == null) {
-//            return;
-//        }
-//        this.getLogWatcher().log(s);
-//    }
 
     public void logEvent(@NotNull Object eventObject) {
         if (this.getLogWatcher() == null) {
@@ -917,8 +892,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             updateWatcher = new UpdateWatcher();
             updateWatcher.init();
         }
-
-
         /* Delay the Ecoonomy system load, give a chance to let economy system regiser. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
         Util.debugLog("Loading economy system...");
@@ -933,7 +906,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
         timerTaskList.add(signUpdateWatcher.runTaskTimer(this, 0, 10));
         timerTaskList.add(shopContainerWatcher.runTaskTimer(this, 0, 5)); // Nobody use it
-
         if (logWatcher != null) {
             timerTaskList.add(logWatcher.runTaskTimerAsynchronously(this, 10, 10));
             getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
