@@ -109,7 +109,7 @@ public class ContainerShop implements Shop {
     @Nullable
     @EqualsAndHashCode.Exclude
     private volatile InventoryWrapper inventoryWrapper;
-    @Nullable
+    @NotNull
     private volatile String symbolLink;
 
     private ContainerShop(@NotNull ContainerShop s) {
@@ -192,10 +192,12 @@ public class ContainerShop implements Shop {
         this.taxAccount = taxAccount;
         this.dirty = false;
         this.isAlwaysCountingContainer = getExtra(plugin).getBoolean("is-always-counting-container", false);
+        if (symbolLink == null)
+            throw new IllegalArgumentException("SymbolLink cannot be null");
+        if (inventoryWrapperProvider == null)
+            throw new IllegalArgumentException("InventoryWrapperProvider cannot be null");
         this.symbolLink = symbolLink;
         this.inventoryWrapperProvider = inventoryWrapperProvider;
-        if (this.symbolLink == null)
-            throw new IllegalArgumentException("SymbolLink cannot be null");
         initDisplayItem();
         updateShopData();
     }
@@ -926,7 +928,7 @@ public class ContainerShop implements Shop {
     @Override
     @NotNull
     public String saveToSymbolLink() {
-        return symbolLink == null ? "" : symbolLink;
+        return symbolLink;
     }
 
     @Override
@@ -1374,8 +1376,12 @@ public class ContainerShop implements Shop {
             Util.debugLog("SymbolLink Applying: " + symbolLink);
             inventoryWrapper = locateInventory(symbolLink);
         }
-        if (this.inventoryWrapper.isValid()) {
-            return this.inventoryWrapper;
+        if(inventoryWrapper == null){
+            Util.debugLog("Cannot locate the Inventory with symbol link: " + symbolLink+", provider: "+inventoryWrapperProvider);
+            return null;
+        }
+        if (inventoryWrapper.isValid()) {
+            return inventoryWrapper;
         }
         if (!createBackup) {
             createBackup = false;
@@ -1388,42 +1394,6 @@ public class ContainerShop implements Shop {
         plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
         Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was deleted.");
         return null;
-//        BlockState state = PaperLib.getBlockState(location.getBlock(), false).getState();
-//        try {
-//            if (state.getType() == Material.ENDER_CHEST
-//                    && plugin.getOpenInvPlugin() != null) { //FIXME: Need better impl
-//                IOpenInv openInv = ((IOpenInv) plugin.getOpenInvPlugin());
-//               this.inventory =  new BukkitInventoryWrapper(openInv.getSpecialEnderChest(
-//                                Objects.requireNonNull(
-//                                        openInv.loadPlayer(
-//                                                plugin.getServer().getOfflinePlayer(this.moderator.getOwner()))),
-//                                plugin.getServer().getOfflinePlayer((this.moderator.getOwner())).isOnline())
-//                        .getBukkitInventory());
-//               return this.inventory;
-//            }
-//        } catch (Exception e) {
-//            Util.debugLog(e.getMessage());
-//            return null;
-//        }
-//        InventoryHolder container;
-//        try {
-//            container = (InventoryHolder) state;
-//            this.inventory = new BukkitInventoryWrapper(container.getInventory());
-//            return this.inventory;
-//        } catch (Exception e) {
-//            if (!createBackup) {
-//                createBackup = Util.backupDatabase();
-//                if (createBackup) {
-//                    this.delete(false);
-//                }
-//            } else {
-//                this.delete(true);
-//            }
-//            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
-//            Util.debugLog(
-//                    "Inventory doesn't exist anymore: " + this + " shop was removed.");
-//            return null;
-//        }
     }
 
     /**
@@ -1459,9 +1429,7 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         Block attachedChest = Util
                 .getSecondHalf(this.getLocation().getBlock());
-
         Shop preValue = attachedShop;
-
         //Prevent chain chunk loading
         if (attachedChest == null || !Util.isLoaded(attachedChest.getLocation())) {
             attachedShop = null;
@@ -1544,7 +1512,10 @@ public class ContainerShop implements Shop {
      */
     public boolean isDoubleChestShop() {
         Util.ensureThread(false);
-        return Util.isDoubleChest(this.getLocation().getBlock().getBlockData());
+        if(Util.isDoubleChest(this.getLocation().getBlock().getBlockData())){
+            return getAttachedShop() != null;
+        }
+        return false;
     }
 
     /**
