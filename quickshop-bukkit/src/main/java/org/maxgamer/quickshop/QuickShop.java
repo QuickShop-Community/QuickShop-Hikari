@@ -243,12 +243,14 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private SQLManager sqlManager;
     @Nullable
-    private QuickShopPAPI quickShopPAPI;;
+    private QuickShopPAPI quickShopPAPI;
+    ;
     @Getter
     private Platform platform;
     private BukkitAudiences audience;
     @Getter
     private ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
+
     /**
      * Use for mock bukkit
      */
@@ -548,7 +550,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         this.textManager = new SimpleTextManager(this);
         textManager.load();
         getLogger().info("Registering InventoryWrapper...");
-        this.inventoryWrapperRegistry.register(this,this.inventoryWrapperManager);
+        this.inventoryWrapperRegistry.register(this, this.inventoryWrapperManager);
         getLogger().info("Loading up integration modules.");
         if (PaperLib.isPaper()) {
             this.platform = new PaperPlatform();
@@ -574,12 +576,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getLogger().info("Unregistering PlaceHolderAPI hooks...");
             this.quickShopPAPI.unregister();
         }
-        try {
-            if (getShopManager() != null) {
-                getLogger().info("Unloading all loaded shops...");
-                getShopManager().getLoadedShops().forEach(Shop::onUnload);
-            }
-        } catch (Exception ignored) {
+        if (getShopManager() != null) {
+            getLogger().info("Unloading all loaded shops...");
+            getShopManager().getLoadedShops().forEach(Shop::onUnload);
         }
         getLogger().info("Unregistering compatibility hooks...");
         /* Remove all display items, and any dupes we can find */
@@ -600,14 +599,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             logWatcher.close();
         }
         getLogger().info("Shutting down scheduled timers...");
-        Iterator<BukkitTask> taskIterator = timerTaskList.iterator();
-        while (taskIterator.hasNext()) {
-            BukkitTask task = taskIterator.next();
-            if (!task.isCancelled()) {
-                task.cancel();
-            }
-            taskIterator.remove();
-        }
+        timerTaskList.forEach(BukkitTask::cancel);
+        timerTaskList.clear();
         if (calendarWatcher != null) {
             getLogger().info("Shutting down event calendar watcher...");
             calendarWatcher.stop();
@@ -618,10 +611,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             this.updateWatcher.uninit();
         }
         getLogger().info("Cleanup scheduled tasks...");
-        try {
-            Bukkit.getScheduler().cancelTasks(this);
-        } catch (Throwable ignored) {
-        }
+        Bukkit.getScheduler().cancelTasks(this);
         getLogger().info("Cleanup listeners...");
         HandlerList.unregisterAll(this);
         getLogger().info("Unregistering plugin services...");
@@ -1086,7 +1076,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfig().set("server-uuid", serverUUID);
         }
 
-        if(selectedVersion < 157){
+        if (selectedVersion < 157) {
             new HikariConverter(this).upgrade();
             saveConfig();
             getLogger().info("Server will restart after 5 seconds, enjoy :)");
@@ -1165,7 +1155,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         aliases.addAll(customCommands);
         quickShopCommand.setAliases(aliases);
         try {
-            platform.registerCommand("qs",quickShopCommand);
+            platform.registerCommand("qs", quickShopCommand);
         } catch (Exception e) {
             getLogger().log(Level.WARNING, "Failed to register command aliases", e);
             return;
@@ -1229,6 +1219,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         return this.gameVersion;
     }
+
     @NotNull
     public BukkitAudiences getAudience() {
         return audience;
