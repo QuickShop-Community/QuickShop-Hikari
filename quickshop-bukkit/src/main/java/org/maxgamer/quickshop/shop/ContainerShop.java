@@ -203,18 +203,6 @@ public class ContainerShop implements Shop {
     private @NotNull InventoryWrapper locateInventory(@Nullable String symbolLink) {
         if (symbolLink == null || symbolLink.isEmpty()) {
             throw new IllegalStateException("Symbol link is empty, that's not right bro.");
-//            BlockState block = getLocation().getBlock().getState();
-//            if (block instanceof BlockInventoryHolder) {
-//                this.inventoryWrapperProvider = plugin.getInventoryWrapperRegistry().find(plugin.getInventoryWrapperManager());
-//                this.inventoryWrapper = new BukkitInventoryWrapper(((BlockInventoryHolder) block).getInventory());
-//                this.symbolLink = plugin.getInventoryWrapperManager().mklink(inventoryWrapper);
-//                return this.inventoryWrapper;
-//            } else {
-//                if (block instanceof EnderChest) {
-//                    throw new IllegalStateException("Failed to load ender chest shop: You need install QuickShop EnderChest addon to make it works.");
-//                }
-//                throw new IllegalArgumentException("Failed to load shop: Target block not a Container, Skipping...");
-//            }
         }
         InventoryWrapperManager manager = plugin.getInventoryWrapperRegistry().get(getInventoryWrapperProvider());
         if (manager == null) {

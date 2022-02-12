@@ -1119,7 +1119,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 configurationSection.setInlineComments(key, emptyList);
             }
         }
-
         saveConfig();
         reloadConfig();
 

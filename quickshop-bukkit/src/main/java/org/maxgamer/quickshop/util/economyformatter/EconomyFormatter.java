@@ -75,7 +75,7 @@ public class EconomyFormatter implements Reloadable {
      * @param n price
      * @return The formatted string.
      */
-    public @Nullable String format(double n, @NotNull World world, @Nullable String currency) {
+    public @NotNull String format(double n, @NotNull World world, @Nullable String currency) {
         return format(n, disableVaultFormat, world, currency);
     }
 

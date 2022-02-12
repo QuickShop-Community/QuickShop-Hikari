@@ -345,7 +345,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      * @return formatted price
      */
     @Override
-    public @Nullable String format(double d, @NotNull World world, @Nullable String currency) {
+    public @NotNull String format(double d, @NotNull World world, @Nullable String currency) {
         return formatter.format(d, world, currency);
     }
 
@@ -356,7 +356,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      * @return formatted price
      */
     @Override
-    public @Nullable String format(double d, @NotNull Shop shop) {
+    public @NotNull String format(double d, @NotNull Shop shop) {
         return formatter.format(d, shop);
     }
 
