@@ -18,12 +18,12 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ApolloConfigConverter implements ApolloConverterInterface {
-    private final ApolloConverter instance;
+public class HikariConfigConverter implements HikariConverterInterface {
+    private final HikariConverter instance;
     private final QuickShop plugin;
-    private final Logger logger = Logger.getLogger("ApolloConfigConverter");
+    private final Logger logger = Logger.getLogger("HikariConfigConverter");
 
-    public ApolloConfigConverter(@NotNull ApolloConverter converterInstance) {
+    public HikariConfigConverter(@NotNull HikariConverter converterInstance) {
         this.instance = converterInstance;
         this.plugin = instance.getPlugin();
     }
@@ -75,7 +75,7 @@ public class ApolloConfigConverter implements ApolloConverterInterface {
     }
 
     private void remakeUpgrade(int selectedVersion) {
-        plugin.getLogger().info("[ApolloConverter] Legacy upgrade script executing...");
+        instance.getLogger().info("Legacy upgrade script executing...");
         if (selectedVersion == 1) {
             plugin.getConfig().set("disabled-metrics", false);
             plugin.getConfig().set("config-version", 2);

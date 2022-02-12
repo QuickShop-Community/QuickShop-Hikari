@@ -7,7 +7,7 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
-public interface ApolloConverterInterface {
+public interface HikariConverterInterface {
 
     /**
      * Returns empty for ready, any elements inside will mark as not ready and will be post to users.

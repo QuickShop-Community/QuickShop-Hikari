@@ -23,12 +23,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.maxgamer</groupId>
-    <artifactId>QuickShop</artifactId>
+    <artifactId>QuickShop-Hikari</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
-        <pluginver>0.0.0.1-Apollo</pluginver>
         <java.version>16</java.version>
         <developer>PotatoCraft-Studio</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

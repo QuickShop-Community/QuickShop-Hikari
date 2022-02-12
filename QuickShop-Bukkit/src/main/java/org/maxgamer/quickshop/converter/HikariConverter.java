@@ -13,15 +13,15 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ApolloConverter {
+public class HikariConverter {
     @Getter
     private final QuickShop plugin;
     @Getter
-    private final Logger logger = Logger.getLogger("ApolloConverter");
+    private final Logger logger = Logger.getLogger("HikariConverter");
     @Getter
-    private final List<ApolloConverterInterface> converters = new ArrayList<>();
+    private final List<HikariConverterInterface> converters = new ArrayList<>();
 
-    public ApolloConverter(QuickShop plugin) {
+    public HikariConverter(QuickShop plugin) {
         this.plugin = plugin;
     }
 
@@ -34,13 +34,13 @@ public class ApolloConverter {
 
         logger.info("Please wait, configuring converter...");
         this.converters.clear();
-        this.converters.add(new ApolloConfigConverter(this));
-        this.converters.add(new ApolloDatabaseConverter(this));
+        this.converters.add(new HikariConfigConverter(this));
+        this.converters.add(new HikariDatabaseConverter(this));
         logger.info("Before executing the converter, we're checking for make sure everything getting ready for converting...");
         logger.info("This may need a while...");
         List<Component> errors = new ArrayList<>();
 
-        for (ApolloConverterInterface converter : this.converters) {
+        for (HikariConverterInterface converter : this.converters) {
             try {
                 errors.addAll(converter.checkReady());
             }catch (Exception e){
@@ -69,7 +69,7 @@ public class ApolloConverter {
                 halt();
             }
         }
-        for (ApolloConverterInterface converter : this.converters) {
+        for (HikariConverterInterface converter : this.converters) {
             try {
                 converter.backup(uuid, backupFolder);
             }catch (Exception exception){
@@ -94,7 +94,7 @@ public class ApolloConverter {
         logger.info("");
         logger.info("");
         logger.info("");
-        logger.info("QuickShop Apollo - DataConverter 1.0 by Ghost_chu");
+        logger.info("QuickShop Hikari - DataConverter 1.0 by Ghost_chu");
         logger.info("Please do not stop the server while converting, or you may lose all your data!");
         logger.info("");
         logger.info("");
@@ -103,7 +103,7 @@ public class ApolloConverter {
         try{Thread.sleep(5000); // Give user a chance to kill server before we really start converting
         }catch (InterruptedException ignore){}
 
-        for (ApolloConverterInterface converter : this.converters) {
+        for (HikariConverterInterface converter : this.converters) {
             logger.info("POST: "+converter.getClass().getName());
             try {
                 converter.migrate(uuid);

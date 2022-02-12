@@ -24,12 +24,12 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ApolloDatabaseConverter implements ApolloConverterInterface {
+public class HikariDatabaseConverter implements HikariConverterInterface {
 
-    private final ApolloConverter instance;
+    private final HikariConverter instance;
     private final QuickShop plugin;
 
-    public ApolloDatabaseConverter(@NotNull ApolloConverter instance) {
+    public HikariDatabaseConverter(@NotNull HikariConverter instance) {
         this.instance = instance;
         this.plugin = instance.getPlugin();
         /* Engage HikariCP logging */

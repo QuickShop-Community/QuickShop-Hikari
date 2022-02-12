@@ -67,7 +67,7 @@ import org.maxgamer.quickshop.api.inventory.InventoryWrapperManager;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.command.SimpleCommandManager;
-import org.maxgamer.quickshop.converter.ApolloConverter;
+import org.maxgamer.quickshop.converter.HikariConverter;
 import org.maxgamer.quickshop.database.SimpleDatabaseHelper;
 import org.maxgamer.quickshop.economy.Economy_GemsEconomy;
 import org.maxgamer.quickshop.economy.Economy_TNE;
@@ -878,21 +878,18 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         Timer enableTimer = new Timer(true);
         this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
         getLogger().info("QuickShop " + getFork());
-        getLogger().info("Chat processor selected: Hardcorded Adventure Library.");
         this.audience = BukkitAudiences.create(this);
         /* Check the running envs is support or not. */
         getLogger().info("Starting plugin self-test, please wait...");
         runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
-
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
-
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
         getLogger().info("Let's start loading the plugin");
         getLogger().info("Chat processor selected: Hardcoded BungeeChat Lib");
         /* Process Metrics and Sentry error reporter. */
-        metrics = new Metrics(this, 3320);
+        metrics = new Metrics(this, 14281);
 
         try {
             if (!getConfig().getBoolean("auto-report-errors")) {
@@ -1212,7 +1209,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
 
         if(selectedVersion < 157){
-            new ApolloConverter(this).upgrade();
+            new HikariConverter(this).upgrade();
             saveConfiguration();
             getLogger().info("Server will restart after 5 seconds, enjoy :)");
             try {
