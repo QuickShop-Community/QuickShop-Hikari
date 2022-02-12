@@ -31,6 +31,7 @@ import de.themoep.minedown.adventure.MineDownParser;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -1236,9 +1237,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.owner", shop.ownerName()).forLocale());
         // Enabled
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", MsgUtil.getTranslateText(shop.getItem())).forLocale()
+                        .append(Component.text("   "))
+                        .append(plugin.text().of(p, "menu.preview", Component.text(shop.getItem().getAmount())).forLocale())
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()))
-                .append(Component.text("  ")));
-        if (Util.isTool(items.getType())) {
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND,MsgUtil.fillArgs("/qs silentpreview {0}",shop.getRuntimeRandomUniqueId().toString())))
+        );
+            if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(
                     plugin.text().of(p, "menu.damage-percent-remaining", Component.text(Util.getToolPercentage(items))).forLocale());
         }
