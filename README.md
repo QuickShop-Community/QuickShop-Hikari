@@ -1,24 +1,15 @@
 # QuickShop-Hikari
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a04ef7174d9f4e65b60ae28b09222809)](https://www.codacy.com/gh/Ghost-chu/QuickShop-Hikari/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Ghost-chu/QuickShop-Hikari&amp;utm_campaign=Badge_Grade)
-
 [![CodeFactor](https://www.codefactor.io/repository/github/ghost-chu/quickshop-hikari/badge)](https://www.codefactor.io/repository/github/ghost-chu/quickshop-hikari)
-
 ![GitHub license](https://img.shields.io/github/license/Ghost-chu/QuickShop-Hikari.svg)
-
-![BuildStatus](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari/21/badge/icon)
-
 ![TestsPassed](https://img.shields.io/jenkins/tests?compact_message&jobUrl=https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake)
-
 ![Contributors](https://img.shields.io/github/contributors/Ghost-chu/QuickShop-Hikari)
-
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari?ref=badge_shield)
 
 ---
 
-
 ![Java](https://img.shields.io/badge/java-version%208%2B%20(currently%20is%2016--17)-orange)
-
 ![MC](https://img.shields.io/badge/minecraft-java%20edition%201.16%2B-blueviolet)
 
 [//]: # (![Ver]&#40;https://img.shields.io/spiget/version/62575?label=version&#41;)
