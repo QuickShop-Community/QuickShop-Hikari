@@ -38,7 +38,7 @@ public class SubCommand_Reload implements CommandHandler<CommandSender> {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         plugin.text().of(sender, "command.reloading").send();
-        plugin.reloadConfiguration();
+        plugin.reloadConfig();
         Map<ReloadableContainer, ReloadResult> container = plugin.getReloadManager().reload();
         sender.sendMessage(ChatColor.GOLD + "Reloaded " + container.size() + " modules.");
     }

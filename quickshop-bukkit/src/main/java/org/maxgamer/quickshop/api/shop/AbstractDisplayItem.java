@@ -181,19 +181,19 @@ public abstract class AbstractDisplayItem implements Reloadable {
         //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
         if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
             PLUGIN.getConfig().set("shop.display-type", 0);
-            PLUGIN.saveConfiguration();
+            PLUGIN.saveConfig();
             PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because " + displayType.name() + " type is unsupported");
             return DisplayType.REALITEM;
         }
         if (displayType == DisplayType.UNKNOWN) {
             if (isNotSupportVirtualItem) {
                 PLUGIN.getConfig().set("shop.display-type", 0);
-                PLUGIN.saveConfiguration();
+                PLUGIN.saveConfig();
                 PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because " + displayType.name() + " type is unsupported");
                 return DisplayType.REALITEM;
             } else {
                 PLUGIN.getConfig().set("shop.display-type", 2);
-                PLUGIN.saveConfiguration();
+                PLUGIN.saveConfig();
                 PLUGIN.getLogger().log(Level.WARNING, "Falling back to VirtualDisplayItem because " + displayType.name() + " type is unsupported");
                 return DisplayType.VIRTUALITEM;
             }

@@ -46,7 +46,6 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.h2.Driver;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
@@ -67,7 +66,6 @@ import org.maxgamer.quickshop.economy.Economy_TNE;
 import org.maxgamer.quickshop.economy.Economy_Vault;
 import org.maxgamer.quickshop.inventory.InventoryWrapperRegistry;
 import org.maxgamer.quickshop.listener.*;
-import org.maxgamer.quickshop.listener.worldedit.WorldEditAdapter;
 import org.maxgamer.quickshop.localization.text.SimpleTextManager;
 import org.maxgamer.quickshop.metric.MetricListener;
 import org.maxgamer.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.PluginUtil;
@@ -89,7 +87,10 @@ import org.maxgamer.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import org.maxgamer.quickshop.util.reporter.error.RollbarErrorReporter;
 import org.maxgamer.quickshop.watcher.*;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
@@ -241,8 +242,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private Plugin worldEditPlugin;
     @Getter
-    private WorldEditAdapter worldEditAdapter;
-    @Getter
     private ShopPurger shopPurger;
     private int loggingLocation = 0;
     @Getter
@@ -376,7 +375,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 } else {
                     getLogger().warning("Failed to load ProtocolLib support, fallback to real item display");
                     getConfig().set("shop.display-type", 0);
-                    saveConfiguration();
+                    saveConfig();
                 }
             }
             if (AbstractDisplayItem.getNowUsing() == DisplayType.REALITEM) {
@@ -528,12 +527,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      * Reloads QuickShops config
      */
     @Override
-    @Deprecated
     public void reloadConfig() {
-        this.reloadConfiguration();
-    }
-
-    public void reloadConfiguration() {
         configProvider.reload();
         // Load quick variables
         this.display = this.getConfig().getBoolean("shop.display-items");
@@ -552,6 +546,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
         Bukkit.getPluginManager().callEvent(new QSConfigurationReloadEvent(this));
     }
+
 
     /**
      * Early than onEnable, make sure instance was loaded in first time.
@@ -615,10 +610,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 getShopManager().getLoadedShops().forEach(Shop::onUnload);
             }
         } catch (Exception ignored) {
-        }
-        if (worldEditAdapter != null) {
-            getLogger().info("Unregistering adapters...");
-            worldEditAdapter.unregister();
         }
         getLogger().info("Unregistering compatibility hooks...");
         compatibilityTool.unregisterAll();
@@ -712,7 +703,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         } catch (IllegalArgumentException resourceNotFoundException) {
             getLogger().severe("Failed to save config.yml from jar, The binary file of QuickShop may corrupted. Please re-download from our website.");
         }
-        reloadConfiguration();
+        reloadConfig();
         if (getConfig().getInt("config-version", 0) == 0) {
             getConfig().set("config-version", 1);
         }
@@ -1145,7 +1136,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
         if(selectedVersion < 157){
             new HikariConverter(this).upgrade();
-            saveConfiguration();
+            saveConfig();
             getLogger().info("Server will restart after 5 seconds, enjoy :)");
             try {
                 Thread.sleep(5000);
@@ -1162,7 +1153,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
         try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(getResource("config.yml"))), StandardCharsets.UTF_8)) {
             if (new ConfigurationFixer(this, new File(getDataFolder(), "config.yml"), getConfig(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
-                reloadConfiguration();
+                reloadConfig();
             }
         }
 
@@ -1177,8 +1168,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
         }
 
-        saveConfiguration();
-        reloadConfiguration();
+        saveConfig();
+        reloadConfig();
 
 
         //Delete old example configuration files

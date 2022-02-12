@@ -48,7 +48,7 @@ public class ConfigurationUpdater {
             serverUUID = uuid.toString();
             getConfiguration().set("server-uuid", serverUUID);
         }
-        plugin.saveConfiguration();
+        plugin.saveConfig();
     }
 
     public void update() {
@@ -90,7 +90,7 @@ public class ConfigurationUpdater {
     }
 
     private void saveConfig() {
-        plugin.saveConfiguration();
+        plugin.saveConfig();
     }
 
 
