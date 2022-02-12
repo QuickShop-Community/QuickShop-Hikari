@@ -14,7 +14,7 @@
     <artifactId>quickshop-platform-interface</artifactId>
     <packaging>jar</packaging>
 
-    <name>QuickShop Platform Interface</name>
+    <name>quickshop-platform-interface</name>
 
     <repositories>
         <repository>

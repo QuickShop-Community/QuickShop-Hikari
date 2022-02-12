@@ -14,7 +14,7 @@
     <artifactId>quickshop-platform-paper</artifactId>
     <packaging>jar</packaging>
 
-    <name>QuickShop Platform Paper</name>
+    <name>quickshop-platform-paper</name>
 
     <build>
         <plugins>
