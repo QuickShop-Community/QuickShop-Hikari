@@ -1,0 +1,7 @@
+name: qsc-nocheatplus
+version: '${project.version}'
+main: com.ghostchu.quickshop.compatibility.nocheatplus.Main
+api-version: 1.16
+depend:
+  - NoCheatPlus
+  - QuickShop-Hikari

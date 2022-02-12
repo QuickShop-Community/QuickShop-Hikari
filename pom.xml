@@ -221,9 +221,10 @@
 
 
     <modules>
-        <module>platform/QuickShop-platform-interface</module>
-        <module>platform/QuickShop-platform-spigot</module>
-        <module>platform/QuickShop-platform-paper</module>
+        <module>platform/quickshop-platform-interface</module>
+        <module>platform/quickshop-platform-spigot</module>
+        <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
+        <module>compatibility/clearlag</module>
     </modules>
 </project>

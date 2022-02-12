@@ -1,0 +1,9 @@
+name: qsc-clearlag
+version: '${project.version}'
+main: com.ghostchu.quickshop.compatibility.clearlag.Main
+api-version: 1.16
+depend:
+  - ClearLag
+  - QuickShop-Hikari
+authors: [ Ghost_chu ]
+description: Compatibility module for ClearLagg
