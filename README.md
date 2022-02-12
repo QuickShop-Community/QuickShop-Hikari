@@ -7,8 +7,6 @@
 ![Contributors](https://img.shields.io/github/contributors/Ghost-chu/QuickShop-Hikari)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari?ref=badge_shield)
 
----
-
 ![Java](https://img.shields.io/badge/java-version%208%2B%20(currently%20is%2016--17)-orange)
 ![MC](https://img.shields.io/badge/minecraft-java%20edition%201.16%2B-blueviolet)
 
