@@ -105,7 +105,7 @@ public interface ShopManager {
      * @param world    shop world
      * @return formated price
      */
-    @Nullable String format(double d, @NotNull World world, @Nullable String currency);
+    @NotNull String format(double d, @NotNull World world, @Nullable String currency);
 
     /**
      * Format the price use formatter
@@ -114,7 +114,7 @@ public interface ShopManager {
      * @param shop The shop
      * @return formated price
      */
-    @Nullable String format(double d, @NotNull Shop shop);
+    @NotNull String format(double d, @NotNull Shop shop);
 
     /**
      * Gets a shop in a specific location
