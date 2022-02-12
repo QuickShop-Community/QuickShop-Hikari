@@ -23,11 +23,6 @@ import cc.carm.lib.easysql.EasySQL;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.hikari.HikariConfig;
 import com.ghostchu.simplereloadlib.ReloadManager;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import de.leonhard.storage.LightningBuilder;
-import de.leonhard.storage.Yaml;
-import de.leonhard.storage.internal.settings.ConfigSettings;
-import de.leonhard.storage.internal.settings.ReloadSettings;
 import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
 import lombok.Getter;
@@ -86,7 +81,6 @@ import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.compatibility.SimpleCompatibilityManager;
-import org.maxgamer.quickshop.util.config.ConfigCommentUpdater;
 import org.maxgamer.quickshop.util.config.ConfigProvider;
 import org.maxgamer.quickshop.util.config.ConfigurationFixer;
 import org.maxgamer.quickshop.util.envcheck.*;
@@ -256,9 +250,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private SQLManager sqlManager;
     @Nullable
-    private QuickShopPAPI quickShopPAPI;
-    @Deprecated
-    private Yaml configurationForCompatibility = null;
+    private QuickShopPAPI quickShopPAPI;;
     @Getter
     private Platform platform;
     private BukkitAudiences audience;
@@ -357,15 +349,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             this.blockHubPlugin = Bukkit.getPluginManager().getPlugin("BlockHub");
             if (this.blockHubPlugin != null) {
                 getLogger().info("Successfully loaded BlockHub support!");
-            }
-        }
-        if (getConfig().getBoolean("plugin.WorldEdit")) {
-            //  GameVersion gameVersion = GameVersion.get(nmsVersion);
-            this.worldEditPlugin = Bukkit.getPluginManager().getPlugin("WorldEdit");
-            if (this.worldEditPlugin != null) {
-                this.worldEditAdapter = new WorldEditAdapter(this, (WorldEditPlugin) this.worldEditPlugin);
-                this.worldEditAdapter.register();
-                getLogger().info("Successfully loaded WorldEdit support!");
             }
         }
 
@@ -535,26 +518,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         return configProvider.get();
     }
 
-    @Deprecated
-    public @NotNull Yaml getConfiguration() {
-        return configurationForCompatibility == null ? configurationForCompatibility = LightningBuilder
-                .fromFile(new File(getDataFolder(), "config.yml"))
-                .addInputStreamFromResource("config.yml")
-                .setReloadSettings(ReloadSettings.MANUALLY)
-                .setConfigSettings(ConfigSettings.PRESERVE_COMMENTS)
-                .createYaml() : configurationForCompatibility;
-    }
-
-    @ApiStatus.ScheduledForRemoval
     @Override
-    @Deprecated
     public void saveConfig() {
-        this.saveConfiguration();
-        //configProvider.save();
-    }
-
-    public void saveConfiguration() {
-        this.configProvider.save();
+        configProvider.save();
     }
 
 
@@ -1214,11 +1180,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         saveConfiguration();
         reloadConfiguration();
 
-
-        //Re-add comment for config.yml
-        try (InputStream inputStream = Objects.requireNonNull(getResource("config.yml"))) {
-            new ConfigCommentUpdater(this, inputStream, new File(getDataFolder(), "config.yml")).updateComment();
-        }
 
         //Delete old example configuration files
         Files.deleteIfExists(new File(getDataFolder(), "example.config.yml").toPath());
