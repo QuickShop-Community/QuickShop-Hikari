@@ -56,6 +56,7 @@ import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.command.SimpleCommandManager;
 import org.maxgamer.quickshop.converter.HikariConverter;
+import org.maxgamer.quickshop.database.HikariUtil;
 import org.maxgamer.quickshop.database.SimpleDatabaseHelper;
 import org.maxgamer.quickshop.economy.Economy_GemsEconomy;
 import org.maxgamer.quickshop.economy.Economy_TNE;
@@ -992,20 +993,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private boolean setupDatabase() {
         getLogger().info("Setting up database...");
 
-        HikariConfig config = new HikariConfig();
-
-        config.addDataSourceProperty("connection-timeout", "60000");
-        config.addDataSourceProperty("validation-timeout", "3000");
-        config.addDataSourceProperty("idle-timeout", "60000");
-        config.addDataSourceProperty("login-timeout", "5");
-        config.addDataSourceProperty("maxLifeTime", "60000");
-        config.addDataSourceProperty("maximum-pool-size", "8");
-        config.addDataSourceProperty("minimum-idle", "10");
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        config.addDataSourceProperty("useUnicode", "true");
-        config.addDataSourceProperty("characterEncoding", "utf8");
+        HikariConfig config = HikariUtil.createHikariConfig();
 
         try {
             ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");

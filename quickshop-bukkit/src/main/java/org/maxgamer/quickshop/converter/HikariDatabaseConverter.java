@@ -9,6 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.h2.Driver;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
+import org.maxgamer.quickshop.database.HikariUtil;
 import org.maxgamer.quickshop.database.SimpleDatabaseHelper;
 import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import org.maxgamer.quickshop.util.JsonUtil;
@@ -33,11 +34,11 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         this.instance = instance;
         this.plugin = instance.getPlugin();
         /* Engage HikariCP logging */
-        Logger.getLogger("com.zaxxer.hikari.pool.PoolBase").setLevel(Level.OFF);
-        Logger.getLogger("com.zaxxer.hikari.pool.HikariPool").setLevel(Level.OFF);
-        Logger.getLogger("com.zaxxer.hikari.HikariDataSource").setLevel(Level.OFF);
-        Logger.getLogger("com.zaxxer.hikari.HikariConfig").setLevel(Level.OFF);
-        Logger.getLogger("com.zaxxer.hikari.util.DriverDataSource").setLevel(Level.OFF);
+        Logger.getLogger("cc.carm.lib.easysql.hikari.pool.PoolBase").setLevel(Level.OFF);
+        Logger.getLogger("cc.carm.lib.easysql.hikari.pool.HikariPool").setLevel(Level.OFF);
+        Logger.getLogger("cc.carm.lib.easysql.hikari.HikariDataSource").setLevel(Level.OFF);
+        Logger.getLogger("cc.carm.lib.easysql.hikari.HikariConfig").setLevel(Level.OFF);
+        Logger.getLogger("cc.carm.lib.easysql.hikari.util.DriverDataSource").setLevel(Level.OFF);
     }
 
     /**
@@ -249,19 +250,7 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
      */
     @NotNull
     private SQLManager getLiveDatabase() throws IllegalStateException, ConnectException {
-        HikariConfig config = new HikariConfig();
-        config.addDataSourceProperty("connection-timeout", "60000");
-        config.addDataSourceProperty("validation-timeout", "3000");
-        config.addDataSourceProperty("idle-timeout", "60000");
-        config.addDataSourceProperty("login-timeout", "5");
-        config.addDataSourceProperty("maxLifeTime", "60000");
-        config.addDataSourceProperty("maximum-pool-size", "8");
-        config.addDataSourceProperty("minimum-idle", "10");
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        config.addDataSourceProperty("useUnicode", "true");
-        config.addDataSourceProperty("characterEncoding", "utf8");
+        HikariConfig config = HikariUtil.createHikariConfig();
         SQLManager manager;
         try {
             DatabaseConfig databaseConfig = getDatabaseConfig();
