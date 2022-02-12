@@ -27,9 +27,6 @@ import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.PluginEnableEvent;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
-import org.maxgamer.quickshop.api.integration.IntegratedPlugin;
-import org.maxgamer.quickshop.api.integration.IntegrationManager;
-import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.compatibility.SimpleCompatibilityManager;
 
 import java.util.Set;
@@ -37,7 +34,6 @@ import java.util.Set;
 public class PluginListener extends AbstractQSListener {
 
     private static final Set<String> COMPATIBILITY_MODULE_LIST = SimpleCompatibilityManager.getModuleMapping().keySet();
-    private IntegrationManager integrationHelper;
     private CompatibilityManager compatibilityManager;
 
     public PluginListener(QuickShop plugin) {
@@ -46,7 +42,6 @@ public class PluginListener extends AbstractQSListener {
     }
 
     private void init() {
-        integrationHelper = plugin.getIntegrationHelper();
         compatibilityManager = plugin.getCompatibilityManager();
     }
 
@@ -54,14 +49,6 @@ public class PluginListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginDisabled(PluginDisableEvent event) {
         String pluginName = event.getPlugin().getName();
-        if (integrationHelper.isRegistered(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
-            IntegratedPlugin integratedPlugin = integrationHelper.getIntegrationMap().get(pluginName);
-            if (integratedPlugin != null) {
-                Util.debugLog("[Hot Load] Calling for unloading " + integratedPlugin.getName());
-                integratedPlugin.unload();
-                integrationHelper.unregister(integratedPlugin);
-            }
-        }
         if (COMPATIBILITY_MODULE_LIST.contains(pluginName)) {
             compatibilityManager.unregister(pluginName);
         }
@@ -70,14 +57,6 @@ public class PluginListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPluginEnabled(PluginEnableEvent event) {
         String pluginName = event.getPlugin().getName();
-        if (integrationHelper.isRegistered(pluginName) && plugin.getConfig().getBoolean("integration." + pluginName.toLowerCase() + ".enable")) {
-            integrationHelper.register(pluginName);
-            IntegratedPlugin integratedPlugin = integrationHelper.getIntegrationMap().get(pluginName);
-            if (integratedPlugin != null) {
-                Util.debugLog("[Hot Load] Calling for loading " + integratedPlugin.getName());
-                integratedPlugin.load();
-            }
-        }
         if (COMPATIBILITY_MODULE_LIST.contains(pluginName)) {
             ((SimpleCompatibilityManager) compatibilityManager).register(pluginName);
         }

@@ -61,8 +61,6 @@ import org.maxgamer.quickshop.api.database.DatabaseHelper;
 import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.economy.EconomyType;
 import org.maxgamer.quickshop.api.event.QSConfigurationReloadEvent;
-import org.maxgamer.quickshop.api.integration.IntegrateStage;
-import org.maxgamer.quickshop.api.integration.IntegrationManager;
 import org.maxgamer.quickshop.api.inventory.InventoryWrapperManager;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.shop.*;
@@ -72,8 +70,6 @@ import org.maxgamer.quickshop.database.SimpleDatabaseHelper;
 import org.maxgamer.quickshop.economy.Economy_GemsEconomy;
 import org.maxgamer.quickshop.economy.Economy_TNE;
 import org.maxgamer.quickshop.economy.Economy_Vault;
-import org.maxgamer.quickshop.integration.SimpleIntegrationManager;
-import org.maxgamer.quickshop.integration.worldguard.WorldGuardIntegration;
 import org.maxgamer.quickshop.inventory.InventoryWrapperRegistry;
 import org.maxgamer.quickshop.listener.*;
 import org.maxgamer.quickshop.listener.worldedit.WorldEditAdapter;
@@ -139,7 +135,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     /* Public QuickShop API End */
     boolean onLoadCalled = false;
     private GameVersion gameVersion;
-    private SimpleIntegrationManager integrationHelper;
     private SimpleDatabaseHelper databaseHelper;
     private SimpleCommandManager commandManager;
     private ItemMatcher itemMatcher;
@@ -320,10 +315,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      */
     public static String getFork() {
         return "Hikari";
-    }
-
-    public IntegrationManager getIntegrationHelper() {
-        return integrationHelper;
     }
 
     /**
@@ -628,16 +619,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         getLogger().info("Registering InventoryWrapper...");
         this.inventoryWrapperRegistry.register(this,this.inventoryWrapperManager);
         getLogger().info("Loading up integration modules.");
-        this.integrationHelper = new SimpleIntegrationManager(this);
-        this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadBegin);
-        if (getConfig().getBoolean("integration.worldguard.enable")) {
-            Plugin wg = Bukkit.getPluginManager().getPlugin("WorldGuard");
-            // WG require register flags when onLoad called.
-            if (wg != null) {
-                this.integrationHelper.register(new WorldGuardIntegration(this));
-            }
-        }
-        this.integrationHelper.callIntegrationsLoad(IntegrateStage.onLoadAfter);
         if (PaperLib.isPaper()) {
             this.platform = new PaperPlatform();
         } else if (PaperLib.isSpigot()) {
@@ -662,10 +643,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getLogger().info("Unregistering PlaceHolderAPI hooks...");
             this.quickShopPAPI.unregister();
         }
-        if (this.integrationHelper != null) {
-            getLogger().info("Calling for shutting down to integration modules...");
-            this.integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadBegin);
-        }
         try {
             if (getShopManager() != null) {
                 getLogger().info("Unloading all loaded shops...");
@@ -676,11 +653,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         if (worldEditAdapter != null) {
             getLogger().info("Unregistering adapters...");
             worldEditAdapter.unregister();
-        }
-        if (integrationHelper != null) {
-            getLogger().info("Unregistering integrations...");
-            integrationHelper.callIntegrationsUnload(IntegrateStage.onUnloadAfter);
-            integrationHelper.unregisterAll();
         }
         getLogger().info("Unregistering compatibility hooks...");
         compatibilityTool.unregisterAll();
@@ -876,7 +848,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
         }
         Timer enableTimer = new Timer(true);
-        this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableBegin);
         getLogger().info("QuickShop " + getFork());
         this.audience = BukkitAudiences.create(this);
         /* Check the running envs is support or not. */
@@ -1060,8 +1031,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             timerTaskList.add(ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks")));
             getLogger().info("Ongoing fee feature is enabled.");
         }
-        integrationHelper.searchAndRegisterPlugins();
-        this.integrationHelper.callIntegrationsLoad(IntegrateStage.onEnableAfter);
         new BukkitRunnable() {
             @Override
             public void run() {

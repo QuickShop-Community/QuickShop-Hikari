@@ -60,7 +60,6 @@ import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.api.shop.*;
 import org.maxgamer.quickshop.economy.Trader;
-import org.maxgamer.quickshop.integration.SimpleIntegrationManager;
 import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapper;
 import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.economyformatter.EconomyFormatter;
@@ -949,14 +948,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 null,
                 plugin.getName(),
                 plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper(((InventoryHolder)info.getLocation().getBlock().getState()).getInventory())));
-        if (!info.isBypassed()) {
-            Result result = ((SimpleIntegrationManager) plugin.getIntegrationHelper()).callIntegrationsCanCreate(p, info.getLocation());
-            if (!result.isSuccess()) {
-                plugin.text().of(p, "integrations-check-failed-create", LegacyComponentSerializer.legacySection().deserialize(result.getMessage())).send();
-                Util.debugLog("Cancelled by integrations: " + result);
-                return;
-            }
-        }
 
         // Calling ShopCreateEvent
         ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, p.getUniqueId());
@@ -1323,13 +1314,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
             MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
-            return;
-        }
-        Result result = ((SimpleIntegrationManager) plugin.getIntegrationHelper())
-                .callIntegrationsCanTrade(p, info.getLocation());
-        if (!result.isSuccess()) {
-            plugin.text().of(p, "integrations-check-failed-trade", LegacyComponentSerializer.legacySection().deserialize(result.getMessage())).send();
-            Util.debugLog("Cancel by integrations.");
             return;
         }
         AbstractEconomy eco = plugin.getEconomy();

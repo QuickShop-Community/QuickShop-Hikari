@@ -144,7 +144,6 @@ public class Paste {
         finalReport.append("\tBukkitVersion: ").append(plugin.getServer().getVersion()).append("\n");
         finalReport.append("\tWorldContainer: ").append(plugin.getServer().getWorldContainer()).append("\n");
         List<String> modules = new ArrayList<>();
-        plugin.getIntegrationHelper().getIntegrations().forEach(m -> modules.add(m.getName()));
         finalReport.append("\tLoaded Integrations: ").append(Util.list2String(modules)).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Replaceable Modules Status:\n");
