@@ -1,0 +1,4 @@
+create:
+  default-allow: false
+trade:
+  default-allow: true
