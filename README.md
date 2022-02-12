@@ -1,4 +1,4 @@
-# QuickShop-Apollo
+# QuickShop-Hikari
 
 [//]: # ([![Codacy Badge]&#40;https://app.codacy.com/project/badge/Grade/e33e2fafe3ac4d4eb9048d154bbd874e&#41;]&#40;https://www.codacy.com/gh/PotatoCraft-Studio/QuickShop-Reremake/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=PotatoCraft-Studio/QuickShop-Reremake&amp;utm_campaign=Badge_Grade&#41;)
 
@@ -26,11 +26,10 @@
 [//]: # (![Rating]&#40;https://img.shields.io/spiget/rating/62575?label=rating&#41;)
 
 ---
-QuickShop is a **FREE** shop plugin that allows players to easily sell/buy any items from a chest without any commands. In fact,
-none of the commands that QuickShop provides are ever needed by a player. QuickShop-Reremake is a **FREE** fork of QuickShop
-NotLikeMe with more features, bug fixes and other improvements.  
-QuickShop-Reremake is made by PotatoCraft Studio
-from [KaiKikuchi's QuickShop upstream repository](https://github.com/KaiKikuchi/QuickShop).
+QuickShop-Hikari forked from QuickShop-Reremake and is maintained by Ghost_chu.  
+
+The main purpose of this branch is to modernize the core content of QuickShop and adapt the features of the latest version of Minecraft.
+
 
 ## Support
 
