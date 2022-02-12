@@ -100,7 +100,7 @@ public class HikariConverter {
         logger.info("");
         logger.info("");
 
-        try{Thread.sleep(5000); // Give user a chance to kill server before we really start converting
+        try{Thread.sleep(3000); // Give user a chance to kill server before we really start converting
         }catch (InterruptedException ignore){}
 
         for (HikariConverterInterface converter : this.converters) {
