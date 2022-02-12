@@ -226,5 +226,6 @@
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
         <module>compatibility/clearlag</module>
+        <module>compatibility/nocheatplus</module>
     </modules>
 </project>
