@@ -1,23 +1,25 @@
 # QuickShop-Hikari
 
-[//]: # ([![Codacy Badge]&#40;https://app.codacy.com/project/badge/Grade/e33e2fafe3ac4d4eb9048d154bbd874e&#41;]&#40;https://www.codacy.com/gh/PotatoCraft-Studio/QuickShop-Reremake/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=PotatoCraft-Studio/QuickShop-Reremake&amp;utm_campaign=Badge_Grade&#41;)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/a04ef7174d9f4e65b60ae28b09222809)](https://www.codacy.com/gh/Ghost-chu/QuickShop-Hikari/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Ghost-chu/QuickShop-Hikari&amp;utm_campaign=Badge_Grade)
 
-[//]: # ([![CodeFactor]&#40;https://www.codefactor.io/repository/github/potatocraft-studio/quickshop-reremake/badge&#41;]&#40;https://www.codefactor.io/repository/github/potatocraft-studio/quickshop-reremake&#41;)
+[![CodeFactor](https://www.codefactor.io/repository/github/ghost-chu/quickshop-hikari/badge)](https://www.codefactor.io/repository/github/ghost-chu/quickshop-hikari)
 
-[//]: # (![BuildStatus]&#40;https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/21/badge/icon&#41;)
+![GitHub license](https://img.shields.io/github/license/Ghost-chu/QuickShop-Hikari.svg)
 
-[//]: # (![TestsPassed]&#40;https://img.shields.io/jenkins/tests?compact_message&jobUrl=https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake&#41;)
+![BuildStatus](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari/21/badge/icon)
 
-[//]: # (![Contributors]&#40;https://img.shields.io/github/contributors/potatocraft-studio/QuickShop-Reremake&#41;)
+![TestsPassed](https://img.shields.io/jenkins/tests?compact_message&jobUrl=https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake)
 
-[//]: # ([![FOSSA Status]&#40;https://app.fossa.com/api/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake.svg?type=shield&#41;]&#40;https://app.fossa.com/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake?ref=badge_shield&#41;)
+![Contributors](https://img.shields.io/github/contributors/Ghost-chu/QuickShop-Hikari)
 
-[//]: # (---)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari?ref=badge_shield)
 
-[//]: # ()
-[//]: # (![Java]&#40;https://img.shields.io/badge/java-version%208%2B%20&#40;currently%20is%208--16&#41;-orange&#41;)
+---
 
-[//]: # (![MC]&#40;https://img.shields.io/badge/minecraft-java%20edition%201.15%2B-blueviolet&#41;)
+
+![Java](https://img.shields.io/badge/java-version%208%2B%20(currently%20is%2016--17)-orange)
+
+![MC](https://img.shields.io/badge/minecraft-java%20edition%201.16%2B-blueviolet)
 
 [//]: # (![Ver]&#40;https://img.shields.io/spiget/version/62575?label=version&#41;)
 
@@ -31,9 +33,10 @@ QuickShop-Hikari forked from QuickShop-Reremake and is maintained by Ghost_chu.
 The main purpose of this branch is to modernize the core content of QuickShop and adapt the features of the latest version of Minecraft.
 
 
-## Support
+## Community & Support
 
-Use GitHub issue.
+[Discuss](https://github.com/Ghost-chu/QuickShop-Hikari/discussions)  
+[Bug Tracker](https://github.com/Ghost-chu/QuickShop-Hikari/issues)
 
 ## Features
 
@@ -45,14 +48,15 @@ Use GitHub issue.
 - Shops that buy and sell items at the same time (Using double chests)
 - Customisable permission checks
 - UUID support
-- Better shop protection [Reremake]
-- Item display name i18n [Reremake]
-- Enchantment display name i18n [Reremake]
-- A cool item preview [Reremake]
-- World/region protection plugins support [Reremake]
-- ProtocolLib based Virtual DisplayItem support [Reremake]
-- Powerful API [Reremake]
-- Optimized performance [Reremake]
+- Better shop protection
+- Item display name i18n
+- Enchantment display name i18n
+- A cool item preview
+- World/region protection plugins support
+- ProtocolLib based Virtual DisplayItem support
+- Powerful API
+- Optimized performance
+- MineDown syntax support
 
 ## Downloads
 
@@ -65,12 +69,13 @@ then make a pull request when you're done! Please try to
 follow [Google Java Style](https://google.github.io/styleguide/javaguide.html). Also do not increase the plugin version
 number. Thank you very much!
 
+And you can make yourself fork then publish it, no request required.
+
 To compile the QuickShop and debug it by yourself, please follow these steps:
 
 0. Make sure you're using Java16 JDK in your PATH.
 1. Compile main-project without signature by using debug profile: `mvn install -Pdebug`
-2. Start your server with extra flag to skip the QuickShop signature
-   checks: `-Dorg.maxgamer.quickshop.util.envcheck.skip.SIGNATURE_VERIFY`
+2. Start your server and go on.
 
 ## Maven
 
