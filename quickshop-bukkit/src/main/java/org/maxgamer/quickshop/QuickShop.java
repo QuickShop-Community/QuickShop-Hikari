@@ -27,8 +27,6 @@ import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
 import lombok.Getter;
 import lombok.Setter;
-import me.minebuilders.clearlag.Clearlag;
-import me.minebuilders.clearlag.listeners.ItemMergeListener;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -39,7 +37,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.entity.ItemSpawnEvent;
 import org.bukkit.plugin.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
@@ -50,7 +47,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.api.QuickShopAPI;
 import org.maxgamer.quickshop.api.command.CommandManager;
-import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.api.database.DatabaseHelper;
 import org.maxgamer.quickshop.api.economy.AbstractEconomy;
 import org.maxgamer.quickshop.api.economy.EconomyType;
@@ -78,7 +74,6 @@ import org.maxgamer.quickshop.shop.*;
 import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import org.maxgamer.quickshop.util.Timer;
 import org.maxgamer.quickshop.util.*;
-import org.maxgamer.quickshop.util.compatibility.SimpleCompatibilityManager;
 import org.maxgamer.quickshop.util.config.ConfigProvider;
 import org.maxgamer.quickshop.util.config.ConfigurationFixer;
 import org.maxgamer.quickshop.util.envcheck.*;
@@ -117,8 +112,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      */
     @Getter
     private static volatile boolean testing = false;
-    /* Public QuickShop API */
-    private final SimpleCompatibilityManager compatibilityTool = new SimpleCompatibilityManager(this);
     private final Map<String, Integer> limits = new HashMap<>(15);
     /**
      * The shop limites.
@@ -363,8 +356,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
         }
 
-        Bukkit.getPluginManager().registerEvents(this.compatibilityTool, this);
-        compatibilityTool.searchAndRegisterPlugins();
         if (this.display) {
             //VirtualItem support
             if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
@@ -376,28 +367,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                     getLogger().warning("Failed to load ProtocolLib support, fallback to real item display");
                     getConfig().set("shop.display-type", 0);
                     saveConfig();
-                }
-            }
-            if (AbstractDisplayItem.getNowUsing() == DisplayType.REALITEM) {
-                getLogger().warning("You're using Real Display system and that may cause your server lagg, switch to Virtual Display system if you can!");
-                if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
-                    try {
-                        Clearlag clearlag = (Clearlag) Bukkit.getPluginManager().getPlugin("ClearLag");
-                        for (RegisteredListener clearLagListener : ItemSpawnEvent.getHandlerList().getRegisteredListeners()) {
-                            if (!clearLagListener.getPlugin().equals(clearlag)) {
-                                continue;
-                            }
-                            if (clearLagListener.getListener().getClass().equals(ItemMergeListener.class)) {
-                                ItemSpawnEvent.getHandlerList().unregister(clearLagListener.getListener());
-                                getLogger().warning("+++++++++++++++++++++++++++++++++++++++++++");
-                                getLogger().severe("Detected incompatible module of ClearLag-ItemMerge module, it will broken the QuickShop display, we already unregister this module listener!");
-                                getLogger().severe("Please turn off it in the ClearLag config.yml or turn off the QuickShop display feature!");
-                                getLogger().severe("If you didn't do that, this message will keep spam in your console every times you server boot up!");
-                                getLogger().warning("+++++++++++++++++++++++++++++++++++++++++++");
-                            }
-                        }
-                    } catch (Exception ignored) {
-                    }
                 }
             }
         }
@@ -612,7 +581,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         } catch (Exception ignored) {
         }
         getLogger().info("Unregistering compatibility hooks...");
-        compatibilityTool.unregisterAll();
         /* Remove all display items, and any dupes we can find */
         if (shopManager != null) {
             Util.debugLog("Cleaning up shop manager...");
@@ -917,7 +885,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         new ChunkListener(this).register();
         new CustomInventoryListener(this).register();
         new ShopProtectionListener(this, this.shopCache).register();
-        new PluginListener(this).register();
         new EconomySetupListener(this).register();
         new MetricListener(this).register();
         InternalListener internalListener = new InternalListener(this);
@@ -948,9 +915,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 }
             }
             new DisplayProtectionListener(this, this.shopCache).register();
-            if (Bukkit.getPluginManager().getPlugin("ClearLag") != null) {
-                new ClearLaggListener(this).register();
-            }
         }
         if (getConfig().getBoolean("shop.lock")) {
             new LockListener(this, this.shopCache).register();
@@ -1224,11 +1188,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
     public @NotNull TextManager text() {
         return this.textManager;
-    }
-
-    @Override
-    public CompatibilityManager getCompatibilityManager() {
-        return this.compatibilityTool;
     }
 
     @Override

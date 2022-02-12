@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.api;
 
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.api.command.CommandManager;
-import org.maxgamer.quickshop.api.compatibility.CompatibilityManager;
 import org.maxgamer.quickshop.api.database.DatabaseHelper;
 import org.maxgamer.quickshop.api.localization.text.TextManager;
 import org.maxgamer.quickshop.api.shop.ItemMatcher;
@@ -36,12 +35,6 @@ import java.util.Map;
  * The unique entry point to allow you to access most features of QuickShop
  */
 public interface QuickShopAPI {
-    /**
-     * Getting Compatibility Manager (usually used for anti-cheat)
-     *
-     * @return Compatibility Manager
-     */
-    CompatibilityManager getCompatibilityManager();
 
     /**
      * Getting Shop Manager which managing most of shops

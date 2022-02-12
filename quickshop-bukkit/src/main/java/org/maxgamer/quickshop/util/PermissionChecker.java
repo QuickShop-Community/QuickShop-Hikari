@@ -43,7 +43,6 @@ import org.maxgamer.quickshop.api.eventmanager.QuickEventManager;
 import org.maxgamer.quickshop.eventmanager.BukkitEventManager;
 import org.maxgamer.quickshop.eventmanager.QSEventManager;
 import org.maxgamer.quickshop.util.holder.Result;
-import org.primesoft.blockshub.BlocksHubBukkit;
 
 import java.util.List;
 
@@ -119,19 +118,6 @@ public class PermissionChecker implements Reloadable {
 
         }
 
-        if (plugin.getBlockHubPlugin() != null) {
-            BlocksHubBukkit blocksHubBukkit = (BlocksHubBukkit) plugin.getBlockHubPlugin();
-            boolean bhCanBuild = blocksHubBukkit.getApi().hasAccess(player.getUniqueId(), blocksHubBukkit.getApi().getWorld(block.getWorld().getName()), block.getX(), block.getY(), block.getZ());
-            if (plugin.getConfig().getBoolean("plugin.BlockHub.only")) {
-                Util.debugLog("BlockHub only mode response: " + bhCanBuild);
-                return new Result("BlockHub");
-            } else {
-                if (!bhCanBuild) {
-                    Util.debugLog("BlockHub reporting player no permission to access this region.");
-                    return new Result("BlockHub");
-                }
-            }
-        }
         if (!usePermissionChecker) {
             return Result.SUCCESS;
         }
@@ -189,9 +175,7 @@ public class PermissionChecker implements Reloadable {
                 }
             }
         }, plugin);
-        plugin.getCompatibilityManager().toggleProtectionListeners(false, player);
         this.eventManager.callEvent(beMainHand);
-        plugin.getCompatibilityManager().toggleProtectionListeners(true, player);
 
         return isCanBuild;
     }
