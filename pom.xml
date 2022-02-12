@@ -221,9 +221,9 @@
 
 
     <modules>
-        <module>quickshop-bukkit</module>
         <module>platform/QuickShop-platform-interface</module>
         <module>platform/QuickShop-platform-spigot</module>
         <module>platform/QuickShop-platform-paper</module>
+        <module>quickshop-bukkit</module>
     </modules>
 </project>
