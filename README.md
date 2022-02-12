@@ -1,25 +1,29 @@
 # QuickShop-Apollo
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/e33e2fafe3ac4d4eb9048d154bbd874e)](https://www.codacy.com/gh/PotatoCraft-Studio/QuickShop-Reremake/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=PotatoCraft-Studio/QuickShop-Reremake&amp;utm_campaign=Badge_Grade)
-[![CodeFactor](https://www.codefactor.io/repository/github/potatocraft-studio/quickshop-reremake/badge)](https://www.codefactor.io/repository/github/potatocraft-studio/quickshop-reremake)
-![BuildStatus](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/21/badge/icon)
-![TestsPassed](https://img.shields.io/jenkins/tests?compact_message&jobUrl=https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake)
-![Contributors](https://img.shields.io/github/contributors/potatocraft-studio/QuickShop-Reremake)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake?ref=badge_shield)
----
+[//]: # ([![Codacy Badge]&#40;https://app.codacy.com/project/badge/Grade/e33e2fafe3ac4d4eb9048d154bbd874e&#41;]&#40;https://www.codacy.com/gh/PotatoCraft-Studio/QuickShop-Reremake/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=PotatoCraft-Studio/QuickShop-Reremake&amp;utm_campaign=Badge_Grade&#41;)
 
-![Java](https://img.shields.io/badge/java-version%208%2B%20(currently%20is%208--16)-orange)
-![MC](https://img.shields.io/badge/minecraft-java%20edition%201.15%2B-blueviolet)
-![Ver](https://img.shields.io/spiget/version/62575?label=version)
-![Downloads](https://img.shields.io/spiget/downloads/62575?label=downloads)
-![Rating](https://img.shields.io/spiget/rating/62575?label=rating)
----
+[//]: # ([![CodeFactor]&#40;https://www.codefactor.io/repository/github/potatocraft-studio/quickshop-reremake/badge&#41;]&#40;https://www.codefactor.io/repository/github/potatocraft-studio/quickshop-reremake&#41;)
 
-## What is Apollo?
-QuickShop-Apollo is a highly experimental, with breaking changes branch.
+[//]: # (![BuildStatus]&#40;https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/21/badge/icon&#41;)
 
-We use this branch to develop new major features and test it.  
-In most case, this branch's content and features need 1-2 years to merge into master.
+[//]: # (![TestsPassed]&#40;https://img.shields.io/jenkins/tests?compact_message&jobUrl=https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake&#41;)
+
+[//]: # (![Contributors]&#40;https://img.shields.io/github/contributors/potatocraft-studio/QuickShop-Reremake&#41;)
+
+[//]: # ([![FOSSA Status]&#40;https://app.fossa.com/api/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake.svg?type=shield&#41;]&#40;https://app.fossa.com/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake?ref=badge_shield&#41;)
+
+[//]: # (---)
+
+[//]: # ()
+[//]: # (![Java]&#40;https://img.shields.io/badge/java-version%208%2B%20&#40;currently%20is%208--16&#41;-orange&#41;)
+
+[//]: # (![MC]&#40;https://img.shields.io/badge/minecraft-java%20edition%201.15%2B-blueviolet&#41;)
+
+[//]: # (![Ver]&#40;https://img.shields.io/spiget/version/62575?label=version&#41;)
+
+[//]: # (![Downloads]&#40;https://img.shields.io/spiget/downloads/62575?label=downloads&#41;)
+
+[//]: # (![Rating]&#40;https://img.shields.io/spiget/rating/62575?label=rating&#41;)
 
 ---
 QuickShop is a **FREE** shop plugin that allows players to easily sell/buy any items from a chest without any commands. In fact,
@@ -30,9 +34,7 @@ from [KaiKikuchi's QuickShop upstream repository](https://github.com/KaiKikuchi/
 
 ## Support
 
-| <a href="https://discord.gg/bfefw2E"/> <img src="/.github/icons/Discord.svg" width="100" height="100" />| <a href="https://github.com/PotatoCraft-Studio/QuickShop-Reremake/issues"><img src="/.github/icons/Github.png" width="100" height="100" />|
-| :---: | :---: |
-| [**Discord**](https://discord.gg/bfefw2E) | [**Github Issues**](https://github.com/PotatoCraft-Studio/QuickShop-Reremake/issues) |
+Use GitHub issue.
 
 ## Features
 
@@ -55,9 +57,7 @@ from [KaiKikuchi's QuickShop upstream repository](https://github.com/KaiKikuchi/
 
 ## Downloads
 
-| <a href="https://www.spigotmc.org/resources/62575/"><img src="/.github/icons/Spigot.png" width="100" height="90" /></a> | <a href="https://dev.bukkit.org/projects/quickshop-reremake"><img src="/.github/icons/Bukkit.png" width="100" height="100" /></a></a> | <a href="http://www.mcbbs.net/thread-809496-1-1.html"><img src="/.github/icons/MCBBS.png" width="100" height="100" /></a> | <a href="https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT/"><img src="/.github/icons/Jenkins.svg" width="85" height="100" /></a>
- | :---: | :---: | :---: | :---: |
-| **Spigot** | **BukkitDev** | **MCBBS** | **Jenkins** |
+No releases yet.
 
 ## Contribute
 
@@ -75,28 +75,45 @@ To compile the QuickShop and debug it by yourself, please follow these steps:
 
 ## Maven
 
-```XML
 
-<repository>
-    <id>quickshop-repo</id>
-    <url>https://repo.codemc.io/repository/maven-public/</url>
-</repository>
+No maven yet.
 
-<dependency>
-<groupId>org.maxgamer</groupId>
-<artifactId>QuickShop</artifactId>
-<version>{VERSION}</version>
-<scope>provided</scope>
-</dependency>
-```
+[//]: # (```XML)
 
-## Bstats
+[//]: # ()
+[//]: # (<repository>)
 
-[![BigImage](https://bstats.org/signatures/bukkit/QuickShop-Reremake.svg)](https://bstats.org/plugin/bukkit/QuickShop-Reremake/3320)
+[//]: # (    <id>quickshop-repo</id>)
 
-## License
+[//]: # (    <url>https://repo.codemc.io/repository/maven-public/</url>)
 
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake?ref=badge_large)
+[//]: # (</repository>)
+
+[//]: # ()
+[//]: # (<dependency>)
+
+[//]: # (<groupId>org.maxgamer</groupId>)
+
+[//]: # (<artifactId>QuickShop</artifactId>)
+
+[//]: # (<version>{VERSION}</version>)
+
+[//]: # (<scope>provided</scope>)
+
+[//]: # (</dependency>)
+
+[//]: # (```)
+
+[//]: # (## Bstats)
+
+[//]: # ()
+[//]: # ([![BigImage]&#40;https://bstats.org/signatures/bukkit/QuickShop-Reremake.svg&#41;]&#40;https://bstats.org/plugin/bukkit/QuickShop-Reremake/3320&#41;)
+
+[//]: # ()
+[//]: # (## License)
+
+[//]: # ()
+[//]: # ([![FOSSA Status]&#40;https://app.fossa.com/api/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake.svg?type=large&#41;]&#40;https://app.fossa.com/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake?ref=badge_large&#41;)
 
 ## Developer API
 
