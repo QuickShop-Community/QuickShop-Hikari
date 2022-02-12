@@ -71,7 +71,6 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
                         if (log.delete()) {
                             //noinspection ResultOfMethodCallIgnored
                             log.createNewFile();
-                            deleteFailed = false;
                         } else {
                             deleteFailed = true;
                         }

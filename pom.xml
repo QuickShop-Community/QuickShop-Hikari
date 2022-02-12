@@ -147,7 +147,10 @@
                                         <pattern>org.enginehub.squirrelid.</pattern>
                                         <shadedPattern>org.maxgamer.quickshop.shade.org.enginehub.squirrelid.</shadedPattern>
                                     </relocation>
-
+                                    <relocation>
+                                        <pattern>co.aikar.taskchain.</pattern>
+                                        <shadedPattern>org.maxgamer.quickshop.shade.co.aikar.taskchain.</shadedPattern> <!-- Replace this -->
+                                    </relocation>
                                 </relocations>
                                 <transformers>
                                     <transformer
