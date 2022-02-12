@@ -28,4 +28,4 @@ jobs:
       #      - name: Build Integration
       #        run: mvn -B install --file src/integration/plotsquared/5/pom.xml
       - name: Build with Maven
-        run: mvn test
+        run: mvn install
