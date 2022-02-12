@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.maxgamer</groupId>
-        <artifactId>QuickShop</artifactId>
+        <groupId>com.ghostchu</groupId>
+        <artifactId>QuickShop-Hikari</artifactId>
         <version>1.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>

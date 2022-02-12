@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.maxgamer</groupId>
-        <artifactId>QuickShop</artifactId>
+        <groupId>com.ghostchu</groupId>
+        <artifactId>QuickShop-Hikari</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -39,10 +39,6 @@
                         </filter>
                     </filters>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jarsigner-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -521,12 +517,6 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
             <version>4.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

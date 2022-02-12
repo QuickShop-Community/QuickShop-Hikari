@@ -22,14 +22,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.maxgamer</groupId>
+    <groupId>com.ghostchu</groupId>
     <artifactId>QuickShop-Hikari</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
         <java.version>16</java.version>
-        <developer>PotatoCraft-Studio</developer>
+        <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -40,6 +40,27 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <name>QuickShop-Hikari</name>
+    <description>Another QuickShop fork</description>
+    <url>https://github.com/${developer}/${artifactId}</url>
+
+    <developers>
+        <developer>
+            <id>Ghost_chu</id>
+            <name>Ghost chu</name>
+            <email>2908803755@qq.com</email>
+            <url>https://www.ghostchu.com</url>
+            <timezone>Asia/Shanghai</timezone>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:${developer}/${artifactId}.git</connection>
+        <developerConnection>scm:git:git@github.com:${developer}/${artifactId}.git</developerConnection>
+        <url>https://github.com/${developer}/${artifactId}</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <issueManagement>
         <url>https://github.com/${developer}/${name}/issues</url>
@@ -56,6 +77,12 @@
             <url>https://repo.codemc.io/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <ciManagement>
+        <system>GitHub Actions</system>
+        <url>https://github.com/${developer}/${artifactId}/actions/workflows/maven.yml</url>
+    </ciManagement>
+
     <pluginRepositories>
         <pluginRepository>
             <id>apache.snapshots</id>
@@ -115,6 +142,12 @@
                                         <pattern>net.minidev.json.</pattern>
                                         <shadedPattern>org.maxgamer.quickshop.shade.net.minidev.json.minidev.json.</shadedPattern>
                                     </relocation>
+                                    <!-- SID -->
+                                    <relocation>
+                                        <pattern>org.enginehub.squirrelid.</pattern>
+                                        <shadedPattern>org.maxgamer.quickshop.shade.org.enginehub.squirrelid.</shadedPattern>
+                                    </relocation>
+
                                 </relocations>
                                 <transformers>
                                     <transformer
