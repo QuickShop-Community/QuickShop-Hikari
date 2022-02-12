@@ -319,7 +319,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      * @return The fork name.
      */
     public static String getFork() {
-        return "Apollo";
+        return "Hikari";
     }
 
     public IntegrationManager getIntegrationHelper() {

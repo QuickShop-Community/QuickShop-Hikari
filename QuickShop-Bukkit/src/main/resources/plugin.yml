@@ -1,4 +1,4 @@
-name: QuickShop
+name: QuickShop-Hikari
 main: org.maxgamer.quickshop.QuickShop
 version: ${project.version}
 authors:
