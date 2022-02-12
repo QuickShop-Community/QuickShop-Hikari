@@ -119,6 +119,10 @@ public class ShopLoader {
                     ++loadAfterWorldLoaded;
                     continue;
                 }
+                if (data.getInventoryWrapperProvider() != null && !data.getInventoryWrapperProvider().isEmpty() && plugin.getInventoryWrapperRegistry().get(data.getInventoryWrapperProvider()) == null) {
+                    Util.debugLog("InventoryWrapperProvider not exists! Shop won't be loaded!");
+                    continue;
+                }
                 Shop shop =
                         new ContainerShop(plugin,
                                 data.getLocation(),
@@ -146,12 +150,7 @@ public class ShopLoader {
                     }
                     continue;
                 }
-                if (shop.getInventoryWrapperProvider() != null && !shop.getInventoryWrapperProvider().isEmpty() && plugin.getInventoryWrapperRegistry().get(shop.getInventoryWrapperProvider()) == null) {
-                    Util.debugLog("InventoryWrapperProvider not exists! Shop won't be loaded!");
-                    continue;
-                }
                 ++valid;
-
                 Location shopLocation = shop.getLocation();
                 //World unloaded but found
                 if (!shopLocation.isWorldLoaded()) {
@@ -160,7 +159,6 @@ public class ShopLoader {
                 }
                 // Load to RAM
                 plugin.getShopManager().loadShop(shopLocation.getWorld().getName(), shop);
-
                 if (Util.isLoaded(shopLocation)) {
                     // Load to World
                     if (!Util.canBeShop(shopLocation.getBlock())) {
