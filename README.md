@@ -25,8 +25,8 @@ The main purpose of this branch is to modernize the core content of QuickShop an
 ## Community & Support
 
 [Discuss](https://github.com/Ghost-chu/QuickShop-Hikari/discussions)  
-[Bug Tracker](https://github.com/Ghost-chu/QuickShop-Hikari/issues)
-
+[Bug Tracker](https://github.com/Ghost-chu/QuickShop-Hikari/issues)  
+[Discord](https://discord.gg/Bu3dVtmsD3)
 ## Features
 
 - Easy to use
