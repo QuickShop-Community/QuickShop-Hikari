@@ -364,5 +364,6 @@
   "safe-mode-admin": "&c&lUWAGA: &cQuickShop na tym serwerze działa teraz w trybie bezpiecznym, żadne funkcje nie będą działać, wpisz &e/qs &c, aby sprawdzić błędy.",
   "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
   "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them."
+  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
+  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
 }
