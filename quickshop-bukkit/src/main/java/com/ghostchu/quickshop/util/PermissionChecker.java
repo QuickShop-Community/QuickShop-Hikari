@@ -19,12 +19,16 @@
 
 package com.ghostchu.quickshop.util;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.ProtectionCheckStatus;
+import com.ghostchu.quickshop.api.event.ShopProtectionCheckEvent;
+import com.ghostchu.quickshop.api.eventmanager.QuickEventManager;
+import com.ghostchu.quickshop.eventmanager.BukkitEventManager;
+import com.ghostchu.quickshop.eventmanager.QSEventManager;
+import com.ghostchu.quickshop.util.holder.Result;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
-import com.griefcraft.lwc.LWC;
-import com.griefcraft.lwc.LWCPlugin;
-import com.griefcraft.model.Protection;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -36,13 +40,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.ProtectionCheckStatus;
-import com.ghostchu.quickshop.api.event.ShopProtectionCheckEvent;
-import com.ghostchu.quickshop.api.eventmanager.QuickEventManager;
-import com.ghostchu.quickshop.eventmanager.BukkitEventManager;
-import com.ghostchu.quickshop.eventmanager.QSEventManager;
-import com.ghostchu.quickshop.util.holder.Result;
 
 import java.util.List;
 
@@ -103,19 +100,6 @@ public class PermissionChecker implements Reloadable {
         if (plugin.getConfig().getStringList("shop.protection-checking-blacklist").contains(block.getWorld().getName())) {
             Util.debugLog("Skipping protection checking in world " + block.getWorld().getName() + " causing it in blacklist.");
             return Result.SUCCESS;
-        }
-
-        if (plugin.getLwcPlugin() != null) {
-            LWCPlugin lwc = (LWCPlugin) plugin.getLwcPlugin();
-            LWC lwcInstance = lwc.getLWC();
-            if (lwcInstance != null) {
-                Protection protection = lwcInstance.findProtection(block.getLocation());
-                if (protection != null && !protection.isOwner(player)) {
-                    Util.debugLog("LWC reporting player no permission to access this block.");
-                    return new Result("LWC");
-                }
-            }
-
         }
 
         if (!usePermissionChecker) {

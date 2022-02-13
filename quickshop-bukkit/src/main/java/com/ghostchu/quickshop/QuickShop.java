@@ -216,8 +216,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private Plugin blockHubPlugin;
     @Getter
-    private Plugin lwcPlugin;
-    @Getter
     private Cache shopCache;
     @Getter
     private boolean allowStack;

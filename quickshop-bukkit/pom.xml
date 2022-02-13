@@ -162,18 +162,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.griefcraft.lwc</groupId>
-            <artifactId>LWCX</artifactId>
-            <version>2.2.7</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>*</artifactId>
-                    <groupId>*</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>com.github.TechFortress</groupId>
             <artifactId>GriefPrevention</artifactId>
             <version>16.17.1</version>
