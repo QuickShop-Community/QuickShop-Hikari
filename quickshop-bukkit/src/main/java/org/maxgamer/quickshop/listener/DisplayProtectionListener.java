@@ -123,8 +123,6 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
         if (AbstractDisplayItem.checkIsGuardItemStack(itemStack)) {
             event.setCancelled(true);
         }
-
-        // Util.debugLog("We canceled an Item from despawning because they are our display item.");
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)

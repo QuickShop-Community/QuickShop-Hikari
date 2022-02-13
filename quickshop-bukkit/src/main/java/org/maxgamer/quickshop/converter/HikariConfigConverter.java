@@ -1,6 +1,5 @@
 package org.maxgamer.quickshop.converter;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -845,7 +844,7 @@ public class HikariConfigConverter implements HikariConverterInterface {
             plugin.getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 131) {
-            plugin.getConfig().set("custom-commands", ImmutableList.of("shop", "chestshop", "cshop"));
+            plugin.getConfig().set("custom-commands", List.of("shop", "chestshop", "cshop"));
             plugin.getConfig().set("unlimited-shop-owner-change", false);
             plugin.getConfig().set("unlimited-shop-owner-change-account", "quickshop");
             plugin.getConfig().set("config-version", ++selectedVersion);
@@ -922,9 +921,6 @@ public class HikariConfigConverter implements HikariConverterInterface {
             plugin.getConfig().set("config-version", ++selectedVersion);
         }
         if (selectedVersion == 143) {
-//            if (plugin.getConfig().get("language") == null) {
-//                plugin.getConfig().set("language", "en-US");
-//            }
             plugin.getConfig().set("config-version", ++selectedVersion);
         }
 

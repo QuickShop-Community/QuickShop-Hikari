@@ -26,9 +26,6 @@ import org.maxgamer.quickshop.util.serialize.BlockPos;
 
 import java.util.UUID;
 
-/**
- * TODO This class used for storage the shop
- */
 @AllArgsConstructor
 @Data
 @Builder

@@ -113,21 +113,20 @@ public class PlayerListener extends AbstractQSListener {
         Util.debugLog("Click: " + interaction.name());
         Util.debugLog("Behavior Mapping: " + plugin.getInteractionController().getBehavior(interaction).name());
         switch (plugin.getInteractionController().getBehavior(interaction)) {
-            case CONTROL_PANEL:
-                if(shopSearched.getKey() !=null) {
+            case CONTROL_PANEL -> {
+                if (shopSearched.getKey() != null) {
                     openControlPanel(e.getPlayer(), shopSearched.getKey());
                     e.setCancelled(true);
                     e.setUseInteractedBlock(Event.Result.DENY);
                     e.setUseItemInHand(Event.Result.DENY);
                 }
-                break;
-            case TRADE_INTERACTION:
+            }
+            case TRADE_INTERACTION -> {
                 if (shopSearched.getKey() == null) {
                     if (createShop(e.getPlayer(), e.getClickedBlock())) {
                         e.setCancelled(true);
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
-                        break;
                     }
                 } else {
                     if (shopSearched.getKey().isBuying()) {
@@ -144,10 +143,10 @@ public class PlayerListener extends AbstractQSListener {
                             e.setUseInteractedBlock(Event.Result.DENY);
                             e.setUseItemInHand(Event.Result.DENY);
                         }
-                        break;
                     }
                 }
-            case TRADE_DIRECT:
+            }
+            case TRADE_DIRECT-> {
                 if (shopSearched.getKey() == null) // No shop here
                 {
                     return;
@@ -166,9 +165,9 @@ public class PlayerListener extends AbstractQSListener {
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
                     }
-                    break;
                 }
-            case TRADE_DIRECT_ALL:
+            }
+            case TRADE_DIRECT_ALL -> {
                 if (shopSearched.getKey().isSelling()) {
                     if (buyFromShop(e.getPlayer(), shopSearched.getKey(), true, true)) {
                         e.setCancelled(true);
@@ -183,10 +182,8 @@ public class PlayerListener extends AbstractQSListener {
                         e.setUseInteractedBlock(Event.Result.DENY);
                         e.setUseItemInHand(Event.Result.DENY);
                     }
-                    break;
                 }
-            case NONE:
-                break;
+            }
         }
     }
 
@@ -549,13 +546,7 @@ public class PlayerListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {
         try {
-            Location location;
-            //for strange NPE from spigot API fix
-            //noinspection ConstantConditions
-            if (e.getInventory() == null) {
-                return;
-            }
-            location = e.getInventory().getLocation();
+            Location location = e.getInventory().getLocation();
             if (location == null) {
                 return; /// ignored as workaround, GH-303
             }

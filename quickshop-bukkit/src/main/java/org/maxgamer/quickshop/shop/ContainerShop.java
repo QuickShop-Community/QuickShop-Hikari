@@ -109,31 +109,6 @@ public class ContainerShop implements Shop {
     @NotNull
     private String symbolLink;
 
-    private ContainerShop(@NotNull ContainerShop s) {
-        Util.ensureThread(false);
-        this.shopType = s.shopType;
-        this.item = s.item.clone();
-        this.location = s.location.clone();
-        this.plugin = s.plugin;
-        this.unlimited = s.unlimited;
-        this.moderator = s.moderator.clone();
-        this.price = s.price;
-        this.isLoaded = s.isLoaded;
-        this.isDeleted = s.isDeleted;
-        this.createBackup = s.createBackup;
-        this.extra = s.extra;
-        this.dirty = true;
-        this.inventoryPreview = null;
-        this.currency = s.currency;
-        this.disableDisplay = s.disableDisplay;
-        this.taxAccount = s.taxAccount;
-        this.isAlwaysCountingContainer = s.isAlwaysCountingContainer;
-        this.inventoryWrapper = s.inventoryWrapper;
-        this.inventoryWrapperProvider = s.inventoryWrapperProvider;
-        this.symbolLink = s.symbolLink;
-        initDisplayItem();
-    }
-
     /**
      * Adds a new shop. You need call ShopManager#loadShop if you create from outside of
      * ShopLoader.
@@ -1042,8 +1017,7 @@ public class ContainerShop implements Shop {
         }
         this.isLoaded = true;
         inventoryWrapper = locateInventory(symbolLink);
-        //Shop manger done this already
-        //plugin.getShopManager().loadShop(this.getLocation().getWorld().getName(), this);
+        //Shop manager done this already
         plugin.getShopManager().getLoadedShops().add(this);
         plugin.getShopContainerWatcher().scheduleCheck(this);
         checkDisplay();

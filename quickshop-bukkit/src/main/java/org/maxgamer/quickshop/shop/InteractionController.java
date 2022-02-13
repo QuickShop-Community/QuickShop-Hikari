@@ -10,14 +10,14 @@ import org.maxgamer.quickshop.QuickShop;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.logging.Level;
 
 public class InteractionController implements Reloadable {
 
     private final QuickShop plugin;
-    private final Map<Interaction, InteractionBehavior> behaviorMap = new HashMap<>();
+    private final Map<Interaction, InteractionBehavior> behaviorMap = new EnumMap<>(Interaction.class);
 
     public InteractionController(@NotNull QuickShop plugin) {
         this.plugin = plugin;

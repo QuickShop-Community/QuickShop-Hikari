@@ -97,7 +97,6 @@ public class WorldListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldUnload(WorldUnloadEvent e) {
-        // FIXME: 24/11/2019 It's not necessary but ok.
         // This is a workaround, because I don't get parsed chunk events when a
         // world unloads, I think...
         // So manually tell all of these shops they're unloaded.

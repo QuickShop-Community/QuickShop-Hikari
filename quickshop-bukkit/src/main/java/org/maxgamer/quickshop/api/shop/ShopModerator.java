@@ -69,8 +69,6 @@ public interface ShopModerator {
      */
     void clearStaffs();
 
-    @NotNull ShopModerator clone();
-
     @Override
     @NotNull String toString();
 

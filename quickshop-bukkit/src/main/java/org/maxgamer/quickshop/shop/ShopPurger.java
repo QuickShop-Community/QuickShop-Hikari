@@ -19,11 +19,11 @@
 
 package org.maxgamer.quickshop.shop;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 import org.maxgamer.quickshop.api.shop.Shop;
+import org.maxgamer.quickshop.util.PlayerFinder;
 import org.maxgamer.quickshop.util.Util;
 
 import java.time.temporal.ChronoUnit;
@@ -67,7 +67,7 @@ public class ShopPurger {
         boolean skipOp = plugin.getConfig().getBoolean("purge.skip-op");
         boolean returnCreationFee = plugin.getConfig().getBoolean("purge.return-create-fee");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(shop.getOwner());
+            OfflinePlayer player = PlayerFinder.findOfflinePlayerByUUID(shop.getOwner());
             if (!player.hasPlayedBefore()) {
                 Util.debugLog("Shop " + shop + " detection skipped: Owner never played before.");
                 continue;

@@ -37,14 +37,9 @@ import java.util.UUID;
  */
 @EqualsAndHashCode
 @NoArgsConstructor
-public class SimpleShopModerator implements ShopModerator, Cloneable {
+public class SimpleShopModerator implements ShopModerator {
     private UUID owner;
     private List<UUID> staffs;
-
-    private SimpleShopModerator(@NotNull SimpleShopModerator shopModerator) {
-        this.owner = shopModerator.owner;
-        this.staffs = shopModerator.staffs;
-    }
 
     /**
      * Shop moderators, inlucding owner, and empty staffs.
@@ -100,12 +95,6 @@ public class SimpleShopModerator implements ShopModerator, Cloneable {
     @Override
     public void clearStaffs() {
         staffs.clear();
-    }
-
-    @Override
-    @SuppressWarnings("MethodDoesntCallSuperMethod")
-    public @NotNull SimpleShopModerator clone() {
-        return new SimpleShopModerator(this.owner, this.staffs);
     }
 
     @Override

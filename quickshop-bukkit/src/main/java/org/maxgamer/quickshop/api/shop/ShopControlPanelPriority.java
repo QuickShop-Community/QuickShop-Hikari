@@ -7,7 +7,7 @@ public enum ShopControlPanelPriority {
     HIGH(96),
     HIGHEST(128);
 
-    private int priority;
+    private final int priority;
 
     ShopControlPanelPriority(int priority) {
         this.priority = priority;

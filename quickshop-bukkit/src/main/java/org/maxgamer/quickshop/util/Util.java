@@ -88,7 +88,7 @@ public class Util {
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
     private static int BYPASSED_CUSTOM_STACKSIZE = -1;
     private static Yaml yaml = null;
-    private volatile static Boolean devMode = null;
+    private static Boolean devMode = null;
     @Setter
     private static QuickShop plugin;
     @Getter
@@ -193,7 +193,6 @@ public class Util {
      * @param inv  The inventory to search
      * @param item The ItemStack to search for
      * @return The number of items that match in this inventory.
-     * @deprecated Deprecated for different order will result different result
      */
     @ApiStatus.Experimental
     public static int countItems(@Nullable InventoryWrapper inv, @NotNull ItemStack item) {
@@ -282,7 +281,6 @@ public class Util {
      * @param item The item prototype. Material, durabiltiy and enchants must match for 'stackability'
      *             to occur.
      * @return The number of items that can be given to the inventory safely.
-     * @deprecated Deprecated for different order will result different result
      */
     @ApiStatus.Experimental
     public static int countSpace(@Nullable InventoryWrapper inv, @NotNull ItemStack item) {
@@ -406,10 +404,9 @@ public class Util {
         List<StackWalker.StackFrame> caller = stackWalker.walk(
                 frames -> frames
                         .limit(2)
-                        .collect(Collectors.toList()));
+                        .toList());
         StackWalker.StackFrame frame = caller.get(1);
 
-       //final StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[2];
         final String className = frame.getClassName();
         final String methodName = frame.getMethodName();
         final int codeLine = frame.getLineNumber();
@@ -486,8 +483,8 @@ public class Util {
     public static String getItemCustomName(@NotNull ItemStack itemStack) {
         if (useEnchantmentForEnchantedBook() && itemStack.getType() == Material.ENCHANTED_BOOK) {
             ItemMeta meta = itemStack.getItemMeta();
-            if (meta instanceof EnchantmentStorageMeta && ((EnchantmentStorageMeta) meta).hasStoredEnchants()) {
-                return getFirstEnchantmentName((EnchantmentStorageMeta) meta);
+            if (meta instanceof EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
+                return getFirstEnchantmentName(enchantmentStorageMeta);
             }
         }
         if (plugin.getConfig().getBoolean("shop.use-effect-for-potion-item") && itemStack.getType().name().endsWith("POTION")) {
@@ -702,8 +699,7 @@ public class Util {
         disableDebugLogger = plugin.getConfig().getBoolean("debug.disable-debuglogger", false);
         try {
             dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     /**
@@ -716,7 +712,7 @@ public class Util {
         try (InputStream in = new FileInputStream(filePath)) {
             return toByteArray(in);
         } catch (IOException e) {
-            return null;
+            return new byte[0];
         }
     }
 
@@ -730,21 +726,6 @@ public class Util {
         return out.toByteArray();
     }
 
-    /**
-     * Read the InputStream to the byte array.
-     *
-     * @param inputStream Target stream
-     * @return Byte array
-     */
-    public static byte[] inputStream2ByteArray(@NotNull InputStream inputStream) {
-        try {
-            byte[] data = toByteArray(inputStream);
-            inputStream.close();
-            return data;
-        } catch (IOException e) {
-            return null;
-        }
-    }
 
     /**
      * Call this to check items in inventory and remove it.

@@ -55,7 +55,6 @@ public class RealDisplayItem extends AbstractDisplayItem {
      */
     RealDisplayItem(@NotNull Shop shop) {
         super(shop);
-        // this.displayLoc = shop.getLocation().clone().add(0.5, 1.2, 0.5);
     }
 
     @Override
@@ -67,7 +66,6 @@ public class RealDisplayItem extends AbstractDisplayItem {
         if (shop.isLeftShop()) {
             return false;
         }
-        // return !this.item.getLocation().equals(getDisplayLocation());
         /* We give 0.6 block to allow item drop on the chest, not floating on the air. */
         if (!Objects.requireNonNull(this.item.getLocation().getWorld())
                 .equals(Objects.requireNonNull(getDisplayLocation()).getWorld())) {
@@ -194,7 +192,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
     @Override
     public void safeGuard(@NotNull Entity entity) {
         Util.ensureThread(false);
-        if (!(entity instanceof Item item)) {
+        if (!(entity instanceof Item itemEntity)) {
             Util.debugLog(
                     "Failed to safeGuard " + entity.getLocation() + ", cause target not a Item");
             return;
@@ -202,16 +200,16 @@ public class RealDisplayItem extends AbstractDisplayItem {
         // Set item protect in the armorstand's hand
 
         if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
-            item.setCustomName(Util.getItemStackName(this.originalItemStack));
-            item.setCustomNameVisible(true);
+            itemEntity.setCustomName(Util.getItemStackName(this.originalItemStack));
+            itemEntity.setCustomNameVisible(true);
         } else {
-            item.setCustomNameVisible(false);
+            itemEntity.setCustomNameVisible(false);
         }
-        item.setPickupDelay(Integer.MAX_VALUE);
-        item.setSilent(true);
-        item.setInvulnerable(true);
-        item.setPortalCooldown(Integer.MAX_VALUE);
-        item.setVelocity(new Vector(0, 0.1, 0));
+        itemEntity.setPickupDelay(Integer.MAX_VALUE);
+        itemEntity.setSilent(true);
+        itemEntity.setInvulnerable(true);
+        itemEntity.setPortalCooldown(Integer.MAX_VALUE);
+        itemEntity.setVelocity(new Vector(0, 0.1, 0));
     }
 
     @Override
@@ -252,7 +250,6 @@ public class RealDisplayItem extends AbstractDisplayItem {
         }
         this.guardedIstack = AbstractDisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
-        //this.item.setItemStack(this.guardedIstack);
         safeGuard(this.item);
     }
 

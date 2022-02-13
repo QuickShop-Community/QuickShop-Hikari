@@ -39,7 +39,6 @@ public class ChunkListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkLoad(ChunkLoadEvent e) {
-
         if (e.isNewChunk()) {
             return;
         }

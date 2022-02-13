@@ -81,15 +81,11 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
             }
             return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, rule.getMin(), rule.getMax());
         }
-        if (undefinedMin != -1) {
-            if (price < undefinedMin) {
-                return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
-            }
+        if (undefinedMin != -1 && price < undefinedMin) {
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
         }
-        if (undefinedMax != -1) {
-            if (price > undefinedMin) {
-                return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
-            }
+        if (undefinedMax != -1 && price > undefinedMin) {
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
         }
         return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PASS, undefinedMin, undefinedMax);
     }
@@ -201,13 +197,11 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
          * @return true if the rule is allowed for given price
          */
         public boolean isAllowed(double price) {
-            if (this.max != -1) {
-                if (price > this.max) {
+            if (this.max != -1 && price > this.max) {
                     return false;
-                }
             }
             if (this.min != -1) {
-                return !(price < this.min);
+                return price >= this.min;
             }
             return true;
         }
