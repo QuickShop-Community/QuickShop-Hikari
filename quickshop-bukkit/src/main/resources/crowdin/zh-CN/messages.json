@@ -213,7 +213,7 @@
     "alwayscounting": "&a总是计算容器物品: {0} &e[&d&l更改&e]",
     "alwayscounting-hover": "&e点击以切换是否总是计算容器物品。",
     "setowner": "&a所有者: &b{0} &e[&d&l修改&e]",
-    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
+    "setowner-uuid": "&a所有者: &b{0} &e[&d&l修改&e]",
     "infomation": "&a商店控制面板",
     "setowner-hover": "&e点击来修改店主",
     "unlimited": "&a无限模式: {0} &e[&d&l切换&e]",
