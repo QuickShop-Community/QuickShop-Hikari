@@ -213,6 +213,7 @@
     "alwayscounting": "&aImmer zählen: {0} &e[&d&lÄndern&e]",
     "alwayscounting-hover": "&eKlicke um zu ändern, ob der Shop immer Zählen soll.",
     "setowner": "&aBesitzer: &b{0} &e[&d&lÄndern&e]",
+    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
     "infomation": "&aShop Kontrollpanel:",
     "setowner-hover": "&eKlicke hier um den Besitzer zu wechseln.",
     "unlimited": "&aUnlimitiert: {0} &e[&d&lÄndern&e]",
@@ -361,5 +362,7 @@
   "purchase-out-of-space": "&cDieser Shop hat keinen Platz mehr. Kontaktiere den Shopeigentümer oder Shop-Mitarbeiter damit er geleert wird.",
   "safe-mode": "&cQuickShop ist nun im sicheren Modus, du kannst diesen Shop-Container nicht öffnen. Bitte kontaktiere den Server Administrator um diesen Fehler zu beheben.",
   "safe-mode-admin": "&c&lWARNUNG: &cQuickShop ist nun im sicheren Modus auf diesem Server und keiner seiner funktionen wird funktionieren. Bitte schreib den &e/qs &cBefehl um nach Fehlern zu schauen.",
-  "internal-error": "&cEin interner Fehler ist aufgetreten. Die details wurden in der Konsole vermerkt. Bitte versuch es erneut und kontaktiere den Server-Administrator wenn dieser Fehler bestehen bleibt."
+  "internal-error": "&cEin interner Fehler ist aufgetreten. Die details wurden in der Konsole vermerkt. Bitte versuch es erneut und kontaktiere den Server-Administrator wenn dieser Fehler bestehen bleibt.",
+  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
+  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them."
 }

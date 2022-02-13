@@ -213,6 +213,7 @@
     "alwayscounting": "&aHer zaman sayıyor: {0} &e[&d&lDeğiştir&e]",
     "alwayscounting-hover": "Dükkan her zaman konteyner sayıyorsa geçiş yapmak için &etıklayın.",
     "setowner": "&aSahibi: &b{0} &e[&d&lDeğiştir&e]",
+    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
     "infomation": "&aMarket Kontrol paneli:",
     "setowner-hover": "&eSahibi değiştirmek için tıkla.",
     "unlimited": "&aSınırsız: {0} &e[&d&lDeğiştir&e]",
@@ -361,5 +362,7 @@
   "purchase-out-of-space": "&cBu markette yer kalmadı, marketi boşaltmaları için mağaza sahibi ya da personelleri ile iletişime geç.",
   "safe-mode": "&cQuickShop şimdi güvenli modda, bu mağaza kapsayıcısını açamazsınız, hataları düzeltmek için lütfen sunucu yöneticisi ile iletişime geçin.",
   "safe-mode-admin": "&c&lUYARI: &cBu sunucudaki QuickShop artık güvenli modda çalışıyor, hiçbir özellik çalışmayacak, hataları kontrol etmek için lütfen &e/qs &c komutunu yazın.",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
+  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
+  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
+  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them."
 }

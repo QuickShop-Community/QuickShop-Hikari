@@ -213,6 +213,7 @@
     "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
     "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&a店主 ： &b{0} &e[&d&l修改&e]",
+    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
     "infomation": "&a商店控制面板 ： ",
     "setowner-hover": "&e點擊修改店主。",
     "unlimited": "&a無限 ： {0} &e[&d&l修改&e]",
@@ -361,5 +362,7 @@
   "purchase-out-of-space": "&c該商店空間不足，請聯繫商店商店店主或商店員工清空商店。",
   "safe-mode": "&cQuickShop 現在處於安全模式，您無法打開此商店容器，請與服務器管理員聯繫以修復錯誤!",
   "safe-mode-admin": "&c&l警告:&c此服務器上的 QuickShop 現在在安全模式下運行，沒有任何功能可用，請輸入 &e/qs &c 命令以檢查任何錯誤!",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
+  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
+  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
+  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them."
 }

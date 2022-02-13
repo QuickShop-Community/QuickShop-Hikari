@@ -213,6 +213,7 @@
     "alwayscounting": "&aConta sempre: {0} &e[&d&lCambia&e]",
     "alwayscounting-hover": "&eFai clic per attivare/disattivare se il negozio conta sempre il contenitore.",
     "setowner": "&aProprietario: &b{0} &e[&d&lCambia&e]",
+    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
     "infomation": "&aPannello di Controllo Negozio:",
     "setowner-hover": "&eClicca per cambiare proprietario.",
     "unlimited": "&aIllimitato: {0} &e[&d&lCambia&e]",
@@ -361,5 +362,7 @@
   "purchase-out-of-space": "&cQuesto negozio ha esaurito lo spazio, contatta il proprietario del negozio o il personale per svuotare il negozio.",
   "safe-mode": "&cQuickShop ora in modalità provvisoria, non puoi aprire questo contenitore del negozio, contatta l'amministratore del server per correggere gli errori.",
   "safe-mode-admin": "&c&lATTENZIONE: &cIl QuickShop su questo server ora funziona in modalità provvisoria, nessuna funzione funzionerà, per favore digita il comando &e/qs &c per controllare eventuali errori.",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
+  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
+  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
+  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them."
 }
