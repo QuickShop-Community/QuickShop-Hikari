@@ -707,23 +707,21 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
             return;
         }
-
-        // Notify the owner of the purchase. //TODO: move to a standalone method
         Player player = plugin.getServer().getPlayer(buyer);
+        shop.buy(buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
+        sendSellSuccess(buyer, shop, amount, total, CalculateUtil.subtract(1, taxModifier));
+        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, taxModifier);
+        plugin.getServer().getPluginManager().callEvent(se);
+        shop.setSignText(); // Update the signs count
+        notifySold(buyer, shop, amount, space);
+    }
 
-
+    private void notifySold(@NotNull UUID buyer, @NotNull Shop shop, int amount, int space) {
+        Player player = plugin.getServer().getPlayer(buyer);
         Component msg = plugin.text().of(player, "player-sold-to-your-store", LegacyComponentSerializer.legacySection().deserialize(player != null ? player.getName() : buyer.toString()),
                         Component.text(amount),
                         MsgUtil.getTranslateText(shop.getItem())).forLocale()
                 .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
-
-        if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
-            for (UUID staff : shop.getModerator().getStaffs()) {
-                MsgUtil.send(shop, staff, msg);
-            }
-        }
-        MsgUtil.send(shop, shop.getOwner(), msg);
-
         if (space == amount) {
             msg = plugin.text().of(player, "shop-out-of-space",
                             Component.text(shop.getLocation().getBlockX()),
@@ -738,18 +736,18 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             MsgUtil.send(shop, shop.getOwner(), msg);
         }
 
-
-        shop.buy(buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
-        sendSellSuccess(buyer, shop, amount, total, CalculateUtil.subtract(1, taxModifier));
-        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, taxModifier);
-        plugin.getServer().getPluginManager().callEvent(se);
-        shop.setSignText(); // Update the signs count
+        if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
+            for (UUID staff : shop.getModerator().getStaffs()) {
+                MsgUtil.send(shop, staff, msg);
+            }
+        }
+        MsgUtil.send(shop, shop.getOwner(), msg);
     }
 
 
     @Deprecated
     public void actionBuying(@NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info,
-                          @NotNull Shop shop, int amount) {
+                             @NotNull Shop shop, int amount) {
         Util.ensureThread(false);
         actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
     }
@@ -883,7 +881,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // Price limit checking
         boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
 
-        PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(p,info.getItem(),plugin.getCurrency(), price);
+        PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(p, info.getItem(), plugin.getCurrency(), price);
 
         switch (priceCheckResult.getStatus()) {
             case REACHED_PRICE_MIN_LIMIT -> {
@@ -919,14 +917,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (!plugin.isAllowStack()) {
             info.getItem().setAmount(1);
         }
-//        Inventory inv;
-//        BlockState state = info.getLocation().getBlock().getState();
-//        if(state instanceof BlockInventoryHolder){
-//            inv = ((BlockInventoryHolder) state).getInventory();
-//        }else{
-//            plugin.text().of(p, "chest-was-removed").send();
-//            return;
-//        }
 
         // Create the sample shop
         ContainerShop shop = new ContainerShop(
@@ -942,7 +932,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 false,
                 null,
                 plugin.getName(),
-                plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper(((InventoryHolder)info.getLocation().getBlock().getState()).getInventory())));
+                plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper(((InventoryHolder) info.getLocation().getBlock().getState()).getInventory())));
 
         // Calling ShopCreateEvent
         ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, p.getUniqueId());
@@ -1099,10 +1089,17 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
             return;
         }
-
-        Component msg;
-        // Notify the shop owner //TODO: move to a standalone method
         Player player = plugin.getServer().getPlayer(seller);
+        shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
+        sendPurchaseSuccess(seller, shop, amount, total, CalculateUtil.subtract(1, taxModifier));
+        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, taxModifier);
+        plugin.getServer().getPluginManager().callEvent(se);
+        notifyBought(seller, shop, amount, stock, taxModifier, total);
+    }
+
+    private void notifyBought(@NotNull UUID seller, @NotNull Shop shop, int amount, int stock, double taxModifier, double total) {
+        Player player = plugin.getServer().getPlayer(seller);
+        Component msg;
         if (plugin.getConfig().getBoolean("show-tax")) {
             msg = plugin.text().of(player, "player-bought-from-your-store-tax",
                             LegacyComponentSerializer.legacySection().deserialize(player != null ? player.getName() : seller.toString()),
@@ -1143,11 +1140,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
 
-
-        shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
-        sendPurchaseSuccess(seller, shop, amount, total, CalculateUtil.subtract(1, taxModifier));
-        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, taxModifier);
-        plugin.getServer().getPluginManager().callEvent(se);
     }
 
     /**
@@ -1223,12 +1215,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.owner", shop.ownerName()).forLocale());
         // Enabled
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", MsgUtil.getTranslateText(shop.getItem())).forLocale()
-                        .append(Component.text("   "))
-                        .append(plugin.text().of(p, "menu.preview", Component.text(shop.getItem().getAmount())).forLocale())
-                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()))
-                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND,MsgUtil.fillArgs("/qs silentpreview {0}",shop.getRuntimeRandomUniqueId().toString())))
+                .append(Component.text("   "))
+                .append(plugin.text().of(p, "menu.preview", Component.text(shop.getItem().getAmount())).forLocale())
+                .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()))
+                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/qs silentpreview {0}", shop.getRuntimeRandomUniqueId().toString())))
         );
-            if (Util.isTool(items.getType())) {
+        if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(
                     plugin.text().of(p, "menu.damage-percent-remaining", Component.text(Util.getToolPercentage(items))).forLocale());
         }
