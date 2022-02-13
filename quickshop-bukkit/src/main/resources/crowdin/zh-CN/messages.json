@@ -363,7 +363,7 @@
   "safe-mode": "&cQuickShop 现在处于安全模式，您不能打开这个商店容器，请与服务器管理员联系以修复错误。",
   "safe-mode-admin": "&c&l警告: &c此服务器上的QuickShop正在安全模式下运行，任何功能都无法工作，请输入&e/qs &c 命令来检查错误。",
   "internal-error": "&c发生内部错误，详细信息已记录到控制台。请再试一次，如果仍然存在，请与服务器管理员联系。",
-  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
-  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
+  "bungee-cross-server-msg": "&eQuickShop跨服信息: &a{0}",
+  "edition-confilct": "QuickShop-Hikari 与 QuickShop-Reremake 同时安装在服务器中可能会相互冲突，你需要卸载其中一个",
+  "plugin-cancelled": "&c操作被取消，原因： {0}"
 }
