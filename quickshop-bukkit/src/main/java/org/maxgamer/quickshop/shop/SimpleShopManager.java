@@ -506,7 +506,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     /**
-     * Adds a shop to the world. Does NOT require the chunk or world to be loaded Call shop.onLoad
+     * Adds (register) a shop to the world. Does NOT require the chunk or world to be loaded Call shop.onLoad
      * by yourself
      *
      * @param world The name of the world
@@ -531,8 +531,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // Put it in the world
         // Put the shop in its location in the chunk list.
         inChunk.put(shop.getLocation(), shop);
-        // shop.onLoad();
-
     }
 
     /**

@@ -60,7 +60,6 @@ public class SimpleInfo implements Info {
         this.dirty = true;
     }
 
-
     public SimpleInfo(
             @NotNull Location loc,
             @NotNull ShopAction action,
@@ -76,7 +75,7 @@ public class SimpleInfo implements Info {
             this.item = item.clone();
         }
         if (shop != null) {
-            this.shop = shop.clone();
+            this.shop = new ContainerShop((ContainerShop) shop);
             this.dirty = shop.isDirty();
         } else {
             this.dirty = true;
