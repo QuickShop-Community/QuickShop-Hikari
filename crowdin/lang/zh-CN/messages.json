@@ -213,6 +213,7 @@
     "alwayscounting": "&a总是计算容器物品: {0} &e[&d&l更改&e]",
     "alwayscounting-hover": "&e点击以切换是否总是计算容器物品。",
     "setowner": "&a所有者: &b{0} &e[&d&l修改&e]",
+    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
     "infomation": "&a商店控制面板",
     "setowner-hover": "&e点击来修改店主",
     "unlimited": "&a无限模式: {0} &e[&d&l切换&e]",
@@ -361,5 +362,7 @@
   "purchase-out-of-space": "&c这个商店空间已不足，请联系商店所有者或助手清空商店",
   "safe-mode": "&cQuickShop 现在处于安全模式，您不能打开这个商店容器，请与服务器管理员联系以修复错误。",
   "safe-mode-admin": "&c&l警告: &c此服务器上的QuickShop正在安全模式下运行，任何功能都无法工作，请输入&e/qs &c 命令来检查错误。",
-  "internal-error": "&c发生内部错误，详细信息已记录到控制台。请再试一次，如果仍然存在，请与服务器管理员联系。"
+  "internal-error": "&c发生内部错误，详细信息已记录到控制台。请再试一次，如果仍然存在，请与服务器管理员联系。",
+  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
+  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them."
 }
