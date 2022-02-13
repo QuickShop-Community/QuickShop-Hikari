@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.command.subcommand.silent;
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -45,7 +44,7 @@ public class SubCommand_SilentBuy extends SubCommand_SilentBase {
         shop.setShopType(ShopType.BUYING);
         shop.update();
         MsgUtil.sendControlPanelInfo(sender, shop);
-        plugin.text().of(sender, "command.now-buying", LegacyComponentSerializer.legacySection().deserialize(Util.getItemStackName(shop.getItem()))).send();
+        plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
     }
 
 

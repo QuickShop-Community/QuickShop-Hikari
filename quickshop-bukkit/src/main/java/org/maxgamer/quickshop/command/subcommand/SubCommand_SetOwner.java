@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -65,7 +64,7 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
                 return;
             }
             shop.setOwner(newShopOwner.getUniqueId());
-            plugin.text().of(sender, "command.new-owner", LegacyComponentSerializer.legacySection().deserialize(newShopOwner.getName())).send();
+            plugin.text().of(sender, "command.new-owner", newShopOwner.getName()).send();
             return;
         }
 

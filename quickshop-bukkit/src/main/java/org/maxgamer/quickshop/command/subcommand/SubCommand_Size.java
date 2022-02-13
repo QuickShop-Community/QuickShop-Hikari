@@ -54,7 +54,7 @@ public class SubCommand_Size implements CommandHandler<Player> {
         try {
             amount = Integer.parseInt(cmdArg[0]);
         } catch (NumberFormatException e) {
-            plugin.text().of(sender, "not-a-integer", LegacyComponentSerializer.legacySection().deserialize(cmdArg[0])).send();
+            plugin.text().of(sender, "not-a-integer", cmdArg[0]).send();
             return;
         }
         final BlockIterator bIt = new BlockIterator(sender, 10);
@@ -65,7 +65,7 @@ public class SubCommand_Size implements CommandHandler<Player> {
             if (shop != null) {
                 if (shop.getModerator().isModerator(sender.getUniqueId()) || sender.hasPermission("quickshop.other.amount")) {
                     if (amount <= 0 || amount > Util.getItemMaxStackSize(shop.getItem().getType())) {
-                        plugin.text().of(sender, "command.invalid-bulk-amount", Component.text(amount)).send();
+                        plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
                         return;
                     }
                     ItemStack pendingItemStack = shop.getItem().clone();
@@ -79,7 +79,7 @@ public class SubCommand_Size implements CommandHandler<Player> {
                         return;
                     }
                     shop.setItem(pendingItemStack);
-                    plugin.text().of(sender, "command.bulk-size-now", Component.text(shop.getItem().getAmount()), MsgUtil.getTranslateText(shop.getItem())).send();
+                    plugin.text().of(sender, "command.bulk-size-now", shop.getItem().getAmount(), MsgUtil.getTranslateText(shop.getItem())).send();
                     return;
                 } else {
                     plugin.text().of(sender, "not-managed-shop").send();

@@ -28,6 +28,8 @@ import com.google.common.cache.CacheBuilder;
 import de.themoep.minedown.adventure.MineDownParser;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -345,8 +347,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull Text of(@NotNull String path, Component... args) {
-        return new Text(this, (CommandSender) null, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
+    public @NotNull Text of(@NotNull String path, Object... args) {
+        return new Text(this, (CommandSender) null, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path,  convert(args));
     }
 
     /**
@@ -358,8 +360,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull Text of(@Nullable CommandSender sender, @NotNull String path, Component... args) {
-        return new Text(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
+    public @NotNull Text of(@Nullable CommandSender sender, @NotNull String path, Object... args) {
+        return new Text(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path,  convert(args));
     }
 
     /**
@@ -371,8 +373,67 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull Text of(@Nullable UUID sender, @NotNull String path, Component... args) {
-        return new Text(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
+    public @NotNull Text of(@Nullable UUID sender, @NotNull String path, Object... args) {
+        return new Text(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, convert(args));
+    }
+
+    @NotNull
+    private Component[] convert(@Nullable Object... args) {
+        if(args == null || args.length == 0)
+            return new Component[0];
+        Component[] components = new Component[args.length];
+        for (int i = 0; i < args.length; i++) {
+            Object obj = args[i];
+            if(obj == null){
+                components[i] = Component.empty();
+                continue;
+            }
+            Class<?> clazz =  obj.getClass();
+            if(obj instanceof Component component){
+                components[i] = component;
+                continue;
+            }
+            if(obj instanceof ComponentLike componentLike){
+                components[i] = componentLike.asComponent();
+                continue;
+            }
+            // Check
+            if(Character.class.equals(clazz)){
+                components[i] = Component.text((char) obj);
+                continue;
+            }
+            if(Byte.class.equals(clazz)){
+                components[i] = Component.text((Byte)obj);
+                continue;
+            }
+            if (Integer.class.equals(clazz)) {
+                components[i] = Component.text((Integer)obj);
+                continue;
+            }
+            if(Long.class.equals(clazz)){
+                components[i] = Component.text((Long)obj);
+                continue;
+            }
+            if(Float.class.equals(clazz)){
+                components[i] = Component.text((Float)obj);
+                continue;
+            }
+            if(Double.class.equals(clazz)){
+                components[i] = Component.text((Double)obj);
+                continue;
+            }
+            if(Boolean.class.equals(clazz)){
+                components[i] = Component.text((Boolean)obj);
+                continue;
+            }
+            if(String.class.equals(clazz)){
+                components[i] = LegacyComponentSerializer.legacySection().deserialize((String)obj);
+                continue;
+            }
+            // undefined
+            components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
+        }
+        return components;
     }
 
     /**
@@ -383,8 +444,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull TextList ofList(@NotNull String path, Component... args) {
-        return new TextList(this, (CommandSender) null, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
+    public @NotNull TextList ofList(@NotNull String path, Object... args) {
+        return new TextList(this, (CommandSender) null, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path,  convert(args));
     }
 
     /**
@@ -396,8 +457,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull TextList ofList(@Nullable UUID sender, @NotNull String path, Component... args) {
-        return new TextList(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
+    public @NotNull TextList ofList(@Nullable UUID sender, @NotNull String path, Object... args) {
+        return new TextList(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path,  convert(args));
     }
 
     /**
@@ -409,8 +470,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @return The text object
      */
     @Override
-    public @NotNull TextList ofList(@Nullable CommandSender sender, @NotNull String path, Component... args) {
-        return new TextList(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, args);
+    public @NotNull TextList ofList(@Nullable CommandSender sender, @NotNull String path, Object... args) {
+        return new TextList(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path,  convert(args));
     }
 
     @Override

@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
@@ -77,7 +76,7 @@ public class SubCommand_Currency implements CommandHandler<Player> {
                         return;
                     }
                     shop.setCurrency(cmdArg[0]);
-                    plugin.text().of(sender, "currency-set", LegacyComponentSerializer.legacySection().deserialize(cmdArg[0])).send();
+                    plugin.text().of(sender, "currency-set", cmdArg[0]).send();
                     return;
 
                 } else {

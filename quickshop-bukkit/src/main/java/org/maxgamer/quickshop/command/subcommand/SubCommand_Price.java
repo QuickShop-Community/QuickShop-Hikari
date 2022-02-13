@@ -61,12 +61,12 @@ public class SubCommand_Price implements CommandHandler<Player> {
         } catch (NumberFormatException ex) {
             // No number input
             Util.debugLog(ex.getMessage());
-            plugin.text().of(sender, "not-a-number", LegacyComponentSerializer.legacySection().deserialize(cmdArg[0])).send();
+            plugin.text().of(sender, "not-a-number", cmdArg[0]).send();
             return;
         }
         // No number input
         if (Double.isInfinite(price) || Double.isNaN(price)) {
-            plugin.text().of(sender, "not-a-number",LegacyComponentSerializer.legacySection().deserialize(cmdArg[0])).send();
+            plugin.text().of(sender, "not-a-number",cmdArg[0]).send();
             return;
         }
 
@@ -106,11 +106,11 @@ public class SubCommand_Price implements CommandHandler<Player> {
 
             PriceLimiterCheckResult checkResult = limiter.check(sender,shop.getItem(),plugin.getCurrency(),price);
             if (checkResult.getStatus() == PriceLimiterStatus.REACHED_PRICE_MIN_LIMIT) {
-                plugin.text().of(sender, "price-too-cheap", LegacyComponentSerializer.legacySection().deserialize((format) ? MsgUtil.decimalFormat(checkResult.getMin()) : Double.toString(checkResult.getMin()))).send();
+                plugin.text().of(sender, "price-too-cheap", (format) ? MsgUtil.decimalFormat(checkResult.getMin()) : Double.toString(checkResult.getMin())).send();
                 return;
             }
             if (checkResult.getStatus() == PriceLimiterStatus.REACHED_PRICE_MAX_LIMIT) {
-                plugin.text().of(sender, "price-too-high", LegacyComponentSerializer.legacySection().deserialize((format) ? MsgUtil.decimalFormat(checkResult.getMax()) : Double.toString(checkResult.getMax()))).send();
+                plugin.text().of(sender, "price-too-high", (format) ? MsgUtil.decimalFormat(checkResult.getMax()) : Double.toString(checkResult.getMax())).send();
                 return;
             }
             if (checkResult.getStatus() == PriceLimiterStatus.PRICE_RESTRICTED) {
@@ -121,7 +121,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
             }
 
             if (checkResult.getStatus() == PriceLimiterStatus.NOT_A_WHOLE_NUMBER) {
-                plugin.text().of(sender, "not-a-integer", Component.text(price)).send();
+                plugin.text().of(sender, "not-a-integer",price).send();
                 return;
             }
 

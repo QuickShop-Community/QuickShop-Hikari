@@ -23,7 +23,6 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -214,9 +213,9 @@ public class PlayerListener extends AbstractQSListener {
         actions.put(p.getUniqueId(), info);
         if(!direct) {
             if (shop.isStackingShop()) {
-                plugin.text().of(p, "how-many-sell-stack", Component.text(shop.getItem().getAmount()), Component.text(items), Component.text(tradeAllWord)).send();
+                plugin.text().of(p, "how-many-sell-stack", shop.getItem().getAmount(), items, tradeAllWord).send();
             } else {
-                plugin.text().of(p, "how-many-sell", Component.text(items), Component.text(tradeAllWord)).send();
+                plugin.text().of(p, "how-many-sell", items, tradeAllWord).send();
             }
         }else{
             if(all){
@@ -249,23 +248,23 @@ public class PlayerListener extends AbstractQSListener {
             if ((shop.isAlwaysCountingContainer() || !shop.isUnlimited()) && shopHaveItems < 1) {
                 // but also the shop's stock is 0
                 plugin.text().of(p, "shop-stock-too-low",
-                        Component.text(shop.getRemainingStock()),
+                        shop.getRemainingStock(),
                         MsgUtil.getTranslateText(shop.getItem())).send();
                 return 0;
             } else {
                 // when if player's inventory is full
                 if (invHaveSpaces <= 0) {
                     plugin.text().of(p, "not-enough-space",
-                            Component.text(invHaveSpaces)).send();
+                           invHaveSpaces).send();
                     return 0;
                 }
                 plugin.text().of(p, "you-cant-afford-to-buy",
-                        LegacyComponentSerializer.legacySection().deserialize(Objects.requireNonNull(
+                      Objects.requireNonNull(
                                 plugin.getShopManager().format(price, shop.getLocation().getWorld(),
-                                        shop.getCurrency()))),
-                        LegacyComponentSerializer.legacySection().deserialize(Objects.requireNonNull(
+                                        shop.getCurrency())),
+                        Objects.requireNonNull(
                                 plugin.getShopManager().format(balance, shop.getLocation().getWorld(),
-                                        shop.getCurrency())))).send();
+                                        shop.getCurrency()))).send();
             }
             return 0;
         }
@@ -302,7 +301,7 @@ public class PlayerListener extends AbstractQSListener {
         if (amount < 1) { // typed 'all' but the auto set amount is 0
             if (shopHaveSpaces == 0) {
                 // when typed 'all' but the shop doesn't have any empty space
-                plugin.text().of(p, "shop-has-no-space", Component.text(shopHaveSpaces),
+                plugin.text().of(p, "shop-has-no-space", shopHaveSpaces,
                         MsgUtil.getTranslateText(shop.getItem())).send();
                 return 0;
             }
@@ -312,18 +311,16 @@ public class PlayerListener extends AbstractQSListener {
                 // when typed 'all' but the shop owner doesn't have enough money to buy at least 1
                 // item (and shop isn't unlimited or pay-unlimited is true)
                 plugin.text().of(p, "the-owner-cant-afford-to-buy-from-you",
-                        LegacyComponentSerializer.legacySection().deserialize(Objects.requireNonNull(
+                       Objects.requireNonNull(
                                 plugin.getShopManager().format(shop.getPrice(), shop.getLocation().getWorld(),
-                                        shop.getCurrency()))),
-                       LegacyComponentSerializer.legacySection().deserialize(Objects.requireNonNull(
+                                        shop.getCurrency())),
+                       Objects.requireNonNull(
                                plugin.getShopManager().format(ownerBalance, shop.getLocation().getWorld(),
-                                       shop.getCurrency())))).send();
+                                       shop.getCurrency()))).send();
                 return 0;
             }
             // when typed 'all' but player doesn't have any items to sell
-            plugin.text().of(p, "you-dont-have-that-many-items",
-                    Component.text(amount),
-                    MsgUtil.getTranslateText(shop.getItem())).send();
+            plugin.text().of(p, "you-dont-have-that-many-items", amount, MsgUtil.getTranslateText(shop.getItem())).send();
             return 0;
         }
         return amount;
@@ -355,9 +352,9 @@ public class PlayerListener extends AbstractQSListener {
         int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
         if(!direct) {
             if (shop.isStackingShop()) {
-                plugin.text().of(p, "how-many-buy-stack", Component.text(shop.getItem().getAmount()), Component.text(itemAmount), Component.text(tradeAllWord)).send();
+                plugin.text().of(p, "how-many-buy-stack",shop.getItem().getAmount(),itemAmount, tradeAllWord).send();
             } else {
-                plugin.text().of(p, "how-many-buy", Component.text(itemAmount), Component.text(tradeAllWord)).send();
+                plugin.text().of(p, "how-many-buy", itemAmount, tradeAllWord).send();
             }
         }else{
             if(all){
@@ -428,10 +425,10 @@ public class PlayerListener extends AbstractQSListener {
         // Send creation menu.
         final SimpleInfo info = new SimpleInfo(block.getLocation(), action, stack, last, false);
         plugin.getShopManager().getActions().put(player.getUniqueId(), info);
-        plugin.text().of(player, "how-much-to-trade-for", MsgUtil.getTranslateText(stack), Component.text(
+        plugin.text().of(player, "how-much-to-trade-for", MsgUtil.getTranslateText(stack),
                 plugin.isAllowStack() &&
                         QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.stacks")
-                        ? stack.getAmount() : 1)).send();
+                        ? stack.getAmount() : 1).send();
         return true;
     }
 

@@ -89,7 +89,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
         } else {
             Material material = matchMaterial(cmdArg[1]);
             if (material == null) {
-                plugin.text().of(sender, "item-not-exist", LegacyComponentSerializer.legacySection().deserialize(cmdArg[1])).send();
+                plugin.text().of(sender, "item-not-exist",cmdArg[1]).send();
                 return;
             }
             if (cmdArg.length > 2 && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stack") && plugin.isAllowStack()) {
@@ -119,7 +119,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
 
             Result result = plugin.getPermissionChecker().canBuild(sender, b);
             if (!result.isSuccess()) {
-                plugin.text().of(sender, "3rd-plugin-build-check-failed", LegacyComponentSerializer.legacySection().deserialize(result.getMessage())).send();
+                plugin.text().of(sender, "3rd-plugin-build-check-failed", result.getMessage()).send();
                 Util.debugLog("Failed to create shop because the protection check has failed! Reason:" + result.getMessage());
                 return;
             }

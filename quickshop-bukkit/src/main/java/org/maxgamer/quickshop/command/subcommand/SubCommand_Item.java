@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -75,7 +74,7 @@ public class SubCommand_Item implements CommandHandler<Player> {
                     return;
                 }
                 shop.setItem(itemStack);
-                plugin.text().of(sender, "command.trade-item-now", Component.text(shop.getItem().getAmount()), LegacyComponentSerializer.legacySection().deserialize(Util.getItemStackName(shop.getItem()))).send();
+                plugin.text().of(sender, "command.trade-item-now",shop.getItem().getAmount(), Util.getItemStackName(shop.getItem())).send();
                 return;
             }
         }

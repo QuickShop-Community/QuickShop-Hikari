@@ -20,7 +20,6 @@
 package org.maxgamer.quickshop.command.subcommand;
 
 import lombok.AllArgsConstructor;
-import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -71,7 +70,7 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
         }
 
         MsgUtil.clean();
-        plugin.text().of(sender, "command.cleaned", Component.text(i)).send();
+        plugin.text().of(sender, "command.cleaned", i).send();
     }
 
 

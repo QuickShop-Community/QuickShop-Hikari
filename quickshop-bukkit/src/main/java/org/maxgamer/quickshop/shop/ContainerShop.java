@@ -829,9 +829,9 @@ public class ContainerShop implements Shop {
         Component line4;
         if (this.isStackingShop()) {
             line4 = plugin.text().of("signs.stack-price",
-                    LegacyComponentSerializer.legacySection().deserialize(plugin.getShopManager().format(this.getPrice(), this)),
-                    Component.text(item.getAmount()),
-                    LegacyComponentSerializer.legacySection().deserialize(Util.getItemStackName(item))).forLocale();
+                   plugin.getShopManager().format(this.getPrice(), this),
+                   item.getAmount(),
+               Util.getItemStackName(item)).forLocale();
         } else {
             line4 = plugin.text().of("signs.price", LegacyComponentSerializer.legacySection().deserialize(plugin.getShopManager().format(this.getPrice(), this))).forLocale();
         }

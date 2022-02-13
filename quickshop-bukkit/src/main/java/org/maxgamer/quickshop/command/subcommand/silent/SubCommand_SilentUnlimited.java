@@ -19,7 +19,6 @@
 
 package org.maxgamer.quickshop.command.subcommand.silent;
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.QuickShop;
@@ -43,7 +42,7 @@ public class SubCommand_SilentUnlimited extends SubCommand_SilentBase {
             plugin.text().of(sender, "command.toggle-unlimited.unlimited").send();
             if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
                 plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);
-                plugin.text().of(sender, "unlimited-shop-owner-changed", LegacyComponentSerializer.legacySection().deserialize(((SimpleShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount().getName())).send();
+                plugin.text().of(sender, "unlimited-shop-owner-changed", ((SimpleShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount().getName()).send();
             }
             return;
         }

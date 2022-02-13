@@ -90,12 +90,12 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                     switch (cmdArg[0]) {
                         case "add" -> {
                             shop.addStaff(offlinePlayer.getUniqueId());
-                            plugin.text().of(sender, "shop-staff-added", Component.text(offlinePlayerName)).send();
+                            plugin.text().of(sender, "shop-staff-added", offlinePlayerName).send();
                             return;
                         }
                         case "del" -> {
                             shop.delStaff(offlinePlayer.getUniqueId());
-                            plugin.text().of(sender, "shop-staff-deleted", Component.text(offlinePlayerName)).send();
+                            plugin.text().of(sender, "shop-staff-deleted", offlinePlayerName).send();
                             return;
                         }
                         default -> {

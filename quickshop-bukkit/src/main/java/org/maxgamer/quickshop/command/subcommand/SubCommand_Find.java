@@ -22,7 +22,6 @@ package org.maxgamer.quickshop.command.subcommand;
 import io.papermc.lib.PaperLib;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -104,7 +103,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
         }
         //Check if no shops found
         if (aroundShops.isEmpty()) {
-            plugin.text().of(sender, "no-nearby-shop", Component.text(lookFor)).send();
+            plugin.text().of(sender, "no-nearby-shop", lookFor).send();
             return;
         }
 
@@ -118,9 +117,9 @@ public class SubCommand_Find implements CommandHandler<Player> {
             Location lookAt = closest.getKey().getLocation().clone().add(0.5, 0.5, 0.5);
             PaperLib.teleportAsync(sender, Util.lookAt(sender.getEyeLocation(), lookAt).add(0, -1.62, 0),
                     PlayerTeleportEvent.TeleportCause.UNKNOWN);
-            plugin.text().of(sender, "nearby-shop-this-way", Component.text(closest.getValue().intValue())).send();
+            plugin.text().of(sender, "nearby-shop-this-way",closest.getValue().intValue()).send();
         } else {
-            Component stringBuilder = plugin.text().of(sender, "nearby-shop-header", LegacyComponentSerializer.legacySection().deserialize(lookFor)).forLocale()
+            Component stringBuilder = plugin.text().of(sender, "nearby-shop-header", lookFor).forLocale()
                     .append(Component.newline());
             for (Map.Entry<Shop, Double> shopDoubleEntry : sortedShops) {
                 Shop shop = shopDoubleEntry.getKey();
@@ -129,10 +128,10 @@ public class SubCommand_Find implements CommandHandler<Player> {
                 stringBuilder = stringBuilder.append(plugin.text().of(sender, "nearby-shop-entry",
                         shop.getSignText(sender.getLocale()).get(1),
                         shop.getSignText(sender.getLocale()).get(3),
-                        Component.text(location.getBlockX()),
-                        Component.text(location.getBlockY()),
-                        Component.text(location.getBlockZ()),
-                        Component.text(shopDoubleEntry.getValue().intValue())
+                     location.getBlockX(),
+                       location.getBlockY(),
+                       location.getBlockZ(),
+                      shopDoubleEntry.getValue().intValue()
                 ).forLocale()).append(Component.newline());
             }
             MsgUtil.sendDirectMessage(sender, stringBuilder.compact());

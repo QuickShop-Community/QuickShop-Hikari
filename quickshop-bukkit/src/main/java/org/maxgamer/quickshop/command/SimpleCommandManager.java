@@ -21,7 +21,6 @@ package org.maxgamer.quickshop.command;
 
 import com.google.common.collect.Sets;
 import lombok.Data;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -420,7 +419,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                     return true;
                 }
                 if (!isAdapt(container, sender)) {
-                    plugin.text().of(sender, "command-type-mismatch", Component.text(container.getExecutorType().getSimpleName())).send();
+                    plugin.text().of(sender, "command-type-mismatch", container.getExecutorType().getSimpleName()).send();
                     return true;
                 }
                 List<String> requirePermissions = container.getPermissions();

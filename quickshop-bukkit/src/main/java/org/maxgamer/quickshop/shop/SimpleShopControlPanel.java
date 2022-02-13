@@ -124,7 +124,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
         //Set amount per bulk
         if (QuickShop.getInstance().isAllowStack()) {
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount") || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeamount")) {
-                Component text = plugin.text().of(sender, "controlpanel.stack", LegacyComponentSerializer.legacySection().deserialize(Integer.toString(shop.getItem().getAmount()))).forLocale();
+                Component text = plugin.text().of(sender, "controlpanel.stack",shop.getItem().getAmount()).forLocale();
                 Component hoverText = plugin.text().of(sender, "controlpanel.stack-hover").forLocale();
                 String clickCommand = "/qs size ";
                 components.add(text
