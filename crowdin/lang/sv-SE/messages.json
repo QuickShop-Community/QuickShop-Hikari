@@ -213,6 +213,7 @@
     "alwayscounting": "&aRäknar alltid: {0} &e[&d&lÄndra&e]",
     "alwayscounting-hover": "&eKlicka för att växla om butiken alltid räknar behållarens utrymme.",
     "setowner": "&aÄgare: &b{0} &e[&d&lÄndra&e]",
+    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
     "infomation": "&aButiksadministration:",
     "setowner-hover": "&eKlicka för att byta ägare.",
     "unlimited": "&aObegränsad: {0} &e[&d&lÄndra&e]",
@@ -361,5 +362,7 @@
   "purchase-out-of-space": "&cDenna butik har slut på tillgängligt utrymme, Kontakta butiksägare eller personal för att tömma butiken.",
   "safe-mode": "&cQuickShop är nu i säkert läge, du kan inte öppna den här butiksbehållaren, kontakta serveradministratören för att åtgärda felen.",
   "safe-mode-admin": "&c&lVARNING: &cQuickShop på denna server som körs nu under safe-mode, inga funktioner kommer att fungera, skriv &e/qs &c kommandot för att kontrollera eventuella fel.",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists."
+  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
+  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
+  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them."
 }
