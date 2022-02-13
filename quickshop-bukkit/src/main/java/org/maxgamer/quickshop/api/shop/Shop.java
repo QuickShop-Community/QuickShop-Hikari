@@ -83,14 +83,6 @@ public interface Shop {
     void clearStaffs();
 
     /**
-     * Clone new shop object. Not a deep clone.
-     *
-     * @return New shop object
-     */
-    @NotNull
-    Shop clone();
-
-    /**
      * Remove a staff from moderators
      *
      * @param player Staff

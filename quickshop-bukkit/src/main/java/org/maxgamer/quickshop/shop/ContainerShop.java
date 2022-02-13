@@ -62,9 +62,6 @@ import java.util.logging.Level;
  */
 @EqualsAndHashCode
 public class ContainerShop implements Shop {
-//    @EqualsAndHashCode.Exclude
-//    @Deprecated
-//    private static final String SHOP_SIGN_PREFIX = "§d§o §r";
     @NotNull
     private final Location location;
     private final YamlConfiguration extra;
@@ -93,24 +90,24 @@ public class ContainerShop implements Shop {
     @EqualsAndHashCode.Exclude
     private InventoryPreview inventoryPreview = null;
     @EqualsAndHashCode.Exclude
-    private volatile ContainerShop attachedShop;
+    private ContainerShop attachedShop;
     @EqualsAndHashCode.Exclude
-    private volatile boolean isDisplayItemChanged = false;
+    private boolean isDisplayItemChanged = false;
     @EqualsAndHashCode.Exclude
-    private volatile boolean dirty;
+    private boolean dirty;
     @EqualsAndHashCode.Exclude
-    private volatile boolean updating = false;
+    private boolean updating = false;
     @Nullable
     private String currency;
     private boolean disableDisplay;
     private UUID taxAccount;
     @NotNull
-    private volatile String inventoryWrapperProvider;
+    private String inventoryWrapperProvider;
     @Nullable
     @EqualsAndHashCode.Exclude
-    private volatile InventoryWrapper inventoryWrapper;
+    private InventoryWrapper inventoryWrapper;
     @NotNull
-    private volatile String symbolLink;
+    private String symbolLink;
 
     private ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
@@ -368,8 +365,6 @@ public class ContainerShop implements Shop {
                     buyerIterator.setCurrent(stack);
                 }
             }
-            // Send the players new inventory to them
-            //buyerInventory.setContents(contents);
             this.setSignText();
             // This should not happen.
             if (amount > 0) {
@@ -410,8 +405,6 @@ public class ContainerShop implements Shop {
                     amount -= stackSize;
                 }
             }
-            // Now update the players inventory.
-            //buyerInventory.setContents(contents);
 
             //Update sign
             this.setSignText();
@@ -753,8 +746,6 @@ public class ContainerShop implements Shop {
                     amount -= stackSize;
                 }
             }
-            // We now have to update the chests inventory manually.
-            //this.getInventory().setContents(chestContents);
             //Update sign
             this.setSignText();
             if (attachedShop != null) {
@@ -1315,18 +1306,6 @@ public class ContainerShop implements Shop {
     @Override
     public void setDirty(boolean isDirty) {
         this.dirty = isDirty;
-    }
-
-    /**
-     * Returns a clone of this shop. References to the same display item, itemstack, location and
-     * owner as this shop does. Do not modify them or you will modify this shop.
-     *
-     * <p>**NOT A DEEP CLONE**
-     */
-    @SuppressWarnings("MethodDoesntCallSuperMethod")
-    @Override
-    public @NotNull ContainerShop clone() {
-        return new ContainerShop(this);
     }
 
     @Override
