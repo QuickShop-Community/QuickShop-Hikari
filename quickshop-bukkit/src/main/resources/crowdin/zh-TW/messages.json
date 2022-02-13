@@ -13,7 +13,7 @@
   "integrations-check-failed-create": "&c集成模組 {0} 拒絕了建立商店的操作。",
   "integrations-check-failed-trade": "&c集成模組 {0} 拒絕了與商店交易的操作。",
   "3rd-plugin-build-check-failed": "&c第三方插件 &l{0}&r&c 拒絕檢查權限操作，請問你有權限建立商店嗎 ？",
-  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&7（僅限管理員）&d{0} &8拒絕權限檢查。&7如果無法接受，請新增 &d{1} &7進監聽黑名單。&7配置指南：https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&c你不能在創造模式中破壞其他玩家的商店，請使用生存模式或使用超級工具 {0} 來破壞。",
   "trading-in-creative-mode-is-disabled": "&c你不能在創造模式中使用商店交易。",
   "supertool-is-disabled": "&c超級工具已被關閉，現在不能使用超級工具破壞任何商店。",
@@ -126,7 +126,7 @@
     },
     "toggle-always-counting": {
       "counting": "&aShop is now always counting container even is unlimited",
-      "not-counting": "&aShop is now respect if shop is unlimited"
+      "not-counting": "&a現在商店會視情況計數容器物品（無限商店無視容器物品）"
     },
     "transfer-success": "&a將&e {0} &a商店轉移到&e {1}",
     "transfer-success-other": "&a將&e {0} {1}&a的商店轉移到&e {2}",
@@ -150,7 +150,7 @@
     "now-nolonger-debuging": "&a成功關閉開發者模式，插件重新載入中……",
     "wrong-args": "&c無效的參數，使用 &l/qs help &c查看指令列表。",
     "description": {
-      "alwayscounting": "&eSet if shop always counting container even is unlimited",
+      "alwayscounting": "&e設定商店是否會持續計數容器物品（即使是無限商店）",
       "title": "&aQuickShop 說明",
       "unlimited": "&e將商店設為無限庫存。",
       "setowner": "&e為商店設置新的店主。",
@@ -210,10 +210,10 @@
     "freeze": "已停用交易"
   },
   "controlpanel": {
-    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting": "&a持續計數：{0} &e[&d&l修改&e]",
     "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&a店主 ： &b{0} &e[&d&l修改&e]",
-    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
+    "setowner-uuid": "&a店主：&b{0} &e[&d&l修改&e]",
     "infomation": "&a商店控制面板 ： ",
     "setowner-hover": "&e點擊修改店主。",
     "unlimited": "&a無限 ： {0} &e[&d&l修改&e]",
@@ -362,8 +362,8 @@
   "purchase-out-of-space": "&c該商店空間不足，請聯繫商店商店店主或商店員工清空商店。",
   "safe-mode": "&cQuickShop 現在處於安全模式，您無法打開此商店容器，請與服務器管理員聯繫以修復錯誤!",
   "safe-mode-admin": "&c&l警告:&c此服務器上的 QuickShop 現在在安全模式下運行，沒有任何功能可用，請輸入 &e/qs &c 命令以檢查任何錯誤!",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
-  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
-  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
+  "internal-error": "&c發生內部錯誤，詳細資訊已記錄到控制台。請稍後再試，如果問題仍然存在，請聯繫伺服器管理員。",
+  "bungee-cross-server-msg": "&eQuickShop跨服信息: &a{0}",
+  "edition-confilct": "QuickShop-Hikari 與 QuickShop-Reremake 同時安裝在伺服器中可能會相互沖突，你需要卸載其中一個",
+  "plugin-cancelled": "&c操作被取消, 原因: {0}"
 }
