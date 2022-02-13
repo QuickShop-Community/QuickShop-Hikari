@@ -35,6 +35,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <configuration>
+                    <outputDirectory>../build-artifacts</outputDirectory>
+                </configuration>
             </plugin>
         </plugins>
         <resources>
