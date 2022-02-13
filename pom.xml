@@ -114,7 +114,7 @@
                             </goals>
                             <configuration>
                                 <finalName>${name}</finalName>
-                                <outputDirectory>${project.basedir}/build-artifacts</outputDirectory>
+                                <outputDirectory>${patent.basedir}/build-artifacts</outputDirectory>
                                 <createDependencyReducedPom>false</createDependencyReducedPom>
                                 <minimizeJar>true</minimizeJar>
                                 <createDependencyReducedPom>false</createDependencyReducedPom>
