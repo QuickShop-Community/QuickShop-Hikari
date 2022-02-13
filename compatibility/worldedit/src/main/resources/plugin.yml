@@ -1,0 +1,5 @@
+name: qsc-worldedit
+version: '${project.version}'
+main: com.ghostchu.quickshop.compatibility.worldedit.Worldedit
+api-version: 1.16
+depend: [ WorldEdit, QuickShop-Hikari ]

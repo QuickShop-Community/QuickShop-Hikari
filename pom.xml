@@ -231,5 +231,6 @@
         <module>compatibility/clearlag</module>
         <module>compatibility/nocheatplus</module>
         <module>compatibility/worldguard</module>
+        <module>compatibility/worldedit</module>
     </modules>
 </project>
