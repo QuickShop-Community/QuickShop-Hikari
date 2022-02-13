@@ -40,7 +40,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.maxgamer</groupId>
+            <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-interface</artifactId>
             <version>${parent.version}</version>
             <scope>compile</scope>

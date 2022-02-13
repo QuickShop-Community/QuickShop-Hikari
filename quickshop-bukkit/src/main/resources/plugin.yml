@@ -1,5 +1,5 @@
 name: QuickShop-Hikari
-main: org.maxgamer.quickshop.QuickShop
+main: com.ghostchu.quickshop.QuickShop
 version: ${project.version}
 authors:
   - PotatoCraft Studio
