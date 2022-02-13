@@ -59,7 +59,6 @@ import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 import org.maxgamer.quickshop.api.event.*;
 import org.maxgamer.quickshop.api.inventory.InventoryWrapper;
 import org.maxgamer.quickshop.api.shop.*;
-import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.shop.inventory.BukkitInventoryWrapper;
 import org.maxgamer.quickshop.util.*;
 import org.maxgamer.quickshop.util.economyformatter.EconomyFormatter;
@@ -92,9 +91,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     private final EconomyFormatter formatter;
     @Getter
     @Nullable
-    private Trader cacheTaxAccount;
+    private OfflinePlayer cacheTaxAccount;
     @Getter
-    private Trader cacheUnlimitedShopAccount;
+    private OfflinePlayer cacheUnlimitedShopAccount;
     private SimplePriceLimiter priceLimiter;
     private boolean useOldCanBuildAlgorithm;
     private boolean autoSign;
@@ -113,11 +112,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
         if (!taxAccount.isEmpty()) {
             if (Util.isUUID(taxAccount)) {
-                this.cacheTaxAccount = new Trader(taxAccount,
-                        plugin.getServer().getOfflinePlayer(UUID.fromString(taxAccount)));
+                this.cacheTaxAccount = plugin.getServer().getOfflinePlayer(UUID.fromString(taxAccount));
             } else {
-                this.cacheTaxAccount = new Trader(taxAccount,
-                        PlayerFinder.findOfflinePlayerByName(taxAccount));
+                this.cacheTaxAccount = PlayerFinder.findOfflinePlayerByName(taxAccount);
             }
         } else {
             // disable tax account
@@ -130,9 +127,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 plugin.getLogger().log(Level.WARNING, "unlimited-shop-owner-change-account is empty, default to \"quickshop\"");
             }
             if (Util.isUUID(uAccount)) {
-                cacheUnlimitedShopAccount = new Trader(uAccount, Bukkit.getOfflinePlayer(UUID.fromString(uAccount)));
+                cacheUnlimitedShopAccount = Bukkit.getOfflinePlayer(UUID.fromString(uAccount));
             } else {
-                cacheUnlimitedShopAccount = new Trader(uAccount, PlayerFinder.findOfflinePlayerByName(uAccount));
+                cacheUnlimitedShopAccount = PlayerFinder.findOfflinePlayerByName(uAccount);
             }
         }
         this.priceLimiter = new SimplePriceLimiter(plugin);
@@ -677,9 +674,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         } else {
             total = e.getTotal(); // Allow addon to set it
         }
-        Trader taxAccount;
+        OfflinePlayer taxAccount;
         if (shop.getTaxAccount() != null) {
-            taxAccount = new Trader(shop.getTaxAccount().toString(), Bukkit.getOfflinePlayer(shop.getTaxAccount()));
+            taxAccount = PlayerFinder.findOfflinePlayerByUUID(shop.getTaxAccount());
         } else {
             taxAccount = this.cacheTaxAccount;
         }
@@ -1067,9 +1064,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // Money handling
         // SELLING Player -> Shop Owner
         EconomyTransaction transaction;
-        Trader taxAccount;
+        OfflinePlayer taxAccount;
         if (shop.getTaxAccount() != null) {
-            taxAccount = new Trader(shop.getTaxAccount().toString(), Bukkit.getOfflinePlayer(shop.getTaxAccount()));
+            taxAccount = PlayerFinder.findOfflinePlayerByUUID(shop.getTaxAccount());
         } else {
             taxAccount = this.cacheTaxAccount;
         }

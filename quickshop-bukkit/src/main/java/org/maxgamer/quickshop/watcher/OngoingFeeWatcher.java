@@ -20,8 +20,8 @@
 package org.maxgamer.quickshop.watcher;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -29,9 +29,9 @@ import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.economy.EconomyTransaction;
 import org.maxgamer.quickshop.api.event.ShopOngoingFeeEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
-import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.shop.SimpleShopManager;
 import org.maxgamer.quickshop.util.MsgUtil;
+import org.maxgamer.quickshop.util.PlayerFinder;
 import org.maxgamer.quickshop.util.Util;
 import org.maxgamer.quickshop.util.WarningSender;
 
@@ -74,9 +74,9 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                 World world = location.getWorld();
                 //We must check balance manually to avoid shop missing hell when tax account broken
                 if (allowLoan || plugin.getEconomy().getBalance(shopOwner, Objects.requireNonNull(world), shop.getCurrency()) >= cost) {
-                    Trader taxAccount;
+                    OfflinePlayer taxAccount;
                     if (shop.getTaxAccount() != null) {
-                        taxAccount = new Trader(shop.getTaxAccount().toString(), Bukkit.getOfflinePlayer(shop.getTaxAccount()));
+                        taxAccount = PlayerFinder.findOfflinePlayerByUUID(shop.getTaxAccount());
                     } else {
                         taxAccount = ((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount();
                     }

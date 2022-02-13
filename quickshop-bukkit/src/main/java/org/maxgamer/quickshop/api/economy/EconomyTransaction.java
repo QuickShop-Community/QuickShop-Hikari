@@ -21,12 +21,12 @@ package org.maxgamer.quickshop.api.economy;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.maxgamer.quickshop.QuickShop;
 import org.maxgamer.quickshop.api.event.EconomyCommitEvent;
-import org.maxgamer.quickshop.economy.Trader;
 import org.maxgamer.quickshop.util.CalculateUtil;
 import org.maxgamer.quickshop.util.JsonUtil;
 import org.maxgamer.quickshop.util.Util;
@@ -49,7 +49,7 @@ public class EconomyTransaction {
     private final double actualAmount;
     private final double tax;
     @Nullable
-    private final Trader taxer;
+    private final OfflinePlayer taxer;
     private final boolean allowLoan;
     private final boolean tryingFixBalanceInsufficient;
     @Getter
@@ -79,7 +79,7 @@ public class EconomyTransaction {
      */
 
     @Builder
-    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable Trader taxAccount, EconomyCore core, boolean allowLoan, @NotNull World world, @Nullable String currency) {
+    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable OfflinePlayer taxAccount, EconomyCore core, boolean allowLoan, @NotNull World world, @Nullable String currency) {
         this.from = from;
         this.to = to;
         this.core = core == null ? QuickShop.getInstance().getEconomy() : core;
