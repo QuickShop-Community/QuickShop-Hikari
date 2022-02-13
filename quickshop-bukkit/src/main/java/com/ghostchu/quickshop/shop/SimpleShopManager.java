@@ -935,7 +935,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // Calling ShopCreateEvent
         ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, p.getUniqueId());
         if (Util.fireCancellableEvent(shopCreateEvent)) {
-            Util.debugLog("Cancelled by plugin");
+            plugin.text().of(p, "plugin-cancelled", shopCreateEvent.getCancelReason()).send();
             return;
         }
         // Handle create cost
