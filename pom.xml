@@ -31,7 +31,9 @@
         <java.version>16</java.version>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <rootDir>${project.basedir}</rootDir>
     </properties>
+
 
     <licenses>
         <license>
@@ -114,7 +116,7 @@
                             </goals>
                             <configuration>
                                 <finalName>${name}</finalName>
-                                <outputDirectory>${parent.basedir}/build-artifacts</outputDirectory>
+                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>
                                 <createDependencyReducedPom>false</createDependencyReducedPom>
                                 <minimizeJar>true</minimizeJar>
                                 <createDependencyReducedPom>false</createDependencyReducedPom>
@@ -123,7 +125,9 @@
                                 <relocations>
                                     <relocation>
                                         <pattern>com.dumptruckman.bukkit.configuration.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.com.dumptruckman.bukkit.configuration.</shadedPattern>
+                                        <shadedPattern>
+                                            com.ghostchu.quickshop.shade.com.dumptruckman.bukkit.configuration.
+                                        </shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>io.papermc.lib.</pattern>
@@ -141,16 +145,19 @@
                                     <!-- JsonConfiguration Related -->
                                     <relocation>
                                         <pattern>net.minidev.json.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.net.minidev.json.minidev.json.</shadedPattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.net.minidev.json.minidev.json.
+                                        </shadedPattern>
                                     </relocation>
                                     <!-- SID -->
                                     <relocation>
                                         <pattern>org.enginehub.squirrelid.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.org.enginehub.squirrelid.</shadedPattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.org.enginehub.squirrelid.
+                                        </shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>co.aikar.taskchain.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.co.aikar.taskchain.</shadedPattern> <!-- Replace this -->
+                                        <shadedPattern>com.ghostchu.quickshop.shade.co.aikar.taskchain.
+                                        </shadedPattern> <!-- Replace this -->
                                     </relocation>
                                 </relocations>
                                 <transformers>
@@ -179,30 +186,30 @@
                         </execution>
                     </executions>
                 </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.1</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                    <excludePackageNames>com.ghostchu.quickshop.nonquickshopstuff.*</excludePackageNames>
-                    <!--<aggregate>true</aggregate>
-                    <charmvnset>UTF-8</charmvnset>
-                    <docencoding>UTF-8</docencoding>-->
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <failOnError>false</failOnError>
-                            <additionalJOption>-Xdoclint:none</additionalJOption>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>3.3.1</version>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                        <excludePackageNames>com.ghostchu.quickshop.nonquickshopstuff.*</excludePackageNames>
+                        <!--<aggregate>true</aggregate>
+                        <charmvnset>UTF-8</charmvnset>
+                        <docencoding>UTF-8</docencoding>-->
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                            <configuration>
+                                <failOnError>false</failOnError>
+                                <additionalJOption>-Xdoclint:none</additionalJOption>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
