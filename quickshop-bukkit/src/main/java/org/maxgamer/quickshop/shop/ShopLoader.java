@@ -58,14 +58,10 @@ import java.util.logging.Logger;
  * A class allow plugin load shops fast and simply.
  */
 public class ShopLoader {
-//    private final List<Long> loadTimes = new ArrayList<>();
-//
-//    private final Map<Timer, Double> timeCostCache = new HashMap<>();
 
     private final QuickShop plugin;
     /* This may contains broken shop, must use null check before load it. */
     private int errors;
-    //private final WarningSender warningSender;
 
     /**
      * The shop load allow plugin load shops fast and simply.
@@ -74,7 +70,6 @@ public class ShopLoader {
      */
     public ShopLoader(@NotNull QuickShop plugin) {
         this.plugin = plugin;
-        //this.warningSender = new WarningSender(plugin, 15000);
     }
 
     public void loadShops() {
@@ -87,7 +82,6 @@ public class ShopLoader {
      * @param worldName The world name, null if load all shops
      */
     public void loadShops(@Nullable String worldName) {
-        //boolean backupedDatabaseInDeleteProcess = false;
         this.plugin.getLogger().info("Fetching shops from the database...If plugin stuck there, check your database connection.");
         int loadAfterChunkLoaded = 0;
         int loadAfterWorldLoaded = 0;
@@ -163,11 +157,8 @@ public class ShopLoader {
                     // Load to World
                     if (!Util.canBeShop(shopLocation.getBlock())) {
                         Util.debugLog("Target block can't be a shop, removing it from the memory...");
-                        // shop.delete();
                         valid--;
                         plugin.getShopManager().removeShop(shop); // Remove from Mem
-                        //TODO: Only remove from memory, so if it actually is a bug, user won't lost all shops.
-                        //TODO: Old shop will be deleted when in same location creating new shop.
                     } else {
                         pendingLoading.add(shop);
                         ++loaded;
@@ -229,7 +220,7 @@ public class ShopLoader {
     @NotNull
     private YamlConfiguration extraUpgrade(@NotNull String extraString) {
         if (!StringUtils.isEmpty(extraString) && !"QuickShop: {}".equalsIgnoreCase(extraString)) {
-            Util.debugLog("Extra API -> Upgrading -> " + extraString.replaceAll("\n", ""));
+            Util.debugLog("Extra API -> Upgrading -> " + extraString.replace("\n", ""));
         }
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         JsonConfiguration jsonConfiguration = new JsonConfiguration();
@@ -244,21 +235,7 @@ public class ShopLoader {
         return yamlConfiguration;
     }
 
-    private @NotNull YamlConfiguration deserializeExtra(@NotNull String extraString, @NotNull AtomicBoolean needUpdate) {
-        YamlConfiguration yamlConfiguration = new YamlConfiguration();
-        try {
-            if (extraString.startsWith("{")) {
-                yamlConfiguration = extraUpgrade(extraString);
-                needUpdate.set(true);
-            } else {
-                yamlConfiguration.loadFromString(extraString);
-            }
-        } catch (InvalidConfigurationException e) {
-            yamlConfiguration = extraUpgrade(extraString);
-            needUpdate.set(true);
-        }
-        return yamlConfiguration;
-    }
+
 
     private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
         errors++;
@@ -294,7 +271,8 @@ public class ShopLoader {
             String shopStr = s.trim();
             try {
                 list.add(gson.fromJson(shopStr, ShopRawDatabaseInfo.class));
-            } catch (JsonSyntaxException ignore) {
+            } catch (JsonSyntaxException jsonSyntaxException) {
+                plugin.getLogger().log(Level.WARNING,"Failed to read shop Json "+shopStr, jsonSyntaxException);
             }
         }
         plugin.getLogger().info("Processed " + total + "/" + total + " - [ Valid " + list.size() + "]");
@@ -336,7 +314,6 @@ public class ShopLoader {
         errors = 0;
         List<ShopRawDatabaseInfo> shopRawDatabaseInfoList = new ArrayList<>();
         try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
-            // this.plugin.getLogger().info("Getting shops from the database...");
             while (rs.next()) {
                 ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
                 shopRawDatabaseInfoList.add(origin);
@@ -350,7 +327,7 @@ public class ShopLoader {
 
     @Getter
     @Setter
-    static public class ShopRawDatabaseInfo {
+    public static class ShopRawDatabaseInfo {
         private String item;
 
         private String moderators;
@@ -497,6 +474,22 @@ public class ShopLoader {
                 }
             }
             return shopModerator;
+        }
+
+        private @NotNull YamlConfiguration deserializeExtra(@NotNull String extraString, @NotNull AtomicBoolean needUpdate) {
+            YamlConfiguration yamlConfiguration = new YamlConfiguration();
+            try {
+                if (extraString.startsWith("{")) {
+                    yamlConfiguration = extraUpgrade(extraString);
+                    needUpdate.set(true);
+                } else {
+                    yamlConfiguration.loadFromString(extraString);
+                }
+            } catch (InvalidConfigurationException e) {
+                yamlConfiguration = extraUpgrade(extraString);
+                needUpdate.set(true);
+            }
+            return yamlConfiguration;
         }
 
     }
