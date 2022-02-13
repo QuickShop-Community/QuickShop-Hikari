@@ -120,14 +120,11 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
     private void fireEvent(Event event) {
         HandlerList handlers = event.getHandlers();
         RegisteredListener[] listeners = handlers.getRegisteredListeners();
-
         for (RegisteredListener registration : listeners) {
             if (!registration.getPlugin().isEnabled()) {
                 continue;
             }
             Class<?> regClass = registration.getListener().getClass();
-
-
             boolean skip = false;
             for (ListenerContainer container : this.ignoredListener) {
                 if (container.matches(regClass, registration.getPlugin())) {
@@ -135,27 +132,23 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
                     break;
                 }
             }
-
             if (skip) {
                 continue;
             }
-
             try {
                 registration.callEvent(event);
             } catch (AuthorNagException ex) {
-                Plugin plugin = registration.getPlugin();
-
-                if (plugin.isNaggable()) {
-                    plugin.setNaggable(false);
-
-                    plugin.getServer()
+                Plugin regPlugin = registration.getPlugin();
+                if (regPlugin.isNaggable()) {
+                    regPlugin.setNaggable(false);
+                    regPlugin.getServer()
                             .getLogger()
                             .log(
                                     Level.SEVERE,
                                     String.format(
                                             "Nag author(s): '%s' of '%s' about the following: %s",
-                                            plugin.getDescription().getAuthors(),
-                                            plugin.getDescription().getFullName(),
+                                            regPlugin.getDescription().getAuthors(),
+                                            regPlugin.getDescription().getFullName(),
                                             ex.getMessage()));
                 }
             } catch (Throwable ex) {
