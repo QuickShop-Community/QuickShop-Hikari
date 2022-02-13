@@ -52,7 +52,7 @@
             </resource>
             <resource>
                 <targetPath>/crowdin</targetPath>
-                <directory>${project.basedir}${file.separator}..${file.separator}crowdin</directory>
+                <directory>../crowdin</directory>
                 <filtering>false</filtering>
             </resource>
         </resources>

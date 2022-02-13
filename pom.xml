@@ -113,7 +113,7 @@
                                 <goal>shade</goal>
                             </goals>
                             <configuration>
-                                <finalName>${artifactId}</finalName>
+                                <finalName>${name}</finalName>
                                 <createDependencyReducedPom>false</createDependencyReducedPom>
                                 <minimizeJar>true</minimizeJar>
                                 <createDependencyReducedPom>false</createDependencyReducedPom>
