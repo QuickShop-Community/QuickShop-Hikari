@@ -1,3 +1,3 @@
 files:
   - source: /quickshop-bukkit/src/main/resources/lang/*.json
-    translation: /crowdin/lang/%locale%/%original_file_name%
+    translation: /quickshop-bukkit/src/main/resources/crowdin/%locale%/%original_file_name%
