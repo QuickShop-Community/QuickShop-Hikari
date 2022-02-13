@@ -362,7 +362,7 @@
         <dependency>
             <groupId>net.tnemc</groupId>
             <artifactId>Reserve</artifactId>
-            <version>0.1.5.4</version>
+            <version>0.1.5.3-SNAPSHOT-4</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
