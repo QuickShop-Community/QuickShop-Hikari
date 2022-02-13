@@ -111,7 +111,7 @@ No maven yet.
 ## Developer API
 
 ```java
-Plugin plugin = Bukkit.getPluginManager().getPlugin("QuickShop");
+Plugin plugin = Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
 if(plugin != null){
     QuickShopAPI api = (QuickShopAPI)plugin;
     api.xxxx;
