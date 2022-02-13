@@ -143,19 +143,19 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.maxgamer</groupId>
+            <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-interface</artifactId>
             <version>${parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.maxgamer</groupId>
+            <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-spigot</artifactId>
             <version>${parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.maxgamer</groupId>
+            <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-paper</artifactId>
             <version>${parent.version}</version>
             <scope>compile</scope>

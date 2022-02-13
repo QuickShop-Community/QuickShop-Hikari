@@ -122,40 +122,40 @@
                                 <relocations>
                                     <relocation>
                                         <pattern>com.dumptruckman.bukkit.configuration.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.com.dumptruckman.bukkit.configuration.</shadedPattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.com.dumptruckman.bukkit.configuration.</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>io.papermc.lib.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.io.papermc.lib.</shadedPattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.io.papermc.lib.</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>de.leonhard.storage.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.de.leonhard.storage.</shadedPattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.de.leonhard.storage.</shadedPattern>
                                     </relocation>
                                     <!-- MineDown -->
                                     <relocation>
                                         <pattern>de.themoep.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.de.themoep.</shadedPattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.</shadedPattern>
                                     </relocation>
                                     <!-- JsonConfiguration Related -->
                                     <relocation>
                                         <pattern>net.minidev.json.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.net.minidev.json.minidev.json.</shadedPattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.net.minidev.json.minidev.json.</shadedPattern>
                                     </relocation>
                                     <!-- SID -->
                                     <relocation>
                                         <pattern>org.enginehub.squirrelid.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.org.enginehub.squirrelid.</shadedPattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.org.enginehub.squirrelid.</shadedPattern>
                                     </relocation>
                                     <relocation>
                                         <pattern>co.aikar.taskchain.</pattern>
-                                        <shadedPattern>org.maxgamer.quickshop.shade.co.aikar.taskchain.</shadedPattern> <!-- Replace this -->
+                                        <shadedPattern>com.ghostchu.quickshop.shade.co.aikar.taskchain.</shadedPattern> <!-- Replace this -->
                                     </relocation>
                                 </relocations>
                                 <transformers>
                                     <transformer
                                             implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                        <mainClass>org.maxgamer.quickshop.javaw.bootstrap.Bootstrap</mainClass>
+                                        <mainClass>com.ghostchu.quickshop.javaw.bootstrap.Bootstrap</mainClass>
                                     </transformer>
                                 </transformers>
                                 <filters>
@@ -184,7 +184,7 @@
                 <version>3.3.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <excludePackageNames>org.maxgamer.quickshop.nonquickshopstuff.*</excludePackageNames>
+                    <excludePackageNames>com.ghostchu.quickshop.nonquickshopstuff.*</excludePackageNames>
                     <!--<aggregate>true</aggregate>
                     <charmvnset>UTF-8</charmvnset>
                     <docencoding>UTF-8</docencoding>-->

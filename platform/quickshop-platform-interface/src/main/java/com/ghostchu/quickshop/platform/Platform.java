@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.platform;
+package com.ghostchu.quickshop.platform;
 
 import de.tr7zw.nbtapi.NBTItem;
 import net.kyori.adventure.text.Component;

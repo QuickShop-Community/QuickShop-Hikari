@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.platform.paper;
+package com.ghostchu.quickshop.platform.paper;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
@@ -10,7 +10,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.platform.Platform;
+import com.ghostchu.quickshop.platform.Platform;
 
 public class PaperPlatform implements Platform {
     @Override

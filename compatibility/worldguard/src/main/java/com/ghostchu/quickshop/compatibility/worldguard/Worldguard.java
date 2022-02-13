@@ -14,9 +14,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.maxgamer.quickshop.api.event.ShopCreateEvent;
-import org.maxgamer.quickshop.api.event.ShopPreCreateEvent;
-import org.maxgamer.quickshop.api.event.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 
 import java.util.logging.Level;
 

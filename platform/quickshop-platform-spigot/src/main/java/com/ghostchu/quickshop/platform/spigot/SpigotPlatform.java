@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.platform.spigot;
+package com.ghostchu.quickshop.platform.spigot;
 
 import de.tr7zw.nbtapi.NBTTileEntity;
 import de.tr7zw.nbtapi.plugin.NBTAPI;
@@ -16,7 +16,7 @@ import org.bukkit.block.Sign;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.platform.Platform;
+import com.ghostchu.quickshop.platform.Platform;
 
 public class SpigotPlatform implements Platform {
     private NBTAPI nbtapi;

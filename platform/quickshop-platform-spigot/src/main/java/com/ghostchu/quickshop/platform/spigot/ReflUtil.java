@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.platform.spigot;
+package com.ghostchu.quickshop.platform.spigot;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;

@@ -17,7 +17,7 @@
  *
  */
 
-package org.maxgamer.quickshop.platform.spigot;
+package com.ghostchu.quickshop.platform.spigot;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package org.maxgamer.quickshop.platform.spigot;
+package com.ghostchu.quickshop.platform.spigot;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
