@@ -31,8 +31,22 @@
         <java.version>16</java.version>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <rootDir>${project.basedir}</rootDir>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>github</id>
+            <properties>
+                <rootDir>${maven.multiModuleProjectDirectory}</rootDir>
+            </properties>
+        </profile>
+        <profile>
+            <id>jenkins</id>
+            <properties>
+                <rootDir>${WORKSPACE}</rootDir>
+            </properties>
+        </profile>
+    </profiles>
 
 
     <licenses>
@@ -116,7 +130,7 @@
                             </goals>
                             <configuration>
                                 <finalName>${name}</finalName>
-                                <outputDirectory>${maven.multiModuleProjectDirectory}/build-artifacts</outputDirectory>
+                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>
                                 <createDependencyReducedPom>false</createDependencyReducedPom>
                                 <minimizeJar>true</minimizeJar>
                                 <createDependencyReducedPom>false</createDependencyReducedPom>
