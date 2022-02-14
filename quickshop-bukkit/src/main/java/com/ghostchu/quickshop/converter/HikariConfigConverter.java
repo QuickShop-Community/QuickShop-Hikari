@@ -40,8 +40,8 @@ public class HikariConfigConverter implements HikariConverterInterface {
             entries.add(Component.text("The config.yml is missing!"));
         }
         int version = plugin.getConfig().getInt("config-version");
-        if (version >= 157) {
-            entries.add(Component.text("The configuration seems already up-to-date. Require: < 157, Actual: " + version));
+        if (version >= 1000) {
+            entries.add(Component.text("The configuration seems already up-to-date. Require: < 1000, Actual: " + version));
         }
         if (new File(plugin.getDataFolder(), "price-restriction.yml").exists()) {
             entries.add(Component.text("File price-restriction.yml already exists! "));

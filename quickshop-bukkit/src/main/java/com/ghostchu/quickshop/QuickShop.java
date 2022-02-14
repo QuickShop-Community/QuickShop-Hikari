@@ -950,7 +950,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfig().set("server-uuid", serverUUID);
         }
 
-        if (selectedVersion < 157) {
+        if (selectedVersion < 1000) {
             new HikariConverter(this).upgrade();
             saveConfig();
             getLogger().info("Server will restart after 5 seconds, enjoy :)");

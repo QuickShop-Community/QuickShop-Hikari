@@ -27,7 +27,7 @@ public class HikariConverter {
 
     public void upgrade() {
         int selectedVersion = plugin.getConfig().getInt("config-version");
-        if (selectedVersion >= 157) {
+        if (selectedVersion >= 1000) {
             Util.debugLog("Skipping configuration upgrading...");
             return;
         }
@@ -115,7 +115,7 @@ public class HikariConverter {
         }
         logger.info("Saving configuration...");
         // End everything
-        plugin.getConfig().set("config-version",157); // Apollo first version
+        plugin.getConfig().set("config-version", 1000); // Apollo first version
         plugin.saveConfig();
         logger.info("Awesome! Seems you data already get ready for Apollo!");
     }
