@@ -273,16 +273,6 @@ public class Paste {
             }
             finalReport.append(config)
                     .append("\n");
-//            finalReport.append("\t*********************************\n");
-//            finalReport.append("\tmessages.json:\n");
-//            finalReport
-//                    .append("\t\t\n")
-//                    .append(
-//                            new String(
-//                                    Objects.requireNonNull(
-//                                            Util.inputStream2ByteArray(plugin.getDataFolder() + "/messages.json")),
-//                                    StandardCharsets.UTF_8))
-//                    .append("\n");
 
             finalReport.append("\t*********************************\n");
             finalReport.append("\titemi18n.yml:\n");
