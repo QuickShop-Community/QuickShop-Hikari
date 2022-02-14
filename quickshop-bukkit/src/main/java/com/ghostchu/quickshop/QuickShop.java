@@ -22,29 +22,6 @@ package com.ghostchu.quickshop;
 import cc.carm.lib.easysql.EasySQL;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.hikari.HikariConfig;
-import com.ghostchu.simplereloadlib.ReloadManager;
-import io.papermc.lib.PaperLib;
-import kong.unirest.Unirest;
-import lombok.Getter;
-import lombok.Setter;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.*;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.JavaPluginLoader;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
-import org.h2.Driver;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
@@ -82,12 +59,34 @@ import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
 import com.ghostchu.quickshop.watcher.*;
+import com.ghostchu.simplereloadlib.ReloadManager;
+import io.papermc.lib.PaperLib;
+import kong.unirest.Unirest;
+import lombok.Getter;
+import lombok.Setter;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.plugin.*;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import org.h2.Driver;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -383,7 +382,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
     public boolean loadEcon() {
         try {
-            // EconomyCore core = new Economy_Vault();
             switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
                 case UNKNOWN -> {
                     setupBootError(new BootError(this.getLogger(), "Can't load the Economy provider, invaild value in config.yml."), true);
@@ -649,7 +647,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     }
 
     private void runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
-        testing = true;
         environmentChecker = new EnvironmentChecker(this);
         ResultReport resultReport = environmentChecker.run(stage);
         StringJoiner joiner = new StringJoiner("\n", "", "");
@@ -663,68 +660,17 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         // Check If we need kill the server or disable plugin
 
         switch (resultReport.getFinalResult()) {
-            case DISABLE_PLUGIN:
-                Bukkit.getPluginManager().disablePlugin(this);
-                break;
-            case STOP_WORKING:
+            case DISABLE_PLUGIN -> Bukkit.getPluginManager().disablePlugin(this);
+            case STOP_WORKING -> {
                 setupBootError(new BootError(this.getLogger(), joiner.toString()), true);
                 PluginCommand command = getCommand("qs");
                 if (command != null) {
                     Util.mainThreadRun(() -> command.setTabCompleter(this)); //Disable tab completer
                 }
-                break;
-            case KILL_SERVER:
-                getLogger().severe("[Security Risk Detected] QuickShop forcing crash the server for security, contact the developer for details.");
-                String result = environmentChecker.getReportMaker().bake();
-                File reportFile = writeSecurityReportToFile();
-                URI uri = null;
-                if (reportFile != null) {
-                    uri = reportFile.toURI();
-                }
-                if (uri != null) {
-                    getLogger().warning("[Security Risk Detected] To get more details, please check: " + uri);
-                    try {
-                        if (java.awt.Desktop.isDesktopSupported()) {
-                            java.awt.Desktop dp = java.awt.Desktop.getDesktop();
-                            if (dp.isSupported(java.awt.Desktop.Action.BROWSE)) {
-                                dp.browse(uri);
-                                getLogger().warning("[Security Risk Detected] A browser already open for you. ");
-                            }
-                        }
-                    } catch (Throwable ignored) {
-                        //If failed, write directly to console
-                        getLogger().severe(result);
-                    }
-                } else {
-                    //If write failed, write directly to console
-                    getLogger().severe(result);
-                }
-                //Wait for a while for user and logger outputting
-                try {
-                    //10 seconds
-                    Thread.yield();
-                    Thread.sleep(10000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                // Halt the process, kill the server
-                Runtime.getRuntime().halt(-1);
-            default:
-                break;
+            }
+            default -> {
+            }
         }
-        testing = false;
-    }
-
-    private File writeSecurityReportToFile() {
-        File file = new File(getDataFolder(), UUID.randomUUID() + ".security.letter.txt");
-        try {
-            Files.writeString(new File(getDataFolder(), UUID.randomUUID() + ".security.letter.txt").toPath(), environmentChecker.getReportMaker().bake());
-            file = file.getCanonicalFile();
-        } catch (IOException e) {
-            getLogger().log(Level.SEVERE, "Failed to write security report!", e);
-            return null;
-        }
-        return file;
     }
 
     @Override
@@ -733,7 +679,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getLogger().severe("FATAL: onLoad not called and QuickShop trying patching them... Some Integrations will won't work or work incorrectly!");
             try {
                 onLoad();
-            } catch (Throwable ignored) {
+            } catch (Throwable ex) {
+                getLogger().log(Level.WARNING,"Failed to patch onLoad", ex);
             }
         }
         Timer enableTimer = new Timer(true);
@@ -750,7 +697,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         getLogger().info("Chat processor selected: Hardcoded BungeeChat Lib");
         /* Process Metrics and Sentry error reporter. */
         metrics = new Metrics(this, 14281);
-
         try {
             if (!getConfig().getBoolean("auto-report-errors")) {
                 Util.debugLog("Error reporter was disabled!");
@@ -1037,7 +983,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
     }
 
-    //TODO: Refactor it
     private void updateConfig(int selectedVersion) throws IOException {
         String serverUUID = getConfig().getString("server-uuid");
         if (serverUUID == null || serverUUID.isEmpty()) {
@@ -1053,7 +998,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                getLogger().log(Level.WARNING,"Thread sleep interrupted",e);
             }
             Runtime.getRuntime().halt(0);
         }
