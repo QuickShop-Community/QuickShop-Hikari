@@ -2,7 +2,7 @@
   "_comment": "Xin chào, Nếu bạn chỉnh sửa nội dung này từ Github hoặc từ các source code, bạn nên truy cập vào https://crowdin.com/project/quickshop-reremake",
   "file-test": "Đây là một file test thử. Chúng tôi dùng nó để kiểm tra xem liệu file messages.json có bị lỗi hay không. Bạn có thể tuỳ ý điền bất cứ gì bạn thích vào đây :)",
   "translation-author": "Người dịch: huyhhuy",
-  "translation-version": "Phiên bản hỗ trợ: Reremake",
+  "translation-version": "Support Version: Hikari",
   "translation-contributors": "Người đóng góp: huyhhuy",
   "translation-country": "Vùng ngôn ngữ: Tiếng Việt (vi_VN)",
   "language-version": "63",
@@ -364,5 +364,6 @@
   "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors.",
   "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
   "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them."
+  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
+  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
 }
