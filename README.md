@@ -55,8 +55,6 @@ The main purpose of this branch is to modernize the core content of QuickShop an
 
 [ci.codemc.io](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari/)
 
----
-
 ## Compatibility Modules
 
 ### clearlag
@@ -78,9 +76,6 @@ Removal shops that destoryed in a WorldEdit operation to prevent shops turn to a
 ### worldguard
 
 Flag based shop control.
-
-
----
 
 ## Contribute
 
