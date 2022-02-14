@@ -1,4 +1,4 @@
-name: qsc-openinv
+name: qscompat-openinv
 version: '${project.version}'
 main: com.ghostchu.quickshop.compatibility.openinv.Openinv
 api-version: 1.16

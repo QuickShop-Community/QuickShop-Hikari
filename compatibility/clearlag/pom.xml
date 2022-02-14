@@ -93,12 +93,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>simplereloadlib</artifactId>
-            <version>1.1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>me.minebuilders</groupId>
             <artifactId>clearlag</artifactId>
             <version>3.2.2</version>

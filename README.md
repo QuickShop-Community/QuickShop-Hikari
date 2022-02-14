@@ -16,8 +16,11 @@
 
 [//]: # (![Rating]&#40;https://img.shields.io/spiget/rating/62575?label=rating&#41;)
 
----
-QuickShop-Hikari forked from QuickShop-Reremake and is maintained by Ghost_chu.  
+## Introduction
+
+QuickShop is a shop plugin that allows players to easily sell/buy any items from a chest without any commands. In fact, none of the commands that QuickShop provides are ever needed by a player.  
+
+[Ghost-chu/QuickShop-Hikari(this)](https://github.com/Ghost-chu/QuickShop-Hikari) forked from [PotatoCraft-Studio/QuickShop-Reremake](https://github.com/PotatoCraft-Studio/QuickShop-Reremake/) which it forked from [Ghost-chu/QuickShop-Reremake](https://github.com/Ghost-chu/QuickShop-Reremake) and original repo is [KaiKikuchi/QuickShop](https://github.com/KaiKikuchi/QuickShop). QuickShop-Hikari maintained by Ghost_chu.  
 
 The main purpose of this branch is to modernize the core content of QuickShop and adapt the features of the latest version of Minecraft.
 
@@ -27,6 +30,7 @@ The main purpose of this branch is to modernize the core content of QuickShop an
 [Discuss](https://github.com/Ghost-chu/QuickShop-Hikari/discussions)  
 [Bug Tracker](https://github.com/Ghost-chu/QuickShop-Hikari/issues)  
 [Discord](https://discord.gg/Bu3dVtmsD3)
+
 ## Features
 
 - Easy to use
@@ -46,10 +50,37 @@ The main purpose of this branch is to modernize the core content of QuickShop an
 - Powerful API
 - Optimized performance
 - MineDown syntax support
+- H2 (local) or MySQL (remote) datasource supports
+- Supports custom inventory! Use InventoryWrapper API.
+- Optimized for Paper, also can run under Spigot (but little hacky and slowly)
 
 ## Downloads
 
-No releases yet.
+[ci.codemc.io](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari/)
+
+## Compatibility Modules
+
+You can download compatibility modules optional. Install them if you need.
+
+### clearlag
+
+Prevent [Clearlag](https://www.spigotmc.org/resources/clearlagg.68271/) remove our display items if QuickShop running under Real DisplayItem mode.
+
+### nocheatplus
+
+A compatibility helper to prevent player trigger NCP's anti-cheat checks while creating the shops.
+
+### openinv
+
+Allow player use command `/qs echest` to turn a shop use player's EnderChest inventory as inventory.
+
+### worldedit
+
+Removal shops that destoryed in a WorldEdit operation to prevent shops turn to a "ghost" shop.
+
+### worldguard
+
+Flag based shop control.
 
 ## Contribute
 
@@ -68,45 +99,29 @@ To compile the QuickShop and debug it by yourself, please follow these steps:
 
 ## Maven
 
+```XML
+<repository>
+    <id>quickshop-repo</id>
+    <url>https://repo.codemc.io/repository/maven-public/</url>
+</repository>
 
-No maven yet.
 
-[//]: # (```XML)
+<dependency>
+    <groupId>com.ghostchu</groupId>
+    <artifactId>quickshop-bukkit</artifactId>
+    <version>{VERSION}</version>
+    <scope>provided</scope>
+</dependency>
 
-[//]: # ()
-[//]: # (<repository>)
+```
 
-[//]: # (    <id>quickshop-repo</id>)
+## Bstats
 
-[//]: # (    <url>https://repo.codemc.io/repository/maven-public/</url>)
+[![BigImage](https://bstats.org/signatures/bukkit/QuickShop-Hikari.svg)](https://bstats.org/plugin/bukkit/QuickShop-Hikari/14281)
 
-[//]: # (</repository>)
+## License
 
-[//]: # ()
-[//]: # (<dependency>)
-
-[//]: # (<groupId>org.maxgamer</groupId>)
-
-[//]: # (<artifactId>QuickShop</artifactId>)
-
-[//]: # (<version>{VERSION}</version>)
-
-[//]: # (<scope>provided</scope>)
-
-[//]: # (</dependency>)
-
-[//]: # (```)
-
-[//]: # (## Bstats)
-
-[//]: # ()
-[//]: # ([![BigImage]&#40;https://bstats.org/signatures/bukkit/QuickShop-Reremake.svg&#41;]&#40;https://bstats.org/plugin/bukkit/QuickShop-Reremake/3320&#41;)
-
-[//]: # ()
-[//]: # (## License)
-
-[//]: # ()
-[//]: # ([![FOSSA Status]&#40;https://app.fossa.com/api/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake.svg?type=large&#41;]&#40;https://app.fossa.com/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake?ref=badge_large&#41;)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari?ref=badge_large)
 
 ## Developer API
 

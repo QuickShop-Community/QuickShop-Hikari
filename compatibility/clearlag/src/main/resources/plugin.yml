@@ -1,4 +1,4 @@
-name: qsc-clearlag
+name: qscompat-clearlag
 version: '${project.version}'
 main: com.ghostchu.quickshop.compatibility.clearlag.Main
 api-version: 1.16

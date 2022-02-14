@@ -1,4 +1,4 @@
-name: qsc-worldguard
+name: qscompat-worldguard
 version: '${project.version}'
 main: com.ghostchu.quickshop.compatibility.worldguard.Worldguard
 api-version: 1.16

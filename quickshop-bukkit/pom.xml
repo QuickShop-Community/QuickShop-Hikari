@@ -70,8 +70,7 @@
                 <filtering>true</filtering>
             </resource>
             <resource>
-                <directory>${rootDir}/crowdin/lang</directory>
-                <targetPath>/crowdin/lang/</targetPath>
+                <directory>${rootDir}/crowdin</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
@@ -310,7 +309,7 @@
             <groupId>me.xanium</groupId>
             <artifactId>GemsEconomy</artifactId>
             <scope>system</scope>
-            <version>4.9.3-BCRemake-1.5</version>
+            <version>4.9.3-GCRemake-1.6</version>
             <systemPath>${project.basedir}/lib/GemsEconomy-4.9.2.jar</systemPath>
             <exclusions>
                 <exclusion>
@@ -392,12 +391,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>simplereloadlib</artifactId>
-            <version>1.1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.konghq</groupId>
             <artifactId>unirest-java</artifactId>
             <version>3.13.6</version>
@@ -414,27 +407,15 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>23.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>taskchain-bukkit</artifactId>
             <version>3.7.2</version> <!-- Replace this with the version from TaskChain -->
+        </dependency>
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>simplereloadlib</artifactId>
+            <version>1.1.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

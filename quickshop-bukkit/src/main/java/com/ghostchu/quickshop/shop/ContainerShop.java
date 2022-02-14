@@ -160,8 +160,8 @@ public class ContainerShop implements Shop {
             @Nullable String currency,
             boolean disableDisplay,
             @Nullable UUID taxAccount,
-            @Nullable String inventoryWrapperProvider,
-            @Nullable String symbolLink) {
+            @NotNull String inventoryWrapperProvider,
+            @NotNull String symbolLink) {
         Util.ensureThread(false);
         this.location = location;
         this.price = price;
@@ -189,8 +189,10 @@ public class ContainerShop implements Shop {
         this.taxAccount = taxAccount;
         this.dirty = false;
         this.isAlwaysCountingContainer = getExtra(plugin).getBoolean("is-always-counting-container", false);
+        //noinspection ConstantConditions
         if (symbolLink == null)
             throw new IllegalArgumentException("SymbolLink cannot be null");
+        //noinspection ConstantConditions
         if (inventoryWrapperProvider == null)
             throw new IllegalArgumentException("InventoryWrapperProvider cannot be null");
         this.symbolLink = symbolLink;
