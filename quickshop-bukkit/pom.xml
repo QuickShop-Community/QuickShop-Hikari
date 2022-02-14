@@ -69,6 +69,11 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
+            <resource>
+                <directory>../crowdin/lang</directory>
+                <targetPath>/crowdin/lang/</targetPath>
+                <filtering>true</filtering>
+            </resource>
         </resources>
     </build>
 
