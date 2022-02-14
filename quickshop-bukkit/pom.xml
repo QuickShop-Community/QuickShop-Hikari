@@ -70,7 +70,7 @@
                 <filtering>true</filtering>
             </resource>
             <resource>
-                <directory>../crowdin/lang</directory>
+                <directory>${rootDir}/crowdin/lang</directory>
                 <targetPath>/crowdin/lang/</targetPath>
                 <filtering>true</filtering>
             </resource>
