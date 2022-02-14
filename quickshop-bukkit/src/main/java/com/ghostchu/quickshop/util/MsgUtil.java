@@ -596,7 +596,22 @@ public class MsgUtil {
     public static void sendDirectMessage(@NotNull UUID sender, @Nullable Component... messages) {
         sendDirectMessage(Bukkit.getPlayer(sender), messages);
     }
-
+    public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable String... messages) {
+        if (messages == null) {
+            Util.debugLog("INFO: null messages trying to be sent.");
+            return;
+        }
+        if (sender == null) {
+            Util.debugLog("INFO: Sending message to null sender.");
+            return;
+        }
+        for (String msg : messages) {
+            if (StringUtils.isEmpty(msg)) {
+                return;
+            }
+           sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(msg));
+        }
+    }
     public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable Component... messages) {
         if (messages == null) {
             Util.debugLog("INFO: null messages trying to be sent.");
