@@ -355,7 +355,7 @@
             <groupId>io.papermc</groupId>
             <artifactId>paperlib</artifactId>
             <!--suppress MavenPackageUpdate -->
-            <version>LATEST</version>
+            <version>1.0.7</version>
             <scope>compile</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
