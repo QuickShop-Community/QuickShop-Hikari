@@ -2,7 +2,7 @@
   "_comment": "Hi translator! If you're editing this on GitHub or through source code should you go to https://crowdin.com/project/quickshop-reremake instead.",
   "file-test": "This is a test textfile. We use it to test if the messages.json file is broken. You can fill it with any easter eggs you like :)",
   "translation-author": "Translator: Ghost_chu, Andre_601",
-  "translation-version": "Support Version: Reremake",
+  "translation-version": "Support Version: Hikari",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Language Zone: English (en_US)",
   "language-version": "63",
@@ -118,7 +118,7 @@
   "blacklisted-item": "&cYou cannot sell this item because it is on the blacklist",
   "how-much-to-trade-for": "&aEnter in chat, how much you wish to trade &e{1}x {0}&a for.",
   "command": {
-    "format": "&a{0} {1} &e- {2}",
+    "format": "&a/{0} {1} &e- {2}",
     "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&aShop is now unlimited",
@@ -364,5 +364,6 @@
   "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors.",
   "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
   "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them."
+  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
+  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
 }
