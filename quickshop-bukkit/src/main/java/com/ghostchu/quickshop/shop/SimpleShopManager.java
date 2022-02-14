@@ -323,7 +323,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     plugin.getDatabaseHelper().createShop(shop, null, e2 -> {
                         plugin.getLogger()
                                 .log(Level.SEVERE, "Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
-                        // MsgUtil.sendMessage(player, "shop-creation-failed");
                         plugin.text().of(player, "shop-creation-failed").send();
                         Util.mainThreadRun(() -> {
                             shop.onUnload();

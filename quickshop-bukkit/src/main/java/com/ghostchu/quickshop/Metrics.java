@@ -46,7 +46,7 @@ import java.util.zip.GZIPOutputStream;
  *
  * <p>Check out https://bStats.org/ to learn more about bStats!
  */
-@SuppressWarnings({"WeakerAccess"})
+@SuppressWarnings({"all"}) // we don't care this class that copy from bstats few years ago. just works.
 public class Metrics {
 
     // The version of this bStats class
