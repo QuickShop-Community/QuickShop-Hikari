@@ -94,7 +94,7 @@ public class UpdateWatcher implements Listener {
                                     "A new version of QuickShop snapshot has been released! [" + updater.getRemoteServerVersion() + "]");
                     QuickShop.getInstance()
                             .getLogger()
-                            .info("Update here: https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT");
+                            .info("Update here: https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari");
 
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (QuickShop.getPermissionManager()
@@ -115,7 +115,7 @@ public class UpdateWatcher implements Listener {
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                             player.sendMessage(ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(notify));
                             player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
-                            player.sendMessage(ChatColor.AQUA + " https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT");
+                            player.sendMessage(ChatColor.AQUA + " https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari");
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                         }
                     }

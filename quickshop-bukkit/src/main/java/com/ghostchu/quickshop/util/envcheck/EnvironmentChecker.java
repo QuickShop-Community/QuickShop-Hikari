@@ -19,10 +19,6 @@
 
 package com.ghostchu.quickshop.util.envcheck;
 
-import io.papermc.lib.PaperLib;
-import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.DisplayType;
@@ -31,6 +27,9 @@ import com.ghostchu.quickshop.util.GameVersion;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.Util;
+import io.papermc.lib.PaperLib;
+import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -39,8 +38,6 @@ import java.util.logging.Level;
 public final class EnvironmentChecker {
     private final QuickShop plugin;
     private final List<Method> tests = new ArrayList<>();
-    @Getter
-    private final SecurityReport reportMaker = new SecurityReport();
 
     public EnvironmentChecker(QuickShop plugin) {
         this.plugin = plugin;

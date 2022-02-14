@@ -4,13 +4,13 @@ contact_links:
     about: |-
       Bleeding-edge builds with the latest features and bug fixes.
       DEV-BUILDS MAY CAUSE DAMAGE TO YOUR SERVER! MAKE BACKUPS FIRST!
-    url: 'https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake-SNAPSHOT/'
+    url: 'https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari/'
   - name: 'Feature Requests'
     about: 'Use our discussions page to request changes towards QuickShop.'
-    url: 'https://github.com/PotatoCraft-Studio/QuickShop-Reremake/discussions/categories/ideas'
+    url: 'https://github.com/Ghost-chu/QuickShop-Hikari/discussions/categories/ideas'
   - name: 'Wiki'
     about: 'Find info about QuickShop in our dedicated wiki.'
-    url: 'https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki'
+    url: 'https://github.com/Ghost-chu/QuickShop-Hikari/wiki'
   - name: 'Discord'
     about: 'Join our Discord to ask questions and get fast support.'
-    url: 'https://discord.gg/bfefw2E'
+    url: 'https://discord.gg/Bu3dVtmsD3'

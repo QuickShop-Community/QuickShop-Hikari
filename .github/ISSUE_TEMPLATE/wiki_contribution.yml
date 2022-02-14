@@ -12,9 +12,9 @@ body:
         ## Please Read!
         This Form is reserved for **Wiki Contributions only!**
 
-        - For Bugs or issues with QuickShop, open a [Bug Report](https://github.com/Ghost-chu/QuickShop-Reremake/issues/new?template=bug_report.yml&labels=bug).
-        - For performance issues with QuickShop, open a [Performance Report](https://github.com/Ghost-chu/QuickShop-Reremake/issues/new?template=performance.yml&labels=performance).
-        - Feature requests or other suggestions should be made in the [Discussions](https://github.com/Ghost-chu/QuickShop-Reremake/discussions).
+        - For Bugs or issues with QuickShop, open a [Bug Report](https://github.com/Ghost-chu/QuickShop-Hikari/issues/new?template=bug_report.yml&labels=bug).
+        - For performance issues with QuickShop, open a [Performance Report](https://github.com/Ghost-chu/QuickShop-Hikari/issues/new?template=performance.yml&labels=performance).
+        - Feature requests or other suggestions should be made in the [Discussions](https://github.com/Ghost-chu/QuickShop-Hikari/discussions).
 
         Please fill out all required fields in their entirety and as detailed as possible. Failing to do so could get your issue closed without any warning.
   - type: 'input'

@@ -56,7 +56,7 @@ public class BuildInfo {
             pomGroupId = UNKNOWN;
             pomArtifactId = UNKNOWN;
             jobName = UNKNOWN;
-            jobUrl = "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/";
+            jobUrl = "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari/";
             return;
         }
         YamlConfiguration buildInfo = YamlConfiguration.loadConfiguration(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
@@ -67,7 +67,7 @@ public class BuildInfo {
         gitBranch = buildInfo.getString("git-branch", "Unknown");
         pomGroupId = buildInfo.getString("pom-groupid", "Unknown");
         pomArtifactId = buildInfo.getString("pom-artifactid", "Unknown");
-        jobUrl = buildInfo.getString("job-url", "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Reremake/");
+        jobUrl = buildInfo.getString("job-url", "https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari/");
         jobName = buildInfo.getString("job-name", "Unknown");
         try {
             inputStream.close();
