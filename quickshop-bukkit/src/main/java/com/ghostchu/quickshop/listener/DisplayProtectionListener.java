@@ -73,10 +73,10 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
         if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
             return;
         }
-        if (!(event.getEntity() instanceof Item)) {
+        if (!(event.getEntity() instanceof Item itemEntity)) {
             return;
         }
-        if (AbstractDisplayItem.checkIsGuardItemStack(((Item) event.getEntity()).getItemStack())) {
+        if (AbstractDisplayItem.checkIsGuardItemStack(itemEntity.getItemStack())) {
             event.setCancelled(true);
             event.getEntity().remove();
             sendAlert(

@@ -64,14 +64,11 @@ public class InternalListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopCreate(ShopCreateEvent event) {
         if (isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
-            event.setCancelled(true);
-            plugin.text().of(event.getCreator(), "forbidden-vanilla-behavior").send();
+            event.setCancelled(true,plugin.text().of(event.getCreator(), "forbidden-vanilla-behavior").forLocale());
             return;
         }
         if (loggingAction) {
-            //Player creator = plugin.getServer().getPlayer(event.getCreator());
             plugin.logEvent(new ShopCreationLog(event.getCreator(), event.getShop().saveToInfoStorage(), new BlockPos(event.getShop().getLocation())));
-
         }
     }
 
@@ -102,8 +99,7 @@ public class InternalListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopPrePurchase(ShopPurchaseEvent event) {
         if (isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
-            event.setCancelled(true);
-            plugin.text().of(event.getPurchaser(), "forbidden-vanilla-behavior").send();
+            event.setCancelled(true,plugin.text().of(event.getPurchaser(), "forbidden-vanilla-behavior").forLocale());
             return;
         }
         if (loggingBalance) {
