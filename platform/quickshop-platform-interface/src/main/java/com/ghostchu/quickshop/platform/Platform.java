@@ -36,6 +36,4 @@ public interface Platform {
         }
         return shopId;
     }
-//    @NotNull
-//    Component getLine(@NotNull Sign sign, int line);
 }

@@ -109,7 +109,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      * If running environment test
      */
     @Getter
-    private static volatile boolean testing = false;
+    private static final boolean testing = false;
     private final Map<String, Integer> limits = new HashMap<>(15);
     /**
      * The shop limites.
@@ -239,12 +239,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private SQLManager sqlManager;
     @Nullable
     private QuickShopPAPI quickShopPAPI;
-    ;
     @Getter
     private Platform platform;
     private BukkitAudiences audience;
     @Getter
-    private ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
+    private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
 
     /**
      * Use for mock bukkit
@@ -319,14 +318,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      * Load 3rdParty plugin support module.
      */
     private void load3rdParty() {
-        // added for compatibility reasons with OpenInv - see
-        // https://github.com/KaiKikuchi/QuickShop/issues/139
-//        if (getConfig().getBoolean("plugin.OpenInv")) {
-//            this.openInvPlugin = Bukkit.getPluginManager().getPlugin("OpenInv");
-//            if (this.openInvPlugin != null) {
-//                getLogger().info("Successfully loaded OpenInv support!");
-//            }
-//        }
         if (getConfig().getBoolean("plugin.PlaceHolderAPI")) {
             this.placeHolderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
             if (this.placeHolderAPI != null) {

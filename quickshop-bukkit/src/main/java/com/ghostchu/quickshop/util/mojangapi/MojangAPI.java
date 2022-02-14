@@ -210,7 +210,7 @@ public class MojangAPI {
             }
             String result = response.getBody();
             try {
-                JsonElement index = new JsonParser().parse(result);
+                JsonElement index = JsonParser.parseString(result);
                 if (!index.isJsonObject()) {
                     return Optional.empty();
                 }

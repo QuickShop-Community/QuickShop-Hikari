@@ -56,7 +56,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     @NotNull
     private String prefix;
 
-    public SimpleDatabaseHelper(@NotNull QuickShop plugin, @NotNull SQLManager manager) throws SQLException {
+    public SimpleDatabaseHelper(@NotNull QuickShop plugin, @NotNull SQLManager manager) {
         this.plugin = plugin;
         this.manager = manager;
         this.prefix = plugin.getDbPrefix();

@@ -68,7 +68,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
     private final String languageCode;
     @Nullable
     private volatile JsonObject lang = null;
-    private MojangApiMirror mirror;
+    private final MojangApiMirror mirror;
 
     @SneakyThrows
     public MojangGameLanguageImpl(@NotNull QuickShop plugin, @NotNull String languageCode) {

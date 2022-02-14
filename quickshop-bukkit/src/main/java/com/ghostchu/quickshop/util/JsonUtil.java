@@ -48,7 +48,6 @@ public final class JsonUtil {
             .setPrettyPrinting()
             .create();
 
-    private static final JsonParser PARSER = new JsonParser();
 
     public static Gson regular() {
         return REGULAR_GSON;
@@ -69,18 +68,13 @@ public final class JsonUtil {
     }
 
     @NotNull
-    public static JsonParser parser() {
-        return PARSER;
-    }
-
-    @NotNull
     public static JsonObject readObject(@NotNull Reader reader) {
-        return PARSER.parse(reader).getAsJsonObject();
+        return JsonParser.parseReader(reader).getAsJsonObject();
     }
 
     @NotNull
     public static JsonObject readObject(@NotNull String s) {
-        return PARSER.parse(s).getAsJsonObject();
+        return JsonParser.parseString(s).getAsJsonObject();
     }
 
     public static void writeObject(@NotNull Appendable writer, @NotNull JsonObject object) {

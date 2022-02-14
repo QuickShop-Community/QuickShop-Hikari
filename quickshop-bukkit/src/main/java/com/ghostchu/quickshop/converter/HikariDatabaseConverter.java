@@ -321,7 +321,7 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
     }
 
 
-    private void pushShops(@NotNull List<ShopStorageUnit> units, @NotNull String prefix, @NotNull SQLManager manager) throws SQLException {
+    private void pushShops(@NotNull List<ShopStorageUnit> units, @NotNull String prefix, @NotNull SQLManager manager) {
         instance.getLogger().info("Preparing to pushing shops into database...");
         instance.getLogger().info("Statistics: Total " + units.size() + " shops waiting for pushing.");
         instance.getLogger().info("Initializing target database...");
