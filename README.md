@@ -57,6 +57,8 @@ The main purpose of this branch is to modernize the core content of QuickShop an
 
 ## Compatibility Modules
 
+You can download compatibility modules optional. Install them if you need.
+
 ### clearlag
 
 Prevent [Clearlag](https://www.spigotmc.org/resources/clearlagg.68271/) remove our display items if QuickShop running under Real DisplayItem mode.
