@@ -308,9 +308,6 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
                         shop.getInventoryWrapperProvider()
                 )
                 .executeAsync(integer -> {
-                    if (integer <= 0) {
-                        plugin.getLogger().warning("SQL execution returns " + integer + " lines modified when creating shop " + shop + ", shop may not save correctly");
-                    }
                 }, ((exception, sqlAction) -> plugin.getLogger().log(Level.SEVERE, "Failed to create the shop " + shop + " cause database returns an error while executing create SQL: " + sqlAction.getSQLContent() + ". The shop may loss after server restart!", exception)));
     }
 
@@ -404,7 +401,6 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
                 .build()
                 .executeAsync(null, (exception, sqlAction) -> {
                     if (exception != null) {
-                        plugin.getLogger().severe("Error updating shop: " + exception.getMessage() + ", changes may loss after server restart.");
                         Util.debugLog("Failed to execute SQL:" + sqlAction.getSQLContent() + ", error: " + exception.getMessage());
                     }
                 });
