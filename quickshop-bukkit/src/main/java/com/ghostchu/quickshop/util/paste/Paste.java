@@ -378,22 +378,6 @@ public class Paste {
                 finalReport.append("\tpaper.yml:\n");
                 finalReport.append("\t\t\n").append("Read failed.").append("\n");
             }
-//            try {
-//                finalReport.append("\t*********************************\n");
-//                finalReport.append("\ttuinity.yml:\n");
-//                finalReport
-//                        .append("\t\t\n")
-//                        .append(
-//                                new String(
-//                                        Objects.requireNonNull(
-//                                                Util.inputStream2ByteArray(new File(new File("."), "tuinity.yml").getPath())),
-//                                        StandardCharsets.UTF_8))
-//                        .append("\n");
-//            } catch (Exception th) {
-//                finalReport.append("\t*********************************\n");
-//                finalReport.append("\ttuinity.yml:\n");
-//                finalReport.append("\t\t\n").append("Read failed.").append("\n");
-//            }
             try {
                 finalReport.append("\t*********************************\n");
                 finalReport.append("\tpurpur.yml:\n");
