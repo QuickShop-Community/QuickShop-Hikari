@@ -2,7 +2,7 @@
   "_comment": "Ahoj překladateli! Pokud toto upravuješ z Githubu nebo ze zdrojového kódu, měl bys mrknout na https://crowdin.com/project/quickshop-reremake",
   "file-test": "Toto je zkušební textový soubor. Používáme jej k testování, pokud jde o zprávy json je rozbitý. Můžete jej vyplnit jakýmkoliv východním vejci, které se vám zde líbí :)",
   "translation-author": "Translator: Ghost_chu, Andre_601",
-  "translation-version": "Podpora verze: Reremake",
+  "translation-version": "Support Version: Hikari",
   "translation-contributors": "Přispěli: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Jazyková Zóna: Czech (cs_CZ)",
   "language-version": "63",
@@ -118,7 +118,7 @@
   "blacklisted-item": "&b▪&8▏ &bSystem &8› &cNemůžete prodat tento item, protože je na černé listině",
   "how-much-to-trade-for": "&7Zadejte do chatu: Cenu za kolik chcete prodávat &b{1}x {0}&7.",
   "command": {
-    "format": "&8| &f/{0} {1} &7- &f{2}",
+    "format": "&a/{0} {1} &e- {2}",
     "format-disabled": "&8| &c/{0} {1} &7- &f{2}",
     "toggle-unlimited": {
       "unlimited": "&7Obchod je nyní neomezený",
@@ -364,5 +364,6 @@
   "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors.",
   "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
   "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them."
+  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
+  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
 }
