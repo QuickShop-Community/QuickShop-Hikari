@@ -16,7 +16,7 @@
 
 [//]: # (![Rating]&#40;https://img.shields.io/spiget/rating/62575?label=rating&#41;)
 
----
+## Introduction
 
 QuickShop is a shop plugin that allows players to easily sell/buy any items from a chest without any commands. In fact, none of the commands that QuickShop provides are ever needed by a player.  
 
