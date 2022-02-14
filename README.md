@@ -50,6 +50,9 @@ The main purpose of this branch is to modernize the core content of QuickShop an
 - Powerful API
 - Optimized performance
 - MineDown syntax support
+- H2 (local) or MySQL (remote) datasource supports
+- Supports custom inventory! Use InventoryWrapper API.
+- Optimized for Paper, also can run under Spigot (but little hacky and slowly)
 
 ## Downloads
 
