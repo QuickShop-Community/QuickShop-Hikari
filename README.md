@@ -17,7 +17,10 @@
 [//]: # (![Rating]&#40;https://img.shields.io/spiget/rating/62575?label=rating&#41;)
 
 ---
-QuickShop-Hikari forked from QuickShop-Reremake and is maintained by Ghost_chu.  
+
+QuickShop is a shop plugin that allows players to easily sell/buy any items from a chest without any commands. In fact, none of the commands that QuickShop provides are ever needed by a player.  
+
+[QuickShop-Hikari(this)](https://github.com/Ghost-chu/QuickShop-Hikari) forked from [PotatoCraft-Studio/QuickShop-Reremake](https://github.com/PotatoCraft-Studio/QuickShop-Reremake/) which it forked from [Ghost-chu/QuickShop-Reremake](https://github.com/Ghost-chu/QuickShop-Reremake) and original repo is [Kaikuchi/QuickShop](https://github.com/Kaikuchi/QuickShop) and is maintained by Ghost_chu.  
 
 The main purpose of this branch is to modernize the core content of QuickShop and adapt the features of the latest version of Minecraft.
 
