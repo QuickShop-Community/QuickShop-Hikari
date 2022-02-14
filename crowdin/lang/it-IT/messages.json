@@ -2,7 +2,7 @@
   "_comment": "Ciao traduttore! Se lo modifichi da Github o da sorgenti di codice, dovresti andare su https://crowdin.com/project/quickshop-reremake",
   "file-test": "Questo è un file di testo di prova. Lo usiamo per verificare se il file messages.json è rotto. Puoi riempirlo con tutti gli easter egg che ti piacciono qui :)",
   "translation-author": "Traduttori: Ghost_chu, Andre_601, MaxFederico, sandtechnology, MiniMoro",
-  "translation-version": "Versione di Supporto: Reremake",
+  "translation-version": "Support Version: Hikari",
   "translation-contributors": "Collaboratori: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601, sandtechnology, MiniMoro",
   "translation-country": "Lingua zona: Italian (it_IT)",
   "language-version": "63",
@@ -364,5 +364,6 @@
   "safe-mode-admin": "&c&lATTENZIONE: &cIl QuickShop su questo server ora funziona in modalità provvisoria, nessuna funzione funzionerà, per favore digita il comando &e/qs &c per controllare eventuali errori.",
   "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
   "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them."
+  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
+  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
 }
