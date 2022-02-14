@@ -42,7 +42,6 @@ import com.ghostchu.quickshop.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.listener.*;
 import com.ghostchu.quickshop.localization.text.SimpleTextManager;
 import com.ghostchu.quickshop.metric.MetricListener;
-import com.ghostchu.quickshop.nonquickshopstuff.com.rylinaux.plugman.util.PluginUtil;
 import com.ghostchu.quickshop.papi.QuickShopPAPI;
 import com.ghostchu.quickshop.permission.PermissionManager;
 import com.ghostchu.quickshop.platform.Platform;
@@ -74,7 +73,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.*;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -87,10 +87,8 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -592,36 +590,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         getLogger().info("Finishing remains misc works...");
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
         getLogger().info("All shutdown work is finished.");
-    }
-
-    public void reload() {
-        PluginManager pluginManager = getServer().getPluginManager();
-        try {
-            File file = Paths.get(getClass().getProtectionDomain().getCodeSource().getLocation().toURI()).toFile();
-            //When quickshop was updated, we need to stop reloading
-            if (getUpdateWatcher() != null) {
-                File updatedJar = getUpdateWatcher().getUpdater().getUpdatedJar();
-                if (updatedJar != null) {
-                    throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin was updated)");
-                }
-            }
-            if (!file.exists()) {
-                throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Failed to find plugin jar)");
-            }
-            Throwable throwable = PluginUtil.unload(this);
-            if (throwable != null) {
-                throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin unloading has failed)", throwable);
-            }
-            Plugin plugin = pluginManager.loadPlugin(file);
-            if (plugin != null) {
-                plugin.onLoad();
-                pluginManager.enablePlugin(plugin);
-            } else {
-                throw new IllegalStateException("Failed to reload QuickShop! Please consider restarting the server. (Plugin loading has failed)");
-            }
-        } catch (URISyntaxException | InvalidDescriptionException | InvalidPluginException e) {
-            throw new RuntimeException("Failed to reload QuickShop! Please consider restarting the server.", e);
-        }
     }
 
     private void initConfiguration() {
