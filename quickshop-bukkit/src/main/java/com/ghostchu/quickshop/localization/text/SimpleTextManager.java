@@ -64,7 +64,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class SimpleTextManager implements TextManager, Reloadable {
-    private static final String CROWDIN_LANGUAGE_FILE_PATH = "/master/crowdin/lang/%locale%/messages.json";
+    private static final String CROWDIN_LANGUAGE_FILE_PATH = "/hikari/crowdin/lang/%locale%/messages.json";
     public final List<PostProcessor> postProcessors = new ArrayList<>();
     private final QuickShop plugin;
     private final Distribution distribution;
@@ -310,6 +310,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     }
                 }
             }
+            Util.debugLog("Registering relative language "+langCode+" to "+result);
             languagesCache.put(langCode, result);
         }
         return result;
