@@ -1,4 +1,4 @@
-name: qsc-worldedit
+name: qscompat-worldedit
 version: '${project.version}'
 main: com.ghostchu.quickshop.compatibility.worldedit.Worldedit
 api-version: 1.16
