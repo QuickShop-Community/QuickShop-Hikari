@@ -2,12 +2,12 @@ name: QuickShop-Hikari
 main: com.ghostchu.quickshop.QuickShop
 version: ${project.version}
 authors:
+  - Ghost_chu
   - PotatoCraft Studio
   - Netherfoam
   - Timtower
   - KaiNoMood (KaiKikuchi)
   - jho5245
-  - Ghost_chu
   - cakoyo
   - Ectabro
   - portlek
