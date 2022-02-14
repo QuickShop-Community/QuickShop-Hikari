@@ -134,11 +134,6 @@ public final class EnvironmentChecker {
                         Util.debugLog("[Fatal-Disable] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         skipAllTest = true; //We need to disable the plugin NOW! Some HUGE exception is happening here, hurry up!
                         break;
-                    case KILL_SERVER:
-                        plugin.getLogger().warning("[FATAL] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                        Util.debugLog("[Fatal-Kill] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                        skipAllTest = true; //We need to disable the plugin NOW! Some HUGE exception is happening here, hurry up!
-                        break;
                     default:
                         plugin.getLogger().warning("[UNDEFINED] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                 }
