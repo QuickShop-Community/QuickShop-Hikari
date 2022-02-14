@@ -72,45 +72,29 @@ To compile the QuickShop and debug it by yourself, please follow these steps:
 
 ## Maven
 
+```XML
+<repository>
+    <id>quickshop-repo</id>
+    <url>https://repo.codemc.io/repository/maven-public/</url>
+</repository>
 
-No maven yet.
 
-[//]: # (```XML)
+<dependency>
+    <groupId>com.ghostchu</groupId>
+    <artifactId>quickshop-bukkit</artifactId>
+    <version>{VERSION}</version>
+    <scope>provided</scope>
+</dependency>
 
-[//]: # ()
-[//]: # (<repository>)
+```
 
-[//]: # (    <id>quickshop-repo</id>)
+## Bstats
 
-[//]: # (    <url>https://repo.codemc.io/repository/maven-public/</url>)
+[![BigImage](https://bstats.org/signatures/bukkit/QuickShop-Hikari.svg)](https://bstats.org/plugin/bukkit/QuickShop-Hikari/14281)
 
-[//]: # (</repository>)
+## License
 
-[//]: # ()
-[//]: # (<dependency>)
-
-[//]: # (<groupId>org.maxgamer</groupId>)
-
-[//]: # (<artifactId>QuickShop</artifactId>)
-
-[//]: # (<version>{VERSION}</version>)
-
-[//]: # (<scope>provided</scope>)
-
-[//]: # (</dependency>)
-
-[//]: # (```)
-
-[//]: # (## Bstats)
-
-[//]: # ()
-[//]: # ([![BigImage]&#40;https://bstats.org/signatures/bukkit/QuickShop-Reremake.svg&#41;]&#40;https://bstats.org/plugin/bukkit/QuickShop-Reremake/3320&#41;)
-
-[//]: # ()
-[//]: # (## License)
-
-[//]: # ()
-[//]: # ([![FOSSA Status]&#40;https://app.fossa.com/api/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake.svg?type=large&#41;]&#40;https://app.fossa.com/projects/git%2Bgithub.com%2FPotatoCraft-Studio%2FQuickShop-Reremake?ref=badge_large&#41;)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari?ref=badge_large)
 
 ## Developer API
 
