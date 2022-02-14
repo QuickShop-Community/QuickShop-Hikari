@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.localization.game.game.distributions;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import org.apache.commons.lang3.StringUtils;
@@ -101,7 +102,7 @@ public class MojangDistribution {
         if (versionMapping == null) {
             return Collections.emptyList();
         }
-        for (Map.Entry<String, JsonElement> objects : JsonUtil.parser().parse(versionMapping).getAsJsonObject().get("objects").getAsJsonObject().entrySet()) {
+        for (Map.Entry<String, JsonElement> objects : JsonParser.parseString(versionMapping).getAsJsonObject().get("objects").getAsJsonObject().entrySet()) {
             if (objects.getKey().startsWith("minecraft/lang/")) {
                 languages.add(StringUtils.substringBetween("minecraft/lang/", ".json"));
             }

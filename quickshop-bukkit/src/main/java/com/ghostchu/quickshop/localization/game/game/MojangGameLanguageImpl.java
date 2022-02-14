@@ -19,6 +19,10 @@
 
 package com.ghostchu.quickshop.localization.game.game;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.mojangapi.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -35,10 +39,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.mojangapi.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -76,10 +76,6 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         this.plugin = plugin;
         this.languageCode = MsgUtil.getGameLanguageCode(languageCode);
         switch (plugin.getConfig().getInt("mojangapi-mirror", 0)) {
-            case 0 -> {
-                mirror = new MojangApiOfficialMirror();
-                plugin.getLogger().info("Game assets server selected: Mojang API");
-            }
             case 1 -> {
                 mirror = new MojangApiBmclApiMirror();
                 plugin.getLogger().info("Game assets server selected: BMCLAPI");
@@ -98,6 +94,10 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 plugin.getLogger().info("You should only use this mirror if your server in China mainland or have connection trouble with Mojang server, otherwise use Mojang Official server");
                 plugin.getLogger().warning("You're selected unofficial game assets server, use at your own risk.");
             }
+            default -> {
+                mirror = new MojangApiOfficialMirror();
+                plugin.getLogger().info("Game assets server selected: Mojang API");
+            }
         }
     }
 
@@ -113,7 +113,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
             }
             this.lang = loadThread.getLang(); // Get the Lang whatever thread running or died.
         } catch (InterruptedException exception) {
-            plugin.getLogger().warning("Failed to wait game language thread loading");
+            plugin.getLogger().log(Level.WARNING, "Failed to wait game language thread loading", exception);
         } finally {
             LOCK.unlock();
         }
@@ -262,7 +262,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                                 if (cacheVersion.equals(plugin.getPlatform().getMinecraftVersion())) {
                                     isLatest = true;
                                     try (FileReader reader = new FileReader(cachedFile)) {
-                                        lang = new JsonParser().parse(reader).getAsJsonObject();
+                                        lang = JsonParser.parseReader(reader).getAsJsonObject();
                                         return; //We doesn't need to update it
                                     } catch (Exception e) {
                                         //Keep it empty so continue to update files
