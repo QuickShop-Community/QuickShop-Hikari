@@ -117,7 +117,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             InputStream stream = null;
             if (!StringUtils.isEmpty(parentStr)) {
                 //Try to fetch matched i18n resources
-                stream = plugin.getResource("crowdin/lang/" + parentStr + "/" + fileName);
+                stream = plugin.getResource("lang/" + parentStr + "/" + fileName);
             }
             if (stream == null) {
                 //Fallback to default
