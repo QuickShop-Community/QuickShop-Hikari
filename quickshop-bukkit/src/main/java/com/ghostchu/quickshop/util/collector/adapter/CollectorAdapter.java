@@ -50,16 +50,15 @@ public class CollectorAdapter {
         Map<String, String> economy = new HashMap<>();
         try {
             EconomyCore economyCore = plugin.getEconomy();
-            //noinspection SwitchStatementWithTooFewBranches
             switch (AbstractEconomy.getNowUsing()) {
                 case VAULT -> {
                     economy.put("core", "Vault");
                     economy.put("provider", ((Economy_Vault) economyCore).getProviderName());
                 }
-//                case RESERVE:
-//                    economy.put("core", "Reserve");
-//                    economy.put("provider", "No details");
-//                    break;
+                case RESERVE->{
+                    economy.put("core", "Reserve");
+                    economy.put("provider", "No details");
+                }
                 default -> {
                     economy.put("core", economyCore.getName());
                     economy.put("provider", economyCore.getPlugin().getName());

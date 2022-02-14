@@ -29,7 +29,7 @@ public enum EconomyType {
      * */
     UNKNOWN(-1),
     VAULT(0),
-    //RESERVE(1),
+    RESERVE(1),
     //MIXED(2),
     GEMS_ECONOMY(3),
     TNE(4);
