@@ -55,6 +55,33 @@ The main purpose of this branch is to modernize the core content of QuickShop an
 
 [ci.codemc.io](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari/)
 
+---
+
+## Compatibility Modules
+
+### clearlag
+
+Prevent [Clearlag](https://www.spigotmc.org/resources/clearlagg.68271/) remove our display items if QuickShop running under Real DisplayItem mode.
+
+### nocheatplus
+
+A compatibility helper to prevent player trigger NCP's anti-cheat checks while creating the shops.
+
+### openinv
+
+Allow player use command `/qs echest` to turn a shop use player's EnderChest inventory as inventory.
+
+### worldedit
+
+Removal shops that destoryed in a WorldEdit operation to prevent shops turn to a "ghost" shop.
+
+### worldguard
+
+Flag based shop control.
+
+
+---
+
 ## Contribute
 
 If you're a developer, you can contribute to the QuickShop code! Just make a fork and install the Lombok plugin,
