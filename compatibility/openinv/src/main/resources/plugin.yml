@@ -1,0 +1,5 @@
+name: qsc-openinv
+version: '${project.version}'
+main: com.ghostchu.quickshop.compatibility.openinv.Openinv
+api-version: 1.16
+depend: [ Openinv, QuickShop-Hikari ]

@@ -254,5 +254,6 @@
         <module>compatibility/nocheatplus</module>
         <module>compatibility/worldguard</module>
         <module>compatibility/worldedit</module>
+        <module>compatibility/openinv</module>
     </modules>
 </project>
