@@ -16,7 +16,7 @@
 
 [//]: # (![Rating]&#40;https://img.shields.io/spiget/rating/62575?label=rating&#41;)
 
----
+## Introduction
 
 QuickShop is a shop plugin that allows players to easily sell/buy any items from a chest without any commands. In fact, none of the commands that QuickShop provides are ever needed by a player.  
 
@@ -50,10 +50,37 @@ The main purpose of this branch is to modernize the core content of QuickShop an
 - Powerful API
 - Optimized performance
 - MineDown syntax support
+- H2 (local) or MySQL (remote) datasource supports
+- Supports custom inventory! Use InventoryWrapper API.
+- Optimized for Paper, also can run under Spigot (but little hacky and slowly)
 
 ## Downloads
 
 [ci.codemc.io](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari/)
+
+## Compatibility Modules
+
+You can download compatibility modules optional. Install them if you need.
+
+### clearlag
+
+Prevent [Clearlag](https://www.spigotmc.org/resources/clearlagg.68271/) remove our display items if QuickShop running under Real DisplayItem mode.
+
+### nocheatplus
+
+A compatibility helper to prevent player trigger NCP's anti-cheat checks while creating the shops.
+
+### openinv
+
+Allow player use command `/qs echest` to turn a shop use player's EnderChest inventory as inventory.
+
+### worldedit
+
+Removal shops that destoryed in a WorldEdit operation to prevent shops turn to a "ghost" shop.
+
+### worldguard
+
+Flag based shop control.
 
 ## Contribute
 
