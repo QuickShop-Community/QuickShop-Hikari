@@ -53,7 +53,7 @@ The main purpose of this branch is to modernize the core content of QuickShop an
 
 ## Downloads
 
-No releases yet.
+[ci.codemc.io](https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari/)
 
 ## Contribute
 
