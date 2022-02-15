@@ -2,7 +2,7 @@
   "_comment": "Hei oversetter! Hvis du redigerer dette fra Github eller fra kildekoder, bør du gå til https://crowdin.com/project/quickshop-reremake",
   "file-test": "Dette er en test tekstfil. Vi bruker den til å teste om messages.json er ødelagt. Her kan du skrive hva som helst uten at det påvirker noe :)",
   "translation-author": "Oversetter: Baktus_79",
-  "translation-version": "Support Version: Hikari",
+  "translation-version": "Støttet versjon: Hikari",
   "translation-contributors": "Bidragsytere: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Språksone: Norsk (no_NO)",
   "language-version": "63",
@@ -213,7 +213,7 @@
     "alwayscounting": "&aTeller alltid: {0} &e[&d&lEndre&e]",
     "alwayscounting-hover": "&eKlikk for å veksle om butikken skal alltid telle beholderen.",
     "setowner": "&aEier: &b{0} &e[&d&lEndre&e]",
-    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
+    "setowner-uuid": "&aEier: &b{0} &c(&b{1}&c) &e[&d&lEndre&e]",
     "infomation": "&aButikkens kontrollpanel:",
     "setowner-hover": "&eKlikk for å bytte eier.",
     "unlimited": "&aUbegrenset: {0} &e[&d&lEndre&e]",
@@ -362,8 +362,8 @@
   "purchase-out-of-space": "&cDenne butikken er tom for plass, kontakt butikkeier eller ansatte for å tømme butikken.",
   "safe-mode": "&cQuickShop er nå i sikkerhetsmodus, du kan derfor ikke åpne denne butikkbeholderen. Ta kontakt med serveradministrator for å fikse feilene.",
   "safe-mode-admin": "&c&lADVARSEL: &cQuickShop på denne serveren kjører nå i sikkerhetsmodus, ingen funksjoner vil fungere. Vennligst skriv inn &e/qs &ckommando for å sjekke eventuelle feil.",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
+  "internal-error": "&cDet har oppstått en intern feil, detaljene er logget i konsollen. Vennligst prøv igjen eller kontakt serveradministratoren hvis det fortsatt eksisterer.",
   "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
-  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
+  "edition-confilct": "QuicShop-Hikari og QuickShop-Reremake er installert. Disse kan komme i konflikt med hverandre, avinstaller en av dem.",
+  "plugin-cancelled": "&cOperasjon avbrutt, Årsak: {0}"
 }

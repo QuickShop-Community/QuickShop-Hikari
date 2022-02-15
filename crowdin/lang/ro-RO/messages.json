@@ -118,7 +118,7 @@
   "blacklisted-item": "&cNu poti vinde acest obiect pentru ca este pe lista neagra",
   "how-much-to-trade-for": "&aIntra in chat, cat de mult doresti sa tranzacționezi &{1}x {0}&a.",
   "command": {
-    "format": "&a/{0} {1} &e- {2}",
+    "format": "&a{0} {1} &e- {2}",
     "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&aMagazinul este acum nelimitat",

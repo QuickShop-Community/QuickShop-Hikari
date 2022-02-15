@@ -118,7 +118,7 @@
   "blacklisted-item": "&cVous ne pouvez pas vendre cet objet car il se trouve sur la liste noire",
   "how-much-to-trade-for": "&aEntrez dans le chat, combien vous souhaitez échanger &e{1}x {0}&a.",
   "command": {
-    "format": "&a/{0} {1} &e- {2}",
+    "format": "&a{0} {1} &e- {2}",
     "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&aCe shop est désormais illimité",
