@@ -52,13 +52,13 @@ public class CommandContainer {
     @NotNull
     private String prefix; // E.g /qs <prefix>
     @Nullable
-    private Component description; // Will show in the /qs help
+    private Function<@NotNull String, @Nullable Component> description; // Will show in the /qs help, provide an arg that pass a player locale code
 
     private boolean disabled; //Set command is disabled or not.
     @Nullable
     private Supplier<Boolean> disabledSupplier; //Set command is disabled or not.
     @Nullable
-    private Component disablePlaceholder; //Set the text shown if command disabled
+    private Supplier<Component> disablePlaceholder; //Set the text shown if command disabled
     @Nullable
     private Function<@Nullable CommandSender, @NotNull Component> disableCallback; //Set the callback that should return a text to shown
 
@@ -88,8 +88,8 @@ public class CommandContainer {
     public final @NotNull Component getDisableText(@NotNull CommandSender sender) {
         if (this.getDisableCallback() != null) {
             return this.getDisableCallback().apply(sender);
-        } else if (!Util.isEmptyComponent(this.getDisablePlaceholder())) {
-            return this.getDisablePlaceholder();
+        } else if (this.getDisablePlaceholder() != null && !Util.isEmptyComponent(this.getDisablePlaceholder().get())) {
+            return this.getDisablePlaceholder().get();
         } else {
             return Component.empty().color(NamedTextColor.GRAY).append(QuickShop.getInstance().text().of(sender, "command.feature-not-enabled").forLocale());
         }

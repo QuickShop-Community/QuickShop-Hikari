@@ -44,7 +44,7 @@ public final class Openinv extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         super.onEnable();
-        this.api.getCommandManager().registerCmd(CommandContainer.builder().prefix("echest").permission("quickshop.echest").description(LegacyComponentSerializer.legacySection().deserialize(getConfig().getString("messages.description"))).executor(new OpenInvCommand(this)).build());
+        this.api.getCommandManager().registerCmd(CommandContainer.builder().prefix("echest").permission("quickshop.echest").description((locale)->LegacyComponentSerializer.legacySection().deserialize(getConfig().getString("messages.description"))).executor(new OpenInvCommand(this)).build());
     }
 
     @Override

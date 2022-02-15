@@ -19,13 +19,15 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
-import lombok.AllArgsConstructor;
-import net.kyori.adventure.text.Component;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.util.MsgUtil;
+import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -43,7 +45,10 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
 
     private void sendHelp(@NotNull CommandSender s, @NotNull String commandLabel) {
         plugin.text().of(s, "command.description.title").send();
-
+        String locale = MsgUtil.getDefaultGameLanguageCode();
+        if(s instanceof Player p){
+            locale = p.getLocale();
+        }
         commandPrintingLoop:
         for (CommandContainer container : plugin.getCommandManager().getRegisteredCommands()) {
             if (!container.isHidden()) {
@@ -75,7 +80,7 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
                 }
                 Component commandDesc = plugin.text().of(s, "command.description." + container.getPrefix()).forLocale();
                 if (container.getDescription() != null) {
-                    commandDesc = container.getDescription();
+                    commandDesc = container.getDescription().apply(locale);
                     if (commandDesc == null) {
                         commandDesc = Component.text("Error: Subcommand " + container.getPrefix() + " # " + container.getClass().getCanonicalName() + " doesn't register the correct help description.");
                     }
