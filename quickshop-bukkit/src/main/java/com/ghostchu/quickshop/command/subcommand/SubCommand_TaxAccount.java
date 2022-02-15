@@ -19,16 +19,14 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
-import lombok.AllArgsConstructor;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.util.BlockIterator;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.PlayerFinder;
 import com.ghostchu.quickshop.util.Util;
+import lombok.AllArgsConstructor;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.UUID;
@@ -40,27 +38,22 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        BlockIterator bIt = new BlockIterator(sender, 10);
-
-        while (bIt.hasNext()) {
-            final Block b = bIt.next();
-            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop != null) {
-                if (cmdArg.length < 1) {
-                    shop.setTaxAccount(null);
-                    plugin.text().of(sender, "taxaccount-unset").send();
-                    return;
-                }
-                if (Util.isUUID(cmdArg[0])) {
-                    shop.setTaxAccount(UUID.fromString(cmdArg[0]));
-                } else {
-                    shop.setTaxAccount(PlayerFinder.findUUIDByName(cmdArg[0]));
-                }
-                plugin.text().of(sender, "taxaccount-set", cmdArg[0]).send();
+        final Shop shop = getLookingShop(sender);
+        if (shop != null) {
+            if (cmdArg.length < 1) {
+                shop.setTaxAccount(null);
+                plugin.text().of(sender, "taxaccount-unset").send();
                 return;
             }
+            if (Util.isUUID(cmdArg[0])) {
+                shop.setTaxAccount(UUID.fromString(cmdArg[0]));
+            } else {
+                shop.setTaxAccount(PlayerFinder.findUUIDByName(cmdArg[0]));
+            }
+            plugin.text().of(sender, "taxaccount-set", cmdArg[0]).send();
+        } else {
+            plugin.text().of(sender, "not-looking-at-shop").send();
         }
-        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
     @NotNull

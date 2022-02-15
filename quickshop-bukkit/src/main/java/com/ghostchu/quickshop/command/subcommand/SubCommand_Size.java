@@ -19,15 +19,6 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
-import lombok.AllArgsConstructor;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.BlockIterator;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.PriceLimiter;
@@ -36,6 +27,13 @@ import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
+import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
@@ -57,36 +55,31 @@ public class SubCommand_Size implements CommandHandler<Player> {
             plugin.text().of(sender, "not-a-integer", cmdArg[0]).send();
             return;
         }
-        final BlockIterator bIt = new BlockIterator(sender, 10);
-        // Loop through every block they're looking at upto 10 blocks away
-        while (bIt.hasNext()) {
-            final Block b = bIt.next();
-            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop != null) {
-                if (shop.getModerator().isModerator(sender.getUniqueId()) || sender.hasPermission("quickshop.other.amount")) {
-                    if (amount <= 0 || amount > Util.getItemMaxStackSize(shop.getItem().getType())) {
-                        plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
-                        return;
-                    }
-                    ItemStack pendingItemStack = shop.getItem().clone();
-                    pendingItemStack.setAmount(amount);
-                    PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
-                    PriceLimiterCheckResult checkResult = limiter.check(sender, pendingItemStack, shop.getCurrency(), shop.getPrice());
-                    if (checkResult.getStatus() != PriceLimiterStatus.PASS) {
-                        plugin.text().of(sender, "restricted-prices", MsgUtil.getTranslateText(shop.getItem()),
-                                Component.text(checkResult.getMin()),
-                                Component.text(checkResult.getMax())).send();
-                        return;
-                    }
-                    shop.setItem(pendingItemStack);
-                    plugin.text().of(sender, "command.bulk-size-now", shop.getItem().getAmount(), MsgUtil.getTranslateText(shop.getItem())).send();
+        final Shop shop = getLookingShop(sender);
+        if (shop != null) {
+            if (shop.getModerator().isModerator(sender.getUniqueId()) || sender.hasPermission("quickshop.other.amount")) {
+                if (amount <= 0 || amount > Util.getItemMaxStackSize(shop.getItem().getType())) {
+                    plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
                     return;
-                } else {
-                    plugin.text().of(sender, "not-managed-shop").send();
                 }
+                ItemStack pendingItemStack = shop.getItem().clone();
+                pendingItemStack.setAmount(amount);
+                PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();
+                PriceLimiterCheckResult checkResult = limiter.check(sender, pendingItemStack, shop.getCurrency(), shop.getPrice());
+                if (checkResult.getStatus() != PriceLimiterStatus.PASS) {
+                    plugin.text().of(sender, "restricted-prices", MsgUtil.getTranslateText(shop.getItem()),
+                            Component.text(checkResult.getMin()),
+                            Component.text(checkResult.getMax())).send();
+                    return;
+                }
+                shop.setItem(pendingItemStack);
+                plugin.text().of(sender, "command.bulk-size-now", shop.getItem().getAmount(), MsgUtil.getTranslateText(shop.getItem())).send();
+            } else {
+                plugin.text().of(sender, "not-managed-shop").send();
             }
+        } else {
+            plugin.text().of(sender, "not-looking-at-shop").send();
         }
-        plugin.text().of(sender, "not-looking-at-shop").send();
 
 
     }

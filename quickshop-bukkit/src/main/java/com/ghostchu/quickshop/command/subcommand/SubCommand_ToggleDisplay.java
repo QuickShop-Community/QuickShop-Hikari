@@ -19,14 +19,12 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
-import lombok.AllArgsConstructor;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.util.BlockIterator;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
+import lombok.AllArgsConstructor;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -38,29 +36,22 @@ public class SubCommand_ToggleDisplay implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        BlockIterator bIt = new BlockIterator(sender, 10);
-
-        while (bIt.hasNext()) {
-            final Block b = bIt.next();
-            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-
-
-            if (shop != null) {
-                if (shop.getModerator().isModerator(sender.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.toggledisplay")) {
-                    if (shop.isDisableDisplay()) {
-                        shop.setDisableDisplay(false);
-                        plugin.text().of(sender, "display-turn-on").send();
-                    } else {
-                        shop.setDisableDisplay(true);
-                        plugin.text().of(sender, "display-turn-off").send();
-                    }
+        final Shop shop = getLookingShop(sender);
+        if (shop != null) {
+            if (shop.getModerator().isModerator(sender.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.toggledisplay")) {
+                if (shop.isDisableDisplay()) {
+                    shop.setDisableDisplay(false);
+                    plugin.text().of(sender, "display-turn-on").send();
                 } else {
-                    plugin.text().of(sender, "not-managed-shop").send();
+                    shop.setDisableDisplay(true);
+                    plugin.text().of(sender, "display-turn-off").send();
                 }
-                return;
+            } else {
+                plugin.text().of(sender, "not-managed-shop").send();
             }
+        } else {
+            plugin.text().of(sender, "not-looking-at-shop").send();
         }
-        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
     @NotNull

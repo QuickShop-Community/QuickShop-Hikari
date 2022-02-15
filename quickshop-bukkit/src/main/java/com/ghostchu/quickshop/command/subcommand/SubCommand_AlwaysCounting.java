@@ -19,14 +19,12 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
-import lombok.AllArgsConstructor;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.util.BlockIterator;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
+import lombok.AllArgsConstructor;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
 public class SubCommand_AlwaysCounting implements CommandHandler<Player> {
@@ -35,21 +33,16 @@ public class SubCommand_AlwaysCounting implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        BlockIterator bIt = new BlockIterator(sender, 10);
-
-        while (bIt.hasNext()) {
-            final Block b = bIt.next();
-            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop != null) {
-                shop.setAlwaysCountingContainer(!shop.isAlwaysCountingContainer());
-                shop.update();
-                if (shop.isAlwaysCountingContainer()) {
-                    plugin.text().of(sender, "command.toggle-always-counting.counting").send();
-                } else {
-                    plugin.text().of(sender, "command.toggle-always-counting.not-counting").send();
-                }
-                return;
+        final Shop shop = getLookingShop(sender);
+        if (shop != null) {
+            shop.setAlwaysCountingContainer(!shop.isAlwaysCountingContainer());
+            shop.update();
+            if (shop.isAlwaysCountingContainer()) {
+                plugin.text().of(sender, "command.toggle-always-counting.counting").send();
+            } else {
+                plugin.text().of(sender, "command.toggle-always-counting.not-counting").send();
             }
+            return;
         }
         plugin.text().of(sender, "not-looking-at-shop").send();
     }

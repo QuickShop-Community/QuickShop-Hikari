@@ -19,16 +19,14 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
-import lombok.AllArgsConstructor;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.util.BlockIterator;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.PlayerFinder;
+import lombok.AllArgsConstructor;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,33 +40,24 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-
         if (cmdArg.length < 1) {
             plugin.text().of(sender, "command.no-owner-given").send();
             return;
         }
+        final Shop shop = getLookingShop(sender);
 
-        final BlockIterator bIt = new BlockIterator(sender, 10);
-
-        while (bIt.hasNext()) {
-            final Block b = bIt.next();
-            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-
-            if (shop == null) {
-                continue;
-            }
-
-            final OfflinePlayer newShopOwner = PlayerFinder.findOfflinePlayerByName(cmdArg[0]);
-            if (newShopOwner.getName() == null) {
-                plugin.text().of(sender, "unknown-player").send();
-                return;
-            }
-            shop.setOwner(newShopOwner.getUniqueId());
-            plugin.text().of(sender, "command.new-owner", newShopOwner.getName()).send();
+        if (shop == null) {
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
 
-        plugin.text().of(sender, "not-looking-at-shop").send();
+        final OfflinePlayer newShopOwner = PlayerFinder.findOfflinePlayerByName(cmdArg[0]);
+        if (newShopOwner.getName() == null) {
+            plugin.text().of(sender, "unknown-player").send();
+            return;
+        }
+        shop.setOwner(newShopOwner.getUniqueId());
+        plugin.text().of(sender, "command.new-owner", newShopOwner.getName()).send();
     }
 
     @NotNull

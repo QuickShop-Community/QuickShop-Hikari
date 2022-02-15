@@ -19,16 +19,14 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
-import lombok.AllArgsConstructor;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.util.BlockIterator;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.ContainerShop;
+import lombok.AllArgsConstructor;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
 public class SubCommand_Empty implements CommandHandler<Player> {
@@ -37,32 +35,17 @@ public class SubCommand_Empty implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        BlockIterator bIt = new BlockIterator(sender, 10);
-
-        while (bIt.hasNext()) {
-            final Block b = bIt.next();
-            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-
-            if (shop == null) {
-                continue;
+        final Shop shop = getLookingShop(sender);
+        if (shop instanceof final ContainerShop cs) {
+            final InventoryWrapper inventory = cs.getInventory();
+            if (inventory == null) {
+                return;
             }
-
-            if (shop instanceof final ContainerShop cs) {
-                final InventoryWrapper inventory = cs.getInventory();
-
-                if (inventory == null) {
-                    return;
-                }
-
-                cs.getInventory().clear();
-                plugin.text().of(sender, "empty-success").send();
-            } else {
-                plugin.text().of(sender, "not-looking-at-shop").send();
-            }
-
-            return;
+            cs.getInventory().clear();
+            plugin.text().of(sender, "empty-success").send();
+        } else {
+            plugin.text().of(sender, "not-looking-at-shop").send();
         }
-        plugin.text().of(sender, "not-looking-at-shop").send();
     }
 
 

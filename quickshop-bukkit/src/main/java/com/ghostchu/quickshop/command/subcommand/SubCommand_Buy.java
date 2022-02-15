@@ -19,16 +19,14 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
-import lombok.AllArgsConstructor;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.util.BlockIterator;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.util.MsgUtil;
+import lombok.AllArgsConstructor;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
 public class SubCommand_Buy implements CommandHandler<Player> {
@@ -36,24 +34,17 @@ public class SubCommand_Buy implements CommandHandler<Player> {
     private final QuickShop plugin;
 
     @Override
-    public void onCommand(@NotNull Player sender
-            , @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        BlockIterator bIt = new BlockIterator(sender, 10);
-
-        while (bIt.hasNext()) {
-            final Block b = bIt.next();
-            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-
-            if (shop != null) {
-                if (shop.getModerator().isModerator(sender.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control")) {
-                    shop.setShopType(ShopType.BUYING);
-                    shop.update();
-                    plugin.text().of(sender, "command.now-buying", MsgUtil.getTranslateText(shop.getItem())).send();
-                } else {
-                    plugin.text().of(sender, "not-managed-shop").send();
-                }
-                return;
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        final Shop shop = getLookingShop(sender);
+        if (shop != null) {
+            if (shop.getModerator().isModerator(sender.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control")) {
+                shop.setShopType(ShopType.BUYING);
+                shop.update();
+                plugin.text().of(sender, "command.now-buying", MsgUtil.getTranslateText(shop.getItem())).send();
+            } else {
+                plugin.text().of(sender, "not-managed-shop").send();
             }
+            return;
         }
         plugin.text().of(sender, "not-looking-at-shop").send();
     }
