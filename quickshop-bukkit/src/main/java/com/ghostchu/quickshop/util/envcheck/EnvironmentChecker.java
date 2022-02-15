@@ -284,6 +284,14 @@ public final class EnvironmentChecker {
         return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }
 
+    @EnvCheckEntry(name = "Reremake Test", priority = 11, stage = EnvCheckEntry.Stage.ON_ENABLE)
+    public ResultContainer rereMakeTest() {
+        if (plugin.getServer().getPluginManager().isPluginEnabled("QuickShop")) {
+            return new ResultContainer(CheckResult.WARNING, "WARNING: Multiple QuickShop installed, uninstall one of them.");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
+
     @EnvCheckEntry(name = "End of life Test", priority = Integer.MAX_VALUE, stage = EnvCheckEntry.Stage.ON_ENABLE)
     public ResultContainer eolTest() {
         if (plugin.getGameVersion().isEndOfLife()) {
