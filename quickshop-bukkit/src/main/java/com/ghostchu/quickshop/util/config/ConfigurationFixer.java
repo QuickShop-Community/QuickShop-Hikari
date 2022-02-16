@@ -19,10 +19,10 @@
 
 package com.ghostchu.quickshop.util.config;
 
+import com.ghostchu.quickshop.QuickShop;
 import lombok.AllArgsConstructor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import com.ghostchu.quickshop.QuickShop;
 
 import java.io.File;
 import java.io.IOException;
