@@ -669,7 +669,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         //Load the database
         setupDBonEnableding = true;
         setupDatabase();
-
         setupDBonEnableding = false;
 
         /* Initalize the tools */
@@ -681,7 +680,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             //BUKKIT METHOD SHOULD ALWAYS EXECUTE ON THE SERVER MAIN THEAD
             timerTaskList.add(this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfig().getInt("shop.display-check-time"))); // not worth async
         }
-
         getLogger().info("Registering commands...");
         /* PreInit for BootError feature */
         commandManager = new SimpleCommandManager(this);
@@ -689,11 +687,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         getCommand("qs").setExecutor(commandManager);
         //noinspection ConstantConditions
         getCommand("qs").setTabCompleter(commandManager);
-
         this.registerCustomCommands();
-
         this.shopManager = new SimpleShopManager(this);
-
         this.permissionChecker = new PermissionChecker(this);
         // Limit
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
@@ -923,7 +918,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         } else {
             getLogger().info("You have disabled mertics, Skipping...");
         }
-
     }
 
     private void updateConfig(int selectedVersion) throws IOException {
@@ -945,8 +939,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
             Runtime.getRuntime().halt(0);
         }
-
-
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(platform.getMinecraftVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
@@ -956,21 +948,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 reloadConfig();
             }
         }
-
-//        //Check if server software support comment saving
-//        if (Util.isMethodAvailable("org.bukkit.configuration.MemoryConfiguration", "getInlineComments", String.class)) {
-//            //If so, clean the comment
-//            ConfigurationSection configurationSection = getConfig();
-//            List<String> emptyList = Collections.emptyList();
-//            for (String key : configurationSection.getKeys(true)) {
-//                configurationSection.setComments(key, emptyList);
-//                configurationSection.setInlineComments(key, emptyList);
-//            }
-//        }
         saveConfig();
         reloadConfig();
-
-
         //Delete old example configuration files
         Files.deleteIfExists(new File(getDataFolder(), "example.config.yml").toPath());
         Files.deleteIfExists(new File(getDataFolder(), "example-configuration.txt").toPath());
