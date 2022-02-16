@@ -407,11 +407,6 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>co.aikar</groupId>
-            <artifactId>taskchain-bukkit</artifactId>
-            <version>3.7.2</version> <!-- Replace this with the version from TaskChain -->
-        </dependency>
-        <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>simplereloadlib</artifactId>
             <version>1.1.0</version>
