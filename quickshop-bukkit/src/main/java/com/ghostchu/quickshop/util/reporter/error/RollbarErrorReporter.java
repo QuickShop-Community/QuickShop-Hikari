@@ -89,8 +89,7 @@ public class RollbarErrorReporter {
             @Override
             public void run() {
                 synchronized (reportLock) {
-                    //noinspection InfiniteLoopStatement
-                    while (true) {
+                    while (enabled) {
                         try {
                             reportLock.wait();
                         } catch (InterruptedException e) {
@@ -115,6 +114,9 @@ public class RollbarErrorReporter {
         enabled = false;
         plugin.getLogger().setFilter(quickShopExceptionFilter.preFilter);
         plugin.getServer().getLogger().setFilter(serverExceptionFilter.preFilter);
+        synchronized (reportLock) {
+            reportLock.notifyAll(); // Exit all threads
+        }
         //Logger.getGlobal().setFilter(globalExceptionFilter.preFilter);
     }
 
