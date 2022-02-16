@@ -428,17 +428,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         return true;
     }
 
-//    @Override
-//    public @NotNull FileConfiguration getConfig() throws UnsupportedOperationException {
-//        return configProvider.get();
-//    }
-//
-//    @Override
-//    public void saveConfig() {
-//        configProvider.save();
-//    }
-//
-
     /**
      * Reloads QuickShops config
      */
