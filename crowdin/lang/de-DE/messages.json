@@ -374,12 +374,12 @@
   "paste-disabled": "&cPaste Funktion wurde deaktiviert! Du kannst keinen technischen Support anfordern.\nGrund: {0}",
   "support-disable-reason": {
     "privacy": "&eDer Server läuft im Cracked (Offline) Modus. Wenn du einen Bukkit Server unter einer Proxy betreibst und online-mode=true im Proxy aktiv ist, konfiguriere bitte die Proxy-bezogenen Einstellungen korrekt.",
-    "authlib-injector-detected": "&eThis server running under 3rd-party authlib provider like authlib-injector.",
-    "bad-hosts": "&eThis server HOSTS has been modified and QuickShop some functions require connect to Mojang API correctly. Fix the HOSTS before asking support, Windows at C:\\windows\\system32\\drivers\\etc\\hosts, Linux at /etc/hosts.",
-    "hot-reload": "&eUnsupported hot reloaded, restart the server and check again.",
-    "outdated": "&eThis version of QuickShop already outdated, up-to-date before requesting support!",
-    "modified": "&eFile integrity check failed, this QuickShop build has been modified by others.",
-    "unsupported-server-software": "&eUnsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.",
-    "consolespamfix-installed": "&eConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support."
+    "authlib-injector-detected": "&eDieser Server läuft mit einer Drittanbieter Authentifizierungs-Software wie Authlib-Injector.",
+    "bad-hosts": "&eDieser Server hat seine HOSTS modifiziert und bestimmte Funktionen von QuickShop benötigen eine Verbindung zu der Mojang API. Behebe die HOSTS einstellungen bevor du nach Support fragts. Auf Windows unter C:\\windows\\system32\\drivers\\etc\\hosts, auf Linux unter /etc/hosts.",
+    "hot-reload": "&eNicht unterstützter Hot reload vom Server. Starte den Server neu und versuch es erneut.",
+    "outdated": "&eDiese Version von QuickShop ist bereits nicht mehr aktuell. Aktualisiere bevor du nach Support fragst!",
+    "modified": "&eDatei-Integritätsprüfung fehlgeschlagen. Dieser QuickShop Build wurde von jemandem modifiziert.",
+    "unsupported-server-software": "&eNicht unterstützte Server-Software. Jede modifizierte Hybrid-Server-Software wird nicht unterstützt, einschliesslich, MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard, etc.",
+    "consolespamfix-installed": "&eConsoleSpamFix ist installiert. Es wird Details von Fehlern verstecken. Deaktiviere es vorrübergehend während du nach Support fragst."
   }
 }
