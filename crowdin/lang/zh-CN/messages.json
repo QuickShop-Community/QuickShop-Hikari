@@ -2,7 +2,7 @@
   "_comment": "嗨 翻译者！如果您正在Github上或直接编辑源文件的方式进行翻译，请您前往：https://crowdin.com/project/quickshop-reremake",
   "file-test": "这是个测试文件，我们可以用它来测试 messages.json 文件是否损坏。你可以在这里填入任何喜欢的彩蛋 :)",
   "translation-author": "翻译人员： Ghost_chu, Andre_601, 李馨雨, YuanYuanOwO",
-  "translation-version": "支持版本: Hikari",
+  "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
   "language-version": "63",
@@ -17,6 +17,7 @@
   "no-creative-break": "&c你不能在创造模式破坏其他玩家的商店, 请使用生存模式或用超级工具 {0} 来破坏。",
   "trading-in-creative-mode-is-disabled": "&c你不能在创造模式下进行交易操作。",
   "supertool-is-disabled": "&c超级工具已被禁用，现已不能使用超级工具破坏任何商店。",
+  "disabled-in-this-world": "&cQuickShop 在这个世界中被禁用",
   "no-double-chests": "&c你没有权限创建大箱子商店。",
   "not-managed-shop": "&c你不是该商店的所有者或助手",
   "shop-already-owned": "&c这已经是一个商店了。",
@@ -213,7 +214,6 @@
     "alwayscounting": "&a总是计算容器物品: {0} &e[&d&l更改&e]",
     "alwayscounting-hover": "&e点击以切换是否总是计算容器物品。",
     "setowner": "&a所有者: &b{0} &e[&d&l修改&e]",
-    "setowner-uuid": "&a所有者: &b{0} &e[&d&l修改&e]",
     "infomation": "&a商店控制面板",
     "setowner-hover": "&e点击来修改店主",
     "unlimited": "&a无限模式: {0} &e[&d&l切换&e]",
@@ -244,10 +244,10 @@
     "toggledisplay-hover": "&e切换商店是否显示悬浮物"
   },
   "tableformat": {
-    "full_line": "&5+---------------------------------------------------+",
-    "left_half_line": "&5+--------------------",
-    "right_half_line": "&5--------------------+",
-    "left_begin": "&5| "
+    "full_line": "+---------------------------------------------------+",
+    "left_half_line": "+--------------------",
+    "right_half_line": "--------------------+",
+    "left_begin": "| "
   },
   "booleanformat": {
     "success": "&a✔",
@@ -293,7 +293,13 @@
       "github": "[GitHub]",
       "spigotmc": "[SpigotMC]",
       "bukkitdev": "[BukkitDev]",
-      "master": "[主分支]"
+      "master": "[主分支]",
+      "polymart": "[Polymart]",
+      "ore": "[Ore]",
+      "papermc": "[PaperMC]",
+      "nbtapi": "[+NBTAPI]",
+      "paper": "[+Paper Optimized]",
+      "basic": "[Basic]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&c你在 {0} 的商店已经被移除了，因为你没有足够的资金去维持它！",
@@ -362,8 +368,18 @@
   "purchase-out-of-space": "&c这个商店空间已不足，请联系商店所有者或助手清空商店",
   "safe-mode": "&cQuickShop 现在处于安全模式，您不能打开这个商店容器，请与服务器管理员联系以修复错误。",
   "safe-mode-admin": "&c&l警告: &c此服务器上的QuickShop正在安全模式下运行，任何功能都无法工作，请输入&e/qs &c 命令来检查错误。",
-  "internal-error": "&c发生内部错误，详细信息已记录到控制台。请再试一次，如果仍然存在，请与服务器管理员联系。",
   "bungee-cross-server-msg": "&eQuickShop跨服信息: &a{0}",
   "edition-confilct": "QuickShop-Hikari 与 QuickShop-Reremake 同时安装在服务器中可能会相互冲突，你需要卸载其中一个",
-  "plugin-cancelled": "&c操作被取消，原因： {0}"
+  "plugin-cancelled": "&c操作被取消，原因： {0}",
+  "paste-disabled": "&cPaste functionality has been disabled! You cannot request technical support. \nReason: {0}",
+  "support-disable-reason": {
+    "privacy": "&eThis server running under cracked (offline) mode. If you are running bukkit server under proxy and online-mode=true on proxy, please configure the proxy related settings correctly.",
+    "authlib-injector-detected": "&eThis server running under 3rd-party authlib provider like authlib-injector.",
+    "bad-hosts": "&eThis server HOSTS has been modified and QuickShop some functions require connect to Mojang API correctly. Fix the HOSTS before asking support, Windows at C:\\windows\\system32\\drivers\\etc\\hosts, Linux at /etc/hosts.",
+    "hot-reload": "&eUnsupported hot reloaded, restart the server and check again.",
+    "outdated": "&eThis version of QuickShop already outdated, up-to-date before requesting support!",
+    "modified": "&eFile integrity check failed, this QuickShop build has been modified by others.",
+    "unsupported-server-software": "&eUnsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.",
+    "consolespamfix-installed": "&eConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support."
+  }
 }
