@@ -244,10 +244,10 @@
     "toggledisplay-hover": "&eSlå av/på butikkens utstillingsvare"
   },
   "tableformat": {
-    "full_line": "+---------------------------------------------------+",
-    "left_half_line": "+--------------------",
-    "right_half_line": "--------------------+",
-    "left_begin": "| "
+    "full_line": "&5+---------------------------------------------------+",
+    "left_half_line": "&5+--------------------",
+    "right_half_line": "&5--------------------+",
+    "left_begin": "&5| "
   },
   "booleanformat": {
     "success": "&a✔",
