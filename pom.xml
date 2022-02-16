@@ -130,7 +130,7 @@
                                 <goal>shade</goal>
                             </goals>
                             <configuration>
-                                <finalName>${name}-artifact-v${revision}</finalName>
+                                <finalName>artifact-${name}-v${revision}</finalName>
 <!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
                                 <createDependencyReducedPom>false</createDependencyReducedPom>
                                 <minimizeJar>true</minimizeJar>
