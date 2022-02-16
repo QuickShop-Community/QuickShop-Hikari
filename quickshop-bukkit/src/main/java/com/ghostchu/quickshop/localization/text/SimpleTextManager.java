@@ -20,6 +20,15 @@
 package com.ghostchu.quickshop.localization.text;
 
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.localization.text.TextManager;
+import com.ghostchu.quickshop.api.localization.text.postprocessor.PostProcessor;
+import com.ghostchu.quickshop.localization.text.distributions.Distribution;
+import com.ghostchu.quickshop.localization.text.distributions.crowdin.CrowdinOTA;
+import com.ghostchu.quickshop.localization.text.postprocessing.impl.FillerProcessor;
+import com.ghostchu.quickshop.localization.text.postprocessing.impl.PlaceHolderApiProcessor;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -39,15 +48,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.localization.text.TextManager;
-import com.ghostchu.quickshop.api.localization.text.postprocessor.PostProcessor;
-import com.ghostchu.quickshop.localization.text.distributions.Distribution;
-import com.ghostchu.quickshop.localization.text.distributions.crowdin.CrowdinOTA;
-import com.ghostchu.quickshop.localization.text.postprocessing.impl.FillerProcessor;
-import com.ghostchu.quickshop.localization.text.postprocessing.impl.PlaceHolderApiProcessor;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +64,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class SimpleTextManager implements TextManager, Reloadable {
-    private static final String CROWDIN_LANGUAGE_FILE_PATH = "/hikari/crowdin/lang/%locale%/messages.json";
+    private static String CROWDIN_LANGUAGE_FILE_PATH = "/hikari/crowdin/lang/%locale%/messages.json";
     public final List<PostProcessor> postProcessors = new ArrayList<>();
     private final QuickShop plugin;
     private final Distribution distribution;
@@ -278,6 +278,15 @@ public class SimpleTextManager implements TextManager, Reloadable {
         // Register post processor
         postProcessors.add(new FillerProcessor());
         postProcessors.add(new PlaceHolderApiProcessor());
+        /* Workaround for Crowdin bug. */
+        if (!distribution.getAvailableFiles().contains(CROWDIN_LANGUAGE_FILE_PATH)) {
+            Util.debugLog("Warning! Illegal file path detected, trying auto fix...");
+            List<String> messagesFiles = distribution.getAvailableFiles().stream().filter(s -> s.endsWith("messages.json")).toList();
+            if (!messagesFiles.isEmpty()) {
+                CROWDIN_LANGUAGE_FILE_PATH = messagesFiles.get(0);
+            }
+            Util.debugLog("Auto fix failed :(");
+        }
     }
 
     private String findRelativeLanguages(String langCode) {
@@ -310,7 +319,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     }
                 }
             }
-            Util.debugLog("Registering relative language "+langCode+" to "+result);
+            Util.debugLog("Registering relative language " + langCode + " to " + result);
             languagesCache.put(langCode, result);
         }
         return result;
@@ -349,7 +358,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull Text of(@NotNull String path, Object... args) {
-        return new Text(this, (CommandSender) null, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path,  convert(args));
+        return new Text(this, (CommandSender) null, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, convert(args));
     }
 
     /**
@@ -362,7 +371,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull Text of(@Nullable CommandSender sender, @NotNull String path, Object... args) {
-        return new Text(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path,  convert(args));
+        return new Text(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, convert(args));
     }
 
     /**
@@ -380,55 +389,55 @@ public class SimpleTextManager implements TextManager, Reloadable {
 
     @NotNull
     private Component[] convert(@Nullable Object... args) {
-        if(args == null || args.length == 0)
+        if (args == null || args.length == 0)
             return new Component[0];
         Component[] components = new Component[args.length];
         for (int i = 0; i < args.length; i++) {
             Object obj = args[i];
-            if(obj == null){
+            if (obj == null) {
                 components[i] = Component.empty();
                 continue;
             }
-            Class<?> clazz =  obj.getClass();
-            if(obj instanceof Component component){
+            Class<?> clazz = obj.getClass();
+            if (obj instanceof Component component) {
                 components[i] = component;
                 continue;
             }
-            if(obj instanceof ComponentLike componentLike){
+            if (obj instanceof ComponentLike componentLike) {
                 components[i] = componentLike.asComponent();
                 continue;
             }
             // Check
-            if(Character.class.equals(clazz)){
+            if (Character.class.equals(clazz)) {
                 components[i] = Component.text((char) obj);
                 continue;
             }
-            if(Byte.class.equals(clazz)){
-                components[i] = Component.text((Byte)obj);
+            if (Byte.class.equals(clazz)) {
+                components[i] = Component.text((Byte) obj);
                 continue;
             }
             if (Integer.class.equals(clazz)) {
-                components[i] = Component.text((Integer)obj);
+                components[i] = Component.text((Integer) obj);
                 continue;
             }
-            if(Long.class.equals(clazz)){
-                components[i] = Component.text((Long)obj);
+            if (Long.class.equals(clazz)) {
+                components[i] = Component.text((Long) obj);
                 continue;
             }
-            if(Float.class.equals(clazz)){
-                components[i] = Component.text((Float)obj);
+            if (Float.class.equals(clazz)) {
+                components[i] = Component.text((Float) obj);
                 continue;
             }
-            if(Double.class.equals(clazz)){
-                components[i] = Component.text((Double)obj);
+            if (Double.class.equals(clazz)) {
+                components[i] = Component.text((Double) obj);
                 continue;
             }
-            if(Boolean.class.equals(clazz)){
-                components[i] = Component.text((Boolean)obj);
+            if (Boolean.class.equals(clazz)) {
+                components[i] = Component.text((Boolean) obj);
                 continue;
             }
-            if(String.class.equals(clazz)){
-                components[i] = LegacyComponentSerializer.legacySection().deserialize((String)obj);
+            if (String.class.equals(clazz)) {
+                components[i] = LegacyComponentSerializer.legacySection().deserialize((String) obj);
                 continue;
             }
             // undefined
@@ -446,7 +455,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull TextList ofList(@NotNull String path, Object... args) {
-        return new TextList(this, (CommandSender) null, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path,  convert(args));
+        return new TextList(this, (CommandSender) null, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, convert(args));
     }
 
     /**
@@ -459,7 +468,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull TextList ofList(@Nullable UUID sender, @NotNull String path, Object... args) {
-        return new TextList(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path,  convert(args));
+        return new TextList(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, convert(args));
     }
 
     /**
@@ -472,7 +481,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull TextList ofList(@Nullable CommandSender sender, @NotNull String path, Object... args) {
-        return new TextList(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path,  convert(args));
+        return new TextList(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, convert(args));
     }
 
     @Override

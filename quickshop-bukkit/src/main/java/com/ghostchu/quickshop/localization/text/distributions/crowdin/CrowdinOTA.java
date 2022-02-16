@@ -19,6 +19,13 @@
 
 package com.ghostchu.quickshop.localization.text.distributions.crowdin;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.localization.text.distributions.Distribution;
+import com.ghostchu.quickshop.localization.text.distributions.crowdin.bean.Manifest;
+import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.UrlEncoderDecoder;
+import com.ghostchu.quickshop.util.Util;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
@@ -31,12 +38,6 @@ import lombok.EqualsAndHashCode;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.localization.text.distributions.Distribution;
-import com.ghostchu.quickshop.localization.text.distributions.crowdin.bean.Manifest;
-import com.ghostchu.quickshop.util.JsonUtil;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -154,9 +155,6 @@ public class CrowdinOTA implements Distribution {
         if (manifest.isLocal()) {
             return "{}";
         }
-//        if (manifest.getCustom_languages() != null && !manifest.getCustom_languages().contains(crowdinLocale)) {
-//            throw new IllegalArgumentException("The locale " + crowdinLocale + " not exists on Crowdin");
-//        }
         // Post path (replaced with locale code)
         String postProcessingPath = fileCrowdinPath.replace("%locale%", crowdinLocale);
 
@@ -182,8 +180,8 @@ public class CrowdinOTA implements Distribution {
         }
         // Out of the cache
         String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
+        url = UrlEncoderDecoder.encodeToLegalPath(url);
         plugin.getLogger().info("Updating translation " + crowdinLocale + " from: " + url);
-
         HttpResponse<String> response = Unirest.get(url).asString();
         if (!response.isSuccess()) {
             throw new OTAException("Failed to grab data: " + response.getStatus() + "/" + response.getStatusText());
@@ -193,48 +191,6 @@ public class CrowdinOTA implements Distribution {
         otaCacheControl.writeObjectCache(postProcessingPath, data.getBytes(StandardCharsets.UTF_8), manifestTimestamp);
         otaCacheControl.writeManifestTimestamp(getManifest().getTimestamp());
         return data;
-
-//        String pathHash = DigestUtils.sha1Hex(postProcessingPath);
-//        // Reading metadata
-//        File metadataFile = new File(Util.getCacheFolder(), "i18n.metadata");
-//        YamlConfiguration cacheMetadata = YamlConfiguration.loadConfiguration(metadataFile);
-//        // Reading cloud timestamp
-//        long localeTimestamp = cacheMetadata.getLong(pathHash + ".timestamp");
-//        // Reading locale cache
-//        File cachedDataFile = new File(Util.getCacheFolder(), pathHash);
-//        String data = null;
-//        // Getting local cache
-//        if (cachedDataFile.exists()) {
-//            Util.debugLog("Reading data from local cache: " + cachedDataFile.getCanonicalPath());
-//            data = Util.readToString(cachedDataFile);
-//        }
-//        // invalidate cache, flush it
-//        // force flush required OR local cache not exists OR outdated
-//        if (forceFlush || data == null || localeTimestamp != manifest.getTimestamp()) {
-//            String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
-//            //Util.debugLog("Reading data from remote server: " + url);
-//            plugin.getLogger().info("Downloading translation " + crowdinLocale + " from: " + url);
-//            try (Response response = HttpUtil.create().getClient().newCall(new Request.Builder().get().url(url).build()).execute()) {
-//                val body = response.body();
-//                if (body == null) {
-//                    throw new OTAException(response.code(), ""); // Returns empty string (failed to getting content)
-//                }
-//                data = body.string();
-//                if (response.code() != 200) {
-//                    throw new OTAException(response.code(), data);
-//                }
-//                // save to local cache file
-//                Files.write(cachedDataFile.toPath(), data.getBytes(StandardCharsets.UTF_8));
-//            } catch (IOException e) {
-//                plugin.getLogger().log(Level.WARNING, "Failed to download manifest.json, multi-language system may won't work");
-//                e.printStackTrace();
-//                return "";
-//            }
-//            // update cache index
-//            cacheMetadata.set(pathHash + ".timestamp", manifest.getTimestamp());
-//            cacheMetadata.save(metadataFile);
-//            return data;
-//        }
     }
 
     @EqualsAndHashCode(callSuper = true)
@@ -283,7 +239,7 @@ public class CrowdinOTA implements Distribution {
             LOCK.lock();
             try {
                 l = this.metadata.getLong("manifest.timestamp", -1);
-            }finally {
+            } finally {
                 LOCK.unlock();
             }
             return l;
@@ -293,7 +249,7 @@ public class CrowdinOTA implements Distribution {
             LOCK.lock();
             try {
                 this.metadata.set("manifest.timestamp", timestamp);
-            }finally {
+            } finally {
                 LOCK.unlock();
             }
 
@@ -306,10 +262,10 @@ public class CrowdinOTA implements Distribution {
             LOCK.lock();
             try {
                 l = this.metadata.getLong("objects." + cacheKey + ".time", -1);
-            }finally {
+            } finally {
                 LOCK.unlock();
             }
-           return l;
+            return l;
         }
 
         public boolean isCachedObjectOutdated(String path, long manifestTimestamp) {
@@ -327,7 +283,7 @@ public class CrowdinOTA implements Distribution {
             LOCK.lock();
             try {
                 this.metadata.set("objects." + cacheKey + ".time", manifestTimestamp);
-            }finally {
+            } finally {
                 LOCK.unlock();
                 save();
             }
