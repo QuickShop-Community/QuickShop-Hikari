@@ -19,6 +19,13 @@
 
 package com.ghostchu.quickshop.listener;
 
+import com.ghostchu.quickshop.Cache;
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.Info;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopAction;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import io.papermc.lib.PaperLib;
@@ -28,7 +35,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
@@ -40,13 +46,6 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.Cache;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.Info;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopAction;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 
 /**
  * BlockListener to listening events about block events
@@ -106,13 +105,6 @@ public class BlockListener extends AbstractProtectionListener {
             plugin.text().of(p, "success-removed-shop").send();
         } else if (Util.isWallSign(b.getType())) {
             BlockState state = PaperLib.getBlockState(b, false).getState();
-            if (state instanceof Sign sign) {
-                if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
-                        || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
-                    // Ignore break lockette sign
-                    return;
-                }
-            }
 
             final Shop shop = getShopNextTo(b.getLocation());
 

@@ -19,12 +19,14 @@
 
 package com.ghostchu.quickshop.listener;
 
+import com.ghostchu.quickshop.Cache;
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
-import io.papermc.lib.PaperLib;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,10 +37,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.Cache;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.Util;
 
 public class LockListener extends AbstractProtectionListener {
     public LockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
@@ -71,16 +69,6 @@ public class LockListener extends AbstractProtectionListener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent e) {
         Block b = e.getBlock();
-        BlockState state = PaperLib.getBlockState(b, false).getState();
-        if (state instanceof final Sign sign) {
-            if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
-                    || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
-                // Ignore break lockette sign
-                Util.debugLog("Skipped a dead-lock shop sign.(Lockette or other sign-lock plugin)");
-                return;
-            }
-        }
-
         final Player p = e.getPlayer();
         // If the chest was a chest
         if (Util.canBeShop(b)) {
@@ -96,14 +84,6 @@ public class LockListener extends AbstractProtectionListener {
                 plugin.text().of(p, "no-permission").send();
             }
         } else if (Util.isWallSign(b.getType())) {
-            if (b instanceof final Sign sign) {
-
-                if (sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.private"))
-                        || sign.getLine(0).equals(super.getPlugin().getConfig().getString("lockette.more_users"))) {
-                    // Ignore break lockette sign
-                    return;
-                }
-            }
             b = Util.getAttached(b);
 
             if (b == null) {

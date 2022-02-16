@@ -417,11 +417,6 @@ shop:
 blacklist:
   - Bedrock
 
-#A fix for lockette plugin with Quickshop, because we are not canceling a break lock sign event (Making it impossible to break a locked chest).
-lockette:
-  enable: true
-  private: "[Private]"
-  more_users: "[More Users]"
 #Enable or disable plugin support.
 plugin:
   #If you have Multiverse-Core, QuickShop will try to load worlds when the shop's world doesn't exist.
