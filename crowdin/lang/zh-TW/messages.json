@@ -2,7 +2,7 @@
   "_comment": "你好翻譯者 ！ 假若你正在從 Github 或其他代管平台編輯，你應該前往 https://crowdin.com/project/quickshop-reremake 進行翻譯",
   "file-test": "這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)",
   "translation-author": "翻譯人員 ： Ghost_chu、Andre_601、Flandre_tw （主翻譯） 、胡蝶 しのぶ こちょう しのぶ#3062（主翻譯）",
-  "translation-version": "Support Version: Hikari",
+  "translation-version": "支援版本：Reremake（重製版）",
   "translation-contributors": "貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",
   "translation-country": "語言 ： &b&l繁體中文 Chinese Traditional （zh_TW）",
   "language-version": "63",
@@ -17,6 +17,7 @@
   "no-creative-break": "&c你不能在創造模式中破壞其他玩家的商店，請使用生存模式或使用超級工具 {0} 來破壞。",
   "trading-in-creative-mode-is-disabled": "&c你不能在創造模式中使用商店交易。",
   "supertool-is-disabled": "&c超級工具已被關閉，現在不能使用超級工具破壞任何商店。",
+  "disabled-in-this-world": "&c該世界已停用 QuickShop",
   "no-double-chests": "&c你沒有建立大型儲物箱商店的權限。",
   "not-managed-shop": "你沒有管理此商店的權限",
   "shop-already-owned": "&c這已是一個商店了。",
@@ -213,7 +214,6 @@
     "alwayscounting": "&a持續計數：{0} &e[&d&l修改&e]",
     "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&a店主 ： &b{0} &e[&d&l修改&e]",
-    "setowner-uuid": "&a店主：&b{0} &e[&d&l修改&e]",
     "infomation": "&a商店控制面板 ： ",
     "setowner-hover": "&e點擊修改店主。",
     "unlimited": "&a無限 ： {0} &e[&d&l修改&e]",
@@ -293,7 +293,13 @@
       "github": "[GitHub]",
       "spigotmc": "[SpigotMC]",
       "bukkitdev": "[BukkitDev]",
-      "master": "[主要分支 Master]"
+      "master": "[主要分支 Master]",
+      "polymart": "[Polymart]",
+      "ore": "[Ore]",
+      "papermc": "[PaperMC]",
+      "nbtapi": "[+NBTAPI]",
+      "paper": "[+Paper Optimized]",
+      "basic": "[Basic]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&c你在 {0} 的商店已被刪除了，因為你沒有足夠的資金去維護它 ！",
@@ -362,8 +368,18 @@
   "purchase-out-of-space": "&c該商店空間不足，請聯繫商店商店店主或商店員工清空商店。",
   "safe-mode": "&cQuickShop 現在處於安全模式，您無法打開此商店容器，請與服務器管理員聯繫以修復錯誤!",
   "safe-mode-admin": "&c&l警告:&c此服務器上的 QuickShop 現在在安全模式下運行，沒有任何功能可用，請輸入 &e/qs &c 命令以檢查任何錯誤!",
-  "internal-error": "&c發生內部錯誤，詳細資訊已記錄到控制台。請稍後再試，如果問題仍然存在，請聯繫伺服器管理員。",
   "bungee-cross-server-msg": "&eQuickShop跨服信息: &a{0}",
   "edition-confilct": "QuickShop-Hikari 與 QuickShop-Reremake 同時安裝在伺服器中可能會相互沖突，你需要卸載其中一個",
-  "plugin-cancelled": "&c操作被取消, 原因: {0}"
+  "plugin-cancelled": "&c操作被取消, 原因: {0}",
+  "paste-disabled": "&cPaste functionality has been disabled! You cannot request technical support. \nReason: {0}",
+  "support-disable-reason": {
+    "privacy": "&eThis server running under cracked (offline) mode. If you are running bukkit server under proxy and online-mode=true on proxy, please configure the proxy related settings correctly.",
+    "authlib-injector-detected": "&eThis server running under 3rd-party authlib provider like authlib-injector.",
+    "bad-hosts": "&eThis server HOSTS has been modified and QuickShop some functions require connect to Mojang API correctly. Fix the HOSTS before asking support, Windows at C:\\windows\\system32\\drivers\\etc\\hosts, Linux at /etc/hosts.",
+    "hot-reload": "&eUnsupported hot reloaded, restart the server and check again.",
+    "outdated": "&eThis version of QuickShop already outdated, up-to-date before requesting support!",
+    "modified": "&eFile integrity check failed, this QuickShop build has been modified by others.",
+    "unsupported-server-software": "&eUnsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.",
+    "consolespamfix-installed": "&eConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support."
+  }
 }
