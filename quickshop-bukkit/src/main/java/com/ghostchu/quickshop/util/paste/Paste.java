@@ -79,10 +79,6 @@ public class Paste {
         finalReport.append("\tBuild Tag: ").append(plugin.getBuildInfo().getBuildTag()).append("\n");
         finalReport.append("\tChat System: ").append("Hardcoded Adventure").append("\n");
         finalReport.append("\tServer ID: ").append(plugin.getServerUniqueID()).append("\n");
-        finalReport
-                .append("\tOpenInv Hook: ")
-                .append(plugin.getOpenInvPlugin() == null ? "Disabled" : "Enabled")
-                .append("\n");
         finalReport.append("\tEconomy System: ");
         try {
             EconomyCore economyCore = plugin.getEconomy();

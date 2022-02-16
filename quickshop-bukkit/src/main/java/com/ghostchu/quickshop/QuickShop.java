@@ -166,11 +166,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      */
     private Metrics metrics;
     /**
-     * The plugin OpenInv (null if not present)
-     */
-    @Getter
-    private Plugin openInvPlugin;
-    /**
      * The plugin PlaceHolderAPI(null if not present)
      */
     @Getter
@@ -208,9 +203,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private @Deprecated
     DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
     @Getter
-    @Deprecated
-    private boolean enabledAsyncDisplayDespawn;
-    @Getter
     private Plugin blockHubPlugin;
     @Getter
     private Cache shopCache;
@@ -228,8 +220,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private String currency = null;
     @Getter
     private CalendarWatcher calendarWatcher;
-    @Getter
-    private Plugin worldEditPlugin;
     @Getter
     private ShopPurger shopPurger;
     private int loggingLocation = 0;

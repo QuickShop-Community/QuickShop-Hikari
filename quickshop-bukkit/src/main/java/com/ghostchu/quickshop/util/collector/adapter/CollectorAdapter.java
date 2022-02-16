@@ -46,7 +46,6 @@ public class CollectorAdapter {
         data.put("fork", QuickShop.getFork());
         data.put("build_info", plugin.getBuildInfo());
         data.put("server_id", plugin.getServerUniqueID());
-        data.put("openinv_hook", plugin.getOpenInvPlugin() == null ? "Disabled" : "Enabled");
         Map<String, String> economy = new HashMap<>();
         try {
             EconomyCore economyCore = plugin.getEconomy();

@@ -19,7 +19,14 @@
 
 package com.ghostchu.quickshop.command;
 
-import com.google.common.collect.Sets;
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandContainer;
+import com.ghostchu.quickshop.api.command.CommandManager;
+import com.ghostchu.quickshop.command.subcommand.*;
+import com.ghostchu.quickshop.command.subcommand.silent.*;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
+import com.google.common.collect.ImmutableList;
 import lombok.Data;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -29,24 +36,17 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.command.CommandContainer;
-import com.ghostchu.quickshop.api.command.CommandManager;
-import com.ghostchu.quickshop.command.subcommand.*;
-import com.ghostchu.quickshop.command.subcommand.silent.*;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @SuppressWarnings("unchecked")
 public class SimpleCommandManager implements CommandManager, TabCompleter, CommandExecutor {
     private static final String[] EMPTY_ARGS = new String[0];
-    private final Set<CommandContainer> cmds = Sets.newCopyOnWriteArraySet(); //Because we open to allow register, so this should be thread-safe
+    private final List<CommandContainer> cmds = Collections.synchronizedList(new ArrayList<>()); //Because we open to allow register, so this should be thread-safe
     private final QuickShop plugin;
     private final CommandContainer rootContainer;
 
@@ -357,7 +357,9 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         }
         container.bakeExecutorType();
         cmds.removeIf(commandContainer -> commandContainer.getPrefix().equalsIgnoreCase(container.getPrefix()));
+        cmds.removeIf(container::equals);
         cmds.add(container);
+        cmds.sort(Comparator.comparing(CommandContainer::getPrefix));
     }
 
     /**
@@ -378,7 +380,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     @Override
     @NotNull
     public List<CommandContainer> getRegisteredCommands() {
-        return new ArrayList<>(this.getCmds());
+        return ImmutableList.copyOf(this.getCmds());
     }
 
     @Override

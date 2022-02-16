@@ -166,9 +166,6 @@ public class Util {
             return false;
         }
         final BlockState bs = PaperLib.getBlockState(b, false).getState();
-        if (bs instanceof EnderChest) { // BlockState for Mod supporting
-            return plugin.getOpenInvPlugin() != null;
-        }
         return bs instanceof InventoryHolder;
     }
 
