@@ -387,7 +387,9 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
         map.put("itemConfig", Util.serialize(item));
         map.put("unlimited", unlimited);
         map.put("type", shopType);
+        map.put("price",price);
         map.put("extra", extra);
+        map.put("currency",currency);
         map.put("disableDisplay", disableDisplay ? 1 : 0);
         map.put("taxAccount", taxAccount);
         map.put("inventorySymbolLink", inventorySymbolLink);
