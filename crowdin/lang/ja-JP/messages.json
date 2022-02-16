@@ -2,7 +2,7 @@
   "_comment": "翻訳者さんこんにちは！Githubから、もしくはコードソースから編集している場合は、https://crowdin.com/project/quickshop-reremakeにアクセスしてください。",
   "file-test": "これはテスト用のファイルです。私たちはこれを使って、messages.jsonは壊れていないかをチェックします。ここに好きなイースターエッグを挿入してもいいですよ:)",
   "translation-author": "翻訳者: Ghost_chu, Andre_601",
-  "translation-version": "Support Version: Hikari",
+  "translation-version": "&c&lサポートバージョン: &b&lReremake",
   "translation-contributors": "貢献者: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken, Andre_601 and Namiu",
   "translation-country": "&c&l言語圏: &b&l日本語 (ja_JP)",
   "language-version": "63",
@@ -17,6 +17,7 @@
   "no-creative-break": "&cクリエイティブモードでは他のプレイヤーのショップを破壊することはできません。サバイバルモードに切り替えるか、代わりにスーパーツール {0} を使用してください。",
   "trading-in-creative-mode-is-disabled": "&cクリエイティブモードではこのショップと取引することはできません。",
   "supertool-is-disabled": "&cスーパーツールが無効になっています。どのショップも破壊することはできません。",
+  "disabled-in-this-world": "&cQuickShop is disabled in this world",
   "no-double-chests": "&cラージチェストのショップを作成することはできません。",
   "not-managed-shop": "あなたはショップの店主でもモデレーターでもありません。",
   "shop-already-owned": "&cこれはすでにショップです。",
@@ -213,7 +214,6 @@
     "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
     "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&a店主: &b{0} &e[&d&l変更&e]",
-    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
     "infomation": "&aショップコントロールパネル:",
     "setowner-hover": "&eクリックで店主を変更します",
     "unlimited": "&a無制限: {0} &e[&d&l変更&e]",
@@ -361,9 +361,5 @@
   "purchase-out-of-stock": "&cこのショップは在庫がなくなりました。店主またはショップスタッフにお問い合わせください。",
   "purchase-out-of-space": "&cこのショップは空き容量がありません。店主またはショップスタッフにお問い合わせください。",
   "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors.",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
-  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
-  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
 }

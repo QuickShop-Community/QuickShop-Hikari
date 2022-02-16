@@ -1,8 +1,8 @@
 {
-  "_comment": "嗨 翻译者！如果您正在Github上或直接编辑源文件的方式进行翻译，请您前往：https://crowdin.com/project/quickshop-reremake",
+  "_comment": "嗨！翻译者！如果您正在Github上或直接编辑源文件的方式进行翻译，请您前往：https://crowdin.com/project/quickshop-reremake",
   "file-test": "这是个测试文件，我们可以用它来测试 messages.json 文件是否损坏。你可以在这里填入任何喜欢的彩蛋 :)",
   "translation-author": "翻译人员： Ghost_chu, Andre_601, 李馨雨, YuanYuanOwO",
-  "translation-version": "支持版本: Hikari",
+  "translation-version": "支持版本：Reremake",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
   "language-version": "63",
@@ -17,6 +17,7 @@
   "no-creative-break": "&c你不能在创造模式破坏其他玩家的商店, 请使用生存模式或用超级工具 {0} 来破坏。",
   "trading-in-creative-mode-is-disabled": "&c你不能在创造模式下进行交易操作。",
   "supertool-is-disabled": "&c超级工具已被禁用，现已不能使用超级工具破坏任何商店。",
+  "disabled-in-this-world": "&cQuickShop 在这个世界中被禁用",
   "no-double-chests": "&c你没有权限创建大箱子商店。",
   "not-managed-shop": "&c你不是该商店的所有者或助手",
   "shop-already-owned": "&c这已经是一个商店了。",
@@ -24,11 +25,11 @@
   "price-too-cheap": "&c价格必须大于&e${0}",
   "no-price-change": "&c这不会导致价格变动！",
   "you-cant-afford-a-new-shop": "&c你需要 {0} 才能创建一个商店。",
-  "player-bought-from-your-store-tax": "&c{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3} (扣税{4})",
+  "player-bought-from-your-store-tax": "&c{0} 从你的商店里购买了 {1} 个 {2}，你因此赚得了 {3} 元(扣税 {4} 元)",
   "you-cant-afford-to-change-price": "&c你需要 {0} 才能修改商店的价格。",
   "success-created-shop": "&c商店已创建",
   "success-removed-shop": "&a商店已删除！",
-  "shops-arent-locked": "&c注意，商店无法防盗，如果您想要防盗功能，请使用Lockette，LWC，等插件锁住箱子。",
+  "shops-arent-locked": "&c注意，商店无法防盗，如果您想要防盗功能，请使用Lockette，LWC，等插件锁住商店。",
   "shop-creation-cancelled": "&c商店创建已取消。",
   "shop-purchase-cancelled": "&c您取消了交易操作。",
   "shop-stock-too-low": "&c这个商店只有 {0} 个 {1} 了。",
@@ -213,7 +214,6 @@
     "alwayscounting": "&a总是计算容器物品: {0} &e[&d&l更改&e]",
     "alwayscounting-hover": "&e点击以切换是否总是计算容器物品。",
     "setowner": "&a所有者: &b{0} &e[&d&l修改&e]",
-    "setowner-uuid": "&a所有者: &b{0} &e[&d&l修改&e]",
     "infomation": "&a商店控制面板",
     "setowner-hover": "&e点击来修改店主",
     "unlimited": "&a无限模式: {0} &e[&d&l切换&e]",
@@ -244,9 +244,9 @@
     "toggledisplay-hover": "&e切换商店是否显示悬浮物"
   },
   "tableformat": {
-    "full_line": "&5+---------------------------------------------------+",
-    "left_half_line": "&5+--------------------",
-    "right_half_line": "&5--------------------+",
+    "full_line": "+---------------------------------------------------+",
+    "left_half_line": "+--------------------",
+    "right_half_line": "--------------------+",
     "left_begin": "| "
   },
   "booleanformat": {
@@ -361,9 +361,5 @@
   "purchase-out-of-stock": "&c这个商店已缺货，请联系商店所有者或助手补充库存",
   "purchase-out-of-space": "&c这个商店空间已不足，请联系商店所有者或助手清空商店",
   "safe-mode": "&cQuickShop 现在处于安全模式，您不能打开这个商店容器，请与服务器管理员联系以修复错误。",
-  "safe-mode-admin": "&c&l警告: &c此服务器上的QuickShop正在安全模式下运行，任何功能都无法工作，请输入&e/qs &c 命令来检查错误。",
-  "internal-error": "&c发生内部错误，详细信息已记录到控制台。请再试一次，如果仍然存在，请与服务器管理员联系。",
-  "bungee-cross-server-msg": "&eQuickShop跨服信息: &a{0}",
-  "edition-confilct": "QuickShop-Hikari 与 QuickShop-Reremake 同时安装在服务器中可能会相互冲突，你需要卸载其中一个",
-  "plugin-cancelled": "&c操作被取消，原因： {0}"
+  "safe-mode-admin": "&c&l警告: &c此服务器上的QuickShop正在安全模式下运行，任何功能都无法工作，请输入&e/qs &c 命令来检查错误。"
 }

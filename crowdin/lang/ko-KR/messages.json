@@ -2,7 +2,7 @@
   "_comment": "안녕하세요 번역가님! 만약 당신이 깃헙이나 소스코드에서 번역 중이라면 다음 사이트를 가보시기 바래요! https://crowdin.com/project/quickshop-reremake",
   "file-test": "이것은텍스트파일일까요? 한국어 일까yo? :)",
   "translation-author": "번역: Chicki_yeah(번역에 이상한 부분이 있다면 치키이예#0032로 연락해주시면 수정하겠습니다.)",
-  "translation-version": "Support Version: Hikari",
+  "translation-version": "지원 버전: Reremake",
   "translation-contributors": "기여자: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "언어 지역: 한국어 (ko_KR)",
   "language-version": "63",
@@ -17,6 +17,7 @@
   "no-creative-break": "&c크리에이티브 모드 상태론 다른 플레이어의 상점을 파괴할 수 없습니다, 서바이벌 모드로 전환하거나 슈퍼툴 {0} 을(를) 사용해주세요.",
   "trading-in-creative-mode-is-disabled": "&c크리에이티브 모드 상태에서는 상점에서 거래할 수 없습니다.",
   "supertool-is-disabled": "&c슈퍼툴이 비활성화 되어있습니다. 어느 상점도 부술 수 없습니다.",
+  "disabled-in-this-world": "&cQuickShop is disabled in this world",
   "no-double-chests": "&c당신은 큰상자(일반 상자를 두개붙인)를 이용한 상점을 만들 수 없습니다. (권한 부족입니다.)",
   "not-managed-shop": "&c당신은 상점의 주인이나 관리자가 아닙니다",
   "shop-already-owned": "&c이것은 이미 상점입니다.",
@@ -213,7 +214,6 @@
     "alwayscounting": "&a상시 카운트: {0} &e[&d&l변경&e]",
     "alwayscounting-hover": "&e상시 카운트 할건지 설정합니다",
     "setowner": "&a주인: &b{0} &e[&d&l바꾸기&e]",
-    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
     "infomation": "&a상점 컨트롤 패널:",
     "setowner-hover": "&e눌러서 주인 변경",
     "unlimited": "&a무제한:{0} &e[&d&l변경&e]",
@@ -361,9 +361,5 @@
   "purchase-out-of-stock": "&c이 상점은 재고가 다 떨어졌으니 주인에게 문의하여 재고보충을 요구해주세요.",
   "purchase-out-of-space": "&c이 상점은 공간이 부족하니 주인에게 문의하여 상자를 비우라고 요청해주세요.",
   "safe-mode": "이 서버의 QuickShop은 현재 안전 모드로 실행 중이므로 기능이 작동하지 않습니다. 오류를 확인하려면 관리자에게 연락하세요",
-  "safe-mode-admin": "&c&l경고: &c이 서버의 QuickShop은 현재 안전 모드로 실행 중이므로 기능이 작동하지 않습니다. 오류를 확인하려면 &e/qs &c 명령을 입력하십시오.",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
-  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
-  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
+  "safe-mode-admin": "&c&l경고: &c이 서버의 QuickShop은 현재 안전 모드로 실행 중이므로 기능이 작동하지 않습니다. 오류를 확인하려면 &e/qs &c 명령을 입력하십시오."
 }

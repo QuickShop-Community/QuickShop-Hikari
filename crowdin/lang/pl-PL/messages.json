@@ -2,7 +2,7 @@
   "_comment": "Witaj tłumaczu! Jeśli edytujesz to z Github'a lub ze źródeł kodowych, powinieneś przejść do https://crowdin.com/project/quickshop-reremake",
   "file-test": "To jest testowy plik tekstowy. Używamy go do testowania jeśli messages.json jest zepsuty. Możesz wypełnić go dowolnymi easter egg'ami, które lubisz :)",
   "translation-author": "Tłumacz: Ghost_chu, Andre_601",
-  "translation-version": "Support Version: Hikari",
+  "translation-version": "Wspierana wersja: Reremake",
   "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",
   "translation-country": "Język: Polski (pl_PL)",
   "language-version": "63",
@@ -17,6 +17,7 @@
   "no-creative-break": "&cNie możesz zniszczyć sklepów innych graczy w trybie kreatywnym, przełącz się na tryb przetrwania lub zamiast tego spróbuj użyć SuperTool {0}.",
   "trading-in-creative-mode-is-disabled": "&cNie możesz handlować z tym sklepem, będąc w trybie kreatywnym.",
   "supertool-is-disabled": "&cSupertool jest wyłączone. Nie można zniszczyć żadnych sklepów.",
+  "disabled-in-this-world": "&cQuickShop is disabled in this world",
   "no-double-chests": "&cNie możesz stworzyć sklepu z podwójną skrzynią.",
   "not-managed-shop": "&cNie jesteś właścicielem ani moderatorem tego sklepu",
   "shop-already-owned": "&cTo już jest sklep.",
@@ -213,7 +214,6 @@
     "alwayscounting": "&aZawsze liczy: {0} &e[&d&lZmień&e]",
     "alwayscounting-hover": "&eKliknij, aby przełączyć, jeśli sklep zawsze liczy pojemnik.",
     "setowner": "&aWłaściciel: &b{0} &e[&d&lZmień&e]",
-    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
     "infomation": "&aPanel sterowania sklepu:",
     "setowner-hover": "&eKliknij, aby zmienić właściciela.",
     "unlimited": "&aBez ograniczenia: {0} &e[&d&lZmień&e]",
@@ -361,9 +361,5 @@
   "purchase-out-of-stock": "&cW tym sklepie skończyły się zapasy, skontaktuj się z właścicielem sklepu lub personelem, aby uzupełnić zapasy.",
   "purchase-out-of-space": "&cW tym sklepie zabrakło miejsca, skontaktuj się z właścicielem sklepu lub personelem, aby opróżnić sklep.",
   "safe-mode": "&cQuickShop jest teraz w trybie bezpiecznym, nie możesz otworzyć pojemnika tego sklepu, skontaktuj się z administratorem serwera, aby naprawić błędy.",
-  "safe-mode-admin": "&c&lUWAGA: &cQuickShop na tym serwerze działa teraz w trybie bezpiecznym, żadne funkcje nie będą działać, wpisz &e/qs &c, aby sprawdzić błędy.",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
-  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
-  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
+  "safe-mode-admin": "&c&lUWAGA: &cQuickShop na tym serwerze działa teraz w trybie bezpiecznym, żadne funkcje nie będą działać, wpisz &e/qs &c, aby sprawdzić błędy."
 }

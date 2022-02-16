@@ -2,7 +2,7 @@
   "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
   "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
   "translation-author": "Translator: Ghost_chu, Andre_601",
-  "translation-version": "Support Version: Hikari",
+  "translation-version": "Support Version: Reremake",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "โซนภาษา: ไทย (th_TH)",
   "language-version": "63",
@@ -17,6 +17,7 @@
   "no-creative-break": "&cYou cannot break other players shops in creative mode, switch to survival mode or try to use the supertool {0} instead.",
   "trading-in-creative-mode-is-disabled": "&cคุณไม่สามารถแลกเปลี่ยนกับร้านค้านี้ได้ในขณะที่อยู่ในโหมดสร้างสรรค์",
   "supertool-is-disabled": "&cSupertool is disabled. Cannot break any shops.",
+  "disabled-in-this-world": "&cQuickShop is disabled in this world",
   "no-double-chests": "&cYou cannot create the double chest shop.",
   "not-managed-shop": "&cYou are not the owner or moderator of this Shop",
   "shop-already-owned": "&cThis is already a shop.",
@@ -213,7 +214,6 @@
     "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
     "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aOwner: &b{0} &e[&d&lChange&e]",
-    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
     "infomation": "&aShop Control panel:",
     "setowner-hover": "&eClick to switch owner.",
     "unlimited": "&aUnlimited: {0} &e[&d&lChange&e]",
@@ -361,9 +361,5 @@
   "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
   "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop.",
   "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors.",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
-  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
-  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
 }

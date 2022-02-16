@@ -2,7 +2,7 @@
   "_comment": "Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake",
   "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
   "translation-author": "Traductor: Javiooli, Hoswolf",
-  "translation-version": "Support Version: Hikari",
+  "translation-version": "Versió suportada: Reremake",
   "translation-contributors": "Contributors: Hoswolf, Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Zona de l'idioma: Català (ca_ES)",
   "language-version": "63",
@@ -17,6 +17,7 @@
   "no-creative-break": "&cNo pots trencar botigues d'altres jugadors en mode creatiu, canvia a supervivència o intenta utilitzar la Supertool {0}.",
   "trading-in-creative-mode-is-disabled": "&cNo pots intercanviar amb aquesta botiga mentre estiguis en mode creatiu.",
   "supertool-is-disabled": "&cLa Supertool està desactivada. No pots trencar cap botiga.",
+  "disabled-in-this-world": "&cQuickShop is disabled in this world",
   "no-double-chests": "&cNo pots crear una botiga de cofre doble.",
   "not-managed-shop": "&cNo ets l'amo o moderador d'aquesta botiga.",
   "shop-already-owned": "&cAixò ja és una botiga.",
@@ -213,7 +214,6 @@
     "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
     "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aPropietari: &b{0} &e[&d&lCanvia&e]",
-    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
     "infomation": "&aPanell de control de la botiga:",
     "setowner-hover": "&eFes clic per canviar de propietari.",
     "unlimited": "&aIl·limitat: {0} &e[&d&lCanvia&e]",
@@ -361,9 +361,5 @@
   "purchase-out-of-stock": "&cThis shop run out of the stock, Contact shop owner or staffs to refill the stock.",
   "purchase-out-of-space": "&cThis shop run out of the space, Contact shop owner or staffs to empty the shop.",
   "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors.",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
-  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
-  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
 }

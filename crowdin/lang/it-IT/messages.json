@@ -2,7 +2,7 @@
   "_comment": "Ciao traduttore! Se lo modifichi da Github o da sorgenti di codice, dovresti andare su https://crowdin.com/project/quickshop-reremake",
   "file-test": "Questo è un file di testo di prova. Lo usiamo per verificare se il file messages.json è rotto. Puoi riempirlo con tutti gli easter egg che ti piacciono qui :)",
   "translation-author": "Traduttori: Ghost_chu, Andre_601, MaxFederico, sandtechnology, MiniMoro",
-  "translation-version": "Support Version: Hikari",
+  "translation-version": "Versione di Supporto: Reremake",
   "translation-contributors": "Collaboratori: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601, sandtechnology, MiniMoro",
   "translation-country": "Lingua zona: Italian (it_IT)",
   "language-version": "63",
@@ -17,6 +17,7 @@
   "no-creative-break": "&cNon puoi rompere i negozi degli altri giocatori in modalità creativa, passa alla modalità Sopravvivenza o prova ad usare il supertool {0}.",
   "trading-in-creative-mode-is-disabled": "&cNon puoi scambiare con questo negozio mentre sei in modalità creativa.",
   "supertool-is-disabled": "&cSupertool è disabilitato. Impossibile rompere alcun negozio.",
+  "disabled-in-this-world": "&cQuickShop is disabled in this world",
   "no-double-chests": "&cNon puoi creare un negozio con doppia cassa.",
   "not-managed-shop": "&cNon sei il proprietario o moderatore di questo negozio",
   "shop-already-owned": "&cQuesto è già un negozio.",
@@ -213,7 +214,6 @@
     "alwayscounting": "&aConta sempre: {0} &e[&d&lCambia&e]",
     "alwayscounting-hover": "&eFai clic per attivare/disattivare se il negozio conta sempre il contenitore.",
     "setowner": "&aProprietario: &b{0} &e[&d&lCambia&e]",
-    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
     "infomation": "&aPannello di Controllo Negozio:",
     "setowner-hover": "&eClicca per cambiare proprietario.",
     "unlimited": "&aIllimitato: {0} &e[&d&lCambia&e]",
@@ -361,9 +361,5 @@
   "purchase-out-of-stock": "&cQuesto negozio ha esaurito le scorte, contatta il proprietario del negozio o il personale per rifornire le scorte.",
   "purchase-out-of-space": "&cQuesto negozio ha esaurito lo spazio, contatta il proprietario del negozio o il personale per svuotare il negozio.",
   "safe-mode": "&cQuickShop ora in modalità provvisoria, non puoi aprire questo contenitore del negozio, contatta l'amministratore del server per correggere gli errori.",
-  "safe-mode-admin": "&c&lATTENZIONE: &cIl QuickShop su questo server ora funziona in modalità provvisoria, nessuna funzione funzionerà, per favore digita il comando &e/qs &c per controllare eventuali errori.",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
-  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
-  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
+  "safe-mode-admin": "&c&lATTENZIONE: &cIl QuickShop su questo server ora funziona in modalità provvisoria, nessuna funzione funzionerà, per favore digita il comando &e/qs &c per controllare eventuali errori."
 }

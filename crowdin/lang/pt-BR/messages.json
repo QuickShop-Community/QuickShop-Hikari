@@ -2,7 +2,7 @@
   "_comment": "Olá, tradutor! Se você editar isso do Github ou de fontes de código, você deve ir https://crowdin.com/project/quickshop-remake",
   "file-test": "Este é um arquivo de texto de teste. Nós o usamos para testar se as mensagens são enviadas. filho está quebrado. Você pode preenchê-lo com quaisquer ovos de Páscoa que goste aqui :)",
   "translation-author": "Tradutor: Ghost_chu, Andre_601",
-  "translation-version": "Support Version: Hikari",
+  "translation-version": "Versão de suporte: Remake",
   "translation-contributors": "Contribuidores: Torre de Timor, Netherfoam, KaiNoMood, Mgazul, JackTheChicken e Andre_601",
   "translation-country": "Zona do idioma: Português Brasileiro (pt_BR)",
   "language-version": "63",
@@ -13,10 +13,11 @@
   "integrations-check-failed-create": "&cIntegração {0} negou a criação da loja",
   "integrations-check-failed-trade": "&cIntegração {0} negou a negociação da loja",
   "3rd-plugin-build-check-failed": "&c3rd plugin &l{0}&r&c negou as verificações de permissão, você configurou as permissões?",
-  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8negou as verificações de permissão, se isto não for experado, tente adicionar &d{1} &7para os listeners restritos. &7Guia de Configuração: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cVocê não pode quebrar lojas de outros jogadores no modo criativo, mude para o modo sobrevivência ou tente usar a super-ferramenta {0}.",
   "trading-in-creative-mode-is-disabled": "&cVocê não pode negociar com a loja no modo criativo.",
   "supertool-is-disabled": "&cSuper-ferramenta foi desativada, não será possível quebrar nenhuma loja.",
+  "disabled-in-this-world": "&cQuickShop is disabled in this world",
   "no-double-chests": "&cVocê não pode criar a loja com baú duplo.",
   "not-managed-shop": "&cVocê não é o proprietário ou moderador desta loja",
   "shop-already-owned": "&cIsso já é uma loja.",
@@ -97,7 +98,7 @@
     "owner": "&aProprietário: {0}",
     "item": "&aItem: &e{0}",
     "item-holochat-error": "&c[Erro]",
-    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
+    "item-holochat-data-too-large": "&c[Error] Item NBT é muito grande para exibição",
     "preview": "&b[Visualização do item]",
     "space": "&aEspaço: &e{0}",
     "stock": "&aEstoque &e{0}",
@@ -125,8 +126,8 @@
       "limited": "&aLoja agora é limitada"
     },
     "toggle-always-counting": {
-      "counting": "&aShop is now always counting container even is unlimited",
-      "not-counting": "&aShop is now respect if shop is unlimited"
+      "counting": "&aShop agora está sempre contando o contêiner, mesmo que ilimitado",
+      "not-counting": "&aShop agora é respeitado se a loja é ilimitada"
     },
     "transfer-success": "&aTransferido &e{0} &ashop(s) para &e{1}",
     "transfer-success-other": "&aTransferido &e{0} lojas de {1}&a para &e{2}",
@@ -136,7 +137,7 @@
     "now-buying": "&aAgora &dCOMPRANDO &e{0}",
     "now-selling": "&aAgora &bVENDENDO &e{0}",
     "cleaning": "&aRemovendo lojas sem estoque...",
-    "reloading": "&aConfiguration reloaded. &eSome changes may require reboot to affect. \n&7(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won't crashed.)",
+    "reloading": "&aConfiguração recarregada. &eAlgumas alterações podem requerer reinicialização para afetar. \n&7(Observação: o comportamento de recarregamento foi alterado após 4.0.9.10 agora só recarregamos a configuração mas não todo o plugin para garantir que o servidor não falhe.)",
     "cleaned": "&aRemovido &e{0}&a lojas.",
     "no-type-given": "&cUse: /qs find <item>",
     "no-world-given": "&cPor favor, especifique um nome do mundo",
@@ -150,7 +151,7 @@
     "now-nolonger-debuging": "&aModo de Desenvolvedor &cdesabilitado &acom sucesso. Recarregando QuickShop...",
     "wrong-args": "&cArgumento inválido. Use &l/qs help &cpara ver uma lista de comandos.",
     "description": {
-      "alwayscounting": "&eSet if shop always counting container even is unlimited",
+      "alwayscounting": "&eDefinir se a loja sempre contando o contêiner, mesmo que seja ilimitado",
       "title": "&aAjuda do QuickShop",
       "unlimited": "&eDá um estoque ilimitado para a loja.",
       "setowner": "&eAltera o proprietário de uma loja.",
@@ -187,7 +188,7 @@
       "lock": "&eAlterne o status de bloqueio da loja",
       "taxaccount": "&eDefinir a conta de taxa que a loja usa",
       "toggledisplay": "&eAtivar o display de itens nessa loja",
-      "purge": "&eStart the shop purge task in background"
+      "purge": "&eIniciar a tarefa de limpar lojas em segundo plano"
     },
     "disabled": "&cEste comando está desativado: &e{0}",
     "feature-not-enabled": "Esse recurso não está ativado no arquivo de configuração."
@@ -210,10 +211,9 @@
     "freeze": "Trading desabilitado"
   },
   "controlpanel": {
-    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
-    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
+    "alwayscounting": "&aSempre contando: {0} &e[&d&lAltere&e]",
+    "alwayscounting-hover": "&eClique para alternar se a loja está sempre contando contêiner.",
     "setowner": "&aProprietário: &b{0} &e[&d&lMudar&e]",
-    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
     "infomation": "&aPainel de Controle da Loja:",
     "setowner-hover": "&eClique para alterar o proprietário.",
     "unlimited": "&aEstoque ilimitado: {0} &e[&d&lMudar&e]",
@@ -240,7 +240,7 @@
     "lock-hover": "&eEnable/Disable proteção de bloqueio de loja",
     "freeze": "&eModo de bloqueio: &b{0} &e[&d&lToggle&e]",
     "freeze-hover": "&eAlterna o status de congelamento da loja.",
-    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
+    "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lAlternar&e]",
     "toggledisplay-hover": "&eAtivar o display de itens nessa loja"
   },
   "tableformat": {
@@ -282,7 +282,7 @@
       "O que cê tá esperando? {0} foi lançado! Atualize!",
       "Doutor, o QuickShop tem uma nova atualização {0}! Você deve atualizar~",
       "Ko~ko~da~yo~ O QuickShop tem uma nova atualização {0}~",
-      "Paimon want told you the QuickShop have new update {0}!"
+      "Paimon quer lhe dizer que a QuickShop tem uma nova atualização {0}!"
     ],
     "remote-disable-warning": "&cEsta versão do QuickShop está marcada como desabilitada pelo servidor remoto o que significa que esta versão pode ter problemas sérios, obtenha detalhes da nossa página do SpigotMC: {0}. Este aviso continuará a aparecer até que você mude para uma versão estável, mas isso não afetará a performance do seu servidor.",
     "label": {
@@ -298,7 +298,7 @@
   },
   "shop-removed-cause-ongoing-fee": "&cSua loja em {0} foi removida! Você não tem dinheiro suficiente para mantê-la!",
   "digits-reach-the-limit": "&cVocê atingiu os limites de números no preço.",
-  "complete": "&aComplete!",
+  "complete": "&aCompleto!",
   "quickshop-gui-preview": "Pré-visualização de itens do QuickShop GUI",
   "shops-recovering": "Recuperando lojas do backup...",
   "shops-backingup": "Criando backup de lojas no banco de dados...",
@@ -336,7 +336,7 @@
   "backup-success": "&aBackup bem sucedido.",
   "console-only": "&cEste comando só pode ser executado pelo Console.",
   "console-only-danger": "&cEste é um comando perigoso, de modo que apenas o Console possa executá-lo.",
-  "clean-warning": "&eThis command will purge &call &eshops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or &c&lEXISTS IN A UNLOADED WORLD&e. Make sure to create a full backup of your shop data first and use &b/qs cleanghost confirm &eto continue.",
+  "clean-warning": "&eEste comando irá limpar &chamar o &eshops se a loja estiver danificada ou corrompida, foi criada em mundos não permitidos, está vendendo/comprando itens não permitidos ou &c&lEXISTE EM UM MUNDO DESCARREGADO. Certifique-se de criar um backup completo dos dados da loja primeiro e usar a limpeza &b/qs cleanghost confirm &epara continuar.",
   "shop-creation-failed": "A criação da &cShop falhou, por favor, contate o administrador do servidor.",
   "shop-owner-self-trade": "&eVocê pode fazer trading consigo mesmo para não ganhar nenhum saldo.",
   "chest-title": "Loja QuickShop",
@@ -345,25 +345,21 @@
   "unlimited-shop-owner-keeped": "&eAtenção: O proprietário da loja ainda possui um proprietário ilimitado de loja, você precisa redefinir o dono da nova loja por conta própria.",
   "server-crash-warning": "&cO servidor pode falhar após executar o comando /qs reload se você substituir/delete o arquivo Jar do plugin QuickShop enquanto o servidor é executado.",
   "reloading-status": {
-    "success": "&aReload completed without any errors.",
-    "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
-    "failed": "&cReload failed, check the server console",
-    "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
+    "success": "&aRecarregar concluído sem quaisquer erros.",
+    "require-restart": "&aRecarregamento completo. &e(As mudanças requerem reinicialização do servidor para afetar)",
+    "failed": "&cRecarregar falhou, verifique o console do servidor",
+    "scheduled": "&aRecarregar completo. &7(Somente alterações necessárias um tempo para afetar)"
   },
   "client-language-changed": "&aO plugin detectou sua linguagem, agora estamos usando a linguagem {0} com você.",
   "client-language-unsupported": "&eO plugin não suporta sua linguagem, voltamos a usar a linguagem {0} com você.",
   "taxaccount-set": "&aA taxa da loja foi setada para &e{0}",
   "taxaccount-unset": "&aA taxa dessa loja agora está seguindo a taxa global.",
-  "taxaccount-invalid": "&cTarget account not invalid, please enter a valid player name or uuid(with dashes).",
+  "taxaccount-invalid": "&cA conta não é inválida, por favor insira um nome de jogador ou uuid(com traços).",
   "display-turn-on": "&aVocê ativou o display de item.",
   "display-turn-off": "&aVocê desativou o display de item.",
-  "shop-purged-start": "&aShop purge started, check the console for details.",
+  "shop-purged-start": "&aLimpeza de Lojas iniciada, verifique o console para mais detalhes.",
   "purchase-out-of-stock": "&cEssa loja está sem itens no estoque, Chame o dono ou alguém da equipe caso for lojas de admin para re-estocar.",
   "purchase-out-of-space": "&cEssa loja está cheia, Chame o dono ou alguém da equipe caso for loja de admin para limpar.",
-  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors.",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
-  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
-  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
+  "safe-mode": "&cQuickShop agora está em modo seguro, você não pode abrir esta loja, por favor entre em contato com o administrador do servidor para corrigir os erros.",
+  "safe-mode-admin": "&c&lAVISO: &cO QuickShop neste servidor agora rodando em modo seguro, nenhum recurso funcionará, por favor digite o comando &e/qs &c para verificar quaisquer erros."
 }

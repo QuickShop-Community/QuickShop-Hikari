@@ -2,7 +2,7 @@
   "_comment": "Hej översättare! Om du redigerar detta från Github eller från kodkällor, besök https://crowdin.com/project/quickshop-reremake",
   "file-test": "Detta är en testtextfil. Vi använder den för att testa om messages.json är trasig. Du kan fylla den med valfria påskägg som du gillar här :)",
   "translation-author": "Översättare: Ghost_chu, Andre_601",
-  "translation-version": "Support Version: Hikari",
+  "translation-version": "Supportversion: Reremake",
   "translation-contributors": "Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken och Andre_601",
   "translation-country": "Språkområde: Svenska (sv_SE)",
   "language-version": "63",
@@ -17,6 +17,7 @@
   "no-creative-break": "&cDu kan inte förstöra andra spelarbutiker i kreativt läge, byt till överlevnadsläge eller försök använda superverktyget {0} istället.",
   "trading-in-creative-mode-is-disabled": "&cDu kan inte handla med den här butiken när du är i kreativt läge.",
   "supertool-is-disabled": "&cSuperredskapet är inaktiverat. Du kan inte förstöra någon butik.",
+  "disabled-in-this-world": "&cQuickShop is disabled in this world",
   "no-double-chests": "&cDu kan inte skapa den dubbla kistbutiken.",
   "not-managed-shop": "&cDu är inte ägare eller moderator av denna butik",
   "shop-already-owned": "&cDet här är redan en butik.",
@@ -213,7 +214,6 @@
     "alwayscounting": "&aRäknar alltid: {0} &e[&d&lÄndra&e]",
     "alwayscounting-hover": "&eKlicka för att växla om butiken alltid räknar behållarens utrymme.",
     "setowner": "&aÄgare: &b{0} &e[&d&lÄndra&e]",
-    "setowner-uuid": "&aÄgare: &b{0} &c(&b{1}&c) &e[&d&lÄndra&e]",
     "infomation": "&aButiksadministration:",
     "setowner-hover": "&eKlicka för att byta ägare.",
     "unlimited": "&aObegränsad: {0} &e[&d&lÄndra&e]",
@@ -361,9 +361,5 @@
   "purchase-out-of-stock": "&cDenna butik har slut på lagret, Kontakta butiksägare eller personal för att fylla på lagret.",
   "purchase-out-of-space": "&cDenna butik har slut på tillgängligt utrymme, Kontakta butiksägare eller personal för att tömma butiken.",
   "safe-mode": "&cQuickShop är nu i säkert läge, du kan inte öppna den här butiksbehållaren, kontakta serveradministratören för att åtgärda felen.",
-  "safe-mode-admin": "&c&lVARNING: &cQuickShop på denna server som körs nu under safe-mode, inga funktioner kommer att fungera, skriv &e/qs &c kommandot för att kontrollera eventuella fel.",
-  "internal-error": "&cEtt internt fel har inträffat, detaljerna har loggats in i konsolen. Försök igen och kontakta serveradministratören om det fortfarande finns.",
-  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari med QuickShop-Reremake installerat kan strida mot varandra, avinstallera en av dem.",
-  "plugin-cancelled": "&cOperationen avbruten, Orsak: {0}"
+  "safe-mode-admin": "&c&lVARNING: &cQuickShop på denna server som körs nu under safe-mode, inga funktioner kommer att fungera, skriv &e/qs &c kommandot för att kontrollera eventuella fel."
 }

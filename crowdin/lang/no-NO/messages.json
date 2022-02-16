@@ -2,7 +2,7 @@
   "_comment": "Hei oversetter! Hvis du redigerer dette fra Github eller fra kildekoder, bør du gå til https://crowdin.com/project/quickshop-reremake",
   "file-test": "Dette er en test tekstfil. Vi bruker den til å teste om messages.json er ødelagt. Her kan du skrive hva som helst uten at det påvirker noe :)",
   "translation-author": "Oversetter: Baktus_79",
-  "translation-version": "Støttet versjon: Hikari",
+  "translation-version": "Støttet versjon: Reremake",
   "translation-contributors": "Bidragsytere: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Språksone: Norsk (no_NO)",
   "language-version": "63",
@@ -17,6 +17,7 @@
   "no-creative-break": "&cDu kan ikke ødelegge andre spillere sine butikker i kreativ modus. Bytt til overlevelsesmodus eller prøv å bruke superverktøyet {0} i stedet.",
   "trading-in-creative-mode-is-disabled": "&cDu kan ikke handle med denne butikken mens du er i kreativ modus.",
   "supertool-is-disabled": "&cSuperverktøyet er deaktivert. Kan ikke ødelegge butikker.",
+  "disabled-in-this-world": "&cQuickShop er deaktivert i denne verdenen",
   "no-double-chests": "&cDu kan ikke opprette en butikk med dobbelkiste.",
   "not-managed-shop": "&cDu er ikke eieren eller moderator for denne butikken",
   "shop-already-owned": "&cDette er allerede en butikk.",
@@ -118,7 +119,7 @@
   "blacklisted-item": "&cDu kan ikke selge denne gjenstanden fordi den er på svartelisten",
   "how-much-to-trade-for": "&aSkriv i chat hvor mye du ønsker å selge &e{1}x {0}&a for.",
   "command": {
-    "format": "&a/{0} {1} &e- {2}",
+    "format": "&a/{0} {1} &- {2}",
     "format-disabled": "&a/{0} {1} &- {2}",
     "toggle-unlimited": {
       "unlimited": "&aButikken er nå ubegrenset",
@@ -213,7 +214,6 @@
     "alwayscounting": "&aTeller alltid: {0} &e[&d&lEndre&e]",
     "alwayscounting-hover": "&eKlikk for å veksle om butikken skal alltid telle beholderen.",
     "setowner": "&aEier: &b{0} &e[&d&lEndre&e]",
-    "setowner-uuid": "&aEier: &b{0} &c(&b{1}&c) &e[&d&lEndre&e]",
     "infomation": "&aButikkens kontrollpanel:",
     "setowner-hover": "&eKlikk for å bytte eier.",
     "unlimited": "&aUbegrenset: {0} &e[&d&lEndre&e]",
@@ -361,9 +361,5 @@
   "purchase-out-of-stock": "&cDenne butikken er tom på lager, kontakt butikkeier eller ansatte for å fylle på lageret.",
   "purchase-out-of-space": "&cDenne butikken er tom for plass, kontakt butikkeier eller ansatte for å tømme butikken.",
   "safe-mode": "&cQuickShop er nå i sikkerhetsmodus, du kan derfor ikke åpne denne butikkbeholderen. Ta kontakt med serveradministrator for å fikse feilene.",
-  "safe-mode-admin": "&c&lADVARSEL: &cQuickShop på denne serveren kjører nå i sikkerhetsmodus, ingen funksjoner vil fungere. Vennligst skriv inn &e/qs &ckommando for å sjekke eventuelle feil.",
-  "internal-error": "&cDet har oppstått en intern feil, detaljene er logget i konsollen. Vennligst prøv igjen eller kontakt serveradministratoren hvis det fortsatt eksisterer.",
-  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari og QuickShop-Reremake er installert. Disse kan komme i konflikt med hverandre, avinstaller en av dem.",
-  "plugin-cancelled": "&cOperasjon avbrutt, Årsak: {0}"
+  "safe-mode-admin": "&c&lADVARSEL: &cQuickShop på denne serveren kjører nå i sikkerhetsmodus, ingen funksjoner vil fungere. Vennligst skriv inn &e/qs &ckommando for å sjekke eventuelle feil."
 }

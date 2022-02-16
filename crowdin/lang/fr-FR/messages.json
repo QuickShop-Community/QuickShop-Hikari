@@ -2,11 +2,11 @@
   "_comment": "Bonjour traducteur! Si vous éditez ceci à partir de Github ou à partir de sources de code, vous devriez aller sur https://crowdin.com/project/quickshop-reremake",
   "file-test": "Ceci est un fichier texte de test. Nous l'utilisons pour tester si les messages sont cassé. Vous pouvez le remplir avec n'importe quel \"easter eggs\" que vous aimez ici :)",
   "translation-author": "&cYou only have room for {0} more",
-  "translation-version": "Support Version: Hikari",
+  "translation-version": "Version suportée: Reremake",
   "translation-contributors": "Contributeurs : Timtower, Netherfoam, KaiNoMood, Mgazul, JackThePicken, Andre_601 et brunopaiva15, HiiRaZ",
   "translation-country": "Langue: Français (fr_FR)",
   "language-version": "63",
-  "not-looking-at-valid-shop-block": "&cCould not find a block for creating shop. You need to look at one.",
+  "not-looking-at-valid-shop-block": "&cImpossible de trouver un bloc pour créer une boutique. Vous devez en regarder un.",
   "not-looking-at-shop": "&cImpossible de trouver un QuickShop. Vous devez en regarder un.",
   "no-anythings-in-your-hand": "&cVous n'avez aucun objet dans votre main.",
   "no-permission": "&cVous n'avez pas la permission de faire ceci.",
@@ -17,6 +17,7 @@
   "no-creative-break": "&cVous ne pouvez pas détruire les boutiques des autres joueurs en mode créatif, basculez en mode survie ou essayez d'utiliser le super-outil {0} à la place.",
   "trading-in-creative-mode-is-disabled": "&cVous ne pouvez pas utiliser une boutique en mode créatif.",
   "supertool-is-disabled": "&cLe super-outil est désactivé, impossible de détruire une boutique avec.",
+  "disabled-in-this-world": "&cQuickShop is disabled in this world",
   "no-double-chests": "&cVous ne pouvez pas créer de boutique avec un double coffre.",
   "not-managed-shop": "&cVous n'êtes pas le propriétaire ou le modérateur de cette boutique",
   "shop-already-owned": "&cCeci est déjà une boutique.",
@@ -118,7 +119,7 @@
   "blacklisted-item": "&cVous ne pouvez pas vendre cet objet car il se trouve sur la liste noire",
   "how-much-to-trade-for": "&aEntrez dans le chat, combien vous souhaitez échanger &e{1}x {0}&a.",
   "command": {
-    "format": "&a{0} {1} &e- {2}",
+    "format": "&a/{0} {1} &e- {2}",
     "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&aCe shop est désormais illimité",
@@ -213,7 +214,6 @@
     "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
     "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aPropriétaire: &b{0} &e[&dChanger&e]",
-    "setowner-uuid": "&aOwner: &b{0} &c(&b{1}&c) &e[&d&lChange&e]",
     "infomation": "&aPanneau de contrôle de la boutique :",
     "setowner-hover": "&eCliquez pour changer le propriétaire.",
     "unlimited": "&aIllimité: {0} &e[&d&lChanger&e]",
@@ -361,9 +361,5 @@
   "purchase-out-of-stock": "&cCette boutique est en rupture de stock, contactez le propriétaire ou le personnel de la boutique pour recharger le stock.",
   "purchase-out-of-space": "&cCette boutique est à court d'espace, contactez le propriétaire ou le personnel de la boutique pour vider la boutique.",
   "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors.",
-  "internal-error": "&cAn internal error has occurred, the details has been logged in Console. Please try again and contact the server administrator if still exists.",
-  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
-  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
-  "plugin-cancelled": "&cOperation cancelled, Reason: {0}"
+  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors."
 }
