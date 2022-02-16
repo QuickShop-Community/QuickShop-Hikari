@@ -957,16 +957,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
         }
 
-        //Check if server software support comment saving
-        if (Util.isMethodAvailable("org.bukkit.configuration.MemoryConfiguration", "getInlineComments", String.class)) {
-            //If so, clean the comment
-            ConfigurationSection configurationSection = getConfig();
-            List<String> emptyList = Collections.emptyList();
-            for (String key : configurationSection.getKeys(true)) {
-                configurationSection.setComments(key, emptyList);
-                configurationSection.setInlineComments(key, emptyList);
-            }
-        }
+//        //Check if server software support comment saving
+//        if (Util.isMethodAvailable("org.bukkit.configuration.MemoryConfiguration", "getInlineComments", String.class)) {
+//            //If so, clean the comment
+//            ConfigurationSection configurationSection = getConfig();
+//            List<String> emptyList = Collections.emptyList();
+//            for (String key : configurationSection.getKeys(true)) {
+//                configurationSection.setComments(key, emptyList);
+//                configurationSection.setInlineComments(key, emptyList);
+//            }
+//        }
         saveConfig();
         reloadConfig();
 
