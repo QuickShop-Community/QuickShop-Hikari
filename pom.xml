@@ -130,8 +130,8 @@
                                 <goal>shade</goal>
                             </goals>
                             <configuration>
-                                <finalName>${name}</finalName>
-                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>
+                                <finalName>${name}-v${revision}</finalName>
+<!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
                                 <createDependencyReducedPom>false</createDependencyReducedPom>
                                 <minimizeJar>true</minimizeJar>
                                 <createSourcesJar>false</createSourcesJar>
@@ -205,7 +205,7 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>3.3.1</version>
                     <configuration>
-                        <outputDirectory>${rootDir}/build-artifacts/javadoc</outputDirectory>
+<!--                        <outputDirectory>${rootDir}/build-artifacts/javadoc</outputDirectory>-->
                         <encoding>UTF-8</encoding>
                         <excludePackageNames>com.ghostchu.quickshop.nonquickshopstuff.*</excludePackageNames>
                         <!--<aggregate>true</aggregate>
@@ -243,13 +243,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
-                    <configuration>
-                        <filesets>
-                            <fileset>
-                                <directory>${rootDir}/build-artifacts</directory>
-                            </fileset>
-                        </filesets>
-                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
