@@ -244,10 +244,10 @@
     "toggledisplay-hover": "&fPřepne obchodu status ukazovaného předmětu"
   },
   "tableformat": {
-    "full_line": "&r",
-    "left_half_line": "&r",
-    "right_half_line": "&r",
-    "left_begin": "&8| &7» "
+    "full_line": "&5+---------------------------------------------------+",
+    "left_half_line": "&5+--------------------",
+    "right_half_line": "&5--------------------+",
+    "left_begin": "&5| "
   },
   "booleanformat": {
     "success": "&a✔",
