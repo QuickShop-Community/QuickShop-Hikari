@@ -2,7 +2,7 @@
   "_comment": "Hallo Übersetzer! Wenn du dies auf GitHub oder im Quellcode bearbeitest, solltest du zu https:/crowdin.com/projects/quickshop-reremake wechseln",
   "file-test": "Dies ist eine Text Testdatei. Wir verwenden sie um zu testen ob die messages.json kaputt ist. Du kannst sie mit jedem Easter Egg füllen wie du willst :)",
   "translation-author": "Übersetzer: Ghost_chu, Andre_601",
-  "translation-version": "Unterstützte Version: Hikari",
+  "translation-version": "Unterstütze Version: Reremake",
   "translation-contributors": "Mitwirkende: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken und Andre_601",
   "translation-country": "Sprache: Deutsch (de_DE)",
   "language-version": "63",
@@ -17,6 +17,7 @@
   "no-creative-break": "&cDu kannst Shops anderere Spieler nicht im Kreativmodus zerstören. Wechsle zum Überlebensmodus oder verwende das Supertool {0}.",
   "trading-in-creative-mode-is-disabled": "&cDu kannst mit dem Shop nicht handeln während du im Kreativmodus bist.",
   "supertool-is-disabled": "&cSupertool ist deaktiviert. Kann keine Shops zersören.",
+  "disabled-in-this-world": "&cQuickShop ist in dieser Welt deaktiviert",
   "no-double-chests": "&cDu kannst keinen Doppeltruhen-Shop erstellen.",
   "not-managed-shop": "&cDu bist nicht der Besitzer oder ein Moderator dieses Shops",
   "shop-already-owned": "&cDies ist bereits ein Shop.",
@@ -213,7 +214,6 @@
     "alwayscounting": "&aImmer zählen: {0} &e[&d&lÄndern&e]",
     "alwayscounting-hover": "&eKlicke um zu ändern, ob der Shop immer Zählen soll.",
     "setowner": "&aBesitzer: &b{0} &e[&d&lÄndern&e]",
-    "setowner-uuid": "&aBesitzer: &b{0} &c(&b{1}&c) &e[&d&lÄndern&e]",
     "infomation": "&aShop Kontrollpanel:",
     "setowner-hover": "&eKlicke hier um den Besitzer zu wechseln.",
     "unlimited": "&aUnlimitiert: {0} &e[&d&lÄndern&e]",
@@ -293,7 +293,13 @@
       "github": "[GitHub]",
       "spigotmc": "[SpigotMC]",
       "bukkitdev": "[BukkitDev]",
-      "master": "[Master]"
+      "master": "[Master]",
+      "polymart": "[Polymart]",
+      "ore": "[Ore]",
+      "papermc": "[PaperMC]",
+      "nbtapi": "[+NBTAPI]",
+      "paper": "[+Paper Optimized]",
+      "basic": "[Basic]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&cDein Shop bei den Koordinaten {0} wurde entfernt, da du nicht genug Geld hattest um ihn zu behalten!",
@@ -362,8 +368,18 @@
   "purchase-out-of-space": "&cDieser Shop hat keinen Platz mehr. Kontaktiere den Shopeigentümer oder Shop-Mitarbeiter damit er geleert wird.",
   "safe-mode": "&cQuickShop ist nun im sicheren Modus, du kannst diesen Shop-Container nicht öffnen. Bitte kontaktiere den Server Administrator um diesen Fehler zu beheben.",
   "safe-mode-admin": "&c&lWARNUNG: &cQuickShop ist nun im sicheren Modus auf diesem Server und keiner seiner funktionen wird funktionieren. Bitte schreib den &e/qs &cBefehl um nach Fehlern zu schauen.",
-  "internal-error": "&cEin interner Fehler ist aufgetreten. Die details wurden in der Konsole vermerkt. Bitte versuch es erneut und kontaktiere den Server-Administrator wenn dieser Fehler bestehen bleibt.",
   "bungee-cross-server-msg": "QuickShop CSM: &a{0}",
   "edition-confilct": "QuicShop-Hikari mit QuickShop-Reremake installiert können gegenseitige Konflikte auslösen. Deinstalliere eines davon.",
-  "plugin-cancelled": "&cVorgang abgebrochen, Grund: {0}"
+  "plugin-cancelled": "&cVorgang abgebrochen, Grund: {0}",
+  "paste-disabled": "&cPaste functionality has been disabled! You cannot request technical support. \nReason: {0}",
+  "support-disable-reason": {
+    "privacy": "&eThis server running under cracked (offline) mode. If you are running bukkit server under proxy and online-mode=true on proxy, please configure the proxy related settings correctly.",
+    "authlib-injector-detected": "&eThis server running under 3rd-party authlib provider like authlib-injector.",
+    "bad-hosts": "&eThis server HOSTS has been modified and QuickShop some functions require connect to Mojang API correctly. Fix the HOSTS before asking support, Windows at C:\\windows\\system32\\drivers\\etc\\hosts, Linux at /etc/hosts.",
+    "hot-reload": "&eUnsupported hot reloaded, restart the server and check again.",
+    "outdated": "&eThis version of QuickShop already outdated, up-to-date before requesting support!",
+    "modified": "&eFile integrity check failed, this QuickShop build has been modified by others.",
+    "unsupported-server-software": "&eUnsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.",
+    "consolespamfix-installed": "&eConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support."
+  }
 }
