@@ -363,7 +363,7 @@
   "safe-mode": "&cQuickShop ist nun im sicheren Modus, du kannst diesen Shop-Container nicht öffnen. Bitte kontaktiere den Server Administrator um diesen Fehler zu beheben.",
   "safe-mode-admin": "&c&lWARNUNG: &cQuickShop ist nun im sicheren Modus auf diesem Server und keiner seiner funktionen wird funktionieren. Bitte schreib den &e/qs &cBefehl um nach Fehlern zu schauen.",
   "internal-error": "&cEin interner Fehler ist aufgetreten. Die details wurden in der Konsole vermerkt. Bitte versuch es erneut und kontaktiere den Server-Administrator wenn dieser Fehler bestehen bleibt.",
-  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
+  "bungee-cross-server-msg": "QuickShop CSM: &a{0}",
   "edition-confilct": "QuicShop-Hikari mit QuickShop-Reremake installiert können gegenseitige Konflikte auslösen. Deinstalliere eines davon.",
   "plugin-cancelled": "&cVorgang abgebrochen, Grund: {0}"
 }
