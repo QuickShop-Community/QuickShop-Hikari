@@ -298,8 +298,8 @@
       "ore": "[Ore]",
       "papermc": "[PaperMC]",
       "nbtapi": "[+NBTAPI]",
-      "paper": "[+Paper Optimized]",
-      "basic": "[Basic]"
+      "paper": "[+Paper Optimiert]",
+      "basic": "[Grundlegendes]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&cDein Shop bei den Koordinaten {0} wurde entfernt, da du nicht genug Geld hattest um ihn zu behalten!",
@@ -371,9 +371,9 @@
   "bungee-cross-server-msg": "QuickShop CSM: &a{0}",
   "edition-confilct": "QuicShop-Hikari mit QuickShop-Reremake installiert können gegenseitige Konflikte auslösen. Deinstalliere eines davon.",
   "plugin-cancelled": "&cVorgang abgebrochen, Grund: {0}",
-  "paste-disabled": "&cPaste functionality has been disabled! You cannot request technical support. \nReason: {0}",
+  "paste-disabled": "&cPaste Funktion wurde deaktiviert! Du kannst keinen technischen Support anfordern.\nGrund: {0}",
   "support-disable-reason": {
-    "privacy": "&eThis server running under cracked (offline) mode. If you are running bukkit server under proxy and online-mode=true on proxy, please configure the proxy related settings correctly.",
+    "privacy": "&eDer Server läuft im Cracked (Offline) Modus. Wenn du einen Bukkit Server unter einer Proxy betreibst und online-mode=true im Proxy aktiv ist, konfiguriere bitte die Proxy-bezogenen Einstellungen korrekt.",
     "authlib-injector-detected": "&eThis server running under 3rd-party authlib provider like authlib-injector.",
     "bad-hosts": "&eThis server HOSTS has been modified and QuickShop some functions require connect to Mojang API correctly. Fix the HOSTS before asking support, Windows at C:\\windows\\system32\\drivers\\etc\\hosts, Linux at /etc/hosts.",
     "hot-reload": "&eUnsupported hot reloaded, restart the server and check again.",
