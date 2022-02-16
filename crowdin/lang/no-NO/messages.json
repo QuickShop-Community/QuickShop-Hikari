@@ -2,7 +2,7 @@
   "_comment": "Hei oversetter! Hvis du redigerer dette fra Github eller fra kildekoder, bør du gå til https://crowdin.com/project/quickshop-reremake",
   "file-test": "Dette er en test tekstfil. Vi bruker den til å teste om messages.json er ødelagt. Her kan du skrive hva som helst uten at det påvirker noe :)",
   "translation-author": "Oversetter: Baktus_79",
-  "translation-version": "Støttet versjon: Hikari",
+  "translation-version": "Støttet versjon: Reremake",
   "translation-contributors": "Bidragsytere: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "Språksone: Norsk (no_NO)",
   "language-version": "63",
@@ -17,6 +17,7 @@
   "no-creative-break": "&cDu kan ikke ødelegge andre spillere sine butikker i kreativ modus. Bytt til overlevelsesmodus eller prøv å bruke superverktøyet {0} i stedet.",
   "trading-in-creative-mode-is-disabled": "&cDu kan ikke handle med denne butikken mens du er i kreativ modus.",
   "supertool-is-disabled": "&cSuperverktøyet er deaktivert. Kan ikke ødelegge butikker.",
+  "disabled-in-this-world": "&cQuickShop er deaktivert i denne verdenen",
   "no-double-chests": "&cDu kan ikke opprette en butikk med dobbelkiste.",
   "not-managed-shop": "&cDu er ikke eieren eller moderator for denne butikken",
   "shop-already-owned": "&cDette er allerede en butikk.",
@@ -213,7 +214,6 @@
     "alwayscounting": "&aTeller alltid: {0} &e[&d&lEndre&e]",
     "alwayscounting-hover": "&eKlikk for å veksle om butikken skal alltid telle beholderen.",
     "setowner": "&aEier: &b{0} &e[&d&lEndre&e]",
-    "setowner-uuid": "&aEier: &b{0} &c(&b{1}&c) &e[&d&lEndre&e]",
     "infomation": "&aButikkens kontrollpanel:",
     "setowner-hover": "&eKlikk for å bytte eier.",
     "unlimited": "&aUbegrenset: {0} &e[&d&lEndre&e]",
@@ -293,7 +293,13 @@
       "github": "[GitHub]",
       "spigotmc": "[SpigotMC]",
       "bukkitdev": "[BukkitDev]",
-      "master": "[Master]"
+      "master": "[Master]",
+      "polymart": "[Polymart]",
+      "ore": "[Ore]",
+      "papermc": "[PaperMC]",
+      "nbtapi": "[+NBTAPI]",
+      "paper": "[+Paper Optimized]",
+      "basic": "[Basic]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&cButikken din på lokasjon {0} ble fjernet fordi du ikke har nok penger til å beholde den!",
@@ -362,8 +368,18 @@
   "purchase-out-of-space": "&cDenne butikken er tom for plass, kontakt butikkeier eller ansatte for å tømme butikken.",
   "safe-mode": "&cQuickShop er nå i sikkerhetsmodus, du kan derfor ikke åpne denne butikkbeholderen. Ta kontakt med serveradministrator for å fikse feilene.",
   "safe-mode-admin": "&c&lADVARSEL: &cQuickShop på denne serveren kjører nå i sikkerhetsmodus, ingen funksjoner vil fungere. Vennligst skriv inn &e/qs &ckommando for å sjekke eventuelle feil.",
-  "internal-error": "&cDet har oppstått en intern feil, detaljene er logget i konsollen. Vennligst prøv igjen eller kontakt serveradministratoren hvis det fortsatt eksisterer.",
   "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
   "edition-confilct": "QuicShop-Hikari og QuickShop-Reremake er installert. Disse kan komme i konflikt med hverandre, avinstaller en av dem.",
-  "plugin-cancelled": "&cOperasjon avbrutt, Årsak: {0}"
+  "plugin-cancelled": "&cOperasjon avbrutt, Årsak: {0}",
+  "paste-disabled": "&cPaste functionality has been disabled! You cannot request technical support. \nReason: {0}",
+  "support-disable-reason": {
+    "privacy": "&eThis server running under cracked (offline) mode. If you are running bukkit server under proxy and online-mode=true on proxy, please configure the proxy related settings correctly.",
+    "authlib-injector-detected": "&eThis server running under 3rd-party authlib provider like authlib-injector.",
+    "bad-hosts": "&eThis server HOSTS has been modified and QuickShop some functions require connect to Mojang API correctly. Fix the HOSTS before asking support, Windows at C:\\windows\\system32\\drivers\\etc\\hosts, Linux at /etc/hosts.",
+    "hot-reload": "&eUnsupported hot reloaded, restart the server and check again.",
+    "outdated": "&eThis version of QuickShop already outdated, up-to-date before requesting support!",
+    "modified": "&eFile integrity check failed, this QuickShop build has been modified by others.",
+    "unsupported-server-software": "&eUnsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.",
+    "consolespamfix-installed": "&eConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support."
+  }
 }
