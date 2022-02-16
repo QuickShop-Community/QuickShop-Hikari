@@ -26,12 +26,13 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>${revision}</version>
+        <version>1.0-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <artifactId>quickshop-platform-paper</artifactId>
     <packaging>jar</packaging>
+
     <name>quickshop-platform-paper</name>
 
     <build>
