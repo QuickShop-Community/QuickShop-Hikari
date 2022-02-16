@@ -50,6 +50,8 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
             boolean deleteFailed = false;
             if (!log.exists()) {
                 //noinspection ResultOfMethodCallIgnored
+                log.getParentFile().mkdirs();
+                //noinspection ResultOfMethodCallIgnored
                 log.createNewFile();
             } else {
                 if ((log.length() / 1024f / 1024f) > plugin.getConfig().getDouble("logging.file-size")) {
