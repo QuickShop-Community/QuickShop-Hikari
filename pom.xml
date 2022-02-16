@@ -285,5 +285,6 @@
         <module>compatibility/worldguard</module>
         <module>compatibility/worldedit</module>
         <module>compatibility/openinv</module>
+        <module>compatibility/advancedregionmarket</module>
     </modules>
 </project>
