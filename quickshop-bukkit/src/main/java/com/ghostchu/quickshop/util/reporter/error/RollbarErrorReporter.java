@@ -19,23 +19,25 @@
 
 package com.ghostchu.quickshop.util.reporter.error;
 
-import com.google.common.collect.Lists;
-import com.rollbar.notifier.Rollbar;
-import com.rollbar.notifier.config.Config;
-import com.rollbar.notifier.config.ConfigBuilder;
-import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.InvalidPluginException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.GameVersion;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.paste.Paste;
+import com.google.common.collect.Lists;
+import com.rollbar.notifier.Rollbar;
+import com.rollbar.notifier.config.Config;
+import com.rollbar.notifier.config.ConfigBuilder;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import org.bukkit.plugin.InvalidPluginException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.util.*;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -59,6 +61,9 @@ public class RollbarErrorReporter {
     //private final GlobalExceptionFilter globalExceptionFilter;
     @Getter
     private volatile boolean enabled;
+    private final Thread asyncErrorReportThread;
+    private final Queue<ErrorBundle> reportQueue = new LinkedBlockingQueue<>();
+    private final Object reportLock = new Object();
 
 
     public RollbarErrorReporter(@NotNull QuickShop plugin) {
@@ -79,6 +84,31 @@ public class RollbarErrorReporter {
 
         Util.debugLog("Rollbar error reporter success loaded.");
         enabled = true;
+
+        asyncErrorReportThread = new Thread() {
+            @Override
+            public void run() {
+                synchronized (reportLock) {
+                    //noinspection InfiniteLoopStatement
+                    while (true) {
+                        try {
+                            reportLock.wait();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        ErrorBundle errorBundle = reportQueue.poll();
+                        if (errorBundle == null)
+                            continue;
+                        Util.debugLog("Sending error: " + errorBundle.getThrowable().getMessage()
+                                + " with context: " + Util.array2String(errorBundle.getContext()));
+                        sendError0(errorBundle.getThrowable(), errorBundle.getContext());
+                    }
+                }
+            }
+        };
+        asyncErrorReportThread.setDaemon(true);
+        asyncErrorReportThread.start();
+
     }
 
     public void unregister() {
@@ -175,12 +205,18 @@ public class RollbarErrorReporter {
      * @param context   BreadCrumb
      */
     public void sendError(@NotNull Throwable throwable, @NotNull String... context) {
-        if (Bukkit.isPrimaryThread()) {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> sendError0(throwable, context));
-            //ignore async response
-        } else {
-            sendError0(throwable, context);
+        this.reportQueue.add(new ErrorBundle(throwable, context));
+        synchronized (reportLock) {
+            reportLock.notifyAll();
         }
+        Util.debugLog("Wake up asyncErrorReportThread to sending errors...");
+    }
+
+    @AllArgsConstructor
+    @Data
+    static class ErrorBundle {
+        private final Throwable throwable;
+        private final String[] context;
     }
 
     /**

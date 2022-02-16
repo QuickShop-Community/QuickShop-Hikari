@@ -67,14 +67,7 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
                 config.delete();
                 plugin.saveDefaultConfig();
                 plugin.reloadConfig();
-                plugin.getServer().getPluginManager().disablePlugin(plugin);
-                plugin.getServer().getPluginManager().enablePlugin(plugin);
-                plugin.text().of(sender, "complete").send();
-            }
-            case "messages" -> {
-                File msgs = new File(plugin.getDataFolder(), "messages.json");
-                msgs.delete();
-                MsgUtil.loadI18nFile();
+                plugin.getReloadManager().reload();
                 plugin.text().of(sender, "complete").send();
             }
             default -> plugin.text().of(sender, "command.wrong-args").send();
