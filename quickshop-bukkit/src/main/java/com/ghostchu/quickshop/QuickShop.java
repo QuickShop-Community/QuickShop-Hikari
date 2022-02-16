@@ -51,7 +51,6 @@ import com.ghostchu.quickshop.shop.*;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.util.Timer;
 import com.ghostchu.quickshop.util.*;
-import com.ghostchu.quickshop.util.config.ConfigProvider;
 import com.ghostchu.quickshop.util.config.ConfigurationFixer;
 import com.ghostchu.quickshop.util.envcheck.*;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
@@ -69,7 +68,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -111,10 +109,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private static final boolean testing = false;
     private final Map<String, Integer> limits = new HashMap<>(15);
-    /**
-     * The shop limites.
-     */
-    private final ConfigProvider configProvider = new ConfigProvider(this, new File(getDataFolder(), "config.yml"));
     private final List<BukkitTask> timerTaskList = new ArrayList<>(3);
     @Getter
     private final ReloadManager reloadManager = new ReloadManager();
@@ -434,23 +428,23 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         return true;
     }
 
-    @Override
-    public @NotNull FileConfiguration getConfig() throws UnsupportedOperationException {
-        return configProvider.get();
-    }
-
-    @Override
-    public void saveConfig() {
-        configProvider.save();
-    }
-
+//    @Override
+//    public @NotNull FileConfiguration getConfig() throws UnsupportedOperationException {
+//        return configProvider.get();
+//    }
+//
+//    @Override
+//    public void saveConfig() {
+//        configProvider.save();
+//    }
+//
 
     /**
      * Reloads QuickShops config
      */
     @Override
     public void reloadConfig() {
-        configProvider.reload();
+        super.reloadConfig();
         // Load quick variables
         this.display = this.getConfig().getBoolean("shop.display-items");
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");
