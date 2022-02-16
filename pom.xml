@@ -24,10 +24,11 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
 
     <properties>
+        <revision>1.0.0.0</revision>
         <java.version>16</java.version>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -129,13 +130,12 @@
                                 <goal>shade</goal>
                             </goals>
                             <configuration>
-                                <finalName>${name}</finalName>
+                                <finalName>${name}-v${version}</finalName>
                                 <outputDirectory>${rootDir}/build-artifacts</outputDirectory>
-                                <createDependencyReducedPom>false</createDependencyReducedPom>
+                                <createDependencyReducedPom>true</createDependencyReducedPom>
                                 <minimizeJar>true</minimizeJar>
-                                <createDependencyReducedPom>false</createDependencyReducedPom>
-                                <createSourcesJar>false</createSourcesJar>
-                                <createTestSourcesJar>false</createTestSourcesJar>
+                                <createSourcesJar>true</createSourcesJar>
+                                <createTestSourcesJar>true</createTestSourcesJar>
                                 <relocations>
                                     <relocation>
                                         <pattern>com.dumptruckman.bukkit.configuration.</pattern>
@@ -205,6 +205,7 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>3.3.1</version>
                     <configuration>
+                        <outputDirectory>${rootDir}/build-artifacts/javadoc</outputDirectory>
                         <encoding>UTF-8</encoding>
                         <excludePackageNames>com.ghostchu.quickshop.nonquickshopstuff.*</excludePackageNames>
                         <!--<aggregate>true</aggregate>
@@ -223,6 +224,32 @@
                             </configuration>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                    <version>1.2.7</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>flatten</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <!-- See usage on maven site from link above for details -->
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <configuration>
+                        <filesets>
+                            <fileset>
+                                <directory>${rootDir}/build-artifacts</directory>
+                            </fileset>
+                        </filesets>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
