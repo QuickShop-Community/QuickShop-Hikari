@@ -132,6 +132,13 @@ if(plugin != null){
             <version>PUT_VERSION_HERE</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Add provided quickshop-platform-interface module or you may get an error about cannot access to -->
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-platform-interface</artifactId>
+            <version>PUT_VERSION_HERE</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- Add provided SimpleReloadLib module or you may get an error about cannot access to -->
         <dependency>
             <groupId>com.ghostchu</groupId>
@@ -144,13 +151,6 @@ if(plugin != null){
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
             <version>4.0.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Add provided quickshop-platform-interface module or you may get an error about cannot access to -->
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-interface</artifactId>
-            <version>PUT_VERSION_HERE</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
