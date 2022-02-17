@@ -20,12 +20,12 @@
 package com.ghostchu.quickshop.compatibility.towny;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
-import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
+import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.util.Util;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.event.PlotClearEvent;
@@ -42,14 +42,13 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public final class Towny extends JavaPlugin implements Listener {
+public final class Towny extends CompatibilityModule implements Listener {
     private QuickShopAPI api;
     private List<TownyFlags> createFlags;
     private List<TownyFlags> tradeFlags;
@@ -60,27 +59,7 @@ public final class Towny extends JavaPlugin implements Listener {
     private boolean whiteList;
 
     @Override
-    public void onLoad() {
-
-    }
-
-    @Override
-    public void onEnable() {
-        // Plugin startup logic
-        saveDefaultConfig();
-        this.api = (QuickShopAPI)Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
-        init();
-        Bukkit.getPluginManager().registerEvents(this,this);
-        getLogger().info("QuickShop Compatibility Module - Towny loaded");
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
-
-    private void init() {
-        reloadConfig();
+    public void init() {
         createFlags = TownyFlags.deserialize(getConfig().getStringList("create"));
         tradeFlags = TownyFlags.deserialize(getConfig().getStringList("trade"));
         ignoreDisabledWorlds =getConfig().getBoolean("ignore-disabled-worlds");
@@ -89,12 +68,6 @@ public final class Towny extends JavaPlugin implements Listener {
         deleteShopOnPlotDestroy = getConfig().getBoolean("delete-shop-on-plot-destroy");
         whiteList = getConfig().getBoolean("towny.whitelist-mode");
     }
-    @EventHandler(ignoreCancelled = true)
-    public void onQuickShopReloading(QSConfigurationReloadEvent event){
-        init();
-        getLogger().info("QuickShop Compatibility Module - Towny reloaded");
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void onPreCreation(ShopPreCreateEvent event){
         if(checkFlags(event.getPlayer(),event.getLocation(),this.createFlags)){
@@ -144,6 +117,7 @@ public final class Towny extends JavaPlugin implements Listener {
                                     //It should be equal in address
                                     if (WorldCoord.parseWorldCoord(shop.getLocation()).getTownBlock().getTown() == town) {
                                         //delete it
+                                        recordDeletion(owner, shop, "Town leaved");
                                         shop.delete();
                                     }
                                 } catch (NotRegisteredException ignored) {
@@ -180,6 +154,7 @@ public final class Towny extends JavaPlugin implements Listener {
                             //Matching Owner
                             if (WorldCoord.parseWorldCoord(shop.getLocation()).equals(worldCoord)) {
                                 //delete it
+
                                 shop.delete();
                             }
                         }

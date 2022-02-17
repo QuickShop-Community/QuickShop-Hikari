@@ -19,28 +19,14 @@
 
 package com.ghostchu.quickshop.compatibility.nocheatplus;
 
-import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
-import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 import com.ghostchu.quickshop.api.event.ProtectionCheckStatus;
 import com.ghostchu.quickshop.api.event.ShopProtectionCheckEvent;
+import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
-public final class Main extends JavaPlugin implements Listener {
-    @Override
-    public void onEnable() {
-        // Plugin startup logic
-        Bukkit.getPluginManager().registerEvents(this, this);
-        getLogger().info("QuickShop Compatibility Module - NoCheatPlus loaded");
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
-
+public final class Main extends CompatibilityModule implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onFakeEventBegin(ShopProtectionCheckEvent event) {
         if (event.getStatus() == ProtectionCheckStatus.BEGIN)
@@ -49,8 +35,8 @@ public final class Main extends JavaPlugin implements Listener {
             NCPExemptionManager.unexempt(event.getPlayer().getUniqueId());
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onQuickShopReload(QSConfigurationReloadEvent event){
-        getLogger().info("QuickShop Compatibility Module - NoCheatPlus reloading skipped");
+    @Override
+    public void init() {
+
     }
 }

@@ -20,7 +20,6 @@
 package com.ghostchu.quickshop.compatibility.factionsuuid;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
-import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
@@ -30,13 +29,13 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.perms.PermissibleAction;
 import com.massivecraft.factions.perms.PermissibleActionRegistry;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -62,32 +61,9 @@ public final class Factionsuuid extends JavaPlugin implements Listener {
     private boolean tradeRequireWarZone;
     private boolean whiteList;
 
-    @Override
-    public void onLoad() {
-
-    }
-
-    @Override
-    public void onEnable() {
-        // Plugin startup logic
-        saveDefaultConfig();
-        this.api = (QuickShopAPI)Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
-        init();
-        Bukkit.getPluginManager().registerEvents(this,this);
-        getLogger().info("QuickShop Compatibility Module - FactionsUUID loaded");
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
-
-
     private void init() {
-        reloadConfig();
         this.createFlags = getConfig().getStringList("create.flags");
         this.tradeFlags = getConfig().getStringList("trade.flags");
-
         this.whiteList = getConfig().getBoolean("whitelist-mode");
         this.createRequireOpen =
                 getConfig().getBoolean("create.require.open");
@@ -121,78 +97,70 @@ public final class Factionsuuid extends JavaPlugin implements Listener {
         this.tradeRequireWarZone =
                 getConfig().getBoolean("trade.require.warzone");
     }
-    @EventHandler
-    public void onQuickShopReloading(QSConfigurationReloadEvent event){
-        init();
-        getLogger().info("QuickShop Compatibility Module - FactionsUUID reloaded");
-    }
 
-
-    private boolean check(@NotNull Player player, @NotNull Location location, boolean createRequireOpen, boolean createRequireSafeZone, boolean createRequirePermanent, boolean createRequirePeaceful, boolean createRequireWilderness, boolean createRequireWarZone, boolean createRequireNormal, boolean createRequireOwn, List<String> createFlags, boolean whiteList) {
+    @Nullable
+    private String check(@NotNull Player player, @NotNull Location location, boolean createRequireOpen, boolean createRequireSafeZone, boolean createRequirePermanent, boolean createRequirePeaceful, boolean createRequireWilderness, boolean createRequireWarZone, boolean createRequireNormal, boolean createRequireOwn, List<String> createFlags, boolean whiteList) {
         FLocation fLocation = new FLocation(location);
         Faction faction = Board.getInstance().getFactionAt(fLocation);
         if (faction == null) {
-            return !whiteList;
+            return "You're not allowed create the shop outside of a faction.";
         }
         if (createRequireOpen && !faction.getOpen()) {
-            return false;
+            return "You're not allowed create the shop in a closed faction.";
         }
         if (createRequireSafeZone && !faction.isSafeZone()) {
-            return false;
+            return "You're not allowed create the shop in a non-safezone.";
         }
         if (createRequirePermanent && !faction.isPermanent()) {
-            return false;
+            return "You're not allowed create the shop in a non-permanent faction.";
         }
         if (createRequirePeaceful && !faction.isPeaceful()) {
-            return false;
+            return "You're not allowed create the shop in a non-peaceful faction.";
         }
         if (createRequireWilderness && !faction.isWilderness()) {
-            return false;
-        }
-        if (createRequireOpen && !faction.getOpen()) {
-            return false;
+            return "You're not allowed create the shop in a non-wilderness faction.";
         }
         if (createRequireWarZone && !faction.isWarZone()) {
-            return false;
+            return "You're not allowed create the shop in a non-warzone faction.";
         }
         if (createRequireNormal && !faction.isNormal()) {
-            return false;
+            return "You're not allowed create the shop in a non-normal faction.";
         }
         if (createRequireOwn
                 && !faction.getOwnerList(fLocation).contains(player.getName())) {
-            return false;
+            return "You're not allowed create the shop in a faction you don't own.";
         }
 
         for (String flag : createFlags) {
             PermissibleAction permissibleAction = PermissibleActionRegistry.get(flag);
             if (permissibleAction != null && !faction.hasAccess(FPlayers.getInstance().getByPlayer(player), permissibleAction, fLocation)) {
-                return false;
+                return "You're not allowed create the shop in a faction you don't have access to.";
             }
         }
-        return true;
+        return null;
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPreCreation(ShopPreCreateEvent event){
-        if (check(event.getPlayer(), event.getLocation(), createRequireOpen, createRequireSafeZone, createRequirePermanent, createRequirePeaceful, createRequireWilderness, createRequireWarZone, createRequireNormal, createRequireOwn, createFlags, whiteList)) {
+    public void onPreCreation(ShopPreCreateEvent event) {
+        String error = check(event.getPlayer(), event.getLocation(), createRequireOpen, createRequireSafeZone, createRequirePermanent, createRequirePeaceful, createRequireWilderness, createRequireWarZone, createRequireNormal, createRequireOwn, createFlags, whiteList);
+        if (error == null)
             return;
-        }
-        event.setCancelled(true, "FactionsUUID blocked.");
+        event.setCancelled(true, error);
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onCreation(ShopCreateEvent event){
+    public void onCreation(ShopCreateEvent event) {
         //noinspection ConstantConditions
-        if (check(event.getPlayer(), event.getShop().getLocation(), createRequireOpen, createRequireSafeZone, createRequirePermanent, createRequirePeaceful, createRequireWilderness, createRequireWarZone, createRequireNormal, createRequireOwn, createFlags, whiteList)) {
+        String error = check(event.getPlayer(), event.getShop().getLocation(), createRequireOpen, createRequireSafeZone, createRequirePermanent, createRequirePeaceful, createRequireWilderness, createRequireWarZone, createRequireNormal, createRequireOwn, createFlags, whiteList);
+        if (error == null)
             return;
-        }
-        event.setCancelled(true, "FactionsUUID blocked.");
+        event.setCancelled(true, error);
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onTrade(ShopPurchaseEvent event){
+    public void onTrade(ShopPurchaseEvent event) {
         //noinspection ConstantConditions
-        if (check(event.getPlayer(), event.getShop().getLocation(), tradeRequireOpen, tradeRequireSafeZone, tradeRequirePermanent, tradeRequirePeaceful, tradeRequireWilderness, tradeRequireWarZone, tradeRequireNormal, tradeRequireOwn, tradeFlags, whiteList)) {
-            return;
-        }
-        event.setCancelled(true, "FactionsUUID blocked.");
+        String error = check(event.getPlayer(), event.getShop().getLocation(), tradeRequireOpen, tradeRequireSafeZone, tradeRequirePermanent, tradeRequirePeaceful, tradeRequireWilderness, tradeRequireWarZone, tradeRequireNormal, tradeRequireOwn, tradeFlags, whiteList);
+        event.setCancelled(true, error);
     }
 }

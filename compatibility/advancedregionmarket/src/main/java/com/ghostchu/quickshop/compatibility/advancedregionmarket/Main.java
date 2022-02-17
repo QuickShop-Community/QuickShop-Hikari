@@ -19,20 +19,17 @@
 
 package com.ghostchu.quickshop.compatibility.advancedregionmarket;
 
-import com.ghostchu.quickshop.api.QuickShopAPI;
-import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import net.alex9849.arm.events.RemoveRegionEvent;
 import net.alex9849.arm.events.RestoreRegionEvent;
 import net.alex9849.arm.regions.Region;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
@@ -40,25 +37,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public final class Main extends JavaPlugin implements Listener {
-    private QuickShopAPI api;
-    @Override
-    public void onEnable() {
-        // Plugin startup logic
-        this.api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
-        Bukkit.getPluginManager().registerEvents(this,this);
-        getLogger().info("QuickShop Compatibility Module - Clearlag loaded");
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onQuickShopReload(QSConfigurationReloadEvent event){
-        getLogger().info("QuickShop Compatibility Module - AdvancedRegionMarket reloading skipped");
-    }
+public final class Main extends CompatibilityModule implements Listener {
 
     private void handleDeletion(Region region) {
         Vector minPoint = region.getRegion().getMinPoint();
@@ -76,7 +55,7 @@ public final class Main extends JavaPlugin implements Listener {
         HashMap<Location, Shop> shopMap = new HashMap<>();
 
         for (Chunk chunk : chuckLocations) {
-            Map<Location, Shop> shopsInChunk = api.getShopManager().getShops(chunk);
+            Map<Location, Shop> shopsInChunk = getApi().getShopManager().getShops(chunk);
             if (shopsInChunk != null) {
                 shopMap.putAll(shopsInChunk);
             }

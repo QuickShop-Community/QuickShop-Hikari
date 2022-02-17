@@ -19,7 +19,10 @@
 
 package com.ghostchu.quickshop.compatibility.worldguard;
 
-import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
+import com.ghostchu.quickshop.api.event.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
+import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
@@ -33,14 +36,10 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
-import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 
 import java.util.logging.Level;
 
-public final class Worldguard extends JavaPlugin implements Listener {
+public final class Worldguard extends CompatibilityModule implements Listener {
     private StateFlag createFlag;
     private StateFlag tradeFlag;
     @Override
@@ -75,23 +74,14 @@ public final class Worldguard extends JavaPlugin implements Listener {
                 return;
             }
         }
-        getLogger().info("QuickShop Compatibility Module - WorldGuard loaded");
+        super.onLoad();
     }
+
+
 
     @Override
-    public void onEnable() {
-        // Plugin startup logic
-        Bukkit.getPluginManager().registerEvents(this,this);
-    }
+    public void init() {
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onQuickShopReload(QSConfigurationReloadEvent event){
-        getLogger().info("QuickShop Compatibility Module - WorldGuard reloading require the server restart");
     }
 
     @EventHandler(ignoreCancelled = true)

@@ -19,32 +19,32 @@
 
 package com.ghostchu.quickshop.compatibility.worldedit;
 
-import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
+import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 
-public final class Worldedit extends JavaPlugin implements Listener {
+public final class Worldedit extends CompatibilityModule implements Listener {
     private WorldEditAdapter adapter;
+
     @Override
     public void onEnable() {
         // Plugin startup logic
-        getLogger().info("QuickShop Compatibility Module - WorldEdit loaded");
         WorldEditPlugin worldEditPlugin = (WorldEditPlugin) Bukkit.getPluginManager().getPlugin("WorldEdit");
         adapter = new WorldEditAdapter(worldEditPlugin);
-        Bukkit.getPluginManager().registerEvents(adapter,this);
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onQuickShopReload(QSConfigurationReloadEvent event){
-        getLogger().info("QuickShop Compatibility Module - WorldEdit reloading skipped");
+        Bukkit.getPluginManager().registerEvents(adapter, this);
+        super.onEnable();
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
         adapter.unregister();
+        super.onDisable();
     }
+
+    @Override
+    public void init() {
+
+    }
+
 }

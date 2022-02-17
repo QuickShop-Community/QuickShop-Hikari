@@ -20,11 +20,10 @@
 package com.ghostchu.quickshop.compatibility.plotsquared;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
-import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.google.common.eventbus.Subscribe;
 import com.plotsquared.core.PlotSquared;
 import com.plotsquared.core.configuration.caption.Caption;
@@ -34,62 +33,44 @@ import com.plotsquared.core.plot.Plot;
 import com.plotsquared.core.plot.flag.GlobalFlagContainer;
 import com.plotsquared.core.plot.flag.types.BooleanFlag;
 import com.sk89q.worldedit.regions.CuboidRegion;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-public final class Plotsquared extends JavaPlugin implements Listener {
+public final class Plotsquared extends CompatibilityModule implements Listener {
     private QuickShopAPI api;
     private boolean whiteList;
     private boolean deleteUntrusted;
     private QuickshopCreateFlag createFlag;
     private QuickshopTradeFlag tradeFlag;
-    @Override
-    public void onLoad() {
-
-    }
 
     @Override
     public void onEnable() {
         // Plugin startup logic
-        saveDefaultConfig();
-        this.api = (QuickShopAPI)Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
-        init();
-        Bukkit.getPluginManager().registerEvents(this,this);
+        super.onEnable();
         this.createFlag = new QuickshopCreateFlag();
         this.tradeFlag = new QuickshopTradeFlag();
         GlobalFlagContainer.getInstance().addAll(Arrays.asList(createFlag, tradeFlag));
         getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
-        Util.debugLog("Success register " + getName() + " flags.");
         PlotSquared.get().getEventDispatcher().registerListener(this);
-        getLogger().info("QuickShop Compatibility Module - PlotSquared loaded");
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        super.onDisable();
         PlotSquared.get().getEventDispatcher().unregisterListener(this);
     }
 
-
-    private void init() {
-        reloadConfig();
+    public void init() {
         this.whiteList = getConfig().getBoolean("whitelist-mode");
         this.deleteUntrusted = getConfig().getBoolean("delete-when-user-untrusted");
-    }
-    @EventHandler
-    public void onQuickShopReloading(QSConfigurationReloadEvent event){
-        init();
-        getLogger().info("QuickShop Compatibility Module - PlotSquared reloaded");
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -124,23 +105,17 @@ public final class Plotsquared extends JavaPlugin implements Listener {
     private List<Shop> getShops(Plot plot) {
         List<Shop> shopsList = new ArrayList<>();
         for (CuboidRegion region : plot.getRegions()) {
-            for (int x = region.getMinimumPoint().getX() >> 4;
-                 x <= region.getMaximumPoint().getX() >> 4; x++) {
-                for (int z = region.getMinimumPoint().getZ() >> 4;
-                     z <= region.getMaximumPoint().getZ() >> 4; z++) {
-                    Map<Location, Shop> shops = this.api.getShopManager().getShops(plot.getWorldName(), x, z);
-                    if (shops != null) {
-                        shopsList.addAll(shops.values());
-                    }
-                }
-            }
+            shopsList.addAll(getShops(region.getWorld().getName(),region.getMinimumPoint().getX(),region.getMinimumPoint().getZ(),region.getMaximumPoint().getX(),region.getMaximumPoint().getZ()));
         }
         return shopsList;
     }
 
     @Subscribe
     public void onPlotDelete(PlotDeleteEvent event) {
-        getShops(event.getPlot()).forEach(Shop::delete);
+        getShops(event.getPlot()).forEach(shop->{
+            recordDeletion(event.getPlot().getOwner(),shop,"Plot deleted");
+            shop.delete();
+        });
     }
 
     @Subscribe
@@ -151,7 +126,10 @@ public final class Plotsquared extends JavaPlugin implements Listener {
         if (event.wasAdded()) {
             return; // We only check untrusted
         }
-        getShops(event.getPlot()).stream().filter(shop -> shop.getOwner().equals(event.getPlayer())).forEach(Shop::delete);
+        getShops(event.getPlot()).stream().filter(shop -> shop.getOwner().equals(event.getPlayer())).forEach(shop->{
+            recordDeletion(event.getPlot().getOwner(),shop,"Untrusted -> "+event.getPlayer());
+            shop.delete();
+        });
     }
 
 

@@ -19,67 +19,45 @@
 
 package com.ghostchu.quickshop.compatibility.bentobox;
 
-import com.ghostchu.quickshop.api.QuickShopAPI;
-import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 import world.bentobox.bentobox.api.events.island.IslandDeletedEvent;
 import world.bentobox.bentobox.api.events.island.IslandResettedEvent;
 import world.bentobox.bentobox.database.objects.Island;
 import world.bentobox.bentobox.database.objects.IslandDeletion;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public final class Bentobox extends JavaPlugin implements Listener {
-    private QuickShopAPI api;
+public final class Bentobox extends CompatibilityModule implements Listener {
     private boolean deleteShopOnLeave;
     private boolean deleteShopOnReset;
 
     @Override
-    public void onEnable() {
-        // Plugin startup logic
-        saveDefaultConfig();
-        this.api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
-        init();
-        Bukkit.getPluginManager().registerEvents(this, this);
-        getLogger().info("QuickShop Compatibility Module - BentoBox loaded");
-    }
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
-
-    private void init() {
-        reloadConfig();
+    public void init() {
         deleteShopOnLeave = getConfig().getBoolean("delete-shop-on-member-leave");
         deleteShopOnReset = getConfig().getBoolean("delete-shop-on-island-reset");
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onQuickShopReloading(QSConfigurationReloadEvent event) {
-        init();
-        getLogger().info("QuickShop Compatibility Module - BentoBox reloaded");
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onIslandResetted(IslandResettedEvent event) {
         if (!deleteShopOnReset)
             return;
-        getShops(event.getOldIsland()).forEach(Shop::delete);
+        getShops(event.getOldIsland()).forEach(shop -> {
+            recordDeletion(event.getPlayerUUID(), shop, "Island " + event.getIsland().getName() + " was resetted");
+            shop.delete();
+        });
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onIslandDeleted(IslandDeletedEvent event) {
         if (!deleteShopOnReset)
             return;
-        getShops(event.getDeletedIslandInfo()).forEach(Shop::delete);
+        getShops(event.getDeletedIslandInfo()).forEach(shop -> {
+            recordDeletion(event.getPlayerUUID(), shop, "Island " + event.getIsland().getName() + " was deleted");
+            shop.delete();
+        });
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -87,8 +65,10 @@ public final class Bentobox extends JavaPlugin implements Listener {
         if (!deleteShopOnLeave)
             return;
         getShops(event.getIsland()).forEach((shop) -> {
-            if (shop.getOwner().equals(event.getPlayerUUID()))
+            if (shop.getOwner().equals(event.getPlayerUUID())) {
+                recordDeletion(event.getOwner(), shop, "Player " + event.getPlayerUUID() + " was kicked from the island");
                 shop.delete();
+            }
         });
     }
 
@@ -97,38 +77,18 @@ public final class Bentobox extends JavaPlugin implements Listener {
         if (!deleteShopOnLeave)
             return;
         getShops(event.getIsland()).forEach((shop) -> {
-            if (shop.getOwner().equals(event.getPlayerUUID()))
+            if (shop.getOwner().equals(event.getPlayerUUID())) {
+                recordDeletion(null, shop, "Player " + event.getPlayerUUID() + " was leaved from the island");
                 shop.delete();
+            }
         });
     }
 
-    private List<Shop> getShops(IslandDeletion island) {
-        List<Shop> shopsList = new ArrayList<>();
-        for (int x = island.getMinX() >> 4;
-             x <= island.getMaxX() >> 4; x++) {
-            for (int z = island.getMinZ() >> 4;
-                 z <= island.getMaxZ() >> 4; z++) {
-                Map<Location, Shop> shops = this.api.getShopManager().getShops(island.getWorld().getName(), x, z);
-                if (shops != null) {
-                    shopsList.addAll(shops.values());
-                }
-            }
-        }
-        return shopsList;
+    private List<Shop> getShops(Island island) {
+        return getShops(island.getWorld().getName(), island.getMinX(), island.getMinZ(), island.getMaxX(), island.getMaxZ());
     }
 
-    private List<Shop> getShops(Island island) {
-        List<Shop> shopsList = new ArrayList<>();
-        for (int x = island.getMinX() >> 4;
-             x <= island.getMaxX() >> 4; x++) {
-            for (int z = island.getMinZ() >> 4;
-                 z <= island.getMaxZ() >> 4; z++) {
-                Map<Location, Shop> shops = this.api.getShopManager().getShops(island.getWorld().getName(), x, z);
-                if (shops != null) {
-                    shopsList.addAll(shops.values());
-                }
-            }
-        }
-        return shopsList;
+    private List<Shop> getShops(IslandDeletion island) {
+        return getShops(island.getWorld().getName(), island.getMinX(), island.getMinZ(), island.getMaxX(), island.getMaxZ());
     }
 }

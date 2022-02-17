@@ -97,6 +97,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.ghostchu.quickshop.compatibility</groupId>
+            <artifactId>common</artifactId>
+            <version>${parent.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>world.bentobox</groupId>
             <artifactId>bentobox</artifactId>
             <version>1.19.0</version>

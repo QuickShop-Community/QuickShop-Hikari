@@ -29,11 +29,12 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
-    <artifactId>worldedit</artifactId>
+    <artifactId>common</artifactId>
     <packaging>jar</packaging>
 
-    <name>quickshop-compatibility-worldedit</name>
+    <name>quickshop-compatibility-common</name>
 
+    <description>Compatibility module for Commons</description>
     <properties>
         <java.version>16</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -72,10 +73,6 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>sk89q-repo</id>
-            <url>https://maven.enginehub.org/repo/</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -86,34 +83,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.sk89q.worldedit</groupId>
-            <artifactId>worldedit-bukkit</artifactId>
-            <version>7.2.0</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.bstats</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-bukkit</artifactId>
             <version>${parent.version}</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-api</artifactId>
-            <version>4.9.3</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.ghostchu.quickshop.compatibility</groupId>
-            <artifactId>common</artifactId>
-            <version>${parent.version}</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
