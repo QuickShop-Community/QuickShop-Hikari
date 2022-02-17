@@ -21,6 +21,9 @@ package com.ghostchu.quickshop.compatibility.towny;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
+import com.ghostchu.quickshop.api.event.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
+import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.util.Util;
@@ -86,10 +89,34 @@ public final class Towny extends JavaPlugin implements Listener {
         deleteShopOnPlotDestroy = getConfig().getBoolean("integration.towny.delete-shop-on-plot-destroy");
         whiteList = getConfig().getBoolean("integration.towny.whitelist-mode");
     }
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onQuickShopReloading(QSConfigurationReloadEvent event){
         init();
         getLogger().info("QuickShop Compatibility Module - Towny reloaded");
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPreCreation(ShopPreCreateEvent event){
+        if(checkFlags(event.getPlayer(),event.getLocation(),this.createFlags)){
+            return;
+        }
+        event.setCancelled(true, "Towny Blocked");
+    }
+    @EventHandler(ignoreCancelled = true)
+    public void onPreCreation(ShopCreateEvent event){
+        //noinspection ConstantConditions
+        if(checkFlags(event.getPlayer(),event.getShop().getLocation(), this.createFlags)){
+            return;
+        }
+        event.setCancelled(true, "Towny Blocked");
+    }
+    @EventHandler(ignoreCancelled = true)
+    public void onTrading(ShopPurchaseEvent event){
+        //noinspection ConstantConditions
+        if(checkFlags(event.getPlayer(),event.getShop().getLocation(), this.tradeFlags)){
+            return;
+        }
+        event.setCancelled(true, "Towny Blocked");
     }
 
     public void deleteShops(UUID owner, Town town) {
@@ -194,9 +221,6 @@ public final class Towny extends JavaPlugin implements Listener {
         }
     }
 
-    public boolean canCreateShopHere(@NotNull Player player, @NotNull Location location) {
-        return checkFlags(player, location, createFlags);
-    }
 
     private boolean checkFlags(@NotNull Player player, @NotNull Location location, List<TownyFlags> flags) {
         if (ignoreDisabledWorlds && !TownyAPI.getInstance().isTownyWorld(location.getWorld())) {
