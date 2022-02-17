@@ -1,0 +1,5 @@
+name: qscompat-bentobox
+version: '${project.version}'
+main: com.ghostchu.quickshop.compatibility.bentobox.Bentobox
+api-version: 1.16
+depend: [ BentoBox, QuickShop-Hikari ]
