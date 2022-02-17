@@ -58,6 +58,7 @@ import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
 import com.ghostchu.quickshop.watcher.*;
 import com.ghostchu.simplereloadlib.ReloadManager;
+import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
 import lombok.Getter;
@@ -246,9 +247,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         return getInstance();
     }
 
+    private static final List<String> whitelistedAccessPoint = ImmutableList.of(
+            "java",
+            "org.bukkit",
+            "net.minecraft",
+            "com.ghostchu.quickshop",
+            "org.maxgamer.quickshop"
+    );
+    private static final StackWalker stackWalker = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE),2);
     @NotNull
     public static QuickShop getInstance() {
-        StackWalker stackWalker = StackWalker.getInstance(Set.of(),2);
         List<StackWalker.StackFrame> caller = stackWalker.walk(
                 frames -> frames
                         .limit(2)
@@ -258,7 +266,14 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         String className = frame.getClassName();
         String methodName = frame.getMethodName();
         int codeLine = frame.getLineNumber();
-        if(!(packageName.startsWith("com.ghostchu.quickshop")||packageName.startsWith("org.maxgamer.quickshop"))) {
+        boolean anyHit = false;
+        for (String s : whitelistedAccessPoint) {
+            if (packageName.startsWith(s)) {
+                anyHit = true;
+                break;
+            }
+        }
+        if(!anyHit){
             throw new IllegalStateException("External non-standard API access is not allowed, Please use QuickShopAPI instead! Caller: " + packageName + "." + className + "." + methodName + ":" + codeLine);
         }
         return instance;

@@ -377,7 +377,7 @@ public class Util {
         LOCK.readLock().unlock();
         return strings;
     }
-
+   private static final StackWalker stackWalker = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE),2);
     /**
      * Print debug log when plugin running on dev mode.
      *
@@ -395,24 +395,17 @@ public class Util {
             LOCK.writeLock().unlock();
             return;
         }
-
-        StackWalker stackWalker = StackWalker.getInstance(Set.of(),2);
         List<StackWalker.StackFrame> caller = stackWalker.walk(
                 frames -> frames
                         .limit(2)
                         .toList());
         StackWalker.StackFrame frame = caller.get(1);
-
         final String className = frame.getClassName();
         final String methodName = frame.getMethodName();
         final int codeLine = frame.getLineNumber();
-
         for (String log : logs) {
             DEBUG_LOGS.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-            if(plugin != null)
-                plugin.getLogger().info("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-            else
-            QuickShop.getInstance().getLogger().info("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
         }
         LOCK.writeLock().unlock();
     }
