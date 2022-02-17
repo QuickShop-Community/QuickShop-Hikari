@@ -2,7 +2,7 @@
   "_comment": "¡Hola traductor! Si editas esto desde Github o desde código fuente, deberías ir a https://crowdin.com/project/quickshop-reremake",
   "file-test": "Este es un archivo de texto de prueba. Lo usamos para probar si el messages.json está roto. Puedes llenarlo con los huevos de pascua que quieras aquí :)",
   "translation-author": "Traductor: Ghost_chu, Andre_601, Randall_Rut, MarcosTheFasdox",
-  "translation-version": "&c&lVersión Soportada: &b&lReremake",
+  "translation-version": "Support Version: Hikari",
   "translation-contributors": "Contribuidores: Randall_Rut, Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken y Andre_601",
   "translation-country": "&c&lZona de idioma: &b&lEspañol (es_ES)",
   "language-version": "63",
@@ -381,5 +381,7 @@
     "modified": "&eFile integrity check failed, this QuickShop build has been modified by others.",
     "unsupported-server-software": "&eUnsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.",
     "consolespamfix-installed": "&eConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support."
-  }
+  },
+  "inventory-unavailable": "&cThis shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.",
+  "inventory-error": "&cFailed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators."
 }
