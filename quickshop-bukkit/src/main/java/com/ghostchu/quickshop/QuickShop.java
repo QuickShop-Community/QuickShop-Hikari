@@ -58,7 +58,6 @@ import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
 import com.ghostchu.quickshop.watcher.*;
 import com.ghostchu.simplereloadlib.ReloadManager;
-import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
 import lombok.Getter;
@@ -243,42 +242,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         super(loader, description, dataFolder, file);
     }
 
-    @Override
-    public @NotNull QuickShop getInternalInstance() {
-        return getInstance();
-    }
-
-    private static final List<String> whitelistedAccessPoint = ImmutableList.of(
-            "java",
-            "org.bukkit",
-            "net.minecraft",
-            "com.ghostchu.quickshop",
-            "org.maxgamer.quickshop"
-    );
-
-    private static final StackWalker stackWalker = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE),2);
-    @ApiStatus.Experimental
+    /**
+     * Get the QuickShop instance
+     * You should use QuickShopAPI if possible, we don't promise the internal access will be stable
+     * @apiNote This method is internal only.
+     * @hidden This method is hidden in documentation.
+     * @return QuickShop instance
+     */
+    @ApiStatus.Internal
     @NotNull
     public static QuickShop getInstance() {
-        List<StackWalker.StackFrame> caller = stackWalker.walk(
-                frames -> frames
-                        .limit(2)
-                        .toList());
-        StackWalker.StackFrame frame = caller.get(1);
-        String packageName = frame.getDeclaringClass().getPackageName();
-        String className = frame.getClassName();
-        String methodName = frame.getMethodName();
-        int codeLine = frame.getLineNumber();
-        boolean anyHit = false;
-        for (String s : whitelistedAccessPoint) {
-            if (packageName.startsWith(s)) {
-                anyHit = true;
-                break;
-            }
-        }
-        if(!anyHit){
-            throw new IllegalStateException("External non-standard API access is not allowed, Please use QuickShopAPI instead! Caller: " + packageName + "." + className + "." + methodName + ":" + codeLine);
-        }
         return instance;
     }
 
