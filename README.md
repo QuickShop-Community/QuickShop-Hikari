@@ -97,24 +97,6 @@ To compile the QuickShop and debug it by yourself, please follow these steps:
 1. Compile main-project without signature by using profile: `mvn install -Pgithub` with github profile selected.
 2. Start your server and go on.
 
-## Maven
-
-```XML
-<repository>
-    <id>quickshop-repo</id>
-    <url>https://repo.codemc.io/repository/maven-public/</url>
-</repository>
-
-
-<dependency>
-    <groupId>com.ghostchu</groupId>
-    <artifactId>quickshop-bukkit</artifactId>
-    <version>{VERSION}</version>
-    <scope>provided</scope>
-</dependency>
-
-```
-
 ## Bstats
 
 [![BigImage](https://bstats.org/signatures/bukkit/QuickShop-Hikari.svg)](https://bstats.org/plugin/bukkit/QuickShop-Hikari/14281)
@@ -138,12 +120,8 @@ if(plugin != null){
 ```xml
     <repositories>
         <repository>
-            <id>codemc-releases</id>
-            <url>https://repo.codemc.io/repository/maven-releases/</url>
-        </repository>
-        <repository>
-            <id>codemc-snapshots</id>
-            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
+            <id>codemc</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
     </repositories>
     <dependencies>
