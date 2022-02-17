@@ -2,7 +2,7 @@
   "_comment": "Hej oversætter! Hvis du redigerer dette fra Github eller fra kodekilder, bør du gå https://crowdin.com/project/quickshop-reremake",
   "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
   "translation-author": "Oversættere: Ghost_chu, Andre_601, notashelf",
-  "translation-version": "Supportversion: Reremake",
+  "translation-version": "Support Version: Hikari",
   "translation-contributors": "Bidragydere: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken og Andre_601",
   "translation-country": "Sprogzone: dansk (da_DA)",
   "language-version": "63",
@@ -381,5 +381,7 @@
     "modified": "&eFile integrity check failed, this QuickShop build has been modified by others.",
     "unsupported-server-software": "&eUnsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.",
     "consolespamfix-installed": "&eConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support."
-  }
+  },
+  "inventory-unavailable": "&cThis shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.",
+  "inventory-error": "&cFailed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators."
 }
