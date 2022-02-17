@@ -760,7 +760,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         getLogger().info("Cleaning MsgUtils...");
         MsgUtil.loadTransactionMessages();
         MsgUtil.clean();
-        if (this.getConfig().getBoolean("updater", true)) {
+        //disable update watcher during our project hadn't release on SpigotMC yet!
+        //noinspection PointlessBooleanExpression,ConstantConditions
+        if (this.getConfig().getBoolean("updater", true) && false) {
             updateWatcher = new UpdateWatcher();
             updateWatcher.init();
         }
