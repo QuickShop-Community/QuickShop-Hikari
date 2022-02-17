@@ -19,6 +19,13 @@
 
 package com.ghostchu.quickshop.util;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.inventory.CountableInventoryWrapper;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
+import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
+import com.ghostchu.quickshop.api.shop.ItemMatcher;
+import com.ghostchu.quickshop.api.shop.Shop;
 import com.google.common.collect.EvictingQueue;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
@@ -30,7 +37,6 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.EnderChest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.command.CommandSender;
@@ -52,13 +58,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.inventory.CountableInventoryWrapper;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
-import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
-import com.ghostchu.quickshop.api.shop.ItemMatcher;
-import com.ghostchu.quickshop.api.shop.Shop;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -410,6 +409,9 @@ public class Util {
 
         for (String log : logs) {
             DEBUG_LOGS.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+            if(plugin != null)
+                plugin.getLogger().info("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+            else
             QuickShop.getInstance().getLogger().info("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
         }
         LOCK.writeLock().unlock();
@@ -1265,7 +1267,7 @@ public class Util {
         if (Bukkit.isPrimaryThread()) {
             runnable.run();
         } else {
-            Bukkit.getScheduler().runTask(QuickShop.getInstance(), runnable);
+            Bukkit.getScheduler().runTask(plugin, runnable);
         }
     }
 

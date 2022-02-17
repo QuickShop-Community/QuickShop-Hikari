@@ -106,7 +106,7 @@ public class EconomyFormatter implements Reloadable {
             return getInternalFormat(n, currency);
         }
         try {
-            String formatted = QuickShop.getInstance().getEconomy().format(n, world, currency);
+            String formatted = plugin.getEconomy().format(n, world, currency);
             if (StringUtils.isEmpty(formatted)) {
                 Util.debugLog(
                         "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");

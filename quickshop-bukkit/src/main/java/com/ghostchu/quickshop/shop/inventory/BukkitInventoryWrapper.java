@@ -37,9 +37,11 @@ import java.util.Map;
 
 public class BukkitInventoryWrapper implements InventoryWrapper {
     private final Inventory inventory;
+    private final InventoryWrapperManager manager;
 
     public BukkitInventoryWrapper(@NotNull Inventory inventory){
         this.inventory = inventory;
+        this.manager = QuickShop.getInstance().getInventoryWrapperManager();
     }
 
     @Override
@@ -69,7 +71,7 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
 
     @Override
     public @NotNull InventoryWrapperManager getWrapperManager() {
-        return QuickShop.getInstance().getInventoryWrapperManager();
+        return this.manager;
     }
 
     @Override

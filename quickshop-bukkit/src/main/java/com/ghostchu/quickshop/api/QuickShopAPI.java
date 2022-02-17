@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.api;
 
+import com.ghostchu.quickshop.QuickShop;
 import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
@@ -132,5 +133,12 @@ public interface QuickShopAPI {
      * @param eventObject event object, must can be serialized by Gson.
      */
     void logEvent(@NotNull Object eventObject);
+
+    /**
+     * Gets the internal instance, un-standard API
+     * The content may changes frequently, avoid using them.
+     */
+    @NotNull
+    QuickShop getInternalInstance();
 
 }

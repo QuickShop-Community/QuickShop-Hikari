@@ -457,9 +457,9 @@ public class MsgUtil {
      */
     public static Component bool2String(boolean bool) {
         if (bool) {
-            return QuickShop.getInstance().text().of("booleanformat.success").forLocale();
+            return plugin.text().of("booleanformat.success").forLocale();
         } else {
-            return QuickShop.getInstance().text().of("booleanformat.failed").forLocale();
+            return plugin.text().of("booleanformat.failed").forLocale();
         }
     }
 

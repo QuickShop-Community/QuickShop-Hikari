@@ -241,8 +241,26 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         super(loader, description, dataFolder, file);
     }
 
+    @Override
+    public @NotNull QuickShop getInternalInstance() {
+        return getInstance();
+    }
+
     @NotNull
     public static QuickShop getInstance() {
+        StackWalker stackWalker = StackWalker.getInstance(Set.of(),2);
+        List<StackWalker.StackFrame> caller = stackWalker.walk(
+                frames -> frames
+                        .limit(2)
+                        .toList());
+        StackWalker.StackFrame frame = caller.get(1);
+        String packageName = frame.getDeclaringClass().getPackageName();
+        String className = frame.getClassName();
+        String methodName = frame.getMethodName();
+        int codeLine = frame.getLineNumber();
+        if(!(packageName.startsWith("com.ghostchu.quickshop")||packageName.startsWith("org.maxgamer.quickshop"))) {
+            throw new IllegalStateException("External non-standard API access is not allowed, Please use QuickShopAPI instead! Caller: " + packageName + "." + className + "." + methodName + ":" + codeLine);
+        }
         return instance;
     }
 
