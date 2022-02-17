@@ -280,6 +280,7 @@
         <module>platform/quickshop-platform-spigot</module>
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
+        <module>compatibility/common</module>
         <module>compatibility/clearlag</module>
         <module>compatibility/nocheatplus</module>
         <module>compatibility/worldguard</module>
