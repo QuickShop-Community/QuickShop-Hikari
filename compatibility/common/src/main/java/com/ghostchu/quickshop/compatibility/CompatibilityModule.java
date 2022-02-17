@@ -47,7 +47,6 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
     public void onLoad() {
         saveDefaultConfig();
         this.api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
-        Bukkit.getPluginManager().registerEvents(this, this);
         getLogger().info("QuickShop Compatibility Module - " + getName() + " loading");
     }
 
