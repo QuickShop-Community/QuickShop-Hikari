@@ -2,7 +2,7 @@
   "_comment": "Hallo vertaler! Als u dit bewerkt van Github of van code-bronnen, moet u https://crowdin.com/project/quickshop-reremake",
   "file-test": "Dit is een test textfile. We gebruiken dit om te testen of de \"message.json\" kapot is. Je kan dit vullen met elke easter egg die jij leuk vindt",
   "translation-author": "Vertaler",
-  "translation-version": "ondersteunende versie: Reremake",
+  "translation-version": "Support Version: Hikari",
   "translation-contributors": "Medewerkers",
   "translation-country": "Taal Zone: Engels (nl_US)",
   "language-version": "63",
@@ -381,5 +381,7 @@
     "modified": "&eFile integrity check failed, this QuickShop build has been modified by others.",
     "unsupported-server-software": "&eUnsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.",
     "consolespamfix-installed": "&eConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support."
-  }
+  },
+  "inventory-unavailable": "&cThis shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.",
+  "inventory-error": "&cFailed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators."
 }
