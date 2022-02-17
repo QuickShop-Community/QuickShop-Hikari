@@ -1,0 +1,5 @@
+name: qscompat-plotsquared
+version: '${project.version}'
+main: com.ghostchu.quickshop.compatibility.plotsquared.Plotsquared
+api-version: 1.16
+depend: [ PlotSquared, QuickShop-Hikari ]

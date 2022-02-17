@@ -1,0 +1,4 @@
+#Should we prevent the creation of a shop or trade with a shop outside PlotSquared's area?
+whitelist-mode: true
+#Should we delete shops that were created by players that get untrusted?
+delete-when-user-untrusted: true
