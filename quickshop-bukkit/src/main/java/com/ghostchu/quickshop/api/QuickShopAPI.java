@@ -127,4 +127,10 @@ public interface QuickShopAPI {
     @NotNull
     InventoryWrapperRegistry getInventoryWrapperRegistry();
 
+    /**
+     * Logs a event into logs database / file
+     * @param eventObject event object, must can be serialized by Gson.
+     */
+    void logEvent(@NotNull Object eventObject);
+
 }
