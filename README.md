@@ -132,3 +132,48 @@ if(plugin != null){
     api.xxxx;
 }
 ```
+
+## Maven
+
+```xml
+    <repositories>
+        <repository>
+            <id>codemc-releases</id>
+            <url>https://repo.codemc.io/repository/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>codemc-snapshots</id>
+            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <!-- QuickShop Main Module -->
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-bukkit</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Add provided SimpleReloadLib module or you may get an error about cannot access to -->
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>simplereloadlib</artifactId>
+            <version>1.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Add provided Adventure module or you may get an error about cannot access to -->
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bukkit</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Add provided quickshop-platform-interface module or you may get an error about cannot access to -->
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-platform-interface</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+```
