@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.compatibility.nocheatplus;
 
+import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import fr.neatmonster.nocheatplus.hooks.NCPExemptionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -46,5 +47,10 @@ public final class Main extends JavaPlugin implements Listener {
             NCPExemptionManager.exemptPermanently(event.getPlayer().getUniqueId());
         else if(event.getStatus() == ProtectionCheckStatus.END)
             NCPExemptionManager.unexempt(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onQuickShopReload(QSConfigurationReloadEvent event){
+        getLogger().info("QuickShop Compatibility Module - NoCheatPlus reloading skipped");
     }
 }

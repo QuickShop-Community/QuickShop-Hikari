@@ -81,13 +81,13 @@ public final class Towny extends JavaPlugin implements Listener {
 
     private void init() {
         reloadConfig();
-        createFlags = TownyFlags.deserialize(getConfig().getStringList("integration.towny.create"));
-        tradeFlags = TownyFlags.deserialize(getConfig().getStringList("integration.towny.trade"));
-        ignoreDisabledWorlds =getConfig().getBoolean("integration.towny.ignore-disabled-worlds");
-        deleteShopOnLeave = getConfig().getBoolean("integration.towny.delete-shop-on-resident-leave");
-        deleteShopOnPlotClear = getConfig().getBoolean("integration.towny.delete-shop-on-plot-clear");
-        deleteShopOnPlotDestroy = getConfig().getBoolean("integration.towny.delete-shop-on-plot-destroy");
-        whiteList = getConfig().getBoolean("integration.towny.whitelist-mode");
+        createFlags = TownyFlags.deserialize(getConfig().getStringList("create"));
+        tradeFlags = TownyFlags.deserialize(getConfig().getStringList("trade"));
+        ignoreDisabledWorlds =getConfig().getBoolean("ignore-disabled-worlds");
+        deleteShopOnLeave = getConfig().getBoolean("delete-shop-on-resident-leave");
+        deleteShopOnPlotClear = getConfig().getBoolean("delete-shop-on-plot-clear");
+        deleteShopOnPlotDestroy = getConfig().getBoolean("delete-shop-on-plot-destroy");
+        whiteList = getConfig().getBoolean("towny.whitelist-mode");
     }
     @EventHandler(ignoreCancelled = true)
     public void onQuickShopReloading(QSConfigurationReloadEvent event){

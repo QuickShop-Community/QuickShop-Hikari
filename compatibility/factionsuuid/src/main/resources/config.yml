@@ -1,27 +1,32 @@
-#If QS should ignore disabled worlds.
-ignore-disabled-worlds: true
-#Which checks does a player need to pass to create a shop?
-#You can use multiple checks at the same time.
-#Priority: UP > DOWN
-#
-#Available fields:
-#OWN = The player must own the plot to create a shop.
-#MODIFY = The player must have the ability to build on the target plot to create a shop.
-#SHOPTYPE = The player must create the shop on a SHOP type plot.
-create:
-  - SHOPTYPE
-  - MODIFY
-#Which checks does a player need to pass to trade with a shop?
-#You can use multiple checks at the same time.
-#Priority: UP > DOWN
-#
-#Available fields:
-#OWN = The player must own the plot to trade with a shop.
-#MODIFY = The player must have the ability to build on the target plot to trade with a shop.
-#SHOPTYPE = The player must trade with the shop on a SHOP type plot.
-trade: [ ]
-delete-shop-on-resident-leave: false
-delete-shop-on-plot-clear: true
-delete-shop-on-plot-destroy: true
-#Should we prevent the creation of a shop or trade with a shop outside Towny's area
+#Should we prevent the creation of a shop or trade with a shop outside Factions's area?
 whitelist-mode: true
+#Which checks does a player need to pass to create a shop?
+create:
+  #Factions requires the status to match with these:
+  require:
+    open: false
+    normal: true
+    wilderness: false
+    peaceful: true
+    permanent: false
+    safezone: false
+    own: false
+    warzone: false
+      #The player must have these flags in the faction:
+  flags:
+    - CONTAINER
+    - ECONOMY
+  #Which checks does a player need to pass to trade with a shop?
+trade:
+  #Factions requires the status to match with these:
+  require:
+    open: false
+    normal: true
+    wilderness: false
+    peaceful: false
+    permanent: false
+    safezone: false
+    own: false
+    warzone: false
+    #The player must have these flags in the faction:
+  flags: [ ]

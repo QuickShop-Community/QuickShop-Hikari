@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.compatibility.worldguard;
 
+import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
@@ -86,6 +87,11 @@ public final class Worldguard extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onQuickShopReload(QSConfigurationReloadEvent event){
+        getLogger().info("QuickShop Compatibility Module - WorldGuard reloading require the server restart");
     }
 
     @EventHandler(ignoreCancelled = true)

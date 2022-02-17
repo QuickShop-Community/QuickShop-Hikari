@@ -20,6 +20,7 @@
 package com.ghostchu.quickshop.compatibility.advancedregionmarket;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
+import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import net.alex9849.arm.events.RemoveRegionEvent;
 import net.alex9849.arm.events.RestoreRegionEvent;
@@ -52,6 +53,11 @@ public final class Main extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onQuickShopReload(QSConfigurationReloadEvent event){
+        getLogger().info("QuickShop Compatibility Module - AdvancedRegionMarket reloading skipped");
     }
 
     private void handleDeletion(Region region) {

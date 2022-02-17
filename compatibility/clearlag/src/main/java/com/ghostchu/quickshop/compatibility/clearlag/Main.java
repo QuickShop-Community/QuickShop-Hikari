@@ -19,6 +19,8 @@
 
 package com.ghostchu.quickshop.compatibility.clearlag;
 
+import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
+import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import me.minebuilders.clearlag.events.EntityRemoveEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -26,7 +28,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 
 public final class Main extends JavaPlugin implements Listener {
 
@@ -51,5 +52,10 @@ public final class Main extends JavaPlugin implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onQuickShopReload(QSConfigurationReloadEvent event){
+        getLogger().info("QuickShop Compatibility Module - Clearlag reloading skipped");
     }
 }

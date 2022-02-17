@@ -85,47 +85,46 @@ public final class Factionsuuid extends JavaPlugin implements Listener {
 
     private void init() {
         reloadConfig();
-        this.createFlags = getConfig().getStringList("integration.factions.create.flags");
-        this.tradeFlags = getConfig().getStringList("integration.factions.trade.flags");
+        this.createFlags = getConfig().getStringList("create.flags");
+        this.tradeFlags = getConfig().getStringList("trade.flags");
 
-        this.whiteList = getConfig().getBoolean("integration.factions.whitelist-mode");
+        this.whiteList = getConfig().getBoolean("whitelist-mode");
         this.createRequireOpen =
-                getConfig().getBoolean("integration.factions.create.require.open");
+                getConfig().getBoolean("create.require.open");
         this.createRequireNormal =
-                getConfig().getBoolean("integration.factions.create.require.normal");
+                getConfig().getBoolean("create.require.normal");
         this.createRequireWilderness =
-                getConfig().getBoolean("integration.factions.create.require.wilderness");
+                getConfig().getBoolean("create.require.wilderness");
         this.createRequirePeaceful =
-                getConfig().getBoolean("integration.factions.create.require.peaceful");
+                getConfig().getBoolean("create.require.peaceful");
         this.createRequirePermanent =
-                getConfig().getBoolean("integration.factions.create.require.permanent");
+                getConfig().getBoolean("create.require.permanent");
         this.createRequireSafeZone =
-                getConfig().getBoolean("integration.factions.create.require.safezone");
+                getConfig().getBoolean("create.require.safezone");
         this.createRequireOwn =
-                getConfig().getBoolean("integration.factions.create.require.own");
+                getConfig().getBoolean("create.require.own");
         this.createRequireWarZone =
-                getConfig().getBoolean("integration.factions.create.require.warzone");
-
+                getConfig().getBoolean("create.require.warzone");
         this.tradeRequireOpen =
-                getConfig().getBoolean("integration.factions.trade.require.open");
+                getConfig().getBoolean("trade.require.open");
         this.tradeRequireNormal =
-                getConfig().getBoolean("integration.factions.trade.require.normal");
+                getConfig().getBoolean("trade.require.normal");
         this.tradeRequireWilderness =
-                getConfig().getBoolean("integration.factions.trade.require.wilderness");
+                getConfig().getBoolean("trade.require.wilderness");
         this.tradeRequirePeaceful =
-                getConfig().getBoolean("integration.factions.trade.require.peaceful");
+                getConfig().getBoolean("trade.require.peaceful");
         this.tradeRequirePermanent =
-                getConfig().getBoolean("integration.factions.trade.require.permanent");
+                getConfig().getBoolean("trade.require.permanent");
         this.tradeRequireSafeZone =
-                getConfig().getBoolean("integration.factions.trade.require.safezone");
-        this.tradeRequireOwn = getConfig().getBoolean("integration.factions.trade.require.own");
+                getConfig().getBoolean("trade.require.safezone");
+        this.tradeRequireOwn = getConfig().getBoolean("trade.require.own");
         this.tradeRequireWarZone =
-                getConfig().getBoolean("integration.factions.trade.require.warzone");
+                getConfig().getBoolean("trade.require.warzone");
     }
     @EventHandler
     public void onQuickShopReloading(QSConfigurationReloadEvent event){
         init();
-        getLogger().info("QuickShop Compatibility Module - Towny reloaded");
+        getLogger().info("QuickShop Compatibility Module - FactionsUUID reloaded");
     }
 
 

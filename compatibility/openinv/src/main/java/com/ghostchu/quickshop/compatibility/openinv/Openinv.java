@@ -21,9 +21,11 @@ package com.ghostchu.quickshop.compatibility.openinv;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.command.CommandContainer;
+import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.lishid.openinv.IOpenInv;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -39,11 +41,17 @@ public final class Openinv extends JavaPlugin implements Listener {
         openInv = (IOpenInv) Bukkit.getPluginManager().getPlugin("OpenInv");
         manager = new OpenInvInventoryManager(openInv, this);
         this.api.getInventoryWrapperRegistry().register(this, manager);
+        Bukkit.getPluginManager().registerEvents(this,this);
     }
 
     @Override
     public void onEnable() {
         this.api.getCommandManager().registerCmd(CommandContainer.builder().prefix("echest").permission("quickshop.echest").description((locale)->LegacyComponentSerializer.legacySection().deserialize(getConfig().getString("messages.description"))).executor(new OpenInvCommand(this)).build());
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onQuickShopReload(QSConfigurationReloadEvent event){
+        getLogger().info("QuickShop Compatibility Module - Openinv reloading skipped");
     }
 
     @Override
