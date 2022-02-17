@@ -22,10 +22,6 @@ package com.ghostchu.quickshop.database;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.SQLQuery;
 import cc.carm.lib.easysql.api.enums.IndexType;
-import org.bukkit.Location;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -33,9 +29,12 @@ import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.metric.ShopMetricRecord;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.Util;
+import org.bukkit.Location;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
-import java.util.LinkedHashMap;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -359,7 +358,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     @Override
     public void updateOwner2UUID(@NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName) {
         manager.createUpdate(prefix + "shops")
-                .setColumnValues("owner", ownerUUID)
+                .addColumnValue("owner", ownerUUID)
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)
@@ -382,20 +381,18 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
                            @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
                            @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName) {
         Util.debugLog("Shop updating: " + x + "," + y + "," + z + "," + world + ", " + inventorySymbolLink + ", " + inventoryWrapperName);
-        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
-        map.put("owner", owner);
-        map.put("itemConfig", Util.serialize(item));
-        map.put("unlimited", unlimited);
-        map.put("type", shopType);
-        map.put("price",price);
-        map.put("extra", extra);
-        map.put("currency",currency);
-        map.put("disableDisplay", disableDisplay ? 1 : 0);
-        map.put("taxAccount", taxAccount);
-        map.put("inventorySymbolLink", inventorySymbolLink);
-        map.put("inventoryWrapperName", inventoryWrapperName);
         manager.createUpdate(prefix + "shops")
-                .setColumnValues(map)
+                .addColumnValue("owner",owner)
+                .addColumnValue("itemConfig",Util.serialize(item))
+                .addColumnValue("unlimited", unlimited)
+                .addColumnValue("type", shopType)
+                .addColumnValue("price",price)
+                .addColumnValue("extra", extra)
+                .addColumnValue("currency",currency)
+                .addColumnValue("disableDisplay", disableDisplay ? 1 : 0)
+                .addColumnValue("taxAccount", taxAccount)
+                .addColumnValue("inventorySymbolLink", inventorySymbolLink)
+                .addColumnValue("inventoryWrapperName", inventoryWrapperName)
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)
