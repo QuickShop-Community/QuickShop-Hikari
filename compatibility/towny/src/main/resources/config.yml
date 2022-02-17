@@ -1,0 +1,10 @@
+create:
+  - OWN
+  - MODIFY
+  - SHOPTYPE
+trade: []
+ignore-disabled-worlds: true
+delete-shop-on-resident-leave: true
+delete-shop-on-plot-clear: true
+delete-shop-on-plot-destroy: true
+whitelist-mode: true

@@ -1,0 +1,5 @@
+name: qscompat-towny
+version: '${project.version}'
+main: com.ghostchu.quickshop.compatibility.towny.Towny
+api-version: 1.16
+depend: [ Towny, QuickShop-Hikari ]
