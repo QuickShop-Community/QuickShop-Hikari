@@ -286,5 +286,10 @@
         <module>compatibility/worldedit</module>
         <module>compatibility/openinv</module>
         <module>compatibility/advancedregionmarket</module>
+        <module>compatibility/bentobox</module>
+        <module>compatibility/factionsuuid</module>
+        <module>compatibility/griefprevention</module>
+        <module>compatibility/towny</module>
+        <module>compatibility/plotsquared</module>
     </modules>
 </project>
