@@ -376,6 +376,9 @@ public class PlayerListener extends AbstractQSListener {
         if (player.getInventory().getItemInMainHand().getType().isAir()) {
             return false; // Air cannot be used for trade
         }
+        if (!Util.canBeShop(block)) {
+            return false;
+        }
         ItemStack stack = player.getInventory().getItemInMainHand();
         ShopAction action = null;
         if (player.hasPermission("quickshop.create.sell")) {
