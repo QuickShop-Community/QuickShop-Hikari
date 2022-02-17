@@ -97,24 +97,6 @@ To compile the QuickShop and debug it by yourself, please follow these steps:
 1. Compile main-project without signature by using profile: `mvn install -Pgithub` with github profile selected.
 2. Start your server and go on.
 
-## Maven
-
-```XML
-<repository>
-    <id>quickshop-repo</id>
-    <url>https://repo.codemc.io/repository/maven-public/</url>
-</repository>
-
-
-<dependency>
-    <groupId>com.ghostchu</groupId>
-    <artifactId>quickshop-bukkit</artifactId>
-    <version>{VERSION}</version>
-    <scope>provided</scope>
-</dependency>
-
-```
-
 ## Bstats
 
 [![BigImage](https://bstats.org/signatures/bukkit/QuickShop-Hikari.svg)](https://bstats.org/plugin/bukkit/QuickShop-Hikari/14281)
@@ -131,4 +113,45 @@ if(plugin != null){
     QuickShopAPI api = (QuickShopAPI)plugin;
     api.xxxx;
 }
+```
+
+## Maven
+
+```xml
+    <repositories>
+        <repository>
+            <id>codemc</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <!-- QuickShop Main Module -->
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-bukkit</artifactId>
+            <version>PUT_VERSION_HERE</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Add provided quickshop-platform-interface module or you may get an error about cannot access to -->
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-platform-interface</artifactId>
+            <version>PUT_VERSION_HERE</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Add provided SimpleReloadLib module or you may get an error about cannot access to -->
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>simplereloadlib</artifactId>
+            <version>1.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Add provided Adventure module or you may get an error about cannot access to -->
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bukkit</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 ```
