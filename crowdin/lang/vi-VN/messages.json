@@ -2,7 +2,7 @@
   "_comment": "Xin chào, Nếu bạn chỉnh sửa nội dung này từ Github hoặc từ các source code, bạn nên truy cập vào https://crowdin.com/project/quickshop-reremake",
   "file-test": "Đây là một file test thử. Chúng tôi dùng nó để kiểm tra xem liệu file messages.json có bị lỗi hay không. Bạn có thể tuỳ ý điền bất cứ gì bạn thích vào đây :)",
   "translation-author": "Người dịch: huyhhuy",
-  "translation-version": "Phiên bản hỗ trợ: Reremake",
+  "translation-version": "Support Version: Hikari",
   "translation-contributors": "Người đóng góp: huyhhuy",
   "translation-country": "Vùng ngôn ngữ: Tiếng Việt (vi_VN)",
   "language-version": "63",
@@ -381,5 +381,7 @@
     "modified": "&eFile integrity check failed, this QuickShop build has been modified by others.",
     "unsupported-server-software": "&eUnsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.",
     "consolespamfix-installed": "&eConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support."
-  }
+  },
+  "inventory-unavailable": "&cThis shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.",
+  "inventory-error": "&cFailed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators."
 }
