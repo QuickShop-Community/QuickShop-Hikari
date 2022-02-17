@@ -197,8 +197,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private @Deprecated
     DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
     @Getter
-    private Plugin blockHubPlugin;
-    @Getter
     private Cache shopCache;
     @Getter
     private boolean allowStack;
@@ -308,12 +306,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 this.quickShopPAPI = new QuickShopPAPI();
                 this.quickShopPAPI.register();
                 getLogger().info("Successfully loaded PlaceHolderAPI support!");
-            }
-        }
-        if (getConfig().getBoolean("plugin.BlockHub")) {
-            this.blockHubPlugin = Bukkit.getPluginManager().getPlugin("BlockHub");
-            if (this.blockHubPlugin != null) {
-                getLogger().info("Successfully loaded BlockHub support!");
             }
         }
 
