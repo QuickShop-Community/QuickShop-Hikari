@@ -2,7 +2,7 @@
   "_comment": "嗨 翻译者！如果您正在Github上或直接编辑源文件的方式进行翻译，请您前往：https://crowdin.com/project/quickshop-reremake",
   "file-test": "这是个测试文件，我们可以用它来测试 messages.json 文件是否损坏。你可以在这里填入任何喜欢的彩蛋 :)",
   "translation-author": "翻译人员： Ghost_chu, Andre_601, 李馨雨, YuanYuanOwO",
-  "translation-version": "Support Version: Hikari",
+  "translation-version": "支持版本: Hikari",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
   "language-version": "63",
@@ -153,7 +153,7 @@
     "description": {
       "alwayscounting": "&e设置商店是否总会计算容器物品（即使是无限商店）",
       "title": "&aQuickShop 帮助",
-      "unlimited": "&e将商店设置为无限库存。",
+      "unlimited": "&e将商店设置为无限库存",
       "setowner": "&e为商店设置新的所有者。",
       "owner": "&e为商店设置新的所有者。",
       "buy": "&e切换到 &d收购 &e模式",
@@ -371,17 +371,17 @@
   "bungee-cross-server-msg": "&eQuickShop跨服信息: &a{0}",
   "edition-confilct": "QuickShop-Hikari 与 QuickShop-Reremake 同时安装在服务器中可能会相互冲突，你需要卸载其中一个",
   "plugin-cancelled": "&c操作被取消，原因： {0}",
-  "paste-disabled": "&cPaste functionality has been disabled! You cannot request technical support. \nReason: {0}",
+  "paste-disabled": "&cPaste功能已被禁用！你不能请求技术支持。 \n原因： {0}",
   "support-disable-reason": {
-    "privacy": "&eThis server running under cracked (offline) mode. If you are running bukkit server under proxy and online-mode=true on proxy, please configure the proxy related settings correctly.",
-    "authlib-injector-detected": "&eThis server running under 3rd-party authlib provider like authlib-injector.",
-    "bad-hosts": "&eThis server HOSTS has been modified and QuickShop some functions require connect to Mojang API correctly. Fix the HOSTS before asking support, Windows at C:\\windows\\system32\\drivers\\etc\\hosts, Linux at /etc/hosts.",
-    "hot-reload": "&eUnsupported hot reloaded, restart the server and check again.",
-    "outdated": "&eThis version of QuickShop already outdated, up-to-date before requesting support!",
-    "modified": "&eFile integrity check failed, this QuickShop build has been modified by others.",
-    "unsupported-server-software": "&eUnsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.",
-    "consolespamfix-installed": "&eConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support."
+    "privacy": "&e该服务器在破解（离线）模式下运行。如果你在代理下运行bukkit服务器，并且在代理上的online-mode=true，请正确配置代理相关设置。",
+    "authlib-injector-detected": "&e该服务器在第三方authlib提供商（如authlib-injector）下运行。",
+    "bad-hosts": "&e该服务器 HOSTS 已被修改，QuickShop 的一些功能需要连接到 Mojang API。 在请求支持之前修复HOSTS, Windows 路径 C:\\windows\\system32\\drivers\\et\\hosts, Linux 路径/etc/hosts。",
+    "hot-reload": "&e热重载不受支持，请重启服务器并再次检查。",
+    "outdated": "&e该版本的QuickShop已过时，在请求支持之前更新到最新版本！",
+    "modified": "&e文件完整性检查失败，此QuickShop构建已被其他人修改。",
+    "unsupported-server-software": "&e不受支持的服务端核心，任何修改过的混合服务端核心都不支持，包括MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard等。",
+    "consolespamfix-installed": "&e检测到 ConsoleSpamFix 已安装，它将隐藏异常详情，在请求支持时前暂时禁用它。"
   },
-  "inventory-unavailable": "&cThis shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.",
-  "inventory-error": "&cFailed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators."
+  "inventory-unavailable": "&c此商店InventoryWrapper不存在或无效。 你是否使用附属插件重新绑定商店库存？信息：InventoryWrapper={0}，WrapperProvider={1}，SymbolLink={2}。请联系服务器管理员。",
+  "inventory-error": "&c处理InventoryWrapper失败。 你是否使用附属插件重新绑定商店库存？信息：异常={0}，InventoryWrapper={1}，WrapperType={2}，WrapperProvider={3}，SymbolLink={4}。 请联系服务器管理员"
 }
