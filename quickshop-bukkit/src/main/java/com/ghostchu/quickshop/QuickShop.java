@@ -450,7 +450,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         } else {
             logWatcher = null;
         }
-        Bukkit.getPluginManager().callEvent(new QSConfigurationReloadEvent(this));
+        // Schedule this event can be run in next tick.
+        Util.mainThreadRun(()->Bukkit.getPluginManager().callEvent(new QSConfigurationReloadEvent(this)));
     }
 
 
