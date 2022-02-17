@@ -45,7 +45,7 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
 
     @Override
     public void onLoad() {
-        saveDefaultConfig();
+        try {saveDefaultConfig();}catch (IllegalArgumentException ignored){}
         this.api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
         getLogger().info("Loading up...");
     }
@@ -53,7 +53,7 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
     @Override
     public void onEnable() {
         // Plugin startup logic
-        saveDefaultConfig();
+        try {saveDefaultConfig();}catch (IllegalArgumentException ignored){}
         this.api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
         Bukkit.getPluginManager().registerEvents(this, this);
         getLogger().info("Enabling...");

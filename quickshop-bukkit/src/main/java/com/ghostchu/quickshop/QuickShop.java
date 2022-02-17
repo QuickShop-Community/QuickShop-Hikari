@@ -454,7 +454,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         Util.mainThreadRun(()->Bukkit.getPluginManager().callEvent(new QSConfigurationReloadEvent(this)));
     }
 
-
     /**
      * Early than onEnable, make sure instance was loaded in first time.
      */
