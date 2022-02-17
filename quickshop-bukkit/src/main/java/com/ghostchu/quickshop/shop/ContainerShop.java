@@ -931,9 +931,10 @@ public class ContainerShop implements Shop {
         this.inventoryWrapper = wrapper;
         this.inventoryWrapperProvider = provider;
         this.symbolLink = manager.mklink(wrapper);
-        Util.debugLog("Inventory changed: " + this.symbolLink + ", wrapper provider:" + inventoryWrapperProvider);
         setDirty();
         update();
+        Util.debugLog("Inventory changed: " + this.symbolLink + ", wrapper provider:" + inventoryWrapperProvider);
+        new ShopInventoryChangedEvent(wrapper, manager).callEvent();
     }
 
     private void notifyDisplayItemChange() {
