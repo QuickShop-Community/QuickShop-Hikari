@@ -81,4 +81,9 @@ public final class Main extends CompatibilityModule implements Listener {
     public void onShopNeedDeletion(RemoveRegionEvent event) {
         handleDeletion(event.getRegion());
     }
+
+    @Override
+    public void init() {
+
+    }
 }
