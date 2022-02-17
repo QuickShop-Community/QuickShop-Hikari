@@ -79,6 +79,7 @@ import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.h2.Driver;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -254,7 +255,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             "com.ghostchu.quickshop",
             "org.maxgamer.quickshop"
     );
+
     private static final StackWalker stackWalker = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE),2);
+    @ApiStatus.Experimental
     @NotNull
     public static QuickShop getInstance() {
         List<StackWalker.StackFrame> caller = stackWalker.walk(
