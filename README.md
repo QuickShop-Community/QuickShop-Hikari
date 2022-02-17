@@ -151,7 +151,7 @@ if(plugin != null){
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-bukkit</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>PUT_VERSION_HERE</version>
             <scope>provided</scope>
         </dependency>
         <!-- Add provided SimpleReloadLib module or you may get an error about cannot access to -->
@@ -172,7 +172,7 @@ if(plugin != null){
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-interface</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>PUT_VERSION_HERE</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
