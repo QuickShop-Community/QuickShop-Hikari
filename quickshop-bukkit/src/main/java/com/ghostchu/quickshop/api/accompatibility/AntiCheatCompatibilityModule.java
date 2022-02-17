@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is AbstractQSCompatibilityModule.java
+ *  This file is a part of project QuickShop, the name is CompatibilityModule.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,20 +17,32 @@
  *
  */
 
-package com.ghostchu.quickshop.api.compatibility;
+package com.ghostchu.quickshop.api.accompatibility;
 
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.holder.QuickShopInstanceHolder;
 
-public abstract class AbstractQSCompatibilityModule extends QuickShopInstanceHolder implements CompatibilityModule {
-    protected AbstractQSCompatibilityModule(QuickShop plugin) {
-        super(plugin);
-    }
+public interface AntiCheatCompatibilityModule {
+    /**
+     * Gets the CompatibilityModule provider name
+     *
+     * @return Provider name
+     */
+    @NotNull String getName();
 
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return plugin;
-    }
+    /**
+     * Gets the CompatibilityModule provider plugin instance
+     *
+     * @return Provider Plugin instance
+     */
+    @NotNull Plugin getPlugin();
+
+    /**
+     * Calls CompatibilityModule to toggle the detection status for player between on and off
+     *
+     * @param player The player
+     * @param status On or Off
+     */
+    void toggle(@NotNull Player player, boolean status);
 }

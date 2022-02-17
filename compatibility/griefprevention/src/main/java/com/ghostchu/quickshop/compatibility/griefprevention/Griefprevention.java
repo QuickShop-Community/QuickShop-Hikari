@@ -19,7 +19,6 @@
 
 package com.ghostchu.quickshop.compatibility.griefprevention;
 
-import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
@@ -88,12 +87,6 @@ public final class Griefprevention extends CompatibilityModule implements Listen
             return;
         }
         event.setCancelled(true, "GriefPrevention Blocked");
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onQuickShopReloading(QSConfigurationReloadEvent event) {
-        init();
-        getLogger().info("QuickShop Compatibility Module - GriefPrevention reloaded");
     }
 
 

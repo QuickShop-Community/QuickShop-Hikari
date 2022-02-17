@@ -17,7 +17,7 @@
  *
  */
 
-package com.ghostchu.quickshop.api.compatibility;
+package com.ghostchu.quickshop.api.accompatibility;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Manager that managing all registered compatibility for anti-cheat modules
  */
-public interface CompatibilityManager {
+public interface AntiCheatCompatibilityManager {
     /**
      * Check a module registered
      *
@@ -53,7 +53,7 @@ public interface CompatibilityManager {
      *
      * @param module Compatibility module
      */
-    void register(@NotNull CompatibilityModule module);
+    void register(@NotNull AntiCheatCompatibilityModule module);
 
     /**
      * Unregister a registered compatibility modules
@@ -67,5 +67,5 @@ public interface CompatibilityManager {
      *
      * @param module Compatibility module
      */
-    void unregister(@NotNull CompatibilityModule module);
+    void unregister(@NotNull AntiCheatCompatibilityModule module);
 }

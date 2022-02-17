@@ -89,6 +89,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.ghostchu.quickshop.compatibility</groupId>
+            <artifactId>common</artifactId>
+            <version>${parent.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>me.minebuilders</groupId>
             <artifactId>clearlag</artifactId>
             <version>3.2.2</version>

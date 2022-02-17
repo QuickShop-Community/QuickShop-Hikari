@@ -47,7 +47,7 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
     public void onLoad() {
         saveDefaultConfig();
         this.api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
-        getLogger().info("QuickShop Compatibility Module - " + getName() + " loading");
+        getLogger().info("Loading up...");
     }
 
     @Override
@@ -56,21 +56,21 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
         saveDefaultConfig();
         this.api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
         Bukkit.getPluginManager().registerEvents(this, this);
-        getLogger().info("QuickShop Compatibility Module - " + getName() + " enabling");
+        getLogger().info("Enabling...");
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
         HandlerList.unregisterAll((Plugin) this);
-        getLogger().info("QuickShop Compatibility Module - " + getName() + " unloading");
+        getLogger().info("Unloading...");
     }
 
     @EventHandler(ignoreCancelled = true,priority = EventPriority.MONITOR)
     public void onQuickShopReload(QSConfigurationReloadEvent event) {
         reloadConfig();
         init();
-        getLogger().info("QuickShop Compatibility Module - " + getName() + " reloading");
+        getLogger().info("Reloading configuration...");
     }
 
     public QuickShopAPI getApi() {
