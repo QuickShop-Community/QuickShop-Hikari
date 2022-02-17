@@ -19,6 +19,18 @@
 
 package com.ghostchu.quickshop.shop;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.ServiceInjector;
+import com.ghostchu.quickshop.api.economy.EconomyTransaction;
+import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
+import com.ghostchu.quickshop.api.shop.*;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
+import com.ghostchu.quickshop.util.serialize.BlockPos;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
@@ -42,17 +54,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.EconomyTransaction;
-import com.ghostchu.quickshop.api.event.*;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
-import com.ghostchu.quickshop.api.shop.*;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
-import com.ghostchu.quickshop.util.serialize.BlockPos;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -116,7 +117,7 @@ public class ContainerShop implements Shop {
         this.location = s.location.clone();
         this.plugin = s.plugin;
         this.unlimited = s.unlimited;
-        this.moderator = new SimpleShopModerator(s.getOwner(),s.getStaffs());
+        this.moderator = new SimpleShopModerator(s.getOwner(), s.getStaffs());
         this.price = s.price;
         this.isLoaded = s.isLoaded;
         this.isDeleted = s.isDeleted;
@@ -273,23 +274,20 @@ public class ContainerShop implements Shop {
 
     private void initDisplayItem() {
         Util.ensureThread(false);
-        if (plugin.isDisplayEnabled() && !isDisableDisplay()) {
-            switch (AbstractDisplayItem.getNowUsing()) {
-                case REALITEM:
-                    this.displayItem = new RealDisplayItem(this);
-                    break;
-                case VIRTUALITEM:
-                    this.displayItem = new VirtualDisplayItem(this);
-                    break;
-                default:
-                    //Tips will be raised in AbstractDisplayItem#getNowUsing
-                    if (AbstractDisplayItem.isNotSupportVirtualItem()) {
-                        this.displayItem = new RealDisplayItem(this);
-                    } else {
-                        this.displayItem = new VirtualDisplayItem(this);
+        try {
+            if (plugin.isDisplayEnabled() && !isDisableDisplay()) {
+                this.displayItem = switch (AbstractDisplayItem.getNowUsing()) {
+                    case REALITEM -> new RealDisplayItem(this);
+                    case VIRTUALITEM -> new VirtualDisplayItem(this);
+                    case CUSTOM -> {
+                        DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
+                        if (provider == null) yield null;
+                        yield provider.provide(this);
                     }
-                    break;
+                };
             }
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to init display item for shop " + this + ", display item init failed!", e);
         }
     }
 
@@ -831,9 +829,9 @@ public class ContainerShop implements Shop {
         Component line4;
         if (this.isStackingShop()) {
             line4 = plugin.text().of("signs.stack-price",
-                   plugin.getShopManager().format(this.getPrice(), this),
-                   item.getAmount(),
-               Util.getItemStackName(item)).forLocale();
+                    plugin.getShopManager().format(this.getPrice(), this),
+                    item.getAmount(),
+                    Util.getItemStackName(item)).forLocale();
         } else {
             line4 = plugin.text().of("signs.price", LegacyComponentSerializer.legacySection().deserialize(plugin.getShopManager().format(this.getPrice(), this))).forLocale();
         }
@@ -1356,8 +1354,8 @@ public class ContainerShop implements Shop {
             Util.debugLog("SymbolLink Applying: " + symbolLink);
             inventoryWrapper = locateInventory(symbolLink);
         }
-        if(inventoryWrapper == null){
-            Util.debugLog("Cannot locate the Inventory with symbol link: " + symbolLink+", provider: "+inventoryWrapperProvider);
+        if (inventoryWrapper == null) {
+            Util.debugLog("Cannot locate the Inventory with symbol link: " + symbolLink + ", provider: " + inventoryWrapperProvider);
             return null;
         }
         if (inventoryWrapper.isValid()) {
@@ -1492,7 +1490,7 @@ public class ContainerShop implements Shop {
      */
     public boolean isDoubleChestShop() {
         Util.ensureThread(false);
-        if(Util.isDoubleChest(this.getLocation().getBlock().getBlockData())){
+        if (Util.isDoubleChest(this.getLocation().getBlock().getBlockData())) {
             return getAttachedShop() != null;
         }
         return false;

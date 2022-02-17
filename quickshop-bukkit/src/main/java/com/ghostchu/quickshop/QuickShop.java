@@ -415,7 +415,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 setupBootError(BuiltInSolution.econError(), false);
                 return false;
             }
-            economy = ServiceInjector.getEconomy(economy);
+            economy = ServiceInjector.getInjectedService(AbstractEconomy.class, economy);
         } catch (Throwable e) {
             this.getSentryErrorReporter().ignoreThrow();
             getLogger().log(Level.WARNING, "Something going wrong when loading up economy system", e);
@@ -612,7 +612,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             try {
                 onLoad();
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING,"Failed to patch onLoad", ex);
+                getLogger().log(Level.WARNING, "Failed to patch onLoad", ex);
             }
         }
         Timer enableTimer = new Timer(true);
@@ -815,7 +815,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             case 0 -> new QuickShopItemMatcherImpl(this);
             default -> throw new IllegalStateException("Unexpected value: " + getConfig().getInt("matcher.work-type"));
         };
-        this.itemMatcher = ServiceInjector.getItemMatcher(defItemMatcher);
+        this.itemMatcher = ServiceInjector.getInjectedService(ItemMatcher.class, defItemMatcher);
     }
 
     /**
@@ -924,7 +924,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
-                getLogger().log(Level.WARNING,"Thread sleep interrupted",e);
+                getLogger().log(Level.WARNING, "Thread sleep interrupted", e);
             }
             Runtime.getRuntime().halt(0);
         }

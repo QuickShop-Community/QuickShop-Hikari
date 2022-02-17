@@ -132,7 +132,6 @@ public abstract class AbstractDisplayItem implements Reloadable {
         if (getNowUsing() == DisplayType.VIRTUALITEM) {
             return false;
         }
-
         if (!itemStack.hasItemMeta()) {
             return false;
         }
@@ -149,7 +148,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
         //noinspection ConstantConditions
         for (String lore : iMeta.getLore()) {
             try {
-                if (!lore.startsWith("{")) {
+                if (!MsgUtil.isJson(lore)) {
                     continue;
                 }
                 ShopProtectionFlag shopProtectionFlag = JsonUtil.getGson().fromJson(lore, ShopProtectionFlag.class);
@@ -184,19 +183,6 @@ public abstract class AbstractDisplayItem implements Reloadable {
             PLUGIN.saveConfig();
             PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because " + displayType.name() + " type is unsupported");
             return DisplayType.REALITEM;
-        }
-        if (displayType == DisplayType.UNKNOWN) {
-            if (isNotSupportVirtualItem) {
-                PLUGIN.getConfig().set("shop.display-type", 0);
-                PLUGIN.saveConfig();
-                PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because " + displayType.name() + " type is unsupported");
-                return DisplayType.REALITEM;
-            } else {
-                PLUGIN.getConfig().set("shop.display-type", 2);
-                PLUGIN.saveConfig();
-                PLUGIN.getLogger().log(Level.WARNING, "Falling back to VirtualDisplayItem because " + displayType.name() + " type is unsupported");
-                return DisplayType.VIRTUALITEM;
-            }
         }
         return displayType;
     }

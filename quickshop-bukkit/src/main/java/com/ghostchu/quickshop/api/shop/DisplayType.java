@@ -34,10 +34,10 @@ public enum DisplayType {
      * ARMORSTAND = USE ARMORSTAND DISPLAY
      * VIRTUALITEM = USE VIRTUAL DROPPED ITEM (CLIENT SIDE)
      * */
-    UNKNOWN(-1),
     REALITEM(0),
     //  ARMORSTAND(1),
-    VIRTUALITEM(2);
+    VIRTUALITEM(2),
+    CUSTOM(3);
 
     private static final Map<Integer, DisplayType> TYPE_MAP;
 
@@ -56,7 +56,7 @@ public enum DisplayType {
     }
 
     public static @NotNull DisplayType fromID(int id) {
-        return TYPE_MAP.getOrDefault(id, UNKNOWN);
+        return TYPE_MAP.getOrDefault(id, CUSTOM);
     }
 
     public static int toID(@NotNull DisplayType displayType) {
@@ -70,7 +70,7 @@ public enum DisplayType {
         if (displayItem instanceof VirtualDisplayItem) {
             return VIRTUALITEM;
         }
-        return UNKNOWN;
+        return CUSTOM;
     }
 
     public int toID() {

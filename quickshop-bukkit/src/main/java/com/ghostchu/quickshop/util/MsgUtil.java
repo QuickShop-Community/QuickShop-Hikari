@@ -217,7 +217,7 @@ public class MsgUtil {
     @ApiStatus.ScheduledForRemoval
     @Deprecated
     public static void loadGameLanguage(@NotNull String languageCode) {
-        gameLanguage = ServiceInjector.getGameLanguage();
+        gameLanguage = ServiceInjector.getInjectedService(GameLanguage.class,null);
         if (gameLanguage == null) {
             gameLanguage = new MojangGameLanguageImpl(plugin, languageCode);
             ((MojangGameLanguageImpl) gameLanguage).load();

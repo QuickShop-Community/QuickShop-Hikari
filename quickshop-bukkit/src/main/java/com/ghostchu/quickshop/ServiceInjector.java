@@ -23,9 +23,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.shop.ItemMatcher;
-import com.ghostchu.quickshop.localization.game.game.GameLanguage;
 
 /**
  * ServiceInjector used for "Replaceable Modules" features that allow 3rd party QuickShop addon
@@ -34,9 +31,9 @@ import com.ghostchu.quickshop.localization.game.game.GameLanguage;
  * @author Ghost_chu
  */
 public class ServiceInjector {
-    public static @NotNull AbstractEconomy getEconomy(@NotNull AbstractEconomy def) {
-        @Nullable RegisteredServiceProvider<? extends AbstractEconomy> registeredServiceProvider =
-                Bukkit.getServicesManager().getRegistration(AbstractEconomy.class);
+    public static @Nullable <T> T getInjectedService(@NotNull Class<T> clazz, T def) {
+        @Nullable RegisteredServiceProvider<? extends T> registeredServiceProvider =
+                Bukkit.getServicesManager().getRegistration(clazz);
         if (registeredServiceProvider == null) {
             return def;
         } else {
@@ -44,23 +41,4 @@ public class ServiceInjector {
         }
     }
 
-    public static @NotNull ItemMatcher getItemMatcher(@NotNull ItemMatcher def) {
-        @Nullable RegisteredServiceProvider<? extends ItemMatcher> registeredServiceProvider =
-                Bukkit.getServicesManager().getRegistration(ItemMatcher.class);
-        if (registeredServiceProvider == null) {
-            return def;
-        } else {
-            return registeredServiceProvider.getProvider();
-        }
-    }
-
-    public static @Nullable GameLanguage getGameLanguage() {
-        @Nullable RegisteredServiceProvider<? extends GameLanguage> registeredServiceProvider =
-                Bukkit.getServicesManager().getRegistration(GameLanguage.class);
-        if (registeredServiceProvider == null) {
-            return null;
-        } else {
-            return registeredServiceProvider.getProvider();
-        }
-    }
 }
