@@ -2,7 +2,7 @@
   "_comment": "Hej översättare! Om du redigerar detta från Github eller från kodkällor, besök https://crowdin.com/project/quickshop-reremake",
   "file-test": "Detta är en testtextfil. Vi använder den för att testa om messages.json är trasig. Du kan fylla den med valfria påskägg som du gillar här :)",
   "translation-author": "Översättare: Ghost_chu, Andre_601",
-  "translation-version": "Supportversion: Reremake",
+  "translation-version": "Support Version: Hikari",
   "translation-contributors": "Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken och Andre_601",
   "translation-country": "Språkområde: Svenska (sv_SE)",
   "language-version": "63",
@@ -244,10 +244,10 @@
     "toggledisplay-hover": "&eVäxla butikens status för visningsföremålet"
   },
   "tableformat": {
-    "full_line": "+---------------------------------------------------+",
-    "left_half_line": "+--------------------",
-    "right_half_line": "--------------------+",
-    "left_begin": "| "
+    "full_line": "&5+---------------------------------------------------+",
+    "left_half_line": "&5+--------------------",
+    "right_half_line": "&5--------------------+",
+    "left_begin": "&5| "
   },
   "booleanformat": {
     "success": "&a✔",
@@ -293,7 +293,13 @@
       "github": "[GitHub]",
       "spigotmc": "[SpigotMC]",
       "bukkitdev": "[BukkitDev]",
-      "master": "[Master]"
+      "master": "[Master]",
+      "polymart": "[Polymart]",
+      "ore": "[Ore]",
+      "papermc": "[PaperMC]",
+      "nbtapi": "[+NBTAPI]",
+      "paper": "[+Paper Optimized]",
+      "basic": "[Basic]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&cDin butik vid {0} togs bort eftersom du inte hade tillräckligt med pengar för att behålla den!",
@@ -361,5 +367,21 @@
   "purchase-out-of-stock": "&cDenna butik har slut på lagret, Kontakta butiksägare eller personal för att fylla på lagret.",
   "purchase-out-of-space": "&cDenna butik har slut på tillgängligt utrymme, Kontakta butiksägare eller personal för att tömma butiken.",
   "safe-mode": "&cQuickShop är nu i säkert läge, du kan inte öppna den här butiksbehållaren, kontakta serveradministratören för att åtgärda felen.",
-  "safe-mode-admin": "&c&lVARNING: &cQuickShop på denna server som körs nu under safe-mode, inga funktioner kommer att fungera, skriv &e/qs &c kommandot för att kontrollera eventuella fel."
+  "safe-mode-admin": "&c&lVARNING: &cQuickShop på denna server som körs nu under safe-mode, inga funktioner kommer att fungera, skriv &e/qs &c kommandot för att kontrollera eventuella fel.",
+  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
+  "edition-confilct": "QuicShop-Hikari med QuickShop-Reremake installerat kan strida mot varandra, avinstallera en av dem.",
+  "plugin-cancelled": "&cOperationen avbruten, Orsak: {0}",
+  "paste-disabled": "&cPaste functionality has been disabled! You cannot request technical support. \nReason: {0}",
+  "support-disable-reason": {
+    "privacy": "&eThis server running under cracked (offline) mode. If you are running bukkit server under proxy and online-mode=true on proxy, please configure the proxy related settings correctly.",
+    "authlib-injector-detected": "&eThis server running under 3rd-party authlib provider like authlib-injector.",
+    "bad-hosts": "&eThis server HOSTS has been modified and QuickShop some functions require connect to Mojang API correctly. Fix the HOSTS before asking support, Windows at C:\\windows\\system32\\drivers\\etc\\hosts, Linux at /etc/hosts.",
+    "hot-reload": "&eUnsupported hot reloaded, restart the server and check again.",
+    "outdated": "&eThis version of QuickShop already outdated, up-to-date before requesting support!",
+    "modified": "&eFile integrity check failed, this QuickShop build has been modified by others.",
+    "unsupported-server-software": "&eUnsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.",
+    "consolespamfix-installed": "&eConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support."
+  },
+  "inventory-unavailable": "&cThis shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.",
+  "inventory-error": "&cFailed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators."
 }

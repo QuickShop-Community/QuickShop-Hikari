@@ -2,7 +2,7 @@
   "_comment": "Olá, tradutor! Se você editar isso do Github ou de fontes de código, você deve ir https://crowdin.com/project/quickshop-remake",
   "file-test": "Este é um arquivo de texto de teste. Nós o usamos para testar se as mensagens são enviadas. filho está quebrado. Você pode preenchê-lo com quaisquer ovos de Páscoa que goste aqui :)",
   "translation-author": "Tradutor: Ghost_chu, Andre_601",
-  "translation-version": "Versão de suporte: Remake",
+  "translation-version": "Support Version: Hikari",
   "translation-contributors": "Contribuidores: Torre de Timor, Netherfoam, KaiNoMood, Mgazul, JackTheChicken e Andre_601",
   "translation-country": "Zona do idioma: Português Brasileiro (pt_BR)",
   "language-version": "63",
@@ -98,7 +98,7 @@
     "owner": "&aProprietário: {0}",
     "item": "&aItem: &e{0}",
     "item-holochat-error": "&c[Erro]",
-    "item-holochat-data-too-large": "&c[Error] Item NBT é muito grande para exibição",
+    "item-holochat-data-too-large": "&c[Error] Item NBT is too large for showing",
     "preview": "&b[Visualização do item]",
     "space": "&aEspaço: &e{0}",
     "stock": "&aEstoque &e{0}",
@@ -126,7 +126,7 @@
       "limited": "&aLoja agora é limitada"
     },
     "toggle-always-counting": {
-      "counting": "&aShop agora está sempre contando o contêiner, mesmo que ilimitado",
+      "counting": "&aShop is now always counting container even is unlimited",
       "not-counting": "&aShop agora é respeitado se a loja é ilimitada"
     },
     "transfer-success": "&aTransferido &e{0} &ashop(s) para &e{1}",
@@ -212,7 +212,7 @@
   },
   "controlpanel": {
     "alwayscounting": "&aSempre contando: {0} &e[&d&lAltere&e]",
-    "alwayscounting-hover": "&eClique para alternar se a loja está sempre contando contêiner.",
+    "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aProprietário: &b{0} &e[&d&lMudar&e]",
     "infomation": "&aPainel de Controle da Loja:",
     "setowner-hover": "&eClique para alterar o proprietário.",
@@ -244,10 +244,10 @@
     "toggledisplay-hover": "&eAtivar o display de itens nessa loja"
   },
   "tableformat": {
-    "full_line": "+---------------------------------------------------+",
-    "left_half_line": "+--------------------",
-    "right_half_line": "--------------------+",
-    "left_begin": "| "
+    "full_line": "&5+---------------------------------------------------+",
+    "left_half_line": "&5+--------------------",
+    "right_half_line": "&5--------------------+",
+    "left_begin": "&5| "
   },
   "booleanformat": {
     "success": "&a✔",
@@ -293,7 +293,13 @@
       "github": "[GitHub]",
       "spigotmc": "[SpigotMC]",
       "bukkitdev": "[BukkitDev]",
-      "master": "[Master]"
+      "master": "[Master]",
+      "polymart": "[Polymart]",
+      "ore": "[Ore]",
+      "papermc": "[PaperMC]",
+      "nbtapi": "[+NBTAPI]",
+      "paper": "[+Paper Optimized]",
+      "basic": "[Basic]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&cSua loja em {0} foi removida! Você não tem dinheiro suficiente para mantê-la!",
@@ -346,9 +352,9 @@
   "server-crash-warning": "&cO servidor pode falhar após executar o comando /qs reload se você substituir/delete o arquivo Jar do plugin QuickShop enquanto o servidor é executado.",
   "reloading-status": {
     "success": "&aRecarregar concluído sem quaisquer erros.",
-    "require-restart": "&aRecarregamento completo. &e(As mudanças requerem reinicialização do servidor para afetar)",
+    "require-restart": "&aReload completed. &e(Some changes require server restart to affect)",
     "failed": "&cRecarregar falhou, verifique o console do servidor",
-    "scheduled": "&aRecarregar completo. &7(Somente alterações necessárias um tempo para afetar)"
+    "scheduled": "&aReload completed. &7(Some changes required a while to affect)"
   },
   "client-language-changed": "&aO plugin detectou sua linguagem, agora estamos usando a linguagem {0} com você.",
   "client-language-unsupported": "&eO plugin não suporta sua linguagem, voltamos a usar a linguagem {0} com você.",
@@ -361,5 +367,21 @@
   "purchase-out-of-stock": "&cEssa loja está sem itens no estoque, Chame o dono ou alguém da equipe caso for lojas de admin para re-estocar.",
   "purchase-out-of-space": "&cEssa loja está cheia, Chame o dono ou alguém da equipe caso for loja de admin para limpar.",
   "safe-mode": "&cQuickShop agora está em modo seguro, você não pode abrir esta loja, por favor entre em contato com o administrador do servidor para corrigir os erros.",
-  "safe-mode-admin": "&c&lAVISO: &cO QuickShop neste servidor agora rodando em modo seguro, nenhum recurso funcionará, por favor digite o comando &e/qs &c para verificar quaisquer erros."
+  "safe-mode-admin": "&c&lAVISO: &cO QuickShop neste servidor agora rodando em modo seguro, nenhum recurso funcionará, por favor digite o comando &e/qs &c para verificar quaisquer erros.",
+  "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
+  "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
+  "plugin-cancelled": "&cOperation cancelled, Reason: {0}",
+  "paste-disabled": "&cPaste functionality has been disabled! You cannot request technical support. \nReason: {0}",
+  "support-disable-reason": {
+    "privacy": "&eThis server running under cracked (offline) mode. If you are running bukkit server under proxy and online-mode=true on proxy, please configure the proxy related settings correctly.",
+    "authlib-injector-detected": "&eThis server running under 3rd-party authlib provider like authlib-injector.",
+    "bad-hosts": "&eThis server HOSTS has been modified and QuickShop some functions require connect to Mojang API correctly. Fix the HOSTS before asking support, Windows at C:\\windows\\system32\\drivers\\etc\\hosts, Linux at /etc/hosts.",
+    "hot-reload": "&eUnsupported hot reloaded, restart the server and check again.",
+    "outdated": "&eThis version of QuickShop already outdated, up-to-date before requesting support!",
+    "modified": "&eFile integrity check failed, this QuickShop build has been modified by others.",
+    "unsupported-server-software": "&eUnsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.",
+    "consolespamfix-installed": "&eConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support."
+  },
+  "inventory-unavailable": "&cThis shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.",
+  "inventory-error": "&cFailed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators."
 }

@@ -1,8 +1,8 @@
 {
-  "_comment": "嗨！翻译者！如果您正在Github上或直接编辑源文件的方式进行翻译，请您前往：https://crowdin.com/project/quickshop-reremake",
+  "_comment": "嗨 翻译者！如果您正在Github上或直接编辑源文件的方式进行翻译，请您前往：https://crowdin.com/project/quickshop-reremake",
   "file-test": "这是个测试文件，我们可以用它来测试 messages.json 文件是否损坏。你可以在这里填入任何喜欢的彩蛋 :)",
   "translation-author": "翻译人员： Ghost_chu, Andre_601, 李馨雨, YuanYuanOwO",
-  "translation-version": "支持版本：Reremake",
+  "translation-version": "支持版本: Hikari",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",
   "translation-country": "本地化语言：简体中文 (zh_CN)",
   "language-version": "63",
@@ -25,11 +25,11 @@
   "price-too-cheap": "&c价格必须大于&e${0}",
   "no-price-change": "&c这不会导致价格变动！",
   "you-cant-afford-a-new-shop": "&c你需要 {0} 才能创建一个商店。",
-  "player-bought-from-your-store-tax": "&c{0} 从你的商店里购买了 {1} 个 {2}，你因此赚得了 {3} 元(扣税 {4} 元)",
+  "player-bought-from-your-store-tax": "&c{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3} (扣税{4})",
   "you-cant-afford-to-change-price": "&c你需要 {0} 才能修改商店的价格。",
   "success-created-shop": "&c商店已创建",
   "success-removed-shop": "&a商店已删除！",
-  "shops-arent-locked": "&c注意，商店无法防盗，如果您想要防盗功能，请使用Lockette，LWC，等插件锁住商店。",
+  "shops-arent-locked": "&c注意，商店无法防盗，如果您想要防盗功能，请使用Lockette，LWC，等插件锁住箱子。",
   "shop-creation-cancelled": "&c商店创建已取消。",
   "shop-purchase-cancelled": "&c您取消了交易操作。",
   "shop-stock-too-low": "&c这个商店只有 {0} 个 {1} 了。",
@@ -153,7 +153,7 @@
     "description": {
       "alwayscounting": "&e设置商店是否总会计算容器物品（即使是无限商店）",
       "title": "&aQuickShop 帮助",
-      "unlimited": "&e将商店设置为无限库存。",
+      "unlimited": "&e将商店设置为无限库存",
       "setowner": "&e为商店设置新的所有者。",
       "owner": "&e为商店设置新的所有者。",
       "buy": "&e切换到 &d收购 &e模式",
@@ -244,10 +244,10 @@
     "toggledisplay-hover": "&e切换商店是否显示悬浮物"
   },
   "tableformat": {
-    "full_line": "+---------------------------------------------------+",
-    "left_half_line": "+--------------------",
-    "right_half_line": "--------------------+",
-    "left_begin": "| "
+    "full_line": "&5+---------------------------------------------------+",
+    "left_half_line": "&5+--------------------",
+    "right_half_line": "&5--------------------+",
+    "left_begin": "&5| "
   },
   "booleanformat": {
     "success": "&a✔",
@@ -293,7 +293,13 @@
       "github": "[GitHub]",
       "spigotmc": "[SpigotMC]",
       "bukkitdev": "[BukkitDev]",
-      "master": "[主分支]"
+      "master": "[主分支]",
+      "polymart": "[Polymart]",
+      "ore": "[Ore]",
+      "papermc": "[PaperMC]",
+      "nbtapi": "[+NBTAPI]",
+      "paper": "[+Paper端优化]",
+      "basic": "[Basic]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&c你在 {0} 的商店已经被移除了，因为你没有足够的资金去维持它！",
@@ -361,5 +367,21 @@
   "purchase-out-of-stock": "&c这个商店已缺货，请联系商店所有者或助手补充库存",
   "purchase-out-of-space": "&c这个商店空间已不足，请联系商店所有者或助手清空商店",
   "safe-mode": "&cQuickShop 现在处于安全模式，您不能打开这个商店容器，请与服务器管理员联系以修复错误。",
-  "safe-mode-admin": "&c&l警告: &c此服务器上的QuickShop正在安全模式下运行，任何功能都无法工作，请输入&e/qs &c 命令来检查错误。"
+  "safe-mode-admin": "&c&l警告: &c此服务器上的QuickShop正在安全模式下运行，任何功能都无法工作，请输入&e/qs &c 命令来检查错误。",
+  "bungee-cross-server-msg": "&eQuickShop跨服信息: &a{0}",
+  "edition-confilct": "QuickShop-Hikari 与 QuickShop-Reremake 同时安装在服务器中可能会相互冲突，你需要卸载其中一个",
+  "plugin-cancelled": "&c操作被取消，原因： {0}",
+  "paste-disabled": "&cPaste功能已被禁用！你不能请求技术支持。 \n原因： {0}",
+  "support-disable-reason": {
+    "privacy": "&e该服务器在破解（离线）模式下运行。如果你在代理下运行bukkit服务器，并且在代理上的online-mode=true，请正确配置代理相关设置。",
+    "authlib-injector-detected": "&e该服务器在第三方authlib提供商（如authlib-injector）下运行。",
+    "bad-hosts": "&e该服务器 HOSTS 已被修改，QuickShop 的一些功能需要连接到 Mojang API。 在请求支持之前修复HOSTS, Windows 路径 C:\\windows\\system32\\drivers\\et\\hosts, Linux 路径/etc/hosts。",
+    "hot-reload": "&e热重载不受支持，请重启服务器并再次检查。",
+    "outdated": "&e该版本的QuickShop已过时，在请求支持之前更新到最新版本！",
+    "modified": "&e文件完整性检查失败，此QuickShop构建已被其他人修改。",
+    "unsupported-server-software": "&e不受支持的服务端核心，任何修改过的混合服务端核心都不支持，包括MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard等。",
+    "consolespamfix-installed": "&e检测到 ConsoleSpamFix 已安装，它将隐藏异常详情，在请求支持时前暂时禁用它。"
+  },
+  "inventory-unavailable": "&c此商店InventoryWrapper不存在或无效。 你是否使用附属插件重新绑定商店库存？信息：InventoryWrapper={0}，WrapperProvider={1}，SymbolLink={2}。请联系服务器管理员。",
+  "inventory-error": "&c处理InventoryWrapper失败。 你是否使用附属插件重新绑定商店库存？信息：异常={0}，InventoryWrapper={1}，WrapperType={2}，WrapperProvider={3}，SymbolLink={4}。 请联系服务器管理员"
 }
