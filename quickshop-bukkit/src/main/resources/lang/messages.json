@@ -381,6 +381,6 @@
     "modified": "&eFile integrity check failed, this QuickShop build has been modified by others.",
     "unsupported-server-software": "&eUnsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.",
     "consolespamfix-installed": "&eConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support."
-    }   
- "inventory-unavailable": "&cThis shop Inventory not exists or invalid. Did you using addon to re-binding the shop Inventory? Infomation: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Contact server administrator for helps."
+  },
+  "inventory-unavailable": "&cThis shop Inventory not exists or invalid. Did you using addon to re-binding the shop Inventory? Infomation: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators."
 }
