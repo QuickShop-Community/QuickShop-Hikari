@@ -646,7 +646,6 @@ public class MsgUtil {
             return plugin.getPlatform().getItemTranslationKey(stack.getType());
         } else {
             return LegacyComponentSerializer.legacySection().deserialize(Util.getItemStackName(stack));
-
         }
     }
 }

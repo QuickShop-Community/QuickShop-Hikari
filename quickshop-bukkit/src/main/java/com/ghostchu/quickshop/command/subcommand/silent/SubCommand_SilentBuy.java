@@ -19,13 +19,12 @@
 
 package com.ghostchu.quickshop.command.subcommand.silent;
 
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 
 public class SubCommand_SilentBuy extends SubCommand_SilentBase {
@@ -44,7 +43,7 @@ public class SubCommand_SilentBuy extends SubCommand_SilentBase {
         shop.setShopType(ShopType.BUYING);
         shop.update();
         MsgUtil.sendControlPanelInfo(sender, shop);
-        plugin.text().of(sender, "command.now-buying", Util.getItemStackName(shop.getItem())).send();
+        plugin.text().of(sender, "command.now-buying", MsgUtil.getTranslateText(shop.getItem())).send();
     }
 
 
