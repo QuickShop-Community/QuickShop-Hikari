@@ -51,9 +51,10 @@ public class InventoryTransaction {
     private final QuickShop plugin = QuickShop.getInstance();
     @Getter
     private String lastError;
+
     @Builder
     public InventoryTransaction(@Nullable InventoryWrapper from, @Nullable InventoryWrapper to, @NotNull ItemStack item, int amount) {
-        if(from == null && to == null)
+        if (from == null && to == null)
             throw new IllegalArgumentException("Both from and to are null");
         this.from = from;
         this.to = to;
@@ -72,7 +73,7 @@ public class InventoryTransaction {
         Util.debugLog("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + Util.serialize(item));
         boolean result = commit();
         if (!result) {
-            Util.debugLog("Fail-safe commit failed, starting rollback: "+lastError);
+            Util.debugLog("Fail-safe commit failed, starting rollback: " + lastError);
             rollback(true);
         }
         return result;
@@ -98,18 +99,18 @@ public class InventoryTransaction {
      * @return The transaction success.
      */
     public boolean commit(@NotNull InventoryTransaction.TransactionCallback callback) {
-        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: "+Util.serialize(item));
+        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + Util.serialize(item));
         if (!callback.onCommit(this)) {
             this.lastError = "Plugin cancelled this transaction.";
             return false;
         }
         if (from != null && !this.executeOperation(new RemoveItemOperation(item, amount, from))) {
-            this.lastError = "Failed to remove " + amount + "x "+Util.serialize(item) +" from "+from;
+            this.lastError = "Failed to remove " + amount + "x " + Util.serialize(item) + " from " + from;
             callback.onFailed(this);
             return false;
         }
         if (to != null && !this.executeOperation(new AddItemOperation(item, amount, to))) {
-            this.lastError = "Failed to add " + amount + "x "+Util.serialize(item) +" to "+to;
+            this.lastError = "Failed to add " + amount + "x " + Util.serialize(item) + " to " + to;
             callback.onFailed(this);
             return false;
         }
@@ -149,14 +150,17 @@ public class InventoryTransaction {
         while (!processingStack.isEmpty()) {
             Operation operation = processingStack.pop();
             if (!operation.isCommitted()) {
+                Util.debugLog("Operation: " + operation + " is not committed, skip rollback.");
                 continue;
             }
             if (operation.isRollback()) {
+                Util.debugLog("Operation: " + operation + " is already rolled back, skip rollback.");
                 continue;
             }
             try {
                 boolean result = operation.rollback();
                 if (!result) {
+                    Util.debugLog("Rollback failed: " + operation);
                     if (continueWhenFailed) {
                         operations.add(operation);
                         continue;
@@ -164,6 +168,7 @@ public class InventoryTransaction {
                         break;
                     }
                 }
+                Util.debugLog("Rollback successed: " + operation);
                 operations.add(operation);
             } catch (Exception exception) {
                 if (continueWhenFailed) {
@@ -205,13 +210,10 @@ public class InventoryTransaction {
          * @param economyTransaction Transaction
          */
         default void onFailed(@NotNull InventoryTransaction economyTransaction) {
-          }
+        }
 
 
     }
-
-
-
 
 
 }

@@ -63,6 +63,7 @@ public class RemoveItemOperation implements Operation {
             if(notFit.isEmpty()){
                 remains -= stackSize;
             }else{
+                remains -= stackSize - notFit.entrySet().iterator().next().getValue().getAmount();
                 return false;
             }
         }
@@ -80,6 +81,7 @@ public class RemoveItemOperation implements Operation {
             if(notSaved.isEmpty()) {
                 rollbackRemains -= stackSize;
             }else{
+                rollbackRemains -= stackSize - notSaved.entrySet().iterator().next().getValue().getAmount();
                 return false;
             }
         }

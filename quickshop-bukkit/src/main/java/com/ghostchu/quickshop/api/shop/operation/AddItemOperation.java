@@ -63,6 +63,7 @@ public class AddItemOperation implements Operation {
             if(notSaved.isEmpty()) {
                 remains -= stackSize;
             }else{
+                rollbackRemains -= stackSize - notSaved.entrySet().iterator().next().getValue().getAmount();
                 return false;
             }
         }
@@ -80,6 +81,7 @@ public class AddItemOperation implements Operation {
             if(notFit.isEmpty()){
                 rollbackRemains -= stackSize;
             }else{
+                remains -= stackSize - notFit.entrySet().iterator().next().getValue().getAmount();
                 return false;
             }
         }

@@ -212,63 +212,63 @@ public class Util {
             return items / item.getAmount();
         }
     }
+//
+//    /**
+//     * Counts the number of shop items in the given inventory where Util.matches(inventory item, item) is
+//     * true.
+//     *
+//     * @param inv  The inventory to search
+//     * @param shop The Shop for matching
+//     * @return The number of shop items that match in this inventory.
+//     */
+//    public static int countItems(@Nullable InventoryWrapper inv, @NotNull Shop shop) {
+//        if (inv == null) {
+//            return 0;
+//        }
+//        if (inv instanceof CountableInventoryWrapper) {
+//            return ((CountableInventoryWrapper) inv).countItem(shop::matches);
+//        } else {
+//            int items = 0;
+//            for (final ItemStack iStack : inv) {
+//                if (iStack == null || iStack.getType() == Material.AIR) {
+//                    continue;
+//                }
+//                if (shop.matches(iStack)) {
+//                    items += iStack.getAmount();
+//                }
+//            }
+//            return items / shop.getItem().getAmount();
+//        }
+//    }
 
-    /**
-     * Counts the number of shop items in the given inventory where Util.matches(inventory item, item) is
-     * true.
-     *
-     * @param inv  The inventory to search
-     * @param shop The Shop for matching
-     * @return The number of shop items that match in this inventory.
-     */
-    public static int countItems(@Nullable InventoryWrapper inv, @NotNull Shop shop) {
-        if (inv == null) {
-            return 0;
-        }
-        if (inv instanceof CountableInventoryWrapper) {
-            return ((CountableInventoryWrapper) inv).countItem(shop::matches);
-        } else {
-            int items = 0;
-            for (final ItemStack iStack : inv) {
-                if (iStack == null || iStack.getType() == Material.AIR) {
-                    continue;
-                }
-                if (shop.matches(iStack)) {
-                    items += iStack.getAmount();
-                }
-            }
-            return items / shop.getItem().getAmount();
-        }
-    }
-
-    /**
-     * Returns the number of shop items that can be given to the inventory safely.
-     *
-     * @param inv  The inventory to count
-     * @param shop The shop containing item prototype. Material, durabiltiy and enchants must match for 'stackability'
-     *             to occur.
-     * @return The number of shop items that can be given to the inventory safely.
-     */
-    public static int countSpace(@Nullable InventoryWrapper inv, @NotNull Shop shop) {
-        if (inv == null) {
-            return 0;
-        }
-        if (inv instanceof CountableInventoryWrapper) {
-            return ((CountableInventoryWrapper) inv).countSpace(shop::matches);
-        } else {
-            ItemStack item = shop.getItem();
-            int space = 0;
-            int itemMaxStackSize = getItemMaxStackSize(item.getType());
-            for (ItemStack iStack : inv) {
-                if (iStack == null || iStack.getType() == Material.AIR) {
-                    space += itemMaxStackSize;
-                } else if (shop.matches(iStack)) {
-                    space += iStack.getAmount() >= itemMaxStackSize ? 0 : itemMaxStackSize - iStack.getAmount();
-                }
-            }
-            return space / item.getAmount();
-        }
-    }
+//    /**
+//     * Returns the number of shop items that can be given to the inventory safely.
+//     *
+//     * @param inv  The inventory to count
+//     * @param shop The shop containing item prototype. Material, durabiltiy and enchants must match for 'stackability'
+//     *             to occur.
+//     * @return The number of shop items that can be given to the inventory safely.
+//     */
+//    public static int countSpace(@Nullable InventoryWrapper inv, @NotNull Shop shop) {
+//        if (inv == null) {
+//            return 0;
+//        }
+//        if (inv instanceof CountableInventoryWrapper) {
+//            return ((CountableInventoryWrapper) inv).countSpace(shop::matches);
+//        } else {
+//            ItemStack item = shop.getItem();
+//            int space = 0;
+//            int itemMaxStackSize = getItemMaxStackSize(item.getType());
+//            for (ItemStack iStack : inv) {
+//                if (iStack == null || iStack.getType() == Material.AIR) {
+//                    space += itemMaxStackSize;
+//                } else if (shop.matches(iStack)) {
+//                    space += iStack.getAmount() >= itemMaxStackSize ? 0 : itemMaxStackSize - iStack.getAmount();
+//                }
+//            }
+//            return space / item.getAmount();
+//        }
+//    }
 
     /**
      * Returns the number of items that can be given to the inventory safely.
