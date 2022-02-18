@@ -201,12 +201,12 @@ public class InventoryTransaction {
 
         /**
          * Calling while Transaction commit failed
-         * Use EconomyTransaction#getLastError() to getting reason
-         * Use EconomyTransaction#getSteps() to getting the fail step
+         * Use InventoryTransaction#getLastError() to getting reason
+         * Use InventoryTransaction#getSteps() to getting the fail step
          *
-         * @param economyTransaction Transaction
+         * @param transaction Transaction
          */
-        default void onFailed(@NotNull InventoryTransaction economyTransaction) {
+        default void onFailed(@NotNull InventoryTransaction transaction) {
         }
 
 
