@@ -1086,7 +1086,7 @@ public class ContainerShop implements Shop {
             Util.debugLog("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
             return 0;
         }
-        int space = Util.countSpace(this.getInventory(), this);
+        int space = Util.countSpace(this.getInventory(), this.getItem());
         new ShopInventoryCalculateEvent(this, space, -1).callEvent();
         Util.debugLog("Space count is: " + space);
         return space;
@@ -1107,7 +1107,7 @@ public class ContainerShop implements Shop {
             Util.debugLog("Failed to calc RemainingStock for shop " + this + ": Inventory null.");
             return 0;
         }
-        int stock = Util.countItems(this.getInventory(), this);
+        int stock = Util.countItems(this.getInventory(), this.getItem());
         new ShopInventoryCalculateEvent(this, -1, stock).callEvent();
         return stock;
     }
