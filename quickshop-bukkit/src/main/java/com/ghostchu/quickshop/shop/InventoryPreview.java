@@ -87,17 +87,6 @@ public class InventoryPreview implements Listener {
         }
     }
 
-    @Deprecated
-    public static boolean isPreviewItem(@Nullable ItemStack stack) {
-        if (stack == null) {
-            return false;
-        }
-        if (!stack.hasItemMeta() || !stack.getItemMeta().hasLore()) {
-            return false;
-        }
-        return stack.getItemMeta().getPersistentDataContainer().get(NAMESPACED_KEY, PreviewGuiPersistentDataType.INSTANCE) != null;
-    }
-
     /**
      * Open the preview GUI for player.
      */
