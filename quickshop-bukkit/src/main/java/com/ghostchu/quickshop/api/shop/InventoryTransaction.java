@@ -126,11 +126,8 @@ public class InventoryTransaction {
             throw new IllegalStateException("Operation already rolled back, you must create another new operation.");
         }
         try {
-            boolean result = operation.commit();
-            if (!result)
-                return false;
-            processingStack.push(operation);
-            return true;
+            processingStack.push(operation); // Item is special, economy fail won't do anything but item does.
+            return operation.commit();
         } catch (Exception exception) {
             this.lastError = "Failed to execute operation: " + operation;
             return false;
