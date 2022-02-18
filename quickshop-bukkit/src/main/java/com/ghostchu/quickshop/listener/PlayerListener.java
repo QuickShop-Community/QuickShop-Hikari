@@ -230,13 +230,13 @@ public class PlayerListener extends AbstractQSListener {
     private int sellingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
         int amount;
         int shopHaveItems = shop.getRemainingStock();
-        int invHaveSpaces = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop.getItem());
+        int invHaveSpaces = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
         if (shop.isAlwaysCountingContainer() || !shop.isUnlimited()) {
             amount = Math.min(shopHaveItems, invHaveSpaces);
         } else {
             // should check not having items but having empty slots, cause player is trying to buy
             // items from the shop.
-            amount = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop.getItem());
+            amount = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
         }
         // typed 'all', check if player has enough money than price * amount
         double price = shop.getPrice();
@@ -274,8 +274,8 @@ public class PlayerListener extends AbstractQSListener {
     private int buyingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
         int amount;
         int shopHaveSpaces =
-                Util.countSpace(shop.getInventory(), shop.getItem());
-        int invHaveItems = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop.getItem());
+                Util.countSpace(shop.getInventory(), shop);
+        int invHaveItems = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
         // Check if shop owner has enough money
         double ownerBalance = eco
                 .getBalance(shop.getOwner(), shop.getLocation().getWorld(),
@@ -290,7 +290,7 @@ public class PlayerListener extends AbstractQSListener {
             amount = Math.min(shopHaveSpaces, invHaveItems);
             amount = Math.min(amount, ownerCanAfford);
         } else {
-            amount = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop.getItem());
+            amount = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
             // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
             // true,
             // the unlimited shop owner should have enough money.
@@ -506,9 +506,9 @@ public class PlayerListener extends AbstractQSListener {
     private int getPlayerCanBuy( @NotNull Shop shop, double traderBalance, double price, @NotNull InventoryWrapper playerInventory) {
         boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
         if (shop.isFreeShop()) { // Free shop
-            return isContainerCountingNeeded ? Util.countSpace(playerInventory, shop.getItem()) : Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop.getItem()));
+            return isContainerCountingNeeded ? Util.countSpace(playerInventory, shop) : Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop));
         }
-        int itemAmount = Math.min(Util.countSpace(playerInventory, shop.getItem()), (int) Math.floor(traderBalance / price));
+        int itemAmount = Math.min(Util.countSpace(playerInventory, shop), (int) Math.floor(traderBalance / price));
         if (!isContainerCountingNeeded) {
             itemAmount = Math.min(itemAmount, shop.getRemainingStock());
         }
@@ -521,10 +521,10 @@ public class PlayerListener extends AbstractQSListener {
     private int getPlayerCanSell( @NotNull Shop shop, double ownerBalance, double price, @NotNull  InventoryWrapper playerInventory) {
         boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
         if (shop.isFreeShop()) {
-            return isContainerCountingNeeded ? Util.countItems(playerInventory, shop.getItem()) : Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop.getItem()));
+            return isContainerCountingNeeded ? Util.countItems(playerInventory, shop) : Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop));
         }
 
-        int items = Util.countItems(playerInventory, shop.getItem());
+        int items = Util.countItems(playerInventory, shop);
         final int ownerCanAfford = (int) (ownerBalance / price);
         if (!isContainerCountingNeeded) {
             // Amount check player amount and shop empty slot
