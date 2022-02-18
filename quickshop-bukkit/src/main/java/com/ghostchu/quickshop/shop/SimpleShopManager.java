@@ -706,7 +706,14 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return;
         }
         Player player = plugin.getServer().getPlayer(buyer);
-        shop.buy(buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
+        try {
+            shop.buy(buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
+        } catch (Exception shopError) {
+            plugin.getLogger().log(Level.WARNING,"Failed to processing purchase, rolling back...", shopError);
+            transaction.rollback(true);
+            plugin.text().of(buyer, "shop-transaction-failed", shopError.getMessage()).send();
+            return;
+        }
         sendSellSuccess(buyer, shop, amount, total, CalculateUtil.subtract(1, taxModifier));
         ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, taxModifier);
         plugin.getServer().getPluginManager().callEvent(se);
@@ -1025,6 +1032,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     MsgUtil.getTranslateText(shop.getItem())).send();
             return;
         }
+        int playerSpace = Util.countSpace(sellerInventory, shop);
+        if (playerSpace < amount) {
+            plugin.text().of(seller, "inventory-space-full", amount, playerSpace).send();
+            return;
+        }
         if (amount < 1) {
             // & Dumber
             plugin.text().of(seller, "negative-amount").send();
@@ -1087,7 +1099,14 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return;
         }
         Player player = plugin.getServer().getPlayer(seller);
-        shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
+        try {
+            shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
+        } catch (Exception shopError) {
+            plugin.getLogger().log(Level.WARNING,"Failed to processing purchase, rolling back...", shopError);
+            transaction.rollback(true);
+            plugin.text().of(seller, "shop-transaction-failed", shopError.getMessage()).send();
+            return;
+        }
         sendPurchaseSuccess(seller, shop, amount, total, CalculateUtil.subtract(1, taxModifier));
         ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, taxModifier);
         plugin.getServer().getPluginManager().callEvent(se);

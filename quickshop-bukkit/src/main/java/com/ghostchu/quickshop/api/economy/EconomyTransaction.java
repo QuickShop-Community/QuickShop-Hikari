@@ -20,9 +20,9 @@
 package com.ghostchu.quickshop.api.economy;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.operation.Operation;
-import com.ghostchu.quickshop.api.economy.operation.economy.DepositEconomyOperation;
-import com.ghostchu.quickshop.api.economy.operation.economy.WithdrawEconomyOperation;
+import com.ghostchu.quickshop.api.operation.Operation;
+import com.ghostchu.quickshop.api.economy.operation.DepositEconomyOperation;
+import com.ghostchu.quickshop.api.economy.operation.WithdrawEconomyOperation;
 import com.ghostchu.quickshop.api.event.EconomyCommitEvent;
 import com.ghostchu.quickshop.util.CalculateUtil;
 import com.ghostchu.quickshop.util.JsonUtil;
@@ -132,6 +132,7 @@ public class EconomyTransaction {
         Util.debugLog("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + ", EconomyCore: " + core.getName());
         boolean result = commit();
         if (!result) {
+            Util.debugLog("Fail-safe commit failed, starting rollback: "+lastError);
             rollback(true);
         }
         return result;
@@ -171,7 +172,7 @@ public class EconomyTransaction {
             this.lastError = "Plugin cancelled this transaction.";
             return false;
         }
-        if (checkBalance()) {
+        if (!checkBalance()) {
             this.lastError = "From hadn't enough money";
             callback.onFailed(this);
             return false;

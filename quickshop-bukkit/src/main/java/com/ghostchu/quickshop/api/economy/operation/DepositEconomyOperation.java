@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is WithdrawEconomyOperation.java
+ *  This file is a part of project QuickShop, the name is DepositEconomyOperation.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,10 +17,10 @@
  *
  */
 
-package com.ghostchu.quickshop.api.economy.operation.economy;
+package com.ghostchu.quickshop.api.economy.operation;
 
 import com.ghostchu.quickshop.api.economy.EconomyCore;
-import com.ghostchu.quickshop.api.economy.operation.Operation;
+import com.ghostchu.quickshop.api.operation.Operation;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

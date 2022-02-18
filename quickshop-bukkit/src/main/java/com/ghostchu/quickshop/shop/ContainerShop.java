@@ -298,7 +298,7 @@ public class ContainerShop implements Shop {
      * @param amount The amount to add to the shop.
      */
     @Override
-    public void add(@NotNull ItemStack item, int amount) {
+    public void add(@NotNull ItemStack item, int amount) throws Exception {
         Util.ensureThread(false);
         if (this.unlimited) {
             return;
@@ -307,9 +307,7 @@ public class ContainerShop implements Shop {
         int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
         InventoryWrapper inv = this.getInventory();
         if (inv == null) {
-            plugin.getLogger().warning("Failed to add item " + item + " x" + amount + " to shop " + this + ": Inventory null.");
-            Util.debugLog("Failed to add item " + item + " x" + amount + " to shop " + this + ": Inventory null. Provider: " + inventoryWrapperProvider);
-            return;
+            throw new IllegalArgumentException("Failed to add item to shop " + this + ", the inventory is null!");
         }
         int remains = amount;
         while (remains > 0) {
@@ -344,7 +342,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void buy(@NotNull UUID buyer, @NotNull InventoryWrapper buyerInventory,
-                    @NotNull Location loc2Drop, int amount) {
+                    @NotNull Location loc2Drop, int amount) throws Exception {
         Util.ensureThread(false);
         amount = amount * item.getAmount();
         if (amount < 0) {
@@ -353,30 +351,15 @@ public class ContainerShop implements Shop {
         }
         InventoryWrapperIterator buyerIterator = buyerInventory.iterator();
         if (this.isUnlimited() && !isAlwaysCountingContainer) {
-            while (amount > 0 && buyerIterator.hasNext()) {
-                ItemStack stack = buyerIterator.next();
-                if (stack == null || stack.getType() == Material.AIR) {
-                    continue; // No item
-                }
-                if (matches(stack)) {
-                    int stackSize = Math.min(amount, stack.getAmount());
-                    stack.setAmount(stack.getAmount() - stackSize);
-                    amount -= stackSize;
-                    buyerIterator.setCurrent(stack);
-                }
-            }
-            this.setSignText();
-            // This should not happen.
-            if (amount > 0) {
-                plugin.getLogger().log(
-                        Level.WARNING,
-                        "Could not take all items from a players inventory on purchase! "
-                                + buyer
-                                + ", missing: "
-                                + amount
-                                + ", item: "
-                                + Util.getItemStackName(this.getItem())
-                                + "!");
+            InventoryTransaction transaction = InventoryTransaction
+                    .builder()
+                    .from(buyerInventory)
+                    .to(null) // To void
+                    .item(this.getItem())
+                    .amount(amount)
+                    .build();
+            if(!transaction.failSafeCommit()){
+                throw new IllegalStateException("Failed to commit transaction!");
             }
         } else {
             InventoryWrapper chestInv = this.getInventory();
@@ -385,32 +368,21 @@ public class ContainerShop implements Shop {
                 Util.debugLog("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
                 return;
             }
-            while (amount > 0 && buyerIterator.hasNext()) {
-                ItemStack originalItem = buyerIterator.next();
-                if (originalItem != null && this.matches(originalItem)) {
-                    // Copy it, we don't want to interfere
-                    ItemStack clonedItem = originalItem.clone();
-                    // Amount = total, item.getAmount() = how many items in the
-                    // stack
-                    int stackSize = Math.min(amount, clonedItem.getAmount());
-                    // If Amount is item.getAmount(), then this sets the amount
-                    // to 0
-                    // Else it sets it to the remainder
-                    originalItem.setAmount(originalItem.getAmount() - stackSize);
-                    // We can modify this, it is a copy.
-                    clonedItem.setAmount(stackSize);
-                    buyerIterator.setCurrent(originalItem);
-                    // Add the items to the players inventory
-                    Objects.requireNonNull(chestInv).addItem(clonedItem);
-                    amount -= stackSize;
-                }
+            InventoryTransaction transaction = InventoryTransaction
+                    .builder()
+                    .from(buyerInventory)
+                    .to(chestInv) // To void
+                    .item(this.getItem())
+                    .amount(amount)
+                    .build();
+            if(!transaction.failSafeCommit()){
+                throw new IllegalStateException("Failed to commit transaction!");
             }
-
-            //Update sign
-            this.setSignText();
-            if (attachedShop != null) {
-                attachedShop.setSignText();
-            }
+        }
+        //Update sign
+        this.setSignText();
+        if (attachedShop != null) {
+            attachedShop.setSignText();
         }
     }
 
@@ -699,7 +671,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void sell(@NotNull UUID seller, @NotNull InventoryWrapper sellerInventory,
-                     @NotNull Location loc2Drop, int amount) {
+                     @NotNull Location loc2Drop, int amount) throws Exception{
         Util.ensureThread(false);
         amount = item.getAmount() * amount;
         if (amount < 0) {
@@ -707,52 +679,36 @@ public class ContainerShop implements Shop {
             return;
         }
         // Items to drop on floor
-        ArrayList<ItemStack> floor = new ArrayList<>(5);
-        int itemMaxStackSize = Util.getItemMaxStackSize(this.item.getType());
         if (this.isUnlimited() && !isAlwaysCountingContainer()) {
-            ItemStack item = this.item.clone();
-            while (amount > 0) {
-                int stackSize = Math.min(amount, itemMaxStackSize);
-                item.setAmount(stackSize);
-                sellerInventory.addItem(item);
-                amount -= stackSize;
+            InventoryTransaction transaction = InventoryTransaction
+                    .builder()
+                    .from(null)
+                    .to(sellerInventory) // To void
+                    .item(this.getItem())
+                    .amount(amount)
+                    .build();
+            if(!transaction.failSafeCommit()){
+                throw new IllegalStateException("Failed to commit transaction!");
             }
         } else {
-            if (this.getInventory() == null) {
+            InventoryWrapper chestInv = this.getInventory();
+            if (chestInv== null) {
                 plugin.getLogger().warning("Failed to process sell, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
                 return;
             }
-            InventoryWrapperIterator iterator = this.getInventory().iterator();
-            while (amount > 0 && iterator.hasNext()) {
-                // Can't clone it here, it could be null
-                ItemStack originalItem = iterator.next();
-                if (originalItem != null && originalItem.getType() != Material.AIR && this.matches(originalItem)) {
-                    // Copy it, we don't want to interfere
-                    ItemStack clonedItem = originalItem.clone();
-                    // Amount = total, item.getAmount() = how many items in the
-                    // stack
-                    int stackSize = Math.min(amount, clonedItem.getAmount());
-                    // If Amount is item.getAmount(), then this sets the amount
-                    // to 0
-                    // Else it sets it to the remainder
-                    originalItem.setAmount(originalItem.getAmount() - stackSize);
-                    iterator.setCurrent(originalItem);
-                    // We can modify this, it is a copy.
-                    clonedItem.setAmount(stackSize);
-                    // Add the items to the players inventory
-                    floor.addAll(sellerInventory.addItem(clonedItem).values());
-                    amount -= stackSize;
-                }
+            InventoryTransaction transactionTake = InventoryTransaction
+                    .builder()
+                    .from(chestInv)
+                    .to(sellerInventory) // To void
+                    .item(this.getItem())
+                    .amount(amount)
+                    .build();
+            if(!transactionTake.failSafeCommit()){
+                throw new IllegalStateException("Failed to commit transaction!");
             }
-            //Update sign
             this.setSignText();
             if (attachedShop != null) {
                 attachedShop.setSignText();
-            }
-        }
-        if (loc2Drop != null) {
-            for (ItemStack stack : floor) {
-                loc2Drop.getWorld().dropItem(loc2Drop, stack);
             }
         }
     }

@@ -17,7 +17,7 @@
  *
  */
 
-package com.ghostchu.quickshop.api.economy.operation;
+package com.ghostchu.quickshop.api.operation;
 
 public interface Operation {
     boolean commit() throws Exception;

@@ -51,8 +51,9 @@ public interface Shop {
      *
      * @param paramItemStack The ItemStack you want add
      * @param paramInt       How many you want add
+     * @exception Exception Possible exception thrown if anything wrong.
      */
-    void add(@NotNull ItemStack paramItemStack, int paramInt);
+    void add(@NotNull ItemStack paramItemStack, int paramInt) throws Exception;
 
     /**
      * Add new staff to the moderators
@@ -69,8 +70,9 @@ public interface Shop {
      * @param buyerInventory The buyer inventory ( may not a player inventory )
      * @param loc2Drop       The location to drops items if player inventory are full
      * @param paramInt       How many buyed?
+     * @exception Exception Possible exception thrown if anything wrong.
      */
-    void buy(@NotNull UUID buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int paramInt);
+    void buy(@NotNull UUID buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
 
     /**
      * Check the display location, and teleport, respawn if needs.
@@ -155,8 +157,9 @@ public interface Shop {
      *
      * @param paramItemStack Want removed ItemStack
      * @param paramInt       Want remove how many
+     * @exception Exception Possible exception thrown if anything wrong.
      */
-    void remove(@NotNull ItemStack paramItemStack, int paramInt);
+    void remove(@NotNull ItemStack paramItemStack, int paramInt) throws Exception;
 
     /**
      * Execute sell action for player with x items.
@@ -165,8 +168,9 @@ public interface Shop {
      * @param sellerInventory Seller's inventory ( may not a player inventory )
      * @param loc2Drop        The location to be drop if buyer inventory full ( if player enter a number that < 0, it will turn to buying item)
      * @param paramInt        How many sold?
+     * @exception Exception Possible exception thrown if anything wrong.
      */
-    void sell(@NotNull UUID seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int paramInt);
+    void sell(@NotNull UUID seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
 
     /**
      * Generate new sign texts on shop's sign.
