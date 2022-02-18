@@ -583,6 +583,7 @@ public class PlayerListener extends AbstractQSListener {
     public void onPlayerQuit(PlayerQuitEvent e) {
         // Remove them from the menu
         plugin.getShopManager().getActions().remove(e.getPlayer().getUniqueId());
+        plugin.getDatabaseHelper().setPlayerLocale(e.getPlayer().getUniqueId(), e.getPlayer().getLocale());
     }
 
     @EventHandler(ignoreCancelled = true)
