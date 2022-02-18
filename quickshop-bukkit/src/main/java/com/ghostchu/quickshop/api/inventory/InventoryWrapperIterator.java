@@ -67,7 +67,9 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
 
             @Override
             public void setCurrent(ItemStack stack) {
-                inventory.setItem(Math.max(0, currentIndex - 1), stack);
+                ItemStack[] storageItems = inventory.getStorageContents();
+                storageItems[Math.max(0, currentIndex - 1)] = stack;
+                inventory.setStorageContents(storageItems);
             }
 
             @Override
@@ -77,7 +79,7 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
 
             @Override
             public ItemStack next() {
-                return inventory.getItem(currentIndex++);
+                return inventory.getStorageContents()[currentIndex++];
             }
         };
     }

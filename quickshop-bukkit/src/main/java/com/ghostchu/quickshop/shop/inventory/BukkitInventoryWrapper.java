@@ -19,6 +19,11 @@
 
 package com.ghostchu.quickshop.shop.inventory;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapperType;
 import org.bukkit.Location;
 import org.bukkit.block.Container;
 import org.bukkit.inventory.BlockInventoryHolder;
@@ -27,11 +32,6 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapperType;
 
 import java.util.Map;
 
@@ -81,7 +81,7 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
 
     @Override
     public void setContents(ItemStack[] itemStacks) {
-        inventory.setContents(itemStacks);
+        inventory.setStorageContents(itemStacks);
     }
 
     @Override
