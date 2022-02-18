@@ -318,6 +318,6 @@
         <module>compatibility/towny</module>
         <module>compatibility/plotsquared</module>
         <module>compatibility/lands</module>
-        <module>compatibility/nova</module>
+<!--        <module>compatibility/nova</module>-->
     </modules>
 </project>
