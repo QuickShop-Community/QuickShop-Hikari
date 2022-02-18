@@ -618,7 +618,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
-        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood");
+        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood, sandtechnology");
         getLogger().info("Let's start loading the plugin");
         getLogger().info("Chat processor selected: Hardcoded BungeeChat Lib");
         /* Process Metrics and Sentry error reporter. */
@@ -718,8 +718,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         new ShopProtectionListener(this, this.shopCache).register();
         new EconomySetupListener(this).register();
         new MetricListener(this).register();
-        InternalListener internalListener = new InternalListener(this);
-        internalListener.register();
+        new InternalListener(this).register();
 
         this.shopControlPanelManager.register(new SimpleShopControlPanel());
 
