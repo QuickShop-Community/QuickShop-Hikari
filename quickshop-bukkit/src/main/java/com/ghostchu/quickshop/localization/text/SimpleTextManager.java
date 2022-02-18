@@ -57,7 +57,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
@@ -65,12 +64,12 @@ import java.util.regex.PatternSyntaxException;
 
 public class SimpleTextManager implements TextManager, Reloadable {
     private static String CROWDIN_LANGUAGE_FILE_PATH = "/hikari/crowdin/lang/%locale%/messages.json";
-    public final List<PostProcessor> postProcessors = new ArrayList<>();
+    public final Set<PostProcessor> postProcessors = new LinkedHashSet<>();
     private final QuickShop plugin;
     private final Distribution distribution;
     // <File <Locale, Section>>
     private final LanguageFilesManager languageFilesManager = new LanguageFilesManager();
-    private final List<String> availableLanguages = new CopyOnWriteArrayList<>();
+    private final Set<String> availableLanguages = new LinkedHashSet<>();
     private final Cache<String, String> languagesCache =
             CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
 
@@ -153,7 +152,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public List<String> getAvailableLanguages() {
-        return Collections.unmodifiableList(availableLanguages);
+        return new ArrayList<>(availableLanguages);
     }
 
     /**
@@ -224,7 +223,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * Loading Crowdin OTA module and i18n system
      */
     public void load() {
-        plugin.getLogger().info("Checking for translation updates, this may need a while...");
+        plugin.getLogger().info("Loading up translations from Crowdin OTA, this may need a while...");
         this.reset();
         List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
         //Make sure is a lowercase regex, prevent case-sensitive and underscore issue
@@ -486,7 +485,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
 
     @Override
     public ReloadResult reloadModule() {
-        this.load();
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, this::load);
+
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 

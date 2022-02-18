@@ -203,10 +203,16 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
 
     @Override
     public void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
+        Util.debugLog("Update: "+uuid+" to "+locale);
         manager.createReplace(prefix + "players")
                 .setColumnNames("uuid", "locale")
                 .setParams(uuid.toString(), locale)
-                .executeAsync();
+                .executeAsync(integer -> {
+                },(exception, sqlAction) -> {
+                    if (exception != null) {
+                        Util.debugLog("Failed to update player locale! Err: "+exception.getMessage()+"; SQL: "+sqlAction.getSQLContent());
+                    }
+                });
     }
 
     @Override
