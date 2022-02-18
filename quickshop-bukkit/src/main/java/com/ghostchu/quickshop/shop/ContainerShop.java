@@ -677,7 +677,6 @@ public class ContainerShop implements Shop {
         InventoryWrapper inv = this.getInventory();
         if (inv == null) {
             plugin.getLogger().warning("Failed to process item remove, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
-            Util.debugLog("Failed to process item remove, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
             return;
         }
         int remains = amount;
@@ -721,7 +720,6 @@ public class ContainerShop implements Shop {
         } else {
             if (this.getInventory() == null) {
                 plugin.getLogger().warning("Failed to process sell, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
-                Util.debugLog("Failed to process sell, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
                 return;
             }
             InventoryWrapperIterator iterator = this.getInventory().iterator();
@@ -1032,13 +1030,10 @@ public class ContainerShop implements Shop {
             return;
         }
         Map<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(getLocation().getChunk());
-
         if (shopsInChunk == null || !shopsInChunk.containsValue(this)) {
             throw new IllegalStateException("Shop must register into ShopManager before loading.");
         }
-
-        ShopLoadEvent shopLoadEvent = new ShopLoadEvent(this);
-        if (Util.fireCancellableEvent(shopLoadEvent)) {
+        if (Util.fireCancellableEvent(new ShopLoadEvent(this))) {
             return;
         }
         this.isLoaded = true;
