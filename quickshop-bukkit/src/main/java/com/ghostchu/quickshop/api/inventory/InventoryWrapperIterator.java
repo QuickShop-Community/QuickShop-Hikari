@@ -62,6 +62,7 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
      * @return the default implementation for bukkit inventory
      */
     static InventoryWrapperIterator ofBukkitInventory(Inventory inventory) {
+        int size = inventory.getStorageContents().length;
         return new InventoryWrapperIterator() {
             int currentIndex = 0;
 
@@ -74,15 +75,18 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
 
             @Override
             public boolean hasNext() {
-                return currentIndex < inventory.getSize();
+                return currentIndex < size;
             }
 
             @Override
             public ItemStack next() {
-                return inventory.getStorageContents()[currentIndex++];
+             return inventory.getStorageContents()[currentIndex++];
             }
         };
     }
+
+    @Override
+    boolean hasNext();
 
     /**
      * Set the current ItemStack instance
