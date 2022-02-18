@@ -384,5 +384,7 @@
   },
   "inventory-unavailable": "&c此商店InventoryWrapper不存在或无效。 你是否使用附属插件重新绑定商店库存？信息：InventoryWrapper={0}，WrapperProvider={1}，SymbolLink={2}。请联系服务器管理员。",
   "inventory-error": "&c处理InventoryWrapper失败。 你是否使用附属插件重新绑定商店库存？信息：异常={0}，InventoryWrapper={1}，WrapperType={2}，WrapperProvider={3}，SymbolLink={4}。 请联系服务器管理员",
-  "economy-transaction-failed": "&cSorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred."
+  "economy-transaction-failed": "&cSorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.",
+  "shop-transaction-failed": "&cSorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.",
+  "inventory-space-full": "&cYou inventory space not enough to put &e{0}x &citems, the space maximum can put &a{1}x &citems into it, try empty the your inventory!"
 }
