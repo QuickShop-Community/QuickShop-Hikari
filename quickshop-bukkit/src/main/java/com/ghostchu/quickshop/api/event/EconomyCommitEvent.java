@@ -19,10 +19,10 @@
 
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 
 /**
  * Calling when transaction will commit

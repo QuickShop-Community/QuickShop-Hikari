@@ -19,12 +19,12 @@
 
 package com.ghostchu.quickshop.shop;
 
-import org.bukkit.OfflinePlayer;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.PlayerFinder;
 import com.ghostchu.quickshop.util.Util;
+import org.bukkit.OfflinePlayer;
 
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;

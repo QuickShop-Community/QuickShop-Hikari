@@ -19,22 +19,28 @@
 
 package com.ghostchu.quickshop.api.economy;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.economy.operation.Operation;
+import com.ghostchu.quickshop.api.economy.operation.economy.DepositEconomyOperation;
+import com.ghostchu.quickshop.api.economy.operation.economy.WithdrawEconomyOperation;
+import com.ghostchu.quickshop.api.event.EconomyCommitEvent;
+import com.ghostchu.quickshop.util.CalculateUtil;
+import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logging.container.EconomyTransactionLog;
 import lombok.Builder;
 import lombok.Getter;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.EconomyCommitEvent;
-import com.ghostchu.quickshop.util.CalculateUtil;
-import com.ghostchu.quickshop.util.JsonUtil;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.logging.container.EconomyTransactionLog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.UUID;
+import java.util.logging.Level;
 
 @Getter
 public class EconomyTransaction {
@@ -59,11 +65,10 @@ public class EconomyTransaction {
     private final String currency;
     @JsonUtil.Hidden
     private final QuickShop plugin = QuickShop.getInstance();
-    @Getter
-    private TransactionSteps steps; //For rollback
     @Nullable
     @Getter
     private String lastError = null;
+    private final Stack<Operation> processingStack = new Stack<>();
 
 
     /**
@@ -84,7 +89,6 @@ public class EconomyTransaction {
         this.to = to;
         this.core = core == null ? QuickShop.getInstance().getEconomy() : core;
         this.amount = amount;
-        this.steps = TransactionSteps.WAIT;
         this.taxer = taxAccount;
         this.allowLoan = allowLoan;
         this.world = world;
@@ -163,38 +167,59 @@ public class EconomyTransaction {
      */
     public boolean commit(@NotNull TransactionCallback callback) {
         Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + actualAmount + " Tax: " + tax + ", EconomyCore: " + core.getName());
-        steps = TransactionSteps.CHECK;
         if (!callback.onCommit(this)) {
             this.lastError = "Plugin cancelled this transaction.";
             return false;
         }
-
-        if (from != null && core.getBalance(from, world, currency) < amount && !allowLoan) {
+        if (checkBalance()) {
             this.lastError = "From hadn't enough money";
             callback.onFailed(this);
             return false;
         }
-        steps = TransactionSteps.WITHDRAW;
-        if (from != null && !core.withdraw(from, amount, world, currency)) {
+        if (from != null && !this.executeOperation(new WithdrawEconomyOperation(from, amount, world, currency, core))) {
             this.lastError = "Failed to withdraw " + amount + " from player " + from + " account. LastError: " + core.getLastError();
             callback.onFailed(this);
             return false;
         }
-        steps = TransactionSteps.DEPOSIT;
-        if (to != null && !core.deposit(to, actualAmount, world, currency)) {
+        if (to != null && !this.executeOperation(new DepositEconomyOperation(to, actualAmount, world, currency,core))) {
             this.lastError = "Failed to deposit " + actualAmount + " to player " + to + " account. LastError: " + core.getLastError();
             callback.onFailed(this);
             return false;
         }
-        steps = TransactionSteps.TAX;
-        if (tax > 0 && taxer != null && !core.deposit(taxer, tax, world, currency)) {
+        if (tax > 0 && taxer != null && !this.executeOperation(new DepositEconomyOperation(taxer.getUniqueId(), tax, world, currency,core))) {
             this.lastError = "Failed to deposit tax account: " + tax + ". LastError: " + core.getLastError();
             callback.onTaxFailed(this);
             //Tax never should failed.
         }
-        steps = TransactionSteps.DONE;
         callback.onSuccess(this);
         return true;
+    }
+
+    /**
+     * Checks this transaction can be finished
+     * @return The transaction can be finished (had enough money)
+     */
+    public boolean checkBalance(){
+        return from == null || !(core.getBalance(from, world, currency) < amount) || allowLoan;
+    }
+
+    private boolean executeOperation(@NotNull Operation operation) {
+        if (operation.isCommitted()) {
+            throw new IllegalStateException("Operation already committed");
+        }
+        if (operation.isRollback()) {
+            throw new IllegalStateException("Operation already rolled back, you must create another new operation.");
+        }
+        try {
+            boolean result = operation.commit();
+            if (!result)
+                return false;
+            processingStack.push(operation);
+            return true;
+        } catch (Exception exception) {
+            this.lastError = "Failed to execute operation: " + core.getLastError() + "; Operation: " + operation;
+            return false;
+        }
     }
 
     /**
@@ -205,49 +230,38 @@ public class EconomyTransaction {
      */
     @SuppressWarnings("UnusedReturnValue")
     @NotNull
-    public List<RollbackSteps> rollback(boolean continueWhenFailed) {
-        List<RollbackSteps> rollbackSteps = new ArrayList<>(3);
-        if (steps == TransactionSteps.CHECK) {
-            return rollbackSteps; //We did nothing, just checks balance
-        }
-        if (steps == TransactionSteps.WITHDRAW) {
-            return rollbackSteps; //We did nothing, because the trade failed so no anybody money changes.
-        }
-        if (steps == TransactionSteps.DEPOSIT || steps == TransactionSteps.TAX) {
-            if (from != null && !core.deposit(from, amount, world, currency)) { //Rollback withdraw
-                if (!continueWhenFailed) {
-                    rollbackSteps.add(RollbackSteps.ROLLBACK_WITHDRAW);
-                    return rollbackSteps;
+    public List<Operation> rollback(boolean continueWhenFailed) {
+        List<Operation> operations = new ArrayList<>();
+        while (!processingStack.isEmpty()) {
+            Operation operation = processingStack.pop();
+            if (!operation.isCommitted()) {
+                continue;
+            }
+            if (operation.isRollback()) {
+                continue;
+            }
+            try {
+                boolean result = operation.rollback();
+                if (!result) {
+                    if (continueWhenFailed) {
+                        operations.add(operation);
+                        continue;
+                    } else {
+                        break;
+                    }
+                }
+                operations.add(operation);
+            } catch (Exception exception) {
+                if (continueWhenFailed) {
+                    operations.add(operation);
+                    MsgUtil.debugStackTrace(exception.getStackTrace());
+                } else {
+                    plugin.getLogger().log(Level.WARNING, "Failed to rollback transaction: " + core.getLastError() + "; Operation: " + operation + "; Transaction: " + this);
+                    break;
                 }
             }
         }
-        if (steps == TransactionSteps.TAX) {
-            if (to != null && !core.withdraw(to, actualAmount, world, currency)) { //Rollback deposit
-                if (!continueWhenFailed) {
-                    rollbackSteps.add(RollbackSteps.ROLLBACK_DEPOSIT);
-                    return rollbackSteps;
-                }
-            }
-        }
-
-        rollbackSteps.add(RollbackSteps.ROLLBACK_DONE);
-        return rollbackSteps;
-    }
-
-    private enum RollbackSteps {
-        ROLLBACK_WITHDRAW,
-        ROLLBACK_DEPOSIT,
-        ROLLBACK_TAX,
-        ROLLBACK_DONE
-    }
-
-    public enum TransactionSteps {
-        WAIT,
-        CHECK,
-        WITHDRAW,
-        DEPOSIT,
-        TAX,
-        DONE
+        return operations;
     }
 
     public interface TransactionCallback {

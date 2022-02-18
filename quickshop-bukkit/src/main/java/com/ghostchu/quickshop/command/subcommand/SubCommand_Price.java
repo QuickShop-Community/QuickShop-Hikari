@@ -38,7 +38,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
 
 @AllArgsConstructor
 public class SubCommand_Price implements CommandHandler<Player> {
@@ -123,19 +122,17 @@ public class SubCommand_Price implements CommandHandler<Player> {
                     .world(Objects.requireNonNull(shop.getLocation().getWorld()))
                     .currency(shop.getCurrency())
                     .build();
+            if (!transaction.checkBalance()) {
+                plugin.text().of(sender, "you-cant-afford-to-change-price", LegacyComponentSerializer.legacySection().deserialize(plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency()))).send();
+                return;
+            }
             if (!transaction.failSafeCommit()) {
-                EconomyTransaction.TransactionSteps steps = transaction.getSteps();
-                if (steps == EconomyTransaction.TransactionSteps.CHECK) {
-                    plugin.text().of(sender,
-                            "you-cant-afford-to-change-price", LegacyComponentSerializer.legacySection().deserialize(plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency()))).send();
-                } else {
-                    plugin.text().of(sender,
-                            "fee-charged-for-price-change", LegacyComponentSerializer.legacySection().deserialize(plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency()))).send();
-                    plugin.getLogger().log(Level.WARNING, "QuickShop can't pay taxes to the configured tax account! Please set the tax account name in the config.yml to an existing player: " + transaction.getLastError());
-                }
+                plugin.text().of(sender, "economy-transaction-failed", transaction.getLastError()).send();
                 return;
             }
         }
+        plugin.text().of(sender,
+                "fee-charged-for-price-change", LegacyComponentSerializer.legacySection().deserialize(plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency()))).send();
         // Update the shop
         shop.setPrice(price);
         shop.update();

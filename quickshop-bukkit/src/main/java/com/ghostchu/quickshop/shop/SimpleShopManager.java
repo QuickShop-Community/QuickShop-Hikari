@@ -19,6 +19,16 @@
 
 package com.ghostchu.quickshop.shop;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.economy.EconomyTransaction;
+import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.shop.*;
+import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
+import com.ghostchu.quickshop.util.*;
+import com.ghostchu.quickshop.util.economyformatter.EconomyFormatter;
+import com.ghostchu.quickshop.util.holder.Result;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -52,16 +62,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.economy.EconomyTransaction;
-import com.ghostchu.quickshop.api.event.*;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
-import com.ghostchu.quickshop.api.shop.*;
-import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
-import com.ghostchu.quickshop.util.*;
-import com.ghostchu.quickshop.util.economyformatter.EconomyFormatter;
-import com.ghostchu.quickshop.util.holder.Result;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -692,17 +692,17 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         } else {
             transaction = builder.from(null).build();
         }
+        if (!transaction.checkBalance()) {
+            plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you",
+                    Objects.requireNonNull(format(total, shop.getLocation().getWorld(), shop.getCurrency())),
+                    Objects.requireNonNull(format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(),
+                            shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency()))).send();
+            return;
+        }
         if (!transaction.failSafeCommit()) {
-            if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
-                plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you",
-                        Objects.requireNonNull(format(total, shop.getLocation().getWorld(), shop.getCurrency())),
-                        Objects.requireNonNull(format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(),
-                                shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency()))).send();
-            } else {
-                plugin.text().of(buyer, "purchase-failed").send();
-                plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
-                plugin.getLogger().severe("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
-            }
+            plugin.text().of(buyer, "economy-transaction-failed", transaction.getLastError()).send();
+            plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
+            plugin.getLogger().severe("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
             return;
         }
         Player player = plugin.getServer().getPlayer(buyer);
@@ -957,17 +957,16 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                             .currency(plugin.getCurrency())
                             .world(shop.getLocation().getWorld())
                             .build();
+            if (!economyTransaction.checkBalance()) {
+                plugin.text().of(p, "you-cant-afford-a-new-shop",
+                        Objects.requireNonNull(format(createCost, shop.getLocation().getWorld(),
+                                shop.getCurrency()))).send();
+                return;
+            }
             if (!economyTransaction.failSafeCommit()) {
-                if (economyTransaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
-                    plugin.text().of(p, "you-cant-afford-a-new-shop",
-                            Objects.requireNonNull(format(createCost, shop.getLocation().getWorld(),
-                                    shop.getCurrency()))).send();
-                } else {
-                    plugin.text().of(p, "purchase-failed").send();
-                    plugin.getLogger().severe("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
-                    plugin.getLogger().severe("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
-
-                }
+                plugin.text().of(p, "economy-transaction-failed", economyTransaction.getLastError()).send();
+                plugin.getLogger().severe("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
+                plugin.getLogger().severe("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
                 return;
             }
         }
@@ -1071,19 +1070,20 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         } else {
             transaction = builder.to(null).build();
         }
+        if (!transaction.checkBalance()) {
+            plugin.text().of(seller, "you-cant-afford-to-buy",
+                    Objects.requireNonNull(
+                            format(total, shop.getLocation().getWorld(), shop.getCurrency())),
+                    Objects.requireNonNull(format(
+                            eco.getBalance(seller, shop.getLocation().getWorld(),
+                                    shop.getCurrency()), shop.getLocation().getWorld(),
+                            shop.getCurrency()))).send();
+            return;
+        }
+
         if (!transaction.failSafeCommit()) {
-            if (transaction.getSteps() == EconomyTransaction.TransactionSteps.CHECK) {
-                plugin.text().of(seller, "you-cant-afford-to-buy",
-                        Objects.requireNonNull(
-                                format(total, shop.getLocation().getWorld(), shop.getCurrency())),
-                        Objects.requireNonNull(format(
-                                eco.getBalance(seller, shop.getLocation().getWorld(),
-                                        shop.getCurrency()), shop.getLocation().getWorld(),
-                                shop.getCurrency()))).send();
-            } else {
-                plugin.text().of(seller, "purchase-failed").send();
-                plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
-            }
+            plugin.text().of(seller, "economy-transaction-failed", transaction.getLastError()).send();
+            plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
             return;
         }
         Player player = plugin.getServer().getPlayer(seller);
