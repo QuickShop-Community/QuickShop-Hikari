@@ -291,5 +291,6 @@
         <module>compatibility/griefprevention</module>
         <module>compatibility/towny</module>
         <module>compatibility/plotsquared</module>
+        <module>compatibility/lands</module>
     </modules>
 </project>

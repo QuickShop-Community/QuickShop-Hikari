@@ -76,7 +76,7 @@ public final class Towny extends CompatibilityModule implements Listener {
         event.setCancelled(true, "Towny Blocked");
     }
     @EventHandler(ignoreCancelled = true)
-    public void onPreCreation(ShopCreateEvent event){
+    public void onCreation(ShopCreateEvent event){
         //noinspection ConstantConditions
         if(checkFlags(event.getPlayer(),event.getShop().getLocation(), this.createFlags)){
             return;

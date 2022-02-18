@@ -1,0 +1,6 @@
+#Should we prevent the creation of a shop or trade with a shop outside Land's area?
+whitelist-mode: false
+#If QS should ignore disabled worlds.
+ignore-disabled-worlds: true
+#Should we delete the shop in a land when the shop owner loses the permission for this land?
+delete-on-lose-permission: false
