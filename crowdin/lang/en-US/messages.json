@@ -382,9 +382,9 @@
     "unsupported-server-software": "&eUnsupported Server software. Any modded Hybrid-Server software is not supported, including MCPC, Cauldron, CatServer, Mohis, Magma, Fukkit, Cardboard, etc.",
     "consolespamfix-installed": "&eConsoleSpamFix is installed. It will hide Exception-details. Disable it temporarily during support requests."
   },
-  "inventory-unavailable": "&cThis shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.",
-  "inventory-error": "&cFailed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.",
-  "economy-transaction-failed": "&cSorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.",
-  "shop-transaction-failed": "&cSorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.",
-  "inventory-space-full": "&cYour inventory space remains can only put &a{1}x &citems into it, try empty the your inventory!"
+  "inventory-unavailable": "&cNon-existant or invalid InventoryWrapper. Do you use an Addon to re-bind the Shop Inventory?\nInformation: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the Server administrators.",
+  "inventory-error": "&cFailed to process the InventoryWrapper. Do you use an addon to re-bind the shop Inventory?\nInformation: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.",
+  "economy-transaction-failed": "&cSorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economic changes have been rolled back. Please contact the server administrators if this error persists.",
+  "shop-transaction-failed": "&cSorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Please contact the server administrators if this error persists.",
+  "inventory-space-full": "&cYour remaining inventory space can only have &a{1}x &cmore items added to it. Try emptying your inventory!"
 }
