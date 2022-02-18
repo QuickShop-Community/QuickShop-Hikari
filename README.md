@@ -34,25 +34,26 @@ The main purpose of this branch is to modernize the core content of QuickShop an
 ## Features
 
 - Easy to use
-- Toggleable Display Item on top of the chest
-- NBT Data, Enchantment, Tool Damage, Potion, and Mob Egg support
-- Unlimited chest support
-- Blacklist support & bypass permissions
-- Shops that buy and sell items at the same time (Using double chests)
-- Customisable permission checks
-- UUID support
-- Better shop protection
-- Item display name i18n
-- Enchantment display name i18n
-- A cool item preview
-- World/region protection plugins support
-- ProtocolLib based Virtual DisplayItem support
-- Powerful API
-- Optimized performance
-- MineDown syntax support
-- H2 (local) or MySQL (remote) datasource supports
+- Toggleable Display Item on top of the chest.
+- NBT Data, Enchantment, Tool Damage, Potion, and Mob Egg support.
+- Unlimited chest support.
+- Blacklist support & bypass permissions.
+- Shops that buy and sell items at the same time (Using double chests).
+- Customisable permission checks.
+- UUID support.
+- Better shop protection.
+- Item display name i18n.
+- Enchantment display name i18n.
+- A cool item preview.
+- World/region protection plugins support.
+- ProtocolLib based Virtual DisplayItem support.
+- Powerful API.
+- Optimized performance.
+- MineDown syntax support.
+- H2 (local) or MySQL (remote) datasource supports.
 - Supports custom inventory! Use InventoryWrapper API.
-- Optimized for Paper, also can run under Spigot (but little hacky and slowly)
+- Optimized for Paper, also can run under Spigot (but little hacky and slowly).
+- Advanced Transaction mechanism, rollback any Inventory/Economy operation while it failed to prevent dupes.
 
 ## Downloads
 
