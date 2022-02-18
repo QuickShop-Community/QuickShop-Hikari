@@ -26,7 +26,6 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import me.angeschossen.lands.api.events.LandUntrustPlayerEvent;
 import me.angeschossen.lands.api.events.PlayerLeaveLandEvent;
 import me.angeschossen.lands.api.integration.LandsIntegration;
@@ -127,7 +126,7 @@ public final class Lands extends CompatibilityModule implements Listener {
                         Map<Location, Shop> shops = chunkedShopEntry.getValue();
                         for (Shop shop : shops.values()) {
                             if (target.equals(shop.getOwner())) {
-                                getApi().logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "[Lands Integration] Untrusted", shop.saveToInfoStorage()));
+                                recordDeletion(Util.getNilUniqueId(), shop, "Lands: shop deleted because owner lost permission");
                                 Util.mainThreadRun(shop::delete);
                             }
                         }
