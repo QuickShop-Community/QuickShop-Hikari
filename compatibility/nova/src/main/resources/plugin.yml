@@ -1,0 +1,5 @@
+name: qscompat-nova
+version: '${project.version}'
+main: com.ghostchu.quickshop.compatibility.nova.Nova
+api-version: 1.16
+depend: [ Nova, QuickShop-Hikari ]
