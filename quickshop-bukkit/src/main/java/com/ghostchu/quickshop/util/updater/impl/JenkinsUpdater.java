@@ -138,7 +138,7 @@ public class JenkinsUpdater implements QuickUpdater {
         if (plugins == null) {
             throw new IOException("Can't get the files in plugins folder");
         }
-        File newJar = new File(pluginFolder, "QuickShop" + UUID.randomUUID().toString().replace("-", "") + ".jar");
+        File newJar = new File(pluginFolder, "QuickShop-Hikari-" + UUID.randomUUID().toString().replace("-", "") + ".jar");
 
         for (File pluginJar : plugins) {
             try { //Delete all old jar files
