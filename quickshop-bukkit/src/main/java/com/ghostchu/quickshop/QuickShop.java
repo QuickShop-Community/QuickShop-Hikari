@@ -651,7 +651,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
         //Load the database
         setupDBonEnableding = true;
-        setupDatabase();
+        if(!setupDatabase()){
+            getLogger().severe("Failed to setup database, please check the log for more information!");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
         setupDBonEnableding = false;
 
         /* Initalize the tools */
