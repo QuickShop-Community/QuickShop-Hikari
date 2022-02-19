@@ -72,6 +72,7 @@ public class Paste {
         finalReport.append("QuickShop:\n");
         finalReport.append("\tVersion: ").append(QuickShop.getVersion()).append("\n");
         finalReport.append("\tFork: ").append(QuickShop.getFork()).append("\n");
+        finalReport.append("\tBuild Version: ").append(plugin.getBuildInfo().getGitInfo().getBuildVersion()).append("\n");
         finalReport.append("\tBuild Number: ").append(plugin.getBuildInfo().getCiInfo().getId()).append("\n");
         finalReport.append("\tBuild Branch: ").append(plugin.getBuildInfo().getGitInfo().getBranch()).append("\n");
         finalReport.append("\tBuild Commit: ").append(plugin.getBuildInfo().getGitInfo().getId()).append("\n");

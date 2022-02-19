@@ -79,7 +79,7 @@ public class UpdateWatcher implements Listener {
                             } else {
                                 notify = Component.text("New update {0} now avaliable! Please update!");
                             }
-                            notify = MsgUtil.fillArgs(notify, Component.text(updater.getRemoteServerVersion()), Component.text(QuickShop.getInstance().getBuildInfo().getCiInfo().getTag()));
+                            notify = MsgUtil.fillArgs(notify, Component.text(updater.getRemoteServerVersion()), Component.text(QuickShop.getInstance().getBuildInfo().getGitInfo().getBuildVersion()));
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                             player.sendMessage(ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(notify));
                             player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
