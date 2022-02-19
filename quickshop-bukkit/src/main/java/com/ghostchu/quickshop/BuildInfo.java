@@ -19,7 +19,6 @@
 
 package com.ghostchu.quickshop;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
@@ -214,7 +213,6 @@ public class BuildInfo {
         }
     }
 
-    @Builder
     public static class JenkinsInfo {
         private final boolean ci;
         private final int id;
