@@ -992,6 +992,8 @@ public class ContainerShop implements Shop {
         try {
             inventoryWrapper = locateInventory(symbolLink);
         } catch (Exception e) {
+            Util.debugLog("Failed to load shop: " + symbolLink+": "+e.getClass().getName()+": "+e.getMessage());
+            MsgUtil.debugStackTrace(e.getStackTrace());
             this.delete(!plugin.getConfig().getBoolean("debug.delete-corrupt-shop"));
             onUnload();
             return;
