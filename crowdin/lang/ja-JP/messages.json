@@ -13,7 +13,7 @@
   "integrations-check-failed-create": "&c{0} 統合がショップの作成を拒否しました",
   "integrations-check-failed-trade": "&c{0} 統合がショップの取引を拒否しました",
   "3rd-plugin-build-check-failed": "&cサードパーティプラグイン &l{0}&r&c が権限チェックを拒否しました。そこに権限を設定していませんか？",
-  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cクリエイティブモードでは他のプレイヤーのショップを破壊することはできません。サバイバルモードに切り替えるか、代わりにスーパーツール {0} を使用してください。",
   "trading-in-creative-mode-is-disabled": "&cクリエイティブモードではこのショップと取引することはできません。",
   "supertool-is-disabled": "&cスーパーツールが無効になっています。どのショップも破壊することはできません。",

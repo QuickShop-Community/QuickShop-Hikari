@@ -13,7 +13,7 @@
   "integrations-check-failed-create": "&cالتكامل {0} رفض إنشاء المحل",
   "integrations-check-failed-trade": "&cالتكامل {0} رفض تداول المتجر",
   "3rd-plugin-build-check-failed": "&c3 البرنامج المساعد &l{0}&r&c رفض فحص الصلاحيات، هل قمت باعداد الصلاحيات هناك؟",
-  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cلا يمكنك كسر متاجر اللاعبين الآخرين في الوضع الإبداعي، قم بالتبديل إلى وضع البقاء أو حاول استخدام الأداة الخارقة {0} بدلاً من ذلك.",
   "trading-in-creative-mode-is-disabled": "&cلا يمكنك التداول مع هذا المتجر بينما تكون في وضع إبداعي.",
   "supertool-is-disabled": "&cالأذاة الخارقة معطلة. لا يمكن كسر أي متاجر.",
