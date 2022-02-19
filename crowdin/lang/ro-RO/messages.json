@@ -13,7 +13,7 @@
   "integrations-check-failed-create": "&cIntegrarea {0} a refuzat crearea magazinului",
   "integrations-check-failed-trade": "&cIntegrarea {0} a refuzat crearea magazinului",
   "3rd-plugin-build-check-failed": "&c3rd plugin &l{0}&r&c a respins verificarile permisiunilor, ai permisiunile setari acolo?",
-  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cNu poti strica magazinele altor jucatori in mod creativ, sa treci la modul de supravietuire sau sa incerci sa folosesti superunealta {0}.",
   "trading-in-creative-mode-is-disabled": "&cNu poti face comert cu acest magazin in timp ce te afli in modul creativ.",
   "supertool-is-disabled": "&cSupertool-ul este dezactivat. Nu se pot sparge magazinele.",
