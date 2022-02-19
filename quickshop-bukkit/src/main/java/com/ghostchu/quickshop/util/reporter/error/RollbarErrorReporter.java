@@ -96,11 +96,12 @@ public class RollbarErrorReporter {
                             e.printStackTrace();
                         }
                         ErrorBundle errorBundle = reportQueue.poll();
-                        if (errorBundle == null)
-                            continue;
-                        Util.debugLog("Sending error: " + errorBundle.getThrowable().getMessage()
-                                + " with context: " + Util.array2String(errorBundle.getContext()));
-                        sendError0(errorBundle.getThrowable(), errorBundle.getContext());
+                        while (errorBundle != null) {
+                            Util.debugLog("Sending error: " + errorBundle.getThrowable().getMessage()
+                                    + " with context: " + Util.array2String(errorBundle.getContext()));
+                            sendError0(errorBundle.getThrowable(), errorBundle.getContext());
+                            errorBundle = reportQueue.poll();
+                        }
                     }
                 }
             }
