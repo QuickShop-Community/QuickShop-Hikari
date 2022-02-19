@@ -74,7 +74,7 @@ public class SubCommand_About implements CommandHandler<CommandSender> {
                         + ">> "
                         + ChatColor.GREEN
                         + Util.list2String(plugin.getDescription().getAuthors())));
-        MsgUtil.sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(ChatColor.GOLD + "Powered by PotatoCraft Studio"));
+        MsgUtil.sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(ChatColor.GOLD + "Powered by Community"));
         MsgUtil.sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(ChatColor.RED + "Made with ❤"));
     }
 

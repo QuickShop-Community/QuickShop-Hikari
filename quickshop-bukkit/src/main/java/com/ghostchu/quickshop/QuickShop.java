@@ -754,8 +754,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             new LockListener(this, this.shopCache).register();
         }
         getLogger().info("Cleaning MsgUtils...");
-        MsgUtil.loadTransactionMessages();
         MsgUtil.clean();
+        MsgUtil.loadTransactionMessages();
         //disable update watcher during our project hadn't release on SpigotMC yet!
         //noinspection PointlessBooleanExpression,ConstantConditions
         if (this.getConfig().getBoolean("updater", true) && false) {

@@ -87,7 +87,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
             }
             case 2 -> {
                 mirror = new MojangApiMcbbsApiMirror();
-                plugin.getLogger().info("Game assets server selected: BMCLAPI");
+                plugin.getLogger().info("Game assets server selected: MCBBSAPI");
                 plugin.getLogger().info("===Mirror description===");
                 plugin.getLogger().info("MCBBSAPI is a special server of OpenBMCLAPI made by @bangbang93 but managed by MCBBS, same with BMCLAPI, MCBBSAPI is target speed up download in China mainland region.");
                 plugin.getLogger().info("Donate BMCLAPI or get details about BMCLAPI (includes MCBBSAPI), check here: https://bmclapidoc.bangbang93.com");

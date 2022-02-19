@@ -13,7 +13,7 @@
   "integrations-check-failed-create": "&cLa integració {0} ha denegat la creació de la botiga",
   "integrations-check-failed-trade": "&cLa integració {0} ha denegat l'ús de la botiga",
   "3rd-plugin-build-check-failed": "&cEl plugin &l{0}&r&c ha denegat les proves de permisos, tenies muntat un sistema de permisos aquí?",
-  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cNo pots trencar botigues d'altres jugadors en mode creatiu, canvia a supervivència o intenta utilitzar la Supertool {0}.",
   "trading-in-creative-mode-is-disabled": "&cNo pots intercanviar amb aquesta botiga mentre estiguis en mode creatiu.",
   "supertool-is-disabled": "&cLa Supertool està desactivada. No pots trencar cap botiga.",

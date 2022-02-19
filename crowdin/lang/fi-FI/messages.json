@@ -13,7 +13,7 @@
   "integrations-check-failed-create": "&cIntergraatio {0} kielsi kaupan luomisen",
   "integrations-check-failed-trade": "&cIntergraatio {0} kielsi kaupankäynnin",
   "3rd-plugin-build-check-failed": "&cKolmannen osapuolen lisäosa &l{0}&r&c kielsi oikeuden tarkistukset, onko sinulla oikeudet asennettu oikein täällä?",
-  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cEt voi rikkoa muiden pelaajien kauppoja luova tilassa, vaihda selviytymistilaan tai yritä käyttää supertyökalua {0}.",
   "trading-in-creative-mode-is-disabled": "&cEt voi ostaa/myydä luovassa tilassa.",
   "supertool-is-disabled": "&cSupertyökalu on poistettu käytöstä, et voi rikkoa mitään kauppoja.",

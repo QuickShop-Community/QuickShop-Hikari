@@ -13,7 +13,7 @@
   "integrations-check-failed-create": "&cIntegração {0} negou a criação da loja",
   "integrations-check-failed-trade": "&cIntegração {0} negou a negociação da loja",
   "3rd-plugin-build-check-failed": "&c3rd plugin &l{0}&r&c negou as verificações de permissão, você configurou as permissões?",
-  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8negou as verificações de permissão, se isto não for experado, tente adicionar &d{1} &7para os listeners restritos. &7Guia de Configuração: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cVocê não pode quebrar lojas de outros jogadores no modo criativo, mude para o modo sobrevivência ou tente usar a super-ferramenta {0}.",
   "trading-in-creative-mode-is-disabled": "&cVocê não pode negociar com a loja no modo criativo.",
   "supertool-is-disabled": "&cSuper-ferramenta foi desativada, não será possível quebrar nenhuma loja.",

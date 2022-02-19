@@ -989,11 +989,17 @@ public class ContainerShop implements Shop {
         if (shopsInChunk == null || !shopsInChunk.containsValue(this)) {
             throw new IllegalStateException("Shop must register into ShopManager before loading.");
         }
+        try {
+            inventoryWrapper = locateInventory(symbolLink);
+        } catch (Exception e) {
+            this.delete(!plugin.getConfig().getBoolean("debug.delete-corrupt-shop"));
+            onUnload();
+            return;
+        }
         if (Util.fireCancellableEvent(new ShopLoadEvent(this))) {
             return;
         }
         this.isLoaded = true;
-        inventoryWrapper = locateInventory(symbolLink);
         //Shop manager done this already
         plugin.getShopManager().getLoadedShops().add(this);
         plugin.getShopContainerWatcher().scheduleCheck(this);
