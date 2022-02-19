@@ -988,9 +988,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // sets its text.
         if (shop.isDoubleShop()) {
             Shop nextTo = shop.getAttachedShop();
-            if (Objects.requireNonNull(nextTo).getPrice() > shop.getPrice()) {
-                // The one next to it must always be a
-                // buying shop.
+            if (Objects.requireNonNull(nextTo).getPrice() > shop.getPrice() && (shop.isBuying() == nextTo.isSelling()) && shop.matches(nextTo.getItem())) { // different type compare
                 plugin.text().of(p, "buying-more-than-selling").send();
             }
         }
