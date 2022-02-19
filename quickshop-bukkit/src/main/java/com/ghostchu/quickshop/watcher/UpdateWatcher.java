@@ -19,6 +19,11 @@
 
 package com.ghostchu.quickshop.watcher;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.updater.QuickUpdater;
+import com.ghostchu.quickshop.util.updater.VersionType;
+import com.ghostchu.quickshop.util.updater.impl.JenkinsUpdater;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
@@ -28,11 +33,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitTask;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.updater.QuickUpdater;
-import com.ghostchu.quickshop.util.updater.VersionType;
-import com.ghostchu.quickshop.util.updater.impl.JenkinsUpdater;
 
 import java.util.List;
 import java.util.Random;
@@ -79,7 +79,7 @@ public class UpdateWatcher implements Listener {
                             } else {
                                 notify = Component.text("New update {0} now avaliable! Please update!");
                             }
-                            notify = MsgUtil.fillArgs(notify, Component.text(updater.getRemoteServerVersion()), Component.text(QuickShop.getInstance().getBuildInfo().getBuildTag()));
+                            notify = MsgUtil.fillArgs(notify, Component.text(updater.getRemoteServerVersion()), Component.text(QuickShop.getInstance().getBuildInfo().getCiInfo().getTag()));
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                             player.sendMessage(ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(notify));
                             player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
@@ -109,9 +109,9 @@ public class UpdateWatcher implements Listener {
                             if (notifyNum > 0) { // Translate bug.
                                 notify = notifys.get(notifyNum);
                             } else {
-                                notify = Component.text( "New update {0} now avaliable! Please update!");
+                                notify = Component.text("New update {0} now avaliable! Please update!");
                             }
-                            notify = MsgUtil.fillArgs(notify, Component.text(updater.getRemoteServerVersion()), Component.text(QuickShop.getInstance().getBuildInfo().getBuildTag()));
+                            notify = MsgUtil.fillArgs(notify, Component.text(updater.getRemoteServerVersion()), Component.text(QuickShop.getInstance().getBuildInfo().getGitInfo().getBuildVersion()));
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                             player.sendMessage(ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(notify));
                             player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
@@ -142,8 +142,7 @@ public class UpdateWatcher implements Listener {
             List<Component> notifys = QuickShop.getInstance().text().ofList(e.getPlayer(), "updatenotify.list").forLocale();
             int notifyNum = random.nextInt(notifys.size());
             Component notify = notifys.get(notifyNum);
-            notify = MsgUtil.fillArgs(notify, Component.text(updater.getRemoteServerVersion()), Component.text( QuickShop.getInstance().getBuildInfo().getBuildTag()));
-
+            notify = MsgUtil.fillArgs(notify, Component.text(updater.getRemoteServerVersion()), Component.text(QuickShop.getInstance().getBuildInfo().getGitInfo().getBuildVersion()));
             e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");
             e.getPlayer().sendMessage(ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(notify));
             e.getPlayer().sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");

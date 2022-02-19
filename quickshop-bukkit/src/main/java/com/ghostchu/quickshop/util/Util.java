@@ -1130,7 +1130,7 @@ public class Util {
      * @return DevEdition status
      */
     public static boolean isDevEdition() {
-        return !"release".equalsIgnoreCase(QuickShop.getInstance().getBuildInfo().getGitBranch());
+        return !"origin/release".equalsIgnoreCase(QuickShop.getInstance().getBuildInfo().getGitInfo().getBranch());
     }
 
     /**

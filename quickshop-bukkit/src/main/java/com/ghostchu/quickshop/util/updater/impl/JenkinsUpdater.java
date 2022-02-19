@@ -46,16 +46,16 @@ public class JenkinsUpdater implements QuickUpdater {
 
     public JenkinsUpdater(BuildInfo pluginBuildInfo) {
         this.pluginBuildInfo = pluginBuildInfo;
-        this.jobUrl = pluginBuildInfo.getJobUrl();
+        this.jobUrl = pluginBuildInfo.getCiInfo().getProjectUrl();
     }
 
     @Override
     public @NotNull VersionType getCurrentRunning() {
-        return switch (pluginBuildInfo.getGitBranch()) {
-            case "release" -> VersionType.STABLE;
-            case "rc" -> VersionType.RC;
-            case "beta" -> VersionType.BETA;
-            case "lts" -> VersionType.LTS;
+        return switch (pluginBuildInfo.getGitInfo().getBranch()) {
+            case "origin/release" -> VersionType.STABLE;
+            case "origin/rc" -> VersionType.RC;
+            case "origin/beta" -> VersionType.BETA;
+            case "origin/lts" -> VersionType.LTS;
             default -> VersionType.SNAPSHOT;
         };
     }
@@ -68,7 +68,7 @@ public class JenkinsUpdater implements QuickUpdater {
         if (this.lastRemoteBuildInfo == null) {
             return -1;
         }
-        return this.lastRemoteBuildInfo.getBuildId();
+        return this.lastRemoteBuildInfo.getCiInfo().getId();
     }
 
     @Override
@@ -79,7 +79,7 @@ public class JenkinsUpdater implements QuickUpdater {
         if (this.lastRemoteBuildInfo == null) {
             return "Error";
         }
-        return this.lastRemoteBuildInfo.getBuildTag();
+        return this.lastRemoteBuildInfo.getGitInfo().getBuildVersion();
     }
 
     @Override
@@ -97,7 +97,7 @@ public class JenkinsUpdater implements QuickUpdater {
                 .expectResponseCode(200)
                 .getInputStream()) {
             this.lastRemoteBuildInfo = new BuildInfo(inputStream);
-            return lastRemoteBuildInfo.getBuildId() <= pluginBuildInfo.getBuildId() || lastRemoteBuildInfo.getGitCommit().equalsIgnoreCase(pluginBuildInfo.getGitCommit());
+            return lastRemoteBuildInfo.getCiInfo().getId() <= pluginBuildInfo.getCiInfo().getId() || lastRemoteBuildInfo.getGitInfo().getId().equalsIgnoreCase(pluginBuildInfo.getGitInfo().getId());
         } catch (IOException ioException) {
             MsgUtil.sendDirectMessage(Bukkit.getConsoleSender(), Component.text( "[QuickShop] Failed to check for an update on build server! It might be an internet issue or the build server host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often, Error: " + ioException.getMessage()).color(NamedTextColor.RED));
             return true;

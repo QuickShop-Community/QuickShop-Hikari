@@ -37,10 +37,11 @@ import java.util.Properties;
 public class BuildInfo {
     private final GitInfo gitInfo;
     private final JenkinsInfo ciInfo;
+
     @SneakyThrows
     public BuildInfo(@Nullable InputStream inputStream) {
         // Read InputStream to String as UTF-8 encoding with Reader
-        if(inputStream == null){
+        if (inputStream == null) {
             gitInfo = new GitInfo(new Properties());
             ciInfo = new JenkinsInfo(new Properties());
             return;
@@ -51,8 +52,7 @@ public class BuildInfo {
         this.ciInfo = new JenkinsInfo(properties);
     }
 
-    @Data
-    static class GitInfo {
+    public static class GitInfo {
         @Nullable
         private final String branch;
         private final boolean dirty;
@@ -84,6 +84,115 @@ public class BuildInfo {
         private final String buildNumber;
         @Nullable
         private final String tags;
+        @NotNull
+        public String getBranch() {
+            if (branch == null)
+                return "undefined";
+            return branch;
+        }
+
+        public boolean isDirty() {
+            return dirty;
+        }
+
+        @NotNull
+        public String getRemoteOriginUrl() {
+            if (remoteOriginUrl == null)
+                return "undefined";
+            return remoteOriginUrl;
+        }
+
+        @NotNull
+        public String getId() {
+            if (id == null)
+                return "undefined";
+            return id;
+        }
+
+        @NotNull
+        public String getAbbrev() {
+            if (abbrev == null)
+                return "undefined";
+            return abbrev;
+        }
+
+        @NotNull
+        public String getDescribe() {
+            if (describe == null)
+                return "undefined";
+            return describe;
+        }
+
+        @NotNull
+        public String getDescribeShort() {
+            if (describeShort == null)
+                return "undefined";
+            return describeShort;
+        }
+
+        @NotNull
+        public String getCommitUsername() {
+            if (commitUsername == null)
+                return "undefined";
+            return commitUsername;
+        }
+
+        @NotNull
+        public String getCommitEmail() {
+            if (commitEmail == null)
+                return "undefined";
+            return commitEmail;
+        }
+
+        @NotNull
+        public String getCommitMessage() {
+            if (commitMessage == null)
+                return "undefined";
+            return commitMessage;
+        }
+
+        @NotNull
+        public String getCommitMessageFull() {
+            if (commitMessageFull == null)
+                return "undefined";
+            return commitMessageFull;
+        }
+
+        @NotNull
+        public String getCommitDate() {
+            if (commitMessageFull == null)
+                return "undefined";
+            return commitDate;
+        }
+
+        @NotNull
+        public String getBuildTime() {
+            if (buildTime == null)
+                return "undefined";
+            return buildTime;
+        }
+
+        @NotNull
+        public String getBuildVersion() {
+            if (buildVersion == null)
+                return "undefined";
+            return buildVersion;
+        }
+
+        @NotNull
+        public String getBuildNumber() {
+            if (buildNumber == null)
+                return "undefined";
+            return buildNumber;
+        }
+
+        @NotNull
+        public String getTags() {
+            if (tags == null)
+                return "undefined";
+            return tags;
+        }
+
 
         public GitInfo(@NotNull Properties properties) {
             this.tags = properties.getProperty("git.tags");
@@ -104,9 +213,9 @@ public class BuildInfo {
             this.buildNumber = properties.getProperty("git.build.number");
         }
     }
-    @Data
+
     @Builder
-    static class JenkinsInfo {
+    public static class JenkinsInfo {
         private final boolean ci;
         private final int id;
         @Nullable
@@ -121,6 +230,57 @@ public class BuildInfo {
         private final String projectUrl;
         @Nullable
         private final String projectBaseName;
+
+
+        public boolean isCi() {
+            return ci;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        @NotNull
+        public String getIdName() {
+            if (idName == null)
+                return "undefined";
+            return idName;
+        }
+
+        @NotNull
+        public String getTag() {
+            if (tag == null)
+                return "undefined";
+            return tag;
+        }
+
+        @NotNull
+        public String getUrl() {
+            if (url == null)
+                return "undefined";
+            return url;
+        }
+
+        @NotNull
+        public String getProjectName() {
+            if (projectName == null)
+                return "undefined";
+            return projectName;
+        }
+
+        @NotNull
+        public String getProjectUrl() {
+            if (projectUrl == null)
+                return "undefined";
+            return projectUrl;
+        }
+
+        @NotNull
+        public String getProjectBaseName() {
+            if (projectBaseName == null)
+                return "undefined";
+            return projectBaseName;
+        }
 
         public JenkinsInfo(@NotNull Properties properties) {
             this.ci = "true".equalsIgnoreCase(properties.getProperty("jenkins.ci"));
