@@ -62,7 +62,7 @@ public class UpdateWatcher implements Listener {
                                     "A new version of QuickShop has been released! [" + updater.getRemoteServerVersion() + "]");
                     QuickShop.getInstance()
                             .getLogger()
-                            .info("Update here: https://www.spigotmc.org/resources/62575/");
+                            .info("Update here: https://www.spigotmc.org/resources/100125/");
 
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         if (QuickShop.getPermissionManager()
@@ -83,7 +83,7 @@ public class UpdateWatcher implements Listener {
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                             player.sendMessage(ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(notify));
                             player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
-                            player.sendMessage(ChatColor.AQUA + " https://www.spigotmc.org/resources/62575/");
+                            player.sendMessage(ChatColor.AQUA + " https://www.spigotmc.org/resources/100125/");
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                         }
                     }
@@ -146,7 +146,7 @@ public class UpdateWatcher implements Listener {
             e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");
             e.getPlayer().sendMessage(ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(notify));
             e.getPlayer().sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
-            e.getPlayer().sendMessage(ChatColor.AQUA + " https://www.spigotmc.org/resources/62575/");
+            e.getPlayer().sendMessage(ChatColor.AQUA + " https://www.spigotmc.org/resources/100125/");
             e.getPlayer().sendMessage(ChatColor.GREEN + "---------------------------------------------------");
         }, 80);
     }

@@ -464,7 +464,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         this.onLoadCalled = true;
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up");
         //BEWARE THESE ONLY RUN ONCE
-        this.buildInfo = new BuildInfo(null);
+        this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
         runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
