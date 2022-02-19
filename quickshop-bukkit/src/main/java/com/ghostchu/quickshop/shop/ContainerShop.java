@@ -995,7 +995,6 @@ public class ContainerShop implements Shop {
             Util.debugLog("Failed to load shop: " + symbolLink+": "+e.getClass().getName()+": "+e.getMessage());
             MsgUtil.debugStackTrace(e.getStackTrace());
             this.delete(!plugin.getConfig().getBoolean("debug.delete-corrupt-shop"));
-            onUnload();
             return;
         }
         if (Util.fireCancellableEvent(new ShopLoadEvent(this))) {
