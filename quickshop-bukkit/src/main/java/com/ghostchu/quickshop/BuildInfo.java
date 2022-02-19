@@ -72,8 +72,6 @@ public class BuildInfo {
         @Nullable
         private final String commitMessage;
         @Nullable
-        private final String commitMessageFull;
-        @Nullable
         private final String commitDate;
         @Nullable
         private final String buildTime;
@@ -149,17 +147,9 @@ public class BuildInfo {
                 return "undefined";
             return commitMessage;
         }
-
-        @NotNull
-        public String getCommitMessageFull() {
-            if (commitMessageFull == null)
-                return "undefined";
-            return commitMessageFull;
-        }
-
         @NotNull
         public String getCommitDate() {
-            if (commitMessageFull == null)
+            if (commitDate == null)
                 return "undefined";
             return commitDate;
         }
@@ -205,7 +195,6 @@ public class BuildInfo {
             this.commitUsername = properties.getProperty("git.commit.user.name");
             this.commitEmail = properties.getProperty("git.commit.user.email");
             this.commitMessage = properties.getProperty("git.commit.message.short");
-            this.commitMessageFull = properties.getProperty("git.commit.message.full");
             this.commitDate = properties.getProperty("git.commit.time");
             this.buildTime = properties.getProperty("git.build.time");
             this.buildVersion = properties.getProperty("git.build.version");

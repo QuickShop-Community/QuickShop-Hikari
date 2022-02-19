@@ -8,7 +8,6 @@ git.commit.id.describe=${git.commit.id.describe}
 git.commit.id.describe-short=${git.commit.id.describe-short}
 git.commit.user.name=${git.commit.user.name}
 git.commit.user.email=${git.commit.user.email}
-git.commit.message.full=${git.commit.message.full}
 git.commit.message.short=${git.commit.message.short}
 git.commit.time=${git.commit.time}
 git.build.user.name=${git.build.user.name}
