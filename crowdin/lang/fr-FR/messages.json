@@ -13,7 +13,7 @@
   "integrations-check-failed-create": "&cIntégration {0} à refusé la création de la boutique",
   "integrations-check-failed-trade": "&cIntégration {0} à refusé la création de la boutique",
   "3rd-plugin-build-check-failed": "Un plugin tiers &l{0}&r&c a refusé les vérifications de permission, avez-vous les droits pour paramétrer ici ?",
-  "3rd-plugin-build-check-failed-admin": "{0} {1}",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cVous ne pouvez pas détruire les boutiques des autres joueurs en mode créatif, basculez en mode survie ou essayez d'utiliser le super-outil {0} à la place.",
   "trading-in-creative-mode-is-disabled": "&cVous ne pouvez pas utiliser une boutique en mode créatif.",
   "supertool-is-disabled": "&cLe super-outil est désactivé, impossible de détruire une boutique avec.",

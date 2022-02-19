@@ -13,7 +13,7 @@
   "integrations-check-failed-create": "A {0} integráció elutasította a bolt-készítést",
   "integrations-check-failed-trade": "A {0} integráció elutasította a bolttal való kereskedelmet",
   "3rd-plugin-build-check-failed": "&c3rd party plugin &l{0}&r&c denied the permission checks, did you have permission setup in there?",
-  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cYou cannot break other players shops in the creative mode, switch to survival mode or try to use supertool {0} instead.",
   "trading-in-creative-mode-is-disabled": "&cYou cannot trade with shop in the creative mode.",
   "supertool-is-disabled": "&cSupertool is disabled, cannot break any shop.",

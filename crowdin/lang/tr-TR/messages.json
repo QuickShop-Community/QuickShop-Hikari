@@ -13,7 +13,7 @@
   "integrations-check-failed-create": "&c{0} entegrasyonu market oluşumunu reddetti",
   "integrations-check-failed-trade": "&c{0} entegrasyonu market ticaretini reddetti",
   "3rd-plugin-build-check-failed": "&c3. parti &l{0}&r&c eklentisi yetki kontrollerini reddetti, orada yetkiniz var mıydı?",
-  "3rd-plugin-build-check-failed-admin": "&7(Yalnızca Yönetici) &d{0} &8izin kontrollerini reddetti, Bu istisna değilse, &d{1} &7'yi dinleyici kara listesine eklemeyi deneyin. &7Yapılandırma Kılavuzu: https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter",
   "no-creative-break": "&sYaratıcı modda diğer oyuncuların marketlerini kıramazsın, hayatta kalma moduna geçin veya yerine {0} supertool aletini kullanın.",
   "trading-in-creative-mode-is-disabled": "&cYaratıcı modda iken bu marketle ticaret yapamazsın.",
   "supertool-is-disabled": "&sSupertool devre dışı. Hiçbir marketi kıramazsın.",
