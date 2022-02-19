@@ -2,7 +2,7 @@
   "_comment": "안녕하세요 번역가님! 만약 당신이 깃헙이나 소스코드에서 번역 중이라면 다음 사이트를 가보시기 바래요! https://crowdin.com/project/quickshop-reremake",
   "file-test": "이것은텍스트파일일까요? 한국어 일까yo? :)",
   "translation-author": "번역: Chicki_yeah(번역에 이상한 부분이 있다면 치키이예#0032로 연락해주시면 수정하겠습니다.)",
-  "translation-version": "Support Version: Hikari",
+  "translation-version": "지원 버전: Hikari",
   "translation-contributors": "기여자: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
   "translation-country": "언어 지역: 한국어 (ko_KR)",
   "language-version": "63",
@@ -244,10 +244,10 @@
     "toggledisplay-hover": "&e상점 표시 항목 상태 전환"
   },
   "tableformat": {
-    "full_line": "&5+---------------------------------------------------+",
-    "left_half_line": "&5+--------------------",
+    "full_line": "+---------------------------------------------------+",
+    "left_half_line": "+--------------------",
     "right_half_line": "&5--------------------+",
-    "left_begin": "&5| "
+    "left_begin": "&5l "
   },
   "booleanformat": {
     "success": "&a✔",
@@ -299,7 +299,7 @@
       "papermc": "[PaperMC]",
       "nbtapi": "[+NBTAPI]",
       "paper": "[+Paper Optimized]",
-      "basic": "[Basic]"
+      "basic": "[기본]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&c{0} 위치에 있는 당신의 상점이 유지 비용이 없어 제거되었습니다!",
