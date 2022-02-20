@@ -127,7 +127,7 @@
     },
     "toggle-always-counting": {
       "counting": "&aShop is now always counting container even is unlimited",
-      "not-counting": "&aShop is now respect if shop is unlimited"
+      "not-counting": "&aショップが無制限の場合、ショップはリスペクトされます"
     },
     "transfer-success": "&e{0} のショップを &e{1} に転送しました",
     "transfer-success-other": "&a{0} {1}&aのショップを&e{2} に転送しました",
@@ -151,7 +151,7 @@
     "now-nolonger-debuging": "&a開発者モードを無効化しました。QuickShopをリロードしています。",
     "wrong-args": "&c無効な引数です。コマンドを&l/qs help &rで確認して下さい。",
     "description": {
-      "alwayscounting": "&eSet if shop always counting container even is unlimited",
+      "alwayscounting": "&e常時コンテナをカウントするかどうかを設定する",
       "title": "&aQuickShop ヘルプ",
       "unlimited": "&eショップに無制限の在庫を与えます",
       "setowner": "&eショップの所有権を変更します",
@@ -211,7 +211,7 @@
     "freeze": "取引が無効化されました。"
   },
   "controlpanel": {
-    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting": "&a常にカウント: {0} &e[&d&lChange&e]",
     "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&a店主: &b{0} &e[&d&l変更&e]",
     "infomation": "&aショップコントロールパネル:",
@@ -282,7 +282,7 @@
       "どう思う？{0} がリリースされました！更新しよう！",
       "ドクター！QuickShopに新しいアップデート {0} がやってきました！アップデートした方がいいですよ～",
       "こ～こ～だ～よ～！QuickShopに新しいアップデート {0} があるよ～",
-      "Paimon want told you the QuickShop have new update {0}!"
+      "Paimonはクイックショップに新しいアップデート {0} があると言っています！"
     ],
     "remote-disable-warning": "&cこのバージョンのQuickShopは、リモートサーバーによって無効とマークされており、このバージョンには深刻な問題がある可能性があります。{0}. この警告は安定したバージョンに切り替えるまで表示され続けますが、サーバーのパフォーマンスに影響を与えることはありません。",
     "label": {
@@ -366,8 +366,8 @@
   "shop-purged-start": "&aショップパージを開始しました。コンソールを確認してください。",
   "purchase-out-of-stock": "&cこのショップは在庫がなくなりました。店主またはショップスタッフにお問い合わせください。",
   "purchase-out-of-space": "&cこのショップは空き容量がありません。店主またはショップスタッフにお問い合わせください。",
-  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors.",
+  "safe-mode": "&cクイックショップはセーフモードです。このショップのコンテナを開くことができません。エラーを修正するにはサーバー管理者に問い合わせてください。",
+  "safe-mode-admin": "&c&lWARNING: &cこのサーバーのクイックショップは現在安全モードで動作していますが、機能は動作しません。エラーをチェックするには&e/qs &cコマンドを入力してください。",
   "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
   "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
   "plugin-cancelled": "&cOperation cancelled, Reason: {0}",
