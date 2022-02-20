@@ -17,7 +17,7 @@
   "no-creative-break": "&cクリエイティブモードでは他のプレイヤーのショップを破壊することはできません。サバイバルモードに切り替えるか、代わりにスーパーツール {0} を使用してください。",
   "trading-in-creative-mode-is-disabled": "&cクリエイティブモードではこのショップと取引することはできません。",
   "supertool-is-disabled": "&cスーパーツールが無効になっています。どのショップも破壊することはできません。",
-  "disabled-in-this-world": "&cQuickShop is disabled in this world",
+  "disabled-in-this-world": "&cこのワールドではクイックショップが無効になっています",
   "no-double-chests": "&cラージチェストのショップを作成することはできません。",
   "not-managed-shop": "あなたはショップの店主でもモデレーターでもありません。",
   "shop-already-owned": "&cこれはすでにショップです。",
