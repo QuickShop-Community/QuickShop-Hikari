@@ -36,7 +36,16 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
+
 public class PaperPlatform implements Platform {
+
+    private Map<String, String> translationMapping;
+
+    public PaperPlatform(Map<String, String> mapping){
+        this.translationMapping = mapping;
+    }
+
 
     @Override
     public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
@@ -94,35 +103,45 @@ public class PaperPlatform implements Platform {
         }
     }
 
+    private String postProcessingTranslationKey(String key){
+        return this.translationMapping.getOrDefault(key,key);
+    }
+
     @Override
     public @NotNull String getTranslationKey(@NotNull EntityType type) {
+        String key;
         try {
-            return type.translationKey();
+            key =  type.translationKey();
         } catch (Error error) {
             try {
-                return type.getTranslationKey();
+                key = type.getTranslationKey();
             } catch (Error error2) {
-                return "entity." + type.getKey().getNamespace() + "." + type.getKey().getKey();
+                key = "entity." + type.getKey().getNamespace() + "." + type.getKey().getKey();
             }
         }
+        return postProcessingTranslationKey(key);
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
+        String key;
         try {
-            return potionEffectType.translationKey();
+            key =  potionEffectType.translationKey();
         } catch (Error error) {
-            return "effect." + potionEffectType.getKey().getNamespace() + "." + potionEffectType.getKey().getKey();
+            key = "effect." + potionEffectType.getKey().getNamespace() + "." + potionEffectType.getKey().getKey();
         }
+        return postProcessingTranslationKey(key);
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
+        String key;
         try {
-            return enchantment.translationKey();
+            key = enchantment.translationKey();
         } catch (Error error) {
-            return enchantment.getKey().getNamespace() + "." + enchantment.getKey().getKey();
+            key = enchantment.getKey().getNamespace() + "." + enchantment.getKey().getKey();
         }
+        return postProcessingTranslationKey(key);
     }
 
     @Override
@@ -160,5 +179,10 @@ public class PaperPlatform implements Platform {
     @Override
     public void setDisplayName(@NotNull Item stack, @NotNull Component component) {
         stack.customName(component);
+    }
+
+    @Override
+    public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
+        this.translationMapping = mapping;
     }
 }

@@ -42,15 +42,19 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
+
 public class SpigotPlatform implements Platform {
     private NBTAPI nbtapi;
     private final ReflServerStateProvider provider;
+    private Map<String, String> translationMapping;
 
-    public SpigotPlatform() {
+    public SpigotPlatform(@NotNull Map<String, String> mapping) {
         this.provider = new ReflServerStateProvider();
         if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
             nbtapi = NBTAPI.getInstance();
         }
+        this.translationMapping = mapping;
     }
 
     @Override
@@ -104,27 +108,39 @@ public class SpigotPlatform implements Platform {
         return ReflectFactory.getServerVersion();
     }
 
+    private String postProcessingTranslationKey(String key) {
+        return this.translationMapping.getOrDefault(key, key);
+    }
+
     @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
+        String key;
         if (!material.isBlock())
-            return "item." + material.getKey().getNamespace() + "." + material.getKey().getKey();
+            key = "item." + material.getKey().getNamespace() + "." + material.getKey().getKey();
         else
-            return "block." + material.getKey().getNamespace() + "." + material.getKey().getKey();
+            key = "block." + material.getKey().getNamespace() + "." + material.getKey().getKey();
+        return postProcessingTranslationKey(key);
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull EntityType type) {
-        return "entity." + type.getKey().getNamespace() + "." + type.getKey().getKey();
+        String key;
+        key = "entity." + type.getKey().getNamespace() + "." + type.getKey().getKey();
+        return postProcessingTranslationKey(key);
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
-        return "effect." + potionEffectType.getKey().getNamespace() + "." + potionEffectType.getKey().getKey();
+        String key;
+        key = "effect." + potionEffectType.getKey().getNamespace() + "." + potionEffectType.getKey().getKey();
+        return postProcessingTranslationKey(key);
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
-        return enchantment.getKey().getNamespace() + "." + enchantment.getKey().getKey();
+        String key;
+        key = enchantment.getKey().getNamespace() + "." + enchantment.getKey().getKey();
+        return postProcessingTranslationKey(key);
     }
 
     @Override
@@ -167,5 +183,10 @@ public class SpigotPlatform implements Platform {
     @Override
     public void setDisplayName(@NotNull Item stack, @NotNull Component component) {
         stack.setCustomName(LegacyComponentSerializer.legacySection().serialize(component));
+    }
+
+    @Override
+    public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
+        this.translationMapping = mapping;
     }
 }

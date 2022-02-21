@@ -35,6 +35,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
+
 public interface Platform {
     void setLine(@NotNull Sign sign, int line, @NotNull Component component);
     @NotNull
@@ -79,4 +81,5 @@ public interface Platform {
     Component getDisplayName(@NotNull ItemStack stack);
     void setDisplayName(@NotNull ItemStack stack, @NotNull Component component);
     void setDisplayName(@NotNull Item stack, @NotNull Component component);
+    void updateTranslationMappingSection(@NotNull Map<String, String> mapping);
 }

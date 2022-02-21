@@ -227,6 +227,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private BukkitAudiences audience;
     @Getter
     private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
+    private HashMap<String, String> translationMapping;
 
     /**
      * Use for mock bukkit
@@ -442,6 +443,15 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         this.allowStack = this.getConfig().getBoolean("shop.allow-stacks");
         this.currency = this.getConfig().getString("currency");
         this.loggingLocation = this.getConfig().getInt("logging.location");
+        this.translationMapping = new HashMap<>();
+        getConfig().getStringList("custom-translation-key").forEach(str->{
+            String[] split = str.split("=",0);
+            this.translationMapping.put(split[0],split[1]);
+        });
+        if(this.platform != null){
+            this.platform.updateTranslationMappingSection(this.translationMapping);
+        }
+
         if (StringUtils.isEmpty(this.currency)) {
             this.currency = null;
         }
@@ -480,9 +490,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         this.inventoryWrapperRegistry.register(this, this.inventoryWrapperManager);
         getLogger().info("Loading up integration modules.");
         if (PaperLib.isPaper()) {
-            this.platform = new PaperPlatform();
+            this.platform = new PaperPlatform(this.translationMapping);
         } else if (PaperLib.isSpigot()) {
-            this.platform = new SpigotPlatform();
+            this.platform = new SpigotPlatform(this.translationMapping);
         } else {
             throw new UnsupportedOperationException("Unsupported platform");
         }
@@ -926,6 +936,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
             Runtime.getRuntime().halt(0);
         }
+
+        if(selectedVersion == 1000){
+            getConfig().set("custom-translation-key",new ArrayList<>());
+            selectedVersion++;
+        }
+
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(platform.getMinecraftVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
@@ -935,6 +951,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 reloadConfig();
             }
         }
+        getConfig().set("config-version", selectedVersion);
         saveConfig();
         reloadConfig();
         //Delete old example configuration files
@@ -1045,4 +1062,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     public BukkitAudiences getAudience() {
         return audience;
     }
+
+
 }

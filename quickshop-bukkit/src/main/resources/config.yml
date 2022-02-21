@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1000
+config-version: 1001
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -550,5 +550,7 @@ custom-commands:
 #Let this stay false, DO NOT TOUCH IT!
 config-damaged: false
 
-
-
+#Specfic the translation key mapping to a fixed String.
+#Example:
+#  - "ecoenchants:enchantment.damage_artifact=Artifact Damage"
+custom-translation-key: []
