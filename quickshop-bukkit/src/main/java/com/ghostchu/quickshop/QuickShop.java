@@ -227,7 +227,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private BukkitAudiences audience;
     @Getter
     private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
-    private HashMap<String, String> translationMapping;
+    private Map<String, String> translationMapping;
+    private Map<String, String> addonRegisteredMapping = new HashMap<>();
 
     /**
      * Use for mock bukkit
@@ -448,6 +449,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             String[] split = str.split("=",0);
             this.translationMapping.put(split[0],split[1]);
         });
+        this.translationMapping.putAll(this.addonRegisteredMapping);
         if(this.platform != null){
             this.platform.updateTranslationMappingSection(this.translationMapping);
         }
@@ -1062,6 +1064,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     public BukkitAudiences getAudience() {
         return audience;
     }
-
-
+    @Override
+    public void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key) {
+        addonRegisteredMapping.put(translationKey, key);
+        translationMapping.putAll(addonRegisteredMapping);
+        if(this.platform != null){
+            this.platform.updateTranslationMappingSection(translationMapping);
+        }
+    }
 }
