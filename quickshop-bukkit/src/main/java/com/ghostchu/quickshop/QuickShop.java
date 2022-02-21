@@ -227,6 +227,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private BukkitAudiences audience;
     @Getter
     private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
+    private Map<String, String> translationMapping;
+    private Map<String, String> addonRegisteredMapping = new HashMap<>();
 
     /**
      * Use for mock bukkit
@@ -442,6 +444,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         this.allowStack = this.getConfig().getBoolean("shop.allow-stacks");
         this.currency = this.getConfig().getString("currency");
         this.loggingLocation = this.getConfig().getInt("logging.location");
+        this.translationMapping = new HashMap<>();
+        getConfig().getStringList("custom-translation-key").forEach(str->{
+            String[] split = str.split("=",0);
+            this.translationMapping.put(split[0],split[1]);
+        });
+        this.translationMapping.putAll(this.addonRegisteredMapping);
+        if(this.platform != null){
+            this.platform.updateTranslationMappingSection(this.translationMapping);
+        }
+
         if (StringUtils.isEmpty(this.currency)) {
             this.currency = null;
         }
@@ -480,9 +492,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         this.inventoryWrapperRegistry.register(this, this.inventoryWrapperManager);
         getLogger().info("Loading up integration modules.");
         if (PaperLib.isPaper()) {
-            this.platform = new PaperPlatform();
+            this.platform = new PaperPlatform(this.translationMapping);
         } else if (PaperLib.isSpigot()) {
-            this.platform = new SpigotPlatform();
+            this.platform = new SpigotPlatform(this.translationMapping);
         } else {
             throw new UnsupportedOperationException("Unsupported platform");
         }
@@ -545,6 +557,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         getServer().getServicesManager().unregisterAll(this);
         getLogger().info("Shutting down Unirest instances...");
         Unirest.shutDown(true);
+        getLogger().info("Shutting down database...");
+        EasySQL.shutdownManager(this.sqlManager);
         getLogger().info("Finishing remains misc works...");
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
         getLogger().info("All shutdown work is finished.");
@@ -642,9 +656,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         } catch (Exception e) {
             getLogger().log(Level.WARNING, "Error when loading translation", e);
         }
-        MsgUtil.loadItemi18n();
-        MsgUtil.loadEnchi18n();
-        MsgUtil.loadPotioni18n();
 
         /* Load 3rd party supports */
         load3rdParty();
@@ -927,6 +938,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             }
             Runtime.getRuntime().halt(0);
         }
+
+        if(selectedVersion == 1000){
+            getConfig().set("custom-translation-key",new ArrayList<>());
+            selectedVersion++;
+        }
+
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(platform.getMinecraftVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
@@ -936,6 +953,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 reloadConfig();
             }
         }
+        getConfig().set("config-version", selectedVersion);
         saveConfig();
         reloadConfig();
         //Delete old example configuration files
@@ -1045,5 +1063,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @NotNull
     public BukkitAudiences getAudience() {
         return audience;
+    }
+    @Override
+    public void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key) {
+        addonRegisteredMapping.put(translationKey, key);
+        translationMapping.putAll(addonRegisteredMapping);
+        if(this.platform != null){
+            this.platform.updateTranslationMappingSection(translationMapping);
+        }
     }
 }

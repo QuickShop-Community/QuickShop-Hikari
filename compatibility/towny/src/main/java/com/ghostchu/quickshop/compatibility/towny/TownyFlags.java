@@ -1,6 +1,6 @@
 /*
- * This file is a part of project QuickShop, the name is TownyFlags.java
- *  Copyright (C) PotatoCraft Studio and contributors
+ *  This file is a part of project QuickShop, the name is TownyFlags.java
+ *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
  *  under the terms of the GNU General Public License as published by the
