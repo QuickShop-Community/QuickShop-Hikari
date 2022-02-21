@@ -770,13 +770,11 @@ public class ContainerShop implements Shop {
         if (plugin.getConfig().getBoolean("shop.force-use-item-original-name") || !this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
             Component left = plugin.text().of("signs.item-left").forLocale();
             Component right = plugin.text().of("signs.item-right").forLocale();
-
-            // NBTAPI installed
-            String itemName = Util.getItemCustomName(getItem());
-            Component itemComponents = itemName == null ? plugin.getPlatform().getItemTranslationKey(getItem().getType()) : LegacyComponentSerializer.legacySection().deserialize(itemName);
+            Component itemName = Util.getItemCustomName(getItem());
+            Component itemComponents = itemName == null ? plugin.getPlatform().getItemTranslationKey(getItem().getType()) : itemName;
             lines.add(left.append(itemComponents).append(right));
         } else {
-            lines.add(plugin.text().of("signs.item-left").forLocale().append(LegacyComponentSerializer.legacySection().deserialize(Util.getItemStackName(getItem())).append(plugin.text().of("signs.item-right").forLocale())));
+            lines.add(plugin.text().of("signs.item-left").forLocale().append(Util.getItemStackName(getItem()).append(plugin.text().of("signs.item-right").forLocale())));
         }
 
         //line 4

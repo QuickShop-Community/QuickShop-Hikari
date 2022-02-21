@@ -545,6 +545,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         getServer().getServicesManager().unregisterAll(this);
         getLogger().info("Shutting down Unirest instances...");
         Unirest.shutDown(true);
+        getLogger().info("Shutting down database...");
+        EasySQL.shutdownManager(this.sqlManager);
         getLogger().info("Finishing remains misc works...");
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
         getLogger().info("All shutdown work is finished.");
@@ -642,9 +644,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         } catch (Exception e) {
             getLogger().log(Level.WARNING, "Error when loading translation", e);
         }
-        MsgUtil.loadItemi18n();
-        MsgUtil.loadEnchi18n();
-        MsgUtil.loadPotioni18n();
 
         /* Load 3rd party supports */
         load3rdParty();

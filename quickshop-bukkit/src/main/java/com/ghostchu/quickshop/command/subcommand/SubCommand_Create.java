@@ -19,27 +19,24 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.shop.ShopAction;
+import com.ghostchu.quickshop.shop.SimpleInfo;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.holder.Result;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.api.shop.ShopAction;
-import com.ghostchu.quickshop.shop.SimpleInfo;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.holder.Result;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 public class SubCommand_Create implements CommandHandler<Player> {
 
@@ -52,21 +49,13 @@ public class SubCommand_Create implements CommandHandler<Player> {
 
     @Nullable
     private Material matchMaterial(String itemName) {
+        itemName = itemName.toUpperCase();
+        itemName = itemName.replace(" ", "_");
         Material material = Material.matchMaterial(itemName);
         if (isValidMaterial(material)) {
             return material;
         }
-        ConfigurationSection section = MsgUtil.getItemi18n().getConfigurationSection("itemi18n");
-        for (String itemKey : Objects.requireNonNull(section).getKeys(false)) {
-            if (itemName.equalsIgnoreCase(section.getString(itemKey))) {
-                material = Material.matchMaterial(itemKey);
-                break;
-            }
-        }
-        if (!isValidMaterial(material)) {
-            return null;
-        }
-        return material;
+        return null;
     }
 
     private boolean isValidMaterial(@Nullable Material material) {
