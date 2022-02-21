@@ -114,7 +114,7 @@ public class UpdateWatcher implements Listener {
                             notify = MsgUtil.fillArgs(notify, Component.text(updater.getRemoteServerVersion()), Component.text(QuickShop.getInstance().getBuildInfo().getGitInfo().getBuildVersion()));
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                             player.sendMessage(ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(notify));
-                            player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
+                            //player.sendMessage(ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
                             player.sendMessage(ChatColor.AQUA + " https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari");
                             player.sendMessage(ChatColor.GREEN + "---------------------------------------------------");
                         }
