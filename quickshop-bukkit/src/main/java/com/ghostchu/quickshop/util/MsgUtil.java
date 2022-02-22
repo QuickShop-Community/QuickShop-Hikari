@@ -64,12 +64,6 @@ public class MsgUtil {
     public static GameLanguage gameLanguage;
     private static DecimalFormat decimalFormat;
     private static QuickShop plugin = QuickShop.getInstance();
-//    @Getter
-//    private static YamlConfiguration enchi18n;
-//    @Getter
-//    private static YamlConfiguration itemi18n;
-//    @Getter
-//    private static YamlConfiguration potioni18n;
     private volatile static Entry<String, String> cachedGameLanguageCode = null;
 
     /**
@@ -105,29 +99,6 @@ public class MsgUtil {
         }
         return false;
     }
-
-//    /**
-//     * Get item's i18n name, If you want get item name, use Util.getItemStackName
-//     *
-//     * @param itemBukkitName ItemBukkitName(e.g. Material.STONE.name())
-//     * @return String Item's i18n name.
-//     */
-//    @ApiStatus.ScheduledForRemoval
-//    @Deprecated
-//    public static String getItemi18n(@NotNull String itemBukkitName) {
-//        if (itemBukkitName.isEmpty()) {
-//            return "Item is empty";
-//        }
-//        String itemnameI18n = itemi18n.getString("itemi18n." + itemBukkitName);
-//        if (itemnameI18n != null && !itemnameI18n.isEmpty()) {
-//            return itemnameI18n;
-//        }
-//        Material material = Material.matchMaterial(itemBukkitName);
-//        if (material == null) {
-//            return "Material not exist";
-//        }
-//        return Util.prettifyText(material.name());
-//    }
 
     /**
      * Replace args in raw to args
@@ -211,7 +182,7 @@ public class MsgUtil {
     @ApiStatus.ScheduledForRemoval
     @Deprecated
     public static void loadGameLanguage(@NotNull String languageCode) {
-        gameLanguage = ServiceInjector.getInjectedService(GameLanguage.class,null);
+        gameLanguage = ServiceInjector.getInjectedService(GameLanguage.class, null);
         if (gameLanguage == null) {
             gameLanguage = new MojangGameLanguageImpl(plugin, languageCode);
             ((MojangGameLanguageImpl) gameLanguage).load();
@@ -228,112 +199,6 @@ public class MsgUtil {
         //Load game language i18n
         loadGameLanguage(plugin.getConfig().getString("game-language", "default"));
     }
-
-//    @ApiStatus.ScheduledForRemoval
-//    @Deprecated
-//    public static void loadEnchi18n() {
-//        plugin.getLogger().info("Loading enchantments translations...");
-//        File enchi18nFile = new File(plugin.getDataFolder(), "enchi18n.yml");
-//        if (!enchi18nFile.exists()) {
-//            plugin.getLogger().info("Creating enchi18n.yml");
-//            try {
-//                enchi18nFile.createNewFile();
-//            } catch (IOException e) {
-//                plugin.getLogger().log(Level.WARNING, "Failed to create enchi18n.yml", e);
-//            }
-//        }
-//        // Store it
-//        enchi18n = YamlConfiguration.loadConfiguration(enchi18nFile);
-//        enchi18n.options().copyDefaults(false);
-//        Enchantment[] enchsi18n = Enchantment.values();
-//        for (Enchantment ench : enchsi18n) {
-//            String enchi18nString = enchi18n.getString("enchi18n." + ench.getKey().getKey().trim());
-//            if (enchi18nString != null && !enchi18nString.isEmpty()) {
-//                continue;
-//            }
-//            String enchName = gameLanguage.getEnchantment(ench);
-//            enchi18n.set("enchi18n." + ench.getKey().getKey(), enchName);
-//            plugin.getLogger().info("Found new ench [" + enchName + "] , adding it to the config...");
-//        }
-//        try {
-//            enchi18n.save(enchi18nFile);
-//        } catch (IOException e) {
-//            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction enchname from enchi18n.yml. Skipping...", e);
-//        }
-//    }
-//
-//    /**
-//     * Load Itemi18n fron file
-//     */
-//    @ApiStatus.ScheduledForRemoval
-//    @Deprecated
-//    public static void loadItemi18n() {
-//        plugin.getLogger().info("Loading items translations...");
-//        File itemi18nFile = new File(plugin.getDataFolder(), "itemi18n.yml");
-//        if (!itemi18nFile.exists()) {
-//            plugin.getLogger().info("Creating itemi18n.yml");
-//            try {
-//                itemi18nFile.createNewFile();
-//            } catch (IOException e) {
-//                plugin.getLogger().log(Level.WARNING, "Failed to create itemi18n.yml", e);
-//            }
-//        }
-//        // Store it
-//        itemi18n = YamlConfiguration.loadConfiguration(itemi18nFile);
-//        itemi18n.options().copyDefaults(false);
-//        Material[] itemsi18n = Material.values();
-//        for (Material material : itemsi18n) {
-//            String itemi18nString = itemi18n.getString("itemi18n." + material.name());
-//            if (itemi18nString != null && !itemi18nString.isEmpty()) {
-//                continue;
-//            }
-//            String itemName = gameLanguage.getItem(material);
-//            itemi18n.set("itemi18n." + material.name(), itemName);
-//            plugin
-//                    .getLogger()
-//                    .info("Found new items/blocks [" + itemName + "] , adding it to the config...");
-//        }
-//        try {
-//            itemi18n.save(itemi18nFile);
-//        } catch (IOException e) {
-//            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction itemname from itemi18n.yml. Skipping...", e);
-//        }
-//    }
-//
-//    @ApiStatus.ScheduledForRemoval
-//    @Deprecated
-//    public static void loadPotioni18n() {
-//        plugin.getLogger().info("Loading potions translations...");
-//        File potioni18nFile = new File(plugin.getDataFolder(), "potioni18n.yml");
-//        if (!potioni18nFile.exists()) {
-//            plugin.getLogger().info("Creating potioni18n.yml");
-//            try {
-//                potioni18nFile.createNewFile();
-//            } catch (IOException e) {
-//                plugin.getLogger().log(Level.WARNING, "Failed to create potioni18n.yml", e);
-//            }
-//        }
-//        // Store it
-//        potioni18n = YamlConfiguration.loadConfiguration(potioni18nFile);
-//        potioni18n.options().copyDefaults(false);
-//        for (PotionEffectType potion : PotionEffectType.values()) {
-//            if (potion == null) {
-//                continue;
-//            }
-//            String potionI18n = potioni18n.getString("potioni18n." + potion.getName());
-//            if (potionI18n != null && !StringUtils.isEmpty(potionI18n)) {
-//                continue;
-//            }
-//            String potionName = gameLanguage.getPotion(potion);
-//            plugin.getLogger().info("Found new potion [" + potionName + "] , adding it to the config...");
-//            potioni18n.set("potioni18n." + potion.getName(), potionName);
-//        }
-//        try {
-//            potioni18n.save(potioni18nFile);
-//        } catch (IOException e) {
-//            plugin.getLogger().log(Level.WARNING, "Could not load/save transaction potionname from potioni18n.yml. Skipping...", e);
-//        }
-//    }
 
     /**
      * loads all player purchase messages from the database.
@@ -427,7 +292,7 @@ public class MsgUtil {
      * @param shop   Target shop
      */
     public static void sendControlPanelInfo(@NotNull CommandSender sender, @NotNull Shop shop) {
-        if(!(sender instanceof Player)) {
+        if (!(sender instanceof Player)) {
             return;
         }
         if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use") && (shop.getOwner().equals(((Player) sender).getUniqueId()) || !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control"))) {
@@ -502,27 +367,6 @@ public class MsgUtil {
         }
     }
 
-//    /**
-//     * Get Enchantment's i18n name.
-//     *
-//     * @param key The Enchantment.
-//     * @return Enchantment's i18n name.
-//     */
-//    @ApiStatus.ScheduledForRemoval
-//    @Deprecated
-//    public static String getEnchi18n(@NotNull Enchantment key) {
-//        String enchString = key.getKey().getKey();
-//        if (enchString.isEmpty()) {
-//            return "Enchantment key is empty";
-//        }
-//        String enchI18n = enchi18n.getString("enchi18n." + enchString);
-//        if (enchI18n != null && !enchI18n.isEmpty()) {
-//            return enchI18n;
-//        }
-//        return Util.prettifyText(enchString);
-//    }
-
-
     public static void printEnchantment(@NotNull Player p, @NotNull Shop shop, ChatSheetPrinter chatSheetPrinter) {
         if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && plugin.getConfig().getBoolean("respect-item-flag")) {
             return;
@@ -553,27 +397,6 @@ public class MsgUtil {
         }
     }
 
-//    /**
-//     * Get potion effect's i18n name.
-//     *
-//     * @param potion potionType
-//     * @return Potion's i18n name.
-//     */
-//    @ApiStatus.ScheduledForRemoval
-//    @Deprecated
-//    public static String getPotioni18n(@NotNull PotionEffectType potion) {
-//        String potionString = potion.getName().trim();
-//        if (potionString.isEmpty()) {
-//            return "Potion name is empty.";
-//        }
-//        String potionI18n = potioni18n.getString("potioni18n." + potionString);
-//        if (potionI18n != null && !potionI18n.isEmpty()) {
-//            return potionI18n;
-//        }
-//        return Util.prettifyText(potionString);
-//    }
-
-
     public static void debugStackTrace(StackTraceElement[] traces) {
         if (Util.isDisableDebugLogger()) {
             return;
@@ -590,6 +413,7 @@ public class MsgUtil {
     public static void sendDirectMessage(@NotNull UUID sender, @Nullable Component... messages) {
         sendDirectMessage(Bukkit.getPlayer(sender), messages);
     }
+
     public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable String... messages) {
         if (messages == null) {
             Util.debugLog("INFO: null messages trying to be sent.");
@@ -603,9 +427,10 @@ public class MsgUtil {
             if (StringUtils.isEmpty(msg)) {
                 return;
             }
-           sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(msg));
+            sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(msg));
         }
     }
+
     public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable Component... messages) {
         if (messages == null) {
             Util.debugLog("INFO: null messages trying to be sent.");

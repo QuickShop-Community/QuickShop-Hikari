@@ -521,35 +521,6 @@ public class Util {
         }
     }
 
-//    /**
-//     * Get ItemStack's local name, return null if failed to get.
-//     *
-//     * @param itemStack Target ItemStack
-//     * @return LocalName or NULL
-//     */
-//    @Nullable
-//    public static String getLocalizedName(@NotNull ItemStack itemStack) {
-//        ItemMeta itemMeta = itemStack.getItemMeta();
-//        if (itemMeta == null) {
-//            return null;
-//        }
-//        if (!itemMeta.hasLocalizedName()) {
-//            return null;
-//        }
-//        return itemMeta.getLocalizedName();
-//    }
-
-//    /**
-//     * Return an entry with min and max prices, but null if there isn't a price restriction
-//     *
-//     * @param material mat
-//     * @return min, max
-//     */
-//    @Nullable
-//    public static Entry<Double, Double> getPriceRestriction(@NotNull Material material) {
-//        return RESTRICTED_PRICES.get(material);
-//    }
-
     public static boolean isDoubleChest(@Nullable BlockData blockData) {
         if (!(blockData instanceof org.bukkit.block.data.type.Chest chestBlockData)) {
             return false;
@@ -654,21 +625,6 @@ public class Util {
             BLACKLIST.add(mat);
         }
 
-//        for (String s : plugin.getConfig().getStringList("shop.price-restriction")) {
-//            String[] sp = s.split(";");
-//            if (sp.length == 3) {
-//                try {
-//                    Material mat = Material.matchMaterial(sp[0]);
-//                    if (mat == null) {
-//                        plugin.getLogger().warning("Material " + sp[0] + " in config.yml can't match with a valid Materials, check your config.yml!");
-//                        continue;
-//                    }
-//                    RESTRICTED_PRICES.put(mat, new SimpleEntry<>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
-//                } catch (Exception e) {
-//                    plugin.getLogger().warning("Invalid price restricted material: " + s);
-//                }
-//            }
-//        }
         for (String material : plugin.getConfig().getStringList("custom-item-stacksize")) {
             String[] data = material.split(":");
             if (data.length != 2) {
