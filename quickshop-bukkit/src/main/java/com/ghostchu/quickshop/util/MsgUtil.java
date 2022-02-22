@@ -451,7 +451,7 @@ public class MsgUtil {
 
     public static Component getTranslateText(@NotNull ItemStack stack) {
         if (plugin.getConfig().getBoolean("force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
-            return plugin.getPlatform().getItemTranslationKey(stack.getType());
+            return plugin.getPlatform().getTranslation(stack.getType());
         } else {
             return Util.getItemStackName(stack);
         }

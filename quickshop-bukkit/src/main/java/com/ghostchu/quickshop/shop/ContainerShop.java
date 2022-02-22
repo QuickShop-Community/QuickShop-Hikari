@@ -771,7 +771,7 @@ public class ContainerShop implements Shop {
             Component left = plugin.text().of("signs.item-left").forLocale();
             Component right = plugin.text().of("signs.item-right").forLocale();
             Component itemName = Util.getItemCustomName(getItem());
-            Component itemComponents = itemName == null ? plugin.getPlatform().getItemTranslationKey(getItem().getType()) : itemName;
+            Component itemComponents = itemName == null ? plugin.getPlatform().getTranslation(getItem().getType()) : itemName;
             lines.add(left.append(itemComponents).append(right));
         } else {
             lines.add(plugin.text().of("signs.item-left").forLocale().append(Util.getItemStackName(getItem()).append(plugin.text().of("signs.item-right").forLocale())));
