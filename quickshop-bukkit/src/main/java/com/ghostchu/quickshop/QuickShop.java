@@ -938,6 +938,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfig().set("custom-translation-key",new ArrayList<>());
             selectedVersion++;
         }
+        if(selectedVersion == 1001){
+            getConfig().set("shop.name-fee",0);
+            getConfig().set("shop.name-max-length",32);
+            selectedVersion++;
+        }
 
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(platform.getMinecraftVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");

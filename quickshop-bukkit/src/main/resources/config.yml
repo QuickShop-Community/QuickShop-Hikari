@@ -388,6 +388,11 @@ shop:
   #The word to trade all items in player inventory.
   word-for-trade-all-items: "all"
 
+  #Sets the name cost
+  name-fee: 0
+  #Sets the max length for shop naming
+  name-max-length: 32
+
   #The shop ongoing fee.
   #If the shop owner doesn't have enough money, the shop will automatically be removed.
   ongoing-fee:
