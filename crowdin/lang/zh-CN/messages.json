@@ -419,8 +419,8 @@
     "scheduled-at": "计划于 {0}",
     "scheduled-in": "计划在 {0}",
     "longtimeago": "很久前",
-    "std-format": "MM/dd/yyyy HH:mm:ss",
-    "std-past-format": "{5}{4}{3}{2}{1}前{0}",
+    "std-format": "yyyy/MM/dd HH:mm:ss",
+    "std-past-format": "{5}{4}{3}{2}{1}{0}前",
     "before": "前",
     "behind": "后面",
     "after": "之后",
@@ -435,11 +435,11 @@
     "query-argument": "查询参数： {0}",
     "no-results": "&c未找到交易。",
     "transaction-count": "&e 总计{0}",
-    "entry-header-global": "&b| [owner](color=#FFD39B) &b| [player](color=#EEC591) &b| [action](color=#CDAA7D) &b| [shop](color=#8B7355) &b| [price](color=#8B7E66) &b|",
+    "entry-header-global": "&b| [所有者](color=#FFD39B) &b| [玩家](color=#EEC591) &b| [类型](color=#CDAA7D) &b| [商店](color=#8B7355) &b| [价格](color=#8B7E66) &b|",
     "entry-global:": "&b| [{0}](color=#FFD39B hover={1}) &b| [{2}](color=#EEC591 hover={3}) &b| [{4}](color=#CDAA7D hover={5}) &b| [{6}](color=#8B7355 hover={7} &b| [{8}](color=#8B7E66 hover={9}) &b|",
-    "entry-header-player": "&b| [purchaser](color=#FFD39B) &b| [action](color=#EEC591) &b| [shop](color=#CDAA7D) &b| [amount](color=#8B7355) &b| [price](color=#8B7E66) &b|",
+    "entry-header-player": "&b| [交易者](color=#FFD39B) &b| [类型](color=#EEC591) &b| [商店](color=#CDAA7D) &b| [数量](color=#8B7355) &b| [价格](color=#8B7E66) &b|",
     "entry-player": "&b| [{0}](color=#FFD39B hover={1}) &b| [{2}](color=#EEC591 hover={3}) &b| [{4}](color=#CDAA7D hover={5}) &b| [{6}](color=#8B7355 hover={7} &b| [{8}](color=#8B7E66 hover={9}) &b|",
-    "entry-header-shop": "&b| [purchaser](color=#FFD39B) &b| [action](color=#EEC591) &b| [amount](color=#CDAA7D) &b| [price](color=#8B7355) &b| [tax](color=#8B7E66) &b|",
+    "entry-header-shop": "&b| [交易者](color=#FFD39B) &b| [类型](color=#EEC591) &b| [数量](color=#CDAA7D) &b| [价格](color=#8B7355) &b| [税](color=#8B7E66) &b|",
     "entry-shop": "&b| [{0}](color=#FFD39B hover={1}) &b| [{2}](color=#EEC591 hover={3}) &b| [{4}](color=#CDAA7D hover={5}) &b| [{6}](color=#8B7355 hover={7} &b| [{8}](color=#8B7E66 hover={9}) &b|",
     "unknown": "&7(未知)",
     "undefined": "&7(无名)",
@@ -457,8 +457,8 @@
       "PURCHASE_SELLING_SHOP": "&e玩家从一个出售商店购买了一些物品",
       "PURCHASE_BUYING_SHOP": "&e玩家将一些物品卖给收购商店",
       "CREATE": "&e玩家创建了一个商店",
-      "DELETE": "&e玩家删除了一个商店。如果可能的话，将商店创建费退还给所有者",
-      "ONGOING_FEE": "&e玩家支付了持续商店的费用，因为支付时间已过。"
+      "DELETE": "&e玩家删除了一个商店，如果可能的话，商店创建费将会退还给所有者",
+      "ONGOING_FEE": "&e玩家支付了持续商店的费用，因为支付期限已过。"
     }
   }
 }
