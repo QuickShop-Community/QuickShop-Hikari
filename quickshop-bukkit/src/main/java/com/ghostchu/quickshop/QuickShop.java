@@ -651,11 +651,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         /* Initalize the Utils */
         this.loadItemMatcher();
         Util.initialize();
-        try {
-            MsgUtil.loadI18nFile();
-        } catch (Exception e) {
-            getLogger().log(Level.WARNING, "Error when loading translation", e);
-        }
 
         /* Load 3rd party supports */
         load3rdParty();
