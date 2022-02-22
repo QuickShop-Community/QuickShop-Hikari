@@ -90,7 +90,7 @@ public class BlockListener extends AbstractProtectionListener {
                     return;
                 }
                 e.setCancelled(true);
-                plugin.text().of(p, "no-creative-break", plugin.getPlatform().getItemTranslationKey(Material.GOLDEN_AXE)).send();
+                plugin.text().of(p, "no-creative-break", plugin.getPlatform().getTranslation(Material.GOLDEN_AXE)).send();
                 return;
             }
 
@@ -128,7 +128,7 @@ public class BlockListener extends AbstractProtectionListener {
                     return;
                 }
                 e.setCancelled(true);
-                plugin.text().of(p, "no-creative-break",plugin.getPlatform().getItemTranslationKey(Material.GOLDEN_AXE)).send();
+                plugin.text().of(p, "no-creative-break",plugin.getPlatform().getTranslation(Material.GOLDEN_AXE)).send();
                 return;
             }
             //Allow Shop owner break the shop sign(for sign replacement)

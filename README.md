@@ -8,7 +8,7 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari?ref=badge_shield)
 
 ![Java](https://img.shields.io/badge/java-version%2016%2B%20(currently%20is%2016--17)-orange)
-![MC](https://img.shields.io/badge/minecraft-java%20edition%201.16%2B-blueviolet)
+![MC](https://img.shields.io/badge/minecraft-java%20edition%201.18%2B-blueviolet)
 
 [//]: # (![Ver]&#40;https://img.shields.io/spiget/version/62575?label=version&#41;)
 
@@ -117,6 +117,8 @@ if(plugin != null){
 ```
 
 ## Maven
+
+I'm working on a dependency issue, but at the moment you need to manually add multiple external dependencies.
 
 ```xml
     <repositories>

@@ -27,16 +27,20 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
 
 public interface Platform {
     void setLine(@NotNull Sign sign, int line, @NotNull Component component);
     @NotNull
     Component getLine(@NotNull Sign sign, int line);
-    @NotNull
-    TranslatableComponent getItemTranslationKey(@NotNull Material material);
     @NotNull
     HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack);
     void registerCommand(@NotNull String prefix, @NotNull PluginCommand command);
@@ -55,4 +59,25 @@ public interface Platform {
         }
         return shopId;
     }
+    @NotNull
+    String getTranslationKey(@NotNull Material material);
+    @NotNull
+    String getTranslationKey(@NotNull EntityType entity);
+    @NotNull
+    String getTranslationKey(@NotNull PotionEffectType potionEffectType);
+    @NotNull
+    String getTranslationKey(@NotNull Enchantment enchantment);
+    @NotNull
+    Component getTranslation(@NotNull Material material);
+    @NotNull
+    Component getTranslation(@NotNull EntityType entity);
+    @NotNull
+    Component getTranslation(@NotNull PotionEffectType potionEffectType);
+    @NotNull
+    Component getTranslation(@NotNull Enchantment enchantment);
+    @NotNull
+    Component getDisplayName(@NotNull ItemStack stack);
+    void setDisplayName(@NotNull ItemStack stack, @NotNull Component component);
+    void setDisplayName(@NotNull Item stack, @NotNull Component component);
+    void updateTranslationMappingSection(@NotNull Map<String, String> mapping);
 }

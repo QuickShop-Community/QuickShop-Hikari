@@ -85,27 +85,24 @@ public class RollbarErrorReporter {
         Util.debugLog("Rollbar error reporter success loaded.");
         enabled = true;
 
-        asyncErrorReportThread = new Thread() {
-            @Override
-            public void run() {
-                synchronized (reportLock) {
-                    while (enabled) {
-                        try {
-                            reportLock.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        ErrorBundle errorBundle = reportQueue.poll();
-                        while (errorBundle != null) {
-                            Util.debugLog("Sending error: " + errorBundle.getThrowable().getMessage()
-                                    + " with context: " + Util.array2String(errorBundle.getContext()));
-                            sendError0(errorBundle.getThrowable(), errorBundle.getContext());
-                            errorBundle = reportQueue.poll();
-                        }
+        asyncErrorReportThread = new Thread(() -> {
+            synchronized (reportLock) {
+                while (enabled) {
+                    try {
+                        reportLock.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    ErrorBundle errorBundle = reportQueue.poll();
+                    while (errorBundle != null) {
+                        Util.debugLog("Sending error: " + errorBundle.getThrowable().getMessage()
+                                + " with context: " + Util.array2String(errorBundle.getContext()));
+                        sendError0(errorBundle.getThrowable(), errorBundle.getContext());
+                        errorBundle = reportQueue.poll();
                     }
                 }
             }
-        };
+        });
         asyncErrorReportThread.setDaemon(true);
         asyncErrorReportThread.start();
 

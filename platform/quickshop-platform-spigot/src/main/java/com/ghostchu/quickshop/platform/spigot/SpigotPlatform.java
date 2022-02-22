@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.platform.spigot;
 
+import com.ghostchu.quickshop.platform.Platform;
 import de.tr7zw.nbtapi.NBTTileEntity;
 import de.tr7zw.nbtapi.plugin.NBTAPI;
 import net.kyori.adventure.key.Key;
@@ -33,19 +34,27 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Sign;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.platform.Platform;
+
+import java.util.Map;
 
 public class SpigotPlatform implements Platform {
     private NBTAPI nbtapi;
     private final ReflServerStateProvider provider;
+    private Map<String, String> translationMapping;
 
-    public SpigotPlatform() {
+    public SpigotPlatform(@NotNull Map<String, String> mapping) {
         this.provider = new ReflServerStateProvider();
         if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
             nbtapi = NBTAPI.getInstance();
         }
+        this.translationMapping = mapping;
     }
 
     @Override
@@ -68,20 +77,15 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
-    public @NotNull TranslatableComponent getItemTranslationKey(@NotNull Material material) {
-        return Component.translatable(ReflectFactory.getMaterialMinecraftNamespacedKey(material));
-    }
-
-    @Override
     public @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack) {
         NamespacedKey namespacedKey = stack.getType().getKey();
         Key key = Key.key(namespacedKey.toString());
-        return HoverEvent.showItem(key,stack.getAmount(), BinaryTagHolder.of(ReflectFactory.getMaterialMinecraftNamespacedKey(stack.getType())));
+        return HoverEvent.showItem(key, stack.getAmount(), BinaryTagHolder.of(ReflectFactory.getMaterialMinecraftNamespacedKey(stack.getType())));
     }
 
     @Override
     public void registerCommand(@NotNull String prefix, @NotNull PluginCommand command) {
-        try{
+        try {
             ReflectFactory.getCommandMap().register(prefix, command);
             ReflectFactory.syncCommands();
         } catch (Exception e) {
@@ -97,5 +101,87 @@ public class SpigotPlatform implements Platform {
     @Override
     public @NotNull String getMinecraftVersion() {
         return ReflectFactory.getServerVersion();
+    }
+
+    private String postProcessingTranslationKey(String key) {
+        return this.translationMapping.getOrDefault(key, key);
+    }
+
+    @Override
+    public @NotNull String getTranslationKey(@NotNull Material material) {
+        String key;
+        if (!material.isBlock())
+            key = "item." + material.getKey().getNamespace() + "." + material.getKey().getKey();
+        else
+            key = "block." + material.getKey().getNamespace() + "." + material.getKey().getKey();
+        return postProcessingTranslationKey(key);
+    }
+
+    @Override
+    public @NotNull String getTranslationKey(@NotNull EntityType type) {
+        String key;
+        key = "entity." + type.getKey().getNamespace() + "." + type.getKey().getKey();
+        return postProcessingTranslationKey(key);
+    }
+
+    @Override
+    public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
+        String key;
+        key = "effect." + potionEffectType.getKey().getNamespace() + "." + potionEffectType.getKey().getKey();
+        return postProcessingTranslationKey(key);
+    }
+
+    @Override
+    public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
+        String key;
+        key = enchantment.getKey().getNamespace() + "." + enchantment.getKey().getKey();
+        return postProcessingTranslationKey(key);
+    }
+
+    @Override
+    public @NotNull Component getTranslation(@NotNull Material material) {
+        return Component.translatable(getTranslationKey(material));
+    }
+
+    @Override
+    public @NotNull Component getTranslation(@NotNull EntityType entity) {
+        return Component.translatable(getTranslationKey(entity));
+    }
+
+    @Override
+    public @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) {
+        return Component.translatable(getTranslationKey(potionEffectType));
+    }
+
+    @Override
+    public @NotNull Component getTranslation(@NotNull Enchantment enchantment) {
+        return Component.translatable(getTranslationKey(enchantment));
+    }
+
+    @Override
+    public @NotNull Component getDisplayName(@NotNull ItemStack stack) {
+        if (stack.hasItemMeta()) {
+            return LegacyComponentSerializer.legacySection().deserialize(stack.getItemMeta().getDisplayName());
+        }
+        return Component.empty();
+    }
+
+    @Override
+    public void setDisplayName(@NotNull ItemStack stack, @NotNull Component component) {
+        if (!stack.hasItemMeta())
+            return;
+        ItemMeta meta = stack.getItemMeta();
+        meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component));
+        stack.setItemMeta(meta);
+    }
+
+    @Override
+    public void setDisplayName(@NotNull Item stack, @NotNull Component component) {
+        stack.setCustomName(LegacyComponentSerializer.legacySection().serialize(component));
+    }
+
+    @Override
+    public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
+        this.translationMapping = mapping;
     }
 }

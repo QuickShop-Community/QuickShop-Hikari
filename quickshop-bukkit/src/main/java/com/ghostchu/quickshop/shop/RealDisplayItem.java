@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.shop;
 
+import com.ghostchu.quickshop.QuickShop;
 import io.papermc.lib.PaperLib;
 import lombok.ToString;
 import org.bukkit.Location;
@@ -200,7 +201,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
         // Set item protect in the armorstand's hand
 
         if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
-            itemEntity.setCustomName(Util.getItemStackName(this.originalItemStack));
+            QuickShop.getInstance().getPlatform().setDisplayName(itemEntity, Util.getItemStackName(this.originalItemStack));
             itemEntity.setCustomNameVisible(true);
         } else {
             itemEntity.setCustomNameVisible(false);

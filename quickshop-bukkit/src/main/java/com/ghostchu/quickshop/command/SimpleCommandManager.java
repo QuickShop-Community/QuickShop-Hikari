@@ -241,13 +241,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .permission("quickshop.create.sell")
                         .executor(new SubCommand_Create(plugin))
                         .build());
-        registerCmd(
-                CommandContainer.builder()
-                        .prefix("update")
-                        .hidden(true)
-                        .permission("quickshop.alerts")
-                        .executor(new SubCommand_Update(plugin))
-                        .build());
+//        registerCmd(
+//                CommandContainer.builder()
+//                        .prefix("update")
+//                        .hidden(true)
+//                        .permission("quickshop.alerts")
+//                        .executor(new SubCommand_Update(plugin))
+//                        .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("find")
@@ -314,6 +314,12 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .selectivePermission("quickshop.removeall.other")
                 .selectivePermission("quickshop.removeall.self")
                 .executor(new SubCommand_RemoveAll(plugin))
+                .build());
+        registerCmd(CommandContainer.builder()
+                .prefix("name")
+                .selectivePermission("quickshop.shopnaming")
+                .selectivePermission("quickshop.other.shopnaming")
+                .executor(new SubCommand_Name(plugin))
                 .build());
         registerCmd(CommandContainer.builder()
                 .prefix("removeworld")

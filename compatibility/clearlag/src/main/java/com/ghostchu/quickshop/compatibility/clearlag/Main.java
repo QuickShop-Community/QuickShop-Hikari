@@ -17,9 +17,10 @@
  *
  */
 
-package com.ghostchu.quickshop.compatibility;
+package com.ghostchu.quickshop.compatibility.clearlag;
 
 import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
+import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import me.minebuilders.clearlag.events.EntityRemoveEvent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;

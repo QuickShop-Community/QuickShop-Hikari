@@ -273,7 +273,13 @@ public class BuildInfo {
             this.ci = "true".equalsIgnoreCase(properties.getProperty("jenkins.ci"));
             String idStr = properties.getProperty("ci.build.id");
             if (idStr != null) {
-                this.id = Integer.parseInt(properties.getProperty("ci.build.id"));
+                int fid = -1;
+                try {
+                    fid = Integer.parseInt(properties.getProperty("ci.build.id"));
+                }catch (NumberFormatException ignored) {
+                }finally {
+                    this.id = fid;
+                }
             } else {
                 this.id = -1;
             }

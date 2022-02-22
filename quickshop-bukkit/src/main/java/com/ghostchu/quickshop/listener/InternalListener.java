@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -114,7 +115,7 @@ public class InternalListener extends AbstractQSListener {
             plugin.logEvent(new ShopPurchaseLog(event.getShop().saveToInfoStorage(),
                     event.getShop().getShopType(),
                     event.getPurchaser(),
-                    Util.getItemStackName(event.getShop().getItem()),
+                    LegacyComponentSerializer.legacySection().serialize(Util.getItemStackName(event.getShop().getItem())),
                     Util.serialize(event.getShop().getItem()),
                     event.getAmount(),
                     event.getBalance(),

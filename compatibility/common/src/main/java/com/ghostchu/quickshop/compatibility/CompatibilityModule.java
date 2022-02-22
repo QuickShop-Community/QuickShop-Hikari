@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is Main.java
+ *  This file is a part of project QuickShop, the name is CompatibilityModule.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it

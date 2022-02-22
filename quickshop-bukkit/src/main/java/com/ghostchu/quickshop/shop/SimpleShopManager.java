@@ -37,12 +37,12 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import de.themoep.minedown.adventure.MineDownParser;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -936,7 +936,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 false,
                 null,
                 plugin.getName(),
-                plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper(((InventoryHolder) info.getLocation().getBlock().getState()).getInventory())));
+                plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper(((InventoryHolder) info.getLocation().getBlock().getState()).getInventory())),
+                null);
 
         // Calling ShopCreateEvent
         ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, p.getUniqueId());
@@ -1274,7 +1275,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 //Because the bukkit API limit, we can't get the actual effect level
                 chatSheetPrinter.printLine(Component.empty()
                         .color(NamedTextColor.YELLOW)
-                        .append(new MineDownParser().parse(MsgUtil.getPotioni18n(potionEffectType)))
+                        .append(plugin.getPlatform().getTranslation(potionEffectType))
                 );
             }
             if (potionMeta.hasCustomEffects()) {
@@ -1282,7 +1283,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     int level = potionEffect.getAmplifier();
                     chatSheetPrinter.printLine(Component.empty()
                             .color(NamedTextColor.YELLOW)
-                            .append(Component.text(MsgUtil.getPotioni18n(potionEffect.getType()) + " " + (level <= 10 ? RomanNumber.toRoman(potionEffect.getAmplifier()) : level))));
+                            .append(plugin.getPlatform().getTranslation(potionEffect.getType())).append(LegacyComponentSerializer.legacySection().deserialize(" " + (level <= 10 ? RomanNumber.toRoman(level) : level))));
                 }
             }
         }

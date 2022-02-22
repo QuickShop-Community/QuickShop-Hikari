@@ -22,6 +22,8 @@ package com.ghostchu.quickshop.command.subcommand;
 import io.papermc.lib.PaperLib;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -88,7 +90,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
             //Check distance
             if (distance <= maxDistance) {
                 //Collect valid shop that trading items we want
-                if (!Util.getItemStackName(shop.getItem()).toLowerCase().contains(lookFor)) {
+                if (!ChatColor.stripColor(LegacyComponentSerializer.legacySection().serialize(Util.getItemStackName(shop.getItem()))).toLowerCase().contains(lookFor)) {
                     if (!shop.getItem().getType().name().toLowerCase().contains(lookFor)) {
                         continue;
                     }

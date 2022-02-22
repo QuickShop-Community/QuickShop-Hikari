@@ -242,7 +242,9 @@
     "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
     "freeze-hover": "&eToggle the shop's freeze status.",
     "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
-    "toggledisplay-hover": "&eToggle the shop's displayitem status"
+    "toggledisplay-hover": "&eToggle the shop's displayitem status",
+    "name": "&aShop Name: &e{0} &e[&d&lChange&e]",
+    "name-hover": "&eClick to change the shop's name."
   },
   "tableformat": {
     "full_line": "&5+---------------------------------------------------+",

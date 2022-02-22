@@ -62,6 +62,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     }
 
     public void init(@NotNull String prefix) throws SQLException {
+        Util.debugLog("Initializing database helper...");
         this.prefix = prefix;
         checkTables();
         checkColumns();
@@ -112,6 +113,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
                 .addColumn("taxAccount", "VARCHAR(255) NULL")
                 .addColumn("inventorySymbolLink", "TEXT NULL")
                 .addColumn("inventoryWrapperName", "VARCHAR(255) NULL")
+                .addColumn("name","TEXT NULL")
                 .setIndex(IndexType.PRIMARY_KEY, null, "x", "y", "z", "world")
                 .build().execute((i) -> {
                     return i;
@@ -238,22 +240,29 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     /**
      * Verifies that all required columns exist.
      */
-    public void checkColumns() {
+    public void checkColumns() throws SQLException{
         plugin.getLogger().info("Checking and updating database columns, it may take a while...");
-        if (getDatabaseVersion() == 0) {
+        if (getDatabaseVersion() < 1) {
             // QuickShop v4/v5 upgrade
             // Call updater
             setDatabaseVersion(1);
         }
-
+        if(getDatabaseVersion() == 1){
+            // QuickShop-Hikari 1.1.0.0
+           manager.alterTable(prefix+"shops")
+                            .addColumn("name","TEXT NULL")
+                    .execute();
+           plugin.getLogger().info("[DatabaseHelper] Migrated to 1.1.0.0 data structure, version 2");
+           setDatabaseVersion(2);
+        }
         plugin.getLogger().info("Finished!");
     }
 
-    public void setDatabaseVersion(int version) {
+    public void setDatabaseVersion(int version) throws SQLException {
         manager.createReplace(prefix+ "metadata")
                 .setColumnNames("key", "value")
                 .setParams("database_version", version)
-                .executeAsync();
+                .execute();
     }
 
     public int getDatabaseVersion() {
@@ -264,7 +273,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
             if (!result.next()) {
                 return 0;
             }
-            return Integer.parseInt(result.getString("version"));
+            return Integer.parseInt(result.getString("value"));
         } catch (SQLException e) {
             return -1;
         }
@@ -385,7 +394,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
                            double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
                            @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
-                           @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName) {
+                           @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName,@Nullable String shopName) {
         Util.debugLog("Shop updating: " + x + "," + y + "," + z + "," + world + ", " + inventorySymbolLink + ", " + inventoryWrapperName);
         manager.createUpdate(prefix + "shops")
                 .addColumnValue("owner",owner)
@@ -399,6 +408,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
                 .addColumnValue("taxAccount", taxAccount)
                 .addColumnValue("inventorySymbolLink", inventorySymbolLink)
                 .addColumnValue("inventoryWrapperName", inventoryWrapperName)
+                .addColumnValue("name", shopName)
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)

@@ -205,13 +205,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
             Util.debugLog("ItemStack " + itemStack + " cannot getting or creating ItemMeta, failed to create guarded ItemStack.");
             return itemStack;
         }
-        if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
-            if (iMeta.hasDisplayName()) {
-                iMeta.setDisplayName(iMeta.getDisplayName());
-            } else {
-                iMeta.setDisplayName(Util.getItemStackName(itemStack));
-            }
-        } else {
+        if (!PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
             iMeta.setDisplayName(null);
         }
         ShopProtectionFlag shopProtectionFlag = createShopProtectionFlag(itemStack, shop);

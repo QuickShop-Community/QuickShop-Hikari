@@ -32,6 +32,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -68,7 +69,6 @@ import java.text.DecimalFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -77,7 +77,6 @@ import java.util.stream.Collectors;
 
 public class Util {
     private static final EnumSet<Material> BLACKLIST = EnumSet.noneOf(Material.class);
-    private static final EnumMap<Material, Entry<Double, Double>> RESTRICTED_PRICES = new EnumMap<>(Material.class);
     private static final EnumMap<Material, Integer> CUSTOM_STACKSIZE = new EnumMap<>(Material.class);
     private static final EnumSet<Material> SHOPABLES = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> VERTICAL_FACING = List.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
@@ -469,7 +468,7 @@ public class Util {
     }
 
     @Nullable
-    public static String getItemCustomName(@NotNull ItemStack itemStack) {
+    public static Component getItemCustomName(@NotNull ItemStack itemStack) {
         if (useEnchantmentForEnchantedBook() && itemStack.getType() == Material.ENCHANTED_BOOK) {
             ItemMeta meta = itemStack.getItemMeta();
             if (meta instanceof EnchantmentStorageMeta enchantmentStorageMeta && enchantmentStorageMeta.hasStoredEnchants()) {
@@ -483,12 +482,12 @@ public class Util {
                 PotionEffectType potionEffectType = potionData.getType().getEffectType();
                 if (potionEffectType != null) {
                     //Because the bukkit API limit, we can't get the actual effect level
-                    return MsgUtil.getPotioni18n(potionEffectType);
+                    return plugin.getPlatform().getTranslation(potionEffectType);
                 } else if (potionMeta.hasCustomEffects()) {
                     PotionEffect potionEffect = potionMeta.getCustomEffects().get(0);
                     if (potionEffect != null) {
                         int level = potionEffect.getAmplifier();
-                        return MsgUtil.getPotioni18n(potionEffect.getType()) + " " + (level <= 10 ? RomanNumber.toRoman(potionEffect.getAmplifier()) : level);
+                        return  plugin.getPlatform().getTranslation(potionEffect.getType()).append(LegacyComponentSerializer.legacySection().deserialize(" " + (level <= 10 ? RomanNumber.toRoman(potionEffect.getAmplifier()) : level)));
                     }
                 }
             }
@@ -496,58 +495,29 @@ public class Util {
         if (itemStack.hasItemMeta()
                 && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName()
                 && !QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
-            return itemStack.getItemMeta().getDisplayName();
+            return plugin.getPlatform().getDisplayName(itemStack);
         }
         return null;
     }
 
     @NotNull
-    public static String getItemStackName(@NotNull ItemStack itemStack) {
-        String result = getItemCustomName(itemStack);
-        return result == null ? MsgUtil.getItemi18n(itemStack.getType().name()) : result;
+    public static Component getItemStackName(@NotNull ItemStack itemStack) {
+        Component result = getItemCustomName(itemStack);
+        return isEmptyComponent(result) ? plugin.getPlatform().getTranslation(itemStack.getType()) : result;
     }
 
     @NotNull
-    public static String getFirstEnchantmentName(@NotNull EnchantmentStorageMeta meta) {
+    public static Component getFirstEnchantmentName(@NotNull EnchantmentStorageMeta meta) {
         if (!meta.hasStoredEnchants()) {
             throw new IllegalArgumentException("Item does not have an enchantment!");
         }
         Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
-        String name = MsgUtil.getEnchi18n(entry.getKey());
+        Component name = plugin.getPlatform().getTranslation(entry.getKey());
         if (entry.getValue() == 1 && entry.getKey().getMaxLevel() == 1) {
             return name;
         } else {
-            return name + " " + RomanNumber.toRoman(entry.getValue());
+            return name.append(LegacyComponentSerializer.legacySection().deserialize(" " + RomanNumber.toRoman(entry.getValue())));
         }
-    }
-
-    /**
-     * Get ItemStack's local name, return null if failed to get.
-     *
-     * @param itemStack Target ItemStack
-     * @return LocalName or NULL
-     */
-    @Nullable
-    public static String getLocalizedName(@NotNull ItemStack itemStack) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null) {
-            return null;
-        }
-        if (!itemMeta.hasLocalizedName()) {
-            return null;
-        }
-        return itemMeta.getLocalizedName();
-    }
-
-    /**
-     * Return an entry with min and max prices, but null if there isn't a price restriction
-     *
-     * @param material mat
-     * @return min, max
-     */
-    @Nullable
-    public static Entry<Double, Double> getPriceRestriction(@NotNull Material material) {
-        return RESTRICTED_PRICES.get(material);
     }
 
     public static boolean isDoubleChest(@Nullable BlockData blockData) {
@@ -626,7 +596,7 @@ public class Util {
         }
         BLACKLIST.clear();
         SHOPABLES.clear();
-        RESTRICTED_PRICES.clear();
+       // RESTRICTED_PRICES.clear();
         CUSTOM_STACKSIZE.clear();
         devMode = plugin.getConfig().getBoolean("dev-mode");
 
@@ -654,21 +624,6 @@ public class Util {
             BLACKLIST.add(mat);
         }
 
-        for (String s : plugin.getConfig().getStringList("shop.price-restriction")) {
-            String[] sp = s.split(";");
-            if (sp.length == 3) {
-                try {
-                    Material mat = Material.matchMaterial(sp[0]);
-                    if (mat == null) {
-                        plugin.getLogger().warning("Material " + sp[0] + " in config.yml can't match with a valid Materials, check your config.yml!");
-                        continue;
-                    }
-                    RESTRICTED_PRICES.put(mat, new SimpleEntry<>(Double.valueOf(sp[1]), Double.valueOf(sp[2])));
-                } catch (Exception e) {
-                    plugin.getLogger().warning("Invalid price restricted material: " + s);
-                }
-            }
-        }
         for (String material : plugin.getConfig().getStringList("custom-item-stacksize")) {
             String[] data = material.split(":");
             if (data.length != 2) {
