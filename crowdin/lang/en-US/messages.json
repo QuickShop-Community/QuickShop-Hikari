@@ -483,9 +483,9 @@
     "select": "select",
     "selector": "selector",
     "last": "last",
-    "last-x": "last {0} records",
+    "last-x": "last {0} record(s)",
     "first": "first",
-    "first-x": "first-x",
+    "first-x": "first {0} record(s)",
     "sort": "sort",
     "ascending": "ascending",
     "descending": "descending",
@@ -493,6 +493,6 @@
     "uppercase":"uppercase",
     "lowercase": "lowercase",
     "sensitive": "sensitive",
-    "no-sensitive": "no sensitive"
+    "no-sensitive": "no sensitive",
   }
 }
