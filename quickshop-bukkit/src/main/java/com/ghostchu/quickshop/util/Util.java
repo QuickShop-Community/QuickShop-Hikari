@@ -77,7 +77,6 @@ import java.util.stream.Collectors;
 
 public class Util {
     private static final EnumSet<Material> BLACKLIST = EnumSet.noneOf(Material.class);
-//    private static final EnumMap<Material, Entry<Double, Double>> RESTRICTED_PRICES = new EnumMap<>(Material.class);
     private static final EnumMap<Material, Integer> CUSTOM_STACKSIZE = new EnumMap<>(Material.class);
     private static final EnumSet<Material> SHOPABLES = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> VERTICAL_FACING = List.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
