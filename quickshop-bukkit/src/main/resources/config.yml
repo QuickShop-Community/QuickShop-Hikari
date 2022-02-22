@@ -303,12 +303,6 @@ shop:
   #(e.g There are blocks on all sides of the shop / The player doesn't have permission to put down a sign at that location)
   allow-shop-without-space-for-sign: false
 
-  #Per item price restrictions.
-  #Format: <itemname>;<minprice>;<maxprice>
-  #e.g:
-  # - DIAMOND;100;200
-  price-restriction: [ ]
-
   #The maximum number of digits after the decimal.
   #Set this to -1 to disable it. (Unlimited maximum digits)
   maximum-digits-in-price: -1
