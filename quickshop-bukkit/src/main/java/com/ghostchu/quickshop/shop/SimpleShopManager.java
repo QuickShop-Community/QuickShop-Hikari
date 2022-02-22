@@ -936,7 +936,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 false,
                 null,
                 plugin.getName(),
-                plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper(((InventoryHolder) info.getLocation().getBlock().getState()).getInventory())));
+                plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper(((InventoryHolder) info.getLocation().getBlock().getState()).getInventory())),
+                null);
 
         // Calling ShopCreateEvent
         ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, p.getUniqueId());

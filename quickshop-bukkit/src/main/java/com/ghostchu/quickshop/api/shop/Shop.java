@@ -47,6 +47,18 @@ public interface Shop {
     NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShop.getInstance(), "shopsign");
 
     /**
+     * Sets shop name
+     * @param shopName shop name, null to remove currently name
+     */
+    void setShopName(@Nullable String shopName);
+
+    /**
+     * Gets this shop name that set by player
+     * @return Shop name, or null if not set
+     */
+    @Nullable
+    String getShopName();
+    /**
      * Add x ItemStack to the shop inventory
      *
      * @param paramItemStack The ItemStack you want add
