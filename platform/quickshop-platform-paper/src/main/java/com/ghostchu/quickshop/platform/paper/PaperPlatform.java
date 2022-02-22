@@ -89,7 +89,20 @@ public class PaperPlatform implements Platform {
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
-        return postProcessingTranslationKey(material.translationKey());
+        String key;
+        try {
+            return material.translationKey();
+        } catch (Error error) {
+            try {
+                key= material.getTranslationKey();
+            } catch (Error error2) {
+                if (!material.isBlock())
+                    key= "item." + material.getKey().getNamespace() + "." + material.getKey().getKey();
+                else
+                    key= "block." + material.getKey().getNamespace() + "." + material.getKey().getKey();
+            }
+        }
+        return postProcessingTranslationKey(key);
     }
 
     private String postProcessingTranslationKey(String key){
@@ -98,17 +111,39 @@ public class PaperPlatform implements Platform {
 
     @Override
     public @NotNull String getTranslationKey(@NotNull EntityType type) {
-        return postProcessingTranslationKey(type.translationKey());
+        String key;
+        try {
+            key =  type.translationKey();
+        } catch (Error error) {
+            try {
+                key = type.getTranslationKey();
+            } catch (Error error2) {
+                key = "entity." + type.getKey().getNamespace() + "." + type.getKey().getKey();
+            }
+        }
+        return postProcessingTranslationKey(key);
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
-        return postProcessingTranslationKey(potionEffectType.translationKey());
+        String key;
+        try {
+            key =  potionEffectType.translationKey();
+        } catch (Error error) {
+            key = "effect." + potionEffectType.getKey().getNamespace() + "." + potionEffectType.getKey().getKey();
+        }
+        return postProcessingTranslationKey(key);
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
-        return postProcessingTranslationKey(enchantment.translationKey());
+        String key;
+        try {
+            key = enchantment.translationKey();
+        } catch (Error error) {
+            key = enchantment.getKey().getNamespace() + "." + enchantment.getKey().getKey();
+        }
+        return postProcessingTranslationKey(key);
     }
 
     @Override
