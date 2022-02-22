@@ -189,7 +189,7 @@
       "taxaccount": "&eSet the tax account that shop using",
       "toggledisplay": "&eToggle the shop display item status",
       "purge": "&eStart the shop purge task in background",
-      "name": "&eChange the shop name"
+      "name": "&eNaming a shop to specific name"
     },
     "disabled": "&cThis command is disabled: &e{0}",
     "feature-not-enabled": "This feature is not enabled in the config file."
@@ -261,7 +261,8 @@
     "range": "[range]",
     "amount": "[amount]",
     "currency": "[currency name]",
-    "item": "[item]"
+    "item": "[item]",
+    "name": "[name]"
   },
   "updatenotify": {
     "buttontitle": "[Update Now]",
@@ -391,11 +392,12 @@
   "shop-transaction-failed": "&cSorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Please contact the server administrators if this error persists.",
   "inventory-space-full": "&cYour remaining inventory space can only have &a{1}x &cmore items added to it. Try emptying your inventory!",
   "shop-name-success": "&aSuccessfully set the shop name to &e{0}&a.",
-  "shop-name-conflict": "&cThe shop name &e{0} &cis already in use. Pick another one!",
   "shop-name-invalid": "&cThe shop name &e{0} &cis invalid. Pick another one!",
   "shop-name-disallowed": "&cThe shop name &e{0} &cis disallowed. Pick another one!",
+  "shop-name-too-long": "&cThis shop name is too long (max length {0}), please pick another one!",
   "shop-name-not-found": "&cThe shop named &e{0} &cnot exists.",
-  "shop-name-not-set": "&cThe shop name is not set.",
+  "shop-name-unset": "&cThis shop's name now removed",
+  "you-cant-afford-shop-naming": "&cYou can't afford shop naming, it costs {0} to naming.",
   "timeunit": {
     "second": "&c{0} second",
     "seconds": "&c{0} seconds",

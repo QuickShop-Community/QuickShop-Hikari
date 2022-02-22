@@ -17,7 +17,7 @@
   "no-creative-break": "&cВы не можете сломать чужой магазин в творческом режиме, переключитесь на режим выживания или попробуйте использовать супер-инструментом {0}.",
   "trading-in-creative-mode-is-disabled": "&cВы не можете торговать в творческом режиме.",
   "supertool-is-disabled": "&cСупер-инструмент отключен, вы не можете сломать чужой магазин.",
-  "disabled-in-this-world": "&cQuickShop is disabled in this world",
+  "disabled-in-this-world": "&cQuickShop отключен в этом мире",
   "no-double-chests": "&cВы не можете создать магазин двойных сундуков.",
   "not-managed-shop": "&cВы не владелец или сотрудник этого магазина",
   "shop-already-owned": "&cВы уже создали магазин.",
@@ -127,7 +127,7 @@
     },
     "toggle-always-counting": {
       "counting": "&aShop is now always counting container even is unlimited",
-      "not-counting": "&aShop is now respect if shop is unlimited"
+      "not-counting": "&aТеперь магазин неограничен"
     },
     "transfer-success": "&aПеремещено &e{0} &aмагазин(ов) в &e{1}",
     "transfer-success-other": "&aПеремещено &e{0} {1}&a магазин(ов) в &e{2}",
@@ -151,7 +151,7 @@
     "now-nolonger-debuging": "&aУспешно выключен режим разработчика. Перезагружаю...",
     "wrong-args": "&cНеверный аргумент. Используйте &l/qs help &cчтобы узнать список командов.",
     "description": {
-      "alwayscounting": "&eSet if shop always counting container even is unlimited",
+      "alwayscounting": "&eУстановите, чтобы магазин считал количество предметов в контейнере бесконечным",
       "title": "&aQuickShop справка",
       "unlimited": "&eДает магазину неограниченный товар.",
       "setowner": "&eУстанавливает владельца магазина.",
@@ -188,7 +188,8 @@
       "lock": "&eПереключает состояние блокировки магазина",
       "taxaccount": "&eУстанавливает налоговый счет, который магазин использует",
       "toggledisplay": "&eПереключает отображение товара в магазине (над сундука)",
-      "purge": "&aЗапускает задачи очистки магазина в фоновом режиме"
+      "purge": "&aЗапускает задачи очистки магазина в фоновом режиме",
+      "name": "&eNaming a shop to specific name"
     },
     "disabled": "&cДанная команда недоступна: &e{0}",
     "feature-not-enabled": "Функция не включена в конфигурации."
@@ -211,7 +212,7 @@
     "freeze": "Обмен отключен"
   },
   "controlpanel": {
-    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting": "&aВсегда считать магазин полным: {0} &e[&d&lChange&e]",
     "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aВладелец: &b{0} &e[&d&lИзменить&e]",
     "infomation": "&aПанель управления магазином:",
@@ -258,7 +259,8 @@
     "range": "[диапазон]",
     "amount": "[количество]",
     "currency": "[название валюты]",
-    "item": "[товар]"
+    "item": "[товар]",
+    "name": "[name]"
   },
   "updatenotify": {
     "buttontitle": "[Обновить]",
@@ -282,7 +284,7 @@
       "Что вы думаете? {0} был выпущен! Обновитесь!",
       "Доктор, QuickShop уже есть новое обновление {0}! Вы должны обновить~",
       "Ко~ко~да~ё~ QuickShop появились новое обновление {0} ~",
-      "Paimon want told you the QuickShop have new update {0}!"
+      "Paimon хочет сообщить, что QuickShop имеет новое обновление {0}!"
     ],
     "remote-disable-warning": "&cТекущая версия QuickShop отмечена как отключенная удалённым сервером, означая, что эта версия может иметь серьезные проблемы, получить подробную информацию с нашей страницы плагина SpigotMC: {0}. Это предупреждение будет отображаться до тех пор, пока вы не переключитесь на стабильную версию, но это не повлияет на перфорирование вашего сервера.",
     "label": {
@@ -366,8 +368,8 @@
   "shop-purged-start": "&aНачато очистки магазина, проверьте консоль для получения подробностей.",
   "purchase-out-of-stock": "&cВ этом магазине закончился запас, свяжитесь с владельцем магазина или сотрудниками для пополнения.",
   "purchase-out-of-space": "&cВ этом магазине закончилось место, свяжитесь с владельцем магазина или сотрудниками, чтобы освободились место.",
-  "safe-mode": "&cQuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.",
-  "safe-mode-admin": "&c&lWARNING: &cThe QuickShop on this server now running under safe-mode, no features will working, please type &e/qs &c command to check any errors.",
+  "safe-mode": "&cQuickShop сейчас находится в безопасном режиме, вы не можете открыть этот магазин. Пожалуйста, свяжитесь с администратором сервера, чтобы исправить ошибку.",
+  "safe-mode-admin": "&c&lВнимание: &cQuickShop на этом сервере работает в безопасном режиме, никакие функции не работают, пожалуйста, введите команду &e/qs &c для проверки ошибок.",
   "bungee-cross-server-msg": "&eQuickShop CSM: &a{0}",
   "edition-confilct": "QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.",
   "plugin-cancelled": "&cOperation cancelled, Reason: {0}",
@@ -386,5 +388,77 @@
   "inventory-error": "&cFailed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.",
   "economy-transaction-failed": "&cSorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.",
   "shop-transaction-failed": "&cSorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.",
-  "inventory-space-full": "&cYour inventory space remains can only put &a{1}x &citems into it, try empty the your inventory!"
+  "inventory-space-full": "&cYour inventory space remains can only put &a{1}x &citems into it, try empty the your inventory!",
+  "shop-name-success": "&aSuccessfully set the shop name to &e{0}&a.",
+  "shop-name-invalid": "&cThe shop name &e{0} &cis invalid. Pick another one!",
+  "shop-name-disallowed": "&cThe shop name &e{0} &cis disallowed. Pick another one!",
+  "shop-name-too-long": "&cThis shop name is too long (max length {0}), please pick another one!",
+  "shop-name-not-found": "&cThe shop named &e{0} &cnot exists.",
+  "shop-name-unset": "&cThis shop's name now removed",
+  "you-cant-afford-shop-naming": "&cYou can't afford shop naming, it costs {0} to naming.",
+  "timeunit": {
+    "second": "&c{0} second",
+    "seconds": "&c{0} seconds",
+    "minute": "&c{0} minute",
+    "minutes": "&c{0} minutes",
+    "hour": "&c{0} hour",
+    "hours": "&c{0} hours",
+    "day": "&c{0} day",
+    "days": "&c{0} days",
+    "week": "&c{0} week",
+    "weeks": "&c{0} weeks",
+    "month": "&c{0} month",
+    "months": "&c{0} months",
+    "year": "&c{0} year",
+    "years": "&c{0} years",
+    "recent": "recent",
+    "justnow": "just now",
+    "future": "in {0}",
+    "future-plain-text": "future",
+    "scheduled": "scheduled",
+    "scheduled-at": "scheduled at {0}",
+    "scheduled-in": "scheduled in {0}",
+    "longtimeago": "long time ago",
+    "std-format": "MM/dd/yyyy HH:mm:ss",
+    "std-past-format": "{5}{4}{3}{2}{1}{0}ago",
+    "before": "before",
+    "behind": "behind",
+    "after": "after",
+    "between": "between",
+    "between-format": "between {0} and {1}"
+  },
+  "metric": {
+    "header-global": "&eThe server {0} {1} transactions:",
+    "header-player": "&e{0}'s {1} {2} transactions:",
+    "header-shop": "&eThe shop {0}'s {1} {2} transactions:",
+    "looking-up": "&ePerforming metric lookup, Please wait...",
+    "query-argument": "Query Argument: {0}",
+    "no-results": "&cNo transactions found.",
+    "transaction-count": "&e{0} total",
+    "entry-header-global": "&b| [owner](color=#FFD39B) &b| [player](color=#EEC591) &b| [action](color=#CDAA7D) &b| [shop](color=#8B7355) &b| [price](color=#8B7E66) &b|",
+    "entry-global:": "&b| [{0}](color=#FFD39B hover={1}) &b| [{2}](color=#EEC591 hover={3}) &b| [{4}](color=#CDAA7D hover={5}) &b| [{6}](color=#8B7355 hover={7} &b| [{8}](color=#8B7E66 hover={9}) &b|",
+    "entry-header-player": "&b| [purchaser](color=#FFD39B) &b| [action](color=#EEC591) &b| [shop](color=#CDAA7D) &b| [amount](color=#8B7355) &b| [price](color=#8B7E66) &b|",
+    "entry-player": "&b| [{0}](color=#FFD39B hover={1}) &b| [{2}](color=#EEC591 hover={3}) &b| [{4}](color=#CDAA7D hover={5}) &b| [{6}](color=#8B7355 hover={7} &b| [{8}](color=#8B7E66 hover={9}) &b|",
+    "entry-header-shop": "&b| [purchaser](color=#FFD39B) &b| [action](color=#EEC591) &b| [amount](color=#CDAA7D) &b| [price](color=#8B7355) &b| [tax](color=#8B7E66) &b|",
+    "entry-shop": "&b| [{0}](color=#FFD39B hover={1}) &b| [{2}](color=#EEC591 hover={3}) &b| [{4}](color=#CDAA7D hover={5}) &b| [{6}](color=#8B7355 hover={7} &b| [{8}](color=#8B7E66 hover={9}) &b|",
+    "unknown": "&7(unknown)",
+    "undefined": "&7(noname)",
+    "na": "&7N/A",
+    "player-hover": "&e{0}\n&6UUID: &7{1}",
+    "shop-hover": "&e{0}\n&6Pos: &7{1} {2} {3}, World: {4}\n&6Owner: &7{5}\n&6Shop Type: &7{6}\n&6Item: &7{7}\n&6Price: &7{8}",
+    "action-hover": "&e{0}",
+    "price-hover": "&eTotal {0}, including {1} taxes.",
+    "amount-hover": "&e{0}x",
+    "amount-stack-hover": "&e{0}x stack",
+    "tax-hover": "&e{0} taxes",
+    "time-hover": "&eTime: {0}",
+    "action-description": {
+      "PURCHASE": "&ePurchased item with a shop",
+      "PURCHASE_SELLING_SHOP": "&ePlayer bought some items from a selling shop",
+      "PURCHASE_BUYING_SHOP": "&ePlayer sold some items to a buying shop.",
+      "CREATE": "&ePlayer created a shop.",
+      "DELETE": "&ePlayer deleted a shop. And refunded the shop creation fee to owner if possible.",
+      "ONGOING_FEE": "&ePlayer paid the ongoing fee because the payment period."
+    }
+  }
 }
