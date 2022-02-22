@@ -63,7 +63,7 @@ public class MsgUtil {
     private static final Map<UUID, List<String>> OUTGOING_MESSAGES = Maps.newConcurrentMap();
     public static GameLanguage gameLanguage;
     private static DecimalFormat decimalFormat;
-    private static QuickShop plugin = QuickShop.getInstance();
+    private static final QuickShop plugin = QuickShop.getInstance();
     private volatile static Entry<String, String> cachedGameLanguageCode = null;
 
     /**
@@ -187,17 +187,6 @@ public class MsgUtil {
             gameLanguage = new MojangGameLanguageImpl(plugin, languageCode);
             ((MojangGameLanguageImpl) gameLanguage).load();
         }
-    }
-
-    @ApiStatus.ScheduledForRemoval
-    @Deprecated
-    public static void loadI18nFile() {
-        //Update instance
-        plugin = QuickShop.getInstance();
-        plugin.getLogger().info("Loading plugin translations files...");
-
-        //Load game language i18n
-        loadGameLanguage(plugin.getConfig().getString("game-language", "default"));
     }
 
     /**
