@@ -77,11 +77,6 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
-    public @NotNull TranslatableComponent getItemTranslationKey(@NotNull Material material) {
-        return Component.translatable(ReflectFactory.getMaterialMinecraftNamespacedKey(material));
-    }
-
-    @Override
     public @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack) {
         NamespacedKey namespacedKey = stack.getType().getKey();
         Key key = Key.key(namespacedKey.toString());

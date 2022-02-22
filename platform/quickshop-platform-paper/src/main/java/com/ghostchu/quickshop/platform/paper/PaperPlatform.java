@@ -58,15 +58,6 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public @NotNull TranslatableComponent getItemTranslationKey(@NotNull Material material) {
-        try {
-            return Component.translatable(material.translationKey());
-        } catch (Error e) {
-            return Component.translatable(material.getTranslationKey());
-        }
-    }
-
-    @Override
     public @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack) {
         return stack.asHoverEvent();
     }

@@ -42,8 +42,6 @@ public interface Platform {
     @NotNull
     Component getLine(@NotNull Sign sign, int line);
     @NotNull
-    TranslatableComponent getItemTranslationKey(@NotNull Material material);
-    @NotNull
     HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack);
     void registerCommand(@NotNull String prefix, @NotNull PluginCommand command);
     boolean isServerStopping();
