@@ -465,6 +465,7 @@
     "and": "and",
     "or": "or",
     "equals": "equals",
+    "not-equals": "not equals",
     "between": "between",
     "like": "like",
     "not": "not",
