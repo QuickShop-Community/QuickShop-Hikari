@@ -355,14 +355,12 @@ shop:
     - disabled_world
 
   #The listener list to skip when protection-checking.
-  #Requires "protection-checking-handler" set to 1.
   #Examples:
   #- xx.xxx.xxx.xxxxx.BlockBreakListenerClass
-  #  This will skip calling the xx.xxx.xxx.xxxxx.BlockBreakListenerClass.
-  #  This can improve performance because its not string based.
+  #  This will skip calling the xx.xxx.xxx.xxxxx.BlockBreakListenerClass listener.
   #
   #- xx.xx.xxx.xxxxx
-  #  This will skip calling all classes that start with xx.xx.xxx.xxxxx.
+  #  This will skip calling all listener that class name start with xx.xx.xxx.xxxxx.
   #
   #- @PluginName
   #  This will skip calling all listeners registered by this plugin.
