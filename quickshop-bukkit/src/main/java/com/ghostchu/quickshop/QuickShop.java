@@ -97,7 +97,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      * The active instance of QuickShop
      * You shouldn't use this if you really need it.
      */
-    @Deprecated
+    @ApiStatus.Internal
     private static QuickShop instance;
     /**
      * The manager to check permissions.
@@ -228,7 +228,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
     private Map<String, String> translationMapping;
-    private Map<String, String> addonRegisteredMapping = new HashMap<>();
+    private final Map<String, String> addonRegisteredMapping = new HashMap<>();
 
     /**
      * Use for mock bukkit
@@ -651,11 +651,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         /* Initalize the Utils */
         this.loadItemMatcher();
         Util.initialize();
-        try {
-            MsgUtil.loadI18nFile();
-        } catch (Exception e) {
-            getLogger().log(Level.WARNING, "Error when loading translation", e);
-        }
 
         /* Load 3rd party supports */
         load3rdParty();

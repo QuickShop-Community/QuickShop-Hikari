@@ -40,5 +40,4 @@ public class ServiceInjector {
             return registeredServiceProvider.getProvider();
         }
     }
-
 }

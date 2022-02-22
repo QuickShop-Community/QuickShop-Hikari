@@ -53,7 +53,7 @@ softdepend:
   - ProtocolLib
   - NBTAPI
 
-api-version: 1.16
+api-version: 1.18
 
 libraries:
   - org.apache.commons:commons-compress:1.21
