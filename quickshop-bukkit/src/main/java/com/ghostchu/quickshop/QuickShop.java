@@ -97,7 +97,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
      * The active instance of QuickShop
      * You shouldn't use this if you really need it.
      */
-    @Deprecated
+    @ApiStatus.Internal
     private static QuickShop instance;
     /**
      * The manager to check permissions.
