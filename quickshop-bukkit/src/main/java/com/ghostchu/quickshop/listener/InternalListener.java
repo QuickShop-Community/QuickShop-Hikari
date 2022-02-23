@@ -47,7 +47,6 @@ public class InternalListener extends AbstractQSListener {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
         readConfig();
-        this.register();
     }
 
     private void readConfig() {
