@@ -315,6 +315,18 @@
             <version>4.0.1</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.juliomarcopineda</groupId>
+            <artifactId>jdbc-stream</artifactId>
+            <version>0.1.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>one.util</groupId>
+            <artifactId>streamex</artifactId>
+            <version>0.8.1</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 

@@ -496,4 +496,12 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
         }
         return match; // Uh, wtf.
     }
+
+    public SQLManager getManager() {
+        return manager;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
 }
