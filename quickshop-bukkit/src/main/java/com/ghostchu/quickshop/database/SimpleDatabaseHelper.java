@@ -53,7 +53,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     private final QuickShop plugin;
 
     @NotNull
-    private String prefix;
+    private final String prefix;
 
     public SimpleDatabaseHelper(@NotNull QuickShop plugin, @NotNull SQLManager manager,@NotNull String prefix) throws SQLException{
         this.plugin = plugin;
