@@ -40,11 +40,13 @@
   "not-a-integer": "&cYou must input an integer, your input was {0}.",
   "player-bought-from-your-store": "&a{0} purchased {1} {2} from your shop, and you earned {3}.",
   "shop-out-of-stock": "&5Your shop at {0}, {1}, {2} has run out of {3}!",
+  "shop-out-of-stock-name": "&5Your shop {0} has run out of {1}!",
   "shop-has-no-space": "&cThe shop only has room for {0} more {1}.",
   "you-dont-have-that-many-items": "&cYou only have {0} {1}.",
   "the-owner-cant-afford-to-buy-from-you": "&cThis item is worth {0}, but the shop-owner only has {1}",
   "player-sold-to-your-store": "&a{0} sold {1} {2} to your shop.",
   "shop-out-of-space": "&5Your shop at {0}, {1}, {2} is full!",
+  "shop-out-of-space-name": "&5Your shop {0} is full!",
   "fee-charged-for-price-change": "&aYou paid &c{0}&a to change the price.",
   "price-is-now": "&aThe new price of the shop is &e{0}",
   "thats-not-a-number": "&cInvalid number",
@@ -242,9 +244,7 @@
     "freeze": "&eFreeze mode: &b{0} &e[&d&lToggle&e]",
     "freeze-hover": "&eToggle the shop's freeze status.",
     "toggledisplay": "&eDisplayItem: &b{0} &e[&d&lToggle&e]",
-    "toggledisplay-hover": "&eToggle the shop's displayitem status",
-    "name": "&aShop Name: &e{0} &e[&d&lChange&e]",
-    "name-hover": "&eClick to change the shop's name."
+    "toggledisplay-hover": "&eToggle the shop's displayitem status"
   },
   "tableformat": {
     "full_line": "&5+---------------------------------------------------+",
