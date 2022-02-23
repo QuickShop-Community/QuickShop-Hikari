@@ -924,14 +924,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
         if (selectedVersion < 1000) {
             new HikariConverter(this).upgrade();
+            getLogger().info("Save changes & Reloading configurations...");
             saveConfig();
-            getLogger().info("Server will restart after 5 seconds, enjoy :)");
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                getLogger().log(Level.WARNING, "Thread sleep interrupted", e);
-            }
-            Runtime.getRuntime().halt(0);
+            reloadConfig();
+            if(this.getReloadManager() != null)
+                this.getReloadManager().reload();
         }
 
         if (selectedVersion == 1000) {
