@@ -247,9 +247,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     /**
      * Get the QuickShop instance
      * You should use QuickShopAPI if possible, we don't promise the internal access will be stable
+     *
+     * @return QuickShop instance
      * @apiNote This method is internal only.
      * @hidden This method is hidden in documentation.
-     * @return QuickShop instance
      */
     @ApiStatus.Internal
     @NotNull
@@ -445,12 +446,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         this.currency = this.getConfig().getString("currency");
         this.loggingLocation = this.getConfig().getInt("logging.location");
         this.translationMapping = new HashMap<>();
-        getConfig().getStringList("custom-translation-key").forEach(str->{
-            String[] split = str.split("=",0);
-            this.translationMapping.put(split[0],split[1]);
+        getConfig().getStringList("custom-translation-key").forEach(str -> {
+            String[] split = str.split("=", 0);
+            this.translationMapping.put(split[0], split[1]);
         });
         this.translationMapping.putAll(this.addonRegisteredMapping);
-        if(this.platform != null){
+        if (this.platform != null) {
             this.platform.updateTranslationMappingSection(this.translationMapping);
         }
 
@@ -463,7 +464,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             logWatcher = null;
         }
         // Schedule this event can be run in next tick.
-        Util.mainThreadRun(()->Bukkit.getPluginManager().callEvent(new QSConfigurationReloadEvent(this)));
+        Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new QSConfigurationReloadEvent(this)));
     }
 
     /**
@@ -657,7 +658,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
 
         //Load the database
         setupDBonEnableding = true;
-        if(!setupDatabase()){
+        if (!setupDatabase()) {
             getLogger().severe("Failed to setup database, please check the log for more information!");
             Bukkit.getPluginManager().disablePlugin(this);
             return;
@@ -859,8 +860,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 this.sqlManager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode
             }
             // Make the database up to date
-            this.databaseHelper = new SimpleDatabaseHelper(this, this.sqlManager);
-            this.databaseHelper.init(this.getDbPrefix());
+            this.databaseHelper = new SimpleDatabaseHelper(this, this.sqlManager, this.getDbPrefix());
             return true;
         } catch (Exception e) {
             getLogger().log(Level.SEVERE, "Error when connecting to the database", e);
@@ -934,13 +934,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             Runtime.getRuntime().halt(0);
         }
 
-        if(selectedVersion == 1000){
-            getConfig().set("custom-translation-key",new ArrayList<>());
+        if (selectedVersion == 1000) {
+            getConfig().set("custom-translation-key", new ArrayList<>());
             selectedVersion++;
         }
-        if(selectedVersion == 1001){
-            getConfig().set("shop.name-fee",0);
-            getConfig().set("shop.name-max-length",32);
+        if (selectedVersion == 1001) {
+            getConfig().set("shop.name-fee", 0);
+            getConfig().set("shop.name-max-length", 32);
             selectedVersion++;
         }
 
@@ -1064,11 +1064,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     public BukkitAudiences getAudience() {
         return audience;
     }
+
     @Override
     public void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key) {
         addonRegisteredMapping.put(translationKey, key);
         translationMapping.putAll(addonRegisteredMapping);
-        if(this.platform != null){
+        if (this.platform != null) {
             this.platform.updateTranslationMappingSection(translationMapping);
         }
     }

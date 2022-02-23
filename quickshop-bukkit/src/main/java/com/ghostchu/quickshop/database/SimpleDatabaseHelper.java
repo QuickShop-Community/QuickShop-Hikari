@@ -55,14 +55,9 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     @NotNull
     private String prefix;
 
-    public SimpleDatabaseHelper(@NotNull QuickShop plugin, @NotNull SQLManager manager) {
+    public SimpleDatabaseHelper(@NotNull QuickShop plugin, @NotNull SQLManager manager,@NotNull String prefix) throws SQLException{
         this.plugin = plugin;
         this.manager = manager;
-        this.prefix = plugin.getDbPrefix();
-    }
-
-    public void init(@NotNull String prefix) throws SQLException {
-        Util.debugLog("Initializing database helper...");
         this.prefix = prefix;
         checkTables();
         checkColumns();
