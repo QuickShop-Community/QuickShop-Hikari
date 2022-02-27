@@ -13,7 +13,7 @@
   "integrations-check-failed-create": "&cIntegrierung {0} hat die Shop-Erstellung verweigert",
   "integrations-check-failed-trade": "&cIntegrierung {0} hat das Shop-handeln verweigert",
   "3rd-plugin-build-check-failed": "&cDas Drittanbieter Plugin &l{0}&r&c hat die Berechtigungsprüfung abgelehnt, hast du die richtigen Rechte eingerichtet?",
-  "3rd-plugin-build-check-failed-admin": "&7(AdminOnly) &d{0} &8denied the permission checks, If this not excepted, try add &d{1} &7to listener blacklist. &7Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter",
+  "3rd-plugin-build-check-failed-admin": "&7(Nur für Admins) &{0} &8hat die Berechtigungsprüfungen verweigert. Falls dies nicht beabsichtigt ist, sollte &{1} &8zu der Listener Blacklist hinzugefügt werden. &7Konfigurationsguide (Englisch): https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter",
   "no-creative-break": "&cDu kannst Shops anderere Spieler nicht im Kreativmodus zerstören. Wechsle zum Überlebensmodus oder verwende das Supertool {0}.",
   "trading-in-creative-mode-is-disabled": "&cDu kannst mit dem Shop nicht handeln während du im Kreativmodus bist.",
   "supertool-is-disabled": "&cSupertool ist deaktiviert. Kann keine Shops zersören.",
