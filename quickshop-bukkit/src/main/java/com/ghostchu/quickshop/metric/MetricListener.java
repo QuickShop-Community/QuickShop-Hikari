@@ -19,22 +19,28 @@
 
 package com.ghostchu.quickshop.metric;
 
-import org.bukkit.Location;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopDeleteEvent;
 import com.ghostchu.quickshop.api.event.ShopOngoingFeeEvent;
 import com.ghostchu.quickshop.api.event.ShopSuccessPurchaseEvent;
+import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.listener.AbstractQSListener;
+import org.bukkit.Location;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 
 public class MetricListener extends AbstractQSListener implements Listener {
     public MetricListener(QuickShop plugin) {
         super(plugin);
     }
-
+    private ShopOperationEnum wrapShopOperation(Shop shop){
+        return switch (shop.getShopType()){
+            case SELLING -> ShopOperationEnum.PURCHASE_SELLING_SHOP;
+            case BUYING -> ShopOperationEnum.PURCHASE_BUYING_SHOP;
+        };
+    }
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPurchase(ShopSuccessPurchaseEvent event){
         Location loc = event.getShop().getLocation();
@@ -48,7 +54,7 @@ public class MetricListener extends AbstractQSListener implements Listener {
                         .player(event.getPurchaser())
                         .tax(event.getTax())
                         .total(event.getBalanceWithoutTax())
-                        .type(ShopOperationEnum.PURCHASE)
+                        .type(wrapShopOperation(event.getShop()))
                         .build()
         );
     }

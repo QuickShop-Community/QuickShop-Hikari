@@ -109,6 +109,8 @@ public class ContainerShop implements Shop {
     private InventoryWrapper inventoryWrapper;
     @NotNull
     private String symbolLink;
+    @Nullable
+    private String shopName;
 
     ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
@@ -132,6 +134,7 @@ public class ContainerShop implements Shop {
         this.inventoryWrapper = s.inventoryWrapper;
         this.inventoryWrapperProvider = s.inventoryWrapperProvider;
         this.symbolLink = s.symbolLink;
+        this.shopName = s.shopName;
         initDisplayItem();
     }
 
@@ -162,8 +165,10 @@ public class ContainerShop implements Shop {
             boolean disableDisplay,
             @Nullable UUID taxAccount,
             @NotNull String inventoryWrapperProvider,
-            @NotNull String symbolLink) {
+            @NotNull String symbolLink,
+            @Nullable String shopName) {
         Util.ensureThread(false);
+        this.shopName = shopName;
         this.location = location;
         this.price = price;
         this.moderator = moderator;
@@ -289,6 +294,28 @@ public class ContainerShop implements Shop {
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING, "Failed to init display item for shop " + this + ", display item init failed!", e);
         }
+    }
+
+    /**
+     * Sets shop name
+     *
+     * @param shopName shop name, null to remove currently name
+     */
+    @Override
+    public void setShopName(@Nullable String shopName) {
+        this.shopName = shopName;
+        setDirty();
+        update();
+    }
+
+    /**
+     * Gets this shop name that set by player
+     *
+     * @return Shop name, or null if not set
+     */
+    @Override
+    public @Nullable String getShopName() {
+        return this.shopName;
     }
 
     /**
@@ -858,7 +885,7 @@ public class ContainerShop implements Shop {
             plugin.getDatabaseHelper()
                     .updateShop(SimpleShopModerator.serialize(this.moderator), this.getItem(),
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
-                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), saveToSymbolLink(), this.inventoryWrapperProvider);
+                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), saveToSymbolLink(), this.inventoryWrapperProvider,this.shopName);
             this.dirty = false;
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING,

@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is ShopOperationEnum.java
+ *  This file is a part of project QuickShop, the name is MetricRecord.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,17 +17,30 @@
  *
  */
 
-package com.ghostchu.quickshop.metric;
+package com.ghostchu.quickshop.api.database;
 
-public enum ShopOperationEnum {
-    /**
-     * @deprecated No longer use PURCHASE
-     */
-    @Deprecated
-    PURCHASE,
-    PURCHASE_SELLING_SHOP,
-    PURCHASE_BUYING_SHOP,
-    CREATE,
-    DELETE,
-    ONGOING_FEE
+import com.ghostchu.quickshop.metric.ShopOperationEnum;
+
+import java.util.UUID;
+
+public interface MetricRecord {
+    long getTimestamp();
+
+    int getX();
+
+    int getY();
+
+    int getZ();
+
+    String getWorld();
+
+    ShopOperationEnum getType();
+
+    double getTotal();
+
+    double getTax();
+
+    int getAmount();
+
+    UUID getPlayer();
 }

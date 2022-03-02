@@ -158,7 +158,7 @@ public final class EnvironmentChecker {
         }
         try {
             int majorVersion = Integer.parseInt(splitVersion[0]);
-            return majorVersion < 16; //Target JDK/JRE version
+            return majorVersion < 17; //Target JDK/JRE version
         } catch (NumberFormatException ignored) {
             Util.debugLog("Failed to parse jvm major version to check: " + splitVersion[0]);
             return false;

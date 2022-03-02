@@ -7,7 +7,7 @@
 ![Contributors](https://img.shields.io/github/contributors/Ghost-chu/QuickShop-Hikari)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari?ref=badge_shield)
 
-![Java](https://img.shields.io/badge/java-version%2016%2B%20(currently%20is%2016--17)-orange)
+![Java](https://img.shields.io/badge/java-version%2017%2B%20(currently%20is%2017--18)-orange)
 ![MC](https://img.shields.io/badge/minecraft-java%20edition%201.18%2B-blueviolet)
 
 [//]: # (![Ver]&#40;https://img.shields.io/spiget/version/62575?label=version&#41;)
@@ -118,6 +118,8 @@ if(plugin != null){
 
 ## Maven
 
+I'm working on a dependency issue, but at the moment you need to manually add multiple external dependencies.
+
 ```xml
     <repositories>
         <repository>
@@ -131,27 +133,6 @@ if(plugin != null){
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-bukkit</artifactId>
             <version>PUT_VERSION_HERE</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Add provided quickshop-platform-interface module or you may get an error about cannot access to -->
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-interface</artifactId>
-            <version>PUT_VERSION_HERE</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Add provided SimpleReloadLib module or you may get an error about cannot access to -->
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>simplereloadlib</artifactId>
-            <version>1.1.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Add provided Adventure module or you may get an error about cannot access to -->
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.0.1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

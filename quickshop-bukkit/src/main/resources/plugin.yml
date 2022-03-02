@@ -67,6 +67,8 @@ libraries:
   - com.ghostchu:simplereloadlib:1.1.0
   - com.konghq:unirest-java:3.13.6
   - net.kyori:adventure-platform-bukkit:4.0.1
+  - com.github.juliomarcopineda:jdbc-stream:0.1.1
+  - one.util:streamex:0.8.1
 
 commands:
   qs:
@@ -95,6 +97,7 @@ permissions:
       quickshop.preview: true
       quickshop.currency: true
       quickshop.toggledisplay: true
+      quickshop.shopnaming: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
     default: op
@@ -114,6 +117,8 @@ permissions:
       quickshop.purge: true
       quickshop.other.setowner: true
       quickshop.taxaccount: true
+      quickshop.other.shopnaming: true
+      quickshop.bypass.namefee: true
 
 
   quickshop.create.sell:
@@ -265,4 +270,13 @@ permissions:
     default: op
   quickshop.purge:
     description: Permission to use /qs purge
+    default: op
+  quickshop.shopnaming:
+    description: Permission to use /qs name
+    default: op
+  quickshop.other.shopnaming:
+    description: Permission to use /qs name on others shops
+    default: op
+  quickshop.bypass.namefee:
+    description: Permission to use /qs name without the fee
     default: op

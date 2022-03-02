@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1001
+config-version: 1002
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -189,15 +189,20 @@ shop-blocks:
 shop:
   #The cost to make a shop.
   cost: 10
+
   #Should QS refund the player when their shops are deleted/removed/broken?
   refund: false
+
   #Should QS send stock messages to staffs?
   sending-stock-message-to-staffs: false
+
   #Should QS disable trading in creative mode?
   disable-creative-mode-trading: false
+
   #Should QS disable the super tool?
   #The Super Tool is a Golden Axe that allows creative mode players to break shops.
   disable-super-tool: false
+
   #Should QS allow the owner of a shop to break the sign to let players replace the sign?
   #This may cause a sign dupe when auto-sign is true!
   allow-owner-break-shop-sign: false
@@ -303,12 +308,6 @@ shop:
   #(e.g There are blocks on all sides of the shop / The player doesn't have permission to put down a sign at that location)
   allow-shop-without-space-for-sign: false
 
-  #Per item price restrictions.
-  #Format: <itemname>;<minprice>;<maxprice>
-  #e.g:
-  # - DIAMOND;100;200
-  price-restriction: [ ]
-
   #The maximum number of digits after the decimal.
   #Set this to -1 to disable it. (Unlimited maximum digits)
   maximum-digits-in-price: -1
@@ -330,10 +329,12 @@ shop:
   #in the sign instead of "Enchanted Book".
   #NOTE: Only one enchantment is shown and is randomly chosen.
   use-enchantment-for-enchanted-book: false
+
   #If this is enabled, the effect name will be shown
   #in the sign instead of "Potion".
   #NOTE: Only one effect is shown and is randomly chosen.
   use-effect-for-potion-item: false
+
   #The list of worlds in which creating new shops is disabled.
   blacklist-world:
     - disabled_world_name
@@ -355,14 +356,12 @@ shop:
     - disabled_world
 
   #The listener list to skip when protection-checking.
-  #Requires "protection-checking-handler" set to 1.
   #Examples:
   #- xx.xxx.xxx.xxxxx.BlockBreakListenerClass
-  #  This will skip calling the xx.xxx.xxx.xxxxx.BlockBreakListenerClass.
-  #  This can improve performance because its not string based.
+  #  This will skip calling the xx.xxx.xxx.xxxxx.BlockBreakListenerClass listener.
   #
   #- xx.xx.xxx.xxxxx
-  #  This will skip calling all classes that start with xx.xx.xxx.xxxxx.
+  #  This will skip calling all listener that class name start with xx.xx.xxx.xxxxx.
   #
   #- @PluginName
   #  This will skip calling all listeners registered by this plugin.
@@ -387,6 +386,11 @@ shop:
 
   #The word to trade all items in player inventory.
   word-for-trade-all-items: "all"
+
+  #Sets the name cost
+  name-fee: 0
+  #Sets the max length for shop naming
+  name-max-length: 32
 
   #The shop ongoing fee.
   #If the shop owner doesn't have enough money, the shop will automatically be removed.
@@ -488,6 +492,8 @@ matcher:
     suspiciousStew: true
     #Should the Plugin check the shulkerBox contents?
     shulkerBox: true
+    #Should the Plugin check the bundle contents?
+    bundle: true
 
 #The protection that a shop should check.
 protect:

@@ -19,6 +19,10 @@
 
 package com.ghostchu.quickshop.util.matcher.item;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.ItemMatcher;
+import com.ghostchu.quickshop.util.ReflectFactory;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -34,10 +38,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionData;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.ItemMatcher;
-import com.ghostchu.quickshop.util.ReflectFactory;
-import com.ghostchu.quickshop.util.Util;
 
 import java.util.*;
 
@@ -240,7 +240,6 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 return true;
             });
             addIfEnable(itemMatcherConfig, "displayname", ((meta1, meta2) -> {
-
                 if (meta1.hasDisplayName() != meta2.hasDisplayName()) {
                     return false;
                 }
@@ -257,15 +256,11 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1.hasLore()) {
                     List<String> lores1 = meta1.getLore();
                     List<String> lores2 = meta2.getLore();
-                    return Arrays.deepEquals(
-                            Objects.requireNonNull(lores1).toArray(), Objects.requireNonNull(lores2).toArray());
+                    return Objects.deepEquals(lores1,lores2);
                 }
-
                 return true;
-
             }));
             addIfEnable(itemMatcherConfig, "enchs", ((meta1, meta2) -> {
-
                 if (meta1.hasEnchants() != meta2.hasEnchants()) {
                     return false;
                 }
@@ -285,7 +280,6 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 return true;
             }));
             addIfEnable(itemMatcherConfig, "potions", ((meta1, meta2) -> {
-
                 if (meta1 instanceof PotionMeta != meta2 instanceof PotionMeta) {
                     return false;
                 }
@@ -329,10 +323,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                     for (Attribute att : set1) {
                         if (!set2.contains(att)) {
                             return false;
-                        } else if (!meta1
-                                .getAttributeModifiers()
-                                .get(att)
-                                .equals(meta2.getAttributeModifiers().get(att))) {
+                        } else if (!meta1.getAttributeModifiers().get(att).equals(meta2.getAttributeModifiers().get(att))) {
                             return false;
                         }
                     }
@@ -352,21 +343,18 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                     if (book1.hasTitle() && !Objects.equals(book1.getTitle(), book2.getTitle())) {
                         return false;
                     }
-
                     if (book1.hasPages() != book2.hasPages()) {
                         return false;
                     }
                     if (book1.hasPages() && !book1.getPages().equals(book2.getPages())) {
                         return false;
                     }
-
                     if (book1.hasAuthor() != book2.hasAuthor()) {
                         return false;
                     }
                     if (book1.hasAuthor() && !Objects.equals(book1.getAuthor(), book2.getAuthor())) {
                         return false;
                     }
-
                     if (book1.hasGeneration() != book2.hasGeneration()) {
                         return false;
                     }
@@ -391,12 +379,29 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1 instanceof SkullMeta != meta2 instanceof SkullMeta) {
                     return false;
                 }
-                if (meta1 instanceof SkullMeta) {
+                if (meta1 instanceof SkullMeta skullMeta1) {
                     //getOwningPlayer will let server query playerProfile in server thread
                     //Causing huge lag, so using String instead
-                    String player1 = ((SkullMeta) meta1).getOwner(); //FIXME: Update this when drop 1.15 supports
+                    String player1 = skullMeta1.getOwner(); //FIXME: Update this when drop 1.15 supports
                     String player2 = ((SkullMeta) meta2).getOwner(); //FIXME: Update this when drop 1.15 supports
                     return Objects.equals(player1, player2);
+                }
+                return true;
+            });
+            addIfEnable(itemMatcherConfig, "bundle", (meta1, meta2) -> {
+                if (meta1 instanceof BundleMeta != meta2 instanceof BundleMeta) {
+                    return false;
+                }
+                if (meta1 instanceof BundleMeta bundleMeta1) {
+                    //getOwningPlayer will let server query playerProfile in server thread
+                    //Causing huge lag, so using String instead
+                    BundleMeta bundleMeta2 = (BundleMeta) meta2;
+                    if(bundleMeta1.hasItems() != bundleMeta2.hasItems()) {
+                        return false;
+                    }
+                    if(bundleMeta1.hasItems()){
+                        return Util.listDisorderMatches(bundleMeta1.getItems(),bundleMeta2.getItems());
+                    }
                 }
                 return true;
             });
@@ -412,14 +417,12 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                     if (mapMeta1.hasMapView() && mapMeta2.hasMapView() && !Objects.equals(mapMeta1.getMapView(), mapMeta2.getMapView())) {
                         return false;
                     }
-
                     if (mapMeta1.hasColor() != mapMeta2.hasColor()) {
                         return false;
                     }
                     if (mapMeta1.hasColor() && mapMeta2.hasColor() && !Objects.equals(mapMeta1.getColor(), mapMeta2.getColor())) {
                         return false;
                     }
-
                     if (mapMeta1.hasLocationName() != mapMeta2.hasLocationName()) {
                         return false;
                     }
@@ -504,7 +507,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                                 return false;
                             }
                             if (stewMeta1.hasCustomEffects()) {
-                                return stewMeta1.getCustomEffects().equals(stewMeta2.getCustomEffects());
+                                return Util.listDisorderMatches(stewMeta1.getCustomEffects(), stewMeta2.getCustomEffects());
                             }
                         }
                         return true;

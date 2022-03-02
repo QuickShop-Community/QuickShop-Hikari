@@ -709,7 +709,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         try {
             shop.buy(buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
         } catch (Exception shopError) {
-            plugin.getLogger().log(Level.WARNING,"Failed to processing purchase, rolling back...", shopError);
+            plugin.getLogger().log(Level.WARNING, "Failed to processing purchase, rolling back...", shopError);
             transaction.rollback(true);
             plugin.text().of(buyer, "shop-transaction-failed", shopError.getMessage()).send();
             return;
@@ -728,11 +728,17 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         MsgUtil.getTranslateText(shop.getItem())).forLocale()
                 .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
         if (space == amount) {
-            msg = plugin.text().of(player, "shop-out-of-space",
-                            Component.text(shop.getLocation().getBlockX()),
-                            Component.text(shop.getLocation().getBlockY()),
-                            Component.text(shop.getLocation().getBlockZ())).forLocale()
-                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+            if (shop.getShopName() == null) {
+                msg = plugin.text().of(player, "shop-out-of-space",
+                                shop.getLocation().getBlockX(),
+                                shop.getLocation().getBlockY(),
+                                shop.getLocation().getBlockZ()).forLocale()
+                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+            } else {
+                msg = plugin.text().of(player, "shop-out-of-space-name", shop.getShopName(),
+                                MsgUtil.getTranslateText(shop.getItem())).forLocale()
+                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+            }
             if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
                 for (UUID staff : shop.getModerator().getStaffs()) {
                     MsgUtil.send(shop, staff, msg);
@@ -936,7 +942,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 false,
                 null,
                 plugin.getName(),
-                plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper(((InventoryHolder) info.getLocation().getBlock().getState()).getInventory())));
+                plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper(((InventoryHolder) info.getLocation().getBlock().getState()).getInventory())),
+                null);
 
         // Calling ShopCreateEvent
         ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, p.getUniqueId());
@@ -1100,7 +1107,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         try {
             shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
         } catch (Exception shopError) {
-            plugin.getLogger().log(Level.WARNING,"Failed to processing purchase, rolling back...", shopError);
+            plugin.getLogger().log(Level.WARNING, "Failed to processing purchase, rolling back...", shopError);
             transaction.rollback(true);
             plugin.text().of(seller, "shop-transaction-failed", shopError.getMessage()).send();
             return;
@@ -1139,13 +1146,18 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         // Transfers the item from A to B
         if (stock == amount) {
-            msg = plugin.text().of(player, "shop-out-of-stock",
-                            Component.text(shop.getLocation().getBlockX()),
-                            Component.text(shop.getLocation().getBlockY()),
-                            Component.text(shop.getLocation().getBlockZ()),
-                            MsgUtil.getTranslateText(shop.getItem())).forLocale()
-                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
-
+            if (shop.getShopName() == null) {
+                msg = plugin.text().of(player, "shop-out-of-stock",
+                                shop.getLocation().getBlockX(),
+                                shop.getLocation().getBlockY(),
+                                shop.getLocation().getBlockZ(),
+                                MsgUtil.getTranslateText(shop.getItem())).forLocale()
+                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+            } else {
+                msg = plugin.text().of(player, "shop-out-of-stock-name", shop.getShopName(),
+                                MsgUtil.getTranslateText(shop.getItem())).forLocale()
+                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+            }
             MsgUtil.send(shop, shop.getOwner(), msg);
             if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
                 for (UUID staff : shop.getModerator().getStaffs()) {

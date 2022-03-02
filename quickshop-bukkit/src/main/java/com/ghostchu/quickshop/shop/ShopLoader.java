@@ -130,7 +130,8 @@ public class ShopLoader {
                                 data.isDisableDisplay(),
                                 data.getTaxAccount(),
                                 data.getInventoryWrapperProvider(),
-                                data.getSymbolLink());
+                                data.getSymbolLink(),
+                                data.getShopName());
                 if (data.needUpdate.get()) {
                     shop.setDirty();
                 }
@@ -294,7 +295,8 @@ public class ShopLoader {
                                 data.isDisableDisplay(),
                                 data.getTaxAccount(),
                                 data.getInventoryWrapperProvider(),
-                                data.getSymbolLink());
+                                data.getSymbolLink(),
+                                data.getShopName());
                 if (shopNullCheck(shop)) {
                     continue;
                 }
@@ -358,6 +360,8 @@ public class ShopLoader {
 
         private String symbolLink;
 
+        private String shopName;
+
         ShopRawDatabaseInfo(ResultSet rs) throws SQLException {
             this.x = rs.getInt("x");
             this.y = rs.getInt("y");
@@ -378,6 +382,7 @@ public class ShopLoader {
             this.taxAccount = rs.getString("taxAccount");
             this.symbolLink = rs.getString("inventorySymbolLink");
             this.inventoryWrapperProvider = rs.getString("inventoryWrapperName");
+            this.shopName = rs.getString("name");
         }
 
         @Override
@@ -423,6 +428,8 @@ public class ShopLoader {
 
         private String symbolLink;
 
+        private String shopName;
+
         ShopDatabaseInfo(ShopRawDatabaseInfo origin) {
             try {
                 this.x = origin.getX();
@@ -441,6 +448,7 @@ public class ShopLoader {
                 this.taxAccount = origin.getTaxAccount() != null ? UUID.fromString(origin.getTaxAccount()) : null;
                 this.inventoryWrapperProvider = origin.getInventoryWrapperProvider();
                 this.symbolLink = origin.getSymbolLink();
+                this.shopName = origin.getShopName();
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }
