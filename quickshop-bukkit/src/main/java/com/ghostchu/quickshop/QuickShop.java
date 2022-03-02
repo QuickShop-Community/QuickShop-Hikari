@@ -927,7 +927,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getLogger().info("Save changes & Reloading configurations...");
             saveConfig();
             reloadConfig();
-            if(this.getReloadManager() != null)
+            if (this.getReloadManager() != null)
                 this.getReloadManager().reload();
         }
 
@@ -935,9 +935,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfig().set("custom-translation-key", new ArrayList<>());
             selectedVersion++;
         }
+
         if (selectedVersion == 1001) {
             getConfig().set("shop.name-fee", 0);
             getConfig().set("shop.name-max-length", 32);
+            getConfig().set("matcher.item.bundle", true);
             selectedVersion++;
         }
 

@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1001
+config-version: 1002
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -189,15 +189,20 @@ shop-blocks:
 shop:
   #The cost to make a shop.
   cost: 10
+
   #Should QS refund the player when their shops are deleted/removed/broken?
   refund: false
+
   #Should QS send stock messages to staffs?
   sending-stock-message-to-staffs: false
+
   #Should QS disable trading in creative mode?
   disable-creative-mode-trading: false
+
   #Should QS disable the super tool?
   #The Super Tool is a Golden Axe that allows creative mode players to break shops.
   disable-super-tool: false
+
   #Should QS allow the owner of a shop to break the sign to let players replace the sign?
   #This may cause a sign dupe when auto-sign is true!
   allow-owner-break-shop-sign: false
@@ -324,10 +329,12 @@ shop:
   #in the sign instead of "Enchanted Book".
   #NOTE: Only one enchantment is shown and is randomly chosen.
   use-enchantment-for-enchanted-book: false
+
   #If this is enabled, the effect name will be shown
   #in the sign instead of "Potion".
   #NOTE: Only one effect is shown and is randomly chosen.
   use-effect-for-potion-item: false
+
   #The list of worlds in which creating new shops is disabled.
   blacklist-world:
     - disabled_world_name
@@ -485,6 +492,8 @@ matcher:
     suspiciousStew: true
     #Should the Plugin check the shulkerBox contents?
     shulkerBox: true
+    #Should the Plugin check the bundle contents?
+    bundle: true
 
 #The protection that a shop should check.
 protect:

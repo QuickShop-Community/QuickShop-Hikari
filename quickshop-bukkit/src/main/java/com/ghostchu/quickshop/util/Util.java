@@ -1274,4 +1274,14 @@ public class Util {
         return loc;
     }
 
+    /**
+     * Matches the given lists but disordered.
+     * @param list1 List1
+     * @param list2 List2
+     * @return Lists matches or not
+     */
+    public static boolean listDisorderMatches(@NotNull List<?> list1, @NotNull List<?> list2){
+        return list1.containsAll(list2) && list2.containsAll(list1);
+    }
+
 }
