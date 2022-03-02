@@ -853,7 +853,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 config.setPassword(pass);
                 this.sqlManager = EasySQL.createManager(config);
             } else {
-                // SQLite database - Doing this handles file creation
+                // H2 database - Doing this handles file creation
                 Driver.load();
                 config.setJdbcUrl("jdbc:h2:" + new File(this.getDataFolder(), "shops").getCanonicalFile().getAbsolutePath() + ";DB_CLOSE_DELAY=-1;MODE=MYSQL");
                 this.sqlManager = EasySQL.createManager(config);
