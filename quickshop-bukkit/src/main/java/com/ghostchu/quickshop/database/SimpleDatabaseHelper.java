@@ -245,7 +245,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
         if(getDatabaseVersion() == 1){
             // QuickShop-Hikari 1.1.0.0
            manager.alterTable(prefix+"shops")
-                            .addColumn("name","TEXT NULL")
+                            .modifyColumn("name","TEXT NULL")
                     .execute();
            plugin.getLogger().info("[DatabaseHelper] Migrated to 1.1.0.0 data structure, version 2");
            setDatabaseVersion(2);
