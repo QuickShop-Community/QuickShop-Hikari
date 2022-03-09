@@ -462,5 +462,7 @@
       "DELETE": "&e玩家删除了一个商店，如果可能的话，商店创建费将会退还给所有者",
       "ONGOING_FEE": "&e玩家支付了持续商店的费用，因为支付期限已过。"
     }
-  }
+  },
+  "bad-command-usage": "&cBad command arguments!",
+  "bad-command-usage-detailed": "&cBad command arguments! Accepts the following parameters: &7{0}"
 }
