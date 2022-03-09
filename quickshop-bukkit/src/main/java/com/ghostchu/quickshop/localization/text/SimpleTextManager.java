@@ -563,7 +563,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 if (languageCode.equals(locale)) {
                     List<String> str = fallbackLocal();
                     if (str.isEmpty()) {
-                        return Collections.singletonList(Component.text("Fallback Missing Language Key: " + path + ", report to QuickShop!"));
+                        Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                        return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
                     }
                     List<Component> components = str.stream().map(s -> new MineDownParser().parse(s).build().compact()).toList();
                     return postProcess(components);
@@ -578,7 +579,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     str = fallbackLocal();
                 }
                 if (str.isEmpty()) {
-                    return Collections.singletonList(Component.text("Fallback Missing Language Key: " + path + ", report to QuickShop!"));
+                    Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
                 }
                 List<Component> components = str.stream().map(s -> new MineDownParser().parse(s).build().compact()).toList();
                 return postProcess(components);
@@ -684,7 +686,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 if (MsgUtil.getDefaultGameLanguageCode().equals(locale)) {
                     String str = fallbackLocal();
                     if (str == null) {
-                        return Component.text("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                        Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                        return LegacyComponentSerializer.legacySection().deserialize(path);
                     }
                     Component component = new MineDownParser().parse(str).build().compact();
                     return postProcess(component);
@@ -699,7 +702,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     str = fallbackLocal();
                 }
                 if (str == null) {
-                    return Component.text("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    return LegacyComponentSerializer.legacySection().deserialize(path);
                 }
                 Component component = new MineDownParser().parse(str).build().compact();
                 return postProcess(component);
