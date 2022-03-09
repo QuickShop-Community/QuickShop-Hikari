@@ -462,5 +462,7 @@
       "DELETE": "&ePlayer deleted a shop. And refunded the shop creation fee to owner if possible.",
       "ONGOING_FEE": "&ePlayer paid the ongoing fee because the payment period."
     }
-  }
+  },
+  "bad-command-usage": "&cBad command arguments!",
+  "bad-command-usage-detailed": "&cBad command arguments! Accepts the following parameters: &7{0}"
 }
