@@ -463,6 +463,6 @@
       "ONGOING_FEE": "&e玩家支付了持续商店的费用，因为支付期限已过。"
     }
   },
-  "bad-command-usage": "&cBad command arguments!",
-  "bad-command-usage-detailed": "&cBad command arguments! Accepts the following parameters: &7{0}"
+  "bad-command-usage": "&c错误的命令参数！",
+  "bad-command-usage-detailed": "&c错误的命令参数! 接受以下参数: &7{0}"
 }
