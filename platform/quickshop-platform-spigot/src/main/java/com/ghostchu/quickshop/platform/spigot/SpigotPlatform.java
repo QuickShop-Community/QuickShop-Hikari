@@ -25,7 +25,6 @@ import de.tr7zw.nbtapi.plugin.NBTAPI;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -43,16 +42,22 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class SpigotPlatform implements Platform {
     private NBTAPI nbtapi;
     private final ReflServerStateProvider provider;
     private Map<String, String> translationMapping;
+    private final Logger logger = Logger.getLogger("QuickShop-Hikari");
 
     public SpigotPlatform(@NotNull Map<String, String> mapping) {
         this.provider = new ReflServerStateProvider();
         if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
-            nbtapi = NBTAPI.getInstance();
+            if(NBTAPI.getInstance().isCompatible()) {
+                nbtapi = NBTAPI.getInstance();
+            }else{
+                logger.warning("NBTAPI not compatible with this minecraft version, disabling NBTAPI support.");
+            }
         }
         this.translationMapping = mapping;
     }
