@@ -929,6 +929,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             reloadConfig();
             if (this.getReloadManager() != null)
                 this.getReloadManager().reload();
+            selectedVersion = getConfig().getInt("config-version",1000);
         }
 
         if (selectedVersion == 1000) {

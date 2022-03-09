@@ -76,7 +76,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
         } else {
             Component text;
             if (plugin.getConfig().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op") && shop.isUnlimited()) {
-                text = plugin.text().of(sender, "controlpanel.setowner-uuid", shop.ownerName(), Component.text(shop.getOwner().toString())).forLocale();
+                text = plugin.text().of(sender, "controlpanel.setowner-uuid", shop.ownerName(), shop.getOwner().toString()).forLocale();
             } else {
                 text = plugin.text().of(sender, "controlpanel.setowner", shop.ownerName()).forLocale();
             }

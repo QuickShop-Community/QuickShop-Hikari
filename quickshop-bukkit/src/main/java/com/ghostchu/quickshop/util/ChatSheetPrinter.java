@@ -19,15 +19,13 @@
 
 package com.ghostchu.quickshop.util;
 
+import com.ghostchu.quickshop.QuickShop;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
 
 
 @AllArgsConstructor
@@ -50,15 +48,6 @@ public class ChatSheetPrinter {
                         .append(QuickShop.getInstance().text().of(p, "tableformat.right_half_line").forLocale()));
     }
 
-    public void printExecutableCmdLine(
-            @NotNull Component text, @NotNull Component hoverText, @NotNull String executeCmd) {
-        MsgUtil.sendDirectMessage(p,
-                text.hoverEvent(HoverEvent.showText(hoverText))
-                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, executeCmd)));
-
-
-    }
-
     private void printFullLine() {
         MsgUtil.sendDirectMessage(p, QuickShop.getInstance().text().of(p, "tableformat.full_line").forLocale());
     }
@@ -78,13 +67,4 @@ public class ChatSheetPrinter {
         MsgUtil.sendDirectMessage(p, QuickShop.getInstance().text().of(p, "tableformat.left_begin").forLocale()
                 .append(component));
     }
-
-    public void printSuggestedCmdLine(
-            @NotNull Component text, @NotNull Component hoverText, @NotNull String suggestCmd) {
-
-        MsgUtil.sendDirectMessage(p,
-                text.hoverEvent(HoverEvent.showText(hoverText))
-                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, suggestCmd)));
-    }
-
 }
