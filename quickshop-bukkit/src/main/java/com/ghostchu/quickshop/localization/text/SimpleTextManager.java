@@ -34,7 +34,6 @@ import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import de.themoep.minedown.adventure.MineDownParser;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
@@ -72,12 +71,14 @@ public class SimpleTextManager implements TextManager, Reloadable {
     private final Set<String> availableLanguages = new LinkedHashSet<>();
     private final Cache<String, String> languagesCache =
             CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
+    private final SimpleMsgParser msgParser;
 
     public SimpleTextManager(QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
         plugin.getLogger().info("Translation over-the-air platform selected: Crowdin");
         this.distribution = new CrowdinOTA(plugin);
+        this.msgParser = new SimpleMsgParser(plugin.getConfig().getInt("syntax-parser",0));
     }
 
     /**
@@ -566,7 +567,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                         Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                         return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
                     }
-                    List<Component> components = str.stream().map(s -> new MineDownParser().parse(s).build().compact()).toList();
+                    List<Component> components = str.stream().map(manager.msgParser::parse).toList();
                     return postProcess(components);
                 } else {
                     return forLocale(languageCode);
@@ -582,7 +583,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
                 }
-                List<Component> components = str.stream().map(s -> new MineDownParser().parse(s).build().compact()).toList();
+                List<Component> components = str.stream().map(manager.msgParser::parse).toList();
                 return postProcess(components);
             }
         }
@@ -689,7 +690,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                         Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                         return LegacyComponentSerializer.legacySection().deserialize(path);
                     }
-                    Component component = new MineDownParser().parse(str).build().compact();
+                    Component component = manager.msgParser.parse(str);
                     return postProcess(component);
                 } else {
                     return forLocale(MsgUtil.getDefaultGameLanguageCode());
@@ -705,7 +706,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     return LegacyComponentSerializer.legacySection().deserialize(path);
                 }
-                Component component = new MineDownParser().parse(str).build().compact();
+                Component component = manager.msgParser.parse(str);
                 return postProcess(component);
             }
         }

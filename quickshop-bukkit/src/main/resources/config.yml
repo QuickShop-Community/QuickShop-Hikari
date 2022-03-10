@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1002
+config-version: 1003
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -64,6 +64,10 @@ bungee-cross-server-msg: true
 #Set this to "" to use default currency.
 #Only required if you use multiple currencies.
 currency: ""
+
+# Translation parser
+# 0=MineDown 1=MiniMessage
+syntax-parser: 0
 
 logging:
   #Enable logging?

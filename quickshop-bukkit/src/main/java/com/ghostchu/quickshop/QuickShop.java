@@ -929,7 +929,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             reloadConfig();
             if (this.getReloadManager() != null)
                 this.getReloadManager().reload();
-            selectedVersion = getConfig().getInt("config-version",1000);
+            selectedVersion = getConfig().getInt("config-version", 1000);
         }
 
         if (selectedVersion == 1000) {
@@ -943,7 +943,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getConfig().set("matcher.item.bundle", true);
             selectedVersion++;
         }
-
+        if (selectedVersion == 1002) {
+            getConfig().set("syntax-parser", 0);
+            selectedVersion++;
+        }
         if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(platform.getMinecraftVersion()).name().contains("1_16")) {
             getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
         }
