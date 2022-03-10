@@ -463,6 +463,6 @@
       "ONGOING_FEE": "&e在購買時段，玩家支付了進行費。"
     }
   },
-  "bad-command-usage": "&cBad command arguments!",
+  "bad-command-usage": "&c無效的指令!",
   "bad-command-usage-detailed": "&cBad command arguments! Accepts the following parameters: &7{0}"
 }
