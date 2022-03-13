@@ -1,4 +1,4 @@
-name: Qodana Scan
+name: Qodana Clone Scan
 on:
   workflow_dispatch:
   pull_request:
