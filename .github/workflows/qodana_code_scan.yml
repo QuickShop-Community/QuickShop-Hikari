@@ -1,4 +1,4 @@
-name: Qodana Code Scan
+name: Qodana Code Quality Scan
 on:
   workflow_dispatch:
   pull_request:
