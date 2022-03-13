@@ -90,8 +90,8 @@ public class ConfigurationUpdater {
         plugin.getConfig().set("config-version", selectedVersion);
         plugin.saveConfig();
         plugin.reloadConfig();
-        if (plugin.getReloadManager() != null)
-            plugin.getReloadManager().reload();
+//        if (plugin.getReloadManager() != null)
+//            plugin.getReloadManager().reload();
         //Delete old example configuration files
         try {
             cleanupOldConfigs();
