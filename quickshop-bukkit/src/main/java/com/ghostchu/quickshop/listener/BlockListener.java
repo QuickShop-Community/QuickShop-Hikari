@@ -28,13 +28,11 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
-import io.papermc.lib.PaperLib;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
@@ -104,8 +102,6 @@ public class BlockListener extends AbstractProtectionListener {
             shop.delete();
             plugin.text().of(p, "success-removed-shop").send();
         } else if (Util.isWallSign(b.getType())) {
-            BlockState state = PaperLib.getBlockState(b, false).getState();
-
             final Shop shop = getShopNextTo(b.getLocation());
 
             if (shop == null) {
@@ -128,7 +124,7 @@ public class BlockListener extends AbstractProtectionListener {
                     return;
                 }
                 e.setCancelled(true);
-                plugin.text().of(p, "no-creative-break",plugin.getPlatform().getTranslation(Material.GOLDEN_AXE)).send();
+                plugin.text().of(p, "no-creative-break", plugin.getPlatform().getTranslation(Material.GOLDEN_AXE)).send();
                 return;
             }
             //Allow Shop owner break the shop sign(for sign replacement)
@@ -200,6 +196,7 @@ public class BlockListener extends AbstractProtectionListener {
             event.setCancelled(true);
         }
     }
+
     /*
      * Listens for chest placement, so a doublechest shop can't be created.
      */
