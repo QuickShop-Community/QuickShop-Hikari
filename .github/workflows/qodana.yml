@@ -30,3 +30,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ${{ runner.temp }}/qodana/results/report
           destination_dir: ./
+      - name: Qodana - Clone Finder
+        uses: JetBrains/qodana-clone-finder-action@v2.0-eap
+      - name: Qodana - License Audit
+        uses: JetBrains/qodana-license-audit-action@v2.0-eap
