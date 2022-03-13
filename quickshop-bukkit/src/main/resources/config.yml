@@ -445,10 +445,15 @@ plugin:
   WorldEdit: true
   #Allow us use NBTAPI to direct modify the blockstate data
   NBTAPI: true
+#Special in-game effect
 effect:
+  #Sound related
   sound:
+    #Should we play sound while player trying tab completing?
     ontabcomplete: true
+    #Should we play sound while player executing commands?
     oncommand: true
+    #Should we play sound while player clicking shop container/sign?
     onclick: true
 #Item matcher.
 #Do not touch it if you don't know what you're doing!

@@ -32,7 +32,6 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.command.SimpleCommandManager;
-import com.ghostchu.quickshop.converter.HikariConverter;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelper;
 import com.ghostchu.quickshop.economy.Economy_GemsEconomy;
@@ -51,7 +50,8 @@ import com.ghostchu.quickshop.shop.*;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.util.Timer;
 import com.ghostchu.quickshop.util.*;
-import com.ghostchu.quickshop.util.config.ConfigurationFixer;
+import com.ghostchu.quickshop.util.config.ConfigUpdateScript;
+import com.ghostchu.quickshop.util.config.ConfigurationUpdater;
 import com.ghostchu.quickshop.util.envcheck.*;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
@@ -82,12 +82,8 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -581,7 +577,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         /* It will generate a new UUID above updateConfig */
         this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID()))));
         try {
-            updateConfig(getConfig().getInt("config-version"));
+            updateConfig();
         } catch (IOException exception) {
             getLogger().log(Level.WARNING, "Failed to update configuration", exception);
         }
@@ -914,63 +910,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         }
     }
 
-    private void updateConfig(int selectedVersion) throws IOException {
-        String serverUUID = getConfig().getString("server-uuid");
-        if (serverUUID == null || serverUUID.isEmpty()) {
-            UUID uuid = UUID.randomUUID();
-            serverUUID = uuid.toString();
-            getConfig().set("server-uuid", serverUUID);
-        }
-
-        if (selectedVersion < 1000) {
-            new HikariConverter(this).upgrade();
-            getLogger().info("Save changes & Reloading configurations...");
-            saveConfig();
-            reloadConfig();
-            if (this.getReloadManager() != null)
-                this.getReloadManager().reload();
-            selectedVersion = getConfig().getInt("config-version", 1000);
-        }
-
-        if (selectedVersion == 1000) {
-            getConfig().set("custom-translation-key", new ArrayList<>());
-            selectedVersion++;
-        }
-
-        if (selectedVersion == 1001) {
-            getConfig().set("shop.name-fee", 0);
-            getConfig().set("shop.name-max-length", 32);
-            getConfig().set("matcher.item.bundle", true);
-            selectedVersion++;
-        }
-        if (selectedVersion == 1002) {
-            getConfig().set("syntax-parser", 0);
-            selectedVersion++;
-        }
-        if (getConfig().getInt("matcher.work-type") != 0 && GameVersion.get(platform.getMinecraftVersion()).name().contains("1_16")) {
-            getLogger().warning("You are not using QS Matcher, it may meeting item comparing issue mentioned there: https://hub.spigotmc.org/jira/browse/SPIGOT-5063");
-        }
-
-        try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(getResource("config.yml"))), StandardCharsets.UTF_8)) {
-            if (new ConfigurationFixer(this, new File(getDataFolder(), "config.yml"), getConfig(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
-                reloadConfig();
-            }
-        }
-        getConfig().set("config-version", selectedVersion);
-        saveConfig();
-        reloadConfig();
-        //Delete old example configuration files
-        Files.deleteIfExists(new File(getDataFolder(), "example.config.yml").toPath());
-        Files.deleteIfExists(new File(getDataFolder(), "example-configuration.txt").toPath());
-        Files.deleteIfExists(new File(getDataFolder(), "example-configuration.yml").toPath());
-
-        try {
-            if (new File(getDataFolder(), "messages.json").exists()) {
-                Files.move(new File(getDataFolder(), "messages.json").toPath(), new File(getDataFolder(), "messages.json.outdated").toPath());
-            }
-        } catch (Exception ignore) {
-        }
-
+    private void updateConfig() throws IOException {
+        new ConfigurationUpdater(this).update(new ConfigUpdateScript(getConfig(),this));
     }
 
     /**
