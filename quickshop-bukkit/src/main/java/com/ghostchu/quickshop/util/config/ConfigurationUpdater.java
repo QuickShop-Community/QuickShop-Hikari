@@ -90,8 +90,6 @@ public class ConfigurationUpdater {
         plugin.getConfig().set("config-version", selectedVersion);
         plugin.saveConfig();
         plugin.reloadConfig();
-//        if (plugin.getReloadManager() != null)
-//            plugin.getReloadManager().reload();
         //Delete old example configuration files
         try {
             cleanupOldConfigs();
@@ -126,14 +124,12 @@ public class ConfigurationUpdater {
         Files.deleteIfExists(new File(plugin.getDataFolder(), "example.config.yml").toPath());
         Files.deleteIfExists(new File(plugin.getDataFolder(), "example-configuration.txt").toPath());
         Files.deleteIfExists(new File(plugin.getDataFolder(), "example-configuration.yml").toPath());
-
         try {
             if (new File(plugin.getDataFolder(), "messages.json").exists()) {
                 Files.move(new File(plugin.getDataFolder(), "messages.json").toPath(), new File(plugin.getDataFolder(), "messages.json.outdated").toPath());
             }
         } catch (Exception ignore) {
         }
-
     }
 
     @NotNull
