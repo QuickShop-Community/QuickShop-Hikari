@@ -24,6 +24,15 @@ jobs:
       - uses: github/codeql-action/upload-sarif@v1
         with:
           sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
+      - name: Qodana - License Audit
+        uses: JetBrains/qodana-license-audit-action@v2.0-eap
+      - name: Qodana - Clone Finder
+        uses: JetBrains/qodana-clone-finder-action@v2.0-eap
+        with:
+          project-dir: ${{ github.workspace }}/project
+          versus-dir: ${{ github.workspace }}/versus
+          results-dir: ${{ github.workspace }}/qodana
+          languages: "-l Java -l Kotlin"
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
