@@ -464,5 +464,5 @@
     }
   },
   "bad-command-usage": "&c無效的指令!",
-  "bad-command-usage-detailed": "&cBad command arguments! Accepts the following parameters: &7{0}"
+  "bad-command-usage-detailed": "&壞命令參數！接受以下參數：&7{0}"
 }
