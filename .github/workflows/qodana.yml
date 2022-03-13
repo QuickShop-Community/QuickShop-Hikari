@@ -2,13 +2,15 @@ name: Qodana
 on:
   workflow_dispatch:
   pull_request:
+    branches:
+      - main
+      - release
+      - hikari
   push:
     branches:
       - main
-      - master
-      - hikari
       - release
-      - 'releases/*'
+      - hikari
 
 jobs:
   qodana:
@@ -19,12 +21,3 @@ jobs:
         uses: JetBrains/qodana-action@v4.2.2
         with:
           linter: jetbrains/qodana-java
-      - uses: github/codeql-action/upload-sarif@v1
-        with:
-          sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ${{ runner.temp }}/qodana/results/report
-          destination_dir: ./
