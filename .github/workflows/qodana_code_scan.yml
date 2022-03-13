@@ -1,4 +1,4 @@
-name: Qodana
+name: Qodana Code Scan
 on:
   workflow_dispatch:
   pull_request:
@@ -30,12 +30,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ${{ runner.temp }}/qodana/results/report
           destination_dir: ./
-      - name: Qodana - Clone Finder
-        uses: JetBrains/qodana-clone-finder-action@v2.0-eap
-        with:
-          project-dir: ${{ github.workspace }}/project
-          versus-dir: ${{ github.workspace }}/versus
-          results-dir: ${{ github.workspace }}/qodana
-          languages: "-l Java -l Kotlin"
-      - name: Qodana - License Audit
-        uses: JetBrains/qodana-license-audit-action@v2.0-eap
