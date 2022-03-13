@@ -1,0 +1,26 @@
+name: Qodana Scan
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+      - release
+      - hikari
+  push:
+    branches:
+      - main
+      - release
+      - hikari
+
+jobs:
+  qodana:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Qodana - Clone Finder
+        uses: JetBrains/qodana-clone-finder-action@v2.0-eap
+        with:
+          project-dir: ${{ github.workspace }}/project
+          versus-dir: ${{ github.workspace }}/versus
+          results-dir: ${{ github.workspace }}/qodana
+          languages: "-l Java -l Kotlin"
