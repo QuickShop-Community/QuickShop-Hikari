@@ -33,6 +33,7 @@ import com.plotsquared.core.plot.Plot;
 import com.plotsquared.core.plot.flag.GlobalFlagContainer;
 import com.plotsquared.core.plot.flag.types.BooleanFlag;
 import com.sk89q.worldedit.regions.CuboidRegion;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -74,7 +75,7 @@ public final class Plotsquared extends CompatibilityModule implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public boolean canCreateShopHere(ShopPreCreateEvent event) {
+    public void canCreateShopHere(ShopPreCreateEvent event) {
         Location location = event.getLocation();
         com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(
                 location.getWorld().getName(),
@@ -83,12 +84,18 @@ public final class Plotsquared extends CompatibilityModule implements Listener {
                 location.getBlockZ());
         Plot plot = pLocation.getPlot();
         if (plot == null) {
-            return !whiteList;
+            if(!whiteList) {
+                event.setCancelled(true, Component.text("PlotSquared-Compat: WhiteList Mode is on and no plot found in this position."));
+                  return;
+            }
+            return;
         }
-        return plot.getFlag(createFlag);
+        if(!plot.getFlag(tradeFlag)){
+            event.setCancelled(true, Component.text("PlotSquared-Compat: Trade Flag is not enabled."));
+        }
     }
     @EventHandler(ignoreCancelled = true)
-    public boolean canTradeShopHere(ShopPurchaseEvent event) {
+    public void canTradeShopHere(ShopPurchaseEvent event) {
         Location location = event.getShop().getLocation();
         com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(
                 location.getWorld().getName(),
@@ -97,9 +104,15 @@ public final class Plotsquared extends CompatibilityModule implements Listener {
                 location.getBlockZ());
         Plot plot = pLocation.getPlot();
         if (plot == null) {
-            return !whiteList;
+            if(!whiteList) {
+                event.setCancelled(true, Component.text("PlotSquared-Compat: WhiteList Mode is on and no plot found in this position."));
+                return;
+            }
+            return;
         }
-        return plot.getFlag(tradeFlag);
+        if(!plot.getFlag(tradeFlag)){
+            event.setCancelled(true, Component.text("PlotSquared-Compat: Trade Flag is not enabled."));
+        }
     }
 
     private List<Shop> getShops(Plot plot) {

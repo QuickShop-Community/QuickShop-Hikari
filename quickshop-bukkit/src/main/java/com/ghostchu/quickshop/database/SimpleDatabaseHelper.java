@@ -55,7 +55,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     @NotNull
     private final String prefix;
 
-    public SimpleDatabaseHelper(@NotNull QuickShop plugin, @NotNull SQLManager manager,@NotNull String prefix) throws SQLException{
+    public SimpleDatabaseHelper(@NotNull QuickShop plugin, @NotNull SQLManager manager, @NotNull String prefix) throws SQLException {
         this.plugin = plugin;
         this.manager = manager;
         this.prefix = prefix;
@@ -108,7 +108,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
                 .addColumn("taxAccount", "VARCHAR(255) NULL")
                 .addColumn("inventorySymbolLink", "TEXT NULL")
                 .addColumn("inventoryWrapperName", "VARCHAR(255) NULL")
-                .addColumn("name","TEXT NULL")
+                .addColumn("name", "TEXT NULL")
                 .setIndex(IndexType.PRIMARY_KEY, null, "x", "y", "z", "world")
                 .build().execute((i) -> {
                     return i;
@@ -120,7 +120,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
      * Creates the database table 'metrics'
      */
     public void createMetricsTable() {
-        manager.createTable(prefix+ "metrics")
+        manager.createTable(prefix + "metrics")
                 .addColumn("time", "BIGINT NOT NULL")
                 .addColumn("x", "INT NOT NULL")
                 .addColumn("y", "INT NOT NULL")
@@ -187,6 +187,11 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
                 .setIndex(IndexType.PRIMARY_KEY, null, "key")
                 .build()
                 .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create metadata table! SQL:" + sqlAction.getSQLContent(), exception)));
+        try {
+            setDatabaseVersion(2);
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to update database version!", e);
+        }
     }
 
     public void createPlayerTable() {
@@ -200,14 +205,14 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
 
     @Override
     public void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
-        Util.debugLog("Update: "+uuid+" to "+locale);
+        Util.debugLog("Update: " + uuid + " to " + locale);
         manager.createReplace(prefix + "players")
                 .setColumnNames("uuid", "locale")
                 .setParams(uuid.toString(), locale)
                 .executeAsync(integer -> {
-                },(exception, sqlAction) -> {
+                }, (exception, sqlAction) -> {
                     if (exception != null) {
-                        Util.debugLog("Failed to update player locale! Err: "+exception.getMessage()+"; SQL: "+sqlAction.getSQLContent());
+                        Util.debugLog("Failed to update player locale! Err: " + exception.getMessage() + "; SQL: " + sqlAction.getSQLContent());
                     }
                 });
     }
@@ -235,33 +240,30 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     /**
      * Verifies that all required columns exist.
      */
-    public void checkColumns() throws SQLException{
+    public void checkColumns() throws SQLException {
         plugin.getLogger().info("Checking and updating database columns, it may take a while...");
         if (getDatabaseVersion() < 1) {
             // QuickShop v4/v5 upgrade
             // Call updater
             setDatabaseVersion(1);
         }
-        if(getDatabaseVersion() == 1){
+        if (getDatabaseVersion() == 1) {
             // QuickShop-Hikari 1.1.0.0
-            // TODO: Hacky workaround, need a better way
-            if(!hasColumn(prefix+"shops","name")) {
-                try{
-                    manager.alterTable(prefix + "shops")
-                            .addColumn("name", "TEXT NULL")
-                            .execute();
-                }catch (SQLException e){
-                    plugin.getLogger().log(Level.INFO, "Failed to add name column to shops table! SQL: "+e.getMessage());
-                }
+            try {
+                manager.alterTable(prefix + "shops")
+                        .addColumn("name", "TEXT NULL")
+                        .execute();
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.INFO, "Failed to add name column to shops table! SQL: " + e.getMessage());
             }
-           plugin.getLogger().info("[DatabaseHelper] Migrated to 1.1.0.0 data structure, version 2");
-           setDatabaseVersion(2);
+            plugin.getLogger().info("[DatabaseHelper] Migrated to 1.1.0.0 data structure, version 2");
+            setDatabaseVersion(2);
         }
         plugin.getLogger().info("Finished!");
     }
 
     public void setDatabaseVersion(int version) throws SQLException {
-        manager.createReplace(prefix+ "metadata")
+        manager.createReplace(prefix + "metadata")
                 .setColumnNames("key", "value")
                 .setParams("database_version", version)
                 .execute();
@@ -277,13 +279,14 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
             }
             return Integer.parseInt(result.getString("value"));
         } catch (SQLException e) {
+            Util.debugLog("Failed to getting database version! Err: " + e.getMessage());
             return -1;
         }
     }
 
     @Override
     public void cleanMessage(long weekAgo) {
-        manager.createDelete(prefix+ "messages")
+        manager.createDelete(prefix + "messages")
                 .addCondition("time", "<", weekAgo)
                 .build()
                 .executeAsync();
@@ -337,7 +340,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
 
     @Override
     public void removeShop(String world, int x, int y, int z) {
-        manager.createDelete(prefix+ "shops")
+        manager.createDelete(prefix + "shops")
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)
@@ -354,7 +357,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     @Override
     public SQLQuery selectTable(String table) throws SQLException {
         return manager.createQuery()
-                .inTable(prefix+ table)
+                .inTable(prefix + table)
                 .build()
                 .execute();
     }
@@ -396,16 +399,16 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
                            double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
                            @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
-                           @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName,@Nullable String shopName) {
+                           @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName, @Nullable String shopName) {
         Util.debugLog("Shop updating: " + x + "," + y + "," + z + "," + world + ", " + inventorySymbolLink + ", " + inventoryWrapperName);
         manager.createUpdate(prefix + "shops")
-                .addColumnValue("owner",owner)
-                .addColumnValue("itemConfig",Util.serialize(item))
+                .addColumnValue("owner", owner)
+                .addColumnValue("itemConfig", Util.serialize(item))
                 .addColumnValue("unlimited", unlimited)
                 .addColumnValue("type", shopType)
-                .addColumnValue("price",price)
+                .addColumnValue("price", price)
                 .addColumnValue("extra", extra)
-                .addColumnValue("currency",currency)
+                .addColumnValue("currency", currency)
                 .addColumnValue("disableDisplay", disableDisplay ? 1 : 0)
                 .addColumnValue("taxAccount", taxAccount)
                 .addColumnValue("inventorySymbolLink", inventorySymbolLink)
