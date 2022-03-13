@@ -244,10 +244,15 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
         }
         if(getDatabaseVersion() == 1){
             // QuickShop-Hikari 1.1.0.0
+            // TODO: Hacky workaround, need a better way
             if(!hasColumn(prefix+"shops","name")) {
-                manager.alterTable(prefix + "shops")
-                        .addColumn("name", "TEXT NULL")
-                        .execute();
+                try{
+                    manager.alterTable(prefix + "shops")
+                            .addColumn("name", "TEXT NULL")
+                            .execute();
+                }catch (SQLException e){
+                    plugin.getLogger().log(Level.INFO, "Failed to add name column to shops table! SQL: "+e.getMessage());
+                }
             }
            plugin.getLogger().info("[DatabaseHelper] Migrated to 1.1.0.0 data structure, version 2");
            setDatabaseVersion(2);
