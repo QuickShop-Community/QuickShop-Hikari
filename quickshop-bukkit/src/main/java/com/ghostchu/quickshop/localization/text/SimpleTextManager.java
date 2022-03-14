@@ -404,40 +404,48 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 continue;
             }
             // Check
-            if (Character.class.equals(clazz)) {
-                components[i] = Component.text((char) obj);
-                continue;
-            }
-            if (Byte.class.equals(clazz)) {
-                components[i] = Component.text((Byte) obj);
-                continue;
-            }
-            if (Integer.class.equals(clazz)) {
-                components[i] = Component.text((Integer) obj);
-                continue;
-            }
-            if (Long.class.equals(clazz)) {
-                components[i] = Component.text((Long) obj);
-                continue;
-            }
-            if (Float.class.equals(clazz)) {
-                components[i] = Component.text((Float) obj);
-                continue;
-            }
-            if (Double.class.equals(clazz)) {
-                components[i] = Component.text((Double) obj);
-                continue;
-            }
-            if (Boolean.class.equals(clazz)) {
-                components[i] = Component.text((Boolean) obj);
-                continue;
-            }
-            if (String.class.equals(clazz)) {
-                components[i] = LegacyComponentSerializer.legacySection().deserialize((String) obj);
-                continue;
+            try {
+                if (Character.class.equals(clazz)) {
+                    components[i] = Component.text((char) obj);
+                    continue;
+                }
+                if (Byte.class.equals(clazz)) {
+                    components[i] = Component.text((Byte) obj);
+                    continue;
+                }
+                if (Integer.class.equals(clazz)) {
+                    components[i] = Component.text((Integer) obj);
+                    continue;
+                }
+                if (Long.class.equals(clazz)) {
+                    components[i] = Component.text((Long) obj);
+                    continue;
+                }
+                if (Float.class.equals(clazz)) {
+                    components[i] = Component.text((Float) obj);
+                    continue;
+                }
+                if (Double.class.equals(clazz)) {
+                    components[i] = Component.text((Double) obj);
+                    continue;
+                }
+                if (Boolean.class.equals(clazz)) {
+                    components[i] = Component.text((Boolean) obj);
+                    continue;
+                }
+                if (String.class.equals(clazz)) {
+                    components[i] = LegacyComponentSerializer.legacySection().deserialize((String) obj);
+                    continue;
+                }
+                components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
+            }catch (Exception exception){
+                Util.debugLog("Failed to process the object: " + obj);
+                if(plugin.getSentryErrorReporter() != null)
+                    plugin.getSentryErrorReporter().sendError(exception, "Failed to process the object: " + obj);
+                components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
             }
             // undefined
-            components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
+
         }
         return components;
     }
