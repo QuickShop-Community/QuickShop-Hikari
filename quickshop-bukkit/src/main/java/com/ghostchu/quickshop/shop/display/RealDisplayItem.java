@@ -55,7 +55,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
      *
      * @param shop The shop (See Shop)
      */
-    RealDisplayItem(@NotNull Shop shop) {
+    public RealDisplayItem(@NotNull Shop shop) {
         super(shop);
     }
 
