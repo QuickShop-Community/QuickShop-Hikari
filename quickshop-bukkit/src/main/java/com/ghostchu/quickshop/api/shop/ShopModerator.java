@@ -39,6 +39,7 @@ public interface ShopModerator {
      * @return Json String
      * @throws JsonSyntaxException incorrect json string
      */
+    @NotNull
     static ShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
         // Use Gson deserialize data
         Gson gson = JsonUtil.getGson();
@@ -51,6 +52,7 @@ public interface ShopModerator {
      * @param shopModerator ShopModerator object
      * @return Json String
      */
+    @NotNull
     static String serialize(@NotNull ShopModerator shopModerator) {
         Gson gson = JsonUtil.getGson();
         return gson.toJson(shopModerator); // Use Gson serialize this class
