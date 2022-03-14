@@ -225,6 +225,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     public void load() {
         plugin.getLogger().info("Loading up translations from Crowdin OTA, this may need a while...");
+        //TODO: This will break the message processing system in-game until loading finished, need to fix it.
         this.reset();
         List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
         //Make sure is a lowercase regex, prevent case-sensitive and underscore issue
