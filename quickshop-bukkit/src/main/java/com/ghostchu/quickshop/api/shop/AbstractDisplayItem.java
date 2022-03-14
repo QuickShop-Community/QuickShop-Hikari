@@ -33,7 +33,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.shop.ShopProtectionFlag;
+import com.ghostchu.quickshop.shop.datatype.ShopProtectionFlag;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;

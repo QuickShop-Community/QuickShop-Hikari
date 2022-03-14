@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is HopperPersistentDataType.java
+ *  This file is a part of project QuickShop, the name is ShopPersistentDataType.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -16,7 +16,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.ghostchu.quickshop.shop;
+package com.ghostchu.quickshop.shop.datatype;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,10 +25,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.util.MsgUtil;
 
-import java.util.UUID;
-
-public class HopperPersistentDataType implements PersistentDataType<String, HopperPersistentData> {
-    public static final HopperPersistentDataType INSTANCE = new HopperPersistentDataType();
+public class ShopPersistentDataType implements PersistentDataType<String, ShopPersistentData> {
+    static final ShopPersistentDataType INSTANCE = new ShopPersistentDataType();
 
     private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
@@ -38,13 +36,13 @@ public class HopperPersistentDataType implements PersistentDataType<String, Hopp
     }
 
     @Override
-    public @NotNull Class<HopperPersistentData> getComplexType() {
-        return HopperPersistentData.class;
+    public @NotNull Class<ShopPersistentData> getComplexType() {
+        return ShopPersistentData.class;
     }
 
     @NotNull
     @Override
-    public String toPrimitive(@NotNull HopperPersistentData complex, @NotNull PersistentDataAdapterContext context) {
+    public String toPrimitive(@NotNull ShopPersistentData complex, @NotNull PersistentDataAdapterContext context) {
         try {
             return GSON.toJson(complex);
         } catch (Exception th) {
@@ -55,13 +53,13 @@ public class HopperPersistentDataType implements PersistentDataType<String, Hopp
 
     @NotNull
     @Override
-    public HopperPersistentData fromPrimitive(
+    public ShopPersistentData fromPrimitive(
             @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
         try {
-            return GSON.fromJson(primitive, HopperPersistentData.class);
+            return GSON.fromJson(primitive, ShopPersistentData.class);
         } catch (Exception th) {
             MsgUtil.debugStackTrace(th.getStackTrace());
-            return new HopperPersistentData(new UUID(0,0));
+            return new ShopPersistentData(0, 0, 0, "null", false);
         }
     }
 }

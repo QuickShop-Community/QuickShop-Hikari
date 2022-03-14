@@ -17,9 +17,10 @@
  *
  */
 
-package com.ghostchu.quickshop.shop;
+package com.ghostchu.quickshop.shop.display;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.shop.ContainerShop;
 import io.papermc.lib.PaperLib;
 import lombok.ToString;
 import org.bukkit.Location;

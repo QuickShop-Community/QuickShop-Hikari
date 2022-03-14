@@ -17,7 +17,7 @@
  *
  */
 
-package com.ghostchu.quickshop.shop;
+package com.ghostchu.quickshop.shop.controlpanel;
 
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;

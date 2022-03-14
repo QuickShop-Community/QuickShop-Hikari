@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is ShopPersistentDataType.java
+ *  This file is a part of project QuickShop, the name is DisplayItemPersistentDataType.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -16,19 +16,20 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.ghostchu.quickshop.shop;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+package com.ghostchu.quickshop.shop.datatype;
+
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.util.Util;
 
-public class ShopPersistentDataType implements PersistentDataType<String, ShopPersistentData> {
-    static final ShopPersistentDataType INSTANCE = new ShopPersistentDataType();
-
-    private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+public class DisplayItemPersistentDataType
+        implements PersistentDataType<String, ShopProtectionFlag> {
+    static final DisplayItemPersistentDataType INSTANCE = new DisplayItemPersistentDataType();
 
     @Override
     public @NotNull Class<String> getPrimitiveType() {
@@ -36,30 +37,32 @@ public class ShopPersistentDataType implements PersistentDataType<String, ShopPe
     }
 
     @Override
-    public @NotNull Class<ShopPersistentData> getComplexType() {
-        return ShopPersistentData.class;
+    public @NotNull Class<ShopProtectionFlag> getComplexType() {
+        return ShopProtectionFlag.class;
     }
 
     @NotNull
     @Override
-    public String toPrimitive(@NotNull ShopPersistentData complex, @NotNull PersistentDataAdapterContext context) {
+    public String toPrimitive(
+            @NotNull ShopProtectionFlag complex, @NotNull PersistentDataAdapterContext context) {
         try {
-            return GSON.toJson(complex);
+            return JsonUtil.getGson().toJson(complex);
         } catch (Exception th) {
-            MsgUtil.debugStackTrace(th.getStackTrace());
+            new RuntimeException("Cannot to toPrimitive the shop protection flag.").printStackTrace();
             return "";
         }
     }
 
     @NotNull
     @Override
-    public ShopPersistentData fromPrimitive(
+    public ShopProtectionFlag fromPrimitive(
             @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
         try {
-            return GSON.fromJson(primitive, ShopPersistentData.class);
+            return JsonUtil.getGson().fromJson(primitive, ShopProtectionFlag.class);
         } catch (Exception th) {
-            MsgUtil.debugStackTrace(th.getStackTrace());
-            return new ShopPersistentData(0, 0, 0, "null", false);
+            new RuntimeException("Cannot to fromPrimitive the shop protection flag.").printStackTrace();
+            return new ShopProtectionFlag("", Util.serialize(new ItemStack(Material.STONE)));
         }
     }
+
 }

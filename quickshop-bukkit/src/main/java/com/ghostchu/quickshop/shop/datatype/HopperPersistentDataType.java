@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is DisplayItemPersistentDataType.java
+ *  This file is a part of project QuickShop, the name is HopperPersistentDataType.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -16,20 +16,21 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+package com.ghostchu.quickshop.shop.datatype;
 
-package com.ghostchu.quickshop.shop;
-
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.util.JsonUtil;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.MsgUtil;
 
-public class DisplayItemPersistentDataType
-        implements PersistentDataType<String, ShopProtectionFlag> {
-    static final DisplayItemPersistentDataType INSTANCE = new DisplayItemPersistentDataType();
+import java.util.UUID;
+
+public class HopperPersistentDataType implements PersistentDataType<String, HopperPersistentData> {
+    public static final HopperPersistentDataType INSTANCE = new HopperPersistentDataType();
+
+    private static final Gson GSON = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
     @Override
     public @NotNull Class<String> getPrimitiveType() {
@@ -37,32 +38,30 @@ public class DisplayItemPersistentDataType
     }
 
     @Override
-    public @NotNull Class<ShopProtectionFlag> getComplexType() {
-        return ShopProtectionFlag.class;
+    public @NotNull Class<HopperPersistentData> getComplexType() {
+        return HopperPersistentData.class;
     }
 
     @NotNull
     @Override
-    public String toPrimitive(
-            @NotNull ShopProtectionFlag complex, @NotNull PersistentDataAdapterContext context) {
+    public String toPrimitive(@NotNull HopperPersistentData complex, @NotNull PersistentDataAdapterContext context) {
         try {
-            return JsonUtil.getGson().toJson(complex);
+            return GSON.toJson(complex);
         } catch (Exception th) {
-            new RuntimeException("Cannot to toPrimitive the shop protection flag.").printStackTrace();
+            MsgUtil.debugStackTrace(th.getStackTrace());
             return "";
         }
     }
 
     @NotNull
     @Override
-    public ShopProtectionFlag fromPrimitive(
+    public HopperPersistentData fromPrimitive(
             @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
         try {
-            return JsonUtil.getGson().fromJson(primitive, ShopProtectionFlag.class);
+            return GSON.fromJson(primitive, HopperPersistentData.class);
         } catch (Exception th) {
-            new RuntimeException("Cannot to fromPrimitive the shop protection flag.").printStackTrace();
-            return new ShopProtectionFlag("", Util.serialize(new ItemStack(Material.STONE)));
+            MsgUtil.debugStackTrace(th.getStackTrace());
+            return new HopperPersistentData(new UUID(0,0));
         }
     }
-
 }

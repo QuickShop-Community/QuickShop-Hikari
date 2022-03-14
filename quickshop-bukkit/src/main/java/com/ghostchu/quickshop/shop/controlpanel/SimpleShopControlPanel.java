@@ -17,7 +17,7 @@
  *
  */
 
-package com.ghostchu.quickshop.shop;
+package com.ghostchu.quickshop.shop.controlpanel;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;

@@ -16,7 +16,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.ghostchu.quickshop.shop;
+package com.ghostchu.quickshop.shop.datatype;
 
 import com.google.gson.annotations.Expose;
 import lombok.AllArgsConstructor;

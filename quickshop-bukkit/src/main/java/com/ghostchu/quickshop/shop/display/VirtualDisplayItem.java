@@ -16,7 +16,7 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package com.ghostchu.quickshop.shop;
+package com.ghostchu.quickshop.shop.display;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -34,6 +34,8 @@ import com.ghostchu.quickshop.api.event.ShopDisplayItemSpawnEvent;
 import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.DisplayType;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.ContainerShop;
+import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.ghostchu.quickshop.util.GameVersion;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
@@ -280,10 +282,6 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                             return;
                         }
                         Player player = event.getPlayer();
-                        // User report NoDefClassError there
-//                        if (player instanceof TemporaryPlayer) {
-//                            return;
-//                        }
                         if (player == null || !player.isOnline()) {
                             return;
                         }
@@ -359,15 +357,6 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
 
             //noinspection SwitchStatementWithTooFewBranches
             switch (VERSION) {
-//                case v1_13_R1:
-//                case v1_13_R2:
-//                    fakeItemPacket.getIntegers()
-//                            //For 1.13, we should use type id to represent the EntityType
-//                            //2 -> minecraft:item (Object ID:https://wiki.vg/Object_Data)
-//                            .write(6, 2)
-//                            //int data to mark
-//                            .write(7, 1);
-//                    break;
                 //int data to mark
                 default -> {
                     //For 1.14+, we should use EntityType
@@ -376,18 +365,6 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                     fakeItemPacket.getIntegers().write(6, 1);
                 }
             }
-//        if (version == 13) {
-//            //for 1.13, we should use type id to represent the EntityType
-//            //2->minecraft:item (Object ID:https://wiki.vg/Object_Data)
-//            fakeItemPacket.getIntegers().write(6, 2);
-//            //int data to mark
-//            fakeItemPacket.getIntegers().write(7, 1);
-//        } else {
-//            //for 1.14+, we should use EntityType
-//            fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
-//            //int data to mark
-//            fakeItemPacket.getIntegers().write(6, 1);
-//        }
             //UUID
             fakeItemPacket.getUUIDs().write(0, UUID.randomUUID());
             //Location
@@ -422,21 +399,8 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                 wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromJson(itemName).getHandle()));
                 wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
             }
-
             //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
-            //Is 1.17-?
-            if (GameVersion.v1_17_R1.ordinal() > VERSION.ordinal()) {
-//                if (version == GameVersion.v1_13_R1 || version == GameVersion.v1_13_R2) {
-//                    //For 1.13 is 6
-//                    wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
-//                } else {
-                //1.14-1.16 is 7
-                wpw.setObject(7, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
-                // }
-            } else {
-                //1.17+ is 8
-                wpw.setObject(8, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
-            }
+            wpw.setObject(8, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
             //Add it
             fakeItemMetaPacket.getWatchableCollectionModifier().write(0, wpw.getWatchableObjects());
             return fakeItemMetaPacket;

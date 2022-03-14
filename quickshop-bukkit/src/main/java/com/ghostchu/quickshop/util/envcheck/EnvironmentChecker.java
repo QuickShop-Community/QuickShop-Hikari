@@ -22,7 +22,7 @@ package com.ghostchu.quickshop.util.envcheck;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.DisplayType;
-import com.ghostchu.quickshop.shop.VirtualDisplayItem;
+import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
 import com.ghostchu.quickshop.util.GameVersion;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.ReflectFactory;

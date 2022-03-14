@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is ShopProtectionFlag.java
+ *  This file is a part of project QuickShop, the name is SimpleDisplayProvider.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,33 +17,24 @@
  *
  */
 
-package com.ghostchu.quickshop.shop;
+package com.ghostchu.quickshop.shop.display;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
+import com.ghostchu.quickshop.api.shop.DisplayProvider;
+import com.ghostchu.quickshop.api.shop.Shop;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-public class ShopProtectionFlag {
-    private static final String MARK = "QuickShop DisplayItem";
-    private final String itemStackString;
-    private final String shopLocation;
-
-    public ShopProtectionFlag(@NotNull String shopLocation, @NotNull String itemStackString) {
-        this.shopLocation = shopLocation;
-        this.itemStackString = itemStackString;
+public class SimpleDisplayProvider implements DisplayProvider {
+    @Override
+    public @NotNull Plugin getProvider() {
+        return QuickShop.getInstance();
     }
 
-    public static String getDefaultMark() {
-        return MARK;
-    }
-
-    public static String getMark() {
-        return MARK;
+    @Override
+    public @Nullable AbstractDisplayItem provide(@NotNull Shop shop) {
+        return null;
     }
 }

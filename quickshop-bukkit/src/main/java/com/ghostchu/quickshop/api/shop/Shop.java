@@ -33,7 +33,7 @@ import org.jetbrains.annotations.Nullable;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
-import com.ghostchu.quickshop.shop.ShopSignPersistentDataType;
+import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.ShopSignStorage;
 import com.ghostchu.quickshop.util.Util;
 
