@@ -25,11 +25,17 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.injector.server.TemporaryPlayer;
 import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.ShopDisplayItemSpawnEvent;
+import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
+import com.ghostchu.quickshop.api.shop.DisplayType;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.GameVersion;
+import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -40,13 +46,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.ShopDisplayItemSpawnEvent;
-import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
-import com.ghostchu.quickshop.api.shop.DisplayType;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.GameVersion;
-import com.ghostchu.quickshop.util.Util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -281,10 +280,14 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                             return;
                         }
                         Player player = event.getPlayer();
-                        if (player instanceof TemporaryPlayer) {
+                        // User report NoDefClassError there
+//                        if (player instanceof TemporaryPlayer) {
+//                            return;
+//                        }
+                        if (player == null || !player.isOnline()) {
                             return;
                         }
-                        if (player == null || !player.isOnline()) {
+                        if (player.getClass().getName().contains("TemporaryPlayer")) {
                             return;
                         }
                         StructureModifier<Integer> integerStructureModifier = event.getPacket().getIntegers();
