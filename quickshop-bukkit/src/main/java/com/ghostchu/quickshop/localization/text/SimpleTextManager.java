@@ -78,7 +78,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         plugin.getReloadManager().register(this);
         plugin.getLogger().info("Translation over-the-air platform selected: Crowdin");
         this.distribution = new CrowdinOTA(plugin);
-        this.msgParser = new SimpleMsgParser(plugin.getConfig().getInt("syntax-parser",0));
+        this.msgParser = new SimpleMsgParser(plugin.getConfig().getInt("syntax-parser", 0));
     }
 
     /**
@@ -302,21 +302,16 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 result = langCode;
             } else {
                 String[] splits = langCode.split("_", 2);
-                if (splits.length != 2) {
-                    for (String availableLanguage : availableLanguages) {
-                        if (availableLanguage.startsWith(langCode) || availableLanguage.endsWith(langCode)) {
-                            result = availableLanguage;
-                            break;
-                        }
-                    }
-                } else {
-                    String start = splits[0] + "_";
-                    String end = "_" + splits[1];
-                    for (String availableLanguage : availableLanguages) {
-                        if (availableLanguage.startsWith(start) || availableLanguage.endsWith(end)) {
-                            result = availableLanguage;
-                            break;
-                        }
+                String start = langCode;
+                String end = langCode;
+                if (splits.length == 2) {
+                    start = splits[0] + "_";
+                    end = "_" + splits[1];
+                }
+                for (String availableLanguage : availableLanguages) {
+                    if (availableLanguage.startsWith(start) || availableLanguage.endsWith(end)) {
+                        result = availableLanguage;
+                        break;
                     }
                 }
             }
