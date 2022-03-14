@@ -466,25 +466,25 @@
   "bad-command-usage": "&cSchlechte Befehlsargumente!",
   "bad-command-usage-detailed": "&cSchlechte Befehlsargumente! Volgende Argumente werden unterstützt: &7{0}",
   "quick-fill": {
-    "header": "&eYou have multiple shops with name \"&a{0}&e\", choose one to continue:",
+    "header": "&eDu hast mehrere Shops mit dem Namen \"&a{0}&e\". Wähle einen um fortzufahren:",
     "entry-normal": " &e- &b{0} &d{1}",
-    "entry-own": " &e- &c[own] &b{0} &d{1}",
+    "entry-own": " &e- &c[eigener] &b{0} &d{1}",
     "entry-cooperation": " &e- &c[co] &b{0} &d{1}",
     "hover": [
       "&eName: &b{0}",
-      "&eOwner: &b{0}",
-      "&eType: &b{0}",
-      "&ePrice: &b{0}",
+      "&eBesitzer: &b{0}",
+      "&eTyp: &b{0}",
+      "&ePreis: &b{0}",
       "&eItem: &b{0}",
-      "&eLocation: &b{0}"
+      "&eStandort: &b{0}"
     ],
     "hover-arg-filled": [
       "&eName: &b{name}",
-      "&eOwner: &b{owner}",
-      "&eType: &b{type}",
-      "&ePrice: &b{price}",
+      "&eBesitzer: &b{owner}",
+      "&eTyp: &b{type}",
+      "&ePreis: &b{price}",
       "&eItem: &b{item}",
-      "&eLocation: &b{location}"
+      "&eStandort: &b{location}"
     ]
   }
 }
