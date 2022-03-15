@@ -468,7 +468,7 @@
   "quick-fill": {
     "header": "&e您有多个名称为“&a{0}&e”的商店，选择其中一个继续：",
     "entry-normal": " &e- &c{0} &b{1} &d",
-    "entry-own": " &e- &c[own] &b{0} &d{1}",
+    "entry-own": " &e- &c[所有者] &b{0} &d{1}",
     "entry-cooperation": " &e- &c[co] &b{0} &d{1}",
     "hover": [
       "&e商店名称: &b{0}",
