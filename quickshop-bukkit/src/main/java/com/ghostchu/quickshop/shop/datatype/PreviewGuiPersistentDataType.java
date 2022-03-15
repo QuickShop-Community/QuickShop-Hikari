@@ -27,7 +27,7 @@ import java.util.UUID;
 
 public class PreviewGuiPersistentDataType
         implements PersistentDataType<String, UUID> {
-    static final PreviewGuiPersistentDataType INSTANCE = new PreviewGuiPersistentDataType();
+    public static final PreviewGuiPersistentDataType INSTANCE = new PreviewGuiPersistentDataType();
 
     @Override
     public @NotNull Class<String> getPrimitiveType() {
