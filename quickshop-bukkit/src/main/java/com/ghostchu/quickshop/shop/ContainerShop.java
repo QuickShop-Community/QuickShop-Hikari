@@ -24,7 +24,6 @@ import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
@@ -380,7 +379,7 @@ public class ContainerShop implements Shop {
             this.sell(buyer, buyerInventory, loc2Drop, -amount);
             return;
         }
-        InventoryWrapperIterator buyerIterator = buyerInventory.iterator();
+       // InventoryWrapperIterator buyerIterator = buyerInventory.iterator();
         if (this.isUnlimited() && !isAlwaysCountingContainer) {
             InventoryTransaction transaction = InventoryTransaction
                     .builder()
@@ -861,7 +860,6 @@ public class ContainerShop implements Shop {
             return;
         }
         this.setSignText(getSignText(MsgUtil.getDefaultGameLanguageCode()));
-        // this.setSignText(getSignText("en_us"));
     }
 
     /**
