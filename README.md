@@ -95,7 +95,7 @@ And you can make yourself fork then publish it, no request required.
 
 To compile the QuickShop and debug it by yourself, please follow these steps:
 
-0. Make sure you're using Java16 JDK in your PATH.
+0. Make sure you're using Java17+ JDK in your PATH.
 1. Compile main-project without signature by using profile: `mvn install -Pgithub` with github profile selected.
 2. Start your server and go on.
 
