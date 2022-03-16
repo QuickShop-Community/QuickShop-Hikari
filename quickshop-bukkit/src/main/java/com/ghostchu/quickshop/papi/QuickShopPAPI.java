@@ -30,6 +30,7 @@ import java.util.UUID;
 
 public class QuickShopPAPI extends PlaceholderExpansion {
     private QuickShop plugin;
+    private final PAPICache papiCache = new PAPICache();
 
     @Override
     public boolean canRegister() {
@@ -69,7 +70,12 @@ public class QuickShopPAPI extends PlaceholderExpansion {
     }
 
     @Override
-    public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
+    public @Nullable String onRequest(@NotNull OfflinePlayer player, @NotNull String params) {
+       String cached = papiCache.readCache(player.getUniqueId(),params);
+       if(cached != null) {
+           Util.debugLog("Processing cached placeholder: " + params);
+           return cached;
+       }
         String[] args = params.split("_");
         if (args.length < 1) {
             return null;

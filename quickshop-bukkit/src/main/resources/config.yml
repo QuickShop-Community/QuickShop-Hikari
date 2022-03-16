@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1003
+config-version: 1004
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -433,7 +433,11 @@ plugin:
   #If you have OpenInv, QuickShop will enable the EnderChest feature for shop-blocks.
   OpenInv: true
   #If you have PlaceHolderAPI, QuickShop will use it to process all messages.
-  PlaceHolderAPI: true
+  PlaceHolderAPI:
+    enable: true
+    # The PAPI request caching expire time. (ms)
+    # Low value may increase the database load and hurt server performance.
+    cache: 900000
   #If you have LWC/LWCX, QuickShop will check access.
   LWC: true
   #If you use BlockHub, Should QuickShop use BlockHub to check region access for players?
@@ -569,3 +573,6 @@ config-damaged: false
 #Example:
 #  - "ecoenchants:enchantment.damage_artifact=Artifact Damage"
 custom-translation-key: []
+
+transaction-metric:
+  enable: true

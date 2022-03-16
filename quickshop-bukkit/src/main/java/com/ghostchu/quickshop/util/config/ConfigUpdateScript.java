@@ -53,4 +53,13 @@ public class ConfigUpdateScript {
     public void adventureMiniMessage() {
         getConfig().set("syntax-parser", 0);
     }
+
+    @UpdateScript(version = 1003)
+    public void metricAndPapiController() {
+        getConfig().set("transaction-metric.enable", true);
+        boolean papiEnabled = getConfig().getBoolean("plugin.PlaceHolderAPI", true);
+        getConfig().set("plugin.PlaceHolderAPI", null);
+        getConfig().set("plugin.PlaceHolderAPI.enable", papiEnabled);
+        getConfig().set("plugin.PlaceHolderAPI.cache", 15*60*1000);
+    }
 }
