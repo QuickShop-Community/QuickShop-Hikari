@@ -195,9 +195,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     @Getter
     private ShopContainerWatcher shopContainerWatcher;
     @Getter
-    private @Deprecated
-    DisplayDupeRemoverWatcher displayDupeRemoverWatcher;
-    @Getter
     private Cache shopCache;
     @Getter
     private boolean allowStack;
@@ -703,17 +700,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         } else {
             this.shopCache = null;
         }
-
         signUpdateWatcher = new SignUpdateWatcher();
         shopContainerWatcher = new ShopContainerWatcher();
-        if (display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
-            displayDupeRemoverWatcher = new DisplayDupeRemoverWatcher();
-            displayDupeRemoverWatcher.runTaskTimerAsynchronously(this, 0, 1);
-        }
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();
-
         getLogger().info("Registering listeners...");
         this.interactionController = new InteractionController(this);
         // Register events
