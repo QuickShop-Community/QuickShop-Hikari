@@ -32,5 +32,5 @@ import java.lang.annotation.*;
 @Inherited
 public @interface UpdateScript {
     int version();
-    @Nullable String description();
+    @Nullable String description() default "";
 }
