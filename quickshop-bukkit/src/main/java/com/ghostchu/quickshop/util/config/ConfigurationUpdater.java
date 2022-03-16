@@ -56,7 +56,6 @@ public class ConfigurationUpdater {
         }
     }
 
-    // TODO: 2022/3/13 We need check bundled config.yml version before update config to prevent execute last script everytime startup.
     public void update(@NotNull Object configUpdateScript) {
         Util.debugLog("Starting configuration update...");
         writeServerUniqueId();
