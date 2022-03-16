@@ -85,17 +85,21 @@ public class QuickShopPAPI extends PlaceholderExpansion {
                 return String.valueOf(plugin.getCurrency());
             }
             case "player" -> {
+                UUID uuid = null;
                 if (args.length >= 3) {
                     if (Util.isUUID(args[1])) {
-                        UUID uuid = UUID.fromString(args[1]);
-                        //noinspection SwitchStatementWithTooFewBranches
-                        switch (args[2]) {
-                            case "count" -> {
-                                return String.valueOf(plugin.getShopManager().getPlayerAllShops(uuid).size());
-                            }
-                        }
+                        uuid = UUID.fromString(args[1]);
                     }
                 }
+                if (uuid == null)
+                    uuid = player.getUniqueId();
+                //noinspection SwitchStatementWithTooFewBranches
+                switch (args[2]) {
+                    case "count" -> {
+                        return String.valueOf(plugin.getShopManager().getPlayerAllShops(uuid).size());
+                    }
+                }
+
                 return null;
             }
         }
