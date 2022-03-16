@@ -20,6 +20,7 @@
 package com.ghostchu.quickshop.shop.display;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.ShopDisplayItemSafeGuardEvent;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import io.papermc.lib.PaperLib;
 import lombok.ToString;
@@ -258,6 +259,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
         this.guardedIstack = AbstractDisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
         safeGuard(this.item);
+        new ShopDisplayItemSafeGuardEvent(shop, this.item).callEvent();
     }
 
     @Override
