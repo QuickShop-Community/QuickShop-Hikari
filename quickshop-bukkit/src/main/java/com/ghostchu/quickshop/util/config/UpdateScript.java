@@ -19,6 +19,8 @@
 
 package com.ghostchu.quickshop.util.config;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.lang.annotation.*;
 
 /**
@@ -30,4 +32,5 @@ import java.lang.annotation.*;
 @Inherited
 public @interface UpdateScript {
     int version();
+    @Nullable String description();
 }
