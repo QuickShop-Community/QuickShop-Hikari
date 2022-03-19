@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is MatcherWorkMode.java
+ *  This file is a part of project QuickShop, the name is SimpleDisplayProvider.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,39 +17,24 @@
  *
  */
 
-package com.ghostchu.quickshop.shop;
+package com.ghostchu.quickshop.shop.display;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
+import com.ghostchu.quickshop.api.shop.DisplayProvider;
+import com.ghostchu.quickshop.api.shop.Shop;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public enum MatcherWorkMode {
-    QSMATCHER(0),
-    BUKKITMATCHER(1),
-    JAVAMATCHER(2);
-
-    private final int id;
-
-    MatcherWorkMode(int id) {
-        this.id = id;
+public class SimpleDisplayProvider implements DisplayProvider {
+    @Override
+    public @NotNull Plugin getProvider() {
+        return QuickShop.getInstance();
     }
 
-    public static @NotNull MatcherWorkMode fromID(int id) {
-        for (MatcherWorkMode workMode : MatcherWorkMode.values()) {
-            if (workMode.id == id) {
-                return workMode;
-            }
-        }
-        return QSMATCHER;
-    }
-
-    public static int toID(@NotNull MatcherWorkMode workMode) {
-        return workMode.id;
-    }
-
-    public int toID() {
-        return id;
-    }
-
-    public int getId() {
-        return id;
+    @Override
+    public @Nullable AbstractDisplayItem provide(@NotNull Shop shop) {
+        return null;
     }
 }

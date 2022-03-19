@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is PreviewGuiPersistentDataType.java
+ *  This file is a part of project QuickShop, the name is ShopSignPersistentDataType.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,17 +17,17 @@
  *
  */
 
-package com.ghostchu.quickshop.shop;
+package com.ghostchu.quickshop.shop.datatype;
 
+import com.ghostchu.quickshop.shop.ShopSignStorage;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import com.ghostchu.quickshop.util.JsonUtil;
 
-import java.util.UUID;
-
-public class PreviewGuiPersistentDataType
-        implements PersistentDataType<String, UUID> {
-    static final PreviewGuiPersistentDataType INSTANCE = new PreviewGuiPersistentDataType();
+public class ShopSignPersistentDataType
+        implements PersistentDataType<String, ShopSignStorage> {
+    public static final ShopSignPersistentDataType INSTANCE = new ShopSignPersistentDataType();
 
     @Override
     public @NotNull Class<String> getPrimitiveType() {
@@ -35,26 +35,21 @@ public class PreviewGuiPersistentDataType
     }
 
     @Override
-    public @NotNull Class<UUID> getComplexType() {
-        return UUID.class;
+    public @NotNull Class<ShopSignStorage> getComplexType() {
+        return ShopSignStorage.class;
     }
 
     @NotNull
     @Override
     public String toPrimitive(
-            @NotNull UUID complex, @NotNull PersistentDataAdapterContext context) {
-        return complex.toString();
+            @NotNull ShopSignStorage complex, @NotNull PersistentDataAdapterContext context) {
+        return JsonUtil.getGson().toJson(complex);
     }
 
-    @NotNull
     @Override
-    public UUID fromPrimitive(
+    public @NotNull ShopSignStorage fromPrimitive(
             @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
-        try {
-            return UUID.fromString(primitive);
-        } catch (Exception exception) {
-            return new UUID(0L, 0L);
-        }
+        return JsonUtil.getGson().fromJson(primitive, ShopSignStorage.class);
     }
 
 }

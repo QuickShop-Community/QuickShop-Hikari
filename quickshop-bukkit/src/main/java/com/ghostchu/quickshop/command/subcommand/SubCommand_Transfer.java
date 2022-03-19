@@ -19,16 +19,14 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
-import net.kyori.adventure.text.Component;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.PlayerFinder;
 import com.ghostchu.quickshop.util.Util;
+import org.bukkit.entity.Player;
+import org.enginehub.squirrelid.Profile;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
@@ -46,41 +44,37 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length == 1) {
-            final OfflinePlayer targetPlayer = PlayerFinder.findOfflinePlayerByName(cmdArg[0]);
-            String targetPlayerName = targetPlayer.getName();
-            if (targetPlayerName == null) {
-                targetPlayerName = "null";
+            Profile profile = plugin.getPlayerFinder().find(cmdArg[0]);
+            if (profile == null) {
+                plugin.text().of(sender, "unknown-player").send();
+                return;
             }
-            final UUID targetPlayerUUID = targetPlayer.getUniqueId();
+            UUID targetPlayerUUID = profile.getUniqueId();
             List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(sender.getUniqueId());
             for (Shop shop : shopList) {
                 shop.setOwner(targetPlayerUUID);
             }
-            plugin.text().of(sender, "command.transfer-success", shopList.size(), targetPlayerName).send();
+            plugin.text().of(sender, "command.transfer-success", shopList.size(), profile.getName()).send();
         } else if (cmdArg.length == 2) {
             if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.transfer.other")) {
                 plugin.text().of(sender, "no-permission").send();
                 return;
             }
-
-            final OfflinePlayer fromPlayer = PlayerFinder.findOfflinePlayerByName(cmdArg[0]);
-            String fromPlayerName = fromPlayer.getName();
-            if (fromPlayerName == null) {
-                fromPlayerName = "null";
+            Profile fromPlayer = plugin.getPlayerFinder().find(cmdArg[0]);
+            Profile targetPlayer = plugin.getPlayerFinder().find(cmdArg[1]);
+            if (fromPlayer == null) {
+                plugin.text().of(sender, "unknown-player", "fromPlayer").send();
+                return;
             }
-            //FIXME: Update this when drop 1.15 supports
-            final OfflinePlayer targetPlayer = PlayerFinder.findOfflinePlayerByName(cmdArg[1]);
-            String targetPlayerName = targetPlayer.getName();
-            if (targetPlayerName == null) {
-                targetPlayerName = "null";
+            if (targetPlayer == null) {
+                plugin.text().of(sender, "unknown-player", "targetPlayer").send();
+                return;
             }
-            final UUID targetPlayerUUID = targetPlayer.getUniqueId();
             List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(fromPlayer.getUniqueId());
             for (Shop shop : shopList) {
-                shop.setOwner(targetPlayerUUID);
+                shop.setOwner(targetPlayer.getUniqueId());
             }
-            plugin.text().of(sender, "command.transfer-success-other", shopList.size(), fromPlayerName, Component.text(targetPlayerName)).send();
-
+            plugin.text().of(sender, "command.transfer-success-other", shopList.size(), fromPlayer.getName(), targetPlayer.getName()).send();
         } else {
             plugin.text().of(sender, "command.wrong-args").send();
         }

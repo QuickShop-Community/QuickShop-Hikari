@@ -30,6 +30,7 @@ import java.util.UUID;
 
 public class QuickShopPAPI extends PlaceholderExpansion {
     private QuickShop plugin;
+    private final PAPICache papiCache = new PAPICache();
 
     @Override
     public boolean canRegister() {
@@ -69,7 +70,12 @@ public class QuickShopPAPI extends PlaceholderExpansion {
     }
 
     @Override
-    public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
+    public @Nullable String onRequest(@NotNull OfflinePlayer player, @NotNull String params) {
+       String cached = papiCache.readCache(player.getUniqueId(),params);
+       if(cached != null) {
+           Util.debugLog("Processing cached placeholder: " + params);
+           return cached;
+       }
         String[] args = params.split("_");
         if (args.length < 1) {
             return null;
@@ -85,17 +91,21 @@ public class QuickShopPAPI extends PlaceholderExpansion {
                 return String.valueOf(plugin.getCurrency());
             }
             case "player" -> {
+                UUID uuid = null;
                 if (args.length >= 3) {
                     if (Util.isUUID(args[1])) {
-                        UUID uuid = UUID.fromString(args[1]);
-                        //noinspection SwitchStatementWithTooFewBranches
-                        switch (args[2]) {
-                            case "count" -> {
-                                return String.valueOf(plugin.getShopManager().getPlayerAllShops(uuid).size());
-                            }
-                        }
+                        uuid = UUID.fromString(args[1]);
                     }
                 }
+                if (uuid == null)
+                    uuid = player.getUniqueId();
+                //noinspection SwitchStatementWithTooFewBranches
+                switch (args[2]) {
+                    case "count" -> {
+                        return String.valueOf(plugin.getShopManager().getPlayerAllShops(uuid).size());
+                    }
+                }
+
                 return null;
             }
         }

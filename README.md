@@ -2,6 +2,7 @@
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/a04ef7174d9f4e65b60ae28b09222809)](https://www.codacy.com/gh/Ghost-chu/QuickShop-Hikari/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Ghost-chu/QuickShop-Hikari&amp;utm_campaign=Badge_Grade)
 [![CodeFactor](https://www.codefactor.io/repository/github/ghost-chu/quickshop-hikari/badge)](https://www.codefactor.io/repository/github/ghost-chu/quickshop-hikari)
+[![CodeScore](https://api.codiga.io/project/32011/score/svg)](https://app.codiga.io/public/project/32011/QuickShop-Hikari/dashboard)
 ![GitHub license](https://img.shields.io/github/license/Ghost-chu/QuickShop-Hikari.svg)
 ![TestsPassed](https://img.shields.io/jenkins/tests?compact_message&jobUrl=https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari)
 ![Contributors](https://img.shields.io/github/contributors/Ghost-chu/QuickShop-Hikari)
@@ -94,7 +95,7 @@ And you can make yourself fork then publish it, no request required.
 
 To compile the QuickShop and debug it by yourself, please follow these steps:
 
-0. Make sure you're using Java16 JDK in your PATH.
+0. Make sure you're using Java17+ JDK in your PATH.
 1. Compile main-project without signature by using profile: `mvn install -Pgithub` with github profile selected.
 2. Start your server and go on.
 

@@ -17,9 +17,11 @@
  *
  */
 
-package com.ghostchu.quickshop.shop;
+package com.ghostchu.quickshop.shop.display;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.ShopDisplayItemSafeGuardEvent;
+import com.ghostchu.quickshop.shop.ContainerShop;
 import io.papermc.lib.PaperLib;
 import lombok.ToString;
 import org.bukkit.Location;
@@ -54,7 +56,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
      *
      * @param shop The shop (See Shop)
      */
-    RealDisplayItem(@NotNull Shop shop) {
+    public RealDisplayItem(@NotNull Shop shop) {
         super(shop);
     }
 
@@ -210,6 +212,11 @@ public class RealDisplayItem extends AbstractDisplayItem {
         itemEntity.setSilent(true);
         itemEntity.setInvulnerable(true);
         itemEntity.setPortalCooldown(Integer.MAX_VALUE);
+        // TODO: Remove method check when dropping 1.18 and 1.18.1 supports
+        if(Util.isMethodAvailable("org.bukkit.entity.Item","setUnlimitedLifetime")) {
+            itemEntity.setUnlimitedLifetime(true);
+            Util.debugLog("Guard display "+itemEntity+" with 1.18.2+ new unlimited life time api.");
+        }
         itemEntity.setVelocity(new Vector(0, 0.1, 0));
     }
 
@@ -252,6 +259,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
         this.guardedIstack = AbstractDisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack);
         safeGuard(this.item);
+        new ShopDisplayItemSafeGuardEvent(shop, this.item).callEvent();
     }
 
     @Override

@@ -23,6 +23,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.converter.HikariConverter;
 import com.ghostchu.quickshop.util.Util;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -55,40 +56,46 @@ public class ConfigurationUpdater {
         }
     }
 
-    // TODO: 2022/3/13 We need check bundled config.yml version before update config to prevent execute last script everytime startup.
     public void update(@NotNull Object configUpdateScript) {
         Util.debugLog("Starting configuration update...");
         writeServerUniqueId();
         selectedVersion = configuration.getInt("config-version", -1);
         legacyUpdate();
-        for (Method updateScript : getUpdateScripts(configUpdateScript)) {
+        for (Method method : getUpdateScripts(configUpdateScript)) {
             try {
-                UpdateScript configUpdater = updateScript.getAnnotation(UpdateScript.class);
+                UpdateScript updateScript = method.getAnnotation(UpdateScript.class);
                 int current = getConfiguration().getInt("config-version");
-                if (current >= configUpdater.version()) {
-                    Util.debugLog("Skipping update script about" + configUpdater.version() + " newer than " + current + " .");
+                if (current >= updateScript.version()) {
+                    Util.debugLog("Skipping update script v" + updateScript.version() + " newer than v" + current + " .");
                     continue;
                 }
-                plugin.getLogger().info("[ConfigUpdater] Updating configuration from " + current + " to " + configUpdater.version());
+                plugin.getLogger().info("[ConfigUpdater] Updating configuration from " + current + " to " + updateScript.version());
+                String scriptName = updateScript.description();
+                if(StringUtils.isEmpty(scriptName)) {
+                    scriptName = method.getName();
+                }
+                plugin.getLogger().info("[ConfigUpdater] Executing update script " + scriptName);
                 try {
-                    if (updateScript.getParameterCount() == 0) {
-                        updateScript.invoke(configUpdateScript);
-                    }
-                    if (updateScript.getParameterCount() == 1 && (updateScript.getParameterTypes()[0] == int.class || updateScript.getParameterTypes()[0] == Integer.class)) {
-                        updateScript.invoke(configUpdateScript, current);
+                    if (method.getParameterCount() == 0) {
+                        method.invoke(configUpdateScript);
+                    }else {
+                        if (method.getParameterCount() == 1 && (method.getParameterTypes()[0] == int.class || method.getParameterTypes()[0] == Integer.class)) {
+                            method.invoke(configUpdateScript, current);
+                        }
                     }
                 } catch (Exception e) {
-                    plugin.getLogger().log(Level.WARNING, "Failed to execute update script " + updateScript.getName() + " for version " + configUpdater.version() + ": " + e.getMessage() + ", plugin may not working properly!", e);
+                    plugin.getLogger().log(Level.WARNING, "Failed to execute update script " + method.getName() + " for version " + updateScript.version() + ": " + e.getMessage() + ", plugin may not working properly!", e);
                 }
-                getConfiguration().set("config-version", configUpdater.version());
+                getConfiguration().set("config-version", updateScript.version());
+                plugin.getLogger().info("[ConfigUpdater] Configuration updated to version " + updateScript.version());
             } catch (Throwable throwable) {
-                plugin.getLogger().log(Level.WARNING, "Failed execute update script " + updateScript.getName() + " for updating to version " + updateScript.getAnnotation(UpdateScript.class).version() + ", some configuration options may missing or outdated", throwable);
+                plugin.getLogger().log(Level.WARNING, "Failed execute update script " + method.getName() + " for updating to version " + method.getAnnotation(UpdateScript.class).version() + ", some configuration options may missing or outdated", throwable);
             }
         }
+        plugin.getLogger().info("[ConfigUpdater] Saving configuration changes...");
         plugin.saveConfig();
-        brokenConfigurationFix();
-        plugin.getConfig().set("config-version", selectedVersion);
-        plugin.saveConfig();
+        //brokenConfigurationFix();
+        //plugin.saveConfig();
         plugin.reloadConfig();
         //Delete old example configuration files
         try {

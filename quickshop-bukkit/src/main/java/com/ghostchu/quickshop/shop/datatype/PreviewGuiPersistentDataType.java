@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is ShopSignPersistentDataType.java
+ *  This file is a part of project QuickShop, the name is PreviewGuiPersistentDataType.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,16 +17,17 @@
  *
  */
 
-package com.ghostchu.quickshop.shop;
+package com.ghostchu.quickshop.shop.datatype;
 
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.util.JsonUtil;
 
-public class ShopSignPersistentDataType
-        implements PersistentDataType<String, ShopSignStorage> {
-    public static final ShopSignPersistentDataType INSTANCE = new ShopSignPersistentDataType();
+import java.util.UUID;
+
+public class PreviewGuiPersistentDataType
+        implements PersistentDataType<String, UUID> {
+    public static final PreviewGuiPersistentDataType INSTANCE = new PreviewGuiPersistentDataType();
 
     @Override
     public @NotNull Class<String> getPrimitiveType() {
@@ -34,21 +35,26 @@ public class ShopSignPersistentDataType
     }
 
     @Override
-    public @NotNull Class<ShopSignStorage> getComplexType() {
-        return ShopSignStorage.class;
+    public @NotNull Class<UUID> getComplexType() {
+        return UUID.class;
     }
 
     @NotNull
     @Override
     public String toPrimitive(
-            @NotNull ShopSignStorage complex, @NotNull PersistentDataAdapterContext context) {
-        return JsonUtil.getGson().toJson(complex);
+            @NotNull UUID complex, @NotNull PersistentDataAdapterContext context) {
+        return complex.toString();
     }
 
+    @NotNull
     @Override
-    public @NotNull ShopSignStorage fromPrimitive(
+    public UUID fromPrimitive(
             @NotNull String primitive, @NotNull PersistentDataAdapterContext context) {
-        return JsonUtil.getGson().fromJson(primitive, ShopSignStorage.class);
+        try {
+            return UUID.fromString(primitive);
+        } catch (Exception exception) {
+            return new UUID(0L, 0L);
+        }
     }
 
 }

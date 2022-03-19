@@ -396,12 +396,13 @@ public class Util {
                         .limit(2)
                         .toList());
         StackWalker.StackFrame frame = caller.get(1);
+        final String threadName = Thread.currentThread().getName();
         final String className = frame.getClassName();
         final String methodName = frame.getMethodName();
         final int codeLine = frame.getLineNumber();
         for (String log : logs) {
             DEBUG_LOGS.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info( "[DEBUG/"+threadName+"] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
         }
         LOCK.writeLock().unlock();
     }

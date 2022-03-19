@@ -22,8 +22,8 @@ package com.ghostchu.quickshop.shop;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.PlayerFinder;
 import com.ghostchu.quickshop.util.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.time.temporal.ChronoUnit;
@@ -67,7 +67,7 @@ public class ShopPurger {
         boolean skipOp = plugin.getConfig().getBoolean("purge.skip-op");
         boolean returnCreationFee = plugin.getConfig().getBoolean("purge.return-create-fee");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
-            OfflinePlayer player = PlayerFinder.findOfflinePlayerByUUID(shop.getOwner());
+            OfflinePlayer player = Bukkit.getOfflinePlayer(shop.getOwner());
             if (!player.hasPlayedBefore()) {
                 Util.debugLog("Shop " + shop + " detection skipped: Owner never played before.");
                 continue;

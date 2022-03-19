@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is SimpleDisplayProvider.java
+ *  This file is a part of project QuickShop, the name is ShopPersistentData.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -16,25 +16,29 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+package com.ghostchu.quickshop.shop.datatype;
 
-package com.ghostchu.quickshop.shop;
+import com.google.gson.annotations.Expose;
+import lombok.Getter;
 
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
-import com.ghostchu.quickshop.api.shop.DisplayProvider;
-import com.ghostchu.quickshop.api.shop.Shop;
-import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+//TODO
+@Getter
+public class ShopPersistentData {
+    @Expose
+    private final String world;
+    @Expose
+    private final int x;
+    @Expose
+    private final int y;
+    @Expose
+    private final int z;
+    private final boolean setup;
 
-public class SimpleDisplayProvider implements DisplayProvider {
-    @Override
-    public @NotNull Plugin getProvider() {
-        return QuickShop.getInstance();
-    }
-
-    @Override
-    public @Nullable AbstractDisplayItem provide(@NotNull Shop shop) {
-        return null;
+    public ShopPersistentData(int x, int y, int z, String world, boolean setup) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.world = world;
+        this.setup = setup;
     }
 }

@@ -17,7 +17,7 @@
  *
  */
 
-package com.ghostchu.quickshop.shop;
+package com.ghostchu.quickshop.shop.datatype;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

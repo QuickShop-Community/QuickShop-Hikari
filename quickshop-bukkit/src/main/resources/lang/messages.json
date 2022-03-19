@@ -464,5 +464,13 @@
     }
   },
   "bad-command-usage": "&cBad command arguments!",
-  "bad-command-usage-detailed": "&cBad command arguments! Accepts the following parameters: &7{0}"
+  "bad-command-usage-detailed": "&cBad command arguments! Accepts the following parameters: &7{0}",
+  "quick-fill":{
+    "header": "&eYou have multiple shops with name \"&a{0}&e\", choose one to continue:",
+    "entry-normal": " &e- &b{0} &d{1}",
+    "entry-own": " &e- &c[own] &b{0} &d{1}",
+    "entry-cooperation": " &e- &c[co] &b{0} &d{1}",
+    "hover": ["&eName: &b{0}","&eOwner: &b{0}","&eType: &b{0}", "&ePrice: &b{0}","&eItem: &b{0}","&eLocation: &b{0}"],
+    "hover-arg-filled": ["&eName: &b{name}","&eOwner: &b{owner}","&eType: &b{type}", "&ePrice: &b{price}","&eItem: &b{item}","&eLocation: &b{location}"]
+  }
 }

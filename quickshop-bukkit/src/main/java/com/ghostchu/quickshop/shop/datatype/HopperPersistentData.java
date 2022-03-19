@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is DisplayWatcher.java
+ *  This file is a part of project QuickShop, the name is HopperPersistentData.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -16,23 +16,16 @@
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+package com.ghostchu.quickshop.shop.datatype;
 
-package com.ghostchu.quickshop.watcher;
+import com.google.gson.annotations.Expose;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-import lombok.Data;
-import com.ghostchu.quickshop.QuickShop;
-
-@Data
-@Deprecated
-public class DisplayWatcher {
-    private QuickShop plugin;
-
-    public DisplayWatcher(QuickShop plugin) {
-        this.plugin = plugin;
-        registerTask();
-    }
-
-
-    private void registerTask() {
-    }
+import java.util.UUID;
+@AllArgsConstructor
+@Getter
+public class HopperPersistentData {
+    @Expose
+    private final UUID player;
 }

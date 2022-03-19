@@ -24,9 +24,11 @@ import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.shop.*;
+import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
+import com.ghostchu.quickshop.shop.display.RealDisplayItem;
+import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
@@ -38,7 +40,6 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -52,6 +53,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -281,15 +283,16 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         try {
             if (plugin.isDisplayEnabled() && !isDisableDisplay()) {
-                this.displayItem = switch (AbstractDisplayItem.getNowUsing()) {
-                    case REALITEM -> new RealDisplayItem(this);
-                    case VIRTUALITEM -> new VirtualDisplayItem(this);
-                    case CUSTOM -> {
-                        DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
-                        if (provider == null) yield null;
-                        yield provider.provide(this);
-                    }
-                };
+                DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
+                if (provider != null) {
+                    displayItem = provider.provide(this);
+                } else {
+                    this.displayItem = switch (AbstractDisplayItem.getNowUsing()) {
+                        case REALITEM -> new RealDisplayItem(this);
+                        case VIRTUALITEM -> new VirtualDisplayItem(this);
+                        default -> new VirtualDisplayItem(this);
+                    };
+                }
             }
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING, "Failed to init display item for shop " + this + ", display item init failed!", e);
@@ -376,7 +379,7 @@ public class ContainerShop implements Shop {
             this.sell(buyer, buyerInventory, loc2Drop, -amount);
             return;
         }
-        InventoryWrapperIterator buyerIterator = buyerInventory.iterator();
+       // InventoryWrapperIterator buyerIterator = buyerInventory.iterator();
         if (this.isUnlimited() && !isAlwaysCountingContainer) {
             InventoryTransaction transaction = InventoryTransaction
                     .builder()
@@ -385,7 +388,7 @@ public class ContainerShop implements Shop {
                     .item(this.getItem())
                     .amount(amount)
                     .build();
-            if(!transaction.failSafeCommit()){
+            if (!transaction.failSafeCommit()) {
                 throw new IllegalStateException("Failed to commit transaction!");
             }
         } else {
@@ -402,7 +405,7 @@ public class ContainerShop implements Shop {
                     .item(this.getItem())
                     .amount(amount)
                     .build();
-            if(!transaction.failSafeCommit()){
+            if (!transaction.failSafeCommit()) {
                 throw new IllegalStateException("Failed to commit transaction!");
             }
         }
@@ -615,9 +618,9 @@ public class ContainerShop implements Shop {
 
     @Override
     public @NotNull Component ownerName(boolean forceUsername) {
-        OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
+        Profile player = plugin.getPlayerFinder().find(this.getOwner());
         Component name;
-        if (player.getName() == null || player.getName().isEmpty()) {
+        if (player == null) {
             name = plugin.text().of("unknown-owner").forLocale();
         } else {
             name = Component.text(player.getName());
@@ -698,7 +701,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public void sell(@NotNull UUID seller, @NotNull InventoryWrapper sellerInventory,
-                     @NotNull Location loc2Drop, int amount) throws Exception{
+                     @NotNull Location loc2Drop, int amount) throws Exception {
         Util.ensureThread(false);
         amount = item.getAmount() * amount;
         if (amount < 0) {
@@ -714,12 +717,12 @@ public class ContainerShop implements Shop {
                     .item(this.getItem())
                     .amount(amount)
                     .build();
-            if(!transaction.failSafeCommit()){
+            if (!transaction.failSafeCommit()) {
                 throw new IllegalStateException("Failed to commit transaction!");
             }
         } else {
             InventoryWrapper chestInv = this.getInventory();
-            if (chestInv== null) {
+            if (chestInv == null) {
                 plugin.getLogger().warning("Failed to process sell, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
                 return;
             }
@@ -730,7 +733,7 @@ public class ContainerShop implements Shop {
                     .item(this.getItem())
                     .amount(amount)
                     .build();
-            if(!transactionTake.failSafeCommit()){
+            if (!transactionTake.failSafeCommit()) {
                 throw new IllegalStateException("Failed to commit transaction!");
             }
             this.setSignText();
@@ -857,7 +860,6 @@ public class ContainerShop implements Shop {
             return;
         }
         this.setSignText(getSignText(MsgUtil.getDefaultGameLanguageCode()));
-        // this.setSignText(getSignText("en_us"));
     }
 
     /**
@@ -885,7 +887,7 @@ public class ContainerShop implements Shop {
             plugin.getDatabaseHelper()
                     .updateShop(SimpleShopModerator.serialize(this.moderator), this.getItem(),
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
-                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), saveToSymbolLink(), this.inventoryWrapperProvider,this.shopName);
+                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), saveToSymbolLink(), this.inventoryWrapperProvider, this.shopName);
             this.dirty = false;
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING,
@@ -1017,7 +1019,7 @@ public class ContainerShop implements Shop {
         try {
             inventoryWrapper = locateInventory(symbolLink);
         } catch (Exception e) {
-            Util.debugLog("Failed to load shop: " + symbolLink+": "+e.getClass().getName()+": "+e.getMessage());
+            Util.debugLog("Failed to load shop: " + symbolLink + ": " + e.getClass().getName() + ": " + e.getMessage());
             MsgUtil.debugStackTrace(e.getStackTrace());
             this.delete(!plugin.getConfig().getBoolean("debug.delete-corrupt-shop"));
             return;

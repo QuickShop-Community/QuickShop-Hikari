@@ -78,7 +78,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         plugin.getReloadManager().register(this);
         plugin.getLogger().info("Translation over-the-air platform selected: Crowdin");
         this.distribution = new CrowdinOTA(plugin);
-        this.msgParser = new SimpleMsgParser(plugin.getConfig().getInt("syntax-parser",0));
+        this.msgParser = new SimpleMsgParser(plugin.getConfig().getInt("syntax-parser", 0));
     }
 
     /**
@@ -225,6 +225,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     public void load() {
         plugin.getLogger().info("Loading up translations from Crowdin OTA, this may need a while...");
+        //TODO: This will break the message processing system in-game until loading finished, need to fix it.
         this.reset();
         List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
         //Make sure is a lowercase regex, prevent case-sensitive and underscore issue
@@ -301,21 +302,16 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 result = langCode;
             } else {
                 String[] splits = langCode.split("_", 2);
-                if (splits.length != 2) {
-                    for (String availableLanguage : availableLanguages) {
-                        if (availableLanguage.startsWith(langCode) || availableLanguage.endsWith(langCode)) {
-                            result = availableLanguage;
-                            break;
-                        }
-                    }
-                } else {
-                    String start = splits[0] + "_";
-                    String end = "_" + splits[1];
-                    for (String availableLanguage : availableLanguages) {
-                        if (availableLanguage.startsWith(start) || availableLanguage.endsWith(end)) {
-                            result = availableLanguage;
-                            break;
-                        }
+                String start = langCode;
+                String end = langCode;
+                if (splits.length == 2) {
+                    start = splits[0] + "_";
+                    end = "_" + splits[1];
+                }
+                for (String availableLanguage : availableLanguages) {
+                    if (availableLanguage.startsWith(start) || availableLanguage.endsWith(end)) {
+                        result = availableLanguage;
+                        break;
                     }
                 }
             }
@@ -408,40 +404,48 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 continue;
             }
             // Check
-            if (Character.class.equals(clazz)) {
-                components[i] = Component.text((char) obj);
-                continue;
-            }
-            if (Byte.class.equals(clazz)) {
-                components[i] = Component.text((Byte) obj);
-                continue;
-            }
-            if (Integer.class.equals(clazz)) {
-                components[i] = Component.text((Integer) obj);
-                continue;
-            }
-            if (Long.class.equals(clazz)) {
-                components[i] = Component.text((Long) obj);
-                continue;
-            }
-            if (Float.class.equals(clazz)) {
-                components[i] = Component.text((Float) obj);
-                continue;
-            }
-            if (Double.class.equals(clazz)) {
-                components[i] = Component.text((Double) obj);
-                continue;
-            }
-            if (Boolean.class.equals(clazz)) {
-                components[i] = Component.text((Boolean) obj);
-                continue;
-            }
-            if (String.class.equals(clazz)) {
-                components[i] = LegacyComponentSerializer.legacySection().deserialize((String) obj);
-                continue;
+            try {
+                if (Character.class.equals(clazz)) {
+                    components[i] = Component.text((char) obj);
+                    continue;
+                }
+                if (Byte.class.equals(clazz)) {
+                    components[i] = Component.text((Byte) obj);
+                    continue;
+                }
+                if (Integer.class.equals(clazz)) {
+                    components[i] = Component.text((Integer) obj);
+                    continue;
+                }
+                if (Long.class.equals(clazz)) {
+                    components[i] = Component.text((Long) obj);
+                    continue;
+                }
+                if (Float.class.equals(clazz)) {
+                    components[i] = Component.text((Float) obj);
+                    continue;
+                }
+                if (Double.class.equals(clazz)) {
+                    components[i] = Component.text((Double) obj);
+                    continue;
+                }
+                if (Boolean.class.equals(clazz)) {
+                    components[i] = Component.text((Boolean) obj);
+                    continue;
+                }
+                if (String.class.equals(clazz)) {
+                    components[i] = LegacyComponentSerializer.legacySection().deserialize((String) obj);
+                    continue;
+                }
+                components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
+            }catch (Exception exception){
+                Util.debugLog("Failed to process the object: " + obj);
+                if(plugin.getSentryErrorReporter() != null)
+                    plugin.getSentryErrorReporter().sendError(exception, "Failed to process the object: " + obj);
+                components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
             }
             // undefined
-            components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
+
         }
         return components;
     }

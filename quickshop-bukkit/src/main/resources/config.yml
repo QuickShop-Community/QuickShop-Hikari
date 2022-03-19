@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1003
+config-version: 1005
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -142,20 +142,34 @@ database:
   #false = use local SQLite database.
   #true = use local/remote MySQL database.
   mysql: false
+  # The database address. (Only required if mysql is true)
   host: localhost
+  # The database port. (Only required if mysql is true)
   port: 3306
+  # The database names. (Only required if mysql is true)
   database: quickshop
+  # The database username. (Only required if mysql is true)
   user: root
+  # The database password. (Only required if mysql is true)
   password: passwd
-  #Set prefix to "none" to remove prefix
+  # Set prefix to "none" to remove prefix (Both local and remote will be used).
   prefix: "qs_"
+  # Should QuickShop use SSL for database connections?  (Only required if mysql is true)
   usessl: false
-  #Whether to use async queue?
-  queue: true
-  #How long should the interval between each commit be when using queue (in seconds)?
-  queue-commit-interval: 2
-  #Auto set table encoding to utf8mb4 (beta)
-  auto-fix-encoding-issue-in-database: false
+  # Properties for creating connections, you can add your own properties for datasource here. (Both local and remote will be used).
+  properties:
+    connection-timeout: 60000
+    validation-timeout: 3000
+    idle-timeout: 60000
+    login-timeout: 10
+    maxLifeTime: 60000
+    maximum-pool-size: 8
+    minimum-idle: 2
+    cachePrepStmts: true
+    prepStmtCacheSize: 250
+    prepStmtCacheSqlLimit: 2048
+    useUnicode: true
+    characterEncoding: utf8
 
 #Limits the number of shops a person can create and own at a time.
 limits:
@@ -433,7 +447,11 @@ plugin:
   #If you have OpenInv, QuickShop will enable the EnderChest feature for shop-blocks.
   OpenInv: true
   #If you have PlaceHolderAPI, QuickShop will use it to process all messages.
-  PlaceHolderAPI: true
+  PlaceHolderAPI:
+    enable: true
+    # The PAPI request caching expire time. (ms)
+    # Low value may increase the database load and hurt server performance.
+    cache: 900000
   #If you have LWC/LWCX, QuickShop will check access.
   LWC: true
   #If you use BlockHub, Should QuickShop use BlockHub to check region access for players?
@@ -569,3 +587,9 @@ config-damaged: false
 #Example:
 #  - "ecoenchants:enchantment.damage_artifact=Artifact Damage"
 custom-translation-key: []
+
+# Record transactions for metric purpose,
+# all transaction will be record into database can used by other plugins for analyse trade activities.
+# Turn off this will stop recording transactions for metrics.
+transaction-metric:
+  enable: true

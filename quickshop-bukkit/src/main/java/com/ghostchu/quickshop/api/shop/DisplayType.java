@@ -21,8 +21,8 @@ package com.ghostchu.quickshop.api.shop;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.shop.RealDisplayItem;
-import com.ghostchu.quickshop.shop.VirtualDisplayItem;
+import com.ghostchu.quickshop.shop.display.RealDisplayItem;
+import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
 
 import java.util.Collections;
 import java.util.HashMap;

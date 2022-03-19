@@ -464,5 +464,27 @@
     }
   },
   "bad-command-usage": "&c無效的指令!",
-  "bad-command-usage-detailed": "&壞命令參數！接受以下參數：&7{0}"
+  "bad-command-usage-detailed": "&壞命令參數！接受以下參數：&7{0}",
+  "quick-fill": {
+    "header": "&e您有多個名為\"&a{0}&e\"的商店，請選擇一個以繼續：",
+    "entry-normal": " &e- &b{0} &d{1}",
+    "entry-own": " &e- &c[own] &b{0} &d{1}",
+    "entry-cooperation": " &e- &c[co] &b{0} &d{1}",
+    "hover": [
+      "&e名稱: &b{0}",
+      "&a商店主人：{0}",
+      "&e類型: &b{0}",
+      "&e價格: &b{0}",
+      "&a商品：&e{0}",
+      "&e位置: &b{0}"
+    ],
+    "hover-arg-filled": [
+      "&e名稱: &b{name}",
+      "&a商店主人：{owner}",
+      "&e類型: &b{type}",
+      "&e價格: &b{price}",
+      "&e商品：&b{item}",
+      "&e位置: &b{location}"
+    ]
+  }
 }

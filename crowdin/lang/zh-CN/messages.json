@@ -464,5 +464,27 @@
     }
   },
   "bad-command-usage": "&c错误的命令参数！",
-  "bad-command-usage-detailed": "&c错误的命令参数! 接受以下参数: &7{0}"
+  "bad-command-usage-detailed": "&c错误的命令参数! 接受以下参数: &7{0}",
+  "quick-fill": {
+    "header": "&e您有多个名称为“&a{0}&e”的商店，选择其中一个继续：",
+    "entry-normal": " &e- &c{0} &b{1} &d",
+    "entry-own": " &e- &c[所有者] &b{0} &d{1}",
+    "entry-cooperation": " &e- &c[co] &b{0} &d{1}",
+    "hover": [
+      "&e商店名称: &b{0}",
+      "&e所有者: &b{0}",
+      "&e类型: &b{0}",
+      "&e价格: &b{0}",
+      "&e物品: &b{0}",
+      "&e位置: &b{0}"
+    ],
+    "hover-arg-filled": [
+      "&e商店名称: &b{name}",
+      "&e所有者: &b{owner}",
+      "&e类型: &b{type}",
+      "&e价格: &b{price}",
+      "&e物品: &b{item}",
+      "&e位置: &b{location}"
+    ]
+  }
 }

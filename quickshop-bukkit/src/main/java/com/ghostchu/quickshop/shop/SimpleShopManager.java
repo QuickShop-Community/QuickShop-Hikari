@@ -113,7 +113,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (Util.isUUID(taxAccount)) {
                 this.cacheTaxAccount = plugin.getServer().getOfflinePlayer(UUID.fromString(taxAccount));
             } else {
-                this.cacheTaxAccount = PlayerFinder.findOfflinePlayerByName(taxAccount);
+                this.cacheTaxAccount = Bukkit.getOfflinePlayer(taxAccount);
             }
         } else {
             // disable tax account
@@ -128,7 +128,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (Util.isUUID(uAccount)) {
                 cacheUnlimitedShopAccount = Bukkit.getOfflinePlayer(UUID.fromString(uAccount));
             } else {
-                cacheUnlimitedShopAccount = PlayerFinder.findOfflinePlayerByName(uAccount);
+                cacheUnlimitedShopAccount = Bukkit.getOfflinePlayer(uAccount);
             }
         }
         this.priceLimiter = new SimplePriceLimiter(plugin);
@@ -670,11 +670,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         } else {
             total = e.getTotal(); // Allow addon to set it
         }
-        OfflinePlayer taxAccount;
+        UUID taxAccount = null;
         if (shop.getTaxAccount() != null) {
-            taxAccount = PlayerFinder.findOfflinePlayerByUUID(shop.getTaxAccount());
+            taxAccount = shop.getTaxAccount();
         } else {
-            taxAccount = this.cacheTaxAccount;
+            if(this.cacheTaxAccount != null)
+              taxAccount = this.cacheTaxAccount.getUniqueId();
         }
         EconomyTransaction transaction;
         EconomyTransaction.EconomyTransactionBuilder builder = EconomyTransaction.builder()
@@ -962,7 +963,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (createCost > 0) {
             EconomyTransaction economyTransaction =
                     EconomyTransaction.builder()
-                            .taxAccount(cacheTaxAccount)
+                            .taxAccount(cacheTaxAccount.getUniqueId())
                             .taxModifier(0.0)
                             .core(plugin.getEconomy())
                             .from(p.getUniqueId())
@@ -1065,11 +1066,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // Money handling
         // SELLING Player -> Shop Owner
         EconomyTransaction transaction;
-        OfflinePlayer taxAccount;
+        UUID taxAccount = null;
         if (shop.getTaxAccount() != null) {
-            taxAccount = PlayerFinder.findOfflinePlayerByUUID(shop.getTaxAccount());
+            taxAccount = shop.getTaxAccount();
         } else {
-            taxAccount = this.cacheTaxAccount;
+            if(this.cacheTaxAccount != null) {
+                taxAccount = this.cacheTaxAccount.getUniqueId();
+            }
         }
         EconomyTransaction.EconomyTransactionBuilder builder = EconomyTransaction.builder()
                 .allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false))

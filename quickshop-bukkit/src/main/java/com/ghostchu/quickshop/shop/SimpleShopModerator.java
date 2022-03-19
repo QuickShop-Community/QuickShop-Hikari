@@ -62,12 +62,14 @@ public class SimpleShopModerator implements ShopModerator {
         this.staffs = staffs;
     }
 
+    @NotNull
     public static ShopModerator deserialize(@NotNull String serilized) throws JsonSyntaxException {
         // Use Gson deserialize data
         Gson gson = JsonUtil.regular();
         return gson.fromJson(serilized, SimpleShopModerator.class);
     }
 
+    @NotNull
     public static String serialize(@NotNull ShopModerator shopModerator) {
         Gson gson = JsonUtil.getGson();
         SimpleShopModerator gsonWorkaround = (SimpleShopModerator) shopModerator;

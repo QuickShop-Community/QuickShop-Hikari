@@ -25,7 +25,6 @@ import com.ghostchu.quickshop.api.event.ShopOngoingFeeEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.PlayerFinder;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.WarningSender;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -74,11 +73,13 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                 World world = location.getWorld();
                 //We must check balance manually to avoid shop missing hell when tax account broken
                 if (allowLoan || plugin.getEconomy().getBalance(shopOwner, Objects.requireNonNull(world), shop.getCurrency()) >= cost) {
-                    OfflinePlayer taxAccount;
+                    UUID taxAccount = null;
                     if (shop.getTaxAccount() != null) {
-                        taxAccount = PlayerFinder.findOfflinePlayerByUUID(shop.getTaxAccount());
+                        taxAccount = shop.getTaxAccount();
                     } else {
-                        taxAccount = ((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount();
+                        OfflinePlayer offlinePlayer = ((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount();
+                        if (offlinePlayer != null)
+                            taxAccount = offlinePlayer.getUniqueId();
                     }
 
                     ShopOngoingFeeEvent event = new ShopOngoingFeeEvent(shop, shopOwner, cost);
@@ -89,6 +90,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                     cost = event.getCost();
                     double finalCost = cost;
 
+                    UUID finalTaxAccount = taxAccount;
                     Util.mainThreadRun(() -> {
                         EconomyTransaction transaction = EconomyTransaction.builder()
                                 .allowLoan(allowLoan)
@@ -96,7 +98,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                                 .core(plugin.getEconomy())
                                 .world(world)
                                 .amount(finalCost)
-                                .to(taxAccount == null ? null : taxAccount.getUniqueId())
+                                .to(finalTaxAccount)
                                 .from(shopOwner).build();
 
                         boolean success = transaction.failSafeCommit();

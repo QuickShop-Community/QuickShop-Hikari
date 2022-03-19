@@ -39,8 +39,8 @@ import org.jetbrains.annotations.Nullable;
 import com.ghostchu.quickshop.Cache;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.shop.HopperPersistentData;
-import com.ghostchu.quickshop.shop.HopperPersistentDataType;
+import com.ghostchu.quickshop.shop.datatype.HopperPersistentData;
+import com.ghostchu.quickshop.shop.datatype.HopperPersistentDataType;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 

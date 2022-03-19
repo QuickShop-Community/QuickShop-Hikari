@@ -22,10 +22,10 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.PlayerFinder;
 import com.ghostchu.quickshop.util.Util;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
+import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -48,7 +48,12 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
             if (Util.isUUID(cmdArg[0])) {
                 shop.setTaxAccount(UUID.fromString(cmdArg[0]));
             } else {
-                shop.setTaxAccount(PlayerFinder.findUUIDByName(cmdArg[0]));
+                Profile profile = plugin.getPlayerFinder().find(cmdArg[0]);
+                if(profile == null){
+                    plugin.text().of(sender, "unknown-player").send();
+                    return;
+                }
+                shop.setTaxAccount(profile.getUniqueId());
             }
             plugin.text().of(sender, "taxaccount-set", cmdArg[0]).send();
         } else {

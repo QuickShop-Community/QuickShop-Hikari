@@ -20,6 +20,12 @@
 package com.ghostchu.quickshop.util.paste;
 
 import cc.carm.lib.easysql.api.SQLQuery;
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.economy.EconomyCore;
+import com.ghostchu.quickshop.economy.Economy_Vault;
+import com.ghostchu.quickshop.util.ReflectFactory;
+import com.ghostchu.quickshop.util.Util;
 import com.google.common.cache.CacheStats;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -28,13 +34,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.economy.EconomyCore;
-import com.ghostchu.quickshop.economy.Economy_Vault;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.ReflectFactory;
-import com.ghostchu.quickshop.util.Util;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;
@@ -147,7 +146,7 @@ public class Paste {
             finalReport.append("\tEconomyCore: ").append(plugin.getEconomy().getName()).append("@").append(plugin.getEconomy().getPlugin().getName()).append("\n");
         }
         // finalReport.append("\tDatabaseCore: ").append(plugin.getDatabaseManager().getDatabase().getName()).append("@").append(plugin.getDatabaseManager().getDatabase().getPlugin().getName()).append("\n");
-        finalReport.append("\tGameLanguage Processor: ").append(MsgUtil.gameLanguage.getName()).append("@").append(MsgUtil.gameLanguage.getPlugin().getName()).append("\n");
+        // finalReport.append("\tGameLanguage Processor: ").append(MsgUtil.gameLanguage.getName()).append("@").append(MsgUtil.gameLanguage.getPlugin().getName()).append("\n");
         finalReport.append("================================================\n");
         finalReport.append("Active shops on the server:\n");
         finalReport.append("\tTotal: ").append(plugin.getShopManager().getLoadedShops().size()).append("\n");

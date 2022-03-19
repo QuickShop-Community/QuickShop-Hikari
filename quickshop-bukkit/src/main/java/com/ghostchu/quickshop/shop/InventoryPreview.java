@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.shop;
 
+import com.ghostchu.quickshop.shop.datatype.PreviewGuiPersistentDataType;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;

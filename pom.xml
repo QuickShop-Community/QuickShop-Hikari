@@ -28,7 +28,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <revision>1.0.2.5</revision>
+        <revision>1.0.3.0</revision>
         <java.version>17</java.version>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -171,7 +171,7 @@
                                     <relocation>
                                         <pattern>co.aikar.taskchain.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.co.aikar.taskchain.
-                                        </shadedPattern> <!-- Replace this -->
+                                        </shadedPattern>
                                     </relocation>
                                 </relocations>
                                 <transformers>
