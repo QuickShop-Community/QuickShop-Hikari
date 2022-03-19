@@ -171,7 +171,7 @@
                                     <relocation>
                                         <pattern>co.aikar.taskchain.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.co.aikar.taskchain.
-                                        </shadedPattern> <!-- Replace this -->
+                                        </shadedPattern>
                                     </relocation>
                                 </relocations>
                                 <transformers>

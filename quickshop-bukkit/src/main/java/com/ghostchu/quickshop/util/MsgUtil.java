@@ -201,7 +201,7 @@ public class MsgUtil {
                 if (Util.isUUID(owner)) {
                     ownerUUID = UUID.fromString(owner);
                 } else {
-                    ownerUUID = PlayerFinder.findUUIDByName(owner);
+                    ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
                 }
                 String message = rs.getString("message");
                 List<String> msgs = OUTGOING_MESSAGES.computeIfAbsent(ownerUUID, k -> new LinkedList<>());

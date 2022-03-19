@@ -40,7 +40,6 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -54,6 +53,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -618,9 +618,9 @@ public class ContainerShop implements Shop {
 
     @Override
     public @NotNull Component ownerName(boolean forceUsername) {
-        OfflinePlayer player = plugin.getServer().getOfflinePlayer(this.getOwner());
+        Profile player = plugin.getPlayerFinder().find(this.getOwner());
         Component name;
-        if (player.getName() == null || player.getName().isEmpty()) {
+        if (player == null) {
             name = plugin.text().of("unknown-owner").forLocale();
         } else {
             name = Component.text(player.getName());

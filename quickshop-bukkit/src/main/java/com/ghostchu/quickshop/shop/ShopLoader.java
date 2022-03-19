@@ -21,6 +21,13 @@ package com.ghostchu.quickshop.shop;
 
 import cc.carm.lib.easysql.api.SQLQuery;
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopModerator;
+import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.util.Timer;
+import com.ghostchu.quickshop.util.Util;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
@@ -33,16 +40,9 @@ import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopModerator;
-import com.ghostchu.quickshop.api.shop.ShopType;
-import com.ghostchu.quickshop.util.JsonUtil;
-import com.ghostchu.quickshop.util.PlayerFinder;
-import com.ghostchu.quickshop.util.Timer;
-import com.ghostchu.quickshop.util.Util;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -237,7 +237,6 @@ public class ShopLoader {
     }
 
 
-
     private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
         errors++;
         Logger logger = plugin.getLogger();
@@ -273,7 +272,7 @@ public class ShopLoader {
             try {
                 list.add(gson.fromJson(shopStr, ShopRawDatabaseInfo.class));
             } catch (JsonSyntaxException jsonSyntaxException) {
-                plugin.getLogger().log(Level.WARNING,"Failed to read shop Json "+shopStr, jsonSyntaxException);
+                plugin.getLogger().log(Level.WARNING, "Failed to read shop Json " + shopStr, jsonSyntaxException);
             }
         }
         plugin.getLogger().info("Processed " + total + "/" + total + " - [ Valid " + list.size() + "]");
@@ -465,7 +464,7 @@ public class ShopLoader {
             }
         }
 
-        private @Nullable ShopModerator deserializeModerator(@NotNull String moderatorJson, AtomicBoolean needUpdate) {
+        private @NotNull ShopModerator deserializeModerator(@NotNull String moderatorJson, @NotNull AtomicBoolean needUpdate) {
             ShopModerator shopModerator;
             if (Util.isUUID(moderatorJson)) {
                 Util.debugLog("Updating old shop data... for " + moderatorJson);
@@ -476,8 +475,15 @@ public class ShopLoader {
                     shopModerator = SimpleShopModerator.deserialize(moderatorJson);
                 } catch (JsonSyntaxException ex) {
                     Util.debugLog("Updating old shop data... for " + moderatorJson);
-                    moderatorJson = PlayerFinder.findUUIDByName(moderatorJson).toString();
-                    shopModerator = new SimpleShopModerator(UUID.fromString(moderatorJson)); // New one
+                    Profile profile = plugin.getPlayerFinder().find(moderatorJson);
+                    UUID uuid;
+                    if (profile == null) {
+                        Util.debugLog("Failed to find the player: " + moderatorJson);
+                        uuid = Bukkit.getOfflinePlayer(moderatorJson).getUniqueId();
+                    } else {
+                        uuid = profile.getUniqueId();
+                    }
+                    shopModerator = new SimpleShopModerator(uuid); // New one
                     needUpdate.set(true);
                 }
             }

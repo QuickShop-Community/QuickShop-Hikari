@@ -19,21 +19,20 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
-import lombok.AllArgsConstructor;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.util.BlockIterator;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.PlayerFinder;
 import com.ghostchu.quickshop.util.Util;
+import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.util.BlockIterator;
+import org.enginehub.squirrelid.Profile;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -81,21 +80,20 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                         }
                     }
                 case 2:
-                    final OfflinePlayer offlinePlayer = PlayerFinder.findOfflinePlayerByName(cmdArg[1]);
-                    String offlinePlayerName = offlinePlayer.getName();
-
-                    if (offlinePlayerName == null) {
-                        offlinePlayerName = "null";
+                    Profile profile = plugin.getPlayerFinder().find(cmdArg[1]);
+                    if(profile == null) {
+                        plugin.text().of(sender, "unknown-player").send();
+                        return;
                     }
                     switch (cmdArg[0]) {
                         case "add" -> {
-                            shop.addStaff(offlinePlayer.getUniqueId());
-                            plugin.text().of(sender, "shop-staff-added", offlinePlayerName).send();
+                            shop.addStaff(profile.getUniqueId());
+                            plugin.text().of(sender, "shop-staff-added", profile.getName()).send();
                             return;
                         }
                         case "del" -> {
-                            shop.delStaff(offlinePlayer.getUniqueId());
-                            plugin.text().of(sender, "shop-staff-deleted", offlinePlayerName).send();
+                            shop.delStaff(profile.getUniqueId());
+                            plugin.text().of(sender, "shop-staff-deleted", profile.getName()).send();
                             return;
                         }
                         default -> {

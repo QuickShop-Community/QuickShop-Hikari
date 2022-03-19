@@ -24,7 +24,6 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.event.ShopNamingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.PlayerFinder;
 import com.ghostchu.quickshop.util.Util;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -80,7 +79,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
                         .from(sender.getUniqueId())
                         .to(shop.getTaxAccount())
                         .currency(plugin.getCurrency())
-                        .taxAccount(PlayerFinder.findOfflinePlayerByUUID(shop.getTaxAccount()))
+                        .taxAccount(shop.getTaxAccount())
                         .taxModifier(0.0d)
                         .allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false))
                         .core(plugin.getEconomy())

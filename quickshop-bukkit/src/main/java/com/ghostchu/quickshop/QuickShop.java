@@ -226,6 +226,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
     private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
     private Map<String, String> translationMapping;
     private final Map<String, String> addonRegisteredMapping = new HashMap<>();
+    @Getter
+    private PlayerFinder playerFinder;
 
     /**
      * Use for mock bukkit
@@ -370,9 +372,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                             if (!taxAccount.isEmpty()) {
                                 OfflinePlayer tax;
                                 if (Util.isUUID(taxAccount)) {
-                                    tax = PlayerFinder.findOfflinePlayerByUUID(UUID.fromString(taxAccount));
+                                    tax = Bukkit.getOfflinePlayer(UUID.fromString(taxAccount));
                                 } else {
-                                    tax = PlayerFinder.findOfflinePlayerByName((Objects.requireNonNull(taxAccount)));
+                                    tax = Bukkit.getOfflinePlayer((Objects.requireNonNull(taxAccount)));
                                 }
                                 Economy_Vault vault = (Economy_Vault) economy;
                                 if (vault.isValid()) {
@@ -475,7 +477,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up");
         //BEWARE THESE ONLY RUN ONCE
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
+        getLogger().info("Self testing...");
         runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
+        getLogger().info("Loading player name and unique id mapping...");
+        this.playerFinder = new PlayerFinder();
         getLogger().info("Reading the configuration...");
         this.initConfiguration();
         this.bootError = null;

@@ -20,10 +20,10 @@
 package com.ghostchu.quickshop.api.economy;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.api.economy.operation.DepositEconomyOperation;
 import com.ghostchu.quickshop.api.economy.operation.WithdrawEconomyOperation;
 import com.ghostchu.quickshop.api.event.EconomyCommitEvent;
+import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.util.CalculateUtil;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -31,7 +31,6 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.EconomyTransactionLog;
 import lombok.Builder;
 import lombok.Getter;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -55,7 +54,7 @@ public class EconomyTransaction {
     private final double actualAmount;
     private final double tax;
     @Nullable
-    private final OfflinePlayer taxer;
+    private final UUID taxer;
     private final boolean allowLoan;
     private final boolean tryingFixBalanceInsufficient;
     @Getter
@@ -84,7 +83,7 @@ public class EconomyTransaction {
      */
 
     @Builder
-    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable OfflinePlayer taxAccount, EconomyCore core, boolean allowLoan, @NotNull World world, @Nullable String currency) {
+    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, EconomyCore core, boolean allowLoan, @NotNull World world, @Nullable String currency) {
         this.from = from;
         this.to = to;
         this.core = core == null ? QuickShop.getInstance().getEconomy() : core;
@@ -187,7 +186,7 @@ public class EconomyTransaction {
             callback.onFailed(this);
             return false;
         }
-        if (tax > 0 && taxer != null && !this.executeOperation(new DepositEconomyOperation(taxer.getUniqueId(), tax, world, currency,core))) {
+        if (tax > 0 && taxer != null && !this.executeOperation(new DepositEconomyOperation(taxer, tax, world, currency,core))) {
             this.lastError = "Failed to deposit tax account: " + tax + ". LastError: " + core.getLastError();
             callback.onTaxFailed(this);
             //Tax never should failed.
@@ -283,7 +282,7 @@ public class EconomyTransaction {
          */
         default void onSuccess(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Transaction succeed.");
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(true, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer().getUniqueId(), economyTransaction.getAmount(), economyTransaction.getLastError()));
+            QuickShop.getInstance().logEvent(new EconomyTransactionLog(true, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
         /**
@@ -295,7 +294,7 @@ public class EconomyTransaction {
          */
         default void onFailed(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Transaction failed: " + economyTransaction.getLastError() + ".");
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer().getUniqueId(), economyTransaction.getAmount(), economyTransaction.getLastError()));
+            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
         /**
@@ -307,7 +306,7 @@ public class EconomyTransaction {
          */
         default void onTaxFailed(@NotNull EconomyTransaction economyTransaction) {
             Util.debugLog("Tax Transaction failed: " + economyTransaction.getLastError() + ".");
-            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer().getUniqueId(), economyTransaction.getAmount(), economyTransaction.getLastError()));
+            QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
     }
