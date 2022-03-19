@@ -61,14 +61,8 @@ public class PlayerFinder {
         return cache.getIfPresent(uuid) != null;
     }
 
-    public void bake(@NotNull Iterable<UUID> uuidIterable){
-        try {
-            this.resolver.findAllByUuid(uuidIterable);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void flash(@NotNull UUID uuid, @NotNull String name) {
+        this.cache.put(new Profile(uuid, name));
     }
 
     @Nullable
@@ -86,7 +80,7 @@ public class PlayerFinder {
     @Nullable
     public Profile find(@NotNull String name) {
         // Fallback to UUID lookup if name is UUID.
-        if(Util.isUUID(name)) {
+        if (Util.isUUID(name)) {
             return find(UUID.fromString(name));
         }
         if (Bukkit.getServer().getOnlineMode()) {
