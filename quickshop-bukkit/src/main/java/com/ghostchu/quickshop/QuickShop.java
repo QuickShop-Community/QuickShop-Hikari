@@ -82,6 +82,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.enginehub.squirrelid.Profile;
 import org.h2.Driver;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -710,6 +711,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();
+        bakeShopsOwnerCache();
         getLogger().info("Registering listeners...");
         this.interactionController = new InteractionController(this);
         // Register events
@@ -808,6 +810,35 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         Util.debugLog("Now using display-type: " + AbstractDisplayItem.getNowUsing().name());
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
+    }
+
+    private void bakeShopsOwnerCache() {
+        if (System.getProperties().containsKey("com.ghostchu.quickshop.QuickShop.bakeuuids")) {
+            getLogger().info("Baking shops owner and moderators caches... (This may take a while if you upgrade from old versions.");
+            Set<UUID> waitingForBake = new HashSet<>();
+            this.shopManager.getAllShops().forEach(shop -> {
+                if (!this.playerFinder.contains(shop.getOwner())) {
+                    waitingForBake.add(shop.getOwner());
+                }
+                shop.getModerator().getStaffs().forEach(staff -> {
+                    if (!this.playerFinder.contains(staff)) {
+                        waitingForBake.add(staff);
+                    }
+                });
+            });
+
+            if (waitingForBake.isEmpty())
+                return;
+            getLogger().info("Resolving " + waitingForBake.size() + " players' UUID and Name mappings...");
+            waitingForBake.forEach(uuid -> {
+                Profile profile = playerFinder.find(uuid);
+                if (profile == null) {
+                    getLogger().info("Lookup player invalid, skip.");
+                    return;
+                }
+                getLogger().info("Resolved: " + profile.getUniqueId() + "( " + profile.getName() + " ), " + (waitingForBake.size() - 1) + " jobs remains.");
+            });
+        }
     }
 
     private void loadItemMatcher() {

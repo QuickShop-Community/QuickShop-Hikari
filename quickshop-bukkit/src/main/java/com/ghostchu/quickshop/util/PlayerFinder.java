@@ -42,6 +42,7 @@ import java.util.UUID;
  */
 public class PlayerFinder {
     private final CacheForwardingService resolver;
+    private final ProfileCache cache;
 
     public PlayerFinder() {
         ProfileCache cache = new HashMapCache(); // Memory cache
@@ -53,6 +54,21 @@ public class PlayerFinder {
         this.resolver = new CacheForwardingService(
                 HttpRepositoryService.forMinecraft(),
                 cache);
+        this.cache = cache;
+    }
+
+    public boolean contains(@NotNull UUID uuid) {
+        return cache.getIfPresent(uuid) != null;
+    }
+
+    public void bake(@NotNull Iterable<UUID> uuidIterable){
+        try {
+            this.resolver.findAllByUuid(uuidIterable);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Nullable
