@@ -60,6 +60,26 @@ public class ConfigUpdateScript {
         boolean papiEnabled = getConfig().getBoolean("plugin.PlaceHolderAPI", true);
         getConfig().set("plugin.PlaceHolderAPI", null);
         getConfig().set("plugin.PlaceHolderAPI.enable", papiEnabled);
-        getConfig().set("plugin.PlaceHolderAPI.cache", 15*60*1000);
+        getConfig().set("plugin.PlaceHolderAPI.cache", 15 * 60 * 1000);
+    }
+
+    @UpdateScript(version = 1004)
+    public void configurableDatabaseProperties() {
+        getConfig().set("database.queue", null);
+        getConfig().set("database.queue-commit-interval", null);
+        getConfig().set("database.auto-fix-encoding-issue-in-database", null);
+        getConfig().set("database.properties.connection-timeout", 60000);
+        getConfig().set("database.properties.validation-timeout", 3000);
+        getConfig().set("database.properties.idle-timeout", 60000);
+        getConfig().set("database.properties.login-timeout", 10);
+        getConfig().set("database.properties.maxLifeTime", 60000);
+        getConfig().set("database.properties.maximum-pool-size", 8);
+        getConfig().set("database.properties.minimum-idle", 2);
+        getConfig().set("database.properties.cachePrepStmts", true);
+        getConfig().set("database.properties.prepStmtCacheSize", 250);
+        getConfig().set("database.properties.prepStmtCacheSqlLimit", 2048);
+        getConfig().set("database.properties.useUnicode", true);
+        getConfig().set("database.properties.characterEncoding", "utf8");
+        getConfig().set("database.properties.connection-timeout", 60000);
     }
 }

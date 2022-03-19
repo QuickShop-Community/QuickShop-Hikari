@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1004
+config-version: 1005
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -150,12 +150,19 @@ database:
   #Set prefix to "none" to remove prefix
   prefix: "qs_"
   usessl: false
-  #Whether to use async queue?
-  queue: true
-  #How long should the interval between each commit be when using queue (in seconds)?
-  queue-commit-interval: 2
-  #Auto set table encoding to utf8mb4 (beta)
-  auto-fix-encoding-issue-in-database: false
+  properties:
+    connection-timeout: 60000
+    validation-timeout: 3000
+    idle-timeout: 60000
+    login-timeout: 10
+    maxLifeTime: 60000
+    maximum-pool-size: 8
+    minimum-idle: 2
+    cachePrepStmts: true
+    prepStmtCacheSize: 250
+    prepStmtCacheSqlLimit: 2048
+    useUnicode: true
+    characterEncoding: utf8
 
 #Limits the number of shops a person can create and own at a time.
 limits:
