@@ -666,6 +666,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         double total = CalculateUtil.multiply(amount, shop.getPrice());
         ShopPurchaseEvent e = new ShopPurchaseEvent(shop, buyer, buyerInventory, amount, total);
         if (Util.fireCancellableEvent(e)) {
+            plugin.text().of(buyer, "plugin-cancelled", e.getCancelReason()).send();
             return; // Cancelled
         } else {
             total = e.getTotal(); // Allow addon to set it
@@ -1059,6 +1060,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
         ShopPurchaseEvent e = new ShopPurchaseEvent(shop, seller, sellerInventory, amount, total);
         if (Util.fireCancellableEvent(e)) {
+            plugin.text().of(seller, "plugin-cancelled", e.getCancelReason()).send();
             return; // Cancelled
         } else {
             total = e.getTotal(); // Allow addon to set it
