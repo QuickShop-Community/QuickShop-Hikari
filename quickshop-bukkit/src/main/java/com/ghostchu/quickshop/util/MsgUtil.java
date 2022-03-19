@@ -21,11 +21,8 @@ package com.ghostchu.quickshop.util;
 
 import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.event.ShopControlPanelOpenEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.localization.game.game.GameLanguage;
-import com.ghostchu.quickshop.localization.game.game.MojangGameLanguageImpl;
 import com.ghostchu.quickshop.util.logging.container.PluginGlobalAlertLog;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
@@ -61,7 +58,7 @@ import java.util.logging.Level;
 
 public class MsgUtil {
     private static final Map<UUID, List<String>> OUTGOING_MESSAGES = Maps.newConcurrentMap();
-    public static GameLanguage gameLanguage;
+    //public static GameLanguage gameLanguage;
     private static DecimalFormat decimalFormat;
     private static final QuickShop plugin = QuickShop.getInstance();
     private volatile static Entry<String, String> cachedGameLanguageCode = null;
@@ -179,15 +176,15 @@ public class MsgUtil {
         }
     }
 
-    @ApiStatus.ScheduledForRemoval
-    @Deprecated
-    public static void loadGameLanguage(@NotNull String languageCode) {
-        gameLanguage = ServiceInjector.getInjectedService(GameLanguage.class, null);
-        if (gameLanguage == null) {
-            gameLanguage = new MojangGameLanguageImpl(plugin, languageCode);
-            ((MojangGameLanguageImpl) gameLanguage).load();
-        }
-    }
+//    @ApiStatus.ScheduledForRemoval
+//    @Deprecated
+//    public static void loadGameLanguage(@NotNull String languageCode) {
+//        gameLanguage = ServiceInjector.getInjectedService(GameLanguage.class, null);
+//        if (gameLanguage == null) {
+//            gameLanguage = new MojangGameLanguageImpl(plugin, languageCode);
+//            ((MojangGameLanguageImpl) gameLanguage).load();
+//        }
+//    }
 
     /**
      * loads all player purchase messages from the database.

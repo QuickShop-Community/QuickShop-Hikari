@@ -19,17 +19,15 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandHandler;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.util.MsgUtil;
 
 import java.io.File;
 import java.util.List;
-import java.util.Objects;
 
 @AllArgsConstructor
 public class SubCommand_Reset implements CommandHandler<CommandSender> {
@@ -56,7 +54,7 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
                 item.delete();
                 ench.delete();
                 potion.delete();
-                MsgUtil.loadGameLanguage(Objects.requireNonNull(plugin.getConfig().getString("game-language", "default")));
+                //MsgUtil.loadGameLanguage(Objects.requireNonNull(plugin.getConfig().getString("game-language", "default")));
                 plugin.text().of(sender, "complete").send();
             }
             case "config" -> {
