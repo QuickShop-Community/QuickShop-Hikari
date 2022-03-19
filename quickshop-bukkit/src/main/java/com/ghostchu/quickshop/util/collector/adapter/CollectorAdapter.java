@@ -19,20 +19,19 @@
 
 package com.ghostchu.quickshop.util.collector.adapter;
 
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Item;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.economy.EconomyCore;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.economy.Economy_Vault;
 import com.ghostchu.quickshop.shop.ShopLoader;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.collector.CollectResolver;
 import com.ghostchu.quickshop.util.collector.CollectType;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Item;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
@@ -115,7 +114,7 @@ public class CollectorAdapter {
             data.put("economy_core", plugin.getEconomy().getName() + "@" + plugin.getEconomy().getPlugin().getName());
         }
         // data.put("database_core", plugin.getDatabaseManager().getDatabase().getName() + "@" + plugin.getDatabaseManager().getDatabase().getPlugin().getName());
-        data.put("gamelanguage_processor", MsgUtil.gameLanguage.getName() + "@" + MsgUtil.gameLanguage.getPlugin().getName());
+        //data.put("gamelanguage_processor", MsgUtil.gameLanguage.getName() + "@" + MsgUtil.gameLanguage.getPlugin().getName());
         return data;
     }
 

@@ -19,19 +19,21 @@
 
 package com.ghostchu.quickshop.util;
 
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.enginehub.squirrelid.Profile;
 import org.enginehub.squirrelid.cache.HashMapCache;
 import org.enginehub.squirrelid.cache.ProfileCache;
 import org.enginehub.squirrelid.cache.SQLiteCache;
-import org.enginehub.squirrelid.resolver.CacheForwardingService;
-import org.enginehub.squirrelid.resolver.HttpRepositoryService;
+import org.enginehub.squirrelid.resolver.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -41,7 +43,7 @@ import java.util.UUID;
  * @since Hikari-1.0.3, refactored
  */
 public class PlayerFinder {
-    private final CacheForwardingService resolver;
+    private final ProfileService resolver;
     private final ProfileCache cache;
 
     public PlayerFinder() {
@@ -51,9 +53,14 @@ public class PlayerFinder {
         } catch (Exception e) {
             Util.debugLog("Failed to initialize player mapping cache database, use HashMapCache instead.");
         }
-        this.resolver = new CacheForwardingService(
-                HttpRepositoryService.forMinecraft(),
-                cache);
+        List<ProfileService> services = new ArrayList<>();
+        if(PaperLib.isPaper() && !System.getProperties().containsKey("com.ghostchu.quickshop.util.PlayerFinder.forceSpigot")){
+            services.add(PaperPlayerService.getInstance());
+        }else {
+            Util.debugLog("Fallback to use general CombinedProfileService for player lookup.");
+            services.add(new CacheForwardingService(new ParallelProfileService(HttpRepositoryService.forMinecraft(), 2), cache));
+        }
+        this.resolver = new CombinedProfileService(services);
         this.cache = cache;
     }
 
