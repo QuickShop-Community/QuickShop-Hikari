@@ -78,22 +78,24 @@ public class ConfigurationUpdater {
                 try {
                     if (method.getParameterCount() == 0) {
                         method.invoke(configUpdateScript);
-                    }
-                    if (method.getParameterCount() == 1 && (method.getParameterTypes()[0] == int.class || method.getParameterTypes()[0] == Integer.class)) {
-                        method.invoke(configUpdateScript, current);
+                    }else {
+                        if (method.getParameterCount() == 1 && (method.getParameterTypes()[0] == int.class || method.getParameterTypes()[0] == Integer.class)) {
+                            method.invoke(configUpdateScript, current);
+                        }
                     }
                 } catch (Exception e) {
                     plugin.getLogger().log(Level.WARNING, "Failed to execute update script " + method.getName() + " for version " + updateScript.version() + ": " + e.getMessage() + ", plugin may not working properly!", e);
                 }
                 getConfiguration().set("config-version", updateScript.version());
+                plugin.getLogger().info("[ConfigUpdater] Configuration updated to version " + updateScript.version());
             } catch (Throwable throwable) {
                 plugin.getLogger().log(Level.WARNING, "Failed execute update script " + method.getName() + " for updating to version " + method.getAnnotation(UpdateScript.class).version() + ", some configuration options may missing or outdated", throwable);
             }
         }
+        plugin.getLogger().info("[ConfigUpdater] Saving configuration changes...");
         plugin.saveConfig();
-        brokenConfigurationFix();
-        plugin.getConfig().set("config-version", selectedVersion);
-        plugin.saveConfig();
+        //brokenConfigurationFix();
+        //plugin.saveConfig();
         plugin.reloadConfig();
         //Delete old example configuration files
         try {
