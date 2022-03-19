@@ -2,4 +2,4 @@ name: qscompat-griefprevention
 version: '${project.version}'
 main: com.ghostchu.quickshop.compatibility.griefprevention.Griefprevention
 api-version: 1.16
-depend: [ Towny, QuickShop-Hikari ]
+depend: [ GriefPrevention, QuickShop-Hikari ]
