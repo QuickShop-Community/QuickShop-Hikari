@@ -193,9 +193,9 @@ public class Util {
             return 0;
         }
         ItemMatcher matcher = plugin.getItemMatcher();
-        if (inv instanceof CountableInventoryWrapper) {
+        if (inv instanceof CountableInventoryWrapper ciw) {
 
-            return ((CountableInventoryWrapper) inv).countItem(input -> matcher.matches(item, input));
+            return ciw.countItem(input -> matcher.matches(item, input));
         } else {
             int items = 0;
             for (final ItemStack iStack : inv) {
@@ -222,8 +222,8 @@ public class Util {
         if (inv == null) {
             return 0;
         }
-        if (inv instanceof CountableInventoryWrapper) {
-            return ((CountableInventoryWrapper) inv).countItem(shop::matches);
+        if (inv instanceof CountableInventoryWrapper ciw) {
+            return ciw.countItem(shop::matches);
         } else {
             int items = 0;
             for (final ItemStack iStack : inv) {
@@ -250,8 +250,8 @@ public class Util {
         if (inv == null) {
             return 0;
         }
-        if (inv instanceof CountableInventoryWrapper) {
-            return ((CountableInventoryWrapper) inv).countSpace(shop::matches);
+        if (inv instanceof CountableInventoryWrapper ciw) {
+            return ciw.countSpace(shop::matches);
         } else {
             ItemStack item = shop.getItem();
             int space = 0;
@@ -280,8 +280,8 @@ public class Util {
             return 0;
         }
         ItemMatcher matcher = plugin.getItemMatcher();
-        if (inv instanceof CountableInventoryWrapper) {
-            return ((CountableInventoryWrapper) inv).countSpace(input -> matcher.matches(item, input));
+        if (inv instanceof CountableInventoryWrapper ciw) {
+            return ciw.countSpace(input -> matcher.matches(item, input));
         } else {
             int space = 0;
             int itemMaxStackSize = getItemMaxStackSize(item.getType());
