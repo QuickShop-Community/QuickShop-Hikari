@@ -911,12 +911,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             if (getEconomy() != null) {
                 economyType = this.getEconomy().getName();
             }
-            String eventAdapter;
-            if (getConfig().getInt("shop.protection-checking-handler") == 1) {
-                eventAdapter = "QUICKSHOP";
-            } else {
-                eventAdapter = "BUKKIT";
-            }
             // Version
             metrics.addCustomChart(new Metrics.SimplePie("server_version", Bukkit::getVersion));
             metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", Bukkit::getBukkitVersion));
@@ -933,7 +927,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> AbstractDisplayItem.getNowUsing().name()));
             metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));
             metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> String.valueOf(this.isAllowStack())));
-            metrics.addCustomChart(new Metrics.SimplePie("event_adapter", () -> eventAdapter));
             metrics.addCustomChart(new Metrics.SingleLineChart("shops_created_on_all_servers", () -> this.getShopManager().getAllShops().size()));
         } else {
             getLogger().info("You have disabled mertics, Skipping...");
