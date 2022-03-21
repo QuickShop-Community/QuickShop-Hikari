@@ -675,6 +675,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
             //BUKKIT METHOD SHOULD ALWAYS EXECUTE ON THE SERVER MAIN THEAD
             this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
+            getLogger().warning("Unrecommended display-auto-despawn has been enabled, this feature may heavy impact the server performance!");
         }
         getLogger().info("Registering commands...");
         /* PreInit for BootError feature */
