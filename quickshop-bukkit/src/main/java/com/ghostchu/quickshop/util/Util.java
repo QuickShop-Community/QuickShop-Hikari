@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
 import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.listener.LockListener;
 import com.google.common.collect.EvictingQueue;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
@@ -47,12 +48,16 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -1283,6 +1288,14 @@ public class Util {
      */
     public static boolean listDisorderMatches(@NotNull List<?> list1, @NotNull List<?> list2){
         return list1.containsAll(list2) && list2.containsAll(list1);
+    }
+
+    public static void unregisterListenerClazz(@NotNull Plugin plugin, @NotNull Class<? extends Listener> clazz) {
+        for (RegisteredListener registeredListener : HandlerList.getRegisteredListeners(plugin)) {
+            if(registeredListener.getListener() instanceof LockListener ll){
+                HandlerList.unregisterAll(ll);
+            }
+        }
     }
 
 }
