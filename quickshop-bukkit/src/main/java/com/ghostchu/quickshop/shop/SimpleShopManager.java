@@ -90,9 +90,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     private final EconomyFormatter formatter;
     @Getter
     @Nullable
-    private OfflinePlayer cacheTaxAccount;
+    private UUID cacheTaxAccount;
     @Getter
-    private OfflinePlayer cacheUnlimitedShopAccount;
+    private UUID cacheUnlimitedShopAccount;
     private SimplePriceLimiter priceLimiter;
     private boolean useOldCanBuildAlgorithm;
     private boolean autoSign;
@@ -111,9 +111,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
         if (!taxAccount.isEmpty()) {
             if (Util.isUUID(taxAccount)) {
-                this.cacheTaxAccount = plugin.getServer().getOfflinePlayer(UUID.fromString(taxAccount));
+                this.cacheTaxAccount = UUID.fromString(taxAccount);
             } else {
-                this.cacheTaxAccount = Bukkit.getOfflinePlayer(taxAccount);
+                this.cacheTaxAccount = Bukkit.getOfflinePlayer(taxAccount).getUniqueId();
             }
         } else {
             // disable tax account
@@ -126,9 +126,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 plugin.getLogger().log(Level.WARNING, "unlimited-shop-owner-change-account is empty, default to \"quickshop\"");
             }
             if (Util.isUUID(uAccount)) {
-                cacheUnlimitedShopAccount = Bukkit.getOfflinePlayer(UUID.fromString(uAccount));
+               cacheUnlimitedShopAccount = UUID.fromString(uAccount);
             } else {
-                cacheUnlimitedShopAccount = Bukkit.getOfflinePlayer(uAccount);
+                cacheUnlimitedShopAccount = Bukkit.getOfflinePlayer(uAccount).getUniqueId();
             }
         }
         this.priceLimiter = new SimplePriceLimiter(plugin);
@@ -676,7 +676,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             taxAccount = shop.getTaxAccount();
         } else {
             if(this.cacheTaxAccount != null)
-              taxAccount = this.cacheTaxAccount.getUniqueId();
+              taxAccount = this.cacheTaxAccount;
         }
         EconomyTransaction transaction;
         EconomyTransaction.EconomyTransactionBuilder builder = EconomyTransaction.builder()
@@ -964,7 +964,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (createCost > 0) {
             EconomyTransaction economyTransaction =
                     EconomyTransaction.builder()
-                            .taxAccount(cacheTaxAccount.getUniqueId())
+                            .taxAccount(cacheTaxAccount)
                             .taxModifier(0.0)
                             .core(plugin.getEconomy())
                             .from(p.getUniqueId())
@@ -1073,7 +1073,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             taxAccount = shop.getTaxAccount();
         } else {
             if(this.cacheTaxAccount != null) {
-                taxAccount = this.cacheTaxAccount.getUniqueId();
+                taxAccount = this.cacheTaxAccount;
             }
         }
         EconomyTransaction.EconomyTransactionBuilder builder = EconomyTransaction.builder()
@@ -1536,7 +1536,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      */
     @Override
     public void migrateOwnerToUnlimitedShopOwner(Shop shop) {
-        shop.setOwner(this.cacheUnlimitedShopAccount.getUniqueId());
+        shop.setOwner(this.cacheUnlimitedShopAccount);
         shop.setSignText();
     }
 

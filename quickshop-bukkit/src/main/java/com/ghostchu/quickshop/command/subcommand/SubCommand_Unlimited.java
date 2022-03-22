@@ -23,9 +23,13 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
+import com.ghostchu.quickshop.util.Util;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
+import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
 
 @AllArgsConstructor
 public class SubCommand_Unlimited implements CommandHandler<Player> {
@@ -44,8 +48,14 @@ public class SubCommand_Unlimited implements CommandHandler<Player> {
         if (shop.isUnlimited()) {
             plugin.text().of(sender, "command.toggle-unlimited.unlimited").send();
             if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
+                UUID uuid = ((SimpleShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount();
+                Profile profile = plugin.getPlayerFinder().find(uuid);
+                if(profile == null){
+                    Util.debugLog("Failed to migrate shop to unlimited shop owner, uniqueid invalid: "+uuid+".");
+                    return;
+                }
                 plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);
-                plugin.text().of(sender, "unlimited-shop-owner-changed", ((SimpleShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount().getName()).send();
+                plugin.text().of(sender, "unlimited-shop-owner-changed", profile.getName()).send();
             }
             return;
         }

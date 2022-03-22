@@ -29,7 +29,6 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.WarningSender;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -77,9 +76,9 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                     if (shop.getTaxAccount() != null) {
                         taxAccount = shop.getTaxAccount();
                     } else {
-                        OfflinePlayer offlinePlayer = ((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount();
-                        if (offlinePlayer != null)
-                            taxAccount = offlinePlayer.getUniqueId();
+                        UUID uuid = ((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount();
+                        if (uuid != null)
+                            taxAccount = uuid;
                     }
 
                     ShopOngoingFeeEvent event = new ShopOngoingFeeEvent(shop, shopOwner, cost);
