@@ -4,16 +4,16 @@ fee-charged-for-price-change: <green>You paid <red>{0}<green> to change the pric
 not-allowed-to-create: <red>You may not create a shop here.
 disabled-in-this-world: <red>QuickShop is disabled in this world
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
-client-language-changed: <green>QuickShop detected that your client language has been changed. We now use the {0} locale for you.
+client-language-changed: <green>QuickShop detected that your client language has been changed, we now use the {0} locale for you.
 shops-backingup: Creating Shop-backup from database...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-reremake instead.
+_comment: Hi translator! If you're editing this on GitHub or through source code should you go to https://crowdin.com/project/quickshop-reremake instead.
 unlimited-shop-owner-changed: <yellow>The unlimited Shop Owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Invalid number
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
 not-a-number: <red>You can only input a number, your input was {0}.
-not-looking-at-valid-shop-block: <red>Could not create a shop. Please look at a supported block type and try again.
+not-looking-at-valid-shop-block: <red>Could not create a shop. Please look a supported block-type and try again.
 shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
 tabcomplete:
   amount: '[amount]'
@@ -25,12 +25,12 @@ tabcomplete:
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>You cannot sell this item because it is on the blacklist
 command-type-mismatch: <red>This command can only be executed by <aqua>{0}.
-server-crash-warning: '<red>WARNING: Using the /qs reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
+server-crash-warning: '<red>The Server may crash after executing the /qs reload command when you replace/delete the QuickShop plugin-jar file while the server is running.'
 you-cant-afford-to-change-price: <red>It costs {0} to change the price in your shop.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
-forbidden-vanilla-behavior: <red>This operation is not allowed due to it not being consistent with vanilla behaviours
+forbidden-vanilla-behavior: <red>This operation is forbidden due to it not being consistent with vanilla behaviour
 shop-out-of-space-name: <dark_purple>Your shop {0} is full!
-paste-disabled: '<red>Paste function has been disabled! You cannot request technical support.<newline>Reason: {0}'
+paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
@@ -57,12 +57,12 @@ currency-unset: <green>Shop currency removed successfully. Using default setting
 you-cant-create-shop-in-there: <red>You don't have permissions to create a shop at this location.
 no-pending-action: <red>You don't have any pending actions
 refill-success: <green>Refill successful
-failed-to-paste: <red>Failed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)
+failed-to-paste: <red>Failed to upload the data to pastebin. Check your internet connection and try again. (See console for details)
 shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
 exceeded-maximum: <red>The value exceeded the maximum value in Java.
-unlimited-shop-owner-keeped: '<yellow>Attention: The Shop owner is still owning an unlimited shop and you have to re-set the new Shop owner by yourself.'
+unlimited-shop-owner-keeped: '<yellow>Attention: The Shop Owner is still an unlimited Shop Owner, and you have to re-set the new Shop Owner by yourself.'
 no-enough-money-to-keep-shops: <red>You didn't had enough money to keep your shops! All your shops have been removed...
 3rd-plugin-build-check-failed: <red>3rd-party plugin <bold>{0}<reset><red> denied the permission checks, did you have permission set up in there?
 not-a-integer: <red>You must input an integer, your input was {0}.
@@ -75,16 +75,16 @@ flush-finished: <green>Successfully cleared recent messages.
 no-price-given: <red>Please provide a valid price.
 shop-already-owned: <red>This is already a shop.
 backup-success: <green>Backup successfull.
-not-looking-at-shop: <red>Couldn't find a QuickShop. Make sure you look at one.
+not-looking-at-shop: <red>Could not find a QuickShop. Make sure you look at one.
 you-cant-afford-a-new-shop: <red>It costs {0} to create a new shop.
 success-created-shop: <green>Shop created.
 shop-creation-cancelled: <red>Shop creation cancelled.
-shop-owner-self-trade: <yellow>You trade with your own shop. You may not gain any money.
+shop-owner-self-trade: <yellow>You trade with your own shop, so you might not gain any balance.
 purchase-out-of-space: <red>This shop has run out of space. Contact the shop owner or staff to get it emptied.
 reloading-status:
   success: <green>Reload completed without any errors.
-  scheduled: <green>Reload complete. <gray>(Some changes take a while to become active)
-  require-restart: <green>Reload complete. <yellow>(Some changes require a server restart to take effect)
+  scheduled: <green>Reload completed. <gray>(Some changes take a while to become active)
+  require-restart: <green>Reload completed. <yellow>(Some changes require a server restart to take effect)
   failed: <red>Reload failed, check the server console
 player-bought-from-your-store-tax: <green>{0} purchased{1} {2} from your shop and you earned {3} ({4} in taxes).
 not-enough-space: <red>You only have room left for {0} more!
@@ -119,7 +119,7 @@ currency-not-exists: <red>Cannot find the currency that you want to set. Maybe t
 no-nearby-shop: <red>No nearby shops matching {0}.
 translation-author: 'Translator: Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Integration {0} denied the Shop trading
-shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Please contact the server administrators if this error persists.
+shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Successfully set the shop owner to Server.
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
 shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
@@ -162,12 +162,12 @@ translate-not-completed-yet-url: 'The translation of the language {0} was not co
 success-removed-shop: <green>Shop removed.
 currency-set: <green>Shop currency successfully set to {0}.
 shop-purged-start: <green>Shop purge started, check the console for details.
-economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economic changes have been rolled back. Please contact the server administrators if this error persists.
+economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
 nothing-to-flush: <green>You have no new shop messages.
 no-price-change: <red>This wouldn't result in a price change!
-edition-confilct: QuickShop-Hikari with QuickShop-Reremake installed may cause conflicts between each other. Uninstall one of them.
-inventory-unavailable: '<red>Non-existant or invalid InventoryWrapper. Do you use an Addon to re-bind the Shop Inventory?<newline>Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the Server administrators.'
-file-test: This is a test text file. We use it to test if the messages.json file is broken. You can fill it with any easter eggs you like :)
+edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
+inventory-unavailable: '<red>This shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.'
+file-test: This is a test textfile. We use it to test if the messages.json file is broken. You can fill it with any easter eggs you like :)
 unknown-player: <red>The target player doesn't exist. Please check the username you typed.
 language:
   qa-issues: '<yellow>Quality assurance issues: <aqua>{0}%'
@@ -176,7 +176,7 @@ language:
   translate-progress: '<yellow>Translation Progress: <aqua>{0}%'
   name: '<yellow>Name: <gold>{0}'
   help-us: <green>[Help us improve the translation quality]
-warn-to-paste: '<yellow>Collecting data and uploading to Pastebin, this may take a while. <red><bold>Warning: <red>The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
+warn-to-paste: '<yellow>Collecting data and uploading to Pastebin, this may take a while. <red><bold>Warning:<red> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
 how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL<green>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to sell all.
 updatenotify:
   buttontitle: '[Update Now]'
@@ -259,14 +259,14 @@ translation-contributors: 'Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul
 empty-success: <green>Emptying shop successful
 taxaccount-set: <green>This shop's tax account has been set to <yellow>{0}
 support-disable-reason:
-  hot-reload: <yellow>Unsupported hot-reload. Restart the server and check again.
-  outdated: <yellow>This version of QuickShop is already outdated. Update before requesting support!
-  bad-hosts: '<yellow>The server''s HOSTS has been modified and certain QuickShop-functions require a connection to the Mojang API to work. Please fix the HOSTS settings before asking for support.<newline>Windows: C:\windows\system32\drivers\etc\hosts<newline>Linux: /etc/hosts'
-  privacy: <yellow>This server is running in Cracked (Offline) mode. If you're running the server under a proxy and online-mode is set to true in the proxy, configure the proxy-related settings correctly.
-  modified: <yellow>File-integrity-check failed. This QuickShop build has been modified by others.
-  consolespamfix-installed: <yellow>ConsoleSpamFix is installed. It will hide Exception-details. Disable it temporarily during support requests.
-  authlib-injector-detected: <yellow>This server runs with a 3rd-party Auth-library provided such as AuthLib-Injector.
-  unsupported-server-software: <yellow>Unsupported Server software. Any modded Hybrid-Server software is not supported, including MCPC, Cauldron, CatServer, Mohis, Magma, Fukkit, Cardboard, etc.
+  hot-reload: <yellow>Unsupported hot reloaded, restart the server and check again.
+  outdated: <yellow>This version of QuickShop already outdated, up-to-date before requesting support!
+  bad-hosts: '<yellow>This server HOSTS has been modified and QuickShop some functions require connect to Mojang API correctly. Fix the HOSTS before asking support, Windows at C:\windows\system32\drivers\etc\hosts, Linux at /etc/hosts.'
+  privacy: <yellow>This server running under cracked (offline) mode. If you are running bukkit server under proxy and online-mode=true on proxy, please configure the proxy related settings correctly.
+  modified: <yellow>File integrity check failed, this QuickShop build has been modified by others.
+  consolespamfix-installed: <yellow>ConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support.
+  authlib-injector-detected: <yellow>This server running under 3rd-party authlib provider like authlib-injector.
+  unsupported-server-software: <yellow>Unsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.
 supertool-is-disabled: <red>Supertool is disabled. Cannot break any shops.
 unknown-owner: Unknown
 restricted-prices: '<red>Restricted price for {0}: Min {1}, max {2}'
@@ -295,7 +295,7 @@ nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}<green>:'
 backup-failed: Cannot backup the database. Check the console for details.
 shop-staff-cleared: <green>Successfully removed all staff members from your shop.
 price-too-high: <red>The shop price is too high! You cannot create a shop with a price higher than {0}.
-plugin-cancelled: '<red>Operation cancelled. Reason: {0}'
+plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <green>{0} sold {1} {2} to your shop.
 shop-out-of-stock: <dark_purple>Your shop at {0}, {1}, {2} has run out of {3}!
 how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}<green>. Enter <aqua>{1}<green> to buy them all.
@@ -307,7 +307,7 @@ language-info-panel:
   translate-on-crowdin: '[Translate on Crowdin]'
 item-not-exist: <red>The item <yellow>{0} <red>does not exist, please check your spelling.
 shop-creation-failed: <red>Shop creation failed, please contact with server administrator.
-inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x <red>more items added to it. Try emptying your inventory!
+inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items into it, try empty the your inventory!
 no-creative-break: <red>You cannot break the shops of other players while in creative mode. Switch to survival mode or try to use the supertool {0} instead.
 booleanformat:
   success: <green>✔
@@ -450,7 +450,7 @@ currency-not-support: <red>The economy plugin doesn't support the multi-economy 
 trading-in-creative-mode-is-disabled: <red>You cannot trade with this shop while in creative mode.
 the-owner-cant-afford-to-buy-from-you: <red>This item is worth {0}, but the shop-owner only has {1}
 you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to naming.
-inventory-error: '<red>Failed to process the InventoryWrapper. Do you use an addon to re-bind the shop Inventory?<newline>Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.'
+inventory-error: '<red>Failed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.'
 integrations-check-failed-create: <red>Integration {0} denied the shop-creation
 shop-out-of-space: <dark_purple>Your shop at {0}, {1}, {2} is full!
 admin-shop: AdminShop
@@ -460,7 +460,7 @@ chest-was-removed: <red>The chest was removed.
 you-cant-afford-to-buy: <red>It costs {0}, but you only have {1}
 shops-removed-in-world: <yellow>A total of <aqua>{0}<yellow> shops have been deleted in world <aqua>{1}<yellow>.
 display-turn-off: <green>Successfully turn off the shop display.
-client-language-unsupported: <yellow>QuickShop doesn't support your client language. Falling back to locale {0}...
+client-language-unsupported: <yellow>QuickShop doesn't support your client language, falling back to {0} locale...
 language-version: '63'
-not-managed-shop: <red>You are not the owner nor a moderator of this Shop
+not-managed-shop: <red>You are not the owner nor moderator of this Shop
 shop-cannot-trade-when-freezing: <red>You cannot trade with this shop because it is frozen.
