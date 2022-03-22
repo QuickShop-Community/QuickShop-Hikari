@@ -296,6 +296,7 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.rollbar</groupId>
@@ -434,6 +435,10 @@
                 <exclusion>
                     <artifactId>guava</artifactId>
                     <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>sqlite-jdbc</artifactId>
+                    <groupId>org.xerial</groupId>
                 </exclusion>
             </exclusions>
             <type>jar</type>

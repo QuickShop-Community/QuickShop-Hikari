@@ -169,6 +169,11 @@
                                         </shadedPattern>
                                     </relocation>
                                     <relocation>
+                                        <pattern>org.json.simple.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.org.json.simple.
+                                        </shadedPattern>
+                                    </relocation>
+                                    <relocation>
                                         <pattern>co.aikar.taskchain.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.co.aikar.taskchain.
                                         </shadedPattern>
