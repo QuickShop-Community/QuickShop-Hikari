@@ -1,6 +1,6 @@
 {
   "_comment": "Xin chào, Nếu bạn chỉnh sửa nội dung này từ Github hoặc từ các source code, bạn nên truy cập vào https://crowdin.com/project/quickshop-reremake",
-  "file-test": "Đây là một file test thử. Chúng tôi dùng nó để kiểm tra xem liệu file messages.json có bị lỗi hay không. Bạn có thể tuỳ ý điền bất cứ gì bạn thích vào đây :)",
+  "file-test": "Đây là một file test thử. Chúng tôi dùng nó để kiểm tra xem liệu file messages.yml có bị lỗi hay không. Bạn có thể tuỳ ý điền bất cứ gì bạn thích vào đây :)",
   "translation-author": "Người dịch: huyhhuy",
   "translation-version": "Phiên bản hỗ trợ: Hikari",
   "translation-contributors": "Người đóng góp: huyhhuy",

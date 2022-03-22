@@ -19,7 +19,7 @@
 
 package com.ghostchu.quickshop.localization.text;
 
-import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -28,12 +28,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-// No to-do anymore! This used for not only messages.json! Keep the extent ability!
+// No to-do anymore! This used for not only messages.yml! Keep the extent ability!
 public class LanguageFilesManager {
     //distributionPath->[localeCode->OTA files]
-    private final Map<String, Map<String, JsonConfiguration>> locale2ContentMapping = new ConcurrentHashMap<>();
+    private final Map<String, Map<String, FileConfiguration>> locale2ContentMapping = new ConcurrentHashMap<>();
     //distributionPath->bundled files
-    private final Map<String, JsonConfiguration> bundledFile2ContentMapping = new ConcurrentHashMap<>();
+    private final Map<String, FileConfiguration> bundledFile2ContentMapping = new ConcurrentHashMap<>();
 
     /**
      * Reset TextMapper
@@ -51,7 +51,7 @@ public class LanguageFilesManager {
      * @param distribution     The values from Distribution platform
      * @param bundled          The values from bundled file
      */
-    public void deploy(@NotNull String distributionPath, @NotNull String locale, @NotNull JsonConfiguration distribution, @NotNull JsonConfiguration bundled) {
+    public void deploy(@NotNull String distributionPath, @NotNull String locale, @NotNull FileConfiguration distribution, @NotNull FileConfiguration bundled) {
         this.bundledFile2ContentMapping.put(distributionPath, bundled);
         this.locale2ContentMapping.computeIfAbsent(distributionPath, e -> new HashMap<>());
         this.locale2ContentMapping.get(distributionPath).put(locale, distribution);
@@ -63,7 +63,7 @@ public class LanguageFilesManager {
      * @param distributionPath Distribution Path
      * @param bundled          The values from bundled file
      */
-    public void deployBundled(@NotNull String distributionPath, @NotNull JsonConfiguration bundled) {
+    public void deployBundled(@NotNull String distributionPath, @NotNull FileConfiguration bundled) {
         this.bundledFile2ContentMapping.put(distributionPath, bundled);
     }
 
@@ -104,7 +104,7 @@ public class LanguageFilesManager {
      * @param distributionPath The distribution path
      * @return The bundled data, null if never deployed
      */
-    public @Nullable JsonConfiguration getBundled(@NotNull String distributionPath) {
+    public @Nullable FileConfiguration getBundled(@NotNull String distributionPath) {
         return this.bundledFile2ContentMapping.get(distributionPath);
 
     }
@@ -115,7 +115,7 @@ public class LanguageFilesManager {
      * @param distributionPath The distribution path
      * @return The locales data, empty if never deployed
      */
-    public @NotNull Map<String, JsonConfiguration> getDistribution(@NotNull String distributionPath) {
+    public @NotNull Map<String, FileConfiguration> getDistribution(@NotNull String distributionPath) {
         return this.locale2ContentMapping.getOrDefault(distributionPath, Collections.emptyMap());
     }
 
@@ -126,7 +126,7 @@ public class LanguageFilesManager {
      * @param locale           The specific locale
      * @return The locale data, null if never deployed
      */
-    public @Nullable JsonConfiguration getDistribution(@NotNull String distributionPath, @NotNull String locale) {
+    public @Nullable FileConfiguration getDistribution(@NotNull String distributionPath, @NotNull String locale) {
         return this.getDistribution(distributionPath).get(locale);
     }
 

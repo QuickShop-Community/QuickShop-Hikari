@@ -1,6 +1,6 @@
 {
   "_comment": "Hej oversætter! Hvis du redigerer dette fra Github eller fra kodekilder, bør du gå https://crowdin.com/project/quickshop-reremake",
-  "file-test": "This is a test textfile. We use it to test if the messages.json is broken. You can fill it with any easter eggs you like here :)",
+  "file-test": "This is a test textfile. We use it to test if the messages.yml is broken. You can fill it with any easter eggs you like here :)",
   "translation-author": "Oversættere: Ghost_chu, Andre_601, notashelf",
   "translation-version": "Support Version: Hikari",
   "translation-contributors": "Bidragydere: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken og Andre_601",

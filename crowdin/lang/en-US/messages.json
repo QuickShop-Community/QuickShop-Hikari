@@ -1,6 +1,6 @@
 {
   "_comment": "Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-reremake instead.",
-  "file-test": "This is a test text file. We use it to test if the messages.json file is broken. You can fill it with any easter eggs you like :)",
+  "file-test": "This is a test text file. We use it to test if the messages.yml file is broken. You can fill it with any easter eggs you like :)",
   "translation-author": "Translator: Ghost_chu, Andre_601",
   "translation-version": "Support Version: Hikari",
   "translation-contributors": "Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",

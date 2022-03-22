@@ -1,6 +1,6 @@
 {
   "_comment": "你好翻譯者 ！ 假若你正在從 Github 或其他代管平台編輯，你應該前往 https://crowdin.com/project/quickshop-reremake 進行翻譯",
-  "file-test": "這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)",
+  "file-test": "這是個測試的文字檔案，我們使用它來測試 messages.yml 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)",
   "translation-author": "翻譯人員 ： Ghost_chu、Andre_601、Flandre_tw （主翻譯） 、胡蝶 しのぶ こちょう しのぶ#3062（主翻譯）",
   "translation-version": "支援版本: Hikari",
   "translation-contributors": "貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601",

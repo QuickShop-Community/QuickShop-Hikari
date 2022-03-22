@@ -19,7 +19,6 @@
 
 package com.ghostchu.quickshop.localization.text;
 
-import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.localization.text.postprocessor.PostProcessor;
@@ -44,6 +43,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -62,7 +63,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class SimpleTextManager implements TextManager, Reloadable {
-    private static String CROWDIN_LANGUAGE_FILE_PATH = "/hikari/crowdin/lang/%locale%/messages.json";
+    private static String CROWDIN_LANGUAGE_FILE_PATH = "/hikari/crowdin/lang/%locale%/messages.yml";
     public final Set<PostProcessor> postProcessors = new LinkedHashSet<>();
     private final QuickShop plugin;
     private final Distribution distribution;
@@ -107,8 +108,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @param file The Crowdin file path
      * @return The bundled file configuration object
      */
-    private JsonConfiguration loadBundled(String file) {
-        JsonConfiguration bundledLang = new JsonConfiguration();
+    private FileConfiguration loadBundled(String file) {
+        FileConfiguration bundledLang = new YamlConfiguration();
         File fileObject = new File(file);
         Path parentPath = fileObject.toPath().getParent();
         String parentStr = parentPath != null ? parentPath.toFile().getName() : "";
@@ -127,10 +128,10 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(stream, StandardCharsets.UTF_8), StandardCharsets.UTF_8), StandardCharsets.UTF_8));
             } else {
                 plugin.getLogger().log(Level.WARNING, "Cannot load bundled language file from jar, bundled language files " + (parentStr == null ? "" : parentStr) + "/" + fileName + " not found.");
-                bundledLang = new JsonConfiguration();
+                bundledLang = new YamlConfiguration();
             }
         } catch (IOException | InvalidConfigurationException ex) {
-            bundledLang = new JsonConfiguration();
+            bundledLang = new YamlConfiguration();
             plugin.getLogger().log(Level.SEVERE, "Cannot load bundled language file from jar, some strings may missing!", ex);
         }
         return bundledLang;
@@ -184,7 +185,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @param distributionConfiguration The configuration that from distribution (will override it)
      * @param overrideConfiguration     The configuration that from local
      */
-    private void applyOverrideConfiguration(@NotNull JsonConfiguration distributionConfiguration, @NotNull JsonConfiguration overrideConfiguration) {
+    private void applyOverrideConfiguration(@NotNull FileConfiguration distributionConfiguration, @NotNull FileConfiguration overrideConfiguration) {
         for (String key : overrideConfiguration.getKeys(true)) {
             if ("language-version".equals(key) || "config-version".equals(key) || "_comment".equals(key) || "version".equals(key)) {
                 continue;
@@ -206,8 +207,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @return The configuration
      * @throws Exception Any errors when getting it
      */
-    private JsonConfiguration getDistributionConfiguration(@NotNull String distributionFile, @NotNull String distributionCode) throws Exception {
-        JsonConfiguration configuration = new JsonConfiguration();
+    private FileConfiguration getDistributionConfiguration(@NotNull String distributionFile, @NotNull String distributionCode) throws Exception {
+        FileConfiguration configuration = new YamlConfiguration();
         try {
             // Load the locale file from local cache if available
             // Or load the locale file from remote server if it had updates or not exists.
@@ -247,21 +248,21 @@ public class SimpleTextManager implements TextManager, Reloadable {
                             return;
                         }
                         //Offline default file
-                        JsonConfiguration defaultFile = loadBundled(crowdinFile);
+                        FileConfiguration defaultFile = loadBundled(crowdinFile);
                         //Add available language (minecraftCode)
                         availableLanguages.add(minecraftCode);
                         Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
                         // Deploy bundled to mapper
                         languageFilesManager.deployBundled(crowdinFile, defaultFile);
                         // Loading bundled file (for no internet connection or failed loading)
-                        JsonConfiguration configuration = loadBundled(crowdinFile.replace("%locale%", crowdinCode));
-                        JsonConfiguration remoteConfiguration = getDistributionConfiguration(crowdinFile, crowdinCode);
+                        FileConfiguration configuration = loadBundled(crowdinFile.replace("%locale%", crowdinCode));
+                        FileConfiguration remoteConfiguration = getDistributionConfiguration(crowdinFile, crowdinCode);
                         // Only apply right language-version for client
                         if (defaultFile.isSet("language-version") && defaultFile.getString("language-version", "0").equals(remoteConfiguration.getString("language-version", "0"))) {
                             applyOverrideConfiguration(configuration, remoteConfiguration);
                         }
                         // Loading override text (allow user modification the translation)
-                        JsonConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
+                        FileConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
                         applyOverrideConfiguration(configuration, override);
                         // Deploy distribution to mapper
                         languageFilesManager.deploy(crowdinFile, minecraftCode, configuration, defaultFile);
@@ -282,7 +283,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         /* Workaround for Crowdin bug. */
         if (!distribution.getAvailableFiles().contains(CROWDIN_LANGUAGE_FILE_PATH)) {
             Util.debugLog("Warning! Illegal file path detected, trying auto fix...");
-            List<String> messagesFiles = distribution.getAvailableFiles().stream().filter(s -> s.endsWith("messages.json")).toList();
+            List<String> messagesFiles = distribution.getAvailableFiles().stream().filter(s -> s.endsWith("messages.yml")).toList();
             if (!messagesFiles.isEmpty()) {
                 CROWDIN_LANGUAGE_FILE_PATH = messagesFiles.get(0);
             }
@@ -329,14 +330,14 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @return The override configuration
      * @throws IOException IOException
      */
-    private JsonConfiguration getOverrideConfiguration(@NotNull String overrideFile, @NotNull String locale) throws IOException {
+    private FileConfiguration getOverrideConfiguration(@NotNull String overrideFile, @NotNull String locale) throws IOException {
         File localOverrideFile = new File(getOverrideFilesFolder(overrideFile.replace("%locale%", locale)), new File(overrideFile.replace("%locale%", locale)).getName());
         if (!localOverrideFile.exists()) {
             Util.debugLog("Creating locale override file: " + localOverrideFile);
             localOverrideFile.getParentFile().mkdirs();
             localOverrideFile.createNewFile();
         }
-        JsonConfiguration result = JsonConfiguration.loadConfiguration(localOverrideFile);
+        FileConfiguration result = YamlConfiguration.loadConfiguration(localOverrideFile);
         //Add a comment for user guide if file is empty
 //        if (result.getKeys(false).isEmpty()) {
 //            result.set("_comment", "Please visit https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-translation-override-system for override language file tutorial.");
@@ -498,13 +499,13 @@ public class SimpleTextManager implements TextManager, Reloadable {
     public static class TextList implements com.ghostchu.quickshop.api.localization.text.TextList {
         private final SimpleTextManager manager;
         private final String path;
-        private final Map<String, JsonConfiguration> mapping;
+        private final Map<String, FileConfiguration> mapping;
         private final CommandSender sender;
         private final Component[] args;
         @Nullable
-        private final JsonConfiguration bundled;
+        private final FileConfiguration bundled;
 
-        private TextList(SimpleTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Component... args) {
+        private TextList(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, @Nullable FileConfiguration bundled, String path, Component... args) {
             this.manager = manager;
             this.sender = sender;
             this.mapping = mapping;
@@ -513,7 +514,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             this.args = args;
         }
 
-        private TextList(SimpleTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Component... args) {
+        private TextList(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, @Nullable FileConfiguration bundled, String path, Component... args) {
             this.manager = manager;
             if (sender != null) {
                 this.sender = Bukkit.getPlayer(sender);
@@ -561,7 +562,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         @Override
         @NotNull
         public List<Component> forLocale(@NotNull String locale) {
-            JsonConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
             if (index == null) {
                 Util.debugLog("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
                 String languageCode = MsgUtil.getDefaultGameLanguageCode();
@@ -624,13 +625,13 @@ public class SimpleTextManager implements TextManager, Reloadable {
     public static class Text implements com.ghostchu.quickshop.api.localization.text.Text {
         private final SimpleTextManager manager;
         private final String path;
-        private final Map<String, JsonConfiguration> mapping;
+        private final Map<String, FileConfiguration> mapping;
         private final CommandSender sender;
         private final Component[] args;
         @Nullable
-        private final JsonConfiguration bundled;
+        private final FileConfiguration bundled;
 
-        private Text(SimpleTextManager manager, CommandSender sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Component... args) {
+        private Text(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, @Nullable FileConfiguration bundled, String path, Component... args) {
             this.manager = manager;
             this.sender = sender;
             this.mapping = mapping;
@@ -639,7 +640,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             this.args = args;
         }
 
-        private Text(SimpleTextManager manager, UUID sender, Map<String, JsonConfiguration> mapping, @Nullable JsonConfiguration bundled, String path, Component... args) {
+        private Text(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, @Nullable FileConfiguration bundled, String path, Component... args) {
             this.manager = manager;
             if (sender != null) {
                 this.sender = Bukkit.getPlayer(sender);
@@ -685,7 +686,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         @Override
         @NotNull
         public Component forLocale(@NotNull String locale) {
-            JsonConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
             if (index == null) {
                 Util.debugLog("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
                 if (MsgUtil.getDefaultGameLanguageCode().equals(locale)) {

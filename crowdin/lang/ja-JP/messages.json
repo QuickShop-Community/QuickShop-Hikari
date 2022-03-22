@@ -1,6 +1,6 @@
 {
   "_comment": "翻訳者さんこんにちは！Githubから、もしくはコードソースから編集している場合は、https://crowdin.com/project/quickshop-reremakeにアクセスしてください。",
-  "file-test": "これはテスト用のファイルです。私たちはこれを使って、messages.jsonは壊れていないかをチェックします。ここに好きなイースターエッグを挿入してもいいですよ:)",
+  "file-test": "これはテスト用のファイルです。私たちはこれを使って、messages.ymlは壊れていないかをチェックします。ここに好きなイースターエッグを挿入してもいいですよ:)",
   "translation-author": "翻訳者: Ghost_chu, Andre_601",
   "translation-version": "サポートバージョン: Hikari",
   "translation-contributors": "貢献者: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken, Andre_601 and Namiu",

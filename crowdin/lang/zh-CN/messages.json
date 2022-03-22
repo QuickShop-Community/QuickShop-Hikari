@@ -1,6 +1,6 @@
 {
   "_comment": "嗨 翻译者！如果您正在Github上或直接编辑源文件的方式进行翻译，请您前往：https://crowdin.com/project/quickshop-reremake",
-  "file-test": "这是个测试文件，我们可以用它来测试 messages.json 文件是否损坏。你可以在这里填入任何喜欢的彩蛋 :)",
+  "file-test": "这是个测试文件，我们可以用它来测试 messages.yml 文件是否损坏。你可以在这里填入任何喜欢的彩蛋 :)",
   "translation-author": "翻译人员： Ghost_chu, Andre_601, 李馨雨, YuanYuanOwO",
   "translation-version": "支持版本: Hikari",
   "translation-contributors": "开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601",

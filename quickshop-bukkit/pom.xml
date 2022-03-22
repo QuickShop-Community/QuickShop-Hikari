@@ -139,11 +139,6 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
-        <!-- JsonConfiguration  -->
-        <repository>
-            <id>onarandombox</id>
-            <url>https://repo.onarandombox.com/content/groups/public</url>
-        </repository>
         <!-- for development builds -->
         <repository>
             <id>sonatype-oss</id>
@@ -156,11 +151,6 @@
         <repository>
             <id>enginehub-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
-        </repository>
-        <!--MineDown -->
-        <repository>
-            <id>minebench-repo</id>
-            <url>https://repo.minebench.de/</url>
         </repository>
         <repository> <!-- for development builds -->
             <id>sonatype-oss-snapshots</id>
@@ -230,12 +220,6 @@
             <artifactId>ProtocolLib</artifactId>
             <version>4.8.0</version>
             <scope>provided</scope>
-        </dependency>
-        <!--JsonConfiguration Dependency Start-->
-        <dependency>
-            <groupId>com.dumptruckman.minecraft</groupId>
-            <artifactId>JsonConfiguration</artifactId>
-            <version>1.1</version>
         </dependency>
         <!--JsonConfiguration Dependency End-->
         <dependency>
@@ -319,18 +303,6 @@
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>de.themoep</groupId>
-            <artifactId>minedown-adventure</artifactId>
-            <version>1.7.2-SNAPSHOT</version>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.kyori</groupId>
-                    <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -469,6 +441,12 @@
                 </exclusion>
             </exclusions>
             <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-minimessage</artifactId>
+            <version>4.10.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

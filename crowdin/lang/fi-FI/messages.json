@@ -1,6 +1,6 @@
 {
   "_comment": "Hei kääntäjä! Jos muokkaat tätä Githubista tai koodilähteistä, sinun pitäisi mennä https://crowdin.com/project/quickshop-reremake",
-  "file-test": "Tämä on testi tekstitiedosto. Käytämme sitä testataksemme onko messages.json rikki. Voit täyttää sen millä tahansa pääsiäismunalla, josta pidät :)",
+  "file-test": "Tämä on testi tekstitiedosto. Käytämme sitä testataksemme onko messages.yml rikki. Voit täyttää sen millä tahansa pääsiäismunalla, josta pidät :)",
   "translation-author": "Kääntäjät: eemunni, Antti, salasan1",
   "translation-version": "Support Version: Hikari",
   "translation-contributors": "Avustajat: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",

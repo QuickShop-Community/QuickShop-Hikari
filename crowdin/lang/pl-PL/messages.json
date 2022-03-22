@@ -1,6 +1,6 @@
 {
   "_comment": "Witaj tłumaczu! Jeśli edytujesz to z Github'a lub ze źródeł kodowych, powinieneś przejść do https://crowdin.com/project/quickshop-reremake",
-  "file-test": "To jest testowy plik tekstowy. Używamy go do testowania jeśli messages.json jest zepsuty. Możesz wypełnić go dowolnymi easter egg'ami, które lubisz :)",
+  "file-test": "To jest testowy plik tekstowy. Używamy go do testowania jeśli messages.yml jest zepsuty. Możesz wypełnić go dowolnymi easter egg'ami, które lubisz :)",
   "translation-author": "Tłumacz: Ghost_chu, Andre_601",
   "translation-version": "Wersja wsparcia: Hikari",
   "translation-contributors": "Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601",

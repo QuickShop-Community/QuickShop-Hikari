@@ -1,6 +1,6 @@
 {
   "_comment": "Merhaba çevirmen! Eğer bunu Github'tan ya da kaynak kodundan çeviriyorsan, https://crowdin.com/project/quickshop-reremake adresine gitmelisin",
-  "file-test": "Bu bir deneme metin dosyası. Bu dosyası messages.json dosyasının bozuk mu diye kontrol etmek için kullanıyoruz. Bu dosyaya istediğin gibi sevdiğin easter egg'leri koyabilirsin :)",
+  "file-test": "Bu bir deneme metin dosyası. Bu dosyası messages.yml dosyasının bozuk mu diye kontrol etmek için kullanıyoruz. Bu dosyaya istediğin gibi sevdiğin easter egg'leri koyabilirsin :)",
   "translation-author": "Çevirmen: Cazcez, NOYB, ZOYTRK#4529",
   "translation-version": "Support Version: Hikari",
   "translation-contributors": "Katkıda Bulunanlar: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken Andre_601 and ZOYTRK#4529",

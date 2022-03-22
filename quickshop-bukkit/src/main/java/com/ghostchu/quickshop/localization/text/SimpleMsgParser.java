@@ -19,7 +19,6 @@
 
 package com.ghostchu.quickshop.localization.text;
 
-import de.themoep.minedown.adventure.MineDownParser;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -31,10 +30,10 @@ public class SimpleMsgParser {
 
     @NotNull
     public Component parse(@NotNull String str) {
-        if (type == 1) {
+        //if (type == 1) {
             return MiniMessage.miniMessage().deserialize(str);
-        } else {
-            return new MineDownParser().parse(str).build();
-        }
+        //} else {
+        //    return new MineDownParser().parse(str).build();
+        //}
     }
 }

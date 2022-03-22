@@ -20,7 +20,6 @@
 package com.ghostchu.quickshop.shop;
 
 import cc.carm.lib.easysql.api.SQLQuery;
-import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopModerator;
@@ -32,7 +31,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -218,23 +216,23 @@ public class ShopLoader {
         return false;
     }
 
-    @NotNull
-    private YamlConfiguration extraUpgrade(@NotNull String extraString) {
-        if (!StringUtils.isEmpty(extraString) && !"QuickShop: {}".equalsIgnoreCase(extraString)) {
-            Util.debugLog("Extra API -> Upgrading -> " + extraString.replace("\n", ""));
-        }
-        YamlConfiguration yamlConfiguration = new YamlConfiguration();
-        JsonConfiguration jsonConfiguration = new JsonConfiguration();
-        try {
-            jsonConfiguration.loadFromString(extraString);
-        } catch (InvalidConfigurationException e) {
-            plugin.getLogger().log(Level.WARNING, "Cannot upgrade extra data: " + extraString, e);
-        }
-        for (String key : jsonConfiguration.getKeys(true)) {
-            yamlConfiguration.set(key, jsonConfiguration.get(key));
-        }
-        return yamlConfiguration;
-    }
+//    @NotNull
+//    private YamlConfiguration extraUpgrade(@NotNull String extraString) {
+//        if (!StringUtils.isEmpty(extraString) && !"QuickShop: {}".equalsIgnoreCase(extraString)) {
+//            Util.debugLog("Extra API -> Upgrading -> " + extraString.replace("\n", ""));
+//        }
+//        YamlConfiguration yamlConfiguration = new YamlConfiguration();
+//        JsonConfiguration jsonConfiguration = new JsonConfiguration();
+//        try {
+//            jsonConfiguration.loadFromString(extraString);
+//        } catch (InvalidConfigurationException e) {
+//            plugin.getLogger().log(Level.WARNING, "Cannot upgrade extra data: " + extraString, e);
+//        }
+//        for (String key : jsonConfiguration.getKeys(true)) {
+//            yamlConfiguration.set(key, jsonConfiguration.get(key));
+//        }
+//        return yamlConfiguration;
+//    }
 
 
     private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
@@ -493,14 +491,9 @@ public class ShopLoader {
         private @NotNull YamlConfiguration deserializeExtra(@NotNull String extraString, @NotNull AtomicBoolean needUpdate) {
             YamlConfiguration yamlConfiguration = new YamlConfiguration();
             try {
-                if (extraString.startsWith("{")) {
-                    yamlConfiguration = extraUpgrade(extraString);
-                    needUpdate.set(true);
-                } else {
-                    yamlConfiguration.loadFromString(extraString);
-                }
+                yamlConfiguration.loadFromString(extraString);
             } catch (InvalidConfigurationException e) {
-                yamlConfiguration = extraUpgrade(extraString);
+                yamlConfiguration = new YamlConfiguration();
                 needUpdate.set(true);
             }
             return yamlConfiguration;
