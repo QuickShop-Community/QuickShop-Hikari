@@ -64,6 +64,8 @@ import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
 import com.ghostchu.quickshop.watcher.*;
 import com.ghostchu.simplereloadlib.ReloadManager;
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.Reloadable;
 import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
 import lombok.Getter;
@@ -94,7 +96,7 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 
-public class QuickShop extends JavaPlugin implements QuickShopAPI {
+public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     /**
      * The active instance of QuickShop
      * You shouldn't use this if you really need it.
@@ -476,6 +478,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         Util.setPlugin(this);
         this.onLoadCalled = true;
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up");
+        getReloadManager().register(this);
         //BEWARE THESE ONLY RUN ONCE
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
         getLogger().info("Self testing...");
@@ -650,14 +653,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
             getLogger().warning("Because our error reporter doesn't work, please report this error to developer, thank you!");
         }
-
         /* Initalize the Utils */
         this.loadItemMatcher();
         Util.initialize();
-
         /* Load 3rd party supports */
         load3rdParty();
-
         //Load the database
         setupDBonEnableding = true;
         if (!setupDatabase()) {
@@ -666,16 +666,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             return;
         }
         setupDBonEnableding = false;
-
         /* Initalize the tools */
         // Create the shop manager.
         permissionManager = new PermissionManager(this);
         // This should be inited before shop manager
-        if (this.display && getConfig().getBoolean("shop.display-auto-despawn")) {
-            this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
-            //BUKKIT METHOD SHOULD ALWAYS EXECUTE ON THE SERVER MAIN THEAD
-            this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
-        }
+        this.registerDisplayAutoDespawn();
         getLogger().info("Registering commands...");
         /* PreInit for BootError feature */
         commandManager = new SimpleCommandManager(this);
@@ -687,20 +682,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         this.shopManager = new SimpleShopManager(this);
         this.permissionChecker = new PermissionChecker(this);
         // Limit
-        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
-        ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
-        if (limitCfg != null) {
-            this.limit = limitCfg.getBoolean("use", false);
-            limitCfg = limitCfg.getConfigurationSection("ranks");
-            for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
-                limits.put(key, limitCfg.getInt(key));
-            }
-        }
+        this.registerLimitRanks();
         // Limit end
         if (getConfig().getInt("shop.finding.distance") > 100 && (getConfig().getBoolean("shop.finding.exclude-out-of-stock"))) {
             getLogger().severe("Shop find distance is too high with chunk loading feature turned on! It may cause lag! Pick a number under 100!");
         }
-
         if (getConfig().getBoolean("use-caching")) {
             this.shopCache = new Cache(this);
         } else {
@@ -727,9 +713,85 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
         new EconomySetupListener(this).register();
         new MetricListener(this).register();
         new InternalListener(this).register();
-
         this.shopControlPanelManager.register(new SimpleShopControlPanel());
+        this.registerDisplayItem();
+        this.registerShopLock();
+        getLogger().info("Cleaning MsgUtils...");
+        MsgUtil.clean();
+        MsgUtil.loadTransactionMessages();
+        this.registerUpdater();
+        /* Delay the Ecoonomy system load, give a chance to let economy system regiser. */
+        /* And we have a listener to listen the ServiceRegisterEvent :) */
+        Util.debugLog("Loading economy system...");
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                loadEcon();
+            }
+        }.runTaskLater(this, 1);
+        Util.debugLog("Registering watchers...");
+        calendarWatcher = new CalendarWatcher(this);
+        // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
+        signUpdateWatcher.runTaskTimer(this, 0, 10);
+        shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
+        if (logWatcher != null) {
+            logWatcher.runTaskTimerAsynchronously(this, 10, 10);
+            getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
+        }
+        this.registerOngoingFee();
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                getLogger().info("Registering bStats metrics...");
+                submitMeritcs();
+            }
+        }.runTask(this);
+        if (loaded) {
+            getServer().getPluginManager().callEvent(new QSConfigurationReloadEvent(this));
+        } else {
+            loaded = true;
+        }
+        calendarWatcher = new CalendarWatcher(this);
+        calendarWatcher.start();
+        this.shopPurger = new ShopPurger(this);
+        if (getConfig().getBoolean("purge.at-server-startup")) {
+            shopPurger.purge();
+        }
+        Util.debugLog("Now using display-type: " + AbstractDisplayItem.getNowUsing().name());
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
+    }
 
+    private void registerLimitRanks() {
+        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
+        ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
+        if (limitCfg != null) {
+            this.limit = limitCfg.getBoolean("use", false);
+            limitCfg = limitCfg.getConfigurationSection("ranks");
+            for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
+                limits.put(key, limitCfg.getInt(key));
+            }
+        }else{
+            this.limit = false;
+            limits.clear();
+        }
+    }
+
+    private void registerDisplayAutoDespawn() {
+        if (this.display && getConfig().getBoolean("shop.display-auto-despawn")) {
+            this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
+            //BUKKIT METHOD SHOULD ALWAYS EXECUTE ON THE SERVER MAIN THEAD
+            this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
+            getLogger().warning("Unrecommended display-auto-despawn has been enabled, this feature may heavy impact the server performance!");
+        }else{
+            if(this.displayAutoDespawnWatcher != null) {
+                this.displayAutoDespawnWatcher.cancel();
+                this.displayAutoDespawnWatcher = null;
+            }
+        }
+    }
+
+    private void registerDisplayItem() {
         if (this.display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
             if (getDisplayItemCheckTicks() > 0) {
                 if (getConfig().getInt("shop.display-items-check-ticks") < 3000) {
@@ -753,63 +815,53 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
                 }
             }
             new DisplayProtectionListener(this, this.shopCache).register();
+        }else{
+            Util.unregisterListenerClazz(this,DisplayProtectionListener.class);
         }
+    }
+
+    private void registerShopLock() {
         if (getConfig().getBoolean("shop.lock")) {
             new LockListener(this, this.shopCache).register();
+        }else{
+            Util.unregisterListenerClazz(this, LockListener.class);
         }
-        getLogger().info("Cleaning MsgUtils...");
-        MsgUtil.clean();
-        MsgUtil.loadTransactionMessages();
-        //disable update watcher during our project hadn't release on SpigotMC yet!
-        //noinspection PointlessBooleanExpression,ConstantConditions
-        if (this.getConfig().getBoolean("updater", true) && false) {
+    }
+
+    private void registerUpdater() {
+        if (this.getConfig().getBoolean("updater", true)) {
             updateWatcher = new UpdateWatcher();
             updateWatcher.init();
-        }
-        /* Delay the Ecoonomy system load, give a chance to let economy system regiser. */
-        /* And we have a listener to listen the ServiceRegisterEvent :) */
-        Util.debugLog("Loading economy system...");
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                loadEcon();
+        } else {
+            if(updateWatcher != null) {
+                updateWatcher.uninit();
+                updateWatcher = null;
             }
-        }.runTaskLater(this, 1);
-        Util.debugLog("Registering watchers...");
-        calendarWatcher = new CalendarWatcher(this);
-        // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
-        signUpdateWatcher.runTaskTimer(this, 0, 10);
-        shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
-        if (logWatcher != null) {
-            logWatcher.runTaskTimerAsynchronously(this, 10, 10);
-            getLogger().info("Log actions is enabled, actions will log in the qs.log file!");
         }
+    }
+
+    private void registerOngoingFee(){
         if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
             ongoingFeeWatcher = new OngoingFeeWatcher(this);
             ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks"));
             getLogger().info("Ongoing fee feature is enabled.");
-        }
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                getLogger().info("Registering bStats metrics...");
-                submitMeritcs();
+        }else{
+            if(ongoingFeeWatcher != null){
+                ongoingFeeWatcher.cancel();
+                ongoingFeeWatcher = null;
             }
-        }.runTask(this);
-        if (loaded) {
-            getServer().getPluginManager().callEvent(new QSConfigurationReloadEvent(this));
-        } else {
-            loaded = true;
         }
-        calendarWatcher = new CalendarWatcher(this);
-        calendarWatcher.start();
-        this.shopPurger = new ShopPurger(this);
-        if (getConfig().getBoolean("purge.at-server-startup")) {
-            shopPurger.purge();
-        }
-        Util.debugLog("Now using display-type: " + AbstractDisplayItem.getNowUsing().name());
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        registerDisplayAutoDespawn();
+        registerOngoingFee();
+        registerUpdater();
+        registerShopLock();
+        registerDisplayItem();
+        registerLimitRanks();
+        return Reloadable.super.reloadModule();
     }
 
     private void bakeShopsOwnerCache() {
@@ -911,12 +963,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             if (getEconomy() != null) {
                 economyType = this.getEconomy().getName();
             }
-            String eventAdapter;
-            if (getConfig().getInt("shop.protection-checking-handler") == 1) {
-                eventAdapter = "QUICKSHOP";
-            } else {
-                eventAdapter = "BUKKIT";
-            }
             // Version
             metrics.addCustomChart(new Metrics.SimplePie("server_version", Bukkit::getVersion));
             metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", Bukkit::getBukkitVersion));
@@ -933,7 +979,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI {
             metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> AbstractDisplayItem.getNowUsing().name()));
             metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));
             metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> String.valueOf(this.isAllowStack())));
-            metrics.addCustomChart(new Metrics.SimplePie("event_adapter", () -> eventAdapter));
             metrics.addCustomChart(new Metrics.SingleLineChart("shops_created_on_all_servers", () -> this.getShopManager().getAllShops().size()));
         } else {
             getLogger().info("You have disabled mertics, Skipping...");

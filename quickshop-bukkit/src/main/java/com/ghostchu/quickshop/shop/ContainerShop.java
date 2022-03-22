@@ -257,7 +257,7 @@ public class ContainerShop implements Shop {
             uuid = taxAccount;
         } else {
             if (((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount() != null) {
-                uuid = ((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount().getUniqueId();
+                uuid = ((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount();
             }
         }
         ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(this, uuid);
