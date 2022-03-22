@@ -101,6 +101,9 @@
             <resource>
                 <directory>${rootDir}/crowdin</directory>
                 <filtering>true</filtering>
+                <excludes>
+                    <exclude>*.json</exclude>
+                </excludes>
             </resource>
         </resources>
     </build>
