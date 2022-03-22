@@ -19,52 +19,35 @@
 
 package com.ghostchu.quickshop.localization.text;
 
+import com.ghostchu.quickshop.util.Util;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 // No to-do anymore! This used for not only messages.yml! Keep the extent ability!
 public class LanguageFilesManager {
     //distributionPath->[localeCode->OTA files]
-    private final Map<String, Map<String, FileConfiguration>> locale2ContentMapping = new ConcurrentHashMap<>();
-    //distributionPath->bundled files
-    private final Map<String, FileConfiguration> bundledFile2ContentMapping = new ConcurrentHashMap<>();
+    private final Map<String, FileConfiguration> locale2ContentMapping = new ConcurrentHashMap<>();
 
     /**
      * Reset TextMapper
      */
     public void reset() {
         this.locale2ContentMapping.clear();
-        this.bundledFile2ContentMapping.clear();
     }
 
     /**
      * Deploy new locale to TextMapper with cloud values and bundle values
      *
-     * @param distributionPath Distribution Path
      * @param locale           The locale code
      * @param distribution     The values from Distribution platform
-     * @param bundled          The values from bundled file
      */
-    public void deploy(@NotNull String distributionPath, @NotNull String locale, @NotNull FileConfiguration distribution, @NotNull FileConfiguration bundled) {
-        this.bundledFile2ContentMapping.put(distributionPath, bundled);
-        this.locale2ContentMapping.computeIfAbsent(distributionPath, e -> new HashMap<>());
-        this.locale2ContentMapping.get(distributionPath).put(locale, distribution);
-    }
-
-    /**
-     * Deploy bundled file
-     *
-     * @param distributionPath Distribution Path
-     * @param bundled          The values from bundled file
-     */
-    public void deployBundled(@NotNull String distributionPath, @NotNull FileConfiguration bundled) {
-        this.bundledFile2ContentMapping.put(distributionPath, bundled);
+    public void deploy(@NotNull String locale, @NotNull FileConfiguration distribution) {
+        Util.debugLog("Registered and deployed locale: " + locale);
+        this.locale2ContentMapping.put(locale, distribution);
     }
 
     /**
@@ -73,7 +56,6 @@ public class LanguageFilesManager {
      * @param distributionPath The distribution path
      */
     public void remove(@NotNull String distributionPath) {
-        this.bundledFile2ContentMapping.remove(distributionPath);
         this.locale2ContentMapping.remove(distributionPath);
     }
 
@@ -85,49 +67,28 @@ public class LanguageFilesManager {
      */
     public void remove(@NotNull String distributionPath, @NotNull String locale) {
         if (this.locale2ContentMapping.containsKey(distributionPath)) {
-            this.locale2ContentMapping.get(distributionPath).remove(locale);
+            this.locale2ContentMapping.remove(locale);
         }
-    }
-
-    /**
-     * Remove specific bundled data
-     *
-     * @param distributionPath The distribution path
-     */
-    public void removeBundled(@NotNull String distributionPath) {
-        this.bundledFile2ContentMapping.remove(distributionPath);
-    }
-
-    /**
-     * Getting specific bundled data
-     *
-     * @param distributionPath The distribution path
-     * @return The bundled data, null if never deployed
-     */
-    public @Nullable FileConfiguration getBundled(@NotNull String distributionPath) {
-        return this.bundledFile2ContentMapping.get(distributionPath);
-
-    }
-
-    /**
-     * Getting locales data under specific distribution data
-     *
-     * @param distributionPath The distribution path
-     * @return The locales data, empty if never deployed
-     */
-    public @NotNull Map<String, FileConfiguration> getDistribution(@NotNull String distributionPath) {
-        return this.locale2ContentMapping.getOrDefault(distributionPath, Collections.emptyMap());
     }
 
     /**
      * Getting specific locale data under specific distribution data
      *
-     * @param distributionPath The distribution path
      * @param locale           The specific locale
      * @return The locale data, null if never deployed
      */
-    public @Nullable FileConfiguration getDistribution(@NotNull String distributionPath, @NotNull String locale) {
-        return this.getDistribution(distributionPath).get(locale);
+    public @Nullable FileConfiguration getDistribution(@NotNull String locale) {
+        return this.locale2ContentMapping.get(locale);
     }
+
+    /**
+     * Getting specific locale data under specific distribution data
+     *
+     * @return The locale data, null if never deployed
+     */
+    public @NotNull Map<String, FileConfiguration> getDistributions() {
+        return locale2ContentMapping;
+    }
+
 
 }

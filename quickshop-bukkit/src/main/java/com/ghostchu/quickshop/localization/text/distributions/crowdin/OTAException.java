@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is Manifest.java
+ *  This file is a part of project QuickShop, the name is OTAException.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,21 +17,15 @@
  *
  */
 
-package com.ghostchu.quickshop.localization.text.distributions.crowdin.bean;
+package com.ghostchu.quickshop.localization.text.distributions.crowdin;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
 
-import java.util.List;
-
-
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Data
-@NoArgsConstructor
-public class Manifest {
-    private List<String> files;
-    private List<String> languages;
-    private List<?> custom_languages;
-    private long timestamp;
+public class OTAException extends Exception{
+    public OTAException(String message) {
+        super(message);
+    }
 }

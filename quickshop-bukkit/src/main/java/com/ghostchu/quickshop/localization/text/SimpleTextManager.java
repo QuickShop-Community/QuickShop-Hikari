@@ -37,8 +37,7 @@ import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -50,12 +49,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -66,7 +63,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
     private static String CROWDIN_LANGUAGE_FILE_PATH = "/hikari/crowdin/lang/%locale%/messages.yml";
     public final Set<PostProcessor> postProcessors = new LinkedHashSet<>();
     private final QuickShop plugin;
-    private final Distribution distribution;
+    @Nullable
+    private Distribution distribution;
     // <File <Locale, Section>>
     private final LanguageFilesManager languageFilesManager = new LanguageFilesManager();
     private final Set<String> availableLanguages = new LinkedHashSet<>();
@@ -74,68 +72,38 @@ public class SimpleTextManager implements TextManager, Reloadable {
             CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
     private final SimpleMsgParser msgParser;
 
-    public SimpleTextManager(QuickShop plugin) {
+    public SimpleTextManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
         plugin.getLogger().info("Translation over-the-air platform selected: Crowdin");
-        this.distribution = new CrowdinOTA(plugin);
+        try {
+            this.distribution = new CrowdinOTA(plugin);
+        } catch (IOException e) {
+            this.distribution = null;
+            plugin.getLogger().log(Level.SEVERE, "Failed to initialize Crowdin OTA distribution, cloud translations update failed.", e);
+        }
         this.msgParser = new SimpleMsgParser(plugin.getConfig().getInt("syntax-parser", 0));
     }
+
 
     /**
      * Generate the override files storage path
      *
-     * @param path The distribution file path
+     * @param localeCode The language localeCode
      * @return Override files storage path
      */
     @SneakyThrows
     @NotNull
-    private File getOverrideFilesFolder(@NotNull String path) {
-        File file = new File(path);
-        String module = file.getParentFile().getName();
-        File moduleFolder = new File(new File(plugin.getDataFolder(), "overrides"), module);
+    private File getOverrideFilesFolder(@NotNull String localeCode) {
+        File moduleFolder = new File(new File(plugin.getDataFolder(), "overrides"), localeCode);
         moduleFolder.mkdirs();
-        File fileFolder = new File(moduleFolder, file.getName());
+        File fileFolder = new File(moduleFolder, localeCode);
         if (fileFolder.isDirectory()) {
             Files.deleteIfExists(fileFolder.toPath()); //TODO Workaround for v5 beta stage a bug, delete it in future
         }
         return moduleFolder;
     }
 
-    /**
-     * Loading bundled files from Jar file
-     *
-     * @param file The Crowdin file path
-     * @return The bundled file configuration object
-     */
-    private FileConfiguration loadBundled(String file) {
-        FileConfiguration bundledLang = new YamlConfiguration();
-        File fileObject = new File(file);
-        Path parentPath = fileObject.toPath().getParent();
-        String parentStr = parentPath != null ? parentPath.toFile().getName() : "";
-        String fileName = fileObject.getName();
-        try {
-            InputStream stream = null;
-            if (!StringUtils.isEmpty(parentStr)) {
-                //Try to fetch matched i18n resources
-                stream = plugin.getResource("lang/" + parentStr + "/" + fileName);
-            }
-            if (stream == null) {
-                //Fallback to default
-                stream = plugin.getResource("lang/" + fileName);
-            }
-            if (stream != null) {
-                bundledLang.loadFromString(new String(IOUtils.toByteArray(new InputStreamReader(stream, StandardCharsets.UTF_8), StandardCharsets.UTF_8), StandardCharsets.UTF_8));
-            } else {
-                plugin.getLogger().log(Level.WARNING, "Cannot load bundled language file from jar, bundled language files " + (parentStr == null ? "" : parentStr) + "/" + fileName + " not found.");
-                bundledLang = new YamlConfiguration();
-            }
-        } catch (IOException | InvalidConfigurationException ex) {
-            bundledLang = new YamlConfiguration();
-            plugin.getLogger().log(Level.SEVERE, "Cannot load bundled language file from jar, some strings may missing!", ex);
-        }
-        return bundledLang;
-    }
 
     /**
      * Reset everything
@@ -212,6 +180,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
         try {
             // Load the locale file from local cache if available
             // Or load the locale file from remote server if it had updates or not exists.
+            if (distribution == null)
+                throw new IllegalStateException("Distribution hadn't initialized yet!");
             configuration.loadFromString(distribution.getFile(distributionFile, distributionCode));
         } catch (InvalidConfigurationException exception) {
             // Force loading the locale file form remote server because file not valid.
@@ -219,6 +189,54 @@ public class SimpleTextManager implements TextManager, Reloadable {
             plugin.getLogger().log(Level.WARNING, "Cannot load language file from distribution platform, some strings may missing!", exception);
         }
         return configuration;
+    }
+
+    /**
+     * Loading translations from bundled resources
+     *
+     * @return The bundled translations, empty hash map if nothing can be load.
+     */
+    @NotNull
+    private Map<String, FileConfiguration> loadBundled() {
+        File jarFile;
+        try {
+            jarFile = Util.getPluginJarFile(plugin);
+        } catch (FileNotFoundException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to load bundled translation: " + e.getMessage());
+            e.printStackTrace();
+            return new HashMap<>();
+        }
+        try (ZipFile zipFile = new ZipFile(jarFile, "UTF-8")) {
+            // jar/lang/<region_code>/
+            Map<String, FileConfiguration> availableLang = new HashMap<>();
+            zipFile.getEntries().asIterator().forEachRemaining(entry -> {
+                Util.debugLog("Zip entry: " + entry.getName());
+                if (entry.isDirectory())
+                    return;
+                if (!entry.getName().startsWith("lang/"))
+                    return;
+                if (!entry.getName().endsWith("messages.yml"))
+                    return;
+                String[] split = entry.getName().split("/");
+                String locale = split[split.length - 2];
+                if (zipFile.canReadEntryData(entry)) {
+                    try {
+                        YamlConfiguration configuration = new YamlConfiguration();
+                        configuration.loadFromString(new String(zipFile.getInputStream(entry).readAllBytes(), StandardCharsets.UTF_8));
+                        availableLang.put(locale.toLowerCase(Locale.ROOT).replace("-", "_"), configuration);
+                        Util.debugLog("Bundled language file: " + locale + " at " + entry.getName() + " loaded.");
+                    } catch (IOException | InvalidConfigurationException e) {
+                        plugin.getLogger().log(Level.WARNING, "Failed to load bundled translation.", e);
+                    }
+                }
+            });
+            return availableLang;
+        } catch (IOException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to load bundled translation, jar invalid: " + e.getMessage());
+            e.printStackTrace();
+            return new HashMap<>();
+        }
+
     }
 
     /**
@@ -233,62 +251,73 @@ public class SimpleTextManager implements TextManager, Reloadable {
         for (int i = 0; i < enabledLanguagesRegex.size(); i++) {
             enabledLanguagesRegex.set(i, enabledLanguagesRegex.get(i).toLowerCase(Locale.ROOT).replace("-", "_"));
         }
+        // Load bundled translations
+        loadBundled().forEach((locale, configuration) -> {
+            if (localeEnabled(locale, enabledLanguagesRegex)) {
+                Util.debugLog("Initializing language with bundled resource: " + locale);
+                FileConfiguration override;
+                try {
+                    override = getOverrideConfiguration(locale);
+                } catch (IOException e) {
+                    plugin.getLogger().log(Level.WARNING, "Failed to load bundled translation.", e);
+                    return;
+                }
+                applyOverrideConfiguration(configuration, override);
+                availableLanguages.add(locale);
+                languageFilesManager.deploy(locale, configuration);
+                Util.debugLog("Initialized language with bundled resource: " + locale);
+            } else {
+                Util.debugLog("Locale " + locale + " is disabled, skipping...");
+            }
+        });
+
         //====Multi File and Multi-Language loader start====
-        //Init offline default file
-        languageFilesManager.deployBundled(CROWDIN_LANGUAGE_FILE_PATH, loadBundled(CROWDIN_LANGUAGE_FILE_PATH));
         //Get language code first
-        distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode ->
+        if (distribution != null) {
+            /* Workaround for Crowdin bug. */
+            if (!distribution.getAvailableFiles().contains(CROWDIN_LANGUAGE_FILE_PATH)) {
+                Util.debugLog("Warning! Illegal file path detected, trying auto fix...");
+                List<String> messagesFiles = distribution.getAvailableFiles().stream().filter(s -> s.endsWith("messages.yml")).toList();
+                if (!messagesFiles.isEmpty()) {
+                    CROWDIN_LANGUAGE_FILE_PATH = messagesFiles.get(0);
+                } else {
+                    Util.debugLog("Auto fix failed :(");
+                }
+            }
+            distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> {
                 //Then load all the files in this language code
-                distribution.getAvailableFiles().forEach(crowdinFile -> {
-                    try {
-                        // Minecraft client use lowercase
-                        String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
-                        if (!localeEnabled(minecraftCode, enabledLanguagesRegex)) {
-                            Util.debugLog("Locale: " + minecraftCode + " not enabled in configuration.");
-                            return;
-                        }
-                        //Offline default file
-                        FileConfiguration defaultFile = loadBundled(crowdinFile);
-                        //Add available language (minecraftCode)
-                        availableLanguages.add(minecraftCode);
-                        Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
-                        // Deploy bundled to mapper
-                        languageFilesManager.deployBundled(crowdinFile, defaultFile);
-                        // Loading bundled file (for no internet connection or failed loading)
-                        FileConfiguration configuration = loadBundled(crowdinFile.replace("%locale%", crowdinCode));
-                        FileConfiguration remoteConfiguration = getDistributionConfiguration(crowdinFile, crowdinCode);
-                        // Only apply right language-version for client
-                        if (defaultFile.isSet("language-version") && defaultFile.getString("language-version", "0").equals(remoteConfiguration.getString("language-version", "0"))) {
-                            applyOverrideConfiguration(configuration, remoteConfiguration);
-                        }
-                        // Loading override text (allow user modification the translation)
-                        FileConfiguration override = getOverrideConfiguration(crowdinFile, minecraftCode);
-                        applyOverrideConfiguration(configuration, override);
-                        // Deploy distribution to mapper
-                        languageFilesManager.deploy(crowdinFile, minecraftCode, configuration, defaultFile);
-                        Util.debugLog("Locale " + crowdinFile.replace("%locale%", crowdinCode) + " has been successfully loaded");
-                    } // Key founds in available locales but not in custom mapping on crowdin platform
-                    catch (IOException e) {
-                        // Network error
-                        plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + " please check your network connection.", e);
-                    } catch (Exception e) {
-                        // Translation syntax error or other exceptions
-                        plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + ".", e);
+                try {
+                    // Minecraft client use lowercase
+                    String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
+                    if (!localeEnabled(minecraftCode, enabledLanguagesRegex)) {
+                        Util.debugLog("Locale: " + minecraftCode + " not enabled in configuration.");
+                        return;
                     }
-                }));
+                    //Add available language (minecraftCode)
+                    availableLanguages.add(minecraftCode);
+                    Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
+                    FileConfiguration remoteConfiguration = getDistributionConfiguration(CROWDIN_LANGUAGE_FILE_PATH, crowdinCode);
+                    // Loading override text (allow user modification the translation)
+                    FileConfiguration override = getOverrideConfiguration(minecraftCode);
+                    applyOverrideConfiguration(remoteConfiguration, override);
+                    // Deploy distribution to mapper
+                    languageFilesManager.deploy(minecraftCode, remoteConfiguration);
+                    Util.debugLog("Locale " + CROWDIN_LANGUAGE_FILE_PATH.replace("%locale%", crowdinCode) + " has been successfully loaded");
+                } // Key founds in available locales but not in custom mapping on crowdin platform
+                catch (IOException e) {
+                    // Network error
+                    plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + " please check your network connection.", e);
+                } catch (Exception e) {
+                    // Translation syntax error or other exceptions
+                    plugin.getLogger().log(Level.WARNING, "Couldn't update the translation for locale " + crowdinCode + ".", e);
+                }
+            });
+        }
 
         // Register post processor
         postProcessors.add(new FillerProcessor());
         postProcessors.add(new PlaceHolderApiProcessor());
-        /* Workaround for Crowdin bug. */
-        if (!distribution.getAvailableFiles().contains(CROWDIN_LANGUAGE_FILE_PATH)) {
-            Util.debugLog("Warning! Illegal file path detected, trying auto fix...");
-            List<String> messagesFiles = distribution.getAvailableFiles().stream().filter(s -> s.endsWith("messages.yml")).toList();
-            if (!messagesFiles.isEmpty()) {
-                CROWDIN_LANGUAGE_FILE_PATH = messagesFiles.get(0);
-            }
-            Util.debugLog("Auto fix failed :(");
-        }
+
     }
 
     private String findRelativeLanguages(String langCode) {
@@ -325,13 +354,12 @@ public class SimpleTextManager implements TextManager, Reloadable {
     /**
      * Getting user's override configuration for specific distribution path
      *
-     * @param overrideFile The distribution
-     * @param locale       the locale
+     * @param locale the locale
      * @return The override configuration
      * @throws IOException IOException
      */
-    private FileConfiguration getOverrideConfiguration(@NotNull String overrideFile, @NotNull String locale) throws IOException {
-        File localOverrideFile = new File(getOverrideFilesFolder(overrideFile.replace("%locale%", locale)), new File(overrideFile.replace("%locale%", locale)).getName());
+    private FileConfiguration getOverrideConfiguration(@NotNull String locale) throws IOException {
+        File localOverrideFile = new File(getOverrideFilesFolder(locale), "messages.yml");
         if (!localOverrideFile.exists()) {
             Util.debugLog("Creating locale override file: " + localOverrideFile);
             localOverrideFile.getParentFile().mkdirs();
@@ -355,7 +383,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull Text of(@NotNull String path, Object... args) {
-        return new Text(this, (CommandSender) null, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, convert(args));
+        return new Text(this, (CommandSender) null, languageFilesManager.getDistributions(), path, convert(args));
     }
 
     /**
@@ -368,7 +396,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull Text of(@Nullable CommandSender sender, @NotNull String path, Object... args) {
-        return new Text(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, convert(args));
+        return new Text(this, sender, languageFilesManager.getDistributions(), path, convert(args));
     }
 
     /**
@@ -381,7 +409,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull Text of(@Nullable UUID sender, @NotNull String path, Object... args) {
-        return new Text(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, convert(args));
+        return new Text(this, sender, languageFilesManager.getDistributions(), path, convert(args));
     }
 
     @NotNull
@@ -439,9 +467,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     continue;
                 }
                 components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
-            }catch (Exception exception){
+            } catch (Exception exception) {
                 Util.debugLog("Failed to process the object: " + obj);
-                if(plugin.getSentryErrorReporter() != null)
+                if (plugin.getSentryErrorReporter() != null)
                     plugin.getSentryErrorReporter().sendError(exception, "Failed to process the object: " + obj);
                 components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
             }
@@ -460,7 +488,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull TextList ofList(@NotNull String path, Object... args) {
-        return new TextList(this, (CommandSender) null, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, convert(args));
+        return new TextList(this, (CommandSender) null, languageFilesManager.getDistributions(), path, convert(args));
     }
 
     /**
@@ -473,7 +501,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull TextList ofList(@Nullable UUID sender, @NotNull String path, Object... args) {
-        return new TextList(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, convert(args));
+        return new TextList(this, sender, languageFilesManager.getDistributions(), path, convert(args));
     }
 
     /**
@@ -486,7 +514,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      */
     @Override
     public @NotNull TextList ofList(@Nullable CommandSender sender, @NotNull String path, Object... args) {
-        return new TextList(this, sender, languageFilesManager.getDistribution(CROWDIN_LANGUAGE_FILE_PATH), languageFilesManager.getBundled(CROWDIN_LANGUAGE_FILE_PATH), path, convert(args));
+        return new TextList(this, sender, languageFilesManager.getDistributions(), path, convert(args));
     }
 
     @Override
@@ -502,19 +530,16 @@ public class SimpleTextManager implements TextManager, Reloadable {
         private final Map<String, FileConfiguration> mapping;
         private final CommandSender sender;
         private final Component[] args;
-        @Nullable
-        private final FileConfiguration bundled;
 
-        private TextList(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, @Nullable FileConfiguration bundled, String path, Component... args) {
+        private TextList(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
             this.manager = manager;
             this.sender = sender;
             this.mapping = mapping;
-            this.bundled = bundled;
             this.path = path;
             this.args = args;
         }
 
-        private TextList(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, @Nullable FileConfiguration bundled, String path, Component... args) {
+        private TextList(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
             this.manager = manager;
             if (sender != null) {
                 this.sender = Bukkit.getPlayer(sender);
@@ -522,19 +547,10 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 this.sender = null;
             }
             this.mapping = mapping;
-            this.bundled = bundled;
             this.path = path;
             this.args = args;
         }
 
-        /**
-         * Getting the bundled fallback text
-         *
-         * @return The bundled text
-         */
-        private @NotNull List<String> fallbackLocal() {
-            return this.bundled != null ? this.bundled.getStringList(path) : Collections.emptyList();
-        }
 
         /**
          * Post processes the text
@@ -567,23 +583,13 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 Util.debugLog("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
                 String languageCode = MsgUtil.getDefaultGameLanguageCode();
                 if (languageCode.equals(locale)) {
-                    List<String> str = fallbackLocal();
-                    if (str.isEmpty()) {
-                        Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
-                        return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
-                    }
-                    List<Component> components = str.stream().map(manager.msgParser::parse).toList();
-                    return postProcess(components);
+                    Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
                 } else {
                     return forLocale(languageCode);
                 }
             } else {
                 List<String> str = index.getStringList(path);
-                if (str.isEmpty()) {
-                    // Fallback
-                    Util.debugLog("Fallback " + path + " to bundle translation caused OTA & User's override file doesn't contains this key");
-                    str = fallbackLocal();
-                }
                 if (str.isEmpty()) {
                     Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
@@ -628,19 +634,16 @@ public class SimpleTextManager implements TextManager, Reloadable {
         private final Map<String, FileConfiguration> mapping;
         private final CommandSender sender;
         private final Component[] args;
-        @Nullable
-        private final FileConfiguration bundled;
 
-        private Text(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, @Nullable FileConfiguration bundled, String path, Component... args) {
+        private Text(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
             this.manager = manager;
             this.sender = sender;
             this.mapping = mapping;
             this.path = path;
-            this.bundled = bundled;
             this.args = args;
         }
 
-        private Text(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, @Nullable FileConfiguration bundled, String path, Component... args) {
+        private Text(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
             this.manager = manager;
             if (sender != null) {
                 this.sender = Bukkit.getPlayer(sender);
@@ -648,19 +651,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 this.sender = null;
             }
             this.mapping = mapping;
-            this.bundled = bundled;
             this.path = path;
             this.args = args;
-        }
-
-        /**
-         * Getting the bundled fallback text
-         *
-         * @return The bundled text
-         */
-        @Nullable
-        private String fallbackLocal() {
-            return this.bundled != null ? this.bundled.getString(path) : null;
         }
 
         /**
@@ -688,27 +680,19 @@ public class SimpleTextManager implements TextManager, Reloadable {
         public Component forLocale(@NotNull String locale) {
             FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
             if (index == null) {
+                Util.debugLog("Index for "+locale+" is null");
                 Util.debugLog("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
                 if (MsgUtil.getDefaultGameLanguageCode().equals(locale)) {
-                    String str = fallbackLocal();
-                    if (str == null) {
-                        Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
-                        return LegacyComponentSerializer.legacySection().deserialize(path);
-                    }
-                    Component component = manager.msgParser.parse(str);
-                    return postProcess(component);
+                    Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    return LegacyComponentSerializer.legacySection().deserialize(path);
                 } else {
                     return forLocale(MsgUtil.getDefaultGameLanguageCode());
                 }
             } else {
                 String str = index.getString(path);
                 if (str == null) {
-                    // Fallback
-                    Util.debugLog("Fallback " + path + " to bundle translation caused OTA & User's override file doesn't contains this key");
-                    str = fallbackLocal();
-                }
-                if (str == null) {
-                    Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    Util.debugLog("The value about index "+index+" is null");
+                    Util.debugLog("Missing Language Key: " + path + ", report to QuickShop!");
                     return LegacyComponentSerializer.legacySection().deserialize(path);
                 }
                 Component component = manager.msgParser.parse(str);

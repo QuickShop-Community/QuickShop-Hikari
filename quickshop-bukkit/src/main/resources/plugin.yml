@@ -61,7 +61,7 @@ libraries:
   - com.rollbar:rollbar-java:1.8.1
   - commons-codec:commons-codec:1.15
   - org.slf4j:slf4j-nop:1.7.35
-  - commons-io:commons-io:2.11.0
+#  - commons-io:commons-io:2.11.0
   - cc.carm.lib:easysql-hikaricp:0.3.7
   - com.h2database:h2:2.1.210
   - com.ghostchu:simplereloadlib:1.1.0
