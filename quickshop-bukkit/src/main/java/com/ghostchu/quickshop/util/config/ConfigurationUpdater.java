@@ -132,8 +132,8 @@ public class ConfigurationUpdater {
         Files.deleteIfExists(new File(plugin.getDataFolder(), "example-configuration.txt").toPath());
         Files.deleteIfExists(new File(plugin.getDataFolder(), "example-configuration.yml").toPath());
         try {
-            if (new File(plugin.getDataFolder(), "messages.json").exists()) {
-                Files.move(new File(plugin.getDataFolder(), "messages.json").toPath(), new File(plugin.getDataFolder(), "messages.json.outdated").toPath());
+            if (new File(plugin.getDataFolder(), "messages.yml").exists()) {
+                Files.move(new File(plugin.getDataFolder(), "messages.yml").toPath(), new File(plugin.getDataFolder(), "messages.yml.outdated").toPath());
             }
         } catch (Exception ignore) {
         }

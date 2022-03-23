@@ -367,7 +367,7 @@ public class Util {
             yamlConfiguration.loadFromString(config);
             return yamlConfiguration.getItemStack("item");
         } catch (Exception e) {
-            throw new InvalidConfigurationException("Exception in deserialize item: "+config, e);
+            throw new InvalidConfigurationException("Exception in deserialize item: " + config, e);
         }
     }
 
@@ -378,7 +378,9 @@ public class Util {
         LOCK.readLock().unlock();
         return strings;
     }
-   private static final StackWalker stackWalker = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE),2);
+
+    private static final StackWalker stackWalker = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE), 2);
+
     /**
      * Print debug log when plugin running on dev mode.
      *
@@ -407,7 +409,7 @@ public class Util {
         final int codeLine = frame.getLineNumber();
         for (String log : logs) {
             DEBUG_LOGS.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info( "[DEBUG/"+threadName+"] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info("[DEBUG/" + threadName + "] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
         }
         LOCK.writeLock().unlock();
     }
@@ -493,7 +495,7 @@ public class Util {
                     PotionEffect potionEffect = potionMeta.getCustomEffects().get(0);
                     if (potionEffect != null) {
                         int level = potionEffect.getAmplifier();
-                        return  plugin.getPlatform().getTranslation(potionEffect.getType()).append(LegacyComponentSerializer.legacySection().deserialize(" " + (level <= 10 ? RomanNumber.toRoman(potionEffect.getAmplifier()) : level)));
+                        return plugin.getPlatform().getTranslation(potionEffect.getType()).append(LegacyComponentSerializer.legacySection().deserialize(" " + (level <= 10 ? RomanNumber.toRoman(potionEffect.getAmplifier()) : level)));
                     }
                 }
             }
@@ -602,7 +604,7 @@ public class Util {
         }
         BLACKLIST.clear();
         SHOPABLES.clear();
-       // RESTRICTED_PRICES.clear();
+        // RESTRICTED_PRICES.clear();
         CUSTOM_STACKSIZE.clear();
         devMode = plugin.getConfig().getBoolean("dev-mode");
 
@@ -649,7 +651,8 @@ public class Util {
         disableDebugLogger = plugin.getConfig().getBoolean("debug.disable-debuglogger", false);
         try {
             dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 
     /**
@@ -711,11 +714,12 @@ public class Util {
         } catch (Exception ignored) {
         }
     }
-    public static boolean isEmptyComponent(@Nullable Component component){
-        if(component == null) {
+
+    public static boolean isEmptyComponent(@Nullable Component component) {
+        if (component == null) {
             return true;
         }
-        if(component.equals(Component.empty())) {
+        if (component.equals(Component.empty())) {
             return true;
         }
         return component.equals(Component.text(""));
@@ -898,7 +902,7 @@ public class Util {
      * @return str
      */
     @NotNull
-    public static String list2String(@NotNull List<String> strList) {
+    public static String list2String(@NotNull Collection<String> strList) {
         StringJoiner joiner = new StringJoiner(", ", "", "");
         strList.forEach(joiner::add);
         return joiner.toString();
@@ -1282,20 +1286,35 @@ public class Util {
 
     /**
      * Matches the given lists but disordered.
+     *
      * @param list1 List1
      * @param list2 List2
      * @return Lists matches or not
      */
-    public static boolean listDisorderMatches(@NotNull List<?> list1, @NotNull List<?> list2){
+    public static boolean listDisorderMatches(@NotNull List<?> list1, @NotNull List<?> list2) {
         return list1.containsAll(list2) && list2.containsAll(list1);
     }
 
     public static void unregisterListenerClazz(@NotNull Plugin plugin, @NotNull Class<? extends Listener> clazz) {
         for (RegisteredListener registeredListener : HandlerList.getRegisteredListeners(plugin)) {
-            if(registeredListener.getListener() instanceof LockListener ll){
+            if (registeredListener.getListener() instanceof LockListener ll) {
                 HandlerList.unregisterAll(ll);
             }
         }
+    }
+
+    @NotNull
+    public static String getPluginJarPath(@NotNull Plugin plugin) {
+        return plugin.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+    }
+
+    @NotNull
+    public static File getPluginJarFile(@NotNull Plugin plugin) throws FileNotFoundException {
+        String path = getPluginJarPath(plugin);
+        File file = new File(path);
+        if (!file.exists())
+            throw new FileNotFoundException("File not found: " + path);
+        return file;
     }
 
 }

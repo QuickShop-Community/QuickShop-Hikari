@@ -402,14 +402,14 @@ public class PlayerListener extends AbstractQSListener {
         if (Util.isDoubleChest(block.getBlockData()) &&
                 !QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.double")) {
             plugin.text().of(player, "no-double-chests").send();
-            return true;
+            return false;
         }
         // Blacklist check
         if (Util.isBlacklisted(stack)
                 && !QuickShop.getPermissionManager()
                 .hasPermission(player, "quickshop.bypass." + stack.getType().name())) {
             plugin.text().of(player, "blacklisted-item").send();
-            return true;
+            return false;
         }
         // Check if had enderchest shop creation permission
         if (block.getType() == Material.ENDER_CHEST
@@ -440,7 +440,7 @@ public class PlayerListener extends AbstractQSListener {
                 plugin.isAllowStack() &&
                         QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.stacks")
                         ? stack.getAmount() : 1).send();
-        return true;
+        return false;
     }
 
     @NotNull

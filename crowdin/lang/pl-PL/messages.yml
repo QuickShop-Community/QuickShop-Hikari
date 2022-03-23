@@ -1,0 +1,466 @@
+---
+break-shop-use-supertool: <yellow>Możesz rozbić sklep za pomocą SuperTool.
+fee-charged-for-price-change: <green>You paid <red>{0}</red> to change the price.
+not-allowed-to-create: <red>Tu nie zrobisz sklepu.
+disabled-in-this-world: <red>QuickShop jest wyłączony w tym świecie
+how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}</yellow> for.
+client-language-changed: <green>QuickShop wykrył, że ustawienia języka klienta zostały zmienione, teraz używamy dla Ciebie wersji językowej {0}.
+shops-backingup: Tworzenie kopii zapasowej sklepu z bazy danych...
+_comment: Witaj tłumaczu! Jeśli edytujesz to z Github'a lub ze źródeł kodowych, powinieneś przejść do https://crowdin.com/project/quickshop-reremake
+unlimited-shop-owner-changed: <yellow>Ten właściciel sklepu nielimitowanego został zmieniony na {0}.
+bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
+thats-not-a-number: <red>Nieprawidłowa liczba
+shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is disallowed. Pick another one!
+console-only-danger: <red>Jest to niebezpieczne polecenie, więc tylko konsola może go wykonać.
+not-a-number: Możesz wpisać tylko liczbę, ty wpisałeś {0}.
+not-looking-at-valid-shop-block: <red>Nie można znaleźć bloku do tworzenia sklepu. Musisz patrzeć się na jeden z nich.
+shop-removed-cause-ongoing-fee: <red>Twój sklep w {0} został usunięty, ponieważ nie masz wystarczającej ilości pieniędzy, aby go utrzymać!
+tabcomplete:
+  amount: '[ilość]'
+  item: '[item]'
+  price: '[cena]'
+  name: '[name]'
+  range: '[zakres]'
+  currency: '[nazwa waluty]'
+taxaccount-unset: <green>Konto podatkowe tego sklepu jest teraz zgodne z ustawieniami globalnymi serwera.
+blacklisted-item: <red>Nie możesz sprzedać tego przedmiotu, ponieważ znajduje się na czarnej liście
+command-type-mismatch: <red>This command can only be executed by <aqua>{0}</aqua>.
+server-crash-warning: '<red>Serwer może się zawiesić po wykonaniu polecenia /qs reload po zastąpieniu/usunięciu pliku Jar pluginu QuickShop podczas uruchamiania serwera.'
+you-cant-afford-to-change-price: <red>Musisz mieć {0} aby zmienić cenę w sklepie.
+safe-mode: <red>QuickShop jest teraz w trybie bezpiecznym, nie możesz otworzyć pojemnika tego sklepu, skontaktuj się z administratorem serwera, aby naprawić błędy.
+forbidden-vanilla-behavior: <red>Operacja jest zabroniona, ponieważ nie jest zgodna z zachowaniem waniliowym
+shop-out-of-space-name: <dark_purple>Twój sklep {0} jest pełny!
+paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
+quick-fill:
+  entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
+  hover:
+    - '&eName: &b{0}'
+    - '&eOwner: &b{0}'
+    - '&eType: &b{0}'
+    - '&ePrice: &b{0}'
+    - '&eItem: &b{0}'
+    - '&eLocation: &b{0}'
+  hover-arg-filled:
+    - '&eName: &b{name}'
+    - '&eOwner: &b{owner}'
+    - '&eType: &b{type}'
+    - '&ePrice: &b{price}'
+    - '&eItem: &b{item}'
+    - '&eLocation: &b{location}'
+  header: '<yellow>You have multiple shops with name "<green>{0}</green>", choose one to continue:'
+  entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
+  entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+average-price-nearby: '<green>Cena w pobliżu: <yellow>{0}'
+digits-reach-the-limit: <red>Osiągnąłeś limit miejsc po przecinku w cenie.
+currency-unset: <green>Waluta sklepu usunięta pomyślnie. Używasz teraz ustawień domyślnych.
+you-cant-create-shop-in-there: <red>Nie masz uprawnień do utworzenia sklepu w tej lokalizacji.
+no-pending-action: <red>Nie masz żadnych oczekujących akcji
+refill-success: <green>Udało się uzupełnić sklep
+failed-to-paste: <red>Nie udało się przesłać danych do Pastebina. Sprawdź swoje połączenie internetowe i spróbuj ponownie. (Szczegóły znajdują się w konsoli)
+shop-out-of-stock-name: <dark_purple>W twoim sklepie {0} zabrakło {1}!
+shop-name-invalid: <red>The shop name <yellow>{0}</yellow> is invalid. Pick another one!
+how-many-buy-stack: <green>Wpisz, ile stacków chcesz <aqua>KUPIĆ<green> na czacie. W każdym stacku jest <yellow>{0}<green> przedmiotów. Możesz kupić <yellow>{1}<green> stacków. Wpisz <aqua>{2}<green> by zakupić wszystkie.
+exceeded-maximum: <red>Wartość przekroczyła maksymalną wartość w Java.
+unlimited-shop-owner-keeped: '<yellow>Uwaga: Właściciel sklepu nadal jest właścicielem nielimitowanego sklepu, musisz ustawić nowego właściciela sklepu samodzielnie.'
+no-enough-money-to-keep-shops: <red>Nie masz wystarczająco pieniędzy, aby przechowywać sklepy! Wszystkie sklepy zostały usunięte...
+3rd-plugin-build-check-failed: <red>3rd-party plugin <bold>{0}</bold> denied the permission checks, did you have permission set up in there?
+not-a-integer: <red>Musisz wprowadzić całkowitą liczbę, ty wpisałeś {0}.
+translation-country: 'Język: Polski (pl_PL)'
+buying-more-than-selling: '<red>OSTRZEŻENIE: Kupujesz przedmioty za więcej niż je sprzedajesz!'
+purchase-failed: '<red>Zakup nie powiódł się: Błąd wewnętrzny. Skontaktuj się z administratorem serwera.'
+denied-put-in-item: <red>Nie możesz umieścić tego przedmiotu w swoim sklepie!
+shop-has-changed: <red>Sklep, z którego próbowałeś skorzystać, zmienił się od momentu kliknięcia!
+flush-finished: <green>Pomyślnie wyczyszczono wiadomości.
+no-price-given: <red>Podaj poprawną cenę.
+shop-already-owned: <red>To już jest sklep.
+backup-success: <green>Kopia zapasowa powiodła się.
+not-looking-at-shop: <red>Nie można znaleźć QuickShop. Musisz na niego patrzeć.
+you-cant-afford-a-new-shop: <red>Musisz mieć {0} aby zrobić nowy sklep.
+success-created-shop: <red>Sklep utworzony.
+shop-creation-cancelled: <red>Tworzenie sklepu anulowane.
+shop-owner-self-trade: <yellow>Handlujesz z własnym sklepem, więc nie będziesz mógł uzyskać żadnych korzyści.
+purchase-out-of-space: <red>W tym sklepie zabrakło miejsca, skontaktuj się z właścicielem sklepu lub personelem, aby opróżnić sklep.
+reloading-status:
+  success: <green>Przeładowanie zakończone bez żadnych błędów.
+  scheduled: <green>Przeładowanie zakończone. <gray>(Niektóre zmiany wymagały chwili, aby zadziałać)
+  require-restart: <green>Przeładowanie zakończone. <yellow>(Wszystkie zmiany wymagają restartu serwera)
+  failed: <red>Przeładowywanie nie powiodło się, sprawdź konsolę serwera
+player-bought-from-your-store-tax: <red>{0} zakupił {1} {2} w Twoim sklepie, i zarobiłeś {3} ({4} w podatkach).
+not-enough-space: <red>Masz tylko miejsce na {0} więcej!
+shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
+shop-staff-added: <green>Pomyślnie dodano {0} jako członka personelu twojego sklepu.
+shops-recovering: Odzyskiwanie sklepów z kopii zapasowej...
+menu:
+  sell-tax: <green>You paid <yellow>{0}</yellow> in taxes.
+  owner: '<green>Właściciel: {0}'
+  preview: <aqua>[Podgląd przedmiotu]
+  enchants: <dark_purple>Enchanty
+  sell-tax-self: <green>Nie płaciłeś podatków, ponieważ posiadasz ten sklep.
+  shop-information: '<green>Info:'
+  item: '<green>Przedmiot: <yellow>{0}'
+  price-per: <green>Cena za <yellow>{0} <green>- <yellow>{1}
+  item-name-and-price: <yellow>{0} {1} <green>for</green> {2}
+  successful-purchase: '<green>Zakupiono:'
+  price-per-stack: <green>Cena za <yellow>{2}x {0} - {1}
+  stored-enchants: <dark_purple>Przechowywane Enchanty
+  item-holochat-error: <red>[Error]
+  this-shop-is-selling: <green>This shop is <aqua>SELLING</aqua> items.
+  shop-stack: '<green>Ilość stacków: <yellow>{0}'
+  space: '<green>Miejsce: <yellow>{0}'
+  effects: <green>Efekty
+  damage-percent-remaining: <yellow>{0}% <green>Zostało.
+  item-holochat-data-too-large: <red>[Error] Element NBT jest zbyt duży, aby go pokazać
+  stock: '<green>Ilość <yellow>{0}'
+  this-shop-is-buying: <green>Ten sklep <light_purple>SKUPUJE<green> itemy.
+  successfully-sold: '<green>Sprzedano:'
+  total-value-of-chest: '<green>Ilość w skrzyni: <yellow>{0}'
+currency-not-exists: <red>Nie można znaleźć waluty, którą chcesz ustawić. Może pisownia jest błędna lub ta waluta nie jest dostępna w tym świecie.
+no-nearby-shop: <red>Brak pobliskiego sklepu pasującego do {0}.
+translation-author: 'Tłumacz: Ghost_chu, Andre_601'
+integrations-check-failed-trade: <red>Integracja {0} odmówiła handlu ze sklepem
+shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
+success-change-owner-to-server: <green>Pomyślnie ustawiono właściciela sklepu na Serwer.
+shop-name-not-found: <red>The shop named <yellow>{0}</yellow> not exists.
+shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+metric:
+  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  action-hover: <yellow>{0}
+  entry-header-shop: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66) <aqua>|'
+  price-hover: <yellow>Total {0}, including {1} taxes.
+  unknown: <gray>(unknown)
+  undefined: <gray>(noname)
+  no-results: <red>No transactions found.
+  action-description:
+    DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
+    ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
+    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
+    CREATE: <yellow>Player created a shop.
+    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
+    PURCHASE: <yellow>Purchased item with a shop
+  query-argument: 'Query Argument: {0}'
+  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  amount-hover: <yellow>{0}x
+  entry-header-global: '<aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591) <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
+  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
+  player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
+  looking-up: <yellow>Performing metric lookup, Please wait...
+  entry-header-player: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [shop](color=#CDAA7D) <aqua>| [amount](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
+  entry-shop: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  tax-hover: <yellow>{0} taxes
+  header-global: '<yellow>The server {0} {1} transactions:'
+  na: <gray>N/A
+  transaction-count: <yellow>{0} total
+  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}'
+  time-hover: '<yellow>Time: {0}'
+  amount-stack-hover: <yellow>{0}x stack
+permission-denied-3rd-party: '<red>Odmowa uprawnień: Wtyczka osób trzecich [{0}].'
+you-dont-have-that-many-items: <red>Posiadasz tylko {0} {1}.
+complete: <green>Zakończony!
+translate-not-completed-yet-url: 'Tłumaczenie języka {0} nie zostało jeszcze ukończone przez {1}. Czy chcesz pomóc nam ulepszyć tłumaczenie? Przeglądaj: {2}'
+success-removed-shop: <green>Sklep usunięty.
+currency-set: <green>Waluta sklepu została ustawiona na {0}.
+shop-purged-start: <green>Rozpoczęto czyszczenie sklepu, sprawdź konsolę, aby uzyskać szczegółowe informacje.
+economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
+nothing-to-flush: <green>Nie masz nowych wiadomości ze sklepu.
+no-price-change: <red>Cena nie została zmieniona!
+edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
+inventory-unavailable: '<red>This shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.'
+file-test: To jest testowy plik tekstowy. Używamy go do testowania jeśli messages.json jest zepsuty. Możesz wypełnić go dowolnymi easter egg'ami, które lubisz :)
+unknown-player: <red>Docelowy gracz nie istnieje, sprawdź wpisaną nazwę użytkownika.
+language:
+  qa-issues: '<yellow>Problemy z zapewnieniem jakości: <aqua>{0}'
+  code: '<yellow>Kod: <gold>{0}'
+  approval-progress: '<yellow>Postęp zatwierdzania: <aqua>{0}%'
+  translate-progress: '<yellow>Postęp tłumaczenia: <aqua>{0}%'
+  name: '<yellow>Nazwa: <gold>{0}'
+  help-us: <green>[Pomóż nam poprawić jakość tłumaczenia]
+warn-to-paste: '<yellow>Gromadzenie danych i przesyłanie ich do Pastebin może trochę potrwać. <red><bold>Ostrzeżenie:<red> dane są upublicznione przez tydzień! Może to spowodować wyciek z konfiguracji serwera i innych poufnych informacji. Upewnij się, że wysyłasz je tylko do <bold>zaufanego personelu/programistów.'
+how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+updatenotify:
+  buttontitle: '[Aktualizuj Teraz]'
+  onekeybuttontitle: '[Aktualizacja OneKey]'
+  label:
+    github: '[GitHub]'
+    ore: '[Ore]'
+    lts: '[LTS]'
+    nbtapi: '[+NBTAPI]'
+    qualityverifyed: '[Jakość]'
+    master: '[Mistrz]'
+    unstable: '[Niestabilny]'
+    paper: '[+Paper Optimized]'
+    stable: '[Stabilny]'
+    spigotmc: '[SpigotMC]'
+    papermc: '[PaperMC]'
+    bukkitdev: '[BukkitDev]'
+    polymart: '[Polymart]'
+    basic: '[Basic]'
+  list:
+    - '{0} został wydany. Nadal używasz {1}!'
+    - Boom! Nowa aktualizacja {0} nadchodzą. Aktualizuj!
+    - Niespodzianka! {0} wyszedł. Jesteś na {1}
+    - Wygląda na to, że musisz zaktualizować. {0} został wydany!
+    - Ups! {0} został zwolniony. Jesteś na {1}!
+    - Przysięgam, QS został zaktualizowany na {0}. Dlaczego jeszcze nie zaktualizowałeś?
+    - Naprawa i re... Przepraszamy, ale {0} został wydany!
+    - Err! Nie. To nie jest błąd. {0} został wydany!
+    - OMG! Właśnie wyszło {0}, dlaczego ciągle siedzisz na {1}?
+    - 'Dzisiaj w faktach po faktach: {0} już jest!'
+    - Wtyczka k.i.a. Powinieneś zaktualizować do {0}!
+    - Aktualizacja {0} zapalona. Zapisz aktualizację!
+    - Dostępna jest aktualizacja dowódcy. {0} właśnie wyszedł!
+    - Spójrz na mój styl---{0} zaktualizowany. Nadal używasz {1}
+    - Ahhhhhhh! Nowy update {0}! Pobieraj Teraz!
+    - Co myślisz? {0} został wydany! Aktualizuj!
+    - Lekarz, QuickShop ma nową aktualizację {0}! Powinieneś zaktualizować~
+    - Ko~ko~da~yo~ QuickShop ma nową aktualizację {0}~
+    - Paimon chce Ci powiedzieć, że QuickShop ma nową aktualizację {0}!
+  remote-disable-warning: '<red>Ta wersja QuickShop jest oznaczona jako wyłączona przez zdalny serwer, co oznacza, że ta wersja może mieć poważny problem, uzyskaj szczegóły z naszej strony SpigotMC: {0}. To ostrzeżenie będzie wyświetlane dopóki nie przejdziesz do stabilnej wersji, ale nie wpłynie to na wydajność Twojego serwera.'
+purchase-out-of-stock: <red>W tym sklepie skończyły się zapasy, skontaktuj się z właścicielem sklepu lub personelem, aby uzupełnić zapasy.
+nearby-shop-entry: '<green>- Info:{0} <green>Cena:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>dystans: <aqua>{5} <green>blok(ów)'
+chest-title: Sklep QuickShop
+console-only: <red>To polecenie może być wykonane tylko przez konsolę.
+failed-to-put-sign: <red>Za mało miejsca wokół sklepu, aby umieścić znak informacyjny.
+shop-name-unset: <red>This shop's name now removed
+shop-nolonger-freezed: <green>Odblokowałeś sklep. Wróć do normalnego sklepu!
+no-permission-build: <red>Nie możesz zbudować sklepu tutaj.
+tableformat:
+  left_half_line: <dark_purple>+--------------------
+  right_half_line: <dark_purple>--------------------+
+  full_line: <dark_purple>+---------------------------------------------------+
+  left_begin: '<dark_purple>| '
+quickshop-gui-preview: Podgląd przedmiotów ze Sklepu
+translate-not-completed-yet-click: Tłumaczenie języka {0} nie zostało jeszcze ukończone przez {1}. Czy chcesz pomóc nam ulepszyć tłumaczenie? Kliknij tutaj!
+taxaccount-invalid: <red>Konto docelowe jest nieprawidłowe, wprowadź prawidłową nazwę gracza lub identyfikator uuid (z myślnikami).
+player-bought-from-your-store: <red>{0} zakupił {1} {2} w Twoim sklepie, i zarobiłeś {3}.
+reached-maximum-can-create: <red>Już utworzyłeś maksimum {0}/{1} sklepów!
+translation-version: 'Wersja wsparcia: Hikari'
+no-double-chests: <red>Nie możesz stworzyć sklepu z podwójną skrzynią.
+price-too-cheap: <red>Cena musi być większa niż <yellow>${0}
+shop-not-exist: <red>Sklep nie istnieje.
+bad-command-usage: <red>Bad command arguments!
+clean-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+shop-purchase-cancelled: <red>Zakup w sklepie został anulowany.
+bypassing-lock: <red>Omijanie blokady QuickShop!
+bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
+saved-to-path: Kopia zapasowa została zapisana w {0}.
+shop-now-freezed: <green>Zamroziłeś sklep. Nikt nie może teraz handlować z tym sklepem!
+price-is-now: <green>Nowa cena sklepu to <yellow>{0}
+shops-arent-locked: <red>Pamiętaj, sklepy NIE są chronione przed kradzieżą! Jeśli chcesz zatrzymać złodziei, zablokuj je za pomocą LWC, Lockette, itp!
+that-is-locked: <red>Ten sklep jest zablokowany.
+shop-has-no-space: <red>Sklep ma miejsce tylko na {0} więcej {1}.
+safe-mode-admin: '<red><bold>WARNING: </bold>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs </yellow> command to check any errors.'
+shop-stock-too-low: <red>W sklepie pozostało tylko {0} {1}!
+world-not-exists: <red>The world <yellow>{0}</yellow> doesn't exist
+how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL</light_purple>. You can sell <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> in chat, to sell all.
+shop-freezed-at-location: <yellow>Twój sklep {0} w {1} został zamrożony!
+translation-contributors: 'Współtwórcy: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken i Andre_601'
+empty-success: <green>Udało się opróżnić sklep
+taxaccount-set: <green>Konto podatkowe tego sklepu zostało ustawione na <yellow>{0}
+support-disable-reason:
+  hot-reload: <yellow>Unsupported hot reloaded, restart the server and check again.
+  outdated: <yellow>This version of QuickShop already outdated, up-to-date before requesting support!
+  bad-hosts: '<yellow>This server HOSTS has been modified and QuickShop some functions require connect to Mojang API correctly. Fix the HOSTS before asking support, Windows at C:\windows\system32\drivers\etc\hosts, Linux at /etc/hosts.'
+  privacy: <yellow>This server running under cracked (offline) mode. If you are running bukkit server under proxy and online-mode=true on proxy, please configure the proxy related settings correctly.
+  modified: <yellow>File integrity check failed, this QuickShop build has been modified by others.
+  consolespamfix-installed: <yellow>ConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support.
+  authlib-injector-detected: <yellow>This server running under 3rd-party authlib provider like authlib-injector.
+  unsupported-server-software: <yellow>Unsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.
+supertool-is-disabled: <red>Supertool jest wyłączone. Nie można zniszczyć żadnych sklepów.
+unknown-owner: Nieznany
+restricted-prices: '<red>Ograniczona cena dla {0}: min. {1}, maks. {2}'
+nearby-shop-this-way: <green>Sklep jest {0} bloków od ciebie.
+owner-bypass-check: <yellow>Pominięto wszystkie sprawdzania. Handel zakończony sukcesem! (Jesteś teraz właścicielem sklepu!)
+signs:
+  item-right: ''
+  out-of-space: Za mało miejsca
+  unlimited: Nieograniczony
+  stack-selling: Sprzedaj {0}
+  stack-price: '{0} za {1}x {2}'
+  status-unavailable: <red>
+  out-of-stock: Wyprzedano produkt
+  stack-buying: Kup {0}
+  freeze: Handel wyłączony
+  price: '{0} za 1 szt.'
+  buying: Sprzedaj {0}
+  header: '{1}{0}'
+  selling: Kup {0}
+  status-available: <green>
+  item-left: ''
+negative-amount: <red>Nie możesz handlować ujemnymi kwotami
+display-turn-on: <green>Pomyślnie włączono wyświetlacz sklepu.
+shop-staff-deleted: <green>Pomyślnie usunięto {0} jako członka personelu twojego sklepu.
+nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}</aqua>:'
+backup-failed: Nie można wykonać kopii zapasowej bazy danych. Sprawdź konsolę, aby uzyskać szczegóły.
+shop-staff-cleared: <green>Pomyślnie usunięto wszystkich graczy z twojego sklepu.
+price-too-high: <red>Zbyt wysoka cena sklepu! Nie można utworzyć takiego, którego cena jest wyższa niż {0}.
+plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
+player-sold-to-your-store: <green>{0} sprzedał {1} {2} do Twojego sklepu.
+shop-out-of-stock: <dark_purple>W twoim sklepie na {0}, {1}, {2}, zabrakło {3}!
+how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+language-info-panel:
+  help: 'Pomóż nam: '
+  code: 'Kod: '
+  name: 'Język: '
+  progress: 'Postęp: '
+  translate-on-crowdin: '[Tłumacz na Crowdin]'
+item-not-exist: <red>The item <yellow>{0}</yellow> does not exist, please check your spelling.
+shop-creation-failed: <red>Tworzenie sklepu nie powiodło się, skontaktuj się z administratorem serwera.
+inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it. Try emptying your inventory!
+no-creative-break: <red>Nie możesz zniszczyć sklepów innych graczy w trybie kreatywnym, przełącz się na tryb przetrwania lub zamiast tego spróbuj użyć SuperTool {0}.
+booleanformat:
+  success: <green>✔
+  failed: <red>✘
+controlpanel:
+  stack: '<green>Ilość za stack: <aqua>{0} <yellow>[<light_purple><bold>Zmień<yellow>]'
+  price-hover: <yellow>Kliknij, aby ustawić nową cenę produktu.
+  remove: <red><bold>[Usuń sklep]
+  mode-buying-hover: <yellow>Kliknij, aby zmienić sklep na tryb SPRZEDAŻ.
+  empty: '<green>Czyszczenie: Wyczyść sklep <yellow>[<light_purple><bold>OK<yellow>]'
+  stack-hover: <yellow>Kliknij, aby ustawić ilość produktu na stack. Ustaw na 1 dla normalnego zachowania.
+  alwayscounting-hover: <yellow>Kliknij, aby przełączyć, jeśli sklep zawsze liczy pojemnik.
+  alwayscounting: '<green>Zawsze liczy: {0} <yellow>[<light_purple><bold>Zmień<yellow>]'
+  setowner: '<green>Właściciel: <aqua>{0} <yellow>[<light_purple><bold>Zmień<yellow>]'
+  freeze: '<yellow>Tryb zamrożenia: <aqua>{0} <yellow>[<light_purple><bold>Przełącz<yellow>]'
+  price: '<green>Cena: <aqua>{0} <yellow>[<light_purple><bold>Zmień<yellow>]'
+  currency-hover: <yellow>Kliknij, aby ustawić lub usunąć walutę, której używa ten sklep
+  lock: '<yellow>Blokada sklepu: <aqua>{0} <yellow>[<light_purple><bold>Przełącz<yellow>]'
+  mode-selling: '<green>Tryb sklepu: <aqua>Sprzedaż <yellow>[<light_purple><bold>Zmień<yellow>]'
+  currency: '<green>Waluta: <aqua>{0} <yellow>[<light_purple><bold>Ustaw<yellow>]'
+  setowner-hover: <yellow>Kliknij, aby zmienić właściciela.
+  mode-buying: '<green>Tryb sklepu: <aqua>Kupno <yellow>[<light_purple><bold>Zmień<yellow>]'
+  item: '<green>Przedmiot sklepu: {0} <yellow>[<light_purple><bold>Zmień<yellow>]'
+  unlimited: '<green>Bez ograniczenia: {0} <yellow>[<light_purple><bold>Zmień<yellow>]'
+  unlimited-hover: <yellow>Kliknij, aby przełączyć.
+  refill-hover: <yellow>Kliknij, aby uzupełnić sklep.
+  remove-hover: <yellow>Kliknij, żeby usunąć sklep.
+  toggledisplay-hover: <yellow>Przełącz status wyświetlania przedmiotu w sklepie
+  refill: '<green>Uzupełnianie: Uzupełnij sklep <yellow>[<light_purple><bold>OK<yellow>]'
+  freeze-hover: <yellow>Przełącz status zamrożenia sklepu.
+  lock-hover: <yellow>Włącz/Wyłącz ochronę blokady sklepu.
+  item-hover: <yellow>Kliknij, aby zmienić przedmiot sklepu
+  infomation: '<green>Panel sterowania sklepu:'
+  mode-selling-hover: <yellow>Kliknij, aby zmienić sklep na tryb KUPNO.
+  empty-hover: <yellow>Kliknij, aby wyczyścić sklep.
+  toggledisplay: '<yellow>Wyświetlacz Przedmiotu: <aqua>{0} <yellow>[<light_purple><bold>Przełącz<yellow>]'
+timeunit:
+  behind: behind
+  week: <red>{0} week
+  weeks: <red>{0} weeks
+  year: <red>{0} year
+  before: before
+  scheduled: scheduled
+  years: <red>{0} years
+  scheduled-in: scheduled in {0}
+  second: <red>{0} second
+  std-past-format: '{5}{4}{3}{2}{1}{0}ago'
+  seconds: <red>{0} seconds
+  hour: <red>{0} hour
+  scheduled-at: scheduled at {0}
+  after: after
+  day: <red>{0} day
+  recent: recent
+  between: between
+  hours: <red>{0} hours
+  months: <red>{0} months
+  longtimeago: long time ago
+  between-format: between {0} and {1}
+  minutes: <red>{0} minutes
+  justnow: just now
+  minute: <red>{0} minute
+  std-format: MM/dd/yyyy HH:mm:ss
+  future-plain-text: future
+  month: <red>{0} month
+  future: in {0}
+  days: <red>{0} days
+command:
+  reloading: '<green>Konfiguracja przeładowana. <yellow>Niektóre zmiany mogą wymagać ponownego uruchomienia. <newline><gray>(Uwaga: zachowanie przeładowania zostało zmienione po 4.0.9.10, teraz przeładowujemy tylko konfigurację, ale nie całą wtyczkę, aby serwer nie uległ awarii)'
+  description:
+    buy: <yellow>Zmienia rodzaj sklepu na tryb <light_purple>KUP
+    about: <yellow>Pokazuje informacje ze Sklepu
+    language: <yellow>Zmień aktualnie używany język
+    purge: <yellow>Uruchom zadanie czyszczenia sklepu w tle
+    paste: <yellow>Wgruje dane serwera do Pastebin
+    title: <green>Pomoc Sklepu
+    remove: <yellow>Usuwa sklep na który patrzysz
+    ban: <yellow>Banuje gracza ze sklepu
+    empty: <yellow>Usuwa wszystkie elementy ze sklepu
+    alwayscounting: <yellow>Ustaw jeśli sklep zawsze liczy pojemnik nawet jeśli jest nieograniczony
+    setowner: <yellow>Zmienia właściciela sklepu.
+    reload: <yellow>Odświeża plik config.yml z QuickShop
+    freeze: <yellow>Wyłącz lub włącz handel sklepowy
+    price: <yellow>Zmienia cenę zakupu/sprzedaży sklepu
+    find: <yellow>Lokalizuje najbliższy sklep określonego typu.
+    create: <yellow>Tworzy nowy sklep z wybranej skrzyni
+    lock: <yellow>Zmień status blokady sklepu
+    currency: <yellow>Ustaw lub usuń ustawienia waluty sklepu
+    removeworld: <yellow>Usuń WSZYSTKIE sklepy w określonym świecie
+    info: <yellow>Pokaż statystyki
+    owner: <yellow>Zmienia właściciela sklepu.
+    amount: <yellow>Aby ustawić kwotę pozycji (przydatne przy zgłaszaniu problemów z czatem)
+    item: <yellow>Zmień przedmiot sklepu w sklepie
+    debug: <yellow>Włącza tryb programisty
+    unlimited: <yellow>Daje sklepowi nieograniczone zapasy.
+    sell: <yellow>Zmienia rodzaj sklepu na tryb <aqua>SPRZEDAJ
+    fetchmessage: <yellow>Pokaż nieprzeczytane wiadomości sklepu
+    staff: <yellow>Zarządzaj personelem sklepu
+    clean: <yellow>Usuwa wszystkie (załadowane) sklepy bez żadnych zapasów
+    refill: <yellow>Dodaje daną liczbę przedmiotów do sklepu
+    help: <yellow>Pokazuje pomoc Sklepu
+    removeall: <yellow>Usuń WSZYSTKIE sklepy określonego gracza
+    unban: <yellow>Odbanuje gracza ze sklepu
+    transfer: <yellow>Przenieś czyjeś WSZYSTKIE sklepy do innych
+    size: <yellow>Zmień na dużą ilość sklepu
+    supercreate: <yellow>Utwórz sklep podczas omijania wszystkich kontroli ochrony
+    taxaccount: <yellow>Ustaw konto podatkowe, które sklep ma używać
+    name: <yellow>Naming a shop to specific name
+    toggledisplay: <yellow>Przełącz stan wyświetlania przedmiotu w sklepie
+  bulk-size-not-set: '<red>Użycie: /qs size <amount>'
+  no-type-given: '<red>Użycie: /qs find <item>'
+  feature-not-enabled: Ta funkcja nie jest włączona w pliku konfiguracyjnym.
+  now-debuging: <green>Pomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...
+  no-amount-given: <red>No amount provided. Use <green>/qs refill <amount></green>
+  no-owner-given: <red>Nie podano właściciela
+  disabled: '<red>Ta komenda jest wyłączona: <yellow>{0}'
+  bulk-size-now: <green>Teraz handluj &{0}x {1}
+  toggle-always-counting:
+    counting: <green>Sklep zawsze liczy pojemnik nawet jeśli jest nieograniczony
+    not-counting: <green>Sklep jest teraz respektowany, jeśli jest nieograniczony
+  cleaning: <green>Usuwanie sklepów bez zapasów...
+  now-nolonger-debuging: <green>Pomyślnie przełączono się do trybu developerskiego. Przeładuj QuickShop...
+  toggle-unlimited:
+    limited: <green>Sklep jest teraz limitowany
+    unlimited: <green>Sklep jest teraz nieograniczony
+  transfer-success-other: <green>Transferred <yellow>{0} {1}</yellow>'s shop(s) to <yellow>{2}
+  no-trade-item: <green>Proszę trzymać przedmiot handlowy, aby zmienić go w ręce głównej
+  wrong-args: <red>Nieprawidłowy argument. Użyj <bold>/qs help <red>aby zobaczyć listę poleceń.
+  some-shops-removed: <yellow>{0} <green>sklep(y/ów) usunięto
+  new-owner: '<green>Nowy Właściciel: <yellow>{0}'
+  format: <green>/{0} {1} <yellow>- {2}
+  transfer-success: <green>Transferred <yellow>{0}</yellow> shop(s) to <yellow>{1}
+  now-buying: <green>Now <light_purple>BUYING</light_purple> {0}
+  now-selling: <green>Now <aqua>SELLING</aqua> {0}
+  cleaned: <green>Removed <yellow>{0}</yellow> shops.
+  trade-item-now: <green>Teraz handluj &{0}x {1}
+  no-world-given: <red>Proszę podać nazwę świata
+  format-disabled: <red>/{0} {1} <gray>- {2}
+  invalid-bulk-amount: <red>Podana wartość {0} jest większa niż maksymalna wielkość stacku lub mniejsza niż jeden
+currency-not-support: <red>Wtyczka ekonomiczna nie obsługuje funkcji wieloekonomicznej.
+trading-in-creative-mode-is-disabled: <red>Nie możesz handlować z tym sklepem, będąc w trybie kreatywnym.
+the-owner-cant-afford-to-buy-from-you: <red>To kosztuje {0}, ale właściciel ma tylko {1}
+you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to naming.
+inventory-error: '<red>Failed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.'
+integrations-check-failed-create: <red>Integracja {0} odmówiła utworzenia sklepu
+shop-out-of-space: <dark_purple>Twój sklep w {0}, {1}, {2} jest teraz pełny.
+admin-shop: Sklep Administracyjny
+no-anythings-in-your-hand: <red>W twojej ręce nic nie ma.
+no-permission: <red>Nie masz uprawnień, aby to zrobić.
+chest-was-removed: <red>Sklep został usunięty.
+you-cant-afford-to-buy: <red>To kosztuje {0}, ale masz tylko {1}
+shops-removed-in-world: <yellow>A total of <aqua>{0}</aqua> shops have been deleted in world <aqua>{1}</aqua>.
+display-turn-off: <green>Pomyślnie wyłączono wyświetlacz sklepu.
+client-language-unsupported: <yellow>QuickShop nie obsługuje Twojego języka klienta, powrócono do wersji językowej {0}.
+language-version: '63'
+not-managed-shop: <red>Nie jesteś właścicielem ani moderatorem tego sklepu
+shop-cannot-trade-when-freezing: <red>Nie możesz handlować z tym sklepem, ponieważ jest zamrożony.

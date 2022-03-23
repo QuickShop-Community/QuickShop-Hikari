@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is SimpleMsgParser.java
+ *  This file is a part of project QuickShop, the name is OTAException.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,24 +17,15 @@
  *
  */
 
-package com.ghostchu.quickshop.localization.text;
+package com.ghostchu.quickshop.localization.text.distributions.crowdin;
 
-import de.themoep.minedown.adventure.MineDownParser;
-import lombok.AllArgsConstructor;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.jetbrains.annotations.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-@AllArgsConstructor
-public class SimpleMsgParser {
-    private final int type;
-
-    @NotNull
-    public Component parse(@NotNull String str) {
-        if (type == 1) {
-            return MiniMessage.miniMessage().deserialize(str);
-        } else {
-            return new MineDownParser().parse(str).build();
-        }
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class OTAException extends Exception{
+    public OTAException(String message) {
+        super(message);
     }
 }

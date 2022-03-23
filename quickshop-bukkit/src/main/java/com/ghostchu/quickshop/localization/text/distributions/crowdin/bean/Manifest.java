@@ -34,5 +34,4 @@ public class Manifest {
     private List<String> languages;
     private List<?> custom_languages;
     private long timestamp;
-    private boolean local;
 }
