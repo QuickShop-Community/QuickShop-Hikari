@@ -1,16 +1,16 @@
 ---
 break-shop-use-supertool: <yellow>U kunt de winkel breken door gebruik te maken van SuperTool.
-fee-charged-for-price-change: <green>You paid <red>{0}</red> to change the price.
+fee-charged-for-price-change: <green>U betaald <red>{0}<green> om de prijs te wijzigen.
 not-allowed-to-create: <red>U kunt hier geen winkel aanmaken.
 disabled-in-this-world: <red>QuickShop is disabled in this world
-how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}</yellow> for.
+how-much-to-trade-for: <green>Enter in de chat, voor hoeveel u wilt handelen <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Shop-back-up aanmaken vanuit database...
 _comment: Hallo vertaler! Als u dit bewerkt van Github of van code-bronnen, moet u https://crowdin.com/project/quickshop-reremake
 unlimited-shop-owner-changed: <yellow>Deze ongelimiteerde winkel is verander van eigenaar. Naar {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Ongeldig nummer
-shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is disallowed. Pick another one!
+shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>Dit is een gevaarlijk commando, zodat alleen de console het kan uitvoeren.
 not-a-number: <red>U kunt alleen een nummer invoeren, uw invoer was {0}.
 not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
@@ -24,7 +24,7 @@ tabcomplete:
   currency: '[valuta naam]'
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>Je kunt dit item niet verkopen omdat het op de zwarte lijst staat
-command-type-mismatch: <red>This command can only be executed by <aqua>{0}</aqua>.
+command-type-mismatch: <red>This command only can executed by <aqua>{0}.
 server-crash-warning: '<red>Server may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running.'
 you-cant-afford-to-change-price: <red>Het kost {0} om de prijs in uw winkel te wijzigen.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
@@ -47,7 +47,7 @@ quick-fill:
     - '&ePrice: &b{price}'
     - '&eItem: &b{item}'
     - '&eLocation: &b{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}</green>", choose one to continue:'
+  header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
@@ -59,12 +59,12 @@ no-pending-action: <red>Je hebt geen lopende acties
 refill-success: <green>Refill succesvol
 failed-to-paste: <red>Mislukt om de gegevens te uploaden naar Pastebin. Controleer je internetverbinding en probeer het opnieuw. (Bekijk console voor details)
 shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
-shop-name-invalid: <red>The shop name <yellow>{0}</yellow> is invalid. Pick another one!
+shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
 exceeded-maximum: <red>De waarde overschrijdt de maximale waarde in Java.
 unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.'
 no-enough-money-to-keep-shops: <red>Je had niet genoeg geld om je winkels te houden! Alle winkels zijn verwijderd...
-3rd-plugin-build-check-failed: <red>3rd-party plugin <bold>{0}</bold> denied the permission checks, did you have permission set up in there?
+3rd-plugin-build-check-failed: <red>3rd party plugin <bold>{0}<reset><red> heeft de controle van de permissions geweigerd, hebt u permissions ingesteld?
 not-a-integer: <red>U moet een nummer invoeren, uw invoer was {0}.
 translation-country: 'Taal Zone: Engels (nl_US)'
 buying-more-than-selling: '<red>WAARSCHUWING: U koopt items voor meer dan u ze verkoopt!'
@@ -92,7 +92,7 @@ shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Succesvol toegevoegd {0} als staflid in uw winkel.
 shops-recovering: Winkels herstellen van backup...
 menu:
-  sell-tax: <green>You paid <yellow>{0}</yellow> in taxes.
+  sell-tax: <green>U heeft &{0} Btw betaald.
   owner: '<green>Eigenaar: {0}'
   preview: <aqua>[Item voorbeeld]
   enchants: <dark_purple>Betoveringen
@@ -100,12 +100,12 @@ menu:
   shop-information: '<green>Shop Informatie:'
   item: '<green>Item: <yellow>{0}'
   price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
-  item-name-and-price: <yellow>{0} {1} <green>for</green> {2}
+  item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
   successful-purchase: '<green>Succesvol aangeschaft:'
   price-per-stack: <green>Price per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Opgeslagen Betoveringen
   item-holochat-error: <red>[Error]
-  this-shop-is-selling: <green>This shop is <aqua>SELLING</aqua> items.
+  this-shop-is-selling: <green>Deze winkel is <aqua>SELLING<yellow>en items.
   shop-stack: '<green>Hoeveelheid bulk: <yellow>{0}'
   space: '<green>Spatie: <yellow>{0}'
   effects: <green>Effecten
@@ -121,7 +121,7 @@ translation-author: 'Vertaler'
 integrations-check-failed-trade: <red>Integratie {0} heeft de aanmaak van de winkel geweigerd
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Succesvol de winkeleigenaar ingesteld op Server.
-shop-name-not-found: <red>The shop named <yellow>{0}</yellow> not exists.
+shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
 shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
@@ -177,7 +177,7 @@ language:
   name: '<yellow>Naam: <gold>{0}'
   help-us: <green>[Help ons de vertaalkwaliteit te verbeteren]
 warn-to-paste: '&Het verzamelen van gegevens en het uploaden naar de Pastebin, dit kan enige tijd duren. <red><bold>Waarschuwing:<red> De gegevens worden één week openbaar gemaakt! Het kan uw serverconfiguratie en andere gevoelige informatie lekken. Zorg ervoor dat je het alleen doorstuurt naar &vertrouwde medewerkers/ontwikkelaars.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL<green>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to sell all.
 updatenotify:
   buttontitle: '[Nu bijwerken]'
   onekeybuttontitle: '[OneKey Update]'
@@ -240,7 +240,7 @@ no-double-chests: <red>Je kunt de dubbele kist winkel niet maken.
 price-too-cheap: <red>Price moet groter zijn dan <yellow>${0}
 shop-not-exist: <red>Er is geen winkel.
 bad-command-usage: <red>Bad command arguments!
-clean-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+clean-warning: <yellow>This command will purge <red>all <yellow>shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD<yellow>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm <yellow>to continue.
 shop-purchase-cancelled: <red>Shop aankoop geannuleerd.
 bypassing-lock: <red>Bypassing van een QuickShop vergrendeling!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
@@ -250,10 +250,10 @@ price-is-now: <green>De nieuwe prijs van de winkel is <yellow>{0}
 shops-arent-locked: <red>Onthoud, winkels zijn NIET beschermd tegen diefstal! Als je dieven wilt stoppen, vergrendel het met LWC, Lockette, etc!
 that-is-locked: <red>Deze winkel is vergrendeld.
 shop-has-no-space: <red>De winkel heeft alleen ruimte voor {0} {1} meer.
-safe-mode-admin: '<red><bold>WARNING: </bold>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs </yellow> command to check any errors.'
+safe-mode-admin: '<red><bold>WARNING: <red>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs <red> command to check any errors.'
 shop-stock-too-low: <red>De winkel heeft nog maar {0} {1} over!
-world-not-exists: <red>The world <yellow>{0}</yellow> doesn't exist
-how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL</light_purple>. You can sell <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> in chat, to sell all.
+world-not-exists: <red>De wereld <yellow>{0}<red> bestaat niet
+how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL<green>. You can sell <yellow>{0}<green>. Enter <aqua>{1}<green> in chat, to sell all.
 shop-freezed-at-location: <yellow>Uw winkel {0} om {1} is bevroren!
 translation-contributors: 'Medewerkers'
 empty-success: '&Het leegmaken van winkel gelukt'
@@ -291,23 +291,23 @@ signs:
 negative-amount: <red>U kan geen negatieve bedragen verhandelen
 display-turn-on: <green>Successfully turn on the shop display.
 shop-staff-deleted: <green>Succesvol {0} verwijderd als staflid van uw winkel.
-nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}</aqua>:'
+nearby-shop-header: '<green>Nearby Shop matching <aqua>{0}<green>:'
 backup-failed: Kan de database niet back-uppen. Controleer de console voor details.
 shop-staff-cleared: <green>Succesvol alle medewerkers verwijderd uit uw winkel.
 price-too-high: <red>De prijs van de winkel is te hoog! U kunt er niet een maken met een prijs hoger dan {0}.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: Een{0} verkocht {1} {2} aan uw winkel.
 shop-out-of-stock: <dark_purple>Uw winkel op {0}, {1}, {2} heeft geen {3} meer!
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}<green>. Enter <aqua>{1}<green> to buy them all.
 language-info-panel:
   help: 'Help ons: '
   code: 'Code '
   name: 'Taal: '
   progress: 'Voortgang: '
   translate-on-crowdin: '[Vertaal op Crowdin]'
-item-not-exist: <red>The item <yellow>{0}</yellow> does not exist, please check your spelling.
+item-not-exist: <red>Het item <yellow>{0} <red>bestaat niet, controleer je spelling.
 shop-creation-failed: Het maken van <red>Shop is mislukt, neem contact op met de serverbeheerder.
-inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it. Try emptying your inventory!
+inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items into it, try empty the your inventory!
 no-creative-break: <red>Je kan de shops van andere spelers niet kapot maken in creative mode, switch naar survival mode of probeer de supertool {0}
 booleanformat:
   success: <green>✔
@@ -420,7 +420,7 @@ command:
   no-type-given: '<red>Gebruik: /qs vinden <item>'
   feature-not-enabled: De functie niet ingeschakeld in de config.
   now-debuging: <green>Succesvol geactiveerd ontwikkelaarsmodus. QuickShop herladen...
-  no-amount-given: <red>No amount provided. Use <green>/qs refill <amount></green>
+  no-amount-given: <red>Geen bedrag verstrekt. Gebruik <green>/qs refill <amount><red>
   no-owner-given: <red>Geen eigenaar opgegeven
   disabled: '<red>Deze opdracht is uitgeschakeld: <yellow>{0}'
   bulk-size-now: <green>Nu handelen <yellow>{0}x {1}
@@ -432,16 +432,16 @@ command:
   toggle-unlimited:
     limited: <green>Shop is nu beperkt
     unlimited: <green>Shop is nu ongelimiteerd
-  transfer-success-other: <green>Transferred <yellow>{0} {1}</yellow>'s shop(s) to <yellow>{2}
+  transfer-success-other: <green>Overdracht <yellow>{0} {1}<green>'s winkel(s) naar <yellow>{2}
   no-trade-item: <green>Houd een handelsitem vast om te veranderen in de hoofdhand
   wrong-args: <red>Ongeldige argumenten. Gebruik <bold>/qs help <red>voor een lijst met commando's.
   some-shops-removed: <yellow>{0} ashop(s) verwijderd
   new-owner: '<green>Nieuwe eigenaar: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
-  transfer-success: <green>Transferred <yellow>{0}</yellow> shop(s) to <yellow>{1}
-  now-buying: <green>Now <light_purple>BUYING</light_purple> {0}
-  now-selling: <green>Now <aqua>SELLING</aqua> {0}
-  cleaned: <green>Removed <yellow>{0}</yellow> shops.
+  transfer-success: <green>Overgedragen van{0} <green>shop(s) naar <yellow>{1}
+  now-buying: <green>Nu <light_purple>BUYING <yellow>{0}
+  now-selling: <green>Nu <aqua>SELLING <yellow>{0}
+  cleaned: <green>Verwijderd{0}<yellow>en winkels.
   trade-item-now: <green>Nu handelen <yellow>{0}x {1}
   no-world-given: <red>Geef een wereldnaam op
   format-disabled: <red>/{0} {1} <gray>- {2}
@@ -458,7 +458,7 @@ no-anythings-in-your-hand: <red>Je hebt niks in je hand.
 no-permission: <red>Je hebt hiervoor geen rechten.
 chest-was-removed: <red>De kist is verwijderd.
 you-cant-afford-to-buy: <red>Het kost {0}, maar je hebt slechts {1}
-shops-removed-in-world: <yellow>A total of <aqua>{0}</aqua> shops have been deleted in world <aqua>{1}</aqua>.
+shops-removed-in-world: <yellow>Totaal <aqua>{0} en winkels is verwijderd in de wereld <aqua>{1}<yellow>.
 display-turn-off: <green>Successfully turn off the shop display.
 client-language-unsupported: <yellow>QuickShop doesn't support your client language, we're fallback to {0} locale now.
 language-version: '63'
