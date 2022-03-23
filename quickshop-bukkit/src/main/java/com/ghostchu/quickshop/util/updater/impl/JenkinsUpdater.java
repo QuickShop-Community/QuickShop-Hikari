@@ -91,7 +91,7 @@ public class JenkinsUpdater implements QuickUpdater {
         if (versionType != getCurrentRunning()) {
             return true;
         }
-        try (InputStream inputStream = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/BUILDINFO"))
+        try (InputStream inputStream = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/quickshop-bukkit/target/extra-resources/BUILDINFO"))
                 .header("User-Agent", "Java-QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
                 .execute()
                 .expectResponseCode(200)

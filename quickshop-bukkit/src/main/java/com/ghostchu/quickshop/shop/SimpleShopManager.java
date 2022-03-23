@@ -1215,7 +1215,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         "menu.item-name-and-price",
                         amount,
                         MsgUtil.getTranslateText(shop.getItem()),
-                        Objects.requireNonNull(format(amount * shop.getPrice(), shop))).forLocale());
+                        Objects.requireNonNull(format(total, shop))).forLocale());
         if (plugin.getConfig().getBoolean("show-tax")) {
             if (tax != 0) {
                 if (!seller.equals(shop.getOwner())) {
