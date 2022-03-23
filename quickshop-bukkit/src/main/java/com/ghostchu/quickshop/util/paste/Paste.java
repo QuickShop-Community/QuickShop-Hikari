@@ -267,41 +267,28 @@ public class Paste {
                     .append("\n");
 
             finalReport.append("\t*********************************\n");
-            finalReport.append("\titemi18n.yml:\n");
+            finalReport.append("\tinteraction.yml:\n");
             finalReport
                     .append("\t\t\n")
                     .append(
                             new String(
                                     Objects.requireNonNull(
                                             Util.inputStream2ByteArray(
-                                                    new File(plugin.getDataFolder(), "itemi18n.yml").getPath())),
+                                                    new File(plugin.getDataFolder(), "interaction.yml").getPath())),
                                     StandardCharsets.UTF_8))
                     .append("\n");
 
             finalReport.append("\t*********************************\n");
-            finalReport.append("\tenchi18n.yml:\n");
+            finalReport.append("\tprice-restriction.yml:\n");
             finalReport
                     .append("\t\t\n")
                     .append(
                             new String(
                                     Objects.requireNonNull(
                                             Util.inputStream2ByteArray(
-                                                    new File(plugin.getDataFolder(), "enchi18n.yml").getPath())),
+                                                    new File(plugin.getDataFolder(), "price-restriction.yml").getPath())),
                                     StandardCharsets.UTF_8))
                     .append("\n");
-
-            finalReport.append("\t*********************************\n");
-            finalReport.append("\tpotioni18n.yml:\n");
-            finalReport
-                    .append("\t\t\n")
-                    .append(
-                            new String(
-                                    Objects.requireNonNull(
-                                            Util.inputStream2ByteArray(
-                                                    new File(plugin.getDataFolder(), "potioni18n.yml").getPath())),
-                                    StandardCharsets.UTF_8))
-                    .append("\n");
-
             finalReport.append("\t*********************************\n");
             finalReport.append("\tInternal Debug Log:\n");
             finalReport
