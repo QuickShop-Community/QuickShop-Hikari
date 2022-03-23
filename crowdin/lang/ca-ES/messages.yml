@@ -1,16 +1,16 @@
 ---
 break-shop-use-supertool: <yellow>Pots trencar la botiga fent servir la SuperTool
-fee-charged-for-price-change: <green>You paid <red>{0}</red> to change the price.
+fee-charged-for-price-change: <green>Has pagat <red>{0}<green> per a canviar el preu.
 not-allowed-to-create: <red>No pots crear una botiga aquí.
 disabled-in-this-world: <red>QuickShop is disabled in this world
-how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}</yellow> for.
+how-much-to-trade-for: <green>Introdueix al xat per quant vols intercambiar <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Creant una còpia de seguretat de la base de dades...
 _comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Nombre invàlid.
-shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is disallowed. Pick another one!
+shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>Aquesta comanda és perillosa, així que només es pot executar des de la consola.
 not-a-number: <red>Només pots introduir un nombre, has introduït {0}.
 not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
@@ -24,7 +24,7 @@ tabcomplete:
   currency: '[nom de la moneda]'
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>No pots vendre aquest objecte perquè està a la llista negra.
-command-type-mismatch: <red>This command can only be executed by <aqua>{0}</aqua>.
+command-type-mismatch: <red>This command only can executed by <aqua>{0}.
 server-crash-warning: '<red>Server may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running.'
 you-cant-afford-to-change-price: <red>Costa {0} canviar el preu a la teva botiga.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
@@ -47,7 +47,7 @@ quick-fill:
     - '&ePrice: &b{price}'
     - '&eItem: &b{item}'
     - '&eLocation: &b{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}</green>", choose one to continue:'
+  header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
@@ -59,12 +59,12 @@ no-pending-action: <red>No tens accions pendents.
 refill-success: <green>Reabastiment exitós!
 failed-to-paste: <red>No s'ha pogut pujar a Pastebin. Comprova la teva connexió a internet i torna-ho a provar. (Més detalls a la consola)
 shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
-shop-name-invalid: <red>The shop name <yellow>{0}</yellow> is invalid. Pick another one!
+shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
 exceeded-maximum: <red>El valor supera el màxim permès per Java.
 unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.'
 no-enough-money-to-keep-shops: <red>No tenies prou diners per mantenir les teves botigues! Totes les botigues s'han eliminat...
-3rd-plugin-build-check-failed: <red>3rd-party plugin <bold>{0}</bold> denied the permission checks, did you have permission set up in there?
+3rd-plugin-build-check-failed: <red>El plugin <bold>{0}<reset><red> ha denegat les proves de permisos, tenies muntat un sistema de permisos aquí?
 not-a-integer: <red>Has d'introduir un nombre enter, has introduït {0}.
 translation-country: 'Zona de l''idioma: Català (ca_ES)'
 buying-more-than-selling: '<red>ATENCIÓ: Estàs comprant objectes per més del que els vens!'
@@ -92,7 +92,7 @@ shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>S'ha afegit {0} com a moderador de la teva botiga.
 shops-recovering: Recuperant botigues de la còpia de seguretat...
 menu:
-  sell-tax: <green>You paid <yellow>{0}</yellow> in taxes.
+  sell-tax: <green>Has pagat <yellow>{0} <green>amb interessos.
   owner: '<green>Propietari/a: {0}'
   preview: <aqua>[Previsualització]
   enchants: <dark_purple>Encanteris
@@ -100,12 +100,12 @@ menu:
   shop-information: '<green>Informació de la botiga:'
   item: '<green>Ítem: <yellow>{0}'
   price-per: <green>Preu per <yellow>{0} <green>- <yellow>{1}
-  item-name-and-price: <yellow>{0} {1} <green>for</green> {2}
+  item-name-and-price: <yellow>{0} {1} <green>per <yellow>{2}
   successful-purchase: '<green>Comprat amb èxit:'
   price-per-stack: <green>Preu per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Encanteris guardats
   item-holochat-error: <red>[Error]
-  this-shop-is-selling: <green>This shop is <aqua>SELLING</aqua> items.
+  this-shop-is-selling: <green>Aquesta botiga està <aqua>VENENT<green> ítems.
   shop-stack: '<green>Quantitat: <yellow>{0}'
   space: '<green>Espai: <yellow>{0}'
   effects: <green>Efectes
@@ -121,7 +121,7 @@ translation-author: 'Traductor: Javiooli, Hoswolf'
 integrations-check-failed-trade: <red>La integració {0} ha denegat l'ús de la botiga
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>S'ha establert el servidor com a propietari de la botiga.
-shop-name-not-found: <red>The shop named <yellow>{0}</yellow> not exists.
+shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
 shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
@@ -177,7 +177,7 @@ language:
   name: '<yellow>Nom: <gold>{0}'
   help-us: <green>[Ajuda'ns a millorar la qualitat de la traducció]
 warn-to-paste: '<yellow>Collecting data and uploading it to Pastebin, this may take a while. <red><bold>Warning:<red> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL<green>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to sell all.
 updatenotify:
   buttontitle: '[Actualitza ara]'
   onekeybuttontitle: '[Actualització OneKey]'
@@ -240,7 +240,7 @@ no-double-chests: <red>No pots crear una botiga de cofre doble.
 price-too-cheap: <red>El preu ha de ser superior a <yellow>${0}
 shop-not-exist: <red>No hi ha cap botiga.
 bad-command-usage: <red>Bad command arguments!
-clean-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+clean-warning: <yellow>This command will purge <red>all <yellow>shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD<yellow>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm <yellow>to continue.
 shop-purchase-cancelled: <red>S'ha cancelat la transacció.
 bypassing-lock: <red>Sobrepassant un bloqueig de QuickShop!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
@@ -250,10 +250,10 @@ price-is-now: <green>El nou preu de la botiga és de <yellow>{0}.
 shops-arent-locked: <red>Recorda, les botigues NO estan protegides de robatoris! Si vols parar els lladres, bloqueja-la amb LWC, Lockette, etc!
 that-is-locked: <red>Aquesta botiga està bloquejada.
 shop-has-no-space: <red>La botiga només té capacitat per a {0} {1} més.
-safe-mode-admin: '<red><bold>WARNING: </bold>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs </yellow> command to check any errors.'
+safe-mode-admin: '<red><bold>WARNING: <red>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs <red> command to check any errors.'
 shop-stock-too-low: <red>Només queden {0} {1} a la botiga!
-world-not-exists: <red>The world <yellow>{0}</yellow> doesn't exist
-how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL</light_purple>. You can sell <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> in chat, to sell all.
+world-not-exists: <red>El món <yellow>{0}<red> no existeix
+how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL<green>. You can sell <yellow>{0}<green>. Enter <aqua>{1}<green> in chat, to sell all.
 shop-freezed-at-location: <yellow>La teva botiga {0} a {1} s'ha congelat!
 translation-contributors: 'Contributors: Hoswolf, Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601'
 empty-success: <green>S'ha buidat la botiga amb èxit
@@ -291,23 +291,23 @@ signs:
 negative-amount: <red>No s'admeten valors negatius.
 display-turn-on: <green>Successfully turn on the shop display.
 shop-staff-deleted: <green>S'ha eliminat {0} com a moderador de la teva botiga.
-nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}</aqua>:'
+nearby-shop-header: '<green>Botiga a prop amb <aqua>{0}<green>:'
 backup-failed: No es pot fer la còpia de la base de dades. Més detalls a la consola.
 shop-staff-cleared: <green>S'han eliminat tots els moderadors de la teva botiga.
 price-too-high: <red>El preu de la botiga és massa alt! No en pots crear amb un preu més alt que {0}.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <green>{0} ha venut {1} {2} a la teva botiga.
 shop-out-of-stock: <dark_purple>La teva botiga a {0}, {1}, {2} s'ha quedat sense {3}!
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}<green>. Enter <aqua>{1}<green> to buy them all.
 language-info-panel:
   help: 'Ajuda''ns: '
   code: 'Codi: '
   name: 'Llengua: '
   progress: 'Progrés: '
   translate-on-crowdin: '[Tradueix a Crowdin]'
-item-not-exist: <red>The item <yellow>{0}</yellow> does not exist, please check your spelling.
+item-not-exist: <red>L'ítem <yellow>{0} <red>no existeix, si us plau, assegura't que estigui ben escrit.
 shop-creation-failed: <red>No s'ha pogut crear la botiga, si us plau, posa't en contacte amb un administrador.
-inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it. Try emptying your inventory!
+inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items into it, try empty the your inventory!
 no-creative-break: <red>No pots trencar botigues d'altres jugadors en mode creatiu, canvia a supervivència o intenta utilitzar la Supertool {0}.
 booleanformat:
   success: <green>✔
@@ -420,7 +420,7 @@ command:
   no-type-given: '<red>Ús: /qs find <objecte>'
   feature-not-enabled: Aquesta opció no està activada a l'arxiu de configuració.
   now-debuging: <green>Mode de desenvolupador activat. Recarregant QuickShop...
-  no-amount-given: <red>No amount provided. Use <green>/qs refill <amount></green>
+  no-amount-given: <red>No s'ha proporcionat cap quantitat. Utilitza <green>/qs refill <quantitat><red>.
   no-owner-given: <red>No s'ha proporcionat cap propietari.
   disabled: '<red>Aquesta comanda està desactivada: <yellow>{0}'
   bulk-size-now: <green>S'està intercanviant <yellow>{0}x {1}
@@ -432,16 +432,16 @@ command:
   toggle-unlimited:
     limited: <green>La botiga ara és limitada.
     unlimited: <green>La botiga ara és il·limitada.
-  transfer-success-other: <green>Transferred <yellow>{0} {1}</yellow>'s shop(s) to <yellow>{2}
+  transfer-success-other: <green>S'han transferit les botigues de <yellow>{0} {1}<green> a <yellow>{2}
   no-trade-item: <green>Si us plau, tingues l'objecte que vols intercanviar a la mà principal.
   wrong-args: <red>Argument invàlid. Utilitza <bold>/qs help <red>per veure una llista de comandes.
   some-shops-removed: <yellow>{0} <green>botigues eliminades
   new-owner: '<green>Nou propietari: <yellow>{0}<green>.'
   format: <green>/{0} {1} <yellow>- {2}
-  transfer-success: <green>Transferred <yellow>{0}</yellow> shop(s) to <yellow>{1}
-  now-buying: <green>Now <light_purple>BUYING</light_purple> {0}
-  now-selling: <green>Now <aqua>SELLING</aqua> {0}
-  cleaned: <green>Removed <yellow>{0}</yellow> shops.
+  transfer-success: <green>S'han transferit <yellow>{0} <green>botigues a <yellow>{1}
+  now-buying: <green>S'està <light_purple>COMPRANT <yellow>{0}<green>.
+  now-selling: <green>S'està <aqua>VENENT <yellow>{0}<green>.
+  cleaned: <green>S'han eliminat <yellow>{0}<green> botigues.
   trade-item-now: <green>S'està intercanviant <yellow>{0}x {1}.
   no-world-given: <red>Si us plau, especifica un nom de món.
   format-disabled: <red>/{0} {1} <gray>- {2}
@@ -458,7 +458,7 @@ no-anythings-in-your-hand: No tens res a la mà.
 no-permission: No tens permisos per fer això.
 chest-was-removed: <red>S'ha eliminat el cofre.
 you-cant-afford-to-buy: <red>Costa {0}, però només tens {1}.
-shops-removed-in-world: <yellow>A total of <aqua>{0}</aqua> shops have been deleted in world <aqua>{1}</aqua>.
+shops-removed-in-world: <yellow>Un total de <aqua>{0}<yellow> botigues s'han eliminat del món <aqua>{1}<yellow>.
 display-turn-off: <green>Successfully turn off the shop display.
 client-language-unsupported: <yellow>QuickShop doesn't support your client language, we're fallback to {0} locale now.
 language-version: '63'
