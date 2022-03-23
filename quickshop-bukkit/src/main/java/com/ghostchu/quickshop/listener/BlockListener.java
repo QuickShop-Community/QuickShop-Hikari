@@ -103,7 +103,6 @@ public class BlockListener extends AbstractProtectionListener {
             plugin.text().of(p, "success-removed-shop").send();
         } else if (Util.isWallSign(b.getType())) {
             final Shop shop = getShopNextTo(b.getLocation());
-
             if (shop == null) {
                 return;
             }
