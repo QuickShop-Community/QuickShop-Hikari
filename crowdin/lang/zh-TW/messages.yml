@@ -1,16 +1,16 @@
+---
 break-shop-use-supertool: <yellow>你可以使用超級工具破壞商店。
-fee-charged-for-price-change: <green>你付了 <red>{0}<green> 元修改商店定價。
+fee-charged-for-price-change: <green>You paid <red>{0}</red> to change the price.
 not-allowed-to-create: <red>你無法在此建立商店。
 disabled-in-this-world: <red>該世界已停用 QuickShop
-how-much-to-trade-for: <green>請在聊天室中輸入你想買賣 <yellow>{1} 個 {0} <green>的價格。
+how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}</yellow> for.
 client-language-changed: <green>QuickShop 偵測到你的客戶端語言已切換，我們現在為你切換為 {0}。
 shops-backingup: 正在把商店資料備份到資料庫……
-_comment: 你好翻譯者 ！ 假若你正在從 Github 或其他代管平台編輯，你應該前往 https://crowdin.com/project/quickshop-reremake
-  進行翻譯
+_comment: 你好翻譯者 ！ 假若你正在從 Github 或其他代管平台編輯，你應該前往 https://crowdin.com/project/quickshop-reremake 進行翻譯
 unlimited-shop-owner-changed: <yellow>這個無限商店的店主已經更換成 {0}。
 bad-command-usage-detailed: '&壞命令參數！接受以下參數：<gray>{0}'
 thats-not-a-number: <red>無效的數字
-shop-name-disallowed: <red>此商店的名稱 <yellow>{0} <red>已被禁止。請嘗試使用另一個名稱!
+shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is disallowed. Pick another one!
 console-only-danger: <red>由於這個是一個有風險的指令，請你在控制台中執行。
 not-a-number: <red>輸入內容只能是數字，但你輸入了 {0}。
 not-looking-at-valid-shop-block: <red>無法找到建立商店的方塊，你需要先注視著商店方塊。
@@ -24,8 +24,8 @@ tabcomplete:
   currency: '[貨幣名稱]'
 taxaccount-unset: <green>該商店的稅金帳戶現在按照伺服器全域設定。
 blacklisted-item: <red>由於這是黑名單的物品，所以你不能賣。
-command-type-mismatch: <red>該指令只能由 <aqua>{0} <red>執行。
-server-crash-warning: <red>如果你更換或刪除 QuickShop 插件 Jar 檔案後，執行指令 /qs reload 可能導致伺服器崩潰。
+command-type-mismatch: <red>This command can only be executed by <aqua>{0}</aqua>.
+server-crash-warning: '<red>如果你更換或刪除 QuickShop 插件 Jar 檔案後，執行指令 /qs reload 可能導致伺服器崩潰。'
 you-cant-afford-to-change-price: <red>你需要花費 {0} 元來修改商品價格。
 safe-mode: <red>QuickShop 現在處於安全模式，您無法打開此商店容器，請與服務器管理員聯繫以修復錯誤!
 forbidden-vanilla-behavior: <red>該操作不符合原版行為，因此被禁止。
@@ -34,44 +34,41 @@ paste-disabled: '<red>原始碼儲存功能被禁止! 你將無法請求技術�
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-  - '&e名稱: &b{0}'
-  - '&a商店主人：{0}'
-  - '&e類型: &b{0}'
-  - '&e價格: &b{0}'
-  - '&a商品：&e{0}'
-  - '&e位置: &b{0}'
+    - '&e名稱: &b{0}'
+    - '&a商店主人：{0}'
+    - '&e類型: &b{0}'
+    - '&e價格: &b{0}'
+    - '&a商品：&e{0}'
+    - '&e位置: &b{0}'
   hover-arg-filled:
-  - '&e名稱: &b{name}'
-  - '&a商店主人：{owner}'
-  - '&e類型: &b{type}'
-  - '&e價格: &b{price}'
-  - '&e商品：&b{item}'
-  - '&e位置: &b{location}'
-  header: <yellow>您有多個名為"<green>{0}<yellow>"的商店，請選擇一個以繼續：
+    - '&e名稱: &b{name}'
+    - '&a商店主人：{owner}'
+    - '&e類型: &b{type}'
+    - '&e價格: &b{price}'
+    - '&e商品：&b{item}'
+    - '&e位置: &b{location}'
+  header: '<yellow>You have multiple shops with name "<green>{0}</green>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: <gray>（僅限管理員）<light_purple>{0} <dark_gray>拒絕權限檢查。<gray>如果不是預期所見到的，請新增
-  <light_purple>{1} <gray>進監聽黑名單。<gray>配置指南：https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter
-average-price-nearby: <green>附近的平均價格 ： <yellow>{0} 元。
+3rd-plugin-build-check-failed-admin: '<gray>（僅限管理員）<light_purple>{0} <dark_gray>拒絕權限檢查。<gray>如果不是預期所見到的，請新增 <light_purple>{1} <gray>進監聽黑名單。<gray>配置指南：https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+average-price-nearby: '<green>附近的平均價格 ： <yellow>{0} 元。'
 digits-reach-the-limit: <red>你的價格超過小數點後位數上限。
-currency-unset: '<green>已成功刪除商店貨幣。現在使用預設設置。 '
+currency-unset: <green>已成功刪除商店貨幣。現在使用預設設置。 
 you-cant-create-shop-in-there: <red>你沒有在這個地方建立商店的權限。
 no-pending-action: <red>你沒有待處理的操作
 refill-success: <green>補貨成功
 failed-to-paste: <red>無法將資料上傳至 Pastebin ，請檢查你的連線再重試。 （詳見控制台）
 shop-out-of-stock-name: <dark_purple>你在 X {0} 出售 {1} 的商店已售罄一空 ！
-shop-name-invalid: <red>此商店的名稱 <yellow>{0} <red>無效. 請嘗試使用另一個名稱!
-how-many-buy-stack: <green>在聊天室中輸入你想 <aqua>購買<green> 的數量，每份中有 <yellow>{0}<green> 個物品，你目前可以買
-  <yellow>{1}<green> 份。輸入 <aqua>{2}<green> 來購買所有物品。
-exceeded-maximum: '<red>該值超出了 Java 中的最大值。 '
-unlimited-shop-owner-keeped: <yellow>注意 ： 該商店店主還是屬於無限商店店主類型，你需要自己重新設定新的商店店主。
+shop-name-invalid: <red>The shop name <yellow>{0}</yellow> is invalid. Pick another one!
+how-many-buy-stack: <green>在聊天室中輸入你想 <aqua>購買<green> 的數量，每份中有 <yellow>{0}<green> 個物品，你目前可以買 <yellow>{1}<green> 份。輸入 <aqua>{2}<green> 來購買所有物品。
+exceeded-maximum: <red>該值超出了 Java 中的最大值。 
+unlimited-shop-owner-keeped: '<yellow>注意 ： 該商店店主還是屬於無限商店店主類型，你需要自己重新設定新的商店店主。'
 no-enough-money-to-keep-shops: <red>你的金錢不夠繳稅，所以你所有的商店已被刪除……
-3rd-plugin-build-check-failed: <red>第三方插件 <bold>{0}<reset><red> 拒絕檢查權限操作，請問你有權限建立商店嗎
-  ？
+3rd-plugin-build-check-failed: <red>3rd-party plugin <bold>{0}</bold> denied the permission checks, did you have permission set up in there?
 not-a-integer: <red>輸入一定是數字，但你輸入了 {0}。
-translation-country: 語言 ： <aqua><bold>繁體中文 Chinese Traditional （zh_TW）
-buying-more-than-selling: <red>警告 ： 你收購的物品比出售的物品多 ！
-purchase-failed: <red>交易失敗 ： 發生錯誤，請聯繫伺服器管理員。
+translation-country: '語言：&b&l繁體中文 Chinese Traditional（zh_TW）'
+buying-more-than-selling: '<red>警告 ： 你收購的物品比出售的物品多 ！'
+purchase-failed: '<red>交易失敗 ： 發生錯誤，請聯繫伺服器管理員。'
 denied-put-in-item: <red>你不能將此物品放入你的商店 ！
 shop-has-changed: <red>你嘗試交易的商店在點擊後已有變動 ！
 flush-finished: <green>成功獲取所有的商店記錄 。
@@ -89,50 +86,47 @@ reloading-status:
   scheduled: <green>重新載入完成。<yellow>（一些更改需要一段時間後作用）
   require-restart: <green>重新載入完成。<yellow>（一些更改需要重新啟動伺服器後作用）
   failed: <red>無法重新載入，請檢查伺服器控制台
-player-bought-from-your-store-tax: <red>{0} 從你的商店購買了 {1} {2}，你總共賺了 {3} 元 （{4} 元的稅）
-  。
+player-bought-from-your-store-tax: <red>{0} 從你的商店購買了 {1} {2}，你總共賺了 {3} 元 （{4} 元的稅） 。
 not-enough-space: <red>你只剩下 {0} 格空間可以裝東西 ！
 shop-name-success: <green>成功轉交商店擁有者給<yellow>{0}<green>。
 shop-staff-added: <green>已新增員工 {0} 到你的商店。
 shops-recovering: 正在嘗試從備份檔案中還原所有商店……
 menu:
-  sell-tax: <green>你付了 <yellow>{0} <green>元的稅。
-  owner: <green>商店主人 ： {0}
+  sell-tax: <green>You paid <yellow>{0}</yellow> in taxes.
+  owner: '<green>商店主人 ： {0}'
   preview: <aqua>[物品預覽]
   enchants: <dark_purple>附魔
   sell-tax-self: <green>因為你是商店主人，所以不需要繳稅。
   shop-information: '<green>商店資訊 ： '
-  item: <green>商品 ： <yellow>{0}
+  item: '<green>商品 ： <yellow>{0}'
   price-per: <green>價格 ： <yellow>1 個 {0} {1} 元
-  item-name-and-price: <green>共 <yellow>{2} <green>元的 <yellow>{0} <green>個 <yellow>{1}
+  item-name-and-price: <yellow>{0} {1} <green>for</green> {2}
   successful-purchase: '<green>成功購買 ： '
   price-per-stack: <green>價格 ： <yellow>{2} 個 {0} {1} 元
   stored-enchants: <dark_purple>附魔
   item-holochat-error: <red>[錯誤]
-  this-shop-is-selling: <green>此商店正在<aqua>出售<green>物品。
-  shop-stack: <green>每份物品的數量 ： <yellow>{0}
-  space: <green>空間 ： <yellow>{0}
+  this-shop-is-selling: <green>This shop is <aqua>SELLING</aqua> items.
+  shop-stack: '<green>每份物品的數量 ： <yellow>{0}'
+  space: '<green>空間 ： <yellow>{0}'
   effects: <green>藥水效果
   damage-percent-remaining: <green>耐久度 ： <yellow>剩餘 {0}%。
   item-holochat-data-too-large: <red>[錯誤] 物品 NBT 太長無法顯示!
-  stock: <green>庫存 ： <yellow>{0} 個
+  stock: '<green>庫存 ： <yellow>{0} 個'
   this-shop-is-buying: <green>此商店是 <light_purple>收購物品<green> 的商店。
   successfully-sold: '<green>成功出售 ： '
-  total-value-of-chest: <green>儲物箱中的物品價值 ： <yellow>{0} 元
+  total-value-of-chest: '<green>儲物箱中的物品價值 ： <yellow>{0} 元'
 currency-not-exists: <red>找不到你要設置的貨幣，可能拼寫錯誤或該貨幣在這個世界上無法使用。
 no-nearby-shop: <red>找不到符合 {0} 的商店。
-translation-author: 翻譯人員 ： Ghost_chu、Andre_601、Flandre_tw （主翻譯） 、胡蝶 しのぶ こちょう しのぶ#3062（主翻譯）
+translation-author: "Air: Air\nStone: Stone\nGranite: Granite\nPolished_GRANITE: Polished Granite\nDiorite: Diorite\n Polished_DIORITE: Polished Diorite\n Andesite: Andesite\n Polished_ANDESITE: Polished Andesite\n Deepslate: Deepslate\n Cobbled_DEEPSLATE: Cobbled Deepslate\n Polished_DEEPSLATE: Polished Deepslate\n Calcite: Calcite\n Tuff: Tuff\n Dripstone_BLOCK: Dripstone Block\n Grass_BLOCK: Grass Block\n Dirt: Dirt\n Coarse_DIRT: Coarse Dirt\n Podzol: Podzol\n Rooted_DIRT: Rooted Dirt\n Crimson_NYLIUM: Crimson Nylium\n Warped_NYLIUM: Warped Nylium\n Cobblestone: Cobblestone\n Oak_PLANKS: Oak Planks\n Spruce_PLANKS: Spruce Planks\n Birch_PLANKS: Birch Planks\n Jungle_PLANKS: Jungle Planks\n Acacia_PLANKS: Acacia Planks\n Dark_OAK_PLANKS: Dark Oak Planks\n Crimson_PLANKS: Crimson Planks\n Warped_PLANKS: Warped Planks\n Oak_SAPLING: Oak Sapling\n Spruce_SAPLING: Spruce Sapling\n Birch_SAPLING: Birch Sapling\n Jungle_SAPLING: Jungle Sapling\n Acacia_SAPLING: Acacia Sapling\n Dark_OAK_SAPLING: Dark Oak Sapling\n Bedrock: Bedrock\n Sand: Sand\n Red_SAND: Red Sand\n Gravel: Gravel\n Coal_ORE: Coal Ore\n Deepslate_COAL_ORE: Deepslate Coal Ore\n Iron_ORE: Iron Ore\n Deepslate_IRON_ORE: Deepslate Iron Ore\n Copper_ORE: Copper Ore\n Deepslate_COPPER_ORE: Deepslate Copper Ore\n Gold_ORE: Gold Ore\n Deepslate_GOLD_ORE: Deepslate Gold Ore\n Redstone_ORE: Redstone Ore\n Deepslate_REDSTONE_ORE: Deepslate Redstone Ore\n Emerald_ORE: Emerald Ore\n Deepslate_EMERALD_ORE: Deepslate Emerald Ore\n Lapis_ORE: Lapis Ore\n Deepslate_LAPIS_ORE: Deepslate Lapis Ore\n Diamond_ORE: Diamond Ore\n Deepslate_DIAMOND_ORE: Deepslate Diamond Ore\n Nether_GOLD_ORE: Nether Gold Ore\n Nether_QUARTZ_ORE: Nether Quartz Ore\n Ancient_DEBRIS: Ancient Debris\n Coal_BLOCK: Coal Block\n Raw_IRON_BLOCK: Raw Iron Block\n Raw_COPPER_BLOCK: Raw Copper Block\n Raw_GOLD_BLOCK: Raw Gold Block\n Amethyst_BLOCK: Amethyst Block\n Budding_AMETHYST: Budding Amethyst\n Iron_BLOCK: Iron Block\n Copper_BLOCK: Copper Block\n Gold_BLOCK: Gold Block\n Diamond_BLOCK: Diamond Block\n Netherite_BLOCK: Netherite Block\n Exposed_COPPER: Exposed Copper\n Weathered_COPPER: Weathered Copper\n Oxidized_COPPER: Oxidized Copper\n Cut_COPPER: Cut Copper\n Exposed_CUT_COPPER: Exposed Cut Copper\n Weathered_CUT_COPPER: Weathered Cut Copper\n Oxidized_CUT_COPPER: Oxidized Cut Copper\n Cut_COPPER_STAIRS: Cut Copper Stairs\n Exposed_CUT_COPPER_STAIRS: Exposed Cut Copper Stairs\n Weathered_CUT_COPPER_STAIRS: Weathered Cut Copper Stairs\n Oxidized_CUT_COPPER_STAIRS: Oxidized Cut Copper Stairs\n Cut_COPPER_SLAB: Cut Copper Slab\n Exposed_CUT_COPPER_SLAB: Exposed Cut Copper Slab\n Weathered_CUT_COPPER_SLAB: Weathered Cut Copper Slab\n Oxidized_CUT_COPPER_SLAB: Oxidized Cut Copper Slab\n Waxed_COPPER_BLOCK: Waxed Copper Block\n Waxed_EXPOSED_COPPER: Waxed Exposed Copper\n Waxed_WEATHERED_COPPER: Waxed Weathered Copper\n Waxed_OXIDIZED_COPPER: Waxed Oxidized Copper\n Waxed_CUT_COPPER: Waxed Cut Copper\n Waxed_EXPOSED_CUT_COPPER: Waxed Exposed Cut Copper\n Waxed_WEATHERED_CUT_COPPER: Waxed Weathered Cut Copper\n Waxed_OXIDIZED_CUT_COPPER: Waxed Oxidized Cut Copper\n Waxed_CUT_COPPER_STAIRS: Waxed Cut Copper Stairs\n Waxed_EXPOSED_CUT_COPPER_STAIRS: Waxed Exposed Cut Copper Stairs\n Waxed_WEATHERED_CUT_COPPER_STAIRS: Waxed Weathered Cut Copper Stairs\n Waxed_OXIDIZED_CUT_COPPER_STAIRS: Waxed Oxidized Cut Copper Stairs\n Waxed_CUT_COPPER_SLAB: Waxed Cut Copper Slab\n Waxed_EXPOSED_CUT_COPPER_SLAB: Waxed Exposed Cut Copper Slab\n Waxed_WEATHERED_CUT_COPPER_SLAB: Waxed Weathered Cut Copper Slab\n Waxed_OXIDIZED_CUT_COPPER_SLAB: Waxed Oxidized Cut Copper Slab\n Oak_LOG: Oak Log\n Spruce_LOG: Spruce Log\n Birch_LOG: Birch Log\n Jungle_LOG: Jungle Log\n Acacia_LOG: Acacia Log\n Dark_OAK_LOG: Dark Oak Log\n Crimson_STEM: Crimson Stem\n Warped_STEM: Warped Stem\n Stripped_OAK_LOG: Stripped Oak Log\n Stripped_SPRUCE_LOG: Stripped Spruce Log\n Stripped_BIRCH_LOG: Stripped Birch Log\n Stripped_JUNGLE_LOG: Stripped Jungle Log\n Stripped_ACACIA_LOG: Stripped Acacia Log\n Stripped_DARK_OAK_LOG: Stripped Dark Oak Log\n Stripped_CRIMSON_STEM: Stripped Crimson Stem\n Stripped_WARPED_STEM: Stripped Warped Stem\n Stripped_OAK_WOOD: Stripped Oak Wood\n Stripped_SPRUCE_WOOD: Stripped Spruce Wood\n Stripped_BIRCH_WOOD: Stripped Birch Wood\n Stripped_JUNGLE_WOOD: Stripped Jungle Wood\n Stripped_ACACIA_WOOD: Stripped Acacia Wood\n Stripped_DARK_OAK_WOOD: Stripped Dark Oak Wood\n Stripped_CRIMSON_HYPHAE: Stripped Crimson Hyphae\n Stripped_WARPED_HYPHAE: Stripped Warped Hyphae\n Oak_WOOD: Oak Wood\n Spruce_WOOD: Spruce Wood\n Birch_WOOD: Birch Wood\n Jungle_WOOD: Jungle Wood\n Acacia_WOOD: Acacia Wood\n Dark_OAK_WOOD: Dark Oak Wood\n Crimson_HYPHAE: Crimson Hyphae\n Warped_HYPHAE: Warped Hyphae\n Oak_LEAVES: Oak Leaves\n Spruce_LEAVES: Spruce Leaves\n Birch_LEAVES: Birch Leaves\n Jungle_LEAVES: Jungle Leaves\n Acacia_LEAVES: Acacia Leaves\n Dark_OAK_LEAVES: Dark Oak Leaves\n Azalea_LEAVES: Azalea Leaves\n Flowering_AZALEA_LEAVES: Flowering Azalea Leaves\n Sponge: Sponge\n Wet_SPONGE: Wet Sponge\n Glass: Glass\n Tinted_GLASS: Tinted Glass\n Lapis_BLOCK: Lapis Block\n Sandstone: Sandstone\n Chiseled_SANDSTONE: Chiseled Sandstone\n Cut_SANDSTONE: Cut Sandstone\n Cobweb: Cobweb\n Grass: Grass\n Fern: Fern\n Azalea: Azalea\n Flowering_AZALEA: Flowering Azalea\n Dead_BUSH: Dead Bush\n Seagrass: Seagrass\n Sea_PICKLE: Sea Pickle\n White_WOOL: White Wool\n Orange_WOOL: Orange Wool\n Magenta_WOOL: Magenta Wool\n Light_BLUE_WOOL: Light Blue Wool\n Yellow_WOOL: Yellow Wool\n Lime_WOOL: Lime Wool\n Pink_WOOL: Pink Wool\n Gray_WOOL: Gray Wool\n Light_GRAY_WOOL: Light Gray Wool\n Cyan_WOOL: Cyan Wool\n Purple_WOOL: Purple Wool\n Blue_WOOL: Blue Wool\n Brown_WOOL: Brown Wool\n Green_WOOL: Green Wool\n Red_WOOL: Red Wool\n Black_WOOL: Black Wool\n Dandelion: Dandelion\n Poppy: Poppy\n Blue_ORCHID: Blue Orchid\n Allium: Allium\n Azure_BLUET: Azure Bluet\n Red_TULIP: Red Tulip\n Orange_TULIP: Orange Tulip\n White_TULIP: White Tulip\n Pink_TULIP: Pink Tulip\n Oxeye_DAISY: Oxeye Daisy\n Cornflower: Cornflower\n Lily_OF_THE_VALLEY: Lily Of The Valley\n Wither_ROSE: Wither Rose\n Spore_BLOSSOM: Spore Blossom\n Brown_MUSHROOM: Brown Mushroom\n Red_MUSHROOM: Red Mushroom\n Crimson_FUNGUS: Crimson Fungus\n Warped_FUNGUS: Warped Fungus\n Crimson_ROOTS: Crimson Roots\n Warped_ROOTS: Warped Roots\n Nether_SPROUTS: Nether Sprouts\n Weeping_VINES: Weeping Vines\n Twisting_VINES: Twisting Vines\n Sugar_CANE: Sugar Cane\n Kelp: Kelp\n Moss_CARPET: Moss Carpet\n Moss_BLOCK: Moss Block\n Hanging_ROOTS: Hanging Roots\n Big_DRIPLEAF: Big Dripleaf\n Small_DRIPLEAF: Small Dripleaf\n Bamboo: Bamboo\n Oak_SLAB: Oak Slab\n Spruce_SLAB: Spruce Slab\n Birch_SLAB: Birch Slab\n Jungle_SLAB: Jungle Slab\n Acacia_SLAB: Acacia Slab\n Dark_OAK_SLAB: Dark Oak Slab\n Crimson_SLAB: Crimson Slab\n Warped_SLAB: Warped Slab\n Stone_SLAB: Stone Slab\n Smooth_STONE_SLAB: Smooth Stone Slab\n Sandstone_SLAB: Sandstone Slab\n Cut_SANDSTONE_SLAB: Cut Sandstone Slab\n Petrified_OAK_SLAB: Petrified Oak Slab\n Cobblestone_SLAB: Cobblestone Slab\n Brick_SLAB: Brick Slab\n Stone_BRICK_SLAB: Stone Brick Slab\n Nether_BRICK_SLAB: Nether Brick Slab\n Quartz_SLAB: Quartz Slab\n Red_SANDSTONE_SLAB: Red Sandstone Slab\n Cut_RED_SANDSTONE_SLAB: Cut Red Sandstone Slab\n Purpur_SLAB: Purpur Slab\n Prismarine_SLAB: Prismarine Slab\n Prismarine_BRICK_SLAB: Prismarine Brick Slab\n Dark_PRISMARINE_SLAB: Dark Prismarine Slab\n Smooth_QUARTZ: Smooth Quartz\n Smooth_RED_SANDSTONE: Smooth Red Sandstone\n Smooth_SANDSTONE: Smooth Sandstone\n Smooth_STONE: Smooth Stone\n Bricks: Bricks\n Bookshelf: Bookshelf\n Mossy_COBBLESTONE: Mossy Cobblestone\n Obsidian: Obsidian\n Torch: Torch\n End_ROD: End Rod\n Chorus_PLANT: Chorus Plant\n Chorus_FLOWER: Chorus Flower\n Purpur_BLOCK: Purpur Block\n Purpur_PILLAR: Purpur Pillar\n Purpur_STAIRS: Purpur Stairs\n Spawner: Spawner\n Oak_STAIRS: Oak Stairs\n Chest: Chest\n Crafting_TABLE: Crafting Table\n Farmland: Farmland\n Furnace: Furnace\n Ladder: Ladder\n Cobblestone_STAIRS: Cobblestone Stairs\n Snow: Snow\n Ice: Ice\n Snow_BLOCK: Snow Block\n Cactus: Cactus\n Clay: Clay\n Jukebox: Jukebox\n Oak_FENCE: Oak Fence\n Spruce_FENCE: Spruce Fence\n Birch_FENCE: Birch Fence\n Jungle_FENCE: Jungle Fence\n Acacia_FENCE: Acacia Fence\n Dark_OAK_FENCE: Dark Oak Fence\n Crimson_FENCE: Crimson Fence\n Warped_FENCE: Warped Fence\n Pumpkin: Pumpkin\n Carved_PUMPKIN: Carved Pumpkin\n Jack_O_LANTERN: Jack O Lantern\n Netherrack: Netherrack\n Soul_SAND: Soul Sand\n Soul_SOIL: Soul Soil\n Basalt: Basalt\n Polished_BASALT: Polished Basalt\n Smooth_BASALT: Smooth Basalt\n Soul_TORCH: Soul Torch\n Glowstone: Glowstone\n Infested_STONE: Infested Stone\n Infested_COBBLESTONE: Infested Cobblestone\n Infested_STONE_BRICKS: Infested Stone Bricks\n Infested_MOSSY_STONE_BRICKS: Infested Mossy Stone Bricks\n Infested_CRACKED_STONE_BRICKS: Infested Cracked Stone Bricks\n Infested_CHISELED_STONE_BRICKS: Infested Chiseled Stone Bricks\n Infested_DEEPSLATE: Infested Deepslate\n Stone_BRICKS: Stone Bricks\n Mossy_STONE_BRICKS: Mossy Stone Bricks\n Cracked_STONE_BRICKS: Cracked Stone Bricks\n Chiseled_STONE_BRICKS: Chiseled Stone Bricks\n Deepslate_BRICKS: Deepslate Bricks\n Cracked_DEEPSLATE_BRICKS: Cracked Deepslate Bricks\n Deepslate_TILES: Deepslate Tiles\n Cracked_DEEPSLATE_TILES: Cracked Deepslate Tiles\n Chiseled_DEEPSLATE: Chiseled Deepslate\n Brown_MUSHROOM_BLOCK: Brown Mushroom Block\n Red_MUSHROOM_BLOCK: Red Mushroom Block\n Mushroom_STEM: Mushroom Stem\n Iron_BARS: Iron Bars\n Chain: Chain\n Glass_PANE: Glass Pane\n Melon: Melon\n Vine: Vine\n Glow_LICHEN: Glow Lichen\n Brick_STAIRS: Brick Stairs\n Stone_BRICK_STAIRS: Stone Brick Stairs\n Mycelium: Mycelium\n Lily_PAD: Lily Pad\n Nether_BRICKS: Nether Bricks\n Cracked_NETHER_BRICKS: Cracked Nether Bricks\n Chiseled_NETHER_BRICKS: Chiseled Nether Bricks\n Nether_BRICK_FENCE: Nether Brick Fence\n Nether_BRICK_STAIRS: Nether Brick Stairs\n Enchanting_TABLE: Enchanting Table\n End_PORTAL_FRAME: End Portal Frame\n End_STONE: End Stone\n End_STONE_BRICKS: End Stone Bricks\n Dragon_EGG: Dragon Egg\n Sandstone_STAIRS: Sandstone Stairs\n Ender_CHEST: Ender Chest\n Emerald_BLOCK: Emerald Block\n Spruce_STAIRS: Spruce Stairs\n Birch_STAIRS: Birch Stairs\n Jungle_STAIRS: Jungle Stairs\n Crimson_STAIRS: Crimson Stairs\n Warped_STAIRS: Warped Stairs\n Command_BLOCK: Command Block\n Beacon: Beacon\n Cobblestone_WALL: Cobblestone Wall\n Mossy_COBBLESTONE_WALL: Mossy Cobblestone Wall\n Brick_WALL: Brick Wall\n Prismarine_WALL: Prismarine Wall\n Red_SANDSTONE_WALL: Red Sandstone Wall\n Mossy_STONE_BRICK_WALL: Mossy Stone Brick Wall\n Granite_WALL: Granite Wall\n Stone_BRICK_WALL: Stone Brick Wall\n Nether_BRICK_WALL: Nether Brick Wall\n Andesite_WALL: Andesite Wall\n Red_NETHER_BRICK_WALL: Red Nether Brick Wall\n Sandstone_WALL: Sandstone Wall\n End_STONE_BRICK_WALL: End Stone Brick Wall\n Diorite_WALL: Diorite Wall\n Blackstone_WALL: Blackstone Wall\n Polished_BLACKSTONE_WALL: Polished Blackstone Wall\n Polished_BLACKSTONE_BRICK_WALL: Polished Blackstone Brick Wall\n Cobbled_DEEPSLATE_WALL: Cobbled Deepslate Wall\n Polished_DEEPSLATE_WALL: Polished Deepslate Wall\n Deepslate_BRICK_WALL: Deepslate Brick Wall\n Deepslate_TILE_WALL: Deepslate Tile Wall\n Anvil: Anvil\n Chipped_ANVIL: Chipped Anvil\n Damaged_ANVIL: Damaged Anvil\n Chiseled_QUARTZ_BLOCK: Chiseled Quartz Block\n Quartz_BLOCK: Quartz Block\n Quartz_BRICKS: Quartz Bricks\n Quartz_PILLAR: Quartz Pillar\n Quartz_STAIRS: Quartz Stairs\n White_TERRACOTTA: White Terracotta\n Orange_TERRACOTTA: Orange Terracotta\n Magenta_TERRACOTTA: Magenta Terracotta\n Light_BLUE_TERRACOTTA: Light Blue Terracotta\n Yellow_TERRACOTTA: Yellow Terracotta\n Lime_TERRACOTTA: Lime Terracotta\n Pink_TERRACOTTA: Pink Terracotta\n Gray_TERRACOTTA: Gray Terracotta\n Light_GRAY_TERRACOTTA: Light Gray Terracotta\n Cyan_TERRACOTTA: Cyan Terracotta\n Purple_TERRACOTTA: Purple Terracotta\n Blue_TERRACOTTA: Blue Terracotta\n Brown_TERRACOTTA: Brown Terracotta\n Green_TERRACOTTA: Green Terracotta\n Red_TERRACOTTA: Red Terracotta\n Black_TERRACOTTA: Black Terracotta\n Barrier: Barrier\n Light: Light\n Hay_BLOCK: Hay Block\n White_CARPET: White Carpet\n Orange_CARPET: Orange Carpet\n Magenta_CARPET: Magenta Carpet\n Light_BLUE_CARPET: Light Blue Carpet\n Yellow_CARPET: Yellow Carpet\n Lime_CARPET: Lime Carpet\n Pink_CARPET: Pink Carpet\n Gray_CARPET: Gray Carpet\n Light_GRAY_CARPET: Light Gray Carpet\n Cyan_CARPET: Cyan Carpet\n Purple_CARPET: Purple Carpet\n Blue_CARPET: Blue Carpet\n Brown_CARPET: Brown Carpet\n Green_CARPET: Green Carpet\n Red_CARPET: Red Carpet\n Black_CARPET: Black Carpet\n Terracotta: Terracotta\n Packed_ICE: Packed Ice\n Acacia_STAIRS: Acacia Stairs\n Dark_OAK_STAIRS: Dark Oak Stairs\n Dirt_PATH: Dirt Path\n Sunflower: Sunflower\n Lilac: Lilac\n Rose_BUSH: Rose Bush\n Peony: Peony\n Tall_GRASS: Tall Grass\n Large_FERN: Large Fern\n White_STAINED_GLASS: White Stained Glass\n Orange_STAINED_GLASS: Orange Stained Glass\n Magenta_STAINED_GLASS: Magenta Stained Glass\n Light_BLUE_STAINED_GLASS: Light Blue Stained Glass\n Yellow_STAINED_GLASS: Yellow Stained Glass\n Lime_STAINED_GLASS: Lime Stained Glass\n Pink_STAINED_GLASS: Pink Stained Glass\n Gray_STAINED_GLASS: Gray Stained Glass\n Light_GRAY_STAINED_GLASS: Light Gray Stained Glass\n Cyan_STAINED_GLASS: Cyan Stained Glass\n Purple_STAINED_GLASS: Purple Stained Glass\n Blue_STAINED_GLASS: Blue Stained Glass\n Brown_STAINED_GLASS: Brown Stained Glass\n Green_STAINED_GLASS: Green Stained Glass\n Red_STAINED_GLASS: Red Stained Glass\n Black_STAINED_GLASS: Black Stained Glass\n White_STAINED_GLASS_PANE: White Stained Glass Pane\n Orange_STAINED_GLASS_PANE: Orange Stained Glass Pane\n Magenta_STAINED_GLASS_PANE: Magenta Stained Glass Pane\n Light_BLUE_STAINED_GLASS_PANE: Light Blue Stained Glass Pane\n Yellow_STAINED_GLASS_PANE: Yellow Stained Glass Pane\n Lime_STAINED_GLASS_PANE: Lime Stained Glass Pane\n Pink_STAINED_GLASS_PANE: Pink Stained Glass Pane\n Gray_STAINED_GLASS_PANE: Gray Stained Glass Pane\n Light_GRAY_STAINED_GLASS_PANE: Light Gray Stained Glass Pane\n Cyan_STAINED_GLASS_PANE: Cyan Stained Glass Pane\n Purple_STAINED_GLASS_PANE: Purple Stained Glass Pane\n Blue_STAINED_GLASS_PANE: Blue Stained Glass Pane\n Brown_STAINED_GLASS_PANE: Brown Stained Glass Pane\n Green_STAINED_GLASS_PANE: Green Stained Glass Pane\n Red_STAINED_GLASS_PANE: Red Stained Glass Pane\n Black_STAINED_GLASS_PANE: Black Stained Glass Pane\n Prismarine: Prismarine\n Prismarine_BRICKS: Prismarine Bricks\n Dark_PRISMARINE: Dark Prismarine\n Prismarine_STAIRS: Prismarine Stairs\n Prismarine_BRICK_STAIRS: Prismarine Brick Stairs\n Dark_PRISMARINE_STAIRS: Dark Prismarine Stairs\n Sea_LANTERN: Sea Lantern\n Red_SANDSTONE: Red Sandstone\n Chiseled_RED_SANDSTONE: Chiseled Red Sandstone\n Cut_RED_SANDSTONE: Cut Red Sandstone\n Red_SANDSTONE_STAIRS: Red Sandstone Stairs\n Repeating_COMMAND_BLOCK: Repeating Command Block\n Chain_COMMAND_BLOCK: Chain Command Block\n Magma_BLOCK: Magma Block\n Nether_WART_BLOCK: Nether Wart Block\n Warped_WART_BLOCK: Warped Wart Block\n Red_NETHER_BRICKS: Red Nether Bricks\n Bone_BLOCK: Bone Block\n Structure_VOID: Structure Void\n Shulker_BOX: Shulker Box\n White_SHULKER_BOX: White Shulker Box\n Orange_SHULKER_BOX: Orange Shulker Box\n Magenta_SHULKER_BOX: Magenta Shulker Box\n Light_BLUE_SHULKER_BOX: Light Blue Shulker Box\n Yellow_SHULKER_BOX: Yellow Shulker Box\n Lime_SHULKER_BOX: Lime Shulker Box\n Pink_SHULKER_BOX: Pink Shulker Box\n Gray_SHULKER_BOX: Gray Shulker Box\n Light_GRAY_SHULKER_BOX: Light Gray Shulker Box\n Cyan_SHULKER_BOX: Cyan Shulker Box\n Purple_SHULKER_BOX: Purple Shulker Box\n Blue_SHULKER_BOX: Blue Shulker Box\n Brown_SHULKER_BOX: Brown Shulker Box\n Green_SHULKER_BOX: Green Shulker Box\n Red_SHULKER_BOX: Red Shulker Box\n Black_SHULKER_BOX: Black Shulker Box\n White_GLAZED_TERRACOTTA: White Glazed Terracotta\n Orange_GLAZED_TERRACOTTA: Orange Glazed Terracotta\n Magenta_GLAZED_TERRACOTTA: Magenta Glazed Terracotta\n Light_BLUE_GLAZED_TERRACOTTA: Light Blue Glazed Terracotta\n Yellow_GLAZED_TERRACOTTA: Yellow Glazed Terracotta\n Lime_GLAZED_TERRACOTTA: Lime Glazed Terracotta\n Pink_GLAZED_TERRACOTTA: Pink Glazed Terracotta\n Gray_GLAZED_TERRACOTTA: Gray Glazed Terracotta\n Light_GRAY_GLAZED_TERRACOTTA: Light Gray Glazed Terracotta\n Cyan_GLAZED_TERRACOTTA: Cyan Glazed Terracotta\n Purple_GLAZED_TERRACOTTA: Purple Glazed Terracotta\n Blue_GLAZED_TERRACOTTA: Blue Glazed Terracotta\n Brown_GLAZED_TERRACOTTA: Brown Glazed Terracotta\n Green_GLAZED_TERRACOTTA: Green Glazed Terracotta\n Red_GLAZED_TERRACOTTA: Red Glazed Terracotta\n Black_GLAZED_TERRACOTTA: Black Glazed Terracotta\n White_CONCRETE: White Concrete\n Orange_CONCRETE: Orange Concrete\n Magenta_CONCRETE: Magenta Concrete\n Light_BLUE_CONCRETE: Light Blue Concrete\n Yellow_CONCRETE: Yellow Concrete\n Lime_CONCRETE: Lime Concrete\n Pink_CONCRETE: Pink Concrete\n Gray_CONCRETE: Gray Concrete\n Light_GRAY_CONCRETE: Light Gray Concrete\n Cyan_CONCRETE: Cyan Concrete\n Purple_CONCRETE: Purple Concrete\n Blue_CONCRETE: Blue Concrete\n Brown_CONCRETE: Brown Concrete\n Green_CONCRETE: Green Concrete\n Red_CONCRETE: Red Concrete\n Black_CONCRETE: Black Concrete\n White_CONCRETE_POWDER: White Concrete Powder\n Orange_CONCRETE_POWDER: Orange Concrete Powder\n Magenta_CONCRETE_POWDER: Magenta Concrete Powder\n Light_BLUE_CONCRETE_POWDER: Light Blue Concrete Powder\n Yellow_CONCRETE_POWDER: Yellow Concrete Powder\n Lime_CONCRETE_POWDER: Lime Concrete Powder\n Pink_CONCRETE_POWDER: Pink Concrete Powder\n Gray_CONCRETE_POWDER: Gray Concrete Powder\n Light_GRAY_CONCRETE_POWDER: Light Gray Concrete Powder\n Cyan_CONCRETE_POWDER: Cyan Concrete Powder\n Purple_CONCRETE_POWDER: Purple Concrete Powder\n Blue_CONCRETE_POWDER: Blue Concrete Powder\n Brown_CONCRETE_POWDER: Brown Concrete Powder\n Green_CONCRETE_POWDER: Green Concrete Powder\n Red_CONCRETE_POWDER: Red Concrete Powder\n Black_CONCRETE_POWDER: Black Concrete Powder\n Turtle_EGG: Turtle Egg\n Dead_TUBE_CORAL_BLOCK: Dead Tube Coral Block\n Dead_BRAIN_CORAL_BLOCK: Dead Brain Coral Block\n Dead_BUBBLE_CORAL_BLOCK: Dead Bubble Coral Block\n Dead_FIRE_CORAL_BLOCK: Dead Fire Coral Block\n Dead_HORN_CORAL_BLOCK: Dead Horn Coral Block\n Tube_CORAL_BLOCK: Tube Coral Block\n Brain_CORAL_BLOCK: Brain Coral Block\n Bubble_CORAL_BLOCK: Bubble Coral Block\n Fire_CORAL_BLOCK: Fire Coral Block\n Horn_CORAL_BLOCK: Horn Coral Block\n Tube_CORAL: Tube Coral\n Brain_CORAL: Brain Coral\n Bubble_CORAL: Bubble Coral\n Fire_CORAL: Fire Coral\n Horn_CORAL: Horn Coral\n Dead_BRAIN_CORAL: Dead Brain Coral\n Dead_BUBBLE_CORAL: Dead Bubble Coral\n Dead_FIRE_CORAL: Dead Fire Coral\n Dead_HORN_CORAL: Dead Horn Coral\n Dead_TUBE_CORAL: Dead Tube Coral\n Tube_CORAL_FAN: Tube Coral Fan\n Brain_CORAL_FAN: Brain Coral Fan\n Bubble_CORAL_FAN: Bubble Coral Fan\n Fire_CORAL_FAN: Fire Coral Fan\n Horn_CORAL_FAN: Horn Coral Fan\n Dead_TUBE_CORAL_FAN: Dead Tube Coral Fan\n Dead_BRAIN_CORAL_FAN: Dead Brain Coral Fan\n Dead_BUBBLE_CORAL_FAN: Dead Bubble Coral Fan\n Dead_FIRE_CORAL_FAN: Dead Fire Coral Fan\n Dead_HORN_CORAL_FAN: Dead Horn Coral Fan\n Blue_ICE: Blue Ice\n Conduit: Conduit\n Polished_GRANITE_STAIRS: Polished Granite Stairs\n Smooth_RED_SANDSTONE_STAIRS: Smooth Red Sandstone Stairs\n Mossy_STONE_BRICK_STAIRS: Mossy Stone Brick Stairs\n Polished_DIORITE_STAIRS: Polished Diorite Stairs\n Mossy_COBBLESTONE_STAIRS: Mossy Cobblestone Stairs\n End_STONE_BRICK_STAIRS: End Stone Brick Stairs\n Stone_STAIRS: Stone Stairs\n Smooth_SANDSTONE_STAIRS: Smooth Sandstone Stairs\n Smooth_QUARTZ_STAIRS: Smooth Quartz Stairs\n Granite_STAIRS: Granite Stairs\n Andesite_STAIRS: Andesite Stairs\n Red_NETHER_BRICK_STAIRS: Red Nether Brick Stairs\n Polished_ANDESITE_STAIRS: Polished Andesite Stairs\n Diorite_STAIRS: Diorite Stairs\n Cobbled_DEEPSLATE_STAIRS: Cobbled Deepslate Stairs\n Polished_DEEPSLATE_STAIRS: Polished Deepslate Stairs\n Deepslate_BRICK_STAIRS: Deepslate Brick Stairs\n Deepslate_TILE_STAIRS: Deepslate Tile Stairs\n Polished_GRANITE_SLAB: Polished Granite Slab\n Smooth_RED_SANDSTONE_SLAB: Smooth Red Sandstone Slab\n Mossy_STONE_BRICK_SLAB: Mossy Stone Brick Slab\n Polished_DIORITE_SLAB: Polished Diorite Slab\n Mossy_COBBLESTONE_SLAB: Mossy Cobblestone Slab\n End_STONE_BRICK_SLAB: End Stone Brick Slab\n Smooth_SANDSTONE_SLAB: Smooth Sandstone Slab\n Smooth_QUARTZ_SLAB: Smooth Quartz Slab\n Granite_SLAB: Granite Slab\n Andesite_SLAB: Andesite Slab\n Red_NETHER_BRICK_SLAB: Red Nether Brick Slab\n Polished_ANDESITE_SLAB: Polished Andesite Slab\n Diorite_SLAB: Diorite Slab\n Cobbled_DEEPSLATE_SLAB: Cobbled Deepslate Slab\n Polished_DEEPSLATE_SLAB: Polished Deepslate Slab\n Deepslate_BRICK_SLAB: Deepslate Brick Slab\n Deepslate_TILE_SLAB: Deepslate Tile Slab\n Scaffolding: Scaffolding\n Redstone: Redstone\n Redstone_TORCH: Redstone Torch\n Redstone_BLOCK: Redstone Block\n Repeater: Repeater\n Comparator: Comparator\n Piston: Piston\n Sticky_PISTON: Sticky Piston\n Slime_BLOCK: Slime Block\n Honey_BLOCK: Honey Block\n Observer: Observer\n Hopper: Hopper\n Dispenser: Dispenser\n Dropper: Dropper\n Lectern: Lectern\n Target: Target\n Lever: Lever\n Lightning_ROD: Lightning Rod\n Daylight_DETECTOR: Daylight Detector\n Sculk_SENSOR: Sculk Sensor\n Tripwire_HOOK: Tripwire Hook\n Trapped_CHEST: Trapped Chest\n Tnt: Tnt\n Redstone_LAMP: Redstone Lamp\n Note_BLOCK: Note Block\n Stone_BUTTON: Stone Button\n Polished_BLACKSTONE_BUTTON: Polished Blackstone Button\n Oak_BUTTON: Oak Button\n Spruce_BUTTON: Spruce Button\n Birch_BUTTON: Birch Button\n Jungle_BUTTON: Jungle Button\n Acacia_BUTTON: Acacia Button\n Dark_OAK_BUTTON: Dark Oak Button\n Crimson_BUTTON: Crimson Button\n Warped_BUTTON: Warped Button\n Stone_PRESSURE_PLATE: Stone Pressure Plate\n Polished_BLACKSTONE_PRESSURE_PLATE: Polished Blackstone Pressure Plate\n Light_WEIGHTED_PRESSURE_PLATE: Light Weighted Pressure Plate\n Heavy_WEIGHTED_PRESSURE_PLATE: Heavy Weighted Pressure Plate\n Oak_PRESSURE_PLATE: Oak Pressure Plate\n Spruce_PRESSURE_PLATE: Spruce Pressure Plate\n Birch_PRESSURE_PLATE: Birch Pressure Plate\n Jungle_PRESSURE_PLATE: Jungle Pressure Plate\n Acacia_PRESSURE_PLATE: Acacia Pressure Plate\n Dark_OAK_PRESSURE_PLATE: Dark Oak Pressure Plate\n Crimson_PRESSURE_PLATE: Crimson Pressure Plate\n Warped_PRESSURE_PLATE: Warped Pressure Plate\n Iron_DOOR: Iron Door\n Oak_DOOR: Oak Door\n Spruce_DOOR: Spruce Door\n Birch_DOOR: Birch Door\n Jungle_DOOR: Jungle Door\n Acacia_DOOR: Acacia Door\n Dark_OAK_DOOR: Dark Oak Door\n Crimson_DOOR: Crimson Door\n Warped_DOOR: Warped Door\n Iron_TRAPDOOR: Iron Trapdoor\n Oak_TRAPDOOR: Oak Trapdoor\n Spruce_TRAPDOOR: Spruce Trapdoor\n Birch_TRAPDOOR: Birch Trapdoor\n Jungle_TRAPDOOR: Jungle Trapdoor\n Acacia_TRAPDOOR: Acacia Trapdoor\n Dark_OAK_TRAPDOOR: Dark Oak Trapdoor\n Crimson_TRAPDOOR: Crimson Trapdoor\n Warped_TRAPDOOR: Warped Trapdoor\n Oak_FENCE_GATE: Oak Fence Gate\n Spruce_FENCE_GATE: Spruce Fence Gate\n Birch_FENCE_GATE: Birch Fence Gate\n Jungle_FENCE_GATE: Jungle Fence Gate\n Acacia_FENCE_GATE: Acacia Fence Gate\n Dark_OAK_FENCE_GATE: Dark Oak Fence Gate\n Crimson_FENCE_GATE: Crimson Fence Gate\n Warped_FENCE_GATE: Warped Fence Gate\n Powered_RAIL: Powered Rail\n Detector_RAIL: Detector Rail\n Rail: Rail\n Activator_RAIL: Activator Rail\n Saddle: Saddle\n Minecart: Minecart\n Chest_MINECART: Chest Minecart\n Furnace_MINECART: Furnace Minecart\n Tnt_MINECART: Tnt Minecart\n Hopper_MINECART: Hopper Minecart\n Carrot_ON_A_STICK: Carrot On A Stick\n Warped_FUNGUS_ON_A_STICK: Warped Fungus On A Stick\n Elytra: Elytra\n Oak_BOAT: Oak Boat\n Spruce_BOAT: Spruce Boat\n Birch_BOAT: Birch Boat\n Jungle_BOAT: Jungle Boat\n Acacia_BOAT: Acacia Boat\n Dark_OAK_BOAT: Dark Oak Boat\n Structure_BLOCK: Structure Block\n Jigsaw: Jigsaw\n Turtle_HELMET: Turtle Helmet\n Scute: Scute\n Flint_AND_STEEL: Flint And Steel\n Apple: Apple\n Bow: Bow\n Arrow: Arrow\n Coal: Coal\n Charcoal: Charcoal\n Diamond: Diamond\n Emerald: Emerald\n Lapis_LAZULI: Lapis Lazuli\n Quartz: Quartz\n Amethyst_SHARD: Amethyst Shard\n Raw_IRON: Raw Iron\n Iron_INGOT: Iron Ingot\n Raw_COPPER: Raw Copper\n Copper_INGOT: Copper Ingot\n Raw_GOLD: Raw Gold\n Gold_INGOT: Gold Ingot\n Netherite_INGOT: Netherite Ingot\n Netherite_SCRAP: Netherite Scrap\n Wooden_SWORD: Wooden Sword\n Wooden_SHOVEL: Wooden Shovel\n Wooden_PICKAXE: Wooden Pickaxe\n Wooden_AXE: Wooden Axe\n Wooden_HOE: Wooden Hoe\n Stone_SWORD: Stone Sword\n Stone_SHOVEL: Stone Shovel\n Stone_PICKAXE: Stone Pickaxe\n Stone_AXE: Stone Axe\n Stone_HOE: Stone Hoe\n Golden_SWORD: Golden Sword\n Golden_SHOVEL: Golden Shovel\n Golden_PICKAXE: Golden Pickaxe\n Golden_AXE: Golden Axe\n Golden_HOE: Golden Hoe\n Iron_SWORD: Iron Sword\n Iron_SHOVEL: Iron Shovel\n Iron_PICKAXE: Iron Pickaxe\n Iron_AXE: Iron Axe\n Iron_HOE: Iron Hoe\n Diamond_SWORD: Diamond Sword\n Diamond_SHOVEL: Diamond Shovel\n Diamond_PICKAXE: Diamond Pickaxe\n Diamond_AXE: Diamond Axe\n Diamond_HOE: Diamond Hoe\n Netherite_SWORD: Netherite Sword\n Netherite_SHOVEL: Netherite Shovel\n Netherite_PICKAXE: Netherite Pickaxe\n Netherite_AXE: Netherite Axe\n Netherite_HOE: Netherite Hoe\n Stick: Stick\n Bowl: Bowl\n Mushroom_STEW: Mushroom Stew\n String: String\n Feather: Feather\n Gunpowder: Gunpowder\n Wheat_SEEDS: Wheat Seeds\n Wheat: Wheat\n Bread: Bread\n Leather_HELMET: Leather Helmet\n Leather_CHESTPLATE: Leather Chestplate\n Leather_LEGGINGS: Leather Leggings\n Leather_BOOTS: Leather Boots\n Chainmail_HELMET: Chainmail Helmet\n Chainmail_CHESTPLATE: Chainmail Chestplate\n Chainmail_LEGGINGS: Chainmail Leggings\n Chainmail_BOOTS: Chainmail Boots\n Iron_HELMET: Iron Helmet\n Iron_CHESTPLATE: Iron Chestplate\n Iron_LEGGINGS: Iron Leggings\n Iron_BOOTS: Iron Boots\n Diamond_HELMET: Diamond Helmet\n Diamond_CHESTPLATE: Diamond Chestplate\n Diamond_LEGGINGS: Diamond Leggings\n Diamond_BOOTS: Diamond Boots\n Golden_HELMET: Golden Helmet\n Golden_CHESTPLATE: Golden Chestplate\n Golden_LEGGINGS: Golden Leggings\n Golden_BOOTS: Golden Boots\n Netherite_HELMET: Netherite Helmet\n Netherite_CHESTPLATE: Netherite Chestplate\n Netherite_LEGGINGS: Netherite Leggings\n Netherite_BOOTS: Netherite Boots\n Flint: Flint\n Porkchop: Porkchop\n Cooked_PORKCHOP: Cooked Porkchop\n Painting: Painting\n Golden_APPLE: Golden Apple\n Enchanted_GOLDEN_APPLE: Enchanted Golden Apple\n Oak_SIGN: Oak Sign\n Spruce_SIGN: Spruce Sign\n Birch_SIGN: Birch Sign\n Jungle_SIGN: Jungle Sign\n Acacia_SIGN: Acacia Sign\n Dark_OAK_SIGN: Dark Oak Sign\n Crimson_SIGN: Crimson Sign\n Warped_SIGN: Warped Sign\n Bucket: Bucket\n Water_BUCKET: Water Bucket\n Lava_BUCKET: Lava Bucket\n Powder_SNOW_BUCKET: Powder Snow Bucket\n Snowball: Snowball\n Leather: Leather\n Milk_BUCKET: Milk Bucket\n Pufferfish_BUCKET: Pufferfish Bucket\n Salmon_BUCKET: Salmon Bucket\n Cod_BUCKET: Cod Bucket\n Tropical_FISH_BUCKET: Tropical Fish Bucket\n Axolotl_BUCKET: Axolotl Bucket\n Brick: Brick\n Clay_BALL: Clay Ball\n Dried_KELP_BLOCK: Dried Kelp Block\n Paper: Paper\n Book: Book\n Slime_BALL: Slime Ball\n Egg: Egg\n Compass: Compass\n Bundle: Bundle\n Fishing_ROD: Fishing Rod\n Clock: Clock\n Spyglass: Spyglass\n Glowstone_DUST: Glowstone Dust\n Cod: Cod\n Salmon: Salmon\n Tropical_FISH: Tropical Fish\n Pufferfish: Pufferfish\n Cooked_COD: Cooked Cod\n Cooked_SALMON: Cooked Salmon\n Ink_SAC: Ink Sac\n Glow_INK_SAC: Glow Ink Sac\n Cocoa_BEANS: Cocoa Beans\n White_DYE: White Dye\n Orange_DYE: Orange Dye\n Magenta_DYE: Magenta Dye\n Light_BLUE_DYE: Light Blue Dye\n Yellow_DYE: Yellow Dye\n Lime_DYE: Lime Dye\n Pink_DYE: Pink Dye\n Gray_DYE: Gray Dye\n Light_GRAY_DYE: Light Gray Dye\n Cyan_DYE: Cyan Dye\n Purple_DYE: Purple Dye\n Blue_DYE: Blue Dye\n Brown_DYE: Brown Dye\n Green_DYE: Green Dye\n Red_DYE: Red Dye\n Black_DYE: Black Dye\n Bone_MEAL: Bone Meal\n Bone: Bone\n Sugar: Sugar\n Cake: Cake\n White_BED: White Bed\n Orange_BED: Orange Bed\n Magenta_BED: Magenta Bed\n Light_BLUE_BED: Light Blue Bed\n Yellow_BED: Yellow Bed\n Lime_BED: Lime Bed\n Pink_BED: Pink Bed\n Gray_BED: Gray Bed\n Light_GRAY_BED: Light Gray Bed\n Cyan_BED: Cyan Bed\n Purple_BED: Purple Bed\n Blue_BED: Blue Bed\n Brown_BED: Brown Bed\n Green_BED: Green Bed\n Red_BED: Red Bed\n Black_BED: Black Bed\n Cookie: Cookie\n Filled_MAP: Filled Map\n Shears: Shears\n Melon_SLICE: Melon Slice\n Dried_KELP: Dried Kelp\n Pumpkin_SEEDS: Pumpkin Seeds\n Melon_SEEDS: Melon Seeds\n Beef: Beef\n Cooked_BEEF: Cooked Beef\n Chicken: Chicken\n Cooked_CHICKEN: Cooked Chicken\n Rotten_FLESH: Rotten Flesh\n Ender_PEARL: Ender Pearl\n Blaze_ROD: Blaze Rod\n Ghast_TEAR: Ghast Tear\n Gold_NUGGET: Gold Nugget\n Nether_WART: Nether Wart\n Potion: Potion\n Glass_BOTTLE: Glass Bottle\n Spider_EYE: Spider Eye\n Fermented_SPIDER_EYE: Fermented Spider Eye\n Blaze_POWDER: Blaze Powder\n Magma_CREAM: Magma Cream\n Brewing_STAND: Brewing Stand\n Cauldron: Cauldron\n Ender_EYE: Ender Eye\n Glistering_MELON_SLICE: Glistering Melon Slice\n Axolotl_SPAWN_EGG: Axolotl Spawn Egg\n Bat_SPAWN_EGG: Bat Spawn Egg\n Bee_SPAWN_EGG: Bee Spawn Egg\n Blaze_SPAWN_EGG: Blaze Spawn Egg\n Cat_SPAWN_EGG: Cat Spawn Egg\n Cave_SPIDER_SPAWN_EGG: Cave Spider Spawn Egg\n Chicken_SPAWN_EGG: Chicken Spawn Egg\n Cod_SPAWN_EGG: Cod Spawn Egg\n Cow_SPAWN_EGG: Cow Spawn Egg\n Creeper_SPAWN_EGG: Creeper Spawn Egg\n Dolphin_SPAWN_EGG: Dolphin Spawn Egg\n Donkey_SPAWN_EGG: Donkey Spawn Egg\n Drowned_SPAWN_EGG: Drowned Spawn Egg\n Elder_GUARDIAN_SPAWN_EGG: Elder Guardian Spawn Egg\n Enderman_SPAWN_EGG: Enderman Spawn Egg\n Endermite_SPAWN_EGG: Endermite Spawn Egg\n Evoker_SPAWN_EGG: Evoker Spawn Egg\n Fox_SPAWN_EGG: Fox Spawn Egg\n Ghast_SPAWN_EGG: Ghast Spawn Egg\n Glow_SQUID_SPAWN_EGG: Glow Squid Spawn Egg\n Goat_SPAWN_EGG: Goat Spawn Egg\n Guardian_SPAWN_EGG: Guardian Spawn Egg\n Hoglin_SPAWN_EGG: Hoglin Spawn Egg\n Horse_SPAWN_EGG: Horse Spawn Egg\n Husk_SPAWN_EGG: Husk Spawn Egg\n Llama_SPAWN_EGG: Llama Spawn Egg\n Magma_CUBE_SPAWN_EGG: Magma Cube Spawn Egg\n Mooshroom_SPAWN_EGG: Mooshroom Spawn Egg\n Mule_SPAWN_EGG: Mule Spawn Egg\n Ocelot_SPAWN_EGG: Ocelot Spawn Egg\n Panda_SPAWN_EGG: Panda Spawn Egg\n Parrot_SPAWN_EGG: Parrot Spawn Egg\n Phantom_SPAWN_EGG: Phantom Spawn Egg\n Pig_SPAWN_EGG: Pig Spawn Egg\n Piglin_SPAWN_EGG: Piglin Spawn Egg\n Piglin_BRUTE_SPAWN_EGG: Piglin Brute Spawn Egg\n Pillager_SPAWN_EGG: Pillager Spawn Egg\n Polar_BEAR_SPAWN_EGG: Polar Bear Spawn Egg\n Pufferfish_SPAWN_EGG: Pufferfish Spawn Egg\n Rabbit_SPAWN_EGG: Rabbit Spawn Egg\n Ravager_SPAWN_EGG: Ravager Spawn Egg\n Salmon_SPAWN_EGG: Salmon Spawn Egg\n Sheep_SPAWN_EGG: Sheep Spawn Egg\n Shulker_SPAWN_EGG: Shulker Spawn Egg\n Silverfish_SPAWN_EGG: Silverfish Spawn Egg\n Skeleton_SPAWN_EGG: Skeleton Spawn Egg\n Skeleton_HORSE_SPAWN_EGG: Skeleton Horse Spawn Egg\n Slime_SPAWN_EGG: Slime Spawn Egg\n Spider_SPAWN_EGG: Spider Spawn Egg\n Squid_SPAWN_EGG: Squid Spawn Egg\n Stray_SPAWN_EGG: Stray Spawn Egg\n Strider_SPAWN_EGG: Strider Spawn Egg\n Trader_LLAMA_SPAWN_EGG: Trader Llama Spawn Egg\n Tropical_FISH_SPAWN_EGG: Tropical Fish Spawn Egg\n Turtle_SPAWN_EGG: Turtle Spawn Egg\n Vex_SPAWN_EGG: Vex Spawn Egg\n Villager_SPAWN_EGG: Villager Spawn Egg\n Vindicator_SPAWN_EGG: Vindicator Spawn Egg\n Wandering_TRADER_SPAWN_EGG: Wandering Trader Spawn Egg\n Witch_SPAWN_EGG: Witch Spawn Egg\n Wither_SKELETON_SPAWN_EGG: Wither Skeleton Spawn Egg\n Wolf_SPAWN_EGG: Wolf Spawn Egg\n Zoglin_SPAWN_EGG: Zoglin Spawn Egg\n Zombie_SPAWN_EGG: Zombie Spawn Egg\n Zombie_HORSE_SPAWN_EGG: Zombie Horse Spawn Egg\n Zombie_VILLAGER_SPAWN_EGG: Zombie Villager Spawn Egg\n Zombified_PIGLIN_SPAWN_EGG: Zombified Piglin Spawn Egg\n Experience_BOTTLE: Experience Bottle\n Fire_CHARGE: Fire Charge\n Writable_BOOK: Writable Book\n Written_BOOK: Written Book\n Item_FRAME: Item Frame\n Glow_ITEM_FRAME: Glow Item Frame\n Flower_POT: Flower Pot\n Carrot: Carrot\n Potato: Potato\n Baked_POTATO: Baked Potato\n Poisonous_POTATO: Poisonous Potato\n Map: Map\n Golden_CARROT: Golden Carrot\n Skeleton_SKULL: Skeleton Skull\n Wither_SKELETON_SKULL: Wither Skeleton Skull\n Player_HEAD: Player Head\n Zombie_HEAD: Zombie Head\n Creeper_HEAD: Creeper Head\n Dragon_HEAD: Dragon Head\n Nether_STAR: Nether Star\n Pumpkin_PIE: Pumpkin Pie\n Firework_ROCKET: Firework Rocket\n Firework_STAR: Firework Star\n Enchanted_BOOK: Enchanted Book\n Nether_BRICK: Nether Brick\n Prismarine_SHARD: Prismarine Shard\n Prismarine_CRYSTALS: Prismarine Crystals\n Rabbit: Rabbit\n Cooked_RABBIT: Cooked Rabbit\n Rabbit_STEW: Rabbit Stew\n Rabbit_FOOT: Rabbit Foot\n Rabbit_HIDE: Rabbit Hide\n Armor_STAND: Armor Stand\n Iron_HORSE_ARMOR: Iron Horse Armor\n Golden_HORSE_ARMOR: Golden Horse Armor\n Diamond_HORSE_ARMOR: Diamond Horse Armor\n Leather_HORSE_ARMOR: Leather Horse Armor\n Lead: Lead\n Name_TAG: Name Tag\n Command_BLOCK_MINECART: Command Block Minecart\n Mutton: Mutton\n Cooked_MUTTON: Cooked Mutton\n White_BANNER: White Banner\n Orange_BANNER: Orange Banner\n Magenta_BANNER: Magenta Banner\n Light_BLUE_BANNER: Light Blue Banner\n Yellow_BANNER: Yellow Banner\n Lime_BANNER: Lime Banner\n Pink_BANNER: Pink Banner\n Gray_BANNER: Gray Banner\n Light_GRAY_BANNER: Light Gray Banner\n Cyan_BANNER: Cyan Banner\n Purple_BANNER: Purple Banner\n Blue_BANNER: Blue Banner\n Brown_BANNER: Brown Banner\n Green_BANNER: Green Banner\n Red_BANNER: Red Banner\n Black_BANNER: Black Banner\n End_CRYSTAL: End Crystal\n Chorus_FRUIT: Chorus Fruit\n Popped_CHORUS_FRUIT: Popped Chorus Fruit\n Beetroot: Beetroot\n Beetroot_SEEDS: Beetroot Seeds\n Beetroot_SOUP: Beetroot Soup\n Dragon_BREATH: Dragon Breath\n Splash_POTION: Splash Potion\n Spectral_ARROW: Spectral Arrow\n Tipped_ARROW: Tipped Arrow\n Lingering_POTION: Lingering Potion\n Shield: Shield\n Totem_OF_UNDYING: Totem Of Undying\n Shulker_SHELL: Shulker Shell\n Iron_NUGGET: Iron Nugget\n Knowledge_BOOK: Knowledge Book\n Debug_STICK: Debug Stick\n Music_DISC_13: Music Disc 13\n Music_DISC_CAT: Music Disc Cat\n Music_DISC_BLOCKS: Music Disc Blocks\n Music_DISC_CHIRP: Music Disc Chirp\n Music_DISC_FAR: Music Disc Far\n Music_DISC_MALL: Music Disc Mall\n Music_DISC_MELLOHI: Music Disc Mellohi\n Music_DISC_STAL: Music Disc Stal\n Music_DISC_STRAD: Music Disc Strad\n Music_DISC_WARD: Music Disc Ward\n Music_DISC_11: Music Disc 11\n Music_DISC_WAIT: Music Disc Wait\n Music_DISC_OTHERSIDE: Music Disc Otherside\n Music_DISC_PIGSTEP: Music Disc Pigstep\n Trident: Trident\n Phantom_MEMBRANE: Phantom Membrane\n Nautilus_SHELL: Nautilus Shell\n Heart_OF_THE_SEA: Heart Of The Sea\n Crossbow: Crossbow\n Suspicious_STEW: Suspicious Stew\n Loom: Loom\n Flower_BANNER_PATTERN: Flower Banner Pattern\n Creeper_BANNER_PATTERN: Creeper Banner Pattern\n Skull_BANNER_PATTERN: Skull Banner Pattern\n Mojang_BANNER_PATTERN: Mojang Banner Pattern\n Globe_BANNER_PATTERN: Globe Banner Pattern\n Piglin_BANNER_PATTERN: Piglin Banner Pattern\n Composter: Composter\n Barrel: Barrel\n Smoker: Smoker\n Blast_FURNACE: Blast Furnace\n Cartography_TABLE: Cartography Table\n Fletching_TABLE: Fletching Table\n Grindstone: Grindstone\n Smithing_TABLE: Smithing Table\n Stonecutter: Stonecutter\n Bell: Bell\n Lantern: Lantern\n Soul_LANTERN: Soul Lantern\n Sweet_BERRIES: Sweet Berries\n Glow_BERRIES: Glow Berries\n Campfire: Campfire\n Soul_CAMPFIRE: Soul Campfire\n Shroomlight: Shroomlight\n Honeycomb: Honeycomb\n Bee_NEST: Bee Nest\n Beehive: Beehive\n Honey_BOTTLE: Honey Bottle\n Honeycomb_BLOCK: Honeycomb Block\n Lodestone: Lodestone\n Crying_OBSIDIAN: Crying Obsidian\n Blackstone: Blackstone\n Blackstone_SLAB: Blackstone Slab\n Blackstone_STAIRS: Blackstone Stairs\n Gilded_BLACKSTONE: Gilded Blackstone\n Polished_BLACKSTONE: Polished Blackstone\n Polished_BLACKSTONE_SLAB: Polished Blackstone Slab\n Polished_BLACKSTONE_STAIRS: Polished Blackstone Stairs\n Chiseled_POLISHED_BLACKSTONE: Chiseled Polished Blackstone\n Polished_BLACKSTONE_BRICKS: Polished Blackstone Bricks\n Polished_BLACKSTONE_BRICK_SLAB: Polished Blackstone Brick Slab\n Polished_BLACKSTONE_BRICK_STAIRS: Polished Blackstone Brick Stairs\n Cracked_POLISHED_BLACKSTONE_BRICKS: Cracked Polished Blackstone Bricks\n Respawn_ANCHOR: Respawn Anchor\n Candle: Candle\n White_CANDLE: White Candle\n Orange_CANDLE: Orange Candle\n Magenta_CANDLE: Magenta Candle\n Light_BLUE_CANDLE: Light Blue Candle\n Yellow_CANDLE: Yellow Candle\n Lime_CANDLE: Lime Candle\n Pink_CANDLE: Pink Candle\n Gray_CANDLE: Gray Candle\n Light_GRAY_CANDLE: Light Gray Candle\n Cyan_CANDLE: Cyan Candle\n Purple_CANDLE: Purple Candle\n Blue_CANDLE: Blue Candle\n Brown_CANDLE: Brown Candle\n Green_CANDLE: Green Candle\n Red_CANDLE: Red Candle\n Black_CANDLE: Black Candle\n Small_AMETHYST_BUD: Small Amethyst Bud\n Medium_AMETHYST_BUD: Medium Amethyst Bud\n Large_AMETHYST_BUD: Large Amethyst Bud\n Amethyst_CLUSTER: Amethyst Cluster\n Pointed_DRIPSTONE: Pointed Dripstone\n Water: Water\n Lava: Lava\n Tall_SEAGRASS: Tall Seagrass\n Piston_HEAD: Piston Head\n Moving_PISTON: Moving Piston\n Wall_TORCH: Wall Torch\n Fire: Fire\n Soul_FIRE: Soul Fire\n Redstone_WIRE: Redstone Wire\n Oak_WALL_SIGN: Oak Wall Sign\n Spruce_WALL_SIGN: Spruce Wall Sign\n Birch_WALL_SIGN: Birch Wall Sign\n Acacia_WALL_SIGN: Acacia Wall Sign\n Jungle_WALL_SIGN: Jungle Wall Sign\n Dark_OAK_WALL_SIGN: Dark Oak Wall Sign\n Redstone_WALL_TORCH: Redstone Wall Torch\n Soul_WALL_TORCH: Soul Wall Torch\n Nether_PORTAL: Nether Portal\n Attached_PUMPKIN_STEM: Attached Pumpkin Stem\n Attached_MELON_STEM: Attached Melon Stem\n Pumpkin_STEM: Pumpkin Stem\n Melon_STEM: Melon Stem\n Water_CAULDRON: Water Cauldron\n Lava_CAULDRON: Lava Cauldron\n Powder_SNOW_CAULDRON: Powder Snow Cauldron\n End_PORTAL: End Portal\n Cocoa: Cocoa\n Tripwire: Tripwire\n Potted_OAK_SAPLING: Potted Oak Sapling\n Potted_SPRUCE_SAPLING: Potted Spruce Sapling\n Potted_BIRCH_SAPLING: Potted Birch Sapling\n Potted_JUNGLE_SAPLING: Potted Jungle Sapling\n Potted_ACACIA_SAPLING: Potted Acacia Sapling\n Potted_DARK_OAK_SAPLING: Potted Dark Oak Sapling\n Potted_FERN: Potted Fern\n Potted_DANDELION: Potted Dandelion\n Potted_POPPY: Potted Poppy\n Potted_BLUE_ORCHID: Potted Blue Orchid\n Potted_ALLIUM: Potted Allium\n Potted_AZURE_BLUET: Potted Azure Bluet\n Potted_RED_TULIP: Potted Red Tulip\n Potted_ORANGE_TULIP: Potted Orange Tulip\n Potted_WHITE_TULIP: Potted White Tulip\n Potted_PINK_TULIP: Potted Pink Tulip\n Potted_OXEYE_DAISY: Potted Oxeye Daisy\n Potted_CORNFLOWER: Potted Cornflower\n Potted_LILY_OF_THE_VALLEY: Potted Lily Of The Valley\n Potted_WITHER_ROSE: Potted Wither Rose\n Potted_RED_MUSHROOM: Potted Red Mushroom\n Potted_BROWN_MUSHROOM: Potted Brown Mushroom\n Potted_DEAD_BUSH: Potted Dead Bush\n Potted_CACTUS: Potted Cactus\n Carrots: Carrots\n Potatoes: Potatoes\n Skeleton_WALL_SKULL: Skeleton Wall Skull\n Wither_SKELETON_WALL_SKULL: Wither Skeleton Wall Skull\n Zombie_WALL_HEAD: Zombie Wall Head\n Player_WALL_HEAD: Player Wall Head\n Creeper_WALL_HEAD: Creeper Wall Head\n Dragon_WALL_HEAD: Dragon Wall Head\n White_WALL_BANNER: White Wall Banner\n Orange_WALL_BANNER: Orange Wall Banner\n Magenta_WALL_BANNER: Magenta Wall Banner\n Light_BLUE_WALL_BANNER: Light Blue Wall Banner\n Yellow_WALL_BANNER: Yellow Wall Banner\n Lime_WALL_BANNER: Lime Wall Banner\n Pink_WALL_BANNER: Pink Wall Banner\n Gray_WALL_BANNER: Gray Wall Banner\n Light_GRAY_WALL_BANNER: Light Gray Wall Banner\n Cyan_WALL_BANNER: Cyan Wall Banner\n Purple_WALL_BANNER: Purple Wall Banner\n Blue_WALL_BANNER: Blue Wall Banner\n Brown_WALL_BANNER: Brown Wall Banner\n Green_WALL_BANNER: Green Wall Banner\n Red_WALL_BANNER: Red Wall Banner\n Black_WALL_BANNER: Black Wall Banner\n Beetroots: Beetroots\n End_GATEWAY: End Gateway\n Frosted_ICE: Frosted Ice\n Kelp_PLANT: Kelp Plant\n Dead_TUBE_CORAL_WALL_FAN: Dead Tube Coral Wall Fan\n Dead_BRAIN_CORAL_WALL_FAN: Dead Brain Coral Wall Fan\n Dead_BUBBLE_CORAL_WALL_FAN: Dead Bubble Coral Wall Fan\n Dead_FIRE_CORAL_WALL_FAN: Dead Fire Coral Wall Fan\n Dead_HORN_CORAL_WALL_FAN: Dead Horn Coral Wall Fan\n Tube_CORAL_WALL_FAN: Tube Coral Wall Fan\n Brain_CORAL_WALL_FAN: Brain Coral Wall Fan\n Bubble_CORAL_WALL_FAN: Bubble Coral Wall Fan\n Fire_CORAL_WALL_FAN: Fire Coral Wall Fan\n Horn_CORAL_WALL_FAN: Horn Coral Wall Fan\n Bamboo_SAPLING: Bamboo Sapling\n Potted_BAMBOO: Potted Bamboo\n Void_AIR: Void Air\n Cave_AIR: Cave Air\n Bubble_COLUMN: Bubble Column\n Sweet_BERRY_BUSH: Sweet Berry Bush\n Weeping_VINES_PLANT: Weeping Vines Plant\n Twisting_VINES_PLANT: Twisting Vines Plant\n Crimson_WALL_SIGN: Crimson Wall Sign\n Warped_WALL_SIGN: Warped Wall Sign\n Potted_CRIMSON_FUNGUS: Potted Crimson Fungus\n Potted_WARPED_FUNGUS: Potted Warped Fungus\n Potted_CRIMSON_ROOTS: Potted Crimson Roots\n Potted_WARPED_ROOTS: Potted Warped Roots\n Candle_CAKE: Candle Cake\n White_CANDLE_CAKE: White Candle Cake\n Orange_CANDLE_CAKE: Orange Candle Cake\n Magenta_CANDLE_CAKE: Magenta Candle Cake\n Light_BLUE_CANDLE_CAKE: Light Blue Candle Cake\n Yellow_CANDLE_CAKE: Yellow Candle Cake\n Lime_CANDLE_CAKE: Lime Candle Cake\n Pink_CANDLE_CAKE: Pink Candle Cake\n Gray_CANDLE_CAKE: Gray Candle Cake\n Light_GRAY_CANDLE_CAKE: Light Gray Candle Cake\n Cyan_CANDLE_CAKE: Cyan Candle Cake\n Purple_CANDLE_CAKE: Purple Candle Cake\n Blue_CANDLE_CAKE: Blue Candle Cake\n Brown_CANDLE_CAKE: Brown Candle Cake\n Green_CANDLE_CAKE: Green Candle Cake\n Red_CANDLE_CAKE: Red Candle Cake\n Black_CANDLE_CAKE: Black Candle Cake\n Powder_SNOW: Powder Snow\n Cave_VINES: Cave Vines\n Cave_VINES_PLANT: Cave Vines Plant\n Big_DRIPLEAF_STEM: Big Dripleaf Stem\n Potted_AZALEA_BUSH: Potted Azalea Bush\n Potted_FLOWERING_AZALEA_BUSH: Potted Flowering Azalea Bush"
 integrations-check-failed-trade: <red>集成模組 {0} 拒絕了與商店交易的操作。
 shop-transaction-failed: <red><red>抱歉，由於系統發生錯誤，你的購買已被取消，款項已返回原本的地方。如果問題持續發生，請聯絡伺服器管理員。
 success-change-owner-to-server: <green>成功將商店擁有者轉交給伺服器。
-shop-name-not-found: '<red>商店名稱: <yellow>{0} <red> 並不存在。'
+shop-name-not-found: <red>The shop named <yellow>{0}</yellow> not exists.
 shop-name-too-long: <green>此商店的名稱太長了（最大長度 {0}<newline>）<newline>請再想過一個吧!
 metric:
   header-player: '<yellow>{0} 的 {1} {2} 交易:'
   action-hover: <yellow>{0}
-  entry-header-shop: <aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591)
-    <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66)
-    <aqua>|
+  entry-header-shop: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66) <aqua>|'
   price-hover: <yellow>總共 {0}, 包括 {1} 稅款.
   unknown: <gray>(未知)
   undefined: <gray>(無名)
@@ -145,60 +139,45 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>玩家從商店購買了一些物品。
     PURCHASE: <yellow>從商店購買了物品
   query-argument: '查詢參數: {0}'
-  'entry-global:': <aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591
-    hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355
-    hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|
-  entry-player: <aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591
-    hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355
-    hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|
+  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}x
-  entry-header-global: <aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591)
-    <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66)
-    <aqua>|
+  entry-header-global: '<aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591) <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
   header-shop: '<yellow>{0} 商店的 {1} {2} 交易:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
   looking-up: <yellow>正在進行指標搜尋，請稍後...
-  entry-header-player: <aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591)
-    <aqua>| [shop](color=#CDAA7D) <aqua>| [amount](color=#8B7355) <aqua>| [price](color=#8B7E66)
-    <aqua>|
-  entry-shop: <aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3})
-    <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>|
-    [{8}](color=#8B7E66 hover={9}) <aqua>|
+  entry-header-player: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [shop](color=#CDAA7D) <aqua>| [amount](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
+  entry-shop: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   tax-hover: <yellow>{0} 稅款
   header-global: '<yellow>伺服器{0} {1} 交易:'
   na: <gray>N/A
   transaction-count: <yellow>{0} 總共
-  shop-hover: '<yellow>{0}<newline><gold>位置: <gray>{1} {2} {3}, 地圖: {4}<newline><gold>持有人:
-    <gray>{5}<newline><gold>商店類型: <gray>{6}<newline><gold>物品: <gray>{7}<newline><gold>價格:
-    <gray>{8}'
+  shop-hover: '<yellow>{0}<newline><gold>位置: <gray>{1} {2} {3}, 地圖: {4}<newline><gold>持有人: <gray>{5}<newline><gold>商店類型: <gray>{6}<newline><gold>物品: <gray>{7}<newline><gold>價格: <gray>{8}'
   time-hover: '<yellow>時間: {0}'
   amount-stack-hover: <yellow>{0}x 組
 permission-denied-3rd-party: <red>權限被拒絕 ： 第三方插件 [{0}]。
 you-dont-have-that-many-items: <red>你的身上只有 {0} 個 {1}!
 complete: <green>完成 ！
-translate-not-completed-yet-url: '{0} 的翻譯完成度為 {1}，你想幫助我們改進翻譯嗎 ？ 前往 Crowdin ： {2}'
+translate-not-completed-yet-url: '{0} 的翻譯完成度為 {1}，你想幫助我們改進翻譯嗎？前往 Crowdin：{2}'
 success-removed-shop: <green>已刪除商店。
-currency-set: '<green>商店貨幣成功設置為 {0}。 '
+currency-set: <green>商店貨幣成功設置為 {0}。 
 shop-purged-start: <green>已開始商店清理，請查看控制台以獲得詳細資訊。
 economy-transaction-failed: <red>抱歉，由於系統發生錯誤，你的交易已被取消，款項已返回原本的地方。如果問題持續發生，請聯絡伺服器管理員。
 nothing-to-flush: <green>沒有關於商店的新訊息。
 no-price-change: <red>這不會導致價格變動 ！
 edition-confilct: QuickShop-Hikari 與 QuickShop-Reremake 同時安裝在伺服器中可能會相互沖突，你需要卸載其中一個
-inventory-unavailable: '<red>此商店的InventoryWrapper外觀不存在或不正確。你有沒有使用任何插件修改了商店的背包? 資訊:
-  InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. 請聯絡伺服器管理員。'
+inventory-unavailable: '<red>此商店的InventoryWrapper外觀不存在或不正確。你有沒有使用任何插件修改了商店的背包? 資訊: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. 請聯絡伺服器管理員。'
 file-test: 這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)
 unknown-player: <red>找不到相對應的玩家，請檢查你輸入的玩家名稱是否正確。
 language:
-  qa-issues: <yellow>品質認證問題 ： <aqua>{0}%
-  code: <yellow>代碼 ： <gold>{0}
-  approval-progress: <yellow>批准進度 ： <aqua>{0}%
-  translate-progress: <yellow>翻譯進度 ： <aqua>{0}%
-  name: <yellow>名稱 ： <gold>{0}
+  qa-issues: '<yellow>品質認證問題 ： <aqua>{0}%'
+  code: '<yellow>代碼 ： <gold>{0}'
+  approval-progress: '<yellow>批准進度 ： <aqua>{0}%'
+  translate-progress: '<yellow>翻譯進度 ： <aqua>{0}%'
+  name: '<yellow>名稱 ： <gold>{0}'
   help-us: <green>[幫助我們提升翻譯品質]
-warn-to-paste: <yellow>正在收集資料並上傳到 Pastebin ，這可能需要一點時間。<red><bold>警告 ： <red>資料上傳後，此連結會公開一星期
-  ！ 可能會洩漏伺服器中的設定或其它資料。請確保傳送此連結的人是 <bold>伺服器員工或開發者<red>。
-how-many-sell-stack: <green>在聊天室中輸入你想 <aqua>售出<green> 的數量，每份中有 <yellow>{0}<green>
-  個物品，你目前可以售出 <yellow>{1}<green> 份。輸入 <aqua>{2}<green> 來售出所有物品。
+warn-to-paste: '<yellow>正在收集資料並上傳到 Pastebin ，這可能需要一點時間。<red><bold>警告 ： <red>資料上傳後，此連結會公開一星期 ！ 可能會洩漏伺服器中的設定或其它資料。請確保傳送此連結的人是 <bold>伺服器員工或開發者<red>。'
+how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
 updatenotify:
   buttontitle: '[現在更新]'
   onekeybuttontitle: '[一鍵更新]'
@@ -218,30 +197,28 @@ updatenotify:
     polymart: '[Polymart]'
     basic: '[Basic]'
   list:
-  - QuickShop {0} 已正式發布，你還在使用 QuickShop {1} ！
-  - 蹦 ！ 新的 QuickShop 版本 {0} 到來了，快更新 ！
-  - 驚喜 ！ QuickShop {0} 出來了，你還在使用 QuickShop {1}。
-  - 看來你需要更新， QuickShop {0} 已正式發布了 ！
-  - 噢 ！ QuickShop {0} 已正式發布了，你還在使用 QuickShop {1} ！
-  - 我保證， QS 已更新到了 {0}。你怎麼還沒有更新 ？
-  - 修復並重…… 抱歉，QuickShop {0} 已正式發布了 ！
-  - 錯誤 ！ 不，其實並沒有錯誤，QuickShop {0} 已正式發布 ！
-  - 我的天啊 ！ QuickShop {0} 已出來了 ！ 你怎麼還在使用 QuickShop {1} ？
-  - 今日新聞 ： QuickShop 已正式發布 {0} 的更新 ！
-  - 插件已陣亡，你應該要更新 QuickShop 到 {0} ！
-  - QuickShop 更新 {0} 發布了，現在就下載拯救更新吧 ！
-  - 指揮官 ， QuickShop 的新版本 {0} 發布了 ！
-  - 看看我的新風格── QuickShop {0} 出來了，你還在使用 QuickShop {1}。
-  - 啊啊啊啊啊啊啊啊 ！ QuickShop 更新 {0} 來了 ！ 快更新 ！
-  - 你在想什麼呢 ？ QuickShop {0} 已正式發布 ！ 請更新 ！
-  - 博士， QuickShop 有一個新的更新 {0} ！ 你應該考慮一下更新了~
-  - Ko~ko~da~yo~ QuickShop 有新的更新 {0} ~
-  - 派蒙想告訴您 QuickShop 有新的更新{0}！
-  remote-disable-warning: <red>該版本的 QuickShop 已被遠端伺服器標記為停用 ， 這意味著該版本可能存在嚴重問題 ， 請從我們的
-    Spigot 插件頁面取得詳細資訊 ： {0} 。 在你切換到穩定版本之前 ， 該警告將繼續出現 ， 但不會影響伺服器的性能。
+    - 'QuickShop {0} 已正式發布，但你還在使用 QuickShop {1}！'
+    - 蹦！新的 QuickShop {0} 來了，快更新！
+    - 驚喜！QuickShop {0} 出來了，但你還在使用 QuickShop {1}。
+    - 看來你需要更新，QuickShop {0} 已正式發布了！
+    - 噢！QuickShop {0} 已正式發布了，但你還在使用 QuickShop {1}！
+    - 我保證，QS 已更新到了 {0}，但你怎麼還沒有更新？
+    - 修復並重…… 抱歉，QuickShop {0} 已正式發布了！
+    - 錯誤！不，其實並沒有錯誤，QuickShop {0} 已正式發布！
+    - 我的天啊！QuickShop {0} 已出來了！你怎麼還在使用 QuickShop {1}？
+    - '今日新聞：QuickShop 已正式發布 {0} 的更新！'
+    - 插件已陣亡，你應該要更新 QuickShop 到 {0}！
+    - QuickShop {0} 更新發布了，現在就下載拯救更新吧！
+    - 指揮官，QuickShop {0} 新版本發布了！
+    - 看看我的新風格── QuickShop {0} 出來了，你還在使用 QuickShop {1}。
+    - 啊啊啊啊啊啊啊！QuickShop 更新 {0} 來了！快更新！
+    - 你在想什麼呢？QuickShop {0} 已正式發布！請更新！
+    - 博士，QuickShop 有新的更新 {0}！你應該考慮一下更新了～
+    - Ko～ko～da～yo～ QuickShop 有新的更新 {0}～
+    - 派蒙想告訴你 QuickShop 有新的更新 {0}！
+  remote-disable-warning: '<red>該版本的 QuickShop 已被遠端伺服器標記為停用 ， 這意味著該版本可能存在嚴重問題 ， 請從我們的 Spigot 插件頁面取得詳細資訊 ： {0} 。 在你切換到穩定版本之前 ， 該警告將繼續出現 ， 但不會影響伺服器的性能。'
 purchase-out-of-stock: <red>該商店已缺貨，請聯繫商店商店店主或商店員工補充庫存。
-nearby-shop-entry: '<green>-資訊 ： {0} <green>價格 ： <aqua>{1} <green>x: <aqua>{2} <green>y:
-  <aqua>{3} <green>z: <aqua>{4} <green>距離 ： <aqua>{5} <green>個方塊。'
+nearby-shop-entry: '<green>-資訊 ： {0} <green>價格 ： <aqua>{1} <green>x: <aqua>{2} <green>y: <aqua>{3} <green>z: <aqua>{4} <green>距離 ： <aqua>{5} <green>個方塊。'
 chest-title: QuickShop 商店
 console-only: <red>該指令只能在控制台執行。
 failed-to-put-sign: <red>你的商店周圍沒有足夠的空間，放置商店的資訊告示牌。
@@ -253,8 +230,8 @@ tableformat:
   right_half_line: <dark_purple>--------------------+
   full_line: +---------------------------------------------------+
   left_begin: '<dark_purple>| '
-quickshop-gui-preview: 儲物箱商店物品介面預覽
-translate-not-completed-yet-click: '{0} 的翻譯完成度為 {1}，你想幫助我們改進翻譯嗎 ？ 點擊這裡 ！'
+quickshop-gui-preview: QuickShop 物品預覽介面
+translate-not-completed-yet-click: '{0} 的翻譯完成度為 {1}，你想幫助我們改進翻譯嗎？點擊這裡！'
 taxaccount-invalid: <red>無效的目標帳戶，請輸入有效的玩家名稱或 uuid（須加破折號）。
 player-bought-from-your-store: <red>{0} 從你的商店購買了 {1} {2}，你總共賺了 {3}。
 reached-maximum-can-create: <red>你建立的商店數量 {0}/{1} 已達到上限 ！
@@ -263,8 +240,7 @@ no-double-chests: <red>你沒有建立大型儲物箱商店的權限。
 price-too-cheap: <red>價格必須大於 <yellow>${0}
 shop-not-exist: <red>商店不存在。
 bad-command-usage: <red>無效的指令!
-clean-warning: <yellow>該指令將清理<red>所有<yellow>在不允許建立商店的世界的──出售/購買不允許的物品，以及<red><bold>所有在伺服器沒有載入世界的商店，請確保你的商店資料備份完整後繼續使用
-  <aqua>/qs cleanghost confirm <yellow>。
+clean-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
 shop-purchase-cancelled: <red>已取消購買。
 bypassing-lock: <red>你繞過了 Quickshop 鎖 ！
 bungee-cross-server-msg: '<yellow>QuickShop跨服信息: <green>{0}'
@@ -274,32 +250,26 @@ price-is-now: <green>現在你的商店定價是 <yellow>{0} 元。
 shops-arent-locked: <red>請注意，商店無法防盜 ！ 如果你想要防盜功能，請使用 LWC 、 Lockette 等插件鎖住儲物箱。
 that-is-locked: <red>此商店已上鎖。
 shop-has-no-space: <red>這個商店只能再收購 {0} 個 {1} 而已。
-safe-mode-admin: <red><bold>警告:<red>此服務器上的 QuickShop 現在在安全模式下運行，沒有任何功能可用，請輸入 <yellow>/qs
-  <red> 命令以檢查任何錯誤!
+safe-mode-admin: '<red><bold>WARNING: </bold>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs </yellow> command to check any errors.'
 shop-stock-too-low: <red>這個商店只剩 {0} 個 {1} ！
-world-not-exists: <red>世界 <yellow>{0}<red> 不存在
-how-many-sell: <green>在聊天室中輸入你想要 <light_purple>出售 <green>的數量，你有 <yellow>{0} <green>個可以出售。輸入
-  <aqua>{1} <green>賣出全部。
+world-not-exists: <red>The world <yellow>{0}</yellow> doesn't exist
+how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL</light_purple>. You can sell <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> in chat, to sell all.
 shop-freezed-at-location: <yellow>你在 {1} 的商店 {0} 被凍結了 ！
-translation-contributors: 貢獻人員 ： Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken
-  和 Andre_601
+translation-contributors: '貢獻人員：Timtower、Netherfoam、KaiNoMood、Mgazul、JackTheChicken 和 Andre_601'
 empty-success: <green>清空商品成功
 taxaccount-set: <green>已經設定 <yellow>{0} <green>為該商店的稅金帳戶
 support-disable-reason:
   hot-reload: <yellow>我們不支援重新加載指令，請您重啟再試。
   outdated: <yellow>此版本的 Quickshop 已經過期，再提供技術支援前，請更新至最新版本!
-  bad-hosts: <yellow>此伺服器的HOSTS 被修改。Quickshop 需要特定的功能去正確地連接Mojang API。請你在要求提供技術支援前，請先修改HOSTS，如果你使用Windows
-    系統，請在檔案的C:\windows\system32\drivers\etc\hosts 這個位置進行修改, 如果你使用Linux 系統，請在檔案的 /etc/hosts
-    這個位置進行修改
+  bad-hosts: '<yellow>此伺服器的HOSTS 被修改。Quickshop 需要特定的功能去正確地連接Mojang API。請你在要求提供技術支援前，請先修改HOSTS，如果你使用Windows 系統，請在檔案的C:\windows\system32\drivers\etc\hosts 這個位置進行修改, 如果你使用Linux 系統，請在檔案的 /etc/hosts 這個位置進行修改'
   privacy: <yellow>此伺服器在破解版（離線版）環境底下運行。如果你正在使用代理伺服器下的bukkit伺服器及在代理伺服器設置 online-mode=true，請你將代理伺服器的相關配置正確設定。
   modified: '<yellow>檔案完整度檢查失敗: 此版本的QuickShop 並非官方正式版本，亦已經被其他人修改過。'
   consolespamfix-installed: <yellow>已安裝ConsoleSpamFix, 任何錯誤詳細訊息已被隱藏。如要提供技術支援，請先關閉此功能。
   authlib-injector-detected: <yellow>此伺服器正在運行 authlib 例如 authlib-injector.
-  unsupported-server-software: <yellow>此伺服器並非運行支援的伺服器軟件，任何模組化的伺服器軟件例如MCPC, Cauldron,
-    CatServer, Mohist, Magma, Fukkit, Cardboard 將不被提供技術支援。
+  unsupported-server-software: <yellow>此伺服器並非運行支援的伺服器軟件，任何模組化的伺服器軟件例如MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard 將不被提供技術支援。
 supertool-is-disabled: <red>超級工具已被關閉，現在不能使用超級工具破壞任何商店。
 unknown-owner: 未知
-restricted-prices: <red>{0} 元是無效的價格 ： 最高 {1} 元，最低 {2} 元。
+restricted-prices: '<red>{0} 元是無效的價格 ： 最高 {1} 元，最低 {2} 元。'
 nearby-shop-this-way: <green>商店距離你 {0} 格遠。
 owner-bypass-check: <yellow>繞過所有檢查並完成交易 （因為你是商店店主 ！ ）
 signs:
@@ -312,7 +282,7 @@ signs:
   out-of-stock: 無庫存
   stack-buying: 收購 {0}
   freeze: 已停用交易
-  price: 每個 {0}
+  price: '每個 {0} 元'
   buying: 收購 {0} 個
   header: '{1}{0}'
   selling: 出售 {0} 個
@@ -321,60 +291,59 @@ signs:
 negative-amount: <red>我的天啊，沒想到居然有人想要交易負數的數量。
 display-turn-on: <green>成功開啟商店懸浮物顯示
 shop-staff-deleted: <green>成功從你的商店刪除員工 {0} 。
-nearby-shop-header: '<green>附近匹配商店 <aqua>{0}<green> ： '
-backup-failed: 無法備份商店資料庫，試著查看控制台來檢視錯誤。
+nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}</aqua>:'
+backup-failed: 無法備份商店資料庫，請查看控制台以獲得詳細資訊。
 shop-staff-cleared: <green>已將所有員工從你的商店刪除。
 price-too-high: <red>商店價格太高了 ！ 請設定在 {0} 元以內。
 plugin-cancelled: '<red>操作被取消, 原因: {0}'
 player-sold-to-your-store: <green>{0} 在你的商店賣出了 {1} 個 {2}。
 shop-out-of-stock: <dark_purple>你在 X ： {0} Y ： {1} Z ： {2} 出售 {3} 的商店已售罄一空 ！
-how-many-buy: <green>在聊天室中輸入你想要 <aqua>購買 <green>的數量，你可以購買 <yellow>{0} <green>個。輸入
-  <aqua>{1}<green>購買全部。
+how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
 language-info-panel:
-  help: '幫助我們 ： '
-  code: '代碼 ： '
-  name: '語言 ： '
-  progress: '進度 ： '
+  help: '協助我們：'
+  code: '代碼：'
+  name: '語言：'
+  progress: '進度：'
   translate-on-crowdin: '[在 Crowdin 上翻譯]'
-item-not-exist: '<red>物品<yellow> {0}<red>不存在，請檢查你的拼寫。 '
+item-not-exist: <red>The item <yellow>{0}</yellow> does not exist, please check your spelling.
 shop-creation-failed: <red>商店建立失敗，請與伺服器管理員聯繫。
-inventory-space-full: <red>你的背包只有<green>{1}x <red>空位，請你先清空一下背包再嘗試!
+inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it. Try emptying your inventory!
 no-creative-break: <red>你不能在創造模式中破壞其他玩家的商店，請使用生存模式或使用超級工具 {0} 來破壞。
 booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: <green>每份數量 ： <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]
+  stack: '<green>每份數量 ： <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
   price-hover: <yellow>點擊修改商品價格。
   remove: <red><bold>[刪除商店]
   mode-buying-hover: <yellow>點擊商店修改為出售模式。
-  empty: <green>清空 ： 刪除所有商品 <yellow>[<light_purple><bold>OK<yellow>]
+  empty: '<green>清空 ： 刪除所有商品 <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>點擊設置每份的物品數量。設置為 1 以恢復為普通單物品商店。
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
-  alwayscounting: <green>持續計數：{0} <yellow>[<light_purple><bold>修改<yellow>]
-  setowner: <green>店主 ： <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]
-  freeze: <yellow>凍結模式 ： <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]
-  price: <green>價格 ： <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]
+  alwayscounting: '<green>持續計數：{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  setowner: '<green>店主 ： <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  freeze: '<yellow>凍結模式 ： <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
+  price: '<green>價格 ： <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
   currency-hover: <yellow>點擊設置或移除目前正在使用的商店貨幣
-  lock: <yellow>商店鎖 ： <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]
-  mode-selling: <green>商店模式 ： <aqua>出售 <yellow>[<light_purple><bold>修改<yellow>]
-  currency: <green>目前 ： <aqua>{0} <yellow>[<light_purple><bold>設定<yellow>]
+  lock: '<yellow>商店鎖 ： <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
+  mode-selling: '<green>商店模式 ： <aqua>出售 <yellow>[<light_purple><bold>修改<yellow>]'
+  currency: '<green>目前 ： <aqua>{0} <yellow>[<light_purple><bold>設定<yellow>]'
   setowner-hover: <yellow>點擊修改店主。
-  mode-buying: <green>商店模式 ： <aqua>收購 <yellow>[<light_purple><bold>修改<yellow>]
-  item: <green>商店物品 ： {0} <yellow>[<light_purple><bold>修改<yellow>]
-  unlimited: <green>無限 ： {0} <yellow>[<light_purple><bold>修改<yellow>]
+  mode-buying: '<green>商店模式 ： <aqua>收購 <yellow>[<light_purple><bold>修改<yellow>]'
+  item: '<green>商店物品 ： {0} <yellow>[<light_purple><bold>修改<yellow>]'
+  unlimited: '<green>無限 ： {0} <yellow>[<light_purple><bold>修改<yellow>]'
   unlimited-hover: <yellow>點擊修改商店模式為無限。
   refill-hover: <yellow>點擊重新填充商品。
   remove-hover: <yellow>點擊刪除商店。
   toggledisplay-hover: <yellow>切換商店是否顯示懸浮物
-  refill: <green>補貨 ： 重新填充商品 <yellow>[<light_purple><bold>OK<yellow>]
+  refill: '<green>補貨 ： 重新填充商品 <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>切換商店凍結狀態。
   lock-hover: <yellow>開啟/關閉商店鎖保護。
   item-hover: <yellow>點擊修改商店物品
   infomation: '<green>商店控制面板 ： '
   mode-selling-hover: <yellow>點擊商店修改為收購模式。
   empty-hover: <yellow>點擊清除商店內庫存。
-  toggledisplay: <yellow>懸浮物顯示 ： <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]
+  toggledisplay: '<yellow>懸浮物顯示 ： <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
 timeunit:
   behind: 後面
   week: <red>{0} 星期
@@ -406,8 +375,7 @@ timeunit:
   future: 在 {0}
   days: <red>{0} 天
 command:
-  reloading: <green>配置檔案已經重新載入，<yellow>某些更改可能需要重新啟動才能生效。<newline><gray>（注意 ： 4.0.9.10
-    後的重新載入發生了變化，我們現在只重新載入配置檔案而不是整個插件，以確保伺服器不會崩潰。）
+  reloading: '<green>配置檔案已經重新載入，<yellow>某些更改可能需要重新啟動才能生效。<newline><gray>（注意 ： 4.0.9.10 後的重新載入發生了變化，我們現在只重新載入配置檔案而不是整個插件，以確保伺服器不會崩潰。）'
   description:
     buy: <yellow>修改成 <light_purple>收購 <yellow>模式
     about: <yellow>顯示關於 QuickShop 的資訊
@@ -448,13 +416,13 @@ command:
     taxaccount: <yellow>設定商店使用的稅金帳戶
     name: <yellow>命名商店一個專有名稱
     toggledisplay: <yellow>切換商店顯示物品狀態
-  bulk-size-not-set: <red>用法 ： /qs size <amount>
-  no-type-given: <red>用法 ： /qs find <item>
-  feature-not-enabled: 該功能沒有在設定檔案中啟用。
+  bulk-size-not-set: '<red>用法 ： /qs size <amount>'
+  no-type-given: '<red>用法 ： /qs find <item>'
+  feature-not-enabled: 該功能沒有在配置檔案中啟用
   now-debuging: <green>成功開啟開發者模式，插件重新載入中……
-  no-amount-given: <red>沒有提供數量，請使用 ： <green>/qs refill <amount><red>
+  no-amount-given: <red>No amount provided. Use <green>/qs refill <amount></green>
   no-owner-given: <red>未指定新的商店店主
-  disabled: <red>這個指令被停用 ： <yellow>{0}
+  disabled: '<red>這個指令被停用 ： <yellow>{0}'
   bulk-size-now: <green>現在開始交易 <yellow>{0} 個 {1}
   toggle-always-counting:
     counting: <green>Shop is now always counting container even is unlimited
@@ -464,16 +432,16 @@ command:
   toggle-unlimited:
     limited: <green>這個商店現在已恢復數量限制
     unlimited: <green>這個商店現在已沒有數量限制
-  transfer-success-other: <green>將<yellow> {0} {1}<green>的商店轉移到<yellow> {2}
+  transfer-success-other: <green>Transferred <yellow>{0} {1}</yellow>'s shop(s) to <yellow>{2}
   no-trade-item: <green>請在主手持有要修改的交易商品
   wrong-args: <red>無效的參數，使用 <bold>/qs help <red>查看指令列表。
   some-shops-removed: <yellow>{0} <green>的商店已刪除
-  new-owner: <green>新商店主人 ： <yellow>{0}
+  new-owner: '<green>新商店主人 ： <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
-  transfer-success: <green>將<yellow> {0} <green>商店轉移到<yellow> {1}
-  now-buying: <green>商店正在 <light_purple>收購 <yellow>{0}
-  now-selling: <green>商店現在 <aqua>出售 <yellow>{0}
-  cleaned: <green>已刪除 <yellow>{0} <green>個商店。
+  transfer-success: <green>Transferred <yellow>{0}</yellow> shop(s) to <yellow>{1}
+  now-buying: <green>Now <light_purple>BUYING</light_purple> {0}
+  now-selling: <green>Now <aqua>SELLING</aqua> {0}
+  cleaned: <green>Removed <yellow>{0}</yellow> shops.
   trade-item-now: <green>現在開始交易 <yellow>{0} 個 {1}
   no-world-given: <red>請指定世界名稱
   format-disabled: <red>/{0} {1} <gray>- {2}
@@ -482,16 +450,15 @@ currency-not-support: <red>該經濟插件不支援多重經濟（multi-economy�
 trading-in-creative-mode-is-disabled: <red>你不能在創造模式中使用商店交易。
 the-owner-cant-afford-to-buy-from-you: <red>這個商店只能再收購 {0} 個 {1}。
 you-cant-afford-shop-naming: <red>你沒有足夠的金錢命名商店, 命名商店需要{0}.
-inventory-error: '<red> InventoryWrapper運行失敗。你有沒有使用其他插件覆蓋了商店的背包存取? 資訊: Exception={0},
-  InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}。請聯絡伺服器管理員。'
+inventory-error: '<red> InventoryWrapper運行失敗。你有沒有使用其他插件覆蓋了商店的背包存取? 資訊: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}。請聯絡伺服器管理員。'
 integrations-check-failed-create: <red>集成模組 {0} 拒絕了建立商店的操作。
 shop-out-of-space: <dark_purple>你在 {0}, {1}, {2} 的商店已滿了。
-admin-shop: 管理員商店
+admin-shop: 系統商店
 no-anythings-in-your-hand: <red>手上沒有任何東西。
 no-permission: <dark_red>你沒有使用該指令的權限。
 chest-was-removed: <red>儲物箱已被移除。
 you-cant-afford-to-buy: <red>商品價格是 {0} 元，但是你只有 {1} 元。
-shops-removed-in-world: <yellow>世界 <aqua>{1} <yellow>總共有 <aqua>{0} <yellow>個商店被刪除。
+shops-removed-in-world: <yellow>A total of <aqua>{0}</aqua> shops have been deleted in world <aqua>{1}</aqua>.
 display-turn-off: <green>成功關閉商店懸浮物顯示
 client-language-unsupported: <yellow>QuickShop 不支援你的客戶端語言，我們現在還原為 {0}。
 language-version: '63'

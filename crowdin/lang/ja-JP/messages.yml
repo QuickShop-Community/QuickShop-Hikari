@@ -1,17 +1,16 @@
+---
 break-shop-use-supertool: <yellow>SuperToolを使ってショップを破壊することができます。
-fee-charged-for-price-change: <green>価格変更のため <red>{0}<green> を支払いました
+fee-charged-for-price-change: <green>You paid <red>{0}</red> to change the price.
 not-allowed-to-create: <red>あなたはここでショップを作る事ができません
 disabled-in-this-world: <red>このワールドではクイックショップが無効になっています
-how-much-to-trade-for: <green>チャットで<yellow>{1}個の {0}<green>をいくらで取引したいか入力してください。
+how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}</yellow> for.
 client-language-changed: <green>QuickShop はクライアントの言語設定が変更されていることを検出しました。現在 {0} ロケールを使用しています。
 shops-backingup: データベースからショップのバックアップを作成しています...
 _comment: 翻訳者さんこんにちは！Githubから、もしくはコードソースから編集している場合は、https://crowdin.com/project/quickshop-reremakeにアクセスしてください。
 unlimited-shop-owner-changed: <yellow>この無制限の店主は {0} に変更されました。
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters:
-  <gray>{0}'
+bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>無効な番号です
-shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another
-  one!
+shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is disallowed. Pick another one!
 console-only-danger: <red>これは危険なコマンドなので、コンソールのみが実行できます。
 not-a-number: <red>数字しか入力出来ません。あなたの入力は {0} でした。
 not-looking-at-valid-shop-block: <red>ショップを作成するためのブロックが見つかりませんでした。確認する必要があります。
@@ -25,37 +24,33 @@ tabcomplete:
   currency: '[通貨名]'
 taxaccount-unset: <green>このショップの税金口座はサーバーのグローバル設定に従っています。
 blacklisted-item: <red>ブラックリストに載っているので、この商品を販売することはできません
-command-type-mismatch: <red>このコマンドは<aqua>{0} のみ実行できます。
-server-crash-warning: <red>サーバーの実行中にQuickShopプラグインのJarファイルを交換/削除した場合、/qsreloadコマンドを実行するとサーバーがクラッシュすることがあります。
+command-type-mismatch: <red>This command can only be executed by <aqua>{0}</aqua>.
+server-crash-warning: '<red>サーバーの実行中にQuickShopプラグインのJarファイルを交換/削除した場合、/qsreloadコマンドを実行するとサーバーがクラッシュすることがあります。'
 you-cant-afford-to-change-price: <red>ショップの価格を変更するには {0} かかります。
 safe-mode: <red>クイックショップはセーフモードです。このショップのコンテナを開くことができません。エラーを修正するにはサーバー管理者に問い合わせてください。
 forbidden-vanilla-behavior: この操作はバニラの動作に反したため、禁止されています
 shop-out-of-space-name: <dark_purple>Your shop {0} is full!
-paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical
-  support. <newline>Reason: {0}'
+paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-  - '&eName: &b{0}'
-  - '&eOwner: &b{0}'
-  - '&eType: &b{0}'
-  - '&ePrice: &b{0}'
-  - '&eItem: &b{0}'
-  - '&eLocation: &b{0}'
+    - '&eName: &b{0}'
+    - '&eOwner: &b{0}'
+    - '&eType: &b{0}'
+    - '&ePrice: &b{0}'
+    - '&eItem: &b{0}'
+    - '&eLocation: &b{0}'
   hover-arg-filled:
-  - '&eName: &b{name}'
-  - '&eOwner: &b{owner}'
-  - '&eType: &b{type}'
-  - '&ePrice: &b{price}'
-  - '&eItem: &b{item}'
-  - '&eLocation: &b{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose
-    one to continue:'
+    - '&eName: &b{name}'
+    - '&eOwner: &b{owner}'
+    - '&eType: &b{type}'
+    - '&ePrice: &b{price}'
+    - '&eItem: &b{item}'
+    - '&eLocation: &b{location}'
+  header: '<yellow>You have multiple shops with name "<green>{0}</green>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied
-  the permission checks, If this not excepted, try add <light_purple>{1} <gray>to
-  listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>近所の平均価格: <yellow>{0}'
 digits-reach-the-limit: 価格が小数点以下の制限に達しました。
 currency-unset: <green>ショップの通貨は正常に削除されました。現在、デフォルトの設定を使用しています。
@@ -64,16 +59,14 @@ no-pending-action: <red>保留中のアクションはありません
 refill-success: <green>補充成功
 failed-to-paste: <red>Pastebinへのデータのアップロードに失敗しました。インターネット接続を確認して、もう一度お試しください。(詳細についてはコンソールをご覧ください)
 shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
-shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
-how-many-buy-stack: <yellow>チャットで<aqua>購入<green>したい商品の数を入力して下さい。1つの商品に <yellow>{0}
-  個<green> のアイテムが含まれており、あなたは<yellow>{1} つ<green> の商品を購入することができます。すべて購入するにはチャットで <aqua>{2}<green>
-  と入力して下さい。
+shop-name-invalid: <red>The shop name <yellow>{0}</yellow> is invalid. Pick another one!
+how-many-buy-stack: <yellow>チャットで<aqua>購入<green>したい商品の数を入力して下さい。1つの商品に <yellow>{0} 個<green> のアイテムが含まれており、あなたは<yellow>{1} つ<green> の商品を購入することができます。すべて購入するにはチャットで <aqua>{2}<green> と入力して下さい。
 exceeded-maximum: この値はJavaの最大値を越えました
 unlimited-shop-owner-keeped: '<yellow>注意: 店主はまだ無制限の店主です。自分で新しいショップオーナーを再設定する必要があります。'
 no-enough-money-to-keep-shops: <red>ショップを維持するのに十分な資金がありませんので全てのショップが削除されました...
-3rd-plugin-build-check-failed: <red>サードパーティプラグイン <bold>{0}<reset><red> が権限チェックを拒否しました。そこに権限を設定していませんか？
+3rd-plugin-build-check-failed: <red>3rd-party plugin <bold>{0}</bold> denied the permission checks, did you have permission set up in there?
 not-a-integer: 数字しか入力できません。あなたが入力したのは {0} でした
-translation-country: '<red><bold>言語圏: <aqua><bold>日本語 (ja_JP)'
+translation-country: '&c&l言語圏: &b&l日本語 (ja_JP)'
 buying-more-than-selling: '<red>警告: あなたは販売価格以上の値段で買取価格を設定しています！'
 purchase-failed: '<red>購入失敗: 内部エラーが発生しました。サーバー管理者に連絡してください。'
 denied-put-in-item: <red>ショップにこのアイテムを入れることはできません！
@@ -93,14 +86,13 @@ reloading-status:
   scheduled: <green>リロードが完了しました。<gray>(一部の変更は反映に時間が掛かる場合があります)
   require-restart: <green>リロードが完了しました。<yellow>(一部の変更については、サーバーの再起動が必要です)
   failed: <red>リロードに失敗しました。サーバーコンソールを確認してください
-player-bought-from-your-store-tax: <red>{0} が {1} 個の {2} をあなたのショップから購入したので {3} を獲得しました。(うち消費税
-  {4})
+player-bought-from-your-store-tax: <red>{0} が {1} 個の {2} をあなたのショップから購入したので {3} を獲得しました。(うち消費税 {4})
 not-enough-space: <red>あなたには {0} 個分のスペースしかありません！
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>あなたのショップスタッフに {0} を追加しました。
 shops-recovering: バックアップからショップを復元しています...
 menu:
-  sell-tax: <green>消費税として <yellow>{0} <green>を支払いました
+  sell-tax: <green>You paid <yellow>{0}</yellow> in taxes.
   owner: '<green>店主: {0}'
   preview: <aqua>[アイテムプレビュー]
   enchants: <dark_purple>エンチャント
@@ -108,12 +100,12 @@ menu:
   shop-information: '<green>ショップ情報 :'
   item: '<green>アイテム : <yellow>{0}'
   price-per: '<green>単価: <yellow>{0} <green>- <yellow>{1}'
-  item-name-and-price: <yellow>{0} {1} <green>を <yellow>{2}
+  item-name-and-price: <yellow>{0} {1} <green>for</green> {2}
   successful-purchase: '<green>購入成功:'
   price-per-stack: '<green>単価: <yellow>{2}x {0} - {1}'
   stored-enchants: <dark_purple>エンチャント保管
   item-holochat-error: <red>[Error]
-  this-shop-is-selling: <green>このショップは <aqua>販売<green> です
+  this-shop-is-selling: <green>This shop is <aqua>SELLING</aqua> items.
   shop-stack: '<green>1商品の内容量: <yellow>{0}'
   space: '<green>空き: <yellow>{0}'
   effects: <green>効果
@@ -127,58 +119,40 @@ currency-not-exists: <red>設定したい通貨が見当たりません。スペ
 no-nearby-shop: <red> {0} に一致するショップは近所にありません。
 translation-author: '翻訳者: Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>{0} 統合がショップの取引を拒否しました
-shop-transaction-failed: <red>Sorry, but an internal error occurred while processing
-  your purchase. The purchase has been cancelled and any operation has been rollback.
-  Please contact the server administrators if it keeping occurred.
+shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>ショップの店主をサーバーに設定しました。
-shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick
-  another one!
+shop-name-not-found: <red>The shop named <yellow>{0}</yellow> not exists.
+shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
   action-hover: <yellow>{0}
-  entry-header-shop: <aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591)
-    <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66)
-    <aqua>|
+  entry-header-shop: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66) <aqua>|'
   price-hover: <yellow>Total {0}, including {1} taxes.
   unknown: <gray>(unknown)
   undefined: <gray>(noname)
   no-results: <red>No transactions found.
   action-description:
-    DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner
-      if possible.
+    DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
     PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
     CREATE: <yellow>Player created a shop.
     PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
     PURCHASE: <yellow>Purchased item with a shop
   query-argument: 'Query Argument: {0}'
-  'entry-global:': <aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591
-    hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355
-    hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|
-  entry-player: <aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591
-    hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355
-    hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|
+  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}x
-  entry-header-global: <aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591)
-    <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66)
-    <aqua>|
+  entry-header-global: '<aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591) <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
   header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
   looking-up: <yellow>Performing metric lookup, Please wait...
-  entry-header-player: <aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591)
-    <aqua>| [shop](color=#CDAA7D) <aqua>| [amount](color=#8B7355) <aqua>| [price](color=#8B7E66)
-    <aqua>|
-  entry-shop: <aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3})
-    <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>|
-    [{8}](color=#8B7E66 hover={9}) <aqua>|
+  entry-header-player: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [shop](color=#CDAA7D) <aqua>| [amount](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
+  entry-shop: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   tax-hover: <yellow>{0} taxes
   header-global: '<yellow>The server {0} {1} transactions:'
   na: <gray>N/A
   transaction-count: <yellow>{0} total
-  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner:
-    <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price:
-    <gray>{8}'
+  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}'
   time-hover: '<yellow>Time: {0}'
   amount-stack-hover: <yellow>{0}x stack
 permission-denied-3rd-party: '<red>アクセス拒否: サードパーティのプラグイン [{0}]'
@@ -188,16 +162,11 @@ translate-not-completed-yet-url: '{1} では言語 {0} の翻訳が完了して�
 success-removed-shop: <green>ショップを削除しました。
 currency-set: <green>ショップの通貨は {0} に設定されました。
 shop-purged-start: <green>ショップパージを開始しました。コンソールを確認してください。
-economy-transaction-failed: <red>Sorry, but an internal error occurred while processing
-  your transaction. The transaction has been cancelled and any economy operation has
-  been rollback. Please contact the server administrators if it keeping occurred.
+economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
 nothing-to-flush: <green>新しいショップメッセージはありませんでした
 no-price-change: <red>これでは価格変更になりません！
-edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each
-  other, uninstall one of them.
-inventory-unavailable: '<red>This shop InventoryWrapper not exists or invalid. Did
-  you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0},
-  WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.'
+edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict each other, uninstall one of them.
+inventory-unavailable: '<red>This shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.'
 file-test: これはテスト用のファイルです。私たちはこれを使って、messages.jsonは壊れていないかをチェックします。ここに好きなイースターエッグを挿入してもいいですよ:)
 unknown-player: <red>指定したプレーヤーが存在しません。入力したユーザー名を確認してください。
 language:
@@ -207,11 +176,8 @@ language:
   translate-progress: '<yellow>翻訳の進行状況: <aqua>{0}%'
   name: '<yellow>名前: <gold>{0}'
   help-us: <green>[翻訳の品質向上にご協力ください]
-warn-to-paste: <yellow>データを収集してPastebinにアップロードするには、しばらく時間がかかる場合があります。<red><bold>警告:<red>
-  データは1週間公開されます。サーバーの設定やその他の機密情報が漏洩する可能性があります。<bold>信頼できるスタッフや開発者にのみ送信するようにしてください。
-how-many-sell-stack: <yellow>チャットで<aqua>売却<green>したい商品の数を入力して下さい。1つの商品に <yellow>{0}
-  個<green> のアイテムが含まれており、あなたは<yellow>{1} つ<green> の商品を売却することができます。すべて売却するにはチャットで <aqua>{2}<green>
-  と入力して下さい。
+warn-to-paste: '<yellow>データを収集してPastebinにアップロードするには、しばらく時間がかかる場合があります。<red><bold>警告:<red> データは1週間公開されます。サーバーの設定やその他の機密情報が漏洩する可能性があります。<bold>信頼できるスタッフや開発者にのみ送信するようにしてください。'
+how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
 updatenotify:
   buttontitle: '[更新する]'
   onekeybuttontitle: '[ワンキーアップデート]'
@@ -231,30 +197,28 @@ updatenotify:
     polymart: '[Polymart]'
     basic: '[Basic]'
   list:
-  - '{0} がリリースされました。まだ {1} を使用しています！'
-  - どかーん！新しいアップデート {0} がやってきました。更新しよう！
-  - サプライズです！ {0} がやってきました！あなたは {1} です
-  - アップデートが必要です。{0} がリリースされました！
-  - おっと！ {0} がリリースされました。今は {1} です！
-  - マジでQSが {0} にアップデートされてるんだって！なんでまだ更新してないんだ？
-  - 修正と再... 申し訳ありませんが、{0} がリリースされました！
-  - エラー！間違えました。これはエラーではありません。{0} がリリースされました！
-  - ああ、神様！ {0} が出ました！ まだ {1} を使用しているのはなぜですか？
-  - 今日のニュース：QuickShop が {0} に更新されました！
-  - プラグインは戦死しました。{0} にアップデートする必要があります！
-  - '{0} を更新しました。アップデートしましょう！'
-  - 司令官、アップデートがあります。{0} が出ました！
-  - 私のスタイルを見てください---{0} が更新されました。まだ {1} を使用しています
-  - ああ！ 新しい更新 {0}！ 更新を！
-  - どう思う？{0} がリリースされました！更新しよう！
-  - ドクター！QuickShopに新しいアップデート {0} がやってきました！アップデートした方がいいですよ～
-  - こ～こ～だ～よ～！QuickShopに新しいアップデート {0} があるよ～
-  - Paimonはクイックショップに新しいアップデート {0} があると言っています！
-  remote-disable-warning: <red>このバージョンのQuickShopは、リモートサーバーによって無効とマークされており、このバージョンには深刻な問題がある可能性があります。{0}.
-    この警告は安定したバージョンに切り替えるまで表示され続けますが、サーバーのパフォーマンスに影響を与えることはありません。
+    - '{0} がリリースされました。まだ {1} を使用しています！'
+    - どかーん！新しいアップデート {0} がやってきました。更新しよう！
+    - サプライズです！ {0} がやってきました！あなたは {1} です
+    - アップデートが必要です。{0} がリリースされました！
+    - おっと！ {0} がリリースされました。今は {1} です！
+    - マジでQSが {0} にアップデートされてるんだって！なんでまだ更新してないんだ？
+    - 修正と再... 申し訳ありませんが、{0} がリリースされました！
+    - エラー！間違えました。これはエラーではありません。{0} がリリースされました！
+    - ああ、神様！ {0} が出ました！ まだ {1} を使用しているのはなぜですか？
+    - '今日のニュース：QuickShop が {0} に更新されました！'
+    - プラグインは戦死しました。{0} にアップデートする必要があります！
+    - '{0} を更新しました。アップデートしましょう！'
+    - 司令官、アップデートがあります。{0} が出ました！
+    - 私のスタイルを見てください---{0} が更新されました。まだ {1} を使用しています
+    - ああ！ 新しい更新 {0}！ 更新を！
+    - どう思う？{0} がリリースされました！更新しよう！
+    - ドクター！QuickShopに新しいアップデート {0} がやってきました！アップデートした方がいいですよ～
+    - こ～こ～だ～よ～！QuickShopに新しいアップデート {0} があるよ～
+    - Paimonはクイックショップに新しいアップデート {0} があると言っています！
+  remote-disable-warning: '<red>このバージョンのQuickShopは、リモートサーバーによって無効とマークされており、このバージョンには深刻な問題がある可能性があります。{0}. この警告は安定したバージョンに切り替えるまで表示され続けますが、サーバーのパフォーマンスに影響を与えることはありません。'
 purchase-out-of-stock: <red>このショップは在庫がなくなりました。店主またはショップスタッフにお問い合わせください。
-nearby-shop-entry: '<green>- 情報:{0} <green>価格:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3}
-  <green>z:<aqua>{4} <green>距離: <aqua>{5} <green>ブロック'
+nearby-shop-entry: '<green>- 情報:{0} <green>価格:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>距離: <aqua>{5} <green>ブロック'
 chest-title: QuickShopストア
 console-only: <red>このコマンドはコンソールでのみ実行できます。
 failed-to-put-sign: <red>情報看板を設置する十分なスペースがショップの周囲にありません。
@@ -276,8 +240,7 @@ no-double-chests: <red>ラージチェストのショップを作成すること
 price-too-cheap: <red>価格は<yellow>${0}<red>以上である必要があります。
 shop-not-exist: <red>そこにショップはありませんでした。
 bad-command-usage: <red>Bad command arguments!
-clean-warning: <yellow>このコマンドは、ショップが破損、許可されていないワールドで作成、許可されていないアイテムを販売/買取、または<red>ロードされていないワールドに存在している場合<yellow>、全てのショップをパージします。ショップデータの完全なバックアップを作成してから、<aqua>/qs
-  cleanghost confirm <yellow>で続行してください。
+clean-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
 shop-purchase-cancelled: <red>ショップでの購入がキャンセルされました。
 bypassing-lock: <red>QuickShopロックをバイパスします！
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
@@ -287,36 +250,23 @@ price-is-now: <green>ショップの新しい価格は <yellow>{0} です
 shops-arent-locked: <red>ショップは保護されていません！保護が必要な場合は、LWCやLocketteなどでロックしてください！
 that-is-locked: <red>このショップはロックされています。
 shop-has-no-space: <red>ショップには {0} 個以上 {1} 個分のスペースしかありません
-safe-mode-admin: '<red><bold>WARNING: <red>このサーバーのクイックショップは現在安全モードで動作していますが、機能は動作しません。エラーをチェックするには<yellow>/qs
-  <red>コマンドを入力してください。'
+safe-mode-admin: '<red><bold>WARNING: </bold>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs </yellow> command to check any errors.'
 shop-stock-too-low: <red>ショップには {1} は {0} 個 しか残っていません！
-world-not-exists: <red>ワールド <yellow>{0}<red> が存在しません
-how-many-sell: <green>チャットで<light_purple>売却<green>したい個数を入力してください。<yellow>{0}個 <green>所持しています。<aqua>{1}
-  <green>で全て売却
+world-not-exists: <red>The world <yellow>{0}</yellow> doesn't exist
+how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL</light_purple>. You can sell <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> in chat, to sell all.
 shop-freezed-at-location: <yellow> {0} のショップ {1} が凍結されました！
-translation-contributors: '貢献者: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken,
-  Andre_601 and Namiu'
+translation-contributors: '貢献者: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken, Andre_601 and Namiu'
 empty-success: <green>ショップを空っぽにしました
 taxaccount-set: <green>このショップの税金口座は <yellow>{0} に設定されました
 support-disable-reason:
   hot-reload: <yellow>Unsupported hot reloaded, restart the server and check again.
-  outdated: <yellow>This version of QuickShop already outdated, up-to-date before
-    requesting support!
-  bad-hosts: <yellow>This server HOSTS has been modified and QuickShop some functions
-    require connect to Mojang API correctly. Fix the HOSTS before asking support,
-    Windows at C:\windows\system32\drivers\etc\hosts, Linux at /etc/hosts.
-  privacy: <yellow>This server running under cracked (offline) mode. If you are running
-    bukkit server under proxy and online-mode=true on proxy, please configure the
-    proxy related settings correctly.
-  modified: <yellow>File integrity check failed, this QuickShop build has been modified
-    by others.
-  consolespamfix-installed: <yellow>ConsoleSpamFix installed, it will hidden exception
-    details, temporarily disable it during asking support.
-  authlib-injector-detected: <yellow>This server running under 3rd-party authlib provider
-    like authlib-injector.
-  unsupported-server-software: <yellow>Unsupported server software, Any modded hybrid
-    server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma,
-    Fukkit, Cardboard etc.
+  outdated: <yellow>This version of QuickShop already outdated, up-to-date before requesting support!
+  bad-hosts: '<yellow>This server HOSTS has been modified and QuickShop some functions require connect to Mojang API correctly. Fix the HOSTS before asking support, Windows at C:\windows\system32\drivers\etc\hosts, Linux at /etc/hosts.'
+  privacy: <yellow>This server running under cracked (offline) mode. If you are running bukkit server under proxy and online-mode=true on proxy, please configure the proxy related settings correctly.
+  modified: <yellow>File integrity check failed, this QuickShop build has been modified by others.
+  consolespamfix-installed: <yellow>ConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support.
+  authlib-injector-detected: <yellow>This server running under 3rd-party authlib provider like authlib-injector.
+  unsupported-server-software: <yellow>Unsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.
 supertool-is-disabled: <red>スーパーツールが無効になっています。どのショップも破壊することはできません。
 unknown-owner: 不明
 restricted-prices: '<red>{0} の価格制限: 最低 {1}, 最高 {2}'
@@ -341,27 +291,24 @@ signs:
 negative-amount: <red>マイナス量を取引できません
 display-turn-on: <green>ショップの表示をオンにしました。
 shop-staff-deleted: <green>あなたのショップスタッフの {0} を削除しました。
-nearby-shop-header: '<aqua>{0}<green> に一致する近くのショップ:'
+nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}</aqua>:'
 backup-failed: データベースをバックアップできません。詳細についてはコンソールを確認してください。
 shop-staff-cleared: <green>ショップのスタッフを全員削除しました。
 price-too-high: <red>ショップの価格が高すぎます！ {0} より高い価格のショップは作成できません。
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <green>{0} があなたのショップに {2} を {1} 個 売却しました。
 shop-out-of-stock: <dark_purple>{0}、{1}、{2} のショップで {3} の在庫がなくなりました！
-how-many-buy: <green>チャットで<aqua>購入<green>したい個数を入力してください。<yellow>{0}個 <green> 購入できます。<aqua>{1}
-  <green>で全て購入
+how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
 language-info-panel:
   help: 'ヘルプ: '
   code: 'コード: '
   name: '言語: '
   progress: '進捗: '
   translate-on-crowdin: '[Crowdinで翻訳]'
-item-not-exist: <red>アイテム<yellow>{0} <red>は存在しません。スペルを確認してください。
+item-not-exist: <red>The item <yellow>{0}</yellow> does not exist, please check your spelling.
 shop-creation-failed: <red>ショップの作成に失敗しました。サーバー管理者に連絡してください。
-inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items
-  into it, try empty the your inventory!
-no-creative-break: <red>クリエイティブモードでは他のプレイヤーのショップを破壊することはできません。サバイバルモードに切り替えるか、代わりにスーパーツール
-  {0} を使用してください。
+inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it. Try emptying your inventory!
+no-creative-break: <red>クリエイティブモードでは他のプレイヤーのショップを破壊することはできません。サバイバルモードに切り替えるか、代わりにスーパーツール {0} を使用してください。
 booleanformat:
   success: <green>✔
   failed: <red>✘
@@ -428,7 +375,7 @@ timeunit:
   future: in {0}
   days: <red>{0} days
 command:
-  reloading: <green>設定をリロードしました。<yellow>一部の変更に影響を与えるために再起動が必要な場合があります。 <newline><gray>(4.0.9.10以降、リロードの動作が変更され、サーバーがクラッシュしないように設定のみをリロードし、プラグイン全体をリロードしないようになりました。)
+  reloading: '<green>設定をリロードしました。<yellow>一部の変更に影響を与えるために再起動が必要な場合があります。 <newline><gray>(4.0.9.10以降、リロードの動作が変更され、サーバーがクラッシュしないように設定のみをリロードし、プラグイン全体をリロードしないようになりました。)'
   description:
     buy: <yellow>ショップを<light_purple>買取<yellow>モードに変更します
     about: <yellow>QuickShopの情報を表示します
@@ -473,7 +420,7 @@ command:
   no-type-given: '<red>使用法: /qs find <アイテム名>'
   feature-not-enabled: この機能は設定ファイルで有効になっていません。
   now-debuging: <green>開発者モードに切り替え成功、QuickShopをリロードしています。
-  no-amount-given: <red>個数が入力されていません。<green>/qs refill <amount><red> を使用してください
+  no-amount-given: <red>No amount provided. Use <green>/qs refill <amount></green>
   no-owner-given: <red>店主が指定されていません
   disabled: '<red>このコマンドは無効です: <yellow>{0}'
   bulk-size-now: <green>現在は <yellow>{1} <green>を <yellow>{0} 個 <green> 取引しています
@@ -485,16 +432,16 @@ command:
   toggle-unlimited:
     limited: <green>ショップは制限されています
     unlimited: <green>ショップは無制限になりました
-  transfer-success-other: <green>{0} {1}<green>のショップを<yellow>{2} に転送しました
+  transfer-success-other: <green>Transferred <yellow>{0} {1}</yellow>'s shop(s) to <yellow>{2}
   no-trade-item: <green>変更対象のアイテムをメインハンドで持って下さい
   wrong-args: <red>無効な引数です。コマンドを<bold>/qs help <reset>で確認して下さい。
   some-shops-removed: <yellow>{0} つのショップを削除しました
   new-owner: '<green>新しい店主: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
-  transfer-success: <yellow>{0} のショップを <yellow>{1} に転送しました
-  now-buying: <green>現在 <light_purple>買取 <yellow>{0}
-  now-selling: <green>現在 <aqua>販売 <yellow>{0}
-  cleaned: <yellow>{0} つ<green> のショップを削除しました。
+  transfer-success: <green>Transferred <yellow>{0}</yellow> shop(s) to <yellow>{1}
+  now-buying: <green>Now <light_purple>BUYING</light_purple> {0}
+  now-selling: <green>Now <aqua>SELLING</aqua> {0}
+  cleaned: <green>Removed <yellow>{0}</yellow> shops.
   trade-item-now: <green>現在は <yellow>{1} <green>を <yellow>{0} 個 <green> 取引しています
   no-world-given: <red>ワールド名を指定してください
   format-disabled: <red>/{0} {1} <gray>- {2}
@@ -503,10 +450,7 @@ currency-not-support: <red>エコノミープラグインはマルチエコノ�
 trading-in-creative-mode-is-disabled: <red>クリエイティブモードではこのショップと取引することはできません。
 the-owner-cant-afford-to-buy-from-you: <red>この商品の買取価格は {0} ですが、店主は {1} しか所持していません。
 you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to naming.
-inventory-error: '<red>Failed to processing the InventoryWrapper. Did you using addon
-  to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1},
-  WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server
-  administrators.'
+inventory-error: '<red>Failed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.'
 integrations-check-failed-create: <red>{0} 統合がショップの作成を拒否しました
 shop-out-of-space: <dark_purple>あなたの {0}, {1}, {2} のショップが一杯です。
 admin-shop: アドミンショップ
@@ -514,7 +458,7 @@ no-anythings-in-your-hand: <red>あなたは手に何も持っていません。
 no-permission: <red>あなたは権限を持っていないため実行できません。
 chest-was-removed: <red>チェストが削除されました。
 you-cant-afford-to-buy: <red>価格は {0} ですが {1} しか所持していません。
-shops-removed-in-world: <yellow>ワールド <aqua>{1}<yellow> で合計 <aqua>{0} つ<yellow> のショップを削除しました。
+shops-removed-in-world: <yellow>A total of <aqua>{0}</aqua> shops have been deleted in world <aqua>{1}</aqua>.
 display-turn-off: <green>ショップの表示をオフにしました。
 client-language-unsupported: <yellow>QuickShopはクライアント言語をサポートしていません。 {0} ロケールにフォールバックします。
 language-version: '63'
