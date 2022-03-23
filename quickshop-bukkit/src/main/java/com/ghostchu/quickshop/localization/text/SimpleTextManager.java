@@ -209,7 +209,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
             // jar/lang/<region_code>/
             Map<String, FileConfiguration> availableLang = new HashMap<>();
             zipFile.getEntries().asIterator().forEachRemaining(entry -> {
-                Util.debugLog("Zip entry: " + entry.getName());
                 if (entry.isDirectory())
                     return;
                 if (!entry.getName().startsWith("lang/"))
