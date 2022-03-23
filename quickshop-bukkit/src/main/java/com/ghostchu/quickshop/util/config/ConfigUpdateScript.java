@@ -88,7 +88,7 @@ public class ConfigUpdateScript {
         getConfig().set("database.properties.connection-timeout", 60000);
     }
 
-    @UpdateScript(version = 1005)
+    @UpdateScript(version = 1006)
     public void migrateToMiniMessage() {
         File locales = new File(plugin.getDataFolder(), "overrides");
         if (!locales.exists())
