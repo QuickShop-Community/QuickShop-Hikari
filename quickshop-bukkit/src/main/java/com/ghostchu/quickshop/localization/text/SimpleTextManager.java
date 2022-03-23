@@ -36,6 +36,7 @@ import com.google.common.cache.CacheBuilder;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.bukkit.Bukkit;
@@ -70,7 +71,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
     private final Set<String> availableLanguages = new LinkedHashSet<>();
     private final Cache<String, String> languagesCache =
             CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
-    private final SimpleMsgParser msgParser;
 
     public SimpleTextManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -82,7 +82,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
             this.distribution = null;
             plugin.getLogger().log(Level.SEVERE, "Failed to initialize Crowdin OTA distribution, cloud translations update failed.", e);
         }
-        this.msgParser = new SimpleMsgParser(plugin.getConfig().getInt("syntax-parser", 0));
     }
 
 
@@ -594,7 +593,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
                 }
-                List<Component> components = str.stream().map(manager.msgParser::parse).toList();
+                List<Component> components = str.stream().map(s-> MiniMessage.miniMessage().deserialize(s)).toList();
                 return postProcess(components);
             }
         }
@@ -695,7 +694,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     Util.debugLog("Missing Language Key: " + path + ", report to QuickShop!");
                     return LegacyComponentSerializer.legacySection().deserialize(path);
                 }
-                Component component = manager.msgParser.parse(str);
+                Component component = MiniMessage.miniMessage().deserialize(str);
                 return postProcess(component);
             }
         }
