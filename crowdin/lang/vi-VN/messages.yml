@@ -1,16 +1,16 @@
 ---
 break-shop-use-supertool: <yellow>Bạn có thể phá vỡ cửa hàng bằng cách sử dụng SuperTool.
-fee-charged-for-price-change: <green>You đã trả <red>{0}<green> để được thay đổi giá.
+fee-charged-for-price-change: <green>You paid <red>{0}</red> to change the price.
 not-allowed-to-create: <red>Bạn không thể tạo cửa hàng ở đây.
 disabled-in-this-world: <red>QuickShop bị vô hiệu hóa trong thế giới này
-how-much-to-trade-for: <green>Nhập vào khung chat số tiền bạn muốn giao dịch <yellow>{1}x {0}<green>.
+how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}</yellow> for.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Creating Shop-backup from database...
 _comment: Xin chào, Nếu bạn chỉnh sửa nội dung này từ Github hoặc từ các source code, bạn nên truy cập vào https://crowdin.com/project/quickshop-reremake
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Số không hợp lệ
-shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
+shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is disallowed. Pick another one!
 console-only-danger: <red>Đây là một lệnh nguy hiểm nên chỉ có Console mới có thể thực thi nó.
 not-a-number: <red>Bạn chỉ có thể nhập vào số, bạn vừa nhập vào {0}.
 not-looking-at-valid-shop-block: <red>Không thể tìm ra block để tạo Shop. Bạn cần phải nhìn vào block trước.
@@ -24,7 +24,7 @@ tabcomplete:
   currency: '[currency name]'
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>Bạn không thể bán vật phẩm này vì nó nằm trong danh sách đen
-command-type-mismatch: <red>This command only can executed by <aqua>{0}.
+command-type-mismatch: <red>This command can only be executed by <aqua>{0}</aqua>.
 server-crash-warning: '<red>Server may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running.'
 you-cant-afford-to-change-price: <red>Tiêu tốn {0} để thay đổi giá của shop.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
@@ -47,7 +47,7 @@ quick-fill:
     - '&ePrice: &b{price}'
     - '&eItem: &b{item}'
     - '&eLocation: &b{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
+  header: '<yellow>You have multiple shops with name "<green>{0}</green>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(Chỉ admin) <light_purple>{0} <dark_gray>đã từ chối kiểm tra quyền, Nếu điều này không bị ngoại trừ, hãy thử thêm <light_purple>{1} <gray>vào danh sách đen. <gray>Hướng dẫn cấu hình:https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
@@ -59,12 +59,12 @@ no-pending-action: <red>You do not have any pending actions
 refill-success: <green>Nạp tiền thành công
 failed-to-paste: <red>Failed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)
 shop-out-of-stock-name: <dark_purple>Cửa hàng của bạn {0} đã hết {1}!
-shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
+shop-name-invalid: <red>The shop name <yellow>{0}</yellow> is invalid. Pick another one!
 how-many-buy-stack: <yellow>Nhập vào khung chat số  lượng bạn muốn<light_purple> MUA<yellow>. Có<green> {0} <yellow>vật phẩm trong mỗi số lượng lớn và bạn có thể mua <green>{1}<yellow> hàng loạt. Nhập <green>{2} <yellow>vào trò chuyện để mua tất cả.
 exceeded-maximum: <red>Giá trị vượt quá giá trị tối đa trong Java.
 unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.'
 no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All shops have been removed...
-3rd-plugin-build-check-failed: <red>Plugin bên thứ 3 <bold>{0}<reset><red> đã từ chối quyền kiểm tra, bạn đã có quyền thiết lập ở đó chưa?
+3rd-plugin-build-check-failed: <red>3rd-party plugin <bold>{0}</bold> denied the permission checks, did you have permission set up in there?
 not-a-integer: <red>You must input a integer, your input was {0}.
 translation-country: 'Vùng ngôn ngữ: Tiếng Việt (vi_VN)'
 buying-more-than-selling: '<red>WARNING: You are buying items for more than you are selling them!'
@@ -92,7 +92,7 @@ shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
 shops-recovering: Recovering shops from backup...
 menu:
-  sell-tax: <green>Bạn đã trả <yellow>{0} <green>tiền thuế.
+  sell-tax: <green>You paid <yellow>{0}</yellow> in taxes.
   owner: '<green>Chủ: {0}'
   preview: <aqua>[Xem trước item]
   enchants: <dark_purple>Enchantments
@@ -100,12 +100,12 @@ menu:
   shop-information: '<green>Thông tin shop:'
   item: '<green>Vật phẩm: <yellow>{0}'
   price-per: <green>Giá mỗi <yellow>{0} <green>- <yellow>{1}
-  item-name-and-price: <yellow>{0} {1} <green>cho <yellow>{2}
+  item-name-and-price: <yellow>{0} {1} <green>for</green> {2}
   successful-purchase: '<green>Mua thành công:'
   price-per-stack: <green>Giá mỗi <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Stored Enchantments
   item-holochat-error: <red>[Lỗi]
-  this-shop-is-selling: <green>Cửa hàng này đang <aqua>BÁN <green>các vật phẩm.
+  this-shop-is-selling: <green>This shop is <aqua>SELLING</aqua> items.
   shop-stack: '<green>Số lượng: <yellow>{0}'
   space: '<green>Trống: <yellow>{0}'
   effects: <green>Hiệu ứng
@@ -121,7 +121,7 @@ translation-author: 'Người dịch: huyhhuy'
 integrations-check-failed-trade: <red>Tích hợp {0} đã từ chối Shop trao đổi
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Đã đặt thành công chủ cửa hàng thành Máy chủ.
-shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
+shop-name-not-found: <red>The shop named <yellow>{0}</yellow> not exists.
 shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
@@ -139,7 +139,7 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
     PURCHASE: <yellow>Purchased item with a shop
   query-argument: 'Query Argument: {0}'
-  'entry-global:': '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}x
   entry-header-global: '<aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591) <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
@@ -177,7 +177,7 @@ language:
   name: '<yellow>Tên: <gold>{0}'
   help-us: <green>[Giúp chúng tôi cải thiện chất lượng bản dịch]
 warn-to-paste: '<yellow>Collecting data and uploading it to Pastebin, this may take a while. <red><bold>Warning:<red> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <yellow>Nhập vào khung chat số lượng bạn muốn<light_purple> BÁN<yellow>. Có<green> {0} <yellow>vật phẩm trong mỗi số lượng lớn và bạn có thể bán <green>{1}<yellow> hàng loạt. Nhập <green>{2} <yellow>vào trò chuyện để bán tất cả.
+how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
 updatenotify:
   buttontitle: '[Update Now]'
   onekeybuttontitle: '[OneKey Update]'
@@ -240,7 +240,7 @@ no-double-chests: <red>Bạn không thể tạo ra Shop gương đôi.
 price-too-cheap: <red>Giá tiền phải lớn hơn <yellow>${0}
 shop-not-exist: <red>Không có shop nào.
 bad-command-usage: <red>Bad command arguments!
-clean-warning: <yellow>This command will purge <red>all <yellow>shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD<yellow>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm <yellow>to continue.
+clean-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
 shop-purchase-cancelled: <red>Tính năng mua bán của shop đã bị huỷ.
 bypassing-lock: <red>Bỏ qua khóa QuickShop!
 bungee-cross-server-msg: '<green>QuickShop CSM: <green>{0}'
@@ -250,10 +250,10 @@ price-is-now: <green>Giá mới của shop hiện giờ là <yellow>{0}
 shops-arent-locked: <red>Xin hãy lưu ý, Các shop không có cơ chế bảo vệ khỏi trộm! Nếu không muốn bị trộm, khoá nó lại với các plugin LWC, Lockette, v. v!
 that-is-locked: <red>Cửa hàng này đã bị khóa.
 shop-has-no-space: <red>Shop chỉ còn chỗ cho {0} {1}.
-safe-mode-admin: '<red><bold>WARNING: <red>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs <red> command to check any errors.'
+safe-mode-admin: '<red><bold>WARNING: </bold>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs </yellow> command to check any errors.'
 shop-stock-too-low: <red>Shop chỉ còn {0} {1} !
-world-not-exists: <red>Thế giới <yellow>{0} <red>không tồn tại
-how-many-sell: <green>Nhập vào khung chat số lượng bạn muốn <aqua>BÁN<green>. Bạn có thể bán <aqua>{0}<green>. Nhập <aqua>{1}<green> để bán tất cả.
+world-not-exists: <red>The world <yellow>{0}</yellow> doesn't exist
+how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL</light_purple>. You can sell <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> in chat, to sell all.
 shop-freezed-at-location: <yellow>Cửa hàng của bạn {0} tại {1} đã bị đóng băng!
 translation-contributors: 'Người đóng góp: huyhhuy'
 empty-success: <green>Cửa hàng trống
@@ -291,23 +291,23 @@ signs:
 negative-amount: <red>Bạn không thể giao dịch lượng số âm
 display-turn-on: <green>Successfully turn on the shop display.
 shop-staff-deleted: <green>Successfully removed {0} as a staff member for your shop.
-nearby-shop-header: '<green>Shop <aqua>{0}<green>đã được tìm thấy gần đây:'
+nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}</aqua>:'
 backup-failed: Cannot backup the database. Check the console for details.
 shop-staff-cleared: <green>Đã xóa thành công tất cả nhân viên khỏi cửa hàng của bạn.
 price-too-high: <red>The shop price is too high! You cannot create one with a price higher than {0}.
 plugin-cancelled: '<red>Thao tác bị hủy, Lý do: {0}'
 player-sold-to-your-store: <green>{0} đã bán {1} {2} cho shop của bạn.
 shop-out-of-stock: <dark_purple>Shop của bạn ở toạ độ {0}, {1}, {2} đã hết {3}!
-how-many-buy: <green>Nhập vào khung chat số lượng bạn muốn <aqua>MUA<green>. Bạn có thể mua <aqua>{0}<green>. Nhập <aqua>{1}<green> để mua tất cả.
+how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
 language-info-panel:
   help: 'Liên lạc'
   code: 'Code: '
   name: 'Language: '
   progress: 'Tiến trình:'
   translate-on-crowdin: '[Translate on Crowdin]'
-item-not-exist: <red>Vật phẩm <yellow>{0} <red>không tồn tại, vui lòng kiểm tra chính tả của bạn.
+item-not-exist: <red>The item <yellow>{0}</yellow> does not exist, please check your spelling.
 shop-creation-failed: <red>Không tạo được cửa hàng, vui lòng liên hệ với quản trị viên máy chủ.
-inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items into it, try empty the your inventory!
+inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it. Try emptying your inventory!
 no-creative-break: <red>You cannot break other players shops in creative mode, switch to survival mode or try to use the supertool {0} instead.
 booleanformat:
   success: <green>✔
@@ -420,7 +420,7 @@ command:
   no-type-given: '<red>Sử dụng lệnh: /qs find <item>'
   feature-not-enabled: Tính năng này không được kích hoạt trong tệp cấu hình.
   now-debuging: <green>Đã bật chế độ nhà phát triển thành công. Đang tải lại QuickShop ...
-  no-amount-given: <red>Không có số tiền được cung cấp. Sử dụng <green>/qs refill <số lượng><red>
+  no-amount-given: <red>No amount provided. Use <green>/qs refill <amount></green>
   no-owner-given: <red>Không có chủ sở hữu.
   disabled: '<red>Lệnh này bị tắt: <yellow>{0}'
   bulk-size-now: <green>Đang giao dịch <yellow>{0}x {1}
@@ -432,16 +432,16 @@ command:
   toggle-unlimited:
     limited: <green>Cửa hàng bây giờ có giới hạn
     unlimited: <green>Cửa hàng bây giờ là không giới hạn
-  transfer-success-other: <green>Đã chuyển cửa hàng <yellow>{0} {1} <green>sang <yellow>{2}
+  transfer-success-other: <green>Transferred <yellow>{0} {1}</yellow>'s shop(s) to <yellow>{2}
   no-trade-item: <green>Vui lòng giữ item muốn đổi trên tay
   wrong-args: <red>Lệnh không hợp lệ. Sử dụng <green>/qs help
   some-shops-removed: <yellow>{0} <green>cửa hàng đã bị xóa
   new-owner: '<green>Chủ mới: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
-  transfer-success: <green>Đã chuyển cửa hàng <yellow>{0} <green>sang <yellow>{1}
-  now-buying: '<green>Trạng thái: <light_purple>ĐANG BÁN <yellow>{0}'
-  now-selling: '<green>Trạng thái: <light_purple>ĐANG MUA <yellow>{0}'
-  cleaned: <green>Đã xoá <yellow>{0}<green> shops.
+  transfer-success: <green>Transferred <yellow>{0}</yellow> shop(s) to <yellow>{1}
+  now-buying: <green>Now <light_purple>BUYING</light_purple> {0}
+  now-selling: <green>Now <aqua>SELLING</aqua> {0}
+  cleaned: <green>Removed <yellow>{0}</yellow> shops.
   trade-item-now: <green>Now trading <yellow>{0}x {1}
   no-world-given: <red>Xin vui lòng chỉ rõ một tên hợp lệ.
   format-disabled: <red>/{0} {1} <gray>- {2}
@@ -458,7 +458,7 @@ no-anythings-in-your-hand: <red>Chẳng có gì trong tay bạn cả.
 no-permission: <red>Bạn không có quyền làm thế.
 chest-was-removed: <red>Gương đã được xoá.
 you-cant-afford-to-buy: <red>Tiêu tốn {0} để mua, nhưng bạn chỉ còn {1}
-shops-removed-in-world: <yellow>Total <aqua>{0}<yellow> shops has been deleted in world <aqua>{1}<yellow>.
+shops-removed-in-world: <yellow>A total of <aqua>{0}</aqua> shops have been deleted in world <aqua>{1}</aqua>.
 display-turn-off: <green>Successfully turn off the shop display.
 client-language-unsupported: <yellow>QuickShop doesn't support your client language, we're fallback to {0} locale now.
 language-version: '63'
