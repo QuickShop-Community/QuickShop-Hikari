@@ -121,7 +121,7 @@
   "blacklisted-item": "&cYou cannot sell this item because it is on the blacklist",
   "how-much-to-trade-for": "&aEnter in chat, how much you wish to trade &e{1}x {0}&a for.",
   "command": {
-    "format": "&a{0} {1} &e- {2}",
+    "format": "&a/{0} {1} &e- {2}",
     "format-disabled": "&c/{0} {1} &7- {2}",
     "toggle-unlimited": {
       "unlimited": "&aShop is now unlimited",

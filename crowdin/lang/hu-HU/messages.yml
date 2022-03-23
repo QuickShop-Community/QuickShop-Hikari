@@ -1,16 +1,16 @@
 ---
 break-shop-use-supertool: <yellow>Ki tudod szedni a boltjaidat, ha használod a SuperToolt.
-fee-charged-for-price-change: <green>You paid <red>{0}</red> to change the price.
+fee-charged-for-price-change: <green>Neked fizetned kell <red>{0}<green>, hogy az ár megváltozzon.
 not-allowed-to-create: <red>Nem tudsz boltot létrehozni itt.
 disabled-in-this-world: <red>QuickShop is disabled in this world
-how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}</yellow> for.
+how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Mentés betöltése a databázisból... 
 _comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Ismeretlen szám.
-shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is disallowed. Pick another one!
+shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
 not-a-number: <red>Ennek egy számnak kell lennie! <gray><italic>({0})
 not-looking-at-valid-shop-block: <red>Nem tudtuk létrehozni a boltot, mert nem találtunk blokkot. Nézz egy blokkra.
@@ -24,7 +24,7 @@ tabcomplete:
   currency: '[currency name]'
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>Ez a tárgy a feketelistán van! Nem tudod eladni!
-command-type-mismatch: <red>This command can only be executed by <aqua>{0}</aqua>.
+command-type-mismatch: <red>This command only can executed by <aqua>{0}.
 server-crash-warning: '<red>Server may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running.'
 you-cant-afford-to-change-price: <red>{0} -ba kerül az áralakítás.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
@@ -47,7 +47,7 @@ quick-fill:
     - '&ePrice: &b{price}'
     - '&eItem: &b{item}'
     - '&eLocation: &b{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}</green>", choose one to continue:'
+  header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
@@ -59,12 +59,12 @@ no-pending-action: <red>You do not have any pending action
 refill-success: <green>Újratöltés sikeresen megtörtént!
 failed-to-paste: <red>Az adatok átvitele sikerteleül zajlott le a Pastebinbe! Próbálja újra később! (Nézze meg a konzolt információkért)
 shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
-shop-name-invalid: <red>The shop name <yellow>{0}</yellow> is invalid. Pick another one!
+shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
 exceeded-maximum: <red>The value exceeded the maximum value in Java.
 unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.'
 no-enough-money-to-keep-shops: <red>Nincs elég pénzed, hogy fentartsd a boltjaidat! Az összes bolt törölve lett...
-3rd-plugin-build-check-failed: <red>3rd-party plugin <bold>{0}</bold> denied the permission checks, did you have permission set up in there?
+3rd-plugin-build-check-failed: <red>3rd party plugin <bold>{0}<reset><red> denied the permission checks, did you have permission setup in there?
 not-a-integer: <red>You must input a integer, your input was {0}.
 translation-country: 'Nyelv Zóna: Magyar (hu_HU)'
 buying-more-than-selling: '<red>FIGYELEM: Te többér veszel dolgokat, mint amennyiért eladod!'
@@ -92,7 +92,7 @@ shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Sikeresen hozzá adtad a {0}t a boltodhoz!
 shops-recovering: Mentés betöltése a boltokról...
 menu:
-  sell-tax: <green>You paid <yellow>{0}</yellow> in taxes.
+  sell-tax: <green>Te fizettél <yellow>{0} <green>adót.
   owner: '<green>Tulajdonos: {0}'
   preview: <aqua>[Preview Item]
   enchants: <dark_purple>Varázslatok
@@ -100,12 +100,12 @@ menu:
   shop-information: '<green>Boltinformáció:'
   item: '<green>Tárgy: <yellow>{0}'
   price-per: <green>Érték per <yellow>{0} <green>- <yellow>{1}
-  item-name-and-price: <yellow>{0} {1} <green>for</green> {2}
+  item-name-and-price: <yellow>{0} {1} <yellow>{2}ért
   successful-purchase: '<green>Sikeres vásárlás'
   price-per-stack: <green>Price per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Eltároltárolt varázslatok
   item-holochat-error: <red>[Error]
-  this-shop-is-selling: <green>This shop is <aqua>SELLING</aqua> items.
+  this-shop-is-selling: <green>Ez a bolt <aqua>TÁRGYAKAT<green> ad el.
   shop-stack: '<green>Stack Amount: <yellow>{0}'
   space: '<green>Hely: <yellow>{0}'
   effects: <green>Hatások
@@ -121,7 +121,7 @@ translation-author: 'Fordító: Gobli989, Mesterkender'
 integrations-check-failed-trade: A {0} integráció elutasította a bolttal való kereskedelmet
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Sikeresen megváltoztattad a boltod tulajdonosát szerverré!
-shop-name-not-found: <red>The shop named <yellow>{0}</yellow> not exists.
+shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
 shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
@@ -177,7 +177,7 @@ language:
   name: '<green>Név: <gold>{0}'
   help-us: <green>[Segíts nekünk javítani a fordítási minőséget]
 warn-to-paste: '<yellow>Adatok összegyűjtése és feltöltése a Pastebinbe. Ez el fog tartani egy kis ideig. <red><bold>Figyelem<red>, Az adaz csak egy hétig lesz publikus! Kiszivároghat a szerver konfiguréciója és egyébb dolgok is! Győzödjön meg róla, hogy csak azoknak az embereknek küldi el akikben megbízik!'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL<green>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to sell all.
 updatenotify:
   buttontitle: '[Frissítse most]'
   onekeybuttontitle: '[OneKey frissítés]'
@@ -240,7 +240,7 @@ no-double-chests: <red>Nem tudsz csinálni egy duplaláda boltot.
 price-too-cheap: <red>Az árnak minimum <yellow>${0} <red>-nak/nek kell lennie!
 shop-not-exist: <red>Itt nincs egy üzlet sem.
 bad-command-usage: <red>Bad command arguments!
-clean-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+clean-warning: <yellow>This command will purge <red>all <yellow>shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD<yellow>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm <yellow>to continue.
 shop-purchase-cancelled: <red>Boltból vétel visszavonva.
 bypassing-lock: <red>A <green>gyorsbolt<red> zárva van
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
@@ -250,10 +250,10 @@ price-is-now: <green>A boltok új ára <yellow>{0}
 shops-arent-locked: <dark_red><bold>Figyelem!! <red>A boltok <red><bold>NINCSENEK <red>levédve! Védd le a területedet!
 that-is-locked: <red>Ez a bolt le van zárva.
 shop-has-no-space: <red>The shop only has room for {0} more {1}.
-safe-mode-admin: '<red><bold>WARNING: </bold>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs </yellow> command to check any errors.'
+safe-mode-admin: '<red><bold>WARNING: <red>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs <red> command to check any errors.'
 shop-stock-too-low: '<red>A boltban ennyi maradt: <gray>{0} {1}'
-world-not-exists: <red>The world <yellow>{0}</yellow> doesn't exist
-how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL</light_purple>. You can sell <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> in chat, to sell all.
+world-not-exists: <red>The world <yellow>{0}<red> doesn't exist
+how-many-sell: <green>Írd be a chatbe, hogy mennyit szeretnél eladni. Maximum <yellow>{0}<green> db-ot tudsz eladni. Ha az összeset eladnád, írd be, hogy <aqua>{1}<green>.
 shop-freezed-at-location: '<yellow>A te boltod: {0}, itt: {1}, le lett fagyasztva!'
 translation-contributors: 'Közreműködők: Timtower, Netherfoam, KaiNoMood and Mgazul'
 empty-success: <green>Sikeresen kiürítetted!
@@ -291,23 +291,23 @@ signs:
 negative-amount: <red>Nem tudsz negatív mennyiséget megadni.
 display-turn-on: <green>Successfully turn on the shop display.
 shop-staff-deleted: <green>Sikeresen eltávolítottad a {0}t a boltodból!
-nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}</aqua>:'
+nearby-shop-header: '<green>Nearby Shop matching <aqua>{0}<green>:'
 backup-failed: Nem lehet lementeni a bázist! Nézze meg a konzolt további információkért.
 shop-staff-cleared: <green>Sikeresen eltávolítottál mindent a boltodból!
 price-too-high: <red> A bolt ára túl magas! Nem tudsz olyan boltot létrehozni, amelynek magasabb az ára, mint {0}.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <white>{0} <green>eladott <white>{1} {2} <green>a boltodba.
 shop-out-of-stock: '<dark_purple><bold>!!! <light_purple>A boldot itt: <white>{0}<light_purple>, <white>{1}<light_purple>, <white>{2}<light_purple>, kifogyott ebből: <white>{3}'
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>Írd be a chatbe, hogy mennyit szeretnél vásárolni. Maximum <yellow>{0}<green> db-ot tudsz venni. Ha az összeset megvennéd, írd be, hogy <aqua>{1}<green>.
 language-info-panel:
   help: 'Segítség: '
   code: 'Kód: '
   name: 'Nyelv: '
   progress: 'Folyamatban: '
   translate-on-crowdin: '[Lefordítás a crowidon]'
-item-not-exist: <red>The item <yellow>{0}</yellow> does not exist, please check your spelling.
+item-not-exist: <red>The item <yellow>{0} <red>does not exist, please check your spelling.
 shop-creation-failed: <red>Shop creation failed, please contact with server administrator.
-inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it. Try emptying your inventory!
+inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items into it, try empty the your inventory!
 no-creative-break: <red>You cannot break other players shops in the creative mode, switch to survival mode or try to use supertool {0} instead.
 booleanformat:
   success: <green>✔
@@ -420,7 +420,7 @@ command:
   no-type-given: '<red>Használat: /qs find <tárgy>'
   feature-not-enabled: This feature is not enabled in the config file.
   now-debuging: <green>Sikeresen átváltottál fejlesztő módba. Gyorsbolt újratöltése...
-  no-amount-given: <red>No amount provided. Use <green>/qs refill <amount></green>
+  no-amount-given: <red>Nincs megadva mennyiség! Használd <green>/qs refill <mennyiség><red>
   no-owner-given: <red>No owner provided
   disabled: '<red>This command is disabled: <yellow>{0}'
   bulk-size-now: <green>Now trading <yellow>{0}x {1}
@@ -432,16 +432,16 @@ command:
   toggle-unlimited:
     limited: <green>A bolt korlátozott
     unlimited: <green>A bolt korlátlan
-  transfer-success-other: <green>Transferred <yellow>{0} {1}</yellow>'s shop(s) to <yellow>{2}
+  transfer-success-other: <green>Transferred <yellow>{0} {1}<green>'s shop(s) to <yellow>{2}
   no-trade-item: <green>Please hold a trade item to change in main hand
   wrong-args: <red>Invalid argument. Use <bold>/qs help <red>to see a list of commands.
   some-shops-removed: <yellow>{0} <green>shop removed
   new-owner: '<green>Új tulajdonos: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
-  transfer-success: <green>Transferred <yellow>{0}</yellow> shop(s) to <yellow>{1}
-  now-buying: <green>Now <light_purple>BUYING</light_purple> {0}
-  now-selling: <green>Now <aqua>SELLING</aqua> {0}
-  cleaned: <green>Removed <yellow>{0}</yellow> shops.
+  transfer-success: <green>Transferred <yellow>{0} <green>shop(s) to <yellow>{1}
+  now-buying: <green>Most <light_purple>VESZEL<green> <yellow>{0}
+  now-selling: <green>Most <aqua>ELADSZ <yellow>{0}
+  cleaned: <green><yellow>{0}<green> bolt törlése.
   trade-item-now: <green>Now trading <yellow>{0}x {1}
   no-world-given: <red>Please specify a world name
   format-disabled: <red>/{0} {1} <gray>- {2}
@@ -458,7 +458,7 @@ no-anythings-in-your-hand: <red>Nincs semmi a kezedben.
 no-permission: <red>Nincs jogod ehhez!
 chest-was-removed: <red>Ez a láda kitörlődött.
 you-cant-afford-to-buy: <red>Ez <gray>{0} <red>-ba kerül, de neked csak <gray>{1} <red>-od van.
-shops-removed-in-world: <yellow>A total of <aqua>{0}</aqua> shops have been deleted in world <aqua>{1}</aqua>.
+shops-removed-in-world: <yellow>Total <aqua>{0}<yellow> shops has been deleted in world <aqua>{1}<yellow>.
 display-turn-off: <green>Successfully turn off the shop display.
 client-language-unsupported: <yellow>QuickShop doesn't support your client language, we're fallback to {0} locale now.
 language-version: '63'

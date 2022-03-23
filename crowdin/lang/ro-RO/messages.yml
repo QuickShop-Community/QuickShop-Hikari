@@ -1,16 +1,16 @@
 ---
 break-shop-use-supertool: <yellow>You can break the shop by using the SuperTool.
-fee-charged-for-price-change: <green>You paid <red>{0}</red> to change the price.
+fee-charged-for-price-change: <green>Ai achitat{0}<green> pentru a schimba pretul.
 not-allowed-to-create: <red>Nu poti crea un magazin aici.
 disabled-in-this-world: <red>QuickShop is disabled in this world
-how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}</yellow> for.
+how-much-to-trade-for: <green>Intra in chat, cat de mult doresti sa tranzacționezi &{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Creating Shop-backup from database...
 _comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Invalid number
-shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is disallowed. Pick another one!
+shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
 not-a-number: <red>Poti sa introduci doar un numar, intrarea ta a fost {0}.
 not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
@@ -24,7 +24,7 @@ tabcomplete:
   currency: '[currency name]'
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>Nu poti vinde acest obiect pentru ca este pe lista neagra
-command-type-mismatch: <red>This command can only be executed by <aqua>{0}</aqua>.
+command-type-mismatch: <red>This command only can executed by <aqua>{0}.
 server-crash-warning: '<red>Server may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running.'
 you-cant-afford-to-change-price: <red>Schimbarea pretului magazinului tau costa {0}.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
@@ -47,7 +47,7 @@ quick-fill:
     - '&ePrice: &b{price}'
     - '&eItem: &b{item}'
     - '&eLocation: &b{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}</green>", choose one to continue:'
+  header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
@@ -59,12 +59,12 @@ no-pending-action: <red>You do not have any pending actions
 refill-success: <green>Reîncărcare reușită
 failed-to-paste: <red>Failed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)
 shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
-shop-name-invalid: <red>The shop name <yellow>{0}</yellow> is invalid. Pick another one!
+shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
 exceeded-maximum: <red>The value exceeded the maximum value in Java.
 unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.'
 no-enough-money-to-keep-shops: <red>Nu ai destui bani pentru a-ti pastra magazinele! Toate magazinele au fost sterse...
-3rd-plugin-build-check-failed: <red>3rd-party plugin <bold>{0}</bold> denied the permission checks, did you have permission set up in there?
+3rd-plugin-build-check-failed: <red>3rd plugin <bold>{0}<reset><red> a respins verificarile permisiunilor, ai permisiunile setari acolo?
 not-a-integer: <red>You must input a integer, your input was {0}.
 translation-country: 'Zona de Limbă: Engleză (ro_US)'
 buying-more-than-selling: '<red>ATENTIE: Cumpari articole pentru mai mult decat le vindeti!'
@@ -92,7 +92,7 @@ shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
 shops-recovering: Recovering shops from backup...
 menu:
-  sell-tax: <green>You paid <yellow>{0}</yellow> in taxes.
+  sell-tax: <green>You paid <yellow>{0} <green>in taxes.
   owner: '<green>Owner: {0}'
   preview: <aqua>[Item Preview]
   enchants: <dark_purple>Enchantments
@@ -100,12 +100,12 @@ menu:
   shop-information: '<green>Shop Information:'
   item: '<green>Item: <yellow>{0}'
   price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
-  item-name-and-price: <yellow>{0} {1} <green>for</green> {2}
+  item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
   successful-purchase: '<green>Successfully purchased:'
   price-per-stack: <green>Price per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Stored Enchantments
   item-holochat-error: <red>[Error]
-  this-shop-is-selling: <green>This shop is <aqua>SELLING</aqua> items.
+  this-shop-is-selling: <green>This shop is <aqua>SELLING<green> items.
   shop-stack: '<green>Amount of bulk: <yellow>{0}'
   space: '<green>Space: <yellow>{0}'
   effects: <green>Effects
@@ -121,7 +121,7 @@ translation-author: 'Traducător: Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Integrarea {0} a refuzat crearea magazinului
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Successfully set the shop owner to Server.
-shop-name-not-found: <red>The shop named <yellow>{0}</yellow> not exists.
+shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
 shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
@@ -177,7 +177,7 @@ language:
   name: '<yellow>Name: <gold>{0}'
   help-us: <green>[Help us improve the translation quality]
 warn-to-paste: '<yellow>Collecting data and uploading it to Pastebin, this may take a while. <red><bold>Warning:<red> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL<green>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to sell all.
 updatenotify:
   buttontitle: '[Update Now]'
   onekeybuttontitle: '[OneKey Update]'
@@ -240,7 +240,7 @@ no-double-chests: <red>Nu poti crea un magazin dublu.
 price-too-cheap: <red>Pretul trebuie sa fie mai mare decat${0}
 shop-not-exist: <red>Nu exista magazin.
 bad-command-usage: <red>Bad command arguments!
-clean-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+clean-warning: <yellow>This command will purge <red>all <yellow>shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD<yellow>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm <yellow>to continue.
 shop-purchase-cancelled: <red>Achizitie a fost anulata.
 bypassing-lock: <red>Bypassing a QuickShop lock!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
@@ -250,10 +250,10 @@ price-is-now: <green>Noul pret al magazinului este <yellow>{0}
 shops-arent-locked: <red>Amintiți-vă, magazinele NU sunt protejate de furt! Dacă doriți să opriți hoții, blocați-le cu LWC, Lockette, etc!
 that-is-locked: <red>This shop is locked.
 shop-has-no-space: <red>Magazinul are loc doar pentru {0} inca {1}.
-safe-mode-admin: '<red><bold>WARNING: </bold>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs </yellow> command to check any errors.'
+safe-mode-admin: '<red><bold>WARNING: <red>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs <red> command to check any errors.'
 shop-stock-too-low: <red>Magazinul mai are {0} {1}!
-world-not-exists: <red>The world <yellow>{0}</yellow> doesn't exist
-how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL</light_purple>. You can sell <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> in chat, to sell all.
+world-not-exists: <red>The world <yellow>{0}<red> doesn't exist
+how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL<green>. You can sell <yellow>{0}<green>. Enter <aqua>{1}<green> in chat, to sell all.
 shop-freezed-at-location: <yellow>Your shop {0} at {1} got frozen!
 translation-contributors: 'Contribuitori: Turnul, Netherfoam, KaiNoMood, Mgazul, JackTheChicken și Andre_601'
 empty-success: <green>Magazinul a fost de succes
@@ -291,23 +291,23 @@ signs:
 negative-amount: <red>Nu poti tranzacționa sume negative
 display-turn-on: <green>Successfully turn on the shop display.
 shop-staff-deleted: <green>Successfully removed {0} as a staff member for your shop.
-nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}</aqua>:'
+nearby-shop-header: '<green>Nearby Shop matching <aqua>{0}<green>:'
 backup-failed: Cannot backup the database. Check the console for details.
 shop-staff-cleared: <green>Successfully removed all staff members from your shop.
 price-too-high: <red>The shop price is too high! You cannot create one with a price higher than {0}.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <green>{0} a vândut {1} {2} magazinului tău.
 shop-out-of-stock: <dark_purple>Magazinul tau la {0}, {1}, {2} a expirat din {3}!
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}<green>. Enter <aqua>{1}<green> to buy them all.
 language-info-panel:
   help: 'Help us: '
   code: 'Code: '
   name: 'Language: '
   progress: 'Progress: '
   translate-on-crowdin: '[Translate on Crowdin]'
-item-not-exist: <red>The item <yellow>{0}</yellow> does not exist, please check your spelling.
+item-not-exist: <red>The item <yellow>{0} <red>does not exist, please check your spelling.
 shop-creation-failed: <red>Shop creation failed, please contact with server administrator.
-inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it. Try emptying your inventory!
+inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items into it, try empty the your inventory!
 no-creative-break: <red>Nu poti strica magazinele altor jucatori in mod creativ, sa treci la modul de supravietuire sau sa incerci sa folosesti superunealta {0}.
 booleanformat:
   success: <green>✔
@@ -420,7 +420,7 @@ command:
   no-type-given: '<white>Foloseste /qs gaseste <item>'
   feature-not-enabled: This feature is not enabled in the config file.
   now-debuging: <green>Activare modul dezvoltator activata cu succes. Reincarcare quickShop...
-  no-amount-given: <red>No amount provided. Use <green>/qs refill <amount></green>
+  no-amount-given: <red>Nicio suma furnizata. Foloseste <green>/qs reîncărcare <amount><red>
   no-owner-given: <red>Niciun proprietar
   disabled: '<red>This command is disabled: <yellow>{0}'
   bulk-size-now: <green>Acum tranzacționarea <yellow>{0}x {1}
@@ -432,16 +432,16 @@ command:
   toggle-unlimited:
     limited: <green>Magazinul este acum limitat
     unlimited: <green>Magazinul este acum nelimitat
-  transfer-success-other: <green>Transferred <yellow>{0} {1}</yellow>'s shop(s) to <yellow>{2}
+  transfer-success-other: <green>Transferat &{0} {1}Magazine ale <bold>ui{2}
   no-trade-item: <green>Te rugam sa tii un articol de vanzare pentru a se schimba in mana principala
   wrong-args: <red>Invalid argument. Use <bold>/qs help <red>to see a list of commands.
   some-shops-removed: <yellow>{0} <green>shop(uri) eliminat(e)
   new-owner: '<green>Un proprietar nou: <yellow>{0}'
   format: <green>{0} {1} <yellow>- {2}
-  transfer-success: <green>Transferred <yellow>{0}</yellow> shop(s) to <yellow>{1}
-  now-buying: <green>Now <light_purple>BUYING</light_purple> {0}
-  now-selling: <green>Now <aqua>SELLING</aqua> {0}
-  cleaned: <green>Removed <yellow>{0}</yellow> shops.
+  transfer-success: <green>Transferat &{0} <green>shop(i) catre{1}
+  now-buying: <green>Acum <light_purple>CUMPĂRĂ<yellow>{0}
+  now-selling: <green>Acum <underline><strikethrough>ut{0}
+  cleaned: <green>A eliminat &{0} magazine.
   trade-item-now: <green>Acum tranzacționarea <yellow>{0}x {1}
   no-world-given: <red>Please specify a world name
   format-disabled: <red>/{0} {1} <gray>- {2}
@@ -458,7 +458,7 @@ no-anythings-in-your-hand: <red>Nu este nimic in mana.
 no-permission: <red>Nu ai permisiunea să faci asta.".
 chest-was-removed: <red>Lada a fost stearsa.
 you-cant-afford-to-buy: <red>Costa {0}, dar ai doar {1}
-shops-removed-in-world: <yellow>A total of <aqua>{0}</aqua> shops have been deleted in world <aqua>{1}</aqua>.
+shops-removed-in-world: <yellow>Total <aqua>{0}<yellow> shops has been deleted in world <aqua>{1}<yellow>.
 display-turn-off: <green>Successfully turn off the shop display.
 client-language-unsupported: <yellow>QuickShop doesn't support your client language, we're fallback to {0} locale now.
 language-version: '63'

@@ -1,16 +1,16 @@
 ---
 break-shop-use-supertool: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Obchod můžete rozbít pomocí SuperTool.
-fee-charged-for-price-change: <green>You paid <red>{0}</red> to change the price.
+fee-charged-for-price-change: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Zaplatili jste <red>{0}<gray> za změnu ceny.
 not-allowed-to-create: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Zde nemůžete vytvořit obchod.
 disabled-in-this-world: <red>QuickShop is disabled in this world
-how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}</yellow> for.
+how-much-to-trade-for: '<gray>Zadejte do chatu: Cenu za kolik chcete prodávat <aqua>{1}x {0}<gray>.'
 client-language-changed: <green>QuickShop zjistil, že nastavení jazyka vašeho klienta bylo změněno, nyní pro Vás používáme {0} locales.
 shops-backingup: Vytváření zálohy obchodu z databáze...
 _comment: Ahoj překladateli! Pokud toto upravuješ z Githubu nebo ze zdrojového kódu, měl bys mrknout na https://crowdin.com/project/quickshop-reremake
 unlimited-shop-owner-changed: <gray>Majitel tohoto neomezeného obchodu byl změněn na {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Neplatné číslo
-shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is disallowed. Pick another one!
+shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>Tento příkaz není bezpečný, můžete ho použít pouze v konzoly.
 not-a-number: <red>Můžete zadat pouze číslo, váš vstup byl {0}.
 not-looking-at-valid-shop-block: <red>Nelze najít blok pro vytvoření obchodu. Musíte se na něj dívat.
@@ -24,7 +24,7 @@ tabcomplete:
   currency: '[currency name]'
 taxaccount-unset: <green>Tento účet obchodu nyní následuje globální nastavení serveru.
 blacklisted-item: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Nemůžete prodat tento item, protože je na černé listině
-command-type-mismatch: <red>This command can only be executed by <aqua>{0}</aqua>.
+command-type-mismatch: <red>Tento příkaz může být spuštěn pouze v <aqua>{0}.
 server-crash-warning: '<red>Server může spadnout po spustění příkazu /qs reload pokud nahradíš/smažeš jar soubor QuickShop pluginu při spuštěném serveru.'
 you-cant-afford-to-change-price: <red>Cena za změnu ceny ve tvém obchodě je {0}.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
@@ -47,7 +47,7 @@ quick-fill:
     - '&ePrice: &b{price}'
     - '&eItem: &b{item}'
     - '&eLocation: &b{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}</green>", choose one to continue:'
+  header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
@@ -59,12 +59,12 @@ no-pending-action: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Nem�
 refill-success: <green>Doplnění úspěšně proběhlo.
 failed-to-paste: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Nepodařilo se nahrát data do Pastebinu. Zkontrolujte připojení k internetu a zkuste to znovu. (Podrobnosti naleznete v konzoli)
 shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
-shop-name-invalid: <red>The shop name <yellow>{0}</yellow> is invalid. Pick another one!
+shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <gray>Zadej do chatu, kolik stacků si přejete <aqua>Koupit<gray>. Existuje <aqua>{0}<gray> položek v každém balíku a můžete koupit <aqua>{1}<gray> stacků. Vložte <aqua>{2}<gray> do chatu pro nákup všech.
 exceeded-maximum: <red>Hodnota překročila maximální hodnotu v Javě.
 unlimited-shop-owner-keeped: '<red>Upozornění: <gray>Vlastník obchodu je stále neomezený vlastník obchodu, musíte si nastavit nového vlastníka obchodu sami.'
 no-enough-money-to-keep-shops: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Nemáte dostatek peněz na udržení svých obchodů! Všechny obchody byly odstraněny...
-3rd-plugin-build-check-failed: <red>3rd-party plugin <bold>{0}</bold> denied the permission checks, did you have permission set up in there?
+3rd-plugin-build-check-failed: Plugin <red>3 strany <bold>{0}<reset><red> odmítl kontrolu oprávnění, máte správně nastavená oprávnění?
 not-a-integer: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Mužeš zadat pouze celé číslo, zadal jsi {0}.
 translation-country: 'Jazyková Zóna: Czech (cs_CZ)'
 buying-more-than-selling: '<red>VAROVÁNÍ: Kupujete předměty za více, než je prodáváte!'
@@ -92,7 +92,7 @@ shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Úspěšně byl přidán {0} jako člen tvého obchodu.
 shops-recovering: Obnovování obchodů ze zálohy...
 menu:
-  sell-tax: <green>You paid <yellow>{0}</yellow> in taxes.
+  sell-tax: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Zaplatil jste <aqua>{0} <gray>na daních.
   owner: '<reset> <white>Vlastník: <aqua>{0}'
   preview: <reset> <aqua>[Náhled itemu]
   enchants: <aqua>Enchanty
@@ -100,12 +100,12 @@ menu:
   shop-information: '<aqua>Informace o obchodě:'
   item: '<reset> <white>Item: <aqua>{0}'
   price-per: <reset> <white>Cena za <aqua>{0} <gray>- <aqua>{1}
-  item-name-and-price: <yellow>{0} {1} <green>for</green> {2}
+  item-name-and-price: <yellow>{0} {1} <green>za <yellow>{2}
   successful-purchase: '<aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Úspěšně zakoupeno:'
   price-per-stack: <reset> <white>Cena za <aqua>{2}x {0} - {1}
   stored-enchants: <aqua>Uložené enchanty
   item-holochat-error: <reset> <red>[Error]
-  this-shop-is-selling: <green>This shop is <aqua>SELLING</aqua> items.
+  this-shop-is-selling: <gray>Tento obchod <aqua>Prodává <gray>itemy.
   shop-stack: '<gray>Počet stacků: <aqua>{0}'
   space: '<reset> <white>Mezera: <aqua>{0}'
   effects: <white>Efekty
@@ -121,7 +121,7 @@ translation-author: 'Translator: Ghost_chu, Andre_601, LixCisCZ'
 integrations-check-failed-trade: <red>Integrace {0} zamítla obchod
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Úspěšně nastaveno vlastníka obchodu na Server.
-shop-name-not-found: <red>The shop named <yellow>{0}</yellow> not exists.
+shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
 shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
@@ -177,7 +177,7 @@ language:
   name: '<white>Jméno: <aqua>{0}'
   help-us: <white>[Pomozte nám zlepšit kvalitu překladu]
 warn-to-paste: '<aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Shromažďování dat a jejich nahrávání do Pastebinu, to může chvíli trvat. <dark_red>Varování:<red><red> Data jsou po dobu jednoho týdne veřejně uchovávána! Může dojít k úniku konfigurace serveru a dalších citlivých informací. Ujistěte se, že jste jej poslali pouze <bold>důvěryhodnému personálu/vývojářům.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <gray>Zadej do chatu, kolik stacků si přejete <aqua>Prodat<gray>. Existuje <aqua>{0}<gray> položek v každém balíku a můžete koupit <aqua>{1}<gray> stacků. Vložte <aqua>{2}<gray> do chatu pro nákup všech.
 updatenotify:
   buttontitle: '[Update Now]'
   onekeybuttontitle: '[OneKey Update]'
@@ -240,7 +240,7 @@ no-double-chests: <red>Nemůžeš vytvářet DoubleChest obchod.
 price-too-cheap: <red>Cena musí být větší než <yellow>${0}
 shop-not-exist: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Nemáš žádný obchod.
 bad-command-usage: <red>Bad command arguments!
-clean-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+clean-warning: <gray>Tento příkaz promaže <red><red>všechny <gray>obchody, pokud jsou jakýmkoliv způsobem poškozeny, byly vytvořeny ve světě, který už neexistuje a podobné problémy.
 shop-purchase-cancelled: <red>Nákup v obchodě byl zrušen.
 bypassing-lock: <red>Obcházíte zámek QuickShopu!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
@@ -250,10 +250,10 @@ price-is-now: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Nová ce
 shops-arent-locked: <red>Pamatujte, obchody nejsou chráněny před krádeží! Pokud chcete zastavit zloději uzamknout pomocí LWC, Lockette, atd!
 that-is-locked: <red>Tento obchod je uzamčen.
 shop-has-no-space: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Obchod má pouze místo pro {0} více {1}.
-safe-mode-admin: '<red><bold>WARNING: </bold>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs </yellow> command to check any errors.'
+safe-mode-admin: '<red><bold>WARNING: <red>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs <red> command to check any errors.'
 shop-stock-too-low: <red>V obchodě zbývá pouze {0} {1}!
-world-not-exists: <red>The world <yellow>{0}</yellow> doesn't exist
-how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL</light_purple>. You can sell <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> in chat, to sell all.
+world-not-exists: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Svět <aqua>{0}<red> neexistuje
+how-many-sell: <gray>Zadejte do chatu, kolik si přejete <aqua>Prodat<gray>. Máte k dispozici <aqua>{0}<gray>. Zadejte <aqua>{1}<gray> do chatu, k prodeji všeho.
 shop-freezed-at-location: <aqua>Váš obchod {0} v {1} byl zmražen!
 translation-contributors: 'Přispěli: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601'
 empty-success: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Emptying obchod byl úspěšný
@@ -291,23 +291,23 @@ signs:
 negative-amount: <red>Derp, nemůžeš obchodovat se zápornými částkami
 display-turn-on: <green>Úspěšně zapnuto zobrazení obchodu.
 shop-staff-deleted: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Úspěšně byl odebrán {0} jako člen z tvého obchodu.
-nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}</aqua>:'
+nearby-shop-header: '<aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Nejbližší obchod odpovídající <aqua>{0}<gray>:'
 backup-failed: Nelze zálohovat databázi. Podrobnosti naleznete v konzole.
 shop-staff-cleared: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Úspěšně byli odebráni všichni členi z tvého obchodu.
 price-too-high: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Cena obchodu je příliš vysoká! Nelze vytvořit s cenou vyšší než {0}.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Hráč {0} prodal {1} {2} do tvého obchodu.
 shop-out-of-stock: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Váš obchod v {0}, {1}, {2}, vyčerpal {3}!
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <gray>Napište do chatu, kolik si přejete <aqua>Koupit<gray>. Můžete si koupit <aqua>{0}<gray>. Zadejte <aqua>{1}<gray> pro zakoupení všech.
 language-info-panel:
   help: 'Pomozte nám'
   code: 'kód:'
   name: 'Jazyky:'
   progress: 'Průběh: '
   translate-on-crowdin: 'Přeložit na Crowdin'
-item-not-exist: <red>The item <yellow>{0}</yellow> does not exist, please check your spelling.
+item-not-exist: <red>Položka <aqua>{0} <red>neexistuje, prosím zkontrolujte pravopis.
 shop-creation-failed: <red>Vytvoření ochodu se nezdařilo, kontaktujte prosím správce serveru.
-inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it. Try emptying your inventory!
+inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items into it, try empty the your inventory!
 no-creative-break: <red>Nemůžete rozbít obchody ostatních hráčů v kreativním režimu, přepněte do režimu přežití nebo zkuste použít super tool {0}.
 booleanformat:
   success: <green>✔
@@ -420,7 +420,7 @@ command:
   no-type-given: '<red>Použití: <gray>/qs find <item>'
   feature-not-enabled: Funkce není v konfiguraci povolena.
   now-debuging: <gray>Úspěšně povolen vývojářský režim. Reloaduji QuickShop...
-  no-amount-given: <red>No amount provided. Use <green>/qs refill <amount></green>
+  no-amount-given: <red>Nebyla poskytnuta žádná hodnota. Použijte <aqua>/qs refill <amount><red>
   no-owner-given: <red>Žádný vlastník
   disabled: '<red>Tento příkaz je zakázán: <aqua>{0}'
   bulk-size-now: <gray>Nyní tradujete <aqua>{0}x {1}
@@ -432,16 +432,16 @@ command:
   toggle-unlimited:
     limited: <gray>Obchod je nyní omezený
     unlimited: <gray>Obchod je nyní neomezený
-  transfer-success-other: <green>Transferred <yellow>{0} {1}</yellow>'s shop(s) to <yellow>{2}
+  transfer-success-other: <gray>Přeneseno <aqua>{0} <gray>obchodů <aqua>{1}
   no-trade-item: <gray>Podržte prosím item obchodu, který chcete změnit v hlavní ruce
   wrong-args: <red>Neplatné argumenty. Použij <bold>/qs help <red>pro zobrazení seznamu příkazů.
   some-shops-removed: <aqua>{0} <gray>obchod(ů) odstraněno
   new-owner: '<white>Nový majitel: <aqua>{0}'
   format: <green>/{0} {1} <yellow>- {2}
-  transfer-success: <green>Transferred <yellow>{0}</yellow> shop(s) to <yellow>{1}
-  now-buying: <green>Now <light_purple>BUYING</light_purple> {0}
-  now-selling: <green>Now <aqua>SELLING</aqua> {0}
-  cleaned: <green>Removed <yellow>{0}</yellow> shops.
+  transfer-success: <gray>Přeneseno <aqua>{0} <gray>obchodů <aqua>{1}
+  now-buying: <gray>Nyní <aqua>Kupujete <white>{0}
+  now-selling: <gray>Nyní <aqua>Prodáváte <white>{0}
+  cleaned: <gray>Odstraněno <aqua>{0}<gray> obchodů.
   trade-item-now: <gray>Nyní tradujete <aqua>{0}x {1}
   no-world-given: <red>Zadejte název světa
   format-disabled: <dark_gray>| <red>/{0} {1} <gray>- <white>{2}
@@ -458,7 +458,7 @@ no-anythings-in-your-hand: <red>Nemáš v ruce žádný předmět.
 no-permission: <red>Na tuto akci nemáš práva.
 chest-was-removed: <red>Truhla byla odstraněna.
 you-cant-afford-to-buy: <red>Toto stojí {0}, ale ty máš jen {1}
-shops-removed-in-world: <yellow>A total of <aqua>{0}</aqua> shops have been deleted in world <aqua>{1}</aqua>.
+shops-removed-in-world: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Celkem <aqua>{0}<gray> obchodů bylo smazáno ve světě <aqua>{1}<gray>.
 display-turn-off: <green>Úspěšně vypnuto zobrazení obchodu.
 client-language-unsupported: <yellow>QuickShop nepodporuje váš klientský jazyk, nastavili jsme vám tedy záložní na {0} locales.
 language-version: '63'
