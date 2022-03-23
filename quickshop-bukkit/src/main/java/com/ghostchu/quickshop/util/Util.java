@@ -68,6 +68,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.lang.management.ManagementFactory;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.DecimalFormat;
@@ -1305,7 +1306,9 @@ public class Util {
 
     @NotNull
     public static String getPluginJarPath(@NotNull Plugin plugin) {
-        return plugin.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+        String jarPath = plugin.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+        return jarPath;
     }
 
     @NotNull
