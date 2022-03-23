@@ -103,7 +103,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
         if (undefinedMin != -1 && price < undefinedMin) {
             return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
         }
-        if (undefinedMax != -1 && price > undefinedMin) {
+        if (undefinedMax != -1 && price > undefinedMax) {
             return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
         }
         return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PASS, undefinedMin, undefinedMax);
