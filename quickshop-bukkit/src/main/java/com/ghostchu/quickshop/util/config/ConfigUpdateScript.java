@@ -104,10 +104,7 @@ public class ConfigUpdateScript {
                 yamlFile.createNewFile();
                 YamlConfiguration yamlConfiguration = new YamlConfiguration();
                 JsonConfiguration jsonConfiguration = JsonConfiguration.loadConfiguration(jsonFile);
-                jsonConfiguration.getKeys(true).forEach(key -> {
-                    yamlConfiguration.set(key, translate(jsonConfiguration.get(key)));
-                    yamlConfiguration.setComments(key, jsonConfiguration.getComments(key));
-                });
+                jsonConfiguration.getKeys(true).forEach(key -> yamlConfiguration.set(key, translate(jsonConfiguration.get(key))));
                 Files.copy(jsonFile.toPath(), new File(jsonFile.getParent(), jsonFile.getName() + ".bak").toPath());
                 file.deleteOnExit();
                 yamlConfiguration.save(yamlFile);
