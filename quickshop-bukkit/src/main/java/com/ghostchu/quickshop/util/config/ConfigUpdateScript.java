@@ -106,7 +106,7 @@ public class ConfigUpdateScript {
                 JsonConfiguration jsonConfiguration = JsonConfiguration.loadConfiguration(jsonFile);
                 jsonConfiguration.getKeys(true).forEach(key -> yamlConfiguration.set(key, translate(jsonConfiguration.get(key))));
                 Files.copy(jsonFile.toPath(), new File(jsonFile.getParent(), jsonFile.getName() + ".bak").toPath());
-                file.deleteOnExit();
+                jsonFile.deleteOnExit();
                 yamlConfiguration.save(yamlFile);
             }catch (Exception e) {
                 plugin.getLogger().log(Level.WARNING,"Failed to upgrade override translation file " + jsonFile.getName(), e);
