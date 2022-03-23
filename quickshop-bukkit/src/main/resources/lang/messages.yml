@@ -176,7 +176,7 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
     PURCHASE: <yellow>Purchased item with a shop
   query-argument: 'Query Argument: {0}'
-  'entry-global:': <aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591
+  entry-global: <aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591
     hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355
     hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|
   entry-player: <aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591
@@ -400,7 +400,7 @@ language-info-panel:
   translate-on-crowdin: '[Translate on Crowdin]'
 item-not-exist: <red>The item <yellow>{0}</yellow> does not exist, please check your spelling.
 shop-creation-failed: <red>Shop creation failed, please contact with server administrator.
-inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it. 
+inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it.
   Try emptying your inventory!
 no-creative-break: <red>You cannot break the shops of other players while in creative
   mode. Switch to survival mode or try to use the supertool {0} instead.
