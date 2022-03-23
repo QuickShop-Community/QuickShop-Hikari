@@ -19,6 +19,10 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.MsgUtil;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -31,10 +35,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.MsgUtil;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -95,6 +95,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             plugin.reloadConfig();
             plugin.getConfig().set("dev-mode", false);
             plugin.saveConfig();
+            plugin.getReloadManager().reload();
             plugin.text().of(sender, "command.now-nolonger-debuging").send();
             return;
         }
@@ -102,6 +103,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         plugin.reloadConfig();
         plugin.getConfig().set("dev-mode", true);
         plugin.saveConfig();
+        plugin.getReloadManager().reload();
         plugin.text().of(sender, "command.now-debuging").send();
     }
 
