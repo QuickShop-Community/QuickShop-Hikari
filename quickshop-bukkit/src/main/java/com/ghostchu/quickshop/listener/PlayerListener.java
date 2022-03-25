@@ -208,9 +208,6 @@ public class PlayerListener extends AbstractQSListener {
         final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
         final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
         int items = getPlayerCanSell(shop, ownerBalance, price, new BukkitInventoryWrapper(playerInventory));
-        if(shop.isStackingShop()){
-            items = items / shop.getShopStackingAmount();
-        }
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
         Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
         actions.put(p.getUniqueId(), info);
@@ -357,9 +354,6 @@ public class PlayerListener extends AbstractQSListener {
         actions.put(p.getUniqueId(), info);
         final double traderBalance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
         int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
-        if(shop.isStackingShop()){
-            itemAmount = itemAmount / shop.getShopStackingAmount();
-        }
         if (!direct) {
             if (shop.isStackingShop()) {
                 plugin.text().of(p, "how-many-buy-stack", shop.getItem().getAmount(), itemAmount, tradeAllWord).send();
