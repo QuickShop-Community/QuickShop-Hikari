@@ -491,7 +491,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         getLogger().info("Initialing Unirest http request library...");
         Unirest.config()
                 .concurrency(10, 5)
-                .setDefaultHeader("User-Agent", "Java QuickShop-" + getFork() + "/" + getDescription().getVersion());
+                .setDefaultHeader("User-Agent", "QuickShop/" + getFork() + "-" + getDescription().getVersion()+" Java/"+System.getProperty("java.version"));
         getLogger().info("Loading messages translation over-the-air (this may need take a while).");
         this.textManager = new SimpleTextManager(this);
         textManager.load();
