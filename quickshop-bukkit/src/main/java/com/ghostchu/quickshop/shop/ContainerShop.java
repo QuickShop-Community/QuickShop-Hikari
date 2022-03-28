@@ -1496,7 +1496,7 @@ public class ContainerShop implements Shop {
         if (!Util.canBeShop(this.getLocation().getBlock())) {
             Util.debugLog("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock()
                     + " container was missing, deleting...");
-            plugin.getDatabaseHelper().insertHistoryRecord(new ShopRemoveLog(Util.getNilUniqueId(), "Container invalid", saveToInfoStorage()));
+            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Container invalid", saveToInfoStorage()));
             this.onUnload();
             this.delete(false);
         }

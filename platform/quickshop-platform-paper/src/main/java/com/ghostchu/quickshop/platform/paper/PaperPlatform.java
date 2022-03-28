@@ -21,7 +21,6 @@ package com.ghostchu.quickshop.platform.paper;
 
 import com.ghostchu.quickshop.platform.Platform;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -35,7 +34,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public class PaperPlatform implements Platform {
@@ -163,6 +166,16 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
+    public @NotNull Component getDisplayName(@NotNull ItemMeta meta) {
+        return null;
+    }
+
+    @Override
+    public void setDisplayName(@NotNull ItemMeta meta, @NotNull Component component) {
+
+    }
+
+    @Override
     public void setDisplayName(@NotNull ItemStack stack, @NotNull Component component) {
         ItemMeta meta = stack.getItemMeta();
         meta.displayName(component);
@@ -177,5 +190,25 @@ public class PaperPlatform implements Platform {
     @Override
     public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
         this.translationMapping = mapping;
+    }
+
+    @Override
+    public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
+        stack.lore(new ArrayList<>(components));
+    }
+
+    @Override
+    public void setLore(@NotNull ItemMeta meta, @NotNull Collection<Component> components) {
+        meta.lore(new ArrayList<>(components));
+    }
+
+    @Override
+    public @Nullable List<Component> getLore(@NotNull ItemStack stack) {
+        return stack.lore();
+    }
+
+    @Override
+    public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
+        return meta.lore();
     }
 }

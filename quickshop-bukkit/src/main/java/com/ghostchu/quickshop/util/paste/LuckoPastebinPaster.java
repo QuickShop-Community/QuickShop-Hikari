@@ -19,15 +19,14 @@
 
 package com.ghostchu.quickshop.util.paste;
 
+import com.ghostchu.quickshop.util.JsonUtil;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
-import com.ghostchu.quickshop.util.JsonUtil;
 
 import java.io.IOException;
-import java.net.URL;
 
 /**
  * Paste the paste through https://bytebin.lucko.me/post
@@ -39,14 +38,16 @@ public class LuckoPastebinPaster implements PasteInterface {
     @Override
     @NotNull
     public String pasteTheText(@NotNull String text) throws IOException {
-        HttpRequest request = HttpRequest.post(new URL("https://bytebin.lucko.me/post"))
-                .body(text)
-                .header("User-Agent", "QuickShop-" + QuickShop.getFork() + "-" + QuickShop.getVersion())
-                .execute();
-        request.expectResponseCode(200, 201, 301, 302);
-        String json = request.returnContent().asString("UTF-8");
-        Response response = JsonUtil.getGson().fromJson(json, Response.class);
-        return response.getKey();
+        HttpResponse<String> response = Unirest.post("https://bytebin.lucko.me/post")
+                .asString();
+        if(response.isSuccess()){
+            String json = response.getBody();
+            Response req = JsonUtil.getGson().fromJson(json, Response.class);
+            return req.getKey();
+        }else{
+            throw new IOException(response.getStatus() + " " + response.getStatusText() + ": " + response.getBody());
+        }
+
     }
 
     @NoArgsConstructor

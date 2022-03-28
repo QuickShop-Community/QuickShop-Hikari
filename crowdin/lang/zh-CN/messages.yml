@@ -228,7 +228,7 @@ no-permission-build: <red>你不能在这里建立商店。
 tableformat:
   left_half_line: <dark_purple>+--------------------
   right_half_line: <dark_purple>--------------------+
-  full_line: <dark_purple>+-----------------------------------------------------------+
+  full_line: <dark_purple>+---------------------------------------------------+
   left_begin: '<dark_purple>| '
 quickshop-gui-preview: QuickShop 物品预览界面
 translate-not-completed-yet-click: '{0} 的翻译完成度为 {1}，您想帮助我们改进翻译吗？来这里吧： '

@@ -20,10 +20,6 @@
 package com.ghostchu.quickshop.util.updater;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.io.File;
-import java.io.IOException;
 
 public interface QuickUpdater {
     /**
@@ -55,28 +51,28 @@ public interface QuickUpdater {
      */
     boolean isLatest(@NotNull VersionType versionType);
 
-    /**
-     * Download update from remote server
-     *
-     * @param versionType The version type to download
-     * @return The binary array that downloads
-     * @throws IOException IOException will throws if downloading fails
-     */
-    byte[] update(@NotNull VersionType versionType) throws IOException;
-
-    /**
-     * Install updates to server
-     * * Warning: It is unstable, recommend to restart server *
-     *
-     * @param bytes The bytes will write to jar file
-     * @throws IOException IOException will throws if copying failed
-     */
-    void install(byte[] bytes) throws IOException;
-
-    /**
-     * Return the updated jar
-     *
-     * @return null if not updated, or updated file
-     */
-    @Nullable File getUpdatedJar();
+//    /**
+//     * Download update from remote server
+//     *
+//     * @param versionType The version type to download
+//     * @return The binary array that downloads
+//     * @throws IOException IOException will throws if downloading fails
+//     */
+//    byte[] update(@NotNull VersionType versionType) throws IOException;
+//
+//    /**
+//     * Install updates to server
+//     * * Warning: It is unstable, recommend to restart server *
+//     *
+//     * @param bytes The bytes will write to jar file
+//     * @throws IOException IOException will throws if copying failed
+//     */
+//    void install(byte[] bytes) throws IOException;
+//
+//    /**
+//     * Return the updated jar
+//     *
+//     * @return null if not updated, or updated file
+//     */
+//    @Nullable File getUpdatedJar();
 }

@@ -19,36 +19,28 @@
 
 package com.ghostchu.quickshop.util.paste;
 
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
-import com.ghostchu.quickshop.util.Util;
 
-import java.net.URL;
+import java.io.IOException;
 
 public class PastebinPaster implements PasteInterface {
     private final static String DEVELOPER_KEY = "kYoezdaN6Gg9c2VnY78NcpylWRwdzQdk";
 
     @Override
     public String pasteTheText(@NotNull String text) throws Exception {
-        HttpRequest request = HttpRequest.post(new URL("https://pastebin.com/api/api_post.php"))
-                .bodyUrlEncodedForm(HttpRequest.Form.create()
-                        .add("api_option", "paste")
-                        .add("api_dev_key", DEVELOPER_KEY)
-                        //.add("api_paste_private", "1")
-                        .add("api_paste_name", "quickshop.paste")
-                        .add("api_paste_expire_date", "1Y")
-                        //.add("api_user_key", "")
-                        .add("api_paste_code", text)
-                )
-                .execute();
-        String str = request.returnContent().asString("UTF-8");
-        try {
-            request.expectResponseCode(200);
-        } catch (Exception ex) {
-            Util.debugLog(str);
-            throw ex;
+        HttpResponse<String> response = Unirest.post("https://pastebin.com/api/api_post.php")
+                .field("api_option","paste")
+                .field("api_dev_key",DEVELOPER_KEY)
+                .field("api_paste_name","quickshop.paste")
+                .field("api_paste_expire_date", "1Y")
+                .field("api_paste_code", text)
+                .asString();
+        if(response.isSuccess()){
+            return response.getBody();
+        }else{
+            throw new IOException(response.getStatus() + " " + response.getStatusText() + ": " + response.getBody());
         }
-        return str;
-
     }
 }

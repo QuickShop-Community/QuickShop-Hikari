@@ -19,24 +19,22 @@
 
 package com.ghostchu.quickshop.util.updater.impl;
 
+import com.ghostchu.quickshop.BuildInfo;
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.updater.QuickUpdater;
+import com.ghostchu.quickshop.util.updater.VersionType;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.InvalidDescriptionException;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.BuildInfo;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.nonquickshopstuff.com.sk89q.worldedit.util.net.HttpRequest;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.updater.QuickUpdater;
-import com.ghostchu.quickshop.util.updater.VersionType;
 
-import java.io.*;
-import java.net.URL;
-import java.util.UUID;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class JenkinsUpdater implements QuickUpdater {
     private final BuildInfo pluginBuildInfo;
@@ -91,83 +89,82 @@ public class JenkinsUpdater implements QuickUpdater {
         if (versionType != getCurrentRunning()) {
             return true;
         }
-        try (InputStream inputStream = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/quickshop-bukkit/target/extra-resources/BUILDINFO"))
-                .header("User-Agent", "Java-QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion())
-                .execute()
-                .expectResponseCode(200)
-                .getInputStream()) {
-            this.lastRemoteBuildInfo = new BuildInfo(inputStream);
+        HttpResponse<String> response = Unirest.get(jobUrl + "lastSuccessfulBuild/artifact/quickshop-bukkit/target/extra-resources/BUILDINFO")
+                .asString();
+        try(InputStream is = new ByteArrayInputStream(response.getBody().getBytes())){
+            this.lastRemoteBuildInfo = new BuildInfo(is);
             return lastRemoteBuildInfo.getCiInfo().getId() <= pluginBuildInfo.getCiInfo().getId() || lastRemoteBuildInfo.getGitInfo().getId().equalsIgnoreCase(pluginBuildInfo.getGitInfo().getId());
         } catch (IOException ioException) {
             MsgUtil.sendDirectMessage(Bukkit.getConsoleSender(), Component.text( "[QuickShop] Failed to check for an update on build server! It might be an internet issue or the build server host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often, Error: " + ioException.getMessage()).color(NamedTextColor.RED));
             return true;
         }
     }
+//
+//    @Override
+//    public byte[] update(@NotNull VersionType versionType) throws IOException {
+//        Unirest.get(jobUrl + "lastSuccessfulBuild/artifact/target/QuickShop.jar")
+//        try (InputStream is = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/QuickShop.jar")).header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion()).execute().getInputStream(); ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+//            byte[] buff = new byte[1024];
+//            int len;
+//            long downloaded = 0;
+//            if (is == null) {
+//                throw new IOException("Failed downloading: Cannot open connection with remote server.");
+//            }
+//            while ((len = is.read(buff)) != -1) {
+//                os.write(buff, 0, len);
+//                downloaded += len;
+//                Util.debugLog("File Downloader: " + downloaded + " bytes.");
+//            }
+//            is.close();
+//            byte[] file = os.toByteArray();
+//            os.close();
+//            return file;
+//        }
+//    }
 
-    @Override
-    public byte[] update(@NotNull VersionType versionType) throws IOException {
-        try (InputStream is = HttpRequest.get(new URL(jobUrl + "lastSuccessfulBuild/artifact/target/QuickShop.jar")).header("User-Agent", "QuickShop-" + QuickShop.getFork() + " " + QuickShop.getVersion()).execute().getInputStream(); ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-            byte[] buff = new byte[1024];
-            int len;
-            long downloaded = 0;
-            if (is == null) {
-                throw new IOException("Failed downloading: Cannot open connection with remote server.");
-            }
-            while ((len = is.read(buff)) != -1) {
-                os.write(buff, 0, len);
-                downloaded += len;
-                Util.debugLog("File Downloader: " + downloaded + " bytes.");
-            }
-            is.close();
-            byte[] file = os.toByteArray();
-            os.close();
-            return file;
-        }
-    }
-
-    @Override
-    public void install(byte[] bytes) throws IOException {
-        File pluginFolder = new File("plugins");
-        if (!pluginFolder.exists()) {
-            throw new IOException("Can't find the plugins folder.");
-        }
-        if (!pluginFolder.isDirectory()) {
-            throw new IOException("Plugins not a folder.");
-        }
-        File[] plugins = pluginFolder.listFiles();
-        if (plugins == null) {
-            throw new IOException("Can't get the files in plugins folder");
-        }
-        File newJar = new File(pluginFolder, "QuickShop-Hikari-" + UUID.randomUUID().toString().replace("-", "") + ".jar");
-
-        for (File pluginJar : plugins) {
-            try { //Delete all old jar files
-                PluginDescriptionFile desc = QuickShop.getInstance().getPluginLoader().getPluginDescription(pluginJar);
-                if (!desc.getName().equals(QuickShop.getInstance().getDescription().getName())) {
-                    continue;
-                }
-                Util.debugLog("Deleting: " + pluginJar.getPath());
-                if (!pluginJar.delete()) {
-                    Util.debugLog("Delete failed, using replacing method");
-                    try (OutputStream outputStream = new FileOutputStream(pluginJar, false)) {
-                        outputStream.write(bytes);
-                        outputStream.flush();
-                        updatedJar = pluginJar;
-                    }
-                } else {
-                    try (OutputStream outputStream = new FileOutputStream(newJar, false)) {
-                        outputStream.write(bytes);
-                        outputStream.flush();
-                        updatedJar = newJar;
-                    }
-                }
-            } catch (InvalidDescriptionException ignored) {
-            }
-        }
-    }
-
-    @Override
-    public @Nullable File getUpdatedJar() {
-        return updatedJar;
-    }
+//    @Override
+//    public void install(byte[] bytes) throws IOException {
+//        File pluginFolder = new File("plugins");
+//        if (!pluginFolder.exists()) {
+//            throw new IOException("Can't find the plugins folder.");
+//        }
+//        if (!pluginFolder.isDirectory()) {
+//            throw new IOException("Plugins not a folder.");
+//        }
+//        File[] plugins = pluginFolder.listFiles();
+//        if (plugins == null) {
+//            throw new IOException("Can't get the files in plugins folder");
+//        }
+//        File newJar = new File(pluginFolder, "QuickShop-Hikari-" + UUID.randomUUID().toString().replace("-", "") + ".jar");
+//
+//        for (File pluginJar : plugins) {
+//            try { //Delete all old jar files
+//                PluginDescriptionFile desc = QuickShop.getInstance().getPluginLoader().getPluginDescription(pluginJar);
+//                if (!desc.getName().equals(QuickShop.getInstance().getDescription().getName())) {
+//                    continue;
+//                }
+//                Util.debugLog("Deleting: " + pluginJar.getPath());
+//                if (!pluginJar.delete()) {
+//                    Util.debugLog("Delete failed, using replacing method");
+//                    try (OutputStream outputStream = new FileOutputStream(pluginJar, false)) {
+//                        outputStream.write(bytes);
+//                        outputStream.flush();
+//                        updatedJar = pluginJar;
+//                    }
+//                } else {
+//                    try (OutputStream outputStream = new FileOutputStream(newJar, false)) {
+//                        outputStream.write(bytes);
+//                        outputStream.flush();
+//                        updatedJar = newJar;
+//                    }
+//                }
+//            } catch (InvalidDescriptionException ignored) {
+//            }
+//        }
+//    }
+//
+//    @Override
+//    public @Nullable File getUpdatedJar() {
+//        return updatedJar;
+//    }
 }

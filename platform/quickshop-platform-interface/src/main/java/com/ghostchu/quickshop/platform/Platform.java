@@ -21,7 +21,6 @@ package com.ghostchu.quickshop.platform;
 
 import de.tr7zw.nbtapi.NBTItem;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -31,10 +30,13 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 public interface Platform {
@@ -77,7 +79,14 @@ public interface Platform {
     Component getTranslation(@NotNull Enchantment enchantment);
     @NotNull
     Component getDisplayName(@NotNull ItemStack stack);
+    @NotNull
+    Component getDisplayName(@NotNull ItemMeta meta);
+    void setDisplayName(@NotNull ItemMeta meta, @NotNull Component component);
     void setDisplayName(@NotNull ItemStack stack, @NotNull Component component);
     void setDisplayName(@NotNull Item stack, @NotNull Component component);
     void updateTranslationMappingSection(@NotNull Map<String, String> mapping);
+    void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components);
+    void setLore(@NotNull ItemMeta meta, @NotNull Collection<Component> components);
+    @Nullable List<Component> getLore(@NotNull ItemStack stack);
+    @Nullable List<Component> getLore(@NotNull ItemMeta meta);
 }

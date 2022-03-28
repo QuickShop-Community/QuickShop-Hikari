@@ -458,14 +458,6 @@ public class Paste {
     public String paste(@NotNull String content, PasteType type) {
         PasteInterface paster;
         switch (type) {
-            case PASTEBIN:
-                try {
-                    // EngineHub Pastebin
-                    paster = new PastebinPaster();
-                    return paster.pasteTheText(content);
-                } catch (Exception ignore) {
-                }
-                break;
             case HELPCHAT:
                 try {
                     // Ubuntu Pastebin
@@ -478,6 +470,14 @@ public class Paste {
                 try {
                     // Lucko Pastebin
                     paster = new LuckoPastebinPaster();
+                    return paster.pasteTheText(content);
+                } catch (Exception ignore) {
+                }
+                break;
+            case PASTEBIN:
+                try {
+                    // EngineHub Pastebin
+                    paster = new PastebinPaster();
                     return paster.pasteTheText(content);
                 } catch (Exception ignore) {
                 }
