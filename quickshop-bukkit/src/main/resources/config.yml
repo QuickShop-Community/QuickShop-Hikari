@@ -476,7 +476,7 @@ matcher:
   #0= QuickShop item matcher with configurable options below.
   #1= Bukkit item matcher, can be more accurate.
   #2= Stricter Bukkit matcher, equals method.
-  work-type: 0
+  work-type: 1
   #For Item (Only works under QuickShop ItemMatcher)
   item:
     #Should the Plugin check the item damage?

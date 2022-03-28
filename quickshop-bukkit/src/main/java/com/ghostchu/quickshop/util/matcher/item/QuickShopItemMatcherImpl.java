@@ -267,7 +267,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1.hasEnchants()) {
                     Map<Enchantment, Integer> enchMap1 = meta1.getEnchants();
                     Map<Enchantment, Integer> enchMap2 = meta2.getEnchants();
-                    return enchMap1.equals(enchMap2);
+                    return Util.listDisorderMatches(enchMap1.entrySet(), enchMap2.entrySet());
                 }
                 if (meta1 instanceof EnchantmentStorageMeta != meta2 instanceof EnchantmentStorageMeta) {
                     return false;
@@ -275,7 +275,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1 instanceof EnchantmentStorageMeta) {
                     Map<Enchantment, Integer> stor1 = ((EnchantmentStorageMeta) meta1).getStoredEnchants();
                     Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) meta2).getStoredEnchants();
-                    return stor1.equals(stor2);
+                    return Util.listDisorderMatches(stor1.entrySet(), stor2.entrySet());
                 }
                 return true;
             }));
