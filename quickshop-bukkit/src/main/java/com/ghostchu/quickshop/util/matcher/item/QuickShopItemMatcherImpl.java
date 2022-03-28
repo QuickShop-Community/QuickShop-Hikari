@@ -21,7 +21,6 @@ package com.ghostchu.quickshop.util.matcher.item;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
-import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
@@ -141,10 +140,10 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         }
 
         String shopIdOrigin = plugin.getPlatform().getItemShopId(requireStack);
-        if(shopIdOrigin != null){
-            Util.debugLog("ShopId compare -> Origin: "+shopIdOrigin+"  Given: "+plugin.getPlatform().getItemShopId(givenStack));
+        if (shopIdOrigin != null) {
+            Util.debugLog("ShopId compare -> Origin: " + shopIdOrigin + "  Given: " + plugin.getPlatform().getItemShopId(givenStack));
             String shopIdTester = plugin.getPlatform().getItemShopId(givenStack);
-            if(shopIdOrigin.equals(shopIdTester)) {
+            if (shopIdOrigin.equals(shopIdTester)) {
                 return true;
             }
         }
@@ -198,7 +197,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         private final List<Matcher> matcherList = new ArrayList<>();
 
         public ItemMetaMatcher(@NotNull ConfigurationSection itemMatcherConfig, @NotNull QuickShopItemMatcherImpl itemMatcher) {
-
+            QuickShop plugin = QuickShop.getInstance();
             addIfEnable(itemMatcherConfig, "damage", (meta1, meta2) -> {
                 if (meta1 instanceof Damageable != meta2 instanceof Damageable) {
                     return false;
@@ -239,27 +238,9 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 }
                 return true;
             });
-            addIfEnable(itemMatcherConfig, "displayname", ((meta1, meta2) -> {
-                if (meta1.hasDisplayName() != meta2.hasDisplayName()) {
-                    return false;
-                }
-                if (meta1.hasDisplayName()) {
-                    return meta1.getDisplayName().equals(meta2.getDisplayName());
-                }
-                return true;
-            }));
+            addIfEnable(itemMatcherConfig, "displayname", ((meta1, meta2) -> Objects.equals(plugin.getPlatform().getDisplayName(meta1), plugin.getPlatform().getDisplayName(meta2))));
             // We didn't touch the loresMatches because many plugin use this check item.
-            addIfEnable(itemMatcherConfig, "lores", ((meta1, meta2) -> {
-                if (meta1.hasLore() != meta2.hasLore()) {
-                    return false;
-                }
-                if (meta1.hasLore()) {
-                    List<String> lores1 = meta1.getLore();
-                    List<String> lores2 = meta2.getLore();
-                    return Objects.deepEquals(lores1,lores2);
-                }
-                return true;
-            }));
+            addIfEnable(itemMatcherConfig, "lores", ((meta1, meta2) -> Objects.equals(plugin.getPlatform().getLore(meta1), plugin.getPlatform().getLore(meta2))));
             addIfEnable(itemMatcherConfig, "enchs", ((meta1, meta2) -> {
                 if (meta1.hasEnchants() != meta2.hasEnchants()) {
                     return false;
@@ -396,11 +377,11 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                     //getOwningPlayer will let server query playerProfile in server thread
                     //Causing huge lag, so using String instead
                     BundleMeta bundleMeta2 = (BundleMeta) meta2;
-                    if(bundleMeta1.hasItems() != bundleMeta2.hasItems()) {
+                    if (bundleMeta1.hasItems() != bundleMeta2.hasItems()) {
                         return false;
                     }
-                    if(bundleMeta1.hasItems()){
-                        return Util.listDisorderMatches(bundleMeta1.getItems(),bundleMeta2.getItems());
+                    if (bundleMeta1.hasItems()) {
+                        return Util.listDisorderMatches(bundleMeta1.getItems(), bundleMeta2.getItems());
                     }
                 }
                 return true;
@@ -486,34 +467,30 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 }
                 return true;
             }));
-            if (!"v1_13_R1".equals(ReflectFactory.getNMSVersion()) && !"v1_13_R2".equals(ReflectFactory.getNMSVersion())) {
-                addIfEnable(itemMatcherConfig, "custommodeldata", ((meta1, meta2) -> {
-                    if (meta1.hasCustomModelData() != meta2.hasCustomModelData()) {
+            addIfEnable(itemMatcherConfig, "custommodeldata", ((meta1, meta2) -> {
+                if (meta1.hasCustomModelData() != meta2.hasCustomModelData()) {
+                    return false;
+                }
+                if (meta1.hasCustomModelData()) {
+                    return meta1.getCustomModelData() == meta2.getCustomModelData();
+                }
+                return true;
+            }));
+            addIfEnable(itemMatcherConfig, "suspiciousStew", ((meta1, meta2) -> {
+                if ((meta1 instanceof SuspiciousStewMeta) != (meta2 instanceof SuspiciousStewMeta)) {
+                    return false;
+                }
+                if (meta1 instanceof SuspiciousStewMeta stewMeta1) {
+                    SuspiciousStewMeta stewMeta2 = ((SuspiciousStewMeta) meta2);
+                    if (stewMeta1.hasCustomEffects() != stewMeta2.hasCustomEffects()) {
                         return false;
                     }
-                    if (meta1.hasCustomModelData()) {
-                        return meta1.getCustomModelData() == meta2.getCustomModelData();
+                    if (stewMeta1.hasCustomEffects()) {
+                        return Util.listDisorderMatches(stewMeta1.getCustomEffects(), stewMeta2.getCustomEffects());
                     }
-                    return true;
-                }));
-                if (!"v1_14_R1".equals(ReflectFactory.getNMSVersion())) {
-                    addIfEnable(itemMatcherConfig, "suspiciousStew", ((meta1, meta2) -> {
-                        if ((meta1 instanceof SuspiciousStewMeta) != (meta2 instanceof SuspiciousStewMeta)) {
-                            return false;
-                        }
-                        if (meta1 instanceof SuspiciousStewMeta stewMeta1) {
-                            SuspiciousStewMeta stewMeta2 = ((SuspiciousStewMeta) meta2);
-                            if (stewMeta1.hasCustomEffects() != stewMeta2.hasCustomEffects()) {
-                                return false;
-                            }
-                            if (stewMeta1.hasCustomEffects()) {
-                                return Util.listDisorderMatches(stewMeta1.getCustomEffects(), stewMeta2.getCustomEffects());
-                            }
-                        }
-                        return true;
-                    }));
                 }
-            }
+                return true;
+            }));
         }
 
         private void addIfEnable(ConfigurationSection itemMatcherConfig, String path, Matcher matcher) {

@@ -40,9 +40,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class SpigotPlatform implements Platform {
     private NBTAPI nbtapi;
@@ -172,6 +176,19 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
+    public @NotNull Component getDisplayName(@NotNull ItemMeta meta) {
+        if (meta.hasDisplayName()) {
+            return LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName());
+        }
+        return Component.empty();
+    }
+
+    @Override
+    public void setDisplayName(@NotNull ItemMeta meta, @NotNull Component component) {
+        meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component));
+    }
+
+    @Override
     public void setDisplayName(@NotNull ItemStack stack, @NotNull Component component) {
         if (!stack.hasItemMeta())
             return;
@@ -188,5 +205,35 @@ public class SpigotPlatform implements Platform {
     @Override
     public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
         this.translationMapping = mapping;
+    }
+
+    @Override
+    public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
+        if (!stack.hasItemMeta())
+            return;
+        ItemMeta meta = stack.getItemMeta();
+        meta.setLore(components.stream().map(LegacyComponentSerializer.legacySection()::serialize).collect(Collectors.toList()));
+        stack.setItemMeta(meta);
+    }
+
+    @Override
+    public void setLore(@NotNull ItemMeta meta, @NotNull Collection<Component> components) {
+        meta.setLore(components.stream().map(LegacyComponentSerializer.legacySection()::serialize).collect(Collectors.toList()));
+    }
+
+    @Override
+    public @Nullable List<Component> getLore(@NotNull ItemStack stack) {
+        if(!stack.hasItemMeta())
+            return null;
+        if(!stack.getItemMeta().hasLore())
+            return null;
+        return stack.getItemMeta().getLore().stream().map(LegacyComponentSerializer.legacySection()::deserialize).collect(Collectors.toList());
+    }
+
+    @Override
+    public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
+        if(!meta.hasLore())
+            return null;
+        return meta.getLore().stream().map(LegacyComponentSerializer.legacySection()::deserialize).collect(Collectors.toList());
     }
 }
