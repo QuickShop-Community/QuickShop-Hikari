@@ -26,7 +26,6 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.configuration.ConfigurationSection;
@@ -164,17 +163,18 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         }
 
         if (requireStack.isSimilar(givenStack)) {
+            Util.debugLog("Bukkit matches passed!");
             return true;
         }
         /* If they are the same type, they should also have item meta
         if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
             return false;
         }*/
-        if (requireStack.hasItemMeta()) {
+        if (requireStack.hasItemMeta() && givenStack.hasItemMeta()) {
             return itemMetaMatcher.matches(requireStack, givenStack);
         }
 
-        return true;
+        return !requireStack.hasItemMeta() && !givenStack.hasItemMeta();
     }
 
     private boolean typeMatches(ItemStack requireStack, ItemStack givenStack) {
@@ -510,18 +510,16 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
             ItemMeta meta1 = requireStack.getItemMeta();
             ItemMeta meta2 = givenStack.getItemMeta();
             //If givenStack don't have meta, try to generate one
-            if (meta2 == null) {
-                meta2 = Bukkit.getItemFactory().getItemMeta(givenStack.getType());
-                if (meta2 == null) {
-                    return true; // Passed check. givenStack still have no meta need to check.
+            if(meta1 != null && meta2 != null) {
+                for (Matcher matcher : matcherList) {
+                    boolean result = matcher.match(meta1, meta2);
+                    Util.debugLog("Matcher: " + matcher.getClass().getName() + " Result: " + result);
+                    if (!result) {
+                        return false;
+                    }
                 }
             }
-            for (Matcher matcher : matcherList) {
-                if (!matcher.match(meta1, meta2)) {
-                    return false;
-                }
-            }
-            return true;
+            return meta1 == null && meta2 == null;
         }
 
         private boolean rootMatches(ItemMeta meta1, ItemMeta meta2) {
@@ -538,7 +536,6 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
              * @return is same
              */
             boolean match(ItemMeta meta1, ItemMeta meta2);
-
         }
 
 
