@@ -232,7 +232,12 @@ public class RollbarErrorReporter {
         if (plugin.getUpdateWatcher() == null) {
             return false;
         }
-        if (!plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) { // We only receive latest reports.
+        try {
+            if (!plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) { // We only receive latest reports.
+                return false;
+            }
+        }catch (Exception exception){
+            Util.debugLog("Cannot to check reportable: "+ exception.getMessage());
             return false;
         }
         if (!GameVersion.get(plugin.getPlatform().getMinecraftVersion()).isCoreSupports()) { // Ignore errors if user install quickshop on unsupported
