@@ -126,7 +126,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 plugin.getLogger().log(Level.WARNING, "unlimited-shop-owner-change-account is empty, default to \"quickshop\"");
             }
             if (Util.isUUID(uAccount)) {
-               cacheUnlimitedShopAccount = UUID.fromString(uAccount);
+                cacheUnlimitedShopAccount = UUID.fromString(uAccount);
             } else {
                 cacheUnlimitedShopAccount = Bukkit.getOfflinePlayer(uAccount).getUniqueId();
             }
@@ -675,8 +675,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (shop.getTaxAccount() != null) {
             taxAccount = shop.getTaxAccount();
         } else {
-            if(this.cacheTaxAccount != null)
-              taxAccount = this.cacheTaxAccount;
+            if (this.cacheTaxAccount != null)
+                taxAccount = this.cacheTaxAccount;
         }
         EconomyTransaction transaction;
         EconomyTransaction.EconomyTransactionBuilder builder = EconomyTransaction.builder()
@@ -725,21 +725,32 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     private void notifySold(@NotNull UUID buyer, @NotNull Shop shop, int amount, int space) {
         Player player = plugin.getServer().getPlayer(buyer);
-        Component msg = plugin.text().of(player, "player-sold-to-your-store", player != null ? player.getName() : buyer.toString(),
-                        amount,
-                        MsgUtil.getTranslateText(shop.getItem())).forLocale()
-                .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
-        if (space == amount) {
-            if (shop.getShopName() == null) {
-                msg = plugin.text().of(player, "shop-out-of-space",
-                                shop.getLocation().getBlockX(),
-                                shop.getLocation().getBlockY(),
-                                shop.getLocation().getBlockZ()).forLocale()
-                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
-            } else {
-                msg = plugin.text().of(player, "shop-out-of-space-name", shop.getShopName(),
-                                MsgUtil.getTranslateText(shop.getItem())).forLocale()
-                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+        plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner(), (locale) -> {
+            String langCode = MsgUtil.getDefaultGameLanguageCode();
+            if (locale.isPresent())
+                langCode = locale.get();
+            Component msg = plugin.text().of("player-sold-to-your-store", player != null ? player.getName() : buyer.toString(),
+                            amount,
+                            MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
+                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+            if (space == amount) {
+                if (shop.getShopName() == null) {
+                    msg = plugin.text().of("shop-out-of-space",
+                                    shop.getLocation().getBlockX(),
+                                    shop.getLocation().getBlockY(),
+                                    shop.getLocation().getBlockZ()).forLocale(langCode)
+                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                } else {
+                    msg = plugin.text().of("shop-out-of-space-name", shop.getShopName(),
+                                    MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
+                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                }
+                if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
+                    for (UUID staff : shop.getModerator().getStaffs()) {
+                        MsgUtil.send(shop, staff, msg);
+                    }
+                }
+                MsgUtil.send(shop, shop.getOwner(), msg);
             }
             if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
                 for (UUID staff : shop.getModerator().getStaffs()) {
@@ -747,14 +758,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 }
             }
             MsgUtil.send(shop, shop.getOwner(), msg);
-        }
+        });
 
-        if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
-            for (UUID staff : shop.getModerator().getStaffs()) {
-                MsgUtil.send(shop, staff, msg);
-            }
-        }
-        MsgUtil.send(shop, shop.getOwner(), msg);
     }
 
 
@@ -1072,7 +1077,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (shop.getTaxAccount() != null) {
             taxAccount = shop.getTaxAccount();
         } else {
-            if(this.cacheTaxAccount != null) {
+            if (this.cacheTaxAccount != null) {
                 taxAccount = this.cacheTaxAccount;
             }
         }
@@ -1102,7 +1107,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                             shop.getCurrency()))).send();
             return;
         }
-
         if (!transaction.failSafeCommit()) {
             plugin.text().of(seller, "economy-transaction-failed", transaction.getLastError()).send();
             plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
@@ -1125,52 +1129,56 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     private void notifyBought(@NotNull UUID seller, @NotNull Shop shop, int amount, int stock, double taxModifier, double total) {
         Player player = plugin.getServer().getPlayer(seller);
-        Component msg;
-        if (plugin.getConfig().getBoolean("show-tax")) {
-            msg = plugin.text().of(player, "player-bought-from-your-store-tax",
-                            player != null ? player.getName() : seller.toString(),
-                            amount * shop.getItem().getAmount(),
-                            shop.getItem(),
-                            this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop),
-                            this.formatter.format(CalculateUtil.multiply(taxModifier, total), shop)).forLocale()
-                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
-        } else {
-            msg = plugin.text().of(player, "player-bought-from-your-store",
-                            player != null ? player.getName() : seller.toString(),
-                            amount * shop.getItem().getAmount(),
-                            MsgUtil.getTranslateText(shop.getItem()),
-                            this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop)).forLocale()
-                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
-        }
-
-        MsgUtil.send(shop, shop.getOwner(), msg);
-        if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
-            for (UUID staff : shop.getModerator().getStaffs()) {
-                MsgUtil.send(shop, staff, msg);
-            }
-        }
-        // Transfers the item from A to B
-        if (stock == amount) {
-            if (shop.getShopName() == null) {
-                msg = plugin.text().of(player, "shop-out-of-stock",
-                                shop.getLocation().getBlockX(),
-                                shop.getLocation().getBlockY(),
-                                shop.getLocation().getBlockZ(),
-                                MsgUtil.getTranslateText(shop.getItem())).forLocale()
+        plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner(), (locale) -> {
+            String langCode = MsgUtil.getDefaultGameLanguageCode();
+            if (locale.isPresent())
+                langCode = locale.get();
+            Component msg;
+            if (plugin.getConfig().getBoolean("show-tax")) {
+                msg = plugin.text().of("player-bought-from-your-store-tax",
+                                player != null ? player.getName() : seller.toString(),
+                                amount * shop.getItem().getAmount(),
+                                shop.getItem(),
+                                this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop),
+                                this.formatter.format(CalculateUtil.multiply(taxModifier, total), shop)).forLocale(langCode)
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
             } else {
-                msg = plugin.text().of(player, "shop-out-of-stock-name", shop.getShopName(),
-                                MsgUtil.getTranslateText(shop.getItem())).forLocale()
+                msg = plugin.text().of("player-bought-from-your-store",
+                                player != null ? player.getName() : seller.toString(),
+                                amount * shop.getItem().getAmount(),
+                                MsgUtil.getTranslateText(shop.getItem()),
+                                this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop)).forLocale(langCode)
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
             }
+
             MsgUtil.send(shop, shop.getOwner(), msg);
             if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
                 for (UUID staff : shop.getModerator().getStaffs()) {
                     MsgUtil.send(shop, staff, msg);
                 }
             }
-        }
-
+            // Transfers the item from A to B
+            if (stock == amount) {
+                if (shop.getShopName() == null) {
+                    msg = plugin.text().of("shop-out-of-stock",
+                                    shop.getLocation().getBlockX(),
+                                    shop.getLocation().getBlockY(),
+                                    shop.getLocation().getBlockZ(),
+                                    MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
+                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                } else {
+                    msg = plugin.text().of("shop-out-of-stock-name", shop.getShopName(),
+                                    MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
+                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                }
+                MsgUtil.send(shop, shop.getOwner(), msg);
+                if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
+                    for (UUID staff : shop.getModerator().getStaffs()) {
+                        MsgUtil.send(shop, staff, msg);
+                    }
+                }
+            }
+        });
     }
 
     /**
