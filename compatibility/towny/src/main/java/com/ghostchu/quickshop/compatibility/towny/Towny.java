@@ -197,7 +197,7 @@ public final class Towny extends CompatibilityModule implements Listener {
     }
 
 
-    private boolean checkFlags(@NotNull Player player, @NotNull Location location, List<TownyFlags> flags) {
+    private boolean checkFlags(@NotNull Player player, @NotNull Location location, @NotNull List<TownyFlags> flags) {
         if (ignoreDisabledWorlds && !TownyAPI.getInstance().isTownyWorld(location.getWorld())) {
             Util.debugLog("This world disabled Towny.");
             return true;
