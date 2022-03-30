@@ -389,7 +389,8 @@ public class ContainerShop implements Shop {
                     .amount(amount)
                     .build();
             if (!transaction.failSafeCommit()) {
-                throw new IllegalStateException("Failed to commit transaction!");
+                plugin.getSentryErrorReporter().ignoreThrow();
+                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:"+transaction.getLastError());
             }
         } else {
             InventoryWrapper chestInv = this.getInventory();
@@ -406,7 +407,8 @@ public class ContainerShop implements Shop {
                     .amount(amount)
                     .build();
             if (!transaction.failSafeCommit()) {
-                throw new IllegalStateException("Failed to commit transaction!");
+                plugin.getSentryErrorReporter().ignoreThrow();
+                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:"+transaction.getLastError());
             }
         }
         //Update sign
@@ -734,7 +736,8 @@ public class ContainerShop implements Shop {
                     .amount(amount)
                     .build();
             if (!transaction.failSafeCommit()) {
-                throw new IllegalStateException("Failed to commit transaction!");
+                plugin.getSentryErrorReporter().ignoreThrow();
+                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:"+transaction.getLastError());
             }
         } else {
             InventoryWrapper chestInv = this.getInventory();
@@ -750,7 +753,8 @@ public class ContainerShop implements Shop {
                     .amount(amount)
                     .build();
             if (!transactionTake.failSafeCommit()) {
-                throw new IllegalStateException("Failed to commit transaction!");
+                plugin.getSentryErrorReporter().ignoreThrow();
+                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:"+transactionTake.getLastError());
             }
             this.setSignText();
             if (attachedShop != null) {
