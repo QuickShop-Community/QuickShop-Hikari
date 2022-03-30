@@ -531,10 +531,10 @@ public class ContainerShop implements Shop {
                 double cost = plugin.getConfig().getDouble("shop.cost");
                 EconomyTransaction transaction;
                 if (plugin.getConfig().getBoolean("shop.refund-from-tax-account", false)) {
-                    double newCost = Math.min(cost, plugin.getEconomy().getBalance(taxAccount, this.getLocation().getWorld(), plugin.getCurrency()));
+                    cost = Math.min(cost, plugin.getEconomy().getBalance(taxAccount, this.getLocation().getWorld(), plugin.getCurrency()));
                     transaction =
                             EconomyTransaction.builder()
-                                    .amount(newCost)
+                                    .amount(cost)
                                     .allowLoan(false)
                                     .core(QuickShop.getInstance().getEconomy())
                                     .currency(plugin.getCurrency())
