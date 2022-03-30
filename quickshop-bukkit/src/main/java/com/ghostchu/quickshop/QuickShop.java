@@ -491,7 +491,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         getLogger().info("Initialing Unirest http request library...");
         Unirest.config()
                 .concurrency(10, 5)
-                .setDefaultHeader("User-Agent", "QuickShop/" + getFork() + "-" + getDescription().getVersion()+" Java/"+System.getProperty("java.version"));
+                .setDefaultHeader("User-Agent", "QuickShop/" + getFork() + "-" + getDescription().getVersion() + " Java/" + System.getProperty("java.version"));
         getLogger().info("Loading messages translation over-the-air (this may need take a while).");
         this.textManager = new SimpleTextManager(this);
         textManager.load();
@@ -771,7 +771,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
                 limits.put(key, limitCfg.getInt(key));
             }
-        }else{
+        } else {
             this.limit = false;
             limits.clear();
         }
@@ -783,8 +783,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             //BUKKIT METHOD SHOULD ALWAYS EXECUTE ON THE SERVER MAIN THEAD
             this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
             getLogger().warning("Unrecommended display-auto-despawn has been enabled, this feature may heavy impact the server performance!");
-        }else{
-            if(this.displayAutoDespawnWatcher != null) {
+        } else {
+            if (this.displayAutoDespawnWatcher != null) {
                 this.displayAutoDespawnWatcher.cancel();
                 this.displayAutoDespawnWatcher = null;
             }
@@ -815,15 +815,15 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 }
             }
             new DisplayProtectionListener(this, this.shopCache).register();
-        }else{
-            Util.unregisterListenerClazz(this,DisplayProtectionListener.class);
+        } else {
+            Util.unregisterListenerClazz(this, DisplayProtectionListener.class);
         }
     }
 
     private void registerShopLock() {
         if (getConfig().getBoolean("shop.lock")) {
             new LockListener(this, this.shopCache).register();
-        }else{
+        } else {
             Util.unregisterListenerClazz(this, LockListener.class);
         }
     }
@@ -833,20 +833,20 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             updateWatcher = new UpdateWatcher();
             updateWatcher.init();
         } else {
-            if(updateWatcher != null) {
+            if (updateWatcher != null) {
                 updateWatcher.uninit();
                 updateWatcher = null;
             }
         }
     }
 
-    private void registerOngoingFee(){
+    private void registerOngoingFee() {
         if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
             ongoingFeeWatcher = new OngoingFeeWatcher(this);
             ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks"));
             getLogger().info("Ongoing fee feature is enabled.");
-        }else{
-            if(ongoingFeeWatcher != null){
+        } else {
+            if (ongoingFeeWatcher != null) {
                 ongoingFeeWatcher.cancel();
                 ongoingFeeWatcher = null;
             }
@@ -907,20 +907,20 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
      *
      * @return The setup result
      */
-                private boolean setupDatabase() {
-                    getLogger().info("Setting up database...");
+    private boolean setupDatabase() {
+        getLogger().info("Setting up database...");
 
-                    HikariConfig config = HikariUtil.createHikariConfig();
+        HikariConfig config = HikariUtil.createHikariConfig();
 
-                    try {
-                        ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
-                        if (Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
-                            // MySQL database - Required database be created first.
-                            dbPrefix = dbCfg.getString("prefix");
-                            if (dbPrefix == null || "none".equals(dbPrefix)) {
-                                dbPrefix = "";
-                            }
-                            String user = dbCfg.getString("user");
+        try {
+            ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
+            if (Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
+                // MySQL database - Required database be created first.
+                dbPrefix = dbCfg.getString("prefix");
+                if (dbPrefix == null || "none".equals(dbPrefix)) {
+                    dbPrefix = "";
+                }
+                String user = dbCfg.getString("user");
                 String pass = dbCfg.getString("password");
                 String host = dbCfg.getString("host");
                 String port = dbCfg.getString("port");
