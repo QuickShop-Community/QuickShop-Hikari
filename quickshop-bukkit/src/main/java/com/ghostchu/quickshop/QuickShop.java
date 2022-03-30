@@ -907,20 +907,20 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
      *
      * @return The setup result
      */
-    private boolean setupDatabase() {
-        getLogger().info("Setting up database...");
+                private boolean setupDatabase() {
+                    getLogger().info("Setting up database...");
 
-        HikariConfig config = HikariUtil.createHikariConfig();
+                    HikariConfig config = HikariUtil.createHikariConfig();
 
-        try {
-            ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
-            if (Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
-                // MySQL database - Required database be created first.
-                dbPrefix = dbCfg.getString("prefix");
-                if (dbPrefix == null || "none".equals(dbPrefix)) {
-                    dbPrefix = "";
-                }
-                String user = dbCfg.getString("user");
+                    try {
+                        ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
+                        if (Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
+                            // MySQL database - Required database be created first.
+                            dbPrefix = dbCfg.getString("prefix");
+                            if (dbPrefix == null || "none".equals(dbPrefix)) {
+                                dbPrefix = "";
+                            }
+                            String user = dbCfg.getString("user");
                 String pass = dbCfg.getString("password");
                 String host = dbCfg.getString("host");
                 String port = dbCfg.getString("port");
