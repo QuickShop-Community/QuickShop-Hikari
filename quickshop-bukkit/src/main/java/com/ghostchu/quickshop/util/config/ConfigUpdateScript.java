@@ -116,7 +116,7 @@ public class ConfigUpdateScript {
     }
     @UpdateScript(version = 1007)
     public void refundFromTaxAccountOption(){
-        getConfig().set("shop.refund-from-tax-account",true);
+        getConfig().set("shop.refund-from-tax-account",false);
     }
 
     private Object translate(Object o) {

@@ -532,7 +532,7 @@ public class ContainerShop implements Shop {
 //                        Objects.requireNonNull(getLocation().getWorld()), getCurrency());
                 double cost = plugin.getConfig().getDouble("shop.cost");
                 EconomyTransaction transaction;
-                if (plugin.getConfig().getBoolean("shop.refund-from-tax-account", false)) {
+                if (plugin.getConfig().getBoolean("shop.refund-from-tax-account", false) && taxAccount != null) {
                     cost = Math.min(cost, plugin.getEconomy().getBalance(taxAccount, this.getLocation().getWorld(), plugin.getCurrency()));
                     transaction =
                             EconomyTransaction.builder()
