@@ -379,7 +379,7 @@ public class ContainerShop implements Shop {
             this.sell(buyer, buyerInventory, loc2Drop, -amount);
             return;
         }
-       // InventoryWrapperIterator buyerIterator = buyerInventory.iterator();
+        // InventoryWrapperIterator buyerIterator = buyerInventory.iterator();
         if (this.isUnlimited() && !isAlwaysCountingContainer) {
             InventoryTransaction transaction = InventoryTransaction
                     .builder()
@@ -526,17 +526,33 @@ public class ContainerShop implements Shop {
             // Delete it from the database
             // Refund if necessary
             if (plugin.getConfig().getBoolean("shop.refund")) {
-                plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"),
-                        Objects.requireNonNull(getLocation().getWorld()), getCurrency());
-                EconomyTransaction transaction =
-                        EconomyTransaction.builder()
-                                .amount(plugin.getConfig().getDouble("shop.cost"))
-                                .allowLoan(false)
-                                .core(QuickShop.getInstance().getEconomy())
-                                .currency(this.getCurrency())
-                                .world(this.getLocation().getWorld())
-                                .to(this.getOwner())
-                                .build();
+//                plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"),
+//                        Objects.requireNonNull(getLocation().getWorld()), getCurrency());
+                double cost = plugin.getConfig().getDouble("shop.cost");
+                EconomyTransaction transaction;
+                if (plugin.getConfig().getBoolean("shop.refund-from-tax-account", false)) {
+                    double newCost = Math.min(cost, plugin.getEconomy().getBalance(taxAccount, this.getLocation().getWorld(), plugin.getCurrency()));
+                    transaction =
+                            EconomyTransaction.builder()
+                                    .amount(newCost)
+                                    .allowLoan(false)
+                                    .core(QuickShop.getInstance().getEconomy())
+                                    .currency(plugin.getCurrency())
+                                    .world(this.getLocation().getWorld())
+                                    .from(taxAccount)
+                                    .to(this.getOwner())
+                                    .build();
+                } else {
+                    transaction =
+                            EconomyTransaction.builder()
+                                    .amount(cost)
+                                    .allowLoan(false)
+                                    .core(QuickShop.getInstance().getEconomy())
+                                    .currency(plugin.getCurrency())
+                                    .world(this.getLocation().getWorld())
+                                    .to(this.getOwner())
+                                    .build();
+                }
                 if (!transaction.failSafeCommit()) {
                     plugin.getLogger().warning("Shop deletion refund failed. Reason: " + transaction.getLastError());
                 }
