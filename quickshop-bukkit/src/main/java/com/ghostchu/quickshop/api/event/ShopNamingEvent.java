@@ -82,4 +82,12 @@ public class ShopNamingEvent extends AbstractQSEvent implements QSCancellable {
     public String getName() {
         return name;
     }
+
+    /**
+     * Sets the shop new name
+     * @param name Shop new name
+     */
+    public void setName(@Nullable String name) {
+        this.name = name;
+    }
 }
