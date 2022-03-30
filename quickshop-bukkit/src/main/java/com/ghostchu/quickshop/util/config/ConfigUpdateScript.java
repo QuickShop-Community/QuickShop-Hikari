@@ -114,6 +114,10 @@ public class ConfigUpdateScript {
         }
         getConfig().set("syntax-parser",null);
     }
+    @UpdateScript(version = 1007)
+    public void refundFromTaxAccountOption(){
+        getConfig().set("shop.refund-from-tax-account",true);
+    }
 
     private Object translate(Object o) {
         if (o instanceof String str) {

@@ -46,7 +46,7 @@
   "the-owner-cant-afford-to-buy-from-you": "&cQuesto costa {0}, ma il proprietario del negozio ha solo {1}",
   "player-sold-to-your-store": "&a{0} ha venduto {1} {2} al tuo negozio.",
   "shop-out-of-space": "&5Il tuo negozio in {0}, {1}, {2} è ora pieno.",
-  "shop-out-of-space-name": "&5Your shop {0} is full!",
+  "shop-out-of-space-name": "&5Il tuo negozio {0} è pieno!",
   "fee-charged-for-price-change": "&aHai pagato &c{0}&a per cambiare il prezzo.",
   "price-is-now": "&aIl nuovo prezzo del negozio è &e{0}",
   "thats-not-a-number": "&cNumero non valido",

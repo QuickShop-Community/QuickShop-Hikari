@@ -45,6 +45,7 @@ import java.util.UUID;
  */
 public interface Shop {
     NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShop.getInstance(), "shopsign");
+    NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
 
     /**
      * Sets shop name
@@ -598,6 +599,10 @@ public interface Shop {
 
         // Check for exists shop sign (modern)
         ShopSignStorage shopSignStorage = sign.getPersistentDataContainer().get(SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
+        if(shopSignStorage == null){
+            // Try to read Reremake sign namespaced key
+            shopSignStorage = sign.getPersistentDataContainer().get(LEGACY_SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
+        }
         if (shopSignStorage != null) {
             return shopSignStorage.equals(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ());
         }

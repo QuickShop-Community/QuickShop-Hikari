@@ -120,7 +120,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
                     .from(sender.getUniqueId())
                     .amount(fee)
                     .world(Objects.requireNonNull(shop.getLocation().getWorld()))
-                    .currency(shop.getCurrency())
+                    .currency(plugin.getCurrency())
                     .build();
             if (!transaction.checkBalance()) {
                 plugin.text().of(sender, "you-cant-afford-to-change-price", LegacyComponentSerializer.legacySection().deserialize(plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency()))).send();
@@ -132,7 +132,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
             }
         }
         plugin.text().of(sender,
-                "fee-charged-for-price-change", LegacyComponentSerializer.legacySection().deserialize(plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency()))).send();
+                "fee-charged-for-price-change", LegacyComponentSerializer.legacySection().deserialize(plugin.getEconomy().format(fee, shop.getLocation().getWorld(), plugin.getCurrency()))).send();
         // Update the shop
         shop.setPrice(price);
         shop.update();

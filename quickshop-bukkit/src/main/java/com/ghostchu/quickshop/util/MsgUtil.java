@@ -176,15 +176,6 @@ public class MsgUtil {
         }
     }
 
-//    @ApiStatus.ScheduledForRemoval
-//    @Deprecated
-//    public static void loadGameLanguage(@NotNull String languageCode) {
-//        gameLanguage = ServiceInjector.getInjectedService(GameLanguage.class, null);
-//        if (gameLanguage == null) {
-//            gameLanguage = new MojangGameLanguageImpl(plugin, languageCode);
-//            ((MojangGameLanguageImpl) gameLanguage).load();
-//        }
-//    }
 
     /**
      * loads all player purchase messages from the database.
@@ -402,11 +393,9 @@ public class MsgUtil {
 
     public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable String... messages) {
         if (messages == null) {
-            Util.debugLog("INFO: null messages trying to be sent.");
             return;
         }
         if (sender == null) {
-            Util.debugLog("INFO: Sending message to null sender.");
             return;
         }
         for (String msg : messages) {
@@ -419,11 +408,9 @@ public class MsgUtil {
 
     public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable Component... messages) {
         if (messages == null) {
-            Util.debugLog("INFO: null messages trying to be sent.");
             return;
         }
         if (sender == null) {
-            Util.debugLog("INFO: Sending message to null sender.");
             return;
         }
         for (Component msg : messages) {

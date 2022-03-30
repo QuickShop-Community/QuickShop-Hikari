@@ -28,7 +28,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <revision>1.1.1.0</revision>
+        <revision>1.1.1.1</revision>
         <java.version>17</java.version>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -182,7 +182,7 @@
                                 <transformers>
                                     <transformer
                                             implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                        <mainClass>com.ghostchu.quickshop.javaw.bootstrap.Bootstrap</mainClass>
+                                        <mainClass>com.ghostchu.quickshop.bootstrap.Bootstrap</mainClass>
                                     </transformer>
                                 </transformers>
                                 <filters>

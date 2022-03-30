@@ -47,7 +47,6 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager {
         if (!LOCK.tryLock()) {
             throw new IllegalStateException("Cannot resort while another thread is sorting");
         }
-        LOCK.lock();
         List<Map.Entry<ShopControlPanel, Integer>> list = new ArrayList<>(registry.entrySet());
         list.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
         registry.clear();

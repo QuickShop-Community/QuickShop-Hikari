@@ -91,11 +91,12 @@ public class SubCommand_Name implements CommandHandler<Player> {
                 }
             }
         }
-
-        if(Util.fireCancellableEvent(new ShopNamingEvent(shop, shopName))){
+        ShopNamingEvent namingEvent = new ShopNamingEvent(shop, shopName);
+        if(Util.fireCancellableEvent(namingEvent)){
             Util.debugLog("Other plugin cancelled shop naming.");
             return;
         }
+        shopName = namingEvent.getName();
 
         if(transaction != null && !transaction.failSafeCommit()){
             plugin.text().of(sender, "economy-transaction-failed", transaction.getLastError()).send();

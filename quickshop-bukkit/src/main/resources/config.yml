@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1006
+config-version: 1007
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -206,6 +206,10 @@ shop:
 
   #Should QS refund the player when their shops are deleted/removed/broken?
   refund: false
+
+  # Should QS refund from the tax-account?
+  # refund is as much as possible, player may won't get all refund if the tax-account had no enough money.
+  refund-from-tax-account: false
 
   #Should QS send stock messages to staffs?
   sending-stock-message-to-staffs: false
@@ -416,6 +420,7 @@ shop:
     cost-per-shop: 2
     #Should we ignore unlimited shops?
     ignore-unlimited: true
+
   #Allow QuickShop to use a hack util to force-load shops from higher Minecraft versions.
   #WARNING: This may destroy your server data and QuickShop shops, backup before enabling it!
   force-load-downgrade-items:
@@ -424,10 +429,13 @@ shop:
     #0=Call Bukkit to try to update the ItemStack
     #1=Call Bukkit to directly load the ItemStack
     method: 0
+
   #If a block/entity has trigged the protection, should QuickShop break/kill it?
   remove-protection-trigger: true
+
   #Allow QuickShop to sell/buy multiple items in one transaction?
   allow-stacks: false
+
   #This setting controls if QuickShop should ignore the item's custom display name.
   force-use-item-original-name: false
 #List of items that can't be sold in shops.
@@ -440,17 +448,21 @@ plugin:
   #If you have Multiverse-Core, QuickShop will try to load worlds when the shop's world doesn't exist.
   #This will throw an exception and automatically repair the shops.
   Multiverse-Core: true
+
   #If you have OpenInv, QuickShop will enable the EnderChest feature for shop-blocks.
   OpenInv: true
+
   #If you have PlaceHolderAPI, QuickShop will use it to process all messages.
   PlaceHolderAPI:
     enable: true
     # The PAPI request caching expire time. (ms)
     # Low value may increase the database load and hurt server performance.
     cache: 900000
+
   #If you have LWC/LWCX, QuickShop will check access.
   LWC: true
   #If you use BlockHub, Should QuickShop use BlockHub to check region access for players?
+
   BlockHub:
     enable: true
     #Should BlockHub only be used for permission checks?
@@ -582,7 +594,7 @@ config-damaged: false
 #Specfic the translation key mapping to a fixed String.
 #Example:
 #  - "ecoenchants:enchantment.damage_artifact=Artifact Damage"
-custom-translation-key: []
+custom-translation-key: [ ]
 
 # Record transactions for metric purpose,
 # all transaction will be record into database can used by other plugins for analyse trade activities.

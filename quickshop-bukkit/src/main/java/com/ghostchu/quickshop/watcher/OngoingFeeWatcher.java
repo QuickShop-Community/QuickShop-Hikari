@@ -71,7 +71,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                 double cost = gobalCost;
                 World world = location.getWorld();
                 //We must check balance manually to avoid shop missing hell when tax account broken
-                if (allowLoan || plugin.getEconomy().getBalance(shopOwner, Objects.requireNonNull(world), shop.getCurrency()) >= cost) {
+                if (allowLoan || plugin.getEconomy().getBalance(shopOwner, Objects.requireNonNull(world), plugin.getCurrency()) >= cost) {
                     UUID taxAccount = null;
                     if (shop.getTaxAccount() != null) {
                         taxAccount = shop.getTaxAccount();
@@ -93,7 +93,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                     Util.mainThreadRun(() -> {
                         EconomyTransaction transaction = EconomyTransaction.builder()
                                 .allowLoan(allowLoan)
-                                .currency(shop.getCurrency())
+                                .currency(plugin.getCurrency())
                                 .core(plugin.getEconomy())
                                 .world(world)
                                 .amount(finalCost)
