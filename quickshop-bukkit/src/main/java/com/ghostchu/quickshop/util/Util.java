@@ -26,7 +26,6 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
 import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.listener.LockListener;
 import com.google.common.collect.EvictingQueue;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
@@ -1298,8 +1297,8 @@ public class Util {
 
     public static void unregisterListenerClazz(@NotNull Plugin plugin, @NotNull Class<? extends Listener> clazz) {
         for (RegisteredListener registeredListener : HandlerList.getRegisteredListeners(plugin)) {
-            if (registeredListener.getListener() instanceof LockListener ll) {
-                HandlerList.unregisterAll(ll);
+            if (registeredListener.getListener().getClass().equals(clazz)) {
+                HandlerList.unregisterAll(registeredListener.getListener());
             }
         }
     }
