@@ -235,6 +235,7 @@ translate-not-completed-yet-click: '{0} 的翻译完成度为 {1}，您想帮助
 taxaccount-invalid: <red>目标帐户无效，请输入有效的玩家名称或uuid(带有破折号)。
 player-bought-from-your-store: <red>{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3}
 reached-maximum-can-create: <red>你创建的商店数量达到上限：{0}/{1}
+reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: '支持版本: Hikari'
 no-double-chests: <red>你没有权限创建大箱子商店。
 price-too-cheap: <red>价格必须大于<yellow>${0}
