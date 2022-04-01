@@ -2,7 +2,7 @@
   "_comment": "Привет переводчик! Если вы редактируете это с Github или из исходных кодов, вы должны перейти сюда https://crowdin.com/project/quickshop-reremake",
   "file-test": "Это тестовый файл. Мы используем его для тестирования, если файл messages.json поломан. Вы тут можете заполнить любым пасхальными яйцами, которые вам нравятся :)",
   "translation-author": "Переводчик: Ghost_chu, Andre_601, kyrtion, limbiz86, Cap_Scarlett",
-  "translation-version": "Support Version: Hikari",
+  "translation-version": "Поддерживаемая версия: Hikari",
   "translation-contributors": "Участники: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken и Andre_601",
   "translation-country": "Языковой регион: Русский (ru_RU)",
   "language-version": "63",
@@ -407,7 +407,7 @@
     "hours": "&c{0} hours",
     "day": "&c{0} day",
     "days": "&c{0} days",
-    "week": "&c{0} week",
+    "week": "&c{0} неделя",
     "weeks": "&c{0} weeks",
     "month": "&c{0} month",
     "months": "&c{0} months",
@@ -447,23 +447,23 @@
     "undefined": "&7(noname)",
     "na": "&7N/A",
     "player-hover": "&e{0}\n&6UUID: &7{1}",
-    "shop-hover": "&e{0}\n&6Pos: &7{1} {2} {3}, World: {4}\n&6Owner: &7{5}\n&6Shop Type: &7{6}\n&6Item: &7{7}\n&6Price: &7{8}",
+    "shop-hover": "&e{0}\n&6Pos: &7{1} {2} {3}, Мир: {4}\n&6Владелец: &7{5}\n&6Тип Магазина: &7{6}\n&6Товары: &7{7}\n&6Цена: &7{8}",
     "action-hover": "&e{0}",
-    "price-hover": "&eTotal {0}, including {1} taxes.",
+    "price-hover": "&eВсего {0}, включая {1} налогов.",
     "amount-hover": "&e{0}x",
-    "amount-stack-hover": "&e{0}x stack",
-    "tax-hover": "&e{0} taxes",
-    "time-hover": "&eTime: {0}",
+    "amount-stack-hover": "&e{0}x стаков",
+    "tax-hover": "&e{0} налогов",
+    "time-hover": "&eВремя: {0}",
     "action-description": {
       "PURCHASE": "&ePurchased item with a shop",
       "PURCHASE_SELLING_SHOP": "&ePlayer bought some items from a selling shop",
       "PURCHASE_BUYING_SHOP": "&ePlayer sold some items to a buying shop.",
-      "CREATE": "&ePlayer created a shop.",
+      "CREATE": "&eИгрок создал магазин.",
       "DELETE": "&ePlayer deleted a shop. And refunded the shop creation fee to owner if possible.",
       "ONGOING_FEE": "&ePlayer paid the ongoing fee because the payment period."
     }
   },
-  "bad-command-usage": "&cBad command arguments!",
+  "bad-command-usage": "&cНекорректные аргументы команды!",
   "bad-command-usage-detailed": "&cBad command arguments! Accepts the following parameters: &7{0}",
   "quick-fill": {
     "header": "&eYou have multiple shops with name \"&a{0}&e\", choose one to continue:",
@@ -471,20 +471,20 @@
     "entry-own": " &e- &c[own] &b{0} &d{1}",
     "entry-cooperation": " &e- &c[co] &b{0} &d{1}",
     "hover": [
-      "&eName: &b{0}",
-      "&eOwner: &b{0}",
-      "&eType: &b{0}",
-      "&ePrice: &b{0}",
-      "&eItem: &b{0}",
-      "&eLocation: &b{0}"
+      "&eИмя: &b{0}",
+      "&eВладелец: &b{0}",
+      "&eТип: &b{0}",
+      "&eЦена: &b{0}",
+      "&eПредмет: &b{0}",
+      "&eЛокация: &b{0}"
     ],
     "hover-arg-filled": [
-      "&eName: &b{name}",
-      "&eOwner: &b{owner}",
-      "&eType: &b{type}",
-      "&ePrice: &b{price}",
-      "&eItem: &b{item}",
-      "&eLocation: &b{location}"
+      "&eИмя: &b{name}",
+      "&eВладелец: &b{owner}",
+      "&eТип: &b{type}",
+      "&eЦена: &b{price}",
+      "&eПредмет: &b{item}",
+      "&eЛокация:&b{location}"
     ]
   }
 }

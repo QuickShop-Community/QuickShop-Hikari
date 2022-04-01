@@ -235,7 +235,7 @@ translate-not-completed-yet-click: Die Übersetzung von der Sprache {0} wurde no
 taxaccount-invalid: <red>Zielkonto ist nicht gültig. Bitte gib einen gültigen spielernamen oder eine gültige UUID (Mit Bindestrichen) an.
 player-bought-from-your-store: <red>{0} hat {1} {2} von deinem Shop gekauft und du hast {3} ( Steuern) verdient.
 reached-maximum-can-create: <red>Du hast bereits das Maximum von {0}/{1} Shops erstellt!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
+reached-maximum-create-limit: <red>Du hast die maximale Anzahl an Shops erreicht, welche du erstellen kannst
 translation-version: 'Unterstützte Version: Hikari'
 no-double-chests: <red>Du kannst keinen Doppeltruhen-Shop erstellen.
 price-too-cheap: <red>Preis muss höher als <yellow>${0}<red> sein
