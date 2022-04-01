@@ -280,6 +280,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // first init
         shop.setSignText();
         // save to database
+        // TODO: Optimize logic
         plugin.getDatabaseHelper().createShop(shop, null, e ->
                 Util.mainThreadRun(() -> {
                     // also remove from memory when failed
