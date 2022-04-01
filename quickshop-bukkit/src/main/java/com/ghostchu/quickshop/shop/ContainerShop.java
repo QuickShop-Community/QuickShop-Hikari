@@ -207,6 +207,7 @@ public class ContainerShop implements Shop {
         this.inventoryWrapperProvider = inventoryWrapperProvider;
         initDisplayItem();
         updateShopData();
+        // ContainerShop constructor is not allowed to write any persistent data to disk
     }
 
     private @NotNull InventoryWrapper locateInventory(@Nullable String symbolLink) {

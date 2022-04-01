@@ -24,11 +24,9 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.holder.Result;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.BlockIterator;
@@ -101,41 +99,9 @@ public class SubCommand_Create implements CommandHandler<Player> {
 
         while (bIt.hasNext()) {
             final Block b = bIt.next();
-
             if (!Util.canBeShop(b)) {
                 continue;
             }
-
-            Result result = plugin.getPermissionChecker().canBuild(sender, b);
-            if (!result.isSuccess()) {
-                plugin.text().of(sender, "3rd-plugin-build-check-failed", result.getMessage()).send();
-                Util.debugLog("Failed to create shop because the protection check has failed! Reason:" + result.getMessage());
-                return;
-            }
-
-            BlockFace blockFace = sender.getFacing();
-
-            if (!plugin.getShopManager().canBuildShop(sender, b, blockFace)) {
-                // As of the new checking system, most plugins will tell the
-                // player why they can't create a shop there.
-                // So telling them a message would cause spam etc.
-                Util.debugLog("Util report you can't build shop there.");
-                return;
-            }
-
-            if (Util.isDoubleChest(b.getBlockData())
-                    && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.double")) {
-                plugin.text().of(sender, "no-double-chests").send();
-                return;
-            }
-
-            if (Util.isBlacklisted(item)
-                    && !QuickShop.getPermissionManager()
-                    .hasPermission(sender, "quickshop.bypass." + item.getType().name())) {
-                plugin.text().of(sender, "blacklisted-item").send();
-                return;
-            }
-
             // Send creation menu.
             plugin.getShopManager().getActions().put(sender.getUniqueId(),
                     new SimpleInfo(b.getLocation(), ShopAction.CREATE_SELL, item, b.getRelative(sender.getFacing().getOppositeFace()), false));
