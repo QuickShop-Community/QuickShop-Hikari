@@ -235,6 +235,7 @@ translate-not-completed-yet-click: Перевод языка {0} еще не з�
 taxaccount-invalid: <red>Текущий аккаунт налогового счета неизвестен, пожалуйста, введите правильное имя игрока или uuid(тире).
 player-bought-from-your-store: <red>{0} купил {1} {2} и вы зарабатывали {3}.
 reached-maximum-can-create: <red>Вы уже создали максимум {0}/{1} магазинов!
+reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>Вы не можете создать магазин двойных сундуков.
 price-too-cheap: <red>Цена должна быть больше <yellow>${0}
