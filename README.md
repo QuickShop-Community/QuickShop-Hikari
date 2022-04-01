@@ -119,7 +119,6 @@ if(plugin != null){
 
 ## Maven
 
-I'm working on a dependency issue, but at the moment you need to manually add multiple external dependencies.
 
 ```xml
     <repositories>
