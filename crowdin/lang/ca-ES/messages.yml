@@ -235,6 +235,7 @@ translate-not-completed-yet-click: La traducció de la llengua {0} encara no est
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <red>{0} ha comprat {1} {2} de la teva botiga i has guanyat {3}.
 reached-maximum-can-create: <red>Ja has creat un màxim de {0}/{1} botigues!
+reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>No pots crear una botiga de cofre doble.
 price-too-cheap: <red>El preu ha de ser superior a <yellow>${0}
