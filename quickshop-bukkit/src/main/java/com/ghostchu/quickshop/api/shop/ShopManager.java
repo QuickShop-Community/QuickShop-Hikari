@@ -46,8 +46,23 @@ public interface ShopManager {
      * @param b  The block to check
      * @param bf The blockface to check
      * @return True if they're allowed to place a shop there.
+     * @deprecated This method pending for deletion
      */
-    boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf);
+    @Deprecated(forRemoval = true)
+    @ApiStatus.ScheduledForRemoval
+    default boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf){
+        return canBuildShop(p, b);
+    }
+
+    /**
+     * Checks other plugins to make sure they can use the chest they're making a shop.
+     *
+     * @param p  The player to check
+     * @param b  The block to check
+     * @param bf The blockface to check
+     * @return True if they're allowed to place a shop there.
+     */
+    boolean canBuildShop(@NotNull Player p, @NotNull Block b);
 
     /**
      * Returns a map of World - Chunk - Shop

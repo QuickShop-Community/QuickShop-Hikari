@@ -147,11 +147,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      *
      * @param p  The player to check
      * @param b  The block to check
-     * @param bf The blockface to check
      * @return True if they're allowed to place a shop there.
      */
     @Override
-    public boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf) {
+    public boolean canBuildShop(@NotNull Player p, @NotNull Block b) {
         Util.ensureThread(false);
         if (plugin.isLimit()) {
             int owned = 0;
@@ -165,6 +164,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 }
             }
             int max = plugin.getShopLimit(p);
+            Util.debugLog("CanBuildShop check for "+p.getName()+" owned: "+owned+"; max: "+max);
             if (owned + 1 > max) {
                 plugin.text().of(p, "reached-maximum-can-create", Component.text(owned), Component.text(max)).send();
                 return false;
@@ -286,9 +286,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     public void createShop(@NotNull Shop shop, @NotNull Info info) {
         Util.ensureThread(false);
         Player player = plugin.getServer().getPlayer(shop.getOwner());
-        if (player == null) {
+        // Player offline check
+        if (player == null || !player.isOnline()) {
             throw new IllegalStateException("The owner creating the shop is offline or not exist");
         }
+        // Shop info sign check
         if (info.getSignBlock() != null && autoSign) {
             if (info.getSignBlock().getType().isAir() || info.getSignBlock().getType() == Material.WATER) {
                 this.processWaterLoggedSign(shop.getLocation().getBlock(), info.getSignBlock());
@@ -844,6 +846,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         if (!Util.canBeShop(info.getLocation().getBlock())) {
             plugin.text().of(p, "chest-was-removed").send();
+            return;
+        }
+        if(!canBuildShop(p, info.getLocation().getBlock())) {
             return;
         }
         if (info.getLocation().getBlock().getType() == Material.ENDER_CHEST) { // FIXME: Need a better impl
