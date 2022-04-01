@@ -24,7 +24,6 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.shop.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
-import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -93,24 +92,26 @@ public class SubCommand_Price implements CommandHandler<Player> {
         }
 
         PriceLimiterCheckResult checkResult = limiter.check(sender, shop.getItem(), plugin.getCurrency(), price);
-        if (checkResult.getStatus() == PriceLimiterStatus.REACHED_PRICE_MIN_LIMIT) {
-            plugin.text().of(sender, "price-too-cheap", (format) ? MsgUtil.decimalFormat(checkResult.getMin()) : Double.toString(checkResult.getMin())).send();
-            return;
-        }
-        if (checkResult.getStatus() == PriceLimiterStatus.REACHED_PRICE_MAX_LIMIT) {
-            plugin.text().of(sender, "price-too-high", (format) ? MsgUtil.decimalFormat(checkResult.getMax()) : Double.toString(checkResult.getMax())).send();
-            return;
-        }
-        if (checkResult.getStatus() == PriceLimiterStatus.PRICE_RESTRICTED) {
-            plugin.text().of(sender, "restricted-prices", MsgUtil.getTranslateText(shop.getItem()),
-                    Component.text(checkResult.getMin()),
-                    Component.text(checkResult.getMax())).send();
-            return;
-        }
 
-        if (checkResult.getStatus() == PriceLimiterStatus.NOT_A_WHOLE_NUMBER) {
-            plugin.text().of(sender, "not-a-integer", price).send();
-            return;
+        switch (checkResult.getStatus()) {
+            case PRICE_RESTRICTED -> {
+                plugin.text().of(sender, "restricted-prices", MsgUtil.getTranslateText(shop.getItem()),
+                        Component.text(checkResult.getMin()),
+                        Component.text(checkResult.getMax())).send();
+                return;
+            }
+            case REACHED_PRICE_MIN_LIMIT -> {
+                plugin.text().of(sender, "price-too-cheap", (format) ? MsgUtil.decimalFormat(checkResult.getMin()) : Double.toString(checkResult.getMin())).send();
+                return;
+            }
+            case REACHED_PRICE_MAX_LIMIT -> {
+                plugin.text().of(sender, "price-too-high", (format) ? MsgUtil.decimalFormat(checkResult.getMax()) : Double.toString(checkResult.getMax())).send();
+                return;
+            }
+            case NOT_A_WHOLE_NUMBER -> {
+                plugin.text().of(sender, "not-a-integer", price).send();
+                return;
+            }
         }
 
         if (fee > 0) {
