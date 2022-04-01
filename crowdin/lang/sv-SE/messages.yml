@@ -235,6 +235,7 @@ translate-not-completed-yet-click: Översättningen av språket {0} slutfördes 
 taxaccount-invalid: <red>Angivet konto är ogiltigt, ange ett giltigt spelarnamn eller uuid(med bindestreck).
 player-bought-from-your-store: <red>{0} köpte {1} {2} från din butik, och du tjänade {3}.
 reached-maximum-can-create: <red>Du har redan skapat {0}/{1} butiker vilket är max!
+reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>Du kan inte skapa den dubbla kistbutiken.
 price-too-cheap: <red>Priset måste vara högre än <yellow>${0}

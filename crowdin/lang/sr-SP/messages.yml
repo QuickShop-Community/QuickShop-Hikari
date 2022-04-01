@@ -235,6 +235,7 @@ translate-not-completed-yet-click: The translation of the language {0} was not c
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <red>{0} purchased {1} {2} from your shop, and you earned {3}.
 reached-maximum-can-create: <red>You already created a maximum of {0}/{1} shops!
+reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>You cannot create the double chest shop.
 price-too-cheap: <red>Price must be greater than <yellow>${0}

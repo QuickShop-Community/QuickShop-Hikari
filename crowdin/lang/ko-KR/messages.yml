@@ -235,6 +235,7 @@ translate-not-completed-yet-click: '{0} 언어의 번역이 {1} 완료되었습�
 taxaccount-invalid: <red>대상 계정이 올바르지 않습니다. 올바른 플레이어 이름 또는 UUID(대시 포함)를 입력하십시오.
 player-bought-from-your-store: <red>{0} 님이 당신의 상점 에서 {1} {2} 을(를) 구입했으며 당신은 {3} 원 을(를) 얻으셨습니다!
 reached-maximum-can-create: <red>당신은 이미 최대 {0}/{1} 개의 상점을 생성했습니다!
+reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: '지원 버전: Hikari'
 no-double-chests: <red>당신은 큰상자(일반 상자를 두개붙인)를 이용한 상점을 만들 수 없습니다. (권한 부족입니다.)
 price-too-cheap: <red>가격은 반드시 <yellow>${0} 원 <red>보다 높아야만 합니다.

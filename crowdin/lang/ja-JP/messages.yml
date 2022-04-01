@@ -235,6 +235,7 @@ translate-not-completed-yet-click: '{1} では言語 {0} の翻訳が完了し�
 taxaccount-invalid: <red>対象アカウントが無効です。有効なプレイヤー名またはuuid(ダッシュ付き)を入力してください。
 player-bought-from-your-store: <red>{0} が {1} 個の {2} をあなたのショップから購入したので {3} を獲得しました。
 reached-maximum-can-create: <red>あなたはすでに最大値を超えて {0} / {1} のショップを作成しています！
+reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'サポートバージョン: Hikari'
 no-double-chests: <red>ラージチェストのショップを作成することはできません。
 price-too-cheap: <red>価格は<yellow>${0}<red>以上である必要があります。
