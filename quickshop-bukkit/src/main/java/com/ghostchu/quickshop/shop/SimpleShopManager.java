@@ -164,12 +164,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
             int max = plugin.getShopLimit(p);
             Util.debugLog("CanBuildShop check for " + p.getName() + " owned: " + owned + "; max: " + max);
-            if (owned + 1 > max) {
-                plugin.text().of(p, "reached-maximum-can-create", Component.text(owned), Component.text(max)).send();
-                return false;
-            }
+            return owned + 1 > max;
         }
-        return true;
+        return false;
     }
 
     /**
@@ -808,7 +805,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
 
         // Check if player has reached the max shop limit
-        if (!isReachedLimit(p)) {
+        if (isReachedLimit(p)) {
+            plugin.text().of(p, "reached-maximum-create-limit").send();
             return;
         }
         // Check if target block is allowed shop-block
@@ -825,7 +823,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         // Check if server/player allowed to create stacking shop
         if (plugin.isAllowStack() && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks")) {
-            Util.debugLog("Player " + p + " no permission to create stacks shop, forcing creating single item shop");
+            Util.debugLog("Player " + p.getName() + " no permission to create stacks shop, forcing creating single item shop");
             shop.getItem().setAmount(1);
         }
 
