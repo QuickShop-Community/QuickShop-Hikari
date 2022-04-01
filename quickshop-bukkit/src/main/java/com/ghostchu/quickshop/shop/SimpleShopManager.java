@@ -858,8 +858,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return;
         }
 
-
-
         // Sign check
         if (autoSign) {
             if (signBlock == null) {
@@ -983,12 +981,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (signBlock != null && autoSign) {
             if (signBlock.getType().isAir() || signBlock.getType() == Material.WATER) {
                 this.processWaterLoggedSign(shop.getLocation().getBlock(), signBlock);
-            } else {
-                if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
-                    plugin.text().of(p, "failed-to-put-sign").send();
-                    Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
-                    return;
-                }
             }
         }
         registerShop(shop);
