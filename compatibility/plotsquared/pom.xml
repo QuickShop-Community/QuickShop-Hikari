@@ -101,7 +101,7 @@
         <dependency>
             <groupId>com.plotsquared</groupId>
             <artifactId>PlotSquared-Bukkit</artifactId>
-            <version>6.6.1</version>
+            <version>6.6.2</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
