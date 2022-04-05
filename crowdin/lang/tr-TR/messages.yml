@@ -235,6 +235,7 @@ translate-not-completed-yet-click: '{0} dilinin çevirisi {1} tamamlanmadı. Çe
 taxaccount-invalid: <red>Target hesabı geçersiz değil, lütfen geçerli bir oyuncu adı veya uuid(çizgili) girin.
 player-bought-from-your-store: <red>{0} marketinden {1} tane {2} aldı ve {3} kazandın.
 reached-maximum-can-create: <red>Zaten maksimum {0}/{1} market oluşturdun!
+reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>Çifte sandık ile market oluşturamazsınız.
 price-too-cheap: <red>Fiyat <yellow>${0}<red>'dan büyük olmalıdır.

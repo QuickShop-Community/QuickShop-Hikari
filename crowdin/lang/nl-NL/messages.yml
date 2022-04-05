@@ -235,6 +235,7 @@ translate-not-completed-yet-click: De vertaling van de taal {0} is nog niet volt
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <red>{0} heeft {1} {2} gekocht van uw winkel, en u heeft {3} verdiend.
 reached-maximum-can-create: <red>Je hebt al een maximum van {0}/{1} winkels gemaakt!
+reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>Je kunt de dubbele kist winkel niet maken.
 price-too-cheap: <red>Price moet groter zijn dan <yellow>${0}

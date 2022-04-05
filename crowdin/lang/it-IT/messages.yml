@@ -235,6 +235,7 @@ translate-not-completed-yet-click: La traduzione della lingua {0} non è stata a
 taxaccount-invalid: <red>Account target non valido, inserisci un nome giocatore valido o uuid (con trattini).
 player-bought-from-your-store: <red>{0} ha acquistato {1} {2} dal tuo negozio, e hai guadagnato {3}.
 reached-maximum-can-create: <red>Hai già creato un massimo di {0}/{1} negozi!
+reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>Non puoi creare un negozio con doppia cassa.
 price-too-cheap: <red>Il prezzo deve essere superiore di <yellow> ${0}
