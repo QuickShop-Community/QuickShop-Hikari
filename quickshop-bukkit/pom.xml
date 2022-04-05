@@ -450,11 +450,7 @@
             </exclusions>
             <type>jar</type>
         </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-minimessage</artifactId>
-            <version>4.10.1</version>
-        </dependency>
+
         <dependency>
             <groupId>com.dumptruckman.minecraft</groupId>
             <artifactId>JsonConfiguration</artifactId>
