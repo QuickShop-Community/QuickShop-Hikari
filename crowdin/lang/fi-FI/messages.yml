@@ -235,6 +235,7 @@ translate-not-completed-yet-click: Kielen {0} käännös ei ole vielä valmis {1
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <red>{0} osti {1} {2} kaupastasi ja sait siitä {3}.
 reached-maximum-can-create: <red>Olet jo luonut jo {0}/{1}, eli maksimi määrän kauppoja!
+reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>Et voi luoda tupla-arkkukauppaa.
 price-too-cheap: <red>Hinnan pitää olla korkeampi kuin <yellow>${0}

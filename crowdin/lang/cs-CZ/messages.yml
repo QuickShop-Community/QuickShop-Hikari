@@ -235,6 +235,7 @@ translate-not-completed-yet-click: Překlad jazyka {0} ještě nebyl dokončen u
 taxaccount-invalid: <red>Cílový účet není platný, zadejte prosím platné jméno hráče nebo uuid(s pomlčkami).
 player-bought-from-your-store: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>{0} zakoupil {1} {2} z tvého obchodu a ty jsi zaplatil {3} na daních.
 reached-maximum-can-create: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Již jste vytvořili maximum {0}/{1} obchodů!
+reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>Nemůžeš vytvářet DoubleChest obchod.
 price-too-cheap: <red>Cena musí být větší než <yellow>${0}

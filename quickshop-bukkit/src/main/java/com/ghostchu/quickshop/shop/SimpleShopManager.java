@@ -145,12 +145,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     /**
      * Checks other plugins to make sure they can use the chest they're making a shop.
      *
-     * @param p  The player to check
-     * @param b  The block to check
+     * @param p The player to check
      * @return True if they're allowed to place a shop there.
      */
     @Override
-    public boolean canBuildShop(@NotNull Player p, @NotNull Block b) {
+    public boolean isReachedLimit(@NotNull Player p) {
         Util.ensureThread(false);
         if (plugin.isLimit()) {
             int owned = 0;
@@ -164,14 +163,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 }
             }
             int max = plugin.getShopLimit(p);
-            Util.debugLog("CanBuildShop check for "+p.getName()+" owned: "+owned+"; max: "+max);
-            if (owned + 1 > max) {
-                plugin.text().of(p, "reached-maximum-can-create", Component.text(owned), Component.text(max)).send();
-                return false;
-            }
+            Util.debugLog("CanBuildShop check for " + p.getName() + " owned: " + owned + "; max: " + max);
+            return owned + 1 > max;
         }
-        ShopPreCreateEvent spce = new ShopPreCreateEvent(p, b.getLocation());
-        return !Util.fireCancellableEvent(spce);
+        return false;
     }
 
     /**
@@ -276,32 +271,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         signBlockState.update(true);
     }
 
-    /**
-     * Create a shop use Shop and Info object.
-     *
-     * @param shop The shop object
-     * @param info The info object
-     */
     @Override
-    public void createShop(@NotNull Shop shop, @NotNull Info info) {
-        Util.ensureThread(false);
-        Player player = plugin.getServer().getPlayer(shop.getOwner());
-        // Player offline check
-        if (player == null || !player.isOnline()) {
-            throw new IllegalStateException("The owner creating the shop is offline or not exist");
-        }
-        // Shop info sign check
-        if (info.getSignBlock() != null && autoSign) {
-            if (info.getSignBlock().getType().isAir() || info.getSignBlock().getType() == Material.WATER) {
-                this.processWaterLoggedSign(shop.getLocation().getBlock(), info.getSignBlock());
-            } else {
-                if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
-                    plugin.text().of(player, "failed-to-put-sign").send();
-                    Util.debugLog("Sign cannot placed cause no enough space(Not air block)");
-                    return;
-                }
-            }
-        }
+    public void registerShop(@NotNull Shop shop) {
         // sync add to prevent compete issue
         addShop(shop.getLocation().getWorld().getName(), shop);
         // load the shop finally
@@ -309,6 +280,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // first init
         shop.setSignText();
         // save to database
+        // TODO: Optimize logic
         plugin.getDatabaseHelper().createShop(shop, null, e ->
                 Util.mainThreadRun(() -> {
                     // also remove from memory when failed
@@ -325,7 +297,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     plugin.getDatabaseHelper().createShop(shop, null, e2 -> {
                         plugin.getLogger()
                                 .log(Level.SEVERE, "Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
-                        plugin.text().of(player, "shop-creation-failed").send();
+                        Player player = plugin.getServer().getPlayer(shop.getOwner());
+                        if (player != null) {
+                            plugin.text().of(player, "shop-creation-failed").send();
+                        }
                         Util.mainThreadRun(() -> {
                             shop.onUnload();
                             removeShop(shop);
@@ -808,23 +783,57 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         return taxEvent.getTax();
     }
 
+    /**
+     * Create a shop use Shop and Info object.
+     *
+     * @param shop                  The shop object
+     * @param signBlock             The sign block
+     * @param bypassProtectionCheck Should bypass protection check
+     * @throws IllegalStateException If the shop owner offline
+     */
     @Override
-    public void actionCreate(@NotNull Player p, Info info, @NotNull String message) {
+    public void createShop(@NotNull Shop shop, @Nullable Block signBlock, boolean bypassProtectionCheck) throws IllegalStateException {
         Util.ensureThread(false);
+        Player p = plugin.getServer().getPlayer(shop.getOwner());
+        // Player offline check
+        if (p == null || !p.isOnline()) {
+            throw new IllegalStateException("The owner creating the shop is offline or not exist");
+        }
+
         if (plugin.getEconomy() == null) {
             MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
             return;
         }
-        if (plugin.isAllowStack() && !p.hasPermission("quickshop.create.stacks")) {
-            Util.debugLog("Player " + p + " no permission to create stacks shop, forcing creating single item shop");
-            info.getItem().setAmount(1);
+
+        // Check if player has reached the max shop limit
+        if (isReachedLimit(p)) {
+            plugin.text().of(p, "reached-maximum-create-limit").send();
+            return;
+        }
+        // Check if target block is allowed shop-block
+        if (!Util.canBeShop(shop.getLocation().getBlock())) {
+            plugin.text().of(p, "chest-was-removed").send();
+            return;
+        }
+        // Check if item has been blacklisted
+        if (Util.isBlacklisted(shop.getItem())
+                && !QuickShop.getPermissionManager()
+                .hasPermission(p, "quickshop.bypass." + shop.getItem().getType().name().toLowerCase(Locale.ROOT))) {
+            plugin.text().of(p, "blacklisted-item").send();
+            return;
+        }
+        // Check if server/player allowed to create stacking shop
+        if (plugin.isAllowStack() && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks")) {
+            Util.debugLog("Player " + p.getName() + " no permission to create stacks shop, forcing creating single item shop");
+            shop.getItem().setAmount(1);
         }
 
         // Checking the shop can be created
         Util.debugLog("Calling for protection check...");
-        // Fix openInv compatible issue
-        if (!info.isBypassed()) {
-            Result result = plugin.getPermissionChecker().canBuild(p, info.getLocation());
+
+        // Protection check
+        if (!bypassProtectionCheck) {
+            Result result = plugin.getPermissionChecker().canBuild(p, shop.getLocation());
             if (!result.isSuccess()) {
                 plugin.text().of(p, "3rd-plugin-build-check-failed", result.getMessage()).send();
                 if (p.hasPermission("quickshop.alert")) {
@@ -835,36 +844,28 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
 
-        if (plugin.getShopManager().getShop(info.getLocation()) != null) {
+        // Check if the shop is already created
+        if (plugin.getShopManager().getShop(shop.getLocation()) != null) {
             plugin.text().of(p, "shop-already-owned").send();
             return;
         }
-        if (Util.isDoubleChest(info.getLocation().getBlock().getBlockData())
+
+        // Check if player and server allow double chest shop
+        if (Util.isDoubleChest(shop.getLocation().getBlock().getBlockData())
                 && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
             plugin.text().of(p, "no-double-chests").send();
             return;
         }
-        if (!Util.canBeShop(info.getLocation().getBlock())) {
-            plugin.text().of(p, "chest-was-removed").send();
-            return;
-        }
-        if(!canBuildShop(p, info.getLocation().getBlock())) {
-            return;
-        }
-        if (info.getLocation().getBlock().getType() == Material.ENDER_CHEST) { // FIXME: Need a better impl
-            if (!QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.enderchest")) {
-                return;
-            }
-        }
 
+        // Sign check
         if (autoSign) {
-            if (info.getSignBlock() == null) {
+            if (signBlock == null) {
                 if (!plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
                     plugin.text().of(p, "failed-to-put-sign").send();
                     return;
                 }
             } else {
-                Material signType = info.getSignBlock().getType();
+                Material signType = signBlock.getType();
                 if (signType != Material.WATER
                         && !signType.isAir()
                         && !plugin.getConfig().getBoolean("shop.allow-shop-without-space-for-sign")) {
@@ -873,38 +874,16 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 }
             }
         }
-
-        // Price per item
-        double price;
-        try {
-            price = Double.parseDouble(message);
-            if (Double.isInfinite(price)) {
-                plugin.text().of(p, "exceeded-maximum", message).send();
-                return;
-            }
-            String strFormat = new DecimalFormat("#.#########").format(Math.abs(price))
-                    .replace(",", ".");
-            String[] processedDouble = strFormat.split("\\.");
-            if (processedDouble.length > 1) {
-                int maximumDigitsLimit = plugin.getConfig()
-                        .getInt("maximum-digits-in-price", -1);
-                if (processedDouble[1].length() > maximumDigitsLimit
-                        && maximumDigitsLimit != -1) {
-                    plugin.text().of(p, "digits-reach-the-limit", Component.text(maximumDigitsLimit)).send();
-                    return;
-                }
-            }
-        } catch (NumberFormatException ex) {
-            Util.debugLog(ex.getMessage());
-            plugin.text().of(p, "not-a-number", message).send();
+        ShopPreCreateEvent spce = new ShopPreCreateEvent(p, shop.getLocation());
+        if (Util.fireCancellableEvent(spce)) {
+            Util.debugLog("ShopPreCreateEvent cancelled");
             return;
         }
 
+
         // Price limit checking
         boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
-
-        PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(p, info.getItem(), plugin.getCurrency(), price);
-
+        PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(p, shop.getItem(), plugin.getCurrency(), shop.getPrice());
         switch (priceCheckResult.getStatus()) {
             case REACHED_PRICE_MIN_LIMIT -> {
                 plugin.text().of(p, "price-too-cheap",
@@ -920,42 +899,20 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
             case PRICE_RESTRICTED -> {
                 plugin.text().of(p, "restricted-prices",
-                        MsgUtil.getTranslateText(info.getItem()),
+                        MsgUtil.getTranslateText(shop.getItem()),
                         Component.text(priceCheckResult.getMin()),
                         Component.text(priceCheckResult.getMax())).send();
                 return;
             }
             case NOT_VALID -> {
-                plugin.text().of(p, "not-a-number", message).send();
+                plugin.text().of(p, "not-a-number", shop.getPrice()).send();
                 return;
             }
             case NOT_A_WHOLE_NUMBER -> {
-                plugin.text().of(p, "not-a-integer", message).send();
+                plugin.text().of(p, "not-a-integer", shop.getPrice()).send();
                 return;
             }
         }
-
-        // Set to 1 when disabled stacking shop
-        if (!plugin.isAllowStack()) {
-            info.getItem().setAmount(1);
-        }
-
-        // Create the sample shop
-        ContainerShop shop = new ContainerShop(
-                plugin,
-                info.getLocation(),
-                price,
-                info.getItem(),
-                new SimpleShopModerator(p.getUniqueId()),
-                false,
-                ShopType.SELLING,
-                new YamlConfiguration(),
-                null,
-                false,
-                null,
-                plugin.getName(),
-                plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper(((InventoryHolder) info.getLocation().getBlock().getState()).getInventory())),
-                null);
 
         // Calling ShopCreateEvent
         ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, p.getUniqueId());
@@ -998,7 +955,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
 
         // The shop about successfully created
-        createShop(shop, info);
         if (!plugin.getConfig().getBoolean("shop.lock")) {
             plugin.text().of(p, "shops-arent-locked").send();
         }
@@ -1018,6 +974,69 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         // One last refresh to ensure the item shows up
         shop.refresh();
+
+
+        // Shop info sign check
+        if (signBlock != null && autoSign) {
+            if (signBlock.getType().isAir() || signBlock.getType() == Material.WATER) {
+                this.processWaterLoggedSign(shop.getLocation().getBlock(), signBlock);
+            }
+        }
+        registerShop(shop);
+    }
+
+    @Override
+    public void actionCreate(@NotNull Player p, Info info, @NotNull String message) {
+        Util.ensureThread(false);
+        if (plugin.getEconomy() == null) {
+            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
+            return;
+        }
+
+        // Price per item
+        double price;
+        try {
+            price = Double.parseDouble(message);
+            if (Double.isInfinite(price)) {
+                plugin.text().of(p, "exceeded-maximum", message).send();
+                return;
+            }
+            String strFormat = new DecimalFormat("#.#########").format(Math.abs(price))
+                    .replace(",", ".");
+            String[] processedDouble = strFormat.split("\\.");
+            if (processedDouble.length > 1) {
+                int maximumDigitsLimit = plugin.getConfig()
+                        .getInt("maximum-digits-in-price", -1);
+                if (processedDouble[1].length() > maximumDigitsLimit
+                        && maximumDigitsLimit != -1) {
+                    plugin.text().of(p, "digits-reach-the-limit", Component.text(maximumDigitsLimit)).send();
+                    return;
+                }
+            }
+        } catch (NumberFormatException ex) {
+            Util.debugLog(ex.getMessage());
+            plugin.text().of(p, "not-a-number", message).send();
+            return;
+        }
+
+
+        // Create the basic shop
+        ContainerShop shop = new ContainerShop(
+                plugin,
+                info.getLocation(),
+                price,
+                info.getItem(),
+                new SimpleShopModerator(p.getUniqueId()),
+                false,
+                ShopType.SELLING,
+                new YamlConfiguration(),
+                null,
+                false,
+                null,
+                plugin.getName(),
+                plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper(((InventoryHolder) info.getLocation().getBlock().getState()).getInventory())),
+                null);
+        createShop(shop, info.getSignBlock(), info.isBypassed());
     }
 
     @Deprecated

@@ -19,17 +19,16 @@
 
 package com.ghostchu.quickshop.api.shop;
 
+import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 
 import java.util.*;
 
@@ -40,29 +39,12 @@ import java.util.*;
 public interface ShopManager {
 
     /**
-     * Checks other plugins to make sure they can use the chest they're making a shop.
+     * Checks if player reached the limit of shops
      *
      * @param p  The player to check
-     * @param b  The block to check
-     * @param bf The blockface to check
-     * @return True if they're allowed to place a shop there.
-     * @deprecated This method pending for deletion
+     * @return True if they're reached the limit.
      */
-    @Deprecated(forRemoval = true)
-    @ApiStatus.ScheduledForRemoval
-    default boolean canBuildShop(@NotNull Player p, @NotNull Block b, @NotNull BlockFace bf){
-        return canBuildShop(p, b);
-    }
-
-    /**
-     * Checks other plugins to make sure they can use the chest they're making a shop.
-     *
-     * @param p  The player to check
-     * @param b  The block to check
-     * @param bf The blockface to check
-     * @return True if they're allowed to place a shop there.
-     */
-    boolean canBuildShop(@NotNull Player p, @NotNull Block b);
+    boolean isReachedLimit(@NotNull Player p);
 
     /**
      * Returns a map of World - Chunk - Shop
@@ -105,12 +87,22 @@ public interface ShopManager {
     @Nullable Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull String world);
 
     /**
+     * Register shop to memory and database.
+     *
+     * @param info The info object
+     * @return True if the shop was register successfully.
+     */
+    void registerShop(@NotNull Shop shop);
+
+    /**
      * Create a shop use Shop and Info object.
      *
      * @param shop The shop object
-     * @param info The info object
+     * @param signBlock The sign block
+     * @param bypassProtectCheck Should bypass protection check
+     * @throws IllegalStateException If the shop owner offline
      */
-    void createShop(@NotNull Shop shop, @NotNull Info info);
+    void createShop(@NotNull Shop shop, @Nullable Block signBlock, boolean bypassProtectCheck) throws IllegalStateException;
 
     /**
      * Format the price use formatter
@@ -174,8 +166,6 @@ public interface ShopManager {
     @Nullable Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId, boolean includeInvalid);
 
     void handleChat(@NotNull Player p, @NotNull String msg);
-
-    //   void handleChat(@NotNull Player p, @NotNull String msg, boolean bypassProtectionChecks);
 
     /**
      * Load shop method for loading shop into mapping, so getShops method will can find it. It also

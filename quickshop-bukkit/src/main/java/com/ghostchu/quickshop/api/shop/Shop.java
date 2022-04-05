@@ -501,6 +501,13 @@ public interface Shop {
     boolean isRealDouble();
 
     /**
+     * Returns the Shop is a double shop
+     *
+     * @return if the shop is a double shop
+     */
+    boolean isDoubleShop();
+
+    /**
      * Updates the attachedShop variable to reflect the currently attached shop, if any.
      * Also updates the left shop status.
      */
