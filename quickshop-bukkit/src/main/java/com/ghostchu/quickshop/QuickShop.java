@@ -71,6 +71,7 @@ import kong.unirest.Unirest;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -92,6 +93,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -744,6 +747,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             public void run() {
                 getLogger().info("Registering bStats metrics...");
                 submitMeritcs();
+                String jarPath = MiniMessage.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+                jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+                getLogger().info("Loading the Adventure MiniMessage from JAR " + jarPath);
             }
         }.runTask(this);
         if (loaded) {
@@ -760,6 +766,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         Util.debugLog("Now using display-type: " + AbstractDisplayItem.getNowUsing().name());
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
         getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
+
+
     }
 
     private void registerLimitRanks() {
