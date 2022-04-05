@@ -414,7 +414,7 @@
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>simplereloadlib</artifactId>
-            <version>1.1.0</version>
+            <version>1.1.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -454,7 +454,6 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
             <version>4.10.1</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.dumptruckman.minecraft</groupId>
