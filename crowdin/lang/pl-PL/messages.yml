@@ -8,7 +8,7 @@ client-language-changed: <green>QuickShop wykrył, że ustawienia języka klient
 shops-backingup: Tworzenie kopii zapasowej sklepu z bazy danych...
 _comment: Witaj tłumaczu! Jeśli edytujesz to z Github'a lub ze źródeł kodowych, powinieneś przejść do https://crowdin.com/project/quickshop-reremake
 unlimited-shop-owner-changed: <yellow>Ten właściciel sklepu nielimitowanego został zmieniony na {0}.
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
+bad-command-usage-detailed: '<red>Błędne argumenty poleceń! Akceptuje następujące parametry: <gray>{0}'
 thats-not-a-number: <red>Nieprawidłowa liczba
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>Jest to niebezpieczne polecenie, więc tylko konsola może go wykonać.
@@ -34,19 +34,19 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '&eName: &b{0}'
-    - '&eOwner: &b{0}'
-    - '&eType: &b{0}'
-    - '&ePrice: &b{0}'
-    - '&eItem: &b{0}'
-    - '&eLocation: &b{0}'
+    - '&eNazwa: &b{0}'
+    - '&eWłaściciel: &b{0}'
+    - '&eТyp: &b{0}'
+    - '&eCena: &b{0}'
+    - '&ePrzedmiot: &b{0}'
+    - '&eLokalizacja: &b{0}'
   hover-arg-filled:
-    - '&eName: &b{name}'
-    - '&eOwner: &b{owner}'
-    - '&eType: &b{type}'
-    - '&ePrice: &b{price}'
-    - '&eItem: &b{item}'
-    - '&eLocation: &b{location}'
+    - '&eNazwa: &b{name}'
+    - '&eWłaściciel: &b{owner}'
+    - '&eТyp: &b{type}'
+    - '&eCena: &b{price}'
+    - '&ePrzedmiot: &b{item}'
+    - '&eLokalizacja: &b{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'

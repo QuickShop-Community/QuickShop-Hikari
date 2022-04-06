@@ -471,20 +471,20 @@
     "entry-own": " &e- &c[own] &b{0} &d{1}",
     "entry-cooperation": " &e- &c[co] &b{0} &d{1}",
     "hover": [
-      "&eName: &b{0}",
-      "&eOwner: &b{0}",
-      "&eType: &b{0}",
-      "&ePrice: &b{0}",
-      "&eItem: &b{0}",
-      "&eLocation: &b{0}"
+      "&eNazwa: &b{0}",
+      "&eWłaściciel: &b{0}",
+      "&eТyp: &b{0}",
+      "&eCena: &b{0}",
+      "&ePrzedmiot: &b{0}",
+      "&eLokalizacja: &b{0}"
     ],
     "hover-arg-filled": [
-      "&eName: &b{name}",
-      "&eOwner: &b{owner}",
-      "&eType: &b{type}",
-      "&ePrice: &b{price}",
-      "&eItem: &b{item}",
-      "&eLocation: &b{location}"
+      "&eNazwa: &b{name}",
+      "&eWłaściciel: &b{owner}",
+      "&eТyp: &b{type}",
+      "&eCena: &b{price}",
+      "&ePrzedmiot: &b{item}",
+      "&eLokalizacja: &b{location}"
     ]
   }
 }
