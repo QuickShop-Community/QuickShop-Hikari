@@ -8,7 +8,7 @@ client-language-changed: <green>QuickShop wykrył, że ustawienia języka klient
 shops-backingup: Tworzenie kopii zapasowej sklepu z bazy danych...
 _comment: Witaj tłumaczu! Jeśli edytujesz to z Github'a lub ze źródeł kodowych, powinieneś przejść do https://crowdin.com/project/quickshop-reremake
 unlimited-shop-owner-changed: <yellow>Ten właściciel sklepu nielimitowanego został zmieniony na {0}.
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
+bad-command-usage-detailed: '<red>Błędne argumenty poleceń! Akceptuje następujące parametry: <gray>{0}'
 thats-not-a-number: <red>Nieprawidłowa liczba
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>Jest to niebezpieczne polecenie, więc tylko konsola może go wykonać.
@@ -34,19 +34,19 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '&eName: &b{0}'
-    - '&eOwner: &b{0}'
-    - '&eType: &b{0}'
-    - '&ePrice: &b{0}'
-    - '&eItem: &b{0}'
-    - '&eLocation: &b{0}'
+    - '&eNazwa: &b{0}'
+    - '&eWłaściciel: &b{0}'
+    - '&eТyp: &b{0}'
+    - '&eCena: &b{0}'
+    - '&ePrzedmiot: &b{0}'
+    - '&eLokalizacja: &b{0}'
   hover-arg-filled:
-    - '&eName: &b{name}'
-    - '&eOwner: &b{owner}'
-    - '&eType: &b{type}'
-    - '&ePrice: &b{price}'
-    - '&eItem: &b{item}'
-    - '&eLocation: &b{location}'
+    - '&eNazwa: &b{name}'
+    - '&eWłaściciel: &b{owner}'
+    - '&eТyp: &b{type}'
+    - '&eCena: &b{price}'
+    - '&ePrzedmiot: &b{item}'
+    - '&eLokalizacja: &b{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -88,7 +88,7 @@ reloading-status:
   failed: <red>Przeładowywanie nie powiodło się, sprawdź konsolę serwera
 player-bought-from-your-store-tax: <red>{0} zakupił {1} {2} w Twoim sklepie, i zarobiłeś {3} ({4} w podatkach).
 not-enough-space: <red>Masz tylko miejsce na {0} więcej!
-shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
+shop-name-success: <green>Pomyślnie ustawiono nazwę sklepu na <yellow>{0}<green>.
 shop-staff-added: <green>Pomyślnie dodano {0} jako członka personelu twojego sklepu.
 shops-recovering: Odzyskiwanie sklepów z kopii zapasowej...
 menu:
@@ -122,20 +122,20 @@ integrations-check-failed-trade: <red>Integracja {0} odmówiła handlu ze sklepe
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Pomyślnie ustawiono właściciela sklepu na Serwer.
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>Nazwa tego sklepu jest zbyt długa (maksymalna długość {0}), proszę wybrać inną!
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
   action-hover: <yellow>{0}
   entry-header-shop: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66) <aqua>|'
-  price-hover: <yellow>Total {0}, including {1} taxes.
-  unknown: <gray>(unknown)
-  undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  price-hover: <yellow>Suma {0}, łącznie z {1} podatkami.
+  unknown: <gray>(nieznany)
+  undefined: <gray>(brak nazwy)
+  no-results: <red>Nie znaleziono transakcji.
   action-description:
-    DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
-    ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
+    DELETE: <yellow>Gracz usunął sklep. I w miarę możliwości zwrócił właścicielowi opłatę za utworzenie sklepu.
+    ONGOING_FEE: <yellow>Gracz zapłacił bieżące opłaty z powodu opóźnionej płatności.
+    PURCHASE_BUYING_SHOP: <yellow>Gracz sprzedał kilka przedmiotów w sklepie zakupowym.
+    CREATE: <yellow>Gracz utworzył sklep.
     PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
     PURCHASE: <yellow>Purchased item with a shop
   query-argument: 'Query Argument: {0}'
