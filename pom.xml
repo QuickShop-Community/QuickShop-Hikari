@@ -178,6 +178,11 @@
                                         <shadedPattern>com.ghostchu.quickshop.shade.co.aikar.taskchain.
                                         </shadedPattern>
                                     </relocation>
+                                    <relocation>
+                                        <pattern>net.kyori.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.
+                                        </shadedPattern>
+                                    </relocation>
                                 </relocations>
                                 <transformers>
                                     <transformer
