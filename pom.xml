@@ -24,11 +24,10 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>${revision}</version>
+    <version>1.1.3.2</version>
     <packaging>pom</packaging>
 
     <properties>
-        <revision>1.1.3.1</revision>
         <java.version>17</java.version>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -130,13 +129,14 @@
                                 <goal>shade</goal>
                             </goals>
                             <configuration>
-                                <finalName>artifact-${name}-v${revision}</finalName>
+                                <finalName>artifact-${name}-v1.1.2.3</finalName>
                                 <!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
-                                <createDependencyReducedPom>false</createDependencyReducedPom>
+                                <createDependencyReducedPom>true</createDependencyReducedPom>
                                 <minimizeJar>true</minimizeJar>
                                 <createSourcesJar>false</createSourcesJar>
                                 <createTestSourcesJar>false</createTestSourcesJar>
                                 <shadeSourcesContent>true</shadeSourcesContent>
+                                <shadedArtifactAttached>true</shadedArtifactAttached>
                                 <relocations>
                                     <relocation>
                                         <pattern>com.dumptruckman.bukkit.configuration.</pattern>
@@ -266,38 +266,51 @@
                         </gitDescribe>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>flatten-maven-plugin</artifactId>
+                    <version>1.2.7</version>
+                    <configuration>
+                        <updatePomFile>true</updatePomFile>
+                        <!--                    <flattenMode>resolveCiFriendliesOnly</flattenMode>-->
+                        <flattenMode>oss</flattenMode>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>flatten</id>
+                            <phase>process-resources</phase>
+                            <goals>
+                                <goal>flatten</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>flatten.clean</id>
+                            <phase>clean</phase>
+                            <goals>
+                                <goal>clean</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+
             </plugins>
         </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>flatten-maven-plugin</artifactId>
-                <version>1.2.7</version>
-                <configuration>
-                    <updatePomFile>true</updatePomFile>
-<!--                    <flattenMode>resolveCiFriendliesOnly</flattenMode>-->
-                    <flattenMode>oss</flattenMode>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>flatten</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>flatten.clean</id>
-                        <phase>clean</phase>
-                        <goals>
-                            <goal>clean</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>io.github.git-commit-id</groupId>
                 <artifactId>git-commit-id-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <generateBackupPoms>true</generateBackupPoms>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -330,6 +343,7 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
             <version>4.10.1</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.juliomarcopineda</groupId>
