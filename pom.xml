@@ -132,10 +132,11 @@
                             <configuration>
                                 <finalName>artifact-${name}-v${revision}</finalName>
                                 <!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
-                                <createDependencyReducedPom>false</createDependencyReducedPom>
+                                <createDependencyReducedPom>true</createDependencyReducedPom>
                                 <minimizeJar>true</minimizeJar>
-                                <createSourcesJar>false</createSourcesJar>
-                                <createTestSourcesJar>false</createTestSourcesJar>
+                                <createSourcesJar>true</createSourcesJar>
+                                <createTestSourcesJar>true</createTestSourcesJar>
+                                <shadeSourcesContent>true</shadeSourcesContent>
                                 <relocations>
                                     <relocation>
                                         <pattern>com.dumptruckman.bukkit.configuration.</pattern>
