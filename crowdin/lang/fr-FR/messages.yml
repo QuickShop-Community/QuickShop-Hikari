@@ -215,7 +215,7 @@ updatenotify:
     - Qu'est-ce que tu penses? {0} Une nouvelle mise à jour publiée!
     - Docteur, QuickShop a une nouvelle mise à jour {0}! Vous devriez mettre à jour ~
     - Ko~ko~da~yo~ QuickShop a une nouvelle mise à jour {0}~
-    - Paimon want told you the QuickShop have new update {0}!
+    - Paimon souhaite te dire que QuickShop a une nouvelle mise à jour {0}!
   remote-disable-warning: '<red>Cette version de QuickShop est marquée comme désactivée par le serveur distant, ce qui signifie que cette version peut avoir de sérieux problèmes, obtenez plus en profondeur des détails sur notre page SpigotMC : {0}. Cette alerte continuera d''apparaître jusqu''à ce que vous passiez à une version stable, mais elle n''affectera pas les performances de votre serveur.'
 purchase-out-of-stock: <red>Cette boutique est en rupture de stock, contactez le propriétaire ou le personnel de la boutique pour recharger le stock.
 nearby-shop-entry: '<green>- Info:{0} <green>Prix:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>distance: <aqua>{5} <green>bloc(s)'
@@ -256,7 +256,7 @@ shop-stock-too-low: <red>Il ne reste que {0} {1} dans cette boutique!
 world-not-exists: <red>Le monde <yellow>{0}<red> n'existe pas
 how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL<green>. You can sell <yellow>{0}<green>. Enter <aqua>{1}<green> in chat, to sell all.
 shop-freezed-at-location: <yellow>Votre boutique {0} à {1} a été gelée!
-translation-contributors: 'Contributeurs : Timtower, Netherfoam, KaiNoMood, Mgazul, JackThePicken, Andre_601 et brunopaiva15, HiiRaZ'
+translation-contributors: 'Contributeurs : Timtower, Netherfoam, KaiNoMood, Mgazul, JackThePicken, Andre_601, brunopaiva15, HiiRaZ, WAXIE'
 empty-success: <green>Vider la boutique avec succès
 taxaccount-set: <green>Le compte de taxe de cette boutique a été défini à <yellow>{0}
 support-disable-reason:
