@@ -129,7 +129,7 @@
                                 <goal>shade</goal>
                             </goals>
                             <configuration>
-                                <finalName>artifact-${name}-v1.1.2.3</finalName>
+                                <finalName>artifact-${name}-${version}</finalName>
                                 <!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
                                 <createDependencyReducedPom>true</createDependencyReducedPom>
                                 <minimizeJar>true</minimizeJar>
