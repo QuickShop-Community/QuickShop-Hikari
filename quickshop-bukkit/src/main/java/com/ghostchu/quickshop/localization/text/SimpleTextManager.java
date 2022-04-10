@@ -366,7 +366,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         FileConfiguration result = YamlConfiguration.loadConfiguration(localOverrideFile);
         //Add a comment for user guide if file is empty
         if (result.getKeys(false).isEmpty()) {
-            result.options().setHeader(List.of("Please visit https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-translation-override-system for override language file tutorial."));
+          //  result.options().setHeader(List.of("Please visit https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-translation-override-system for override language file tutorial."));
             result.save(localOverrideFile);
         }
         return result;
