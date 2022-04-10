@@ -132,8 +132,9 @@ if(plugin != null){
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-bukkit</artifactId>
-            <version>PUT_VERSION_HERE</version>
+            <version>VERSION HERE</version>
             <scope>provided</scope>
+            <classifier>shaded</classifier>
         </dependency>
     </dependencies>
 ```
