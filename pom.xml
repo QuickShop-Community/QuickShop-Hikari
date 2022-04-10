@@ -137,6 +137,7 @@
                                 <createSourcesJar>false</createSourcesJar>
                                 <createTestSourcesJar>false</createTestSourcesJar>
                                 <shadeSourcesContent>true</shadeSourcesContent>
+                                <shadedArtifactAttached>true</shadedArtifactAttached>
                                 <relocations>
                                     <relocation>
                                         <pattern>com.dumptruckman.bukkit.configuration.</pattern>
