@@ -135,7 +135,7 @@
                                 <createDependencyReducedPom>true</createDependencyReducedPom>
                                 <minimizeJar>true</minimizeJar>
                                 <createSourcesJar>true</createSourcesJar>
-                                <createTestSourcesJar>true</createTestSourcesJar>
+                                <createTestSourcesJar>false</createTestSourcesJar>
                                 <shadeSourcesContent>true</shadeSourcesContent>
                                 <relocations>
                                     <relocation>
