@@ -180,8 +180,8 @@
                                         </shadedPattern>
                                     </relocation>
                                     <relocation>
-                                        <pattern>net.kyori.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.
+                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.adventure.text.minimessage.
                                         </shadedPattern>
                                     </relocation>
                                 </relocations>
