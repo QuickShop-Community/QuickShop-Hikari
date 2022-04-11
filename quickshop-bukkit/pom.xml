@@ -361,12 +361,6 @@
             <version>1.7.35</version>
             <scope>provided</scope>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>com.github.simplix-softworks</groupId>-->
-        <!--            <artifactId>SimplixStorage</artifactId>-->
-        <!--            <version>3.1.9</version>-->
-        <!--            <scope>provided</scope>-->
-        <!--        </dependency>-->
         <dependency>
             <groupId>io.papermc</groupId>
             <artifactId>paperlib</artifactId>

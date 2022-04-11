@@ -59,10 +59,6 @@ public class SubCommand_SuperCreate implements CommandHandler<Player> {
                 continue;
             }
 
-//            if (cmdArg.length >= 1) {
-//                plugin.getShopManager().handleChat(sender, cmdArg[0], true);
-//                return;
-//            }
             // Send creation menu.
             final SimpleInfo info = new SimpleInfo(b.getLocation(), ShopAction.CREATE_SELL, sender.getInventory().getItemInMainHand(), b.getRelative(sender.getFacing().getOppositeFace()), true);
 
