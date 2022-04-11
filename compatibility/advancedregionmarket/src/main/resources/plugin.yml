@@ -1,6 +1,6 @@
-name: qscompat-advanvedregionmarket
+name: qscompat-${artifactId}
 version: '${project.version}'
-main: com.ghostchu.quickshop.compatibility.advancedregionmarket.Main
+main: com.ghostchu.quickshop.compatibility.${artifactId}.Main
 api-version: 1.16
 depend:
   - AdvancedRegionMarket

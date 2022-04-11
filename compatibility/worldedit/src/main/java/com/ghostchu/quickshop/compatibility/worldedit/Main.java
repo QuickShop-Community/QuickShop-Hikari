@@ -24,7 +24,7 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
-public final class Worldedit extends CompatibilityModule implements Listener {
+public final class Main extends CompatibilityModule implements Listener {
     private WorldEditAdapter adapter;
 
     @Override

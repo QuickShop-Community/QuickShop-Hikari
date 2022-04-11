@@ -28,9 +28,9 @@ import java.util.UUID;
 
 public class OpenInvInventoryManager implements InventoryWrapperManager {
     private final IOpenInv openInv;
-    private final Openinv plugin;
+    private final Main plugin;
 
-    public OpenInvInventoryManager(IOpenInv openinv, Openinv plugin) {
+    public OpenInvInventoryManager(IOpenInv openinv, Main plugin) {
         this.openInv = openinv;
         this.plugin = plugin;
     }

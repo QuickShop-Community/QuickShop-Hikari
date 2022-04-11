@@ -44,7 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public final class Plotsquared extends CompatibilityModule implements Listener {
+public final class Main extends CompatibilityModule implements Listener {
     private QuickShopAPI api;
     private boolean whiteList;
     private boolean deleteUntrusted;

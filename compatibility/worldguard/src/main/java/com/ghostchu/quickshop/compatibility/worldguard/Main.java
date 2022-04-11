@@ -39,7 +39,7 @@ import org.bukkit.event.Listener;
 
 import java.util.logging.Level;
 
-public final class Worldguard extends CompatibilityModule implements Listener {
+public final class Main extends CompatibilityModule implements Listener {
     private StateFlag createFlag;
     private StateFlag tradeFlag;
     @Override

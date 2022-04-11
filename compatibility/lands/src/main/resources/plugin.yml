@@ -1,5 +1,5 @@
-name: qscompat-lands
+name: qscompat-${artifactId}
 version: '${project.version}'
-main: com.ghostchu.quickshop.compatibility.lands.Lands
+main: com.ghostchu.quickshop.compatibility.${artifactId}.Main
 api-version: 1.16
 depend: [ Lands, QuickShop-Hikari ]

@@ -38,9 +38,9 @@ import java.util.UUID;
 public class EnderChestWrapper implements InventoryWrapper {
     private final UUID uuid;
     private final Player player;
-    private final Openinv plugin;
+    private final Main plugin;
 
-    public EnderChestWrapper(UUID uuid, IOpenInv iOpenInv, Openinv plugin) {
+    public EnderChestWrapper(UUID uuid, IOpenInv iOpenInv, Main plugin) {
         this.plugin = plugin;
         this.uuid = uuid;
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
