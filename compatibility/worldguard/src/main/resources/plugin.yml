@@ -1,5 +1,5 @@
-name: qscompat-worldguard
+name: qscompat-${artifactId}
 version: '${project.version}'
-main: com.ghostchu.quickshop.compatibility.worldguard.Worldguard
+main: com.ghostchu.quickshop.compatibility.${artifactId}.Main
 api-version: 1.16
 depend: [ WorldGuard, QuickShop-Hikari ]

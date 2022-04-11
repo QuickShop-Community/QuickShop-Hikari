@@ -31,9 +31,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class OpenInvCommand implements CommandHandler<Player> {
-    private final Openinv plugin;
+    private final Main plugin;
 
-    public OpenInvCommand(Openinv openinv) {
+    public OpenInvCommand(Main openinv) {
         this.plugin = openinv;
     }
 

@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import xyz.xenondevs.nova.api.protection.ProtectionIntegration;
 
-public final class Nova extends CompatibilityModule implements Listener, ProtectionIntegration {
+public final class Main extends CompatibilityModule implements Listener, ProtectionIntegration {
 
     @Override
     public void onEnable() {

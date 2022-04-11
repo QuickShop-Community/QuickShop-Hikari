@@ -24,7 +24,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>1.1.3.2</version>
+    <version>1.1.3.3</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -131,7 +131,7 @@
                             <configuration>
                                 <finalName>artifact-${name}-${version}</finalName>
                                 <!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
-                                <createDependencyReducedPom>true</createDependencyReducedPom>
+                                <createDependencyReducedPom>false</createDependencyReducedPom>
                                 <minimizeJar>true</minimizeJar>
                                 <createSourcesJar>false</createSourcesJar>
                                 <createTestSourcesJar>false</createTestSourcesJar>
@@ -180,8 +180,8 @@
                                         </shadedPattern>
                                     </relocation>
                                     <relocation>
-                                        <pattern>net.kyori.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.
+                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.adventure.text.minimessage.
                                         </shadedPattern>
                                     </relocation>
                                 </relocations>

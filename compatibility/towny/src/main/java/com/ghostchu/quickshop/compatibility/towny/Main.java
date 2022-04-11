@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public final class Towny extends CompatibilityModule implements Listener {
+public final class Main extends CompatibilityModule implements Listener {
     private QuickShopAPI api;
     private List<TownyFlags> createFlags;
     private List<TownyFlags> tradeFlags;

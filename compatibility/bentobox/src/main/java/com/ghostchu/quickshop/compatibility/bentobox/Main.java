@@ -30,7 +30,7 @@ import world.bentobox.bentobox.database.objects.IslandDeletion;
 
 import java.util.List;
 
-public final class Bentobox extends CompatibilityModule implements Listener {
+public final class Main extends CompatibilityModule implements Listener {
     private boolean deleteShopOnLeave;
     private boolean deleteShopOnReset;
 

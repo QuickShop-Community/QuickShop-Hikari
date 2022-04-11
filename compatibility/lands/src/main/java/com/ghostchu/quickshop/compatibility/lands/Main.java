@@ -39,7 +39,7 @@ import org.bukkit.event.Listener;
 import java.util.Map;
 import java.util.UUID;
 
-public final class Lands extends CompatibilityModule implements Listener {
+public final class Main extends CompatibilityModule implements Listener {
     private boolean ignoreDisabledWorlds;
     private boolean whitelist;
     private LandsIntegration landsIntegration;

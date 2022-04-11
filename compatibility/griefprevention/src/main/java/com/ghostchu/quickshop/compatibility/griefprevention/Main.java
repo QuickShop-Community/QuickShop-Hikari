@@ -41,7 +41,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public final class Griefprevention extends CompatibilityModule implements Listener {
+public final class Main extends CompatibilityModule implements Listener {
     final GriefPrevention griefPrevention = GriefPrevention.instance;
     private final List<Flag> tradeLimits = new ArrayList<>(3);
     private boolean whiteList;

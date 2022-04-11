@@ -26,7 +26,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 
-public final class Openinv extends CompatibilityModule implements Listener {
+public final class Main extends CompatibilityModule implements Listener {
     public IOpenInv openInv;
     public OpenInvInventoryManager manager;
     @Override
