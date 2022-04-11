@@ -131,7 +131,7 @@
                             <configuration>
                                 <finalName>artifact-${name}-${version}</finalName>
                                 <!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
-                                <createDependencyReducedPom>true</createDependencyReducedPom>
+                                <createDependencyReducedPom>false</createDependencyReducedPom>
                                 <minimizeJar>true</minimizeJar>
                                 <createSourcesJar>false</createSourcesJar>
                                 <createTestSourcesJar>false</createTestSourcesJar>
