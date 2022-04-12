@@ -383,7 +383,7 @@
         <dependency>
             <groupId>cc.carm.lib</groupId>
             <artifactId>easysql-hikaricp</artifactId>
-            <version>0.3.8</version>
+            <version>0.3.11</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
@@ -412,7 +412,7 @@
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>simplereloadlib</artifactId>
-            <version>1.1.1</version>
+            <version>1.1.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
