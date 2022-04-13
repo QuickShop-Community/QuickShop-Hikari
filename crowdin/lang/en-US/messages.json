@@ -115,7 +115,7 @@
   },
   "bypassing-lock": "&cBypassing a QuickShop lock!",
   "that-is-locked": "&cThis shop is locked.",
-  "how-many-buy": "&aEnter in chat, how many you wish to &bBUY&a. You can buy &e{0}&a. Enter &b{1}&a to buy them all.",
+  "how-many-buy": "Enter how much you wish to &bBUY&a in the chat. You can buy &e{0}&a. Enter &b{1}&a to buy all.",
   "how-many-sell": "&aEnter in chat, how much you wish to &dSELL&a. You can sell &e{0}&a. Enter &b{1}&a in chat, to sell all.",
   "not-allowed-to-create": "&cYou may not create a shop here.",
   "blacklisted-item": "&cYou cannot sell this item because it is on the blacklist",
