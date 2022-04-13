@@ -33,6 +33,7 @@ import com.google.gson.JsonParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +63,7 @@ public class MsgUtil {
     private static DecimalFormat decimalFormat;
     private static final QuickShop plugin = QuickShop.getInstance();
     private volatile static Entry<String, String> cachedGameLanguageCode = null;
+
 
     /**
      * Deletes any messages that are older than a week in the database, to save on space.

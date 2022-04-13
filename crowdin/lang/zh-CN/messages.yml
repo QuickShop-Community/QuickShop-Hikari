@@ -53,7 +53,7 @@ quick-fill:
 3rd-plugin-build-check-failed-admin: '<gray>(管理员信息) <light_purple>{0} <dark_gray>拒绝了权限检查。如果不例外，请尝试添加 <light_purple>{1} <gray>进监听器黑名单。<gray>配置指南：https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>附近的平均价格： <yellow>{0}'
 digits-reach-the-limit: <red>您的价格中的小数点后位数超过上限。
-currency-unset: <green>商店货币单位已被成功删除。现在会使用默认货币单位。
+currency-unset: <green>商店货币已被成功删除。现在会使用默认货币。
 you-cant-create-shop-in-there: <red>你没有在这个位置创建商店的权限。
 no-pending-action: <red>你没有任何进行中的操作
 refill-success: <green>填货成功
@@ -160,7 +160,7 @@ you-dont-have-that-many-items: <red>你只有 {0} 个 {1}。
 complete: <green>完成！
 translate-not-completed-yet-url: '{0} 的翻译完成度为 {1}，您想帮助我们改进翻译吗？来这里吧： {2}'
 success-removed-shop: <green>商店已删除！
-currency-set: <green>商店货币单位已被成功设置为 {0}。
+currency-set: <green>商店货币已被成功设置为 {0}。
 shop-purged-start: <green>商店清理已开始，请检查控制台获取详细信息。
 economy-transaction-failed: <red>抱歉，在处理您的交易时发生了内部错误。 交易已被取消，任何交易操作都已被回滚。如果出现这种情况，请联系服务器管理员。
 nothing-to-flush: <green>你没有新的商店消息

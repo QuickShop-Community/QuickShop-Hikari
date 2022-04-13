@@ -71,7 +71,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
     private final Set<String> availableLanguages = new LinkedHashSet<>();
     private final Cache<String, String> languagesCache =
             CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
-
+    private MiniMessage miniMessage = MiniMessage.builder().strict(false).build();
     public SimpleTextManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
@@ -592,7 +592,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
                 }
-                List<Component> components = str.stream().map(s-> MiniMessage.miniMessage().deserialize(s)).toList();
+                List<Component> components = str.stream().map(s-> manager.miniMessage.deserialize(s)).toList();
                 return postProcess(components);
             }
         }
@@ -693,7 +693,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     Util.debugLog("Missing Language Key: " + path + ", report to QuickShop!");
                     return LegacyComponentSerializer.legacySection().deserialize(path);
                 }
-                Component component = MiniMessage.miniMessage().deserialize(str);
+                Component component = manager.miniMessage.deserialize(str);
                 return postProcess(component);
             }
         }
