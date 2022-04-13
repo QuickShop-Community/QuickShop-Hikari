@@ -153,7 +153,7 @@
     "now-nolonger-debuging": "&aPassage réussi en mode développeur. Actualisation de QuickShop...",
     "wrong-args": "&cCommande invalide. Utilisez &l/qs help &cpour voir une liste de commandes.",
     "description": {
-      "alwayscounting": "&eSet if shop always counting container even is unlimited",
+      "alwayscounting": "&aIndiquez si le magasin compte toujours le conteneur même s'il est illimité",
       "title": "&aAide QuickShop",
       "unlimited": "&eDonne à une boutique un stock illimité.",
       "setowner": "&eModifie le propriétaire d'une boutique.",
@@ -214,7 +214,7 @@
     "freeze": "Echange désactivé"
   },
   "controlpanel": {
-    "alwayscounting": "&aAlways counting: {0} &e[&d&lChange&e]",
+    "alwayscounting": "&aToujours compter : {0} &e[&d&lChangement&e]",
     "alwayscounting-hover": "&eClick to toggle if the shop is always counting container.",
     "setowner": "&aPropriétaire: &b{0} &e[&dChanger&e]",
     "infomation": "&aPanneau de contrôle de la boutique :",
@@ -328,8 +328,8 @@
   "shop-cannot-trade-when-freezing": "&cVous ne pouvez pas échanger avec cette boutique car elle est gelée.",
   "shop-freezed-at-location": "&eVotre boutique {0} à {1} a été gelée!",
   "denied-put-in-item": "&cVous ne pouvez pas mettre cet objet dans votre boutique!",
-  "how-many-buy-stack": "&eEntre dans le chat combien de stack tu souhaites &bACHETER&a. Il y a &e{0}&a items dans chaque stack et tu peux acheter &e{1}&a stacks. Entre &b{2}&a dans le chat pour tout acheter.",
-  "how-many-sell-stack": "&eEntre dans le chat combien de stack tu souhaites &dVENDRE&a. Il y a &e{0}&a items dans chaque stack et tu peux vendre &e{1}&a stacks. Entre &b{2}&a dans le chat pour tout vendre.",
+  "how-many-buy-stack": "&aEntre dans le chat combien de stack tu souhaites &bACHETER&a. Il y a &e{0}&a items dans chaque stack et tu peux acheter &e{1}&a stacks. Entre &b{2}&a dans le chat pour tout acheter.",
+  "how-many-sell-stack": "&aEntre dans le chat combien de stack tu souhaites &dVENDRE&a. Il y a &e{0}&a items dans chaque stack et tu peux vendre &e{1}&a stacks. Entre &b{2}&a dans le chat pour tout vendre.",
   "language": {
     "name": "&eNom: &6{0}",
     "code": "&eNom: &6{0}",
@@ -471,20 +471,20 @@
     "entry-own": " &e- &c[own] &b{0} &d{1}",
     "entry-cooperation": " &e- &c[co] &b{0} &d{1}",
     "hover": [
-      "&eName: &b{0}",
-      "&eOwner: &b{0}",
+      "&eNom: &b{0}",
+      "&ePropriétaire : &b{0}",
       "&eType: &b{0}",
-      "&ePrice: &b{0}",
-      "&eItem: &b{0}",
-      "&eLocation: &b{0}"
+      "&ePrix: &b{0}",
+      "&eObjet: &b{0}",
+      "&eEmplacement: &b{0}"
     ],
     "hover-arg-filled": [
-      "&eName: &b{name}",
-      "&eOwner: &b{owner}",
+      "&eNom: &b{name}",
+      "&ePropriétaire : &b{owner}",
       "&eType: &b{type}",
-      "&ePrice: &b{price}",
-      "&eItem: &b{item}",
-      "&eLocation: &b{location}"
+      "&ePrix: &b{price}",
+      "&eObjet: &b{item}",
+      "&eEmplacement: &b{location}"
     ]
   }
 }
