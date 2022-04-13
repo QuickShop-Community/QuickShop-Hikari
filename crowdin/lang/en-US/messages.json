@@ -119,7 +119,7 @@
   "how-many-sell": "Enter how much you wish to &dSELL&a in the chat. You can sell &e{0}&a. Enter &b{1}&a to sell them all.",
   "not-allowed-to-create": "&cYou may not create a shop here.",
   "blacklisted-item": "&cYou cannot sell this item because it is on the blacklist",
-  "how-much-to-trade-for": "&aEnter in chat, how much you wish to trade &e{1}x {0}&a for.",
+  "how-much-to-trade-for": "Enter how much you wish to trade &e{1}x {0}&a for in the chat.",
   "command": {
     "format": "&a{0} {1} &e- {2}",
     "format-disabled": "&c/{0} {1} &7- {2}",
