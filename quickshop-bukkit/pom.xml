@@ -112,6 +112,10 @@
                     <exclude>lang/**/messages.json</exclude>
                 </excludes>
             </resource>
+            <resource>
+                <directory>src/main/resources/3rd-party-licenses</directory>
+                <filtering>false</filtering>
+            </resource>
         </resources>
     </build>
 

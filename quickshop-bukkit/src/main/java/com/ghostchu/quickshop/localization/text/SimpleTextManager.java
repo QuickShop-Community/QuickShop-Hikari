@@ -71,7 +71,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
     private final Set<String> availableLanguages = new LinkedHashSet<>();
     private final Cache<String, String> languagesCache =
             CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
-    private MiniMessage miniMessage = MiniMessage.builder().strict(false).build();
+    private final MiniMessage miniMessage = MiniMessage.builder().strict(false).build();
     public SimpleTextManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
