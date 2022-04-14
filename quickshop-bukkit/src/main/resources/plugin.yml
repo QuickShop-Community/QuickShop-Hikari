@@ -55,6 +55,7 @@ softdepend:
 
 api-version: 1.18
 
+# TODO: https://github.com/PaperMC/Paper/pull/7177
 libraries:
   - org.apache.commons:commons-compress:1.21
   - org.apache.commons:commons-lang3:3.12.0
