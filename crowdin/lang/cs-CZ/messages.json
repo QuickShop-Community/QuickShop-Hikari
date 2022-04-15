@@ -471,20 +471,20 @@
     "entry-own": " &e- &c[own] &b{0} &d{1}",
     "entry-cooperation": " &e- &c[co] &b{0} &d{1}",
     "hover": [
-      "&eName: &b{0}",
-      "&eOwner: &b{0}",
-      "&eType: &b{0}",
-      "&ePrice: &b{0}",
+      "&eJméno: &b{0}",
+      "&r &fVlastník: &b{0}",
+      "&eTyp: &b{0}",
+      "&eCena: &b{0}",
       "&eItem: &b{0}",
-      "&eLocation: &b{0}"
+      "&eUmístění: &b{0}"
     ],
     "hover-arg-filled": [
-      "&eName: &b{name}",
-      "&eOwner: &b{owner}",
-      "&eType: &b{type}",
-      "&ePrice: &b{price}",
+      "&eJméno: &b{name}",
+      "&r &fVlastník: &b{owner}",
+      "&eTyp: &b{type}",
+      "&eCena: &b{price}",
       "&eItem: &b{item}",
-      "&eLocation: &b{location}"
+      "&eUmístění: &b{location}"
     ]
   }
 }
