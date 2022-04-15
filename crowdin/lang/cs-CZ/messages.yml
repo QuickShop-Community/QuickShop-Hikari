@@ -2,13 +2,13 @@
 break-shop-use-supertool: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Obchod můžete rozbít pomocí SuperTool.
 fee-charged-for-price-change: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Zaplatili jste <red>{0}<gray> za změnu ceny.
 not-allowed-to-create: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Zde nemůžete vytvořit obchod.
-disabled-in-this-world: <red>QuickShop is disabled in this world
+disabled-in-this-world: <red>QuickShop je v tomto světě zakázán
 how-much-to-trade-for: '<gray>Zadejte do chatu: Cenu za kolik chcete prodávat <aqua>{1}x {0}<gray>.'
 client-language-changed: <green>QuickShop zjistil, že nastavení jazyka vašeho klienta bylo změněno, nyní pro Vás používáme {0} locales.
 shops-backingup: Vytváření zálohy obchodu z databáze...
 _comment: Ahoj překladateli! Pokud toto upravuješ z Githubu nebo ze zdrojového kódu, měl bys mrknout na https://crowdin.com/project/quickshop-reremake
 unlimited-shop-owner-changed: <gray>Majitel tohoto neomezeného obchodu byl změněn na {0}.
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
+bad-command-usage-detailed: '<red>Špatné parametry příkazů! Povoleny jsou následující parametry: <gray>{0}'
 thats-not-a-number: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Neplatné číslo
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>Tento příkaz není bezpečný, můžete ho použít pouze v konzoly.
@@ -27,26 +27,26 @@ blacklisted-item: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Nemů
 command-type-mismatch: <red>Tento příkaz může být spuštěn pouze v <aqua>{0}.
 server-crash-warning: '<red>Server může spadnout po spustění příkazu /qs reload pokud nahradíš/smažeš jar soubor QuickShop pluginu při spuštěném serveru.'
 you-cant-afford-to-change-price: <red>Cena za změnu ceny ve tvém obchodě je {0}.
-safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
+safe-mode: <red>QuickShop nyní v bezpečném režimu, nemůžete otevřít tento obchod, prosím kontaktujte správce serveru.
 forbidden-vanilla-behavior: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Operace je zakázána, protože není v souladu s chováním vanilla verze
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>Váš obchod {0} je plný!
 paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '&eName: &b{0}'
-    - '&eOwner: &b{0}'
-    - '&eType: &b{0}'
-    - '&ePrice: &b{0}'
+    - '&eJméno: &b{0}'
+    - '&r &fVlastník: &b{0}'
+    - '&eTyp: &b{0}'
+    - '&eCena: &b{0}'
     - '&eItem: &b{0}'
-    - '&eLocation: &b{0}'
+    - '&eUmístění: &b{0}'
   hover-arg-filled:
-    - '&eName: &b{name}'
-    - '&eOwner: &b{owner}'
-    - '&eType: &b{type}'
-    - '&ePrice: &b{price}'
+    - '&eJméno: &b{name}'
+    - '&r &fVlastník: &b{owner}'
+    - '&eTyp: &b{type}'
+    - '&eCena: &b{price}'
     - '&eItem: &b{item}'
-    - '&eLocation: &b{location}'
+    - '&eUmístění: &b{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
