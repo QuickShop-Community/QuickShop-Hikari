@@ -387,7 +387,7 @@
         <dependency>
             <groupId>cc.carm.lib</groupId>
             <artifactId>easysql-hikaricp</artifactId>
-            <version>0.3.11</version>
+            <version>0.3.15</version>
             <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
