@@ -50,7 +50,7 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>zamítl kontrolu oprávnění, pokud to není výjimka, zkuste přidat <light_purple>{1} <gray>na blacklist. <gray>Konfigurace průvodce: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Blízká průměrná cena: <aqua>{0}'
 digits-reach-the-limit: <red>Dosáhli jste limitu desetinných míst v ceně.
 currency-unset: Měna Shopu byla úspěšně odstraněna. Nyní se používá výchozí nastavení.
@@ -58,7 +58,7 @@ you-cant-create-shop-in-there: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>�
 no-pending-action: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Nemáte žádné čekající akce
 refill-success: <green>Doplnění úspěšně proběhlo.
 failed-to-paste: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Nepodařilo se nahrát data do Pastebinu. Zkontrolujte připojení k internetu a zkuste to znovu. (Podrobnosti naleznete v konzoli)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+shop-out-of-stock-name: <dark_purple>v obchodě {0} došel {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <gray>Zadej do chatu, kolik stacků si přejete <aqua>Koupit<gray>. Existuje <aqua>{0}<gray> položek v každém balíku a můžete koupit <aqua>{1}<gray> stacků. Vložte <aqua>{2}<gray> do chatu pro nákup všech.
 exceeded-maximum: <red>Hodnota překročila maximální hodnotu v Javě.
@@ -88,7 +88,7 @@ reloading-status:
   failed: <red>Znovunačtení selhalo, zkontroluj konzoli
 player-bought-from-your-store-tax: <red>{0} zakoupen {1} {2} z tvého obchodu a ty jsi zaplatil {3} na daních).
 not-enough-space: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Obchod má pouze místo pro {0} více!
-shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
+shop-name-success: <green>Název obchodu byl úspěšně nastaven na <yellow>{0}<green>.
 shop-staff-added: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Úspěšně byl přidán {0} jako člen tvého obchodu.
 shops-recovering: Obnovování obchodů ze zálohy...
 menu:
@@ -122,21 +122,21 @@ integrations-check-failed-trade: <red>Integrace {0} zamítla obchod
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Úspěšně nastaveno vlastníka obchodu na Server.
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>Tento název obchodu je příliš dlouhý (maximální délka {0}), vyberte prosím jiný!
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>{0} od {1} {2} transakce:'
   action-hover: <yellow>{0}
   entry-header-shop: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66) <aqua>|'
-  price-hover: <yellow>Total {0}, including {1} taxes.
-  unknown: <gray>(unknown)
-  undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  price-hover: <yellow>Celkem {0}, včetně {1} poplatku.
+  unknown: <gray>(neznámý)
+  undefined: <gray>(bezejmenný)
+  no-results: <red>Nenalezeny žádné transakce.
   action-description:
-    DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
-    ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
+    DELETE: <yellow>Hráč odstranil obchod. Poplatek za shop se vrátil vlastníkovi, pokud to bylo možné.
+    ONGOING_FEE: <yellow>Hráč zaplatil poplatek na další období.
+    PURCHASE_BUYING_SHOP: <yellow>Hráč prodal nějaké předměty do obchodu.
+    CREATE: <yellow>Hráč vytvořil obchod.
+    PURCHASE_SELLING_SHOP: <yellow>Hráč koupil některé předměty z obchodu
     PURCHASE: <yellow>Purchased item with a shop
   query-argument: 'Query Argument: {0}'
   entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
@@ -151,9 +151,9 @@ metric:
   tax-hover: <yellow>{0} taxes
   header-global: '<yellow>The server {0} {1} transactions:'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
-  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}'
-  time-hover: '<yellow>Time: {0}'
+  transaction-count: <yellow>{0} celkem
+  shop-hover: '<yellow>{0}<newline><gold>Pozice: <gray>{1} {2} {3} Svět: {4}<newline><gold>Majitel: <gray>{5}<newline><gold>Typ obchodu: <gray>{6}<newline><gold>Položka: <gray>{7}<newline><gold>Cena: <gray>{8}'
+  time-hover: '<yellow>Čas: {0}'
   amount-stack-hover: <yellow>{0}x stack
 permission-denied-3rd-party: '<aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Oprávnění odepřeno: Plugin třetí strany [{0}].'
 you-dont-have-that-many-items: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Máš pouze {0} {1}.
@@ -189,7 +189,7 @@ updatenotify:
     qualityverifyed: '[Quality]'
     master: 'Master'
     unstable: '[Unstable]'
-    paper: '[+Paper Optimized]'
+    paper: '[+Dokument optimalizován]'
     stable: '[Stable]'
     spigotmc: '[SpigotMC]'
     papermc: '[PaperMC]'
@@ -215,20 +215,20 @@ updatenotify:
     - Co si myslíte? {0} byla vydána! Updatujte plugin!
     - Doktor, QuickShop má novou aktualizaci {0}! Měl byste aktualizovat~
     - Ko~ko~da~yo~ QuickShop má nový update {0}~
-    - Paimon want told you the QuickShop have new update {0}!
+    - Paimon vám nenápadně oznamuje, že QuickShop má novou aktualizaci {0}!
   remote-disable-warning: '<red>Tato verze QuickShopu je označena jako zakázaná vzdáleným serverem, což znamená, že tato verze může mít vážný problém, získejte podrobnosti na naší SpigotMC stránce: {0}. Toto varování se bude objevovat dokud nepřepnete na stabilní verzi, ale neovlivní to výkon vašeho serveru.'
 purchase-out-of-stock: <red>Tumuto obchodu došli zásoby, kontaktujte majitele obchodu pro doplňování zásob.
 nearby-shop-entry: '<aqua>▪<dark_gray>▏ <aqua>Info <dark_gray>› {0}<white>Cena:<aqua>{1} <white>x:<aqua>{2} <white>y:<aqua>{3} <white>z:<aqua>{4} <white>vzdálenost: <aqua>{5} <white>blok(y)'
 chest-title: Obchod QuickShop
 console-only: <red>Tento příkaz může být použit pouze z konzole.
 failed-to-put-sign: <red>Není dostatek místa v okolí obchodu a umístit informační značku.
-shop-name-unset: <red>This shop's name now removed
+shop-name-unset: <red>Název tohoto obchodu byl odstraněn
 shop-nolonger-freezed: <aqua>Odzmrazil jsi obchod. Nyní je to zpět do normální!
 no-permission-build: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Zde nelze postavit obchod.
 tableformat:
   left_half_line: <dark_purple>+--------------------
   right_half_line: <dark_purple>--------------------+
-  full_line: <dark_purple>+---------------------------------------------------+
+  full_line: <dark_purple>+-----------------------------------------------------------+
   left_begin: '<dark_purple>| '
 quickshop-gui-preview: Náhled GUI položky v QuickShopu
 translate-not-completed-yet-click: Překlad jazyka {0} ještě nebyl dokončen uživatelem {1}. Chcete nám pomoci zlepšit překlad? Klikněte zde!
