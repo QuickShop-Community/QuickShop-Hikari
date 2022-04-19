@@ -50,7 +50,7 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '&(Tylko dla Adminów) &d{0} &8odmówił sprawdzenia uprawnień. Jeśli jest to nie wyłączone, spróbuj dodać &d{1} &7aby zwracał uwagę na Blacklistę. &7Przewodnik Konfiguracji: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Cena w pobliżu: <yellow>{0}'
 digits-reach-the-limit: <red>Osiągnąłeś limit miejsc po przecinku w cenie.
 currency-unset: <green>Waluta sklepu usunięta pomyślnie. Używasz teraz ustawień domyślnych.
@@ -124,7 +124,7 @@ success-change-owner-to-server: <green>Pomyślnie ustawiono właściciela sklepu
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
 shop-name-too-long: <red>Nazwa tego sklepu jest zbyt długa (maksymalna długość {0}), proszę wybrać inną!
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>{0} transakcji {1} {2} transakcje/transakcji:'
   action-hover: <yellow>{0}
   entry-header-shop: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66) <aqua>|'
   price-hover: <yellow>Suma {0}, łącznie z {1} podatkami.
@@ -136,24 +136,24 @@ metric:
     ONGOING_FEE: <yellow>Gracz zapłacił bieżące opłaty z powodu opóźnionej płatności.
     PURCHASE_BUYING_SHOP: <yellow>Gracz sprzedał kilka przedmiotów w sklepie zakupowym.
     CREATE: <yellow>Gracz utworzył sklep.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
-    PURCHASE: <yellow>Purchased item with a shop
-  query-argument: 'Query Argument: {0}'
+    PURCHASE_SELLING_SHOP: <yellow>Gracz sprzedał kilka przedmiotów w sklepie do sprzedawania
+    PURCHASE: <yellow>Zakupiony przedmiot ze sklepem
+  query-argument: 'Argument zapytania: {0}'
   entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  amount-hover: <yellow>{0}x
+  amount-hover: <yellow>{0}
   entry-header-global: '<aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591) <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
-  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
-  player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
-  looking-up: <yellow>Performing metric lookup, Please wait...
+  header-shop: '<yellow>{0} transakcji {1} {2} transakcje/transakcji:'
+  player-hover: '<yellow>{0}<newline><gold>UUUID: <gray>{1}'
+  looking-up: <yellow>Wykonywanie wyszukiwania metrycznego, proszę czekać...
   entry-header-player: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [shop](color=#CDAA7D) <aqua>| [amount](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
   entry-shop: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  tax-hover: <yellow>{0} taxes
-  header-global: '<yellow>The server {0} {1} transactions:'
+  tax-hover: <yellow>{0}
+  header-global: '<yellow>{0} transakcji {1} transakcje/transakcji:'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
-  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}'
-  time-hover: '<yellow>Time: {0}'
+  transaction-count: <yellow>łącznie{0}
+  shop-hover: '<yellow>{0}<newline><gold>Pozycja: <gray>{1} {2} {3}, Świat: {4}<newline><gold>Właściciel: <gray>{5}<newline><gold>Typ sklepu: <gray>{6}<newline><gold>Pozycja: <gray>{7}<newline><gold>Cena: <gray>{8}'
+  time-hover: '<yellow>Czas: {0}'
   amount-stack-hover: <yellow>{0}x stack
 permission-denied-3rd-party: '<red>Odmowa uprawnień: Wtyczka osób trzecich [{0}].'
 you-dont-have-that-many-items: <red>Posiadasz tylko {0} {1}.
@@ -346,12 +346,12 @@ controlpanel:
   empty-hover: <yellow>Kliknij, aby wyczyścić sklep.
   toggledisplay: '<yellow>Wyświetlacz Przedmiotu: <aqua>{0} <yellow>[<light_purple><bold>Przełącz<yellow>]'
 timeunit:
-  behind: behind
+  behind: za
   week: <red>{0} week
-  weeks: <red>{0} weeks
+  weeks: <red>{0} tygodni
   year: <red>{0} year
-  before: before
-  scheduled: scheduled
+  before: przed
+  scheduled: zaplanowane
   years: <red>{0} years
   scheduled-in: scheduled in {0}
   second: <red>{0} second
