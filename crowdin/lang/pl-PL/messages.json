@@ -299,11 +299,11 @@
       "bukkitdev": "[BukkitDev]",
       "master": "[Mistrz]",
       "polymart": "[Polymart]",
-      "ore": "[Ore]",
+      "ore": "[Rudy]",
       "papermc": "[PaperMC]",
       "nbtapi": "[+NBTAPI]",
       "paper": "[+Paper Optimized]",
-      "basic": "[Basic]"
+      "basic": "[Podstawowe]"
     }
   },
   "shop-removed-cause-ongoing-fee": "&cTwój sklep w {0} został usunięty, ponieważ nie masz wystarczającej ilości pieniędzy, aby go utrzymać!",
@@ -419,10 +419,10 @@
     "future-plain-text": "future",
     "scheduled": "zaplanowane",
     "scheduled-at": "scheduled at {0}",
-    "scheduled-in": "scheduled in {0}",
+    "scheduled-in": "zaplanowane w {0}",
     "longtimeago": "long time ago",
     "std-format": "MM/dd/yyyy HH:mm:ss",
-    "std-past-format": "{5}{4}{3}{2}{1}{0}ago",
+    "std-past-format": "{5}{4}{3}{2}{1}{0}temu",
     "before": "przed",
     "behind": "za",
     "after": "after",
