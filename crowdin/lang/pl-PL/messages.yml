@@ -154,7 +154,7 @@ metric:
   transaction-count: <yellow>łącznie{0}
   shop-hover: '<yellow>{0}<newline><gold>Pozycja: <gray>{1} {2} {3}, Świat: {4}<newline><gold>Właściciel: <gray>{5}<newline><gold>Typ sklepu: <gray>{6}<newline><gold>Pozycja: <gray>{7}<newline><gold>Cena: <gray>{8}'
   time-hover: '<yellow>Czas: {0}'
-  amount-stack-hover: <yellow>{0}x stack
+  amount-stack-hover: <yellow>{0}x stak/staków
 permission-denied-3rd-party: '<red>Odmowa uprawnień: Wtyczka osób trzecich [{0}].'
 you-dont-have-that-many-items: <red>Posiadasz tylko {0} {1}.
 complete: <green>Zakończony!
@@ -183,7 +183,7 @@ updatenotify:
   onekeybuttontitle: '[Aktualizacja OneKey]'
   label:
     github: '[GitHub]'
-    ore: '[Ore]'
+    ore: '[Rudy]'
     lts: '[LTS]'
     nbtapi: '[+NBTAPI]'
     qualityverifyed: '[Jakość]'
@@ -195,7 +195,7 @@ updatenotify:
     papermc: '[PaperMC]'
     bukkitdev: '[BukkitDev]'
     polymart: '[Polymart]'
-    basic: '[Basic]'
+    basic: '[Podstawowe]'
   list:
     - '{0} został wydany. Nadal używasz {1}!'
     - Boom! Nowa aktualizacja {0} nadchodzą. Aktualizuj!
@@ -222,7 +222,7 @@ nearby-shop-entry: '<green>- Info:{0} <green>Cena:<aqua>{1} <green>x:<aqua>{2} <
 chest-title: Sklep QuickShop
 console-only: <red>To polecenie może być wykonane tylko przez konsolę.
 failed-to-put-sign: <red>Za mało miejsca wokół sklepu, aby umieścić znak informacyjny.
-shop-name-unset: <red>This shop's name now removed
+shop-name-unset: <red>Nazwa tego sklepu została usunięta
 shop-nolonger-freezed: <green>Odblokowałeś sklep. Wróć do normalnego sklepu!
 no-permission-build: <red>Nie możesz zbudować sklepu tutaj.
 tableformat:
@@ -235,16 +235,16 @@ translate-not-completed-yet-click: Tłumaczenie języka {0} nie zostało jeszcze
 taxaccount-invalid: <red>Konto docelowe jest nieprawidłowe, wprowadź prawidłową nazwę gracza lub identyfikator uuid (z myślnikami).
 player-bought-from-your-store: <red>{0} zakupił {1} {2} w Twoim sklepie, i zarobiłeś {3}.
 reached-maximum-can-create: <red>Już utworzyłeś maksimum {0}/{1} sklepów!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
+reached-maximum-create-limit: <red>Osiągnąłeś maksymalną liczbę sklepów, które możesz utworzyć
 translation-version: 'Wersja wsparcia: Hikari'
 no-double-chests: <red>Nie możesz stworzyć sklepu z podwójną skrzynią.
 price-too-cheap: <red>Cena musi być większa niż <yellow>${0}
 shop-not-exist: <red>Sklep nie istnieje.
-bad-command-usage: <red>Bad command arguments!
+bad-command-usage: <red>Błędne argumenty poleceń!
 clean-warning: <yellow>Ta komenda wyczyści <red>wszystkie <yellow>sklepy, jeśli sklep jest uszkodzony, został utworzony w niedozwolonych światach, sprzedaje/skupuje niedozwolone przedmioty lub <red><bold>ISTNIEJE W NIEZAŁADOWANYM ŚWIECIE<yellow>. Upewnij się, że najpierw utwórzyłeś pełną kopię zapasową danych Twojego sklepu i użyj <aqua>/qs cleanghost confirm <yellow>aby kontynuować.
 shop-purchase-cancelled: <red>Zakup w sklepie został anulowany.
 bypassing-lock: <red>Omijanie blokady QuickShop!
-bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
+bungee-cross-server-msg: '<yellow>Szybki sklep CSM: <green>{0}'
 saved-to-path: Kopia zapasowa została zapisana w {0}.
 shop-now-freezed: <green>Zamroziłeś sklep. Nikt nie może teraz handlować z tym sklepem!
 price-is-now: <green>Nowa cena sklepu to <yellow>{0}
@@ -347,16 +347,16 @@ controlpanel:
   toggledisplay: '<yellow>Wyświetlacz Przedmiotu: <aqua>{0} <yellow>[<light_purple><bold>Przełącz<yellow>]'
 timeunit:
   behind: za
-  week: <red>{0} week
+  week: <red>{0} tygodni
   weeks: <red>{0} tygodni
-  year: <red>{0} year
+  year: <red>{0} rok
   before: przed
   scheduled: zaplanowane
-  years: <red>{0} years
-  scheduled-in: scheduled in {0}
-  second: <red>{0} second
-  std-past-format: '{5}{4}{3}{2}{1}{0}ago'
-  seconds: <red>{0} seconds
+  years: <red>{0} lat
+  scheduled-in: zaplanowane w {0}
+  second: <red>{0} sekunda
+  std-past-format: '{5}{4}{3}{2}{1}{0}temu'
+  seconds: <red>{0} sekund
   hour: <red>{0} hour
   scheduled-at: scheduled at {0}
   after: after
