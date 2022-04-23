@@ -371,10 +371,10 @@ timeunit:
   justnow: w tej chwili
   minute: <red>{0} minuta
   std-format: MM/dd/yyyy HH:mm:ss
-  future-plain-text: future
-  month: <red>{0} month
-  future: in {0}
-  days: <red>{0} days
+  future-plain-text: przyszłość
+  month: <red>{0} miesiąc
+  future: w {0}
+  days: <red>{0} dni
 command:
   reloading: '<green>Konfiguracja przeładowana. <yellow>Niektóre zmiany mogą wymagać ponownego uruchomienia. <newline><gray>(Uwaga: zachowanie przeładowania zostało zmienione po 4.0.9.10, teraz przeładowujemy tylko konfigurację, ale nie całą wtyczkę, aby serwer nie uległ awarii)'
   description:
@@ -415,7 +415,7 @@ command:
     size: <yellow>Zmień na dużą ilość sklepu
     supercreate: <yellow>Utwórz sklep podczas omijania wszystkich kontroli ochrony
     taxaccount: <yellow>Ustaw konto podatkowe, które sklep ma używać
-    name: <yellow>Naming a shop to specific name
+    name: <yellow>Nadaje sklepowi konkretną nazwę
     toggledisplay: <yellow>Przełącz stan wyświetlania przedmiotu w sklepie
   bulk-size-not-set: '<red>Użycie: /qs size <amount>'
   no-type-given: '<red>Użycie: /qs find <item>'
@@ -450,7 +450,7 @@ command:
 currency-not-support: <red>Wtyczka ekonomiczna nie obsługuje funkcji wieloekonomicznej.
 trading-in-creative-mode-is-disabled: <red>Nie możesz handlować z tym sklepem, będąc w trybie kreatywnym.
 the-owner-cant-afford-to-buy-from-you: <red>To kosztuje {0}, ale właściciel ma tylko {1}
-you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to naming.
+you-cant-afford-shop-naming: <red>Nie możesz sobie pozwolić na nazwę sklepu, to nazewnictwo kosztuje {0}.
 inventory-error: '<red>Failed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.'
 integrations-check-failed-create: <red>Integracja {0} odmówiła utworzenia sklepu
 shop-out-of-space: <dark_purple>Twój sklep w {0}, {1}, {2} jest teraz pełny.
