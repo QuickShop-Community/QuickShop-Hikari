@@ -357,19 +357,19 @@ timeunit:
   second: <red>{0} sekunda
   std-past-format: '{5}{4}{3}{2}{1}{0}temu'
   seconds: <red>{0} sekund
-  hour: <red>{0} hour
-  scheduled-at: scheduled at {0}
-  after: after
-  day: <red>{0} day
-  recent: recent
-  between: between
-  hours: <red>{0} hours
-  months: <red>{0} months
-  longtimeago: long time ago
-  between-format: between {0} and {1}
-  minutes: <red>{0} minutes
-  justnow: just now
-  minute: <red>{0} minute
+  hour: <red>{0} godzina
+  scheduled-at: zaplanowane na {0}
+  after: po
+  day: <red>{0} dzień
+  recent: najnowsze
+  between: pomiędzy
+  hours: <red>{0} godzin
+  months: <red>{0} miesięcy
+  longtimeago: dawno temu
+  between-format: pomiędzy {0} a {1}
+  minutes: <red>{0} minut
+  justnow: w tej chwili
+  minute: <red>{0} minuta
   std-format: MM/dd/yyyy HH:mm:ss
   future-plain-text: future
   month: <red>{0} month
