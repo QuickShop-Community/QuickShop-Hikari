@@ -25,7 +25,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>1.1.3.4</version>
+        <version>1.1.3.5</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -98,7 +98,7 @@
         <dependency>
             <groupId>com.plotsquared</groupId>
             <artifactId>PlotSquared-Core</artifactId>
-            <version>6.6.2</version>
+            <version>6.6.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

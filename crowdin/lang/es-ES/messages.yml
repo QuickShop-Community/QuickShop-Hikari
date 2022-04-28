@@ -8,7 +8,7 @@ client-language-changed: <green>QuickShop ha detectado que la configuración de 
 shops-backingup: Creando copia de seguridad de la tienda desde la base de datos...
 _comment: '¡Hola traductor! Si editas esto desde Github o desde código fuente, deberías ir a https://crowdin.com/project/quickshop-reremake'
 unlimited-shop-owner-changed: <yellow>El propietario de esta tienda ilimitada ha cambiado a {0}.
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
+bad-command-usage-detailed: '<red>¡Argumentos incorrectos del comando! Acepta los siguientes parámetros: <gray>{0}'
 thats-not-a-number: <red>Número inválido.
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>Este es un comando peligroso, por lo que solo la consola puede ejecutarlo.
