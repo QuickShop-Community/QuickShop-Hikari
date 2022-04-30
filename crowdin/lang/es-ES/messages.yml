@@ -29,28 +29,28 @@ server-crash-warning: '<red>El servidor puede fallar después de ejecutar el com
 you-cant-afford-to-change-price: <red>Cuesta {0} para cambiar el precio en tu tienda.
 safe-mode: <red>QuickShop ahora en modo seguro, no puede abrir este contenedor de la tienda, comuníquese con el administrador del servidor para corregir los errores.
 forbidden-vanilla-behavior: <red>La operación está prohibida por no ser compatible con el comportamiento vainilla
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>¡Tu tienda {0} está llena!
 paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '&eName: &b{0}'
-    - '&eOwner: &b{0}'
-    - '&eType: &b{0}'
-    - '&ePrice: &b{0}'
+    - '&eNombre: &b{0}'
+    - '&ePropietario: &b{0}'
+    - '&eTipo: &b{0}'
+    - '&ePrecio: &b{0}'
     - '&eItem: &b{0}'
-    - '&eLocation: &b{0}'
+    - '&eUbicación: &b{0}'
   hover-arg-filled:
-    - '&eName: &b{name}'
-    - '&eOwner: &b{owner}'
-    - '&eType: &b{type}'
-    - '&ePrice: &b{price}'
+    - '&eNombre: &b{name}'
+    - '&ePropietario: &b{owner}'
+    - '&eTipo: &b{type}'
+    - '&ePrecio: &b{price}'
     - '&eItem: &b{item}'
-    - '&eLocation: &b{location}'
+    - '&eUbicación: &b{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denegó las comprobaciones de permisos, si esto no está excepcionado, intente añadir <light_purple>{1} <gray>a la lista negra de escucha. <gray>Configurar Guía: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Precio medio en esta zona: <yellow>{0}'
 digits-reach-the-limit: <red>Has alcanzado el límite de decimales en el precio.
 currency-unset: <green>Divisa de la tienda ha sido removida con éxito. Usando la configuración predeterminada ahora.
@@ -66,7 +66,7 @@ unlimited-shop-owner-keeped: '<yellow>Atención: El dueño de la tienda todavía
 no-enough-money-to-keep-shops: <red>¡No dispones del suficiente dinero para mantener tus tiendas! Todas tus tiendas han sido eliminadas...
 3rd-plugin-build-check-failed: '<red>El complemento de terceros: <bold>{0}<reset><red> ha denegado la comprobación de permisos, ¿has ajustado los permisos?'
 not-a-integer: <red>Solo puedes introducir un número, tu entrada era {0}.
-translation-country: '&c&lZona de idioma: &b&lEspañol (es_ES)'
+translation-country: '&c&lIdioma: &b&lEspañol (es_ES)'
 buying-more-than-selling: '<red>ATENCIÓN: ¡Estás comprando artículos por más de lo que los estás vendiendo!'
 purchase-failed: '<red>Compra sin éxito: fallo interno. Por favor, contacta con el administrador del servidor.'
 denied-put-in-item: <red>¡No puedes poner este ítem en tu tienda!
