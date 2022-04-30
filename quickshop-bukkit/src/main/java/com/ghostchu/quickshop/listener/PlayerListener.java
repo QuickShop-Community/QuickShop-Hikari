@@ -57,7 +57,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.AbstractMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -263,12 +262,10 @@ public class PlayerListener extends AbstractQSListener {
                     return 0;
                 }
                 plugin.text().of(p, "you-cant-afford-to-buy",
-                        Objects.requireNonNull(
-                                plugin.getShopManager().format(price, shop.getLocation().getWorld(),
-                                        shop.getCurrency())),
-                        Objects.requireNonNull(
-                                plugin.getShopManager().format(balance, shop.getLocation().getWorld(),
-                                        shop.getCurrency()))).send();
+                        plugin.getShopManager().format(price, shop.getLocation().getWorld(),
+                                shop.getCurrency()),
+                        plugin.getShopManager().format(balance, shop.getLocation().getWorld(),
+                                shop.getCurrency())).send();
             }
             return 0;
         }
@@ -315,12 +312,10 @@ public class PlayerListener extends AbstractQSListener {
                 // when typed 'all' but the shop owner doesn't have enough money to buy at least 1
                 // item (and shop isn't unlimited or pay-unlimited is true)
                 plugin.text().of(p, "the-owner-cant-afford-to-buy-from-you",
-                        Objects.requireNonNull(
-                                plugin.getShopManager().format(shop.getPrice(), shop.getLocation().getWorld(),
-                                        shop.getCurrency())),
-                        Objects.requireNonNull(
-                                plugin.getShopManager().format(ownerBalance, shop.getLocation().getWorld(),
-                                        shop.getCurrency()))).send();
+                        plugin.getShopManager().format(shop.getPrice(), shop.getLocation().getWorld(),
+                                shop.getCurrency()),
+                        plugin.getShopManager().format(ownerBalance, shop.getLocation().getWorld(),
+                                shop.getCurrency())).send();
                 return 0;
             }
             // when typed 'all' but player doesn't have any items to sell

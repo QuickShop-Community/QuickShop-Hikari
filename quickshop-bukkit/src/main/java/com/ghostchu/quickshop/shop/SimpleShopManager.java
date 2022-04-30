@@ -673,9 +673,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         if (!transaction.checkBalance()) {
             plugin.text().of(buyer, "the-owner-cant-afford-to-buy-from-you",
-                    Objects.requireNonNull(format(total, shop.getLocation().getWorld(), shop.getCurrency())),
-                    Objects.requireNonNull(format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(),
-                            shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency()))).send();
+                    format(total, shop.getLocation().getWorld(), shop.getCurrency()),
+                    format(eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(),
+                            shop.getCurrency()), shop.getLocation().getWorld(), shop.getCurrency())).send();
             return;
         }
         if (!transaction.failSafeCommit()) {
@@ -942,8 +942,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                             .build();
             if (!economyTransaction.checkBalance()) {
                 plugin.text().of(p, "you-cant-afford-a-new-shop",
-                        Objects.requireNonNull(format(createCost, shop.getLocation().getWorld(),
-                                shop.getCurrency()))).send();
+                        format(createCost, shop.getLocation().getWorld(),
+                                shop.getCurrency())).send();
                 return;
             }
             if (!economyTransaction.failSafeCommit()) {
@@ -1123,12 +1123,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         if (!transaction.checkBalance()) {
             plugin.text().of(seller, "you-cant-afford-to-buy",
-                    Objects.requireNonNull(
-                            format(total, shop.getLocation().getWorld(), shop.getCurrency())),
-                    Objects.requireNonNull(format(
-                            eco.getBalance(seller, shop.getLocation().getWorld(),
+                    format(total, shop.getLocation().getWorld(), shop.getCurrency()),
+                    format(eco.getBalance(seller, shop.getLocation().getWorld(),
                                     shop.getCurrency()), shop.getLocation().getWorld(),
-                            shop.getCurrency()))).send();
+                            shop.getCurrency())).send();
             return;
         }
         if (!transaction.failSafeCommit()) {
@@ -1221,7 +1219,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(plugin.text().of(sender, "menu.successful-purchase").forLocale());
-        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price", Component.text(amount * shop.getItem().getAmount()), MsgUtil.getTranslateText(shop.getItem()), Objects.requireNonNull(format(total, shop))).forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price", Component.text(amount * shop.getItem().getAmount()), MsgUtil.getTranslateText(shop.getItem()), format(total, shop)).forLocale());
         MsgUtil.printEnchantment(sender, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
@@ -1247,12 +1245,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         "menu.item-name-and-price",
                         amount,
                         MsgUtil.getTranslateText(shop.getItem()),
-                        Objects.requireNonNull(format(total, shop))).forLocale());
+                        format(total, shop)).forLocale());
         if (plugin.getConfig().getBoolean("show-tax")) {
             if (tax != 0) {
                 if (!seller.equals(shop.getOwner())) {
                     chatSheetPrinter.printLine(
-                            plugin.text().of(sender, "menu.sell-tax", Objects.requireNonNull(format(tax * total, shop))).forLocale());
+                            plugin.text().of(sender, "menu.sell-tax", format(tax * total, shop)).forLocale());
                 } else {
                     chatSheetPrinter.printLine(plugin.text().of(sender, "menu.sell-tax-self").forLocale());
                 }
@@ -1493,12 +1491,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     return 0;
                 }
                 plugin.text().of(p, "you-cant-afford-to-buy",
-                        Objects.requireNonNull(
-                                plugin.getShopManager().format(price, shop.getLocation().getWorld(),
-                                        shop.getCurrency())),
-                        Objects.requireNonNull(
-                                plugin.getShopManager().format(balance, shop.getLocation().getWorld(),
-                                        shop.getCurrency()))).send();
+                        plugin.getShopManager().format(price, shop.getLocation().getWorld(),
+                                shop.getCurrency()),
+                        plugin.getShopManager().format(balance, shop.getLocation().getWorld(),
+                                shop.getCurrency())).send();
             }
             return 0;
         }
@@ -1545,12 +1541,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 // when typed 'all' but the shop owner doesn't have enough money to buy at least 1
                 // item (and shop isn't unlimited or pay-unlimited is true)
                 plugin.text().of(p, "the-owner-cant-afford-to-buy-from-you",
-                        Objects.requireNonNull(
-                                plugin.getShopManager().format(shop.getPrice(), shop.getLocation().getWorld(),
-                                        shop.getCurrency())),
-                        Objects.requireNonNull(
-                                plugin.getShopManager().format(ownerBalance, shop.getLocation().getWorld(),
-                                        shop.getCurrency()))).send();
+                        plugin.getShopManager().format(shop.getPrice(), shop.getLocation().getWorld(),
+                                shop.getCurrency()),
+                        plugin.getShopManager().format(ownerBalance, shop.getLocation().getWorld(),
+                                shop.getCurrency())).send();
                 return 0;
             }
             // when typed 'all' but player doesn't have any items to sell
