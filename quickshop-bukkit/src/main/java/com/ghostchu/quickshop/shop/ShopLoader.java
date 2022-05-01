@@ -115,21 +115,29 @@ public class ShopLoader {
                     Util.debugLog("InventoryWrapperProvider not exists! Shop won't be loaded!");
                     continue;
                 }
-                Shop shop =
-                        new ContainerShop(plugin,
-                                data.getLocation(),
-                                data.getPrice(),
-                                data.getItem(),
-                                data.getModerators(),
-                                data.isUnlimited(),
-                                data.getType(),
-                                data.getExtra(),
-                                data.getCurrency(),
-                                data.isDisableDisplay(),
-                                data.getTaxAccount(),
-                                data.getInventoryWrapperProvider(),
-                                data.getSymbolLink(),
-                                data.getShopName());
+                Shop shop;
+                try {
+                    shop = new ContainerShop(plugin,
+                            data.getLocation(),
+                            data.getPrice(),
+                            data.getItem(),
+                            data.getModerators(),
+                            data.isUnlimited(),
+                            data.getType(),
+                            data.getExtra(),
+                            data.getCurrency(),
+                            data.isDisableDisplay(),
+                            data.getTaxAccount(),
+                            data.getInventoryWrapperProvider(),
+                            data.getSymbolLink(),
+                            data.getShopName());
+                } catch (Exception e) {
+                    if (e instanceof IllegalStateException) {
+                        plugin.getLogger().log(Level.WARNING, "Failed to load the shop, skipping...", e);
+                    }
+                    exceptionHandler(e, null);
+                    continue;
+                }
                 if (data.needUpdate.get()) {
                     shop.setDirty();
                 }
