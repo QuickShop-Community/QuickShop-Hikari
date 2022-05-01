@@ -108,8 +108,8 @@
     "price-per-stack": "&e{2} &atane &e{0} &abaşına fiyat &e{1}",
     "total-value-of-chest": "&aSandığın toplam değeri: &e{0}",
     "damage-percent-remaining": "&aKalan &e{0}%.",
-    "this-shop-is-buying": "&aBu market öğe %dSATIN ALIYOR&a.",
-    "this-shop-is-selling": "&aBu market öğe %bSATIYOR&a.",
+    "this-shop-is-buying": "&aBu market öğe &dSatın Alıyor&a.",
+    "this-shop-is-selling": "&aBu market öğe &bSatıyor&a.",
     "shop-stack": "&aYığının miktarı: &e{0}",
     "effects": "&aEfektler"
   },
@@ -486,5 +486,6 @@
       "&eItem: &b{item}",
       "&eLocation: &b{location}"
     ]
-  }
+  },
+  "invalid-container": "&cInvalid container, You can only create the shop on block who have inventory."
 }

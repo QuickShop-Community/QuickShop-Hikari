@@ -486,5 +486,6 @@
       "&eItem: &b{item}",
       "&eStandort: &b{location}"
     ]
-  }
+  },
+  "invalid-container": "&cInvalid container, You can only create the shop on block who have inventory."
 }
