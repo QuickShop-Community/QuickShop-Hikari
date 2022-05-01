@@ -487,5 +487,5 @@
       "&eStandort: &b{location}"
     ]
   },
-  "invalid-container": "&cInvalid container, You can only create the shop on block who have inventory."
+  "invalid-container": "&cUngültiger Container. Du kannst nur eine Shop mit Blöcken erstellen, welche ein Inventar haben."
 }
