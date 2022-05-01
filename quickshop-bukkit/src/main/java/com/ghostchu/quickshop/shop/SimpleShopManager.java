@@ -1019,24 +1019,27 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return;
         }
 
-
-        // Create the basic shop
-        ContainerShop shop = new ContainerShop(
-                plugin,
-                info.getLocation(),
-                price,
-                info.getItem(),
-                new SimpleShopModerator(p.getUniqueId()),
-                false,
-                ShopType.SELLING,
-                new YamlConfiguration(),
-                null,
-                false,
-                null,
-                plugin.getName(),
-                plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper(((InventoryHolder) info.getLocation().getBlock().getState()).getInventory())),
-                null);
-        createShop(shop, info.getSignBlock(), info.isBypassed());
+        if (info.getLocation().getBlock().getState() instanceof InventoryHolder holder) {
+            // Create the basic shop
+            ContainerShop shop = new ContainerShop(
+                    plugin,
+                    info.getLocation(),
+                    price,
+                    info.getItem(),
+                    new SimpleShopModerator(p.getUniqueId()),
+                    false,
+                    ShopType.SELLING,
+                    new YamlConfiguration(),
+                    null,
+                    false,
+                    null,
+                    plugin.getName(),
+                    plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper((holder).getInventory())),
+                    null);
+            createShop(shop, info.getSignBlock(), info.isBypassed());
+        } else {
+            plugin.text().of(p, "invalid-container").send();
+        }
     }
 
     @Deprecated
