@@ -197,10 +197,20 @@ public class EconomyTransaction {
 
     /**
      * Checks this transaction can be finished
+     *
      * @return The transaction can be finished (had enough money)
      */
-    public boolean checkBalance(){
+    public boolean checkBalance() {
         return from == null || !(core.getBalance(from, world, currency) < amount) || allowLoan;
+    }
+
+    /**
+     * Getting the tax in this transaction
+     *
+     * @return The tax in this transaction
+     */
+    public double getTax() {
+        return tax;
     }
 
     private boolean executeOperation(@NotNull Operation operation) {
@@ -263,6 +273,7 @@ public class EconomyTransaction {
         }
         return operations;
     }
+
 
     public interface TransactionCallback {
         /**

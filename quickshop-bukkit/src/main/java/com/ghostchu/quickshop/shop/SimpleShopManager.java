@@ -693,8 +693,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.text().of(buyer, "shop-transaction-failed", shopError.getMessage()).send();
             return;
         }
-        sendSellSuccess(buyer, shop, amount, total, CalculateUtil.subtract(1, taxModifier));
-        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, taxModifier);
+        sendSellSuccess(buyer, shop, amount, total, transaction.getTax());
+        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, transaction.getTax());
         plugin.getServer().getPluginManager().callEvent(se);
         shop.setSignText(); // Update the signs count
         notifySold(buyer, shop, amount, space);
@@ -1146,13 +1146,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.text().of(seller, "shop-transaction-failed", shopError.getMessage()).send();
             return;
         }
-        sendPurchaseSuccess(seller, shop, amount, total, CalculateUtil.subtract(1, taxModifier));
-        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, taxModifier);
+        sendPurchaseSuccess(seller, shop, amount, total, transaction.getTax());
+        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, transaction.getTax());
         plugin.getServer().getPluginManager().callEvent(se);
-        notifyBought(seller, shop, amount, stock, taxModifier, total);
+        notifyBought(seller, shop, amount, stock, transaction.getTax(), total);
     }
 
-    private void notifyBought(@NotNull UUID seller, @NotNull Shop shop, int amount, int stock, double taxModifier, double total) {
+    private void notifyBought(@NotNull UUID seller, @NotNull Shop shop, int amount, int stock, double tax, double total) {
         Player player = plugin.getServer().getPlayer(seller);
         plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner(), (locale) -> {
             String langCode = MsgUtil.getDefaultGameLanguageCode();
@@ -1164,15 +1164,15 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                                 player != null ? player.getName() : seller.toString(),
                                 amount * shop.getItem().getAmount(),
                                 shop.getItem(),
-                                this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop),
-                                this.formatter.format(CalculateUtil.multiply(taxModifier, total), shop)).forLocale(langCode)
+                                this.formatter.format(tax, shop),
+                                this.formatter.format(tax, shop)).forLocale(langCode)
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
             } else {
                 msg = plugin.text().of("player-bought-from-your-store",
                                 player != null ? player.getName() : seller.toString(),
                                 amount * shop.getItem().getAmount(),
                                 MsgUtil.getTranslateText(shop.getItem()),
-                                this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop)).forLocale(langCode)
+                                this.formatter.format(tax, shop)).forLocale(langCode)
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
             }
 
