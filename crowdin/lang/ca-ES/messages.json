@@ -25,7 +25,7 @@
   "price-too-cheap": "&cEl preu ha de ser superior a &e${0}",
   "no-price-change": "&cAixò no canviaria el preu!",
   "you-cant-afford-a-new-shop": "&cCosta {0} crear una botiga nova.",
-  "player-bought-from-your-store-tax": "&c{0} ha comprat {1} {2} de la teva botiga, i has guanyat {3} ({4} amb impostos).",
+  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cCosta {0} canviar el preu a la teva botiga.",
   "success-created-shop": "&cS'ha creat la botiga.",
   "success-removed-shop": "&aS'ha eliminat la botiga.",
