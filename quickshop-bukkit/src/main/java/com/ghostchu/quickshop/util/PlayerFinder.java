@@ -46,6 +46,8 @@ public class PlayerFinder {
     private final ProfileService resolver;
     private final ProfileCache cache;
 
+    private boolean forceOnlineMode = false;
+
     public PlayerFinder() {
         ProfileCache cache = new HashMapCache(); // Memory cache
         try {
@@ -61,6 +63,9 @@ public class PlayerFinder {
             services.add(new CacheForwardingService(HttpRepositoryService.forMinecraft(), cache));
         }
         this.resolver = new CombinedProfileService(services);
+        if (System.getProperties().containsKey("com.ghostchu.quickshop.util.PlayerFinder.forceOnlineMode")) {
+            forceOnlineMode = true;
+        }
         this.cache = cache;
     }
 
@@ -74,7 +79,7 @@ public class PlayerFinder {
 
     @Nullable
     public Profile find(@NotNull UUID uuid) {
-        if (Bukkit.getServer().getOnlineMode()) {
+        if (Bukkit.getServer().getOnlineMode() || forceOnlineMode) {
             return findOnline(uuid);
         }
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
@@ -90,7 +95,7 @@ public class PlayerFinder {
         if (Util.isUUID(name)) {
             return find(UUID.fromString(name));
         }
-        if (Bukkit.getServer().getOnlineMode()) {
+        if (Bukkit.getServer().getOnlineMode() || forceOnlineMode) {
             return findOnline(name);
         }
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
