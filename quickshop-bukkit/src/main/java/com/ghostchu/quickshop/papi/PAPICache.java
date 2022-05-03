@@ -20,7 +20,9 @@
 package com.ghostchu.quickshop.papi;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.cache.Cache;
@@ -30,9 +32,14 @@ import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 public class PAPICache implements Reloadable {
+    private QuickShop plugin;
     private long expiredTime;
     private Cache<String, String> performCaches;
 
@@ -42,6 +49,7 @@ public class PAPICache implements Reloadable {
     }
 
     private void init() {
+        this.plugin = QuickShop.getInstance();
         this.expiredTime = 15 * 60 * 1000;
         this.performCaches = CacheBuilder.newBuilder()
                 .expireAfterWrite(expiredTime, java.util.concurrent.TimeUnit.MILLISECONDS)
@@ -67,12 +75,87 @@ public class PAPICache implements Reloadable {
     public String readCache(@NotNull UUID player, @NotNull String queryString) {
         return performCaches.getIfPresent(compileUniqueKey(player, queryString));
     }
-
+    
+    public String getCached(@NotNull UUID player, @NotNull String[] args) {
+        try {
+            return performCaches.get(compileUniqueKey(player, args), () -> getValue(player, args));
+        } catch (ExecutionException ex) {
+            return null;
+        }
+    }
+    
+    @NotNull
+    private String compileUniqueKey(@NotNull UUID player, @NotNull String[] args) {
+        return compileUniqueKey(player, String.join("_", args));
+    }
+    
     @NotNull
     private String compileUniqueKey(@NotNull UUID player, @NotNull String queryString) {
         return JsonUtil.standard().toJson(new CompiledUniqueKey(player, queryString));
     }
-
+    
+    private String getValue(@NotNull UUID player, String[] args) {
+        switch(args[0].toLowerCase(Locale.ROOT)) {
+            case "server-total" -> {
+                return String.valueOf(plugin.getShopManager().getAllShops().size());
+            }
+            case "server-loaded" -> {
+                return String.valueOf(plugin.getShopManager().getLoadedShops().size());
+            }
+            case "world-total" -> {
+                if (args.length < 2)
+                    return null;
+                
+                return String.valueOf(getShopsInWorld(args[1], false));
+            }
+            case "world-loaded" -> {
+                if (args.length < 2)
+                    return null;
+    
+                return String.valueOf(getShopsInWorld(args[1], true));
+            }
+            case "default-currency" -> {
+                return plugin.getCurrency();
+            }
+            case "player" -> {
+                if (args.length < 3)
+                    return null;
+                
+                UUID uuid = null;
+                if (Util.isUUID(args[1])) {
+                    uuid = UUID.fromString(args[1]);
+                }
+                if (uuid == null)
+                    uuid = player;
+                
+                switch (args[2].toLowerCase(Locale.ROOT)) {
+                    case "count" -> {
+                        return String.valueOf(plugin.getShopManager().getPlayerAllShops(uuid));
+                    }
+                    case "count-loaded" -> {
+                        long count = plugin.getShopManager().getPlayerAllShops(uuid).stream()
+                            .filter(Shop::isLoaded)
+                            .count();
+                        
+                        return String.valueOf(count);
+                    }
+                }
+            }
+            default -> {
+                return null;
+            }
+        }
+        return null;
+    }
+    
+    private long getShopsInWorld(@NotNull String world, boolean loadedOnly){
+        return plugin.getShopManager().getAllShops().stream()
+            .filter(shop -> shop.getLocation().getWorld() != null)
+            .filter(shop -> shop.getLocation().getWorld().getName().equals(world))
+            .filter(shop -> !loadedOnly || shop.isLoaded())
+            .count();
+    }
+    
     @AllArgsConstructor
     @Data
     static class CompiledUniqueKey {
