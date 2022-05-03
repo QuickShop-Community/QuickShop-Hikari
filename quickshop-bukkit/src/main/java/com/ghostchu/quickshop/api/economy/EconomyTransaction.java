@@ -131,7 +131,7 @@ public class EconomyTransaction {
         Util.debugLog("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + ", EconomyCore: " + core.getName());
         boolean result = commit();
         if (!result) {
-            Util.debugLog("Fail-safe commit failed, starting rollback: "+lastError);
+            Util.debugLog("Fail-safe commit failed, starting rollback: " + lastError);
             rollback(true);
         }
         return result;
@@ -176,17 +176,24 @@ public class EconomyTransaction {
             callback.onFailed(this);
             return false;
         }
-        if (from != null && !this.executeOperation(new WithdrawEconomyOperation(from, amount, world, currency, core))) {
-            this.lastError = "Failed to withdraw " + amount + " from player " + from + " account. LastError: " + core.getLastError();
+
+        double recv = actualAmount - tax;
+        if (recv < 0) {
+            this.lastError = "Tax more than transaction balance.";
+            return false;
+        }
+
+        if (from != null && !this.executeOperation(new WithdrawEconomyOperation(from, actualAmount, world, currency, core))) {
+            this.lastError = "Failed to withdraw " + actualAmount + " from player " + from + " account. LastError: " + core.getLastError();
             callback.onFailed(this);
             return false;
         }
-        if (to != null && !this.executeOperation(new DepositEconomyOperation(to, actualAmount, world, currency,core))) {
+        if (to != null && !this.executeOperation(new DepositEconomyOperation(to, recv, world, currency, core))) {
             this.lastError = "Failed to deposit " + actualAmount + " to player " + to + " account. LastError: " + core.getLastError();
             callback.onFailed(this);
             return false;
         }
-        if (tax > 0 && taxer != null && !this.executeOperation(new DepositEconomyOperation(taxer, tax, world, currency,core))) {
+        if (tax > 0 && taxer != null && !this.executeOperation(new DepositEconomyOperation(taxer, tax, world, currency, core))) {
             this.lastError = "Failed to deposit tax account: " + tax + ". LastError: " + core.getLastError();
             callback.onTaxFailed(this);
             //Tax never should failed.
