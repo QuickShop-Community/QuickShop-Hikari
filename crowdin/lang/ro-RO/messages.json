@@ -25,7 +25,7 @@
   "price-too-cheap": "&cPretul trebuie sa fie mai mare decat${0}",
   "no-price-change": "&cAceasta nu ar duce la o schimbare de pret!",
   "you-cant-afford-a-new-shop": "&cCrearea unui magazin nou costa {0}.",
-  "player-bought-from-your-store-tax": "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).",
+  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cSchimbarea pretului magazinului tau costa {0}.",
   "success-created-shop": "&cMagazin creat.",
   "success-removed-shop": "&aMagazin eliminat.",

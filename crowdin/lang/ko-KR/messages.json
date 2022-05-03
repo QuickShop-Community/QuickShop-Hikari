@@ -25,7 +25,7 @@
   "price-too-cheap": "&c가격은 반드시 &e${0} 원 &c보다 높아야만 합니다.",
   "no-price-change": "&c입력한 금액이 이전 가격과 똑같습니다. 금액을 변경 하려면 다른 금액을 입력해주세요.",
   "you-cant-afford-a-new-shop": "&c새 상점 생성에 {0} 원이 소모됩니다!",
-  "player-bought-from-your-store-tax": "&c{0} 님이 상점 에서 {2} 을(를) {1}개 구입했으며 {3} 원 을(를) 얻으셨습니다! (세금 : {4}원)",
+  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&c상점 물품의 가격을 변경할때 {0} 원이 소모됩니다.",
   "success-created-shop": "&c상점이 생성되었습니다.",
   "success-removed-shop": "&a상점을 제거했습니다.",
