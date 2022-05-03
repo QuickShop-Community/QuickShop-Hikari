@@ -25,7 +25,7 @@
   "price-too-cheap": "&cFiyat &e${0}&c'dan büyük olmalıdır.",
   "no-price-change": "&cBu fiyat değişikliğine sebep olmaz!",
   "you-cant-afford-a-new-shop": "&cYeni bir market oluşturma maliyeti: ${0}",
-  "player-bought-from-your-store-tax": "&c{0} marketinden {1} tane {2} aldı ve {3} ({4} vergi) kazandın.",
+  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cMarketinizin fiyatını değiştirmek ${0} tutarındadır.",
   "success-created-shop": "&cMarket oluşturuldu.",
   "success-removed-shop": "&aMarket kaldırıldı.",

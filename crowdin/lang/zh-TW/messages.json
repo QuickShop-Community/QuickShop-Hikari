@@ -25,7 +25,7 @@
   "price-too-cheap": "&c價格必須大於 &e${0}",
   "no-price-change": "&c這不會導致價格變動 ！",
   "you-cant-afford-a-new-shop": "&c需要花費 {0} 元才能建立商店。",
-  "player-bought-from-your-store-tax": "&c{0} 從你的商店購買了 {1} {2}，你總共賺了 {3} 元 （{4} 元的稅） 。",
+  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&c你需要花費 {0} 元來修改商品價格。",
   "success-created-shop": "&c已建立商店。",
   "success-removed-shop": "&a已刪除商店。",

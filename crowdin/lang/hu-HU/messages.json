@@ -25,7 +25,7 @@
   "price-too-cheap": "&cAz árnak minimum &e${0} &c-nak/nek kell lennie!",
   "no-price-change": "&cNem változott az ár!",
   "you-cant-afford-a-new-shop": "&cNem tudsz új boltot csinálni, mert túl kevés pénzed van! Ára: &e${0}",
-  "player-bought-from-your-store-tax": "&c{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).",
+  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&c{0} -ba kerül az áralakítás.",
   "success-created-shop": "&aSikeresen elkészítettél egy boltot!",
   "success-removed-shop": "&aKitörölted a boltodat!",

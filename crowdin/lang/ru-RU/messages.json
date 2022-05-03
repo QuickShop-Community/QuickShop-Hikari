@@ -25,7 +25,7 @@
   "price-too-cheap": "&cЦена должна быть больше &e${0}",
   "no-price-change": "&cЦена не может быть равна предыдущей!",
   "you-cant-afford-a-new-shop": "&cСоздание магазина стоит {0}.",
-  "player-bought-from-your-store-tax": "&c{0} купил {1} {2} и вы зарабатывали {3} ({4} за налог).",
+  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cИзменение цены в магазине стоит {0}.",
   "success-created-shop": "&cМагазин создан.",
   "success-removed-shop": "&aМагазин удален.",

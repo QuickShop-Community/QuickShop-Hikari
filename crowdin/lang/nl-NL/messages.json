@@ -25,7 +25,7 @@
   "price-too-cheap": "&cPrice moet groter zijn dan &e${0}",
   "no-price-change": "&cDit zou geen prijswijziging tot gevolg hebben!",
   "you-cant-afford-a-new-shop": "&cHet maken van een nieuwe winkel kost {0}.",
-  "player-bought-from-your-store-tax": "&c{0} kocht {1} {2} in uw winkel, en u hebt {3} ({4} aan belastingen verdiend).",
+  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cHet kost {0} om de prijs in uw winkel te wijzigen.",
   "success-created-shop": "&cShop aangemaakt.",
   "success-removed-shop": "&aWinkel verwijderd.",

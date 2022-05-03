@@ -25,7 +25,7 @@
   "price-too-cheap": "&c يجب أن يكون السعر أكبر من &e${0}",
   "no-price-change": "&cلن يؤدي هذا إلى تغيير في الأسعار!",
   "you-cant-afford-a-new-shop": "&cيكلف إنشاء متجر جديد {0}.",
-  "player-bought-from-your-store-tax": "&ج{0} اشترى {1} {2} من متجرك، وكسبت {3} ({4} كضرائب).",
+  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cيكلف تغيير السعر في متجرك {0}.",
   "success-created-shop": "تم إنشاء المتجر.",
   "success-removed-shop": "&aتمت إزالة المتجر.",
