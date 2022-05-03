@@ -25,7 +25,7 @@
   "price-too-cheap": "&cCena musí být větší než &e${0}",
   "no-price-change": "&cToto nezmění cenu!",
   "you-cant-afford-a-new-shop": "&cCena založení nového obchodu je {0}.",
-  "player-bought-from-your-store-tax": "&c{0} zakoupen {1} {2} z tvého obchodu a ty jsi zaplatil {3} na daních).",
+  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cCena za změnu ceny ve tvém obchodě je {0}.",
   "success-created-shop": "&cObchod vytvořen.",
   "success-removed-shop": "&aObchod odstraněn.",
