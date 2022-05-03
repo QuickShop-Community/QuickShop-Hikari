@@ -108,15 +108,21 @@ public class ConfigUpdateScript {
                 Files.copy(jsonFile.toPath(), new File(jsonFile.getParent(), jsonFile.getName() + ".bak").toPath());
                 jsonFile.deleteOnExit();
                 yamlConfiguration.save(yamlFile);
-            }catch (Exception e) {
-                plugin.getLogger().log(Level.WARNING,"Failed to upgrade override translation file " + jsonFile.getName(), e);
+            } catch (Exception e) {
+                plugin.getLogger().log(Level.WARNING, "Failed to upgrade override translation file " + jsonFile.getName(), e);
             }
         }
-        getConfig().set("syntax-parser",null);
+        getConfig().set("syntax-parser", null);
     }
+
     @UpdateScript(version = 1007)
-    public void refundFromTaxAccountOption(){
-        getConfig().set("shop.refund-from-tax-account",false);
+    public void refundFromTaxAccountOption() {
+        getConfig().set("shop.refund-from-tax-account", false);
+    }
+
+    @UpdateScript(version = 1008)
+    public void disableTaxForUnlimitedShop() {
+        getConfig().set("unlimited-shop-owner-change-account", false);
     }
 
     private Object translate(Object o) {

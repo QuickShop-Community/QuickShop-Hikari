@@ -664,6 +664,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 .currency(shop.getCurrency())
                 .world(shop.getLocation().getWorld())
                 .to(buyer);
+        if (shop.isUnlimited() && plugin.getConfig().getBoolean("unlimited-shop-owner-change-account", false)) {
+            builder.taxModifier(0.0d);
+        }
         if (!shop.isUnlimited()
                 || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")
                 && shop.isUnlimited())) {
@@ -1117,6 +1120,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 .taxAccount(taxAccount)
                 .world(shop.getLocation().getWorld())
                 .currency(shop.getCurrency());
+        if (shop.isUnlimited() && plugin.getConfig().getBoolean("unlimited-shop-owner-change-account", false)) {
+            builder.taxModifier(0.0d);
+        }
         if (!shop.isUnlimited()
                 || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")
                 && shop.isUnlimited())) {
@@ -1124,6 +1130,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         } else {
             transaction = builder.to(null).build();
         }
+
         if (!transaction.checkBalance()) {
             plugin.text().of(seller, "you-cant-afford-to-buy",
                     format(total, shop.getLocation().getWorld(), shop.getCurrency()),
