@@ -664,7 +664,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 .currency(shop.getCurrency())
                 .world(shop.getLocation().getWorld())
                 .to(buyer);
-        if (shop.isUnlimited() && plugin.getConfig().getBoolean("unlimited-shop-owner-change-account", false)) {
+        if (shop.isUnlimited() && plugin.getConfig().getBoolean("tax-free-for-unlimited-shop", false)) {
             builder.taxModifier(0.0d);
         }
         if (!shop.isUnlimited()
@@ -1120,7 +1120,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 .taxAccount(taxAccount)
                 .world(shop.getLocation().getWorld())
                 .currency(shop.getCurrency());
-        if (shop.isUnlimited() && plugin.getConfig().getBoolean("unlimited-shop-owner-change-account", false)) {
+        if (shop.isUnlimited() && plugin.getConfig().getBoolean("tax-free-for-unlimited-shop", false)) {
             builder.taxModifier(0.0d);
         }
         if (!shop.isUnlimited()

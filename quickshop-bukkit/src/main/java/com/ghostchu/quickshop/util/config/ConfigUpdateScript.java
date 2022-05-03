@@ -122,7 +122,7 @@ public class ConfigUpdateScript {
 
     @UpdateScript(version = 1008)
     public void disableTaxForUnlimitedShop() {
-        getConfig().set("unlimited-shop-owner-change-account", false);
+        getConfig().set("tax-free-for-unlimited-shop", false);
     }
 
     private Object translate(Object o) {
