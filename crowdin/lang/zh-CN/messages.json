@@ -25,7 +25,7 @@
   "price-too-cheap": "&c价格必须大于&e${0}",
   "no-price-change": "&c这不会导致价格变动！",
   "you-cant-afford-a-new-shop": "&c你需要 {0} 才能创建一个商店。",
-  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
+  "player-bought-from-your-store-tax": "&c{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3} (扣税{4})",
   "you-cant-afford-to-change-price": "&c你需要 {0} 才能修改商店的价格。",
   "success-created-shop": "&c商店已创建",
   "success-removed-shop": "&a商店已删除！",
@@ -487,5 +487,5 @@
       "&e位置: &b{location}"
     ]
   },
-  "invalid-container": "&cInvalid container, You can only create the shop on block who have inventory."
+  "invalid-container": "&c无效的容器方块。您只能在有库存的方块上创建商店。"
 }
