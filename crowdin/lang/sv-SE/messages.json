@@ -25,7 +25,7 @@
   "price-too-cheap": "&cPriset måste vara högre än &e${0}",
   "no-price-change": "&cDetta skulle inte resultera i en prisändring!",
   "you-cant-afford-a-new-shop": "&cDet kostar {0} att skapa en ny butik.",
-  "player-bought-from-your-store-tax": "&c{0} köpte {1} {2} från din butik, du tjänade {3} ({4} i skatt).",
+  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cDet kostar {0} att ändra priset i din butik.",
   "success-created-shop": "&cButik skapad.",
   "success-removed-shop": "&aButik borttagen.",
