@@ -25,7 +25,7 @@
   "price-too-cheap": "&cCena musi być większa niż &e${0}",
   "no-price-change": "&cCena nie została zmieniona!",
   "you-cant-afford-a-new-shop": "&cMusisz mieć {0} aby zrobić nowy sklep.",
-  "player-bought-from-your-store-tax": "&c{0} zakupił {1} {2} w Twoim sklepie, i zarobiłeś {3} ({4} w podatkach).",
+  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cMusisz mieć {0} aby zmienić cenę w sklepie.",
   "success-created-shop": "&cSklep utworzony.",
   "success-removed-shop": "&aSklep usunięty.",
