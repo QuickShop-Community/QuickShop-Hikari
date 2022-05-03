@@ -51,7 +51,7 @@ public class EconomyTransaction {
     @NotNull
     @JsonUtil.Hidden
     private final EconomyCore core;
-    private final double actualAmount;
+    private final double amountAfterTax;
     private final double tax;
     @Nullable
     private final UUID taxer;
@@ -94,11 +94,11 @@ public class EconomyTransaction {
         this.currency = currency;
 
         if (Double.doubleToLongBits(taxModifier) != Double.doubleToLongBits(0.0d)) { //Calc total money and apply tax
-            this.actualAmount = CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), amount);
+            this.amountAfterTax = CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), amount);
         } else {
-            this.actualAmount = amount;
+            this.amountAfterTax = amount;
         }
-        this.tax = CalculateUtil.subtract(amount, actualAmount); //Calc total tax
+        this.tax = CalculateUtil.subtract(amount, amountAfterTax); //Calc total tax
         if (from == null && to == null) {
             lastError = "From and To cannot be null in same time.";
             throw new IllegalArgumentException("From and To cannot be null in same time.");
@@ -166,7 +166,7 @@ public class EconomyTransaction {
      * @return The transaction success.
      */
     public boolean commit(@NotNull TransactionCallback callback) {
-        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + actualAmount + " Tax: " + tax + ", EconomyCore: " + core.getName());
+        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(after tax): " + amountAfterTax + " Tax: " + tax + ", EconomyCore: " + core.getName());
         if (!callback.onCommit(this)) {
             this.lastError = "Plugin cancelled this transaction.";
             return false;
@@ -183,8 +183,8 @@ public class EconomyTransaction {
             callback.onFailed(this);
             return false;
         }
-        if (to != null && !this.executeOperation(new DepositEconomyOperation(to, actualAmount, world, currency, core))) {
-            this.lastError = "Failed to deposit " + actualAmount + " to player " + to + " account. LastError: " + core.getLastError();
+        if (to != null && !this.executeOperation(new DepositEconomyOperation(to, amountAfterTax, world, currency, core))) {
+            this.lastError = "Failed to deposit " + amountAfterTax + " to player " + to + " account. LastError: " + core.getLastError();
             callback.onFailed(this);
             return false;
         }
