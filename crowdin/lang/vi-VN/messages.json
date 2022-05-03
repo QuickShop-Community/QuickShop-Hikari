@@ -25,7 +25,7 @@
   "price-too-cheap": "&cGiá tiền phải lớn hơn &e${0}",
   "no-price-change": "&cĐiều này sẽ không được thay đổi giá!",
   "you-cant-afford-a-new-shop": "&cTiêu tốn {0} để tạo ra 1 shop mới.",
-  "player-bought-from-your-store-tax": "&c{0} đã mua {1} {2} từ shop của bạn, bạn được nhận {3} ({4} tiền thuế).",
+  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
   "you-cant-afford-to-change-price": "&cTiêu tốn {0} để thay đổi giá của shop.",
   "success-created-shop": "&cShop đã được tạo.",
   "success-removed-shop": "&aShop đã bị xoá.",
