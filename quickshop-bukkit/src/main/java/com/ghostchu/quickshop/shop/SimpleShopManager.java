@@ -1165,14 +1165,14 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                                 amount * shop.getItem().getAmount(),
                                 shop.getItem(),
                                 this.formatter.format(tax, shop),
-                                this.formatter.format(tax, shop)).forLocale(langCode)
+                                this.formatter.format(total - tax, shop)).forLocale(langCode)
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
             } else {
                 msg = plugin.text().of("player-bought-from-your-store",
                                 player != null ? player.getName() : seller.toString(),
                                 amount * shop.getItem().getAmount(),
                                 MsgUtil.getTranslateText(shop.getItem()),
-                                this.formatter.format(tax, shop)).forLocale(langCode)
+                                this.formatter.format(total - tax, shop)).forLocale(langCode)
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
             }
 
