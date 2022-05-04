@@ -408,7 +408,9 @@ public class Util {
             }
         }
         String log = logEntry.toString();
-        Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info(log);
+        if (isDevMode()) {
+            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info(log);
+        }
         LOCK.writeLock().lock();
         DEBUG_LOGS.add(log);
         LOCK.writeLock().unlock();
