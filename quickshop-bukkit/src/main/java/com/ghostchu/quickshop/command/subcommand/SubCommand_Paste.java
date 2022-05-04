@@ -19,13 +19,14 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
-import lombok.AllArgsConstructor;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.paste.Paste;
+import com.ghostchu.quickshop.util.paste.v2.Paste;
+import com.ghostchu.quickshop.util.paste.v2.PasteGenerator;
+import lombok.AllArgsConstructor;
+import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -68,11 +69,9 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     }
 
     private boolean pasteToPastebin(@NotNull CommandSender sender) {
-        final Paste paste = new Paste(plugin);
-        final String pasteText = paste.genNewPaste();
-        String pasteResult = paste.paste(pasteText);
-        if (pasteResult != null) {
-            sender.sendMessage(pasteResult);
+        final String string = Paste.paste(new PasteGenerator().render());
+        if (string != null) {
+            sender.sendMessage(string);
             return true;
         }
         return false;
@@ -82,13 +81,12 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
         File file = new File(plugin.getDataFolder(), "paste");
         file.mkdirs();
         file = new File(file, "paste-" + UUID.randomUUID().toString().replaceAll("-", "") + ".txt");
-        final Paste paste = new Paste(plugin);
-        final String pasteText = paste.genNewPaste();
+        final String string = new PasteGenerator().render();
         try {
             boolean createResult = file.createNewFile();
             Util.debugLog("Create paste file: " + file.getCanonicalPath() + " " + createResult);
             try (FileWriter fwriter = new FileWriter(file)) {
-                fwriter.write(pasteText);
+                fwriter.write(string);
                 fwriter.flush();
             }
             sender.sendMessage("The paste was saved to " + file.getAbsolutePath());
@@ -97,7 +95,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
             plugin.getSentryErrorReporter().ignoreThrow();
             plugin.getLogger().log(Level.WARNING, "Failed to save paste locally! The content will be send to the console", e);
             sender.sendMessage("Paste save failed! Sending paste to the console...");
-            plugin.getLogger().info(pasteText);
+            plugin.getLogger().info(string);
             return false;
         }
     }

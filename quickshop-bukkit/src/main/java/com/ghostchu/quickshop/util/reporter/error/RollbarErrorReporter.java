@@ -22,7 +22,6 @@ package com.ghostchu.quickshop.util.reporter.error;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.GameVersion;
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.paste.Paste;
 import com.google.common.collect.Lists;
 import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.Config;
@@ -57,7 +56,6 @@ public class RollbarErrorReporter {
     private final GlobalExceptionFilter serverExceptionFilter;
     private boolean disable;
     private boolean tempDisable;
-    private String lastPaste = null;
     //private final GlobalExceptionFilter globalExceptionFilter;
     @Getter
     private volatile boolean enabled;
@@ -120,7 +118,6 @@ public class RollbarErrorReporter {
 
     private Map<String, Object> makeMapping() {
         Map<String, Object> dataMapping = new LinkedHashMap<>();
-        dataMapping.put("paste", this.lastPaste);
         dataMapping.put("system_os", System.getProperty("os.name"));
         dataMapping.put("system_arch", System.getProperty("os.arch"));
         dataMapping.put("system_version", System.getProperty("os.version"));
@@ -159,19 +156,6 @@ public class RollbarErrorReporter {
             if (throwable.getCause() != null) {
                 if (ignoredException.contains(throwable.getCause().getClass())) {
                     return;
-                }
-            }
-            if (lastPaste == null) {
-                String pasteURL;
-                try {
-                    Paste paste = new Paste(plugin);
-                    pasteURL = paste.paste(paste.genNewPaste(), Paste.PasteType.UBUNTU);
-                    if (pasteURL != null && !pasteURL.isEmpty()) {
-                        lastPaste = pasteURL;
-                    } else {
-                        lastPaste = paste.paste(paste.genNewPaste());
-                    }
-                } catch (Exception ignored) {
                 }
             }
             this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
