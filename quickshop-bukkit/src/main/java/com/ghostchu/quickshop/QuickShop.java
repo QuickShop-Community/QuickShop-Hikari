@@ -249,6 +249,261 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     }
 
     /**
+     * Early than onEnable, make sure instance was loaded in first time.
+     */
+    @Override
+    public final void onLoad() {
+        instance = this;
+        Util.setPlugin(this);
+        this.onLoadCalled = true;
+        getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up");
+        getReloadManager().register(this);
+        //BEWARE THESE ONLY RUN ONCE
+        this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
+        getLogger().info("Self testing...");
+        runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
+        getLogger().info("Loading player name and unique id mapping...");
+        this.playerFinder = new PlayerFinder();
+        getLogger().info("Reading the configuration...");
+        initConfiguration();
+        // Reset the BootError status to normal.
+        this.bootError = null;
+        setupUnirest();
+        loadChatProcessor();
+        loadTextManager();
+        getLogger().info("Register InventoryWrapper...");
+        this.inventoryWrapperRegistry.register(this, this.inventoryWrapperManager);
+        getLogger().info("Loading up platform modules...");
+        loadPlatform();
+        getLogger().info("QuickShop " + getFork() + " - Early boot step - Complete");
+    }
+
+    @Override
+    public final void onEnable() {
+        if (!this.onLoadCalled) {
+            getLogger().severe("FATAL: onLoad has not been called for QuickShop. Trying to fix it... Some integrations may not work properly!");
+            try {
+                onLoad();
+            } catch (Throwable ex) {
+                getLogger().log(Level.WARNING, "Failed to fix onLoad", ex);
+            }
+        }
+        Timer enableTimer = new Timer(true);
+        getLogger().info("QuickShop " + getFork());
+        this.audience = BukkitAudiences.create(this);
+        /* Check the running envs is support or not. */
+        getLogger().info("Starting plugin self-test, please wait...");
+        runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
+        getLogger().info("Reading the configuration...");
+        initConfiguration();
+        getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
+        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood, sandtechnology");
+        getLogger().info("Let's start loading the plugin");
+        getLogger().info("Chat processor selected: Hardcoded BungeeChat Lib");
+        /* Process Metrics and Sentry error reporter. */
+        metrics = new Metrics(this, 14281);
+        loadErrorReporter();
+        loadItemMatcher();
+        Util.initialize();
+        load3rdParty();
+        //Load the database
+        initDatabase();
+        /* Initalize the tools */
+        // Create the shop manager.
+        permissionManager = new PermissionManager(this);
+        // This should be inited before shop manager
+        this.registerDisplayAutoDespawn();
+        getLogger().info("Registering commands...");
+        loadCommandHandler();
+        this.shopManager = new SimpleShopManager(this);
+        this.permissionChecker = new PermissionChecker(this);
+        // Limit
+        this.registerLimitRanks();
+        // Limit end
+        if (getConfig().getInt("shop.finding.distance") > 100 && getConfig().getBoolean("shop.finding.exclude-out-of-stock")) {
+            getLogger().severe("Shop find distance is too high with chunk loading feature turned on! It may cause lag! Pick a number below 100!");
+        }
+        setupShopCaches();
+        signUpdateWatcher = new SignUpdateWatcher();
+        shopContainerWatcher = new ShopContainerWatcher();
+        /* Load all shops. */
+        shopLoader = new ShopLoader(this);
+        shopLoader.loadShops();
+        bakeShopsOwnerCache();
+        getLogger().info("Registering listeners...");
+        this.interactionController = new InteractionController(this);
+        // Register events
+        // Listeners (These don't)
+        registerListeners();
+        this.shopControlPanelManager.register(new SimpleShopControlPanel());
+        this.registerDisplayItem();
+        this.registerShopLock();
+        getLogger().info("Cleaning MsgUtils...");
+        MsgUtil.clean();
+        MsgUtil.loadTransactionMessages();
+        this.registerUpdater();
+        /* Delay the Economy system load, give a chance to let economy system register. */
+        /* And we have a listener to listen the ServiceRegisterEvent :) */
+        Util.debugLog("Loading economy system...");
+        getServer().getScheduler().runTaskLater(this, this::loadEcon, 1);
+        Util.debugLog("Registering watchers...");
+        registerTasks();
+        Util.debugLog("Now using display-type: " + AbstractDisplayItem.getNowUsing().name());
+        registerCommunicationChannels();
+        getServer().getPluginManager().callEvent(new QSConfigurationReloadEvent(this));
+        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
+    }
+
+    private void registerCommunicationChannels() {
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+    }
+
+    private void registerTasks() {
+        calendarWatcher = new CalendarWatcher(this);
+        // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
+        signUpdateWatcher.runTaskTimer(this, 0, 10);
+        shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
+        if (logWatcher != null) {
+            logWatcher.runTaskTimerAsynchronously(this, 10, 10);
+            getLogger().info("Log actions is enabled. Actions will be logged in the qs.log file!");
+        }
+        this.registerOngoingFee();
+        getServer().getScheduler().runTask(this, () -> {
+            getLogger().info("Registering bStats metrics...");
+            submitMetrics();
+        });
+        calendarWatcher = new CalendarWatcher(this);
+        calendarWatcher.start();
+        this.shopPurger = new ShopPurger(this);
+        if (getConfig().getBoolean("purge.at-server-startup")) {
+            shopPurger.purge();
+        }
+    }
+
+
+    private void registerListeners() {
+        new BlockListener(this, this.shopCache).register();
+        new PlayerListener(this).register();
+        new WorldListener(this).register();
+        // Listeners - We decide which one to use at runtime
+        new ChatListener(this).register();
+        new ChunkListener(this).register();
+        new CustomInventoryListener(this).register();
+        new ShopProtectionListener(this, this.shopCache).register();
+        new EconomySetupListener(this).register();
+        new MetricListener(this).register();
+        new InternalListener(this).register();
+    }
+
+    private void setupShopCaches() {
+        if (getConfig().getBoolean("use-caching")) {
+            this.shopCache = new Cache(this);
+        } else {
+            this.shopCache = null;
+        }
+    }
+
+    private void loadCommandHandler() {
+        /* PreInit for BootError feature */
+        commandManager = new SimpleCommandManager(this);
+        //noinspection ConstantConditions
+        getCommand("qs").setExecutor(commandManager);
+        //noinspection ConstantConditions
+        getCommand("qs").setTabCompleter(commandManager);
+        this.registerCustomCommands();
+    }
+
+    private void initDatabase() {
+        setupDBonEnableding = true;
+        if (!setupDatabase()) {
+            getLogger().severe("Failed to setup database, please check the logs for more information!");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+        setupDBonEnableding = false;
+    }
+
+    private void loadErrorReporter() {
+        try {
+            if (!getConfig().getBoolean("auto-report-errors")) {
+                Util.debugLog("Error reporter was disabled!");
+            } else {
+                sentryErrorReporter = new RollbarErrorReporter(this);
+            }
+        } catch (Throwable th) {
+            getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
+            getLogger().warning("Because the error reporter doesn't work, report this error to the developer. Thank you!");
+        }
+    }
+
+
+    @Override
+    public final void onDisable() {
+        if (!this.platform.isServerStopping()) {
+            getLogger().log(Level.WARNING, "/reload command is unsupported, don't expect any support from QuickShop support team after you execute this command.", new IllegalStateException("/reload command is unsupported, restart your server!"));
+        }
+        getLogger().info("QuickShop is finishing remaining work, this may need a while...");
+        if (sentryErrorReporter != null) {
+            getLogger().info("Shutting down error reporter...");
+            sentryErrorReporter.unregister();
+        }
+        if (this.quickShopPAPI != null) {
+            getLogger().info("Unregistering PlaceHolderAPI hooks...");
+            if (this.quickShopPAPI.unregister()) {
+                getLogger().info("Successfully unregistered PlaceholderAPI hook!");
+            } else {
+                getLogger().info("Unregistering not successful. Was it already unloaded?");
+            }
+        }
+        if (getShopManager() != null) {
+            getLogger().info("Unloading all loaded shops...");
+            getShopManager().getLoadedShops().forEach(Shop::onUnload);
+        }
+        getLogger().info("Unregistering compatibility hooks...");
+        /* Remove all display items, and any dupes we can find */
+        if (shopManager != null) {
+            Util.debugLog("Cleaning up shop manager...");
+            shopManager.clear();
+        }
+        if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+            getLogger().info("Cleaning up display manager...");
+            VirtualDisplayItem.VirtualDisplayItemManager.unload();
+        }
+        if (this.getSqlManager() != null) {
+            getLogger().info("Shutting down database connections...");
+            EasySQL.shutdownManager(this.getSqlManager());
+        }
+        if (logWatcher != null) {
+            getLogger().info("Stopping log watcher...");
+            logWatcher.close();
+        }
+        getLogger().info("Shutting down scheduled timers...");
+        Bukkit.getScheduler().cancelTasks(this);
+        if (calendarWatcher != null) {
+            getLogger().info("Shutting down event calendar watcher...");
+            calendarWatcher.stop();
+        }
+        /* Unload UpdateWatcher */
+        if (this.updateWatcher != null) {
+            getLogger().info("Shutting down update watcher...");
+            this.updateWatcher.uninit();
+        }
+        getLogger().info("Cleanup scheduled tasks...");
+        Bukkit.getScheduler().cancelTasks(this);
+        getLogger().info("Cleanup listeners...");
+        HandlerList.unregisterAll(this);
+        getLogger().info("Unregistering plugin services...");
+        getServer().getServicesManager().unregisterAll(this);
+        getLogger().info("Shutting down Unirest instances...");
+        Unirest.shutDown(true);
+        getLogger().info("Shutting down database...");
+        EasySQL.shutdownManager(this.sqlManager);
+        getLogger().info("Finishing remaining misc work...");
+        this.getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
+        getLogger().info("All shutdown work has been completed.");
+    }
+
+    /**
      * Get the QuickShop instance
      * You should use QuickShopAPI if possible, we don't promise the internal access will be stable
      *
@@ -471,122 +726,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new QSConfigurationReloadEvent(this)));
     }
 
-    /**
-     * Early than onEnable, make sure instance was loaded in first time.
-     */
-    @Override
-    public final void onLoad() {
-        instance = this;
-        Util.setPlugin(this);
-        this.onLoadCalled = true;
-        getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up");
-        getReloadManager().register(this);
-        //BEWARE THESE ONLY RUN ONCE
-        this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
-        getLogger().info("Self testing...");
-        runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
-        getLogger().info("Loading player name and unique id mapping...");
-        this.playerFinder = new PlayerFinder();
-        getLogger().info("Reading the configuration...");
-        this.initConfiguration();
-        this.bootError = null;
-        getLogger().info("Initialing Unirest http request library...");
-        Unirest.config()
-                .concurrency(10, 5)
-                .setDefaultHeader("User-Agent", "QuickShop/" + getFork() + "-" + getDescription().getVersion() + " Java/" + System.getProperty("java.version"));
-        getLogger().info("Loading the Adventure Chat Processor...");
-        getLogger().info("Adventure API loaded from: " + Util.getClassPath(Adventure.class));
-        getLogger().info("Adventure Bukkit Platform loaded from: " + Util.getClassPath(BukkitAudiences.class));
-        getLogger().info("Adventure Text Serializer (Legacy) loaded from: " + Util.getClassPath(LegacyComponentSerializer.class));
-        getLogger().info("Adventure Text Serializer (Gson) loaded from: " + Util.getClassPath(GsonComponentSerializer.class));
-        getLogger().info("Adventure MiniMessage Lib loaded from: " + Util.getClassPath(LegacyComponentSerializer.class));
-        getLogger().info("Loading translations (This may take a while)...");
-        try {
-            this.textManager = new SimpleTextManager(this);
-        } catch (NoSuchMethodError | NoClassDefFoundError e) {
-            getLogger().log(Level.SEVERE, "Failed to initialize text manager, the QuickShop doesn't compatible with your Server version. Did you up-to-date?", e);
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-        textManager.load();
-        getLogger().info("Register InventoryWrapper...");
-        this.inventoryWrapperRegistry.register(this, this.inventoryWrapperManager);
-        getLogger().info("Loading up integration modules.");
-        if (PaperLib.isPaper()) {
-            this.platform = new PaperPlatform(this.translationMapping);
-        } else if (PaperLib.isSpigot()) {
-            this.platform = new SpigotPlatform(this.translationMapping);
-        } else {
-            throw new UnsupportedOperationException("Unsupported platform");
-        }
-        getLogger().info("QuickShop " + getFork() + " - Early boot step - Complete");
-    }
-
-    @Override
-    public final void onDisable() {
-        if (!this.platform.isServerStopping()) {
-            getLogger().log(Level.WARNING, "/reload command is unsupported, don't expect any support from QuickShop support team after you execute this command.", new IllegalStateException("/reload command is unsupported, restart your server!"));
-        }
-        getLogger().info("QuickShop is finishing remaining work, this may need a while...");
-        if (sentryErrorReporter != null) {
-            getLogger().info("Shutting down error reporter...");
-            sentryErrorReporter.unregister();
-        }
-        if (this.quickShopPAPI != null) {
-            getLogger().info("Unregistering PlaceHolderAPI hooks...");
-            if (this.quickShopPAPI.unregister()) {
-                getLogger().info("Successfully unregistered PlaceholderAPI hook!");
-            } else {
-                getLogger().info("Unregistering not successful. Was it already unloaded?");
-            }
-        }
-        if (getShopManager() != null) {
-            getLogger().info("Unloading all loaded shops...");
-            getShopManager().getLoadedShops().forEach(Shop::onUnload);
-        }
-        getLogger().info("Unregistering compatibility hooks...");
-        /* Remove all display items, and any dupes we can find */
-        if (shopManager != null) {
-            Util.debugLog("Cleaning up shop manager...");
-            shopManager.clear();
-        }
-        if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
-            getLogger().info("Cleaning up display manager...");
-            VirtualDisplayItem.VirtualDisplayItemManager.unload();
-        }
-        if (this.getSqlManager() != null) {
-            getLogger().info("Shutting down database connections...");
-            EasySQL.shutdownManager(this.getSqlManager());
-        }
-        if (logWatcher != null) {
-            getLogger().info("Stopping log watcher...");
-            logWatcher.close();
-        }
-        getLogger().info("Shutting down scheduled timers...");
-        Bukkit.getScheduler().cancelTasks(this);
-        if (calendarWatcher != null) {
-            getLogger().info("Shutting down event calendar watcher...");
-            calendarWatcher.stop();
-        }
-        /* Unload UpdateWatcher */
-        if (this.updateWatcher != null) {
-            getLogger().info("Shutting down update watcher...");
-            this.updateWatcher.uninit();
-        }
-        getLogger().info("Cleanup scheduled tasks...");
-        Bukkit.getScheduler().cancelTasks(this);
-        getLogger().info("Cleanup listeners...");
-        HandlerList.unregisterAll(this);
-        getLogger().info("Unregistering plugin services...");
-        getServer().getServicesManager().unregisterAll(this);
-        getLogger().info("Shutting down Unirest instances...");
-        Unirest.shutDown(true);
-        getLogger().info("Shutting down database...");
-        EasySQL.shutdownManager(this.sqlManager);
-        getLogger().info("Finishing remaining misc work...");
-        this.getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
-        getLogger().info("All shutdown work has been completed.");
-    }
 
     private void initConfiguration() {
         /* Process the config */
@@ -637,140 +776,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         }
     }
 
-    @Override
-    public final void onEnable() {
-        if (!this.onLoadCalled) {
-            getLogger().severe("FATAL: onLoad has not been called for QuickShop. Trying to fix it... Some integrations may not work properly!");
-            try {
-                onLoad();
-            } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "Failed to fix onLoad", ex);
-            }
-        }
-        Timer enableTimer = new Timer(true);
-        getLogger().info("QuickShop " + getFork());
-        this.audience = BukkitAudiences.create(this);
-        /* Check the running envs is support or not. */
-        getLogger().info("Starting plugin self-test, please wait...");
-        runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
-        getLogger().info("Reading the configuration...");
-        this.initConfiguration();
-        getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
-        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood, sandtechnology");
-        getLogger().info("Let's start loading the plugin");
-        getLogger().info("Chat processor selected: Hardcoded BungeeChat Lib");
-        /* Process Metrics and Sentry error reporter. */
-        metrics = new Metrics(this, 14281);
-        try {
-            if (!getConfig().getBoolean("auto-report-errors")) {
-                Util.debugLog("Error reporter was disabled!");
-            } else {
-                sentryErrorReporter = new RollbarErrorReporter(this);
-            }
-        } catch (Throwable th) {
-            getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
-            getLogger().warning("Because the error reporter doesn't work, report this error to the developer. Thank you!");
-        }
-        /* Initalize the Utils */
-        this.loadItemMatcher();
-        Util.initialize();
-        /* Load 3rd party supports */
-        load3rdParty();
-        //Load the database
-        setupDBonEnableding = true;
-        if (!setupDatabase()) {
-            getLogger().severe("Failed to setup database, please check the logs for more information!");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
-        setupDBonEnableding = false;
-        /* Initalize the tools */
-        // Create the shop manager.
-        permissionManager = new PermissionManager(this);
-        // This should be inited before shop manager
-        this.registerDisplayAutoDespawn();
-        getLogger().info("Registering commands...");
-        /* PreInit for BootError feature */
-        commandManager = new SimpleCommandManager(this);
-        //noinspection ConstantConditions
-        getCommand("qs").setExecutor(commandManager);
-        //noinspection ConstantConditions
-        getCommand("qs").setTabCompleter(commandManager);
-        this.registerCustomCommands();
-        this.shopManager = new SimpleShopManager(this);
-        this.permissionChecker = new PermissionChecker(this);
-        // Limit
-        this.registerLimitRanks();
-        // Limit end
-        if (getConfig().getInt("shop.finding.distance") > 100 && getConfig().getBoolean("shop.finding.exclude-out-of-stock")) {
-            getLogger().severe("Shop find distance is too high with chunk loading feature turned on! It may cause lag! Pick a number below 100!");
-        }
-        if (getConfig().getBoolean("use-caching")) {
-            this.shopCache = new Cache(this);
-        } else {
-            this.shopCache = null;
-        }
-        signUpdateWatcher = new SignUpdateWatcher();
-        shopContainerWatcher = new ShopContainerWatcher();
-        /* Load all shops. */
-        shopLoader = new ShopLoader(this);
-        shopLoader.loadShops();
-        bakeShopsOwnerCache();
-        getLogger().info("Registering listeners...");
-        this.interactionController = new InteractionController(this);
-        // Register events
-        // Listeners (These don't)
-        new BlockListener(this, this.shopCache).register();
-        new PlayerListener(this).register();
-        new WorldListener(this).register();
-        // Listeners - We decide which one to use at runtime
-        new ChatListener(this).register();
-        new ChunkListener(this).register();
-        new CustomInventoryListener(this).register();
-        new ShopProtectionListener(this, this.shopCache).register();
-        new EconomySetupListener(this).register();
-        new MetricListener(this).register();
-        new InternalListener(this).register();
-        this.shopControlPanelManager.register(new SimpleShopControlPanel());
-        this.registerDisplayItem();
-        this.registerShopLock();
-        getLogger().info("Cleaning MsgUtils...");
-        MsgUtil.clean();
-        MsgUtil.loadTransactionMessages();
-        this.registerUpdater();
-        /* Delay the Economy system load, give a chance to let economy system register. */
-        /* And we have a listener to listen the ServiceRegisterEvent :) */
-        Util.debugLog("Loading economy system...");
-        getServer().getScheduler().runTaskLater(this, this::loadEcon, 1);
-        Util.debugLog("Registering watchers...");
-        calendarWatcher = new CalendarWatcher(this);
-        // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
-        signUpdateWatcher.runTaskTimer(this, 0, 10);
-        shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
-        if (logWatcher != null) {
-            logWatcher.runTaskTimerAsynchronously(this, 10, 10);
-            getLogger().info("Log actions is enabled. Actions will be logged in the qs.log file!");
-        }
-        this.registerOngoingFee();
-        getServer().getScheduler().runTask(this, () -> {
-            getLogger().info("Registering bStats metrics...");
-            submitMetrics();
-        });
-        if (loaded) {
-            getServer().getPluginManager().callEvent(new QSConfigurationReloadEvent(this));
-        } else {
-            loaded = true;
-        }
-        calendarWatcher = new CalendarWatcher(this);
-        calendarWatcher.start();
-        this.shopPurger = new ShopPurger(this);
-        if (getConfig().getBoolean("purge.at-server-startup")) {
-            shopPurger.purge();
-        }
-        Util.debugLog("Now using display-type: " + AbstractDisplayItem.getNowUsing().name());
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
-    }
 
     private void registerLimitRanks() {
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
@@ -1100,4 +1105,43 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             this.platform.updateTranslationMappingSection(translationMapping);
         }
     }
+
+    private void loadPlatform() {
+        if (PaperLib.isPaper()) {
+            this.platform = new PaperPlatform(this.translationMapping);
+        } else if (PaperLib.isSpigot()) {
+            this.platform = new SpigotPlatform(this.translationMapping);
+        } else {
+            throw new UnsupportedOperationException("Unsupported platform");
+        }
+    }
+
+    private void loadTextManager() {
+        getLogger().info("Loading translations (This may take a while)...");
+        try {
+            this.textManager = new SimpleTextManager(this);
+        } catch (NoSuchMethodError | NoClassDefFoundError e) {
+            getLogger().log(Level.SEVERE, "Failed to initialize text manager, the QuickShop doesn't compatible with your Server version. Did you up-to-date?", e);
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
+        textManager.load();
+    }
+
+    private void setupUnirest() {
+        getLogger().info("Initialing Unirest http request library...");
+        Unirest.config()
+                .concurrency(10, 5)
+                .setDefaultHeader("User-Agent", "QuickShop/" + getFork() + "-" + getDescription().getVersion() + " Java/" + System.getProperty("java.version"));
+    }
+
+    private void loadChatProcessor() {
+        getLogger().info("Loading the Adventure Chat Processor...");
+        getLogger().info("Adventure API loaded from: " + Util.getClassPath(Adventure.class));
+        getLogger().info("Adventure Bukkit Platform loaded from: " + Util.getClassPath(BukkitAudiences.class));
+        getLogger().info("Adventure Text Serializer (Legacy) loaded from: " + Util.getClassPath(LegacyComponentSerializer.class));
+        getLogger().info("Adventure Text Serializer (Gson) loaded from: " + Util.getClassPath(GsonComponentSerializer.class));
+        getLogger().info("Adventure MiniMessage Lib loaded from: " + Util.getClassPath(LegacyComponentSerializer.class));
+    }
+
 }
