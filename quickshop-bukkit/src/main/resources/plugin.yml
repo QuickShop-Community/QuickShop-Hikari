@@ -68,6 +68,7 @@ libraries:
   - com.konghq:unirest-java:3.13.7
   - com.github.juliomarcopineda:jdbc-stream:0.1.1
   - one.util:streamex:0.8.1
+  - com.j2html:j2html:1.5.0
 
 commands:
   qs:
