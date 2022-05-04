@@ -1302,17 +1302,15 @@ public class Util {
     }
 
     @NotNull
-    public static String getPluginJarPath(@NotNull Plugin plugin) {
-        String jarPath = plugin.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+    public static String getClassPath(@NotNull Class<?> clazz) {
+        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
         jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
         return jarPath;
     }
 
     @NotNull
-    public static String getClassPath(@NotNull Class<?> clazz) {
-        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
-        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
-        return jarPath;
+    public static String getPluginJarPath(@NotNull Plugin plugin) {
+        return getClassPath(plugin.getClass());
     }
 
     @NotNull
