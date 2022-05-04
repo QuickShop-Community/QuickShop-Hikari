@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is PasteInterface.java
+ *  This file is a part of project QuickShop, the name is AbstractSubPasteItem.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,27 +17,8 @@
  *
  */
 
-package com.ghostchu.quickshop.util.paste;
+package com.ghostchu.quickshop.util.paste.v2.item;
 
-import org.jetbrains.annotations.NotNull;
-
-public interface PasteInterface {
-    /**
-     * Paste the text to pastebin
-     *
-     * @param text The text need to paste
-     * @return The paste link
-     * @throws Exception IOException if paste failed
-     */
-    String pasteTheText(@NotNull String text) throws Exception;
-
-    /**
-     * Paste the text to pastebin
-     *
-     * @param text The text need to paste
-     * @return The paste index
-     * @throws Exception IOException if paste failed
-     */
-    String pasteTheTextJson(@NotNull String text) throws Exception;
+public abstract class AbstractSubPasteItem implements SubPasteItem {
 
 }

@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.util.paste.v2.item;
 
+import com.ghostchu.quickshop.QuickShop;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
@@ -53,6 +54,8 @@ public class HeaderItem implements PasteItem {
 
     @Override
     public @NotNull String toHTML() {
-        return TEMPLATE.replace("{content}", buildContent());
+        return TEMPLATE
+                .replace("{title}", "QuickShop-" + QuickShop.getFork() + " // Paste")
+                .replace("{content}", buildContent());
     }
 }

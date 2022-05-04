@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.util.paste;
 import com.ghostchu.quickshop.util.JsonUtil;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -49,10 +50,31 @@ public class HelpChatPastebinPaster implements PasteInterface {
         }
     }
 
+    @Override
+    public String pasteTheTextJson(@NotNull String text) throws Exception {
+        HttpResponse<String> response = Unirest.post("https://paste.helpch.at/documents")
+                .body(JsonUtil.getGson().toJson(new JsonPadding(text)))
+                .asString();
+        if (response.isSuccess()) {
+            String json = response.getBody();
+            Response resp = JsonUtil.getGson().fromJson(json, Response.class);
+            return "https://paste.helpch.at/documents/" + resp.getKey();
+        } else {
+            throw new IOException(response.getStatus() + " " + response.getStatusText() + ": " + response.getBody());
+        }
+    }
+
     @NoArgsConstructor
     @Data
     static class Response {
         private String key;
+    }
+
+    @AllArgsConstructor
+    @Data
+    static class JsonPadding {
+        private final String _paster = "QuickShop";
+        private String data;
     }
 }
 

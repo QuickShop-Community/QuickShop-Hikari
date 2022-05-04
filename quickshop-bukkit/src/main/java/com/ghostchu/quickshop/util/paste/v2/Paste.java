@@ -19,14 +19,38 @@
 
 package com.ghostchu.quickshop.util.paste.v2;
 
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.paste.HelpChatPastebinPaster;
+import com.ghostchu.quickshop.util.paste.LuckoPastebinPaster;
+import com.ghostchu.quickshop.util.paste.PasteInterface;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 public class Paste {
 
-    private void paste() {
-
-    }
-
-
-    private void generatePrerequisiteCheck() {
-
+    @Nullable
+    public static String paste(@NotNull String content) {
+        PasteInterface paster;
+        try {
+            // Lucko Pastebin
+            paster = new LuckoPastebinPaster();
+            return paster.pasteTheTextJson(content);
+        } catch (Exception ex) {
+            Util.debugLog(ex.getMessage());
+        }
+        try {
+            paster = new HelpChatPastebinPaster();
+            return paster.pasteTheTextJson(content);
+        } catch (Exception ex) {
+            Util.debugLog(ex.getMessage());
+        }
+//        try {
+//            // Ubuntu Pastebin
+//            paster = new UbuntuPaster();
+//            return paster.pasteTheTextDirect(content);
+//        } catch (Exception ex) {
+//            Util.debugLog(ex.getMessage());
+//        }
+        return null;
     }
 }

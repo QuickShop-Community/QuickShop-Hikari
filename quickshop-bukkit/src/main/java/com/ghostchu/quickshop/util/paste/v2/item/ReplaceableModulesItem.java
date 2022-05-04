@@ -1,5 +1,5 @@
-/*
- *  This file is a part of project QuickShop, the name is PrerequisiteCheckItem.java
+/* V
+ *  This file is a part of project QuickShop, the name is SystemInfoItem.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -19,39 +19,43 @@
 
 package com.ghostchu.quickshop.util.paste.v2.item;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.paste.v2.util.HTMLTable;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+public class ReplaceableModulesItem implements SubPasteItem {
+    private final String economyCore;
+    private final String itemMatcher;
 
-import static j2html.TagCreator.*;
+    public ReplaceableModulesItem() {
+        QuickShop plugin = QuickShop.getInstance();
+        itemMatcher = plugin.getItemMatcher().getName() + "@" + plugin.getItemMatcher().getPlugin().getName();
 
-@AllArgsConstructor
-@Data
-public class PrerequisiteCheckItem implements SubPasteItem {
-    private List<String> failedEntries;
+
+        if (plugin.getEconomy() == null) {
+            economyCore = "undefined@Unknown";
+        } else {
+            economyCore = plugin.getEconomy().getName() + "@" + plugin.getEconomy().getPlugin().getName();
+        }
+    }
+
 
     @Override
     public @NotNull String getTitle() {
-        return "Prerequisite Check Warning";
+        return "Replaceable Modules";
     }
 
     @NotNull
     private String buildContent() {
-        return div(
-                p("""
-                        We found that some of the prerequisite checks did not pass.
-                        Since the failed checks may affect the accuracy of this report, we recommend that you first eliminate the errors listed below and create a new report.
-                            """),
-                each(failedEntries, entry -> p(span(entry)))
-        ).render();
+        HTMLTable table = new HTMLTable(2, true);
+        table.insert("Economy Core", economyCore);
+        table.insert("Item Matcher", itemMatcher);
+        return table.render();
     }
+
 
     @Override
     public @NotNull String genBody() {
         return buildContent();
     }
-
-
 }

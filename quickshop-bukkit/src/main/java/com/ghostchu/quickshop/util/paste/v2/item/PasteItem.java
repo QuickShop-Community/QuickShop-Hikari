@@ -24,4 +24,9 @@ import org.jetbrains.annotations.NotNull;
 public interface PasteItem {
     @NotNull
     String toHTML();
+
+
+    static class TableBuilder {
+
+    }
 }
