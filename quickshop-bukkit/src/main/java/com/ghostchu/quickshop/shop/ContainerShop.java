@@ -329,7 +329,7 @@ public class ContainerShop implements Shop {
      * @param amount The amount to add to the shop.
      */
     @Override
-    public void add(@NotNull ItemStack item, int amount) throws Exception {
+    public void add(@NotNull ItemStack item, int amount) {
         Util.ensureThread(false);
         if (this.unlimited) {
             return;

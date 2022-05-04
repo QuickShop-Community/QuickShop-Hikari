@@ -130,7 +130,7 @@ public class SimpleMetricQuery implements MetricQuery {
     }
 
     @NotNull
-    private List<MetricRecord> wrap(@NotNull ResultSet set) throws SQLException {
+    private List<MetricRecord> wrap(@NotNull ResultSet set) {
         return JdbcStream.stream(set).map(rs -> {
             try {
                 return new SimpleMetricRecord(rs.getLong("time"), rs.getInt("x"), rs.getInt("y"), rs.getInt("z"), rs.getString("world"), ShopOperationEnum.valueOf(rs.getString("type")), rs.getDouble("total"), rs.getDouble("tax"), rs.getInt("amount"), UUID.fromString(rs.getString("player")));

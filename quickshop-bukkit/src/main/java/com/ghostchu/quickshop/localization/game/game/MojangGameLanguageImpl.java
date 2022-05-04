@@ -36,7 +36,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
-import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -61,8 +60,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
     private static final Lock LOCK = new ReentrantLock();
     private static final Condition DOWNLOAD_CONDITION = LOCK.newCondition();
     // TODO: Pending for removal
-    @Deprecated
-    @ApiStatus.ScheduledForRemoval
+    @Deprecated(forRemoval = true)
     private static final boolean IS_POTION_SUPPORT_MINECRAFT_KEY = Util.isMethodAvailable("org.bukkit.potion.PotionEffectType", "getKey");
     private final QuickShop plugin;
     private final String languageCode;

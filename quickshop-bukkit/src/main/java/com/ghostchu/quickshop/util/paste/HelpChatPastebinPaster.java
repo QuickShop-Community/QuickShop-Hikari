@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 /**
- * Paste the paste through https://paste.helpch.at/
+ * Paste the paste through <a href="https://paste.helpch.at/">https://paste.helpch.at/</a>
  *
  * @author Ghost_chu
  */

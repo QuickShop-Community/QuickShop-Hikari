@@ -31,7 +31,7 @@ public class LocationOf {
     @NotNull
     private static final Pattern PATTERN =
             Pattern.compile(
-                    "((?<world>[^:/]+)[:/])?(?<x>[\\-0-9.]+),(?<y>[\\-0-9.]+),(?<z>[\\-0-9.]+)(:(?<yaw>[\\-0-9.]+):(?<pitch>[\\-0-9.]+))?");
+                    "((?<world>[^:/]+)[:/])?(?<x>[\\-\\d.]+),(?<y>[\\-\\d.]+),(?<z>[\\-\\d.]+)(:(?<yaw>[\\-\\d.]+):(?<pitch>[\\-\\d.]+))?");
 
     @NotNull
     private final String text;

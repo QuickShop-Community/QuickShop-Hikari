@@ -20,8 +20,11 @@
 package com.ghostchu.quickshop.api.operation;
 
 public interface Operation {
-    boolean commit() throws Exception;
-    boolean rollback() throws Exception;
+    boolean commit();
+
+    boolean rollback();
+
     boolean isCommitted();
+
     boolean isRollback();
 }

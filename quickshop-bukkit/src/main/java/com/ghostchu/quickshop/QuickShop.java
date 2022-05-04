@@ -93,7 +93,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -109,7 +108,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
      * The manager to check permissions.
      */
     private static PermissionManager permissionManager;
-    private static boolean loaded = false;
     /**
      * If running environment test
      */
@@ -742,11 +740,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         }
         /* It will generate a new UUID above updateConfig */
         this.serverUniqueID = UUID.fromString(Objects.requireNonNull(getConfig().getString("server-uuid", String.valueOf(UUID.randomUUID()))));
-        try {
-            updateConfig();
-        } catch (IOException exception) {
-            getLogger().log(Level.WARNING, "Failed to update configuration", exception);
-        }
+        updateConfig();
     }
 
     private void runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
@@ -998,7 +992,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         }
     }
 
-    private void updateConfig() throws IOException {
+    private void updateConfig() {
         new ConfigurationUpdater(this).update(new ConfigUpdateScript(getConfig(), this));
     }
 

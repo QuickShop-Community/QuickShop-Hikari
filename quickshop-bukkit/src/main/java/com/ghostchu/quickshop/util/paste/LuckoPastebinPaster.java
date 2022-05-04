@@ -29,8 +29,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 /**
- * Paste the paste through https://bytebin.lucko.me/post
- * Website Author: Lucko (https://github.com/lucko)
+ * Paste the paste through <a href="https://bytebin.lucko.me/post">https://bytebin.lucko.me/post</a>
+ * Website Author: Lucko (<a href="https://github.com/lucko">https://github.com/lucko</a>)
  *
  * @author Ghost_chu
  */

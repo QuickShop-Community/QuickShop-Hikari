@@ -59,14 +59,15 @@ public interface Shop {
      */
     @Nullable
     String getShopName();
+
     /**
      * Add x ItemStack to the shop inventory
      *
      * @param paramItemStack The ItemStack you want add
      * @param paramInt       How many you want add
-     * @exception Exception Possible exception thrown if anything wrong.
+     * @throws Exception Possible exception thrown if anything wrong.
      */
-    void add(@NotNull ItemStack paramItemStack, int paramInt) throws Exception;
+    void add(@NotNull ItemStack paramItemStack, int paramInt);
 
     /**
      * Add new staff to the moderators
@@ -172,7 +173,7 @@ public interface Shop {
      * @param paramInt       Want remove how many
      * @exception Exception Possible exception thrown if anything wrong.
      */
-    void remove(@NotNull ItemStack paramItemStack, int paramInt) throws Exception;
+    void remove(@NotNull ItemStack paramItemStack, int paramInt);
 
     /**
      * Execute sell action for player with x items.
