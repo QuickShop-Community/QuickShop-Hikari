@@ -32,8 +32,7 @@ import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -94,65 +93,99 @@ public class PAPICache implements Reloadable {
         return JsonUtil.standard().toJson(new CompiledUniqueKey(player, queryString));
     }
     
-    private String getValue(@NotNull UUID player, String[] args) {
+    private String getValue(@NotNull UUID player, String[] original) {
+        // Make a copy with not-present values being null.
+        String[] args = Arrays.copyOf(original, 3);
+        
+        // Invalid placeholder (%qs_%). Shouldn't happen at all, but you never know...
+        if (Util.isNullOrEmpty(args[0]))
+            return null;
+        
         switch(args[0].toLowerCase(Locale.ROOT)) {
-            case "server-total" -> {
-                return String.valueOf(plugin.getShopManager().getAllShops().size());
-            }
-            case "server-loaded" -> {
-                return String.valueOf(plugin.getShopManager().getLoadedShops().size());
-            }
-            case "world-total" -> {
-                if (args.length < 2)
-                    return null;
+            // %qs_shops-total[_world]%
+            case "shops-total" -> {
+                // %qs_shops-total%
+                if (Util.isNullOrEmpty(args[1]))
+                    return String.valueOf(plugin.getShopManager().getAllShops().size());
                 
+                // %qs_shops-total_<world>%
                 return String.valueOf(getShopsInWorld(args[1], false));
             }
-            case "world-loaded" -> {
-                if (args.length < 2)
-                    return null;
-    
+            
+            // %qs_shops-loaded[_world]%
+            case "shops-loaded" -> {
+                //%qs_shops-loaded%
+                if (Util.isNullOrEmpty(args[1]))
+                    return String.valueOf(plugin.getShopManager().getLoadedShops().size());
+                
+                // %qs_shops-loaded_<world>%
                 return String.valueOf(getShopsInWorld(args[1], true));
             }
+            
+            // %qs_default-currency%
             case "default-currency" -> {
                 return plugin.getCurrency();
             }
+            
             case "player" -> {
-                if (args.length < 3)
+                // Invalid placeholder (%qs_player_%)
+                if (Util.isNullOrEmpty(args[1]))
                     return null;
                 
-                UUID uuid = null;
-                if (Util.isUUID(args[1])) {
-                    uuid = UUID.fromString(args[1]);
-                }
-                if (uuid == null)
-                    uuid = player;
-                
-                switch (args[2].toLowerCase(Locale.ROOT)) {
-                    case "count" -> {
-                        return String.valueOf(plugin.getShopManager().getPlayerAllShops(uuid));
-                    }
-                    case "count-loaded" -> {
-                        long count = plugin.getShopManager().getPlayerAllShops(uuid).stream()
-                            .filter(Shop::isLoaded)
-                            .count();
+                switch (args[1].toLowerCase(Locale.ROOT)) {
+                    // %qs_player_shops-total[_uuid]%
+                    case "shops-total" -> {
+                        // %qs_player_shops-total%
+                        if (Util.isNullOrEmpty(args[2]))
+                            return String.valueOf(plugin.getShopManager().getPlayerAllShops(player));
                         
-                        return String.valueOf(count);
+                        // Not valid UUID provided
+                        if (!Util.isUUID(args[2]))
+                            return null;
+                        
+                        // %qs_player_shop-total_<uuid>%
+                        return String.valueOf(plugin.getShopManager().getPlayerAllShops(UUID.fromString(args[2])));
+                    }
+                    
+                    // %qs_player_shops-loaded[_uuid]%
+                    case "shops-loaded" -> {
+                        // %qs_shops-loaded%
+                        if (Util.isNullOrEmpty(args[2]))
+                            return String.valueOf(getLoadedPlayerShops(player));
+                        
+                        // Not valid UUID provided
+                        if (!Util.isUUID(args[2]))
+                            return null;
+                        
+                        // %qs_shops-loaded_<uuid>%
+                        return String.valueOf(getLoadedPlayerShops(UUID.fromString(args[2])));
+                    }
+                    
+                    // Unknown QS player placeholder
+                    default -> {
+                        return null;
                     }
                 }
             }
+            
+            // Unknown QS placeholder
             default -> {
                 return null;
             }
         }
-        return null;
     }
     
-    private long getShopsInWorld(@NotNull String world, boolean loadedOnly){
+    private long getShopsInWorld(@NotNull String world, boolean loadedOnly) {
         return plugin.getShopManager().getAllShops().stream()
             .filter(shop -> shop.getLocation().getWorld() != null)
             .filter(shop -> shop.getLocation().getWorld().getName().equals(world))
             .filter(shop -> !loadedOnly || shop.isLoaded())
+            .count();
+    }
+    
+    private long getLoadedPlayerShops(@NotNull UUID uuid) {
+        return plugin.getShopManager().getPlayerAllShops(uuid).stream()
+            .filter(Shop::isLoaded)
             .count();
     }
     

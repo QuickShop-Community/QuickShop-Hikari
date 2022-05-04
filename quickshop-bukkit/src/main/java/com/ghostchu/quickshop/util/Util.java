@@ -1148,6 +1148,16 @@ public class Util {
         Bukkit.getPluginManager().callEvent((Event) event);
         return event.isCancelled();
     }
+    
+    /**
+     * Simply method to check if the provided String is either {@code null} or empty.
+     * 
+     * @param text The text to check for null or empty value.
+     * @return Whether the text is null or empty.
+     */
+    public static boolean isNullOrEmpty(String text) {
+        return text == null || text.isEmpty();
+    }
 
     /**
      * Get QuickShop caching folder
