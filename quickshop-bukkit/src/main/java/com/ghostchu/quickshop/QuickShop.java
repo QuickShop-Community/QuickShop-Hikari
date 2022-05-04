@@ -70,7 +70,10 @@ import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.Adventure;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -491,6 +494,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         Unirest.config()
                 .concurrency(10, 5)
                 .setDefaultHeader("User-Agent", "QuickShop/" + getFork() + "-" + getDescription().getVersion() + " Java/" + System.getProperty("java.version"));
+        getLogger().info("Loading the Adventure Chat Processor...");
+        getLogger().info("Adventure API loaded from: " + Util.getClassPath(Adventure.class));
+        getLogger().info("Adventure Bukkit Platform loaded from: " + Util.getClassPath(BukkitAudiences.class));
+        getLogger().info("Adventure Text Serializer (Legacy) loaded from: " + Util.getClassPath(LegacyComponentSerializer.class));
+        getLogger().info("Adventure Text Serializer (Gson) loaded from: " + Util.getClassPath(GsonComponentSerializer.class));
+        getLogger().info("Adventure MiniMessage Lib loaded from: " + Util.getClassPath(LegacyComponentSerializer.class));
         getLogger().info("Loading translations (This may take a while)...");
         try {
             this.textManager = new SimpleTextManager(this);
@@ -808,7 +817,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                         shop.checkDisplay();
                     }
                 }, 1L, getDisplayItemCheckTicks());
-            } else if (getDisplayItemCheckTicks() == 0){
+            } else if (getDisplayItemCheckTicks() == 0) {
                 getLogger().info("shop.display-items-check-ticks was set to 0. Display Check has been disabled");
             } else {
                 getLogger().severe("shop.display-items-check-ticks has been set to an invalid value. Please use a value above 3000.");

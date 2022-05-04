@@ -1309,6 +1309,13 @@ public class Util {
     }
 
     @NotNull
+    public static String getClassPath(@NotNull Class<?> clazz) {
+        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+        return jarPath;
+    }
+
+    @NotNull
     public static File getPluginJarFile(@NotNull Plugin plugin) throws FileNotFoundException {
         String path = getPluginJarPath(plugin);
         File file = new File(path);
