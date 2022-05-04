@@ -179,11 +179,11 @@
                                         <shadedPattern>com.ghostchu.quickshop.shade.co.aikar.taskchain.
                                         </shadedPattern>
                                     </relocation>
-                                    <relocation>
-                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.adventure.text.minimessage.
-                                        </shadedPattern>
-                                    </relocation>
+                                    <!--                                    <relocation>-->
+                                    <!--                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>-->
+                                    <!--                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.adventure.text.minimessage.-->
+                                    <!--                                        </shadedPattern>-->
+                                    <!--                                    </relocation>-->
                                 </relocations>
                                 <transformers>
                                     <transformer

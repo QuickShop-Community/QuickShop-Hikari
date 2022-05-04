@@ -452,7 +452,6 @@
             </exclusions>
             <type>jar</type>
         </dependency>
-
         <dependency>
             <groupId>com.dumptruckman.minecraft</groupId>
             <artifactId>JsonConfiguration</artifactId>

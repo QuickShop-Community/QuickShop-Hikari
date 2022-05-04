@@ -83,7 +83,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.enginehub.squirrelid.Profile;
 import org.h2.Driver;
 import org.jetbrains.annotations.ApiStatus;
@@ -493,7 +492,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 .concurrency(10, 5)
                 .setDefaultHeader("User-Agent", "QuickShop/" + getFork() + "-" + getDescription().getVersion() + " Java/" + System.getProperty("java.version"));
         getLogger().info("Loading translations (This may take a while)...");
-        this.textManager = new SimpleTextManager(this);
+        try {
+            this.textManager = new SimpleTextManager(this);
+        } catch (NoSuchMethodError | NoClassDefFoundError e) {
+            getLogger().log(Level.SEVERE, "Failed to initialize text manager, the QuickShop doesn't compatible with your Server version. Did you up-to-date?", e);
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
         textManager.load();
         getLogger().info("Register InventoryWrapper...");
         this.inventoryWrapperRegistry.register(this, this.inventoryWrapperManager);
