@@ -27,6 +27,7 @@ import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.google.common.collect.EvictingQueue;
+import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
@@ -374,7 +375,7 @@ public class Util {
     @NotNull
     public static List<String> getDebugLogs() {
         LOCK.readLock().lock();
-        List<String> strings = new ArrayList<>(DEBUG_LOGS);
+        List<String> strings = ImmutableList.copyOf(DEBUG_LOGS);
         LOCK.readLock().unlock();
         return strings;
     }
