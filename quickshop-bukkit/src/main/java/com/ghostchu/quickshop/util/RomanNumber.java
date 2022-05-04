@@ -22,7 +22,7 @@ package com.ghostchu.quickshop.util;
 import java.util.TreeMap;
 
 /**
- * @author "Ben-Hur Langoni Junior" on StackOverFlow page "https://stackoverflow.com/a/19759564"
+ * @author "Ben-Hur Langoni Junior" on StackOverFlow page "<a href="https://stackoverflow.com/a/19759564">https://stackoverflow.com/a/19759564</a>"
  */
 public class RomanNumber {
     private static final TreeMap<Integer, String> MAP = new TreeMap<>();

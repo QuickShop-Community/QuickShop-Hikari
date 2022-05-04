@@ -27,6 +27,7 @@ import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.google.common.collect.EvictingQueue;
+import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
@@ -374,7 +375,7 @@ public class Util {
     @NotNull
     public static List<String> getDebugLogs() {
         LOCK.readLock().lock();
-        List<String> strings = new ArrayList<>(DEBUG_LOGS);
+        List<String> strings = ImmutableList.copyOf(DEBUG_LOGS);
         LOCK.readLock().unlock();
         return strings;
     }
@@ -390,30 +391,30 @@ public class Util {
         if (disableDebugLogger) {
             return;
         }
-        LOCK.writeLock().lock();
+        StringJoiner logEntry = new StringJoiner("\n");
         if (!isDevMode()) {
             for (String log : logs) {
-                DEBUG_LOGS.add("[DEBUG] " + log);
+                logEntry.add("[DEBUG] " + log);
             }
-            LOCK.writeLock().unlock();
-            return;
+        } else {
+            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(2).toList());
+            StackWalker.StackFrame frame = caller.get(1);
+            String threadName = Thread.currentThread().getName();
+            String className = frame.getClassName();
+            String methodName = frame.getMethodName();
+            int codeLine = frame.getLineNumber();
+            for (String log : logs) {
+                logEntry.add("[DEBUG/" + threadName + "] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+            }
         }
-        List<StackWalker.StackFrame> caller = stackWalker.walk(
-                frames -> frames
-                        .limit(2)
-                        .toList());
-        StackWalker.StackFrame frame = caller.get(1);
-        final String threadName = Thread.currentThread().getName();
-        final String className = frame.getClassName();
-        final String methodName = frame.getMethodName();
-        final int codeLine = frame.getLineNumber();
-        for (String log : logs) {
-            DEBUG_LOGS.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info("[DEBUG/" + threadName + "] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+        String log = logEntry.toString();
+        if (isDevMode()) {
+            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info(log);
         }
+        LOCK.writeLock().lock();
+        DEBUG_LOGS.add(log);
         LOCK.writeLock().unlock();
     }
-
 
     /**
      * return the right side for given blockFace
@@ -903,9 +904,7 @@ public class Util {
      */
     @NotNull
     public static String list2String(@NotNull Collection<String> strList) {
-        StringJoiner joiner = new StringJoiner(", ", "", "");
-        strList.forEach(joiner::add);
-        return joiner.toString();
+        return String.join(", ", strList);
     }
 
     /**
@@ -1227,6 +1226,7 @@ public class Util {
     }
 
     // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
+    @Nullable
     public static LocalDateTime getDateTimeFromTimestamp(long timestamp) {
         if (timestamp == 0) {
             return null;
@@ -1236,16 +1236,19 @@ public class Util {
     }
 
     // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
+    @Nullable
     public static LocalDate getDateFromTimestamp(long timestamp) {
         LocalDateTime date = getDateTimeFromTimestamp(timestamp);
         return date == null ? null : date.toLocalDate();
     }
 
+    @NotNull
     public static UUID getNilUniqueId() {
         return new UUID(0, 0);
     }
 
-    public static UUID getSenderUniqueId(CommandSender sender) {
+    @NotNull
+    public static UUID getSenderUniqueId(@Nullable CommandSender sender) {
         if (sender instanceof OfflinePlayer) {
             return ((OfflinePlayer) sender).getUniqueId();
         }
@@ -1253,6 +1256,7 @@ public class Util {
     }
 
     // https://stackoverflow.com/questions/45321050/java-string-matching-with-wildcards
+    @NotNull
     public static String createRegexFromGlob(@NotNull String glob) {
         StringBuilder out = new StringBuilder("^");
         for (int i = 0; i < glob.length(); ++i) {
@@ -1304,10 +1308,15 @@ public class Util {
     }
 
     @NotNull
-    public static String getPluginJarPath(@NotNull Plugin plugin) {
-        String jarPath = plugin.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+    public static String getClassPath(@NotNull Class<?> clazz) {
+        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
         jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
         return jarPath;
+    }
+
+    @NotNull
+    public static String getPluginJarPath(@NotNull Plugin plugin) {
+        return getClassPath(plugin.getClass());
     }
 
     @NotNull

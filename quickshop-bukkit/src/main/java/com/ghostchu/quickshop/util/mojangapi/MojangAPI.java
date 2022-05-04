@@ -172,7 +172,7 @@ public class MojangAPI {
                  * sha1 : 3a5d110a6ab102c7083bae4296d2de4b8fcf92eb
                  * size : 295421
                  * totalSize : 330604420
-                 * url : https://launchermeta.mojang.com/v1/packages/3a5d110a6ab102c7083bae4296d2de4b8fcf92eb/1.16.json
+                 * url : <a href="https://launchermeta.mojang.com/v1/packages/3a5d110a6ab102c7083bae4296d2de4b8fcf92eb/1.16.json">https://launchermeta.mojang.com/v1/packages/3a5d110a6ab102c7083bae4296d2de4b8fcf92eb/1.16.json</a>
                  */
                 @Nullable
                 private String id;

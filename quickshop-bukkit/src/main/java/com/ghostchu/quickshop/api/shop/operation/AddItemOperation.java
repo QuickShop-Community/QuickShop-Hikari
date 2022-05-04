@@ -53,16 +53,16 @@ public class AddItemOperation implements Operation {
     }
 
     @Override
-    public boolean commit() throws Exception {
+    public boolean commit() {
         committed = true;
         remains = this.amount;
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
             item.setAmount(stackSize);
             Map<Integer, ItemStack> notSaved = inv.addItem(item);
-            if(notSaved.isEmpty()) {
+            if (notSaved.isEmpty()) {
                 remains -= stackSize;
-            }else{
+            } else {
                 rollbackRemains -= stackSize - notSaved.entrySet().iterator().next().getValue().getAmount();
                 return false;
             }
@@ -71,16 +71,16 @@ public class AddItemOperation implements Operation {
     }
 
     @Override
-    public boolean rollback() throws Exception {
+    public boolean rollback() {
         rollback = true;
         rollbackRemains = remains;
         while (rollbackRemains > 0) {
             int stackSize = Math.min(rollbackRemains, itemMaxStackSize);
             item.setAmount(stackSize);
             Map<Integer, ItemStack> notFit = inv.removeItem(item.clone());
-            if(notFit.isEmpty()){
+            if (notFit.isEmpty()) {
                 rollbackRemains -= stackSize;
-            }else{
+            } else {
                 remains -= stackSize - notFit.entrySet().iterator().next().getValue().getAmount();
                 return false;
             }

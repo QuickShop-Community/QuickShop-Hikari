@@ -33,7 +33,6 @@ import com.google.gson.JsonParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -150,7 +149,7 @@ public class MsgUtil {
 
     @ApiStatus.Experimental
     @NotNull
-    public static String getGameLanguageCode(String languageCode) {
+    public static String getGameLanguageCode(@NotNull String languageCode) {
         if ("default".equalsIgnoreCase(languageCode)) {
             Locale locale = Locale.getDefault();
             String language = locale.getLanguage();
@@ -346,7 +345,7 @@ public class MsgUtil {
         }
     }
 
-    public static void printEnchantment(@NotNull Player p, @NotNull Shop shop, ChatSheetPrinter chatSheetPrinter) {
+    public static void printEnchantment(@NotNull Player p, @NotNull Shop shop, @NotNull ChatSheetPrinter chatSheetPrinter) {
         if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && plugin.getConfig().getBoolean("respect-item-flag")) {
             return;
         }
@@ -368,7 +367,7 @@ public class MsgUtil {
         }
     }
 
-    private static void printEnchantment(ChatSheetPrinter chatSheetPrinter, Map<Enchantment, Integer> enchs) {
+    private static void printEnchantment(@NotNull ChatSheetPrinter chatSheetPrinter, @NotNull Map<Enchantment, Integer> enchs) {
         for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
             //Use boxed object to avoid NPE
             Integer level = entries.getValue();
@@ -376,7 +375,7 @@ public class MsgUtil {
         }
     }
 
-    public static void debugStackTrace(StackTraceElement[] traces) {
+    public static void debugStackTrace(@NotNull StackTraceElement[] traces) {
         if (Util.isDisableDebugLogger()) {
             return;
         }
@@ -435,6 +434,7 @@ public class MsgUtil {
         }
     }
 
+    @NotNull
     public static Component getTranslateText(@NotNull ItemStack stack) {
         if (plugin.getConfig().getBoolean("force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
             return plugin.getPlatform().getTranslation(stack.getType());

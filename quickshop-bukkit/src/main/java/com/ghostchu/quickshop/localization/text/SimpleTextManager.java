@@ -246,9 +246,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         this.reset();
         List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
         //Make sure is a lowercase regex, prevent case-sensitive and underscore issue
-        for (int i = 0; i < enabledLanguagesRegex.size(); i++) {
-            enabledLanguagesRegex.set(i, enabledLanguagesRegex.get(i).toLowerCase(Locale.ROOT).replace("-", "_"));
-        }
+        enabledLanguagesRegex.replaceAll(s -> s.toLowerCase(Locale.ROOT).replace("-", "_"));
         // Load bundled translations
         loadBundled().forEach((locale, configuration) -> {
             if (localeEnabled(locale, enabledLanguagesRegex)) {
@@ -592,7 +590,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
                 }
-                List<Component> components = str.stream().map(s-> manager.miniMessage.deserialize(s)).toList();
+                List<Component> components = str.stream().map(manager.miniMessage::deserialize).toList();
                 return postProcess(components);
             }
         }

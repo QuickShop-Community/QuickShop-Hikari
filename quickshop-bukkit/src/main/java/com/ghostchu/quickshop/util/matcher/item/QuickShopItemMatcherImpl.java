@@ -352,7 +352,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                     if (bannerMeta1.numberOfPatterns() != bannerMeta2.numberOfPatterns()) {
                         return false;
                     }
-                    return bannerMeta1.getPatterns().containsAll(bannerMeta2.getPatterns());
+                    return new HashSet<>(bannerMeta1.getPatterns()).containsAll(bannerMeta2.getPatterns());
                 }
                 return true;
             }));
