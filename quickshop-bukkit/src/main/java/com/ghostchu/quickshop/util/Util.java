@@ -1225,6 +1225,7 @@ public class Util {
     }
 
     // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
+    @Nullable
     public static LocalDateTime getDateTimeFromTimestamp(long timestamp) {
         if (timestamp == 0) {
             return null;
@@ -1234,16 +1235,19 @@ public class Util {
     }
 
     // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
+    @Nullable
     public static LocalDate getDateFromTimestamp(long timestamp) {
         LocalDateTime date = getDateTimeFromTimestamp(timestamp);
         return date == null ? null : date.toLocalDate();
     }
 
+    @NotNull
     public static UUID getNilUniqueId() {
         return new UUID(0, 0);
     }
 
-    public static UUID getSenderUniqueId(CommandSender sender) {
+    @NotNull
+    public static UUID getSenderUniqueId(@Nullable CommandSender sender) {
         if (sender instanceof OfflinePlayer) {
             return ((OfflinePlayer) sender).getUniqueId();
         }
@@ -1251,6 +1255,7 @@ public class Util {
     }
 
     // https://stackoverflow.com/questions/45321050/java-string-matching-with-wildcards
+    @NotNull
     public static String createRegexFromGlob(@NotNull String glob) {
         StringBuilder out = new StringBuilder("^");
         for (int i = 0; i < glob.length(); ++i) {
