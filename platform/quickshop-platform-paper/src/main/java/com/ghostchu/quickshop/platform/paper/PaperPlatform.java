@@ -45,7 +45,7 @@ public class PaperPlatform implements Platform {
 
     private Map<String, String> translationMapping;
 
-    public PaperPlatform(Map<String, String> mapping){
+    public PaperPlatform(Map<String, String> mapping) {
         this.translationMapping = mapping;
     }
 
@@ -88,26 +88,26 @@ public class PaperPlatform implements Platform {
             return material.translationKey();
         } catch (Error error) {
             try {
-                key= material.getTranslationKey();
+                key = material.getTranslationKey();
             } catch (Error error2) {
                 if (!material.isBlock())
-                    key= "item." + material.getKey().getNamespace() + "." + material.getKey().getKey();
+                    key = "item." + material.getKey().getNamespace() + "." + material.getKey().getKey();
                 else
-                    key= "block." + material.getKey().getNamespace() + "." + material.getKey().getKey();
+                    key = "block." + material.getKey().getNamespace() + "." + material.getKey().getKey();
             }
         }
         return postProcessingTranslationKey(key);
     }
 
-    private String postProcessingTranslationKey(String key){
-        return this.translationMapping.getOrDefault(key,key);
+    private String postProcessingTranslationKey(String key) {
+        return this.translationMapping.getOrDefault(key, key);
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull EntityType type) {
         String key;
         try {
-            key =  type.translationKey();
+            key = type.translationKey();
         } catch (Error error) {
             try {
                 key = type.getTranslationKey();
@@ -122,7 +122,7 @@ public class PaperPlatform implements Platform {
     public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
         String key;
         try {
-            key =  potionEffectType.translationKey();
+            key = potionEffectType.translationKey();
         } catch (Error error) {
             key = "effect." + potionEffectType.getKey().getNamespace() + "." + potionEffectType.getKey().getKey();
         }
@@ -167,12 +167,12 @@ public class PaperPlatform implements Platform {
 
     @Override
     public @NotNull Component getDisplayName(@NotNull ItemMeta meta) {
-        return null;
+        return meta.displayName();
     }
 
     @Override
     public void setDisplayName(@NotNull ItemMeta meta, @NotNull Component component) {
-
+        meta.displayName(component);
     }
 
     @Override

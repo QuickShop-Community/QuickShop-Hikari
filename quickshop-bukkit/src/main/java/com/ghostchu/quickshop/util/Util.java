@@ -504,7 +504,7 @@ public class Util {
         if (itemStack.hasItemMeta()
                 && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName()
                 && !QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
-            return plugin.getPlatform().getDisplayName(itemStack);
+            return plugin.getPlatform().getDisplayName(itemStack.getItemMeta());
         }
         return null;
     }
