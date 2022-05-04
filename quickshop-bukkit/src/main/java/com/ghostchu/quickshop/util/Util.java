@@ -390,29 +390,61 @@ public class Util {
         if (disableDebugLogger) {
             return;
         }
-        LOCK.writeLock().lock();
+        StringJoiner logEntry = new StringJoiner("\n");
         if (!isDevMode()) {
             for (String log : logs) {
-                DEBUG_LOGS.add("[DEBUG] " + log);
+                logEntry.add("[DEBUG] " + log);
             }
-            LOCK.writeLock().unlock();
-            return;
+        } else {
+            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(2).toList());
+            StackWalker.StackFrame frame = caller.get(1);
+            String threadName = Thread.currentThread().getName();
+            String className = frame.getClassName();
+            String methodName = frame.getMethodName();
+            int codeLine = frame.getLineNumber();
+            for (String log : logs) {
+                logEntry.add("[DEBUG/" + threadName + "] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+            }
         }
-        List<StackWalker.StackFrame> caller = stackWalker.walk(
-                frames -> frames
-                        .limit(2)
-                        .toList());
-        StackWalker.StackFrame frame = caller.get(1);
-        final String threadName = Thread.currentThread().getName();
-        final String className = frame.getClassName();
-        final String methodName = frame.getMethodName();
-        final int codeLine = frame.getLineNumber();
-        for (String log : logs) {
-            DEBUG_LOGS.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info("[DEBUG/" + threadName + "] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-        }
+        String log = logEntry.toString();
+        Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info(log);
+        LOCK.writeLock().lock();
+        DEBUG_LOGS.add(log);
         LOCK.writeLock().unlock();
     }
+//
+//    /**
+//     * Print debug log when plugin running on dev mode.
+//     *
+//     * @param logs logs
+//     */
+//    public static void debugLog(@NotNull String... logs) {
+//        if (disableDebugLogger) {
+//            return;
+//        }
+//        LOCK.writeLock().lock();
+//        if (!isDevMode()) {
+//            for (String log : logs) {
+//                DEBUG_LOGS.add("[DEBUG] " + log);
+//            }
+//            LOCK.writeLock().unlock();
+//            return;
+//        }
+//        List<StackWalker.StackFrame> caller = stackWalker.walk(
+//                frames -> frames
+//                        .limit(2)
+//                        .toList());
+//        StackWalker.StackFrame frame = caller.get(1);
+//        final String threadName = Thread.currentThread().getName();
+//        final String className = frame.getClassName();
+//        final String methodName = frame.getMethodName();
+//        final int codeLine = frame.getLineNumber();
+//        for (String log : logs) {
+//            DEBUG_LOGS.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+//            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info("[DEBUG/" + threadName + "] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+//        }
+//        LOCK.writeLock().unlock();
+//    }
 
 
     /**
