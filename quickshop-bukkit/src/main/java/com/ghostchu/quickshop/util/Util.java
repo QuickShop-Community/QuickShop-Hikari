@@ -903,9 +903,7 @@ public class Util {
      */
     @NotNull
     public static String list2String(@NotNull Collection<String> strList) {
-        StringJoiner joiner = new StringJoiner(", ", "", "");
-        strList.forEach(joiner::add);
-        return joiner.toString();
+        return String.join(", ", strList);
     }
 
     /**
