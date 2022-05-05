@@ -169,7 +169,7 @@ public class SpigotPlatform implements Platform {
 
     @Override
     public @NotNull Component getDisplayName(@NotNull ItemStack stack) {
-        if (stack.hasItemMeta()) {
+        if (stack.getItemMeta() != null) {
             return LegacyComponentSerializer.legacySection().deserialize(stack.getItemMeta().getDisplayName());
         }
         return Component.empty();
