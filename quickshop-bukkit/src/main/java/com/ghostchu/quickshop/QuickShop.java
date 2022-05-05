@@ -500,10 +500,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         Unirest.shutDown(true);
         getLogger().info("Shutting down database...");
         EasySQL.shutdownManager(this.sqlManager);
-        if (databaseDriverType == DatabaseDriverType.H2) {
-            getLogger().info("Create database backup...");
-            new DatabaseBackupUtil().backup();
-        }
         getLogger().info("Finishing remaining misc work...");
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
         getLogger().info("All shutdown work has been completed.");
@@ -928,6 +924,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         HikariConfig config = HikariUtil.createHikariConfig();
 
         try {
+            databaseDriverType = DatabaseDriverType.MYSQL;
             ConfigurationSection dbCfg = getConfig().getConfigurationSection("database");
             if (Objects.requireNonNull(dbCfg).getBoolean("mysql")) {
                 // MySQL database - Required database be created first.
@@ -945,16 +942,15 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 config.setUsername(user);
                 config.setPassword(pass);
                 this.sqlManager = EasySQL.createManager(config);
-                databaseDriverType = DatabaseDriverType.MYSQL;
             } else {
                 // H2 database - Doing this handles file creation
+                databaseDriverType = DatabaseDriverType.H2;
                 Driver.load();
                 getLogger().info("Create database backup...");
                 new DatabaseBackupUtil().backup();
                 config.setJdbcUrl("jdbc:h2:" + new File(this.getDataFolder(), "shops").getCanonicalFile().getAbsolutePath() + ";DB_CLOSE_DELAY=-1;MODE=MYSQL");
                 this.sqlManager = EasySQL.createManager(config);
                 this.sqlManager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode
-                databaseDriverType = DatabaseDriverType.H2;
             }
             // Make the database up to date
             this.databaseHelper = new SimpleDatabaseHelper(this, this.sqlManager, this.getDbPrefix());

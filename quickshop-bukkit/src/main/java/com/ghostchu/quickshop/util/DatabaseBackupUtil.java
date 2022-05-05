@@ -44,23 +44,20 @@ public class DatabaseBackupUtil {
             return;
         if (!databaseBackupFolder.exists())
             databaseBackupFolder.mkdirs();
-
         File backupFolder = new File(databaseBackupFolder, String.valueOf(System.currentTimeMillis()));
         backupFolder.mkdirs();
-
         for (String fileName : databaseBackupList) {
             File file = new File(dataFolder, fileName);
             if (file.exists()) {
                 try {
                     Log.debug("AutoBackup: Backing up " + fileName);
                     Files.copy(file.toPath(), new File(backupFolder, fileName).toPath());
-                    Log.debug("AutoBackup: Backing up" + fileName + " successfully.");
+                    Log.debug("AutoBackup: Backing up " + fileName + " successfully.");
                 } catch (Exception e) {
                     Log.debug(Level.WARNING, "Failed to backup " + fileName + ": " + e.getMessage());
                 }
             }
         }
-
         cleanup();
     }
 
