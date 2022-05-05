@@ -58,7 +58,6 @@ public class DebugLogsItem implements SubPasteItem {
                 StringEscapeUtils.escapeHtml4(builder.toString()) +
                 "</textarea><br />";
     }
-   \
 
     @Override
     public @NotNull String genBody() {
