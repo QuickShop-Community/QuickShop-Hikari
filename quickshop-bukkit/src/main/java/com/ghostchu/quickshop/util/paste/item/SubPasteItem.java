@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is PasteItem.java
+ *  This file is a part of project QuickShop, the name is SubPasteItem.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,16 +17,24 @@
  *
  */
 
-package com.ghostchu.quickshop.util.paste.v2.item;
+package com.ghostchu.quickshop.util.paste.item;
 
 import org.jetbrains.annotations.NotNull;
 
-public interface PasteItem {
+public interface SubPasteItem extends PasteItem {
     @NotNull
-    String toHTML();
+    default String genTitle() {
+        return "<h3># " + getTitle() + "</h3>";
+    }
 
+    @NotNull
+    String getTitle();
 
-    static class TableBuilder {
+    @NotNull
+    String genBody();
 
+    @Override
+    default @NotNull String toHTML() {
+        return genTitle() + genBody();
     }
 }

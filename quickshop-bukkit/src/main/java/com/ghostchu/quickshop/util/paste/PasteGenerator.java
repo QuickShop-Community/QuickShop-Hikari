@@ -17,11 +17,11 @@
  *
  */
 
-package com.ghostchu.quickshop.util.paste.v2;
+package com.ghostchu.quickshop.util.paste;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.paste.v2.item.*;
+import com.ghostchu.quickshop.util.paste.item.*;
 import lombok.Getter;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.command.CommandSender;

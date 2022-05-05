@@ -1,5 +1,5 @@
-/* V
- *  This file is a part of project QuickShop, the name is SystemInfoItem.java
+/*
+ *  This file is a part of project QuickShop, the name is ConfigCollectorItem.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,7 +17,7 @@
  *
  */
 
-package com.ghostchu.quickshop.util.paste.v2.item;
+package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
 import org.apache.commons.lang3.StringEscapeUtils;

@@ -1,4 +1,4 @@
-/* V
+/*
  *  This file is a part of project QuickShop, the name is SystemInfoItem.java
  *  Copyright (C) Ghost_chu and contributors
  *
@@ -17,10 +17,10 @@
  *
  */
 
-package com.ghostchu.quickshop.util.paste.v2.item;
+package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.paste.v2.util.HTMLTable;
+import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 

@@ -1,5 +1,5 @@
-/* V
- *  This file is a part of project QuickShop, the name is SystemInfoItem.java
+/*
+ *  This file is a part of project QuickShop, the name is ChatProcessorInfoItem.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,10 +17,10 @@
  *
  */
 
-package com.ghostchu.quickshop.util.paste.v2.item;
+package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.paste.v2.util.HTMLTable;
+import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import net.kyori.adventure.Adventure;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
