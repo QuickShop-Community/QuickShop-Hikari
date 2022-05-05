@@ -1026,7 +1026,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             getLogger().warning("Failed to get QuickShop PluginCommand instance.");
             return;
         }
-        Set<String> aliases = new HashSet(quickShopCommand.getAliases());
+        Set<String> aliases = new HashSet<>(quickShopCommand.getAliases());
         aliases.addAll(customCommands);
         quickShopCommand.setAliases(new ArrayList<>(aliases));
         try {
