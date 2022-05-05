@@ -84,11 +84,11 @@ public class PasteGenerator {
     }
 
     @NotNull
-    private String bakeFooter(String pasteCreator) {
+    private String bakeFooter(@NotNull String pasteCreator) {
         return DOCUMENT_FOOTER
                 .replace("{product}", "QuickShop-" + QuickShop.getFork() + " v" + QuickShop.getVersion())
-                .replace("{time}", formatTime(timestamp)
-                        .replace("{pastecreator}", pasteCreator));
+                .replace("{time}", formatTime(timestamp))
+                .replace("{pastecreator}", pasteCreator);
     }
 
     @NotNull
