@@ -143,7 +143,7 @@ public class Log {
     @Getter
     @EqualsAndHashCode
     public static class Record {
-        private final long nanoTime = System.nanoTime();
+        private final long timestamp = System.currentTimeMillis();
         @NotNull
         private final Level level;
         @NotNull
