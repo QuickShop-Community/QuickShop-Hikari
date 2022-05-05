@@ -383,9 +383,9 @@ public class PlayerListener extends AbstractQSListener {
         }
         ItemStack stack = player.getInventory().getItemInMainHand();
         ShopAction action = null;
-        if (player.hasPermission("quickshop.create.sell")) {
+        if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.sell")) {
             action = ShopAction.CREATE_SELL;
-        } else if (player.hasPermission("quickshop.create.buy")) {
+        } else if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.buy")) {
             action = ShopAction.CREATE_BUY;
         }
         if (action == null) {

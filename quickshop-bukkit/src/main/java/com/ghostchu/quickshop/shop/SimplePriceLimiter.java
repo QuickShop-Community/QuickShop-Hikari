@@ -197,7 +197,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
          * @return true if the rule is allowed to apply
          */
         public boolean isApply(@NotNull CommandSender sender, @NotNull Material item, @Nullable String currency) {
-            if (sender.hasPermission(this.bypassPermission)) {
+            if (QuickShop.getPermissionManager().hasPermission(sender, this.bypassPermission)) {
                 return false;
             }
             if (!this.materials.contains(item)) {

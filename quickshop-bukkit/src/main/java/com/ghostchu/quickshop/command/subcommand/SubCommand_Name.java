@@ -49,7 +49,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
-        if (!shop.getModerator().isModerator(sender.getUniqueId()) && !sender.hasPermission("quickshop.other.shopnaming")) {
+        if (!shop.getModerator().isModerator(sender.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.shopnaming")) {
             plugin.text().of(sender, "not-managed-shop").send();
         }
 
@@ -74,7 +74,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
         double fee = plugin.getConfig().getDouble("shop.name-fee", 0);
         EconomyTransaction transaction = null;
         if(fee > 0){
-            if(!sender.hasPermission("quickshop.bypass.namefee")){
+            if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.bypass.namefee")) {
                 transaction = EconomyTransaction.builder()
                         .world(shop.getLocation().getWorld())
                         .from(sender.getUniqueId())
