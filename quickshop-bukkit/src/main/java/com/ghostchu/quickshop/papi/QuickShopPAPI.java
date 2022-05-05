@@ -20,6 +20,7 @@
 package com.ghostchu.quickshop.papi;
 
 import com.ghostchu.quickshop.util.logger.Log;
+import lombok.Getter;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +32,7 @@ import java.util.UUID;
 
 public class QuickShopPAPI extends PlaceholderExpansion {
     private QuickShop plugin;
+    @Getter
     private final PAPICache papiCache = new PAPICache();
 
     @Override

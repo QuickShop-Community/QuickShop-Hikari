@@ -28,6 +28,7 @@ import java.text.NumberFormat;
 
 public class CachePerformanceItem implements SubPasteItem {
 
+    private final QuickShop plugin = QuickShop.getInstance();
 
     public CachePerformanceItem() {
 
@@ -40,11 +41,30 @@ public class CachePerformanceItem implements SubPasteItem {
     }
 
     @NotNull
-    private String buildContent() {
-        QuickShop plugin = QuickShop.getInstance();
+    private String buildPAPICacheContent() {
+        if (plugin.getPlaceHolderAPI() == null || plugin.getQuickShopPAPI() == null) {
+            return "<p>PlaceHolderAPI feature disabled.</p>";
+        }
+        if (!plugin.getQuickShopPAPI().isRegistered()) {
+            return "<p>PlaceHolderAPI feature not registered yet.</p>";
+        }
+        if (plugin.getQuickShopPAPI().getPapiCache() == null) {
+            return "<p>PlaceHolderAPI Cache disabled.</p>";
+        }
+        CacheStats stats = plugin.getQuickShopPAPI().getPapiCache().getStats();
+        return renderTable(stats);
+    }
+
+    @NotNull
+    private String buildShopCacheContent() {
         if (plugin.getShopCache() == null)
-            return "<p>Cache disabled.</p>";
+            return "<p>Shop Cache disabled.</p>";
         CacheStats stats = plugin.getShopCache().getStats();
+        return renderTable(stats);
+    }
+
+    @NotNull
+    private String renderTable(@NotNull CacheStats stats) {
         HTMLTable table = new HTMLTable(2, true);
         table.insert("Average Load Penalty", round(stats.averageLoadPenalty()));
         table.insert("Hit Rate", round(stats.hitRate()));
@@ -68,6 +88,9 @@ public class CachePerformanceItem implements SubPasteItem {
 
     @Override
     public @NotNull String genBody() {
-        return buildContent();
+        return "<h4>Shop Cache</h4>" +
+                buildShopCacheContent() +
+                "<h4>PlaceHolderAPI Cache</h4>" +
+                buildPAPICacheContent();
     }
 }

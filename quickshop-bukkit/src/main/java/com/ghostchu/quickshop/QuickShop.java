@@ -224,6 +224,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private InteractionController interactionController;
     @Getter
     private SQLManager sqlManager;
+    @Getter
     @Nullable
     private QuickShopPAPI quickShopPAPI;
     @Getter
