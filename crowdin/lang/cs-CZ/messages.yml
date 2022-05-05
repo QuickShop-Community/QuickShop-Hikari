@@ -356,6 +356,7 @@ timeunit:
   scheduled-in: naplánováno na {0}
   second: <red>{0} sekund
   std-past-format: 'před {5}{4}{3}{2}{1}{0}'
+  std-time-format: "HH:mm:ss"
   seconds: <red>{0} sekund
   hour: <red>{0} hodina
   scheduled-at: naplánováno na {0}
@@ -465,3 +466,4 @@ client-language-unsupported: <yellow>QuickShop nepodporuje váš klientský jazy
 language-version: '63'
 not-managed-shop: <red>Nejsi vlastník nebo moderátor obchodu
 shop-cannot-trade-when-freezing: <red>Nemůžete obchodovat s tímto obchodem, protože je zmražený.
+invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
