@@ -53,7 +53,7 @@ public class ShopsInfoItem implements SubPasteItem {
     private String buildContent() {
         StringBuilder htmlBuilder = new StringBuilder();
         htmlBuilder.append("<p>Total Shops: ").append(totalShops).append("</p>");
-        htmlBuilder.append("<h4>Shops in world</h4>");
+        htmlBuilder.append("<h5>Shops in world</h5>");
         htmlBuilder.append("<ul>");
         shopsMapping.keySet().forEach(worldName -> htmlBuilder.append("<li>").append(worldName).append(": ").append(shopsMapping.get(worldName).size()).append("</li>"));
         htmlBuilder.append("</ul>");

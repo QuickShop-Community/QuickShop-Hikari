@@ -88,9 +88,9 @@ public class CachePerformanceItem implements SubPasteItem {
 
     @Override
     public @NotNull String genBody() {
-        return "<h4>Shop Cache</h4>" +
+        return "<h5>Shop Cache</h5>" +
                 buildShopCacheContent() +
-                "<h4>PlaceHolderAPI Cache</h4>" +
+                "<h5>PlaceHolderAPI Cache</h5>" +
                 buildPAPICacheContent();
     }
 }
