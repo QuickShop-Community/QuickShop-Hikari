@@ -23,7 +23,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;

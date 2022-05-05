@@ -21,13 +21,12 @@ package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
 
 public class SystemInfoItem implements SubPasteItem {
     private final String os;
@@ -48,9 +47,9 @@ public class SystemInfoItem implements SubPasteItem {
         this.javaVersion = System.getProperty("java.version") + " (Vendor: " + System.getProperty("java.vendor.version") + ")";
         this.javaImplName = runtimeMxBean.getVmName();
         this.inputArgs = Util.list2String(runtimeMxBean.getInputArguments());
-        List<String> sysData = new ArrayList<>();
-        runtimeMxBean.getSystemProperties().keySet().forEach(key -> sysData.add(key + "=" + runtimeMxBean.getSystemProperties().get(key)));
-        this.systemProperties = Util.list2String(sysData);
+        this.systemProperties = runtimeMxBean.getSystemProperties().keySet().stream()
+            .map(key -> StringEscapeUtils.escapeHtml4(key + "=" + runtimeMxBean.getSystemProperties().get(key)))
+            .collect(Collectors.joining("<br/>"));
     }
 
 
@@ -69,12 +68,13 @@ public class SystemInfoItem implements SubPasteItem {
         table.insert("Java Version", javaVersion);
         table.insert("JVM Name", javaImplName);
         table.insert("Input Arguments", inputArgs);
-        String propertiesTable = """
-                <textarea name="sys_properties" style="height: 100px; width: 100%;">
-                {properties}
-                </textarea>
-                """;
-        table.insert("System Properties", propertiesTable.replace("{properties}", StringEscapeUtils.escapeHtml4(systemProperties)));
+        String proertiesContent = """
+            <details>
+              <summary>System Properties (Click to open/close)</summary>
+              {properties}
+            </details>
+            """;
+        table.insert("System Properties", proertiesContent.replace("{properties}", systemProperties));
         return table.render();
     }
 

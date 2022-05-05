@@ -35,12 +35,16 @@ public class ShopsInfoItem implements SubPasteItem {
     public ShopsInfoItem() {
         QuickShop plugin = QuickShop.getInstance();
         this.totalShops = String.valueOf(plugin.getShopManager().getAllShops().size());
-        plugin.getShopManager().getAllShops().forEach(shop -> {
-            List<Shop> worldShops = shopsMapping.get(shop.getLocation().getWorld().getName());
-            if (worldShops == null) worldShops = new ArrayList<>();
-            worldShops.add(shop);
-            shopsMapping.put(shop.getLocation().getWorld().getName(), worldShops);
-        });
+        plugin.getShopManager().getAllShops().stream()
+            .filter(shop -> shop.getLocation().getWorld() != null)
+            .forEach(shop -> {
+                List<Shop> worldShops = shopsMapping.get(shop.getLocation().getWorld().getName());
+                if (worldShops == null)
+                    worldShops = new ArrayList<>();
+                
+                worldShops.add(shop);
+                shopsMapping.put(shop.getLocation().getWorld().getName(), worldShops);
+            });
     }
 
 

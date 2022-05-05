@@ -20,7 +20,7 @@
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -347,6 +347,10 @@ public class ConfigCollectorItem implements SubPasteItem {
 
     @NotNull
     private String readFile(@NotNull File file) {
+        if (!file.exists()) {
+            return "Fail: No such file (" + file.getName() + ")";
+        }
+        
         try {
             List<String> lines = Files.readAllLines(file.toPath());
             StringJoiner joiner = new StringJoiner("\n");
