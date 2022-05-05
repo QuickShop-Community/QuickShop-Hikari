@@ -72,7 +72,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     }
 
     private boolean pasteToPastebin(@NotNull CommandSender sender) {
-        final String string = Paste.paste(new PasteGenerator().render());
+        final String string = Paste.paste(new PasteGenerator(sender).render());
         if (string != null) {
             sender.sendMessage("https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8));
             sender.sendMessage("" + ChatColor.RED + ChatColor.BOLD + "Warning: " + ChatColor.RESET + ChatColor.YELLOW + "Don't send paste to public channel or anyone unless you trust them.");
@@ -85,7 +85,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
         File file = new File(plugin.getDataFolder(), "paste");
         file.mkdirs();
         file = new File(file, "paste-" + UUID.randomUUID().toString().replaceAll("-", "") + ".html");
-        final String string = new PasteGenerator().render();
+        final String string = new PasteGenerator(sender).render();
         try {
             boolean createResult = file.createNewFile();
             Log.debug("Create paste file: " + file.getCanonicalPath() + " " + createResult);
