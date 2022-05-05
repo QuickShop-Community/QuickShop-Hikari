@@ -33,6 +33,12 @@ public class HeaderItem implements PasteItem {
     private final Map<String, String> items;
     private static final String TEMPLATE = """
             <h1>{title}</h1>
+            <blockquote>
+            <p>
+            <b>Warning!</b><br />
+            Don't send paste to public channel or anyone unless you trust them.
+            </p>
+            </blockquote>
             <table>
                 <tbody>
                    {content}
