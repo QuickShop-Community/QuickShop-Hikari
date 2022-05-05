@@ -466,4 +466,4 @@ client-language-unsupported: <yellow>QuickShop unterstützt deine Client-Sprache
 language-version: '63'
 not-managed-shop: <red>Du bist nicht der Besitzer oder ein Moderator dieses Shops
 shop-cannot-trade-when-freezing: <red>Du kannst mit diesem Shop nicht handeln, da er eingefroren ist.
-invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
+invalid-container: <red>Ungültiger Container. Du kannst nur Shops mit Blöcken, welche ein Inventar haben, erstellen.
