@@ -25,7 +25,6 @@ import com.ghostchu.quickshop.util.paste.item.*;
 import lombok.Getter;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
