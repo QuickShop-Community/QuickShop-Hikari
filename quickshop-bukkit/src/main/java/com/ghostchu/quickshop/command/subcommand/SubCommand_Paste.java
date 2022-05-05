@@ -31,6 +31,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -71,7 +73,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     private boolean pasteToPastebin(@NotNull CommandSender sender) {
         final String string = Paste.paste(new PasteGenerator().render());
         if (string != null) {
-            sender.sendMessage(string);
+            sender.sendMessage("https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8));
             return true;
         }
         return false;
@@ -80,7 +82,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     private boolean pasteToLocalFile(@NotNull CommandSender sender) {
         File file = new File(plugin.getDataFolder(), "paste");
         file.mkdirs();
-        file = new File(file, "paste-" + UUID.randomUUID().toString().replaceAll("-", "") + ".txt");
+        file = new File(file, "paste-" + UUID.randomUUID().toString().replaceAll("-", "") + ".html");
         final String string = new PasteGenerator().render();
         try {
             boolean createResult = file.createNewFile();

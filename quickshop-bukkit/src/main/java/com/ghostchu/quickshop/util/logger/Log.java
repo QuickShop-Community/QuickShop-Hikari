@@ -168,8 +168,10 @@ public class Log {
                 return toStringCache;
             StringBuilder sb = new StringBuilder();
             Log.Caller caller = this.getCaller();
+
             //noinspection IfStatementWithIdenticalBranches
             if (caller != null) {
+                String simpleClassName = caller.getClassName().substring(caller.getClassName().lastIndexOf('.') + 1);
                 sb.append("[");
                 sb.append(caller.getThreadName());
                 sb.append("/");
@@ -177,7 +179,7 @@ public class Log {
                 sb.append("]");
                 sb.append(" ");
                 sb.append("(");
-                sb.append(caller.getClassName()).append("#").append(caller.getMethodName()).append(":").append(caller.getLineNumber());
+                sb.append(simpleClassName).append("#").append(caller.getMethodName()).append(":").append(caller.getLineNumber());
                 sb.append(")");
                 sb.append(" ");
             } else {
