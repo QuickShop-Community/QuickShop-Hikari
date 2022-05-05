@@ -235,6 +235,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private final Map<String, String> addonRegisteredMapping = new HashMap<>();
     @Getter
     private PlayerFinder playerFinder;
+    @Getter
+    private DatabaseBackupWatcher databaseBackupWatcher;
 
     /**
      * Use for mock bukkit
@@ -328,6 +330,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         setupShopCaches();
         signUpdateWatcher = new SignUpdateWatcher();
         shopContainerWatcher = new ShopContainerWatcher();
+        databaseBackupWatcher = new DatabaseBackupWatcher();
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();
@@ -364,6 +367,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
         signUpdateWatcher.runTaskTimer(this, 0, 10);
         shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
+        databaseBackupWatcher.runTaskTimer(this, 0, 20 * 60 * 60); // Every 1 hour backup once
         if (logWatcher != null) {
             logWatcher.runTaskTimerAsynchronously(this, 10, 10);
             getLogger().info("Log actions is enabled. Actions will be logged in the qs.log file!");
@@ -489,6 +493,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         if (this.updateWatcher != null) {
             getLogger().info("Shutting down update watcher...");
             this.updateWatcher.uninit();
+        }
+        if (this.databaseBackupWatcher != null) {
+            getLogger().info("Shutting down database (H2) watcher...");
+            this.databaseBackupWatcher.cancel();
         }
         getLogger().info("Cleanup scheduled tasks...");
         Bukkit.getScheduler().cancelTasks(this);
@@ -1144,7 +1152,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         getLogger().info("Adventure MiniMessage Lib loaded from: " + Util.getClassPath(LegacyComponentSerializer.class));
     }
 
-    enum DatabaseDriverType {
+    public enum DatabaseDriverType {
         MYSQL,
         H2
     }
