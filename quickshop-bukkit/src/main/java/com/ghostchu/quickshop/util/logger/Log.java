@@ -26,6 +26,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.apache.commons.lang3.ArrayUtils;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +40,7 @@ import java.util.logging.Level;
 
 public class Log {
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
-    private static final int bufferSize = 1500 * Type.values().length;
+    private static final int bufferSize = 2500 * Type.values().length;
     private static final Queue<Record> loggerBuffer = EvictingQueue.create(bufferSize);
 
     private static final boolean disableLocationRecording;
@@ -60,6 +62,10 @@ public class Log {
         transaction(Level.INFO, message, Caller.create());
     }
 
+    public static void permission(@NotNull String message) {
+        permission(Level.INFO, message, Caller.create(3));
+    }
+
 
     public static void debug(@NotNull Level level, @NotNull String message) {
         debug(level, message, Caller.create());
@@ -73,6 +79,11 @@ public class Log {
         transaction(level, message, Caller.create());
     }
 
+    public static void permission(@NotNull Level level, @NotNull String message) {
+        permission(level, message, Caller.create(3));
+    }
+
+    @ApiStatus.Internal
     public static void debug(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         Record record;
@@ -85,6 +96,7 @@ public class Log {
         LOCK.writeLock().unlock();
     }
 
+    @ApiStatus.Internal
     public static void cron(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         Record record;
@@ -97,6 +109,7 @@ public class Log {
         LOCK.writeLock().unlock();
     }
 
+    @ApiStatus.Internal
     public static void transaction(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         Record record;
@@ -104,6 +117,19 @@ public class Log {
             record = new Record(level, Type.TRANSACTION, message, null);
         else
             record = new Record(level, Type.TRANSACTION, message, caller);
+        loggerBuffer.offer(record);
+        debugStdOutputs(record);
+        LOCK.writeLock().unlock();
+    }
+
+    @ApiStatus.Internal
+    public static void permission(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
+        LOCK.writeLock().lock();
+        Record record;
+        if (disableLocationRecording)
+            record = new Record(level, Type.PERMISSION, message, null);
+        else
+            record = new Record(level, Type.PERMISSION, message, caller);
         loggerBuffer.offer(record);
         debugStdOutputs(record);
         LOCK.writeLock().unlock();
@@ -132,13 +158,26 @@ public class Log {
     }
 
     @NotNull
-    public static List<Record> fetchLogs(@NotNull Type type, @NotNull Level level) {
+    public static List<Record> fetchLogsLevel(@NotNull Type type, @NotNull Level level) {
         LOCK.readLock().lock();
         List<Record> records = loggerBuffer.stream().filter(record -> record.getType() == type && record.getLevel() == level).toList();
         LOCK.readLock().unlock();
         return records;
     }
 
+    @NotNull
+    public static List<Record> fetchLogsExclude(@NotNull Type... excludes) {
+        LOCK.readLock().lock();
+        List<Record> records = new ArrayList<>();
+        for (Record record : loggerBuffer) {
+            if (ArrayUtils.contains(excludes, record.getType())) {
+                continue;
+            }
+            records.add(record);
+        }
+        LOCK.readLock().unlock();
+        return records;
+    }
 
     @Getter
     @EqualsAndHashCode
@@ -218,13 +257,25 @@ public class Log {
             int codeLine = frame.getLineNumber();
             return new Caller(threadName, className, methodName, codeLine);
         }
+
+        @NotNull
+        public static Caller create(int steps) {
+            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(steps + 1).toList());
+            StackWalker.StackFrame frame = caller.get(steps);
+            String threadName = Thread.currentThread().getName();
+            String className = frame.getClassName();
+            String methodName = frame.getMethodName();
+            int codeLine = frame.getLineNumber();
+            return new Caller(threadName, className, methodName, codeLine);
+        }
     }
 
 
-    enum Type {
+    public enum Type {
         DEBUG,
         CRON,
-        TRANSACTION
+        TRANSACTION,
+        PERMISSION
     }
 
 }

@@ -30,10 +30,10 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.StringJoiner;
 
-public class DebugLogsItem implements SubPasteItem {
+public class PermissionLogsItem implements SubPasteItem {
     private SimpleDateFormat format;
 
-    public DebugLogsItem() {
+    public PermissionLogsItem() {
         String timeFormat = LegacyComponentSerializer.legacySection().serialize(QuickShop.getInstance().text().of("timeunit.std-time-format").forLocale(MsgUtil.getDefaultGameLanguageCode()));
         try {
             format = new SimpleDateFormat(timeFormat);
@@ -45,16 +45,16 @@ public class DebugLogsItem implements SubPasteItem {
 
     @Override
     public @NotNull String getTitle() {
-        return "Debug History";
+        return "Permission Query History";
     }
 
     @NotNull
     private String buildContent() {
         StringJoiner builder = new StringJoiner("\n");
-        List<String> debugLogs = Log.fetchLogsExclude(Log.Type.PERMISSION).stream().map(record -> "[" + format.format(record.getTimestamp()) + "] " + record).toList();
-        List<String> tail = debugLogs.subList(Math.max(debugLogs.size() - 1000, 0), debugLogs.size());
+        List<String> debugLogs = Log.fetchLogs(Log.Type.PERMISSION).stream().map(record -> "[" + format.format(record.getTimestamp()) + "] " + record).toList();
+        List<String> tail = debugLogs.subList(Math.max(debugLogs.size() - 300, 0), debugLogs.size());
         tail.forEach(builder::add);
-        return "<textarea name=\"debuglogs\" style=\"height: 1000px; width: 100%;\">" +
+        return "<textarea name=\"permissionquery\" style=\"height: 1000px; width: 100%;\">" +
                 StringEscapeUtils.escapeHtml4(builder.toString()) +
                 "</textarea><br />";
     }
