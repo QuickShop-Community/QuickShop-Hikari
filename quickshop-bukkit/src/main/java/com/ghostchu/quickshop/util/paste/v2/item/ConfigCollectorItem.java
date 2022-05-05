@@ -324,7 +324,10 @@ public class ConfigCollectorItem implements SubPasteItem {
         }).toList();
         string = string.replaceAll("secret:.*", "secret: ******")
                 .replaceAll("user:.*", "user: ******")
+                .replaceAll("username:.*", "username: ******")
+                .replaceAll("jdbc.*", "jdbc******")
                 .replaceAll("password:.*", "password: ******")
+                .replaceAll("pass:.*", "pass: ******")
                 .replaceAll("host:.*", "host: ******")
                 .replaceAll("port:.*", "port: ******")
                 .replaceAll("database:.*", "database: ******")
