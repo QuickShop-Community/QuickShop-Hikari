@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.util.config;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.converter.HikariConverter;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;

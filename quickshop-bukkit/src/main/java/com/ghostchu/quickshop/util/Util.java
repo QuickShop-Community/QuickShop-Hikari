@@ -645,7 +645,6 @@ public class Util {
             }
             CUSTOM_STACKSIZE.put(mat, Integer.parseInt(data[1]));
         }
-        disableDebugLogger = plugin.getConfig().getBoolean("debug.disable-debuglogger", false);
         try {
             dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
         } catch (Exception ignored) {

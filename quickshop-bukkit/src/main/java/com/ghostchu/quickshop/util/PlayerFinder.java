@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.util;
 
+import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

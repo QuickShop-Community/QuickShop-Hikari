@@ -377,7 +377,7 @@ public class MsgUtil {
     }
 
     public static void debugStackTrace(@NotNull StackTraceElement[] traces) {
-        if (Util.isDisableDebugLogger()) {
+        if (Util.isDevMode()) {
             return;
         }
         for (StackTraceElement stackTraceElement : traces) {

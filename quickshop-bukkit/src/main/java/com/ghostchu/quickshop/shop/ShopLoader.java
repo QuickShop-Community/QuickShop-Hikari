@@ -27,6 +27,7 @@ import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.Timer;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;

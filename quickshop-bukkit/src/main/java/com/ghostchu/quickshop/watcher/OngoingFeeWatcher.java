@@ -27,6 +27,7 @@ import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.WarningSender;
+import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.World;
