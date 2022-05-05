@@ -356,6 +356,7 @@ timeunit:
   scheduled-in: 计划在 {0}
   second: <red>{0} 秒
   std-past-format: '{5}{4}{3}{2}{1}{0}前'
+  std-time-format: "HH:mm:ss"
   seconds: <red>{0} 秒
   hour: <red>{0} 时
   scheduled-at: 计划于 {0}
@@ -465,3 +466,4 @@ client-language-unsupported: <yellow>QuickShop不支持您的客户端语言，�
 language-version: '63'
 not-managed-shop: <red>你不是该商店的所有者或助手
 shop-cannot-trade-when-freezing: <red>您不能与这家商店交易，因为它已被冻结。
+invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
