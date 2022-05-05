@@ -45,7 +45,7 @@ public class SystemInfoItem implements SubPasteItem {
         this.arch = System.getProperty("os.arch");
         this.version = System.getProperty("os.version");
         this.cores = String.valueOf(Runtime.getRuntime().availableProcessors());
-        this.javaVersion = System.getProperty("java.version");
+        this.javaVersion = System.getProperty("java.version") + " (Vendor: " + System.getProperty("java.vendor.version") + ")";
         this.javaImplName = runtimeMxBean.getVmName();
         this.inputArgs = Util.list2String(runtimeMxBean.getInputArguments());
         List<String> sysData = new ArrayList<>();
