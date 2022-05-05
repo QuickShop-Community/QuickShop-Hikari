@@ -111,7 +111,7 @@ public class Log {
 
     private static void debugStdOutputs(Record record) {
         if (Util.isDevMode()) {
-            QuickShop.getInstance().getLogger().info(record.toString());
+            QuickShop.getInstance().getLogger().info("[DEBUG] " + record.toString());
         }
     }
 
@@ -177,7 +177,7 @@ public class Log {
                 sb.append("]");
                 sb.append(" ");
                 sb.append("(");
-                sb.append(caller.getClassName()).append(".").append(caller.getMethodName()).append(":").append(caller.getLineNumber());
+                sb.append(caller.getClassName()).append("#").append(caller.getMethodName()).append(":").append(caller.getLineNumber());
                 sb.append(")");
                 sb.append(" ");
             } else {
