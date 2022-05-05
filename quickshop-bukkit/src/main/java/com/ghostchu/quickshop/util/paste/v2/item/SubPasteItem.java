@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 public interface SubPasteItem extends PasteItem {
     @NotNull
     default String genTitle() {
-        return "<h3>" + getTitle() + "</h3>";
+        return "<h3># " + getTitle() + "</h3>";
     }
 
     @NotNull
