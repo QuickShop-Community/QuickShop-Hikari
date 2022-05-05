@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.permission;
 
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Getter;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -58,9 +59,9 @@ public class PermissionManager {
             boolean result = provider.hasPermission(sender, permission);
             if (Util.isDevMode()) {
                 try {
-                    Util.debugLog("Node: [" + permission + "]; Result: [" + result + "]; Sender: [" + sender.getName() + "]");
+                    Log.debug("Node: [" + permission + "]; Result: [" + result + "]; Sender: [" + sender.getName() + "]");
                 } catch (Exception th) {
-                    Util.debugLog("Exception threw when getting debug messages.");
+                    Log.debug("Exception threw when getting debug messages.");
                     MsgUtil.debugStackTrace(th.getStackTrace());
                 }
             }

@@ -19,14 +19,14 @@
 
 package com.ghostchu.quickshop.command.subcommand.silent;
 
-import com.ghostchu.quickshop.util.Util;
-import org.bukkit.entity.Player;
-import org.enginehub.squirrelid.Profile;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.logger.Log;
+import org.bukkit.entity.Player;
+import org.enginehub.squirrelid.Profile;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -48,7 +48,7 @@ public class SubCommand_SilentUnlimited extends SubCommand_SilentBase {
                 UUID uuid = ((SimpleShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount();
                 Profile profile = plugin.getPlayerFinder().find(uuid);
                 if(profile == null){
-                    Util.debugLog("Failed to migrate shop to unlimited shop owner, uniqueid invalid: "+uuid+".");
+                    Log.debug("Failed to migrate shop to unlimited shop owner, uniqueid invalid: " + uuid + ".");
                     return;
                 }
                 plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);

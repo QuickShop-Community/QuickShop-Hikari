@@ -20,8 +20,16 @@
 package com.ghostchu.quickshop.shop.display;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.ShopDisplayItemDespawnEvent;
 import com.ghostchu.quickshop.api.event.ShopDisplayItemSafeGuardEvent;
+import com.ghostchu.quickshop.api.event.ShopDisplayItemSpawnEvent;
+import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
+import com.ghostchu.quickshop.api.shop.DisplayType;
+import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.ContainerShop;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.lib.PaperLib;
 import lombok.ToString;
 import org.bukkit.Location;
@@ -32,13 +40,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.api.event.ShopDisplayItemDespawnEvent;
-import com.ghostchu.quickshop.api.event.ShopDisplayItemSpawnEvent;
-import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
-import com.ghostchu.quickshop.api.shop.DisplayType;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +118,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
                 if (shop.isLeftShop()) {
                     return;
                 }
-                Util.debugLog("Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem.getLocation());
+                Log.debug("Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem.getLocation());
                 PaperLib.teleportAsync(entity, Objects.requireNonNull(getDisplayLocation()), PlayerTeleportEvent.TeleportCause.UNKNOWN);
                 return;
             }
@@ -134,7 +135,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
     public void remove() {
         Util.ensureThread(false);
         if (this.item == null) {
-            Util.debugLog("Ignore the Item removing because the Item is already gone or it's a left shop.");
+            Log.debug("Ignore the Item removing because the Item is already gone or it's a left shop.");
             return;
         }
         this.item.remove();
@@ -152,7 +153,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
             return false;
         }
         if (this.item == null) {
-            Util.debugLog("Warning: Trying to removeDupe for a null display shop.");
+            Log.debug("Warning: Trying to removeDupe for a null display shop.");
             return false;
         }
 
@@ -176,7 +177,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
             UUID displayUUID = this.item.getUniqueId();
             if (!eItem.getUniqueId().equals(displayUUID)) {
                 if (AbstractDisplayItem.checkIsTargetShopDisplay(eItem.getItemStack(), this.shop)) {
-                    Util.debugLog("Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem.getLocation());
+                    Log.debug("Removing a duped ItemEntity " + eItem.getUniqueId() + " at " + eItem.getLocation());
                     entity.remove();
                     removed = true;
                 }
@@ -196,7 +197,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
     public void safeGuard(@NotNull Entity entity) {
         Util.ensureThread(false);
         if (!(entity instanceof Item itemEntity)) {
-            Util.debugLog(
+            Log.debug(
                     "Failed to safeGuard " + entity.getLocation() + ", cause target not a Item");
             return;
         }
@@ -215,7 +216,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
         // TODO: Remove method check when dropping 1.18 and 1.18.1 supports
         if(Util.isMethodAvailable("org.bukkit.entity.Item","setUnlimitedLifetime")) {
             itemEntity.setUnlimitedLifetime(true);
-            Util.debugLog("Guard display "+itemEntity+" with 1.18.2+ new unlimited life time api.");
+            Log.debug("Guard display " + itemEntity + " with 1.18.2+ new unlimited life time api.");
         }
         itemEntity.setVelocity(new Vector(0, 0.1, 0));
     }
@@ -230,21 +231,21 @@ public class RealDisplayItem extends AbstractDisplayItem {
             return;
         }
         if (shop.getLocation().getWorld() == null) {
-            Util.debugLog("Canceled the displayItem spawning because the location in the world is null.");
+            Log.debug("Canceled the displayItem spawning because the location in the world is null.");
             return;
         }
 
         if (originalItemStack == null) {
-            Util.debugLog("Canceled the displayItem spawning because the ItemStack is null.");
+            Log.debug("Canceled the displayItem spawning because the ItemStack is null.");
             return;
         }
         if (item != null && item.isValid()) {
-            Util.debugLog("Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
+            Log.debug("Warning: Spawning the Dropped Item for DisplayItem when there is already an existing Dropped Item, May cause a duplicated Dropped Item!");
             MsgUtil.debugStackTrace(Thread.currentThread().getStackTrace());
         }
         if (!Util.isDisplayAllowBlock(
                 Objects.requireNonNull(getDisplayLocation()).getBlock().getType())) {
-            Util.debugLog("Can't spawn the displayItem because there is not an AIR block above the shopblock.");
+            Log.debug("Can't spawn the displayItem because there is not an AIR block above the shopblock.");
             return;
         }
 
@@ -253,7 +254,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
         PLUGIN.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
 
         if (shopDisplayItemSpawnEvent.isCancelled()) {
-            Util.debugLog("Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
+            Log.debug("Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
             return;
         }
         this.guardedIstack = AbstractDisplayItem.createGuardItemStack(this.originalItemStack, this.shop);

@@ -19,7 +19,7 @@
 
 package com.ghostchu.quickshop.util.paste.v2.item;
 
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +42,7 @@ public class DebugLogsItem implements SubPasteItem {
     @NotNull
     private String buildContent() {
         StringJoiner builder = new StringJoiner("\n");
-        List<String> debugLogs = Util.getDebugLogs();
+        List<String> debugLogs = Log.fetchLogs().stream().map(Log::format).toList();
         List<String> tail = debugLogs.subList(Math.max(debugLogs.size() - 3000, 0), debugLogs.size());
         tail.forEach(builder::add);
         return "<textarea name=\"debuglogs\" style=\"height: 1000px; width: 100%;\">" +

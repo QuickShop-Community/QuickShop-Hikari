@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
 import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.collect.EvictingQueue;
 import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
@@ -87,15 +88,12 @@ public class Util {
     private static final EnumSet<Material> SHOPABLES = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> VERTICAL_FACING = List.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
     @SuppressWarnings("UnstableApiUsage")
-    private static final EvictingQueue<String> DEBUG_LOGS = EvictingQueue.create(500);
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
     private static int BYPASSED_CUSTOM_STACKSIZE = -1;
     private static Yaml yaml = null;
     private static Boolean devMode = null;
     @Setter
     private static QuickShop plugin;
-    @Getter
-    private static boolean disableDebugLogger = false;
     @Getter
     @Nullable
     private static DyeColor dyeColor = null;
@@ -336,11 +334,11 @@ public class Util {
             // Try load the itemDataVersion to do some checks.
             //noinspection deprecation
             if (itemDataVersion > Bukkit.getUnsafe().getDataVersion()) {
-                Util.debugLog("WARNING: DataVersion not matched with ItemStack: " + config);
+                Log.debug("WARNING: DataVersion not matched with ItemStack: " + config);
                 // okay we need some things to do
                 if (plugin.getConfig().getBoolean("shop.force-load-downgrade-items.enable")) {
                     // okay it enabled
-                    Util.debugLog("QuickShop is trying force loading " + config);
+                    Log.debug("QuickShop is trying force loading " + config);
                     if (plugin.getConfig().getInt("shop.force-load-downgrade-items.method") == 0) { // Mode 0
                         //noinspection deprecation
                         item.put("v", Bukkit.getUnsafe().getDataVersion() - 1);
@@ -351,7 +349,7 @@ public class Util {
                     // Okay we have hacked the dataVersion, now put it back
                     root.put("item", item);
                     config = yaml.dump(root);
-                    Util.debugLog("Updated, we will try load as hacked ItemStack: " + config);
+                    Log.debug("Updated, we will try load as hacked ItemStack: " + config);
                 } else {
                     plugin
                             .getLogger()
@@ -372,13 +370,6 @@ public class Util {
         }
     }
 
-    @NotNull
-    public static List<String> getDebugLogs() {
-        LOCK.readLock().lock();
-        List<String> strings = ImmutableList.copyOf(DEBUG_LOGS);
-        LOCK.readLock().unlock();
-        return strings;
-    }
 
     private static final StackWalker stackWalker = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE), 2);
 
@@ -387,33 +378,38 @@ public class Util {
      *
      * @param logs logs
      */
+    @Deprecated(forRemoval = true)
     public static void debugLog(@NotNull String... logs) {
-        if (disableDebugLogger) {
-            return;
+        Log.Caller caller = Log.Caller.create();
+        for (String log : logs) {
+            Log.debug(Level.INFO, log, caller);
         }
-        StringJoiner logEntry = new StringJoiner("\n");
-        if (!isDevMode()) {
-            for (String log : logs) {
-                logEntry.add("[DEBUG] " + log);
-            }
-        } else {
-            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(2).toList());
-            StackWalker.StackFrame frame = caller.get(1);
-            String threadName = Thread.currentThread().getName();
-            String className = frame.getClassName();
-            String methodName = frame.getMethodName();
-            int codeLine = frame.getLineNumber();
-            for (String log : logs) {
-                logEntry.add("[DEBUG/" + threadName + "] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-            }
-        }
-        String log = logEntry.toString();
-        if (isDevMode()) {
-            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info(log);
-        }
-        LOCK.writeLock().lock();
-        DEBUG_LOGS.add(log);
-        LOCK.writeLock().unlock();
+//        if (disableDebugLogger) {
+//            return;
+//        }
+//        StringJoiner logEntry = new StringJoiner("\n");
+//        if (!isDevMode()) {
+//            for (String log : logs) {
+//                logEntry.add("[DEBUG] " + log);
+//            }
+//        } else {
+//            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(2).toList());
+//            StackWalker.StackFrame frame = caller.get(1);
+//            String threadName = Thread.currentThread().getName();
+//            String className = frame.getClassName();
+//            String methodName = frame.getMethodName();
+//            int codeLine = frame.getLineNumber();
+//            for (String log : logs) {
+//                logEntry.add("[DEBUG/" + threadName + "] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+//            }
+//        }
+//        String log = logEntry.toString();
+//        if (isDevMode()) {
+//            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info(log);
+//        }
+//        LOCK.writeLock().lock();
+//        DEBUG_LOGS.add(log);
+//        LOCK.writeLock().unlock();
     }
 
     /**
@@ -584,7 +580,7 @@ public class Util {
     @NotNull
     public static String getToolPercentage(@NotNull ItemStack item) {
         if (!(item.getItemMeta() instanceof Damageable)) {
-            Util.debugLog(item.getType().name() + " not Damageable.");
+            Log.debug(item.getType().name() + " not Damageable.");
             return "Error: NaN";
         }
         double dura = ((Damageable) item.getItemMeta()).getDamage();
@@ -691,7 +687,7 @@ public class Util {
             return;
         }
         if (inv.getHolder() == null) {
-            Util.debugLog("Skipped plugin gui inventory check.");
+            Log.debug("Skipped plugin gui inventory check.");
             return;
         }
         InventoryWrapperIterator iterator = inv.iterator();
@@ -708,7 +704,7 @@ public class Util {
                         return; // Virtual GUI
                     }
                     iterator.remove();
-                    Util.debugLog("Found shop display item in an inventory, Removing...");
+                    Log.debug("Found shop display item in an inventory, Removing...");
                     MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location + ", Item is " + itemStack.getType().name());
                 }
             }

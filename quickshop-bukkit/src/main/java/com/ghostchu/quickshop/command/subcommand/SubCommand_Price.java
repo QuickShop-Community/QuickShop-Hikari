@@ -27,7 +27,7 @@ import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -56,7 +56,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
             price = Double.parseDouble(cmdArg[0]);
         } catch (NumberFormatException ex) {
             // No number input
-            Util.debugLog(ex.getMessage());
+            Log.debug(ex.getMessage());
             plugin.text().of(sender, "not-a-number", cmdArg[0]).send();
             return;
         }

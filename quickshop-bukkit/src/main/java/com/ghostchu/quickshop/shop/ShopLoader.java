@@ -112,7 +112,7 @@ public class ShopLoader {
                     continue;
                 }
                 if (data.getInventoryWrapperProvider() != null && !data.getInventoryWrapperProvider().isEmpty() && plugin.getInventoryWrapperRegistry().get(data.getInventoryWrapperProvider()) == null) {
-                    Util.debugLog("InventoryWrapperProvider not exists! Shop won't be loaded!");
+                    Log.debug("InventoryWrapperProvider not exists! Shop won't be loaded!");
                     continue;
                 }
                 Shop shop;
@@ -146,8 +146,8 @@ public class ShopLoader {
                         plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
                         plugin.getDatabaseHelper().removeShop(origin.getWorld(), origin.getX(), origin.getY(), origin.getZ());
                     } else {
-                        Util.debugLog("Trouble database loading debug: " + data);
-                        Util.debugLog("Somethings gone wrong, skipping the loading...");
+                        Log.debug("Trouble database loading debug: " + data);
+                        Log.debug("Somethings gone wrong, skipping the loading...");
                     }
                     continue;
                 }
@@ -163,7 +163,7 @@ public class ShopLoader {
                 if (Util.isLoaded(shopLocation)) {
                     // Load to World
                     if (!Util.canBeShop(shopLocation.getBlock())) {
-                        Util.debugLog("Target block can't be a shop, removing it from the memory...");
+                        Log.debug("Target block can't be a shop, removing it from the memory...");
                         valid--;
                         plugin.getShopManager().removeShop(shop); // Remove from Mem
                     } else {
@@ -199,27 +199,27 @@ public class ShopLoader {
     @SuppressWarnings("ConstantConditions")
     private boolean shopNullCheck(@Nullable Shop shop) {
         if (shop == null) {
-            Util.debugLog("Shop object is null");
+            Log.debug("Shop object is null");
             return true;
         }
         if (shop.getItem() == null) {
-            Util.debugLog("Shop itemStack is null");
+            Log.debug("Shop itemStack is null");
             return true;
         }
         if (shop.getItem().getType() == Material.AIR) {
-            Util.debugLog("Shop itemStack type can't be AIR");
+            Log.debug("Shop itemStack type can't be AIR");
             return true;
         }
         if (shop.getLocation() == null) {
-            Util.debugLog("Shop location is null");
+            Log.debug("Shop location is null");
             return true;
         }
         if (shop.getOwner() == null) {
-            Util.debugLog("Shop owner is null");
+            Log.debug("Shop owner is null");
             return true;
         }
         if (plugin.getServer().getOfflinePlayer(shop.getOwner()).getName() == null) {
-            Util.debugLog("Shop owner not exist on this server, did you have reset the playerdata?");
+            Log.debug("Shop owner not exist on this server, did you have reset the playerdata?");
         }
         return false;
     }
@@ -227,7 +227,7 @@ public class ShopLoader {
 //    @NotNull
 //    private YamlConfiguration extraUpgrade(@NotNull String extraString) {
 //        if (!StringUtils.isEmpty(extraString) && !"QuickShop: {}".equalsIgnoreCase(extraString)) {
-//            Util.debugLog("Extra API -> Upgrading -> " + extraString.replace("\n", ""));
+//            Log.debug("Extra API -> Upgrading -> " + extraString.replace("\n", ""));
 //        }
 //        YamlConfiguration yamlConfiguration = new YamlConfiguration();
 //        JsonConfiguration jsonConfiguration = new JsonConfiguration();
@@ -465,7 +465,7 @@ public class ShopLoader {
                 return Util.deserialize(itemConfig);
             } catch (InvalidConfigurationException e) {
                 plugin.getLogger().log(Level.WARNING, "Failed load shop data, because target config can't deserialize the ItemStack", e);
-                Util.debugLog("Failed to load data to the ItemStack: " + itemConfig);
+                Log.debug("Failed to load data to the ItemStack: " + itemConfig);
                 return null;
             }
         }
@@ -473,18 +473,18 @@ public class ShopLoader {
         private @NotNull ShopModerator deserializeModerator(@NotNull String moderatorJson, @NotNull AtomicBoolean needUpdate) {
             ShopModerator shopModerator;
             if (Util.isUUID(moderatorJson)) {
-                Util.debugLog("Updating old shop data... for " + moderatorJson);
+                Log.debug("Updating old shop data... for " + moderatorJson);
                 shopModerator = new SimpleShopModerator(UUID.fromString(moderatorJson)); // New one
                 needUpdate.set(true);
             } else {
                 try {
                     shopModerator = SimpleShopModerator.deserialize(moderatorJson);
                 } catch (JsonSyntaxException ex) {
-                    Util.debugLog("Updating old shop data... for " + moderatorJson);
+                    Log.debug("Updating old shop data... for " + moderatorJson);
                     Profile profile = plugin.getPlayerFinder().find(moderatorJson);
                     UUID uuid;
                     if (profile == null) {
-                        Util.debugLog("Failed to find the player: " + moderatorJson);
+                        Log.debug("Failed to find the player: " + moderatorJson);
                         uuid = Bukkit.getOfflinePlayer(moderatorJson).getUniqueId();
                     } else {
                         uuid = profile.getUniqueId();

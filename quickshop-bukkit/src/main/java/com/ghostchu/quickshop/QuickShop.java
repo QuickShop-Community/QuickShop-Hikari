@@ -59,6 +59,7 @@ import com.ghostchu.quickshop.util.*;
 import com.ghostchu.quickshop.util.config.ConfigUpdateScript;
 import com.ghostchu.quickshop.util.config.ConfigurationUpdater;
 import com.ghostchu.quickshop.util.envcheck.*;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
@@ -342,11 +343,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         this.registerUpdater();
         /* Delay the Economy system load, give a chance to let economy system register. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
-        Util.debugLog("Loading economy system...");
+        Log.debug("Scheduled economy system loading.");
         getServer().getScheduler().runTaskLater(this, this::loadEcon, 1);
-        Util.debugLog("Registering watchers...");
         registerTasks();
-        Util.debugLog("Now using display-type: " + AbstractDisplayItem.getNowUsing().name());
+        Log.debug("DisplayItem selected: " + AbstractDisplayItem.getNowUsing().name());
         registerCommunicationChannels();
         getServer().getPluginManager().callEvent(new QSConfigurationReloadEvent(this));
         getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
@@ -424,9 +424,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private void loadErrorReporter() {
         try {
             if (!getConfig().getBoolean("auto-report-errors")) {
-                Util.debugLog("Error reporter was disabled!");
+                Log.debug("Error Reporter has been disabled by the configuration.");
             } else {
                 sentryErrorReporter = new RollbarErrorReporter(this);
+                Log.debug("Error Reporter has been initialized.");
             }
         } catch (Throwable th) {
             getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
@@ -460,7 +461,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         getLogger().info("Unregistering compatibility hooks...");
         /* Remove all display items, and any dupes we can find */
         if (shopManager != null) {
-            Util.debugLog("Cleaning up shop manager...");
+            getLogger().info("Cleaning up shop manager...");
             shopManager.clear();
         }
         if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
@@ -623,7 +624,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 }
                 case VAULT -> {
                     economy = new Economy_Vault(this);
-                    Util.debugLog("Now using the Vault economy system.");
+                    Log.debug("Economy bridge selected: Vault");
                     if (getConfig().getDouble("tax", 0.0d) > 0) {
                         try {
                             String taxAccount = getConfig().getString("tax-account", "tax");
@@ -638,7 +639,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                                 if (vault.isValid()) {
                                     if (!Objects.requireNonNull(vault.getVault()).hasAccount(tax)) {
                                         try {
-                                            Util.debugLog("Tax account doesn't exists! Creating...");
+                                            Log.debug("Tax account doesn't exists: " + tax);
                                             getLogger().warning("QuickShop detected that no tax account exists and will try to create one. If you see any errors, please change the tax-account name in the config.yml to that of the Server owner.");
                                             if (vault.getVault().createPlayerAccount(tax)) {
                                                 getLogger().info("Tax account created.");
@@ -654,20 +655,20 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
 
                                 }
                             }
-                        } catch (Exception ignored) {
-                            Util.debugLog("Failed to fix account issue.");
+                        } catch (Exception fail) {
+                            Log.debug("Tax account auto-repair failed: " + fail.getMessage());
                         }
                     }
                 }
                 case GEMS_ECONOMY -> {
                     economy = new Economy_GemsEconomy(this);
-                    Util.debugLog("Now using the GemsEconomy economy system.");
+                    Log.debug("Economy bridge selected: GemsEconomy");
                 }
                 case TNE -> {
                     economy = new Economy_TNE(this);
-                    Util.debugLog("Now using the TNE economy system.");
+                    Log.debug("Economy bridge selected: The New Economy");
                 }
-                default -> Util.debugLog("No economy provider selected.");
+                default -> Log.debug("Economy bridge selected: undefined");
             }
             if (economy == null) {
                 return false;
@@ -1017,16 +1018,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             getLogger().warning("Failed to get QuickShop PluginCommand instance.");
             return;
         }
-        List<String> aliases = quickShopCommand.getAliases();
+        Set<String> aliases = new HashSet(quickShopCommand.getAliases());
         aliases.addAll(customCommands);
-        quickShopCommand.setAliases(aliases);
+        quickShopCommand.setAliases(new ArrayList<>(aliases));
         try {
             platform.registerCommand("qs", quickShopCommand);
         } catch (Exception e) {
             getLogger().log(Level.WARNING, "Failed to register command aliases", e);
             return;
         }
-        Util.debugLog("Command alias successfully registered.");
+        Log.debug("QuickShop command aliases registered with those aliases: " + Util.list2String(aliases));
     }
 
     public @NotNull TextManager text() {

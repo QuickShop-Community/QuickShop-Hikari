@@ -20,7 +20,7 @@
 package com.ghostchu.quickshop.util.paste;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -416,14 +416,14 @@ public class Paste {
             paster = new HelpChatPastebinPaster();
             return paster.pasteTheText(content);
         } catch (Exception ex) {
-            Util.debugLog(ex.getMessage());
+            Log.debug(ex.getMessage());
         }
         try {
             // Lucko Pastebin
             paster = new LuckoPastebinPaster();
             return paster.pasteTheText(content);
         } catch (Exception ex) {
-            Util.debugLog(ex.getMessage());
+            Log.debug(ex.getMessage());
         }
         return null;
     }

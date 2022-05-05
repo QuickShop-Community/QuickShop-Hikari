@@ -69,7 +69,7 @@ public class ShopPurger {
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(shop.getOwner());
             if (!player.hasPlayedBefore()) {
-                Util.debugLog("Shop " + shop + " detection skipped: Owner never played before.");
+                Log.debug("Shop " + shop + " detection skipped: Owner never played before.");
                 continue;
             }
             long lastPlayed = player.getLastPlayed();

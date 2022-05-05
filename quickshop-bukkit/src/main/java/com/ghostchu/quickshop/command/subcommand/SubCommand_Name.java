@@ -25,6 +25,7 @@ import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.event.ShopNamingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -93,7 +94,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
         }
         ShopNamingEvent namingEvent = new ShopNamingEvent(shop, shopName);
         if(Util.fireCancellableEvent(namingEvent)){
-            Util.debugLog("Other plugin cancelled shop naming.");
+            Log.debug("Other plugin cancelled shop naming.");
             return;
         }
         shopName = namingEvent.getName();

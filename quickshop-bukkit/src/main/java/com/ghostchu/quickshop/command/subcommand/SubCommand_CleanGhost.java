@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -83,7 +84,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                 }
                 // Shop exist check
                 Util.mainThreadRun(() -> {
-                    Util.debugLog(
+                    Log.debug(
                             "Posted to main server thread to continue accessing Bukkit API for shop "
                                     + shop);
                     if (!Util.canBeShop(shop.getLocation().getBlock())) {

@@ -25,6 +25,7 @@ import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
@@ -130,7 +131,7 @@ public class BlockListener extends AbstractProtectionListener {
             if (getPlugin().getConfig().getBoolean("shop.allow-owner-break-shop-sign") && p.getUniqueId().equals(shop.getOwner())) {
                 return;
             }
-            Util.debugLog("Player cannot break the shop infomation sign.");
+            Log.debug("Player cannot break the shop information sign.");
             e.setCancelled(true);
         }
     }

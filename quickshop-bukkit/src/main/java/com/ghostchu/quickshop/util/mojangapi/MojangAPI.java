@@ -205,7 +205,7 @@ public class MojangAPI {
         public Optional<String> get() {
             HttpResponse<String> response = Unirest.get(metaEndpoint).asString();
             if (!response.isSuccess()) {
-                Util.debugLog("Request Meta Endpoint failed.");
+                Log.debug("Request Meta Endpoint failed.");
                 return Optional.empty();
             }
             String result = response.getBody();

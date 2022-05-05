@@ -19,13 +19,14 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
-import lombok.AllArgsConstructor;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
+import lombok.AllArgsConstructor;
+import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,13 +60,15 @@ public class SubCommand_ROOT implements CommandHandler<CommandSender> {
                     if (requirePermission != null
                             && !requirePermission.isEmpty()
                             && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
-                        Util.debugLog(
-                                "Player "
-                                        + sender.getName()
-                                        + " is trying to tab-complete the command: "
-                                        + commandLabel
-                                        + ", but doesn't have the permission: "
-                                        + requirePermission);
+                        if (Util.isDevMode()) {
+                            Log.debug(
+                                    "Player "
+                                            + sender.getName()
+                                            + " is trying to tab-complete the command: "
+                                            + commandLabel
+                                            + ", but doesn't have the permission: "
+                                            + requirePermission);
+                        }
                         return Collections.emptyList();
                     }
                 }

@@ -57,7 +57,7 @@ public class ConfigurationUpdater {
     }
 
     public void update(@NotNull Object configUpdateScript) {
-        Util.debugLog("Starting configuration update...");
+        Log.debug("Starting configuration update...");
         writeServerUniqueId();
         selectedVersion = configuration.getInt("config-version", -1);
         legacyUpdate();
@@ -66,7 +66,7 @@ public class ConfigurationUpdater {
                 UpdateScript updateScript = method.getAnnotation(UpdateScript.class);
                 int current = getConfiguration().getInt("config-version");
                 if (current >= updateScript.version()) {
-                    Util.debugLog("Skipping update script v" + updateScript.version() + " newer than v" + current + " .");
+                    Log.debug("Skipping update script v" + updateScript.version() + " newer than v" + current + " .");
                     continue;
                 }
                 plugin.getLogger().info("[ConfigUpdater] Updating configuration from " + current + " to " + updateScript.version());
@@ -101,7 +101,7 @@ public class ConfigurationUpdater {
         try {
             cleanupOldConfigs();
         } catch (IOException e) {
-            Util.debugLog("Failed to cleanup old configuration files: " + e.getMessage());
+            Log.debug("Failed to cleanup old configuration files: " + e.getMessage());
         }
 
     }

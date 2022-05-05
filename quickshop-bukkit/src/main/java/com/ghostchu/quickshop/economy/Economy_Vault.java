@@ -20,6 +20,7 @@
 package com.ghostchu.quickshop.economy;
 
 
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import lombok.Getter;
@@ -107,7 +108,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
             plugin.getLogger().info("Using economy system: " + this.vault.getName());
         }
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        Util.debugLog("Economy service listener was registered.");
+        Log.debug("Economy service listener was registered.");
         return true;
     }
 
@@ -147,7 +148,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
                 return true;
             }
             this.lastError = getProviderName() + ": " + response.type.name() + " - " + response.errorMessage;
-            Util.debugLog("Deposit player " + trader.getUniqueId() + " failed, Vault response: " + response.errorMessage);
+            Log.transaction(Level.WARNING, "Deposit player " + trader.getUniqueId() + " failed, Vault response: " + response.errorMessage);
             return false;
         } catch (Exception t) {
             plugin.getSentryErrorReporter().ignoreThrow();
@@ -234,7 +235,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
                 return true;
             }
             this.lastError = getProviderName() + ": " + response.type.name() + " - " + response.errorMessage;
-            Util.debugLog("Withdraw player " + trader.getUniqueId() + " failed, Vault response: " + response.errorMessage);
+            Log.transaction(Level.WARNING, "Withdraw player " + trader.getUniqueId() + " failed, Vault response: " + response.errorMessage);
             return false;
         } catch (Exception t) {
             plugin.getSentryErrorReporter().ignoreThrow();

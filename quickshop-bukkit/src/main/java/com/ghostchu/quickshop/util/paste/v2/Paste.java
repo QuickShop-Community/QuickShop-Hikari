@@ -19,7 +19,7 @@
 
 package com.ghostchu.quickshop.util.paste.v2;
 
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.HelpChatPastebinPaster;
 import com.ghostchu.quickshop.util.paste.LuckoPastebinPaster;
 import com.ghostchu.quickshop.util.paste.PasteInterface;
@@ -36,13 +36,13 @@ public class Paste {
             paster = new LuckoPastebinPaster();
             return paster.pasteTheTextJson(content);
         } catch (Exception ex) {
-            Util.debugLog(ex.getMessage());
+            Log.debug(ex.getMessage());
         }
         try {
             paster = new HelpChatPastebinPaster();
             return paster.pasteTheTextJson(content);
         } catch (Exception ex) {
-            Util.debugLog(ex.getMessage());
+            Log.debug(ex.getMessage());
         }
 //        try {
 //            // Ubuntu Pastebin

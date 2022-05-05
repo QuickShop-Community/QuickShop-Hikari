@@ -99,7 +99,7 @@ public class InventoryPreview implements Listener {
         }
         ShopInventoryPreviewEvent shopInventoryPreview = new ShopInventoryPreviewEvent(player, itemStack);
         if (Util.fireCancellableEvent(shopInventoryPreview)) {
-            Util.debugLog("Inventory preview was canceled by a plugin.");
+            Log.debug("Inventory preview was canceled by a plugin.");
             return;
         }
         if (inventory == null) {

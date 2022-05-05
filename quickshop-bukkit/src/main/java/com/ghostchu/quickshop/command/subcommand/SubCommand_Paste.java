@@ -21,7 +21,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.v2.Paste;
 import com.ghostchu.quickshop.util.paste.v2.PasteGenerator;
 import lombok.AllArgsConstructor;
@@ -84,7 +84,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
         final String string = new PasteGenerator().render();
         try {
             boolean createResult = file.createNewFile();
-            Util.debugLog("Create paste file: " + file.getCanonicalPath() + " " + createResult);
+            Log.debug("Create paste file: " + file.getCanonicalPath() + " " + createResult);
             try (FileWriter fwriter = new FileWriter(file)) {
                 fwriter.write(string);
                 fwriter.flush();

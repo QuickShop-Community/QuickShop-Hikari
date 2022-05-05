@@ -51,9 +51,9 @@ public class OngoingFeeWatcher extends BukkitRunnable {
 
     @Override
     public void run() {
-        Util.debugLog("Run task for ongoing fee...");
+        Log.debug("Run task for ongoing fee...");
         if (plugin.getEconomy() == null) {
-            Util.debugLog("Economy hadn't get ready.");
+            Log.debug("Economy hadn't get ready.");
             return;
         }
 

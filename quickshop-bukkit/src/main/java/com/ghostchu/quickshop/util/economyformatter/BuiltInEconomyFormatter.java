@@ -63,11 +63,11 @@ public class BuiltInEconomyFormatter implements Reloadable {
 
     public String getInternalFormat(double amount, @Nullable String currency) {
         if (StringUtils.isEmpty(currency)) {
-            Util.debugLog("Format: Currency is null");
+            Log.debug("Format: Currency is null");
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             return currencySymbolOnRight ? formatted + plugin.getConfig().getString("shop.alternate-currency-symbol", "$") : plugin.getConfig().getString("shop.alternate-currency-symbol", "$") + formatted;
         } else {
-            Util.debugLog("Format: Currency is: [" + currency + "]");
+            Log.debug("Format: Currency is: [" + currency + "]");
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             String symbol = CURRENCY_SYMBOL_MAPPING.getOrDefault(currency, currency);
             return currencySymbolOnRight ? formatted + symbol : symbol + formatted;

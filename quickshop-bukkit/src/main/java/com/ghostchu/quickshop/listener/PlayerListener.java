@@ -30,6 +30,7 @@ import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.google.common.cache.Cache;
@@ -108,8 +109,8 @@ public class PlayerListener extends AbstractQSListener {
         if (interaction == null) {
             return;
         }
-        Util.debugLog("Click: " + interaction.name());
-        Util.debugLog("Behavior Mapping: " + plugin.getInteractionController().getBehavior(interaction).name());
+        Log.debug("Click: " + interaction.name());
+        Log.debug("Behavior Mapping: " + plugin.getInteractionController().getBehavior(interaction).name());
         switch (plugin.getInteractionController().getBehavior(interaction)) {
             case CONTROL_PANEL -> {
                 if (shopSearched.getKey() != null) {
@@ -187,7 +188,6 @@ public class PlayerListener extends AbstractQSListener {
 
     public boolean sellToShop(@NotNull Player p, @Nullable Shop shop, boolean direct, boolean all) {
         if (shop == null) {
-            Util.debugLog("Shop null");
             return false;
         }
         if (!shop.isBuying()) {
@@ -327,7 +327,6 @@ public class PlayerListener extends AbstractQSListener {
 
     public boolean buyFromShop(@NotNull Player p, @Nullable Shop shop, boolean direct, boolean all) {
         if (shop == null) {
-            Util.debugLog("Shop null");
             return false;
         }
         if (!shop.isSelling()) {
@@ -577,7 +576,7 @@ public class PlayerListener extends AbstractQSListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onJoin(PlayerLocaleChangeEvent e) {
-        Util.debugLog("Player " + e.getPlayer().getName() + " using new locale " + e.getLocale() + ": " + LegacyComponentSerializer.legacySection().serialize(plugin.text().of(e.getPlayer(), "file-test").forLocale(e.getLocale())));
+        Log.debug("Player " + e.getPlayer().getName() + " using new locale " + e.getLocale() + ": " + LegacyComponentSerializer.legacySection().serialize(plugin.text().of(e.getPlayer(), "file-test").forLocale(e.getLocale())));
         plugin.getDatabaseHelper().setPlayerLocale(e.getPlayer().getUniqueId(), e.getLocale());
     }
 
@@ -632,7 +631,7 @@ public class PlayerListener extends AbstractQSListener {
             } else if (info.getAction().isCreating()) {
                 plugin.text().of(p, "shop-creation-cancelled").send();
             }
-            Util.debugLog(p.getName() + " too far with the shop location.");
+            Log.debug(p.getName() + " too far with the shop location.");
             plugin.getShopManager().getActions().remove(p.getUniqueId());
         }
     }
@@ -651,7 +650,7 @@ public class PlayerListener extends AbstractQSListener {
             return;
         }
         e.setCancelled(true);
-        Util.debugLog("Disallow " + e.getPlayer().getName() + " dye the shop sign.");
+        Log.debug("Disallow " + e.getPlayer().getName() + " dye the shop sign.");
     }
 
     /**
