@@ -71,22 +71,35 @@ public interface Platform {
     String getTranslationKey(@NotNull Enchantment enchantment);
     @NotNull
     Component getTranslation(@NotNull Material material);
+
     @NotNull
     Component getTranslation(@NotNull EntityType entity);
+
     @NotNull
     Component getTranslation(@NotNull PotionEffectType potionEffectType);
+
     @NotNull
     Component getTranslation(@NotNull Enchantment enchantment);
+
     @NotNull
     Component getDisplayName(@NotNull ItemStack stack);
-    @NotNull
+
+    @Nullable
     Component getDisplayName(@NotNull ItemMeta meta);
-    void setDisplayName(@NotNull ItemMeta meta, @NotNull Component component);
-    void setDisplayName(@NotNull ItemStack stack, @NotNull Component component);
-    void setDisplayName(@NotNull Item stack, @NotNull Component component);
+
+    void setDisplayName(@NotNull ItemMeta meta, @Nullable Component component);
+
+    void setDisplayName(@NotNull ItemStack stack, @Nullable Component component);
+
+    void setDisplayName(@NotNull Item stack, @Nullable Component component);
+
     void updateTranslationMappingSection(@NotNull Map<String, String> mapping);
+
     void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components);
+
     void setLore(@NotNull ItemMeta meta, @NotNull Collection<Component> components);
+
     @Nullable List<Component> getLore(@NotNull ItemStack stack);
+
     @Nullable List<Component> getLore(@NotNull ItemMeta meta);
 }

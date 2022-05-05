@@ -57,9 +57,9 @@ public class SpigotPlatform implements Platform {
     public SpigotPlatform(@NotNull Map<String, String> mapping) {
         this.provider = new ReflServerStateProvider();
         if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
-            if(NBTAPI.getInstance().isCompatible()) {
+            if (NBTAPI.getInstance().isCompatible()) {
                 nbtapi = NBTAPI.getInstance();
-            }else{
+            } else {
                 logger.warning("NBTAPI not compatible with this minecraft version, disabling NBTAPI support.");
             }
         }
@@ -184,22 +184,31 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
-    public void setDisplayName(@NotNull ItemMeta meta, @NotNull Component component) {
-        meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component));
+    public void setDisplayName(@NotNull ItemMeta meta, @Nullable Component component) {
+        if (component == null)
+            meta.setDisplayName(null);
+        else
+            meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component));
     }
 
     @Override
-    public void setDisplayName(@NotNull ItemStack stack, @NotNull Component component) {
-        if (!stack.hasItemMeta())
+    public void setDisplayName(@NotNull ItemStack stack, @Nullable Component component) {
+        if (stack.getItemMeta() == null)
             return;
         ItemMeta meta = stack.getItemMeta();
-        meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component));
+        if (component == null)
+            meta.setDisplayName(null);
+        else
+            meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component));
         stack.setItemMeta(meta);
     }
 
     @Override
-    public void setDisplayName(@NotNull Item stack, @NotNull Component component) {
-        stack.setCustomName(LegacyComponentSerializer.legacySection().serialize(component));
+    public void setDisplayName(@NotNull Item stack, @Nullable Component component) {
+        if (component == null)
+            stack.setCustomName(null);
+        else
+            stack.setCustomName(LegacyComponentSerializer.legacySection().serialize(component));
     }
 
     @Override
@@ -223,16 +232,16 @@ public class SpigotPlatform implements Platform {
 
     @Override
     public @Nullable List<Component> getLore(@NotNull ItemStack stack) {
-        if(!stack.hasItemMeta())
+        if (!stack.hasItemMeta())
             return null;
-        if(!stack.getItemMeta().hasLore())
+        if (!stack.getItemMeta().hasLore())
             return null;
         return stack.getItemMeta().getLore().stream().map(LegacyComponentSerializer.legacySection()::deserialize).collect(Collectors.toList());
     }
 
     @Override
     public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
-        if(!meta.hasLore())
+        if (!meta.hasLore())
             return null;
         return meta.getLore().stream().map(LegacyComponentSerializer.legacySection()::deserialize).collect(Collectors.toList());
     }
