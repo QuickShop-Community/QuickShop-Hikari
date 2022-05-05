@@ -130,6 +130,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     @Getter
     private final InventoryWrapperManager inventoryWrapperManager = new BukkitInventoryWrapperManager();
 
+    @Getter
+    private DatabaseDriverType databaseDriverType = null;
+
     /**
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
      */
@@ -938,12 +941,14 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 config.setUsername(user);
                 config.setPassword(pass);
                 this.sqlManager = EasySQL.createManager(config);
+                databaseDriverType = DatabaseDriverType.MYSQL;
             } else {
                 // H2 database - Doing this handles file creation
                 Driver.load();
                 config.setJdbcUrl("jdbc:h2:" + new File(this.getDataFolder(), "shops").getCanonicalFile().getAbsolutePath() + ";DB_CLOSE_DELAY=-1;MODE=MYSQL");
                 this.sqlManager = EasySQL.createManager(config);
                 this.sqlManager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode
+                databaseDriverType = DatabaseDriverType.H2;
             }
             // Make the database up to date
             this.databaseHelper = new SimpleDatabaseHelper(this, this.sqlManager, this.getDbPrefix());
@@ -1137,6 +1142,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         getLogger().info("Adventure Text Serializer (Legacy) loaded from: " + Util.getClassPath(LegacyComponentSerializer.class));
         getLogger().info("Adventure Text Serializer (Gson) loaded from: " + Util.getClassPath(GsonComponentSerializer.class));
         getLogger().info("Adventure MiniMessage Lib loaded from: " + Util.getClassPath(LegacyComponentSerializer.class));
+    }
+
+    enum DatabaseDriverType {
+        MYSQL,
+        H2
     }
 
 }
