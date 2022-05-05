@@ -235,8 +235,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private final Map<String, String> addonRegisteredMapping = new HashMap<>();
     @Getter
     private PlayerFinder playerFinder;
-    @Getter
-    private DatabaseBackupWatcher databaseBackupWatcher;
 
     /**
      * Use for mock bukkit
@@ -330,7 +328,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         setupShopCaches();
         signUpdateWatcher = new SignUpdateWatcher();
         shopContainerWatcher = new ShopContainerWatcher();
-        databaseBackupWatcher = new DatabaseBackupWatcher();
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();
@@ -367,7 +364,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
         signUpdateWatcher.runTaskTimer(this, 0, 10);
         shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
-        databaseBackupWatcher.runTaskTimer(this, 0, 20 * 60 * 60); // Every 1 hour backup once
         if (logWatcher != null) {
             logWatcher.runTaskTimerAsynchronously(this, 10, 10);
             getLogger().info("Log actions is enabled. Actions will be logged in the qs.log file!");
@@ -494,10 +490,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             getLogger().info("Shutting down update watcher...");
             this.updateWatcher.uninit();
         }
-        if (this.databaseBackupWatcher != null) {
-            getLogger().info("Shutting down database (H2) watcher...");
-            this.databaseBackupWatcher.cancel();
-        }
         getLogger().info("Cleanup scheduled tasks...");
         Bukkit.getScheduler().cancelTasks(this);
         getLogger().info("Cleanup listeners...");
@@ -508,6 +500,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         Unirest.shutDown(true);
         getLogger().info("Shutting down database...");
         EasySQL.shutdownManager(this.sqlManager);
+        if (databaseDriverType == DatabaseDriverType.H2) {
+            getLogger().info("Create database backup...");
+            new DatabaseBackupUtil().backup();
+        }
         getLogger().info("Finishing remaining misc work...");
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
         getLogger().info("All shutdown work has been completed.");
@@ -953,6 +949,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             } else {
                 // H2 database - Doing this handles file creation
                 Driver.load();
+                getLogger().info("Create database backup...");
+                new DatabaseBackupUtil().backup();
                 config.setJdbcUrl("jdbc:h2:" + new File(this.getDataFolder(), "shops").getCanonicalFile().getAbsolutePath() + ";DB_CLOSE_DELAY=-1;MODE=MYSQL");
                 this.sqlManager = EasySQL.createManager(config);
                 this.sqlManager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode

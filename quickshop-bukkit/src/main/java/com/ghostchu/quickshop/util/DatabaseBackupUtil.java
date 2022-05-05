@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is SignUpdateWatcher.java
+ *  This file is a part of project QuickShop, the name is DatabaseBackupUtil.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,11 +17,10 @@
  *
  */
 
-package com.ghostchu.quickshop.watcher;
+package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.logger.Log;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-public class DatabaseBackupWatcher extends BukkitRunnable {
+public class DatabaseBackupUtil {
     private final File dataFolder = QuickShop.getInstance().getDataFolder();
     private final File databaseBackupFolder = new File(dataFolder, "h2-backup");
     private final List<String> databaseBackupList = List.of(
@@ -40,9 +39,7 @@ public class DatabaseBackupWatcher extends BukkitRunnable {
             "shops.mv.db-wal"
     );
 
-
-    @Override
-    public void run() {
+    public void backup() {
         if (QuickShop.getInstance().getDatabaseDriverType() != QuickShop.DatabaseDriverType.H2)
             return;
         if (!databaseBackupFolder.exists())
@@ -55,11 +52,11 @@ public class DatabaseBackupWatcher extends BukkitRunnable {
             File file = new File(dataFolder, fileName);
             if (file.exists()) {
                 try {
-                    Log.cron("AutoBackup: Backing up " + fileName);
+                    Log.debug("AutoBackup: Backing up " + fileName);
                     Files.copy(file.toPath(), new File(backupFolder, fileName).toPath());
-                    Log.cron("AutoBackup: Backing up" + fileName + " successfully.");
+                    Log.debug("AutoBackup: Backing up" + fileName + " successfully.");
                 } catch (Exception e) {
-                    Log.cron(Level.WARNING, "Failed to backup " + fileName + ": " + e.getMessage());
+                    Log.debug(Level.WARNING, "Failed to backup " + fileName + ": " + e.getMessage());
                 }
             }
         }
@@ -82,11 +79,11 @@ public class DatabaseBackupWatcher extends BukkitRunnable {
                 continue;
             }
             if (!file.delete()) {
-                Log.cron(Level.WARNING, "Failed to delete backup file: " + file.getAbsolutePath());
+                Log.debug(Level.WARNING, "Failed to delete backup file: " + file.getAbsolutePath());
             } else {
                 purged++;
             }
         }
-        Log.cron("AutoBackup: Purged " + purged + " outdated backups.");
+        Log.debug("AutoBackup: Purged " + purged + " outdated backups.");
     }
 }
