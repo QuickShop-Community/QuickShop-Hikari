@@ -422,6 +422,7 @@
     "scheduled-in": "naplánováno na {0}",
     "longtimeago": "před dlouhou dobou",
     "std-format": "MM/dd/yyyy HH:mm:ss",
+    "std-time-format": "HH:mm:ss",
     "std-past-format": "před {5}{4}{3}{2}{1}{0}",
     "before": "před",
     "behind": "za",

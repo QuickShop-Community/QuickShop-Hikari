@@ -422,6 +422,7 @@
     "scheduled-in": "计划在 {0}",
     "longtimeago": "很久前",
     "std-format": "yyyy/MM/dd HH:mm:ss",
+    "std-time-format": "HH:mm:ss",
     "std-past-format": "{5}{4}{3}{2}{1}{0}前",
     "before": "前",
     "behind": "后面",
