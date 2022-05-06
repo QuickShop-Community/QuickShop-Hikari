@@ -27,6 +27,7 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheStats;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
@@ -60,6 +61,10 @@ public class PAPICache implements Reloadable {
     public ReloadResult reloadModule() throws Exception {
         init();
         return Reloadable.super.reloadModule();
+    }
+
+    public @NotNull CacheStats getStats() {
+        return performCaches.stats();
     }
 
     public long getExpiredTime() {

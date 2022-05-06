@@ -19,6 +19,8 @@
 
 package com.ghostchu.quickshop.util.mojangapi;
 
+import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
@@ -31,8 +33,6 @@ import lombok.Data;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.util.JsonUtil;
-import com.ghostchu.quickshop.util.Util;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -205,7 +205,7 @@ public class MojangAPI {
         public Optional<String> get() {
             HttpResponse<String> response = Unirest.get(metaEndpoint).asString();
             if (!response.isSuccess()) {
-                Util.debugLog("Request Meta Endpoint failed.");
+                Log.debug("Request Meta Endpoint failed.");
                 return Optional.empty();
             }
             String result = response.getBody();

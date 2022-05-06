@@ -1,5 +1,5 @@
 /*
- *  This file is a part of project QuickShop, the name is AbstractSubPasteItem.java
+ *  This file is a part of project QuickShop, the name is PasteItem.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,8 +17,16 @@
  *
  */
 
-package com.ghostchu.quickshop.util.paste.v2.item;
+package com.ghostchu.quickshop.util.paste.item;
 
-public abstract class AbstractSubPasteItem implements SubPasteItem {
+import org.jetbrains.annotations.NotNull;
 
+public interface PasteItem {
+    /**
+     * Render this item to HTML sources
+     *
+     * @return HTML sources
+     */
+    @NotNull
+    String toHTML();
 }

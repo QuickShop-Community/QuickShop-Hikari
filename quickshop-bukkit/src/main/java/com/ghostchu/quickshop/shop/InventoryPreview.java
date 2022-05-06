@@ -19,7 +19,12 @@
 
 package com.ghostchu.quickshop.shop;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.ShopInventoryPreviewEvent;
 import com.ghostchu.quickshop.shop.datatype.PreviewGuiPersistentDataType;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.holder.QuickShopPreviewGUIHolder;
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -34,10 +39,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.ShopInventoryPreviewEvent;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.holder.QuickShopPreviewGUIHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,7 +100,7 @@ public class InventoryPreview implements Listener {
         }
         ShopInventoryPreviewEvent shopInventoryPreview = new ShopInventoryPreviewEvent(player, itemStack);
         if (Util.fireCancellableEvent(shopInventoryPreview)) {
-            Util.debugLog("Inventory preview was canceled by a plugin.");
+            Log.debug("Inventory preview was canceled by a plugin.");
             return;
         }
         if (inventory == null) {

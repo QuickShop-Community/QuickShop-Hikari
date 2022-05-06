@@ -26,8 +26,7 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
 import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.google.common.collect.EvictingQueue;
-import com.google.common.collect.ImmutableList;
+import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
@@ -87,15 +86,12 @@ public class Util {
     private static final EnumSet<Material> SHOPABLES = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> VERTICAL_FACING = List.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
     @SuppressWarnings("UnstableApiUsage")
-    private static final EvictingQueue<String> DEBUG_LOGS = EvictingQueue.create(500);
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
     private static int BYPASSED_CUSTOM_STACKSIZE = -1;
     private static Yaml yaml = null;
     private static Boolean devMode = null;
     @Setter
     private static QuickShop plugin;
-    @Getter
-    private static boolean disableDebugLogger = false;
     @Getter
     @Nullable
     private static DyeColor dyeColor = null;
@@ -336,11 +332,11 @@ public class Util {
             // Try load the itemDataVersion to do some checks.
             //noinspection deprecation
             if (itemDataVersion > Bukkit.getUnsafe().getDataVersion()) {
-                Util.debugLog("WARNING: DataVersion not matched with ItemStack: " + config);
+                Log.debug("WARNING: DataVersion not matched with ItemStack: " + config);
                 // okay we need some things to do
                 if (plugin.getConfig().getBoolean("shop.force-load-downgrade-items.enable")) {
                     // okay it enabled
-                    Util.debugLog("QuickShop is trying force loading " + config);
+                    Log.debug("QuickShop is trying force loading " + config);
                     if (plugin.getConfig().getInt("shop.force-load-downgrade-items.method") == 0) { // Mode 0
                         //noinspection deprecation
                         item.put("v", Bukkit.getUnsafe().getDataVersion() - 1);
@@ -351,7 +347,7 @@ public class Util {
                     // Okay we have hacked the dataVersion, now put it back
                     root.put("item", item);
                     config = yaml.dump(root);
-                    Util.debugLog("Updated, we will try load as hacked ItemStack: " + config);
+                    Log.debug("Updated, we will try load as hacked ItemStack: " + config);
                 } else {
                     plugin
                             .getLogger()
@@ -372,13 +368,6 @@ public class Util {
         }
     }
 
-    @NotNull
-    public static List<String> getDebugLogs() {
-        LOCK.readLock().lock();
-        List<String> strings = ImmutableList.copyOf(DEBUG_LOGS);
-        LOCK.readLock().unlock();
-        return strings;
-    }
 
     private static final StackWalker stackWalker = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE), 2);
 
@@ -387,33 +376,38 @@ public class Util {
      *
      * @param logs logs
      */
+    @Deprecated(forRemoval = true)
     public static void debugLog(@NotNull String... logs) {
-        if (disableDebugLogger) {
-            return;
+        Log.Caller caller = Log.Caller.create();
+        for (String log : logs) {
+            Log.debug(Level.INFO, log, caller);
         }
-        StringJoiner logEntry = new StringJoiner("\n");
-        if (!isDevMode()) {
-            for (String log : logs) {
-                logEntry.add("[DEBUG] " + log);
-            }
-        } else {
-            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(2).toList());
-            StackWalker.StackFrame frame = caller.get(1);
-            String threadName = Thread.currentThread().getName();
-            String className = frame.getClassName();
-            String methodName = frame.getMethodName();
-            int codeLine = frame.getLineNumber();
-            for (String log : logs) {
-                logEntry.add("[DEBUG/" + threadName + "] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-            }
-        }
-        String log = logEntry.toString();
-        if (isDevMode()) {
-            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info(log);
-        }
-        LOCK.writeLock().lock();
-        DEBUG_LOGS.add(log);
-        LOCK.writeLock().unlock();
+//        if (disableDebugLogger) {
+//            return;
+//        }
+//        StringJoiner logEntry = new StringJoiner("\n");
+//        if (!isDevMode()) {
+//            for (String log : logs) {
+//                logEntry.add("[DEBUG] " + log);
+//            }
+//        } else {
+//            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(2).toList());
+//            StackWalker.StackFrame frame = caller.get(1);
+//            String threadName = Thread.currentThread().getName();
+//            String className = frame.getClassName();
+//            String methodName = frame.getMethodName();
+//            int codeLine = frame.getLineNumber();
+//            for (String log : logs) {
+//                logEntry.add("[DEBUG/" + threadName + "] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+//            }
+//        }
+//        String log = logEntry.toString();
+//        if (isDevMode()) {
+//            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info(log);
+//        }
+//        LOCK.writeLock().lock();
+//        DEBUG_LOGS.add(log);
+//        LOCK.writeLock().unlock();
     }
 
     /**
@@ -584,7 +578,7 @@ public class Util {
     @NotNull
     public static String getToolPercentage(@NotNull ItemStack item) {
         if (!(item.getItemMeta() instanceof Damageable)) {
-            Util.debugLog(item.getType().name() + " not Damageable.");
+            Log.debug(item.getType().name() + " not Damageable.");
             return "Error: NaN";
         }
         double dura = ((Damageable) item.getItemMeta()).getDamage();
@@ -649,7 +643,6 @@ public class Util {
             }
             CUSTOM_STACKSIZE.put(mat, Integer.parseInt(data[1]));
         }
-        disableDebugLogger = plugin.getConfig().getBoolean("debug.disable-debuglogger", false);
         try {
             dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
         } catch (Exception ignored) {
@@ -691,7 +684,7 @@ public class Util {
             return;
         }
         if (inv.getHolder() == null) {
-            Util.debugLog("Skipped plugin gui inventory check.");
+            Log.debug("Skipped plugin gui inventory check.");
             return;
         }
         InventoryWrapperIterator iterator = inv.iterator();
@@ -708,7 +701,7 @@ public class Util {
                         return; // Virtual GUI
                     }
                     iterator.remove();
-                    Util.debugLog("Found shop display item in an inventory, Removing...");
+                    Log.debug("Found shop display item in an inventory, Removing...");
                     MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location + ", Item is " + itemStack.getType().name());
                 }
             }
@@ -1227,6 +1220,13 @@ public class Util {
         }
     }
 
+    /**
+     * Execute the Runnable in server main thread.
+     * If it already on main-thread, will be executed directly.
+     * or post to main-thread if came from any other thread.
+     *
+     * @param runnable The runnable
+     */
     public static void mainThreadRun(@NotNull Runnable runnable) {
         if (Bukkit.isPrimaryThread()) {
             runnable.run();
@@ -1235,6 +1235,12 @@ public class Util {
         }
     }
 
+    /**
+     * Convert timestamp to LocalDateTime instance
+     *
+     * @param timestamp Timestamp
+     * @return LocalDateTime instance
+     */
     // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
     @Nullable
     public static LocalDateTime getDateTimeFromTimestamp(long timestamp) {
@@ -1245,6 +1251,12 @@ public class Util {
                 .getDefault().toZoneId());
     }
 
+    /**
+     * Convert timestamp to LocalDate instance
+     *
+     * @param timestamp Timestamp
+     * @return LocalDate instance
+     */
     // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
     @Nullable
     public static LocalDate getDateFromTimestamp(long timestamp) {
@@ -1252,11 +1264,22 @@ public class Util {
         return date == null ? null : date.toLocalDate();
     }
 
+    /**
+     * Gets the nil unique id
+     *
+     * @return uuid which content is `00000000-0000-0000-0000-000000000000`
+     */
     @NotNull
     public static UUID getNilUniqueId() {
         return new UUID(0, 0);
     }
 
+    /**
+     * Gets the CommandSender unique id.
+     *
+     * @param sender the sender
+     * @return the sender unique id if sender is a player, otherwise nil unique id
+     */
     @NotNull
     public static UUID getSenderUniqueId(@Nullable CommandSender sender) {
         if (sender instanceof OfflinePlayer) {
@@ -1265,6 +1288,12 @@ public class Util {
         return getNilUniqueId();
     }
 
+    /**
+     * Create regex from glob
+     *
+     * @param glob glob
+     * @return regex
+     */
     // https://stackoverflow.com/questions/45321050/java-string-matching-with-wildcards
     @NotNull
     public static String createRegexFromGlob(@NotNull String glob) {
@@ -1309,6 +1338,12 @@ public class Util {
         return list1.containsAll(list2) && list2.containsAll(list1);
     }
 
+    /**
+     * Unregister all listeners registered instances that belong to specified class
+     *
+     * @param plugin Plugin instance
+     * @param clazz  Class to unregister
+     */
     public static void unregisterListenerClazz(@NotNull Plugin plugin, @NotNull Class<? extends Listener> clazz) {
         for (RegisteredListener registeredListener : HandlerList.getRegisteredListeners(plugin)) {
             if (registeredListener.getListener().getClass().equals(clazz)) {
@@ -1317,6 +1352,12 @@ public class Util {
         }
     }
 
+    /**
+     * Gets the location of a class inside of a jar file.
+     *
+     * @param clazz The class to get the location of.
+     * @return The jar path which given class at.
+     */
     @NotNull
     public static String getClassPath(@NotNull Class<?> clazz) {
         String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
@@ -1324,11 +1365,24 @@ public class Util {
         return jarPath;
     }
 
+    /**
+     * Get class path of the given class.
+     *
+     * @param plugin Plugin plugin instance
+     * @return Class path
+     */
     @NotNull
     public static String getPluginJarPath(@NotNull Plugin plugin) {
         return getClassPath(plugin.getClass());
     }
 
+    /**
+     * Gets a plugin's Jar file
+     *
+     * @param plugin The plugin instance
+     * @return The plugin's Jar file
+     * @throws FileNotFoundException If the plugin's Jar file could not be found
+     */
     @NotNull
     public static File getPluginJarFile(@NotNull Plugin plugin) throws FileNotFoundException {
         String path = getPluginJarPath(plugin);
@@ -1336,6 +1390,18 @@ public class Util {
         if (!file.exists())
             throw new FileNotFoundException("File not found: " + path);
         return file;
+    }
+
+    /**
+     * Create a list which only contains the given elements at the tail of a list.
+     *
+     * @param list List
+     * @param last The amount of elements from list tail to be added to the new list
+     * @return The new list
+     */
+    @NotNull
+    public static List<String> tail(@NotNull List<String> list, int last) {
+        return list.subList(Math.max(list.size() - last, 0), list.size());
     }
 
 }

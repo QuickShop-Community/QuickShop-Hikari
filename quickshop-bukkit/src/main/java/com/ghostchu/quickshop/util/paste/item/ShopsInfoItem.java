@@ -1,5 +1,5 @@
-/* V
- *  This file is a part of project QuickShop, the name is SystemInfoItem.java
+/*
+ *  This file is a part of project QuickShop, the name is ShopsInfoItem.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,7 +17,7 @@
  *
  */
 
-package com.ghostchu.quickshop.util.paste.v2.item;
+package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -52,8 +52,8 @@ public class ShopsInfoItem implements SubPasteItem {
     @NotNull
     private String buildContent() {
         StringBuilder htmlBuilder = new StringBuilder();
-        htmlBuilder.append("<p>Total Shops: ").append(totalShops).append("</p>").append("<br />");
-        htmlBuilder.append("<h4>Shops in world</h4>");
+        htmlBuilder.append("<p>Total Shops: ").append(totalShops).append("</p>");
+        htmlBuilder.append("<h5>Shops in world</h5>");
         htmlBuilder.append("<ul>");
         shopsMapping.keySet().forEach(worldName -> htmlBuilder.append("<li>").append(worldName).append(": ").append(shopsMapping.get(worldName).size()).append("</li>"));
         htmlBuilder.append("</ul>");

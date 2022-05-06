@@ -422,6 +422,7 @@
     "scheduled-in": "scheduled in {0}",
     "longtimeago": "long time ago",
     "std-format": "MM/dd/yyyy HH:mm:ss",
+    "std-time-format": "HH:mm:ss",
     "std-past-format": "{5}{4}{3}{2}{1}{0}ago",
     "before": "before",
     "behind": "behind",

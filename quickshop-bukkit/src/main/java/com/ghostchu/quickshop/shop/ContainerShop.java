@@ -31,6 +31,7 @@ import com.ghostchu.quickshop.shop.display.RealDisplayItem;
 import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.quickshop.util.serialize.BlockPos;
 import io.papermc.lib.PaperLib;
@@ -232,7 +233,7 @@ public class ContainerShop implements Shop {
         if (section.getString("currency") != null) {
             this.currency = section.getString("currency");
             section.set("currency", null);
-            Util.debugLog("Shop " + this + " currency data upgrade successful.");
+            Log.debug("Shop " + this + " currency data upgrade successful.");
         }
         setDirty();
     }
@@ -397,7 +398,7 @@ public class ContainerShop implements Shop {
             InventoryWrapper chestInv = this.getInventory();
             if (chestInv == null) {
                 plugin.getLogger().warning("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
-                Util.debugLog("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
+                Log.debug("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
                 return;
             }
             InventoryTransaction transaction = InventoryTransaction
@@ -443,9 +444,9 @@ public class ContainerShop implements Shop {
         }
 
         if (this.displayItem == null) {
-            Util.debugLog("Warning: DisplayItem is null, this shouldn't happened...");
+            Log.debug("Warning: DisplayItem is null, this shouldn't happened...");
             StackTraceElement traceElements = Thread.currentThread().getStackTrace()[2];
-            Util.debugLog("Call from: " + traceElements.getClassName() + "#" + traceElements.getMethodName() + "%" + traceElements.getLineNumber());
+            Log.debug("Call from: " + traceElements.getClassName() + "#" + traceElements.getMethodName() + "%" + traceElements.getLineNumber());
             return;
         }
 
@@ -510,7 +511,7 @@ public class ContainerShop implements Shop {
         setDirty();
         ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, memoryOnly);
         if (Util.fireCancellableEvent(shopDeleteEvent)) {
-            Util.debugLog("Shop deletion was canceled because a plugin canceled it.");
+            Log.debug("Shop deletion was canceled because a plugin canceled it.");
             return;
         }
         isDeleted = true;
@@ -598,7 +599,7 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         ShopClickEvent event = new ShopClickEvent(this);
         if (Util.fireCancellableEvent(event)) {
-            Util.debugLog("Ignore shop click, because some plugin cancel it.");
+            Log.debug("Ignore shop click, because some plugin cancel it.");
             return;
         }
         refresh();
@@ -619,7 +620,7 @@ public class ContainerShop implements Shop {
     public void onUnload() {
         Util.ensureThread(false);
         if (!this.isLoaded) {
-            Util.debugLog("Dupe unload request, canceled.");
+            Log.debug("Dupe unload request, canceled.");
             return;
         }
         if (inventoryPreview != null) {
@@ -895,7 +896,7 @@ public class ContainerShop implements Shop {
         }
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
         if (Util.fireCancellableEvent(shopUpdateEvent)) {
-            Util.debugLog("The Shop update action was canceled by a plugin.");
+            Log.debug("The Shop update action was canceled by a plugin.");
             return;
         }
         updating = true;
@@ -935,7 +936,7 @@ public class ContainerShop implements Shop {
         this.symbolLink = manager.mklink(wrapper);
         setDirty();
         update();
-        Util.debugLog("Inventory changed: " + this.symbolLink + ", wrapper provider:" + inventoryWrapperProvider);
+        Log.debug("Inventory changed: " + this.symbolLink + ", wrapper provider:" + inventoryWrapperProvider);
         new ShopInventoryChangedEvent(wrapper, manager).callEvent();
     }
 
@@ -967,7 +968,7 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         ShopItemChangeEvent event = new ShopItemChangeEvent(this, this.item, item);
         if (Util.fireCancellableEvent(event)) {
-            Util.debugLog("A plugin cancelled the item change event.");
+            Log.debug("A plugin cancelled the item change event.");
             return;
         }
         this.item = item;
@@ -1030,7 +1031,7 @@ public class ContainerShop implements Shop {
     public void onLoad() {
         Util.ensureThread(false);
         if (this.isLoaded) {
-            Util.debugLog("Dupe load request, canceled.");
+            Log.debug("Dupe load request, canceled.");
             return;
         }
         Map<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(getLocation().getChunk());
@@ -1040,7 +1041,7 @@ public class ContainerShop implements Shop {
         try {
             inventoryWrapper = locateInventory(symbolLink);
         } catch (Exception e) {
-            Util.debugLog("Failed to load shop: " + symbolLink + ": " + e.getClass().getName() + ": " + e.getMessage());
+            Log.debug("Failed to load shop: " + symbolLink + ": " + e.getClass().getName() + ": " + e.getMessage());
             MsgUtil.debugStackTrace(e.getStackTrace());
             this.delete(!plugin.getConfig().getBoolean("debug.delete-corrupt-shop"));
             return;
@@ -1117,7 +1118,7 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         ShopPriceChangeEvent event = new ShopPriceChangeEvent(this, this.price, price);
         if (Util.fireCancellableEvent(event)) {
-            Util.debugLog("A plugin cancelled the price change event.");
+            Log.debug("A plugin cancelled the price change event.");
             return;
         }
         setDirty();
@@ -1138,12 +1139,12 @@ public class ContainerShop implements Shop {
             return -1;
         }
         if (this.getInventory() == null) {
-            Util.debugLog("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
+            Log.debug("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
             return 0;
         }
         int space = Util.countSpace(this.getInventory(), this);
         new ShopInventoryCalculateEvent(this, space, -1).callEvent();
-        Util.debugLog("Space count is: " + space);
+        Log.debug("Space count is: " + space);
         return space;
     }
 
@@ -1159,7 +1160,7 @@ public class ContainerShop implements Shop {
             return -1;
         }
         if (this.getInventory() == null) {
-            Util.debugLog("Failed to calc RemainingStock for shop " + this + ": Inventory null.");
+            Log.debug("Failed to calc RemainingStock for shop " + this + ": Inventory null.");
             return 0;
         }
         int stock = Util.countItems(this.getInventory(), this);
@@ -1185,7 +1186,7 @@ public class ContainerShop implements Shop {
         }
         setDirty();
         if (Util.fireCancellableEvent(new ShopTypeChangeEvent(this, this.shopType, newShopType))) {
-            Util.debugLog(
+            Log.debug(
                     "Some addon cancelled shop type changes, target shop: " + this);
             return;
         }
@@ -1358,11 +1359,11 @@ public class ContainerShop implements Shop {
     public @Nullable InventoryWrapper getInventory() {
         if (inventoryWrapper == null) {
             Util.ensureThread(false);
-            Util.debugLog("SymbolLink Applying: " + symbolLink);
+            Log.debug("SymbolLink Applying: " + symbolLink);
             inventoryWrapper = locateInventory(symbolLink);
         }
         if (inventoryWrapper == null) {
-            Util.debugLog("Cannot locate the Inventory with symbol link: " + symbolLink + ", provider: " + inventoryWrapperProvider);
+            Log.debug("Cannot locate the Inventory with symbol link: " + symbolLink + ", provider: " + inventoryWrapperProvider);
             return null;
         }
         if (inventoryWrapper.isValid()) {
@@ -1377,7 +1378,7 @@ public class ContainerShop implements Shop {
             this.delete(true);
         }
         plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
-        Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was deleted.");
+        Log.debug("Inventory doesn't exist anymore: " + this + " shop was deleted.");
         return null;
     }
 
@@ -1515,7 +1516,7 @@ public class ContainerShop implements Shop {
             return;
         }
         if (!Util.canBeShop(this.getLocation().getBlock())) {
-            Util.debugLog("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock()
+            Log.debug("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock()
                     + " container was missing, deleting...");
             plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Container invalid", saveToInfoStorage()));
             this.onUnload();

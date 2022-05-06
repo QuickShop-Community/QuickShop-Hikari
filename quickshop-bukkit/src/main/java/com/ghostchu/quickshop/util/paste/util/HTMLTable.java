@@ -17,7 +17,7 @@
  *
  */
 
-package com.ghostchu.quickshop.util.paste.v2.util;
+package com.ghostchu.quickshop.util.paste.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
@@ -41,20 +41,41 @@ public class HTMLTable {
             </table>
             """;
 
-    public HTMLTable(int columns) {
-        this.columns = columns;
+    /**
+     * Creates an HTML Table
+     *
+     * @param maxColumns Table max columns, any more columns will be ignored
+     */
+    public HTMLTable(int maxColumns) {
+        this.columns = maxColumns;
         this.firstColumnBold = false;
     }
 
-    public HTMLTable(int columns, boolean firstColumnBold) {
-        this.columns = columns;
+    /**
+     * Creates an HTML Table
+     *
+     * @param maxColumns      Table max columns, any more columns will be ignored
+     * @param firstColumnBold Whether the first column should be bolded
+     */
+    public HTMLTable(int maxColumns, boolean firstColumnBold) {
+        this.columns = maxColumns;
         this.firstColumnBold = firstColumnBold;
     }
 
+    /**
+     * Sets the table title
+     *
+     * @param title The title, null to clear if already set.
+     */
     public void setTableTitle(@Nullable String... title) {
         this.title = title;
     }
 
+    /**
+     * Insert new row to the table
+     *
+     * @param data The data to insert, any more columns which overflowed than maxColumns will be ignored
+     */
     public void insert(@NotNull String... data) {
         String[] f = new String[columns];
         Arrays.fill(f, "");
@@ -67,6 +88,11 @@ public class HTMLTable {
         this.data.add(f);
     }
 
+    /**
+     * Render this table to HTML sources
+     *
+     * @return The HTML sources
+     */
     @NotNull
     public String render() {
         String thead = renderHead();

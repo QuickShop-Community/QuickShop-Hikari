@@ -27,6 +27,7 @@ import com.ghostchu.quickshop.api.shop.operation.AddItemOperation;
 import com.ghostchu.quickshop.api.shop.operation.RemoveItemOperation;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Builder;
 import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
@@ -70,10 +71,10 @@ public class InventoryTransaction {
      * @return The transaction success.
      */
     public boolean failSafeCommit() {
-        Util.debugLog("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + Util.serialize(item));
+        Log.transaction("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + Util.serialize(item));
         boolean result = commit();
         if (!result) {
-            Util.debugLog("Fail-safe commit failed, starting rollback: " + lastError);
+            Log.transaction(Level.WARNING, "Fail-safe commit failed, starting rollback: " + lastError);
             rollback(true);
         }
         return result;
@@ -99,7 +100,7 @@ public class InventoryTransaction {
      * @return The transaction success.
      */
     public boolean commit(@NotNull InventoryTransaction.TransactionCallback callback) {
-        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + Util.serialize(item));
+        Log.transaction("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + Util.serialize(item));
         if (!callback.onCommit(this)) {
             this.lastError = "Plugin cancelled this transaction.";
             return false;
@@ -150,17 +151,17 @@ public class InventoryTransaction {
         while (!processingStack.isEmpty()) {
             Operation operation = processingStack.pop();
             if (!operation.isCommitted()) {
-                Util.debugLog("Operation: " + operation + " is not committed, skip rollback.");
+                Log.transaction("Operation: " + operation + " is not committed, skip rollback.");
                 continue;
             }
             if (operation.isRollback()) {
-                Util.debugLog("Operation: " + operation + " is already rolled back, skip rollback.");
+                Log.transaction("Operation: " + operation + " is already rolled back, skip rollback.");
                 continue;
             }
             try {
                 boolean result = operation.rollback();
                 if (!result) {
-                    Util.debugLog("Rollback failed: " + operation);
+                    Log.transaction(Level.WARNING, "Rollback failed: " + operation);
                     if (continueWhenFailed) {
                         operations.add(operation);
                         continue;
@@ -168,7 +169,7 @@ public class InventoryTransaction {
                         break;
                     }
                 }
-                Util.debugLog("Rollback successed: " + operation);
+                Log.transaction("Rollback successes: " + operation);
                 operations.add(operation);
             } catch (Exception exception) {
                 if (continueWhenFailed) {

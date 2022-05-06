@@ -1,6 +1,6 @@
 {
-  "_comment": "Ahoj překladatel! Pokud to upravujete na GitHubu nebo pomocí zdrojového kódu, měli byste místo toho jít na https://crowdin.com/project/quickshop-reremake.",
-  "file-test": "Toto je zkušební textový soubor. Používáme jej k testování, pokud jde o zprávy json soubor je rozbitý. Můžete jej vyplnit jakýmkoliv překvapením, které se vám líbí :)",
+  "_comment": "Ahoj překladatel! Pokud to upravujete na GitHub nebo pomocí zdrojového kódu, měli byste místo toho jít na https://crowdin.com/project/quickshop-reremake.",
+  "file-test": "Toto je zkušební textový soubor. Používáme jej k testování, pokud je soubor messages.json rozbitý. Můžete jej vyplnit jakýmkoliv překvapením, které se vám líbí :)",
   "translation-author": "Translator: Ghost_chu, Andre_601, LixCisCZ",
   "translation-version": "Verze podpory: Hikari",
   "translation-contributors": "Přispěli: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601",
@@ -25,7 +25,7 @@
   "price-too-cheap": "&cCena musí být větší než &e${0}",
   "no-price-change": "&cToto nezmění cenu!",
   "you-cant-afford-a-new-shop": "&cCena založení nového obchodu je {0}.",
-  "player-bought-from-your-store-tax": "&a{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).",
+  "player-bought-from-your-store-tax": "&a{0} koupil {1} {2} z vašeho obchodu a vy jste získali {3} ({4} daň).",
   "you-cant-afford-to-change-price": "&cCena za změnu ceny ve tvém obchodě je {0}.",
   "success-created-shop": "&cObchod vytvořen.",
   "success-removed-shop": "&aObchod odstraněn.",
@@ -422,6 +422,7 @@
     "scheduled-in": "naplánováno na {0}",
     "longtimeago": "před dlouhou dobou",
     "std-format": "MM/dd/yyyy HH:mm:ss",
+    "std-time-format": "HH:mm:ss",
     "std-past-format": "před {5}{4}{3}{2}{1}{0}",
     "before": "před",
     "behind": "za",
@@ -487,5 +488,5 @@
       "&eUmístění: &b{location}"
     ]
   },
-  "invalid-container": "&cInvalid container, You can only create the shop on block who have inventory."
+  "invalid-container": "&cNeplatný kontejner, můžete vytvořit pouze obchod na bloku, který má inventář."
 }

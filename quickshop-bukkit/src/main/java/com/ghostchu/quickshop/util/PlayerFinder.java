@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.util;
 
+import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -53,13 +54,13 @@ public class PlayerFinder {
         try {
             cache = new SQLiteCache(new File(Util.getCacheFolder(), "player_mapping.db"));
         } catch (Exception e) {
-            Util.debugLog("Failed to initialize player mapping cache database, use HashMapCache instead.");
+            Log.debug("Failed to initialize player mapping cache database, use HashMapCache instead.");
         }
         List<ProfileService> services = new ArrayList<>();
         if (PaperLib.isPaper() && !System.getProperties().containsKey("com.ghostchu.quickshop.util.PlayerFinder.forceSpigot")) {
             services.add(PaperPlayerService.getInstance());
         } else {
-            Util.debugLog("Fallback to use general CombinedProfileService for player lookup.");
+            Log.debug("Fallback to use general CombinedProfileService for player lookup.");
             services.add(new CacheForwardingService(HttpRepositoryService.forMinecraft(), cache));
         }
         this.resolver = new CombinedProfileService(services);
@@ -109,7 +110,7 @@ public class PlayerFinder {
         try {
             return this.resolver.findByUuid(uuid);
         } catch (IOException | InterruptedException e) {
-            Util.debugLog("Failed to find player profile: " + e.getMessage());
+            Log.debug("Failed to find player profile: " + e.getMessage());
             return null;
         }
     }
@@ -119,7 +120,7 @@ public class PlayerFinder {
         try {
             return this.resolver.findByName(name);
         } catch (IOException | InterruptedException e) {
-            Util.debugLog("Failed to find player profile: " + e.getMessage());
+            Log.debug("Failed to find player profile: " + e.getMessage());
             return null;
         }
     }

@@ -19,6 +19,8 @@
 
 package com.ghostchu.quickshop.converter;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.collect.Lists;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -26,8 +28,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -1022,7 +1022,7 @@ public class HikariConfigConverter implements HikariConverterInterface {
         double globalMax = plugin.getConfig().getDouble("shop.maximum-price", -1d);
         List<String> oldRules = plugin.getConfig().getStringList("shop.price-restriction");
         if (oldRules.isEmpty()) {
-            Util.debugLog("Rules is empty, skipping");
+            Log.debug("Price Limiter rules empty, skipping");
             return;
         }
         File configFile = new File(plugin.getDataFolder(), "price-restriction.yml");

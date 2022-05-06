@@ -1,4 +1,4 @@
-/* V
+/*
  *  This file is a part of project QuickShop, the name is SystemInfoItem.java
  *  Copyright (C) Ghost_chu and contributors
  *
@@ -17,10 +17,10 @@
  *
  */
 
-package com.ghostchu.quickshop.util.paste.v2.item;
+package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.paste.v2.util.HTMLTable;
+import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -45,7 +45,7 @@ public class SystemInfoItem implements SubPasteItem {
         this.arch = System.getProperty("os.arch");
         this.version = System.getProperty("os.version");
         this.cores = String.valueOf(Runtime.getRuntime().availableProcessors());
-        this.javaVersion = System.getProperty("java.version");
+        this.javaVersion = System.getProperty("java.version") + " (" + System.getProperty("java.vendor.version") + ")";
         this.javaImplName = runtimeMxBean.getVmName();
         this.inputArgs = Util.list2String(runtimeMxBean.getInputArguments());
         List<String> sysData = new ArrayList<>();
@@ -70,7 +70,7 @@ public class SystemInfoItem implements SubPasteItem {
         table.insert("JVM Name", javaImplName);
         table.insert("Input Arguments", inputArgs);
         String propertiesTable = """
-                <textarea name="sys_properties" style="height: 100px; width: 100%;">
+                <textarea name="sys_properties" readonly="true" style="height: 100px; width: 100%;">
                 {properties}
                 </textarea>
                 """;

@@ -29,6 +29,7 @@ import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.metric.ShopMetricRecord;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -205,14 +206,14 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
 
     @Override
     public void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
-        Util.debugLog("Update: " + uuid + " to " + locale);
+        Log.debug("Update: " + uuid + " last locale to " + locale);
         manager.createReplace(prefix + "players")
                 .setColumnNames("uuid", "locale")
                 .setParams(uuid.toString(), locale)
                 .executeAsync(integer -> {
                 }, (exception, sqlAction) -> {
                     if (exception != null) {
-                        Util.debugLog("Failed to update player locale! Err: " + exception.getMessage() + "; SQL: " + sqlAction.getSQLContent());
+                        Log.debug("Failed to update player locale! Err: " + exception.getMessage() + "; SQL: " + sqlAction.getSQLContent());
                     }
                 });
     }
@@ -279,7 +280,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
             }
             return Integer.parseInt(result.getString("value"));
         } catch (SQLException e) {
-            Util.debugLog("Failed to getting database version! Err: " + e.getMessage());
+            Log.debug("Failed to getting database version! Err: " + e.getMessage());
             return -1;
         }
     }
@@ -346,7 +347,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
                 .addCondition("z", z)
                 .addCondition("world", world)
                 .build()
-                .executeAsync((handler) -> Util.debugLog("Operation completed, Remove shop for w:" + world + "x:" + x + ",y:" + y + ",z:" + z + ", " + handler + " lines affected"));
+                .executeAsync((handler) -> Log.debug("Operation completed, Remove shop for w:" + world + "x:" + x + ",y:" + y + ",z:" + z + ", " + handler + " lines affected"));
     }
 
     @Override
@@ -372,7 +373,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
         manager.createInsert(prefix + "messages")
                 .setColumnNames("owner", "message", "time")
                 .setParams(player.toString(), message, time)
-                .executeAsync((handler) -> Util.debugLog("Operation completed, saveOfflineTransaction for " + player + ", " + handler + " lines affected"));
+                .executeAsync((handler) -> Log.debug("Operation completed, saveOfflineTransaction for " + player + ", " + handler + " lines affected"));
     }
 
     @Override
@@ -383,7 +384,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
                 .addCondition("y", y)
                 .addCondition("z", z)
                 .addCondition("world", worldName)
-                .build().executeAsync((handler) -> Util.debugLog("Operation completed, updateOwner2UUID " + ownerUUID + ", " + handler + "lines affected"));
+                .build().executeAsync((handler) -> Log.debug("Operation completed, updateOwner2UUID " + ownerUUID + ", " + handler + "lines affected"));
     }
 
     @Override
@@ -400,7 +401,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
                            double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
                            @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
                            @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName, @Nullable String shopName) {
-        Util.debugLog("Shop updating: " + x + "," + y + "," + z + "," + world + ", " + inventorySymbolLink + ", " + inventoryWrapperName);
+        Log.debug("Shop updating: " + x + "," + y + "," + z + "," + world + ", " + inventorySymbolLink + ", " + inventoryWrapperName);
         manager.createUpdate(prefix + "shops")
                 .addColumnValue("owner", owner)
                 .addColumnValue("itemConfig", Util.serialize(item))
@@ -421,7 +422,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
                 .build()
                 .executeAsync(null, (exception, sqlAction) -> {
                     if (exception != null) {
-                        Util.debugLog("Failed to execute SQL:" + sqlAction.getSQLContent() + ", error: " + exception.getMessage());
+                        Log.debug("Failed to execute SQL:" + sqlAction.getSQLContent() + ", error: " + exception.getMessage());
                     }
                 });
     }

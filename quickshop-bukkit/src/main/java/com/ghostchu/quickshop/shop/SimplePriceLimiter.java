@@ -19,6 +19,11 @@
 
 package com.ghostchu.quickshop.shop;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.PriceLimiter;
+import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
+import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import lombok.AllArgsConstructor;
@@ -32,11 +37,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.PriceLimiter;
-import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
-import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
-import com.ghostchu.quickshop.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,7 +87,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
             try {
                 BigDecimal.valueOf(price).setScale(0, RoundingMode.UNNECESSARY);
             } catch (ArithmeticException exception) {
-                Util.debugLog(exception.getMessage());
+                Log.debug(exception.getMessage());
                 return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_A_WHOLE_NUMBER, undefinedMin, undefinedMax);
             }
         }
@@ -197,7 +197,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
          * @return true if the rule is allowed to apply
          */
         public boolean isApply(@NotNull CommandSender sender, @NotNull Material item, @Nullable String currency) {
-            if (sender.hasPermission(this.bypassPermission)) {
+            if (QuickShop.getPermissionManager().hasPermission(sender, this.bypassPermission)) {
                 return false;
             }
             if (!this.materials.contains(item)) {

@@ -19,6 +19,12 @@
 
 package com.ghostchu.quickshop.api.shop;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.shop.datatype.ShopProtectionFlag;
+import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -32,11 +38,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.shop.datatype.ShopProtectionFlag;
-import com.ghostchu.quickshop.util.JsonUtil;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 
 import java.util.logging.Level;
 
@@ -202,7 +203,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
             iMeta = PLUGIN.getServer().getItemFactory().getItemMeta(itemStack.getType());
         }
         if (iMeta == null) {
-            Util.debugLog("ItemStack " + itemStack + " cannot getting or creating ItemMeta, failed to create guarded ItemStack.");
+            Log.debug("ItemStack " + itemStack + " cannot getting or creating ItemMeta, failed to create guarded ItemStack.");
             return itemStack;
         }
         if (!PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
@@ -336,7 +337,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
         Util.ensureThread(false);
         if (shop.isRealDouble()) {
             if (shop.isLeftShop()) {
-                Util.debugLog("Shop is left shop, so location is null.");
+                // Shop is left shop, so location is null.
                 return null;
             }
             double avgX = (shop.getLocation().getX() + shop.getAttachedShop().getLocation().getX()) / 2;

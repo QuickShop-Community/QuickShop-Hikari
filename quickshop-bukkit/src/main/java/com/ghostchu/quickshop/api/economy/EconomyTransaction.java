@@ -28,9 +28,11 @@ import com.ghostchu.quickshop.util.CalculateUtil;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.EconomyTransactionLog;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -42,6 +44,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 @Getter
+@ToString
 public class EconomyTransaction {
     @Nullable
     private final UUID from;
@@ -128,10 +131,10 @@ public class EconomyTransaction {
      * @return The transaction success.
      */
     public boolean failSafeCommit() {
-        Util.debugLog("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + ", EconomyCore: " + core.getName());
+        Log.transaction("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + ", EconomyCore: " + core.getName());
         boolean result = commit();
         if (!result) {
-            Util.debugLog("Fail-safe commit failed, starting rollback: " + lastError);
+            Log.transaction(Level.WARNING, "Fail-safe commit failed, starting rollback: " + lastError);
             rollback(true);
         }
         return result;
@@ -166,7 +169,7 @@ public class EconomyTransaction {
      * @return The transaction success.
      */
     public boolean commit(@NotNull TransactionCallback callback) {
-        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(after tax): " + amountAfterTax + " Tax: " + tax + ", EconomyCore: " + core.getName());
+        Log.transaction("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(after tax): " + amountAfterTax + " Tax: " + tax + ", EconomyCore: " + core.getName());
         if (!callback.onCommit(this)) {
             this.lastError = "Plugin cancelled this transaction.";
             return false;
@@ -294,7 +297,7 @@ public class EconomyTransaction {
          * @param economyTransaction Transaction
          */
         default void onSuccess(@NotNull EconomyTransaction economyTransaction) {
-            Util.debugLog("Transaction succeed.");
+            Log.transaction("Transaction succeed: " + economyTransaction);
             QuickShop.getInstance().logEvent(new EconomyTransactionLog(true, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
@@ -306,7 +309,7 @@ public class EconomyTransaction {
          * @param economyTransaction Transaction
          */
         default void onFailed(@NotNull EconomyTransaction economyTransaction) {
-            Util.debugLog("Transaction failed: " + economyTransaction.getLastError() + ".");
+            Log.transaction(Level.WARNING, "Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
             QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
@@ -318,7 +321,7 @@ public class EconomyTransaction {
          * @param economyTransaction Transaction
          */
         default void onTaxFailed(@NotNull EconomyTransaction economyTransaction) {
-            Util.debugLog("Tax Transaction failed: " + economyTransaction.getLastError() + ".");
+            Log.transaction(Level.WARNING, "Tax Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
             QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 

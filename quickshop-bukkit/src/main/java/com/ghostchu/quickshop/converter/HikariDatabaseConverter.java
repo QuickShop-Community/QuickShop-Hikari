@@ -22,17 +22,17 @@ package com.ghostchu.quickshop.converter;
 import cc.carm.lib.easysql.EasySQL;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.hikari.HikariConfig;
-import lombok.*;
-import net.kyori.adventure.text.Component;
-import org.bukkit.configuration.ConfigurationSection;
-import org.h2.Driver;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelper;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.util.JsonUtil;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
+import lombok.*;
+import net.kyori.adventure.text.Component;
+import org.bukkit.configuration.ConfigurationSection;
+import org.h2.Driver;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.net.ConnectException;
@@ -484,7 +484,7 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         public String getInventorySymbolLink() {
             String holder = JsonUtil.standard().toJson(new BukkitInventoryWrapperManager.BlockHolder(world, x, y, z));
             String link = JsonUtil.standard().toJson(new BukkitInventoryWrapperManager.CommonHolder(BukkitInventoryWrapperManager.HolderType.BLOCK, holder));
-            Util.debugLog("Generating SymbolLink: " + link + ", InventoryHolder: BukkitInventoryWrapper, Holder:" + holder);
+            Log.debug("Generating SymbolLink: " + link + ", InventoryHolder: BukkitInventoryWrapper, Holder:" + holder);
             return link;
         }
     }

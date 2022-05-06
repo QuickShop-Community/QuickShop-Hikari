@@ -19,6 +19,10 @@
 
 package com.ghostchu.quickshop.watcher;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -29,10 +33,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.Util;
 
 @AllArgsConstructor
 public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloadable {
@@ -76,7 +76,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
                 }
                 if (anyPlayerInRegion) {
                     if (!displayItem.isSpawned()) {
-                        Util.debugLog("Respawning the shop " + shop + " the display, cause it was despawned and a player close to it");
+                        Log.debug("Respawning the shop " + shop + " the display, cause it was despawned and a player close to it");
                         displayItem.spawn();
                     }
                 } else if (displayItem.isSpawned()) {

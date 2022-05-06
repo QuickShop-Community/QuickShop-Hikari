@@ -21,16 +21,19 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.paste.v2.Paste;
-import com.ghostchu.quickshop.util.paste.v2.PasteGenerator;
+import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.paste.Paste;
+import com.ghostchu.quickshop.util.paste.PasteGenerator;
 import lombok.AllArgsConstructor;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -69,9 +72,10 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     }
 
     private boolean pasteToPastebin(@NotNull CommandSender sender) {
-        final String string = Paste.paste(new PasteGenerator().render());
+        final String string = Paste.paste(new PasteGenerator(sender).render());
         if (string != null) {
-            sender.sendMessage(string);
+            sender.sendMessage("https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8));
+            sender.sendMessage("" + ChatColor.RED + ChatColor.BOLD + "Warning: " + ChatColor.RESET + ChatColor.YELLOW + "Don't send paste to public channel or anyone unless you trust them.");
             return true;
         }
         return false;
@@ -80,21 +84,23 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     private boolean pasteToLocalFile(@NotNull CommandSender sender) {
         File file = new File(plugin.getDataFolder(), "paste");
         file.mkdirs();
-        file = new File(file, "paste-" + UUID.randomUUID().toString().replaceAll("-", "") + ".txt");
-        final String string = new PasteGenerator().render();
+        file = new File(file, "paste-" + UUID.randomUUID().toString().replaceAll("-", "") + ".html");
+        final String string = new PasteGenerator(sender).render();
         try {
             boolean createResult = file.createNewFile();
-            Util.debugLog("Create paste file: " + file.getCanonicalPath() + " " + createResult);
+            Log.debug("Create paste file: " + file.getCanonicalPath() + " " + createResult);
             try (FileWriter fwriter = new FileWriter(file)) {
                 fwriter.write(string);
                 fwriter.flush();
             }
             sender.sendMessage("The paste was saved to " + file.getAbsolutePath());
+            sender.sendMessage("" + ChatColor.RED + ChatColor.BOLD + "Warning: " + ChatColor.RESET + ChatColor.YELLOW + "Don't send paste to public channel or anyone unless you trust them.");
             return true;
         } catch (IOException e) {
             plugin.getSentryErrorReporter().ignoreThrow();
             plugin.getLogger().log(Level.WARNING, "Failed to save paste locally! The content will be send to the console", e);
             sender.sendMessage("Paste save failed! Sending paste to the console...");
+            sender.sendMessage("" + ChatColor.RED + ChatColor.BOLD + "Warning: " + ChatColor.RESET + ChatColor.YELLOW + "Don't send paste to public channel or anyone unless you trust them.");
             plugin.getLogger().info(string);
             return false;
         }

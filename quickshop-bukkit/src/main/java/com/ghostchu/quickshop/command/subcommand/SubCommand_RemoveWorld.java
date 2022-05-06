@@ -19,15 +19,15 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.Util;
 
 import java.util.Objects;
 
@@ -54,7 +54,7 @@ public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
                 shopsDeleted++;
             }
         }
-        Util.debugLog("Successfully deleted all shops in world " + cmdArg[0] + "!");
+        Log.debug("Successfully deleted all shops in world " + cmdArg[0] + "!");
         plugin.text().of(sender, "shops-removed-in-world", shopsDeleted, world.getName()).send();
     }
 

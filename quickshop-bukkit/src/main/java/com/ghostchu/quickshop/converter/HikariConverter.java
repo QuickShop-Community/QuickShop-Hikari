@@ -19,11 +19,11 @@
 
 package com.ghostchu.quickshop.converter;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.Util;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class HikariConverter {
     public void upgrade() {
         int selectedVersion = plugin.getConfig().getInt("config-version");
         if (selectedVersion >= 1000) {
-            Util.debugLog("Skipping configuration upgrading...");
+            Log.debug("Skipping configuration upgrading (newer than 1k)...");
             return;
         }
 

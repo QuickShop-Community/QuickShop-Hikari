@@ -67,7 +67,7 @@
 //        out.flush(); // Drop
 //
 //        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
-//        Util.debugLog("Request Completed: " + conn.getURL());
+//        Log.debug("Request Completed: " + conn.getURL());
 //        String link = conn.getURL().toString();
 //        in.close();
 //        out.close();

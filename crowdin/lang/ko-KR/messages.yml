@@ -356,6 +356,7 @@ timeunit:
   scheduled-in: scheduled in {0}
   second: <red>{0} second
   std-past-format: '{5}{4}{3}{2}{1}{0}ago'
+  std-time-format: "HH:mm:ss"
   seconds: <red>{0} seconds
   hour: <red>{0} hour
   scheduled-at: scheduled at {0}
@@ -465,3 +466,4 @@ client-language-unsupported: <yellow>퀵 샵이 당신의 언어를 지원하지
 language-version: '63'
 not-managed-shop: <red>당신은 상점의 주인이나 관리자가 아닙니다
 shop-cannot-trade-when-freezing: <red>이 상점은 얼어있기때문에 거래할 수 없습니다.
+invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.

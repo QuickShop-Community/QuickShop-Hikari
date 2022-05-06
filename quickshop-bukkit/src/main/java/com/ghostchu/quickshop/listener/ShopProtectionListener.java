@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.listener;
 
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Location;
@@ -83,7 +84,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
         if (!Util.isClassAvailable("com.destroystokyo.paper.PaperWorldConfig")) {
             return;
         }
-        Util.debugLog("QuickShop is scanning all worlds settings about disableHopperMoveEvents disabled worlds");
+        Log.debug("QuickShop is scanning all worlds settings about disableHopperMoveEvents disabled worlds");
         plugin.getServer().getWorlds().forEach(world -> {
             if (plugin.getShopManager().getShopsInWorld(world).isEmpty()) {
                 return;

@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.localization.game.game;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.mojangapi.*;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -106,7 +107,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
             loadThread.start();
             boolean timeout = !DOWNLOAD_CONDITION.await(20, TimeUnit.SECONDS);
             if (timeout) {
-                Util.debugLog("No longer waiting file downloading because it now timed out, now downloading in background.");
+                Log.debug("No longer waiting file downloading because it now timed out, now downloading in background.");
                 plugin.getLogger().info("No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
             }
             this.lang = loadThread.getLang(); // Get the Lang whatever thread running or died.
@@ -256,7 +257,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                     if (cachedFile.exists()) { //File exists
                         try (FileInputStream cacheFileInputSteam = new FileInputStream(cachedFile)) {
                             if (DigestUtils.sha1Hex(cacheFileInputSteam).equals(cacheSha1)) { //Check if file broken
-                                Util.debugLog("MojangAPI in-game translation digest check passed.");
+                                Log.debug("MojangAPI in-game translation digest check passed.");
                                 if (cacheVersion.equals(plugin.getPlatform().getMinecraftVersion())) {
                                     isLatest = true;
                                     try (FileReader reader = new FileReader(cachedFile)) {
@@ -280,18 +281,18 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 MojangAPI mojangAPI = new MojangAPI(mirror);
                 MojangAPI.AssetsAPI assetsAPI = mojangAPI.getAssetsAPI(plugin.getPlatform().getMinecraftVersion());
                 if (!assetsAPI.isAvailable()) { //This version no meta can be found, bug?
-                    Util.debugLog("AssetsAPI returns not available, This may caused by Mojang servers down or connection issue.");
+                    Log.debug("AssetsAPI returns not available, This may caused by Mojang servers down or connection issue.");
                     plugin.getLogger().warning("Failed to update game assets from MojangAPI server, This may caused by Mojang servers down, connection issue or invalid language code.");
                     return;
                 }
                 //Download AssetsIndex
                 Optional<MojangAPI.AssetsFileData> assetsFileData = assetsAPI.getGameAssetsFile();
                 if (assetsFileData.isEmpty()) {
-                    Util.debugLog("AssetsAPI returns nothing about required game asset file, This may caused by Mojang servers down or connection issue.");
+                    Log.debug("AssetsAPI returns nothing about required game asset file, This may caused by Mojang servers down or connection issue.");
                     plugin.getLogger().warning("Failed to update game assets from MojangAPI server, This may caused by Mojang servers down, connection issue or invalid language code.");
                     return;
                 }
-                Util.debugLog(MsgUtil.fillArgs("Assets file loaded! id:[{0}], sha1:[{1}], Content Length:[{2}]",
+                Log.debug(MsgUtil.fillArgs("Assets file loaded! id:[{0}], sha1:[{1}], Content Length:[{2}]",
                         assetsFileData.get().getId(),
                         assetsFileData.get().getSha1(),
                         String.valueOf(assetsFileData.get().getContent().length())));
@@ -300,7 +301,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 String indexSha1Hex = DigestUtils.sha1Hex(assetsFileData.get().getContent());
 
                 if (!assetsFileData.get().getSha1().equals(indexSha1Hex)) {
-                    Util.debugLog(MsgUtil.fillArgs("File hashing equals failed! excepted:[{0}], file:[{1}]",
+                    Log.debug(MsgUtil.fillArgs("File hashing equals failed! excepted:[{0}], file:[{1}]",
                             assetsFileData.get().getSha1(),
                             indexSha1Hex));
                     plugin.getLogger().warning("Failed to update game assets from MojangAPI server because the file seems invalid, please try again later.");
@@ -350,7 +351,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 yamlConfiguration.set("lang", languageCode);
                 yamlConfiguration.save(cacheFile);
                 isLatest = true;
-                Util.debugLog("Successfully update game assets.");
+                Log.debug("Successfully update game assets.");
                 plugin.getLogger().info("Success! The game assets now up-to-date :)");
                 plugin.getLogger().info("Now you can execute [/qs reset lang] command to regenerate files with localized.");
             } catch (Exception e) {

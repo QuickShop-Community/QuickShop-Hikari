@@ -19,6 +19,11 @@
 
 package com.ghostchu.quickshop.util.economyformatter;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -26,11 +31,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 
 import java.util.HashMap;
 import java.util.List;
@@ -108,27 +108,26 @@ public class EconomyFormatter implements Reloadable {
         try {
             String formatted = plugin.getEconomy().format(n, world, currency);
             if (StringUtils.isEmpty(formatted)) {
-                Util.debugLog(
+                Log.debug(
                         "Use alternate-currency-symbol to formatting, Cause economy plugin returned null");
                 return getInternalFormat(n, currency);
             } else {
                 return formatted;
             }
         } catch (NumberFormatException e) {
-            Util.debugLog("format", e.getMessage());
-            Util.debugLog(
-                    "format", "Use alternate-currency-symbol to formatting, Cause NumberFormatException");
+            Log.debug(e.getMessage());
+            Log.debug("Use alternate-currency-symbol to formatting, Cause NumberFormatException");
             return getInternalFormat(n, currency);
         }
     }
 
     private String getInternalFormat(double amount, @Nullable String currency) {
         if (StringUtils.isEmpty(currency)) {
-            Util.debugLog("Format: Currency is null");
+            Log.debug("Format: Currency is null");
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             return currencySymbolOnRight ? formatted + plugin.getConfig().getString("shop.alternate-currency-symbol", "$") : plugin.getConfig().getString("shop.alternate-currency-symbol", "$") + formatted;
         } else {
-            Util.debugLog("Format: Currency is: [" + currency + "]");
+            Log.debug("Format: Currency is: [" + currency + "]");
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             String symbol = CURRENCY_SYMBOL_MAPPING.getOrDefault(currency, currency);
             return currencySymbolOnRight ? formatted + symbol : symbol + formatted;

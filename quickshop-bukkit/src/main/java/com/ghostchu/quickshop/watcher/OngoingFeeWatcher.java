@@ -27,6 +27,7 @@ import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.WarningSender;
+import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -51,9 +52,9 @@ public class OngoingFeeWatcher extends BukkitRunnable {
 
     @Override
     public void run() {
-        Util.debugLog("Run task for ongoing fee...");
+        Log.debug("Run task for ongoing fee...");
         if (plugin.getEconomy() == null) {
-            Util.debugLog("Economy hadn't get ready.");
+            Log.debug("Economy hadn't get ready.");
             return;
         }
 

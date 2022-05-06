@@ -61,7 +61,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
 
             int i = 0;
             if (!shopOwner.equals(sender)) { //Non-self shop
-                if (!sender.hasPermission("quickshop.removeall.other")) {
+                if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.removeall.other")) {
                     plugin.text().of(sender, "no-permission").send();
                     return;
                 }
@@ -73,7 +73,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
                     }
                 }
             } else { //Self shop
-                if (!sender.hasPermission("quickshop.removeall.self")) {
+                if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.removeall.self")) {
                     plugin.text().of(sender, "no-permission").send();
                     return;
                 }

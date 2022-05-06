@@ -23,6 +23,7 @@ import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopControlPanelOpenEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.PluginGlobalAlertLog;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
@@ -214,7 +215,7 @@ public class MsgUtil {
             return; // Ignore unlimited shops messages.
         }
         String serialized = GsonComponentSerializer.gson().serialize(shopTransactionMessage);
-        Util.debugLog(serialized);
+        Log.debug(serialized);
         OfflinePlayer p = Bukkit.getOfflinePlayer(uuid);
         if (!p.isOnline()) {
             List<String> msgs = OUTGOING_MESSAGES.getOrDefault(uuid, new LinkedList<>());
@@ -239,7 +240,7 @@ public class MsgUtil {
 
                 }
             } catch (Exception e) {
-                Util.debugLog("Could not send shop transaction message to player " + p.getName() + " via BungeeCord: " + e.getMessage());
+                Log.debug("Could not send shop transaction message to player " + p.getName() + " via BungeeCord: " + e.getMessage());
             }
         } else {
             Player player = p.getPlayer();
@@ -277,7 +278,7 @@ public class MsgUtil {
             return;
         }
         if (Util.fireCancellableEvent(new ShopControlPanelOpenEvent(shop, sender))) {
-            Util.debugLog("ControlPanel blocked by 3rd-party");
+            Log.debug("ControlPanel blocked by 3rd-party");
             return;
         }
         plugin.getShopManager().bakeShopRuntimeRandomUniqueIdCache(shop);
@@ -321,7 +322,7 @@ public class MsgUtil {
      */
     public static void sendGlobalAlert(@Nullable String content) {
         if (content == null) {
-            Util.debugLog("Content is null");
+            Log.debug("Content is null");
             Throwable throwable =
                     new Throwable("Known issue: Global Alert accepted null string, what the fuck");
             plugin.getSentryErrorReporter().sendError(throwable, "NullCheck");
@@ -376,7 +377,7 @@ public class MsgUtil {
     }
 
     public static void debugStackTrace(@NotNull StackTraceElement[] traces) {
-        if (Util.isDisableDebugLogger()) {
+        if (Util.isDevMode()) {
             return;
         }
         for (StackTraceElement stackTraceElement : traces) {
@@ -384,7 +385,7 @@ public class MsgUtil {
             final String methodName = stackTraceElement.getMethodName();
             final int codeLine = stackTraceElement.getLineNumber();
             final String fileName = stackTraceElement.getFileName();
-            Util.debugLog("[TRACE]  [" + className + "] [" + methodName + "] (" + fileName + ":" + codeLine + ") ");
+            Log.debug("[TRACE]  [" + className + "] [" + methodName + "] (" + fileName + ":" + codeLine + ") ");
         }
     }
 

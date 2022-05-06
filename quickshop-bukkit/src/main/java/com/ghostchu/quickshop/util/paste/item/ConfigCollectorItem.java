@@ -1,5 +1,5 @@
-/* V
- *  This file is a part of project QuickShop, the name is SystemInfoItem.java
+/*
+ *  This file is a part of project QuickShop, the name is ConfigCollectorItem.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,11 +17,12 @@
  *
  */
 
-package com.ghostchu.quickshop.util.paste.v2.item;
+package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,15 +60,20 @@ public class ConfigCollectorItem implements SubPasteItem {
     private String buildContent() {
         StringBuilder htmlBuilder = new StringBuilder();
         for (File file : file) {
-            htmlBuilder.append(readBuildFile(file));
+            String fileContent = readBuildFile(file);
+            if (readBuildFile(file) != null) // Hide the file in paste if file doesn't exist
+                htmlBuilder.append(fileContent);
         }
         return htmlBuilder.toString();
     }
 
-    @NotNull
+    @Nullable
     private String readBuildFile(@NotNull File file) {
-        return "<h4>" + file.getName() + "</h4>" +
-                "<textarea name=\"" + StringEscapeUtils.escapeHtml4(file.getName()) + "\" style=\"height: 300px; width: 100%;\">" +
+        if (!file.exists()) {
+            return null;
+        }
+        return "<h5>" + file.getName() + "</h5>" +
+                "<textarea readonly=\"true\" name=\"" + StringEscapeUtils.escapeHtml4(file.getName()) + "\" style=\"height: 300px; width: 100%;\">" +
                 StringEscapeUtils.escapeHtml4(censor(readFile(file))) +
                 "</textarea><br />";
     }
@@ -324,7 +330,10 @@ public class ConfigCollectorItem implements SubPasteItem {
         }).toList();
         string = string.replaceAll("secret:.*", "secret: ******")
                 .replaceAll("user:.*", "user: ******")
+                .replaceAll("username:.*", "username: ******")
+                .replaceAll("jdbc.*", "jdbc******")
                 .replaceAll("password:.*", "password: ******")
+                .replaceAll("pass:.*", "pass: ******")
                 .replaceAll("host:.*", "host: ******")
                 .replaceAll("port:.*", "port: ******")
                 .replaceAll("database:.*", "database: ******")
@@ -333,7 +342,7 @@ public class ConfigCollectorItem implements SubPasteItem {
                 .replaceAll("rcon\\.password=.*", "rcon.password=******")
                 .replaceAll("token:.*", "token: ******")
                 .replaceAll("key:.*", "key: ******")
-                .replaceAll("seed=.*", "seed=: ******");
+                .replaceAll("seed=.*", "seed=******");
         for (String paperSeedType : seedType) {
             string = string.replaceAll(paperSeedType + ":.*", "seed-protected: ******");
         }

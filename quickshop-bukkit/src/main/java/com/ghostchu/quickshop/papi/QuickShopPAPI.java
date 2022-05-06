@@ -19,6 +19,8 @@
 
 package com.ghostchu.quickshop.papi;
 
+import com.ghostchu.quickshop.util.logger.Log;
+import lombok.Getter;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +31,9 @@ import com.ghostchu.quickshop.util.Util;
 import java.util.UUID;
 
 public class QuickShopPAPI extends PlaceholderExpansion {
+    private QuickShop plugin;
+  
+    @Getter
     private final PAPICache papiCache = new PAPICache();
 
     @Override
@@ -59,6 +64,11 @@ public class QuickShopPAPI extends PlaceholderExpansion {
     
     @Override
     public @Nullable String onRequest(@NotNull OfflinePlayer player, @NotNull String params) {
+       String cached = papiCache.readCache(player.getUniqueId(),params);
+       if(cached != null) {
+           Log.debug("Processing cached placeholder: " + params);
+           return cached;
+       }
         String[] args = params.split("_");
         if (args.length < 1) {
             return null;

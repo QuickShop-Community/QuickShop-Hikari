@@ -422,6 +422,7 @@
     "scheduled-in": "zaplanowane w {0}",
     "longtimeago": "dawno temu",
     "std-format": "MM/dd/yyyy HH:mm:ss",
+    "std-time-format": "HH:mm:ss",
     "std-past-format": "{5}{4}{3}{2}{1}{0}temu",
     "before": "przed",
     "behind": "za",

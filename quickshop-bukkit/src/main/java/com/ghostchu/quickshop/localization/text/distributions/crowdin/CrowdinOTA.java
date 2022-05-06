@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.UrlEncoderDecoder;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
@@ -106,17 +107,17 @@ public class CrowdinOTA implements Distribution {
                 // Check cache outdated
                 if (!otaCacheControl.isCachedObjectOutdated(postProcessingPath, manifestTimestamp)) {
                     // Return the caches
-                    Util.debugLog("Use local cache for " + postProcessingPath);
+                    Log.debug("Use local cache for " + postProcessingPath);
                     return new String(otaCacheControl.readObjectCache(postProcessingPath), StandardCharsets.UTF_8);
                 } else {
-                    Util.debugLog("Local cache outdated for " + postProcessingPath);
-                    Util.debugLog("Excepted " + otaCacheControl.readCachedObjectTimestamp(postProcessingPath) + " actual: " + manifestTimestamp);
+                    Log.debug("Local cache outdated for " + postProcessingPath);
+                    Log.debug("Excepted " + otaCacheControl.readCachedObjectTimestamp(postProcessingPath) + " actual: " + manifestTimestamp);
                 }
             } catch (Exception exception) {
                 MsgUtil.debugStackTrace(exception.getStackTrace());
             }
         } else {
-            Util.debugLog("Manifest timestamp check failed " + postProcessingPath + " excepted:" + otaCacheControl.readManifestTimestamp() + " actual: " + getManifest().getTimestamp() + " forceUpdate: " + forceFlush);
+            Log.debug("Manifest timestamp check failed " + postProcessingPath + " excepted:" + otaCacheControl.readManifestTimestamp() + " actual: " + getManifest().getTimestamp() + " forceUpdate: " + forceFlush);
         }
         // Out of the cache
         String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
@@ -197,17 +198,17 @@ public class CrowdinOTA implements Distribution {
 //                // Check cache outdated
 //                if (!otaCacheControl.isCachedObjectOutdated(postProcessingPath, manifestTimestamp)) {
 //                    // Return the caches
-//                    Util.debugLog("Use local cache for " + postProcessingPath);
+//                    Log.debug("Use local cache for " + postProcessingPath);
 //                    return new String(otaCacheControl.readObjectCache(postProcessingPath), StandardCharsets.UTF_8);
 //                } else {
-//                    Util.debugLog("Local cache outdated for " + postProcessingPath);
-//                    Util.debugLog("Excepted " + otaCacheControl.readCachedObjectTimestamp(postProcessingPath) + " actual: " + manifestTimestamp);
+//                    Log.debug("Local cache outdated for " + postProcessingPath);
+//                    Log.debug("Excepted " + otaCacheControl.readCachedObjectTimestamp(postProcessingPath) + " actual: " + manifestTimestamp);
 //                }
 //            } catch (Exception exception) {
 //                MsgUtil.debugStackTrace(exception.getStackTrace());
 //            }
 //        } else {
-//            Util.debugLog("Manifest timestamp check failed " + postProcessingPath + " excepted:" + otaCacheControl.readManifestTimestamp() + " actual: " + getManifest().getTimestamp() + " forceUpdate: " + forceFlush);
+//            Log.debug("Manifest timestamp check failed " + postProcessingPath + " excepted:" + otaCacheControl.readManifestTimestamp() + " actual: " + getManifest().getTimestamp() + " forceUpdate: " + forceFlush);
 //        }
 //        // Out of the cache
 //        String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);

@@ -19,14 +19,14 @@
 
 package com.ghostchu.quickshop.command.subcommand.silent;
 
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 
 public class SubCommand_SilentEmpty extends SubCommand_SilentBase {
@@ -45,7 +45,7 @@ public class SubCommand_SilentEmpty extends SubCommand_SilentBase {
         final InventoryWrapper inventory = cs.getInventory();
 
         if (inventory == null) {
-            Util.debugLog("Inventory is empty! " + cs);
+            Log.debug("Inventory is empty! " + cs);
             return;
         }
 

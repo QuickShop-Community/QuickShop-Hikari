@@ -167,23 +167,26 @@ public class PaperPlatform implements Platform {
 
     @Override
     public @NotNull Component getDisplayName(@NotNull ItemMeta meta) {
-        return meta.displayName();
+        Component displayName = meta.displayName();
+        if (displayName == null)
+            return Component.empty();
+        return displayName;
     }
 
     @Override
-    public void setDisplayName(@NotNull ItemMeta meta, @NotNull Component component) {
+    public void setDisplayName(@NotNull ItemMeta meta, @Nullable Component component) {
         meta.displayName(component);
     }
 
     @Override
-    public void setDisplayName(@NotNull ItemStack stack, @NotNull Component component) {
+    public void setDisplayName(@NotNull ItemStack stack, @Nullable Component component) {
         ItemMeta meta = stack.getItemMeta();
         meta.displayName(component);
         stack.setItemMeta(meta);
     }
 
     @Override
-    public void setDisplayName(@NotNull Item stack, @NotNull Component component) {
+    public void setDisplayName(@NotNull Item stack, @Nullable Component component) {
         stack.customName(component);
     }
 

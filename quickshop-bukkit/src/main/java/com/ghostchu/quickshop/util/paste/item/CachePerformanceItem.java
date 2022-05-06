@@ -1,5 +1,5 @@
-/* V
- *  This file is a part of project QuickShop, the name is SystemInfoItem.java
+/*
+ *  This file is a part of project QuickShop, the name is CachePerformanceItem.java
  *  Copyright (C) Ghost_chu and contributors
  *
  *  This program is free software: you can redistribute it and/or modify it
@@ -17,10 +17,10 @@
  *
  */
 
-package com.ghostchu.quickshop.util.paste.v2.item;
+package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.paste.v2.util.HTMLTable;
+import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.google.common.cache.CacheStats;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +28,7 @@ import java.text.NumberFormat;
 
 public class CachePerformanceItem implements SubPasteItem {
 
+    private final QuickShop plugin = QuickShop.getInstance();
 
     public CachePerformanceItem() {
 
@@ -40,11 +41,30 @@ public class CachePerformanceItem implements SubPasteItem {
     }
 
     @NotNull
-    private String buildContent() {
-        QuickShop plugin = QuickShop.getInstance();
+    private String buildPAPICacheContent() {
+        if (plugin.getPlaceHolderAPI() == null || plugin.getQuickShopPAPI() == null) {
+            return "<p>PlaceHolderAPI feature disabled.</p>";
+        }
+        if (!plugin.getQuickShopPAPI().isRegistered()) {
+            return "<p>PlaceHolderAPI feature not registered yet.</p>";
+        }
+        if (plugin.getQuickShopPAPI().getPapiCache() == null) {
+            return "<p>PlaceHolderAPI Cache disabled.</p>";
+        }
+        CacheStats stats = plugin.getQuickShopPAPI().getPapiCache().getStats();
+        return renderTable(stats);
+    }
+
+    @NotNull
+    private String buildShopCacheContent() {
         if (plugin.getShopCache() == null)
-            return "<p>Cache disabled.</p>";
+            return "<p>Shop Cache disabled.</p>";
         CacheStats stats = plugin.getShopCache().getStats();
+        return renderTable(stats);
+    }
+
+    @NotNull
+    private String renderTable(@NotNull CacheStats stats) {
         HTMLTable table = new HTMLTable(2, true);
         table.insert("Average Load Penalty", round(stats.averageLoadPenalty()));
         table.insert("Hit Rate", round(stats.hitRate()));
@@ -68,6 +88,9 @@ public class CachePerformanceItem implements SubPasteItem {
 
     @Override
     public @NotNull String genBody() {
-        return buildContent();
+        return "<h5>Shop Cache</h5>" +
+                buildShopCacheContent() +
+                "<h5>PlaceHolderAPI Cache</h5>" +
+                buildPAPICacheContent();
     }
 }
