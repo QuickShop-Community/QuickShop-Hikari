@@ -33,7 +33,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
 public class JenkinsUpdater implements QuickUpdater {
@@ -89,13 +88,16 @@ public class JenkinsUpdater implements QuickUpdater {
         if (versionType != getCurrentRunning()) {
             return true;
         }
-        HttpResponse<String> response = Unirest.get(jobUrl + "lastSuccessfulBuild/artifact/quickshop-bukkit/target/extra-resources/BUILDINFO")
-                .asString();
-        try(InputStream is = new ByteArrayInputStream(response.getBody().getBytes())){
-            this.lastRemoteBuildInfo = new BuildInfo(is);
-            return lastRemoteBuildInfo.getCiInfo().getId() <= pluginBuildInfo.getCiInfo().getId() || lastRemoteBuildInfo.getGitInfo().getId().equalsIgnoreCase(pluginBuildInfo.getGitInfo().getId());
-        } catch (IOException ioException) {
-            MsgUtil.sendDirectMessage(Bukkit.getConsoleSender(), Component.text( "[QuickShop] Failed to check for an update on build server! It might be an internet issue or the build server host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often, Error: " + ioException.getMessage()).color(NamedTextColor.RED));
+
+        try {
+            HttpResponse<String> response = Unirest.get(jobUrl + "lastSuccessfulBuild/artifact/quickshop-bukkit/target/extra-resources/BUILDINFO")
+                    .asString();
+            try (InputStream is = new ByteArrayInputStream(response.getBody().getBytes())) {
+                this.lastRemoteBuildInfo = new BuildInfo(is);
+                return lastRemoteBuildInfo.getCiInfo().getId() <= pluginBuildInfo.getCiInfo().getId() || lastRemoteBuildInfo.getGitInfo().getId().equalsIgnoreCase(pluginBuildInfo.getGitInfo().getId());
+            }
+        } catch (Exception ioException) {
+            MsgUtil.sendDirectMessage(Bukkit.getConsoleSender(), Component.text("[QuickShop] Failed to check for an update on build server! It might be an internet issue or the build server host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often, Error: " + ioException.getMessage()).color(NamedTextColor.RED));
             return true;
         }
     }
