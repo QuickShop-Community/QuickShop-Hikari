@@ -27,8 +27,6 @@ import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.logger.Log;
-import com.google.common.collect.EvictingQueue;
-import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
@@ -1321,6 +1319,11 @@ public class Util {
         if (!file.exists())
             throw new FileNotFoundException("File not found: " + path);
         return file;
+    }
+
+    @NotNull
+    public static List<String> tail(@NotNull List<String> list, int last) {
+        return list.subList(Math.max(list.size() - last, 0), list.size());
     }
 
 }

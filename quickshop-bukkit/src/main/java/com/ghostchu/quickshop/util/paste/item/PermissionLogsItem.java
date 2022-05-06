@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -52,7 +53,7 @@ public class PermissionLogsItem implements SubPasteItem {
     private String buildContent() {
         StringJoiner builder = new StringJoiner("\n");
         List<String> debugLogs = Log.fetchLogs(Log.Type.PERMISSION).stream().map(record -> "[" + format.format(record.getTimestamp()) + "] " + record).toList();
-        List<String> tail = debugLogs.subList(Math.max(debugLogs.size() - 300, 0), debugLogs.size());
+        List<String> tail = Util.tail(debugLogs, 300);
         tail.forEach(builder::add);
         return "<textarea readonly=\"true\" name=\"permissionquery\" style=\"height: 1000px; width: 100%;\">" +
                 StringEscapeUtils.escapeHtml4(builder.toString()) +
