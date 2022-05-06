@@ -247,6 +247,8 @@ public class Log {
         private final String methodName;
         private final int lineNumber;
 
+        // TODO: Reused create(int) method
+
         @NotNull
         public static Caller create() {
             List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(3).toList());
