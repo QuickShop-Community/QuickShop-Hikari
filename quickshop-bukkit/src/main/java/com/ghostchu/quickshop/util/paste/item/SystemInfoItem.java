@@ -70,7 +70,7 @@ public class SystemInfoItem implements SubPasteItem {
         table.insert("JVM Name", javaImplName);
         table.insert("Input Arguments", inputArgs);
         String propertiesTable = """
-                <textarea name="sys_properties" style="height: 100px; width: 100%;">
+                <textarea name="sys_properties" readonly="true" style="height: 100px; width: 100%;">
                 {properties}
                 </textarea>
                 """;

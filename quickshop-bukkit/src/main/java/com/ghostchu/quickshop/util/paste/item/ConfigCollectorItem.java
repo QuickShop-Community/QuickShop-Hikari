@@ -73,7 +73,7 @@ public class ConfigCollectorItem implements SubPasteItem {
             return null;
         }
         return "<h5>" + file.getName() + "</h5>" +
-                "<textarea name=\"" + StringEscapeUtils.escapeHtml4(file.getName()) + "\" style=\"height: 300px; width: 100%;\">" +
+                "<textarea readonly=\"true\" name=\"" + StringEscapeUtils.escapeHtml4(file.getName()) + "\" style=\"height: 300px; width: 100%;\">" +
                 StringEscapeUtils.escapeHtml4(censor(readFile(file))) +
                 "</textarea><br />";
     }
