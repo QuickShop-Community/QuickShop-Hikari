@@ -247,17 +247,9 @@ public class Log {
         private final String methodName;
         private final int lineNumber;
 
-        // TODO: Reused create(int) method
-
         @NotNull
         public static Caller create() {
-            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(3).toList());
-            StackWalker.StackFrame frame = caller.get(2);
-            String threadName = Thread.currentThread().getName();
-            String className = frame.getClassName();
-            String methodName = frame.getMethodName();
-            int codeLine = frame.getLineNumber();
-            return new Caller(threadName, className, methodName, codeLine);
+           return create(3);
         }
 
         @NotNull
