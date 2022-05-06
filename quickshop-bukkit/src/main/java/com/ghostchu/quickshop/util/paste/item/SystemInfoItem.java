@@ -68,13 +68,13 @@ public class SystemInfoItem implements SubPasteItem {
         table.insert("Java Version", javaVersion);
         table.insert("JVM Name", javaImplName);
         table.insert("Input Arguments", inputArgs);
-        String proertiesContent = """
-            <details>
-              <summary>System Properties (Click to open/close)</summary>
-              {properties}
-            </details>
-            """;
-        table.insert("System Properties", proertiesContent.replace("{properties}", systemProperties));
+        String propertiesContent = """
+                <details>
+                  <summary>System Properties (Click to open/close)</summary>
+                  {properties}
+                </details>
+                """;
+        table.insert("System Properties", propertiesContent.replace("{properties}", systemProperties));
         return table.render();
     }
 
