@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.text.StringEscapeUtils;
@@ -52,7 +53,7 @@ public class DebugLogsItem implements SubPasteItem {
     private String buildContent() {
         StringJoiner builder = new StringJoiner("\n");
         List<String> debugLogs = Log.fetchLogsExclude(Log.Type.PERMISSION).stream().map(record -> "[" + format.format(record.getTimestamp()) + "] " + record).toList();
-        List<String> tail = debugLogs.subList(Math.max(debugLogs.size() - 1000, 0), debugLogs.size());
+        List<String> tail = Util.tail(debugLogs, 1000);
         tail.forEach(builder::add);
         return "<textarea name=\"debuglogs\" style=\"height: 1000px; width: 100%;\">" +
                 StringEscapeUtils.escapeHtml4(builder.toString()) +

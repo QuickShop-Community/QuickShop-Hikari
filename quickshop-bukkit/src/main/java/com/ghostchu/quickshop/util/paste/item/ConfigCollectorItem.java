@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.util.paste.item;
 import com.ghostchu.quickshop.QuickShop;
 import org.apache.commons.text.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,15 +60,20 @@ public class ConfigCollectorItem implements SubPasteItem {
     private String buildContent() {
         StringBuilder htmlBuilder = new StringBuilder();
         for (File file : file) {
-            htmlBuilder.append(readBuildFile(file));
+            String fileContent = readBuildFile(file);
+            if (readBuildFile(file) != null) // Hide the file in paste if file doesn't exist
+                htmlBuilder.append(fileContent);
         }
         return htmlBuilder.toString();
     }
 
-    @NotNull
+    @Nullable
     private String readBuildFile(@NotNull File file) {
+        if (!file.exists()) {
+            return null;
+        }
         return "<h5>" + file.getName() + "</h5>" +
-                "<textarea name=\"" + StringEscapeUtils.escapeHtml4(file.getName()) + "\" style=\"height: 300px; width: 100%;\">" +
+                "<textarea readonly=\"true\" name=\"" + StringEscapeUtils.escapeHtml4(file.getName()) + "\" style=\"height: 300px; width: 100%;\">" +
                 StringEscapeUtils.escapeHtml4(censor(readFile(file))) +
                 "</textarea><br />";
     }
