@@ -351,7 +351,7 @@ public class ConfigCollectorItem implements SubPasteItem {
 
     }
 
-    @Nullable
+    @NotNull
     private String readFile(@NotNull File file) {
         try {
             List<String> lines = Files.readAllLines(file.toPath());
