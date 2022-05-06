@@ -314,6 +314,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.9</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>com.rollbar</groupId>
             <version>1.8.1</version>
             <artifactId>rollbar-java</artifactId>

@@ -28,14 +28,15 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class HTMLTable {
-    private int columns;
+    private final int columns;
     private String[] title;
     private final List<String[]> data = new LinkedList<>();
 
     private final boolean firstColumnBold;
 
     private static final String TEMPLATE = """           
-            <table>
+            <table style="table-layout: fixed;">
+              {col}
               {thead}
               {tbody}
             </table>
@@ -98,8 +99,9 @@ public class HTMLTable {
         String thead = renderHead();
         String tbody = renderBody();
         return TEMPLATE
-                .replace("{thead}", thead)
-                .replace("{tbody}", tbody);
+            .replace("{col}", renderColAttributes())
+            .replace("{thead}", thead)
+            .replace("{tbody}", tbody);
     }
 
     private String renderBody() {
@@ -130,6 +132,8 @@ public class HTMLTable {
                 </thead>
                 """.replace("{th}", tdBuilder.toString());
     }
-
-
+    
+    private String renderColAttributes(){
+        return String.format("<col style\"width: %s%%;\">\n", 100 / columns).repeat(columns);
+    }
 }
