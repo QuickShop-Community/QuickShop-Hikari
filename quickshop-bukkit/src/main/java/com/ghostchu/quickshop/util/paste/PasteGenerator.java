@@ -129,7 +129,7 @@ public class PasteGenerator {
                      Paste creator: {pastecreator}.<br />
                      Built with <a href="https://github.com/oxalorg/sakura">Sakura.css</a>. <br />
                      Pastebin providers: <a href="https://bytebin.lucko.me/">Lucko Bytebin </a>[<a href="https://github.com/sponsors/lucko">support lucko</a>] <br />
-                     Made with sugar and cat paws <3.
+                     Made with sugar and cat paws &lt;3.
                    </p>
                 </footer>
             </html>
@@ -321,6 +321,6 @@ public class PasteGenerator {
             label, legend, fieldset {
               display: block;
               margin-bottom: .5rem;
-              font-weight: 600; }   
+              font-weight: 600; }
             """;
 }
