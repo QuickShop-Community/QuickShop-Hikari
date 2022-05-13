@@ -20,6 +20,7 @@
 package com.ghostchu.quickshop.compatibility.superiorskyblock;
 
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
+import com.bgsoftware.superiorskyblock.api.events.IslandUncoopPlayerEvent;
 import com.bgsoftware.superiorskyblock.api.island.Island;
 import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
 import com.ghostchu.quickshop.QuickShop;
@@ -28,13 +29,15 @@ import com.ghostchu.quickshop.api.event.ShopDeleteOverrideEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
-import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.UUID;
 
 
 public final class Main extends CompatibilityModule implements Listener {
@@ -105,50 +108,45 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler
     public void deleteShops(com.bgsoftware.superiorskyblock.api.events.IslandQuitEvent event) {
-        if (!deleteShopOnMemberLeave)
-            return;
-        event.getIsland().getAllChunks().forEach((chunk) -> {
-            Map<Location, Shop> shops = QuickShop.getInstance().getShopManager().getShops(chunk);
-            if (shops != null && !shops.isEmpty()) {
-                shops.forEach((location, shop) -> {
-                    if (shop.getOwner().equals(event.getPlayer().getUniqueId())) {
-                        recordDeletion(event.getPlayer().getUniqueId(), shop, String.format("[%s Integration]Shop %s deleted caused by ShopOwnerQuitFromIsland", this.getName(), shop));
-                        ;
-                        shop.delete();
-                    }
-                });
-            }
-        });
+        if (deleteShopOnMemberLeave) {
+            deleteShops(event.getIsland(), event.getPlayer().getUniqueId());
+        }
+
     }
 
     @EventHandler
     public void deleteShops(com.bgsoftware.superiorskyblock.api.events.IslandKickEvent event) {
-        if (!deleteShopOnMemberLeave)
-            return;
-        event.getIsland().getAllChunks().forEach((chunk) -> {
+        if (deleteShopOnMemberLeave) {
+            deleteShops(event.getIsland(), event.getTarget().getUniqueId());
+        }
+    }
+
+
+    @EventHandler
+    public void deleteShops(IslandUncoopPlayerEvent event) {
+        deleteShops(event.getIsland(), event.getTarget().getUniqueId());
+    }
+
+
+    @EventHandler
+    public void deleteShopsOnChunkReset(com.bgsoftware.superiorskyblock.api.events.IslandChunkResetEvent event) {
+        deleteShops(event.getIsland(), null);
+    }
+
+    private void deleteShops(@NotNull Island island, @Nullable UUID uuid) {
+        island.getAllChunks().forEach((chunk) -> {
             Map<Location, Shop> shops = QuickShop.getInstance().getShopManager().getShops(chunk);
             if (shops != null && !shops.isEmpty()) {
                 shops.forEach((location, shop) -> {
-                    if (shop.getOwner().equals(event.getTarget().getUniqueId())) {
-                        recordDeletion(event.getPlayer().getUniqueId(), shop, String.format("[%s Integration]Shop %s deleted caused by ShopOwnerKickedFromIsland", this.getName(), shop));
-                        ;
+                    if (uuid != null) {
+                        if (!shop.getOwner().equals(uuid)) {
+                            return;
+                        }
+                        recordDeletion(uuid, shop, "Shop deleting");
                         shop.delete();
                     }
                 });
             }
         });
-
-    }
-
-    @EventHandler
-    public void deleteShops(com.bgsoftware.superiorskyblock.api.events.IslandChunkResetEvent event) {
-        Map<Location, Shop> shops = QuickShop.getInstance().getShopManager().getShops(event.getWorld().getName(), event.getChunkX(), event.getChunkZ());
-        if (shops != null && !shops.isEmpty()) {
-            shops.forEach((location, shop) -> {
-                recordDeletion(Util.getNilUniqueId(), shop, String.format("[%s Integration]Shop %s deleted caused by IslandChunkReset", this.getName(), shop));
-                ;
-                shop.delete();
-            });
-        }
     }
 }
