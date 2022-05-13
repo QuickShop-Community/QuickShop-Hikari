@@ -30,20 +30,20 @@ import java.util.UUID;
 public class ShopDeleteOverrideEvent extends AbstractQSEvent {
     private final Shop shop;
     private boolean overrideForAllowed;
-    private final UUID breaker;
-    private final Player breakerPlayer;
+    private final UUID requester;
+    private final Player requesterPlayer;
 
     /**
      * Call the event when shop checking for deleting. The ShopDeleteEvent will call after ShopDeleteOverrideEvent if some plugin allowed it.
      * If this event passed, delete button will be shown or shop can be break.
      *
-     * @param shop    Target shop
-     * @param breaker The breaker that checking for
+     * @param shop      Target shop
+     * @param requester The requester that checking for
      */
-    public ShopDeleteOverrideEvent(@NotNull Shop shop, @NotNull UUID breaker) {
+    public ShopDeleteOverrideEvent(@NotNull Shop shop, @NotNull UUID requester) {
         this.shop = shop;
-        this.breaker = breaker;
-        this.breakerPlayer = Bukkit.getPlayer(breaker);
+        this.requester = requester;
+        this.requesterPlayer = Bukkit.getPlayer(requester);
     }
 
     /**
@@ -57,23 +57,24 @@ public class ShopDeleteOverrideEvent extends AbstractQSEvent {
     }
 
     /**
-     * Getting the breaker that checking for.
+     * Getting the requester that checking for.
      *
-     * @return The breaker
+     * @return The requester
      */
     @NotNull
-    public UUID getBreaker() {
-        return breaker;
+    public UUID getRequester() {
+        return requester;
     }
 
     /**
-     * Getting the breaker's player.
+     * Getting the requester's player.
      *
-     * @return The breaker's player, null if offline or not exists
+     * @return The requester's player, null if offline or not exists
      */
     @Nullable
-    public Player getBreakerPlayer() {
-        return breakerPlayer;
+    @Deprecated
+    public Player getRequesterPlayer() {
+        return requesterPlayer;
     }
 
     /**
