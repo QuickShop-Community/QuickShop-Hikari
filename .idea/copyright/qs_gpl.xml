@@ -1,0 +1,8 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="allowReplaceRegexp" value="This file is a part of project QuickShop" />
+    <option name="keyword" value="GNU General Public License" />
+    <option name="notice" value=" This file is a part of project QuickShop, the name is &amp;#36;file.fileName&#10; Copyright (C) Ghost_chu and contributors&#10; &#10; This program is free software: you can redistribute it and/or modify it&#10; under the terms of the GNU General Public License as published by the&#10; Free Software Foundation, either version 3 of the License, or&#10; (at your option) any later version.&#10;&#10; This program is distributed in the hope that it will be useful, but WITHOUT&#10; ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or&#10; FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License&#10; for more details.&#10;&#10; You should have received a copy of the GNU General Public License&#10; along with this program. If not, see &lt;http://www.gnu.org/licenses/&gt;.&#10; " />
+    <option name="myName" value="qs gpl" />
+  </copyright>
+</component>
