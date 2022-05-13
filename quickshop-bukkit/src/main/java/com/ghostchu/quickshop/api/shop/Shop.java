@@ -19,6 +19,12 @@
 
 package com.ghostchu.quickshop.api.shop;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
+import com.ghostchu.quickshop.shop.ShopSignStorage;
+import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
+import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -30,12 +36,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
-import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
-import com.ghostchu.quickshop.shop.ShopSignStorage;
-import com.ghostchu.quickshop.util.Util;
 
 import java.util.List;
 import java.util.UUID;
@@ -48,7 +48,16 @@ public interface Shop {
     NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
 
     /**
+     * Check if shop can be deleted by specified player
+     *
+     * @param uuid Player's UUID
+     * @return True if can be deleted, otherwise false.
+     */
+    boolean canDeleteBy(@NotNull UUID uuid);
+
+    /**
      * Sets shop name
+     *
      * @param shopName shop name, null to remove currently name
      */
     void setShopName(@Nullable String shopName);

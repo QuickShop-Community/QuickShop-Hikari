@@ -301,6 +301,15 @@ public class ContainerShop implements Shop {
         }
     }
 
+    @Override
+    public boolean canDeleteBy(@NotNull UUID uuid) {
+        if (getOwner().equals(uuid))
+            return true;
+        ShopDeleteOverrideEvent event = new ShopDeleteOverrideEvent(this, uuid);
+        event.callEvent();
+        return event.isOverrideForAllowed();
+    }
+
     /**
      * Sets shop name
      *
