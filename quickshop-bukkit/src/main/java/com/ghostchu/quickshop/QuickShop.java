@@ -1136,6 +1136,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         Unirest.config()
                 .concurrency(10, 5)
                 .setDefaultHeader("User-Agent", "QuickShop/" + getFork() + "-" + getDescription().getVersion() + " Java/" + System.getProperty("java.version"));
+        Unirest.config().verifySsl(Boolean.parseBoolean(System.getProperties().getProperty("com.ghostchu.quickshop.quickshop.unirest.sslverify", "true")));
     }
 
     private void loadChatProcessor() {
