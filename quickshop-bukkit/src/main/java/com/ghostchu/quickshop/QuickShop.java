@@ -877,7 +877,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     }
 
     private void bakeShopsOwnerCache() {
-        if (System.getProperties().containsKey("com.ghostchu.quickshop.QuickShop.bakeuuids")) {
+        if (Util.parsePackageProperly("bakeuuids").asBoolean()) {
             getLogger().info("Baking shops owner and moderators caches (This may take a while if you upgrade from old versions)...");
             Set<UUID> waitingForBake = new HashSet<>();
             this.shopManager.getAllShops().forEach(shop -> {
@@ -1136,7 +1136,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         Unirest.config()
                 .concurrency(10, 5)
                 .setDefaultHeader("User-Agent", "QuickShop/" + getFork() + "-" + getDescription().getVersion() + " Java/" + System.getProperty("java.version"));
-        Unirest.config().verifySsl(Boolean.parseBoolean(System.getProperties().getProperty("com.ghostchu.quickshop.quickshop.unirest.sslverify", "true")));
+        Unirest.config().verifySsl(Util.parsePackageProperly("verifySSL").asBoolean());
     }
 
     private void loadChatProcessor() {

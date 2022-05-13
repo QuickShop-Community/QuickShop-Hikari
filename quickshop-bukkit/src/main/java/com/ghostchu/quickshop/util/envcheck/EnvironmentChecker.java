@@ -88,7 +88,6 @@ public final class EnvironmentChecker {
         boolean skipAllTest = false;
         ResultContainer executeResult = null;
 
-        Properties properties = System.getProperties();
         CheckResult gResult = CheckResult.PASSED;
         for (Method declaredMethod : this.tests) {
             if (skipAllTest) {
@@ -101,7 +100,7 @@ public final class EnvironmentChecker {
                     Log.debug("Skip test: " + envCheckEntry.name() + ": Except stage: " + Arrays.toString(envCheckEntry.stage()) + " Current stage: " + stage);
                     continue;
                 }
-                if (!properties.containsKey("com.ghostchu.quickshop.util.envcheck.skip." + envCheckEntry.name().toUpperCase(Locale.ROOT).replace(" ", "_"))) {
+                if (!Util.parsePackageProperly("skip." + envCheckEntry.name().toUpperCase(Locale.ROOT).replace(" ", "_")).asBoolean()) {
                     executeResult = (ResultContainer) declaredMethod.invoke(this);
                     if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if its worse than the latest one.
                         result = executeResult.getResult();
@@ -170,7 +169,7 @@ public final class EnvironmentChecker {
     public ResultContainer spigotBasedServer() {
         ResultContainer success = new ResultContainer(CheckResult.PASSED, "Server");
         ResultContainer failed = new ResultContainer(CheckResult.STOP_WORKING, "Server must be Spigot based, Don't use CraftBukkit!");
-        if(!PaperLib.isSpigot()) {
+        if (!PaperLib.isSpigot()) {
             return failed;
         }
         return success;
