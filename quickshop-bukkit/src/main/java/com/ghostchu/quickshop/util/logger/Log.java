@@ -46,7 +46,8 @@ public class Log {
     private static final boolean disableLocationRecording;
 
     static {
-        disableLocationRecording = Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.util.logger.disableLocationRecoding"));
+        // Cannot replace with Util since it depend on this class
+        disableLocationRecording = Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.util.logger."));
     }
 
 
