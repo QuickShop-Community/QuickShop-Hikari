@@ -88,18 +88,19 @@ public class JenkinsUpdater implements QuickUpdater {
         if (versionType != getCurrentRunning()) {
             return true;
         }
-
-        try {
-            HttpResponse<String> response = Unirest.get(jobUrl + "lastSuccessfulBuild/artifact/quickshop-bukkit/target/extra-resources/BUILDINFO")
-                    .asString();
+        HttpResponse<String> response = Unirest.get(jobUrl + "lastSuccessfulBuild/artifact/quickshop-bukkit/target/extra-resources/BUILDINFO")
+                .asString()
+                .ifFailure(throwable -> MsgUtil.sendDirectMessage(Bukkit.getConsoleSender(), Component.text("[QuickShop] Failed to check for an update on build server! It might be an internet issue or the build server host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often, Error: " + throwable.getBody()).color(NamedTextColor.RED)));
+        if (response.isSuccess()) {
             try (InputStream is = new ByteArrayInputStream(response.getBody().getBytes())) {
                 this.lastRemoteBuildInfo = new BuildInfo(is);
                 return lastRemoteBuildInfo.getCiInfo().getId() <= pluginBuildInfo.getCiInfo().getId() || lastRemoteBuildInfo.getGitInfo().getId().equalsIgnoreCase(pluginBuildInfo.getGitInfo().getId());
+            } catch (Exception e) {
+                MsgUtil.sendDirectMessage(Bukkit.getConsoleSender(), Component.text("[QuickShop] Failed to check for an update on build server! It might be an internet issue or the build server host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often, Error: " + e.getMessage()).color(NamedTextColor.RED));
+                return true;
             }
-        } catch (Exception ioException) {
-            MsgUtil.sendDirectMessage(Bukkit.getConsoleSender(), Component.text("[QuickShop] Failed to check for an update on build server! It might be an internet issue or the build server host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often, Error: " + ioException.getMessage()).color(NamedTextColor.RED));
-            return true;
         }
+        return true;
     }
 //
 //    @Override
