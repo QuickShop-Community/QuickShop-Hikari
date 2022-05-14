@@ -40,7 +40,7 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
     @Override
     public boolean hasPermission(@NotNull String permission) {
         List<BuiltInShopPermission> perm = bakeFlatPermissionList(this, new HashSet<>());
-        List<String> node = perm.stream().map(BuiltInShopPermission::getNode).toList();
+        List<String> node = perm.stream().map(BuiltInShopPermission::getNamespacedNode).toList();
         return node.contains(permission);
     }
 
@@ -79,7 +79,7 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
     }
 
     @NotNull
-    public String getNode() {
+    public String getRawNode() {
         return node;
     }
 

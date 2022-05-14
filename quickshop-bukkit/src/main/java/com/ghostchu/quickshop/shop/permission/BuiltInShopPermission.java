@@ -36,7 +36,7 @@ public enum BuiltInShopPermission implements ShopPermissionAudience {
     }
 
     @NotNull
-    public String getNode() {
+    public String getRawNode() {
         return node;
     }
 

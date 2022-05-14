@@ -321,17 +321,17 @@ public class ContainerShop implements Shop {
      */
     @Override
     public boolean playerAuthorize(@NotNull UUID player, @NotNull BuiltInShopPermission permission) {
-        return playerAuthorize(player, QuickShop.getInstance(), permission.getNode());
+        return playerAuthorize(player, QuickShop.getInstance(), permission.getRawNode());
     }
 
     @Override
     public List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermission permission) {
-        return playersCanAuthorize(QuickShop.getInstance(), permission.getNode());
+        return playersCanAuthorize(QuickShop.getInstance(), permission.getRawNode());
     }
 
     @Override
     public List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermissionGroup permissionGroup) {
-        return playerGroup.entrySet().stream().filter(entry -> entry.getValue().equals(permissionGroup.getNode())).map(Map.Entry::getKey).toList();
+        return playerGroup.entrySet().stream().filter(entry -> entry.getValue().equals(permissionGroup.getNamespacedNode())).map(Map.Entry::getKey).toList();
     }
 
     @Override
@@ -377,17 +377,20 @@ public class ContainerShop implements Shop {
      */
     @Override
     public @NotNull String getPlayerGroup(@NotNull UUID player) {
-        if (player.equals(getOwner())) return BuiltInShopPermissionGroup.ADMINISTRATOR.getNode();
-        String group = this.playerGroup.getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNode());
+        if (player.equals(getOwner())) return BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode();
+        String group = this.playerGroup.getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode());
         if (plugin.getShopPermissionManager().hasGroup(group)) {
             return group;
         }
-        return BuiltInShopPermissionGroup.EVERYONE.getNode();
+        return BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode();
     }
 
     @Override
     public void setPlayerGroup(@NotNull UUID player, @Nullable String group) {
-        if (group == null || group.equals(BuiltInShopPermissionGroup.EVERYONE.getNode())) {
+        if (group == null)
+            group = BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode();
+        new ShopPlayerGroupSetEvent(this, getPlayerGroup(player), group).callEvent();
+        if (group.equals(BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode())) {
             this.playerGroup.remove(player);
         } else {
             this.playerGroup.put(player, group);
@@ -396,10 +399,13 @@ public class ContainerShop implements Shop {
 
     @Override
     public void setPlayerGroup(@NotNull UUID player, @Nullable BuiltInShopPermissionGroup group) {
-        if (group == null || group == BuiltInShopPermissionGroup.EVERYONE) {
+        if (group == null)
+            group = BuiltInShopPermissionGroup.EVERYONE;
+        new ShopPlayerGroupSetEvent(this, getPlayerGroup(player), group.getNamespacedNode()).callEvent();
+        if (group == BuiltInShopPermissionGroup.EVERYONE) {
             this.playerGroup.remove(player);
         } else {
-            setPlayerGroup(player, group.getNode());
+            setPlayerGroup(player, group.getRawNode());
         }
 
     }
@@ -593,7 +599,7 @@ public class ContainerShop implements Shop {
     @Override
     public boolean delStaff(@NotNull UUID player) {
         Util.ensureThread(false);
-        if (getPlayerGroup(player).equals(BuiltInShopPermissionGroup.STAFF.getNode())) {
+        if (getPlayerGroup(player).equals(BuiltInShopPermissionGroup.STAFF.getNamespacedNode())) {
             setPlayerGroup(player, BuiltInShopPermissionGroup.EVERYONE);
             setDirty();
             update();
