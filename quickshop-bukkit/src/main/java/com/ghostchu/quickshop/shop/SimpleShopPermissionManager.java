@@ -48,6 +48,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
 
     private void initDefaultConfiguration(@NotNull File file) {
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
+        yamlConfiguration.set("version", 1);
         for (BuiltInShopPermissionGroup group : BuiltInShopPermissionGroup.values()) {
             yamlConfiguration.set(group.getNode(), group.getPermissions().stream().map(BuiltInShopPermission::getNamespacedNode).collect(Collectors.toList()));
         }
