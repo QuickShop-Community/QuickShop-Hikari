@@ -1033,7 +1033,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     info.getLocation(),
                     price,
                     info.getItem(),
-                    new SimpleShopModerator(p.getUniqueId()),
+                    p.getUniqueId(),
                     false,
                     ShopType.SELLING,
                     new YamlConfiguration(),

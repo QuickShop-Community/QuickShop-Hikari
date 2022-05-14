@@ -86,7 +86,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
                     .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/qs setowner ")));
         }
         // Unlimited
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.unlimited") && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.TOGGLE_UNLIMITED)) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.unlimited")) {
             Component text = plugin.text().of(sender, "controlpanel.unlimited", MsgUtil.bool2String(shop.isUnlimited())).forLocale();
             Component hoverText = plugin.text().of(sender, "controlpanel.unlimited-hover").forLocale();
             String clickCommand = MsgUtil.fillArgs("/qs silentunlimited {0}", shop.getRuntimeRandomUniqueId().toString());
@@ -95,7 +95,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
                     .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand)));
         }
         // Always Counting
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.alwayscounting") && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_ALWAYS_COUNTING)) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.alwayscounting")) {
             Component text = plugin.text().of(sender, "controlpanel.alwayscounting", MsgUtil.bool2String(shop.isAlwaysCountingContainer())).forLocale();
             Component hoverText = plugin.text().of(sender, "controlpanel.alwayscounting-hover").forLocale();
             String clickCommand = MsgUtil.fillArgs("/qs silentalwayscounting {0}", shop.getRuntimeRandomUniqueId().toString());
