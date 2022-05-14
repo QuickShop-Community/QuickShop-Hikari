@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.ShopPermissionManager;
 import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -15,7 +16,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
 
-public class SimpleShopPermissionManager {
+public class SimpleShopPermissionManager implements ShopPermissionManager {
     private final Map<String, Set<String>> permissionMapping = new MapMaker().makeMap();
 
     public SimpleShopPermissionManager(@NotNull QuickShop plugin) {
