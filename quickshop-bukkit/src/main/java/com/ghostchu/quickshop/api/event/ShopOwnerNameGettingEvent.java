@@ -19,12 +19,11 @@
 
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.api.shop.Shop;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
-import com.ghostchu.quickshop.api.shop.Shop;
 
 import java.util.UUID;
-
 @AllArgsConstructor
 public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
     private final Shop shop;

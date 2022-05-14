@@ -5,7 +5,9 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
-
+/**
+ * Call when shop authorize was calculated
+ */
 public class ShopAuthorizeCalculateEvent extends AbstractQSEvent {
 
     @NotNull
@@ -19,7 +21,7 @@ public class ShopAuthorizeCalculateEvent extends AbstractQSEvent {
     private boolean result;
 
     /**
-     * Call when shop was clicked.
+     * Call when shop authorize was calculated
      *
      * @param shop The shop bought from
      */

@@ -50,23 +50,80 @@ public interface Shop {
     NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShop.getInstance(), "shopsign");
     NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
 
+    /**
+     * Check if player have authorized for specific permission on specific shop
+     *
+     * @param player     player
+     * @param namespace  permission namespace
+     * @param permission permission
+     * @return true if player have authorized
+     */
     boolean playerAuthorize(@NotNull UUID player, @NotNull Plugin namespace, @NotNull String permission);
 
+    /**
+     * Check if player have authorized for specific permission on specific shop
+     *
+     * @param player     player
+     * @param permission namespaced permission
+     * @return true if player have authorized
+     */
     boolean playerAuthorize(@NotNull UUID player, @NotNull BuiltInShopPermission permission);
 
+    /**
+     * Gets the player list of who can authorize specific permission on this shop
+     *
+     * @param permission permission
+     * @return Collection of UUID
+     */
     List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermission permission);
 
+    /**
+     * Gets the player list of who can authorize specific group on this shop
+     *
+     * @param permissionGroup group
+     * @return Collection of UUID
+     */
     List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermissionGroup permissionGroup);
 
+    /**
+     * Gets the player list of who can authorize specific permission on this shop
+     *
+     * @param permission raw permission
+     * @param plugin     namespace of permission
+     * @return Collection of UUID
+     */
     List<UUID> playersCanAuthorize(@NotNull Plugin plugin, @NotNull String permission);
 
+    /**
+     * Gets specific player group on specific shop
+     *
+     * @param player player
+     * @return namespaced group
+     */
     @NotNull
     String getPlayerGroup(@NotNull UUID player);
 
+    /**
+     * Sets specific player permission on specfic shop
+     *
+     * @param player player
+     * @param group  namespaced group name
+     */
     void setPlayerGroup(@NotNull UUID player, @Nullable String group);
 
+    /**
+     * Sets specific player permission on specfic shop
+     *
+     * @param player player
+     * @param group  group
+     */
     void setPlayerGroup(@NotNull UUID player, @Nullable BuiltInShopPermissionGroup group);
 
+    /**
+     * Gets all player and their group on this shop
+     *
+     * @return Map of UUID and group
+     */
     @NotNull
     Map<UUID, String> getPermissionAudiences();
 
