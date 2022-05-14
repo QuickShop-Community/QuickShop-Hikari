@@ -12,14 +12,12 @@ public enum BuiltInShopPermission implements ShopPermissionAudience {
     RECEIVE_ALERT("alert.receive", "receive-alert"),
     ACCESS_INVENTORY("access_inventory", "access-inventory"),
     OWNERSHIP_TRANSFER("ownership_transfer", "ownership-transfer"),
-    MODIFY_MODERATORS("modify_moderators", "modify-moderators"),
     MANAGEMENT_PERMISSION("management_permission", "management-permission"),
     TOGGLE_DISPLAY("toggle_display", "toggle-display"),
     SET_SHOPTYPE("set_shoptype", "set-shoptype"),
     SET_PRICE("set_price", "set-price"),
     SET_ITEM("set_item", "set-item"),
     SET_STACK_AMOUNT("set_stack_amount", "set-stack-amount"),
-    SET_TAX_ACCOUNT("set_tax_account", "set-tax-account"),
     SET_CURRENCY("set_currency", "set-currency"),
     SET_NAME("set_name", "set-name");
 

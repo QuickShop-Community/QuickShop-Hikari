@@ -13,8 +13,8 @@ import static com.ghostchu.quickshop.shop.permission.BuiltInShopPermission.*;
 
 public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
     EVERYONE("everyone", "everyone", PURCHASE, SHOW_INFORMATION, PREVIEW_SHOP, SEARCH),
-    STAFF("staff", "staff", ImmutableList.of(EVERYONE), ImmutableList.of(ACCESS_INVENTORY, TOGGLE_DISPLAY,
-            TOGGLE_UNLIMITED, SET_SHOPTYPE, SET_PRICE, SET_ITEM, SET_STACK_AMOUNT, SET_ALWAYS_COUNTING, SET_TAX_ACCOUNT,
+    STAFF("staff", "staff", ImmutableList.of(EVERYONE), ImmutableList.of(ACCESS_INVENTORY,
+            TOGGLE_DISPLAY, SET_SHOPTYPE, SET_PRICE, SET_ITEM, SET_STACK_AMOUNT,
             SET_CURRENCY, RECEIVE_ALERT)),
     ADMINISTRATOR("administrator", "administrator", ImmutableList.of(STAFF, EVERYONE), ImmutableList.copyOf(BuiltInShopPermission.values()));
 
