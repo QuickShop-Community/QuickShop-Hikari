@@ -418,6 +418,7 @@ command:
     taxaccount: <yellow>Définir le compte de taxe que la boutique utilise
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Activer/désactiver l'affichage de l'item de la boutique
+    permission: <yellow>Shop permission management
   bulk-size-not-set: '<red>Utilisation: /qs size <quantité>'
   no-type-given: '<red>Utilisation: /qs find <objet>'
   feature-not-enabled: Cette fonctionnalité n'est pas activée dans le fichier de configuration.
@@ -467,3 +468,40 @@ language-version: '63'
 not-managed-shop: <red>Vous n'êtes pas le propriétaire ou le modérateur de cette boutique
 shop-cannot-trade-when-freezing: <red>Vous ne pouvez pas échanger avec cette boutique car elle est gelée.
 invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
+permission:
+  header: "<green>Shop Permission Details"
+  table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
+  item:
+    purchase: "<yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)"
+    show-information: "<yellow>Permission to allow users who have this to see the shop information. (open shop info panel)"
+    preview-shop: "<yellow>Permission to allow users who have this to preview the shop. (preview item)"
+    search: "<yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)"
+    delete: "<yellow>Permission to allow users who have this to delete the shop."
+    receive-alert: "<yellow>Permission to allow users who have this to receive alert message (e.g out-of-stock or new trade)."
+    access-inventory: "<yellow>Permission to allow users who have this to access the shop inventory."
+    ownership-transfer: "<yellow>Permission to allow users who have this to transfer the shop ownership."
+    management-permission: "<yellow>Permission to allow users who have this to manage the groups permissions and edit user's group."
+    toggle-display: "<yellow>Permission to allow users who have this to toggle the shop display item."
+    set-shoptype: "<yellow>Permission to allow users who have this to set the shop type (switch buying or selling)."
+    set-price: "<yellow>Permission to allow users who have this to set the shop price."
+    set-item: "<yellow>Permission to allow users who have this to set the shop item."
+    set-stack-amount: "<yellow>Permission to allow users who have this to set the shop stack amount."
+    set-currency: "<yellow>Permission to allow users who have this to set the shop currency."
+    set-name: "<yellow>Permission to allow users who have this to set the shop name."
+  group:
+    everyone: "<yellow>Default group for all users excepted shop owner."
+    staff: "<yellow>System group for shop staffs."
+    administrator: "<red>System group for administrators, the users in this group will have permissions almost same with shop owner."
+invalid-group: "<red>Invalid group name."
+invalid-permission: "<red>Invalid permission."
+invalid-operation: "<red>Invalid operation, only add/remove are allowed."
+player-no-group: "<yellow>Player {0} not in any group in this shop."
+player-in-group: "<green>Player {0} is in group <aqua>{1}</aqua> in this shop."
+permission-required: "<red>You don't have permission {0} in this shop to do this."
+no-permission-detailed: "<red>You don't have permission <yellow>{0}</yellow> to do this."
+paste-created: "<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don't trust."
+paste-created-local: "<green>Paste created and saved to your local disk at: {0}<newline><red>Warning: <gray>Never send paste to who you don't trust."
+paste-created-local-failed: "<red>Failed to save paste to your local disk, please check your disk."
+paste-451: "<gray><b>TIPS: </b> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file additional parameter to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>"
+paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin provider..."
+paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
