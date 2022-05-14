@@ -9,6 +9,7 @@ public enum BuiltInShopPermission implements ShopPermissionAudience {
     PREVIEW_SHOP("quickshop.preview_shop", "preview-shop"),
     SEARCH("quickshop.search", "search"),
     DELETE("quickshop.delete", "delete"),
+    RECEIVE_ALERT("quickshop.alert.receive", "receive-alert"),
     ACCESS_INVENTORY("quickshop.access_inventory", "access-inventory"),
     OWNERSHIP_TRANSFER("quickshop.ownership_transfer", "ownership-transfer"),
     MODIFY_MODERATORS("quickshop.modify_moderators", "modify-moderators"),

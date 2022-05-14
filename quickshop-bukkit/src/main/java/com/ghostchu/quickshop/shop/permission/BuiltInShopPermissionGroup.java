@@ -15,8 +15,8 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
     EVERYONE("everyone", "everyone", PURCHASE, SHOW_INFORMATION, PREVIEW_SHOP, SEARCH),
     STAFF("staff", "staff", ImmutableList.of(EVERYONE), ImmutableList.of(ACCESS_INVENTORY, TOGGLE_DISPLAY,
             TOGGLE_UNLIMITED, SET_SHOPTYPE, SET_PRICE, SET_ITEM, SET_STACK_AMOUNT, SET_ALWAYS_COUNTING, SET_TAX_ACCOUNT,
-            SET_CURRENCY)),
-    ADMINISTRATOR("administrator", "administrator", ImmutableList.of(STAFF, EVERYONE), Collections.emptyList());
+            SET_CURRENCY, RECEIVE_ALERT)),
+    ADMINISTRATOR("administrator", "administrator", ImmutableList.of(STAFF, EVERYONE), ImmutableList.copyOf(BuiltInShopPermission.values()));
 
     BuiltInShopPermissionGroup(@NotNull String node, @NotNull String descriptionKey, @NotNull BuiltInShopPermission... permissions) {
         this.node = node;
