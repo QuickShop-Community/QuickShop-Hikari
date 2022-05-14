@@ -474,10 +474,7 @@ timeunit:
   future: in {0}
   days: <red>{0} days
 command:
-  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot
-    to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10,
-    we now only reload configuration but not whole plugin to ensure the server won''t
-    crashed.)'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
     buy: <yellow>Changes a shop to <light_purple>BUY<yellow> mode
     about: <yellow>Shows QuickShop info
