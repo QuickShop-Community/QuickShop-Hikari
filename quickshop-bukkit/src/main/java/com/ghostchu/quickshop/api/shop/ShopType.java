@@ -21,6 +21,9 @@ package com.ghostchu.quickshop.api.shop;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The shop trading type *SELLING* or *BUYING*
+ */
 public enum ShopType {
     // SELLING = SELLMODE BUYING = BUY MODE
     SELLING(0),

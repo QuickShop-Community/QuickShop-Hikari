@@ -24,6 +24,9 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Post-processing the Components
+ */
 public interface PostProcessor {
     /**
      * Process the string

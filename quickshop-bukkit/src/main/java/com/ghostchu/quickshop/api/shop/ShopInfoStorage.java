@@ -27,6 +27,9 @@ import lombok.Data;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Minimal information about a shop.
+ */
 @AllArgsConstructor
 @Data
 @Builder

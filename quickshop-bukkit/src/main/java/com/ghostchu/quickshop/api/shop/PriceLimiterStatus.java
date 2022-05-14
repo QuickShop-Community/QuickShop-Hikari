@@ -19,6 +19,9 @@
 
 package com.ghostchu.quickshop.api.shop;
 
+/**
+ * Gets the PriceLimiter status.
+ */
 public enum PriceLimiterStatus {
     PASS,
     REACHED_PRICE_MAX_LIMIT,

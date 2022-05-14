@@ -21,6 +21,9 @@ package com.ghostchu.quickshop.api.inventory;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Manager for InventoryWrappers
+ */
 public interface InventoryWrapperManager {
     /**
      * Create a symbol link for storage.
@@ -41,7 +44,6 @@ public interface InventoryWrapperManager {
      */
     @NotNull
     InventoryWrapper locate(@NotNull String symbolLink) throws IllegalArgumentException;
-
 
 
 }

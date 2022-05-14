@@ -22,6 +22,9 @@ package com.ghostchu.quickshop.api.localization.text;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The Texts of the translation.
+ */
 public interface Text {
     /**
      * Getting the text that use specify locale

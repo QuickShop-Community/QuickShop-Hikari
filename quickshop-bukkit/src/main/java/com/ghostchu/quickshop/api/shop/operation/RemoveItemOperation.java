@@ -27,6 +27,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+/**
+ * Operation to remove items
+ */
 public class RemoveItemOperation implements Operation {
     private boolean committed;
     private boolean rollback;
@@ -37,6 +40,13 @@ public class RemoveItemOperation implements Operation {
     private int rollbackRemains = 0;
     private final int itemMaxStackSize;
 
+    /**
+     * Constructor
+     *
+     * @param item   ItemStack to remove
+     * @param amount Amount to remove
+     * @param inv    The {@link InventoryWrapper} that remove from
+     */
     public RemoveItemOperation(@NotNull ItemStack item, int amount, @NotNull InventoryWrapper inv) {
         this.item = item.clone();
         this.amount = amount;
@@ -44,10 +54,20 @@ public class RemoveItemOperation implements Operation {
         this.itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
     }
 
+    /**
+     * Gets the item remains to remove
+     *
+     * @return The item remains to remove
+     */
     public int getRemains() {
         return remains;
     }
 
+    /**
+     * Gets the item remains to rollback
+     *
+     * @return The item remains to rollback
+     */
     public int getRollbackRemains() {
         return rollbackRemains;
     }

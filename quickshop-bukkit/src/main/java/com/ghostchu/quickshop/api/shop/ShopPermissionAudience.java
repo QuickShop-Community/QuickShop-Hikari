@@ -3,6 +3,10 @@ package com.ghostchu.quickshop.api.shop;
 import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Permission Audience
+ * Can be group or permission item
+ */
 public interface ShopPermissionAudience {
     /**
      * Check if audience has permission

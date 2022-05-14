@@ -41,7 +41,7 @@ public interface ShopManager {
     /**
      * Checks if player reached the limit of shops
      *
-     * @param p  The player to check
+     * @param p The player to check
      * @return True if they're reached the limit.
      */
     boolean isReachedLimit(@NotNull Player p);
@@ -76,6 +76,14 @@ public interface ShopManager {
      */
     @Nullable Map<Location, Shop> getShops(@NotNull Chunk c);
 
+    /**
+     * Gets the shop at the world and specific chunk.
+     *
+     * @param world  The world to get the shop from
+     * @param chunkX The chunk x coordinate
+     * @param chunkZ The chunk z coordinate
+     * @return The shop at the world and specific chunk.
+     */
     @Nullable Map<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ);
 
     /**
@@ -97,8 +105,8 @@ public interface ShopManager {
     /**
      * Create a shop use Shop and Info object.
      *
-     * @param shop The shop object
-     * @param signBlock The sign block
+     * @param shop               The shop object
+     * @param signBlock          The sign block
      * @param bypassProtectCheck Should bypass protection check
      * @throws IllegalStateException If the shop owner offline
      */
@@ -232,6 +240,16 @@ public interface ShopManager {
      */
     @NotNull List<Shop> getShopsInWorld(@NotNull World world);
 
+    /**
+     * Handle the player buying
+     *
+     * @param buyer          The player buying
+     * @param buyerInventory The inventory of the player buying
+     * @param eco            The economy
+     * @param info           The info of the shop
+     * @param shop           The shop
+     * @param amount         The amount of the item/stack
+     */
     void actionBuying(
             @NotNull UUID buyer,
             @NotNull InventoryWrapper buyerInventory,
@@ -243,8 +261,23 @@ public interface ShopManager {
     @Deprecated
     double getTax(@NotNull Shop shop, @NotNull Player p);
 
+    /**
+     * Get the tax of the shop
+     *
+     * @param shop The shop
+     * @param p    The player
+     * @return The tax of the shop
+     */
     double getTax(@NotNull Shop shop, @NotNull UUID p);
 
+    /**
+     * Check if shop is not valided for specific player
+     *
+     * @param uuid The uuid of the player
+     * @param info The info of the shop
+     * @param shop The shop
+     * @return If the shop is not valided for the player
+     */
     boolean shopIsNotValid(@NotNull UUID uuid, @NotNull Info info, @NotNull Shop shop);
 
     /**
@@ -261,8 +294,25 @@ public interface ShopManager {
     @NotNull
     PriceLimiter getPriceLimiter();
 
+    /**
+     * Handle the player shop creating
+     *
+     * @param p       The player
+     * @param info    The info of the shop
+     * @param message The message of the shop
+     */
     void actionCreate(@NotNull Player p, Info info, @NotNull String message);
 
+    /**
+     * Handle the player shop selling
+     *
+     * @param seller          The player selling
+     * @param sellerInventory The inventory of the player selling
+     * @param eco             The economy
+     * @param info            The info of the shop
+     * @param shop            The shop
+     * @param amount          The amount of the item/stack
+     */
     void actionSelling(
             @NotNull UUID seller,
             @NotNull InventoryWrapper sellerInventory,
@@ -270,6 +320,7 @@ public interface ShopManager {
             @NotNull Info info,
             @NotNull Shop shop,
             int amount);
+
     /**
      * Send a purchaseSuccess message for a player.
      *
@@ -279,6 +330,7 @@ public interface ShopManager {
      */
     @ApiStatus.Experimental
     void sendPurchaseSuccess(@NotNull UUID purchaser, @NotNull Shop shop, int amount, double total, double tax);
+
     /**
      * Send a sellSuccess message for a player.
      *

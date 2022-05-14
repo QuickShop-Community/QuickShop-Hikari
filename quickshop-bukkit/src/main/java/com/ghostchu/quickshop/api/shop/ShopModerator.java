@@ -30,6 +30,8 @@ import java.util.UUID;
 /**
  * Contains shop's moderators infomations, owner, staffs etc.
  * You must save the ContainerShop after modify this
+ *
+ * @deprecated Replaced with {@link com.ghostchu.quickshop.api.shop.ShopPermissionManager}
  */
 @Deprecated
 public interface ShopModerator {

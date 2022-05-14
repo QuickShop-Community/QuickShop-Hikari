@@ -23,6 +23,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Throw when no permission provider founded.
+ */
 @AllArgsConstructor
 public class ProviderIsEmptyException extends RuntimeException {
     @Getter

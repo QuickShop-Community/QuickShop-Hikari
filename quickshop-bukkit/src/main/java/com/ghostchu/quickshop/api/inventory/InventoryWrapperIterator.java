@@ -25,6 +25,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
 
+/**
+ * Iterator for InventoryWrapper
+ */
 public interface InventoryWrapperIterator extends Iterator<ItemStack> {
 
 
@@ -80,7 +83,7 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
 
             @Override
             public ItemStack next() {
-             return inventory.getStorageContents()[currentIndex++];
+                return inventory.getStorageContents()[currentIndex++];
             }
         };
     }
