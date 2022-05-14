@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Items pro Menge: <aqua>{0} <yellow>[<light_purple><bold>Ändern<yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   price-hover: Klicke, um den Preis für das Item zu ändern.
   remove: <red><bold>[Shop entfernen]
   mode-buying-hover: <yellow>Klicke, um den Shop in den VERKAUFEN-Modus zu ändern.
-  empty: '<green>Leeren: Alle Items entfernen <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK</bold><yellow>]'
   stack-hover: <yellow>Klicke um die Anzahl an Items pro Mengeneinheit zu ändern. Setze es zu 1 für normales Verhalten.
   alwayscounting-hover: <yellow>Klicke um zu ändern, ob der Shop immer Zählen soll.
-  alwayscounting: '<green>Immer zählen: {0} <yellow>[<light_purple><bold>Ändern<yellow>]'
-  setowner: '<green>Besitzer: <aqua>{0} <yellow>[<light_purple><bold>Ändern<yellow>]'
-  freeze: '<yellow>Freeze Modus: <aqua>{0} <yellow>[<light_purple><bold>Ändern<yellow>]'
-  price: '<green>Preis: <aqua>{0} <yellow>[<light_purple><bold>Ändern<yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   currency-hover: <yellow>Klicke um die Währung zu setzen oder zu entfernen, welcher dieser Shop verwendet
-  lock: '<yellow>Shop Sperre: <aqua>{0} <yellow>[<light_purple><bold>Ändern<yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
   mode-selling: '<green>Shop-Modus: <aqua>Verkaufen <yellow>[<light_purple><bold>Ändern<yellow>]'
-  currency: '<green>Währung: <aqua>{0} <yellow>[<light_purple><bold>Ändern<yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set</bold><yellow>]'
   setowner-hover: <yellow>Klicke hier um den Besitzer zu wechseln.
-  mode-buying: '<green>Shop-Modus: <aqua>Kaufen <yellow>[<light_purple><bold>Ändern<yellow>]'
-  item: '<green>Shopitem: {0} <yellow>[<light_purple><bold>Ändern<yellow>]'
-  unlimited: '<green>Unlimitiert: {0} <yellow>[<light_purple><bold>Ändern<yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   unlimited-hover: <yellow>Klicke hier um umzuschalten, ob der Shop unlimitiert ist.
   refill-hover: <yellow>Klicke hier um den Shop aufzufüllen.
   remove-hover: <yellow>Klicke um diesen Shop zu entfernen.
   toggledisplay-hover: <yellow>Ändere den Item Anzeigemodus des Shops
-  refill: '<green>Auffüllen: Fülle die Items auf <yellow>[<light_purple><bold>OK<yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK</bold><yellow>]'
   freeze-hover: <yellow>Ändere den Freeze-Status des Shops.
   lock-hover: <yellow>Aktiviere/Deaktiviere den Sperrschutz des Shops.
   item-hover: <yellow>Klicke, um das Shopitem zu ändern
   infomation: '<green>Shop Kontrollpanel:'
   mode-selling-hover: <yellow>Klicke, um den Shop in den KAUF-Modus zu ändern.
   empty-hover: <yellow>Klicke hier um den Shop zu leeren.
-  toggledisplay: '<yellow>Item anzeigen: <aqua>{0} <yellow>[<light_purple><bold>Ändern<yellow>]'
+  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
 timeunit:
   behind: hinter
   week: <red>{0} Woche
@@ -377,7 +377,7 @@ timeunit:
   future: in {0}
   days: <red>{0} Tage
 command:
-  reloading: '<green>Konfiguration neu geladen. <yellow>Einige Änderungen benötigen eventuell einen Neustart um aktiv zu werden.<newline><gray>(Hinweis: Das verhalten beim neu laden wurde nach 4.0.9.10 geändert. Wir laden nun nur die Konfiguration neu nicht aber das gesammte Plugin um sicher zu stellen, dass der Server nicht crashed.)'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
     buy: <yellow>Ändert einen Shop zu <light_purple>KAUF<yellow>-Modus
     about: <yellow>Zeigt QuickShop Informationen
@@ -510,4 +510,5 @@ paste-upload-failed: "<red>Konnte Paste nicht auf {0} hochladen, versuche andere
 paste-upload-failed-local: "<red>Hochladen von Paste fehlgeschlagen, versuche lokale Paste zu erstellen..."
 command-incorrect: "<red>Befehlsnutzung falsch, schreibe /qs help um die Hilfe zu sehen. Verwendung: {0}."
 successfully-set-player-group: "<green>Spieler {0} Gruppe erfolgreich zu <aqua>{1}</aqua> geändert."
+successfully-unset-player-group: "<green>Successfully remove player group in this shop."
 successfully-set-player-permission: "<green>Spieler {0} Berechtigung erfolgreich zu <aqua>{1}</aqua> in Shop <aqua>{2}</aqua> geändert."
