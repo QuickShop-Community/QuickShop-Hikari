@@ -583,7 +583,7 @@ public class ContainerShop implements Shop {
     @Override
     public void clearStaffs() {
         Util.ensureThread(false);
-        this.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(uuid -> this.playerGroup.remove(uuid));
+        this.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(this.playerGroup::remove);
         setDirty();
         update();
     }
