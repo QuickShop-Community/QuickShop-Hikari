@@ -84,7 +84,7 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
 
     @NotNull
     public String getNamespacedNode() {
-        return QuickShop.getInstance().getName().toLowerCase(Locale.ROOT) + this.node;
+        return QuickShop.getInstance().getName().toLowerCase(Locale.ROOT) + "." + this.node;
     }
 
     @NotNull

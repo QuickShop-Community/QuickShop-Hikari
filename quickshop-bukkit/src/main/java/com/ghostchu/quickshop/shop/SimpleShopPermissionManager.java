@@ -15,6 +15,8 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
@@ -39,6 +41,15 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
             initDefaultConfiguration(file);
         }
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
+        if (!yamlConfiguration.isSet(QuickShop.getInstance().getName().toLowerCase(Locale.ROOT) + ".everyone") || !yamlConfiguration.isSet(QuickShop.getInstance().getName().toLowerCase(Locale.ROOT) + ".staff")) {
+            plugin.getLogger().warning("Corrupted group configuration file, creating new one...");
+            try {
+                Files.move(file.toPath(), file.toPath().resolveSibling(file.getName() + ".corrupted." + UUID.randomUUID().toString().replace("-", "")));
+                loadConfiguration();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         yamlConfiguration.getKeys(true).forEach(group -> {
             List<String> perms = yamlConfiguration.getStringList(group);
             this.permissionMapping.put(group, new HashSet<>(perms));
