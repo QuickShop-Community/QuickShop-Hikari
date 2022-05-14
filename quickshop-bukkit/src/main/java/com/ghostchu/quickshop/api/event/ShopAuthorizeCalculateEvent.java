@@ -4,6 +4,8 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 public class ShopAuthorizeCalculateEvent extends AbstractQSEvent {
 
     @NotNull
@@ -12,6 +14,7 @@ public class ShopAuthorizeCalculateEvent extends AbstractQSEvent {
     private final Plugin namespace;
 
     private final String permission;
+    private final UUID authorizer;
 
     private boolean result;
 
@@ -20,8 +23,9 @@ public class ShopAuthorizeCalculateEvent extends AbstractQSEvent {
      *
      * @param shop The shop bought from
      */
-    public ShopAuthorizeCalculateEvent(@NotNull Shop shop, @NotNull Plugin namespace, @NotNull String permission, boolean result) {
+    public ShopAuthorizeCalculateEvent(@NotNull Shop shop, @NotNull UUID authorizer, @NotNull Plugin namespace, @NotNull String permission, boolean result) {
         this.shop = shop;
+        this.authorizer = authorizer;
         this.namespace = namespace;
         this.permission = permission;
         this.result = result;
@@ -73,5 +77,15 @@ public class ShopAuthorizeCalculateEvent extends AbstractQSEvent {
      */
     public void setResult(boolean result) {
         this.result = result;
+    }
+
+    /**
+     * Gets the authorizer about this event
+     *
+     * @return authorizer
+     */
+    @NotNull
+    public UUID getAuthorizer() {
+        return authorizer;
     }
 }

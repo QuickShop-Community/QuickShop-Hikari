@@ -340,7 +340,7 @@ public class ContainerShop implements Shop {
         for (Map.Entry<UUID, String> uuidStringEntry : this.playerGroup.entrySet()) {
             String group = uuidStringEntry.getValue();
             boolean r = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
-            ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, namespace, permission, r);
+            ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, uuidStringEntry.getKey(), namespace, permission, r);
             event.callEvent();
             r = event.getResult();
             if (r) {
@@ -363,7 +363,7 @@ public class ContainerShop implements Shop {
         if (player.equals(getOwner())) return true;
         String group = getPlayerGroup(player);
         boolean r = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
-        ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, namespace, permission, r);
+        ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, player, namespace, permission, r);
         event.callEvent();
         return event.getResult();
 
