@@ -39,6 +39,13 @@ public interface Text {
     @NotNull Component forLocale();
 
     /**
+     * Getting this text is exists in the translation file
+     *
+     * @return true if this text is exists in the translation file
+     */
+    boolean isPresent();
+
+    /**
      * Send text to the player
      */
     void send();

@@ -42,6 +42,14 @@ public interface TextList {
     @NotNull List<Component> forLocale();
 
     /**
+     * Getting this text is exists in the translation file
+     *
+     * @return true if this text is exists in the translation file
+     */
+    boolean isPresent();
+
+
+    /**
      * Send text to the player
      */
     void send();
