@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Timer;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -34,6 +35,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -394,9 +396,14 @@ public class ShopLoader {
             this.symbolLink = rs.getString("inventorySymbolLink");
             this.inventoryWrapperProvider = rs.getString("inventoryWrapperName");
             this.shopName = rs.getString("name");
-            Type type = new TypeToken<Map<String, String>>() {
-            }.getType();
-            this.playerGroup = JsonUtil.getGson().fromJson(rs.getString("permission"), type);
+            String permissionJson = rs.getString("permission");
+            if (!StringUtils.isEmpty(permissionJson) && MsgUtil.isJson(permissionJson)) {
+                Type type = new TypeToken<Map<String, String>>() {
+                }.getType();
+                this.playerGroup = JsonUtil.getGson().fromJson(rs.getString("permission"), type);
+            } else {
+                this.playerGroup = new HashMap<>();
+            }
         }
 
         @Override
