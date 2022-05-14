@@ -64,9 +64,9 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
                 pasteToLocalFile(sender);
                 return;
             }
-            plugin.text().of("paste-uploading").send();
+            plugin.text().of(sender, "paste-uploading").send();
             if (!pasteToPastebin(sender)) {
-                plugin.text().of("paste-upload-failed-local").send();
+                plugin.text().of(sender, "paste-upload-failed-local").send();
                 pasteToLocalFile(sender);
             }
         });
@@ -96,7 +96,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
                 fwriter.write(string);
                 fwriter.flush();
             }
-            plugin.text().of("paste-created-local", file.getAbsolutePath()).send();
+            plugin.text().of(sender, "paste-created-local", file.getAbsolutePath()).send();
             return true;
         } catch (IOException e) {
             plugin.getSentryErrorReporter().ignoreThrow();

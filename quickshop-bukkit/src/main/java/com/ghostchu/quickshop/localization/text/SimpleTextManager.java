@@ -635,7 +635,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         @Override
         public void send() {
             if (sender == null) {
-                return;
+                throw new IllegalStateException("Sender is null");
             }
             for (Component s : forLocale()) {
                 MsgUtil.sendDirectMessage(sender, s);
@@ -753,7 +753,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         @Override
         public void send() {
             if (sender == null) {
-                return;
+                throw new IllegalStateException("Sender is null");
             }
             Component lang = forLocale();
             MsgUtil.sendDirectMessage(sender, lang);

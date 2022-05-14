@@ -33,12 +33,12 @@ public class SubCommand_Permission implements CommandHandler<Player> {
         Shop shop = getLookingShop(sender);
 
         if (shop == null) {
-            plugin.text().of("not-looking-at-shop").send();
+            plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
 
         if (cmdArg.length < 3) {
-            plugin.text().of("command-incorrect", "/qs permission <type> <operation> <target> [group]").send();
+            plugin.text().of(sender, "command-incorrect", "/qs permission <type> <operation> <target> [group]").send();
             return;
         }
 
@@ -52,21 +52,21 @@ public class SubCommand_Permission implements CommandHandler<Player> {
             case "user" -> {
                 Profile profile = plugin.getPlayerFinder().find(target);
                 if (profile == null) {
-                    plugin.text().of("unknown-player", target).send();
+                    plugin.text().of(sender, "unknown-player", target).send();
                     return;
                 }
                 switch (operation) {
                     case "set" -> {
                         if (group == null || !plugin.getShopPermissionManager().hasGroup(group)) {
-                            plugin.text().of("invalid-group", target).send();
+                            plugin.text().of(sender, "invalid-group", target).send();
                             return;
                         }
                         shop.setPlayerGroup(profile.getUniqueId(), group);
-                        plugin.text().of("successfully-set-player-group", group).send();
+                        plugin.text().of(sender, "successfully-set-player-group", group).send();
                     }
                     case "list" -> {
                         sheet.printHeader();
-                        plugin.text().of("permission.header-player").send();
+                        plugin.text().of(sender, "permission.header-player").send();
                         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                             for (Map.Entry<UUID, String> map : shop.getPermissionAudiences().entrySet()) {
                                 String name;
@@ -76,7 +76,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
                                 } else {
                                     name = s.getName();
                                 }
-                                plugin.text().of("permission.table", name, map.getValue()).send();
+                                plugin.text().of(sender, "permission.table", name, map.getValue()).send();
                             }
                             sheet.printFooter();
                         });
@@ -97,7 +97,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
 //                    }
 //                }
 //            }
-            default -> plugin.text().of("bad-command-usage-detailed", "user").send();
+            default -> plugin.text().of(sender, "bad-command-usage-detailed", "user").send();
         }
 
 
