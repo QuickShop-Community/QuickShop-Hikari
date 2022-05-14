@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.event.ShopOwnerShipTransferEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import lombok.AllArgsConstructor;
@@ -59,6 +60,10 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
         Profile newShopOwner = plugin.getPlayerFinder().find(cmdArg[0]);
         if (newShopOwner == null) {
             plugin.text().of(sender, "unknown-player").send();
+            return;
+        }
+        ShopOwnerShipTransferEvent event = new ShopOwnerShipTransferEvent(shop, shop.getOwner(), newShopOwner.getUniqueId());
+        if (event.callCancellableEvent()) {
             return;
         }
         shop.setOwner(newShopOwner.getUniqueId());

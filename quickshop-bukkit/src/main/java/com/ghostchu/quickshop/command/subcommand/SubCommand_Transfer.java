@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.event.ShopOwnerShipTransferEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
@@ -72,6 +73,10 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
             }
             List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(fromPlayer.getUniqueId());
             for (Shop shop : shopList) {
+                ShopOwnerShipTransferEvent event = new ShopOwnerShipTransferEvent(shop, shop.getOwner(), targetPlayer.getUniqueId());
+                if (event.callCancellableEvent()) {
+                    continue;
+                }
                 shop.setOwner(targetPlayer.getUniqueId());
             }
             plugin.text().of(sender, "command.transfer-success-other", shopList.size(), fromPlayer.getName(), targetPlayer.getName()).send();
