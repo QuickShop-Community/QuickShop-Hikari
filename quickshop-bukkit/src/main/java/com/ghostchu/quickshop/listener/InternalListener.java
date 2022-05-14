@@ -19,6 +19,11 @@
 
 package com.ghostchu.quickshop.listener;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logging.container.*;
+import com.ghostchu.quickshop.util.serialize.BlockPos;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -28,11 +33,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.*;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.logging.container.*;
-import com.ghostchu.quickshop.util.serialize.BlockPos;
 
 import java.util.Objects;
 
@@ -79,13 +79,6 @@ public class InternalListener extends AbstractQSListener {
         }
         if(plugin.getShopCache() != null){
             plugin.getShopCache().invalidate(event.getShop().getLocation());
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void shopModeratorChanges(ShopModeratorChangedEvent event) {
-        if (loggingAction) {
-            plugin.logEvent(new ShopModeratorChangedLog(event.getShop().saveToInfoStorage(), event.getModerator()));
         }
     }
 

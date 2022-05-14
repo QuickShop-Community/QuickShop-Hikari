@@ -19,13 +19,13 @@
 
 package com.ghostchu.quickshop.shop;
 
+import com.ghostchu.quickshop.api.shop.ShopModerator;
+import com.ghostchu.quickshop.util.JsonUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.api.shop.ShopModerator;
-import com.ghostchu.quickshop.util.JsonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +37,7 @@ import java.util.UUID;
  */
 @EqualsAndHashCode
 @NoArgsConstructor
+@Deprecated
 public class SimpleShopModerator implements ShopModerator {
     private UUID owner;
     private List<UUID> staffs;

@@ -19,10 +19,10 @@
 
 package com.ghostchu.quickshop.api.shop;
 
+import com.ghostchu.quickshop.util.JsonUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.util.JsonUtil;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +31,7 @@ import java.util.UUID;
  * Contains shop's moderators infomations, owner, staffs etc.
  * You must save the ContainerShop after modify this
  */
+@Deprecated
 public interface ShopModerator {
     /**
      * Deserialize a ShopModerator using Gson

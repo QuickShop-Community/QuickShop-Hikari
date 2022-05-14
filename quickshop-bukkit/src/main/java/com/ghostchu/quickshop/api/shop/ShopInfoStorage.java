@@ -19,11 +19,12 @@
 
 package com.ghostchu.quickshop.api.shop;
 
+import com.ghostchu.quickshop.util.serialize.BlockPos;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import com.ghostchu.quickshop.util.serialize.BlockPos;
 
+import java.util.Map;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -32,7 +33,7 @@ import java.util.UUID;
 public class ShopInfoStorage {
     private final String world;
     private final BlockPos position;
-    private final String moderator;
+    private final UUID owner;
     private final double price;
     private final String item;
     private final int unlimited;
@@ -43,4 +44,5 @@ public class ShopInfoStorage {
     private final UUID taxAccount;
     private final String inventoryWrapperName;
     private final String symbolLink;
+    private final Map<UUID, String> permission;
 }

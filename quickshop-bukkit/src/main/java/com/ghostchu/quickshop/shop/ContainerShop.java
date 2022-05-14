@@ -387,7 +387,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public void setPlayerGroup(@NotNull UUID player, @Nullable String group) {
-        if (group == null) {
+        if (group == null || group.equals(BuiltInShopPermissionGroup.EVERYONE.getNode())) {
             this.playerGroup.remove(player);
         } else {
             this.playerGroup.put(player, group);
@@ -396,7 +396,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public void setPlayerGroup(@NotNull UUID player, @Nullable BuiltInShopPermissionGroup group) {
-        if (group == null) {
+        if (group == null || group == BuiltInShopPermissionGroup.EVERYONE) {
             this.playerGroup.remove(player);
         } else {
             setPlayerGroup(player, group.getNode());
@@ -594,7 +594,7 @@ public class ContainerShop implements Shop {
     public boolean delStaff(@NotNull UUID player) {
         Util.ensureThread(false);
         if (getPlayerGroup(player).equals(BuiltInShopPermissionGroup.STAFF.getNode())) {
-            setPlayerGroup(player, (String) null);
+            setPlayerGroup(player, BuiltInShopPermissionGroup.EVERYONE);
             setDirty();
             update();
         }
@@ -1731,7 +1731,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(getLocation().getWorld().getName(), new BlockPos(getLocation()), SimpleShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount(), inventoryWrapperProvider, saveToSymbolLink());
+        return new ShopInfoStorage(getLocation().getWorld().getName(), new BlockPos(getLocation()), getOwner(), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount(), inventoryWrapperProvider, saveToSymbolLink(), getPermissionAudiences());
     }
 
     @Override
