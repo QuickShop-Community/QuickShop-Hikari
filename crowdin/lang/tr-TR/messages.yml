@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   price-hover: <yellow>Öğeye yeni bir fiyat belirlemek için tıkla.
   remove: <red><bold>[Marketi Kaldır]
   mode-buying-hover: <yellow>Marketi SATMA moduna değiştirmek için tıkla.
-  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK</bold><yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>Yığın başına öğe miktarını ayarlamak için tıklayın. Normal davranış için 1 yapın.
   alwayscounting-hover: Dükkan her zaman konteyner sayıyorsa geçiş yapmak için <yellow>tıklayın.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Bu mağazanın kullandığı para birimini ayarlamak veya kaldırmak için tıklayınız
-  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: 'Market modu: <aqua>Satış <yellow>[<light_purple><bold>Değiştir<yellow>]'
-  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set</bold><yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Sahibi değiştirmek için tıkla.
-  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change</bold><yellow>]'
-  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
-  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   unlimited-hover: <yellow>Mağaza sınırsızsa geçiş yapmak için tıkla.
   refill-hover: <yellow>Marketi doldurmak için tıkla.
   remove-hover: <yellow>Bu marketi kaldırmak için tıkla.
   toggledisplay-hover: <yellow>Mağazanın hologramının durumunu değiştir
-  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK</bold><yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>Marketin dondurulma durumunu değiştir.
   lock-hover: <yellow>Marketin kilit korumasını aktif/deaktif et.
   item-hover: <yellow>Market öğesini değiştirmek için tıkla
   infomation: '<green>Market Kontrol paneli:'
   mode-selling-hover: <yellow>Marketi ALMA moduna değiştirmek için tıkla.
   empty-hover: '%eMarketin envanterini temizlemek için tıkla.'
-  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
+  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
 timeunit:
   behind: behind
   week: <red>{0} week
@@ -377,7 +377,7 @@ timeunit:
   future: in {0}
   days: <red>{0} days
 command:
-  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
     buy: <yellow>Bir marketi <light_purple>ALMA<yellow> moduna geçirir
     about: <yellow>QuickShop bilgilerini gösterir
