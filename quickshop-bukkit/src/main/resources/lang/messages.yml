@@ -604,7 +604,7 @@ permission:
     administrator: "<red>System group for administrators, the users in this group will have permissions almost same with shop owner."
 invalid-group: "<red>Invalid group name."
 invalid-permission: "<red>Invalid permission."
-invalid-operation: "<red>Invalid operation, only add/remove are allowed."
+invalid-operation: "<red>Invalid operation, only {0} are allowed."
 player-no-group: "<yellow>Player {0} not in any group in this shop."
 player-in-group: "<green>Player {0} is in group <aqua>{1}</aqua> in this shop."
 permission-required: "<red>You don't have permission {0} in this shop to do this."
