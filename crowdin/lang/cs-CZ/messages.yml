@@ -501,6 +501,7 @@ player-no-group: "<yellow>Hráč {0} není v žádné skupině v tomto obchodě.
 player-in-group: "<green>Hráč {0} je ve skupině <aqua>{1}</aqua> v tomto obchodě."
 permission-required: "<red>K tomu nemáte oprávnění {0} v tomto obchodě."
 no-permission-detailed: "<red>K tomu nemáte oprávnění <yellow>{0}</yellow>."
+paste-uploading: "<aqua>Please wait... Uploading the paste to pastebin......"
 paste-created: "<green>Vložte vytvořené, klikněte pro otevření v prohlížeči: <yellow>{0}</yellow><newline><red>Varování: <gray>Nikdy neposílejte vložení nikomu, komu nedůvěřujete."
 paste-created-local: "<green>Vložte vytvořené a uložené na váš místní disk na: {0}<newline><red>Varování: <gray>Nikdy neposílejte vložení nikomu, komu nedůvěřujete."
 paste-created-local-failed: "<red>Nepodařilo se uložit vložení na místní disk, zkontrolujte svůj disk."
