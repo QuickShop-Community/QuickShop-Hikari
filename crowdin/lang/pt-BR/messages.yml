@@ -470,6 +470,8 @@ shop-cannot-trade-when-freezing: <red>Você não pode negociar com esta loja por
 invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
 permission:
   header: "<green>Shop Permission Details"
+  header-player: "<green>Shop Permission Details for {0}"
+  header-group: "<green>Shop Permission Details for group {0}"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
   item:
     purchase: "<yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)"
@@ -494,7 +496,7 @@ permission:
     administrator: "<red>System group for administrators, the users in this group will have permissions almost same with shop owner."
 invalid-group: "<red>Invalid group name."
 invalid-permission: "<red>Invalid permission."
-invalid-operation: "<red>Invalid operation, only add/remove are allowed."
+invalid-operation: "<red>Invalid operation, only {0} are allowed."
 player-no-group: "<yellow>Player {0} not in any group in this shop."
 player-in-group: "<green>Player {0} is in group <aqua>{1}</aqua> in this shop."
 permission-required: "<red>You don't have permission {0} in this shop to do this."
@@ -505,3 +507,6 @@ paste-created-local-failed: "<red>Failed to save paste to your local disk, pleas
 paste-451: "<gray><b>TIPS: </b> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file additional parameter to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>"
 paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin provider..."
 paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
+command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
+successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
+successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
