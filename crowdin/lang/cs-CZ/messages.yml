@@ -470,6 +470,8 @@ shop-cannot-trade-when-freezing: <red>Nemůžete obchodovat s tímto obchodem, p
 invalid-container: <red>Neplatný kontejner, můžete vytvořit pouze obchod na bloku, který má inventář.
 permission:
   header: "<green>Podrobnosti o oprávnění obchodu"
+  header-player: "<green>Shop Permission Details for {0}"
+  header-group: "<green>Shop Permission Details for group {0}"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
   item:
     purchase: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, zakoupit obchod (včetně nákupu a prodeje)"
@@ -494,7 +496,7 @@ permission:
     administrator: "<red>Systémová skupina pro správce, uživatelé v této skupině budou mít téměř stejná oprávnění jako majitel obchodu."
 invalid-group: "<red>Neplatný název skupiny."
 invalid-permission: "<red>Neplatné oprávnění."
-invalid-operation: "<red>Neplatná operace, je povoleno pouze přidání/odebrání."
+invalid-operation: "<red>Neplatná operace, pouze {0} je povoleno."
 player-no-group: "<yellow>Hráč {0} není v žádné skupině v tomto obchodě."
 player-in-group: "<green>Hráč {0} je ve skupině <aqua>{1}</aqua> v tomto obchodě."
 permission-required: "<red>K tomu nemáte oprávnění {0} v tomto obchodě."
@@ -505,3 +507,6 @@ paste-created-local-failed: "<red>Nepodařilo se uložit vložení na místní d
 paste-451: "<gray><b>TIPS: </b> Zdá se, že vaše současná země nebo oblast blokovala službu CloudFlare Workers a QuickShop vložení nemusí být načteno správně.<newline><gray>Pokud následná operace selže, zkuste přidat --file parametr pro vygenerování místní cesty: <dark_gray>/qs paste --file</dark_gray>"
 paste-upload-failed: "<red>Nepodařilo se nahrát vložení do {0}, vyzkoušet jiného poskytovatele vkládání..."
 paste-upload-failed-local: "<red>Nepodařilo se nahrát vložení, pokus o vygenerování lokálního vložení..."
+command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
+successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
+successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
