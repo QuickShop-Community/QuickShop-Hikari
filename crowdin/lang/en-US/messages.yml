@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   price-hover: <yellow>Click to set a new price for the item.
   remove: <red><bold>[Remove Shop]
   mode-buying-hover: <yellow>Click to change the shop to SELL mode.
-  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK</bold><yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>Click to set the amount of item per bulk. Set to 1 for normal behaviour.
   alwayscounting-hover: <yellow>Click to toggle if the shop should always count the container's content.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Click to set or remove the currency that this shop is using
-  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<light_purple><bold>Change<yellow>]'
-  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set</bold><yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Click to switch owner.
-  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change</bold><yellow>]'
-  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
-  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   unlimited-hover: <yellow>Click to toggle if the shop is unlimited.
   refill-hover: <yellow>Click to refill the shop.
   remove-hover: <yellow>Click to remove this shop.
   toggledisplay-hover: <yellow>Toggle the shop's displayitem status
-  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK</bold><yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>Toggle the shop's freeze status.
   lock-hover: <yellow>Enable/Disable the shop's lock protection.
   item-hover: <yellow>Click to change shop Item
   infomation: '<green>Shop Control panel:'
   mode-selling-hover: <yellow>Click to change the shop to BUY mode.
   empty-hover: <yellow>Click to clear the inventory of the shop.
-  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
+  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
 timeunit:
   behind: behind
   week: <red>{0} week
@@ -377,7 +377,7 @@ timeunit:
   future: in {0}
   days: <red>{0} days
 command:
-  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
     buy: <yellow>Changes a shop to <light_purple>BUY<yellow> mode
     about: <yellow>Shows QuickShop info
