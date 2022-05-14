@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.localization.text;
 
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,12 +43,26 @@ public class LanguageFilesManager {
     /**
      * Deploy new locale to TextMapper with cloud values and bundle values
      *
-     * @param locale           The locale code
-     * @param distribution     The values from Distribution platform
+     * @param locale       The locale code
+     * @param distribution The values from Distribution platform
      */
     public void deploy(@NotNull String locale, @NotNull FileConfiguration distribution) {
         Log.debug("Registered and deployed locale: " + locale);
-        this.locale2ContentMapping.put(locale, distribution);
+        FileConfiguration alreadyRegistered = this.locale2ContentMapping.get(locale);
+        if (alreadyRegistered != null) {
+            Log.debug("Applying and merging two different translations. (prefer cloud)");
+            this.locale2ContentMapping.put(locale, merge(alreadyRegistered, distribution));
+        } else {
+            this.locale2ContentMapping.put(locale, distribution);
+        }
+    }
+
+    @NotNull
+    private FileConfiguration merge(@NotNull FileConfiguration alreadyRegistered, @NotNull FileConfiguration distribution) {
+        FileConfiguration fileConfiguration = new YamlConfiguration();
+        alreadyRegistered.getKeys(true).forEach(key -> fileConfiguration.set(key, alreadyRegistered.get(key)));
+        distribution.getKeys(true).forEach(key -> fileConfiguration.set(key, distribution.get(key)));
+        return fileConfiguration;
     }
 
     /**
@@ -74,7 +89,7 @@ public class LanguageFilesManager {
     /**
      * Getting specific locale data under specific distribution data
      *
-     * @param locale           The specific locale
+     * @param locale The specific locale
      * @return The locale data, null if never deployed
      */
     public @Nullable FileConfiguration getDistribution(@NotNull String locale) {
