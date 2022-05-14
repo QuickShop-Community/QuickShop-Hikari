@@ -470,8 +470,8 @@ shop-cannot-trade-when-freezing: <red>Nemůžete obchodovat s tímto obchodem, p
 invalid-container: <red>Neplatný kontejner, můžete vytvořit pouze obchod na bloku, který má inventář.
 permission:
   header: "<green>Podrobnosti o oprávnění obchodu"
-  header-player: "<green>Shop Permission Details for {0}"
-  header-group: "<green>Shop Permission Details for group {0}"
+  header-player: "<green>Podrobnosti o oprávnění obchodu pro {0}"
+  header-group: "<green>Detaily oprávnění obchodu pro skupinu {0}"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
   item:
     purchase: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, zakoupit obchod (včetně nákupu a prodeje)"
@@ -501,13 +501,13 @@ player-no-group: "<yellow>Hráč {0} není v žádné skupině v tomto obchodě.
 player-in-group: "<green>Hráč {0} je ve skupině <aqua>{1}</aqua> v tomto obchodě."
 permission-required: "<red>K tomu nemáte oprávnění {0} v tomto obchodě."
 no-permission-detailed: "<red>K tomu nemáte oprávnění <yellow>{0}</yellow>."
-paste-uploading: "<aqua>Please wait... Uploading the paste to pastebin......"
+paste-uploading: "<aqua>Počkejte prosím... Nahrávání vložení do úložiště kopírování......"
 paste-created: "<green>Vložte vytvořené, klikněte pro otevření v prohlížeči: <yellow>{0}</yellow><newline><red>Varování: <gray>Nikdy neposílejte vložení nikomu, komu nedůvěřujete."
 paste-created-local: "<green>Vložte vytvořené a uložené na váš místní disk na: {0}<newline><red>Varování: <gray>Nikdy neposílejte vložení nikomu, komu nedůvěřujete."
 paste-created-local-failed: "<red>Nepodařilo se uložit vložení na místní disk, zkontrolujte svůj disk."
 paste-451: "<gray><b>TIPS: </b> Zdá se, že vaše současná země nebo oblast blokovala službu CloudFlare Workers a QuickShop vložení nemusí být načteno správně.<newline><gray>Pokud následná operace selže, zkuste přidat --file parametr pro vygenerování místní cesty: <dark_gray>/qs paste --file</dark_gray>"
 paste-upload-failed: "<red>Nepodařilo se nahrát vložení do {0}, vyzkoušet jiného poskytovatele vkládání..."
 paste-upload-failed-local: "<red>Nepodařilo se nahrát vložení, pokus o vygenerování lokálního vložení..."
-command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
-successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
-successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
+command-incorrect: "<red>Chybné použití příkazu, napište /qs help pro kontrolu nápovědy. Použití: {0}."
+successfully-set-player-group: "<green>Skupina hráče {0} byla úspěšně nastavena na <aqua>{1}</aqua>."
+successfully-set-player-permission: "<green>Úspěšně nastaveno oprávnění hráče {0} <aqua>{1}</aqua> v obchodě <aqua>{2}</aqua>."
