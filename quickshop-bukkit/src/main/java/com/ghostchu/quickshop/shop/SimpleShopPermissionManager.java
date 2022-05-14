@@ -32,7 +32,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
 
 
     private void loadConfiguration() {
-        Log.debug("Loading group configuration...");
+        Log.permission("Loading group configuration...");
         permissionMapping.clear();
         File file = new File(plugin.getDataFolder(), "group.yml");
         if (!file.exists()) {
@@ -42,7 +42,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         yamlConfiguration.getKeys(true).forEach(group -> {
             List<String> perms = yamlConfiguration.getStringList(group);
             this.permissionMapping.put(group, new HashSet<>(perms));
-            Log.debug("Permission loaded for group " + group + ": " + Util.list2String(perms));
+            Log.permission("Permission loaded for group " + group + ": " + Util.list2String(perms));
         });
     }
 
@@ -57,6 +57,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
             file.createNewFile();
             yamlConfiguration.save(file);
         } catch (Exception e) {
+            Log.permission(Level.SEVERE, "Failed to create default group configuration file");
             plugin.getLogger().log(Level.SEVERE, "Failed to create default group configuration", e);
         }
     }
@@ -65,7 +66,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         if (!permissionMapping.containsKey(group)) {
             throw new IllegalArgumentException("Group " + group + " does not exist.");
         }
-        Log.debug("Register permission " + permission + " to group " + group);
+        Log.permission("Register permission " + permission + " to group " + group);
         permissionMapping.get(group).add(namespace.getName().toLowerCase(Locale.ROOT) + "." + permission);
     }
 
@@ -73,7 +74,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         if (!permissionMapping.containsKey(group)) {
             return;
         }
-        Log.debug("Unregister permission " + permission + " from group " + group);
+        Log.permission("Unregister permission " + permission + " from group " + group);
         permissionMapping.get(group).remove(namespace.getName().toLowerCase(Locale.ROOT) + "." + permission);
     }
 
@@ -85,7 +86,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         if (permissionMapping.containsKey(group)) {
             throw new IllegalArgumentException("Group " + group + " already exists.");
         }
-        Log.debug("Register group " + group);
+        Log.permission("Register group " + group);
         permissionMapping.put(group, new CopyOnWriteArraySet<>(permissions));
     }
 
@@ -93,7 +94,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         if (!permissionMapping.containsKey(group)) {
             return;
         }
-        Log.debug("Unregister group " + group);
+        Log.permission("Unregister group " + group);
         permissionMapping.remove(group);
     }
 
@@ -101,7 +102,9 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         if (!permissionMapping.containsKey(group)) {
             return false;
         }
-        return permissionMapping.get(group).contains(namespace.getName().toLowerCase(Locale.ROOT) + "." + permission);
+        boolean result = permissionMapping.get(group).contains(namespace.getName().toLowerCase(Locale.ROOT) + "." + permission);
+        Log.permission("Check permission " + permission + " for group " + group + ": " + result);
+        return result;
     }
 
     @NotNull
