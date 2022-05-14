@@ -36,6 +36,7 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.quickshop.util.serialize.BlockPos;
+import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
@@ -75,7 +76,7 @@ public class ContainerShop implements Shop {
     private final QuickShop plugin;
     @EqualsAndHashCode.Exclude
     private final UUID runtimeRandomUniqueId = UUID.randomUUID();
-    private ShopModerator moderator;
+    private UUID owner;
     private double price;
     private ShopType shopType;
     private boolean unlimited;
@@ -117,7 +118,7 @@ public class ContainerShop implements Shop {
     @Nullable
     private String shopName;
     @NotNull
-    private Map<UUID, String> playerGroup = new HashMap<>();
+    private final Map<UUID, String> playerGroup;
 
     ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
@@ -126,7 +127,7 @@ public class ContainerShop implements Shop {
         this.location = s.location.clone();
         this.plugin = s.plugin;
         this.unlimited = s.unlimited;
-        this.moderator = new SimpleShopModerator(s.getOwner(), s.getStaffs());
+        this.owner = s.owner;
         this.price = s.price;
         this.isLoaded = s.isLoaded;
         this.isDeleted = s.isDeleted;
@@ -154,7 +155,7 @@ public class ContainerShop implements Shop {
      * @param price     The cost per item
      * @param item      The itemstack with the properties we want. This is .cloned, no need to worry
      *                  about references
-     * @param moderator The modertators
+     * @param owner     The shop owner
      * @param type      The shop type
      * @param unlimited The unlimited
      * @param plugin    The plugin instance
@@ -165,7 +166,7 @@ public class ContainerShop implements Shop {
             @NotNull Location location,
             double price,
             @NotNull ItemStack item,
-            @NotNull ShopModerator moderator,
+            @NotNull UUID owner,
             boolean unlimited,
             @NotNull ShopType type,
             @NotNull YamlConfiguration extra,
@@ -180,7 +181,10 @@ public class ContainerShop implements Shop {
         this.shopName = shopName;
         this.location = location;
         this.price = price;
-        this.moderator = moderator;
+
+
+        // Upgrade the shop moderator
+        this.owner = owner;
         this.item = item.clone();
         this.plugin = plugin;
         this.playerGroup = new HashMap<>(playerGroup);
@@ -326,6 +330,11 @@ public class ContainerShop implements Shop {
     }
 
     @Override
+    public List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermissionGroup permissionGroup) {
+        return playerGroup.entrySet().stream().filter(entry -> entry.getValue().equals(permissionGroup.getNode())).map(Map.Entry::getKey).toList();
+    }
+
+    @Override
     public List<UUID> playersCanAuthorize(@NotNull Plugin namespace, @NotNull String permission) {
         List<UUID> result = new ArrayList<>();
         for (Map.Entry<UUID, String> uuidStringEntry : this.playerGroup.entrySet()) {
@@ -368,7 +377,31 @@ public class ContainerShop implements Shop {
      */
     @Override
     public @NotNull String getPlayerGroup(@NotNull UUID player) {
-        return this.playerGroup.getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNode());
+        if (player.equals(getOwner())) return BuiltInShopPermissionGroup.ADMINISTRATOR.getNode();
+        String group = this.playerGroup.getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNode());
+        if (plugin.getShopPermissionManager().hasGroup(group)) {
+            return group;
+        }
+        return BuiltInShopPermissionGroup.EVERYONE.getNode();
+    }
+
+    @Override
+    public void setPlayerGroup(@NotNull UUID player, @Nullable String group) {
+        if (group == null) {
+            this.playerGroup.remove(player);
+        } else {
+            this.playerGroup.put(player, group);
+        }
+    }
+
+    @Override
+    public void setPlayerGroup(@NotNull UUID player, @Nullable BuiltInShopPermissionGroup group) {
+        if (group == null) {
+            this.playerGroup.remove(player);
+        } else {
+            setPlayerGroup(player, group.getNode());
+        }
+
     }
 
     /**
@@ -431,17 +464,14 @@ public class ContainerShop implements Shop {
         this.setSignText();
     }
 
+    @SuppressWarnings("removal")
     @Override
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     public boolean addStaff(@NotNull UUID player) {
         Util.ensureThread(false);
+        setPlayerGroup(player, BuiltInShopPermissionGroup.STAFF);
         setDirty();
-        boolean result = this.moderator.addStaff(player);
-        update();
-        if (result) {
-            Util.mainThreadRun(() -> plugin.getServer().getPluginManager()
-                    .callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
-        }
-        return result;
+        return true;
     }
 
     /**
@@ -548,25 +578,27 @@ public class ContainerShop implements Shop {
         this.displayItem.removeDupe();
     }
 
+    @SuppressWarnings("removal")
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     @Override
     public void clearStaffs() {
+        Util.ensureThread(false);
+        this.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(uuid -> this.playerGroup.remove(uuid));
         setDirty();
-        this.moderator.clearStaffs();
-        Util.mainThreadRun(() -> plugin.getServer().getPluginManager()
-                .callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         update();
     }
 
+    @SuppressWarnings("removal")
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     @Override
     public boolean delStaff(@NotNull UUID player) {
         Util.ensureThread(false);
-        setDirty();
-        boolean result = this.moderator.delStaff(player);
-        update();
-        if (result) {
-            Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+        if (getPlayerGroup(player).equals(BuiltInShopPermissionGroup.STAFF.getNode())) {
+            setPlayerGroup(player, (String) null);
+            setDirty();
+            update();
         }
-        return result;
+        return true;
     }
 
     /**
@@ -988,7 +1020,7 @@ public class ContainerShop implements Shop {
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
             plugin.getDatabaseHelper()
-                    .updateShop(SimpleShopModerator.serialize(this.moderator), this.getItem(),
+                    .updateShop(this.owner.toString(), this.getItem(),
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
                             this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), saveToSymbolLink(), this.inventoryWrapperProvider, this.shopName, this.playerGroup);
             this.dirty = false;
@@ -1145,18 +1177,21 @@ public class ContainerShop implements Shop {
         return this.location;
     }
 
+    @SuppressWarnings("removal")
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     @Override
     public @NotNull ShopModerator getModerator() {
-        return this.moderator;
+        return new SimpleShopModerator(this.getOwner(), ImmutableList.copyOf(playersCanAuthorize(BuiltInShopPermissionGroup.STAFF)));
     }
 
+    @SuppressWarnings("removal")
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     @Override
     public void setModerator(@NotNull ShopModerator shopModerator) {
         Util.ensureThread(false);
+
         setDirty();
-        this.moderator = shopModerator;
         update();
-        plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
     }
 
     /**
@@ -1164,7 +1199,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public @NotNull UUID getOwner() {
-        return this.moderator.getOwner();
+        return this.owner;
     }
 
     /**
@@ -1175,10 +1210,9 @@ public class ContainerShop implements Shop {
     @Override
     public void setOwner(@NotNull UUID owner) {
         Util.ensureThread(false);
-        this.moderator.setOwner(owner);
+        this.owner = owner;
         setSignText();
         update();
-        plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
     }
 
     /**
@@ -1325,8 +1359,10 @@ public class ContainerShop implements Shop {
      */
     @NotNull
     @Override
+    @SuppressWarnings("removal")
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     public List<UUID> getStaffs() {
-        return new ArrayList<>(this.moderator.getStaffs()); //Clone only, so make sure external calling will use addStaff
+        return ImmutableList.copyOf(playersCanAuthorize(BuiltInShopPermissionGroup.STAFF));
     }
 
     @Override

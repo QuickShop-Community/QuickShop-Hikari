@@ -25,7 +25,6 @@ import cc.carm.lib.easysql.api.enums.IndexType;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.metric.ShopMetricRecord;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -326,7 +325,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
                         "currency", "disableDisplay", "taxAccount", "inventorySymbolLink", "inventoryWrapperName",
                         "permission"
                 )
-                .setParams(ShopModerator.serialize(shop.getModerator()), shop.getPrice(), Util.serialize(shop.getItem()),
+                .setParams(shop.getOwner(), shop.getPrice(), Util.serialize(shop.getItem()),
                         location.getBlockX(),
                         location.getBlockY(),
                         location.getBlockZ(),

@@ -24,6 +24,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.Timer;
 import com.ghostchu.quickshop.util.Util;
@@ -121,7 +122,7 @@ public class ShopLoader {
                             data.getLocation(),
                             data.getPrice(),
                             data.getItem(),
-                            data.getModerators(),
+                            data.getOwner(),
                             data.isUnlimited(),
                             data.getType(),
                             data.getExtra(),
@@ -293,7 +294,7 @@ public class ShopLoader {
                                 data.getLocation(),
                                 data.getPrice(),
                                 data.getItem(),
-                                data.getModerators(),
+                                data.getOwner(),
                                 data.isUnlimited(),
                                 data.getType(),
                                 data.getExtra(),
@@ -339,7 +340,7 @@ public class ShopLoader {
     public static class ShopRawDatabaseInfo {
         private String item;
 
-        private String moderators;
+        private String owner;
 
         private double price;
 
@@ -378,7 +379,7 @@ public class ShopLoader {
             this.z = rs.getInt("z");
             this.world = rs.getString("world");
             this.item = rs.getString("itemConfig");
-            this.moderators = rs.getString("owner");
+            this.owner = rs.getString("owner");
             this.price = rs.getDouble("price");
             this.type = rs.getInt("type");
             this.unlimited = rs.getBoolean("unlimited");
@@ -411,7 +412,7 @@ public class ShopLoader {
 
         private Location location;
 
-        private ShopModerator moderators;
+        private UUID owner;
 
         private double price;
 
@@ -454,7 +455,8 @@ public class ShopLoader {
                 this.location = new Location(world, x, y, z);
                 this.price = origin.getPrice();
                 this.unlimited = origin.isUnlimited();
-                this.moderators = deserializeModerator(origin.getModerators(), needUpdate);
+                this.playerGroup = origin.getPlayerGroup();
+                this.owner = deserializeOwner(origin.getOwner(), needUpdate);
                 this.type = ShopType.fromID(origin.getType());
                 this.item = deserializeItem(origin.getItem());
                 this.extra = deserializeExtra(origin.getExtra(), needUpdate);
@@ -464,7 +466,6 @@ public class ShopLoader {
                 this.inventoryWrapperProvider = origin.getInventoryWrapperProvider();
                 this.symbolLink = origin.getSymbolLink();
                 this.shopName = origin.getShopName();
-                this.playerGroup = origin.getPlayerGroup();
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }
@@ -481,15 +482,19 @@ public class ShopLoader {
             }
         }
 
-        private @NotNull ShopModerator deserializeModerator(@NotNull String moderatorJson, @NotNull AtomicBoolean needUpdate) {
-            ShopModerator shopModerator;
+        private @NotNull UUID deserializeOwner(@NotNull String moderatorJson, @NotNull AtomicBoolean needUpdate) {
             if (Util.isUUID(moderatorJson)) {
-                Log.debug("Updating old shop data... for " + moderatorJson);
-                shopModerator = new SimpleShopModerator(UUID.fromString(moderatorJson)); // New one
-                needUpdate.set(true);
+                return UUID.fromString(moderatorJson);
             } else {
+                ShopModerator shopModerator;
                 try {
                     shopModerator = SimpleShopModerator.deserialize(moderatorJson);
+                    shopModerator.getStaffs().forEach(uuid -> {
+                        Log.debug("Loaded moderator: " + uuid + ", upgrading to PlayerGroups...");
+                        this.playerGroup.put(uuid, BuiltInShopPermissionGroup.STAFF.getNode());
+                    });
+                    needUpdate.set(true);
+                    return shopModerator.getOwner();
                 } catch (JsonSyntaxException ex) {
                     Log.debug("Updating old shop data... for " + moderatorJson);
                     Profile profile = plugin.getPlayerFinder().find(moderatorJson);
@@ -500,11 +505,11 @@ public class ShopLoader {
                     } else {
                         uuid = profile.getUniqueId();
                     }
-                    shopModerator = new SimpleShopModerator(uuid); // New one
                     needUpdate.set(true);
+                    return uuid;
+
                 }
             }
-            return shopModerator;
         }
 
         private @NotNull YamlConfiguration deserializeExtra(@NotNull String extraString, @NotNull AtomicBoolean needUpdate) {

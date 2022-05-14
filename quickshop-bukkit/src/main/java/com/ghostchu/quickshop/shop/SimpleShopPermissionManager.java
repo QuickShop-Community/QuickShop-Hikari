@@ -45,6 +45,10 @@ public class SimpleShopPermissionManager {
         permissionMapping.get(group).remove(namespace.getName().toLowerCase(Locale.ROOT) + "." + permission);
     }
 
+    public boolean hasGroup(@NotNull String group) {
+        return permissionMapping.containsKey(group);
+    }
+
     public void registerGroup(@NotNull String group, @NotNull Collection<String> permissions) {
         if (permissionMapping.containsKey(group)) {
             throw new IllegalArgumentException("Group " + group + " already exists.");
