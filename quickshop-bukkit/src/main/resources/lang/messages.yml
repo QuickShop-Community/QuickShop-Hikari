@@ -620,4 +620,5 @@ paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin 
 paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
 command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
 successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
+successfully-unset-player-group: "<green>Successfully remove player group in this shop."
 successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."

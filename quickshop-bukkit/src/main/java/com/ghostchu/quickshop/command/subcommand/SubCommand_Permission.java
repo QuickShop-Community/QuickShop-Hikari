@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.google.common.collect.ImmutableList;
 import lombok.AllArgsConstructor;
@@ -31,25 +32,33 @@ public class SubCommand_Permission implements CommandHandler<Player> {
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         Shop shop = getLookingShop(sender);
-
         if (shop == null) {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
-
-        if (cmdArg.length < 3) {
-            plugin.text().of(sender, "command-incorrect", "/qs permission <type> <operation> <target> [group]").send();
+        String type = null;
+        if (cmdArg.length > 0)
+            type = cmdArg[0].toLowerCase(Locale.ROOT);
+        String operation = null;
+        if (cmdArg.length > 1)
+            operation = cmdArg[1].toLowerCase(Locale.ROOT);
+        String target = null;
+        if (cmdArg.length > 2)
+            target = cmdArg[2];
+        String group = null;
+        if (cmdArg.length > 3)
+            group = cmdArg[3];
+        ChatSheetPrinter sheet = new ChatSheetPrinter(sender);
+        if (type == null) {
+            plugin.text().of(sender, "bad-command-usage-detailed", "user,group").send();
             return;
         }
-
-        String type = cmdArg[0].toLowerCase(Locale.ROOT);
-        String operation = cmdArg[1].toLowerCase(Locale.ROOT);
-        String target = cmdArg[2].toLowerCase(Locale.ROOT);
-        String group = cmdArg.length > 3 ? cmdArg[3] : null;
-        ChatSheetPrinter sheet = new ChatSheetPrinter(sender);
-        //noinspection SwitchStatementWithTooFewBranches
         switch (type) {
             case "user" -> {
+                if (target == null) {
+                    plugin.text().of(sender, "bad-command-usage-detailed", "set,list,unset").send();
+                    return;
+                }
                 Profile profile = plugin.getPlayerFinder().find(target);
                 if (profile == null) {
                     plugin.text().of(sender, "unknown-player", target).send();
@@ -57,16 +66,24 @@ public class SubCommand_Permission implements CommandHandler<Player> {
                 }
                 switch (operation) {
                     case "set" -> {
-                        if (group == null || !plugin.getShopPermissionManager().hasGroup(group)) {
+                        if (group == null) {
+                            plugin.text().of(sender, "command-incorrect", "/qs permission user set <group>").send();
+                            return;
+                        }
+                        if (!plugin.getShopPermissionManager().hasGroup(group)) {
                             plugin.text().of(sender, "invalid-group", target).send();
                             return;
                         }
                         shop.setPlayerGroup(profile.getUniqueId(), group);
-                        plugin.text().of(sender, "successfully-set-player-group", group).send();
+                        plugin.text().of(sender, "successfully-set-player-group", profile.getName(), group).send();
+                    }
+                    case "unset" -> {
+                        shop.setPlayerGroup(profile.getUniqueId(), BuiltInShopPermissionGroup.EVERYONE);
+                        plugin.text().of(sender, "successfully-unset-player-group", profile.getName()).send();
                     }
                     case "list" -> {
                         sheet.printHeader();
-                        plugin.text().of(sender, "permission.header-player").send();
+                        plugin.text().of(sender, "permission.header-player", profile.getName()).send();
                         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                             for (Map.Entry<UUID, String> map : shop.getPermissionAudiences().entrySet()) {
                                 String name;
@@ -83,20 +100,23 @@ public class SubCommand_Permission implements CommandHandler<Player> {
                     }
                 }
             }
-//            case "group" -> {
-//                if(!plugin.getShopPermissionManager().hasGroup(target)){
-//                    plugin.text().of("invalid-group",target).send();
-//                    return;
-//                }
-//                //noinspection SwitchStatementWithTooFewBranches
-//                switch (operation) {
-//                    case "list" -> {
-//                        sheet.printHeader();
-//                        plugin.text().of("permission.header-group").send();
-//
-//                    }
-//                }
-//            }
+            case "group" -> {
+                if (target == null) {
+                    plugin.text().of(sender, "bad-command-usage-detailed", "list").send();
+                    return;
+                }
+                if (!plugin.getShopPermissionManager().hasGroup(target)) {
+                    plugin.text().of("invalid-group", target).send();
+                    return;
+                }
+                //noinspection SwitchStatementWithTooFewBranches
+                switch (operation) {
+                    case "list" -> {
+                        sheet.printHeader();
+                        plugin.text().of("permission.header-group", target).send();
+                    }
+                }
+            }
             default -> plugin.text().of(sender, "bad-command-usage-detailed", "user").send();
         }
 
@@ -113,11 +133,13 @@ public class SubCommand_Permission implements CommandHandler<Player> {
      */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length == 0) {
+        if (cmdArg.length == 1) {
             return ImmutableList.of("user", "group");
         }
-        if (cmdArg.length == 1) {
-            return ImmutableList.of("add", "remove", "list");
+        if (cmdArg[0].equalsIgnoreCase("user")) {
+            return ImmutableList.of("set", "unset", "list");
+        } else if (cmdArg[0].equalsIgnoreCase("group")) {
+            return ImmutableList.of("list");
         }
         return null;
     }
