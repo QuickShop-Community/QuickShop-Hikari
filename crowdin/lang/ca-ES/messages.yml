@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Quantitat per pila: <aqua>{0} <yellow>[<light_purple><bold>Canvia<yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   price-hover: <yellow>Fes clic per canviar el preu de l'ítem.
   remove: <red><bold>[Eliminar botiga]
   mode-buying-hover: <yellow>Fes clic per canviar la botiga al mode VENDRE.
-  empty: '<green>Buidar: Borra tots els ítems <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK</bold><yellow>]'
   stack-hover: <yellow>Fes clic per determinar la quantitat d'ítems per pila. Escriu 1 per comportament normal.
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Propietari: <aqua>{0} <yellow>[<light_purple><bold>Canvia<yellow>]'
-  freeze: '<yellow>Mode congelat: <aqua>{0} <yellow>[<light_purple><bold>Canvia<yellow>]'
-  price: '<green>Preu: <aqua>{0} <yellow>[<light_purple><bold>Canvia<yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   currency-hover: <yellow>Fes clic per determinar o eliminar la moneda que fa servir la botiga.
-  lock: '<yellow>Bloqueig de la botiga: <aqua>{0} <yellow>[<light_purple><bold>Canvia<yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
   mode-selling: '<green>Mode de la botiga: <aqua>Venent <yellow>[<light_purple><bold>Canvia<yellow>]'
-  currency: '<green>Moneda: <aqua>{0} <yellow>[<light_purple><bold>Sel·lecciona<yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set</bold><yellow>]'
   setowner-hover: <yellow>Fes clic per canviar de propietari.
-  mode-buying: '<green>Mode de la botiga: <aqua>Comprant <yellow>[<light_purple><bold>Canvia<yellow>]'
-  item: '<green>Ítem de la botiga: {0} <yellow>[<light_purple><bold>Canvia<yellow>]'
-  unlimited: '<green>Il·limitat: {0} <yellow>[<light_purple><bold>Canvia<yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   unlimited-hover: <yellow>Fes clic per activar o desactivar que la botiga sigui il·limitada.
   refill-hover: <yellow>Fes clic per reemplenar la botiga.
   remove-hover: <yellow>Fes clic per eliminar aquesta botiga.
   toggledisplay-hover: <yellow>Toggle the shop's displayitem status
-  refill: '<green>Reemplenar: Reemplenar els ítems de <yellow>[<light_purple><bold>OK<yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK</bold><yellow>]'
   freeze-hover: <yellow>Congela o descongela la botiga.
   lock-hover: <yellow>Activa o desactiva la protecció de la botiga.
   item-hover: <yellow>Fes clic per canviar l'ítem de la botiga.
   infomation: '<green>Panell de control de la botiga:'
   mode-selling-hover: <yellow>Fes clic per canviar la botiga al mode COMPRAR.
   empty-hover: <yellow>Fes clic per eliminar l'inventari de la botiga.
-  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
 timeunit:
   behind: behind
   week: <red>{0} week
@@ -377,7 +377,7 @@ timeunit:
   future: in {0}
   days: <red>{0} days
 command:
-  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
     buy: <yellow>Canvia la botiga a mode <light_purple>COMPRAR<yellow>.
     about: <yellow>Mostra informació de QuickShop
@@ -510,4 +510,5 @@ paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin 
 paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
 command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
 successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
+successfully-unset-player-group: "<green>Successfully remove player group in this shop."
 successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."

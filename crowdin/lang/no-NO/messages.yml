@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <green>✔
 controlpanel:
-  stack: '<green>Antall i pakken: <aqua>{0} <yellow>[<light_purple><bold>Endre<yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   price-hover: <yellow>Klikk for å velge en ny pris for varen.
   remove: <red><bold>[Fjern Butikk]
   mode-buying-hover: <yellow>Klikk for å endre butikken til SELG modus.
-  empty: '<green>Tøm: Fjern alle gjenstander <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK</bold><yellow>]'
   stack-hover: <yellow>Klikk for å sette antallet i pakken. Sett 1 for normal adferd.
   alwayscounting-hover: <yellow>Klikk for å veksle om butikken skal alltid telle beholderen.
-  alwayscounting: '<green>Teller alltid: {0} <yellow>[<light_purple><bold>Endre<yellow>]'
-  setowner: '<green>Eier: <aqua>{0} <yellow>[<light_purple><bold>Endre<yellow>]'
-  freeze: '<yellow>Frys modus: <aqua>{0} <yellow>[<light_purple><bold>Veksle<yellow>]'
-  price: '<green>Pris: <aqua>{0} <yellow>[<light_purple><bold>Endre<yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   currency-hover: <yellow>Klikk for å sette eller fjerne valutaen på butikken
-  lock: '<yellow>Butikklås: <aqua>{0} <yellow>[<light_purple><bold>Veksle<yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
   mode-selling: '<green>Butikkmodus: <aqua>Selg <yellow>[<light_purple><bold>Endre<yellow>]'
-  currency: '<green>Valuta: <aqua>{0} <yellow>[<light_purple><bold>Sett<yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set</bold><yellow>]'
   setowner-hover: <yellow>Klikk for å bytte eier.
-  mode-buying: '<green>Butikkmodus: <aqua>Kjøp <yellow>[<light_purple><bold>Endre<yellow>]'
-  item: '<green>Vare: {0} <yellow>[<light_purple><bold>Endre<yellow>]'
-  unlimited: '<green>Ubegrenset: {0} <yellow>[<light_purple><bold>Endre<yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   unlimited-hover: <yellow>Klikk for å veksle om butikken er ubegrenset.
   refill-hover: <yellow>Klikk for å etterfylle butikken.
   remove-hover: <yellow>Klikk for å fjerne denne butikken.
   toggledisplay-hover: <yellow>Slå av/på butikkens utstillingsvare
-  refill: '<green>Påfyll: Fyll på varer <yellow>[<light_purple><bold>OK<yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK</bold><yellow>]'
   freeze-hover: <yellow>Veksle butikkens frysestatus.
   lock-hover: <yellow>Aktiver/Deaktiver butikkens låsebeskyttelse.
   item-hover: <yellow>Klikk for å endre varen i butikken
   infomation: '<green>Butikkens kontrollpanel:'
   mode-selling-hover: <yellow>Klikk for å endre butikken til KJØP modus.
   empty-hover: <yellow>Klikk for å fjerne alle varer fra butikken.
-  toggledisplay: '<yellow>Utstillingsvare: <aqua>{0} <yellow>[<light_purple><bold>Veksle<yellow>]'
+  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
 timeunit:
   behind: behind
   week: <red>{0} week
@@ -377,7 +377,7 @@ timeunit:
   future: in {0}
   days: <red>{0} days
 command:
-  reloading: '<green>Konfigurasjon reloadet. <yellow>Noen endringer kan kreve omstart til å påvirke. <newline><gray>(Merknad: Omlastnings atferd er endret etter 4.0.9.10, vi bare omlaster på nytt, men ikke hele utvidelsen for å sikre at serveren ikke krasjer.)'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
     buy: <yellow>Endre en butikk til <light_purple>KJØP<yellow> modus
     about: <yellow>Vis QuickShop info
@@ -510,4 +510,5 @@ paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin 
 paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
 command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
 successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
+successfully-unset-player-group: "<green>Successfully remove player group in this shop."
 successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
