@@ -20,6 +20,7 @@
 package com.ghostchu.quickshop.compatibility.towny;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
+import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
@@ -33,6 +34,7 @@ import com.palmergames.bukkit.towny.event.PlotClearEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
 import com.palmergames.bukkit.towny.event.town.TownUnclaimEvent;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.WorldCoord;
@@ -68,6 +70,25 @@ public final class Main extends CompatibilityModule implements Listener {
         deleteShopOnPlotClear = getConfig().getBoolean("delete-shop-on-plot-clear");
         deleteShopOnPlotDestroy = getConfig().getBoolean("delete-shop-on-plot-destroy");
         whiteList = getConfig().getBoolean("towny.whitelist-mode");
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        Location shopLoc = event.getShop().getLocation();
+        Town town = TownyAPI.getInstance().getTown(shopLoc);
+        if (town == null) return;
+        if (town.getMayor().getUUID().equals(event.getAuthorizer())) {
+            event.setResult(true);
+            return;
+        }
+        try {
+            Nation nation = town.getNation();
+            if (nation.getKing().getUUID().equals(event.getAuthorizer())) {
+                event.setResult(true);
+            }
+        } catch (NotRegisteredException ignored) {
+
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

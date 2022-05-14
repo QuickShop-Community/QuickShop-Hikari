@@ -20,6 +20,7 @@
 package com.ghostchu.quickshop.compatibility.plotsquared;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
+import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -72,6 +73,17 @@ public final class Main extends CompatibilityModule implements Listener {
     public void init() {
         this.whiteList = getConfig().getBoolean("whitelist-mode");
         this.deleteUntrusted = getConfig().getBoolean("delete-when-user-untrusted");
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        Location shopLoc = event.getShop().getLocation();
+        com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(shopLoc.getWorld().getName(), shopLoc.getBlockX(), shopLoc.getBlockY(), shopLoc.getBlockZ());
+        Plot plot = pLocation.getPlot();
+        if (plot == null) return;
+        if (plot.getOwners().contains(event.getAuthorizer())) {
+            event.setResult(true);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

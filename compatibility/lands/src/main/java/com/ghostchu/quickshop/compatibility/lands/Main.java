@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.compatibility.lands;
 
+import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
@@ -50,6 +51,16 @@ public final class Main extends CompatibilityModule implements Listener {
         ignoreDisabledWorlds = getConfig().getBoolean("ignore-disabled-worlds");
         whitelist = getConfig().getBoolean("whitelist-mode");
         deleteWhenLosePermission = getConfig().getBoolean("delete-on-lose-permission");
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        Location shopLoc = event.getShop().getLocation();
+        Land land = landsIntegration.getLand(shopLoc);
+        if (land == null) return;
+        if (land.getOwnerUID().equals(event.getAuthorizer())) {
+            event.setResult(true);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

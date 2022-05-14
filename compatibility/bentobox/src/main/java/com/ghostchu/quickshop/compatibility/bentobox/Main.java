@@ -19,10 +19,13 @@
 
 package com.ghostchu.quickshop.compatibility.bentobox;
 
+import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import world.bentobox.bentobox.BentoBox;
 import world.bentobox.bentobox.api.events.island.IslandDeletedEvent;
 import world.bentobox.bentobox.api.events.island.IslandResettedEvent;
 import world.bentobox.bentobox.database.objects.Island;
@@ -38,6 +41,16 @@ public final class Main extends CompatibilityModule implements Listener {
     public void init() {
         deleteShopOnLeave = getConfig().getBoolean("delete-shop-on-member-leave");
         deleteShopOnReset = getConfig().getBoolean("delete-shop-on-island-reset");
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        Location shopLoc = event.getShop().getLocation();
+        BentoBox.getInstance().getIslandsManager().getIslandAt(shopLoc).ifPresent(island -> {
+            if (event.getAuthorizer().equals(island.getOwner())) {
+                event.setResult(true);
+            }
+        });
     }
 
     @EventHandler(ignoreCancelled = true)

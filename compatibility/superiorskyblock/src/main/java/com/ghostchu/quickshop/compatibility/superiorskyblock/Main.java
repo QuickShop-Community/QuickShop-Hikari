@@ -20,10 +20,14 @@
 package com.ghostchu.quickshop.compatibility.superiorskyblock;
 
 import com.bgsoftware.superiorskyblock.api.SuperiorSkyblockAPI;
+import com.bgsoftware.superiorskyblock.api.events.IslandChunkResetEvent;
+import com.bgsoftware.superiorskyblock.api.events.IslandKickEvent;
+import com.bgsoftware.superiorskyblock.api.events.IslandQuitEvent;
 import com.bgsoftware.superiorskyblock.api.events.IslandUncoopPlayerEvent;
 import com.bgsoftware.superiorskyblock.api.island.Island;
 import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -51,6 +55,16 @@ public final class Main extends CompatibilityModule implements Listener {
     public void init() {
         onlyOwnerCanCreateShop = getConfig().getBoolean("owner-create-only");
         deleteShopOnMemberLeave = getConfig().getBoolean("delete-shop-on-member-leave");
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        Location shopLoc = event.getShop().getLocation();
+        Island island = SuperiorSkyblockAPI.getIslandAt(shopLoc);
+        if (island == null) return;
+        if (island.getOwner().getUniqueId().equals(event.getAuthorizer())) {
+            event.setResult(true);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -94,7 +108,7 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     @EventHandler
-    public void deleteShops(com.bgsoftware.superiorskyblock.api.events.IslandQuitEvent event) {
+    public void deleteShops(IslandQuitEvent event) {
         if (deleteShopOnMemberLeave) {
             deleteShops(event.getIsland(), event.getPlayer().getUniqueId());
         }
@@ -102,7 +116,7 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     @EventHandler
-    public void deleteShops(com.bgsoftware.superiorskyblock.api.events.IslandKickEvent event) {
+    public void deleteShops(IslandKickEvent event) {
         if (deleteShopOnMemberLeave) {
             deleteShops(event.getIsland(), event.getTarget().getUniqueId());
         }
@@ -116,7 +130,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
 
     @EventHandler
-    public void deleteShopsOnChunkReset(com.bgsoftware.superiorskyblock.api.events.IslandChunkResetEvent event) {
+    public void deleteShopsOnChunkReset(IslandChunkResetEvent event) {
         deleteShops(event.getIsland(), null);
     }
 
