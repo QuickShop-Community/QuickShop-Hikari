@@ -13,10 +13,7 @@ import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @AllArgsConstructor
 public class SubCommand_Permission implements CommandHandler<Player> {
@@ -64,6 +61,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
                     plugin.text().of(sender, "unknown-player", target).send();
                     return;
                 }
+
                 switch (operation) {
                     case "set" -> {
                         if (group == null) {
@@ -81,9 +79,26 @@ public class SubCommand_Permission implements CommandHandler<Player> {
                         shop.setPlayerGroup(profile.getUniqueId(), BuiltInShopPermissionGroup.EVERYONE);
                         plugin.text().of(sender, "successfully-unset-player-group", profile.getName()).send();
                     }
+                }
+            }
+            case "group" -> {
+//                if (target == null) {
+//                    plugin.text().of(sender, "bad-command-usage-detailed", "list").send();
+//                    return;
+//                }
+//                if (!plugin.getShopPermissionManager().hasGroup(target)) {
+//                    plugin.text().of(sender,"invalid-group", target).send();
+//                    return;
+//                }
+                if (operation == null) {
+                    plugin.text().of(sender, "bad-command-usage-detailed", "list").send();
+                    return;
+                }
+                //noinspection SwitchStatementWithTooFewBranches
+                switch (operation) {
                     case "list" -> {
                         sheet.printHeader();
-                        plugin.text().of(sender, "permission.header-player", profile.getName()).send();
+                        plugin.text().of(sender, "permission.header").send();
                         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                             for (Map.Entry<UUID, String> map : shop.getPermissionAudiences().entrySet()) {
                                 String name;
@@ -93,31 +108,14 @@ public class SubCommand_Permission implements CommandHandler<Player> {
                                 } else {
                                     name = s.getName();
                                 }
-                                plugin.text().of(sender, "permission.table", name, map.getValue()).send();
+                                sheet.printLine(plugin.text().of(sender, "permission.table", name, map.getValue()).forLocale());
                             }
                             sheet.printFooter();
                         });
                     }
                 }
             }
-            case "group" -> {
-                if (target == null) {
-                    plugin.text().of(sender, "bad-command-usage-detailed", "list").send();
-                    return;
-                }
-                if (!plugin.getShopPermissionManager().hasGroup(target)) {
-                    plugin.text().of("invalid-group", target).send();
-                    return;
-                }
-                //noinspection SwitchStatementWithTooFewBranches
-                switch (operation) {
-                    case "list" -> {
-                        sheet.printHeader();
-                        plugin.text().of("permission.header-group", target).send();
-                    }
-                }
-            }
-            default -> plugin.text().of(sender, "bad-command-usage-detailed", "user").send();
+            default -> plugin.text().of(sender, "bad-command-usage-detailed", "list").send();
         }
 
 
@@ -136,11 +134,23 @@ public class SubCommand_Permission implements CommandHandler<Player> {
         if (cmdArg.length == 1) {
             return ImmutableList.of("user", "group");
         }
-        if (cmdArg[0].equalsIgnoreCase("user")) {
-            return ImmutableList.of("set", "unset", "list");
-        } else if (cmdArg[0].equalsIgnoreCase("group")) {
-            return ImmutableList.of("list");
+        if (cmdArg.length == 2) {
+            if (cmdArg[0].equalsIgnoreCase("user")) {
+                return ImmutableList.of("set", "unset");
+            } else if (cmdArg[0].equalsIgnoreCase("group")) {
+                return ImmutableList.of("list");
+            }
         }
-        return null;
+        if (cmdArg.length == 3) {
+            if (cmdArg[0].equalsIgnoreCase("user")) {
+                return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+            }
+        }
+        if (cmdArg.length == 3) {
+            if (cmdArg[0].equalsIgnoreCase("user")) {
+                return plugin.getShopPermissionManager().getGroups();
+            }
+        }
+        return Collections.emptyList();
     }
 }
