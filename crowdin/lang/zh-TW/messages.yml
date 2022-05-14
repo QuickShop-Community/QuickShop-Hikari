@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>每份數量 ： <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   price-hover: <yellow>點擊修改商品價格。
   remove: <red><bold>[刪除商店]
   mode-buying-hover: <yellow>點擊商店修改為出售模式。
-  empty: '<green>清空 ： 刪除所有商品 <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK</bold><yellow>]'
   stack-hover: <yellow>點擊設置每份的物品數量。設置為 1 以恢復為普通單物品商店。
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
-  alwayscounting: '<green>持續計數：{0} <yellow>[<light_purple><bold>修改<yellow>]'
-  setowner: '<green>店主 ： <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
-  freeze: '<yellow>凍結模式 ： <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
-  price: '<green>價格 ： <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   currency-hover: <yellow>點擊設置或移除目前正在使用的商店貨幣
-  lock: '<yellow>商店鎖 ： <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
   mode-selling: '<green>商店模式 ： <aqua>出售 <yellow>[<light_purple><bold>修改<yellow>]'
-  currency: '<green>目前 ： <aqua>{0} <yellow>[<light_purple><bold>設定<yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set</bold><yellow>]'
   setowner-hover: <yellow>點擊修改店主。
-  mode-buying: '<green>商店模式 ： <aqua>收購 <yellow>[<light_purple><bold>修改<yellow>]'
-  item: '<green>商店物品 ： {0} <yellow>[<light_purple><bold>修改<yellow>]'
-  unlimited: '<green>無限 ： {0} <yellow>[<light_purple><bold>修改<yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   unlimited-hover: <yellow>點擊修改商店模式為無限。
   refill-hover: <yellow>點擊重新填充商品。
   remove-hover: <yellow>點擊刪除商店。
   toggledisplay-hover: <yellow>切換商店是否顯示懸浮物
-  refill: '<green>補貨 ： 重新填充商品 <yellow>[<light_purple><bold>OK<yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK</bold><yellow>]'
   freeze-hover: <yellow>切換商店凍結狀態。
   lock-hover: <yellow>開啟/關閉商店鎖保護。
   item-hover: <yellow>點擊修改商店物品
   infomation: '<green>商店控制面板 ： '
   mode-selling-hover: <yellow>點擊商店修改為收購模式。
   empty-hover: <yellow>點擊清除商店內庫存。
-  toggledisplay: '<yellow>懸浮物顯示 ： <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
+  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
 timeunit:
   behind: 後面
   week: <red>{0} 星期
@@ -377,7 +377,7 @@ timeunit:
   future: 在 {0}
   days: <red>{0} 天
 command:
-  reloading: '<green>配置檔案已經重新載入，<yellow>某些更改可能需要重新啟動才能生效。<newline><gray>（注意 ： 4.0.9.10 後的重新載入發生了變化，我們現在只重新載入配置檔案而不是整個插件，以確保伺服器不會崩潰。）'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
     buy: <yellow>修改成 <light_purple>收購 <yellow>模式
     about: <yellow>顯示關於 QuickShop 的資訊
@@ -510,4 +510,5 @@ paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin 
 paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
 command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
 successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
+successfully-unset-player-group: "<green>Successfully remove player group in this shop."
 successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
