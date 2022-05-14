@@ -12,6 +12,7 @@ import java.util.Set;
 import static com.ghostchu.quickshop.shop.permission.BuiltInShopPermission.*;
 
 public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
+    BLOCKED("blocked", "blocked", ImmutableList.of(), ImmutableList.of()),
     EVERYONE("everyone", "everyone", PURCHASE, SHOW_INFORMATION, PREVIEW_SHOP, SEARCH),
     STAFF("staff", "staff", ImmutableList.of(EVERYONE), ImmutableList.of(ACCESS_INVENTORY,
             TOGGLE_DISPLAY, SET_SHOPTYPE, SET_PRICE, SET_ITEM, SET_STACK_AMOUNT,
