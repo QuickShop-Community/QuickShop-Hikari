@@ -5,6 +5,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface ShopPermissionManager {
     void registerPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission);
@@ -20,4 +21,6 @@ public interface ShopPermissionManager {
     boolean hasPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission);
 
     boolean hasPermission(@NotNull String group, @NotNull BuiltInShopPermission permission);
+
+    @NotNull List<String> getGroups();
 }

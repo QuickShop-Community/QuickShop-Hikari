@@ -5,14 +5,12 @@ import com.ghostchu.quickshop.api.shop.ShopPermissionManager;
 import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.MapMaker;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.stream.Collectors;
 
@@ -71,6 +69,11 @@ public class SimpleShopPermissionManager implements ShopPermissionManager {
             return false;
         }
         return permissionMapping.get(group).contains(namespace.getName().toLowerCase(Locale.ROOT) + "." + permission);
+    }
+
+    @NotNull
+    public List<String> getGroups() {
+        return ImmutableList.copyOf(this.permissionMapping.keySet());
     }
 
     public boolean hasPermission(@NotNull String group, @NotNull BuiltInShopPermission permission) {
