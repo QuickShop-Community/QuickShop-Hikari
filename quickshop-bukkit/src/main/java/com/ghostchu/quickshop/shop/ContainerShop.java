@@ -405,7 +405,7 @@ public class ContainerShop implements Shop {
         if (group == BuiltInShopPermissionGroup.EVERYONE) {
             this.playerGroup.remove(player);
         } else {
-            setPlayerGroup(player, group.getRawNode());
+            setPlayerGroup(player, group.getNamespacedNode());
         }
 
     }

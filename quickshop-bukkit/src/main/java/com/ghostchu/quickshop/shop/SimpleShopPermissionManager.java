@@ -50,7 +50,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         yamlConfiguration.set("version", 1);
         for (BuiltInShopPermissionGroup group : BuiltInShopPermissionGroup.values()) {
-            yamlConfiguration.set(group.getNode(), group.getPermissions().stream().map(BuiltInShopPermission::getNamespacedNode).collect(Collectors.toList()));
+            yamlConfiguration.set(group.getNamespacedNode(), group.getPermissions().stream().map(BuiltInShopPermission::getNamespacedNode).collect(Collectors.toList()));
         }
         try {
             //noinspection ResultOfMethodCallIgnored
@@ -110,7 +110,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
     }
 
     public boolean hasPermission(@NotNull String group, @NotNull BuiltInShopPermission permission) {
-        return hasPermission(group, QuickShop.getInstance(), permission.getNode());
+        return hasPermission(group, QuickShop.getInstance(), permission.getRawNode());
     }
 
     @Override

@@ -499,7 +499,7 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     private void openControlPanel(@NotNull Player p, @NotNull Shop shop) {
-        if (shop.getPlayerGroup(p.getUniqueId()).equals(BuiltInShopPermissionGroup.EVERYONE.getNode()))
+        if (shop.getPlayerGroup(p.getUniqueId()).equals(BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode()))
             return;
         MsgUtil.sendControlPanelInfo(p, shop);
         this.playClickSound(p);

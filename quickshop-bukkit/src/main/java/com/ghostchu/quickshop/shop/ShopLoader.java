@@ -491,7 +491,7 @@ public class ShopLoader {
                     shopModerator = SimpleShopModerator.deserialize(moderatorJson);
                     shopModerator.getStaffs().forEach(uuid -> {
                         Log.debug("Loaded moderator: " + uuid + ", upgrading to PlayerGroups...");
-                        this.playerGroup.put(uuid, BuiltInShopPermissionGroup.STAFF.getNode());
+                        this.playerGroup.put(uuid, BuiltInShopPermissionGroup.STAFF.getNamespacedNode());
                     });
                     needUpdate.set(true);
                     return shopModerator.getOwner();
