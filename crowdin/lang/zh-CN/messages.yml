@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>每次交易物品数量: <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   price-hover: <yellow>点击来给商店设置一个新的价格
   remove: <red><bold>[删除商店]
   mode-buying-hover: <yellow>点击可将商店切换为 出售 模式。
-  empty: '<green>清空: 删除商店所有商品 <yellow>[<light_purple><bold>确认<yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK</bold><yellow>]'
   stack-hover: <yellow>点击设置每次交易的物品数量。设置为1以恢复为普通单物品商店。
   alwayscounting-hover: <yellow>点击以切换是否总是计算容器物品。
-  alwayscounting: '<green>总是计算容器物品: {0} <yellow>[<light_purple><bold>更改<yellow>]'
-  setowner: '<green>所有者: <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
-  freeze: '<yellow>冻结模式： <aqua>{0} <yellow>[<light_purple><bold>切换<yellow>]'
-  price: '<green>价格: <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   currency-hover: <yellow>点击以设置或移除商店使用的交易货币
-  lock: '<yellow>商店锁: <aqua>{0} <yellow>[<light_purple><bold>切换<yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
   mode-selling: '<green>商店模式: <aqua>出售 <yellow>[<light_purple><bold>更改<yellow>]'
-  currency: '<green>货币: <aqua>{0} <yellow>[<light_purple><bold>设置<yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set</bold><yellow>]'
   setowner-hover: <yellow>点击来修改店主
-  mode-buying: '<green>商店模式: <aqua>收购 <yellow>[<light_purple><bold>更改<yellow>]'
-  item: '<green>无限模式: {0} <yellow>[<light_purple><bold>切换<yellow>]'
-  unlimited: '<green>无限模式: {0} <yellow>[<light_purple><bold>切换<yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   unlimited-hover: <yellow>点击以切换无限模式
   refill-hover: <yellow>点击以重新填充商品
   remove-hover: <yellow>点击来删除商店
   toggledisplay-hover: <yellow>切换商店是否显示悬浮物
-  refill: '<green>填充: 重新填充商品 <yellow>[<light_purple><bold>确认<yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK</bold><yellow>]'
   freeze-hover: <yellow>切换商店冻结状态。
   lock-hover: <yellow>启用/禁用商店锁
   item-hover: <yellow>点击以更改商店物品
   infomation: '<green>商店控制面板'
   mode-selling-hover: <yellow>点击可将商店切换为 收购 模式。
   empty-hover: <yellow>点击清除商店库存
-  toggledisplay: '<yellow>悬浮物显示: <aqua>{0} <yellow>[<light_purple><bold>切换<yellow>]'
+  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
 timeunit:
   behind: 后面
   week: <red>{0} 周
@@ -377,7 +377,7 @@ timeunit:
   future: 在 {0}
   days: <red>{0} 天
 command:
-  reloading: '<green>配置文件重载成功. <yellow>一些更改可能需要重启才能生效. <newline><gray>(注意: 重载行为已经在4.0.9.10版本后改变, 我们现在只重新加载配置文件而不是整个插件，以确保服务器不会崩溃.)'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
     buy: <yellow>切换到 <light_purple>收购 <yellow>模式
     about: <yellow>显示QuickShop信息
@@ -510,4 +510,5 @@ paste-upload-failed: "<red>上传Paste到 {0} 失败，正在尝试其它的Past
 paste-upload-failed-local: "<red>上传Paste失败，尝试生成本地Paste..."
 command-incorrect: "<red>指令用法错误，输入/qs help检查帮助。用法： {0}。"
 successfully-set-player-group: "<green>成功地将玩家 {0} 组设置为 <aqua>{1}</aqua>。"
+successfully-unset-player-group: "<green>Successfully remove player group in this shop."
 successfully-set-player-permission: "<green>成功设置玩家 {0} 权限 <aqua>{1}</aqua> 在商店 <aqua>{2}</aqua>"
