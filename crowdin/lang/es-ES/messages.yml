@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   price-hover: <yellow>Click para establecer un precio nuevo.
   remove: <red><bold>[Eliminar tienda]
   mode-buying-hover: <yellow>Click para cambiar a modo de VENTA.
-  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK</bold><yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>Click para establecer la cantidad de artículos por stack. Introduce 1 para comportamiento por defecto.
   alwayscounting-hover: <yellow>Haga clic para alternar si la tienda siempre está contando contenedores.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Click para establecer o remover la divisa que utiliza la tienda
-  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: '<green>Modo: <aqua>Venta <yellow>[<light_purple><bold>Cambiar<yellow>]'
-  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set</bold><yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Click para cambiar el dueño.
-  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change</bold><yellow>]'
-  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
-  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   unlimited-hover: <yellow>Click para alternar si la tienda es ilimitada.
   refill-hover: <yellow>Click para reaprovisionar la tienda.
   remove-hover: <yellow>Click para eliminar esta tienda.
   toggledisplay-hover: <yellow>Alternar el estado del mostrar item de la tienda
-  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK</bold><yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>Cambiar estado de congelación de la tienda.,
   lock-hover: <yellow>Activar/Desactivar protección contra bloqueo de la tienda.
   item-hover: <yellow>Clic para cambiar el artículo de la tienda
   infomation: '<green>Panel de Control de la tienda:'
   mode-selling-hover: <yellow>Click para cambiar a modo de COMPRA.
   empty-hover: <yellow>Click para limpiar el inventario de la tienda.
-  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
+  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
 timeunit:
   behind: behind
   week: <red>{0} week
@@ -377,7 +377,7 @@ timeunit:
   future: in {0}
   days: <red>{0} days
 command:
-  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
     buy: <yellow>Cambia la tienda a modo <light_purple>COMPRA<yellow>
     about: <yellow>Muestra información de QuickShop
