@@ -1039,7 +1039,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     null,
                     plugin.getName(),
                     plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper((holder).getInventory())),
-                    null);
+                    null,
+                    Collections.emptyMap());
             createShop(shop, info.getSignBlock(), info.isBypassed());
         } else {
             plugin.text().of(p, "invalid-container").send();

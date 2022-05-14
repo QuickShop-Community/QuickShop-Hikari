@@ -23,6 +23,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopControlPanel;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelPriority;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.MsgUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -172,7 +173,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
             }
         }
         // Remove
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy") || shop.canDeleteBy(((OfflinePlayer) sender).getUniqueId())) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy") || shop.playerAuthorize(((OfflinePlayer) sender).getUniqueId(), BuiltInShopPermission.DELETE)) {
             Component text = plugin.text().of(sender, "controlpanel.remove", Component.text(shop.getPrice())).forLocale();
             Component hoverText = plugin.text().of(sender, "controlpanel.remove-hover").forLocale();
             String clickCommand = MsgUtil.fillArgs("/qs silentremove {0}", shop.getRuntimeRandomUniqueId().toString());

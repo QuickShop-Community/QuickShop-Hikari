@@ -36,6 +36,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -260,6 +261,17 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
             plugin.getLogger().info("[DatabaseHelper] Migrated to 1.1.0.0 data structure, version 2");
             setDatabaseVersion(2);
         }
+        if (getDatabaseVersion() == 2) {
+            // QuickShop-Hikari 2.0.0.0
+            try {
+                manager.alterTable(prefix + "shops")
+                        .addColumn("permission", "TEXT NULL")
+                        .execute();
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.INFO, "Failed to add name column to shops table! SQL: " + e.getMessage());
+            }
+            setDatabaseVersion(3);
+        }
         plugin.getLogger().info("Finished!");
     }
 
@@ -311,7 +323,8 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
         manager.createReplace(prefix + "shops")
                 .setColumnNames("owner", "price", "itemConfig",
                         "x", "y", "z", "world", "unlimited", "type", "extra",
-                        "currency", "disableDisplay", "taxAccount", "inventorySymbolLink", "inventoryWrapperName"
+                        "currency", "disableDisplay", "taxAccount", "inventorySymbolLink", "inventoryWrapperName",
+                        "permission"
                 )
                 .setParams(ShopModerator.serialize(shop.getModerator()), shop.getPrice(), Util.serialize(shop.getItem()),
                         location.getBlockX(),
@@ -325,7 +338,8 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
                         shop.isDisableDisplay(),
                         shop.getTaxAccountActual(),
                         plugin.getInventoryWrapperManager().mklink(shop.getInventory()),
-                        shop.getInventoryWrapperProvider()
+                        shop.getInventoryWrapperProvider(),
+                        JsonUtil.getGson().toJson(shop.getPermissionAudiences())
                 )
                 .executeAsync(integer -> {
                 }, ((exception, sqlAction) -> plugin.getLogger().log(Level.SEVERE, "Failed to create the shop " + shop + " cause database returns an error while executing create SQL: " + sqlAction.getSQLContent() + ". The shop may loss after server restart!", exception)));
@@ -400,7 +414,8 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
                            double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
                            @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
-                           @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName, @Nullable String shopName) {
+                           @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName, @Nullable String shopName,
+                           @NotNull Map<UUID, String> playerGroups) {
         Log.debug("Shop updating: " + x + "," + y + "," + z + "," + world + ", " + inventorySymbolLink + ", " + inventoryWrapperName);
         manager.createUpdate(prefix + "shops")
                 .addColumnValue("owner", owner)
@@ -415,6 +430,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
                 .addColumnValue("inventorySymbolLink", inventorySymbolLink)
                 .addColumnValue("inventoryWrapperName", inventoryWrapperName)
                 .addColumnValue("name", shopName)
+                .addColumnValue("permission", JsonUtil.getGson().toJson(playerGroups))
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)

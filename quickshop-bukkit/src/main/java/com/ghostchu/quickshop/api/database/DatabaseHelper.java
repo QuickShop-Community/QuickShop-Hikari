@@ -20,13 +20,14 @@
 package com.ghostchu.quickshop.api.database;
 
 import cc.carm.lib.easysql.api.SQLQuery;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.metric.ShopMetricRecord;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.metric.ShopMetricRecord;
 
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -152,7 +153,8 @@ public interface DatabaseHelper {
     void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
                     double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
                     @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
-                    @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName, @NotNull String shopName);
+                    @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName, @NotNull String shopName,
+                    @NotNull Map<UUID, String> playerGroup);
 
     /**
      * Insert a history record into logs table
@@ -162,4 +164,5 @@ public interface DatabaseHelper {
     void insertHistoryRecord(Object rec);
 
     void insertMetricRecord(@NotNull ShopMetricRecord record);
+
 }

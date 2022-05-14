@@ -21,7 +21,6 @@ package com.ghostchu.quickshop.compatibility.towny;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopDeleteOverrideEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -69,26 +68,6 @@ public final class Main extends CompatibilityModule implements Listener {
         deleteShopOnPlotClear = getConfig().getBoolean("delete-shop-on-plot-clear");
         deleteShopOnPlotDestroy = getConfig().getBoolean("delete-shop-on-plot-destroy");
         whiteList = getConfig().getBoolean("towny.whitelist-mode");
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onIslandOwnerDeleteCheck(ShopDeleteOverrideEvent event) {
-        if (TownyAPI.getInstance().getTownyWorld(event.getShop().getLocation().getWorld()) == null) return;
-        Town town = TownyAPI.getInstance().getTown(event.getShop().getLocation());
-        if (town != null) {
-            if (town.getMayor().getUUID().equals(event.getRequester())) {
-                event.setOverrideForAllowed(true);
-                Log.debug("Town owner delete check: " + event.getRequester() + " is the owner of " + town.getName() + ", grant shop " + event.getShop() + " delete permission.");
-            }
-            try {
-                if (town.getNation().getKing().getUUID().equals(event.getRequester())) {
-                    event.setOverrideForAllowed(true);
-                    Log.debug("Town owner delete check: " + event.getRequester() + " is the nation owner of " + town.getName() + ", grant shop " + event.getShop() + " delete permission.");
-                }
-            } catch (NotRegisteredException ignored) {
-
-            }
-        }
     }
 
     @EventHandler(ignoreCancelled = true)

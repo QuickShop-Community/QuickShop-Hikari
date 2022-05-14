@@ -29,6 +29,8 @@ import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.RealDisplayItem;
 import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -114,6 +116,8 @@ public class ContainerShop implements Shop {
     private String symbolLink;
     @Nullable
     private String shopName;
+    @NotNull
+    private Map<UUID, String> playerGroup = new HashMap<>();
 
     ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
@@ -138,6 +142,7 @@ public class ContainerShop implements Shop {
         this.inventoryWrapperProvider = s.inventoryWrapperProvider;
         this.symbolLink = s.symbolLink;
         this.shopName = s.shopName;
+        this.playerGroup = s.playerGroup;
         initDisplayItem();
     }
 
@@ -169,7 +174,8 @@ public class ContainerShop implements Shop {
             @Nullable UUID taxAccount,
             @NotNull String inventoryWrapperProvider,
             @NotNull String symbolLink,
-            @Nullable String shopName) {
+            @Nullable String shopName,
+            @NotNull Map<UUID, String> playerGroup) {
         Util.ensureThread(false);
         this.shopName = shopName;
         this.location = location;
@@ -177,6 +183,7 @@ public class ContainerShop implements Shop {
         this.moderator = moderator;
         this.item = item.clone();
         this.plugin = plugin;
+        this.playerGroup = new HashMap<>(playerGroup);
         if (!plugin.isAllowStack()) {
             this.item.setAmount(1);
         }
@@ -301,13 +308,52 @@ public class ContainerShop implements Shop {
         }
     }
 
+    /**
+     * Check if player has permission to authorize the specified permission node.
+     *
+     * @param player     the player
+     * @param permission the permission node
+     * @return true if player has permission, false otherwise
+     */
     @Override
-    public boolean canDeleteBy(@NotNull UUID uuid) {
-        if (getOwner().equals(uuid))
-            return true;
-        ShopDeleteOverrideEvent event = new ShopDeleteOverrideEvent(this, uuid);
-        event.callEvent();
-        return event.isOverrideForAllowed();
+    public boolean playerAuthorize(@NotNull UUID player, @NotNull BuiltInShopPermission permission) {
+        return playerAuthorize(player, QuickShop.getInstance(), permission.getNode());
+    }
+
+    /**
+     * Check if player has permission to authorize the specified permission node.
+     *
+     * @param player     the player
+     * @param namespace  the plugin instance for the permission node (namespace)
+     * @param permission the permission node
+     * @return true if player has permission, false otherwise
+     */
+    @Override
+    public boolean playerAuthorize(@NotNull UUID player, @NotNull Plugin namespace, @NotNull String permission) {
+        if (player.equals(getOwner())) return true;
+        String group = getPlayerGroup(player);
+        return plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
+    }
+
+    /**
+     * Gets the player's group in this shop
+     *
+     * @param player the player
+     * @return the group
+     */
+    @Override
+    public @NotNull String getPlayerGroup(@NotNull UUID player) {
+        return this.playerGroup.getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNode());
+    }
+
+    /**
+     * Gets registered to this shop's permission audiences.
+     *
+     * @return registered audiences
+     */
+    @Override
+    public @NotNull Map<UUID, String> getPermissionAudiences() {
+        return Map.copyOf(playerGroup);
     }
 
     /**
@@ -918,7 +964,7 @@ public class ContainerShop implements Shop {
             plugin.getDatabaseHelper()
                     .updateShop(SimpleShopModerator.serialize(this.moderator), this.getItem(),
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
-                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), saveToSymbolLink(), this.inventoryWrapperProvider, this.shopName);
+                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), saveToSymbolLink(), this.inventoryWrapperProvider, this.shopName, this.playerGroup);
             this.dirty = false;
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING,

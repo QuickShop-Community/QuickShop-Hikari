@@ -28,6 +28,7 @@ import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.Timer;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
@@ -43,12 +44,10 @@ import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -131,7 +130,8 @@ public class ShopLoader {
                             data.getTaxAccount(),
                             data.getInventoryWrapperProvider(),
                             data.getSymbolLink(),
-                            data.getShopName());
+                            data.getShopName(),
+                            data.getPlayerGroup());
                 } catch (Exception e) {
                     if (e instanceof IllegalStateException) {
                         plugin.getLogger().log(Level.WARNING, "Failed to load the shop, skipping...", e);
@@ -302,7 +302,8 @@ public class ShopLoader {
                                 data.getTaxAccount(),
                                 data.getInventoryWrapperProvider(),
                                 data.getSymbolLink(),
-                                data.getShopName());
+                                data.getShopName(),
+                                data.getPlayerGroup());
                 if (shopNullCheck(shop)) {
                     continue;
                 }
@@ -368,6 +369,9 @@ public class ShopLoader {
 
         private String shopName;
 
+        private Map<UUID, String> playerGroup;
+
+        @SuppressWarnings("UnstableApiUsage")
         ShopRawDatabaseInfo(ResultSet rs) throws SQLException {
             this.x = rs.getInt("x");
             this.y = rs.getInt("y");
@@ -389,6 +393,9 @@ public class ShopLoader {
             this.symbolLink = rs.getString("inventorySymbolLink");
             this.inventoryWrapperProvider = rs.getString("inventoryWrapperName");
             this.shopName = rs.getString("name");
+            Type type = new TypeToken<Map<String, String>>() {
+            }.getType();
+            this.playerGroup = JsonUtil.getGson().fromJson(rs.getString("permission"), type);
         }
 
         @Override
@@ -436,6 +443,8 @@ public class ShopLoader {
 
         private String shopName;
 
+        private Map<UUID, String> playerGroup;
+
         ShopDatabaseInfo(ShopRawDatabaseInfo origin) {
             try {
                 this.x = origin.getX();
@@ -455,6 +464,7 @@ public class ShopLoader {
                 this.inventoryWrapperProvider = origin.getInventoryWrapperProvider();
                 this.symbolLink = origin.getSymbolLink();
                 this.shopName = origin.getShopName();
+                this.playerGroup = origin.getPlayerGroup();
             } catch (Exception ex) {
                 exceptionHandler(ex, this.location);
             }

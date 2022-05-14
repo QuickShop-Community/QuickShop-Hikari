@@ -46,10 +46,7 @@ import com.ghostchu.quickshop.permission.PermissionManager;
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.paper.PaperPlatform;
 import com.ghostchu.quickshop.platform.spigot.SpigotPlatform;
-import com.ghostchu.quickshop.shop.InteractionController;
-import com.ghostchu.quickshop.shop.ShopLoader;
-import com.ghostchu.quickshop.shop.ShopPurger;
-import com.ghostchu.quickshop.shop.SimpleShopManager;
+import com.ghostchu.quickshop.shop.*;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanel;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
 import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
@@ -125,6 +122,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private ItemMatcher itemMatcher;
     private SimpleShopManager shopManager;
     private SimpleTextManager textManager;
+    @Getter
+    private SimpleShopPermissionManager shopPermissionManager;
     private boolean priceChangeRequiresFee = false;
     private final InventoryWrapperRegistry inventoryWrapperRegistry = new InventoryWrapperRegistry(this);
     @Getter
@@ -314,6 +313,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         /* Initalize the tools */
         // Create the shop manager.
         permissionManager = new PermissionManager(this);
+        shopPermissionManager = new SimpleShopPermissionManager(this);
         // This should be inited before shop manager
         this.registerDisplayAutoDespawn();
         getLogger().info("Registering commands...");

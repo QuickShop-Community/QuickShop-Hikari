@@ -24,6 +24,7 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.shop.ShopSignStorage;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -38,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -47,13 +49,15 @@ public interface Shop {
     NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShop.getInstance(), "shopsign");
     NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
 
-    /**
-     * Check if shop can be deleted by specified player
-     *
-     * @param uuid Player's UUID
-     * @return True if can be deleted, otherwise false.
-     */
-    boolean canDeleteBy(@NotNull UUID uuid);
+    boolean playerAuthorize(@NotNull UUID player, @NotNull Plugin namespace, @NotNull String permission);
+
+    boolean playerAuthorize(@NotNull UUID player, @NotNull BuiltInShopPermission permission);
+
+    @NotNull
+    String getPlayerGroup(@NotNull UUID player);
+
+    @NotNull
+    Map<UUID, String> getPermissionAudiences();
 
     /**
      * Sets shop name

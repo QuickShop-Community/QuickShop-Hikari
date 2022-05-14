@@ -20,14 +20,12 @@
 package com.ghostchu.quickshop.compatibility.lands;
 
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopDeleteOverrideEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.logger.Log;
 import me.angeschossen.lands.api.events.LandUntrustPlayerEvent;
 import me.angeschossen.lands.api.events.PlayerLeaveLandEvent;
 import me.angeschossen.lands.api.integration.LandsIntegration;
@@ -52,20 +50,6 @@ public final class Main extends CompatibilityModule implements Listener {
         ignoreDisabledWorlds = getConfig().getBoolean("ignore-disabled-worlds");
         whitelist = getConfig().getBoolean("whitelist-mode");
         deleteWhenLosePermission = getConfig().getBoolean("delete-on-lose-permission");
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onIslandOwnerDeleteCheck(ShopDeleteOverrideEvent event) {
-        if (landsIntegration.getLandWorld(event.getShop().getLocation().getWorld()) == null) {
-            return;
-        }
-        Land land = landsIntegration.getLand(event.getShop().getLocation());
-        if (land != null) {
-            if (land.getOwnerUID().equals(event.getRequester())) {
-                event.setOverrideForAllowed(true);
-                Log.debug("Land owner delete check: " + event.getRequester() + " is the owner of " + land.getName() + ", grant shop " + event.getShop() + " delete permission.");
-            }
-        }
     }
 
     @EventHandler(ignoreCancelled = true)

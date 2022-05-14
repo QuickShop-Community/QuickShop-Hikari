@@ -20,13 +20,11 @@
 package com.ghostchu.quickshop.compatibility.griefprevention;
 
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopDeleteOverrideEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.ClaimPermission;
@@ -63,21 +61,6 @@ public final class Main extends CompatibilityModule implements Listener {
         this.deleteOnSubClaimCreated = getConfig().getBoolean("delete-on-subclaim-created");
         this.createLimit = Flag.getFlag(getConfig().getString("create"));
         this.tradeLimits.addAll(toFlags(getConfig().getStringList("trade")));
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onIslandOwnerDeleteCheck(ShopDeleteOverrideEvent event) {
-        if (!griefPrevention.claimsEnabledForWorld(event.getShop().getLocation().getWorld())) {
-            return;
-        }
-        Claim claim = griefPrevention.dataStore.getClaimAt(event.getShop().getLocation(), false, false, griefPrevention.dataStore.getPlayerData(event.getRequester()).lastClaim);
-        if (claim == null) {
-            return;
-        }
-        if (claim.getOwnerID().equals(event.getRequester())) {
-            event.setOverrideForAllowed(true);
-            Log.debug("Claim owner delete check: " + event.getRequester() + " is the owner of " + claim.getID() + ", grant shop " + event.getShop() + " delete permission.");
-        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

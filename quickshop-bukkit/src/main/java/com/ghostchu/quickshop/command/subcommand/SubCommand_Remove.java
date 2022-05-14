@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
@@ -39,7 +40,7 @@ public class SubCommand_Remove implements CommandHandler<Player> {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
-        if (shop.canDeleteBy(sender.getUniqueId())
+        if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.DELETE)
                 || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")) {
             shop.delete();
             plugin.logEvent(new ShopRemoveLog(sender.getUniqueId(), "/qs remove command", shop.saveToInfoStorage()));

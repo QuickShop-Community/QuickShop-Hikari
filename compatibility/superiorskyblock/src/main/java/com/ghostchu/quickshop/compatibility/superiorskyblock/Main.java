@@ -25,11 +25,9 @@ import com.bgsoftware.superiorskyblock.api.island.Island;
 import com.bgsoftware.superiorskyblock.api.wrappers.SuperiorPlayer;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopDeleteOverrideEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
-import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -53,17 +51,6 @@ public final class Main extends CompatibilityModule implements Listener {
     public void init() {
         onlyOwnerCanCreateShop = getConfig().getBoolean("owner-create-only");
         deleteShopOnMemberLeave = getConfig().getBoolean("delete-shop-on-member-leave");
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onIslandOwnerDeleteCheck(ShopDeleteOverrideEvent event) {
-        Island land = SuperiorSkyblockAPI.getIslandAt(event.getShop().getLocation());
-        if (land != null) {
-            if (event.getRequester().equals(land.getOwner().getUniqueId())) {
-                event.setOverrideForAllowed(true);
-                Log.debug("Island owner delete check: " + event.getRequester() + " is the owner of " + land.getName() + ", grant shop " + event.getShop() + " delete permission.");
-            }
-        }
     }
 
     @EventHandler(ignoreCancelled = true)
