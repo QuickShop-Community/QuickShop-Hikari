@@ -40,6 +40,11 @@ public enum BuiltInShopPermission implements ShopPermissionAudience {
         return node;
     }
 
+    @NotNull
+    public String getNamespacedNode() {
+        return "quickshop." + this.node;
+    }
+
     @Override
     public boolean hasPermission(@NotNull String permission) {
         return this.node.equals(permission);

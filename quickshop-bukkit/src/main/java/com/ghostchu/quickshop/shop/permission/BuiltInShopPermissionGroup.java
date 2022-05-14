@@ -84,6 +84,11 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
     }
 
     @NotNull
+    public String getNamespacedNode() {
+        return "quickshop." + this.node;
+    }
+
+    @NotNull
     public List<BuiltInShopPermission> getPermissions() {
         return permissions;
     }
