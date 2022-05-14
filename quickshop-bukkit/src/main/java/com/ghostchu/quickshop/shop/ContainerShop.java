@@ -320,6 +320,22 @@ public class ContainerShop implements Shop {
         return playerAuthorize(player, QuickShop.getInstance(), permission.getNode());
     }
 
+    @Override
+    public List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermission permission) {
+        return playersCanAuthorize(QuickShop.getInstance(), permission.getNode());
+    }
+
+    @Override
+    public List<UUID> playersCanAuthorize(@NotNull Plugin namespace, @NotNull String permission) {
+        List<UUID> result = new ArrayList<>();
+        for (Map.Entry<UUID, String> uuidStringEntry : this.playerGroup.entrySet()) {
+            String group = uuidStringEntry.getValue();
+            if (plugin.getShopPermissionManager().hasPermission(group, namespace, permission))
+                result.add(uuidStringEntry.getKey());
+        }
+        return result;
+    }
+
     /**
      * Check if player has permission to authorize the specified permission node.
      *
@@ -447,7 +463,7 @@ public class ContainerShop implements Shop {
                     .build();
             if (!transaction.failSafeCommit()) {
                 plugin.getSentryErrorReporter().ignoreThrow();
-                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:"+transaction.getLastError());
+                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         } else {
             InventoryWrapper chestInv = this.getInventory();
@@ -465,7 +481,7 @@ public class ContainerShop implements Shop {
                     .build();
             if (!transaction.failSafeCommit()) {
                 plugin.getSentryErrorReporter().ignoreThrow();
-                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:"+transaction.getLastError());
+                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         }
         //Update sign
@@ -794,7 +810,7 @@ public class ContainerShop implements Shop {
                     .build();
             if (!transaction.failSafeCommit()) {
                 plugin.getSentryErrorReporter().ignoreThrow();
-                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:"+transaction.getLastError());
+                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         } else {
             InventoryWrapper chestInv = this.getInventory();
@@ -811,7 +827,7 @@ public class ContainerShop implements Shop {
                     .build();
             if (!transactionTake.failSafeCommit()) {
                 plugin.getSentryErrorReporter().ignoreThrow();
-                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:"+transactionTake.getLastError());
+                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transactionTake.getLastError());
             }
             this.setSignText();
             if (attachedShop != null) {
@@ -865,7 +881,8 @@ public class ContainerShop implements Shop {
         }
         Component line2 = switch (shopRemaining) {
             //Unlimited
-            case -1 -> plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale)).forLocale(locale);
+            case -1 ->
+                    plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale)).forLocale(locale);
             //No remaining
             case 0 -> plugin.text().of(noRemainingStringKey).forLocale(locale);
             //Has remaining
@@ -1504,16 +1521,16 @@ public class ContainerShop implements Shop {
 
         switch (((Chest) getLocation().getBlock().getBlockData()).getFacing()) {
             case WEST ->
-                    // left block has a smaller z value
+                // left block has a smaller z value
                     isLeftShop = getLocation().getZ() < attachedShop.getLocation().getZ();
             case EAST ->
-                    // left block has a greater z value
+                // left block has a greater z value
                     isLeftShop = getLocation().getZ() > attachedShop.getLocation().getZ();
             case NORTH ->
-                    // left block has greater x value
+                // left block has greater x value
                     isLeftShop = getLocation().getX() > attachedShop.getLocation().getX();
             case SOUTH ->
-                    // left block has a smaller x value
+                // left block has a smaller x value
                     isLeftShop = getLocation().getX() < attachedShop.getLocation().getX();
             default -> isLeftShop = false;
         }

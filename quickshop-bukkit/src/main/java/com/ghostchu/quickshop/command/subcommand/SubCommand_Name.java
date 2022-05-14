@@ -24,6 +24,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.event.ShopNamingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.AllArgsConstructor;
@@ -49,7 +50,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
-        if (!shop.getModerator().isModerator(sender.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.shopnaming")) {
+        if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_NAME) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.shopnaming")) {
             plugin.text().of(sender, "not-managed-shop").send();
         }
 

@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.*;
 import com.ghostchu.quickshop.util.economyformatter.EconomyFormatter;
 import com.ghostchu.quickshop.util.holder.Result;
@@ -727,18 +728,20 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                             .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
                 }
                 if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
-                    for (UUID staff : shop.getModerator().getStaffs()) {
-                        MsgUtil.send(shop, staff, msg);
+                    for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
+                        MsgUtil.send(shop, recv, msg);
                     }
+                } else {
+                    MsgUtil.send(shop, shop.getOwner(), msg);
                 }
-                MsgUtil.send(shop, shop.getOwner(), msg);
             }
             if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
-                for (UUID staff : shop.getModerator().getStaffs()) {
-                    MsgUtil.send(shop, staff, msg);
+                for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
+                    MsgUtil.send(shop, recv, msg);
                 }
+            } else {
+                MsgUtil.send(shop, shop.getOwner(), msg);
             }
-            MsgUtil.send(shop, shop.getOwner(), msg);
         });
 
     }
@@ -1185,11 +1188,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
             }
 
-            MsgUtil.send(shop, shop.getOwner(), msg);
             if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
-                for (UUID staff : shop.getModerator().getStaffs()) {
-                    MsgUtil.send(shop, staff, msg);
+                for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
+                    MsgUtil.send(shop, recv, msg);
                 }
+            } else {
+                MsgUtil.send(shop, shop.getOwner(), msg);
             }
             // Transfers the item from A to B
             if (stock == amount) {
@@ -1205,11 +1209,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                                     MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
                             .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
                 }
-                MsgUtil.send(shop, shop.getOwner(), msg);
                 if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
-                    for (UUID staff : shop.getModerator().getStaffs()) {
-                        MsgUtil.send(shop, staff, msg);
+                    for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
+                        MsgUtil.send(shop, recv, msg);
                     }
+                } else {
+                    MsgUtil.send(shop, shop.getOwner(), msg);
                 }
             }
         });

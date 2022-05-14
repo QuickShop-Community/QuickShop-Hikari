@@ -24,7 +24,7 @@ public class SimpleShopPermissionManager {
 
     private void initDefault() {
         for (BuiltInShopPermissionGroup group : BuiltInShopPermissionGroup.values()) {
-            registerGroup(group.getName(), new CopyOnWriteArraySet<>(group.getPermissions().stream().map(BuiltInShopPermission::getNode).collect(Collectors.toSet())));
+            registerGroup(group.getName(), new CopyOnWriteArraySet<>(group.getPermissions().stream().map(perm -> "quickshop." + perm.getNode()).collect(Collectors.toSet())));
         }
         Log.debug("Initialized default permission mapping.");
     }

@@ -53,6 +53,10 @@ public interface Shop {
 
     boolean playerAuthorize(@NotNull UUID player, @NotNull BuiltInShopPermission permission);
 
+    List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermission permission);
+
+    List<UUID> playersCanAuthorize(@NotNull Plugin plugin, @NotNull String permission);
+
     @NotNull
     String getPlayerGroup(@NotNull UUID player);
 

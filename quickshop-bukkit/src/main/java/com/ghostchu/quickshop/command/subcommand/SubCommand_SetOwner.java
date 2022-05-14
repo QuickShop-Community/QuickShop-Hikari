@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.enginehub.squirrelid.Profile;
@@ -47,6 +48,11 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
 
         if (shop == null) {
             plugin.text().of(sender, "not-looking-at-shop").send();
+            return;
+        }
+
+        if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.OWNERSHIP_TRANSFER)) {
+            plugin.text().of(sender, "no-permission").send();
             return;
         }
 

@@ -4,25 +4,24 @@ import com.ghostchu.quickshop.api.shop.ShopPermissionAudience;
 import org.jetbrains.annotations.NotNull;
 
 public enum BuiltInShopPermission implements ShopPermissionAudience {
-    PURCHASE("quickshop.purchase", "purchase"),
-    SHOW_INFORMATION("quickshop.show_information", "show-information"),
-    PREVIEW_SHOP("quickshop.preview_shop", "preview-shop"),
-    SEARCH("quickshop.search", "search"),
-    DELETE("quickshop.delete", "delete"),
-    RECEIVE_ALERT("quickshop.alert.receive", "receive-alert"),
-    ACCESS_INVENTORY("quickshop.access_inventory", "access-inventory"),
-    OWNERSHIP_TRANSFER("quickshop.ownership_transfer", "ownership-transfer"),
-    MODIFY_MODERATORS("quickshop.modify_moderators", "modify-moderators"),
-    MANAGEMENT_PERMISSION("quickshop.management_permission", "management-permission"),
-    TOGGLE_DISPLAY("quickshop.toggle_display", "toggle-display"),
-    TOGGLE_UNLIMITED("quickshop.toggle_unlimited", "toggle-unlimited"),
-    SET_SHOPTYPE("quickshop.set_shoptype", "set-shoptype"),
-    SET_PRICE("quickshop.set_price", "set-price"),
-    SET_ITEM("quickshop.set_item", "set-item"),
-    SET_STACK_AMOUNT("quickshop.set_stack_amount", "set-stack-amount"),
-    SET_ALWAYS_COUNTING("quickshop.set_always_counting", "set-always-counting"),
-    SET_TAX_ACCOUNT("quickshop.set_tax_account", "set-tax-account"),
-    SET_CURRENCY("quickshop.set_currency", "set-currency");
+    PURCHASE("purchase", "purchase"),
+    SHOW_INFORMATION("show_information", "show-information"),
+    PREVIEW_SHOP("preview_shop", "preview-shop"),
+    SEARCH("search", "search"),
+    DELETE("delete", "delete"),
+    RECEIVE_ALERT("alert.receive", "receive-alert"),
+    ACCESS_INVENTORY("access_inventory", "access-inventory"),
+    OWNERSHIP_TRANSFER("ownership_transfer", "ownership-transfer"),
+    MODIFY_MODERATORS("modify_moderators", "modify-moderators"),
+    MANAGEMENT_PERMISSION("management_permission", "management-permission"),
+    TOGGLE_DISPLAY("toggle_display", "toggle-display"),
+    SET_SHOPTYPE("set_shoptype", "set-shoptype"),
+    SET_PRICE("set_price", "set-price"),
+    SET_ITEM("set_item", "set-item"),
+    SET_STACK_AMOUNT("set_stack_amount", "set-stack-amount"),
+    SET_TAX_ACCOUNT("set_tax_account", "set-tax-account"),
+    SET_CURRENCY("set_currency", "set-currency"),
+    SET_NAME("set_name", "set-name");
 
     private final String node;
 
