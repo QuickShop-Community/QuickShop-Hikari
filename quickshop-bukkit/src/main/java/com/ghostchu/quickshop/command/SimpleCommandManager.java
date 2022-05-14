@@ -349,7 +349,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .executor(new SubCommand_Purge(plugin))
                 .build());
         registerCmd(CommandContainer.builder()
-                .prefix("purge")
+                .prefix("permission")
                 .permission("quickshop.permission")
                 .executor(new SubCommand_Permission(plugin))
                 .build());
