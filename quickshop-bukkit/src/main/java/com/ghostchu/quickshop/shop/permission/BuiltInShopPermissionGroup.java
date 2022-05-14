@@ -1,13 +1,11 @@
 package com.ghostchu.quickshop.shop.permission;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.ShopPermissionAudience;
 import com.google.common.collect.ImmutableList;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.ghostchu.quickshop.shop.permission.BuiltInShopPermission.*;
 
@@ -86,7 +84,7 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
 
     @NotNull
     public String getNamespacedNode() {
-        return "quickshop." + this.node;
+        return QuickShop.getInstance().getName().toLowerCase(Locale.ROOT) + this.node;
     }
 
     @NotNull

@@ -1,7 +1,10 @@
 package com.ghostchu.quickshop.shop.permission;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.ShopPermissionAudience;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Locale;
 
 public enum BuiltInShopPermission implements ShopPermissionAudience {
     PURCHASE("purchase", "purchase"),
@@ -42,7 +45,7 @@ public enum BuiltInShopPermission implements ShopPermissionAudience {
 
     @NotNull
     public String getNamespacedNode() {
-        return "quickshop." + this.node;
+        return QuickShop.getInstance().getName().toLowerCase(Locale.ROOT) + this.node;
     }
 
     @Override
