@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>每次交易物品数量: <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   price-hover: <yellow>点击来给商店设置一个新的价格
   remove: <red><bold>[删除商店]
   mode-buying-hover: <yellow>点击可将商店切换为 出售 模式。
-  empty: '<green>清空: 删除商店所有商品 <yellow>[<light_purple><bold>确认<yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK</bold><yellow>]'
   stack-hover: <yellow>点击设置每次交易的物品数量。设置为1以恢复为普通单物品商店。
   alwayscounting-hover: <yellow>点击以切换是否总是计算容器物品。
-  alwayscounting: '<green>总是计算容器物品: {0} <yellow>[<light_purple><bold>更改<yellow>]'
-  setowner: '<green>所有者: <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
-  freeze: '<yellow>冻结模式： <aqua>{0} <yellow>[<light_purple><bold>切换<yellow>]'
-  price: '<green>价格: <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   currency-hover: <yellow>点击以设置或移除商店使用的交易货币
-  lock: '<yellow>商店锁: <aqua>{0} <yellow>[<light_purple><bold>切换<yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
   mode-selling: '<green>商店模式: <aqua>出售 <yellow>[<light_purple><bold>更改<yellow>]'
-  currency: '<green>货币: <aqua>{0} <yellow>[<light_purple><bold>设置<yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set</bold><yellow>]'
   setowner-hover: <yellow>点击来修改店主
-  mode-buying: '<green>商店模式: <aqua>收购 <yellow>[<light_purple><bold>更改<yellow>]'
-  item: '<green>无限模式: {0} <yellow>[<light_purple><bold>切换<yellow>]'
-  unlimited: '<green>无限模式: {0} <yellow>[<light_purple><bold>切换<yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change</bold><yellow>]'
   unlimited-hover: <yellow>点击以切换无限模式
   refill-hover: <yellow>点击以重新填充商品
   remove-hover: <yellow>点击来删除商店
   toggledisplay-hover: <yellow>切换商店是否显示悬浮物
-  refill: '<green>填充: 重新填充商品 <yellow>[<light_purple><bold>确认<yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK</bold><yellow>]'
   freeze-hover: <yellow>切换商店冻结状态。
   lock-hover: <yellow>启用/禁用商店锁
   item-hover: <yellow>点击以更改商店物品
   infomation: '<green>商店控制面板'
   mode-selling-hover: <yellow>点击可将商店切换为 收购 模式。
   empty-hover: <yellow>点击清除商店库存
-  toggledisplay: '<yellow>悬浮物显示: <aqua>{0} <yellow>[<light_purple><bold>切换<yellow>]'
+  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold><yellow>]'
 timeunit:
   behind: 后面
   week: <red>{0} 周
@@ -377,7 +377,7 @@ timeunit:
   future: 在 {0}
   days: <red>{0} 天
 command:
-  reloading: '<green>配置文件重载成功. <yellow>一些更改可能需要重启才能生效. <newline><gray>(注意: 重载行为已经在4.0.9.10版本后改变, 我们现在只重新加载配置文件而不是整个插件，以确保服务器不会崩溃.)'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
     buy: <yellow>切换到 <light_purple>收购 <yellow>模式
     about: <yellow>显示QuickShop信息
@@ -418,6 +418,7 @@ command:
     taxaccount: <yellow>设置商店使用的税务账户
     name: <yellow>将商店命名为特定名称
     toggledisplay: <yellow>切换商店是否显示悬浮物
+    permission: <yellow>商店权限管理
   bulk-size-not-set: '<red>用法: /qs size <数量>'
   no-type-given: '<red>用法: /qs find <物品名称>'
   feature-not-enabled: 该功能未在配置文件中启用。
@@ -466,4 +467,48 @@ client-language-unsupported: <yellow>QuickShop不支持您的客户端语言，�
 language-version: '63'
 not-managed-shop: <red>你不是该商店的所有者或助手
 shop-cannot-trade-when-freezing: <red>您不能与这家商店交易，因为它已被冻结。
-invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
+invalid-container: <red>无效的容器方块。您只能在有库存的方块上创建商店。
+permission:
+  header: "<green>商店权限信息"
+  header-player: "<green> {0} 的商店权限信息"
+  header-group: "<green>商店权限信息 {0}"
+  table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
+  item:
+    purchase: "<yellow>允许拥有此权限的用户与商店进行交易(包括购买和收购)"
+    show-information: "<yellow>允许拥有此权限的用户查看商店信息。(查看商店控制面板)"
+    preview-shop: "<yellow>允许拥有此权限的用户预览商店所交易的物品(物品预览)"
+    search: "<yellow>允许拥有此权限的用户搜索目标商店(移除权限将商店从搜索结果中隐藏)"
+    delete: "<yellow>允许拥有此权限的用户删除商店。"
+    receive-alert: "<yellow>允许拥有此权限的用户接收商店消息 (商店缺货或新交易信息)。"
+    access-inventory: "<yellow>允许拥有此权限的用户查看商店库存"
+    ownership-transfer: "<yellow>允许拥有此权限的用户转移商店所有者。"
+    management-permission: "<yellow>允许拥有此权限的用户管理组权限并编辑用户组"
+    toggle-display: "<yellow>允许拥有此权限的用户切换商店悬浮物显示。"
+    set-shoptype: "<yellow>允许拥有此权限的用户设置商店交易模式(切换购买或收购)。"
+    set-price: "<yellow>允许拥有此权限的用户设置商店价格"
+    set-item: "<yellow>允许拥有此权限的用户设置商店交易物品"
+    set-stack-amount: "<yellow>允许拥有此权限的用户设置商店堆叠金额"
+    set-currency: "<yellow>允许拥有此权限的用户设置商店货币。"
+    set-name: "<yellow>允许拥有此权限的用户设置商店名称。"
+  group:
+    everyone: "<yellow>除商店店主外，所有用户的默认权限组。"
+    staff: "<yellow>商店助手的系统权限组"
+    administrator: "<red>管理员权限组，该组中的用户与商店店主拥有几乎相同的权限。"
+invalid-group: "<red>无效的组名称"
+invalid-permission: "<red>无效权限"
+invalid-operation: "<red>无效的操作，只允许 {0}"
+player-no-group: "<yellow>玩家 {0} 在这个商店中不属于组"
+player-in-group: "<green>玩家 {0} 属于组 <aqua>{1}</aqua> 在这个商店"
+permission-required: "<red>您在这个商店里没有权限 {0} 去做这个。"
+no-permission-detailed: "<red>您没有权限 <yellow>{0}</yellow> 去做这个。"
+paste-uploading: "<aqua>请稍候... 正在上传Paste到pastebin..."
+paste-created: "<green>Paste已创建，点击在浏览器中打开： <yellow>{0}</yellow><newline><red>警告： <gray>永远不要将Paste发送给不信任的人。"
+paste-created-local: "<green>Paste创建并保存到您的本地磁盘： {0}<newline><red>警告： <gray>永远不要将Paste发送给不信任的人。"
+paste-created-local-failed: "<red>保存Paste到本地磁盘失败，请检查您的磁盘。"
+paste-451: "<gray><b>TIPS: </b> 您所在的国家或地区似乎已经阻止了CloudFlare Workers 服务, QuickShop Paste可能无法正确加载。<newline><gray>如果后续操作失败， 尝试添加 --file 附加参数以生成本地Paste： <dark_gray>/qs paste --file</dark_gray>"
+paste-upload-failed: "<red>上传Paste到 {0} 失败，正在尝试其它的Pastebin..."
+paste-upload-failed-local: "<red>上传Paste失败，尝试生成本地Paste..."
+command-incorrect: "<red>指令用法错误，输入/qs help检查帮助。用法： {0}。"
+successfully-set-player-group: "<green>成功地将玩家 {0} 组设置为 <aqua>{1}</aqua>。"
+successfully-unset-player-group: "<green>Successfully remove player group in this shop."
+successfully-set-player-permission: "<green>成功设置玩家 {0} 权限 <aqua>{1}</aqua> 在商店 <aqua>{2}</aqua>"

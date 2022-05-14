@@ -24,14 +24,18 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Timer;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -43,12 +47,10 @@ import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -122,7 +124,7 @@ public class ShopLoader {
                             data.getLocation(),
                             data.getPrice(),
                             data.getItem(),
-                            data.getModerators(),
+                            data.getOwner(),
                             data.isUnlimited(),
                             data.getType(),
                             data.getExtra(),
@@ -131,7 +133,8 @@ public class ShopLoader {
                             data.getTaxAccount(),
                             data.getInventoryWrapperProvider(),
                             data.getSymbolLink(),
-                            data.getShopName());
+                            data.getShopName(),
+                            data.getPlayerGroup());
                 } catch (Exception e) {
                     if (e instanceof IllegalStateException) {
                         plugin.getLogger().log(Level.WARNING, "Failed to load the shop, skipping...", e);
@@ -293,7 +296,7 @@ public class ShopLoader {
                                 data.getLocation(),
                                 data.getPrice(),
                                 data.getItem(),
-                                data.getModerators(),
+                                data.getOwner(),
                                 data.isUnlimited(),
                                 data.getType(),
                                 data.getExtra(),
@@ -302,7 +305,8 @@ public class ShopLoader {
                                 data.getTaxAccount(),
                                 data.getInventoryWrapperProvider(),
                                 data.getSymbolLink(),
-                                data.getShopName());
+                                data.getShopName(),
+                                data.getPlayerGroup());
                 if (shopNullCheck(shop)) {
                     continue;
                 }
@@ -338,7 +342,7 @@ public class ShopLoader {
     public static class ShopRawDatabaseInfo {
         private String item;
 
-        private String moderators;
+        private String owner;
 
         private double price;
 
@@ -368,13 +372,16 @@ public class ShopLoader {
 
         private String shopName;
 
+        private Map<UUID, String> playerGroup;
+
+        @SuppressWarnings("UnstableApiUsage")
         ShopRawDatabaseInfo(ResultSet rs) throws SQLException {
             this.x = rs.getInt("x");
             this.y = rs.getInt("y");
             this.z = rs.getInt("z");
             this.world = rs.getString("world");
             this.item = rs.getString("itemConfig");
-            this.moderators = rs.getString("owner");
+            this.owner = rs.getString("owner");
             this.price = rs.getDouble("price");
             this.type = rs.getInt("type");
             this.unlimited = rs.getBoolean("unlimited");
@@ -389,6 +396,14 @@ public class ShopLoader {
             this.symbolLink = rs.getString("inventorySymbolLink");
             this.inventoryWrapperProvider = rs.getString("inventoryWrapperName");
             this.shopName = rs.getString("name");
+            String permissionJson = rs.getString("permission");
+            if (!StringUtils.isEmpty(permissionJson) && MsgUtil.isJson(permissionJson)) {
+                Type type = new TypeToken<Map<UUID, String>>() {
+                }.getType();
+                this.playerGroup = new HashMap<>(JsonUtil.getGson().fromJson(rs.getString("permission"), type));
+            } else {
+                this.playerGroup = new HashMap<>();
+            }
         }
 
         @Override
@@ -404,7 +419,7 @@ public class ShopLoader {
 
         private Location location;
 
-        private ShopModerator moderators;
+        private UUID owner;
 
         private double price;
 
@@ -436,6 +451,8 @@ public class ShopLoader {
 
         private String shopName;
 
+        private Map<UUID, String> playerGroup;
+
         ShopDatabaseInfo(ShopRawDatabaseInfo origin) {
             try {
                 this.x = origin.getX();
@@ -445,7 +462,8 @@ public class ShopLoader {
                 this.location = new Location(world, x, y, z);
                 this.price = origin.getPrice();
                 this.unlimited = origin.isUnlimited();
-                this.moderators = deserializeModerator(origin.getModerators(), needUpdate);
+                this.playerGroup = origin.getPlayerGroup();
+                this.owner = deserializeOwner(origin.getOwner(), needUpdate);
                 this.type = ShopType.fromID(origin.getType());
                 this.item = deserializeItem(origin.getItem());
                 this.extra = deserializeExtra(origin.getExtra(), needUpdate);
@@ -471,15 +489,19 @@ public class ShopLoader {
             }
         }
 
-        private @NotNull ShopModerator deserializeModerator(@NotNull String moderatorJson, @NotNull AtomicBoolean needUpdate) {
-            ShopModerator shopModerator;
+        private @NotNull UUID deserializeOwner(@NotNull String moderatorJson, @NotNull AtomicBoolean needUpdate) {
             if (Util.isUUID(moderatorJson)) {
-                Log.debug("Updating old shop data... for " + moderatorJson);
-                shopModerator = new SimpleShopModerator(UUID.fromString(moderatorJson)); // New one
-                needUpdate.set(true);
+                return UUID.fromString(moderatorJson);
             } else {
+                ShopModerator shopModerator;
                 try {
                     shopModerator = SimpleShopModerator.deserialize(moderatorJson);
+                    shopModerator.getStaffs().forEach(uuid -> {
+                        Log.debug("Loaded moderator: " + uuid + ", upgrading to PlayerGroups...");
+                        this.playerGroup.put(uuid, BuiltInShopPermissionGroup.STAFF.getNamespacedNode());
+                    });
+                    needUpdate.set(true);
+                    return shopModerator.getOwner();
                 } catch (JsonSyntaxException ex) {
                     Log.debug("Updating old shop data... for " + moderatorJson);
                     Profile profile = plugin.getPlayerFinder().find(moderatorJson);
@@ -490,11 +512,11 @@ public class ShopLoader {
                     } else {
                         uuid = profile.getUniqueId();
                     }
-                    shopModerator = new SimpleShopModerator(uuid); // New one
                     needUpdate.set(true);
+                    return uuid;
+
                 }
             }
-            return shopModerator;
         }
 
         private @NotNull YamlConfiguration deserializeExtra(@NotNull String extraString, @NotNull AtomicBoolean needUpdate) {

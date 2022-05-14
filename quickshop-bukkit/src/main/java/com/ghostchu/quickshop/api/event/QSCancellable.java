@@ -24,6 +24,9 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.event.Cancellable;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Parent class for all cancellable events.
+ */
 public interface QSCancellable extends Cancellable {
     @Override
     @Deprecated
@@ -38,6 +41,7 @@ public interface QSCancellable extends Cancellable {
         }
         setCancelled(cancel, LegacyComponentSerializer.legacySection().deserialize(reason));
     }
+
     void setCancelled(boolean cancel, @Nullable Component reason);
 
     @Nullable

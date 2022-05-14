@@ -19,11 +19,14 @@
 
 package com.ghostchu.quickshop.compatibility.griefprevention;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import me.ryanhamshire.GriefPrevention.Claim;
@@ -61,6 +64,23 @@ public final class Main extends CompatibilityModule implements Listener {
         this.deleteOnSubClaimCreated = getConfig().getBoolean("delete-on-subclaim-created");
         this.createLimit = Flag.getFlag(getConfig().getString("create"));
         this.tradeLimits.addAll(toFlags(getConfig().getStringList("trade")));
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        Location shopLoc = event.getShop().getLocation();
+        if (!griefPrevention.claimsEnabledForWorld(shopLoc.getWorld())) {
+            return;
+        }
+        Claim claim = griefPrevention.dataStore.getClaimAt(shopLoc, false, false, griefPrevention.dataStore.getPlayerData(event.getAuthorizer()).lastClaim);
+        if (claim == null) {
+            return;
+        }
+        if (claim.getOwnerID().equals(event.getAuthorizer())) {
+            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                event.setResult(true);
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

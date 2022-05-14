@@ -19,13 +19,16 @@
 
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.QuickShop;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
 
+/**
+ * Parent about all events.
+ */
 public abstract class AbstractQSEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();

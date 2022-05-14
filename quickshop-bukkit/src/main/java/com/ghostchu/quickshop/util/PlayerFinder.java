@@ -57,14 +57,14 @@ public class PlayerFinder {
             Log.debug("Failed to initialize player mapping cache database, use HashMapCache instead.");
         }
         List<ProfileService> services = new ArrayList<>();
-        if (PaperLib.isPaper() && !System.getProperties().containsKey("com.ghostchu.quickshop.util.PlayerFinder.forceSpigot")) {
+        if (PaperLib.isPaper() && !Util.parsePackageProperly("forceSpigot").asBoolean()) {
             services.add(PaperPlayerService.getInstance());
         } else {
             Log.debug("Fallback to use general CombinedProfileService for player lookup.");
             services.add(new CacheForwardingService(HttpRepositoryService.forMinecraft(), cache));
         }
         this.resolver = new CombinedProfileService(services);
-        if (System.getProperties().containsKey("com.ghostchu.quickshop.util.PlayerFinder.forceOnlineMode")) {
+        if (Util.parsePackageProperly("forceSpigot").asBoolean()) {
             forceOnlineMode = true;
         }
         this.cache = cache;

@@ -73,6 +73,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
     private final Cache<String, String> languagesCache =
             CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
     private final MiniMessage miniMessage = MiniMessage.builder().strict(false).build();
+
     public SimpleTextManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
@@ -365,7 +366,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         FileConfiguration result = YamlConfiguration.loadConfiguration(localOverrideFile);
         //Add a comment for user guide if file is empty
         if (result.getKeys(false).isEmpty()) {
-          //  result.options().setHeader(List.of("Please visit https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-translation-override-system for override language file tutorial."));
+            //  result.options().setHeader(List.of("Please visit https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-translation-override-system for override language file tutorial."));
             result.save(localOverrideFile);
         }
         return result;
@@ -612,12 +613,29 @@ public class SimpleTextManager implements TextManager, Reloadable {
         }
 
         /**
+         * Getting this text is exists in the translation file
+         *
+         * @return true if this text is exists in the translation file
+         */
+        @Override
+        public boolean isPresent() {
+            String locale;
+            if (sender instanceof Player) {
+                locale = ((Player) sender).getLocale();
+            } else {
+                locale = MsgUtil.getDefaultGameLanguageCode();
+            }
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
+            return index != null;
+        }
+
+        /**
          * Send text to the player
          */
         @Override
         public void send() {
             if (sender == null) {
-                return;
+                throw new IllegalStateException("Sender is null");
             }
             for (Component s : forLocale()) {
                 MsgUtil.sendDirectMessage(sender, s);
@@ -713,12 +731,29 @@ public class SimpleTextManager implements TextManager, Reloadable {
         }
 
         /**
+         * Getting this text is exists in the translation file
+         *
+         * @return true if this text is exists in the translation file
+         */
+        @Override
+        public boolean isPresent() {
+            String locale;
+            if (sender instanceof Player) {
+                locale = ((Player) sender).getLocale();
+            } else {
+                locale = MsgUtil.getDefaultGameLanguageCode();
+            }
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
+            return index != null;
+        }
+
+        /**
          * Send text to the player
          */
         @Override
         public void send() {
             if (sender == null) {
-                return;
+                throw new IllegalStateException("Sender is null");
             }
             Component lang = forLocale();
             MsgUtil.sendDirectMessage(sender, lang);

@@ -22,6 +22,8 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import lombok.AllArgsConstructor;
@@ -50,19 +52,21 @@ public class SubCommand_Staff implements CommandHandler<Player> {
         while (bIt.hasNext()) {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop == null || (!shop.getModerator().isModerator(sender.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.staff"))) {
+            if (shop == null || (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.MANAGEMENT_PERMISSION) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.staff"))) {
                 continue;
             }
             switch (cmdArg.length) {
                 case 1:
                     switch (cmdArg[0]) {
                         case "clear" -> {
-                            shop.clearStaffs();
+                            shop.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(staff -> {
+                                shop.setPlayerGroup(staff, BuiltInShopPermissionGroup.EVERYONE);
+                            });
                             plugin.text().of(sender, "shop-staff-cleared").send();
                             return;
                         }
                         case "list" -> {
-                            final List<UUID> staffs = shop.getStaffs();
+                            final List<UUID> staffs = shop.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF);
                             if (staffs.isEmpty()) {
                                 MsgUtil.sendDirectMessage(sender, plugin.text().of(sender, "tableformat.left_begin").forLocale()
                                         .append(Component.text("Empty").color(NamedTextColor.GRAY)));
@@ -70,7 +74,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                             }
                             for (UUID uuid : staffs) {
                                 MsgUtil.sendDirectMessage(sender, plugin.text().of(sender, "tableformat.left_begin").forLocale()
-                                        .append(Component.text( Bukkit.getOfflinePlayer(uuid).getName()).color(NamedTextColor.GRAY)));
+                                        .append(Component.text(Bukkit.getOfflinePlayer(uuid).getName()).color(NamedTextColor.GRAY)));
                             }
                             return;
                         }
@@ -87,12 +91,12 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                     }
                     switch (cmdArg[0]) {
                         case "add" -> {
-                            shop.addStaff(profile.getUniqueId());
+                            shop.setPlayerGroup(profile.getUniqueId(), BuiltInShopPermissionGroup.STAFF);
                             plugin.text().of(sender, "shop-staff-added", profile.getName()).send();
                             return;
                         }
                         case "del" -> {
-                            shop.delStaff(profile.getUniqueId());
+                            shop.setPlayerGroup(profile.getUniqueId(), BuiltInShopPermissionGroup.EVERYONE);
                             plugin.text().of(sender, "shop-staff-deleted", profile.getName()).send();
                             return;
                         }

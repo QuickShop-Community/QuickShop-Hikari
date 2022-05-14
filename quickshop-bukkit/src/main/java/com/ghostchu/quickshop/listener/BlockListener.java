@@ -24,6 +24,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
@@ -77,7 +78,7 @@ public class BlockListener extends AbstractProtectionListener {
                 return;
             }
             // If they're either survival or the owner, they can break it
-            if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
+            if (p.getGameMode() == GameMode.CREATIVE && !shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE)) {
                 // Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
                     if (getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {
@@ -109,7 +110,7 @@ public class BlockListener extends AbstractProtectionListener {
             }
             // If they're in creative and not the owner, don't let them
             // (accidents happen)
-            if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
+            if (p.getGameMode() == GameMode.CREATIVE && !shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE)) {
                 // Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
                     if (getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {

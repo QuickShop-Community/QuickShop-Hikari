@@ -21,11 +21,11 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.Paste;
 import com.ghostchu.quickshop.util.paste.PasteGenerator;
 import lombok.AllArgsConstructor;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -63,9 +64,9 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
                 pasteToLocalFile(sender);
                 return;
             }
-            sender.sendMessage("§aPlease wait, QS is uploading the data to pastebin...");
+            plugin.text().of(sender, "paste-uploading").send();
             if (!pasteToPastebin(sender)) {
-                sender.sendMessage("The paste upload has failed! Saving the paste locally...");
+                plugin.text().of(sender, "paste-upload-failed-local").send();
                 pasteToLocalFile(sender);
             }
         });
@@ -74,8 +75,10 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     private boolean pasteToPastebin(@NotNull CommandSender sender) {
         final String string = Paste.paste(new PasteGenerator(sender).render());
         if (string != null) {
-            sender.sendMessage("https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8));
-            sender.sendMessage("" + ChatColor.RED + ChatColor.BOLD + "Warning: " + ChatColor.RESET + ChatColor.YELLOW + "Don't send paste to public channel or anyone unless you trust them.");
+            plugin.text().of("paste-created", "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8));
+            if (MsgUtil.getDefaultGameLanguageCode().equalsIgnoreCase("zh_cn") || Locale.getDefault().equals(Locale.CHINA)) {
+                plugin.text().of("paste-451");
+            }
             return true;
         }
         return false;
@@ -93,15 +96,12 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
                 fwriter.write(string);
                 fwriter.flush();
             }
-            sender.sendMessage("The paste was saved to " + file.getAbsolutePath());
-            sender.sendMessage("" + ChatColor.RED + ChatColor.BOLD + "Warning: " + ChatColor.RESET + ChatColor.YELLOW + "Don't send paste to public channel or anyone unless you trust them.");
+            plugin.text().of(sender, "paste-created-local", file.getAbsolutePath()).send();
             return true;
         } catch (IOException e) {
             plugin.getSentryErrorReporter().ignoreThrow();
             plugin.getLogger().log(Level.WARNING, "Failed to save paste locally! The content will be send to the console", e);
-            sender.sendMessage("Paste save failed! Sending paste to the console...");
-            sender.sendMessage("" + ChatColor.RED + ChatColor.BOLD + "Warning: " + ChatColor.RESET + ChatColor.YELLOW + "Don't send paste to public channel or anyone unless you trust them.");
-            plugin.getLogger().info(string);
+            plugin.text().of("paste-created-local-failed").send();
             return false;
         }
     }

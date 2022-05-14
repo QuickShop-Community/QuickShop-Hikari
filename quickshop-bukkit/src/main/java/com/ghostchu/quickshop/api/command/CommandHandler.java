@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * The command handler that processing sub commands under QS main command
  *
- * @param <T> The required sender class you want, must is the sub type of CommandSender
+ * @param <T> The required sender class you want, must is the sub type of {@link CommandSender}
  */
 public interface CommandHandler<T extends CommandSender> {
 

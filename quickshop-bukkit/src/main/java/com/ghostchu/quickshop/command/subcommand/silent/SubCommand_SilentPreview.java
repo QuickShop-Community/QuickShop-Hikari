@@ -19,11 +19,12 @@
 
 package com.ghostchu.quickshop.command.subcommand.silent;
 
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.ContainerShop;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 
 public class SubCommand_SilentPreview extends SubCommand_SilentBase {
@@ -39,7 +40,9 @@ public class SubCommand_SilentPreview extends SubCommand_SilentBase {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
-        shop.openPreview(sender);
+        if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.PREVIEW_SHOP)) {
+            shop.openPreview(sender);
+        }
     }
 
 }

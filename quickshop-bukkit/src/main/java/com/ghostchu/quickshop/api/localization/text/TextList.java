@@ -23,7 +23,9 @@ import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-
+/**
+ * The Texts of a series of the translation.
+ */
 public interface TextList {
 
     /**
@@ -40,6 +42,14 @@ public interface TextList {
      * @return Getting the text for player locale
      */
     @NotNull List<Component> forLocale();
+
+    /**
+     * Getting this text is exists in the translation file
+     *
+     * @return true if this text is exists in the translation file
+     */
+    boolean isPresent();
+
 
     /**
      * Send text to the player

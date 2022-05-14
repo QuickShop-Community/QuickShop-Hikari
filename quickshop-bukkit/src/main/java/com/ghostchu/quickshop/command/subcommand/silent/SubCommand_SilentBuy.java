@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.command.subcommand.silent;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.MsgUtil;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -35,8 +36,8 @@ public class SubCommand_SilentBuy extends SubCommand_SilentBase {
 
     @Override
     protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull String[] cmdArg) {
-        if (!shop.getModerator().isModerator(sender.getUniqueId())) {
-            plugin.text().of(sender, "not-looking-at-shop").send();
+        if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE)) {
+            plugin.text().of(sender, "not-permission").send();
             return;
         }
 

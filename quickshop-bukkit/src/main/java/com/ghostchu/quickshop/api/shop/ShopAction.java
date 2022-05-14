@@ -19,6 +19,9 @@
 
 package com.ghostchu.quickshop.api.shop;
 
+/**
+ * The actions about player and shop
+ */
 public enum ShopAction {
     // buy = trading create = creating shop cancelled = stopped
     PURCHASE_BUY,

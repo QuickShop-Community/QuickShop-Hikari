@@ -19,11 +19,14 @@
 
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.api.shop.Shop;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import com.ghostchu.quickshop.api.shop.Shop;
 
+/**
+ * Fire when shop inventory space/stock calculating.
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor

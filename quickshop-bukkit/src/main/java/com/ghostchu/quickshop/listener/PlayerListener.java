@@ -28,6 +28,7 @@ import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.shop.InteractionController;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -498,11 +499,11 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     private void openControlPanel(@NotNull Player p, @NotNull Shop shop) {
-        if (shop.getOwner().equals(p.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.control")) {
-            MsgUtil.sendControlPanelInfo(p, shop);
-            this.playClickSound(p);
-            shop.setSignText();
-        }
+        if (shop.getPlayerGroup(p.getUniqueId()).equals(BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode()))
+            return;
+        MsgUtil.sendControlPanelInfo(p, shop);
+        this.playClickSound(p);
+        shop.setSignText();
     }
 
     private int getPlayerCanBuy(@NotNull Shop shop, double traderBalance, double price, @NotNull InventoryWrapper playerInventory) {

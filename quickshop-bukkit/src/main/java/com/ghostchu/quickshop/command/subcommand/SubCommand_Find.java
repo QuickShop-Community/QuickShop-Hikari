@@ -19,6 +19,12 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
 import io.papermc.lib.PaperLib;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
@@ -29,11 +35,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 
 import java.util.*;
 
@@ -84,6 +85,9 @@ public class SubCommand_Find implements CommandHandler<Player> {
             }
             if (aroundShops.size() == shopLimit) {
                 break;
+            }
+            if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SEARCH)) {
+                continue;
             }
             Vector shopVector = shop.getLocation().toVector();
             double distance = shopVector.distance(playerVector);

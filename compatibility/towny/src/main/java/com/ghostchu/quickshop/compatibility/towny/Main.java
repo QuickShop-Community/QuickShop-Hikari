@@ -19,13 +19,16 @@
 
 package com.ghostchu.quickshop.compatibility.towny;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
+import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -33,6 +36,7 @@ import com.palmergames.bukkit.towny.event.PlotClearEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
 import com.palmergames.bukkit.towny.event.town.TownUnclaimEvent;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.WorldCoord;
@@ -63,31 +67,57 @@ public final class Main extends CompatibilityModule implements Listener {
     public void init() {
         createFlags = TownyFlags.deserialize(getConfig().getStringList("create"));
         tradeFlags = TownyFlags.deserialize(getConfig().getStringList("trade"));
-        ignoreDisabledWorlds =getConfig().getBoolean("ignore-disabled-worlds");
+        ignoreDisabledWorlds = getConfig().getBoolean("ignore-disabled-worlds");
         deleteShopOnLeave = getConfig().getBoolean("delete-shop-on-resident-leave");
         deleteShopOnPlotClear = getConfig().getBoolean("delete-shop-on-plot-clear");
         deleteShopOnPlotDestroy = getConfig().getBoolean("delete-shop-on-plot-destroy");
         whiteList = getConfig().getBoolean("towny.whitelist-mode");
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onPreCreation(ShopPreCreateEvent event){
-        if(checkFlags(event.getPlayer(),event.getLocation(),this.createFlags)){
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        Location shopLoc = event.getShop().getLocation();
+        Town town = TownyAPI.getInstance().getTown(shopLoc);
+        if (town == null) return;
+        if (town.getMayor().getUUID().equals(event.getAuthorizer())) {
+            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                event.setResult(true);
+            }
+            return;
+        }
+        try {
+            Nation nation = town.getNation();
+            if (nation.getKing().getUUID().equals(event.getAuthorizer())) {
+                if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                    event.setResult(true);
+                }
+            }
+        } catch (NotRegisteredException ignored) {
+
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPreCreation(ShopPreCreateEvent event) {
+        if (checkFlags(event.getPlayer(), event.getLocation(), this.createFlags)) {
             return;
         }
         event.setCancelled(true, "Towny Blocked");
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onCreation(ShopCreateEvent event){
+    public void onCreation(ShopCreateEvent event) {
         //noinspection ConstantConditions
-        if(checkFlags(event.getPlayer(),event.getShop().getLocation(), this.createFlags)){
+        if (checkFlags(event.getPlayer(), event.getShop().getLocation(), this.createFlags)) {
             return;
         }
         event.setCancelled(true, "Towny Blocked");
     }
+
     @EventHandler(ignoreCancelled = true)
-    public void onTrading(ShopPurchaseEvent event){
+    public void onTrading(ShopPurchaseEvent event) {
         //noinspection ConstantConditions
-        if(checkFlags(event.getPlayer(),event.getShop().getLocation(), this.tradeFlags)){
+        if (checkFlags(event.getPlayer(), event.getShop().getLocation(), this.tradeFlags)) {
             return;
         }
         event.setCancelled(true, "Towny Blocked");
@@ -101,7 +131,7 @@ public final class Main extends CompatibilityModule implements Listener {
         if (owner == null) {
             return;
         }
-        String worldName= town.getHomeblockWorld().getName();
+        String worldName = town.getHomeblockWorld().getName();
         //Getting all shop with world-chunk-shop mapping
         for (Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : api.getShopManager().getShops().entrySet()) {
             //Matching world
@@ -164,6 +194,7 @@ public final class Main extends CompatibilityModule implements Listener {
             }
         }
     }
+
     @EventHandler
     public void onPlayerLeave(TownRemoveResidentEvent event) {
         if (Bukkit.isPrimaryThread()) {

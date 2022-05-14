@@ -37,6 +37,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -347,6 +348,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .disabledSupplier(() -> !plugin.getConfig().getBoolean("purge.enabled"))
                 .executor(new SubCommand_Purge(plugin))
                 .build());
+        registerCmd(CommandContainer.builder()
+                .prefix("permission")
+                .permission("quickshop.permission")
+                .executor(new SubCommand_Permission(plugin))
+                .build());
     }
 
     /**
@@ -385,6 +391,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
      */
     @Override
     @NotNull
+    @Unmodifiable
     public List<CommandContainer> getRegisteredCommands() {
         return ImmutableList.copyOf(this.getCmds());
     }

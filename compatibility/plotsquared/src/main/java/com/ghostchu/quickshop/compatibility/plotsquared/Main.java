@@ -19,11 +19,14 @@
 
 package com.ghostchu.quickshop.compatibility.plotsquared;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
+import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.google.common.eventbus.Subscribe;
 import com.plotsquared.core.PlotSquared;
 import com.plotsquared.core.configuration.caption.Caption;
@@ -72,6 +75,19 @@ public final class Main extends CompatibilityModule implements Listener {
     public void init() {
         this.whiteList = getConfig().getBoolean("whitelist-mode");
         this.deleteUntrusted = getConfig().getBoolean("delete-when-user-untrusted");
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        Location shopLoc = event.getShop().getLocation();
+        com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(shopLoc.getWorld().getName(), shopLoc.getBlockX(), shopLoc.getBlockY(), shopLoc.getBlockZ());
+        Plot plot = pLocation.getPlot();
+        if (plot == null) return;
+        if (plot.getOwners().contains(event.getAuthorizer())) {
+            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                event.setResult(true);
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

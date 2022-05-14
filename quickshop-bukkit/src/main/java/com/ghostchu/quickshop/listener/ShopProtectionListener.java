@@ -19,7 +19,15 @@
 
 package com.ghostchu.quickshop.listener;
 
+import com.ghostchu.quickshop.Cache;
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.datatype.HopperPersistentData;
+import com.ghostchu.quickshop.shop.datatype.HopperPersistentDataType;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Location;
@@ -37,13 +45,6 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.Cache;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.shop.datatype.HopperPersistentData;
-import com.ghostchu.quickshop.shop.datatype.HopperPersistentDataType;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -211,8 +212,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
             if(event.getDestination().getHolder() instanceof Hopper hopper){
                 HopperPersistentData hopperPersistentData = hopper.getPersistentDataContainer().get(hopperKey, HopperPersistentDataType.INSTANCE);
                 if (hopperPersistentData != null) {
-                    if (hopperPersistentData.getPlayer().equals(shop.getOwner())) {
-
+                    if (shop.playerAuthorize(hopperPersistentData.getPlayer(), BuiltInShopPermission.ACCESS_INVENTORY)) {
                         return;
                     }
                 }

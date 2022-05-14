@@ -224,6 +224,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
     @Override
     public void spawn() {
         Util.ensureThread(false);
+
         if (shop.isLeftShop()) {
             return;
         }
@@ -248,7 +249,6 @@ public class RealDisplayItem extends AbstractDisplayItem {
             Log.debug("Can't spawn the displayItem because there is not an AIR block above the shopblock.");
             return;
         }
-
         ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop,
                 originalItemStack, DisplayType.REALITEM);
         PLUGIN.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
@@ -260,6 +260,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
         this.guardedIstack = AbstractDisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack, this::safeGuard);
         new ShopDisplayItemSafeGuardEvent(shop, this.item).callEvent();
+        removeDupe();
     }
 
     @Override

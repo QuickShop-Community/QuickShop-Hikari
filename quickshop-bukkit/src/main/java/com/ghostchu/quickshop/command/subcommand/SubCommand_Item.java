@@ -25,6 +25,7 @@ import com.ghostchu.quickshop.api.shop.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import lombok.AllArgsConstructor;
@@ -43,7 +44,7 @@ public class SubCommand_Item implements CommandHandler<Player> {
         // Loop through every block they're looking at upto 10 blocks away
         final Shop shop = getLookingShop(sender);
         if (shop != null) {
-            if (!shop.getModerator().isModerator(sender.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.item")) {
+            if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_ITEM) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.item")) {
                 plugin.text().of(sender, "not-managed-shop").send();
                 return;
             }

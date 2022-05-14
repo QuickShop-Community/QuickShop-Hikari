@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.listener;
 import com.ghostchu.quickshop.Cache;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
@@ -78,7 +79,7 @@ public class LockListener extends AbstractProtectionListener {
                 return; // Wasn't a shop
             }
             // If they owned it or have bypass perms, they can destroy it
-            if (!shop.getOwner().equals(p.getUniqueId())
+            if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE)
                     && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
                 plugin.text().of(p, "no-permission").send();
@@ -97,7 +98,7 @@ public class LockListener extends AbstractProtectionListener {
             }
             // If they're the shop owner or have bypass perms, they can destroy
             // it.
-            if (!shop.getOwner().equals(p.getUniqueId())
+            if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE)
                     && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
                 plugin.text().of(p, "no-permission").send();

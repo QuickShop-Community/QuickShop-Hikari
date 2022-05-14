@@ -21,11 +21,29 @@ package com.ghostchu.quickshop.api.inventory;
 
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * InventoryWrapper for countable Inventory
+ */
 public interface CountableInventoryWrapper extends InventoryWrapper {
+    /**
+     * Counting the spaces
+     *
+     * @param predicate {@link ItemPredicate}
+     * @return the space
+     */
     int countSpace(ItemPredicate predicate);
 
+    /**
+     * Counting the items
+     *
+     * @param predicate {@link ItemPredicate}
+     * @return the items
+     */
     int countItem(ItemPredicate predicate);
 
+    /**
+     * The item predicate for calculating
+     */
     interface ItemPredicate {
         /**
          * Check if the item match the predicate

@@ -20,21 +20,36 @@
 package com.ghostchu.quickshop.api.database;
 
 import cc.carm.lib.easysql.api.SQLQuery;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.metric.ShopMetricRecord;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.metric.ShopMetricRecord;
 
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+/**
+ * Processing and handle most things about database ;)
+ */
 public interface DatabaseHelper {
-
+    /**
+     * Async gets the player last use locale code from database
+     *
+     * @param uuid     The player UUID
+     * @param callback The callback
+     */
     void getPlayerLocale(@NotNull UUID uuid, @NotNull Consumer<Optional<String>> callback);
 
+    /**
+     * Sets the player locale code to database
+     *
+     * @param uuid   The player UUID
+     * @param locale The locale code
+     */
     void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale);
 
     /**
@@ -65,7 +80,7 @@ public interface DatabaseHelper {
      *
      * @param shop The shop
      */
-    void removeShop(Shop shop);
+    void removeShop(@NotNull Shop shop);
 
     /**
      * Remove a shop data record from database
@@ -75,7 +90,7 @@ public interface DatabaseHelper {
      * @param y     Shop Y
      * @param z     Shop Z
      */
-    void removeShop(String world, int x, int y, int z);
+    void removeShop(@NotNull String world, int x, int y, int z);
 
     /**
      * Select all messages that saved in the database
@@ -83,6 +98,7 @@ public interface DatabaseHelper {
      * @return Query result set
      * @throws SQLException Any errors related to SQL Errors
      */
+    @NotNull
     SQLQuery selectAllMessages() throws SQLException;
 
     /**
@@ -91,7 +107,8 @@ public interface DatabaseHelper {
      * @return Query result set
      * @throws SQLException Any errors related to SQL Errors
      */
-    SQLQuery selectTable(String table) throws SQLException;
+    @NotNull
+    SQLQuery selectTable(@NotNull String table) throws SQLException;
 
     /**
      * Select all shops that saved in the database
@@ -99,6 +116,7 @@ public interface DatabaseHelper {
      * @return Query result set
      * @throws SQLException Any errors related to SQL Errors
      */
+    @NotNull
     SQLQuery selectAllShops() throws SQLException;
 
     /**
@@ -152,14 +170,16 @@ public interface DatabaseHelper {
     void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
                     double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
                     @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
-                    @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName, @NotNull String shopName);
+                    @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName, @NotNull String shopName,
+                    @NotNull Map<UUID, String> playerGroup);
 
     /**
      * Insert a history record into logs table
      *
      * @param rec Record object that can be serialized by Gson.
      */
-    void insertHistoryRecord(Object rec);
+    void insertHistoryRecord(@NotNull Object rec);
 
     void insertMetricRecord(@NotNull ShopMetricRecord record);
+
 }

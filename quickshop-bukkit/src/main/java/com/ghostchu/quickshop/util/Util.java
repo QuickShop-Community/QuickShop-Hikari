@@ -28,9 +28,7 @@ import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.lib.PaperLib;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.SneakyThrows;
+import lombok.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -1402,6 +1400,88 @@ public class Util {
     @NotNull
     public static List<String> tail(@NotNull List<String> list, int last) {
         return list.subList(Math.max(list.size() - last, 0), list.size());
+    }
+
+    /**
+     * Parse the given name with package.class prefix (all-lowercases) from property
+     *
+     * @param name name
+     * @return ParseResult
+     */
+    @NotNull
+    public static SysPropertiesParseResult parsePackageProperly(@NotNull String name) {
+        Log.Caller caller = Log.Caller.create();
+        String str = caller.getClassName() + "." + name;
+        String value = System.getProperty(str);
+        SysPropertiesParseResult result = new SysPropertiesParseResult(value);
+        Log.debug("Parsing the system properly for " + str + ": " + result);
+        return result;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class SysPropertiesParseResult {
+        private final String value;
+
+        public boolean isPresent() {
+            return value != null;
+        }
+
+        public boolean asBoolean() {
+            return Boolean.parseBoolean(value);
+        }
+
+        public int asInteger(int def) {
+            if (value == null) return def;
+            try {
+                return Integer.parseInt(value);
+            } catch (NumberFormatException exception) {
+                return def;
+            }
+        }
+
+        public double asDouble(double def) {
+            if (value == null) return def;
+            try {
+                return Double.parseDouble(value);
+            } catch (NumberFormatException exception) {
+                return def;
+            }
+        }
+
+        public byte asByte(byte def) {
+            if (value == null) return def;
+            try {
+                return Byte.parseByte(value);
+            } catch (NumberFormatException exception) {
+                return def;
+            }
+        }
+
+
+        @Nullable
+        public String asString(@NotNull String def) {
+            if (value == null) return def;
+            return value;
+        }
+
+        public long asLong(long def) {
+            if (value == null) return def;
+            try {
+                return Long.parseLong(value);
+            } catch (NumberFormatException exception) {
+                return def;
+            }
+        }
+
+        public short asShort(short def) {
+            if (value == null) return def;
+            try {
+                return Short.parseShort(value);
+            } catch (NumberFormatException exception) {
+                return def;
+            }
+        }
     }
 
 }

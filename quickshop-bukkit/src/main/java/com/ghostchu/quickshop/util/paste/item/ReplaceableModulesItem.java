@@ -33,7 +33,7 @@ public class ReplaceableModulesItem implements SubPasteItem {
 
 
         if (plugin.getEconomy() == null) {
-            economyCore = "undefined@Unknown";
+            economyCore = "undefined@unknown";
         } else {
             economyCore = plugin.getEconomy().getName() + "@" + plugin.getEconomy().getPlugin().getName();
         }

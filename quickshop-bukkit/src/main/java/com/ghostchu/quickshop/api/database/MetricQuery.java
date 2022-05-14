@@ -21,17 +21,65 @@ package com.ghostchu.quickshop.api.database;
 
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.metric.ShopOperationEnum;
+import com.google.common.annotations.Beta;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Perform a metric query from database with quick way.
+ * *BETA*
+ */
+@Beta
 public interface MetricQuery {
+    /**
+     * Query player purchase events from database
+     *
+     * @param player     player's uuid
+     * @param timeStart  start time
+     * @param timeEnd    end time
+     * @param descending true if descending order
+     * @param filter     filter shop operation
+     * @return purchases
+     */
     @NotNull List<MetricRecord> queryPlayerPurchase(@NotNull UUID player, long timeStart, long timeEnd, boolean descending, @NotNull ShopOperationEnum... filter);
 
+    /**
+     * Query shop purchases count from database
+     *
+     * @param player     player's uuid
+     * @param timeStart  start time
+     * @param timeEnd    end time
+     * @param descending true if descending order
+     * @param filter     filter shop operation
+     * @return purchases counting
+     */
     long queryPlayerPurchaseCount(@NotNull UUID player, long timeStart, long timeEnd, boolean descending, @NotNull ShopOperationEnum... filter);
 
+    /**
+     * Query shop translation events from database
+     *
+     * @param shop       shop
+     * @param timeStart  start time
+     * @param timeEnd    end time
+     * @param limit      limit
+     * @param descending true if descending order
+     * @param filter     filter shop operation
+     * @return translations
+     */
     @NotNull List<MetricRecord> queryShopTransaction(@NotNull Shop shop, long timeStart, long timeEnd, int limit, boolean descending, @NotNull ShopOperationEnum... filter);
 
+    /**
+     * Query shop translation count from database
+     *
+     * @param shop       shop
+     * @param timeStart  start time
+     * @param timeEnd    end time
+     * @param limit      limit
+     * @param descending true if descending order
+     * @param filter     filter shop operation
+     * @return translations counting
+     */
     long queryShopTranslationCount(@NotNull Shop shop, long timeStart, long timeEnd, int limit, boolean descending, @NotNull ShopOperationEnum... filter);
 }
