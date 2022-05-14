@@ -347,7 +347,7 @@ public class ContainerShop implements Shop {
                 result.add(uuidStringEntry.getKey());
             }
         }
-        Log.permission("Check permission " + permission + " for " + namespace + ": " + Util.list2String(result.stream().map(UUID::toString).toList()));
+        Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + Util.list2String(result.stream().map(UUID::toString).toList()));
         return result;
     }
 
@@ -362,14 +362,14 @@ public class ContainerShop implements Shop {
     @Override
     public boolean playerAuthorize(@NotNull UUID player, @NotNull Plugin namespace, @NotNull String permission) {
         if (player.equals(getOwner())) {
-            Log.permission("Check permission " + permission + " for " + namespace + ": " + player + " -> " + "true");
+            Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + " for " + player + " -> " + "true");
             return true;
         }
         String group = getPlayerGroup(player);
         boolean r = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
         ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, player, namespace, permission, r);
         event.callEvent();
-        Log.permission("Check permission " + permission + " for " + namespace + ": " + player + " -> " + event.getResult());
+        Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + player + " -> " + event.getResult());
         return event.getResult();
 
     }
