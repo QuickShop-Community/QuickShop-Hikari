@@ -613,6 +613,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             @NotNull Shop shop,
             int amount) {
         Util.ensureThread(false);
+
+        if (!shop.playerAuthorize(buyer, BuiltInShopPermission.PURCHASE)) {
+            plugin.text().of("no-permission").send();
+            return;
+        }
         if (shopIsNotValid(buyer, info, shop)) {
             return;
         }
@@ -782,9 +787,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (tax < 0) {
             tax = 0; // Tax was disabled.
         }
-        if (shop.getModerator().isModerator(p)) {
-            tax = 0; // Is staff or owner, so we won't will take them tax
+        if (shop.getOwner().equals(p)) {
+            tax = 0; // Is owner, so we won't will take them tax
         }
+
+
         ShopTaxEvent taxEvent = new ShopTaxEvent(shop, tax, p);
         taxEvent.callEvent();
         return taxEvent.getTax();
@@ -1067,6 +1074,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             @NotNull Shop shop,
             int amount) {
         Util.ensureThread(false);
+        if (!shop.playerAuthorize(seller, BuiltInShopPermission.PURCHASE)) {
+            plugin.text().of("no-permission").send();
+            return;
+        }
         if (shopIsNotValid(seller, info, shop)) {
             return;
         }
@@ -1285,6 +1296,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      */
     @Override
     public void sendShopInfo(@NotNull Player p, @NotNull Shop shop) {
+        if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.SHOW_INFORMATION)) {
+            return;
+        }
         // Potentially faster with an array?
         ItemStack items = shop.getItem();
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
