@@ -32,10 +32,24 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
+/**
+ * Processing and handle most things about database ;)
+ */
 public interface DatabaseHelper {
-
+    /**
+     * Async gets the player last use locale code from database
+     *
+     * @param uuid     The player UUID
+     * @param callback The callback
+     */
     void getPlayerLocale(@NotNull UUID uuid, @NotNull Consumer<Optional<String>> callback);
 
+    /**
+     * Sets the player locale code to database
+     *
+     * @param uuid   The player UUID
+     * @param locale The locale code
+     */
     void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale);
 
     /**
@@ -66,7 +80,7 @@ public interface DatabaseHelper {
      *
      * @param shop The shop
      */
-    void removeShop(Shop shop);
+    void removeShop(@NotNull Shop shop);
 
     /**
      * Remove a shop data record from database
@@ -76,7 +90,7 @@ public interface DatabaseHelper {
      * @param y     Shop Y
      * @param z     Shop Z
      */
-    void removeShop(String world, int x, int y, int z);
+    void removeShop(@NotNull String world, int x, int y, int z);
 
     /**
      * Select all messages that saved in the database
@@ -84,6 +98,7 @@ public interface DatabaseHelper {
      * @return Query result set
      * @throws SQLException Any errors related to SQL Errors
      */
+    @NotNull
     SQLQuery selectAllMessages() throws SQLException;
 
     /**
@@ -92,7 +107,8 @@ public interface DatabaseHelper {
      * @return Query result set
      * @throws SQLException Any errors related to SQL Errors
      */
-    SQLQuery selectTable(String table) throws SQLException;
+    @NotNull
+    SQLQuery selectTable(@NotNull String table) throws SQLException;
 
     /**
      * Select all shops that saved in the database
@@ -100,6 +116,7 @@ public interface DatabaseHelper {
      * @return Query result set
      * @throws SQLException Any errors related to SQL Errors
      */
+    @NotNull
     SQLQuery selectAllShops() throws SQLException;
 
     /**
@@ -161,7 +178,7 @@ public interface DatabaseHelper {
      *
      * @param rec Record object that can be serialized by Gson.
      */
-    void insertHistoryRecord(Object rec);
+    void insertHistoryRecord(@NotNull Object rec);
 
     void insertMetricRecord(@NotNull ShopMetricRecord record);
 

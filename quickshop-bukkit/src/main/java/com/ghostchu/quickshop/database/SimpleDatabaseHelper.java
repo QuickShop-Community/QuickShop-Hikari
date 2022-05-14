@@ -345,7 +345,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public void removeShop(Shop shop) {
+    public void removeShop(@NotNull Shop shop) {
         removeShop(shop.getLocation().getWorld().getName(),
                 shop.getLocation().getBlockX(),
                 shop.getLocation().getBlockY(),
@@ -353,7 +353,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public void removeShop(String world, int x, int y, int z) {
+    public void removeShop(@NotNull String world, int x, int y, int z) {
         manager.createDelete(prefix + "shops")
                 .addCondition("x", x)
                 .addCondition("y", y)
@@ -364,12 +364,12 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public SQLQuery selectAllMessages() throws SQLException {
+    public @NotNull SQLQuery selectAllMessages() throws SQLException {
         return selectTable("messages");
     }
 
     @Override
-    public SQLQuery selectTable(String table) throws SQLException {
+    public @NotNull SQLQuery selectTable(@NotNull String table) throws SQLException {
         return manager.createQuery()
                 .inTable(prefix + table)
                 .build()
@@ -377,7 +377,7 @@ public class SimpleDatabaseHelper implements DatabaseHelper {
     }
 
     @Override
-    public SQLQuery selectAllShops() throws SQLException {
+    public @NotNull SQLQuery selectAllShops() throws SQLException {
         return selectTable("shops");
     }
 

@@ -24,6 +24,10 @@ import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 
 import java.util.UUID;
+
+/**
+ * Fire when quickshop processing the shop owner name
+ */
 @AllArgsConstructor
 public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
     private final Shop shop;

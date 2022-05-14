@@ -27,6 +27,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
+/**
+ * Operation about deposit money.
+ */
 public class DepositEconomyOperation implements Operation {
     private final UUID account;
     private final double amount;

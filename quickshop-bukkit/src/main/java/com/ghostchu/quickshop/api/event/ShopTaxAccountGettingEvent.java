@@ -19,12 +19,15 @@
 
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.api.shop.Shop;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.api.shop.Shop;
 
 import java.util.UUID;
 
+/**
+ * Fire when quickshop processing shop tax account.
+ */
 @AllArgsConstructor
 public class ShopTaxAccountGettingEvent extends AbstractQSEvent {
     private final Shop shop;

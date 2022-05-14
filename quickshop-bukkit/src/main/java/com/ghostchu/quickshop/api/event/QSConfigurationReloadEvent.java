@@ -21,6 +21,9 @@ package com.ghostchu.quickshop.api.event;
 
 import com.ghostchu.quickshop.QuickShop;
 
+/**
+ * Fire when QuickShop configuration reloaded.
+ */
 public class QSConfigurationReloadEvent extends AbstractQSEvent {
 
     private final QuickShop instance;

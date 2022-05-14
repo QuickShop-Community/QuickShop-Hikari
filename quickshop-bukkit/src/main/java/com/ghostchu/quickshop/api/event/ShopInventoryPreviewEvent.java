@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Calling when previewing Shop
+ * Calling when previewing a Shop item
  */
 public class ShopInventoryPreviewEvent extends AbstractQSEvent implements QSCancellable {
 

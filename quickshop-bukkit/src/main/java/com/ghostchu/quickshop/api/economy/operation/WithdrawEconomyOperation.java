@@ -27,6 +27,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
+/**
+ * Operation for withdraw money from economy.
+ */
 public class WithdrawEconomyOperation implements Operation {
     private final UUID account;
     private final double amount;

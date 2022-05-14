@@ -43,6 +43,11 @@ import java.util.Stack;
 import java.util.UUID;
 import java.util.logging.Level;
 
+/**
+ * Transaction
+ * A secure way to transfer the money between players.
+ * Support rollback :)
+ */
 @Getter
 @ToString
 public class EconomyTransaction {

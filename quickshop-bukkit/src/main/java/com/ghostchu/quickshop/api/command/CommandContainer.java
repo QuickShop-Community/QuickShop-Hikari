@@ -19,22 +19,28 @@
 
 package com.ghostchu.quickshop.api.command;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.Util;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Singular;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.Util;
 
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+/**
+ * Builds a CommandContainer that can be registered into CommandManager.
+ *
+ * @author Ghost_chu
+ */
 @Data
 @Builder
 public class CommandContainer {
@@ -64,6 +70,7 @@ public class CommandContainer {
 
     private Class<?> executorType;
 
+    @ApiStatus.Internal
     @NotNull
     public Class<?> getExecutorType() {
         if (executorType == null) {
@@ -72,6 +79,7 @@ public class CommandContainer {
         return executorType;
     }
 
+    @ApiStatus.Internal
     public void bakeExecutorType() {
         for (Method declaredMethod : getExecutor().getClass().getMethods()) {
             if ("onCommand".equals(declaredMethod.getName()) || "onTabComplete".equals(declaredMethod.getName())) {
@@ -85,6 +93,12 @@ public class CommandContainer {
         executorType = Object.class;
     }
 
+    /**
+     * Gets the text should be shown while command was disabled.
+     *
+     * @param sender the sender
+     * @return the text
+     */
     public final @NotNull Component getDisableText(@NotNull CommandSender sender) {
         if (this.getDisableCallback() != null) {
             return this.getDisableCallback().apply(sender);

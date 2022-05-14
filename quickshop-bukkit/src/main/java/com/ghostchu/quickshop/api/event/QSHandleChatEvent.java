@@ -24,6 +24,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.bukkit.entity.Player;
 
+/**
+ * QuickShop chat handling event
+ *
+ * @author Ghost_chu
+ */
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @Data
