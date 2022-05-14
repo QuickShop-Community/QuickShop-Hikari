@@ -400,7 +400,7 @@ public class ShopLoader {
             if (!StringUtils.isEmpty(permissionJson) && MsgUtil.isJson(permissionJson)) {
                 Type type = new TypeToken<Map<String, String>>() {
                 }.getType();
-                this.playerGroup = JsonUtil.getGson().fromJson(rs.getString("permission"), type);
+                this.playerGroup = new HashMap<>(JsonUtil.getGson().fromJson(rs.getString("permission"), type));
             } else {
                 this.playerGroup = new HashMap<>();
             }
