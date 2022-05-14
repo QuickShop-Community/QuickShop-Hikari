@@ -418,7 +418,7 @@ command:
     taxaccount: <yellow>设置商店使用的税务账户
     name: <yellow>将商店命名为特定名称
     toggledisplay: <yellow>切换商店是否显示悬浮物
-    permission: <yellow>Shop permission management
+    permission: <yellow>商店权限管理
   bulk-size-not-set: '<red>用法: /qs size <数量>'
   no-type-given: '<red>用法: /qs find <物品名称>'
   feature-not-enabled: 该功能未在配置文件中启用。
@@ -467,16 +467,16 @@ client-language-unsupported: <yellow>QuickShop不支持您的客户端语言，�
 language-version: '63'
 not-managed-shop: <red>你不是该商店的所有者或助手
 shop-cannot-trade-when-freezing: <red>您不能与这家商店交易，因为它已被冻结。
-invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
+invalid-container: <red>无效的容器方块。您只能在有库存的方块上创建商店。
 permission:
-  header: "<green>Shop Permission Details"
-  header-player: "<green>Shop Permission Details for {0}"
-  header-group: "<green>Shop Permission Details for group {0}"
+  header: "<green>商店权限信息"
+  header-player: "<green> {0} 的商店权限信息"
+  header-group: "<green>商店权限信息 {0}"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
   item:
-    purchase: "<yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)"
-    show-information: "<yellow>Permission to allow users who have this to see the shop information. (open shop info panel)"
-    preview-shop: "<yellow>Permission to allow users who have this to preview the shop. (preview item)"
+    purchase: "<yellow>允许有此权限的用户与商店进行交易(包括购买和收购)"
+    show-information: "<yellow>允许有此权限的用户查看商店信息。(查看商店控制面板)"
+    preview-shop: "<yellow>允许有此权限的用户预览商店所交易的物品(物品预览)"
     search: "<yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)"
     delete: "<yellow>Permission to allow users who have this to delete the shop."
     receive-alert: "<yellow>Permission to allow users who have this to receive alert message (e.g out-of-stock or new trade)."
@@ -491,23 +491,23 @@ permission:
     set-currency: "<yellow>Permission to allow users who have this to set the shop currency."
     set-name: "<yellow>Permission to allow users who have this to set the shop name."
   group:
-    everyone: "<yellow>Default group for all users excepted shop owner."
-    staff: "<yellow>System group for shop staffs."
-    administrator: "<red>System group for administrators, the users in this group will have permissions almost same with shop owner."
-invalid-group: "<red>Invalid group name."
-invalid-permission: "<red>Invalid permission."
-invalid-operation: "<red>Invalid operation, only {0} are allowed."
-player-no-group: "<yellow>Player {0} not in any group in this shop."
-player-in-group: "<green>Player {0} is in group <aqua>{1}</aqua> in this shop."
-permission-required: "<red>You don't have permission {0} in this shop to do this."
-no-permission-detailed: "<red>You don't have permission <yellow>{0}</yellow> to do this."
-paste-uploading: "<aqua>Please wait... Uploading the paste to pastebin......"
-paste-created: "<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don't trust."
-paste-created-local: "<green>Paste created and saved to your local disk at: {0}<newline><red>Warning: <gray>Never send paste to who you don't trust."
-paste-created-local-failed: "<red>Failed to save paste to your local disk, please check your disk."
-paste-451: "<gray><b>TIPS: </b> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file additional parameter to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>"
-paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin provider..."
-paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
-command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
-successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
-successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
+    everyone: "<yellow>除商店店主外，所有用户的默认权限组。"
+    staff: "<yellow>商店助手的系统权限组"
+    administrator: "<red>管理员权限组，该组中的用户与商店店主拥有几乎相同的权限。"
+invalid-group: "<red>无效的组名称"
+invalid-permission: "<red>无效权限"
+invalid-operation: "<red>无效的操作，只允许 {0}"
+player-no-group: "<yellow>玩家 {0} 在这个商店中不属于组"
+player-in-group: "<green>玩家 {0} 属于组 <aqua>{1}</aqua> 在这个商店"
+permission-required: "<red>您在这个商店里没有权限 {0} 去做这个。"
+no-permission-detailed: "<red>您没有权限 <yellow>{0}</yellow> 去做这个。"
+paste-uploading: "<aqua>请稍候... 正在上传Paste到pastebin..."
+paste-created: "<green>Paste已创建，点击在浏览器中打开： <yellow>{0}</yellow><newline><red>警告： <gray>永远不要将Paste发送给不信任的人。"
+paste-created-local: "<green>Paste创建并保存到您的本地磁盘： {0}<newline><red>警告： <gray>永远不要将Paste发送给不信任的人。"
+paste-created-local-failed: "<red>保存Paste到本地磁盘失败，请检查您的磁盘。"
+paste-451: "<gray><b>TIPS: </b> 您所在的国家或地区似乎已经阻止了CloudFlare Workers 服务, QuickShop Paste可能无法正确加载。<newline><gray>如果后续操作失败， 尝试添加 --file 附加参数以生成本地Paste： <dark_gray>/qs paste --file</dark_gray>"
+paste-upload-failed: "<red>上传Paste到 {0} 失败，正在尝试其它的Pastebin..."
+paste-upload-failed-local: "<red>上传Paste失败，尝试生成本地Paste..."
+command-incorrect: "<red>指令用法错误，输入/qs help检查帮助。用法： {0}。"
+successfully-set-player-group: "<green>成功地将玩家 {0} 组设置为 <aqua>{1}</aqua>。"
+successfully-set-player-permission: "<green>成功设置玩家 {0} 权限 <aqua>{1}</aqua> 在商店 <aqua>{2}</aqua>"
