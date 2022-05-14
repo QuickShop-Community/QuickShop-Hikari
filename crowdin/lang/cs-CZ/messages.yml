@@ -418,6 +418,7 @@ command:
     taxaccount: <white>Nastaví daně, které obchod zaplatí
     name: <yellow>Pojmenování obchodu na konkrétní název
     toggledisplay: <white>Přepne obchodu status ukazovaného předmětu
+    permission: <yellow>Správa oprávnění obchodu
   bulk-size-not-set: '<red>Použití: <gray>/qs size <amount>'
   no-type-given: '<red>Použití: <gray>/qs find <item>'
   feature-not-enabled: Funkce není v konfiguraci povolena.
@@ -466,4 +467,41 @@ client-language-unsupported: <yellow>QuickShop nepodporuje váš klientský jazy
 language-version: '63'
 not-managed-shop: <red>Nejsi vlastník nebo moderátor obchodu
 shop-cannot-trade-when-freezing: <red>Nemůžete obchodovat s tímto obchodem, protože je zmražený.
-invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
+invalid-container: <red>Neplatný kontejner, můžete vytvořit pouze obchod na bloku, který má inventář.
+permission:
+  header: "<green>Podrobnosti o oprávnění obchodu"
+  table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
+  item:
+    purchase: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, zakoupit obchod (včetně nákupu a prodeje)"
+    show-information: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, zobrazit informace o obchodě (otevřený obchodní informační panel)"
+    preview-shop: "<yellow>Oprávnění povolí uživatelům, s tímto oprávněním, zobrazit náhled obchodu. (náhled položky)"
+    search: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, vyhledávat cílový obchod. (Odstraněním oprávnění skryjete obchod ve výsledcích vyhledávání)"
+    delete: "<yellow>Oprávnění povolí uživatelům, s tímto oprávněním, odstranit obchod."
+    receive-alert: "<yellow>Oprávnění povolí uživatelům, s tímto oprávněním, přijímat upozornění (např. mimo burzu nebo nový obchod)."
+    access-inventory: "<yellow>Oprávnění umožní hráčům přístup k inventáři obchodu."
+    ownership-transfer: "<yellow>Oprávnění umožní hráčům, s tímto oprávněním, převést vlastnictví obchodu."
+    management-permission: "<yellow>Oprávnění povolií uživatelům, s tímto oprávněním, spravovat oprávnění skupin a upravovat skupinu uživatelů."
+    toggle-display: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, přepnout položku zobrazení obchodu."
+    set-shoptype: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním,, nastavit typ obchodu (přepnout nákup nebo prodej)."
+    set-price: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, nastavit cenu obchodu."
+    set-item: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, nastavit položku obchodu."
+    set-stack-amount: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, nastavit množství zásobníku obchodu."
+    set-currency: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, nastavit měnu obchodu."
+    set-name: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, nastavit název obchodu."
+  group:
+    everyone: "<yellow>Výchozí skupina pro všechny uživatele kromě vlastníka obchodu."
+    staff: "<yellow>Systém skupin pro zaměstnance v obchodech."
+    administrator: "<red>Systémová skupina pro správce, uživatelé v této skupině budou mít téměř stejná oprávnění jako majitel obchodu."
+invalid-group: "<red>Neplatný název skupiny."
+invalid-permission: "<red>Neplatné oprávnění."
+invalid-operation: "<red>Neplatná operace, je povoleno pouze přidání/odebrání."
+player-no-group: "<yellow>Hráč {0} není v žádné skupině v tomto obchodě."
+player-in-group: "<green>Hráč {0} je ve skupině <aqua>{1}</aqua> v tomto obchodě."
+permission-required: "<red>K tomu nemáte oprávnění {0} v tomto obchodě."
+no-permission-detailed: "<red>K tomu nemáte oprávnění <yellow>{0}</yellow>."
+paste-created: "<green>Vložte vytvořené, klikněte pro otevření v prohlížeči: <yellow>{0}</yellow><newline><red>Varování: <gray>Nikdy neposílejte vložení nikomu, komu nedůvěřujete."
+paste-created-local: "<green>Vložte vytvořené a uložené na váš místní disk na: {0}<newline><red>Varování: <gray>Nikdy neposílejte vložení nikomu, komu nedůvěřujete."
+paste-created-local-failed: "<red>Nepodařilo se uložit vložení na místní disk, zkontrolujte svůj disk."
+paste-451: "<gray><b>TIPS: </b> Zdá se, že vaše současná země nebo oblast blokovala službu CloudFlare Workers a QuickShop vložení nemusí být načteno správně.<newline><gray>Pokud následná operace selže, zkuste přidat --file parametr pro vygenerování místní cesty: <dark_gray>/qs paste --file</dark_gray>"
+paste-upload-failed: "<red>Nepodařilo se nahrát vložení do {0}, vyzkoušet jiného poskytovatele vkládání..."
+paste-upload-failed-local: "<red>Nepodařilo se nahrát vložení, pokus o vygenerování lokálního vložení..."
