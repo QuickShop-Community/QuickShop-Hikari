@@ -98,7 +98,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
                 switch (operation) {
                     case "list" -> {
                         sheet.printHeader();
-                        plugin.text().of(sender, "permission.header").send();
+                        sheet.printLine(plugin.text().of(sender, "permission.header").forLocale());
                         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                             for (Map.Entry<UUID, String> map : shop.getPermissionAudiences().entrySet()) {
                                 String name;
