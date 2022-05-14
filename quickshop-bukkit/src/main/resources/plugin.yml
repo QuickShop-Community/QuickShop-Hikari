@@ -98,6 +98,7 @@ permissions:
       quickshop.currency: true
       quickshop.toggledisplay: true
       quickshop.shopnaming: true
+      quickshop.permission: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
     default: op
@@ -279,4 +280,7 @@ permissions:
     default: op
   quickshop.bypass.namefee:
     description: Permission to use /qs name without the fee
+    default: op
+  quickshop.permission:
+    description: Permission to use /qs permission
     default: op
