@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.compatibility.towny;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
@@ -27,6 +28,7 @@ import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -78,13 +80,17 @@ public final class Main extends CompatibilityModule implements Listener {
         Town town = TownyAPI.getInstance().getTown(shopLoc);
         if (town == null) return;
         if (town.getMayor().getUUID().equals(event.getAuthorizer())) {
-            event.setResult(true);
+            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                event.setResult(true);
+            }
             return;
         }
         try {
             Nation nation = town.getNation();
             if (nation.getKing().getUUID().equals(event.getAuthorizer())) {
-                event.setResult(true);
+                if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                    event.setResult(true);
+                }
             }
         } catch (NotRegisteredException ignored) {
 

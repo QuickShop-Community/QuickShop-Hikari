@@ -19,9 +19,11 @@
 
 package com.ghostchu.quickshop.compatibility.bentobox;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -48,7 +50,9 @@ public final class Main extends CompatibilityModule implements Listener {
         Location shopLoc = event.getShop().getLocation();
         BentoBox.getInstance().getIslandsManager().getIslandAt(shopLoc).ifPresent(island -> {
             if (event.getAuthorizer().equals(island.getOwner())) {
-                event.setResult(true);
+                if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                    event.setResult(true);
+                }
             }
         });
     }

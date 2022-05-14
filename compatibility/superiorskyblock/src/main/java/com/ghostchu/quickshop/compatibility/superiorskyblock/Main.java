@@ -32,6 +32,7 @@ import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -63,7 +64,9 @@ public final class Main extends CompatibilityModule implements Listener {
         Island island = SuperiorSkyblockAPI.getIslandAt(shopLoc);
         if (island == null) return;
         if (island.getOwner().getUniqueId().equals(event.getAuthorizer())) {
-            event.setResult(true);
+            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                event.setResult(true);
+            }
         }
     }
 
