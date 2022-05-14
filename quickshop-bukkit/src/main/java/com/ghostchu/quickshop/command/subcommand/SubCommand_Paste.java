@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.Paste;
 import com.ghostchu.quickshop.util.paste.PasteGenerator;
@@ -34,6 +35,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -74,6 +76,9 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
         final String string = Paste.paste(new PasteGenerator(sender).render());
         if (string != null) {
             plugin.text().of("paste-created", "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8));
+            if (MsgUtil.getDefaultGameLanguageCode().equalsIgnoreCase("zh_cn") || Locale.getDefault().equals(Locale.CHINA)) {
+                plugin.text().of("paste-451");
+            }
             return true;
         }
         return false;
