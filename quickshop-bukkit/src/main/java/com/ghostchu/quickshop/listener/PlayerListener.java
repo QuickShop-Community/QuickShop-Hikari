@@ -28,6 +28,7 @@ import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.shop.InteractionController;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -195,6 +196,10 @@ public class PlayerListener extends AbstractQSListener {
             return false;
         }
 
+        if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
+            return false;
+        }
+
         this.playClickSound(p);
         plugin.getShopManager().sendShopInfo(p, shop);
         shop.setSignText();
@@ -331,6 +336,9 @@ public class PlayerListener extends AbstractQSListener {
             return false;
         }
         if (!shop.isSelling()) {
+            return false;
+        }
+        if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
             return false;
         }
         this.playClickSound(p);
