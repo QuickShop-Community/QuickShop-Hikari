@@ -755,8 +755,7 @@ public class ContainerShop implements Shop {
         update();
         this.isLoaded = false;
         plugin.getShopManager().getLoadedShops().remove(this);
-        ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(this);
-        plugin.getServer().getPluginManager().callEvent(shopUnloadEvent);
+        new ShopUnloadEvent(this).callEvent();
     }
 
     @Override
