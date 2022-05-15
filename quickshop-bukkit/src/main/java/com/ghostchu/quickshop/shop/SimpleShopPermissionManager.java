@@ -79,16 +79,18 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         if (!permissionMapping.containsKey(group)) {
             throw new IllegalArgumentException("Group " + group + " does not exist.");
         }
-        Log.permission("Register permission " + permission + " to group " + group);
-        permissionMapping.get(group).add(namespace.getName().toLowerCase(Locale.ROOT) + "." + permission);
+        String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
+        Log.permission("Register permission " + fullPermissionPath + " to group " + group);
+        permissionMapping.get(group).add(fullPermissionPath);
     }
 
     public void unregisterPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission) {
         if (!permissionMapping.containsKey(group)) {
             return;
         }
-        Log.permission("Unregister permission " + permission + " from group " + group);
-        permissionMapping.get(group).remove(namespace.getName().toLowerCase(Locale.ROOT) + "." + permission);
+        String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
+        Log.permission("Unregister permission " + fullPermissionPath + " from group " + group);
+        permissionMapping.get(group).remove(fullPermissionPath);
     }
 
     public boolean hasGroup(@NotNull String group) {
@@ -115,8 +117,9 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         if (!permissionMapping.containsKey(group)) {
             return false;
         }
-        boolean result = permissionMapping.get(group).contains(namespace.getName().toLowerCase(Locale.ROOT) + "." + permission);
-        Log.permission("Check permission " + permission + " for group " + group + ": " + result);
+        String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
+        boolean result = permissionMapping.get(group).contains(fullPermissionPath);
+        Log.permission("Check permission " + fullPermissionPath + " for group " + group + ": " + result);
         return result;
     }
 
