@@ -106,7 +106,7 @@
                 </excludes>
             </resource>
             <resource>
-                <directory>../crowdin/lang</directory>
+                <directory>${rootDir}/crowdin/lang</directory>
                 <targetPath>/lang</targetPath>
                 <filtering>true</filtering>
             </resource>
