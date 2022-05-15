@@ -45,7 +45,10 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
 
     @Override
     public void onLoad() {
-        try {saveDefaultConfig();}catch (IllegalArgumentException ignored){}
+        try {
+            saveDefaultConfig();
+        } catch (IllegalArgumentException ignored) {
+        }
         this.api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
         getLogger().info("Loading up...");
     }
@@ -53,7 +56,10 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
     @Override
     public void onEnable() {
         // Plugin startup logic
-        try {saveDefaultConfig();}catch (IllegalArgumentException ignored){}
+        try {
+            saveDefaultConfig();
+        } catch (IllegalArgumentException ignored) {
+        }
         this.api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
         Bukkit.getPluginManager().registerEvents(this, this);
         getLogger().info("Enabling...");
@@ -66,7 +72,7 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
         getLogger().info("Unloading...");
     }
 
-    @EventHandler(ignoreCancelled = true,priority = EventPriority.MONITOR)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onQuickShopReload(QSConfigurationReloadEvent event) {
         reloadConfig();
         init();
@@ -79,13 +85,13 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
 
     public abstract void init();
 
-    public void recordDeletion(@Nullable UUID uuid, @NotNull Shop shop, @NotNull String reason){
-        if(uuid == null)
+    public void recordDeletion(@Nullable UUID uuid, @NotNull Shop shop, @NotNull String reason) {
+        if (uuid == null)
             uuid = Util.getNilUniqueId();
-        this.api.logEvent(new ShopRemoveLog(uuid,reason,shop.saveToInfoStorage()));
+        this.api.logEvent(new ShopRemoveLog(uuid, reason, shop.saveToInfoStorage()));
     }
 
-    public List<Shop> getShops(@NotNull String worldName, int minX, int minZ,int maxX, int maxZ) {
+    public List<Shop> getShops(@NotNull String worldName, int minX, int minZ, int maxX, int maxZ) {
         List<Shop> shopsList = new ArrayList<>();
         for (int x = minX >> 4; x <= maxX >> 4; x++) {
             for (int z = minZ >> 4; z <= maxZ >> 4; z++) {

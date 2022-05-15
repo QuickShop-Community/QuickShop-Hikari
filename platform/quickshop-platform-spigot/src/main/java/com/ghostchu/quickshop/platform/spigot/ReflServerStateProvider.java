@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.platform.spigot;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+
 /**
  * @author EssentialsX
  * <a href="https://github.com/EssentialsX/Essentials/blob/2.x/providers/NMSReflectionProvider/src/main/java/net/ess3/nms/refl/providers/ReflServerStateProvider.java">https://github.com/EssentialsX/Essentials/blob/2.x/providers/NMSReflectionProvider/src/main/java/net/ess3/nms/refl/providers/ReflServerStateProvider.java</a>

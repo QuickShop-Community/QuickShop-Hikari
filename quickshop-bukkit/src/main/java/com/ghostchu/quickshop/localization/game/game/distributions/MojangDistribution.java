@@ -19,6 +19,12 @@
 
 package com.ghostchu.quickshop.localization.game.game.distributions;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.localization.game.game.distributions.bean.GameManifest;
+import com.ghostchu.quickshop.localization.game.game.distributions.bean.VersionManifest;
+import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.mojangapi.MojangApiMirror;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
@@ -28,12 +34,6 @@ import kong.unirest.Unirest;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.localization.game.game.distributions.bean.GameManifest;
-import com.ghostchu.quickshop.localization.game.game.distributions.bean.VersionManifest;
-import com.ghostchu.quickshop.util.JsonUtil;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.mojangapi.MojangApiMirror;
 
 import java.util.ArrayList;
 import java.util.Collections;

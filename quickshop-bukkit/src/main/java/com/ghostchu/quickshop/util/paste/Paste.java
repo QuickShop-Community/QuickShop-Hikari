@@ -20,8 +20,6 @@
 package com.ghostchu.quickshop.util.paste;
 
 import com.ghostchu.quickshop.util.logger.Log;
-import com.ghostchu.quickshop.util.paste.LuckoPastebinPaster;
-import com.ghostchu.quickshop.util.paste.PasteInterface;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -52,7 +52,8 @@ public class Bootstrap {
     private static void createAndShowGUI(boolean supportBrowse) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException e) {
+        } catch (ClassNotFoundException | UnsupportedLookAndFeelException | IllegalAccessException |
+                 InstantiationException e) {
             e.printStackTrace();
         }
         if (supportBrowse) {

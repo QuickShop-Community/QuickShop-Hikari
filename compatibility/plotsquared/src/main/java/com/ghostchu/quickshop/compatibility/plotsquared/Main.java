@@ -100,16 +100,17 @@ public final class Main extends CompatibilityModule implements Listener {
                 location.getBlockZ());
         Plot plot = pLocation.getPlot();
         if (plot == null) {
-            if(!whiteList) {
+            if (!whiteList) {
                 event.setCancelled(true, Component.text("PlotSquared-Compat: WhiteList Mode is on and no plot found in this position."));
-                  return;
+                return;
             }
             return;
         }
-        if(!plot.getFlag(tradeFlag)){
+        if (!plot.getFlag(tradeFlag)) {
             event.setCancelled(true, Component.text("PlotSquared-Compat: Trade Flag is not enabled."));
         }
     }
+
     @EventHandler(ignoreCancelled = true)
     public void canTradeShopHere(ShopPurchaseEvent event) {
         Location location = event.getShop().getLocation();
@@ -120,13 +121,13 @@ public final class Main extends CompatibilityModule implements Listener {
                 location.getBlockZ());
         Plot plot = pLocation.getPlot();
         if (plot == null) {
-            if(!whiteList) {
+            if (!whiteList) {
                 event.setCancelled(true, Component.text("PlotSquared-Compat: WhiteList Mode is on and no plot found in this position."));
                 return;
             }
             return;
         }
-        if(!plot.getFlag(tradeFlag)){
+        if (!plot.getFlag(tradeFlag)) {
             event.setCancelled(true, Component.text("PlotSquared-Compat: Trade Flag is not enabled."));
         }
     }
@@ -134,15 +135,15 @@ public final class Main extends CompatibilityModule implements Listener {
     private List<Shop> getShops(Plot plot) {
         List<Shop> shopsList = new ArrayList<>();
         for (CuboidRegion region : plot.getRegions()) {
-            shopsList.addAll(getShops(region.getWorld().getName(),region.getMinimumPoint().getX(),region.getMinimumPoint().getZ(),region.getMaximumPoint().getX(),region.getMaximumPoint().getZ()));
+            shopsList.addAll(getShops(region.getWorld().getName(), region.getMinimumPoint().getX(), region.getMinimumPoint().getZ(), region.getMaximumPoint().getX(), region.getMaximumPoint().getZ()));
         }
         return shopsList;
     }
 
     @Subscribe
     public void onPlotDelete(PlotDeleteEvent event) {
-        getShops(event.getPlot()).forEach(shop->{
-            recordDeletion(event.getPlot().getOwner(),shop,"Plot deleted");
+        getShops(event.getPlot()).forEach(shop -> {
+            recordDeletion(event.getPlot().getOwner(), shop, "Plot deleted");
             shop.delete();
         });
     }
@@ -155,12 +156,11 @@ public final class Main extends CompatibilityModule implements Listener {
         if (event.wasAdded()) {
             return; // We only check untrusted
         }
-        getShops(event.getPlot()).stream().filter(shop -> shop.getOwner().equals(event.getPlayer())).forEach(shop->{
-            recordDeletion(event.getPlot().getOwner(),shop,"Untrusted -> "+event.getPlayer());
+        getShops(event.getPlot()).stream().filter(shop -> shop.getOwner().equals(event.getPlayer())).forEach(shop -> {
+            recordDeletion(event.getPlot().getOwner(), shop, "Untrusted -> " + event.getPlayer());
             shop.delete();
         });
     }
-
 
 
     static class QuickshopCreateFlag extends BooleanFlag<QuickshopCreateFlag> {

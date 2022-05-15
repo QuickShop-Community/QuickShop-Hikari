@@ -72,14 +72,14 @@ public class ConfigurationUpdater {
                 }
                 plugin.getLogger().info("[ConfigUpdater] Updating configuration from " + current + " to " + updateScript.version());
                 String scriptName = updateScript.description();
-                if(StringUtils.isEmpty(scriptName)) {
+                if (StringUtils.isEmpty(scriptName)) {
                     scriptName = method.getName();
                 }
                 plugin.getLogger().info("[ConfigUpdater] Executing update script " + scriptName);
                 try {
                     if (method.getParameterCount() == 0) {
                         method.invoke(configUpdateScript);
-                    }else {
+                    } else {
                         if (method.getParameterCount() == 1 && (method.getParameterTypes()[0] == int.class || method.getParameterTypes()[0] == Integer.class)) {
                             method.invoke(configUpdateScript, current);
                         }

@@ -19,6 +19,13 @@
 
 package com.ghostchu.quickshop.listener;
 
+import com.ghostchu.quickshop.Cache;
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
+import com.ghostchu.quickshop.api.shop.DisplayType;
+import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -36,13 +43,6 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.Cache;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
-import com.ghostchu.quickshop.api.shop.DisplayType;
-import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 
 public class DisplayProtectionListener extends AbstractProtectionListener {
 

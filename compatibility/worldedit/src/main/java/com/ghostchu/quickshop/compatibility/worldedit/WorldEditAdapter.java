@@ -49,7 +49,7 @@ public class WorldEditAdapter implements Listener {
         Actor actor = event.getActor();
         World world = event.getWorld();
         if (actor != null && event.getStage() == EditSession.Stage.BEFORE_CHANGE) {
-            event.setExtent(new WorldEditBlockListener(actor, world, event.getExtent(),QuickShop.getInstance()));
+            event.setExtent(new WorldEditBlockListener(actor, world, event.getExtent(), QuickShop.getInstance()));
         }
     }
 

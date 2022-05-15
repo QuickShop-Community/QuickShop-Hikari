@@ -356,7 +356,7 @@ public class ConfigCollectorItem implements SubPasteItem {
         if (!file.exists()) {
             return "Fail: No such file (" + file.getName() + ")";
         }
-        
+
         try {
             List<String> lines = Files.readAllLines(file.toPath());
             StringJoiner joiner = new StringJoiner("\n");

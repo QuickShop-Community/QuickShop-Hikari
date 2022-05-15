@@ -250,7 +250,7 @@ public class Log {
 
         @NotNull
         public static Caller create() {
-           return create(3);
+            return create(3);
         }
 
         @NotNull

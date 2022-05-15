@@ -77,7 +77,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
         } else {
             Material material = matchMaterial(cmdArg[1]);
             if (material == null) {
-                plugin.text().of(sender, "item-not-exist",cmdArg[1]).send();
+                plugin.text().of(sender, "item-not-exist", cmdArg[1]).send();
                 return;
             }
             if (cmdArg.length > 2 && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stack") && plugin.isAllowStack()) {

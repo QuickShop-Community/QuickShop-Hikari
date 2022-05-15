@@ -20,10 +20,10 @@
 package com.ghostchu.quickshop.shop.datatype;
 
 import com.ghostchu.quickshop.shop.ShopSignStorage;
+import com.ghostchu.quickshop.util.JsonUtil;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.util.JsonUtil;
 
 public class ShopSignPersistentDataType
         implements PersistentDataType<String, ShopSignStorage> {

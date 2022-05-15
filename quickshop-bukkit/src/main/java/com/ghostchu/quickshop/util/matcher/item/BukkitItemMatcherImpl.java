@@ -19,13 +19,13 @@
 
 package com.ghostchu.quickshop.util.matcher.item;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import lombok.AllArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.ItemMatcher;
 
 /**
  * A simple impl for ItemMatcher
@@ -81,9 +81,9 @@ public class BukkitItemMatcherImpl implements ItemMatcher {
         tester.setAmount(1);
 
         String shopIdOrigin = plugin.getPlatform().getItemShopId(original);
-        if(shopIdOrigin != null){
+        if (shopIdOrigin != null) {
             String shopIdTester = plugin.getPlatform().getItemShopId(tester);
-            if(shopIdOrigin.equals(shopIdTester)) {
+            if (shopIdOrigin.equals(shopIdTester)) {
                 return true;
             }
         }

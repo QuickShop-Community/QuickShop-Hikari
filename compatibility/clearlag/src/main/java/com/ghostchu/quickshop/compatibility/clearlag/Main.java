@@ -30,10 +30,10 @@ import org.bukkit.event.Listener;
 public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
-    public void onRemove(EntityRemoveEvent event){
+    public void onRemove(EntityRemoveEvent event) {
         for (Entity entity : event.getEntityList()) {
-            if(entity instanceof Item item){
-                if(AbstractDisplayItem.checkIsGuardItemStack(item.getItemStack())){
+            if (entity instanceof Item item) {
+                if (AbstractDisplayItem.checkIsGuardItemStack(item.getItemStack())) {
                     event.removeEntity(entity);
                 }
             }

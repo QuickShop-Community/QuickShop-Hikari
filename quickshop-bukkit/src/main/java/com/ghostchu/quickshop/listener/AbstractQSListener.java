@@ -19,10 +19,10 @@
 
 package com.ghostchu.quickshop.listener;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import com.ghostchu.quickshop.QuickShop;
 
 public abstract class AbstractQSListener implements Listener, Reloadable {
     protected final QuickShop plugin;

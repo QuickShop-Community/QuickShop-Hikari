@@ -19,10 +19,10 @@
 
 package com.ghostchu.quickshop.shop;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @AllArgsConstructor
 @Data

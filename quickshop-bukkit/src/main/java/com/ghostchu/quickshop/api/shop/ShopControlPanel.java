@@ -32,14 +32,16 @@ import java.util.List;
 public interface ShopControlPanel {
     /**
      * Usually you don't need touch this :)
+     *
      * @return The internal usage priority.
      */
-    default int getInternalPriority(){
+    default int getInternalPriority() {
         return getPriority().getPriority();
     }
 
     /**
      * The shop control panel impl's plugin instance.
+     *
      * @return Your plugin instance;
      */
     @NotNull Plugin getPlugin();
@@ -48,6 +50,7 @@ public interface ShopControlPanel {
      * The shop control panel's priority.
      * HIGH = Earlier shown
      * LOW = Later shown
+     *
      * @return The priority.
      */
     @NotNull
@@ -55,8 +58,9 @@ public interface ShopControlPanel {
 
     /**
      * Generate components for the shop control panel.
+     *
      * @param player The player
-     * @param shop The shop
+     * @param shop   The shop
      * @return The components, or empty list if nothing to show. Every component will be shown in a new line.
      */
     @NotNull List<Component> generate(@NotNull Player player, @NotNull Shop shop);

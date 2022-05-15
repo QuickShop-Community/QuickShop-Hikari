@@ -85,7 +85,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                     }
                 case 2:
                     Profile profile = plugin.getPlayerFinder().find(cmdArg[1]);
-                    if(profile == null) {
+                    if (profile == null) {
                         plugin.text().of(sender, "unknown-player").send();
                         return;
                     }

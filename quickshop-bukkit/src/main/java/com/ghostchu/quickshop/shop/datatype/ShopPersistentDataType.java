@@ -18,12 +18,12 @@
  */
 package com.ghostchu.quickshop.shop.datatype;
 
+import com.ghostchu.quickshop.util.MsgUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.util.MsgUtil;
 
 public class ShopPersistentDataType implements PersistentDataType<String, ShopPersistentData> {
     static final ShopPersistentDataType INSTANCE = new ShopPersistentDataType();

@@ -217,7 +217,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
          */
         public boolean isAllowed(double price) {
             if (this.max != -1 && price > this.max) {
-                    return false;
+                return false;
             }
             if (this.min != -1) {
                 return price >= this.min;

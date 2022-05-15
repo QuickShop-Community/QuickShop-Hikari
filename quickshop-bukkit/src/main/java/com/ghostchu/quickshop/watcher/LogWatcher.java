@@ -19,12 +19,12 @@
 
 package com.ghostchu.quickshop.watcher;
 
+import com.ghostchu.quickshop.QuickShop;
 import lombok.SneakyThrows;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
 
 import java.io.*;
 import java.nio.file.Files;

@@ -19,6 +19,8 @@
 
 package com.ghostchu.quickshop.localization.game.game;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.Util;
 import lombok.AllArgsConstructor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -27,8 +29,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.Util;
 
 @AllArgsConstructor
 public class InternalGameLanguageImpl implements GameLanguage {

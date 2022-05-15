@@ -75,13 +75,13 @@ public class PasteGenerator {
                 .replace("{title}", "QuickShop-" + QuickShop.getFork() + " // Paste")
                 .replace("{inline_style}", INLINE_STYLE);
     }
-    
+
     @NotNull
     private String bakeFooter() {
         return DOCUMENT_FOOTER
-            .replace("{product}", "QuickShop-" + QuickShop.getFork() + " v" + QuickShop.getVersion())
-            .replace("{time}", formatTime(timestamp))
-            .replace("{pastecreator}", sender == null ? "Automatic" : sender.getName());
+                .replace("{product}", "QuickShop-" + QuickShop.getFork() + " v" + QuickShop.getVersion())
+                .replace("{time}", formatTime(timestamp))
+                .replace("{pastecreator}", sender == null ? "Automatic" : sender.getName());
     }
 
     @NotNull

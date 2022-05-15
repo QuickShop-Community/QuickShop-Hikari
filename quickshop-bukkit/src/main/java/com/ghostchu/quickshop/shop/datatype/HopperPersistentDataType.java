@@ -18,12 +18,12 @@
  */
 package com.ghostchu.quickshop.shop.datatype;
 
+import com.ghostchu.quickshop.util.MsgUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.util.MsgUtil;
 
 import java.util.UUID;
 
@@ -61,7 +61,7 @@ public class HopperPersistentDataType implements PersistentDataType<String, Hopp
             return GSON.fromJson(primitive, HopperPersistentData.class);
         } catch (Exception th) {
             MsgUtil.debugStackTrace(th.getStackTrace());
-            return new HopperPersistentData(new UUID(0,0));
+            return new HopperPersistentData(new UUID(0, 0));
         }
     }
 }

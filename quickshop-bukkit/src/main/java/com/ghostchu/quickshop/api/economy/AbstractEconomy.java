@@ -19,13 +19,13 @@
 
 package com.ghostchu.quickshop.api.economy;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
 
 import java.util.UUID;
 

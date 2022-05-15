@@ -19,6 +19,9 @@
 
 package com.ghostchu.quickshop.shop;
 
+import com.ghostchu.quickshop.api.shop.Info;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopAction;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.Location;
@@ -26,9 +29,6 @@ import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.api.shop.Info;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopAction;
 
 /**
  * A class contains shop's infomations

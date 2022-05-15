@@ -19,9 +19,9 @@
 
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.api.shop.Shop;
 import org.bukkit.block.Sign;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.api.shop.Shop;
 
 /**
  * Calling when shop sign update, Can't cancel

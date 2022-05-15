@@ -81,6 +81,7 @@ public class BuildInfo {
         private final String buildNumber;
         @Nullable
         private final String tags;
+
         @NotNull
         public String getBranch() {
             if (branch == null)
@@ -147,6 +148,7 @@ public class BuildInfo {
                 return "undefined";
             return commitMessage;
         }
+
         @NotNull
         public String getCommitDate() {
             if (commitDate == null)
@@ -276,8 +278,8 @@ public class BuildInfo {
                 int fid = -1;
                 try {
                     fid = Integer.parseInt(properties.getProperty("ci.build.id"));
-                }catch (NumberFormatException ignored) {
-                }finally {
+                } catch (NumberFormatException ignored) {
+                } finally {
                     this.id = fid;
                 }
             } else {

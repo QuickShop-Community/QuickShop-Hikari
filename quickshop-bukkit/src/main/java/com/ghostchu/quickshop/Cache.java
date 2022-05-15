@@ -19,13 +19,13 @@
 
 package com.ghostchu.quickshop;
 
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.shop.SimpleShopManager;
 
 import java.lang.ref.WeakReference;
 import java.util.concurrent.TimeUnit;

@@ -19,10 +19,10 @@
 
 package com.ghostchu.quickshop.util;
 
+import com.ghostchu.quickshop.QuickShop;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
 
 /**
  * WarningSender to prevent send too many warnings to CommandSender in short time.

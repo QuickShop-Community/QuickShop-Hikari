@@ -19,10 +19,10 @@
 
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.api.shop.Shop;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.api.shop.Shop;
 
 /**
  * Calling when shop deleting
@@ -63,6 +63,7 @@ public class ShopDeleteEvent extends AbstractQSEvent implements QSCancellable {
     public @Nullable Component getCancelReason() {
         return this.cancelReason;
     }
+
     /**
      * Gets the delete is from memory or also database
      *

@@ -116,12 +116,14 @@ public interface QuickShopAPI {
 
     /**
      * Getting the control panel manager
+     *
      * @return Shop control panel manager
      */
     ShopControlPanelManager getShopControlPanelManager();
 
     /**
      * Gets registry of InventoryWrappers
+     *
      * @return registry
      */
     @NotNull
@@ -129,14 +131,16 @@ public interface QuickShopAPI {
 
     /**
      * Logs a event into logs database / file
+     *
      * @param eventObject event object, must can be serialized by Gson.
      */
     void logEvent(@NotNull Object eventObject);
 
     /**
      * Register a localized translation key mapping to another key or fixed string
+     *
      * @param translationKey the key to
-     * @param key the key to map to or a fixed string
+     * @param key            the key to map to or a fixed string
      */
     void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key);
 }

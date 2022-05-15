@@ -19,12 +19,12 @@
 
 package com.ghostchu.quickshop.util.config;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.holder.QuickShopInstanceHolder;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.holder.QuickShopInstanceHolder;
 
 import java.io.File;
 import java.io.IOException;
