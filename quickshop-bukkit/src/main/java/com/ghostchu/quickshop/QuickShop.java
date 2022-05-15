@@ -352,7 +352,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         registerTasks();
         Log.debug("DisplayItem selected: " + AbstractDisplayItem.getNowUsing().name());
         registerCommunicationChannels();
-        getServer().getPluginManager().callEvent(new QSConfigurationReloadEvent(this));
+        new QSConfigurationReloadEvent(this).callEvent();
         getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
     }
 
@@ -726,7 +726,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             logWatcher = null;
         }
         // Schedule this event can be run in next tick.
-        Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new QSConfigurationReloadEvent(this)));
+        Util.mainThreadRun(() -> new QSConfigurationReloadEvent(this).callEvent());
     }
 
 

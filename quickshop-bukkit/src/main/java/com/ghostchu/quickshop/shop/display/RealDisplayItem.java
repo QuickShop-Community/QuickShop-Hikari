@@ -141,9 +141,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
         this.item.remove();
         this.item = null;
         this.guardedIstack = null;
-        ShopDisplayItemDespawnEvent shopDisplayItemDespawnEvent = new ShopDisplayItemDespawnEvent(
-                shop, originalItemStack, DisplayType.REALITEM);
-        PLUGIN.getServer().getPluginManager().callEvent(shopDisplayItemDespawnEvent);
+        new ShopDisplayItemDespawnEvent(shop, originalItemStack, DisplayType.REALITEM).callEvent();
     }
 
     @Override
@@ -249,11 +247,9 @@ public class RealDisplayItem extends AbstractDisplayItem {
             Log.debug("Can't spawn the displayItem because there is not an AIR block above the shopblock.");
             return;
         }
-        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop,
-                originalItemStack, DisplayType.REALITEM);
-        PLUGIN.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
 
-        if (shopDisplayItemSpawnEvent.isCancelled()) {
+
+        if (new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.REALITEM).callCancellableEvent()) {
             Log.debug("Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
             return;
         }

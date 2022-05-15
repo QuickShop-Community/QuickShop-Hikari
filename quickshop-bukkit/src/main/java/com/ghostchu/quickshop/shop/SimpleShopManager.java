@@ -704,8 +704,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return;
         }
         sendSellSuccess(buyer, shop, amount, total, transaction.getTax());
-        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, transaction.getTax());
-        plugin.getServer().getPluginManager().callEvent(se);
+        new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, transaction.getTax()).callEvent();
         shop.setSignText(); // Update the signs count
         notifySold(buyer, shop, amount, space);
     }
@@ -1170,8 +1169,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return;
         }
         sendPurchaseSuccess(seller, shop, amount, total, transaction.getTax());
-        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, transaction.getTax());
-        plugin.getServer().getPluginManager().callEvent(se);
+        new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, transaction.getTax()).callEvent();
         notifyBought(seller, shop, amount, stock, transaction.getTax(), total);
     }
 

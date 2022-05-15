@@ -991,7 +991,7 @@ public class ContainerShop implements Shop {
                 sign.setGlowingText(isGlowing);
             }
             sign.update(true);
-            plugin.getServer().getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));
+            new ShopSignUpdateEvent(this, sign).callEvent();
         }
     }
 
