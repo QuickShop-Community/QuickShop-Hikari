@@ -314,30 +314,30 @@ booleanformat:
   success: <green>✔
   failed: <red>Augurk
 controlpanel:
-  stack: '<green>Per bulkbedrag: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   price-hover: <yellow>Klik om een nieuwe prijs voor het artikel in te stellen.
   remove: <red><bold>[Verwijder winkel]
   mode-buying-hover: <yellow>Klik om de winkel in SELL modus te wijzigen.
-  empty: '<green>Leeg: Verwijder alle items <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>Klik om de hoeveelheid item per bulk in te stellen. Stel in op 1 voor normaal gedrag.
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Eigenaar: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Klik om de valuta die deze winkel gebruikt in te stellen of te verwijderen
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: '<green>Shop modus: <aqua>verkopen <yellow>[<light_purple><bold>Change<yellow>]'
-  currency: '<green>Valuta: <aqua>{0} e[<light_purple><bold>Set<yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Klik om van eigenaar te wisselen.
-  mode-buying: '<green>Shop modus: <aqua>Aankopen <yellow>[<light_purple><bold>Change<yellow>]'
-  item: '<green>Shop item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  unlimited: '<green>Onbeperkt: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   unlimited-hover: <yellow>Click om te schakelen als de winkel onbeperkt is.
   refill-hover: <yellow>Klik om de winkel te hervullen.
   remove-hover: <yellow>Klik om deze winkel te verwijderen.
   toggledisplay-hover: <yellow>Toggle the shop's displayitem status
-  refill: '<green>Refill: Verfijn de items <yellow>[<light_purple><bold>OK<yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>Toggle the shop's freeze status.
   lock-hover: <yellow>Enable/Disable the shop's lock protection.
   item-hover: <yellow>Klik om winkel item te wijzigen
@@ -510,4 +510,5 @@ paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin 
 paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
 command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
 successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
+successfully-unset-player-group: "<green>Successfully remove player group in this shop."
 successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."

@@ -331,7 +331,7 @@ controlpanel:
   currency: '<green>货币: <aqua>{0} <yellow>[<light_purple><bold>设置<yellow>]'
   setowner-hover: <yellow>点击来修改店主
   mode-buying: '<green>商店模式: <aqua>收购 <yellow>[<light_purple><bold>更改<yellow>]'
-  item: '<green>无限模式: {0} <yellow>[<light_purple><bold>切换<yellow>]'
+  item: '<green>商店物品: {0} <yellow>[<light_purple><bold>修改<yellow>]'
   unlimited: '<green>无限模式: {0} <yellow>[<light_purple><bold>切换<yellow>]'
   unlimited-hover: <yellow>点击以切换无限模式
   refill-hover: <yellow>点击以重新填充商品
@@ -377,7 +377,7 @@ timeunit:
   future: 在 {0}
   days: <red>{0} 天
 command:
-  reloading: '<green>配置文件重载成功. <yellow>一些更改可能需要重启才能生效. <newline><gray>(注意: 重载行为已经在4.0.9.10版本后改变, 我们现在只重新加载配置文件而不是整个插件，以确保服务器不会崩溃.)'
+  reloading: '<green>配置文件重载成功. <yellow>一些更改可能需要重启才能生效.'
   description:
     buy: <yellow>切换到 <light_purple>收购 <yellow>模式
     about: <yellow>显示QuickShop信息
@@ -510,4 +510,5 @@ paste-upload-failed: "<red>上传Paste到 {0} 失败，正在尝试其它的Past
 paste-upload-failed-local: "<red>上传Paste失败，尝试生成本地Paste..."
 command-incorrect: "<red>指令用法错误，输入/qs help检查帮助。用法： {0}。"
 successfully-set-player-group: "<green>成功地将玩家 {0} 组设置为 <aqua>{1}</aqua>。"
+successfully-unset-player-group: "<green>成功地移除此商店中的玩家权限组。"
 successfully-set-player-permission: "<green>成功设置玩家 {0} 权限 <aqua>{1}</aqua> 在商店 <aqua>{2}</aqua>"

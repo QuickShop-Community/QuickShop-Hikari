@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>묶음의 개당 가격: <aqua>{0} <yellow>[<light_purple><bold>변경<yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   price-hover: <yellow>눌러서 아이템에 대한 새로운 가격 설정
   remove: <red><bold>[상점 제거]
   mode-buying-hover: <yellow>클릭하여 상점을 판매 모드로 전환합니다.
-  empty: '<green>제거 : 상점의 모든 아이템을 제거하시겠습니까? <yellow>[<light_purple><bold>네<yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: 묶음당 항목 양을 설정하려면 클릭하십시오. 보통 동작의 경우 1로 설정하십시오.
   alwayscounting-hover: <yellow>상시 카운트 할건지 설정합니다
-  alwayscounting: '<green>상시 카운트: {0} <yellow>[<light_purple><bold>변경<yellow>]'
-  setowner: '<green>주인: <aqua>{0} <yellow>[<light_purple><bold>바꾸기<yellow>]'
-  freeze: '<yellow>동결 상태: <aqua>{0} <yellow>[<light_purple><bold>전환<yellow>]'
-  price: '<green>가격: <aqua>{0} <yellow>[<light_purple><bold>바꾸기<yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>클릭하여 이 상점이 사용중인 통화를 설정하거나 제거합니다.
-  lock: '<yellow>동결 생태: <aqua>{0} <yellow>[<light_purple><bold>전환<yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: '<green>상점 모드: <aqua>판매중 <yellow>[<light_purple><bold>변경<yellow>]'
-  currency: '<red>통화 : <aqua>{0} <yellow>[<light_purple><bold>설정<yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>눌러서 주인 변경
-  mode-buying: '<green>상점 모드: <aqua>구매중 <yellow>[<light_purple><bold>변경<yellow>]'
-  item: '<green>상점 아이템: {0} <yellow>[<light_purple><bold>변경<yellow>]'
-  unlimited: '<green>무제한:{0} <yellow>[<light_purple><bold>변경<yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   unlimited-hover: <yellow>상점 재고가 무제한일 경우 눌러서 전환
   refill-hover: <yellow>눌러서 채우기
   remove-hover: <yellow> 클릭해서 상점 삭제.
   toggledisplay-hover: <yellow>상점 표시 항목 상태 전환
-  refill: '<green>채우기: 상점의 아이템을 채우시겠습니까? <yellow>[<light_purple><bold>네<yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>상점 동결 상태 전환.
   lock-hover: <yellow>상점 잠금 보호를 활성화/비활성화 합니다. 
   item-hover: <yellow>클릭하여 상점의 아이템을 변경합니다
   infomation: '<green>상점 컨트롤 패널:'
   mode-selling-hover: <yellow>클릭하여 상점을 구매 모드로 전환합니다.
   empty-hover: <yellow>눌러서 상점 비우기
-  toggledisplay: '<yellow>아이템 표시: <aqua>{0} <yellow>[<light_purple><bold>전환<yellow>]'
+  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
 timeunit:
   behind: behind
   week: <red>{0} week
@@ -377,7 +377,7 @@ timeunit:
   future: in {0}
   days: <red>{0} days
 command:
-  reloading: '<green>컨피그를 다시 불러왔습니다. <yellow>일부 변경사항은 서버를 완전히 껏다켜야 적용됩니다.<newline><gray>(참고: 4.0.9.10 이후 리로드 방식이 변경되었습니다. 서버가 손상되지 않도록 컨피그만 리로드하고 전체 플러그인은 다시 불러오지 않습니다.)'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
     buy: <yellow>상점을 <light_purple>구매 모드<yellow>로 전환합니다
     about: <yellow>QuickShop 의 정보를 보여줍니다.
@@ -510,4 +510,5 @@ paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin 
 paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
 command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
 successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
+successfully-unset-player-group: "<green>Successfully remove player group in this shop."
 successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."

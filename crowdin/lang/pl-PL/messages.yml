@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Ilość za stack: <aqua>{0} <yellow>[<light_purple><bold>Zmień<yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   price-hover: <yellow>Kliknij, aby ustawić nową cenę produktu.
   remove: <red><bold>[Usuń sklep]
   mode-buying-hover: <yellow>Kliknij, aby zmienić sklep na tryb SPRZEDAŻ.
-  empty: '<green>Czyszczenie: Wyczyść sklep <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>Kliknij, aby ustawić ilość produktu na stack. Ustaw na 1 dla normalnego zachowania.
   alwayscounting-hover: <yellow>Kliknij, aby przełączyć, jeśli sklep zawsze liczy pojemnik.
-  alwayscounting: '<green>Zawsze liczy: {0} <yellow>[<light_purple><bold>Zmień<yellow>]'
-  setowner: '<green>Właściciel: <aqua>{0} <yellow>[<light_purple><bold>Zmień<yellow>]'
-  freeze: '<yellow>Tryb zamrożenia: <aqua>{0} <yellow>[<light_purple><bold>Przełącz<yellow>]'
-  price: '<green>Cena: <aqua>{0} <yellow>[<light_purple><bold>Zmień<yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Kliknij, aby ustawić lub usunąć walutę, której używa ten sklep
-  lock: '<yellow>Blokada sklepu: <aqua>{0} <yellow>[<light_purple><bold>Przełącz<yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: '<green>Tryb sklepu: <aqua>Sprzedaż <yellow>[<light_purple><bold>Zmień<yellow>]'
-  currency: '<green>Waluta: <aqua>{0} <yellow>[<light_purple><bold>Ustaw<yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Kliknij, aby zmienić właściciela.
-  mode-buying: '<green>Tryb sklepu: <aqua>Kupno <yellow>[<light_purple><bold>Zmień<yellow>]'
-  item: '<green>Przedmiot sklepu: {0} <yellow>[<light_purple><bold>Zmień<yellow>]'
-  unlimited: '<green>Bez ograniczenia: {0} <yellow>[<light_purple><bold>Zmień<yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   unlimited-hover: <yellow>Kliknij, aby przełączyć.
   refill-hover: <yellow>Kliknij, aby uzupełnić sklep.
   remove-hover: <yellow>Kliknij, żeby usunąć sklep.
   toggledisplay-hover: <yellow>Przełącz status wyświetlania przedmiotu w sklepie
-  refill: '<green>Uzupełnianie: Uzupełnij sklep <yellow>[<light_purple><bold>OK<yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>Przełącz status zamrożenia sklepu.
   lock-hover: <yellow>Włącz/Wyłącz ochronę blokady sklepu.
   item-hover: <yellow>Kliknij, aby zmienić przedmiot sklepu
   infomation: '<green>Panel sterowania sklepu:'
   mode-selling-hover: <yellow>Kliknij, aby zmienić sklep na tryb KUPNO.
   empty-hover: <yellow>Kliknij, aby wyczyścić sklep.
-  toggledisplay: '<yellow>Wyświetlacz Przedmiotu: <aqua>{0} <yellow>[<light_purple><bold>Przełącz<yellow>]'
+  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
 timeunit:
   behind: za
   week: <red>{0} tygodni
@@ -377,7 +377,7 @@ timeunit:
   future: w {0}
   days: <red>{0} dni
 command:
-  reloading: '<green>Konfiguracja przeładowana. <yellow>Niektóre zmiany mogą wymagać ponownego uruchomienia. <newline><gray>(Uwaga: zachowanie przeładowania zostało zmienione po 4.0.9.10, teraz przeładowujemy tylko konfigurację, ale nie całą wtyczkę, aby serwer nie uległ awarii)'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
     buy: <yellow>Zmienia rodzaj sklepu na tryb <light_purple>KUP
     about: <yellow>Pokazuje informacje ze Sklepu
@@ -510,4 +510,5 @@ paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin 
 paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
 command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
 successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
+successfully-unset-player-group: "<green>Successfully remove player group in this shop."
 successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."

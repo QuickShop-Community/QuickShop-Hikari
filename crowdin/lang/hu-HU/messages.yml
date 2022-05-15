@@ -318,26 +318,26 @@ controlpanel:
   price-hover: <yellow>Kattintson ide, hogy beállítsa az új árát a boltnak.
   remove: <red><bold>[Bolt törlése]
   mode-buying-hover: <yellow>Click to convert the shop to be in the selling mode.
-  empty: '<green>Üres: Az összes tárgy eltávolítása <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>Click to set the amount of item per bulk. Set to 1 for normal behaviour.
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Tulajdonos: <aqua>{0} <yellow>[<light_purple><bold>Megváltoztatás<yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  price: '<green>Érték: <aqua>{0} <yellow>[<light_purple><bold>Beállítás<yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Click to set or remove the currency that this shop is using
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: '<green>Bolt beállítás: <aqua>Eladás <yellow>[<light_purple><bold>Átváltás<yellow>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Kattintson ide, hogy megváltoztassa a tulajdonost.
-  mode-buying: '<green>Bolt beállítás: <aqua>Vétel <yellow>[<light_purple><bold>Megváltoztatás<yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
   item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  unlimited: '<green>Korlátlan: {0} <yellow>[<light_purple><bold>Megváltoztatás<yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   unlimited-hover: <yellow>Kattintson ide, hogy beállítsa, ha a boltja korlátlan.
   refill-hover: <yellow>Kattintson ide a bolt feltöltéséhez.
   remove-hover: <yellow>Kattintson ide, hogy kitörölje a boltot.
   toggledisplay-hover: <yellow>Toggle the shop's displayitem status
-  refill: '<green>Feltöltés: Bolti tárgyak feltöltése <yellow>[<light_purple><bold>OK<yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>Toggle the shop's freeze status.
   lock-hover: <yellow>Enable/Disable the shop's lock protection.
   item-hover: <yellow>Klikk, hogy átváltoztasd a bolt tárgyát
@@ -510,4 +510,5 @@ paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin 
 paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
 command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
 successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
+successfully-unset-player-group: "<green>Successfully remove player group in this shop."
 successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
