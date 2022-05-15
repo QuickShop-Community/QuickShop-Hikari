@@ -80,7 +80,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         plugin.getLogger().info("Translation over-the-air platform selected: Crowdin");
         try {
             this.distribution = new CrowdinOTA(plugin);
-        } catch (IOException e) {
+        } catch (Exception e) {
             this.distribution = null;
             plugin.getLogger().log(Level.SEVERE, "Failed to initialize Crowdin OTA distribution, cloud translations update failed.", e);
         }
