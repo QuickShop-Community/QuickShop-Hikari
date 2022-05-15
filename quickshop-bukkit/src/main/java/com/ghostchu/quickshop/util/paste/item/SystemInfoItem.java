@@ -74,7 +74,9 @@ public class SystemInfoItem implements SubPasteItem {
                   {properties}
                 </details>
                 """;
-        table.insert("System Properties", propertiesContent.replace("{properties}", systemProperties));
+        if (Util.parsePackageProperly("includeProperties").asBoolean()) {
+            table.insert("System Properties", propertiesContent.replace("{properties}", systemProperties));
+        }
         return table.render();
     }
 
