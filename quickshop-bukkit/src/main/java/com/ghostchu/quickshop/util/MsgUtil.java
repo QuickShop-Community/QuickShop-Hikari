@@ -385,7 +385,7 @@ public class MsgUtil {
             final String methodName = stackTraceElement.getMethodName();
             final int codeLine = stackTraceElement.getLineNumber();
             final String fileName = stackTraceElement.getFileName();
-            Log.debug("[TRACE]  [" + className + "] [" + methodName + "] (" + fileName + ":" + codeLine + ") ");
+            Log.debug("[TRACE]  at " + className + "." + methodName + " (" + fileName + ":" + codeLine + ") ");
         }
     }
 
