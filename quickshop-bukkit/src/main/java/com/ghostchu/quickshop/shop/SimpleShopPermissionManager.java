@@ -53,9 +53,11 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
             }
         }
         yamlConfiguration.getKeys(true).forEach(group -> {
-            List<String> perms = yamlConfiguration.getStringList(group);
-            this.permissionMapping.put(group, new HashSet<>(perms));
-            Log.permission("Permission loaded for group " + group + ": " + Util.list2String(perms));
+            if (yamlConfiguration.isList(group)) {
+                List<String> perms = yamlConfiguration.getStringList(group);
+                this.permissionMapping.put(group, new HashSet<>(perms));
+                Log.permission("Permission loaded for group " + group + ": " + Util.list2String(perms));
+            }
         });
     }
 
