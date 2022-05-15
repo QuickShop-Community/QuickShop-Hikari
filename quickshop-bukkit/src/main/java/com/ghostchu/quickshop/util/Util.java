@@ -1339,13 +1339,15 @@ public class Util {
         String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
         jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
         File file = new File(jarPath);
+        return getRelativePath(new File("."), file);
+    }
+
+    @NotNull
+    public static String getRelativePath(@NotNull File rootPath, @NotNull File targetPath) {
         try {
-            if (file.exists())
-                return file.getCanonicalPath();
-            else
-                return jarPath;
-        } catch (IOException e) {
-            return jarPath;
+            return rootPath.toURI().relativize(targetPath.toURI()).getPath();
+        } catch (Exception e) {
+            return targetPath.getAbsolutePath();
         }
     }
 
