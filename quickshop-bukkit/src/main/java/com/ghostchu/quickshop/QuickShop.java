@@ -884,7 +884,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 if (!this.playerFinder.contains(shop.getOwner())) {
                     waitingForBake.add(shop.getOwner());
                 }
-                shop.getModerator().getStaffs().forEach(staff -> {
+                shop.getPermissionAudiences().keySet().forEach(staff -> {
                     if (!this.playerFinder.contains(staff)) {
                         waitingForBake.add(staff);
                     }
