@@ -146,7 +146,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
                 return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
             }
         }
-        if (cmdArg.length == 3) {
+        if (cmdArg.length == 4) {
             if (cmdArg[0].equalsIgnoreCase("user")) {
                 return plugin.getShopPermissionManager().getGroups();
             }
