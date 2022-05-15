@@ -29,12 +29,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 
 public class PluginsInfoItem implements SubPasteItem {
-
-    public PluginsInfoItem() {
-
-    }
-
-
     @Override
     public @NotNull String getTitle() {
         return "Plugins";

@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
 import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.lib.PaperLib;
 import lombok.*;
@@ -829,7 +830,7 @@ public class Util {
         if (shop == null) {
             shop = plugin.getShopManager().getShopIncludeAttached(bshop.getLocation().clone().add(0, 1, 0));
         }
-        return shop != null && !shop.getModerator().isModerator(p.getUniqueId());
+        return shop != null && !shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY);
     }
 
     /**

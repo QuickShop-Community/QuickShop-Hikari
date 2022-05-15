@@ -124,7 +124,7 @@ public class LockListener extends AbstractProtectionListener {
             return;
         }
         Player player = event.getPlayer();
-        if (!shop.getModerator().isOwner(player.getUniqueId())) {
+        if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.DELETE)) {
             plugin.text().of(player, "that-is-locked").send();
             event.setCancelled(true);
         }
@@ -155,7 +155,7 @@ public class LockListener extends AbstractProtectionListener {
             return;
         }
 
-        if (!shop.getModerator().isModerator(p.getUniqueId())) {
+        if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)) {
             if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.open")) {
                 plugin.text().of(p, "bypassing-lock").send();
                 return;

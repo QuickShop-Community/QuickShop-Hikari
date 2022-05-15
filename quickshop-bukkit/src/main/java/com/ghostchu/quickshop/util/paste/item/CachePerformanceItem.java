@@ -27,14 +27,8 @@ import org.jetbrains.annotations.NotNull;
 import java.text.NumberFormat;
 
 public class CachePerformanceItem implements SubPasteItem {
-
     private final QuickShop plugin = QuickShop.getInstance();
-
-    public CachePerformanceItem() {
-
-    }
-
-
+    
     @Override
     public @NotNull String getTitle() {
         return "Cache Performance";

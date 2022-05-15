@@ -352,7 +352,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         registerTasks();
         Log.debug("DisplayItem selected: " + AbstractDisplayItem.getNowUsing().name());
         registerCommunicationChannels();
-        getServer().getPluginManager().callEvent(new QSConfigurationReloadEvent(this));
+        new QSConfigurationReloadEvent(this).callEvent();
         getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
     }
 
@@ -726,7 +726,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             logWatcher = null;
         }
         // Schedule this event can be run in next tick.
-        Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new QSConfigurationReloadEvent(this)));
+        Util.mainThreadRun(() -> new QSConfigurationReloadEvent(this).callEvent());
     }
 
 
@@ -884,7 +884,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 if (!this.playerFinder.contains(shop.getOwner())) {
                     waitingForBake.add(shop.getOwner());
                 }
-                shop.getModerator().getStaffs().forEach(staff -> {
+                shop.getPermissionAudiences().keySet().forEach(staff -> {
                     if (!this.playerFinder.contains(staff)) {
                         waitingForBake.add(staff);
                     }
@@ -1137,6 +1137,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 .concurrency(10, 5)
                 .setDefaultHeader("User-Agent", "QuickShop/" + getFork() + "-" + getDescription().getVersion() + " Java/" + System.getProperty("java.version"));
         Unirest.config().verifySsl(Util.parsePackageProperly("verifySSL").asBoolean());
+        if (Util.parsePackageProperly("proxyHost").isPresent()) {
+            Unirest.config().proxy(Util.parsePackageProperly("proxyHost").asString("127.0.0.1"), Util.parsePackageProperly("proxyPort").asInteger(1080));
+        }
+        if (Util.parsePackageProperly("proxyUsername").isPresent()) {
+            Unirest.config().proxy(Util.parsePackageProperly("proxyHost").asString("127.0.0.1"), Util.parsePackageProperly("proxyPort").asInteger(1080), Util.parsePackageProperly("proxyUsername").asString(""), Util.parsePackageProperly("proxyPassword").asString(""));
+        }
     }
 
     private void loadChatProcessor() {

@@ -192,7 +192,7 @@ public class BlockListener extends AbstractProtectionListener {
             return;
         }
         Player player = event.getPlayer();
-        if (!shop.getModerator().isModerator(player.getUniqueId())) {
+        if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)) {
             plugin.text().of(player, "not-managed-shop").send();
             event.setCancelled(true);
         }
@@ -256,7 +256,7 @@ public class BlockListener extends AbstractProtectionListener {
                 e.setCancelled(true);
                 plugin.text().of(player, "no-double-chests").send();
 
-            } else if (!shop.getModerator().isModerator(player.getUniqueId())) {
+            } else if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)) {
                 e.setCancelled(true);
                 plugin.text().of(player, "not-managed-shop").send();
             }
