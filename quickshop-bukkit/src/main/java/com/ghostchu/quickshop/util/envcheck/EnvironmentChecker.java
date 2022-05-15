@@ -188,7 +188,16 @@ public final class EnvironmentChecker {
         if (Util.isClassAvailable("net.minecraftforge.server.ServerMain")) {
             return true;
         }
-        return Util.isClassAvailable("net.minecraftforge.fml.loading.ModInfo");
+        if (Util.isClassAvailable("net.minecraftforge.fml.loading.ModInfo")) {
+            return true;
+        }
+        if (Util.isClassAvailable("cpw.mods.modlauncher.serviceapi.ILaunchPluginService")) {
+            return true;
+        }
+        if (Util.isClassAvailable("net.minecraftforge.forgespi.locating.IModLocator")) {
+            return true;
+        }
+        return false;
     }
 
     public boolean isFabricBasedServer() {
