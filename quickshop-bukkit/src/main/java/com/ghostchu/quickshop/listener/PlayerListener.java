@@ -196,10 +196,6 @@ public class PlayerListener extends AbstractQSListener {
             return false;
         }
 
-        if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
-            return false;
-        }
-
         this.playClickSound(p);
         plugin.getShopManager().sendShopInfo(p, shop);
         shop.setSignText();
@@ -214,24 +210,26 @@ public class PlayerListener extends AbstractQSListener {
         final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
         int items = getPlayerCanSell(shop, ownerBalance, price, new BukkitInventoryWrapper(playerInventory));
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
-        Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
-        actions.put(p.getUniqueId(), info);
-        if (!direct) {
-            if (shop.isStackingShop()) {
-                plugin.text().of(p, "how-many-sell-stack", shop.getItem().getAmount(), items, tradeAllWord).send();
+        if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
+            Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
+            actions.put(p.getUniqueId(), info);
+            if (!direct) {
+                if (shop.isStackingShop()) {
+                    plugin.text().of(p, "how-many-sell-stack", shop.getItem().getAmount(), items, tradeAllWord).send();
+                } else {
+                    plugin.text().of(p, "how-many-sell", items, tradeAllWord).send();
+                }
             } else {
-                plugin.text().of(p, "how-many-sell", items, tradeAllWord).send();
+                int arg;
+                if (all) {
+                    arg = buyingShopAllCalc(eco, shop, p);
+                } else {
+                    arg = shop.getShopStackingAmount();
+                }
+                if (arg == 0)
+                    return true;
+                plugin.getShopManager().actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
-        } else {
-            int arg;
-            if (all) {
-                arg = buyingShopAllCalc(eco, shop, p);
-            } else {
-                arg = shop.getShopStackingAmount();
-            }
-            if (arg == 0)
-                return true;
-            plugin.getShopManager().actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
         }
         return true;
     }
@@ -338,9 +336,6 @@ public class PlayerListener extends AbstractQSListener {
         if (!shop.isSelling()) {
             return false;
         }
-        if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
-            return false;
-        }
         this.playClickSound(p);
         plugin.getShopManager().sendShopInfo(p, shop);
         shop.setSignText();
@@ -353,26 +348,28 @@ public class PlayerListener extends AbstractQSListener {
         final Inventory playerInventory = p.getInventory();
         final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
-        Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BUY, null, null, shop, false);
-        actions.put(p.getUniqueId(), info);
         final double traderBalance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
         int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
-        if (!direct) {
-            if (shop.isStackingShop()) {
-                plugin.text().of(p, "how-many-buy-stack", shop.getItem().getAmount(), itemAmount, tradeAllWord).send();
+        if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
+            Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BUY, null, null, shop, false);
+            actions.put(p.getUniqueId(), info);
+            if (!direct) {
+                if (shop.isStackingShop()) {
+                    plugin.text().of(p, "how-many-buy-stack", shop.getItem().getAmount(), itemAmount, tradeAllWord).send();
+                } else {
+                    plugin.text().of(p, "how-many-buy", itemAmount, tradeAllWord).send();
+                }
             } else {
-                plugin.text().of(p, "how-many-buy", itemAmount, tradeAllWord).send();
+                int arg;
+                if (all) {
+                    arg = sellingShopAllCalc(eco, shop, p);
+                } else {
+                    arg = shop.getShopStackingAmount();
+                }
+                if (arg == 0)
+                    return true;
+                plugin.getShopManager().actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
-        } else {
-            int arg;
-            if (all) {
-                arg = sellingShopAllCalc(eco, shop, p);
-            } else {
-                arg = shop.getShopStackingAmount();
-            }
-            if (arg == 0)
-                return true;
-            plugin.getShopManager().actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
         }
         return true;
     }
