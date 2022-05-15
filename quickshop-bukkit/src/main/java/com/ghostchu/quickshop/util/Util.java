@@ -381,32 +381,6 @@ public class Util {
         for (String log : logs) {
             Log.debug(Level.INFO, log, caller);
         }
-//        if (disableDebugLogger) {
-//            return;
-//        }
-//        StringJoiner logEntry = new StringJoiner("\n");
-//        if (!isDevMode()) {
-//            for (String log : logs) {
-//                logEntry.add("[DEBUG] " + log);
-//            }
-//        } else {
-//            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(2).toList());
-//            StackWalker.StackFrame frame = caller.get(1);
-//            String threadName = Thread.currentThread().getName();
-//            String className = frame.getClassName();
-//            String methodName = frame.getMethodName();
-//            int codeLine = frame.getLineNumber();
-//            for (String log : logs) {
-//                logEntry.add("[DEBUG/" + threadName + "] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-//            }
-//        }
-//        String log = logEntry.toString();
-//        if (isDevMode()) {
-//            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info(log);
-//        }
-//        LOCK.writeLock().lock();
-//        DEBUG_LOGS.add(log);
-//        LOCK.writeLock().unlock();
     }
 
     /**
