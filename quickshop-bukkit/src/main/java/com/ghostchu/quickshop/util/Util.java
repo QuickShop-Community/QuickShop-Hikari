@@ -1329,6 +1329,28 @@ public class Util {
     }
 
     /**
+     * Gets the location of a class inside of a jar file.
+     *
+     * @param clazz The class to get the location of.
+     * @return The jar path which given class at.
+     */
+    @NotNull
+    public static String getClassPathRelative(@NotNull Class<?> clazz) {
+        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+        File file = new File(jarPath);
+        try {
+            if (file.exists())
+                return file.getCanonicalPath();
+            else
+                return jarPath;
+        } catch (IOException e) {
+            return jarPath;
+        }
+    }
+
+
+    /**
      * Get class path of the given class.
      *
      * @param plugin Plugin plugin instance
