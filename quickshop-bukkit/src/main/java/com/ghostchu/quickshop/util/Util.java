@@ -1349,6 +1349,20 @@ public class Util {
         }
     }
 
+    public static boolean deleteDirectory(@NotNull File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            if (children == null)
+                return false;
+            for (String child : children) {
+                if (!deleteDirectory(new File(dir, child))) {
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
+    }
+
 
     /**
      * Get class path of the given class.
