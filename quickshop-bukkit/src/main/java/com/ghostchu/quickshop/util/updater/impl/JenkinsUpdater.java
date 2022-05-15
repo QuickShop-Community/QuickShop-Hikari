@@ -88,6 +88,9 @@ public class JenkinsUpdater implements QuickUpdater {
         if (versionType != getCurrentRunning()) {
             return true;
         }
+        if (jobUrl.contains("${env")) {
+            return true; // Custom build
+        }
         HttpResponse<String> response = Unirest.get(jobUrl + "lastSuccessfulBuild/artifact/quickshop-bukkit/target/extra-resources/BUILDINFO")
                 .asString()
                 .ifFailure(throwable -> MsgUtil.sendDirectMessage(Bukkit.getConsoleSender(), Component.text("[QuickShop] Failed to check for an update on build server! It might be an internet issue or the build server host is down. If you want disable the update checker, you can disable in config.yml, but we still high-recommend check for updates on SpigotMC.org often, Error: " + throwable.getBody()).color(NamedTextColor.RED)));
