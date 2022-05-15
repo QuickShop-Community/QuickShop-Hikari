@@ -19,6 +19,12 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
 import io.papermc.lib.PaperLib;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
@@ -29,11 +35,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 
 import java.util.*;
 
@@ -85,6 +86,9 @@ public class SubCommand_Find implements CommandHandler<Player> {
             if (aroundShops.size() == shopLimit) {
                 break;
             }
+            if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SEARCH)) {
+                continue;
+            }
             Vector shopVector = shop.getLocation().toVector();
             double distance = shopVector.distance(playerVector);
             //Check distance
@@ -119,7 +123,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
             Location lookAt = closest.getKey().getLocation().clone().add(0.5, 0.5, 0.5);
             PaperLib.teleportAsync(sender, Util.lookAt(sender.getEyeLocation(), lookAt).add(0, -1.62, 0),
                     PlayerTeleportEvent.TeleportCause.UNKNOWN);
-            plugin.text().of(sender, "nearby-shop-this-way",closest.getValue().intValue()).send();
+            plugin.text().of(sender, "nearby-shop-this-way", closest.getValue().intValue()).send();
         } else {
             Component stringBuilder = plugin.text().of(sender, "nearby-shop-header", lookFor).forLocale()
                     .append(Component.newline());
@@ -130,10 +134,10 @@ public class SubCommand_Find implements CommandHandler<Player> {
                 stringBuilder = stringBuilder.append(plugin.text().of(sender, "nearby-shop-entry",
                         shop.getSignText(sender.getLocale()).get(1),
                         shop.getSignText(sender.getLocale()).get(3),
-                     location.getBlockX(),
-                       location.getBlockY(),
-                       location.getBlockZ(),
-                      shopDoubleEntry.getValue().intValue()
+                        location.getBlockX(),
+                        location.getBlockY(),
+                        location.getBlockZ(),
+                        shopDoubleEntry.getValue().intValue()
                 ).forLocale()).append(Component.newline());
             }
             MsgUtil.sendDirectMessage(sender, stringBuilder.compact());

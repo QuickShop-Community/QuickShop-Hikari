@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1007
+config-version: 1008
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -42,6 +42,9 @@ tax: 0.05
 #The fake player where the tax money goes to.
 #Set this to "" to disable it (Taxing will still work but not deposit to any account)
 tax-account: tax
+
+# Disable taxes for unlimited shop
+tax-free-for-unlimited-shop: false
 
 #Turn on this option will migrate shop owner to specified account when you set a shop to unlimited.
 #It won't affect exists shops, you will need switch to unlimited again to apply it.

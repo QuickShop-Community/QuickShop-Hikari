@@ -35,7 +35,8 @@ public class ShopDisplayItemSafeGuardEvent extends AbstractQSEvent {
 
     /**
      * This event called after QuickShop safe guarded (+protection flags and attributes) a display item.
-     * @param shop the shop
+     *
+     * @param shop   the shop
      * @param entity the display item
      */
     public ShopDisplayItemSafeGuardEvent(@NotNull Shop shop, @NotNull Item entity) {
@@ -45,6 +46,7 @@ public class ShopDisplayItemSafeGuardEvent extends AbstractQSEvent {
 
     /**
      * Gets the shop that the display item belongs to.
+     *
      * @return the shop
      */
     @NotNull
@@ -54,6 +56,7 @@ public class ShopDisplayItemSafeGuardEvent extends AbstractQSEvent {
 
     /**
      * Gets the display item.
+     *
      * @return the display item
      */
     @NotNull

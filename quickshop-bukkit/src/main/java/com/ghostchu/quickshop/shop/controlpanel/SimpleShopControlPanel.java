@@ -19,6 +19,12 @@
 
 package com.ghostchu.quickshop.shop.controlpanel;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopControlPanel;
+import com.ghostchu.quickshop.api.shop.ShopControlPanelPriority;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.util.MsgUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -27,11 +33,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopControlPanel;
-import com.ghostchu.quickshop.api.shop.ShopControlPanelPriority;
-import com.ghostchu.quickshop.util.MsgUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,8 +85,6 @@ public class SimpleShopControlPanel implements ShopControlPanel {
                     .hoverEvent(HoverEvent.showText(plugin.text().of(sender, "controlpanel.setowner-hover").forLocale()))
                     .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/qs setowner ")));
         }
-
-
         // Unlimited
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.unlimited")) {
             Component text = plugin.text().of(sender, "controlpanel.unlimited", MsgUtil.bool2String(shop.isUnlimited())).forLocale();
@@ -106,7 +105,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
         }
         // Buying/Selling Mode
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.buy")
-                && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.sell")) {
+                && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.sell") && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE)) {
             if (shop.isSelling()) {
                 Component text = plugin.text().of(sender, "controlpanel.mode-selling").forLocale();
                 Component hoverText = plugin.text().of(sender, "controlpanel.mode-selling-hover").forLocale();
@@ -125,7 +124,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
         }
         // Set Price
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price")
-                || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
+                || shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_PRICE)) {
             Component text = MsgUtil.fillArgs(
                     plugin.text().of(sender, "controlpanel.price").forLocale(),
                     LegacyComponentSerializer.legacySection().deserialize(
@@ -142,8 +141,10 @@ public class SimpleShopControlPanel implements ShopControlPanel {
         }
         //Set amount per bulk
         if (QuickShop.getInstance().isAllowStack()) {
-            if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount") || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId()) && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeamount")) {
-                Component text = plugin.text().of(sender, "controlpanel.stack",shop.getItem().getAmount()).forLocale();
+            if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount") ||
+                    shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_STACK_AMOUNT) &&
+                            QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeamount")) {
+                Component text = plugin.text().of(sender, "controlpanel.stack", shop.getItem().getAmount()).forLocale();
                 Component hoverText = plugin.text().of(sender, "controlpanel.stack-hover").forLocale();
                 String clickCommand = "/qs size ";
                 components.add(text
@@ -172,7 +173,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
             }
         }
         // Remove
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy") || shop.getOwner().equals(((OfflinePlayer) sender).getUniqueId())) {
+        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy") || shop.playerAuthorize(((OfflinePlayer) sender).getUniqueId(), BuiltInShopPermission.DELETE)) {
             Component text = plugin.text().of(sender, "controlpanel.remove", Component.text(shop.getPrice())).forLocale();
             Component hoverText = plugin.text().of(sender, "controlpanel.remove-hover").forLocale();
             String clickCommand = MsgUtil.fillArgs("/qs silentremove {0}", shop.getRuntimeRandomUniqueId().toString());

@@ -20,22 +20,22 @@
 package com.ghostchu.quickshop.database;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class HikariUtil {
-    public static cc.carm.lib.easysql.hikari.HikariConfig createHikariConfig(){
+    public static cc.carm.lib.easysql.hikari.HikariConfig createHikariConfig() {
         cc.carm.lib.easysql.hikari.HikariConfig config = new cc.carm.lib.easysql.hikari.HikariConfig();
         ConfigurationSection section = QuickShop.getInstance().getConfig().getConfigurationSection("database");
-        if(section == null)
+        if (section == null)
             throw new IllegalArgumentException("database section in configuration not found");
         section = section.getConfigurationSection("properties");
-        if(section == null)
+        if (section == null)
             throw new IllegalArgumentException("database.properties section in configuration not found");
         for (String key : section.getKeys(false)) {
             config.addDataSourceProperty(key, section.getString(key));
         }
-        Util.debugLog("HikariConfig created with properties: " + config.getDataSourceProperties());
+        Log.debug("HikariCP Config created with properties: " + config.getDataSourceProperties());
 //        config.addDataSourceProperty("connection-timeout", "60000");
 //        config.addDataSourceProperty("validation-timeout", "3000");
 //        config.addDataSourceProperty("idle-timeout", "60000");

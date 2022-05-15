@@ -23,7 +23,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.DisplayType;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Chunk;
@@ -68,7 +68,7 @@ public class ChunkListener extends AbstractQSListener {
             if (entity instanceof Item itemEntity) {
                 if (AbstractDisplayItem.checkIsGuardItemStack(itemEntity.getItemStack())) {
                     itemEntity.remove();
-                    Util.debugLog("Removed shop display item at " + itemEntity.getLocation() + " while chunk loading, pending for regenerate.");
+                    Log.debug("Removed shop display item at " + itemEntity.getLocation() + " while chunk loading, pending for regenerate.");
                 }
             }
         }

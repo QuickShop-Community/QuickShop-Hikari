@@ -26,9 +26,11 @@ import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.*;
 import com.ghostchu.quickshop.util.economyformatter.EconomyFormatter;
 import com.ghostchu.quickshop.util.holder.Result;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -107,7 +109,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     private void init() {
-        Util.debugLog("Loading caching tax account...");
+        Log.debug("Loading caching tax account...");
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
         if (!taxAccount.isEmpty()) {
             if (Util.isUUID(taxAccount)) {
@@ -163,7 +165,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 }
             }
             int max = plugin.getShopLimit(p);
-            Util.debugLog("CanBuildShop check for " + p.getName() + " owned: " + owned + "; max: " + max);
+            Log.debug("CanBuildShop check for " + p.getName() + " owned: " + owned + "; max: " + max);
             return owned + 1 > max;
         }
         return false;
@@ -390,7 +392,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     @Override
     public @Nullable Shop getShopIncludeAttached(@Nullable Location loc, boolean useCache) {
         if (loc == null) {
-            Util.debugLog("Location is null.");
+            Log.debug("Location is null.");
             return null;
         }
         if (useCache) {
@@ -611,6 +613,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             @NotNull Shop shop,
             int amount) {
         Util.ensureThread(false);
+
+        if (!shop.playerAuthorize(buyer, BuiltInShopPermission.PURCHASE)) {
+            plugin.text().of("no-permission").send();
+            return;
+        }
         if (shopIsNotValid(buyer, info, shop)) {
             return;
         }
@@ -664,6 +671,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 .currency(shop.getCurrency())
                 .world(shop.getLocation().getWorld())
                 .to(buyer);
+        if (shop.isUnlimited() && plugin.getConfig().getBoolean("tax-free-for-unlimited-shop", false)) {
+            builder.taxModifier(0.0d);
+        }
         if (!shop.isUnlimited()
                 || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")
                 && shop.isUnlimited())) {
@@ -693,9 +703,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.text().of(buyer, "shop-transaction-failed", shopError.getMessage()).send();
             return;
         }
-        sendSellSuccess(buyer, shop, amount, total, CalculateUtil.subtract(1, taxModifier));
-        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, taxModifier);
-        plugin.getServer().getPluginManager().callEvent(se);
+        sendSellSuccess(buyer, shop, amount, total, transaction.getTax());
+        new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, transaction.getTax()).callEvent();
         shop.setSignText(); // Update the signs count
         notifySold(buyer, shop, amount, space);
     }
@@ -723,18 +732,20 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                             .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
                 }
                 if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
-                    for (UUID staff : shop.getModerator().getStaffs()) {
-                        MsgUtil.send(shop, staff, msg);
+                    for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
+                        MsgUtil.send(shop, recv, msg);
                     }
+                } else {
+                    MsgUtil.send(shop, shop.getOwner(), msg);
                 }
-                MsgUtil.send(shop, shop.getOwner(), msg);
             }
             if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
-                for (UUID staff : shop.getModerator().getStaffs()) {
-                    MsgUtil.send(shop, staff, msg);
+                for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
+                    MsgUtil.send(shop, recv, msg);
                 }
+            } else {
+                MsgUtil.send(shop, shop.getOwner(), msg);
             }
-            MsgUtil.send(shop, shop.getOwner(), msg);
         });
 
     }
@@ -761,11 +772,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (player != null) {
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.tax")) {
                 tax = 0;
-                Util.debugLog("Disable the Tax for player " + player + " cause they have permission quickshop.tax");
+                Log.debug("Disable the Tax for player " + player + " cause they have permission quickshop.tax");
             }
             if (shop.isUnlimited() && QuickShop.getPermissionManager().hasPermission(player, "quickshop.tax.bypassunlimited")) {
                 tax = 0;
-                Util.debugLog("Disable the Tax for player " + player + " cause they have permission quickshop.tax.bypassunlimited and shop is unlimited.");
+                Log.debug("Disable the Tax for player " + player + " cause they have permission quickshop.tax.bypassunlimited and shop is unlimited.");
             }
         }
         if (tax >= 1.0) {
@@ -775,9 +786,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (tax < 0) {
             tax = 0; // Tax was disabled.
         }
-        if (shop.getModerator().isModerator(p)) {
-            tax = 0; // Is staff or owner, so we won't will take them tax
+        if (shop.getOwner().equals(p)) {
+            tax = 0; // Is owner, so we won't will take them tax
         }
+
+
         ShopTaxEvent taxEvent = new ShopTaxEvent(shop, tax, p);
         taxEvent.callEvent();
         return taxEvent.getTax();
@@ -824,22 +837,22 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         // Check if server/player allowed to create stacking shop
         if (plugin.isAllowStack() && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks")) {
-            Util.debugLog("Player " + p.getName() + " no permission to create stacks shop, forcing creating single item shop");
+            Log.debug("Player " + p.getName() + " no permission to create stacks shop, forcing creating single item shop");
             shop.getItem().setAmount(1);
         }
 
         // Checking the shop can be created
-        Util.debugLog("Calling for protection check...");
+        Log.debug("Calling for protection check...");
 
         // Protection check
         if (!bypassProtectionCheck) {
             Result result = plugin.getPermissionChecker().canBuild(p, shop.getLocation());
             if (!result.isSuccess()) {
                 plugin.text().of(p, "3rd-plugin-build-check-failed", result.getMessage()).send();
-                if (p.hasPermission("quickshop.alert")) {
+                if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.alert")) {
                     plugin.text().of(p, "3rd-plugin-build-check-failed-admin", result.getMessage(), result.getListener()).send();
                 }
-                Util.debugLog("Failed to create shop because protection check failed, found:" + result.getMessage());
+                Log.debug("Failed to create shop because protection check failed, found:" + result.getMessage());
                 return;
             }
         }
@@ -876,7 +889,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         ShopPreCreateEvent spce = new ShopPreCreateEvent(p, shop.getLocation());
         if (Util.fireCancellableEvent(spce)) {
-            Util.debugLog("ShopPreCreateEvent cancelled");
+            Log.debug("ShopPreCreateEvent cancelled");
             return;
         }
 
@@ -1014,7 +1027,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 }
             }
         } catch (NumberFormatException ex) {
-            Util.debugLog(ex.getMessage());
+            Log.debug(ex.getMessage());
             plugin.text().of(p, "not-a-number", message).send();
             return;
         }
@@ -1026,7 +1039,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     info.getLocation(),
                     price,
                     info.getItem(),
-                    new SimpleShopModerator(p.getUniqueId()),
+                    p.getUniqueId(),
                     false,
                     ShopType.SELLING,
                     new YamlConfiguration(),
@@ -1035,7 +1048,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     null,
                     plugin.getName(),
                     plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper((holder).getInventory())),
-                    null);
+                    null,
+                    Collections.emptyMap());
             createShop(shop, info.getSignBlock(), info.isBypassed());
         } else {
             plugin.text().of(p, "invalid-container").send();
@@ -1059,6 +1073,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             @NotNull Shop shop,
             int amount) {
         Util.ensureThread(false);
+        if (!shop.playerAuthorize(seller, BuiltInShopPermission.PURCHASE)) {
+            plugin.text().of("no-permission").send();
+            return;
+        }
         if (shopIsNotValid(seller, info, shop)) {
             return;
         }
@@ -1117,6 +1135,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 .taxAccount(taxAccount)
                 .world(shop.getLocation().getWorld())
                 .currency(shop.getCurrency());
+        if (shop.isUnlimited() && plugin.getConfig().getBoolean("tax-free-for-unlimited-shop", false)) {
+            builder.taxModifier(0.0d);
+        }
         if (!shop.isUnlimited()
                 || (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")
                 && shop.isUnlimited())) {
@@ -1124,6 +1145,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         } else {
             transaction = builder.to(null).build();
         }
+
         if (!transaction.checkBalance()) {
             plugin.text().of(seller, "you-cant-afford-to-buy",
                     format(total, shop.getLocation().getWorld(), shop.getCurrency()),
@@ -1146,13 +1168,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.text().of(seller, "shop-transaction-failed", shopError.getMessage()).send();
             return;
         }
-        sendPurchaseSuccess(seller, shop, amount, total, CalculateUtil.subtract(1, taxModifier));
-        ShopSuccessPurchaseEvent se = new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, taxModifier);
-        plugin.getServer().getPluginManager().callEvent(se);
-        notifyBought(seller, shop, amount, stock, taxModifier, total);
+        sendPurchaseSuccess(seller, shop, amount, total, transaction.getTax());
+        new ShopSuccessPurchaseEvent(shop, seller, sellerInventory, amount, total, transaction.getTax()).callEvent();
+        notifyBought(seller, shop, amount, stock, transaction.getTax(), total);
     }
 
-    private void notifyBought(@NotNull UUID seller, @NotNull Shop shop, int amount, int stock, double taxModifier, double total) {
+    private void notifyBought(@NotNull UUID seller, @NotNull Shop shop, int amount, int stock, double tax, double total) {
         Player player = plugin.getServer().getPlayer(seller);
         plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner(), (locale) -> {
             String langCode = MsgUtil.getDefaultGameLanguageCode();
@@ -1164,23 +1185,24 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                                 player != null ? player.getName() : seller.toString(),
                                 amount * shop.getItem().getAmount(),
                                 shop.getItem(),
-                                this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop),
-                                this.formatter.format(CalculateUtil.multiply(taxModifier, total), shop)).forLocale(langCode)
+                                this.formatter.format(total - tax, shop),
+                                this.formatter.format(tax, shop)).forLocale(langCode)
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
             } else {
                 msg = plugin.text().of("player-bought-from-your-store",
                                 player != null ? player.getName() : seller.toString(),
                                 amount * shop.getItem().getAmount(),
                                 MsgUtil.getTranslateText(shop.getItem()),
-                                this.formatter.format(CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), total), shop)).forLocale(langCode)
+                                this.formatter.format(total - tax, shop)).forLocale(langCode)
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
             }
 
-            MsgUtil.send(shop, shop.getOwner(), msg);
             if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
-                for (UUID staff : shop.getModerator().getStaffs()) {
-                    MsgUtil.send(shop, staff, msg);
+                for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
+                    MsgUtil.send(shop, recv, msg);
                 }
+            } else {
+                MsgUtil.send(shop, shop.getOwner(), msg);
             }
             // Transfers the item from A to B
             if (stock == amount) {
@@ -1196,11 +1218,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                                     MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
                             .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
                 }
-                MsgUtil.send(shop, shop.getOwner(), msg);
                 if (plugin.getConfig().getBoolean("shop.sending-stock-message-to-staffs")) {
-                    for (UUID staff : shop.getModerator().getStaffs()) {
-                        MsgUtil.send(shop, staff, msg);
+                    for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
+                        MsgUtil.send(shop, recv, msg);
                     }
+                } else {
+                    MsgUtil.send(shop, shop.getOwner(), msg);
                 }
             }
         });
@@ -1271,6 +1294,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      */
     @Override
     public void sendShopInfo(@NotNull Player p, @NotNull Shop shop) {
+        if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.SHOW_INFORMATION)) {
+            return;
+        }
         // Potentially faster with an array?
         ItemStack items = shop.getItem();
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
@@ -1396,7 +1422,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     // instead of output cancelled message (when typed neither integer or 'all'), just let
                     // player know that there should be positive number or 'all'
                     plugin.text().of(p, "not-a-integer", message).send();
-                    Util.debugLog(
+                    Log.debug(
                             "Receive the chat " + message + " and it format failed: " + message);
                     return;
                 }
@@ -1412,7 +1438,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     // instead of output cancelled message, just let player know that there should be positive
                     // number or 'all'
                     plugin.text().of(p, "not-a-integer", message).send();
-                    Util.debugLog(
+                    Log.debug(
                             "Receive the chat " + message + " and it format failed: " + message);
                     return;
                 }

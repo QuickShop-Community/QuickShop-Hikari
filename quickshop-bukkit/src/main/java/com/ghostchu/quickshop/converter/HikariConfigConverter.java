@@ -19,6 +19,8 @@
 
 package com.ghostchu.quickshop.converter;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.collect.Lists;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -26,8 +28,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +55,7 @@ public class HikariConfigConverter implements HikariConverterInterface {
     @Override
     public @NotNull List<Component> checkReady() {
         List<Component> entries = new ArrayList<>();
-        if(!new File(plugin.getDataFolder(), "config.yml").exists()){
+        if (!new File(plugin.getDataFolder(), "config.yml").exists()) {
             entries.add(Component.text("The config.yml is missing!"));
         }
         int version = plugin.getConfig().getInt("config-version");
@@ -72,7 +72,7 @@ public class HikariConfigConverter implements HikariConverterInterface {
      * Start for backing up
      *
      * @param actionId Action Identifier for this upgrade operation.
-     * @param folder The target folder for backup.
+     * @param folder   The target folder for backup.
      * @throws Exception Backup fails.
      */
     public void backup(@NotNull UUID actionId, @NotNull File folder) throws Exception {
@@ -85,7 +85,7 @@ public class HikariConfigConverter implements HikariConverterInterface {
      * @param actionId Action Identifier for this upgrade operation.
      */
     public void migrate(@NotNull UUID actionId) {
-        if(!checkReady().isEmpty())
+        if (!checkReady().isEmpty())
             throw new IllegalStateException("Not ready!");
         remakeUpgrade(plugin.getConfig().getInt("config-version"));
         legacyPriceLimiter();
@@ -1022,7 +1022,7 @@ public class HikariConfigConverter implements HikariConverterInterface {
         double globalMax = plugin.getConfig().getDouble("shop.maximum-price", -1d);
         List<String> oldRules = plugin.getConfig().getStringList("shop.price-restriction");
         if (oldRules.isEmpty()) {
-            Util.debugLog("Rules is empty, skipping");
+            Log.debug("Price Limiter rules empty, skipping");
             return;
         }
         File configFile = new File(plugin.getDataFolder(), "price-restriction.yml");
@@ -1051,19 +1051,19 @@ public class HikariConfigConverter implements HikariConverterInterface {
                 if (item == null) {
                     continue;
                 }
-                ConfigurationSection section = rulesSection.createSection("upgrade-"+ item.name());
+                ConfigurationSection section = rulesSection.createSection("upgrade-" + item.name());
                 double min = Double.parseDouble(split[1]);
                 double max = Double.parseDouble(split[2]);
                 section.set("materials", List.of(item.name()));
                 section.set("currency", List.of("*"));
                 section.set("min", min);
                 section.set("max", max);
-                rulesSection.set("upgrade-"+ item.name(), section);
+                rulesSection.set("upgrade-" + item.name(), section);
             } catch (Exception e) {
                 logger.log(Level.WARNING, "Failed to parse rule: " + rule + ", skipping...", e);
             }
         }
-        config.set("rules",rulesSection);
+        config.set("rules", rulesSection);
         try {
             config.save(configFile);
         } catch (IOException e) {

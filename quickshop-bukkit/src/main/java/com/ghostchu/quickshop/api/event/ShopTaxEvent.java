@@ -19,13 +19,13 @@
 
 package com.ghostchu.quickshop.api.event;
 
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.api.shop.Shop;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
 /**
- * Calling when shop tax calcing
+ * Calling when shop tax calculation
  */
 public class ShopTaxEvent extends AbstractQSEvent {
     private final UUID user;

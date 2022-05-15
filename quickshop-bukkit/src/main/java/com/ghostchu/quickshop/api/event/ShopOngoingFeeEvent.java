@@ -19,12 +19,15 @@
 
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.api.shop.Shop;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.api.shop.Shop;
 
 import java.util.UUID;
 
+/**
+ * Fire when watcher processing the shop ongoing fee
+ */
 public class ShopOngoingFeeEvent extends AbstractQSEvent implements QSCancellable {
     private final UUID player;
 

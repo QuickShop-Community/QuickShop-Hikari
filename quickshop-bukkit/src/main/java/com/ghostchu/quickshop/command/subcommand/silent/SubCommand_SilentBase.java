@@ -19,14 +19,14 @@
 
 package com.ghostchu.quickshop.command.subcommand.silent;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.Util;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +39,7 @@ public abstract class SubCommand_SilentBase implements CommandHandler<Player> {
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length != 1) {
-            Util.debugLog("Exception on command! Canceling!");
+            Log.debug("Exception on command! Canceling!");
             return;
         }
         UUID uuid;

@@ -72,7 +72,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                     final Block b = bIt.next();
                     final Shop shop = plugin.getShopManager().getShop(b.getLocation());
                     if (shop != null) {
-                        shop.getSigns().forEach(sign -> MsgUtil.sendDirectMessage(sender, Component.text( "Sign located at: " + sign.getLocation()).color(NamedTextColor.GREEN)));
+                        shop.getSigns().forEach(sign -> MsgUtil.sendDirectMessage(sender, Component.text("Sign located at: " + sign.getLocation()).color(NamedTextColor.GREEN)));
                         break;
                     }
                 }
@@ -116,7 +116,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
             for (RegisteredListener listener1 : list.getRegisteredListeners()) {
                 MsgUtil.sendDirectMessage(sender,
-                        LegacyComponentSerializer.legacySection().deserialize(  ChatColor.AQUA
+                        LegacyComponentSerializer.legacySection().deserialize(ChatColor.AQUA
                                 + listener1.getPlugin().getName()
                                 + ChatColor.YELLOW
                                 + " # "

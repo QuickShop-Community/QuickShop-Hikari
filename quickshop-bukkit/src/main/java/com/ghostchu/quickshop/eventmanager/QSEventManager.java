@@ -19,6 +19,9 @@
 
 package com.ghostchu.quickshop.eventmanager;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.eventmanager.QuickEventManager;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -34,9 +37,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.eventmanager.QuickEventManager;
-import com.ghostchu.quickshop.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,10 +86,10 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
                             try {
                                 Class<?> clazz = Class.forName(input);
                                 this.ignoredListener.add(new ListenerContainer(clazz, input));
-                                Util.debugLog("Successfully added blacklist: [BINDING] " + clazz.getName());
+                                Log.debug("Successfully added blacklist: [BINDING] " + clazz.getName());
                             } catch (Exception ignored) {
                                 this.ignoredListener.add(new ListenerContainer(null, input));
-                                Util.debugLog("Successfully added blacklist: [DYNAMIC] " + input);
+                                Log.debug("Successfully added blacklist: [DYNAMIC] " + input);
                             }
                         });
     }

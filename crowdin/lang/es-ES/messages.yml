@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Cantidad de artículos por stack: <aqua>{0} <yellow>[<light_purple><bold>Cambiar<yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   price-hover: <yellow>Click para establecer un precio nuevo.
   remove: <red><bold>[Eliminar tienda]
   mode-buying-hover: <yellow>Click para cambiar a modo de VENTA.
-  empty: '<green>Vaciar: Eliminar todos los ítems <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>Click para establecer la cantidad de artículos por stack. Introduce 1 para comportamiento por defecto.
   alwayscounting-hover: <yellow>Haga clic para alternar si la tienda siempre está contando contenedores.
-  alwayscounting: '<green>Siempre contando: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Propietario: <aqua>{0} <yellow>[<light_purple><bold>Cambiar<yellow>]'
-  freeze: '<yellow>Tienda bloqueada: <aqua>{0} <yellow>[<light_purple><bold>Cambiar<yellow>]'
-  price: '<green>Precio: <aqua>{0} <yellow>[<light_purple><bold>Cambiar<yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Click para establecer o remover la divisa que utiliza la tienda
-  lock: '<yellow>Tienda bloqueada: <aqua>{0} <yellow>[<light_purple><bold>Cambiar<yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: '<green>Modo: <aqua>Venta <yellow>[<light_purple><bold>Cambiar<yellow>]'
-  currency: '<green>Moneda: <aqua>{0} <yellow>[<light_purple><bold>Establecer<yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Click para cambiar el dueño.
-  mode-buying: '<green>Modo: <aqua>Compra <yellow>[<light_purple><bold>Cambiar<yellow>]'
-  item: '<green>Objeto de Tienda: {0} <yellow>[<light_purple><bold>Cambiar<yellow>]'
-  unlimited: '<green>Ilimitado: {0} <yellow>[<light_purple><bold>Cambiar<yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   unlimited-hover: <yellow>Click para alternar si la tienda es ilimitada.
   refill-hover: <yellow>Click para reaprovisionar la tienda.
   remove-hover: <yellow>Click para eliminar esta tienda.
   toggledisplay-hover: <yellow>Alternar el estado del mostrar item de la tienda
-  refill: '<green>Refill: Reabastecer los ítems <yellow>[<light_purple><bold>OK<yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>Cambiar estado de congelación de la tienda.,
   lock-hover: <yellow>Activar/Desactivar protección contra bloqueo de la tienda.
   item-hover: <yellow>Clic para cambiar el artículo de la tienda
   infomation: '<green>Panel de Control de la tienda:'
   mode-selling-hover: <yellow>Click para cambiar a modo de COMPRA.
   empty-hover: <yellow>Click para limpiar el inventario de la tienda.
-  toggledisplay: '<yellow>Mostrar Item: <aqua>{0} <yellow>[<light_purple><bold>Cambiar<yellow>]'
+  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
 timeunit:
   behind: behind
   week: <red>{0} week
@@ -356,6 +356,7 @@ timeunit:
   scheduled-in: scheduled in {0}
   second: <red>{0} second
   std-past-format: '{5}{4}{3}{2}{1}{0}ago'
+  std-time-format: "HH:mm:ss"
   seconds: <red>{0} seconds
   hour: <red>{0} hour
   scheduled-at: scheduled at {0}
@@ -376,7 +377,7 @@ timeunit:
   future: in {0}
   days: <red>{0} days
 command:
-  reloading: '<green>Configuración recargada. <yellow>Algunos cambios pueden requerir reiniciar el servidor para tomar efecto. <newline><gray>(Aviso: El comportamiento de la recarga ha sido cambiado después de la versión 4.0.9.10, ahora sólo recargamos la configuración pero no el complemento completo para garantizar que el servidor no se bloquee.)'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
     buy: <yellow>Cambia la tienda a modo <light_purple>COMPRA<yellow>
     about: <yellow>Muestra información de QuickShop
@@ -417,6 +418,7 @@ command:
     taxaccount: <yellow>Configure la cuenta de impuestos que compra usando
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Alterna el estado de visualización del artículo de la tienda
+    permission: <yellow>Shop permission management
   bulk-size-not-set: '<red>Usa: /qs size <cantidad>'
   no-type-given: '<red>Uso: /qs find <artículo>'
   feature-not-enabled: La característica no está habilitada en la configuración.
@@ -465,3 +467,48 @@ client-language-unsupported: <yellow>QuickShop no soporta el idioma de tu client
 language-version: '63'
 not-managed-shop: <red>No eres el dueño o el moderador de esta tienda
 shop-cannot-trade-when-freezing: <red>No puedes comerciar con esta tienda porque se encuentra congelada.
+invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
+permission:
+  header: "<green>Shop Permission Details"
+  header-player: "<green>Shop Permission Details for {0}"
+  header-group: "<green>Shop Permission Details for group {0}"
+  table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
+  item:
+    purchase: "<yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)"
+    show-information: "<yellow>Permission to allow users who have this to see the shop information. (open shop info panel)"
+    preview-shop: "<yellow>Permission to allow users who have this to preview the shop. (preview item)"
+    search: "<yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)"
+    delete: "<yellow>Permission to allow users who have this to delete the shop."
+    receive-alert: "<yellow>Permission to allow users who have this to receive alert message (e.g out-of-stock or new trade)."
+    access-inventory: "<yellow>Permission to allow users who have this to access the shop inventory."
+    ownership-transfer: "<yellow>Permission to allow users who have this to transfer the shop ownership."
+    management-permission: "<yellow>Permission to allow users who have this to manage the groups permissions and edit user's group."
+    toggle-display: "<yellow>Permission to allow users who have this to toggle the shop display item."
+    set-shoptype: "<yellow>Permission to allow users who have this to set the shop type (switch buying or selling)."
+    set-price: "<yellow>Permission to allow users who have this to set the shop price."
+    set-item: "<yellow>Permission to allow users who have this to set the shop item."
+    set-stack-amount: "<yellow>Permission to allow users who have this to set the shop stack amount."
+    set-currency: "<yellow>Permission to allow users who have this to set the shop currency."
+    set-name: "<yellow>Permission to allow users who have this to set the shop name."
+  group:
+    everyone: "<yellow>Default group for all users excepted shop owner."
+    staff: "<yellow>System group for shop staffs."
+    administrator: "<red>System group for administrators, the users in this group will have permissions almost same with shop owner."
+invalid-group: "<red>Invalid group name."
+invalid-permission: "<red>Invalid permission."
+invalid-operation: "<red>Invalid operation, only {0} are allowed."
+player-no-group: "<yellow>Player {0} not in any group in this shop."
+player-in-group: "<green>Player {0} is in group <aqua>{1}</aqua> in this shop."
+permission-required: "<red>You don't have permission {0} in this shop to do this."
+no-permission-detailed: "<red>You don't have permission <yellow>{0}</yellow> to do this."
+paste-uploading: "<aqua>Please wait... Uploading the paste to pastebin......"
+paste-created: "<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don't trust."
+paste-created-local: "<green>Paste created and saved to your local disk at: {0}<newline><red>Warning: <gray>Never send paste to who you don't trust."
+paste-created-local-failed: "<red>Failed to save paste to your local disk, please check your disk."
+paste-451: "<gray><b>TIPS: </b> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file additional parameter to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>"
+paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin provider..."
+paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
+command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
+successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
+successfully-unset-player-group: "<green>Successfully remove player group in this shop."
+successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."

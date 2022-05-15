@@ -19,12 +19,15 @@
 
 package com.ghostchu.quickshop.compatibility.lands;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.Util;
 import me.angeschossen.lands.api.events.LandUntrustPlayerEvent;
 import me.angeschossen.lands.api.events.PlayerLeaveLandEvent;
@@ -50,6 +53,18 @@ public final class Main extends CompatibilityModule implements Listener {
         ignoreDisabledWorlds = getConfig().getBoolean("ignore-disabled-worlds");
         whitelist = getConfig().getBoolean("whitelist-mode");
         deleteWhenLosePermission = getConfig().getBoolean("delete-on-lose-permission");
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        Location shopLoc = event.getShop().getLocation();
+        Land land = landsIntegration.getLand(shopLoc);
+        if (land == null) return;
+        if (land.getOwnerUID().equals(event.getAuthorizer())) {
+            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                event.setResult(true);
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

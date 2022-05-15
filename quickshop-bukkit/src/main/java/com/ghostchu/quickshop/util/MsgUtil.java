@@ -23,6 +23,7 @@ import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopControlPanelOpenEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.PluginGlobalAlertLog;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
@@ -33,7 +34,6 @@ import com.google.gson.JsonParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -150,7 +150,7 @@ public class MsgUtil {
 
     @ApiStatus.Experimental
     @NotNull
-    public static String getGameLanguageCode(String languageCode) {
+    public static String getGameLanguageCode(@NotNull String languageCode) {
         if ("default".equalsIgnoreCase(languageCode)) {
             Locale locale = Locale.getDefault();
             String language = locale.getLanguage();
@@ -215,7 +215,7 @@ public class MsgUtil {
             return; // Ignore unlimited shops messages.
         }
         String serialized = GsonComponentSerializer.gson().serialize(shopTransactionMessage);
-        Util.debugLog(serialized);
+        Log.debug(serialized);
         OfflinePlayer p = Bukkit.getOfflinePlayer(uuid);
         if (!p.isOnline()) {
             List<String> msgs = OUTGOING_MESSAGES.getOrDefault(uuid, new LinkedList<>());
@@ -240,7 +240,7 @@ public class MsgUtil {
 
                 }
             } catch (Exception e) {
-                Util.debugLog("Could not send shop transaction message to player " + p.getName() + " via BungeeCord: " + e.getMessage());
+                Log.debug("Could not send shop transaction message to player " + p.getName() + " via BungeeCord: " + e.getMessage());
             }
         } else {
             Player player = p.getPlayer();
@@ -278,7 +278,7 @@ public class MsgUtil {
             return;
         }
         if (Util.fireCancellableEvent(new ShopControlPanelOpenEvent(shop, sender))) {
-            Util.debugLog("ControlPanel blocked by 3rd-party");
+            Log.debug("ControlPanel blocked by 3rd-party");
             return;
         }
         plugin.getShopManager().bakeShopRuntimeRandomUniqueIdCache(shop);
@@ -322,7 +322,7 @@ public class MsgUtil {
      */
     public static void sendGlobalAlert(@Nullable String content) {
         if (content == null) {
-            Util.debugLog("Content is null");
+            Log.debug("Content is null");
             Throwable throwable =
                     new Throwable("Known issue: Global Alert accepted null string, what the fuck");
             plugin.getSentryErrorReporter().sendError(throwable, "NullCheck");
@@ -346,7 +346,7 @@ public class MsgUtil {
         }
     }
 
-    public static void printEnchantment(@NotNull Player p, @NotNull Shop shop, ChatSheetPrinter chatSheetPrinter) {
+    public static void printEnchantment(@NotNull Player p, @NotNull Shop shop, @NotNull ChatSheetPrinter chatSheetPrinter) {
         if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && plugin.getConfig().getBoolean("respect-item-flag")) {
             return;
         }
@@ -368,7 +368,7 @@ public class MsgUtil {
         }
     }
 
-    private static void printEnchantment(ChatSheetPrinter chatSheetPrinter, Map<Enchantment, Integer> enchs) {
+    private static void printEnchantment(@NotNull ChatSheetPrinter chatSheetPrinter, @NotNull Map<Enchantment, Integer> enchs) {
         for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
             //Use boxed object to avoid NPE
             Integer level = entries.getValue();
@@ -376,8 +376,8 @@ public class MsgUtil {
         }
     }
 
-    public static void debugStackTrace(StackTraceElement[] traces) {
-        if (Util.isDisableDebugLogger()) {
+    public static void debugStackTrace(@NotNull StackTraceElement[] traces) {
+        if (!Util.isDevMode()) {
             return;
         }
         for (StackTraceElement stackTraceElement : traces) {
@@ -385,7 +385,7 @@ public class MsgUtil {
             final String methodName = stackTraceElement.getMethodName();
             final int codeLine = stackTraceElement.getLineNumber();
             final String fileName = stackTraceElement.getFileName();
-            Util.debugLog("[TRACE]  [" + className + "] [" + methodName + "] (" + fileName + ":" + codeLine + ") ");
+            Log.debug("[TRACE]  at " + className + "." + methodName + " (" + fileName + ":" + codeLine + ") ");
         }
     }
 
@@ -435,8 +435,9 @@ public class MsgUtil {
         }
     }
 
+    @NotNull
     public static Component getTranslateText(@NotNull ItemStack stack) {
-        if (plugin.getConfig().getBoolean("force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
+        if (plugin.getConfig().getBoolean("shop.force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
             return plugin.getPlatform().getTranslation(stack.getType());
         } else {
             return Util.getItemStackName(stack);

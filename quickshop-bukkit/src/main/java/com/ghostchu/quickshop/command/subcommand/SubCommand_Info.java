@@ -19,17 +19,17 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopChunk;
+import com.ghostchu.quickshop.util.MsgUtil;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopChunk;
-import com.ghostchu.quickshop.util.MsgUtil;
 
 import java.util.Map;
 
@@ -67,7 +67,7 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
         }
 
         MsgUtil.sendDirectMessage(sender, Component.text("QuickShop Statistics...").color(NamedTextColor.GOLD));
-        MsgUtil.sendDirectMessage(sender,  Component.text("Server UniqueId: "+plugin.getServerUniqueID()).color(NamedTextColor.GREEN));
+        MsgUtil.sendDirectMessage(sender, Component.text("Server UniqueId: " + plugin.getServerUniqueID()).color(NamedTextColor.GREEN));
         MsgUtil.sendDirectMessage(sender, Component.text(""
                 + (buying + selling)
                 + " shops in "

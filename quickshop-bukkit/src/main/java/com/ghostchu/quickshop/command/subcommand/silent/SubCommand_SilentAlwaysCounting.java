@@ -19,11 +19,11 @@
 
 package com.ghostchu.quickshop.command.subcommand.silent;
 
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.MsgUtil;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class SubCommand_SilentAlwaysCounting extends SubCommand_SilentBase {
 

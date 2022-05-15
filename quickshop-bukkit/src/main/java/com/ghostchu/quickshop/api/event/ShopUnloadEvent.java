@@ -19,8 +19,8 @@
 
 package com.ghostchu.quickshop.api.event;
 
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.api.shop.Shop;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Getting the unloading shop, Can't cancel.

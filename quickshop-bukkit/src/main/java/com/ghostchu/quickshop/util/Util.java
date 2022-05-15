@@ -26,11 +26,10 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
 import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.google.common.collect.EvictingQueue;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.lib.PaperLib;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.SneakyThrows;
+import lombok.*;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -86,15 +85,12 @@ public class Util {
     private static final EnumSet<Material> SHOPABLES = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> VERTICAL_FACING = List.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
     @SuppressWarnings("UnstableApiUsage")
-    private static final EvictingQueue<String> DEBUG_LOGS = EvictingQueue.create(500);
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
     private static int BYPASSED_CUSTOM_STACKSIZE = -1;
     private static Yaml yaml = null;
     private static Boolean devMode = null;
     @Setter
     private static QuickShop plugin;
-    @Getter
-    private static boolean disableDebugLogger = false;
     @Getter
     @Nullable
     private static DyeColor dyeColor = null;
@@ -335,11 +331,11 @@ public class Util {
             // Try load the itemDataVersion to do some checks.
             //noinspection deprecation
             if (itemDataVersion > Bukkit.getUnsafe().getDataVersion()) {
-                Util.debugLog("WARNING: DataVersion not matched with ItemStack: " + config);
+                Log.debug("WARNING: DataVersion not matched with ItemStack: " + config);
                 // okay we need some things to do
                 if (plugin.getConfig().getBoolean("shop.force-load-downgrade-items.enable")) {
                     // okay it enabled
-                    Util.debugLog("QuickShop is trying force loading " + config);
+                    Log.debug("QuickShop is trying force loading " + config);
                     if (plugin.getConfig().getInt("shop.force-load-downgrade-items.method") == 0) { // Mode 0
                         //noinspection deprecation
                         item.put("v", Bukkit.getUnsafe().getDataVersion() - 1);
@@ -350,7 +346,7 @@ public class Util {
                     // Okay we have hacked the dataVersion, now put it back
                     root.put("item", item);
                     config = yaml.dump(root);
-                    Util.debugLog("Updated, we will try load as hacked ItemStack: " + config);
+                    Log.debug("Updated, we will try load as hacked ItemStack: " + config);
                 } else {
                     plugin
                             .getLogger()
@@ -371,13 +367,6 @@ public class Util {
         }
     }
 
-    @NotNull
-    public static List<String> getDebugLogs() {
-        LOCK.readLock().lock();
-        List<String> strings = new ArrayList<>(DEBUG_LOGS);
-        LOCK.readLock().unlock();
-        return strings;
-    }
 
     private static final StackWalker stackWalker = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE), 2);
 
@@ -386,34 +375,39 @@ public class Util {
      *
      * @param logs logs
      */
+    @Deprecated(forRemoval = true)
     public static void debugLog(@NotNull String... logs) {
-        if (disableDebugLogger) {
-            return;
-        }
-        LOCK.writeLock().lock();
-        if (!isDevMode()) {
-            for (String log : logs) {
-                DEBUG_LOGS.add("[DEBUG] " + log);
-            }
-            LOCK.writeLock().unlock();
-            return;
-        }
-        List<StackWalker.StackFrame> caller = stackWalker.walk(
-                frames -> frames
-                        .limit(2)
-                        .toList());
-        StackWalker.StackFrame frame = caller.get(1);
-        final String threadName = Thread.currentThread().getName();
-        final String className = frame.getClassName();
-        final String methodName = frame.getMethodName();
-        final int codeLine = frame.getLineNumber();
+        Log.Caller caller = Log.Caller.create();
         for (String log : logs) {
-            DEBUG_LOGS.add("[DEBUG] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info("[DEBUG/" + threadName + "] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+            Log.debug(Level.INFO, log, caller);
         }
-        LOCK.writeLock().unlock();
+//        if (disableDebugLogger) {
+//            return;
+//        }
+//        StringJoiner logEntry = new StringJoiner("\n");
+//        if (!isDevMode()) {
+//            for (String log : logs) {
+//                logEntry.add("[DEBUG] " + log);
+//            }
+//        } else {
+//            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(2).toList());
+//            StackWalker.StackFrame frame = caller.get(1);
+//            String threadName = Thread.currentThread().getName();
+//            String className = frame.getClassName();
+//            String methodName = frame.getMethodName();
+//            int codeLine = frame.getLineNumber();
+//            for (String log : logs) {
+//                logEntry.add("[DEBUG/" + threadName + "] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
+//            }
+//        }
+//        String log = logEntry.toString();
+//        if (isDevMode()) {
+//            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info(log);
+//        }
+//        LOCK.writeLock().lock();
+//        DEBUG_LOGS.add(log);
+//        LOCK.writeLock().unlock();
     }
-
 
     /**
      * return the right side for given blockFace
@@ -503,7 +497,7 @@ public class Util {
         if (itemStack.hasItemMeta()
                 && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName()
                 && !QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
-            return plugin.getPlatform().getDisplayName(itemStack);
+            return plugin.getPlatform().getDisplayName(itemStack.getItemMeta());
         }
         return null;
     }
@@ -583,7 +577,7 @@ public class Util {
     @NotNull
     public static String getToolPercentage(@NotNull ItemStack item) {
         if (!(item.getItemMeta() instanceof Damageable)) {
-            Util.debugLog(item.getType().name() + " not Damageable.");
+            Log.debug(item.getType().name() + " not Damageable.");
             return "Error: NaN";
         }
         double dura = ((Damageable) item.getItemMeta()).getDamage();
@@ -648,7 +642,6 @@ public class Util {
             }
             CUSTOM_STACKSIZE.put(mat, Integer.parseInt(data[1]));
         }
-        disableDebugLogger = plugin.getConfig().getBoolean("debug.disable-debuglogger", false);
         try {
             dyeColor = DyeColor.valueOf(plugin.getConfig().getString("shop.sign-dye-color"));
         } catch (Exception ignored) {
@@ -690,7 +683,7 @@ public class Util {
             return;
         }
         if (inv.getHolder() == null) {
-            Util.debugLog("Skipped plugin gui inventory check.");
+            Log.debug("Skipped plugin gui inventory check.");
             return;
         }
         InventoryWrapperIterator iterator = inv.iterator();
@@ -707,7 +700,7 @@ public class Util {
                         return; // Virtual GUI
                     }
                     iterator.remove();
-                    Util.debugLog("Found shop display item in an inventory, Removing...");
+                    Log.debug("Found shop display item in an inventory, Removing...");
                     MsgUtil.sendGlobalAlert("[InventoryCheck] Found displayItem in inventory at " + location + ", Item is " + itemStack.getType().name());
                 }
             }
@@ -837,7 +830,7 @@ public class Util {
         if (shop == null) {
             shop = plugin.getShopManager().getShopIncludeAttached(bshop.getLocation().clone().add(0, 1, 0));
         }
-        return shop != null && !shop.getModerator().isModerator(p.getUniqueId());
+        return shop != null && !shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY);
     }
 
     /**
@@ -903,9 +896,7 @@ public class Util {
      */
     @NotNull
     public static String list2String(@NotNull Collection<String> strList) {
-        StringJoiner joiner = new StringJoiner(", ", "", "");
-        strList.forEach(joiner::add);
-        return joiner.toString();
+        return String.join(", ", strList);
     }
 
     /**
@@ -1218,6 +1209,13 @@ public class Util {
         }
     }
 
+    /**
+     * Execute the Runnable in server main thread.
+     * If it already on main-thread, will be executed directly.
+     * or post to main-thread if came from any other thread.
+     *
+     * @param runnable The runnable
+     */
     public static void mainThreadRun(@NotNull Runnable runnable) {
         if (Bukkit.isPrimaryThread()) {
             runnable.run();
@@ -1226,7 +1224,14 @@ public class Util {
         }
     }
 
+    /**
+     * Convert timestamp to LocalDateTime instance
+     *
+     * @param timestamp Timestamp
+     * @return LocalDateTime instance
+     */
     // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
+    @Nullable
     public static LocalDateTime getDateTimeFromTimestamp(long timestamp) {
         if (timestamp == 0) {
             return null;
@@ -1235,24 +1240,51 @@ public class Util {
                 .getDefault().toZoneId());
     }
 
+    /**
+     * Convert timestamp to LocalDate instance
+     *
+     * @param timestamp Timestamp
+     * @return LocalDate instance
+     */
     // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
+    @Nullable
     public static LocalDate getDateFromTimestamp(long timestamp) {
         LocalDateTime date = getDateTimeFromTimestamp(timestamp);
         return date == null ? null : date.toLocalDate();
     }
 
+    /**
+     * Gets the nil unique id
+     *
+     * @return uuid which content is `00000000-0000-0000-0000-000000000000`
+     */
+    @NotNull
     public static UUID getNilUniqueId() {
         return new UUID(0, 0);
     }
 
-    public static UUID getSenderUniqueId(CommandSender sender) {
+    /**
+     * Gets the CommandSender unique id.
+     *
+     * @param sender the sender
+     * @return the sender unique id if sender is a player, otherwise nil unique id
+     */
+    @NotNull
+    public static UUID getSenderUniqueId(@Nullable CommandSender sender) {
         if (sender instanceof OfflinePlayer) {
             return ((OfflinePlayer) sender).getUniqueId();
         }
         return getNilUniqueId();
     }
 
+    /**
+     * Create regex from glob
+     *
+     * @param glob glob
+     * @return regex
+     */
     // https://stackoverflow.com/questions/45321050/java-string-matching-with-wildcards
+    @NotNull
     public static String createRegexFromGlob(@NotNull String glob) {
         StringBuilder out = new StringBuilder("^");
         for (int i = 0; i < glob.length(); ++i) {
@@ -1295,6 +1327,12 @@ public class Util {
         return list1.containsAll(list2) && list2.containsAll(list1);
     }
 
+    /**
+     * Unregister all listeners registered instances that belong to specified class
+     *
+     * @param plugin Plugin instance
+     * @param clazz  Class to unregister
+     */
     public static void unregisterListenerClazz(@NotNull Plugin plugin, @NotNull Class<? extends Listener> clazz) {
         for (RegisteredListener registeredListener : HandlerList.getRegisteredListeners(plugin)) {
             if (registeredListener.getListener().getClass().equals(clazz)) {
@@ -1303,13 +1341,37 @@ public class Util {
         }
     }
 
+    /**
+     * Gets the location of a class inside of a jar file.
+     *
+     * @param clazz The class to get the location of.
+     * @return The jar path which given class at.
+     */
     @NotNull
-    public static String getPluginJarPath(@NotNull Plugin plugin) {
-        String jarPath = plugin.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+    public static String getClassPath(@NotNull Class<?> clazz) {
+        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
         jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
         return jarPath;
     }
 
+    /**
+     * Get class path of the given class.
+     *
+     * @param plugin Plugin plugin instance
+     * @return Class path
+     */
+    @NotNull
+    public static String getPluginJarPath(@NotNull Plugin plugin) {
+        return getClassPath(plugin.getClass());
+    }
+
+    /**
+     * Gets a plugin's Jar file
+     *
+     * @param plugin The plugin instance
+     * @return The plugin's Jar file
+     * @throws FileNotFoundException If the plugin's Jar file could not be found
+     */
     @NotNull
     public static File getPluginJarFile(@NotNull Plugin plugin) throws FileNotFoundException {
         String path = getPluginJarPath(plugin);
@@ -1317,6 +1379,100 @@ public class Util {
         if (!file.exists())
             throw new FileNotFoundException("File not found: " + path);
         return file;
+    }
+
+    /**
+     * Create a list which only contains the given elements at the tail of a list.
+     *
+     * @param list List
+     * @param last The amount of elements from list tail to be added to the new list
+     * @return The new list
+     */
+    @NotNull
+    public static List<String> tail(@NotNull List<String> list, int last) {
+        return list.subList(Math.max(list.size() - last, 0), list.size());
+    }
+
+    /**
+     * Parse the given name with package.class prefix (all-lowercases) from property
+     *
+     * @param name name
+     * @return ParseResult
+     */
+    @NotNull
+    public static SysPropertiesParseResult parsePackageProperly(@NotNull String name) {
+        Log.Caller caller = Log.Caller.create();
+        String str = caller.getClassName() + "." + name;
+        String value = System.getProperty(str);
+        SysPropertiesParseResult result = new SysPropertiesParseResult(value);
+        Log.debug("Parsing the system properly for " + str + ": " + result);
+        return result;
+    }
+
+    @Data
+    @AllArgsConstructor
+    public static class SysPropertiesParseResult {
+        private final String value;
+
+        public boolean isPresent() {
+            return value != null;
+        }
+
+        public boolean asBoolean() {
+            return Boolean.parseBoolean(value);
+        }
+
+        public int asInteger(int def) {
+            if (value == null) return def;
+            try {
+                return Integer.parseInt(value);
+            } catch (NumberFormatException exception) {
+                return def;
+            }
+        }
+
+        public double asDouble(double def) {
+            if (value == null) return def;
+            try {
+                return Double.parseDouble(value);
+            } catch (NumberFormatException exception) {
+                return def;
+            }
+        }
+
+        public byte asByte(byte def) {
+            if (value == null) return def;
+            try {
+                return Byte.parseByte(value);
+            } catch (NumberFormatException exception) {
+                return def;
+            }
+        }
+
+
+        @Nullable
+        public String asString(@NotNull String def) {
+            if (value == null) return def;
+            return value;
+        }
+
+        public long asLong(long def) {
+            if (value == null) return def;
+            try {
+                return Long.parseLong(value);
+            } catch (NumberFormatException exception) {
+                return def;
+            }
+        }
+
+        public short asShort(short def) {
+            if (value == null) return def;
+            try {
+                return Short.parseShort(value);
+            } catch (NumberFormatException exception) {
+                return def;
+            }
+        }
     }
 
 }

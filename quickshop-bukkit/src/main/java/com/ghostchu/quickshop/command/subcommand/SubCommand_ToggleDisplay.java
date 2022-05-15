@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +39,7 @@ public class SubCommand_ToggleDisplay implements CommandHandler<Player> {
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         final Shop shop = getLookingShop(sender);
         if (shop != null) {
-            if (shop.getModerator().isModerator(sender.getUniqueId()) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.toggledisplay")) {
+            if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.TOGGLE_DISPLAY) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.toggledisplay")) {
                 if (shop.isDisableDisplay()) {
                     shop.setDisableDisplay(false);
                     plugin.text().of(sender, "display-turn-on").send();

@@ -19,6 +19,15 @@
 
 package com.ghostchu.quickshop.listener;
 
+import com.ghostchu.quickshop.Cache;
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.datatype.HopperPersistentData;
+import com.ghostchu.quickshop.shop.datatype.HopperPersistentDataType;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Location;
@@ -36,13 +45,6 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.Cache;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.shop.datatype.HopperPersistentData;
-import com.ghostchu.quickshop.shop.datatype.HopperPersistentDataType;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -60,8 +62,8 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     }
 
     private void init() {
-        this.hopperProtect = plugin.getConfig().getBoolean("protect.hopper",true);
-        this.hopperOwnerExclude = plugin.getConfig().getBoolean("protect.hopper-owner-exclude",false);
+        this.hopperProtect = plugin.getConfig().getBoolean("protect.hopper", true);
+        this.hopperOwnerExclude = plugin.getConfig().getBoolean("protect.hopper-owner-exclude", false);
         scanAndFixPaperListener();
     }
 
@@ -83,7 +85,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
         if (!Util.isClassAvailable("com.destroystokyo.paper.PaperWorldConfig")) {
             return;
         }
-        Util.debugLog("QuickShop is scanning all worlds settings about disableHopperMoveEvents disabled worlds");
+        Log.debug("QuickShop is scanning all worlds settings about disableHopperMoveEvents disabled worlds");
         plugin.getServer().getWorlds().forEach(world -> {
             if (plugin.getShopManager().getShopsInWorld(world).isEmpty()) {
                 return;
@@ -183,14 +185,17 @@ public class ShopProtectionListener extends AbstractProtectionListener {
             }
         }
     }
+
     private final NamespacedKey hopperKey = new NamespacedKey(QuickShop.getInstance(), "hopper-persistent-data");
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlaceHopper(BlockPlaceEvent e) {
-        if(e.getBlockPlaced().getState() instanceof Hopper hopper){
+        if (e.getBlockPlaced().getState() instanceof Hopper hopper) {
             hopper.getPersistentDataContainer().set(hopperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
             hopper.update();
         }
     }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onInventoryMove(InventoryMoveItemEvent event) {
         if (!this.hopperProtect) {
@@ -206,12 +211,11 @@ public class ShopProtectionListener extends AbstractProtectionListener {
         if (shop == null) {
             return;
         }
-        if(this.hopperOwnerExclude) {
-            if(event.getDestination().getHolder() instanceof Hopper hopper){
+        if (this.hopperOwnerExclude) {
+            if (event.getDestination().getHolder() instanceof Hopper hopper) {
                 HopperPersistentData hopperPersistentData = hopper.getPersistentDataContainer().get(hopperKey, HopperPersistentDataType.INSTANCE);
                 if (hopperPersistentData != null) {
-                    if (hopperPersistentData.getPlayer().equals(shop.getOwner())) {
-
+                    if (shop.playerAuthorize(hopperPersistentData.getPlayer(), BuiltInShopPermission.ACCESS_INVENTORY)) {
                         return;
                     }
                 }

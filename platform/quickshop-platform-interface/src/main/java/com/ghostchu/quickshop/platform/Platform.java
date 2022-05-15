@@ -41,52 +41,76 @@ import java.util.Map;
 
 public interface Platform {
     void setLine(@NotNull Sign sign, int line, @NotNull Component component);
+
     @NotNull
     Component getLine(@NotNull Sign sign, int line);
+
     @NotNull
     HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack);
+
     void registerCommand(@NotNull String prefix, @NotNull PluginCommand command);
+
     boolean isServerStopping();
+
     @NotNull
     String getMinecraftVersion();
+
     @Nullable
     default String getItemShopId(@NotNull ItemStack stack) {
-        if(!Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
+        if (!Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
             return null;
         }
         NBTItem nbtItem = new NBTItem(stack);
         String shopId = nbtItem.getString("shopId");
-        if(shopId == null || shopId.isEmpty() || shopId.isBlank()) {
+        if (shopId == null || shopId.isEmpty() || shopId.isBlank()) {
             return null;
         }
         return shopId;
     }
+
     @NotNull
     String getTranslationKey(@NotNull Material material);
+
     @NotNull
     String getTranslationKey(@NotNull EntityType entity);
+
     @NotNull
     String getTranslationKey(@NotNull PotionEffectType potionEffectType);
+
     @NotNull
     String getTranslationKey(@NotNull Enchantment enchantment);
+
     @NotNull
     Component getTranslation(@NotNull Material material);
+
     @NotNull
     Component getTranslation(@NotNull EntityType entity);
+
     @NotNull
     Component getTranslation(@NotNull PotionEffectType potionEffectType);
+
     @NotNull
     Component getTranslation(@NotNull Enchantment enchantment);
+
     @NotNull
     Component getDisplayName(@NotNull ItemStack stack);
-    @NotNull
+
+    @Nullable
     Component getDisplayName(@NotNull ItemMeta meta);
-    void setDisplayName(@NotNull ItemMeta meta, @NotNull Component component);
-    void setDisplayName(@NotNull ItemStack stack, @NotNull Component component);
-    void setDisplayName(@NotNull Item stack, @NotNull Component component);
+
+    void setDisplayName(@NotNull ItemMeta meta, @Nullable Component component);
+
+    void setDisplayName(@NotNull ItemStack stack, @Nullable Component component);
+
+    void setDisplayName(@NotNull Item stack, @Nullable Component component);
+
     void updateTranslationMappingSection(@NotNull Map<String, String> mapping);
+
     void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components);
+
     void setLore(@NotNull ItemMeta meta, @NotNull Collection<Component> components);
+
     @Nullable List<Component> getLore(@NotNull ItemStack stack);
+
     @Nullable List<Component> getLore(@NotNull ItemMeta meta);
 }

@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.command.subcommand.*;
 import com.ghostchu.quickshop.command.subcommand.silent.*;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.collect.ImmutableList;
 import lombok.Data;
 import org.bukkit.Sound;
@@ -36,6 +37,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -346,6 +348,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .disabledSupplier(() -> !plugin.getConfig().getBoolean("purge.enabled"))
                 .executor(new SubCommand_Purge(plugin))
                 .build());
+        registerCmd(CommandContainer.builder()
+                .prefix("permission")
+                .permission("quickshop.permission")
+                .executor(new SubCommand_Permission(plugin))
+                .build());
     }
 
     /**
@@ -357,7 +364,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     @Override
     public void registerCmd(@NotNull CommandContainer container) {
         if (cmds.contains(container)) {
-            Util.debugLog("Dupe subcommand registering: " + container);
+            Log.debug("Dupe subcommand registering: " + container);
             return;
         }
         container.bakeExecutorType();
@@ -384,6 +391,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
      */
     @Override
     @NotNull
+    @Unmodifiable
     public List<CommandContainer> getRegisteredCommands() {
         return ImmutableList.copyOf(this.getCmds());
     }
@@ -411,7 +419,6 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
 
         if (cmdArg.length == 0) {
             //Handle main command
-            Util.debugLog("Print help cause no args (/qs)");
             rootContainer.getExecutor().onCommand(capture(sender), commandLabel, EMPTY_ARGS);
         } else {
             //Handle subcommand
@@ -440,11 +447,10 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                     return true;
                 }
 
-                Util.debugLog("Execute container: " + container.getPrefix() + " - " + cmdArg[0]);
+                Log.debug("Execute container: " + container.getPrefix() + " - " + cmdArg[0]);
                 container.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);
                 return true;
             }
-            Util.debugLog("All checks failed, print helps");
             rootContainer.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);
         }
         return true;
@@ -466,7 +472,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 if (requirePermission != null
                         && !requirePermission.isEmpty()
                         && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
-                    Util.debugLog(
+                    Log.debug(
                             "Sender "
                                     + sender.getName()
                                     + " trying " + action.getName() + " the command: "
@@ -487,15 +493,17 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                     }
                 }
             }
-            Util.debugLog(
-                    "Sender "
-                            + sender.getName()
-                            + " trying " + action + " the command: "
-                            + commandLabel
-                            + " "
-                            + Util.array2String(cmdArg)
-                            + ", but does no have one of those permissions: "
-                            + permissionList);
+            if (Util.isDevMode()) {
+                Log.debug(
+                        "Sender "
+                                + sender.getName()
+                                + " trying " + action + " the command: "
+                                + commandLabel
+                                + " "
+                                + Util.array2String(cmdArg)
+                                + ", but does no have one of those permissions: "
+                                + permissionList);
+            }
             return false;
         }
     }
@@ -539,7 +547,9 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 if (!checkPermissions(sender, commandLabel, passThroughArgs, selectivePermissions, PermissionType.SELECTIVE, Action.TAB_COMPLETE)) {
                     return Collections.emptyList();
                 }
-                Util.debugLog("Tab-complete container: " + container.getPrefix());
+                if (Util.isDevMode()) {
+                    Log.debug("Tab-complete container: " + container.getPrefix());
+                }
                 return container.getExecutor().onTabComplete(capture(sender), commandLabel, passThroughArgs);
 
             }

@@ -27,6 +27,7 @@ import com.ghostchu.quickshop.util.GameVersion;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
@@ -87,7 +88,6 @@ public final class EnvironmentChecker {
         boolean skipAllTest = false;
         ResultContainer executeResult = null;
 
-        Properties properties = System.getProperties();
         CheckResult gResult = CheckResult.PASSED;
         for (Method declaredMethod : this.tests) {
             if (skipAllTest) {
@@ -97,10 +97,10 @@ public final class EnvironmentChecker {
             try {
                 EnvCheckEntry envCheckEntry = declaredMethod.getAnnotation(EnvCheckEntry.class);
                 if (Arrays.stream(envCheckEntry.stage()).noneMatch(entry -> entry == stage)) {
-                    Util.debugLog("Skip test: " + envCheckEntry.name() + ": Except stage: " + Arrays.toString(envCheckEntry.stage()) + " Current stage: " + stage);
+                    Log.debug("Skip test: " + envCheckEntry.name() + ": Except stage: " + Arrays.toString(envCheckEntry.stage()) + " Current stage: " + stage);
                     continue;
                 }
-                if (!properties.containsKey("com.ghostchu.quickshop.util.envcheck.skip." + envCheckEntry.name().toUpperCase(Locale.ROOT).replace(" ", "_"))) {
+                if (!Util.parsePackageProperly("skip." + envCheckEntry.name().toUpperCase(Locale.ROOT).replace(" ", "_")).asBoolean()) {
                     executeResult = (ResultContainer) declaredMethod.invoke(this);
                     if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if its worse than the latest one.
                         result = executeResult.getResult();
@@ -111,27 +111,27 @@ public final class EnvironmentChecker {
                 switch (result) {
                     case SKIPPED:
                         plugin.getLogger().info("[SKIP] " + envCheckEntry.name());
-                        Util.debugLog("Runtime check [" + envCheckEntry.name() + "] has been skipped (Startup Flag).");
+                        Log.debug("Runtime check [" + envCheckEntry.name() + "] has been skipped (Startup Flag).");
                         break;
                     case PASSED:
                         if (Util.isDevEdition() || Util.isDevMode()) {
                             plugin.getLogger().info("[OK] " + envCheckEntry.name());
-                            Util.debugLog("[Pass] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                            Log.debug("[Pass] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         }
                         break;
                     case WARNING:
                         plugin.getLogger().warning("[WARN] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                        Util.debugLog("[Warning] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        Log.debug("[Warning] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         break;
                     case STOP_WORKING:
                         plugin.getLogger().warning("[STOP] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                        Util.debugLog("[Stop-Freeze] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        Log.debug("[Stop-Freeze] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         //It's okay, QuickShop should continue executing checks to collect more data.
                         //And show user all errors at once.
                         break;
                     case DISABLE_PLUGIN:
                         plugin.getLogger().warning("[FATAL] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                        Util.debugLog("[Fatal-Disable] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        Log.debug("[Fatal-Disable] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         skipAllTest = true; //We need to disable the plugin NOW! Some HUGE exception is happening here, hurry up!
                         break;
                     default:
@@ -153,14 +153,14 @@ public final class EnvironmentChecker {
         String jvmVersion = System.getProperty("java.version"); //Use java version not jvm version.
         String[] splitVersion = jvmVersion.split("\\.");
         if (splitVersion.length < 1) {
-            Util.debugLog("Failed to parse jvm version to check: " + jvmVersion);
+            Log.debug("Failed to parse jvm version to check: " + jvmVersion);
             return false;
         }
         try {
             int majorVersion = Integer.parseInt(splitVersion[0]);
             return majorVersion < 17; //Target JDK/JRE version
         } catch (NumberFormatException ignored) {
-            Util.debugLog("Failed to parse jvm major version to check: " + splitVersion[0]);
+            Log.debug("Failed to parse jvm major version to check: " + splitVersion[0]);
             return false;
         }
     }
@@ -169,7 +169,7 @@ public final class EnvironmentChecker {
     public ResultContainer spigotBasedServer() {
         ResultContainer success = new ResultContainer(CheckResult.PASSED, "Server");
         ResultContainer failed = new ResultContainer(CheckResult.STOP_WORKING, "Server must be Spigot based, Don't use CraftBukkit!");
-        if(!PaperLib.isSpigot()) {
+        if (!PaperLib.isSpigot()) {
             return failed;
         }
         return success;
@@ -246,7 +246,7 @@ public final class EnvironmentChecker {
             }
         }
         if (throwable != null) {
-            Util.debugLog(throwable.getMessage());
+            Log.debug(throwable.getMessage());
             MsgUtil.debugStackTrace(throwable.getStackTrace());
             AbstractDisplayItem.setNotSupportVirtualItem(true);
             //do not throw

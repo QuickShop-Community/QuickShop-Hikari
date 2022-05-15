@@ -19,17 +19,17 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,7 +61,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
 
             int i = 0;
             if (!shopOwner.equals(sender)) { //Non-self shop
-                if (!sender.hasPermission("quickshop.removeall.other")) {
+                if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.removeall.other")) {
                     plugin.text().of(sender, "no-permission").send();
                     return;
                 }
@@ -73,7 +73,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
                     }
                 }
             } else { //Self shop
-                if (!sender.hasPermission("quickshop.removeall.self")) {
+                if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.removeall.self")) {
                     plugin.text().of(sender, "no-permission").send();
                     return;
                 }

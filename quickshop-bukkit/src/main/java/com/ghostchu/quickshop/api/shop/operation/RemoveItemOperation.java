@@ -27,6 +27,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+/**
+ * Operation to remove items
+ */
 public class RemoveItemOperation implements Operation {
     private boolean committed;
     private boolean rollback;
@@ -37,6 +40,13 @@ public class RemoveItemOperation implements Operation {
     private int rollbackRemains = 0;
     private final int itemMaxStackSize;
 
+    /**
+     * Constructor
+     *
+     * @param item   ItemStack to remove
+     * @param amount Amount to remove
+     * @param inv    The {@link InventoryWrapper} that remove from
+     */
     public RemoveItemOperation(@NotNull ItemStack item, int amount, @NotNull InventoryWrapper inv) {
         this.item = item.clone();
         this.amount = amount;
@@ -44,25 +54,35 @@ public class RemoveItemOperation implements Operation {
         this.itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
     }
 
+    /**
+     * Gets the item remains to remove
+     *
+     * @return The item remains to remove
+     */
     public int getRemains() {
         return remains;
     }
 
+    /**
+     * Gets the item remains to rollback
+     *
+     * @return The item remains to rollback
+     */
     public int getRollbackRemains() {
         return rollbackRemains;
     }
 
     @Override
-    public boolean commit() throws Exception {
+    public boolean commit() {
         committed = true;
         remains = amount;
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
             item.setAmount(stackSize);
             Map<Integer, ItemStack> notFit = inv.removeItem(item.clone());
-            if(notFit.isEmpty()){
+            if (notFit.isEmpty()) {
                 remains -= stackSize;
-            }else{
+            } else {
                 remains -= stackSize - notFit.entrySet().iterator().next().getValue().getAmount();
                 return false;
             }
@@ -71,16 +91,16 @@ public class RemoveItemOperation implements Operation {
     }
 
     @Override
-    public boolean rollback() throws Exception {
+    public boolean rollback() {
         rollback = true;
         rollbackRemains = this.remains;
         while (rollbackRemains > 0) {
             int stackSize = Math.min(rollbackRemains, itemMaxStackSize);
             item.setAmount(stackSize);
             Map<Integer, ItemStack> notSaved = inv.addItem(item);
-            if(notSaved.isEmpty()) {
+            if (notSaved.isEmpty()) {
                 rollbackRemains -= stackSize;
-            }else{
+            } else {
                 rollbackRemains -= stackSize - notSaved.entrySet().iterator().next().getValue().getAmount();
                 return false;
             }

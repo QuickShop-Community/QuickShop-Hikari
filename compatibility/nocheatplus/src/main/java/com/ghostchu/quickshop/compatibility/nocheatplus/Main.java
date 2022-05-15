@@ -31,7 +31,7 @@ public final class Main extends CompatibilityModule implements Listener {
     public void onFakeEventBegin(ShopProtectionCheckEvent event) {
         if (event.getStatus() == ProtectionCheckStatus.BEGIN)
             NCPExemptionManager.exemptPermanently(event.getPlayer().getUniqueId());
-        else if(event.getStatus() == ProtectionCheckStatus.END)
+        else if (event.getStatus() == ProtectionCheckStatus.END)
             NCPExemptionManager.unexempt(event.getPlayer().getUniqueId());
     }
 

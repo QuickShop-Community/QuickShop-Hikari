@@ -22,7 +22,7 @@ package com.ghostchu.quickshop.util.reporter.error;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.GameVersion;
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.paste.Paste;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.collect.Lists;
 import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.Config;
@@ -57,7 +57,6 @@ public class RollbarErrorReporter {
     private final GlobalExceptionFilter serverExceptionFilter;
     private boolean disable;
     private boolean tempDisable;
-    private String lastPaste = null;
     //private final GlobalExceptionFilter globalExceptionFilter;
     @Getter
     private volatile boolean enabled;
@@ -82,7 +81,7 @@ public class RollbarErrorReporter {
         serverExceptionFilter = new GlobalExceptionFilter(plugin.getLogger().getFilter());
         plugin.getServer().getLogger().setFilter(serverExceptionFilter);
 
-        Util.debugLog("Rollbar error reporter success loaded.");
+        Log.debug("Rollbar error reporter success loaded.");
         enabled = true;
 
         asyncErrorReportThread = new Thread(() -> {
@@ -95,7 +94,7 @@ public class RollbarErrorReporter {
                     }
                     ErrorBundle errorBundle = reportQueue.poll();
                     while (errorBundle != null) {
-                        Util.debugLog("Sending error: " + errorBundle.getThrowable().getMessage()
+                        Log.debug("Sending error: " + errorBundle.getThrowable().getMessage()
                                 + " with context: " + Util.array2String(errorBundle.getContext()));
                         sendError0(errorBundle.getThrowable(), errorBundle.getContext());
                         errorBundle = reportQueue.poll();
@@ -120,7 +119,6 @@ public class RollbarErrorReporter {
 
     private Map<String, Object> makeMapping() {
         Map<String, Object> dataMapping = new LinkedHashMap<>();
-        dataMapping.put("paste", this.lastPaste);
         dataMapping.put("system_os", System.getProperty("os.name"));
         dataMapping.put("system_arch", System.getProperty("os.arch"));
         dataMapping.put("system_version", System.getProperty("os.version"));
@@ -161,19 +159,6 @@ public class RollbarErrorReporter {
                     return;
                 }
             }
-            if (lastPaste == null) {
-                String pasteURL;
-                try {
-                    Paste paste = new Paste(plugin);
-                    pasteURL = paste.paste(paste.genNewPaste(), Paste.PasteType.UBUNTU);
-                    if (pasteURL != null && !pasteURL.isEmpty()) {
-                        lastPaste = pasteURL;
-                    } else {
-                        lastPaste = paste.paste(paste.genNewPaste());
-                    }
-                } catch (Exception ignored) {
-                }
-            }
             this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
             plugin
                     .getLogger()
@@ -187,8 +172,8 @@ public class RollbarErrorReporter {
             throwable.printStackTrace();
             resetIgnores();
             plugin.getLogger().warning("====QuickShop Error Report E N D===");
-            Util.debugLog(throwable.getMessage());
-            Arrays.stream(throwable.getStackTrace()).forEach(a -> Util.debugLog(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
+            Log.debug(throwable.getMessage());
+            Arrays.stream(throwable.getStackTrace()).forEach(a -> Log.debug(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
             if (Util.isDevMode()) {
                 throwable.printStackTrace();
             }
@@ -209,7 +194,7 @@ public class RollbarErrorReporter {
         synchronized (reportLock) {
             reportLock.notifyAll();
         }
-        Util.debugLog("Wake up asyncErrorReportThread to sending errors...");
+        Log.debug("Wake up asyncErrorReportThread to sending errors...");
     }
 
     @AllArgsConstructor
@@ -236,8 +221,8 @@ public class RollbarErrorReporter {
             if (!plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) { // We only receive latest reports.
                 return false;
             }
-        }catch (Exception exception){
-            Util.debugLog("Cannot to check reportable: "+ exception.getMessage());
+        } catch (Exception exception) {
+            Log.debug("Cannot to check reportable: " + exception.getMessage());
             return false;
         }
         if (!GameVersion.get(plugin.getPlatform().getMinecraftVersion()).isCoreSupports()) { // Ignore errors if user install quickshop on unsupported

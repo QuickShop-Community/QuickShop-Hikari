@@ -25,7 +25,7 @@ import com.ghostchu.quickshop.api.database.MetricQuery;
 import com.ghostchu.quickshop.api.database.MetricRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.metric.ShopOperationEnum;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import jdbc.stream.JdbcStream;
 import org.jetbrains.annotations.NotNull;
 
@@ -48,7 +48,7 @@ public class SimpleMetricQuery implements MetricQuery {
         try (SQLQuery query = preparePlayerPurchaseQuery(player, timeStart, timeEnd, -1, descending, filter)) {
             return wrap(query.getResultSet());
         } catch (SQLException e) {
-            Util.debugLog("Failed to perform player query on metrics table: " + e.getMessage());
+            Log.debug("Failed to perform player query on metrics table: " + e.getMessage());
             return Collections.emptyList();
         }
     }
@@ -58,7 +58,7 @@ public class SimpleMetricQuery implements MetricQuery {
         try (SQLQuery query = preparePlayerPurchaseQuery(player, timeStart, timeEnd, -1, descending, filter)) {
             return JdbcStream.stream(query.getResultSet()).count();
         } catch (SQLException e) {
-            Util.debugLog("Failed to perform player query on metrics table: " + e.getMessage());
+            Log.debug("Failed to perform player query on metrics table: " + e.getMessage());
             return -1;
         }
     }
@@ -69,7 +69,7 @@ public class SimpleMetricQuery implements MetricQuery {
         try (SQLQuery query = prepareShopPurchaseQuery(shop, timeStart, timeEnd, limit, descending, filter)) {
             return wrap(query.getResultSet());
         } catch (SQLException e) {
-            Util.debugLog("Failed to perform shop query on metrics table: " + e.getMessage());
+            Log.debug("Failed to perform shop query on metrics table: " + e.getMessage());
             return Collections.emptyList();
         }
     }
@@ -79,7 +79,7 @@ public class SimpleMetricQuery implements MetricQuery {
         try (SQLQuery query = prepareShopPurchaseQuery(shop, timeStart, timeEnd, limit, descending, filter)) {
             return JdbcStream.stream(query.getResultSet()).count();
         } catch (SQLException e) {
-            Util.debugLog("Failed to perform player query on metrics table: " + e.getMessage());
+            Log.debug("Failed to perform player query on metrics table: " + e.getMessage());
             return -1;
         }
     }
@@ -130,12 +130,12 @@ public class SimpleMetricQuery implements MetricQuery {
     }
 
     @NotNull
-    private List<MetricRecord> wrap(@NotNull ResultSet set) throws SQLException {
+    private List<MetricRecord> wrap(@NotNull ResultSet set) {
         return JdbcStream.stream(set).map(rs -> {
             try {
                 return new SimpleMetricRecord(rs.getLong("time"), rs.getInt("x"), rs.getInt("y"), rs.getInt("z"), rs.getString("world"), ShopOperationEnum.valueOf(rs.getString("type")), rs.getDouble("total"), rs.getDouble("tax"), rs.getInt("amount"), UUID.fromString(rs.getString("player")));
             } catch (SQLException e) {
-                Util.debugLog("Failed to perform query on metrics table: " + e.getMessage());
+                Log.debug("Failed to perform query on metrics table: " + e.getMessage());
                 return null;
             }
         }).filter(Objects::nonNull).map(record -> (MetricRecord) record).toList();

@@ -29,10 +29,14 @@ import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.RealDisplayItem;
 import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.quickshop.util.serialize.BlockPos;
+import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
@@ -72,7 +76,7 @@ public class ContainerShop implements Shop {
     private final QuickShop plugin;
     @EqualsAndHashCode.Exclude
     private final UUID runtimeRandomUniqueId = UUID.randomUUID();
-    private ShopModerator moderator;
+    private UUID owner;
     private double price;
     private ShopType shopType;
     private boolean unlimited;
@@ -113,6 +117,8 @@ public class ContainerShop implements Shop {
     private String symbolLink;
     @Nullable
     private String shopName;
+    @NotNull
+    private final Map<UUID, String> playerGroup;
 
     ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
@@ -121,7 +127,7 @@ public class ContainerShop implements Shop {
         this.location = s.location.clone();
         this.plugin = s.plugin;
         this.unlimited = s.unlimited;
-        this.moderator = new SimpleShopModerator(s.getOwner(), s.getStaffs());
+        this.owner = s.owner;
         this.price = s.price;
         this.isLoaded = s.isLoaded;
         this.isDeleted = s.isDeleted;
@@ -137,6 +143,7 @@ public class ContainerShop implements Shop {
         this.inventoryWrapperProvider = s.inventoryWrapperProvider;
         this.symbolLink = s.symbolLink;
         this.shopName = s.shopName;
+        this.playerGroup = s.playerGroup;
         initDisplayItem();
     }
 
@@ -148,7 +155,7 @@ public class ContainerShop implements Shop {
      * @param price     The cost per item
      * @param item      The itemstack with the properties we want. This is .cloned, no need to worry
      *                  about references
-     * @param moderator The modertators
+     * @param owner     The shop owner
      * @param type      The shop type
      * @param unlimited The unlimited
      * @param plugin    The plugin instance
@@ -159,7 +166,7 @@ public class ContainerShop implements Shop {
             @NotNull Location location,
             double price,
             @NotNull ItemStack item,
-            @NotNull ShopModerator moderator,
+            @NotNull UUID owner,
             boolean unlimited,
             @NotNull ShopType type,
             @NotNull YamlConfiguration extra,
@@ -168,14 +175,19 @@ public class ContainerShop implements Shop {
             @Nullable UUID taxAccount,
             @NotNull String inventoryWrapperProvider,
             @NotNull String symbolLink,
-            @Nullable String shopName) {
+            @Nullable String shopName,
+            @NotNull Map<UUID, String> playerGroup) {
         Util.ensureThread(false);
         this.shopName = shopName;
         this.location = location;
         this.price = price;
-        this.moderator = moderator;
+
+
+        // Upgrade the shop moderator
+        this.owner = owner;
         this.item = item.clone();
         this.plugin = plugin;
+        this.playerGroup = new HashMap<>(playerGroup);
         if (!plugin.isAllowStack()) {
             this.item.setAmount(1);
         }
@@ -232,7 +244,7 @@ public class ContainerShop implements Shop {
         if (section.getString("currency") != null) {
             this.currency = section.getString("currency");
             section.set("currency", null);
-            Util.debugLog("Shop " + this + " currency data upgrade successful.");
+            Log.debug("Shop " + this + " currency data upgrade successful.");
         }
         setDirty();
     }
@@ -301,6 +313,119 @@ public class ContainerShop implements Shop {
     }
 
     /**
+     * Check if player has permission to authorize the specified permission node.
+     *
+     * @param player     the player
+     * @param permission the permission node
+     * @return true if player has permission, false otherwise
+     */
+    @Override
+    public boolean playerAuthorize(@NotNull UUID player, @NotNull BuiltInShopPermission permission) {
+        return playerAuthorize(player, QuickShop.getInstance(), permission.getRawNode());
+    }
+
+    @Override
+    public List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermission permission) {
+        return playersCanAuthorize(QuickShop.getInstance(), permission.getRawNode());
+    }
+
+    @Override
+    public List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermissionGroup permissionGroup) {
+        return playerGroup.entrySet().stream().filter(entry -> entry.getValue().equals(permissionGroup.getNamespacedNode())).map(Map.Entry::getKey).toList();
+    }
+
+    @Override
+    public List<UUID> playersCanAuthorize(@NotNull Plugin namespace, @NotNull String permission) {
+        List<UUID> result = new ArrayList<>();
+        for (Map.Entry<UUID, String> uuidStringEntry : this.playerGroup.entrySet()) {
+            String group = uuidStringEntry.getValue();
+            boolean r = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
+            ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, uuidStringEntry.getKey(), namespace, permission, r);
+            event.callEvent();
+            r = event.getResult();
+            if (r) {
+                result.add(uuidStringEntry.getKey());
+            }
+        }
+        Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + Util.list2String(result.stream().map(UUID::toString).toList()));
+        return result;
+    }
+
+    /**
+     * Check if player has permission to authorize the specified permission node.
+     *
+     * @param player     the player
+     * @param namespace  the plugin instance for the permission node (namespace)
+     * @param permission the permission node
+     * @return true if player has permission, false otherwise
+     */
+    @Override
+    public boolean playerAuthorize(@NotNull UUID player, @NotNull Plugin namespace, @NotNull String permission) {
+        if (player.equals(getOwner())) {
+            Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + " for " + player + " -> " + "true");
+            return true;
+        }
+        String group = getPlayerGroup(player);
+        boolean r = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
+        ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, player, namespace, permission, r);
+        event.callEvent();
+        Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + player + " -> " + event.getResult());
+        return event.getResult();
+
+    }
+
+    /**
+     * Gets the player's group in this shop
+     *
+     * @param player the player
+     * @return the group
+     */
+    @Override
+    public @NotNull String getPlayerGroup(@NotNull UUID player) {
+        if (player.equals(getOwner())) return BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode();
+        String group = this.playerGroup.getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode());
+        if (plugin.getShopPermissionManager().hasGroup(group)) {
+            return group;
+        }
+        return BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode();
+    }
+
+    @Override
+    public void setPlayerGroup(@NotNull UUID player, @Nullable String group) {
+        if (group == null)
+            group = BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode();
+        new ShopPlayerGroupSetEvent(this, getPlayerGroup(player), group).callEvent();
+        if (group.equals(BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode())) {
+            this.playerGroup.remove(player);
+        } else {
+            this.playerGroup.put(player, group);
+        }
+    }
+
+    @Override
+    public void setPlayerGroup(@NotNull UUID player, @Nullable BuiltInShopPermissionGroup group) {
+        if (group == null)
+            group = BuiltInShopPermissionGroup.EVERYONE;
+        new ShopPlayerGroupSetEvent(this, getPlayerGroup(player), group.getNamespacedNode()).callEvent();
+        if (group == BuiltInShopPermissionGroup.EVERYONE) {
+            this.playerGroup.remove(player);
+        } else {
+            setPlayerGroup(player, group.getNamespacedNode());
+        }
+
+    }
+
+    /**
+     * Gets registered to this shop's permission audiences.
+     *
+     * @return registered audiences
+     */
+    @Override
+    public @NotNull Map<UUID, String> getPermissionAudiences() {
+        return Map.copyOf(playerGroup);
+    }
+
+    /**
      * Sets shop name
      *
      * @param shopName shop name, null to remove currently name
@@ -329,7 +454,7 @@ public class ContainerShop implements Shop {
      * @param amount The amount to add to the shop.
      */
     @Override
-    public void add(@NotNull ItemStack item, int amount) throws Exception {
+    public void add(@NotNull ItemStack item, int amount) {
         Util.ensureThread(false);
         if (this.unlimited) {
             return;
@@ -350,17 +475,14 @@ public class ContainerShop implements Shop {
         this.setSignText();
     }
 
+    @SuppressWarnings("removal")
     @Override
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     public boolean addStaff(@NotNull UUID player) {
         Util.ensureThread(false);
+        setPlayerGroup(player, BuiltInShopPermissionGroup.STAFF);
         setDirty();
-        boolean result = this.moderator.addStaff(player);
-        update();
-        if (result) {
-            Util.mainThreadRun(() -> plugin.getServer().getPluginManager()
-                    .callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
-        }
-        return result;
+        return true;
     }
 
     /**
@@ -391,13 +513,13 @@ public class ContainerShop implements Shop {
                     .build();
             if (!transaction.failSafeCommit()) {
                 plugin.getSentryErrorReporter().ignoreThrow();
-                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:"+transaction.getLastError());
+                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         } else {
             InventoryWrapper chestInv = this.getInventory();
             if (chestInv == null) {
                 plugin.getLogger().warning("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
-                Util.debugLog("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
+                Log.debug("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
                 return;
             }
             InventoryTransaction transaction = InventoryTransaction
@@ -409,7 +531,7 @@ public class ContainerShop implements Shop {
                     .build();
             if (!transaction.failSafeCommit()) {
                 plugin.getSentryErrorReporter().ignoreThrow();
-                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:"+transaction.getLastError());
+                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         }
         //Update sign
@@ -443,9 +565,9 @@ public class ContainerShop implements Shop {
         }
 
         if (this.displayItem == null) {
-            Util.debugLog("Warning: DisplayItem is null, this shouldn't happened...");
+            Log.debug("Warning: DisplayItem is null, this shouldn't happened...");
             StackTraceElement traceElements = Thread.currentThread().getStackTrace()[2];
-            Util.debugLog("Call from: " + traceElements.getClassName() + "#" + traceElements.getMethodName() + "%" + traceElements.getLineNumber());
+            Log.debug("Call from: " + traceElements.getClassName() + "#" + traceElements.getMethodName() + "%" + traceElements.getLineNumber());
             return;
         }
 
@@ -467,25 +589,27 @@ public class ContainerShop implements Shop {
         this.displayItem.removeDupe();
     }
 
+    @SuppressWarnings("removal")
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     @Override
     public void clearStaffs() {
+        Util.ensureThread(false);
+        this.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(this.playerGroup::remove);
         setDirty();
-        this.moderator.clearStaffs();
-        Util.mainThreadRun(() -> plugin.getServer().getPluginManager()
-                .callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
         update();
     }
 
+    @SuppressWarnings("removal")
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     @Override
     public boolean delStaff(@NotNull UUID player) {
         Util.ensureThread(false);
-        setDirty();
-        boolean result = this.moderator.delStaff(player);
-        update();
-        if (result) {
-            Util.mainThreadRun(() -> plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator)));
+        if (getPlayerGroup(player).equals(BuiltInShopPermissionGroup.STAFF.getNamespacedNode())) {
+            setPlayerGroup(player, BuiltInShopPermissionGroup.EVERYONE);
+            setDirty();
+            update();
         }
-        return result;
+        return true;
     }
 
     /**
@@ -510,7 +634,7 @@ public class ContainerShop implements Shop {
         setDirty();
         ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, memoryOnly);
         if (Util.fireCancellableEvent(shopDeleteEvent)) {
-            Util.debugLog("Shop deletion was canceled because a plugin canceled it.");
+            Log.debug("Shop deletion was canceled because a plugin canceled it.");
             return;
         }
         isDeleted = true;
@@ -598,7 +722,7 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         ShopClickEvent event = new ShopClickEvent(this);
         if (Util.fireCancellableEvent(event)) {
-            Util.debugLog("Ignore shop click, because some plugin cancel it.");
+            Log.debug("Ignore shop click, because some plugin cancel it.");
             return;
         }
         refresh();
@@ -619,7 +743,7 @@ public class ContainerShop implements Shop {
     public void onUnload() {
         Util.ensureThread(false);
         if (!this.isLoaded) {
-            Util.debugLog("Dupe unload request, canceled.");
+            Log.debug("Dupe unload request, canceled.");
             return;
         }
         if (inventoryPreview != null) {
@@ -631,8 +755,7 @@ public class ContainerShop implements Shop {
         update();
         this.isLoaded = false;
         plugin.getShopManager().getLoadedShops().remove(this);
-        ShopUnloadEvent shopUnloadEvent = new ShopUnloadEvent(this);
-        plugin.getServer().getPluginManager().callEvent(shopUnloadEvent);
+        new ShopUnloadEvent(this).callEvent();
     }
 
     @Override
@@ -738,7 +861,7 @@ public class ContainerShop implements Shop {
                     .build();
             if (!transaction.failSafeCommit()) {
                 plugin.getSentryErrorReporter().ignoreThrow();
-                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:"+transaction.getLastError());
+                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         } else {
             InventoryWrapper chestInv = this.getInventory();
@@ -755,7 +878,7 @@ public class ContainerShop implements Shop {
                     .build();
             if (!transactionTake.failSafeCommit()) {
                 plugin.getSentryErrorReporter().ignoreThrow();
-                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:"+transactionTake.getLastError());
+                throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transactionTake.getLastError());
             }
             this.setSignText();
             if (attachedShop != null) {
@@ -809,7 +932,8 @@ public class ContainerShop implements Shop {
         }
         Component line2 = switch (shopRemaining) {
             //Unlimited
-            case -1 -> plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale)).forLocale(locale);
+            case -1 ->
+                    plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale)).forLocale(locale);
             //No remaining
             case 0 -> plugin.text().of(noRemainingStringKey).forLocale(locale);
             //Has remaining
@@ -867,7 +991,7 @@ public class ContainerShop implements Shop {
                 sign.setGlowingText(isGlowing);
             }
             sign.update(true);
-            plugin.getServer().getPluginManager().callEvent(new ShopSignUpdateEvent(this, sign));
+            new ShopSignUpdateEvent(this, sign).callEvent();
         }
     }
 
@@ -895,7 +1019,7 @@ public class ContainerShop implements Shop {
         }
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
         if (Util.fireCancellableEvent(shopUpdateEvent)) {
-            Util.debugLog("The Shop update action was canceled by a plugin.");
+            Log.debug("The Shop update action was canceled by a plugin.");
             return;
         }
         updating = true;
@@ -906,9 +1030,9 @@ public class ContainerShop implements Shop {
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
             plugin.getDatabaseHelper()
-                    .updateShop(SimpleShopModerator.serialize(this.moderator), this.getItem(),
+                    .updateShop(this.owner.toString(), this.getItem(),
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
-                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), saveToSymbolLink(), this.inventoryWrapperProvider, this.shopName);
+                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), saveToSymbolLink(), this.inventoryWrapperProvider, this.shopName, this.playerGroup);
             this.dirty = false;
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING,
@@ -935,7 +1059,7 @@ public class ContainerShop implements Shop {
         this.symbolLink = manager.mklink(wrapper);
         setDirty();
         update();
-        Util.debugLog("Inventory changed: " + this.symbolLink + ", wrapper provider:" + inventoryWrapperProvider);
+        Log.debug("Inventory changed: " + this.symbolLink + ", wrapper provider:" + inventoryWrapperProvider);
         new ShopInventoryChangedEvent(wrapper, manager).callEvent();
     }
 
@@ -967,7 +1091,7 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         ShopItemChangeEvent event = new ShopItemChangeEvent(this, this.item, item);
         if (Util.fireCancellableEvent(event)) {
-            Util.debugLog("A plugin cancelled the item change event.");
+            Log.debug("A plugin cancelled the item change event.");
             return;
         }
         this.item = item;
@@ -1030,7 +1154,7 @@ public class ContainerShop implements Shop {
     public void onLoad() {
         Util.ensureThread(false);
         if (this.isLoaded) {
-            Util.debugLog("Dupe load request, canceled.");
+            Log.debug("Dupe load request, canceled.");
             return;
         }
         Map<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(getLocation().getChunk());
@@ -1040,7 +1164,7 @@ public class ContainerShop implements Shop {
         try {
             inventoryWrapper = locateInventory(symbolLink);
         } catch (Exception e) {
-            Util.debugLog("Failed to load shop: " + symbolLink + ": " + e.getClass().getName() + ": " + e.getMessage());
+            Log.debug("Failed to load shop: " + symbolLink + ": " + e.getClass().getName() + ": " + e.getMessage());
             MsgUtil.debugStackTrace(e.getStackTrace());
             this.delete(!plugin.getConfig().getBoolean("debug.delete-corrupt-shop"));
             return;
@@ -1063,18 +1187,21 @@ public class ContainerShop implements Shop {
         return this.location;
     }
 
+    @SuppressWarnings("removal")
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     @Override
     public @NotNull ShopModerator getModerator() {
-        return this.moderator;
+        return new SimpleShopModerator(this.getOwner(), ImmutableList.copyOf(playersCanAuthorize(BuiltInShopPermissionGroup.STAFF)));
     }
 
+    @SuppressWarnings("removal")
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     @Override
     public void setModerator(@NotNull ShopModerator shopModerator) {
         Util.ensureThread(false);
+
         setDirty();
-        this.moderator = shopModerator;
         update();
-        plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
     }
 
     /**
@@ -1082,7 +1209,7 @@ public class ContainerShop implements Shop {
      */
     @Override
     public @NotNull UUID getOwner() {
-        return this.moderator.getOwner();
+        return this.owner;
     }
 
     /**
@@ -1093,10 +1220,9 @@ public class ContainerShop implements Shop {
     @Override
     public void setOwner(@NotNull UUID owner) {
         Util.ensureThread(false);
-        this.moderator.setOwner(owner);
+        this.owner = owner;
         setSignText();
         update();
-        plugin.getServer().getPluginManager().callEvent(new ShopModeratorChangedEvent(this, this.moderator));
     }
 
     /**
@@ -1117,7 +1243,7 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         ShopPriceChangeEvent event = new ShopPriceChangeEvent(this, this.price, price);
         if (Util.fireCancellableEvent(event)) {
-            Util.debugLog("A plugin cancelled the price change event.");
+            Log.debug("A plugin cancelled the price change event.");
             return;
         }
         setDirty();
@@ -1138,12 +1264,12 @@ public class ContainerShop implements Shop {
             return -1;
         }
         if (this.getInventory() == null) {
-            Util.debugLog("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
+            Log.debug("Failed to calc RemainingSpace for shop " + this + ": Inventory null.");
             return 0;
         }
         int space = Util.countSpace(this.getInventory(), this);
         new ShopInventoryCalculateEvent(this, space, -1).callEvent();
-        Util.debugLog("Space count is: " + space);
+        Log.debug("Space count is: " + space);
         return space;
     }
 
@@ -1159,7 +1285,7 @@ public class ContainerShop implements Shop {
             return -1;
         }
         if (this.getInventory() == null) {
-            Util.debugLog("Failed to calc RemainingStock for shop " + this + ": Inventory null.");
+            Log.debug("Failed to calc RemainingStock for shop " + this + ": Inventory null.");
             return 0;
         }
         int stock = Util.countItems(this.getInventory(), this);
@@ -1185,7 +1311,7 @@ public class ContainerShop implements Shop {
         }
         setDirty();
         if (Util.fireCancellableEvent(new ShopTypeChangeEvent(this, this.shopType, newShopType))) {
-            Util.debugLog(
+            Log.debug(
                     "Some addon cancelled shop type changes, target shop: " + this);
             return;
         }
@@ -1243,8 +1369,10 @@ public class ContainerShop implements Shop {
      */
     @NotNull
     @Override
+    @SuppressWarnings("removal")
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     public List<UUID> getStaffs() {
-        return new ArrayList<>(this.moderator.getStaffs()); //Clone only, so make sure external calling will use addStaff
+        return ImmutableList.copyOf(playersCanAuthorize(BuiltInShopPermissionGroup.STAFF));
     }
 
     @Override
@@ -1358,11 +1486,11 @@ public class ContainerShop implements Shop {
     public @Nullable InventoryWrapper getInventory() {
         if (inventoryWrapper == null) {
             Util.ensureThread(false);
-            Util.debugLog("SymbolLink Applying: " + symbolLink);
+            Log.debug("SymbolLink Applying: " + symbolLink);
             inventoryWrapper = locateInventory(symbolLink);
         }
         if (inventoryWrapper == null) {
-            Util.debugLog("Cannot locate the Inventory with symbol link: " + symbolLink + ", provider: " + inventoryWrapperProvider);
+            Log.debug("Cannot locate the Inventory with symbol link: " + symbolLink + ", provider: " + inventoryWrapperProvider);
             return null;
         }
         if (inventoryWrapper.isValid()) {
@@ -1377,7 +1505,7 @@ public class ContainerShop implements Shop {
             this.delete(true);
         }
         plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
-        Util.debugLog("Inventory doesn't exist anymore: " + this + " shop was deleted.");
+        Log.debug("Inventory doesn't exist anymore: " + this + " shop was deleted.");
         return null;
     }
 
@@ -1448,16 +1576,16 @@ public class ContainerShop implements Shop {
 
         switch (((Chest) getLocation().getBlock().getBlockData()).getFacing()) {
             case WEST ->
-                    // left block has a smaller z value
+                // left block has a smaller z value
                     isLeftShop = getLocation().getZ() < attachedShop.getLocation().getZ();
             case EAST ->
-                    // left block has a greater z value
+                // left block has a greater z value
                     isLeftShop = getLocation().getZ() > attachedShop.getLocation().getZ();
             case NORTH ->
-                    // left block has greater x value
+                // left block has greater x value
                     isLeftShop = getLocation().getX() > attachedShop.getLocation().getX();
             case SOUTH ->
-                    // left block has a smaller x value
+                // left block has a smaller x value
                     isLeftShop = getLocation().getX() < attachedShop.getLocation().getX();
             default -> isLeftShop = false;
         }
@@ -1515,7 +1643,7 @@ public class ContainerShop implements Shop {
             return;
         }
         if (!Util.canBeShop(this.getLocation().getBlock())) {
-            Util.debugLog("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock()
+            Log.debug("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock()
                     + " container was missing, deleting...");
             plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Container invalid", saveToInfoStorage()));
             this.onUnload();
@@ -1613,7 +1741,7 @@ public class ContainerShop implements Shop {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(getLocation().getWorld().getName(), new BlockPos(getLocation()), SimpleShopModerator.serialize(getModerator()), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount(), inventoryWrapperProvider, saveToSymbolLink());
+        return new ShopInfoStorage(getLocation().getWorld().getName(), new BlockPos(getLocation()), getOwner(), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount(), inventoryWrapperProvider, saveToSymbolLink(), getPermissionAudiences());
     }
 
     @Override

@@ -19,9 +19,9 @@
 
 package com.ghostchu.quickshop.util.logging.container;
 
+import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
 
 @AllArgsConstructor
 @Data

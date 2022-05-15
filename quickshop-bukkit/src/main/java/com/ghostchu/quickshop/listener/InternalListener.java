@@ -19,6 +19,11 @@
 
 package com.ghostchu.quickshop.listener;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logging.container.*;
+import com.ghostchu.quickshop.util.serialize.BlockPos;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -28,11 +33,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.event.*;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.logging.container.*;
-import com.ghostchu.quickshop.util.serialize.BlockPos;
 
 import java.util.Objects;
 
@@ -64,7 +64,7 @@ public class InternalListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopCreate(ShopCreateEvent event) {
         if (isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
-            event.setCancelled(true,plugin.text().of(event.getCreator(), "forbidden-vanilla-behavior").forLocale());
+            event.setCancelled(true, plugin.text().of(event.getCreator(), "forbidden-vanilla-behavior").forLocale());
             return;
         }
         if (loggingAction) {
@@ -77,15 +77,8 @@ public class InternalListener extends AbstractQSListener {
         if (loggingAction) {
             plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Shop removed", event.getShop().saveToInfoStorage()));
         }
-        if(plugin.getShopCache() != null){
+        if (plugin.getShopCache() != null) {
             plugin.getShopCache().invalidate(event.getShop().getLocation());
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void shopModeratorChanges(ShopModeratorChangedEvent event) {
-        if (loggingAction) {
-            plugin.logEvent(new ShopModeratorChangedLog(event.getShop().saveToInfoStorage(), event.getModerator()));
         }
     }
 
@@ -99,7 +92,7 @@ public class InternalListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopPrePurchase(ShopPurchaseEvent event) {
         if (isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
-            event.setCancelled(true,plugin.text().of(event.getPurchaser(), "forbidden-vanilla-behavior").forLocale());
+            event.setCancelled(true, plugin.text().of(event.getPurchaser(), "forbidden-vanilla-behavior").forLocale());
             return;
         }
         if (loggingBalance) {

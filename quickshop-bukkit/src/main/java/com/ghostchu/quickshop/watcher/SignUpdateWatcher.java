@@ -19,9 +19,9 @@
 
 package com.ghostchu.quickshop.watcher;
 
+import com.ghostchu.quickshop.api.shop.Shop;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.api.shop.Shop;
 
 import java.util.LinkedList;
 import java.util.Queue;

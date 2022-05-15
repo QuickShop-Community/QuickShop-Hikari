@@ -19,18 +19,19 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 
 @AllArgsConstructor
 public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
@@ -63,31 +64,31 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                     continue; // WTF
                 }
                 if (shop.getItem().getType() == Material.AIR) {
-                    MsgUtil.sendDirectMessage(sender,Component.text("Deleting shop " + shop + " because of corrupted item data.").color(NamedTextColor.YELLOW));
+                    MsgUtil.sendDirectMessage(sender, Component.text("Deleting shop " + shop + " because of corrupted item data.").color(NamedTextColor.YELLOW));
                     plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender), "/qs cleanghost command", shop.saveToInfoStorage()));
                     Util.mainThreadRun(shop::delete);
                     continue;
                 }
                 if (!shop.getLocation().isWorldLoaded()) {
-                    MsgUtil.sendDirectMessage(sender,Component.text("Deleting shop " + shop + " because it's world not loaded.").color(NamedTextColor.YELLOW));
+                    MsgUtil.sendDirectMessage(sender, Component.text("Deleting shop " + shop + " because it's world not loaded.").color(NamedTextColor.YELLOW));
                     Util.mainThreadRun(shop::delete);
                     plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender), "/qs cleanghost command", shop.saveToInfoStorage()));
                     continue;
                 }
                 //noinspection ConstantConditions
                 if (shop.getOwner() == null) {
-                    MsgUtil.sendDirectMessage(sender,Component.text("Deleting shop " + shop + " because of corrupted owner data.").color(NamedTextColor.YELLOW));
+                    MsgUtil.sendDirectMessage(sender, Component.text("Deleting shop " + shop + " because of corrupted owner data.").color(NamedTextColor.YELLOW));
                     Util.mainThreadRun(shop::delete);
                     plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender), "/qs cleanghost command", shop.saveToInfoStorage()));
                     continue;
                 }
                 // Shop exist check
                 Util.mainThreadRun(() -> {
-                    Util.debugLog(
+                    Log.debug(
                             "Posted to main server thread to continue accessing Bukkit API for shop "
                                     + shop);
                     if (!Util.canBeShop(shop.getLocation().getBlock())) {
-                        MsgUtil.sendDirectMessage(sender,Component.text("Deleting shop "
+                        MsgUtil.sendDirectMessage(sender, Component.text("Deleting shop "
                                 + shop
                                 + " because it is no longer on the target location or it is not allowed to create shops in this location.").color(NamedTextColor.YELLOW));
                         shop.delete();
@@ -99,7 +100,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                     Thread.interrupted();
                 }
             }
-            MsgUtil.sendDirectMessage(sender,Component.text("All shops have been checked!").color(NamedTextColor.GREEN));
+            MsgUtil.sendDirectMessage(sender, Component.text("All shops have been checked!").color(NamedTextColor.GREEN));
         });
     }
 

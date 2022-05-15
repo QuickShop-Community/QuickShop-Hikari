@@ -38,6 +38,7 @@ import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.ghostchu.quickshop.util.GameVersion;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -191,10 +192,8 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
         if (shop.isLeftShop() || isDisplay || shop.isDeleted() || !shop.isLoaded()) {
             return;
         }
-        ShopDisplayItemSpawnEvent shopDisplayItemSpawnEvent = new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM);
-        PLUGIN.getServer().getPluginManager().callEvent(shopDisplayItemSpawnEvent);
-        if (shopDisplayItemSpawnEvent.isCancelled()) {
-            Util.debugLog(
+        if (new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM).callCancellableEvent()) {
+            Log.debug(
                     "Canceled the displayItem spawning because a plugin setCancelled the spawning event, usually this is a QuickShop Add on");
             return;
         }
@@ -269,7 +268,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
             if (LOADED.get()) {
                 return;
             }
-            Util.debugLog("Loading VirtualDisplayItem chunks mapping manager...");
+            Log.debug("Loading VirtualDisplayItem chunks mapping manager...");
             if (packetAdapter == null) {
                 packetAdapter = new PacketAdapter(PLUGIN, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
                     @Override
@@ -306,16 +305,16 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                         });
                     }
                 };
-                Util.debugLog("Registering the packet listener...");
+                Log.debug("Registering the packet listener...");
                 PROTOCOL_MANAGER.addPacketListener(packetAdapter);
                 LOADED.set(true);
             }
         }
 
         public static void unload() {
-            Util.debugLog("Unloading VirtualDisplayItem chunks mapping manager...");
+            Log.debug("Unloading VirtualDisplayItem chunks mapping manager...");
             if (LOADED.get()) {
-                Util.debugLog("Unregistering the packet listener...");
+                Log.debug("Unregistering the packet listener...");
                 PROTOCOL_MANAGER.removePacketListener(packetAdapter);
                 LOADED.set(false);
             }

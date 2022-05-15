@@ -27,6 +27,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
+/**
+ * Operation about deposit money.
+ */
 public class DepositEconomyOperation implements Operation {
     private final UUID account;
     private final double amount;
@@ -45,17 +48,17 @@ public class DepositEconomyOperation implements Operation {
     }
 
     @Override
-    public boolean commit() throws Exception {
+    public boolean commit() {
         boolean result = economyCore.deposit(account, amount, world, currency);
-        if(result)
+        if (result)
             committed = true;
         return result;
     }
 
     @Override
-    public boolean rollback() throws Exception {
+    public boolean rollback() {
         boolean result = economyCore.withdraw(account, amount, world, currency);
-        if(result)
+        if (result)
             rollback = true;
         return result;
     }

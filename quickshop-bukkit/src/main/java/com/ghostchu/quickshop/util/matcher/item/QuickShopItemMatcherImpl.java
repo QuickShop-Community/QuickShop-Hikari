@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.util.matcher.item;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -128,7 +129,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         }
 
         if (requireStack == null || givenStack == null) {
-            Util.debugLog(
+            Log.debug(
                     "Match failed: A stack is null: "
                             + "requireStack["
                             + requireStack
@@ -140,7 +141,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
 
         String shopIdOrigin = plugin.getPlatform().getItemShopId(requireStack);
         if (shopIdOrigin != null) {
-            Util.debugLog("ShopId compare -> Origin: " + shopIdOrigin + "  Given: " + plugin.getPlatform().getItemShopId(givenStack));
+            Log.debug("ShopId compare -> Origin: " + shopIdOrigin + "  Given: " + plugin.getPlatform().getItemShopId(givenStack));
             String shopIdTester = plugin.getPlatform().getItemShopId(givenStack);
             if (shopIdOrigin.equals(shopIdTester)) {
                 return true;
@@ -163,7 +164,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         }
 
         if (requireStack.isSimilar(givenStack)) {
-            Util.debugLog("Bukkit matches passed!");
+            Log.debug("Bukkit matches passed!");
             return true;
         }
         /* If they are the same type, they should also have item meta
@@ -352,7 +353,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                     if (bannerMeta1.numberOfPatterns() != bannerMeta2.numberOfPatterns()) {
                         return false;
                     }
-                    return bannerMeta1.getPatterns().containsAll(bannerMeta2.getPatterns());
+                    return new HashSet<>(bannerMeta1.getPatterns()).containsAll(bannerMeta2.getPatterns());
                 }
                 return true;
             }));
@@ -510,10 +511,10 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
             ItemMeta meta1 = requireStack.getItemMeta();
             ItemMeta meta2 = givenStack.getItemMeta();
             //If givenStack don't have meta, try to generate one
-            if(meta1 != null && meta2 != null) {
+            if (meta1 != null && meta2 != null) {
                 for (Matcher matcher : matcherList) {
                     boolean result = matcher.match(meta1, meta2);
-                    Util.debugLog("Matcher: " + matcher.getClass().getName() + " Result: " + result);
+                    Log.debug("Matcher: " + matcher.getClass().getName() + " Result: " + result);
                     if (!result) {
                         return false;
                     }

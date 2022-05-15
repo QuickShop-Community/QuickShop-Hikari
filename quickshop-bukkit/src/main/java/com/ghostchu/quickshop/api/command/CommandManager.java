@@ -34,7 +34,7 @@ public interface CommandManager {
     /**
      * This is a interface to allow addons to register the subcommand into quickshop command manager.
      *
-     * @param container The command container to register
+     * @param container The {@link CommandContainer} to register
      * @throws IllegalStateException Will throw the error if register conflict.
      */
     void registerCmd(@NotNull CommandContainer container);
@@ -42,14 +42,14 @@ public interface CommandManager {
     /**
      * This is a interface to allow addons to unregister the registered/butil-in subcommand from command manager.
      *
-     * @param container The command container to unregister
+     * @param container The {@link CommandContainer} to unregister
      */
     void unregisterCmd(@NotNull CommandContainer container);
 
     /**
      * Gets a list contains all registered commands
      *
-     * @return All registered commands.
+     * @return All registered {@link CommandContainer}s.
      */
     @NotNull List<CommandContainer> getRegisteredCommands();
 

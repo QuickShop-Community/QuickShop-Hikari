@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.compatibility.openinv;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
@@ -51,7 +52,7 @@ public class OpenInvCommand implements CommandHandler<Player> {
             plugin.getApi().getTextManager().of(sender, "not-looking-at-shop").send();
             return;
         }
-        if (!shop.getOwner().equals(sender.getUniqueId()) && !sender.hasPermission("quickshop.admin")) {
+        if (!shop.getOwner().equals(sender.getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.admin")) {
             plugin.getApi().getTextManager().of(sender, "no-permission").send();
             return;
         }

@@ -21,21 +21,21 @@ package com.ghostchu.quickshop.util.mojangapi;
 
 public interface MojangApiMirror {
     /**
-     * https://launchermeta.mojang.com
+     * <a href="https://launchermeta.mojang.com">https://launchermeta.mojang.com</a>
      *
      * @return The url root
      */
     String getLauncherMetaRoot();
 
     /**
-     * https://resources.download.minecraft.net
+     * <a href="https://resources.download.minecraft.net">https://resources.download.minecraft.net</a>
      *
      * @return The url root
      */
     String getResourcesDownloadRoot();
 
     /**
-     * https://libraries.minecraft.net
+     * <a href="https://libraries.minecraft.net">https://libraries.minecraft.net</a>
      *
      * @return The url root
      */

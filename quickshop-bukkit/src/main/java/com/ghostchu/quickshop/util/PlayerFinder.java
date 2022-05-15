@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.util;
 
+import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -46,21 +47,26 @@ public class PlayerFinder {
     private final ProfileService resolver;
     private final ProfileCache cache;
 
+    private boolean forceOnlineMode = false;
+
     public PlayerFinder() {
         ProfileCache cache = new HashMapCache(); // Memory cache
         try {
             cache = new SQLiteCache(new File(Util.getCacheFolder(), "player_mapping.db"));
         } catch (Exception e) {
-            Util.debugLog("Failed to initialize player mapping cache database, use HashMapCache instead.");
+            Log.debug("Failed to initialize player mapping cache database, use HashMapCache instead.");
         }
         List<ProfileService> services = new ArrayList<>();
-        if(PaperLib.isPaper() && !System.getProperties().containsKey("com.ghostchu.quickshop.util.PlayerFinder.forceSpigot")){
+        if (PaperLib.isPaper() && !Util.parsePackageProperly("forceSpigot").asBoolean()) {
             services.add(PaperPlayerService.getInstance());
-        }else {
-            Util.debugLog("Fallback to use general CombinedProfileService for player lookup.");
-            services.add(new CacheForwardingService(new ParallelProfileService(HttpRepositoryService.forMinecraft(), 2), cache));
+        } else {
+            Log.debug("Fallback to use general CombinedProfileService for player lookup.");
+            services.add(new CacheForwardingService(HttpRepositoryService.forMinecraft(), cache));
         }
         this.resolver = new CombinedProfileService(services);
+        if (Util.parsePackageProperly("forceSpigot").asBoolean()) {
+            forceOnlineMode = true;
+        }
         this.cache = cache;
     }
 
@@ -74,7 +80,7 @@ public class PlayerFinder {
 
     @Nullable
     public Profile find(@NotNull UUID uuid) {
-        if (Bukkit.getServer().getOnlineMode()) {
+        if (Bukkit.getServer().getOnlineMode() || forceOnlineMode) {
             return findOnline(uuid);
         }
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
@@ -90,7 +96,7 @@ public class PlayerFinder {
         if (Util.isUUID(name)) {
             return find(UUID.fromString(name));
         }
-        if (Bukkit.getServer().getOnlineMode()) {
+        if (Bukkit.getServer().getOnlineMode() || forceOnlineMode) {
             return findOnline(name);
         }
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
@@ -104,7 +110,7 @@ public class PlayerFinder {
         try {
             return this.resolver.findByUuid(uuid);
         } catch (IOException | InterruptedException e) {
-            Util.debugLog("Failed to find player profile: " + e.getMessage());
+            Log.debug("Failed to find player profile: " + e.getMessage());
             return null;
         }
     }
@@ -114,7 +120,7 @@ public class PlayerFinder {
         try {
             return this.resolver.findByName(name);
         } catch (IOException | InterruptedException e) {
-            Util.debugLog("Failed to find player profile: " + e.getMessage());
+            Log.debug("Failed to find player profile: " + e.getMessage());
             return null;
         }
     }

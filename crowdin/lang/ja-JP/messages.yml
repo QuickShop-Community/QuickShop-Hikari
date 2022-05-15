@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>1商品の内容量: <aqua>{0} <yellow>[<light_purple><bold>変更<yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   price-hover: <yellow>クリックしてアイテムの新しい価格を設定します。
   remove: <red><bold>[ショップ削除]
   mode-buying-hover: <yellow>クリックしてショップを販売モードに変更します。
-  empty: '<green>空っぽ: 全てのアイテムを削除 <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>クリックして1商品の内容量を設定します。通常動作の場合は1に設定します。
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
-  alwayscounting: '<green>常にカウント: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>店主: <aqua>{0} <yellow>[<light_purple><bold>変更<yellow>]'
-  freeze: '<yellow>フリーズモード: <aqua>{0} <yellow>[<light_purple><bold>切り替え<yellow>]'
-  price: '<green>価格: <aqua>{0} <yellow>[<light_purple><bold>変更<yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>このショップが使用している通貨を設定または削除する場合はクリックしてください
-  lock: '<yellow>ショップロック: <aqua>{0} <yellow>[<light_purple><bold>切り替え<yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: '<green>ショップモード: <aqua>販売 <yellow>[<light_purple><bold>変更<yellow>]'
-  currency: '<green>通貨: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>クリックで店主を変更します
-  mode-buying: '<green>ショップモード: <aqua>買取 <yellow>[<light_purple><bold>変更<yellow>]'
-  item: '<green>ショップアイテム: {0} <yellow>[<light_purple><bold>変更<yellow>]'
-  unlimited: '<green>無制限: {0} <yellow>[<light_purple><bold>変更<yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   unlimited-hover: <yellow>クリックで制限/無制限を切り替えます
   refill-hover: <yellow>クリックでアイテム追加
   remove-hover: <yellow>クリックしてショップを削除します。
   toggledisplay-hover: <yellow>ショップのディスプレイアイテムの状態を切り替えます
-  refill: '<green>補充: アイテムを補充[<light_purple><bold>OK<yellow>]'
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>ショップのフリーズ状態を切り替えます。
   lock-hover: <yellow>ショップのロック保護を有効/無効にします。
   item-hover: <yellow>ショップアイテムを変更するにはクリックしてください
   infomation: '<green>ショップコントロールパネル:'
   mode-selling-hover: <yellow>クリックしてショップを買取モードに変更します。
   empty-hover: <yellow>クリックしてショップの在庫を削除します。
-  toggledisplay: '<yellow>ディスプレイアイテム: <aqua>{0} <yellow>[<light_purple><bold>切り替え<yellow>]'
+  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
 timeunit:
   behind: behind
   week: <red>{0} week
@@ -356,6 +356,7 @@ timeunit:
   scheduled-in: scheduled in {0}
   second: <red>{0} second
   std-past-format: '{5}{4}{3}{2}{1}{0}ago'
+  std-time-format: "HH:mm:ss"
   seconds: <red>{0} seconds
   hour: <red>{0} hour
   scheduled-at: scheduled at {0}
@@ -376,7 +377,7 @@ timeunit:
   future: in {0}
   days: <red>{0} days
 command:
-  reloading: '<green>設定をリロードしました。<yellow>一部の変更に影響を与えるために再起動が必要な場合があります。 <newline><gray>(4.0.9.10以降、リロードの動作が変更され、サーバーがクラッシュしないように設定のみをリロードし、プラグイン全体をリロードしないようになりました。)'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
     buy: <yellow>ショップを<light_purple>買取<yellow>モードに変更します
     about: <yellow>QuickShopの情報を表示します
@@ -417,6 +418,7 @@ command:
     taxaccount: <yellow>ショップで使用する税のアカウントを設定する
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>ショップのアイテムの状態を切り替える
+    permission: <yellow>Shop permission management
   bulk-size-not-set: '<red>使用法: /qs size <amount>'
   no-type-given: '<red>使用法: /qs find <アイテム名>'
   feature-not-enabled: この機能は設定ファイルで有効になっていません。
@@ -465,3 +467,48 @@ client-language-unsupported: <yellow>QuickShopはクライアント言語をサ�
 language-version: '63'
 not-managed-shop: あなたはショップの店主でもモデレーターでもありません。
 shop-cannot-trade-when-freezing: <red>凍結されているため、このショップと取引できません。
+invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
+permission:
+  header: "<green>Shop Permission Details"
+  header-player: "<green>Shop Permission Details for {0}"
+  header-group: "<green>Shop Permission Details for group {0}"
+  table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
+  item:
+    purchase: "<yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)"
+    show-information: "<yellow>Permission to allow users who have this to see the shop information. (open shop info panel)"
+    preview-shop: "<yellow>Permission to allow users who have this to preview the shop. (preview item)"
+    search: "<yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)"
+    delete: "<yellow>Permission to allow users who have this to delete the shop."
+    receive-alert: "<yellow>Permission to allow users who have this to receive alert message (e.g out-of-stock or new trade)."
+    access-inventory: "<yellow>Permission to allow users who have this to access the shop inventory."
+    ownership-transfer: "<yellow>Permission to allow users who have this to transfer the shop ownership."
+    management-permission: "<yellow>Permission to allow users who have this to manage the groups permissions and edit user's group."
+    toggle-display: "<yellow>Permission to allow users who have this to toggle the shop display item."
+    set-shoptype: "<yellow>Permission to allow users who have this to set the shop type (switch buying or selling)."
+    set-price: "<yellow>Permission to allow users who have this to set the shop price."
+    set-item: "<yellow>Permission to allow users who have this to set the shop item."
+    set-stack-amount: "<yellow>Permission to allow users who have this to set the shop stack amount."
+    set-currency: "<yellow>Permission to allow users who have this to set the shop currency."
+    set-name: "<yellow>Permission to allow users who have this to set the shop name."
+  group:
+    everyone: "<yellow>Default group for all users excepted shop owner."
+    staff: "<yellow>System group for shop staffs."
+    administrator: "<red>System group for administrators, the users in this group will have permissions almost same with shop owner."
+invalid-group: "<red>Invalid group name."
+invalid-permission: "<red>Invalid permission."
+invalid-operation: "<red>Invalid operation, only {0} are allowed."
+player-no-group: "<yellow>Player {0} not in any group in this shop."
+player-in-group: "<green>Player {0} is in group <aqua>{1}</aqua> in this shop."
+permission-required: "<red>You don't have permission {0} in this shop to do this."
+no-permission-detailed: "<red>You don't have permission <yellow>{0}</yellow> to do this."
+paste-uploading: "<aqua>Please wait... Uploading the paste to pastebin......"
+paste-created: "<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don't trust."
+paste-created-local: "<green>Paste created and saved to your local disk at: {0}<newline><red>Warning: <gray>Never send paste to who you don't trust."
+paste-created-local-failed: "<red>Failed to save paste to your local disk, please check your disk."
+paste-451: "<gray><b>TIPS: </b> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file additional parameter to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>"
+paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin provider..."
+paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
+command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
+successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
+successfully-unset-player-group: "<green>Successfully remove player group in this shop."
+successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."

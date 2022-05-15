@@ -19,14 +19,14 @@
 
 package com.ghostchu.quickshop.util.economyformatter;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,11 +63,11 @@ public class BuiltInEconomyFormatter implements Reloadable {
 
     public String getInternalFormat(double amount, @Nullable String currency) {
         if (StringUtils.isEmpty(currency)) {
-            Util.debugLog("Format: Currency is null");
+            Log.debug("Format: Currency is null");
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             return currencySymbolOnRight ? formatted + plugin.getConfig().getString("shop.alternate-currency-symbol", "$") : plugin.getConfig().getString("shop.alternate-currency-symbol", "$") + formatted;
         } else {
-            Util.debugLog("Format: Currency is: [" + currency + "]");
+            Log.debug("Format: Currency is: [" + currency + "]");
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             String symbol = CURRENCY_SYMBOL_MAPPING.getOrDefault(currency, currency);
             return currencySymbolOnRight ? formatted + symbol : symbol + formatted;

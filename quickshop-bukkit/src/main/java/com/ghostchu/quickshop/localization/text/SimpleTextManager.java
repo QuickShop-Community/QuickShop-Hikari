@@ -28,6 +28,7 @@ import com.ghostchu.quickshop.localization.text.postprocessing.impl.FillerProces
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.PlaceHolderApiProcessor;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -72,6 +73,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
     private final Cache<String, String> languagesCache =
             CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
     private final MiniMessage miniMessage = MiniMessage.builder().strict(false).build();
+
     public SimpleTextManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
@@ -139,7 +141,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     return true;
                 }
             } catch (PatternSyntaxException exception) {
-                Util.debugLog("Pattern " + languagesRegex + " invalid, skipping...");
+                Log.debug("Pattern " + languagesRegex + " invalid, skipping...");
             }
         }
         return false;
@@ -161,7 +163,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             if (content instanceof ConfigurationSection) {
                 continue;
             }
-            //Util.debugLog("Override key " + key + " with content: " + content);
+            //Log.debug("Override key " + key + " with content: " + content);
             distributionConfiguration.set(key, content);
         }
     }
@@ -222,7 +224,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                         YamlConfiguration configuration = new YamlConfiguration();
                         configuration.loadFromString(new String(zipFile.getInputStream(entry).readAllBytes(), StandardCharsets.UTF_8));
                         availableLang.put(locale.toLowerCase(Locale.ROOT).replace("-", "_"), configuration);
-                        Util.debugLog("Bundled language file: " + locale + " at " + entry.getName() + " loaded.");
+                        Log.debug("Bundled language file: " + locale + " at " + entry.getName() + " loaded.");
                     } catch (IOException | InvalidConfigurationException e) {
                         plugin.getLogger().log(Level.WARNING, "Failed to load bundled translation.", e);
                     }
@@ -246,13 +248,11 @@ public class SimpleTextManager implements TextManager, Reloadable {
         this.reset();
         List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
         //Make sure is a lowercase regex, prevent case-sensitive and underscore issue
-        for (int i = 0; i < enabledLanguagesRegex.size(); i++) {
-            enabledLanguagesRegex.set(i, enabledLanguagesRegex.get(i).toLowerCase(Locale.ROOT).replace("-", "_"));
-        }
+        enabledLanguagesRegex.replaceAll(s -> s.toLowerCase(Locale.ROOT).replace("-", "_"));
         // Load bundled translations
         loadBundled().forEach((locale, configuration) -> {
             if (localeEnabled(locale, enabledLanguagesRegex)) {
-                Util.debugLog("Initializing language with bundled resource: " + locale);
+                Log.debug("Initializing language with bundled resource: " + locale);
                 FileConfiguration override;
                 try {
                     override = getOverrideConfiguration(locale);
@@ -263,9 +263,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 applyOverrideConfiguration(configuration, override);
                 availableLanguages.add(locale);
                 languageFilesManager.deploy(locale, configuration);
-                Util.debugLog("Initialized language with bundled resource: " + locale);
+                Log.debug("Initialized language with bundled resource: " + locale);
             } else {
-                Util.debugLog("Locale " + locale + " is disabled, skipping...");
+                Log.debug("Locale " + locale + " is disabled, skipping...");
             }
         });
 
@@ -274,12 +274,12 @@ public class SimpleTextManager implements TextManager, Reloadable {
         if (distribution != null) {
             /* Workaround for Crowdin bug. */
             if (!distribution.getAvailableFiles().contains(CROWDIN_LANGUAGE_FILE_PATH)) {
-                Util.debugLog("Warning! Illegal file path detected, trying auto fix...");
+                Log.debug("Warning! Illegal file path detected, trying auto fix...");
                 List<String> messagesFiles = distribution.getAvailableFiles().stream().filter(s -> s.endsWith("messages.yml")).toList();
                 if (!messagesFiles.isEmpty()) {
                     CROWDIN_LANGUAGE_FILE_PATH = messagesFiles.get(0);
                 } else {
-                    Util.debugLog("Auto fix failed :(");
+                    Log.debug("Auto fix failed :(");
                 }
             }
             distribution.getAvailableLanguages().parallelStream().forEach(crowdinCode -> {
@@ -288,19 +288,19 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     // Minecraft client use lowercase
                     String minecraftCode = crowdinCode.toLowerCase(Locale.ROOT).replace("-", "_");
                     if (!localeEnabled(minecraftCode, enabledLanguagesRegex)) {
-                        Util.debugLog("Locale: " + minecraftCode + " not enabled in configuration.");
+                        Log.debug("Locale: " + minecraftCode + " not enabled in configuration.");
                         return;
                     }
                     //Add available language (minecraftCode)
                     availableLanguages.add(minecraftCode);
-                    Util.debugLog("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
+                    Log.debug("Loading translation for locale: " + crowdinCode + " (" + minecraftCode + ")");
                     FileConfiguration remoteConfiguration = getDistributionConfiguration(CROWDIN_LANGUAGE_FILE_PATH, crowdinCode);
                     // Loading override text (allow user modification the translation)
                     FileConfiguration override = getOverrideConfiguration(minecraftCode);
                     applyOverrideConfiguration(remoteConfiguration, override);
                     // Deploy distribution to mapper
                     languageFilesManager.deploy(minecraftCode, remoteConfiguration);
-                    Util.debugLog("Locale " + CROWDIN_LANGUAGE_FILE_PATH.replace("%locale%", crowdinCode) + " has been successfully loaded");
+                    Log.debug("Locale " + CROWDIN_LANGUAGE_FILE_PATH.replace("%locale%", crowdinCode) + " has been successfully loaded");
                 } // Key founds in available locales but not in custom mapping on crowdin platform
                 catch (IOException e) {
                     // Network error
@@ -343,7 +343,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     }
                 }
             }
-            Util.debugLog("Registering relative language " + langCode + " to " + result);
+            Log.debug("Registering relative language " + langCode + " to " + result);
             languagesCache.put(langCode, result);
         }
         return result;
@@ -359,14 +359,14 @@ public class SimpleTextManager implements TextManager, Reloadable {
     private FileConfiguration getOverrideConfiguration(@NotNull String locale) throws IOException {
         File localOverrideFile = new File(getOverrideFilesFolder(locale), "messages.yml");
         if (!localOverrideFile.exists()) {
-            Util.debugLog("Creating locale override file: " + localOverrideFile);
+            Log.debug("Creating locale override file: " + localOverrideFile);
             localOverrideFile.getParentFile().mkdirs();
             localOverrideFile.createNewFile();
         }
         FileConfiguration result = YamlConfiguration.loadConfiguration(localOverrideFile);
         //Add a comment for user guide if file is empty
         if (result.getKeys(false).isEmpty()) {
-          //  result.options().setHeader(List.of("Please visit https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-translation-override-system for override language file tutorial."));
+            //  result.options().setHeader(List.of("Please visit https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-translation-override-system for override language file tutorial."));
             result.save(localOverrideFile);
         }
         return result;
@@ -466,7 +466,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 }
                 components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
             } catch (Exception exception) {
-                Util.debugLog("Failed to process the object: " + obj);
+                Log.debug("Failed to process the object: " + obj);
                 if (plugin.getSentryErrorReporter() != null)
                     plugin.getSentryErrorReporter().sendError(exception, "Failed to process the object: " + obj);
                 components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
@@ -578,10 +578,10 @@ public class SimpleTextManager implements TextManager, Reloadable {
         public List<Component> forLocale(@NotNull String locale) {
             FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
             if (index == null) {
-                Util.debugLog("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
+                Log.debug("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
                 String languageCode = MsgUtil.getDefaultGameLanguageCode();
                 if (languageCode.equals(locale)) {
-                    Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
                 } else {
                     return forLocale(languageCode);
@@ -589,10 +589,10 @@ public class SimpleTextManager implements TextManager, Reloadable {
             } else {
                 List<String> str = index.getStringList(path);
                 if (str.isEmpty()) {
-                    Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
                 }
-                List<Component> components = str.stream().map(s-> manager.miniMessage.deserialize(s)).toList();
+                List<Component> components = str.stream().map(manager.miniMessage::deserialize).toList();
                 return postProcess(components);
             }
         }
@@ -613,12 +613,29 @@ public class SimpleTextManager implements TextManager, Reloadable {
         }
 
         /**
+         * Getting this text is exists in the translation file
+         *
+         * @return true if this text is exists in the translation file
+         */
+        @Override
+        public boolean isPresent() {
+            String locale;
+            if (sender instanceof Player) {
+                locale = ((Player) sender).getLocale();
+            } else {
+                locale = MsgUtil.getDefaultGameLanguageCode();
+            }
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
+            return index != null;
+        }
+
+        /**
          * Send text to the player
          */
         @Override
         public void send() {
             if (sender == null) {
-                return;
+                throw new IllegalStateException("Sender is null");
             }
             for (Component s : forLocale()) {
                 MsgUtil.sendDirectMessage(sender, s);
@@ -678,10 +695,10 @@ public class SimpleTextManager implements TextManager, Reloadable {
         public Component forLocale(@NotNull String locale) {
             FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
             if (index == null) {
-                Util.debugLog("Index for "+locale+" is null");
-                Util.debugLog("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
+                Log.debug("Index for " + locale + " is null");
+                Log.debug("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
                 if (MsgUtil.getDefaultGameLanguageCode().equals(locale)) {
-                    Util.debugLog("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     return LegacyComponentSerializer.legacySection().deserialize(path);
                 } else {
                     return forLocale(MsgUtil.getDefaultGameLanguageCode());
@@ -689,8 +706,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
             } else {
                 String str = index.getString(path);
                 if (str == null) {
-                    Util.debugLog("The value about index "+index+" is null");
-                    Util.debugLog("Missing Language Key: " + path + ", report to QuickShop!");
+                    Log.debug("The value about index " + index + " is null");
+                    Log.debug("Missing Language Key: " + path + ", report to QuickShop!");
                     return LegacyComponentSerializer.legacySection().deserialize(path);
                 }
                 Component component = manager.miniMessage.deserialize(str);
@@ -714,12 +731,29 @@ public class SimpleTextManager implements TextManager, Reloadable {
         }
 
         /**
+         * Getting this text is exists in the translation file
+         *
+         * @return true if this text is exists in the translation file
+         */
+        @Override
+        public boolean isPresent() {
+            String locale;
+            if (sender instanceof Player) {
+                locale = ((Player) sender).getLocale();
+            } else {
+                locale = MsgUtil.getDefaultGameLanguageCode();
+            }
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
+            return index != null;
+        }
+
+        /**
          * Send text to the player
          */
         @Override
         public void send() {
             if (sender == null) {
-                return;
+                throw new IllegalStateException("Sender is null");
             }
             Component lang = forLocale();
             MsgUtil.sendDirectMessage(sender, lang);

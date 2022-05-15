@@ -19,6 +19,14 @@
 
 package com.ghostchu.quickshop.api.shop;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
+import com.ghostchu.quickshop.shop.ShopSignStorage;
+import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -30,14 +38,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
-import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
-import com.ghostchu.quickshop.shop.ShopSignStorage;
-import com.ghostchu.quickshop.util.Util;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -48,32 +51,113 @@ public interface Shop {
     NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
 
     /**
+     * Check if player have authorized for specific permission on specific shop
+     *
+     * @param player     player
+     * @param namespace  permission namespace
+     * @param permission permission
+     * @return true if player have authorized
+     */
+    boolean playerAuthorize(@NotNull UUID player, @NotNull Plugin namespace, @NotNull String permission);
+
+    /**
+     * Check if player have authorized for specific permission on specific shop
+     *
+     * @param player     player
+     * @param permission namespaced permission
+     * @return true if player have authorized
+     */
+    boolean playerAuthorize(@NotNull UUID player, @NotNull BuiltInShopPermission permission);
+
+    /**
+     * Gets the player list of who can authorize specific permission on this shop
+     *
+     * @param permission permission
+     * @return Collection of UUID
+     */
+    List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermission permission);
+
+    /**
+     * Gets the player list of who can authorize specific group on this shop
+     *
+     * @param permissionGroup group
+     * @return Collection of UUID
+     */
+    List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermissionGroup permissionGroup);
+
+    /**
+     * Gets the player list of who can authorize specific permission on this shop
+     *
+     * @param permission raw permission
+     * @param plugin     namespace of permission
+     * @return Collection of UUID
+     */
+    List<UUID> playersCanAuthorize(@NotNull Plugin plugin, @NotNull String permission);
+
+    /**
+     * Gets specific player group on specific shop
+     *
+     * @param player player
+     * @return namespaced group
+     */
+    @NotNull
+    String getPlayerGroup(@NotNull UUID player);
+
+    /**
+     * Sets specific player permission on specfic shop
+     *
+     * @param player player
+     * @param group  namespaced group name
+     */
+    void setPlayerGroup(@NotNull UUID player, @Nullable String group);
+
+    /**
+     * Sets specific player permission on specfic shop
+     *
+     * @param player player
+     * @param group  group
+     */
+    void setPlayerGroup(@NotNull UUID player, @Nullable BuiltInShopPermissionGroup group);
+
+    /**
+     * Gets all player and their group on this shop
+     *
+     * @return Map of UUID and group
+     */
+    @NotNull
+    Map<UUID, String> getPermissionAudiences();
+
+    /**
      * Sets shop name
+     *
      * @param shopName shop name, null to remove currently name
      */
     void setShopName(@Nullable String shopName);
 
     /**
      * Gets this shop name that set by player
+     *
      * @return Shop name, or null if not set
      */
     @Nullable
     String getShopName();
+
     /**
      * Add x ItemStack to the shop inventory
      *
      * @param paramItemStack The ItemStack you want add
      * @param paramInt       How many you want add
-     * @exception Exception Possible exception thrown if anything wrong.
      */
-    void add(@NotNull ItemStack paramItemStack, int paramInt) throws Exception;
+    void add(@NotNull ItemStack paramItemStack, int paramInt);
 
     /**
      * Add new staff to the moderators
      *
      * @param player New staff
      * @return Success
+     * @deprecated Use {@link #setPlayerGroup(UUID, String)} to set player to {@link BuiltInShopPermissionGroup#STAFF} instead
      */
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     boolean addStaff(@NotNull UUID player);
 
     /**
@@ -83,7 +167,7 @@ public interface Shop {
      * @param buyerInventory The buyer inventory ( may not a player inventory )
      * @param loc2Drop       The location to drops items if player inventory are full
      * @param paramInt       How many buyed?
-     * @exception Exception Possible exception thrown if anything wrong.
+     * @throws Exception Possible exception thrown if anything wrong.
      */
     void buy(@NotNull UUID buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
 
@@ -94,7 +178,10 @@ public interface Shop {
 
     /**
      * Empty moderators team.
+     *
+     * @deprecated
      */
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     void clearStaffs();
 
     /**
@@ -102,7 +189,9 @@ public interface Shop {
      *
      * @param player Staff
      * @return Success
+     * @deprecated Use {@link #setPlayerGroup(UUID, String)} to set player to {@link BuiltInShopPermissionGroup#EVERYONE} instead
      */
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     boolean delStaff(@NotNull UUID player);
 
     /**
@@ -120,7 +209,7 @@ public interface Shop {
     /**
      * Check shop is or not attacked the target block
      *
-     * @param paramBlock Target block
+     * @param paramBlock Target {@link Block}
      * @return isAttached
      */
     boolean isAttached(@NotNull Block paramBlock);
@@ -170,9 +259,9 @@ public interface Shop {
      *
      * @param paramItemStack Want removed ItemStack
      * @param paramInt       Want remove how many
-     * @exception Exception Possible exception thrown if anything wrong.
+     * @throws Exception Possible exception thrown if anything wrong.
      */
-    void remove(@NotNull ItemStack paramItemStack, int paramInt) throws Exception;
+    void remove(@NotNull ItemStack paramItemStack, int paramInt);
 
     /**
      * Execute sell action for player with x items.
@@ -181,7 +270,7 @@ public interface Shop {
      * @param sellerInventory Seller's inventory ( may not a player inventory )
      * @param loc2Drop        The location to be drop if buyer inventory full ( if player enter a number that < 0, it will turn to buying item)
      * @param paramInt        How many sold?
-     * @exception Exception Possible exception thrown if anything wrong.
+     * @throws Exception Possible exception thrown if anything wrong.
      */
     void sell(@NotNull UUID seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
 
@@ -261,7 +350,9 @@ public interface Shop {
      * Return this shop's moderators
      *
      * @return Shop moderators
+     * @deprecated Replaced by {@link #playerAuthorize(UUID, BuiltInShopPermission)} ()}
      */
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     @NotNull
     ShopModerator getModerator();
 
@@ -269,7 +360,10 @@ public interface Shop {
      * Set new shop's moderators
      *
      * @param shopModerator New moderators team you want set
+     * @deprecated Replaced by {@link #setPlayerGroup(UUID, String)}
      */
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
+    @NotNull
     void setModerator(@NotNull ShopModerator shopModerator);
 
     /**
@@ -326,7 +420,7 @@ public interface Shop {
     /**
      * Set new shop type for this shop
      *
-     * @param paramShopType New shop type
+     * @param paramShopType New {@link ShopType}
      */
     void setShopType(@NotNull ShopType paramShopType);
 
@@ -342,8 +436,10 @@ public interface Shop {
      * Directly get all staffs.
      *
      * @return staffs
+     * @deprecated Replaced by {@link #playersCanAuthorize(BuiltInShopPermissionGroup)} with {@link BuiltInShopPermissionGroup#STAFF}
      */
     @NotNull
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
     List<UUID> getStaffs();
 
     /**
@@ -398,7 +494,7 @@ public interface Shop {
     /**
      * Get the shop display entity
      *
-     * @return The entity for shop display.
+     * @return The entity for shop {@link AbstractDisplayItem}.
      */
     @Nullable
     AbstractDisplayItem getDisplay();
@@ -482,7 +578,7 @@ public interface Shop {
     /**
      * open a preview for shop item
      *
-     * @param player The viewer
+     * @param player The viewer {@link Player}
      */
     void openPreview(@NotNull Player player);
 
@@ -574,6 +670,7 @@ public interface Shop {
 
     /**
      * Gets the shop Inventory
+     *
      * @return Inventory
      */
     @Nullable InventoryWrapper getInventory();
@@ -581,7 +678,7 @@ public interface Shop {
     /**
      * Checks if a Sign is a ShopSign
      *
-     * @param sign Target sign
+     * @param sign Target {@link Sign}
      * @return Is shop info sign
      */
     default boolean isShopSign(@NotNull Sign sign) {
@@ -606,7 +703,7 @@ public interface Shop {
 
         // Check for exists shop sign (modern)
         ShopSignStorage shopSignStorage = sign.getPersistentDataContainer().get(SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
-        if(shopSignStorage == null){
+        if (shopSignStorage == null) {
             // Try to read Reremake sign namespaced key
             shopSignStorage = sign.getPersistentDataContainer().get(LEGACY_SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
         }
@@ -642,6 +739,7 @@ public interface Shop {
 
     /**
      * Gets the InventoryWrapper provider name (the plugin name who register it), usually is QuickShop
+     *
      * @return InventoryWrapper
      */
     @NotNull
@@ -649,6 +747,7 @@ public interface Shop {
 
     /**
      * Gets the symbol link that created by InventoryWrapperManager
+     *
      * @return InventoryWrapper
      */
     @NotNull

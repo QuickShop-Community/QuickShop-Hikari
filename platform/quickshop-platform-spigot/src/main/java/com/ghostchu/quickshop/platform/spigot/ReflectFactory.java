@@ -250,7 +250,8 @@ public class ReflectFactory {
             } else {
                 return (String) getMinecraftKeyNameMethod.invoke(nmsItem);
             }
-        } catch (IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (IllegalAccessException | ClassNotFoundException | NoSuchMethodException |
+                 InvocationTargetException e) {
             e.printStackTrace();
             return null;
         }

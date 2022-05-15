@@ -24,7 +24,9 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.event.ShopNamingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -48,7 +50,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
-        if (!shop.getModerator().isModerator(sender.getUniqueId()) && !sender.hasPermission("quickshop.other.shopnaming")) {
+        if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_NAME) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.shopnaming")) {
             plugin.text().of(sender, "not-managed-shop").send();
         }
 
@@ -72,8 +74,8 @@ public class SubCommand_Name implements CommandHandler<Player> {
 
         double fee = plugin.getConfig().getDouble("shop.name-fee", 0);
         EconomyTransaction transaction = null;
-        if(fee > 0){
-            if(!sender.hasPermission("quickshop.bypass.namefee")){
+        if (fee > 0) {
+            if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.bypass.namefee")) {
                 transaction = EconomyTransaction.builder()
                         .world(shop.getLocation().getWorld())
                         .from(sender.getUniqueId())
@@ -85,20 +87,20 @@ public class SubCommand_Name implements CommandHandler<Player> {
                         .core(plugin.getEconomy())
                         .amount(fee)
                         .build();
-                if(!transaction.checkBalance()){
-                    plugin.text().of(sender, "you-cant-afford-shop-naming", plugin.getShopManager().format(fee,shop.getLocation().getWorld(),plugin.getCurrency())).send();
+                if (!transaction.checkBalance()) {
+                    plugin.text().of(sender, "you-cant-afford-shop-naming", plugin.getShopManager().format(fee, shop.getLocation().getWorld(), plugin.getCurrency())).send();
                     return;
                 }
             }
         }
         ShopNamingEvent namingEvent = new ShopNamingEvent(shop, shopName);
-        if(Util.fireCancellableEvent(namingEvent)){
-            Util.debugLog("Other plugin cancelled shop naming.");
+        if (Util.fireCancellableEvent(namingEvent)) {
+            Log.debug("Other plugin cancelled shop naming.");
             return;
         }
         shopName = namingEvent.getName();
 
-        if(transaction != null && !transaction.failSafeCommit()){
+        if (transaction != null && !transaction.failSafeCommit()) {
             plugin.text().of(sender, "economy-transaction-failed", transaction.getLastError()).send();
             plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
             return;

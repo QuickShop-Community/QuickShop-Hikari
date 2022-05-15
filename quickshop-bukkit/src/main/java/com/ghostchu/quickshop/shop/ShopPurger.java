@@ -23,6 +23,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -69,7 +70,7 @@ public class ShopPurger {
         for (Shop shop : plugin.getShopManager().getAllShops()) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(shop.getOwner());
             if (!player.hasPlayedBefore()) {
-                Util.debugLog("Shop " + shop + " detection skipped: Owner never played before.");
+                Log.debug("Shop " + shop + " detection skipped: Owner never played before.");
                 continue;
             }
             long lastPlayed = player.getLastPlayed();

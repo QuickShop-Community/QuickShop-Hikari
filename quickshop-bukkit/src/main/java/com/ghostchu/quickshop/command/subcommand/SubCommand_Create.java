@@ -24,6 +24,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -76,7 +77,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
         } else {
             Material material = matchMaterial(cmdArg[1]);
             if (material == null) {
-                plugin.text().of(sender, "item-not-exist",cmdArg[1]).send();
+                plugin.text().of(sender, "item-not-exist", cmdArg[1]).send();
                 return;
             }
             if (cmdArg.length > 2 && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stack") && plugin.isAllowStack()) {
@@ -93,7 +94,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
                 item = new ItemStack(material, 1);
             }
         }
-        Util.debugLog("Pending task for material: " + item);
+        Log.debug("Pending task for material: " + item);
 
         String price = cmdArg[0];
 

@@ -19,14 +19,13 @@
 
 package com.ghostchu.quickshop.watcher;
 
-import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.CalendarEvent;
 import com.ghostchu.quickshop.util.Util;
+import lombok.Getter;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.IOException;
@@ -144,6 +143,6 @@ public class CalendarWatcher extends BukkitRunnable {
     @Override
     public void run() {
         CalendarEvent.CalendarTriggerType type = getAndUpdate();
-        Util.mainThreadRun(() -> Bukkit.getPluginManager().callEvent(new CalendarEvent(type)));
+        Util.mainThreadRun(() -> new CalendarEvent(type).callEvent());
     }
 }

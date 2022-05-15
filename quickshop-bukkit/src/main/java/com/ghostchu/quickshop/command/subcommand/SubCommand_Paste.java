@@ -19,18 +19,23 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.paste.Paste;
+import com.ghostchu.quickshop.util.paste.PasteGenerator;
 import lombok.AllArgsConstructor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.paste.Paste;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -59,20 +64,21 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
                 pasteToLocalFile(sender);
                 return;
             }
-            sender.sendMessage("§aPlease wait, QS is uploading the data to pastebin...");
+            plugin.text().of(sender, "paste-uploading").send();
             if (!pasteToPastebin(sender)) {
-                sender.sendMessage("The paste upload has failed! Saving the paste locally...");
+                plugin.text().of(sender, "paste-upload-failed-local").send();
                 pasteToLocalFile(sender);
             }
         });
     }
 
     private boolean pasteToPastebin(@NotNull CommandSender sender) {
-        final Paste paste = new Paste(plugin);
-        final String pasteText = paste.genNewPaste();
-        String pasteResult = paste.paste(pasteText);
-        if (pasteResult != null) {
-            sender.sendMessage(pasteResult);
+        final String string = Paste.paste(new PasteGenerator(sender).render());
+        if (string != null) {
+            plugin.text().of(sender, "paste-created", "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8)).send();
+            if (MsgUtil.getDefaultGameLanguageCode().equalsIgnoreCase("zh_cn") || Locale.getDefault().equals(Locale.CHINA)) {
+                plugin.text().of(sender, "paste-451").send();
+            }
             return true;
         }
         return false;
@@ -81,23 +87,21 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     private boolean pasteToLocalFile(@NotNull CommandSender sender) {
         File file = new File(plugin.getDataFolder(), "paste");
         file.mkdirs();
-        file = new File(file, "paste-" + UUID.randomUUID().toString().replaceAll("-", "") + ".txt");
-        final Paste paste = new Paste(plugin);
-        final String pasteText = paste.genNewPaste();
+        file = new File(file, "paste-" + UUID.randomUUID().toString().replaceAll("-", "") + ".html");
+        final String string = new PasteGenerator(sender).render();
         try {
             boolean createResult = file.createNewFile();
-            Util.debugLog("Create paste file: " + file.getCanonicalPath() + " " + createResult);
+            Log.debug("Create paste file: " + file.getCanonicalPath() + " " + createResult);
             try (FileWriter fwriter = new FileWriter(file)) {
-                fwriter.write(pasteText);
+                fwriter.write(string);
                 fwriter.flush();
             }
-            sender.sendMessage("The paste was saved to " + file.getAbsolutePath());
+            plugin.text().of(sender, "paste-created-local", file.getAbsolutePath()).send();
             return true;
         } catch (IOException e) {
             plugin.getSentryErrorReporter().ignoreThrow();
             plugin.getLogger().log(Level.WARNING, "Failed to save paste locally! The content will be send to the console", e);
-            sender.sendMessage("Paste save failed! Sending paste to the console...");
-            plugin.getLogger().info(pasteText);
+            plugin.text().of("paste-created-local-failed").send();
             return false;
         }
     }

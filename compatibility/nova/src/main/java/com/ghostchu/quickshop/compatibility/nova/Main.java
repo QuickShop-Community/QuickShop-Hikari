@@ -47,27 +47,27 @@ public final class Main extends CompatibilityModule implements Listener, Protect
     @Override
     public boolean canBreak(@NotNull OfflinePlayer offlinePlayer, @Nullable ItemStack itemStack, @NotNull Location location) {
         Shop shop = getApi().getShopManager().getShopIncludeAttached(location);
-        if(shop == null)
+        if (shop == null)
             return true;
         return shop.getOwner().equals(offlinePlayer.getUniqueId());
     }
 
     @Override
     public boolean canHurtEntity(@NotNull OfflinePlayer offlinePlayer, @NotNull Entity entity, @Nullable ItemStack itemStack) {
-        if(itemStack != null)
-            if(AbstractDisplayItem.checkIsGuardItemStack(itemStack))
+        if (itemStack != null)
+            if (AbstractDisplayItem.checkIsGuardItemStack(itemStack))
                 return false;
-        if(entity instanceof Item item)
+        if (entity instanceof Item item)
             return !AbstractDisplayItem.checkIsGuardItemStack(item.getItemStack());
         return true; // We don't care that
     }
 
     @Override
     public boolean canInteractWithEntity(@NotNull OfflinePlayer offlinePlayer, @NotNull Entity entity, @Nullable ItemStack itemStack) {
-        if(itemStack != null)
-            if(AbstractDisplayItem.checkIsGuardItemStack(itemStack))
+        if (itemStack != null)
+            if (AbstractDisplayItem.checkIsGuardItemStack(itemStack))
                 return false;
-        if(entity instanceof Item item)
+        if (entity instanceof Item item)
             return !AbstractDisplayItem.checkIsGuardItemStack(item.getItemStack());
         return true; // We don't care that
     }
@@ -75,7 +75,7 @@ public final class Main extends CompatibilityModule implements Listener, Protect
     @Override
     public boolean canPlace(@NotNull OfflinePlayer offlinePlayer, @NotNull ItemStack itemStack, @NotNull Location location) {
         Shop shop = getApi().getShopManager().getShopIncludeAttached(location);
-        if(shop == null)
+        if (shop == null)
             return true;
         return shop.getOwner().equals(offlinePlayer.getUniqueId());
     }
@@ -83,7 +83,7 @@ public final class Main extends CompatibilityModule implements Listener, Protect
     @Override
     public boolean canUseBlock(@NotNull OfflinePlayer offlinePlayer, @Nullable ItemStack itemStack, @NotNull Location location) {
         Shop shop = getApi().getShopManager().getShopIncludeAttached(location);
-        if(shop == null)
+        if (shop == null)
             return true;
         return shop.getOwner().equals(offlinePlayer.getUniqueId());
     }
@@ -91,7 +91,7 @@ public final class Main extends CompatibilityModule implements Listener, Protect
     @Override
     public boolean canUseItem(@NotNull OfflinePlayer offlinePlayer, @NotNull ItemStack itemStack, @NotNull Location location) {
         Shop shop = getApi().getShopManager().getShopIncludeAttached(location);
-        if(shop == null)
+        if (shop == null)
             return true;
         return shop.getOwner().equals(offlinePlayer.getUniqueId());
     }

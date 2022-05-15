@@ -30,6 +30,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Wrapper to handle inventory/fake inventory/custom inventory etc.
+ */
 public interface InventoryWrapper extends Iterable<ItemStack> {
 
     /**
@@ -67,6 +70,9 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
         }
     }
 
+    /**
+     * Change the item from Inventory
+     */
     interface ItemChanger {
         /**
          * Do item change action in the inventory

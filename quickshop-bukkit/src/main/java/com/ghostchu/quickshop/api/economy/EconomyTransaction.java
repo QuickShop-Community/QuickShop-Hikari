@@ -28,9 +28,11 @@ import com.ghostchu.quickshop.util.CalculateUtil;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.EconomyTransactionLog;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,7 +43,13 @@ import java.util.Stack;
 import java.util.UUID;
 import java.util.logging.Level;
 
+/**
+ * Transaction
+ * A secure way to transfer the money between players.
+ * Support rollback :)
+ */
 @Getter
+@ToString
 public class EconomyTransaction {
     @Nullable
     private final UUID from;
@@ -51,7 +59,7 @@ public class EconomyTransaction {
     @NotNull
     @JsonUtil.Hidden
     private final EconomyCore core;
-    private final double actualAmount;
+    private final double amountAfterTax;
     private final double tax;
     @Nullable
     private final UUID taxer;
@@ -94,11 +102,11 @@ public class EconomyTransaction {
         this.currency = currency;
 
         if (Double.doubleToLongBits(taxModifier) != Double.doubleToLongBits(0.0d)) { //Calc total money and apply tax
-            this.actualAmount = CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), amount);
+            this.amountAfterTax = CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), amount);
         } else {
-            this.actualAmount = amount;
+            this.amountAfterTax = amount;
         }
-        this.tax = CalculateUtil.subtract(amount, actualAmount); //Calc total tax
+        this.tax = CalculateUtil.subtract(amount, amountAfterTax); //Calc total tax
         if (from == null && to == null) {
             lastError = "From and To cannot be null in same time.";
             throw new IllegalArgumentException("From and To cannot be null in same time.");
@@ -128,10 +136,10 @@ public class EconomyTransaction {
      * @return The transaction success.
      */
     public boolean failSafeCommit() {
-        Util.debugLog("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + ", EconomyCore: " + core.getName());
+        Log.transaction("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + ", EconomyCore: " + core.getName());
         boolean result = commit();
         if (!result) {
-            Util.debugLog("Fail-safe commit failed, starting rollback: "+lastError);
+            Log.transaction(Level.WARNING, "Fail-safe commit failed, starting rollback: " + lastError);
             rollback(true);
         }
         return result;
@@ -166,7 +174,7 @@ public class EconomyTransaction {
      * @return The transaction success.
      */
     public boolean commit(@NotNull TransactionCallback callback) {
-        Util.debugLog("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(include tax): " + actualAmount + " Tax: " + tax + ", EconomyCore: " + core.getName());
+        Log.transaction("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(after tax): " + amountAfterTax + " Tax: " + tax + ", EconomyCore: " + core.getName());
         if (!callback.onCommit(this)) {
             this.lastError = "Plugin cancelled this transaction.";
             return false;
@@ -176,17 +184,19 @@ public class EconomyTransaction {
             callback.onFailed(this);
             return false;
         }
+
+
         if (from != null && !this.executeOperation(new WithdrawEconomyOperation(from, amount, world, currency, core))) {
             this.lastError = "Failed to withdraw " + amount + " from player " + from + " account. LastError: " + core.getLastError();
             callback.onFailed(this);
             return false;
         }
-        if (to != null && !this.executeOperation(new DepositEconomyOperation(to, actualAmount, world, currency,core))) {
-            this.lastError = "Failed to deposit " + actualAmount + " to player " + to + " account. LastError: " + core.getLastError();
+        if (to != null && !this.executeOperation(new DepositEconomyOperation(to, amountAfterTax, world, currency, core))) {
+            this.lastError = "Failed to deposit " + amountAfterTax + " to player " + to + " account. LastError: " + core.getLastError();
             callback.onFailed(this);
             return false;
         }
-        if (tax > 0 && taxer != null && !this.executeOperation(new DepositEconomyOperation(taxer, tax, world, currency,core))) {
+        if (tax > 0 && taxer != null && !this.executeOperation(new DepositEconomyOperation(taxer, tax, world, currency, core))) {
             this.lastError = "Failed to deposit tax account: " + tax + ". LastError: " + core.getLastError();
             callback.onTaxFailed(this);
             //Tax never should failed.
@@ -197,10 +207,20 @@ public class EconomyTransaction {
 
     /**
      * Checks this transaction can be finished
+     *
      * @return The transaction can be finished (had enough money)
      */
-    public boolean checkBalance(){
+    public boolean checkBalance() {
         return from == null || !(core.getBalance(from, world, currency) < amount) || allowLoan;
+    }
+
+    /**
+     * Getting the tax in this transaction
+     *
+     * @return The tax in this transaction
+     */
+    public double getTax() {
+        return tax;
     }
 
     private boolean executeOperation(@NotNull Operation operation) {
@@ -264,6 +284,7 @@ public class EconomyTransaction {
         return operations;
     }
 
+
     public interface TransactionCallback {
         /**
          * Calling while Transaction commit
@@ -281,7 +302,7 @@ public class EconomyTransaction {
          * @param economyTransaction Transaction
          */
         default void onSuccess(@NotNull EconomyTransaction economyTransaction) {
-            Util.debugLog("Transaction succeed.");
+            Log.transaction("Transaction succeed: " + economyTransaction);
             QuickShop.getInstance().logEvent(new EconomyTransactionLog(true, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
@@ -293,7 +314,7 @@ public class EconomyTransaction {
          * @param economyTransaction Transaction
          */
         default void onFailed(@NotNull EconomyTransaction economyTransaction) {
-            Util.debugLog("Transaction failed: " + economyTransaction.getLastError() + ".");
+            Log.transaction(Level.WARNING, "Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
             QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
@@ -305,7 +326,7 @@ public class EconomyTransaction {
          * @param economyTransaction Transaction
          */
         default void onTaxFailed(@NotNull EconomyTransaction economyTransaction) {
-            Util.debugLog("Tax Transaction failed: " + economyTransaction.getLastError() + ".");
+            Log.transaction(Level.WARNING, "Tax Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
             QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 

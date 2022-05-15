@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Items pro Menge: <aqua>{0} <yellow>[<light_purple><bold>Ändern<yellow>]'
+  stack: '<green>Items pro Menge: <aqua>{0} <yellow>[<light_purple><b>Ändern</b></light_purple>]'
   price-hover: Klicke, um den Preis für das Item zu ändern.
   remove: <red><bold>[Shop entfernen]
   mode-buying-hover: <yellow>Klicke, um den Shop in den VERKAUFEN-Modus zu ändern.
-  empty: '<green>Leeren: Alle Items entfernen <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Leeren: Alle Items entfernen <yellow>[<light_purple><b>OK</b></light_purple>]'
   stack-hover: <yellow>Klicke um die Anzahl an Items pro Mengeneinheit zu ändern. Setze es zu 1 für normales Verhalten.
   alwayscounting-hover: <yellow>Klicke um zu ändern, ob der Shop immer Zählen soll.
-  alwayscounting: '<green>Immer zählen: {0} <yellow>[<light_purple><bold>Ändern<yellow>]'
-  setowner: '<green>Besitzer: <aqua>{0} <yellow>[<light_purple><bold>Ändern<yellow>]'
-  freeze: '<yellow>Freeze Modus: <aqua>{0} <yellow>[<light_purple><bold>Ändern<yellow>]'
-  price: '<green>Preis: <aqua>{0} <yellow>[<light_purple><bold>Ändern<yellow>]'
+  alwayscounting: '<green>Immer zählen: {0} <yellow>[<light_purple><b>Ändern</b></light_purple>]'
+  setowner: '<green>Besitzer: <aqua>{0} <yellow>[<light_purple><b>Ändern</b></light_purple>]'
+  freeze: '<yellow>Einfrieren: <aqua>{0} <yellow>[<light_purple><b>Ändern</b></light_purple>]'
+  price: '<green>Preis: <aqua>{0} <yellow>[<light_purple><b>Ändern</b></light_purple>]'
   currency-hover: <yellow>Klicke um die Währung zu setzen oder zu entfernen, welcher dieser Shop verwendet
-  lock: '<yellow>Shop Sperre: <aqua>{0} <yellow>[<light_purple><bold>Ändern<yellow>]'
+  lock: '<yellow>Shop sperre: <aqua>{0} <yellow>[<light_purple><b>Ändern</b></light_purple>]'
   mode-selling: '<green>Shop-Modus: <aqua>Verkaufen <yellow>[<light_purple><bold>Ändern<yellow>]'
-  currency: '<green>Währung: <aqua>{0} <yellow>[<light_purple><bold>Ändern<yellow>]'
+  currency: '<green>Währung: <aqua>{0} <yellow>[<light_purple><b>Setzen</b></light_purple>]'
   setowner-hover: <yellow>Klicke hier um den Besitzer zu wechseln.
-  mode-buying: '<green>Shop-Modus: <aqua>Kaufen <yellow>[<light_purple><bold>Ändern<yellow>]'
-  item: '<green>Shopitem: {0} <yellow>[<light_purple><bold>Ändern<yellow>]'
-  unlimited: '<green>Unlimitiert: {0} <yellow>[<light_purple><bold>Ändern<yellow>]'
+  mode-buying: '<green>Shop Modus: <aqua>Kaufen <yellow>[<light_purple><b>Ändern</b></light_purple>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><b>Ändern</b></light_purple>]'
+  unlimited: '<green>Unlimitiert: {0} <yellow>[<light_purple><b>Ändern</b></light_purple>]'
   unlimited-hover: <yellow>Klicke hier um umzuschalten, ob der Shop unlimitiert ist.
   refill-hover: <yellow>Klicke hier um den Shop aufzufüllen.
   remove-hover: <yellow>Klicke um diesen Shop zu entfernen.
   toggledisplay-hover: <yellow>Ändere den Item Anzeigemodus des Shops
-  refill: '<green>Auffüllen: Fülle die Items auf <yellow>[<light_purple><bold>OK<yellow>]'
+  refill: '<green>Auffüllen: Items auffüllen <yellow>[<light_purple><b>OK</b></light_purple>]'
   freeze-hover: <yellow>Ändere den Freeze-Status des Shops.
   lock-hover: <yellow>Aktiviere/Deaktiviere den Sperrschutz des Shops.
   item-hover: <yellow>Klicke, um das Shopitem zu ändern
   infomation: '<green>Shop Kontrollpanel:'
   mode-selling-hover: <yellow>Klicke, um den Shop in den KAUF-Modus zu ändern.
   empty-hover: <yellow>Klicke hier um den Shop zu leeren.
-  toggledisplay: '<yellow>Item anzeigen: <aqua>{0} <yellow>[<light_purple><bold>Ändern<yellow>]'
+  toggledisplay: '<yellow>Item anzeigen: <aqua>{0} <yellow>[<light_purple><b>Ändern</b></light_purple>]'
 timeunit:
   behind: hinter
   week: <red>{0} Woche
@@ -356,6 +356,7 @@ timeunit:
   scheduled-in: Geplant in {0}
   second: <red>{0} Sekunde
   std-past-format: 'vor {5}{4}{3}{2}{1}{0}'
+  std-time-format: "HH:mm:ss"
   seconds: <red>{0} Sekunden
   hour: <red>{0} Stunde
   scheduled-at: Geplant am {0}
@@ -376,7 +377,7 @@ timeunit:
   future: in {0}
   days: <red>{0} Tage
 command:
-  reloading: '<green>Konfiguration neu geladen. <yellow>Einige Änderungen benötigen eventuell einen Neustart um aktiv zu werden.<newline><gray>(Hinweis: Das verhalten beim neu laden wurde nach 4.0.9.10 geändert. Wir laden nun nur die Konfiguration neu nicht aber das gesammte Plugin um sicher zu stellen, dass der Server nicht crashed.)'
+  reloading: '<green>Konfiguration neu geladen. <yellow>Einige änderungen benötigen eventuell einen Neustart um aktiv zu werden.<newline><gray>(Hinweis: Das neu laden hat sich nach 4.0.9.10 verändert. Wir laden nur die Konfiguration und nicht das ganze Plugin neu um Server-crashes zu vermeiden.)'
   description:
     buy: <yellow>Ändert einen Shop zu <light_purple>KAUF<yellow>-Modus
     about: <yellow>Zeigt QuickShop Informationen
@@ -417,6 +418,7 @@ command:
     taxaccount: <yellow>Setze den Account welcher für die Steuern des Shops benutzt werden soll
     name: <yellow>Setzt einen bestimmten Namen für den Shop
     toggledisplay: <yellow>Ändere den Anzeigestatus des Items für den Shop
+    permission: <yellow>Shop-Berechtigungsverwaltung
   bulk-size-not-set: '<red>Verwendung: /qs size <Anzahl>'
   no-type-given: '<red>Verwendung: /qs find <item>'
   feature-not-enabled: Dieses Feature ist nicht in der Config Datei aktiviert.
@@ -465,3 +467,48 @@ client-language-unsupported: <yellow>QuickShop unterstützt deine Client-Sprache
 language-version: '63'
 not-managed-shop: <red>Du bist nicht der Besitzer oder ein Moderator dieses Shops
 shop-cannot-trade-when-freezing: <red>Du kannst mit diesem Shop nicht handeln, da er eingefroren ist.
+invalid-container: <red>Ungültiger Container. Du kannst nur Shops mit Blöcken, welche ein Inventar haben, erstellen.
+permission:
+  header: "<green>Details Shop-Berechtigungen"
+  header-player: "<green>Details Shop-Berechtigungen für {0}"
+  header-group: "<green>Details Shop-Berechtigungen für Gruppe {0}"
+  table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
+  item:
+    purchase: "<yellow>Berechtigung welche Benutzern erlaubt, vom Shop zu kaufen/verkaufen."
+    show-information: "<yellow>Berechtigung welche Benutzern erlaubt, die Shop-Informationen zu sehen (Shop-Infopanel zu öffnen)."
+    preview-shop: "<yellow>Berechtigung welche Benutzern erlaubt die Shop-Vorschau (Item-Vorschau) zu sehen."
+    search: "<yellow>Berechtigung, welche dem Benutzer erlaubt den Shop in Suchen zu finden (Entfernen der Berechtigung versteckt den Shop von Suchresultaten)."
+    delete: "<yellow>Berechtigung welche Benutzern erlaubt, den Shop zu löschen."
+    receive-alert: "<yellow>Berechtigung welche Benutzern erlaubt, Benachrichtigungen (z.B. leerer Shop oder neuer handel) zu erhalten."
+    access-inventory: "<yellow>Berechtigung welche Benutzern Zugriff auf das Shop-Inventar erlaubt."
+    ownership-transfer: "<yellow>Berechtigung welche Benutzern erlaubt, den Shop zu übertragen."
+    management-permission: "<yellow>Berechtigung welche Benutzern erlaubt, Gruppen-Bertechtigungen und Gruppen eines Benutzers zu bearbeiten."
+    toggle-display: "<yellow>Berechtigung welche Benutzern erlaubt das anzeigen des Display-Item des Shops zu ändern."
+    set-shoptype: "<yellow>Berechtigung welche Benutzern erlaubt, den Shop-Typ (Kaufen oder Verkaufen) zu ändern."
+    set-price: "<yellow>Berechtigung welche Benutzern erlaubt, den Shop-Preis zu ändern."
+    set-item: "<yellow>Berechtigung welche Benutzern erlaubt, das Shop-Item zu ändern."
+    set-stack-amount: "<yellow>Berechtigung welche Benutzern erlaubt, die Stackmenge zu ändern."
+    set-currency: "<yellow>Berechtigung welche Benutzern erlaubt, die Shop-Währung zu ändern."
+    set-name: "<yellow>Berechtigung welche Benutzern erlaubt, den Shopnamen zu ändern."
+  group:
+    everyone: "<yellow>Standardgruppe für alle ausser dem Shopbesitzers."
+    staff: "<yellow>Systemgruppe für Shop-Mitarbeiter."
+    administrator: "<red>System-Gruppe für Administratoren. Benutzer in dieser Gruppe haben fast die gleichen Berechtigungen wie der Shop-Besitzer."
+invalid-group: "<red>Ungültiger Gruppenname."
+invalid-permission: "<red>Ungültige Berechtigung."
+invalid-operation: "<red>Ungültige Aktion. Nur {0} sind erlaubt."
+player-no-group: "<yellow>Spieler {0} ist in keiner Gruppe in diesem Shop."
+player-in-group: "<green>Spieler {0} ist in Gruppe <aqua>{1}</aqua> in diesem Shop."
+permission-required: "<red>Du hast keine Berechtigung {0} um das in diesem Shop zu tun."
+no-permission-detailed: "<red>Du hast keine Berechtigung <yellow>{0}</yellow> um dies zu tun."
+paste-uploading: "<aqua>Bitte warte... Lade den Paste auf Pastebin hoch..."
+paste-created: "<green>Paste erstellt. Klicke um im Browser zu öffnen: <yellow>{0}</yellow><newline><red>Warnung: <gray>Sende niemals Pastes zu Personen denen du nicht traust."
+paste-created-local: "<green>Paste erstellt und auf deiner lokalen Festplatte gespeichert unter: {0}<newline><red>Warnung: <gray>Sende niemals Pastes zu Personen denen du nicht traust."
+paste-created-local-failed: "<red>Konnte Paste nicht auf lokaler Festplatte speicher, bitte überprüfe deine Festplatte."
+paste-451: "<gray><b>TIPPS:</b> Dein aktuelles Land scheint die Verbindung zum CloudFlare Workers Service blockiert zu haben. QuickShop Pastes können eventuell nicht korrekt geladen werden.<newline><gray>Wenn die nachfolgenden Aktionen fehlschalgen, versuche den --file Parameter hinzuzufügen um einen lokalen paste zu erstellen: <dark_gray>/qs paste --file</dark_gray>"
+paste-upload-failed: "<red>Konnte Paste nicht auf {0} hochladen, versuche anderen Pastebin-Anbieter..."
+paste-upload-failed-local: "<red>Hochladen von Paste fehlgeschlagen, versuche lokale Paste zu erstellen..."
+command-incorrect: "<red>Befehlsnutzung falsch, schreibe /qs help um die Hilfe zu sehen. Verwendung: {0}."
+successfully-set-player-group: "<green>Spieler {0} Gruppe erfolgreich zu <aqua>{1}</aqua> geändert."
+successfully-unset-player-group: "<green>Spielergruppe erfolgreich vom Shop entfernt."
+successfully-set-player-permission: "<green>Spieler {0} Berechtigung erfolgreich zu <aqua>{1}</aqua> in Shop <aqua>{2}</aqua> geändert."

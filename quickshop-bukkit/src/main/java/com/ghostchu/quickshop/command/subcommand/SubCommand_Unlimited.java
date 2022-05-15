@@ -23,7 +23,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.enginehub.squirrelid.Profile;
@@ -50,8 +50,8 @@ public class SubCommand_Unlimited implements CommandHandler<Player> {
             if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
                 UUID uuid = ((SimpleShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount();
                 Profile profile = plugin.getPlayerFinder().find(uuid);
-                if(profile == null){
-                    Util.debugLog("Failed to migrate shop to unlimited shop owner, uniqueid invalid: "+uuid+".");
+                if (profile == null) {
+                    Log.debug("Failed to migrate shop to unlimited shop owner, uniqueid invalid: " + uuid + ".");
                     return;
                 }
                 plugin.getShopManager().migrateOwnerToUnlimitedShopOwner(shop);

@@ -314,37 +314,37 @@ booleanformat:
   success: <green>✔
   failed: <red>
 controlpanel:
-  stack: '<white>Cena za stack: <aqua>{0} <gray>[<light_purple><dark_aqua>Změnit<gray>]'
+  stack: '<green>Za celý stack: <aqua>{0} <yellow>[<light_purple><bold>Změnit<yellow>]'
   price-hover: <aqua>Kliknutím nastavíte novou cenu itemu.
   remove: <dark_red>[<red>Odstranit obchod<dark_red>]
   mode-buying-hover: <aqua>Kliknutím změníte obchod na SELL režim.
-  empty: '<white>Empty: Odstranit všechny itemy <gray>[<light_purple><dark_aqua>OK<gray>]'
+  empty: '<green>Prázdné: Odstranit všechny položky <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <aqua>Kliknutím nastavíte množství položky za každý bulk. Nastavte na 1 pro normální chování.
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
-  alwayscounting: '<green>Vždy počítat: {0} <yellow>[<light_purple><bold>Změnit<yellow>]'
-  setowner: '<white>Vlastník: <aqua>{0} <gray>[<light_purple><dark_aqua>Změna<gray>]'
-  freeze: '<white>Režim zmražení: <aqua>{0} <gray>[<light_purple><dark_aqua>Přepnout<gray>]'
-  price: '<white>Vlastník: <aqua>{0} <gray>[<light_purple><dark_aqua>Změna<gray>]'
+  alwayscounting: '<green>Vždy počítat {0} <yellow>[<light_purple><bold>Změnit<yellow>]'
+  setowner: '<green>Vlastník: <aqua>{0} <yellow>[<light_purple><bold>Změna<yellow>]'
+  freeze: '<yellow>Režim zmražení: <aqua>{0} <yellow>[<light_purple><bold>Přepnout<yellow>]'
+  price: '<green>Cena: <aqua>{0} <yellow>[<light_purple><bold>Změna<yellow>]'
   currency-hover: <aqua>Klikněte pro nastavení nebo odebrání měny, kterou tento obchod používá
-  lock: '<white>Zámek obchodu: <aqua>{0} <gray>[<light_purple><dark_aqua>Přepnout<gray>]'
+  lock: '<yellow>Zámek obchodu: <aqua>{0} <yellow>[<light_purple><bold>Přepnout<yellow>]'
   mode-selling: '<gray>Režim obchodu: <aqua>Selling <gray>[<light_purple><dark_aqua>Change<gray>]'
-  currency: '<white>Měna: <aqua>{0} <gray>[<light_purple><dark_aqua>Nastavit<gray>]'
+  currency: '<green>Měna: <aqua>{0} <yellow>[<light_purple><bold>Nastavit<yellow>]'
   setowner-hover: <aqua>Klikni pro přepnutí vlastníka.
-  mode-buying: '<white>Režim obchodu: <aqua>Selling <gray>[<light_purple><dark_aqua>Change<gray>]'
-  item: '<white>Item obchodu: <aqua>{0} <gray>[<light_purple><dark_aqua>Změnit<gray>]'
-  unlimited: '<white>Neomezeno: <aqua>{0} <gray>[<light_purple><dark_aqua>Změna<gray>]'
+  mode-buying: '<green>Režim obchodu: <aqua>Koupit <yellow>[<light_purple><bold>Změnit<yellow>]'
+  item: '<green>Položka obchodu: {0} <yellow>[<light_purple><bold>Změnit<yellow>]'
+  unlimited: '<green>Neomezeno: {0} <yellow>[<light_purple><bold>Změnit<yellow>]'
   unlimited-hover: <aqua>Kliknutím přepnete pokud obchod není omezený.
   refill-hover: <aqua>Klikněte pro doplnění obchodu.
   remove-hover: <aqua>Klikněte pro odstranění tohoto obchodu.
   toggledisplay-hover: <white>Přepne obchodu status ukazovaného předmětu
-  refill: '<white>Refill: Doplnit itemy<gray>[<light_purple><dark_aqua>OK<gray>]'
+  refill: '<green>Plnění: Doplnit položky <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <aqua>Přepnout stav zmrazení obchodu.
   lock-hover: <aqua>Povolit/Zakázat ochranu zámku obchodu.
   item-hover: <aqua>Klikněte pro změnu itemu obchodu
   infomation: 'Ovládací panel <aqua>Shop:'
   mode-selling-hover: <aqua>Kliknutím změníte obchod na režim BUY.
   empty-hover: <aqua>Klikněte pro vymazání inventáře obchodu.
-  toggledisplay: '<white>Předmět: <aqua>{0} <gray>[<light_purple><dark_aqua>Přepni<gray>]'
+  toggledisplay: '<yellow>Zobrazovaný předmět: <aqua>{0} <yellow>[<light_purple><bold>Změnit<yellow>]'
 timeunit:
   behind: za
   week: <red>{0} týden
@@ -356,6 +356,7 @@ timeunit:
   scheduled-in: naplánováno na {0}
   second: <red>{0} sekund
   std-past-format: 'před {5}{4}{3}{2}{1}{0}'
+  std-time-format: "HH:mm:ss"
   seconds: <red>{0} sekund
   hour: <red>{0} hodina
   scheduled-at: naplánováno na {0}
@@ -376,7 +377,7 @@ timeunit:
   future: v {0}
   days: <red>{0} dnů
 command:
-  reloading: '<aqua>Konfigurace a soubory znovu načteny. Některé změny budou znatelné až po restartu serveru. <gray>(Pozor: Znovunačítání bylo změněno u verze 4.0.9.10, nově se znovu načítá jen konfigurace, ne vše.)'
+  reloading: '<green>Konfigurace obnovena. <yellow>Některé změny mohou vyžadovat restartování. <newline><gray>(Poznámka: Chování obnovení bylo změněno po 4.0.9.10 nyní pouze znovu načítáme konfiguraci, ale ne celý plugin, abychom zajistili, že server bude stabilní.)'
   description:
     buy: <white>Změní obchod na režim <light_purple>BUY<yellow>
     about: <white>Zobrazí informace o QuickShopu
@@ -417,6 +418,7 @@ command:
     taxaccount: <white>Nastaví daně, které obchod zaplatí
     name: <yellow>Pojmenování obchodu na konkrétní název
     toggledisplay: <white>Přepne obchodu status ukazovaného předmětu
+    permission: <yellow>Správa oprávnění obchodu
   bulk-size-not-set: '<red>Použití: <gray>/qs size <amount>'
   no-type-given: '<red>Použití: <gray>/qs find <item>'
   feature-not-enabled: Funkce není v konfiguraci povolena.
@@ -465,3 +467,48 @@ client-language-unsupported: <yellow>QuickShop nepodporuje váš klientský jazy
 language-version: '63'
 not-managed-shop: <red>Nejsi vlastník nebo moderátor obchodu
 shop-cannot-trade-when-freezing: <red>Nemůžete obchodovat s tímto obchodem, protože je zmražený.
+invalid-container: <red>Neplatný kontejner, můžete vytvořit pouze obchod na bloku, který má inventář.
+permission:
+  header: "<green>Podrobnosti o oprávnění obchodu"
+  header-player: "<green>Podrobnosti o oprávnění obchodu pro {0}"
+  header-group: "<green>Detaily oprávnění obchodu pro skupinu {0}"
+  table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
+  item:
+    purchase: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, zakoupit obchod (včetně nákupu a prodeje)"
+    show-information: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, zobrazit informace o obchodě (otevřený obchodní informační panel)"
+    preview-shop: "<yellow>Oprávnění povolí uživatelům, s tímto oprávněním, zobrazit náhled obchodu. (náhled položky)"
+    search: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, vyhledávat cílový obchod. (Odstraněním oprávnění skryjete obchod ve výsledcích vyhledávání)"
+    delete: "<yellow>Oprávnění povolí uživatelům, s tímto oprávněním, odstranit obchod."
+    receive-alert: "<yellow>Oprávnění povolí uživatelům, s tímto oprávněním, přijímat upozornění (např. mimo burzu nebo nový obchod)."
+    access-inventory: "<yellow>Oprávnění umožní hráčům přístup k inventáři obchodu."
+    ownership-transfer: "<yellow>Oprávnění umožní hráčům, s tímto oprávněním, převést vlastnictví obchodu."
+    management-permission: "<yellow>Oprávnění povolií uživatelům, s tímto oprávněním, spravovat oprávnění skupin a upravovat skupinu uživatelů."
+    toggle-display: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, přepnout položku zobrazení obchodu."
+    set-shoptype: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním,, nastavit typ obchodu (přepnout nákup nebo prodej)."
+    set-price: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, nastavit cenu obchodu."
+    set-item: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, nastavit položku obchodu."
+    set-stack-amount: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, nastavit množství zásobníku obchodu."
+    set-currency: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, nastavit měnu obchodu."
+    set-name: "<yellow>Oprávnění umožní uživatelům, s tímto oprávněním, nastavit název obchodu."
+  group:
+    everyone: "<yellow>Výchozí skupina pro všechny uživatele kromě vlastníka obchodu."
+    staff: "<yellow>Systém skupin pro zaměstnance v obchodech."
+    administrator: "<red>Systémová skupina pro správce, uživatelé v této skupině budou mít téměř stejná oprávnění jako majitel obchodu."
+invalid-group: "<red>Neplatný název skupiny."
+invalid-permission: "<red>Neplatné oprávnění."
+invalid-operation: "<red>Neplatná operace, pouze {0} je povoleno."
+player-no-group: "<yellow>Hráč {0} není v žádné skupině v tomto obchodě."
+player-in-group: "<green>Hráč {0} je ve skupině <aqua>{1}</aqua> v tomto obchodě."
+permission-required: "<red>K tomu nemáte oprávnění {0} v tomto obchodě."
+no-permission-detailed: "<red>K tomu nemáte oprávnění <yellow>{0}</yellow>."
+paste-uploading: "<aqua>Počkejte prosím... Nahrávání vložení do úložiště kopírování......"
+paste-created: "<green>Vložte vytvořené, klikněte pro otevření v prohlížeči: <yellow>{0}</yellow><newline><red>Varování: <gray>Nikdy neposílejte vložení nikomu, komu nedůvěřujete."
+paste-created-local: "<green>Vložte vytvořené a uložené na váš místní disk na: {0}<newline><red>Varování: <gray>Nikdy neposílejte vložení nikomu, komu nedůvěřujete."
+paste-created-local-failed: "<red>Nepodařilo se uložit vložení na místní disk, zkontrolujte svůj disk."
+paste-451: "<gray><b>TIPS: </b> Zdá se, že vaše současná země nebo oblast blokovala službu CloudFlare Workers a QuickShop vložení nemusí být načteno správně.<newline><gray>Pokud následná operace selže, zkuste přidat --file parametr pro vygenerování místní cesty: <dark_gray>/qs paste --file</dark_gray>"
+paste-upload-failed: "<red>Nepodařilo se nahrát vložení do {0}, vyzkoušet jiného poskytovatele vkládání..."
+paste-upload-failed-local: "<red>Nepodařilo se nahrát vložení, pokus o vygenerování lokálního vložení..."
+command-incorrect: "<red>Chybné použití příkazu, napište /qs help pro kontrolu nápovědy. Použití: {0}."
+successfully-set-player-group: "<green>Skupina hráče {0} byla úspěšně nastavena na <aqua>{1}</aqua>."
+successfully-unset-player-group: "<green>Skupina hráčů byla úspěšně odstraněna z tohoto obchodu."
+successfully-set-player-permission: "<green>Úspěšně nastaveno oprávnění hráče {0} <aqua>{1}</aqua> v obchodě <aqua>{2}</aqua>."

@@ -19,6 +19,9 @@
 
 package com.ghostchu.quickshop.api.shop;
 
+/**
+ * ShopControlPanel showcase priority
+ */
 public enum ShopControlPanelPriority {
     LOWEST(16),
     LOW(32),
@@ -32,6 +35,11 @@ public enum ShopControlPanelPriority {
         this.priority = priority;
     }
 
+    /**
+     * Gets the priority number of the control panel
+     *
+     * @return priority
+     */
     public int getPriority() {
         return priority;
     }

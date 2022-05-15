@@ -24,7 +24,9 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
@@ -76,7 +78,7 @@ public class BlockListener extends AbstractProtectionListener {
                 return;
             }
             // If they're either survival or the owner, they can break it
-            if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
+            if (p.getGameMode() == GameMode.CREATIVE && !shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE)) {
                 // Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
                     if (getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {
@@ -108,7 +110,7 @@ public class BlockListener extends AbstractProtectionListener {
             }
             // If they're in creative and not the owner, don't let them
             // (accidents happen)
-            if (p.getGameMode() == GameMode.CREATIVE && !p.getUniqueId().equals(shop.getOwner())) {
+            if (p.getGameMode() == GameMode.CREATIVE && !shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE)) {
                 // Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
                     if (getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {
@@ -130,7 +132,7 @@ public class BlockListener extends AbstractProtectionListener {
             if (getPlugin().getConfig().getBoolean("shop.allow-owner-break-shop-sign") && p.getUniqueId().equals(shop.getOwner())) {
                 return;
             }
-            Util.debugLog("Player cannot break the shop infomation sign.");
+            Log.debug("Player cannot break the shop information sign.");
             e.setCancelled(true);
         }
     }
@@ -190,7 +192,7 @@ public class BlockListener extends AbstractProtectionListener {
             return;
         }
         Player player = event.getPlayer();
-        if (!shop.getModerator().isModerator(player.getUniqueId())) {
+        if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)) {
             plugin.text().of(player, "not-managed-shop").send();
             event.setCancelled(true);
         }
@@ -254,7 +256,7 @@ public class BlockListener extends AbstractProtectionListener {
                 e.setCancelled(true);
                 plugin.text().of(player, "no-double-chests").send();
 
-            } else if (!shop.getModerator().isModerator(player.getUniqueId())) {
+            } else if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)) {
                 e.setCancelled(true);
                 plugin.text().of(player, "not-managed-shop").send();
             }

@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.api.eventmanager.QuickEventManager;
 import com.ghostchu.quickshop.eventmanager.BukkitEventManager;
 import com.ghostchu.quickshop.eventmanager.QSEventManager;
 import com.ghostchu.quickshop.util.holder.Result;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -98,7 +99,7 @@ public class PermissionChecker implements Reloadable {
     public Result canBuild(@NotNull Player player, @NotNull Block block) {
 
         if (plugin.getConfig().getStringList("shop.protection-checking-blacklist").contains(block.getWorld().getName())) {
-            Util.debugLog("Skipping protection checking in world " + block.getWorld().getName() + " causing it in blacklist.");
+            Log.debug("Skipping protection checking in world " + block.getWorld().getName() + " causing it in blacklist.");
             return Result.SUCCESS;
         }
 
@@ -115,9 +116,9 @@ public class PermissionChecker implements Reloadable {
             public void setCancelled(boolean cancel) {
                 //tracking cancel plugin
                 if (cancel && !isCancelled()) {
-                    Util.debugLog("An plugin blocked the protection checking event! See this stacktrace:");
+                    Log.debug("An plugin blocked the protection checking event! See this stacktrace:");
                     for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-                        Util.debugLog(element.getClassName() + "." + element.getMethodName() + "(" + element.getLineNumber() + ")");
+                        Log.debug(element.getClassName() + "." + element.getMethodName() + "(" + element.getLineNumber() + ")");
                     }
                     isCanBuild.setMessage(Thread.currentThread().getStackTrace()[2].getClassName());
                     out:

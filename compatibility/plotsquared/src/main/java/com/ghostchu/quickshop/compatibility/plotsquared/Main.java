@@ -19,11 +19,14 @@
 
 package com.ghostchu.quickshop.compatibility.plotsquared;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
+import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.google.common.eventbus.Subscribe;
 import com.plotsquared.core.PlotSquared;
 import com.plotsquared.core.configuration.caption.Caption;
@@ -75,6 +78,19 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        Location shopLoc = event.getShop().getLocation();
+        com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(shopLoc.getWorld().getName(), shopLoc.getBlockX(), shopLoc.getBlockY(), shopLoc.getBlockZ());
+        Plot plot = pLocation.getPlot();
+        if (plot == null) return;
+        if (plot.getOwners().contains(event.getAuthorizer())) {
+            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                event.setResult(true);
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void canCreateShopHere(ShopPreCreateEvent event) {
         Location location = event.getLocation();
         com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(
@@ -84,16 +100,17 @@ public final class Main extends CompatibilityModule implements Listener {
                 location.getBlockZ());
         Plot plot = pLocation.getPlot();
         if (plot == null) {
-            if(!whiteList) {
+            if (!whiteList) {
                 event.setCancelled(true, Component.text("PlotSquared-Compat: WhiteList Mode is on and no plot found in this position."));
-                  return;
+                return;
             }
             return;
         }
-        if(!plot.getFlag(tradeFlag)){
+        if (!plot.getFlag(tradeFlag)) {
             event.setCancelled(true, Component.text("PlotSquared-Compat: Trade Flag is not enabled."));
         }
     }
+
     @EventHandler(ignoreCancelled = true)
     public void canTradeShopHere(ShopPurchaseEvent event) {
         Location location = event.getShop().getLocation();
@@ -104,13 +121,13 @@ public final class Main extends CompatibilityModule implements Listener {
                 location.getBlockZ());
         Plot plot = pLocation.getPlot();
         if (plot == null) {
-            if(!whiteList) {
+            if (!whiteList) {
                 event.setCancelled(true, Component.text("PlotSquared-Compat: WhiteList Mode is on and no plot found in this position."));
                 return;
             }
             return;
         }
-        if(!plot.getFlag(tradeFlag)){
+        if (!plot.getFlag(tradeFlag)) {
             event.setCancelled(true, Component.text("PlotSquared-Compat: Trade Flag is not enabled."));
         }
     }
@@ -118,15 +135,15 @@ public final class Main extends CompatibilityModule implements Listener {
     private List<Shop> getShops(Plot plot) {
         List<Shop> shopsList = new ArrayList<>();
         for (CuboidRegion region : plot.getRegions()) {
-            shopsList.addAll(getShops(region.getWorld().getName(),region.getMinimumPoint().getX(),region.getMinimumPoint().getZ(),region.getMaximumPoint().getX(),region.getMaximumPoint().getZ()));
+            shopsList.addAll(getShops(region.getWorld().getName(), region.getMinimumPoint().getX(), region.getMinimumPoint().getZ(), region.getMaximumPoint().getX(), region.getMaximumPoint().getZ()));
         }
         return shopsList;
     }
 
     @Subscribe
     public void onPlotDelete(PlotDeleteEvent event) {
-        getShops(event.getPlot()).forEach(shop->{
-            recordDeletion(event.getPlot().getOwner(),shop,"Plot deleted");
+        getShops(event.getPlot()).forEach(shop -> {
+            recordDeletion(event.getPlot().getOwner(), shop, "Plot deleted");
             shop.delete();
         });
     }
@@ -139,12 +156,11 @@ public final class Main extends CompatibilityModule implements Listener {
         if (event.wasAdded()) {
             return; // We only check untrusted
         }
-        getShops(event.getPlot()).stream().filter(shop -> shop.getOwner().equals(event.getPlayer())).forEach(shop->{
-            recordDeletion(event.getPlot().getOwner(),shop,"Untrusted -> "+event.getPlayer());
+        getShops(event.getPlot()).stream().filter(shop -> shop.getOwner().equals(event.getPlayer())).forEach(shop -> {
+            recordDeletion(event.getPlot().getOwner(), shop, "Untrusted -> " + event.getPlayer());
             shop.delete();
         });
     }
-
 
 
     static class QuickshopCreateFlag extends BooleanFlag<QuickshopCreateFlag> {
