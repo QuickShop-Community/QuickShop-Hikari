@@ -75,9 +75,9 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     private boolean pasteToPastebin(@NotNull CommandSender sender) {
         final String string = Paste.paste(new PasteGenerator(sender).render());
         if (string != null) {
-            plugin.text().of("paste-created", "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8));
+            plugin.text().of(sender, "paste-created", "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8)).send();
             if (MsgUtil.getDefaultGameLanguageCode().equalsIgnoreCase("zh_cn") || Locale.getDefault().equals(Locale.CHINA)) {
-                plugin.text().of("paste-451");
+                plugin.text().of(sender, "paste-451").send();
             }
             return true;
         }
