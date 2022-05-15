@@ -50,11 +50,11 @@ public class DatabaseBackupUtil {
             File file = new File(dataFolder, fileName);
             if (file.exists()) {
                 try {
-                    Log.debug("AutoBackup: Backing up " + file.getCanonicalPath());
+                    Log.debug("AutoBackup: Backing up " + Util.getRelativePath(file));
                     Files.copy(file.toPath(), new File(backupFolder, fileName).toPath());
-                    Log.debug("AutoBackup: Backing up " + file.getCanonicalPath() + " successfully.");
+                    Log.debug("AutoBackup: Backing up " + Util.getRelativePath(file) + " successfully.");
                 } catch (Exception e) {
-                    Log.debug(Level.WARNING, "Failed to backup " + file.getName() + ": " + e.getMessage());
+                    Log.debug(Level.WARNING, "Failed to backup " + Util.getRelativePath(file) + ": " + e.getMessage());
                 }
             }
         }
@@ -78,7 +78,7 @@ public class DatabaseBackupUtil {
             if (Util.deleteDirectory(file)) {
                 purged++;
             } else {
-                Log.debug("AutoBackup: Failed to purge " + file.getName());
+                Log.debug("AutoBackup: Failed to purge " + Util.getRelativePath(file));
             }
 
         }

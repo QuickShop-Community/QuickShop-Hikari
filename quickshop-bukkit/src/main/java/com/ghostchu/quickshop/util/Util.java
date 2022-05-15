@@ -1351,6 +1351,15 @@ public class Util {
         }
     }
 
+    @NotNull
+    public static String getRelativePath(@NotNull File targetPath) {
+        try {
+            return new File(".").toURI().relativize(targetPath.toURI()).getPath();
+        } catch (Exception e) {
+            return targetPath.getAbsolutePath();
+        }
+    }
+
     public static boolean deleteDirectory(@NotNull File dir) {
         if (dir.isDirectory()) {
             String[] children = dir.list();
