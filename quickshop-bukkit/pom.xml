@@ -107,7 +107,6 @@
             </resource>
             <resource>
                 <directory>${rootDir}/crowdin/lang</directory>
-                <targetPath>/lang</targetPath>
                 <filtering>true</filtering>
             </resource>
         </resources>
