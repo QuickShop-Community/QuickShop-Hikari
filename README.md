@@ -98,7 +98,9 @@ QuickShop Hikari is maintained by Ghost-Chu and has the goal to modernize the co
 - H2 (local) or MySQL (remote) datasource supports.
 - Supports custom inventory! Use the InventoryWrapper API.
 - Optimized for Paper, but also runs on Spigot (Tho slower and with a more "hacky" aproach).
-- Advanced Transaction System. Undo any Inventory/Economy operation with a shop when it failed to prevent duplications and exploits.
+- Advanced Transaction System. Undo any Inventory/Economy operation with a shop when it failed to prevent duplications
+  and exploits.
+- Per-shop permission management.
 
 ## Downloads
 
