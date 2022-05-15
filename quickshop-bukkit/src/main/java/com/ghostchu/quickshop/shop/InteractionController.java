@@ -19,12 +19,12 @@
 
 package com.ghostchu.quickshop.shop;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
 
 import java.io.File;
 import java.io.IOException;

@@ -47,7 +47,7 @@ public class SubCommand_SilentUnlimited extends SubCommand_SilentBase {
             if (plugin.getConfig().getBoolean("unlimited-shop-owner-change")) {
                 UUID uuid = ((SimpleShopManager) plugin.getShopManager()).getCacheUnlimitedShopAccount();
                 Profile profile = plugin.getPlayerFinder().find(uuid);
-                if(profile == null){
+                if (profile == null) {
                     Log.debug("Failed to migrate shop to unlimited shop owner, uniqueid invalid: " + uuid + ".");
                     return;
                 }

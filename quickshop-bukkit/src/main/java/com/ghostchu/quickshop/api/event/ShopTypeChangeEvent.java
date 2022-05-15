@@ -19,11 +19,11 @@
 
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopType;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopType;
 
 /**
  * Calling when shop item was changed
@@ -67,6 +67,7 @@ public class ShopTypeChangeEvent extends AbstractQSEvent implements QSCancellabl
     public @Nullable Component getCancelReason() {
         return this.cancelReason;
     }
+
     /**
      * The shop old ShopType
      *

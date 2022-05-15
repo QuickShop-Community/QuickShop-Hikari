@@ -30,6 +30,7 @@ import org.jetbrains.annotations.Nullable;
 public interface DisplayProvider {
     /**
      * Gets the Display Provider's plugin instance.
+     *
      * @return The plugin instance (provider).
      */
     @NotNull
@@ -37,6 +38,7 @@ public interface DisplayProvider {
 
     /**
      * Provide a display item impl for specified shop.
+     *
      * @param shop The shop to provide display item for.
      * @return The display item.
      */

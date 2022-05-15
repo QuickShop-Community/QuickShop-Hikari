@@ -49,7 +49,7 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
                 shop.setTaxAccount(UUID.fromString(cmdArg[0]));
             } else {
                 Profile profile = plugin.getPlayerFinder().find(cmdArg[0]);
-                if(profile == null){
+                if (profile == null) {
                     plugin.text().of(sender, "unknown-player").send();
                     return;
                 }

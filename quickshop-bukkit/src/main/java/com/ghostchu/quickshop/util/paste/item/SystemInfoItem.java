@@ -48,8 +48,8 @@ public class SystemInfoItem implements SubPasteItem {
         this.javaImplName = runtimeMxBean.getVmName();
         this.inputArgs = Util.list2String(runtimeMxBean.getInputArguments());
         this.systemProperties = runtimeMxBean.getSystemProperties().keySet().stream()
-            .map(key -> StringEscapeUtils.escapeHtml4(key + "=" + runtimeMxBean.getSystemProperties().get(key)))
-            .collect(Collectors.joining("<br/>"));
+                .map(key -> StringEscapeUtils.escapeHtml4(key + "=" + runtimeMxBean.getSystemProperties().get(key)))
+                .collect(Collectors.joining("<br/>"));
     }
 
 

@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop;
 
+import com.ghostchu.quickshop.util.Util;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -28,7 +29,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.ServicePriority;
-import com.ghostchu.quickshop.util.Util;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
@@ -315,9 +315,9 @@ public class Metrics {
                             }
                         }
                     } catch (NullPointerException
-                            | NoSuchMethodException
-                            | IllegalAccessException
-                            | InvocationTargetException ignored) {
+                             | NoSuchMethodException
+                             | IllegalAccessException
+                             | InvocationTargetException ignored) {
                     }
                 }
             } catch (NoSuchFieldException ignored) {

@@ -511,7 +511,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
             ItemMeta meta1 = requireStack.getItemMeta();
             ItemMeta meta2 = givenStack.getItemMeta();
             //If givenStack don't have meta, try to generate one
-            if(meta1 != null && meta2 != null) {
+            if (meta1 != null && meta2 != null) {
                 for (Matcher matcher : matcherList) {
                     boolean result = matcher.match(meta1, meta2);
                     Log.debug("Matcher: " + matcher.getClass().getName() + " Result: " + result);

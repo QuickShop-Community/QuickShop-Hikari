@@ -20,6 +20,10 @@
 package com.ghostchu.quickshop.economy;
 
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.economyformatter.BuiltInEconomyFormatter;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
@@ -37,10 +41,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.economyformatter.BuiltInEconomyFormatter;
 
 import java.util.Objects;
 import java.util.UUID;

@@ -221,7 +221,7 @@ public class RollbarErrorReporter {
             if (!plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) { // We only receive latest reports.
                 return false;
             }
-        }catch (Exception exception){
+        } catch (Exception exception) {
             Log.debug("Cannot to check reportable: " + exception.getMessage());
             return false;
         }

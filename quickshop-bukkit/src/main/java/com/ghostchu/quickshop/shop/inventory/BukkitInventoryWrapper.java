@@ -39,7 +39,7 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
     private final Inventory inventory;
     private final InventoryWrapperManager manager;
 
-    public BukkitInventoryWrapper(@NotNull Inventory inventory){
+    public BukkitInventoryWrapper(@NotNull Inventory inventory) {
         this.inventory = inventory;
         this.manager = QuickShop.getInstance().getInventoryWrapperManager();
     }

@@ -19,15 +19,15 @@
 
 package com.ghostchu.quickshop.permission;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.permission.PermissionProvider;
+import com.ghostchu.quickshop.api.permission.ProviderIsEmptyException;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.permission.PermissionProvider;
-import com.ghostchu.quickshop.api.permission.ProviderIsEmptyException;
 
 @Deprecated
 public class VaultPermissionProvider implements PermissionProvider {

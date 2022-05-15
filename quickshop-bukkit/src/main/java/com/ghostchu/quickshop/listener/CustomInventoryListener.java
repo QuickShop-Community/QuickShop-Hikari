@@ -19,6 +19,8 @@
 
 package com.ghostchu.quickshop.listener;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.holder.QuickShopPreviewGUIHolder;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.event.EventHandler;
@@ -26,8 +28,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.holder.QuickShopPreviewGUIHolder;
 
 public class CustomInventoryListener extends AbstractQSListener {
 

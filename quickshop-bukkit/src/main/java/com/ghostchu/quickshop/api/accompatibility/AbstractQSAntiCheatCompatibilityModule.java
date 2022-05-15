@@ -19,10 +19,10 @@
 
 package com.ghostchu.quickshop.api.accompatibility;
 
-import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.holder.QuickShopInstanceHolder;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractQSAntiCheatCompatibilityModule extends QuickShopInstanceHolder implements AntiCheatCompatibilityModule {
     protected AbstractQSAntiCheatCompatibilityModule(QuickShop plugin) {

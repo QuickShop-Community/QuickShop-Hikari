@@ -19,6 +19,9 @@
 
 package com.ghostchu.quickshop.economy;
 
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.util.economyformatter.BuiltInEconomyFormatter;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import lombok.Getter;
@@ -31,9 +34,6 @@ import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.util.economyformatter.BuiltInEconomyFormatter;
 
 import java.util.UUID;
 

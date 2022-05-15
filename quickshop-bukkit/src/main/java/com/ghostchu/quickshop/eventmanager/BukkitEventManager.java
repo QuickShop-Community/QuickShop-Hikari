@@ -19,9 +19,9 @@
 
 package com.ghostchu.quickshop.eventmanager;
 
-import org.bukkit.event.Event;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.eventmanager.QuickEventManager;
+import org.bukkit.event.Event;
 
 /**
  * A simple impl for Bukkit original EventManager

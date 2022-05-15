@@ -35,14 +35,16 @@ public class MetricListener extends AbstractQSListener implements Listener {
     public MetricListener(QuickShop plugin) {
         super(plugin);
     }
-    private ShopOperationEnum wrapShopOperation(Shop shop){
-        return switch (shop.getShopType()){
+
+    private ShopOperationEnum wrapShopOperation(Shop shop) {
+        return switch (shop.getShopType()) {
             case SELLING -> ShopOperationEnum.PURCHASE_SELLING_SHOP;
             case BUYING -> ShopOperationEnum.PURCHASE_BUYING_SHOP;
         };
     }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPurchase(ShopSuccessPurchaseEvent event){
+    public void onPurchase(ShopSuccessPurchaseEvent event) {
         Location loc = event.getShop().getLocation();
         plugin.getDatabaseHelper().insertMetricRecord(
                 ShopMetricRecord.builder()
@@ -58,8 +60,9 @@ public class MetricListener extends AbstractQSListener implements Listener {
                         .build()
         );
     }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onCreate(ShopCreateEvent event){
+    public void onCreate(ShopCreateEvent event) {
         Location loc = event.getShop().getLocation();
         plugin.getDatabaseHelper().insertMetricRecord(
                 ShopMetricRecord.builder()
@@ -75,8 +78,9 @@ public class MetricListener extends AbstractQSListener implements Listener {
                         .build()
         );
     }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onDelete(ShopDeleteEvent event){
+    public void onDelete(ShopDeleteEvent event) {
         Location loc = event.getShop().getLocation();
         plugin.getDatabaseHelper().insertMetricRecord(
                 ShopMetricRecord.builder()
@@ -87,13 +91,14 @@ public class MetricListener extends AbstractQSListener implements Listener {
                         .world(loc.getWorld().getName())
                         .player(event.getShop().getOwner())
                         .tax(0.0d)
-                        .total(plugin.getConfig().getBoolean("shop.refund") ? plugin.getConfig().getDouble("shop.cost",0.0d):0.0d)
+                        .total(plugin.getConfig().getBoolean("shop.refund") ? plugin.getConfig().getDouble("shop.cost", 0.0d) : 0.0d)
                         .type(ShopOperationEnum.CREATE)
                         .build()
         );
     }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onDelete(ShopOngoingFeeEvent event){
+    public void onDelete(ShopOngoingFeeEvent event) {
         Location loc = event.getShop().getLocation();
         plugin.getDatabaseHelper().insertMetricRecord(
                 ShopMetricRecord.builder()

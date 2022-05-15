@@ -27,9 +27,10 @@ import org.jetbrains.annotations.NotNull;
 public interface InventoryWrapperManager {
     /**
      * Create a symbol link for storage.
+     *
      * @param wrapper Storage wrapper
-     * @exception IllegalArgumentException If cannot create symbol link for target Inventory.
      * @return Symbol Link that used for locate the Inventory
+     * @throws IllegalArgumentException If cannot create symbol link for target Inventory.
      */
     @NotNull
     String mklink(@NotNull InventoryWrapper wrapper) throws IllegalArgumentException;
@@ -38,6 +39,7 @@ public interface InventoryWrapperManager {
      * Locate an Inventory with symbol link
      * NOTICE: This can be call multiple times, and maybe multiple InventoryWrapper will exist in same time.
      * You must be sure all wrapper can be process any request in any time.
+     *
      * @param symbolLink symbol link that created by InventoryWrapperManager#mklink
      * @return Symbol link
      * @throws IllegalArgumentException If symbol link invalid

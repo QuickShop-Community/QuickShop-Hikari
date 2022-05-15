@@ -30,6 +30,7 @@ public interface HikariConverterInterface {
 
     /**
      * Returns empty for ready, any elements inside will mark as not ready and will be post to users.
+     *
      * @return The element about not ready.
      * @throws Exception Any exception throws will mark as unready and will show to users.
      */
@@ -38,17 +39,19 @@ public interface HikariConverterInterface {
 
     /**
      * Start for backing up
+     *
      * @param actionId Action Identifier for this upgrade operation.
-     * @param folder The target folder for backup.
+     * @param folder   The target folder for backup.
      * @throws Exception Backup fails.
      */
     void backup(@NotNull UUID actionId, @NotNull File folder) throws Exception;
 
     /**
      * Start the migrating
+     *
      * @param actionId Action Identifier for this upgrade operation.
      * @throws IllegalStateException Not ready.
-     * @throws Exception Migrate operation fails.
+     * @throws Exception             Migrate operation fails.
      */
     void migrate(@NotNull UUID actionId) throws Exception;
 }

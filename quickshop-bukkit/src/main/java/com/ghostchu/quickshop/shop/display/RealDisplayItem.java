@@ -214,7 +214,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
         itemEntity.setInvulnerable(true);
         itemEntity.setPortalCooldown(Integer.MAX_VALUE);
         // TODO: Remove method check when dropping 1.18 and 1.18.1 supports
-        if(Util.isMethodAvailable("org.bukkit.entity.Item","setUnlimitedLifetime")) {
+        if (Util.isMethodAvailable("org.bukkit.entity.Item", "setUnlimitedLifetime")) {
             itemEntity.setUnlimitedLifetime(true);
             Log.debug("Guard display " + itemEntity + " with 1.18.2+ new unlimited life time api.");
         }

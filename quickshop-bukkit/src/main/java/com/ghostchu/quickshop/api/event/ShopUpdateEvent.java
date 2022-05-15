@@ -19,10 +19,10 @@
 
 package com.ghostchu.quickshop.api.event;
 
+import com.ghostchu.quickshop.api.shop.Shop;
 import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.api.shop.Shop;
 
 /**
  * Calling when shop update to database
@@ -49,6 +49,7 @@ public class ShopUpdateEvent extends AbstractQSEvent implements QSCancellable {
     public boolean isCancelled() {
         return this.cancelled;
     }
+
     @Override
     public void setCancelled(boolean cancel, @Nullable Component reason) {
         this.cancelled = cancel;

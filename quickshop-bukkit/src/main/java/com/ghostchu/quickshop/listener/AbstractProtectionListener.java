@@ -19,13 +19,13 @@
 
 package com.ghostchu.quickshop.listener;
 
+import com.ghostchu.quickshop.Cache;
+import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.shop.Shop;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.ghostchu.quickshop.Cache;
-import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.Shop;
 
 @Getter
 public abstract class AbstractProtectionListener extends AbstractQSListener {

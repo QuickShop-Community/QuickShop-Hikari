@@ -36,7 +36,7 @@ public class BlockPos {
     private int z;
     private String world;
 
-    public BlockPos(@NotNull Location location){
+    public BlockPos(@NotNull Location location) {
         this.x = location.getBlockX();
         this.y = location.getBlockY();
         this.z = location.getBlockZ();

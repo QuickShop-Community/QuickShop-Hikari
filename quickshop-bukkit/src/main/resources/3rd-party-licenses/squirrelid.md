@@ -1,11 +1,9 @@
-
                    GNU LESSER GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
 Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
 Everyone is permitted to copy and distribute verbatim copies
 of this license document, but changing it is not allowed.
-
 
 This version of the GNU Lesser General Public License incorporates
 the terms and conditions of version 3 of the GNU General Public
@@ -26,7 +24,7 @@ Defining a subclass of a class defined by the Library is deemed a mode
 of using an interface provided by the Library.
 
 A "Combined Work" is a work produced by combining or linking an
-Application with the Library.  The particular version of the Library
+Application with the Library. The particular version of the Library
 with which the Combined Work was made is also called the "Linked
 Version".
 
@@ -64,7 +62,7 @@ this License applicable to that copy.
 3. Object Code Incorporating Material from Library Header Files.
 
 The object code form of an Application may incorporate material from
-a header file that is part of the Library.  You may convey such object
+a header file that is part of the Library. You may convey such object
 code under terms of your choice, provided that, if the incorporated
 material is not limited to numerical parameters, data structure
 layouts and accessors, or small macros, inline functions and templates

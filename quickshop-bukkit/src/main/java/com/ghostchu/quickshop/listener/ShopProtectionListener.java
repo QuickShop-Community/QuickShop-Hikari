@@ -62,8 +62,8 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     }
 
     private void init() {
-        this.hopperProtect = plugin.getConfig().getBoolean("protect.hopper",true);
-        this.hopperOwnerExclude = plugin.getConfig().getBoolean("protect.hopper-owner-exclude",false);
+        this.hopperProtect = plugin.getConfig().getBoolean("protect.hopper", true);
+        this.hopperOwnerExclude = plugin.getConfig().getBoolean("protect.hopper-owner-exclude", false);
         scanAndFixPaperListener();
     }
 
@@ -185,14 +185,17 @@ public class ShopProtectionListener extends AbstractProtectionListener {
             }
         }
     }
+
     private final NamespacedKey hopperKey = new NamespacedKey(QuickShop.getInstance(), "hopper-persistent-data");
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlaceHopper(BlockPlaceEvent e) {
-        if(e.getBlockPlaced().getState() instanceof Hopper hopper){
+        if (e.getBlockPlaced().getState() instanceof Hopper hopper) {
             hopper.getPersistentDataContainer().set(hopperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
             hopper.update();
         }
     }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     public void onInventoryMove(InventoryMoveItemEvent event) {
         if (!this.hopperProtect) {
@@ -208,8 +211,8 @@ public class ShopProtectionListener extends AbstractProtectionListener {
         if (shop == null) {
             return;
         }
-        if(this.hopperOwnerExclude) {
-            if(event.getDestination().getHolder() instanceof Hopper hopper){
+        if (this.hopperOwnerExclude) {
+            if (event.getDestination().getHolder() instanceof Hopper hopper) {
                 HopperPersistentData hopperPersistentData = hopper.getPersistentDataContainer().get(hopperKey, HopperPersistentDataType.INSTANCE);
                 if (hopperPersistentData != null) {
                     if (shop.playerAuthorize(hopperPersistentData.getPlayer(), BuiltInShopPermission.ACCESS_INVENTORY)) {

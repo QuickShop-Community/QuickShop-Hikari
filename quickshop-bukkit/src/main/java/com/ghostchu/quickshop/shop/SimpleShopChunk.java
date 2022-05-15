@@ -19,12 +19,12 @@
 
 package com.ghostchu.quickshop.shop;
 
+import com.ghostchu.quickshop.api.shop.ShopChunk;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.api.shop.ShopChunk;
 
 @EqualsAndHashCode
 @ToString

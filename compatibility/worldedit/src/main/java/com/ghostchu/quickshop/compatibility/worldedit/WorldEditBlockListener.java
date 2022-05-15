@@ -68,8 +68,8 @@ public class WorldEditBlockListener extends AbstractDelegateExtent {
             if (oldBlock.getBlockType().getMaterial().hasContainer() && !newBlock.getBlockType().getMaterial().hasContainer()) {
                 Shop shop = api.getShopManager().getShop(location, true); // Because WorldEdit can only remove half of shop, so we can keep another half as shop if it is doublechest shop.
                 if (shop != null) {
-                    Util.mainThreadRun(()->{
-                        api.logEvent(new ShopRemoveLog(actor.getUniqueId(),"WorldEdit",shop.saveToInfoStorage()));
+                    Util.mainThreadRun(() -> {
+                        api.logEvent(new ShopRemoveLog(actor.getUniqueId(), "WorldEdit", shop.saveToInfoStorage()));
                         shop.delete();
                     });
                 }

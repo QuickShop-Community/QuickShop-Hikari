@@ -24,7 +24,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class OTAException extends Exception{
+public class OTAException extends Exception {
     public OTAException(String message) {
         super(message);
     }

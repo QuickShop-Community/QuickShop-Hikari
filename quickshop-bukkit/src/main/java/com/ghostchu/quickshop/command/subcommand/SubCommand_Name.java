@@ -74,7 +74,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
 
         double fee = plugin.getConfig().getDouble("shop.name-fee", 0);
         EconomyTransaction transaction = null;
-        if(fee > 0){
+        if (fee > 0) {
             if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.bypass.namefee")) {
                 transaction = EconomyTransaction.builder()
                         .world(shop.getLocation().getWorld())
@@ -87,20 +87,20 @@ public class SubCommand_Name implements CommandHandler<Player> {
                         .core(plugin.getEconomy())
                         .amount(fee)
                         .build();
-                if(!transaction.checkBalance()){
-                    plugin.text().of(sender, "you-cant-afford-shop-naming", plugin.getShopManager().format(fee,shop.getLocation().getWorld(),plugin.getCurrency())).send();
+                if (!transaction.checkBalance()) {
+                    plugin.text().of(sender, "you-cant-afford-shop-naming", plugin.getShopManager().format(fee, shop.getLocation().getWorld(), plugin.getCurrency())).send();
                     return;
                 }
             }
         }
         ShopNamingEvent namingEvent = new ShopNamingEvent(shop, shopName);
-        if(Util.fireCancellableEvent(namingEvent)){
+        if (Util.fireCancellableEvent(namingEvent)) {
             Log.debug("Other plugin cancelled shop naming.");
             return;
         }
         shopName = namingEvent.getName();
 
-        if(transaction != null && !transaction.failSafeCommit()){
+        if (transaction != null && !transaction.failSafeCommit()) {
             plugin.text().of(sender, "economy-transaction-failed", transaction.getLastError()).send();
             plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
             return;

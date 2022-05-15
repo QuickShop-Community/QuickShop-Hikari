@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.api.event;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 /**
  * Trigger while a calendar data was changed by Calendar Watcher.
  * Useful for quickshop simple scheduler.

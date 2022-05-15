@@ -30,13 +30,13 @@ import org.jetbrains.annotations.Nullable;
 public interface QSCancellable extends Cancellable {
     @Override
     @Deprecated
-    default void setCancelled(boolean cancel){
+    default void setCancelled(boolean cancel) {
         setCancelled(cancel, (Component) null);
     }
 
-    default void setCancelled(boolean cancel, @Nullable String reason){
-        if(reason == null){
-            setCancelled(cancel,(Component) null);
+    default void setCancelled(boolean cancel, @Nullable String reason) {
+        if (reason == null) {
+            setCancelled(cancel, (Component) null);
             return;
         }
         setCancelled(cancel, LegacyComponentSerializer.legacySection().deserialize(reason));

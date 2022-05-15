@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.localization.game.game;
 
+import com.ghostchu.quickshop.QuickShop;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -26,7 +27,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.QuickShop;
 
 import java.util.Objects;
 

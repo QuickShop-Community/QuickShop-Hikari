@@ -19,9 +19,9 @@
 
 package com.ghostchu.quickshop.permission;
 
+import com.ghostchu.quickshop.api.permission.PermissionProvider;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.api.permission.PermissionProvider;
 
 /**
  * A simple impl for PermissionProvider

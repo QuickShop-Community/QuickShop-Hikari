@@ -90,5 +90,4 @@ public class SimpleMetricRecord implements MetricRecord {
     }
 
 
-
 }

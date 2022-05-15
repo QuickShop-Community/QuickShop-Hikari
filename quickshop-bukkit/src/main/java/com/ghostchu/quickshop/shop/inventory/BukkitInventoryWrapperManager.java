@@ -19,6 +19,9 @@
 
 package com.ghostchu.quickshop.shop.inventory;
 
+import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
+import com.ghostchu.quickshop.util.JsonUtil;
 import io.papermc.lib.PaperLib;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,9 +32,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
 import org.jetbrains.annotations.NotNull;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
-import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
-import com.ghostchu.quickshop.util.JsonUtil;
 
 public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     @Override
@@ -51,7 +51,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     @Override
     public @NotNull InventoryWrapper locate(@NotNull String symbolLink) throws IllegalArgumentException {
         try {
-            CommonHolder commonHolder = JsonUtil.standard().fromJson(symbolLink,CommonHolder.class);
+            CommonHolder commonHolder = JsonUtil.standard().fromJson(symbolLink, CommonHolder.class);
             //noinspection SwitchStatementWithTooFewBranches
             switch (commonHolder.getHolder()) {
                 case BLOCK -> {
@@ -88,8 +88,9 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
             }
             return UNKNOWN;
         }
+
         @NotNull
-        public String toType(){
+        public String toType() {
             return this.typeString;
         }
     }
