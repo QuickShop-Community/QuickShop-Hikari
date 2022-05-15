@@ -110,7 +110,7 @@
                 <targetPath>/lang</targetPath>
                 <filtering>true</filtering>
                 <excludes>
-                    <exclude>lang/**/messages.json</exclude>
+                    <exclude>**/messages.json</exclude>
                 </excludes>
             </resource>
         </resources>
