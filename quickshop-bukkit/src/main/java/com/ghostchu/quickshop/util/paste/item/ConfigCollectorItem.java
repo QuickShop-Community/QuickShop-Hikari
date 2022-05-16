@@ -20,6 +20,7 @@
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.Util;
 import org.apache.commons.text.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -342,7 +343,8 @@ public class ConfigCollectorItem implements SubPasteItem {
                 .replaceAll("rcon\\.password=.*", "rcon.password=******")
                 .replaceAll("token:.*", "token: ******")
                 .replaceAll("key:.*", "key: ******")
-                .replaceAll("seed=.*", "seed=******");
+                .replaceAll("seed=.*", "seed=******")
+                .replaceAll("port=.*", "port=******");
         for (String paperSeedType : seedType) {
             string = string.replaceAll(paperSeedType + ":.*", "seed-protected: ******");
         }
@@ -354,7 +356,7 @@ public class ConfigCollectorItem implements SubPasteItem {
     @NotNull
     private String readFile(@NotNull File file) {
         if (!file.exists()) {
-            return "Fail: No such file (" + file.getName() + ")";
+            return "Fail: No such file (" + Util.getRelativePath(file) + ")";
         }
 
         try {

@@ -381,32 +381,6 @@ public class Util {
         for (String log : logs) {
             Log.debug(Level.INFO, log, caller);
         }
-//        if (disableDebugLogger) {
-//            return;
-//        }
-//        StringJoiner logEntry = new StringJoiner("\n");
-//        if (!isDevMode()) {
-//            for (String log : logs) {
-//                logEntry.add("[DEBUG] " + log);
-//            }
-//        } else {
-//            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(2).toList());
-//            StackWalker.StackFrame frame = caller.get(1);
-//            String threadName = Thread.currentThread().getName();
-//            String className = frame.getClassName();
-//            String methodName = frame.getMethodName();
-//            int codeLine = frame.getLineNumber();
-//            for (String log : logs) {
-//                logEntry.add("[DEBUG/" + threadName + "] [" + className + "] [" + methodName + "] (" + codeLine + ") " + log);
-//            }
-//        }
-//        String log = logEntry.toString();
-//        if (isDevMode()) {
-//            Objects.requireNonNullElseGet(plugin, QuickShop::getInstance).getLogger().info(log);
-//        }
-//        LOCK.writeLock().lock();
-//        DEBUG_LOGS.add(log);
-//        LOCK.writeLock().unlock();
     }
 
     /**
@@ -1363,6 +1337,53 @@ public class Util {
         jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
         return jarPath;
     }
+
+    /**
+     * Gets the location of a class inside of a jar file.
+     *
+     * @param clazz The class to get the location of.
+     * @return The jar path which given class at.
+     */
+    @NotNull
+    public static String getClassPathRelative(@NotNull Class<?> clazz) {
+        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+        File file = new File(jarPath);
+        return getRelativePath(new File("."), file);
+    }
+
+    @NotNull
+    public static String getRelativePath(@NotNull File rootPath, @NotNull File targetPath) {
+        try {
+            return rootPath.toURI().relativize(targetPath.toURI()).getPath();
+        } catch (Exception e) {
+            return targetPath.getAbsolutePath();
+        }
+    }
+
+    @NotNull
+    public static String getRelativePath(@NotNull File targetPath) {
+        try {
+            return new File(".").toURI().relativize(targetPath.toURI()).getPath();
+        } catch (Exception e) {
+            return targetPath.getAbsolutePath();
+        }
+    }
+
+    public static boolean deleteDirectory(@NotNull File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            if (children == null)
+                return false;
+            for (String child : children) {
+                if (!deleteDirectory(new File(dir, child))) {
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
+    }
+
 
     /**
      * Get class path of the given class.

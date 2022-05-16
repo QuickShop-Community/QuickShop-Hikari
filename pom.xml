@@ -24,7 +24,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>2.0.0.0</version>
+    <version>2.0.0.3</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -129,7 +129,7 @@
                                 <goal>shade</goal>
                             </goals>
                             <configuration>
-                                <finalName>artifact-${name}-${version}</finalName>
+                                <finalName>${name}-${version}</finalName>
                                 <!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
                                 <createDependencyReducedPom>false</createDependencyReducedPom>
                                 <minimizeJar>true</minimizeJar>

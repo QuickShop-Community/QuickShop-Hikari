@@ -38,11 +38,11 @@ public class ChatProcessorInfoItem implements SubPasteItem {
     private final String miniMessageSource;
 
     public ChatProcessorInfoItem() {
-        this.adventureSource = Util.getClassPath(Adventure.class);
-        this.adventureBukkitPlatformSource = Util.getClassPath(BukkitAudiences.class);
-        this.adventureTextSerializerGsonSource = Util.getClassPath(GsonComponentSerializer.class);
-        this.adventureTextSerializerLegacySource = Util.getClassPath(LegacyComponentSerializer.class);
-        this.miniMessageSource = Util.getClassPath(MiniMessage.class);
+        this.adventureSource = Util.getClassPathRelative(Adventure.class);
+        this.adventureBukkitPlatformSource = Util.getClassPathRelative(BukkitAudiences.class);
+        this.adventureTextSerializerGsonSource = Util.getClassPathRelative(GsonComponentSerializer.class);
+        this.adventureTextSerializerLegacySource = Util.getClassPathRelative(LegacyComponentSerializer.class);
+        this.miniMessageSource = Util.getClassPathRelative(MiniMessage.class);
     }
 
 

@@ -111,8 +111,10 @@ public class PlayerListener extends AbstractQSListener {
         if (interaction == null) {
             return;
         }
-        Log.debug("Click: " + interaction.name());
-        Log.debug("Behavior Mapping: " + plugin.getInteractionController().getBehavior(interaction).name());
+        if (Util.isDevMode()) {
+            Log.debug("Click: " + interaction.name());
+            Log.debug("Behavior Mapping: " + plugin.getInteractionController().getBehavior(interaction).name());
+        }
         switch (plugin.getInteractionController().getBehavior(interaction)) {
             case CONTROL_PANEL -> {
                 if (shopSearched.getKey() != null) {
