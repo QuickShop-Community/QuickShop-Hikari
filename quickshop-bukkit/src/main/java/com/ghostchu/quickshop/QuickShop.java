@@ -970,13 +970,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
 
     private void submitMetrics() {
         if (!getConfig().getBoolean("disabled-metrics")) {
-            String vaultVer;
-            Plugin vault = Bukkit.getPluginManager().getPlugin("Vault");
-            if (vault != null) {
-                vaultVer = vault.getDescription().getVersion();
-            } else {
-                vaultVer = "Vault not found";
-            }
             // Use internal Metric class not Maven for solve plugin name issues
             String economyType = AbstractEconomy.getNowUsing().name();
             if (getEconomy() != null) {
