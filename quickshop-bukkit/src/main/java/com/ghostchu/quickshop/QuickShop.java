@@ -57,7 +57,6 @@ import com.ghostchu.quickshop.util.config.ConfigUpdateScript;
 import com.ghostchu.quickshop.util.config.ConfigurationUpdater;
 import com.ghostchu.quickshop.util.envcheck.*;
 import com.ghostchu.quickshop.util.logger.Log;
-import com.ghostchu.quickshop.util.lookup.ItemLookupManager;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
@@ -131,8 +130,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private final InventoryWrapperManager inventoryWrapperManager = new BukkitInventoryWrapperManager();
     @Getter
     private DatabaseDriverType databaseDriverType = null;
-    @Getter
-    private ItemLookupManager itemLookupManager;
 
     /**
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
@@ -315,7 +312,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         /* Initalize the tools */
         // Create the shop manager.
         permissionManager = new PermissionManager(this);
-        itemLookupManager = new ItemLookupManager(this);
         shopPermissionManager = new SimpleShopPermissionManager(this);
         // This should be inited before shop manager
         this.registerDisplayAutoDespawn();
