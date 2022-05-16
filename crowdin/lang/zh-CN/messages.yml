@@ -419,6 +419,7 @@ command:
     name: <yellow>将商店命名为特定名称
     toggledisplay: <yellow>切换商店是否显示悬浮物
     permission: <yellow>商店权限管理
+    lookup: <yellow>Manage lookup-able items table
   bulk-size-not-set: '<red>用法: /qs size <数量>'
   no-type-given: '<red>用法: /qs find <物品名称>'
   feature-not-enabled: 该功能未在配置文件中启用。
@@ -512,3 +513,8 @@ command-incorrect: "<red>指令用法错误，输入/qs help检查帮助。用�
 successfully-set-player-group: "<green>成功地将玩家 {0} 组设置为 <aqua>{1}</aqua>。"
 successfully-unset-player-group: "<green>成功地移除此商店中的玩家权限组。"
 successfully-set-player-permission: "<green>成功设置玩家 {0} 权限 <aqua>{1}</aqua> 在商店 <aqua>{2}</aqua>"
+lookup-item-created: "<green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now."
+lookup-item-exists: "<red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name."
+lookup-item-not-found: "<red>An item named <yellow>{0}</yellow> not exists."
+lookup-item-name-illegal: "<red>Item name illegal. Only alphanumeric characters and underscores are allowed."
+lookup-item-name-regex: "<red>The name must match this regex: <aqua>{0}</aqua>."
