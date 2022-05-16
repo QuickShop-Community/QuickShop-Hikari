@@ -419,7 +419,7 @@ command:
     name: <yellow>Setzt einen bestimmten Namen für den Shop
     toggledisplay: <yellow>Ändere den Anzeigestatus des Items für den Shop
     permission: <yellow>Shop-Berechtigungsverwaltung
-    lookup: <yellow>Manage lookup-able items table
+    lookup: <yellow>Tabelle der nachschlagbaren Gegenstände verwalten
   bulk-size-not-set: '<red>Verwendung: /qs size <Anzahl>'
   no-type-given: '<red>Verwendung: /qs find <item>'
   feature-not-enabled: Dieses Feature ist nicht in der Config Datei aktiviert.
@@ -513,8 +513,8 @@ command-incorrect: "<red>Befehlsnutzung falsch, schreibe /qs help um die Hilfe z
 successfully-set-player-group: "<green>Spieler {0} Gruppe erfolgreich zu <aqua>{1}</aqua> geändert."
 successfully-unset-player-group: "<green>Spielergruppe erfolgreich vom Shop entfernt."
 successfully-set-player-permission: "<green>Spieler {0} Berechtigung erfolgreich zu <aqua>{1}</aqua> in Shop <aqua>{2}</aqua> geändert."
-lookup-item-created: "<green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now."
-lookup-item-exists: "<red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name."
-lookup-item-not-found: "<red>An item named <yellow>{0}</yellow> not exists."
-lookup-item-name-illegal: "<red>Item name illegal. Only alphanumeric characters and underscores are allowed."
-lookup-item-name-regex: "<red>The name must match this regex: <aqua>{0}</aqua>."
+lookup-item-created: "<green>Ein Gegenstand namens <aqua>{0}</aqua> wurde in der Nachschlagetabelle erstellt. Du kannst diesen Eintrag jetzt in den Konfigurationen verwenden."
+lookup-item-exists: "<red>Ein Gegenstand namens <yellow>{0}</yellow> existiert bereits in der Nachschlagetabelle, lösche ihn oder wähle einen anderen Namen."
+lookup-item-not-found: "<red>Ein Gegenstand namens <yellow>{0}</yellow> existiert nicht."
+lookup-item-name-illegal: "<red>Gegenstandsname unzulässig. Nur alphanumerische Zeichen und Unterstriche sind erlaubt."
+lookup-item-name-regex: "<red>Der Name muss diesem Regex entsprechen: <aqua>{0}</aqua>."
