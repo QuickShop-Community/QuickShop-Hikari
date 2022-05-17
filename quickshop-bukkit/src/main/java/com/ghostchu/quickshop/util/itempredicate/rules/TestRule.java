@@ -1,11 +1,12 @@
 package com.ghostchu.quickshop.util.itempredicate.rules;
 
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public interface TestRule<T> {
-    boolean test(@NotNull T tester) throws UnsupportedOperationException;
+public interface TestRule {
+    boolean test(@NotNull ItemStack tester) throws UnsupportedOperationException;
 
     default boolean mapInclude(@NotNull Map<?, ?> value, @NotNull Map<?, ?> tester) {
         for (Map.Entry<?, ?> entry : value.entrySet()) {
