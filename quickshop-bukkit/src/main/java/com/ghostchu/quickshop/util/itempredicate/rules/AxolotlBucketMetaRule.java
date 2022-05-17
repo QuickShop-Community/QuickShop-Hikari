@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
 public class AxolotlBucketMetaRule implements TestRule<AxolotlBucketMeta> {
+    @NotNull
     private final Axolotl.Variant value;
 
     @Override

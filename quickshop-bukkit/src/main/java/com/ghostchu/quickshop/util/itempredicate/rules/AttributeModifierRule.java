@@ -10,8 +10,11 @@ import java.util.Map;
 
 @AllArgsConstructor
 public class AttributeModifierRule implements TestRule<Map<Attribute, AttributeModifier>> {
+    @NotNull
     private final MatchMethod method;
+    @NotNull
     private final Attribute attribute;
+    @NotNull
     private final AttributeModifier modifier;
 
     @Override
