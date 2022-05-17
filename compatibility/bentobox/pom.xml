@@ -32,7 +32,7 @@
     <artifactId>bentobox</artifactId>
     <packaging>jar</packaging>
 
-    <name>Compatibility-BentoBox</name>
+    <name>Compat-BentoBox</name>
 
     <properties>
         <java.version>16</java.version>

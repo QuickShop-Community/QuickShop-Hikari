@@ -32,7 +32,7 @@
     <artifactId>superiorskyblock</artifactId>
     <packaging>jar</packaging>
 
-    <name>Compatibility-SuperiorSkyblock</name>
+    <name>Compat-SuperiorSkyblock</name>
 
     <description>Compatibility module for SuperiorSkyblock2</description>
     <properties>

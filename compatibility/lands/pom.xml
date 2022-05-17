@@ -32,7 +32,7 @@
     <artifactId>lands</artifactId>
     <packaging>jar</packaging>
 
-    <name>Compatibility-Lands</name>
+    <name>Compat-Lands</name>
 
     <properties>
         <java.version>16</java.version>

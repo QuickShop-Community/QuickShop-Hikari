@@ -32,7 +32,7 @@
     <artifactId>clearlag</artifactId>
     <packaging>jar</packaging>
 
-    <name>Compatibility-Clearlag</name>
+    <name>Compat-Clearlag</name>
 
     <description>Compatibility module for ClearLagg</description>
     <properties>

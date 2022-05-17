@@ -32,7 +32,7 @@
     <artifactId>advancedregionmarket</artifactId>
     <packaging>jar</packaging>
 
-    <name>Compatibility-AdvancedRegionMarket</name>
+    <name>Compat-AdvancedRegionMarket</name>
 
     <description>Compatibility module for AdvancedRegionMarket</description>
     <properties>

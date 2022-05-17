@@ -32,7 +32,7 @@
     <artifactId>openinv</artifactId>
     <packaging>jar</packaging>
 
-    <name>Compatibility-OpenInv</name>
+    <name>Compat-OpenInv</name>
 
     <properties>
         <java.version>16</java.version>

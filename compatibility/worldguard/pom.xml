@@ -32,7 +32,7 @@
     <artifactId>worldguard</artifactId>
     <packaging>jar</packaging>
 
-    <name>Compatibility-WorldGuard</name>
+    <name>Compat-WorldGuard</name>
 
     <properties>
         <java.version>16</java.version>

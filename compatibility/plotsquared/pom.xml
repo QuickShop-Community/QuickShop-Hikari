@@ -32,7 +32,7 @@
     <artifactId>plotsquared</artifactId>
     <packaging>jar</packaging>
 
-    <name>Compatibility-PlotSquared</name>
+    <name>Compat-PlotSquared</name>
 
     <properties>
         <java.version>16</java.version>

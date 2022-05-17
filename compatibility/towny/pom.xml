@@ -32,7 +32,7 @@
     <artifactId>towny</artifactId>
     <packaging>jar</packaging>
 
-    <name>Compatibility-Towny</name>
+    <name>Compat-Towny</name>
 
     <properties>
         <java.version>16</java.version>
