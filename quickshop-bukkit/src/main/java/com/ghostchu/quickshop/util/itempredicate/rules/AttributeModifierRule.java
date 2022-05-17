@@ -11,14 +11,19 @@ import java.util.Map;
 @AllArgsConstructor
 public class AttributeModifierRule implements TestRule<Map<Attribute, AttributeModifier>> {
     private final MatchMethod method;
-    private final Map<Attribute, AttributeModifier> value;
+    private final Attribute attribute;
+    private final AttributeModifier modifier;
 
     @Override
     public boolean test(@NotNull Map<Attribute, AttributeModifier> tester) {
         return switch (method) {
-            case EQUALS -> tester.equals(value);
-            case INCLUDE -> mapInclude(value, tester);
-            case EXCLUDE -> mapExclude(value, tester);
+            case EQUALS -> {
+                if (tester.size() != 1) yield false;
+                AttributeModifier testerModifier = tester.get(attribute);
+                yield testerModifier != null && testerModifier.getAmount() == modifier.getAmount() && testerModifier.getName().equals(modifier.getName());
+            }
+            case INCLUDE -> tester.get(attribute) != null && tester.get(attribute).equals(modifier);
+            case EXCLUDE -> tester.get(attribute) == null || !tester.get(attribute).equals(modifier);
             default -> throw new UnsupportedOperationException("Unsupported match method: " + method);
         };
     }
