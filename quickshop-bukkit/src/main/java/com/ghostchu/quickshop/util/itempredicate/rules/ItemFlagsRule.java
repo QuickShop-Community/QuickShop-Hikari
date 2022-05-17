@@ -21,6 +21,10 @@ public class ItemFlagsRule implements TestRule<List<ItemFlag>> {
                 if (tester.size() != 1) yield false;
                 yield tester.get(0).equals(value);
             }
+            case NOT_EQUALS -> {
+                if (tester.size() != 1) yield true;
+                yield !tester.get(0).equals(value);
+            }
             case EXCLUDE -> !tester.contains(value);
             case INCLUDE -> tester.contains(value);
             default -> throw new UnsupportedOperationException("Unsupported match method: " + method);

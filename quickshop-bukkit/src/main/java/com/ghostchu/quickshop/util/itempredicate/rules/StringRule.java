@@ -16,6 +16,7 @@ public class StringRule implements TestRule<String> {
     public boolean test(@NotNull String tester) {
         return switch (method) {
             case EQUALS -> value.equals(tester);
+            case NOT_EQUALS -> !value.equals(tester);
             case EXCLUDE -> !value.contains(tester);
             case INCLUDE -> value.contains(tester);
             default -> throw new UnsupportedOperationException("Unsupported match method: " + method);

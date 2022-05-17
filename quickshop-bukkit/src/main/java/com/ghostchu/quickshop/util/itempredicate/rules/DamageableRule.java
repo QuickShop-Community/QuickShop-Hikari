@@ -16,7 +16,7 @@ public class DamageableRule implements TestRule<Damageable> {
             case EQUALS, INCLUDE -> tester.getDamage() == value;
             case BIGGER_THAN -> tester.getDamage() > value;
             case SMALLER_THAN -> tester.getDamage() < value;
-            case EXCLUDE -> tester.getDamage() != value;
+            case NOT_EQUALS, EXCLUDE -> tester.getDamage() != value;
         };
     }
 }

@@ -4,6 +4,7 @@ public enum MatchMethod {
     INCLUDE,
     EXCLUDE,
     EQUALS,
+    NOT_EQUALS,
     BIGGER_THAN,
     SMALLER_THAN
 }

@@ -22,6 +22,13 @@ public class AttributeModifierRule implements TestRule<Map<Attribute, AttributeM
                 AttributeModifier testerModifier = tester.get(attribute);
                 yield testerModifier != null && testerModifier.getAmount() == modifier.getAmount() && testerModifier.getName().equals(modifier.getName());
             }
+            case NOT_EQUALS -> {
+                if (tester.size() == 1) {
+                    AttributeModifier testerModifier = tester.get(attribute);
+                    yield testerModifier != null && testerModifier.equals(modifier);
+                }
+                yield true;
+            }
             case INCLUDE -> tester.get(attribute) != null && tester.get(attribute).equals(modifier);
             case EXCLUDE -> tester.get(attribute) == null || !tester.get(attribute).equals(modifier);
             default -> throw new UnsupportedOperationException("Unsupported match method: " + method);

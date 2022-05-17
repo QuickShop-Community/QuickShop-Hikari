@@ -14,7 +14,7 @@ public class RepairableRule implements TestRule<Repairable> {
     public boolean test(@NotNull Repairable tester) throws UnsupportedOperationException {
         return switch (method) {
             case EQUALS, INCLUDE -> tester.getRepairCost() == repairCost;
-            case EXCLUDE -> tester.getRepairCost() != repairCost;
+            case NOT_EQUALS, EXCLUDE -> tester.getRepairCost() != repairCost;
             case SMALLER_THAN -> tester.getRepairCost() < repairCost;
             case BIGGER_THAN -> tester.getRepairCost() > repairCost;
         };

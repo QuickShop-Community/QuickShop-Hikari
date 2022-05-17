@@ -15,7 +15,7 @@ public class LeatherArmorRule implements TestRule<LeatherArmorMeta> {
     public boolean test(@NotNull LeatherArmorMeta tester) throws UnsupportedOperationException {
         return switch (method) {
             case EQUALS, INCLUDE -> tester.getColor().equals(value);
-            case EXCLUDE -> !tester.getColor().equals(value);
+            case NOT_EQUALS, EXCLUDE -> !tester.getColor().equals(value);
             default -> throw new UnsupportedOperationException("Unsupported match method: " + method);
         };
     }

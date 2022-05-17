@@ -18,6 +18,7 @@ public class LoresRule implements TestRule<List<String>> {
     public boolean test(@NotNull List<String> tester) {
         return switch (method) {
             case EQUALS -> value.equals(tester);
+            case NOT_EQUALS -> !value.equals(tester);
             case EXCLUDE -> {
                 for (String s : tester) {
                     if (value.contains(s)) {

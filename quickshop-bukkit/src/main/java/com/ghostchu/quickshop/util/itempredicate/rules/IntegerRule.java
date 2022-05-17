@@ -13,7 +13,7 @@ public class IntegerRule implements TestRule<Integer> {
     public boolean test(@NotNull Integer tester) {
         return switch (method) {
             case EQUALS, INCLUDE -> tester == value;
-            case EXCLUDE -> tester != value;
+            case EXCLUDE, NOT_EQUALS -> tester != value;
             case BIGGER_THAN -> tester > value;
             case SMALLER_THAN -> tester < value;
         };
