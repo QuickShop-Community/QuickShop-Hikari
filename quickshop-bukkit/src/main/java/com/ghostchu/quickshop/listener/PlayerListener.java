@@ -212,7 +212,8 @@ public class PlayerListener extends AbstractQSListener {
         final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
         int items = getPlayerCanSell(shop, ownerBalance, price, new BukkitInventoryWrapper(playerInventory));
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
-        if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
+        if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
+                || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.use")) {
             Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
             actions.put(p.getUniqueId(), info);
             if (!direct) {
@@ -352,7 +353,8 @@ public class PlayerListener extends AbstractQSListener {
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
         final double traderBalance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
         int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
-        if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)) {
+        if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
+                || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.use")) {
             Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BUY, null, null, shop, false);
             actions.put(p.getUniqueId(), info);
             if (!direct) {

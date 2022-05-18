@@ -52,7 +52,9 @@ public class SubCommand_Staff implements CommandHandler<Player> {
         while (bIt.hasNext()) {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop == null || (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.MANAGEMENT_PERMISSION) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.staff"))) {
+            if (shop == null
+                    || (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.MANAGEMENT_PERMISSION)
+                    && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.staff"))) {
                 continue;
             }
             switch (cmdArg.length) {

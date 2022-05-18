@@ -614,9 +614,17 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             int amount) {
         Util.ensureThread(false);
 
-        if (!shop.playerAuthorize(buyer, BuiltInShopPermission.PURCHASE)) {
-            plugin.text().of("no-permission").send();
-            return;
+        Player player = Bukkit.getPlayer(buyer);
+        if (player != null) {
+            if (!QuickShop.getPermissionManager().hasPermission(player, "quickshop.other.use") && !shop.playerAuthorize(buyer, BuiltInShopPermission.PURCHASE)) {
+                plugin.text().of("no-permission").send();
+                return;
+            }
+        } else {
+            if (!shop.playerAuthorize(buyer, BuiltInShopPermission.PURCHASE)) {
+                plugin.text().of("no-permission").send();
+                return;
+            }
         }
         if (shopIsNotValid(buyer, info, shop)) {
             return;
@@ -1073,9 +1081,18 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             @NotNull Shop shop,
             int amount) {
         Util.ensureThread(false);
-        if (!shop.playerAuthorize(seller, BuiltInShopPermission.PURCHASE)) {
-            plugin.text().of("no-permission").send();
-            return;
+
+        Player player = Bukkit.getPlayer(seller);
+        if (player != null) {
+            if (!QuickShop.getPermissionManager().hasPermission(player, "quickshop.other.use") && !shop.playerAuthorize(buyer, BuiltInShopPermission.PURCHASE)) {
+                plugin.text().of("no-permission").send();
+                return;
+            }
+        } else {
+            if (!shop.playerAuthorize(seller, BuiltInShopPermission.PURCHASE)) {
+                plugin.text().of("no-permission").send();
+                return;
+            }
         }
         if (shopIsNotValid(seller, info, shop)) {
             return;
@@ -1294,7 +1311,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      */
     @Override
     public void sendShopInfo(@NotNull Player p, @NotNull Shop shop) {
-        if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.SHOW_INFORMATION)) {
+        if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.SHOW_INFORMATION)
+                && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.use")) {
             return;
         }
         // Potentially faster with an array?

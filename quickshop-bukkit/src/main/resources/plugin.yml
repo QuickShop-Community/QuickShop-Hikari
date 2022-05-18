@@ -120,7 +120,9 @@ permissions:
       quickshop.taxaccount: true
       quickshop.other.shopnaming: true
       quickshop.bypass.namefee: true
-
+      quickshop.other.search: true
+      quickshop.other.preview: true
+      quickshop.other.use: true
 
   quickshop.create.sell:
     description: Allows a player to sell from a shop.
@@ -283,4 +285,13 @@ permissions:
     default: op
   quickshop.permission:
     description: Permission to use /qs permission
+    default: op
+  quickshop.other.search:
+    description: Permission to bypass the search flag restriction
+    default: op
+  quickshop.other.preview:
+    description: Permission to bypass the shop preview restriction
+    default: op
+  quickshop.other.use:
+    description: Permission to bypass the purchase restriction
     default: op

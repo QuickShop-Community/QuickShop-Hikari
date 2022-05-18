@@ -78,7 +78,8 @@ public class BlockListener extends AbstractProtectionListener {
                 return;
             }
             // If they're either survival or the owner, they can break it
-            if (p.getGameMode() == GameMode.CREATIVE && !shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE)) {
+            if (p.getGameMode() == GameMode.CREATIVE
+                    && (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE) || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destory"))) {
                 // Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
                     if (getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {
@@ -110,7 +111,9 @@ public class BlockListener extends AbstractProtectionListener {
             }
             // If they're in creative and not the owner, don't let them
             // (accidents happen)
-            if (p.getGameMode() == GameMode.CREATIVE && !shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE)) {
+            if (p.getGameMode() == GameMode.CREATIVE
+                    && (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE)
+                    || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destory"))) {
                 // Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
                     if (getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {
@@ -192,7 +195,8 @@ public class BlockListener extends AbstractProtectionListener {
             return;
         }
         Player player = event.getPlayer();
-        if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)) {
+        if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)
+                && !QuickShop.getPermissionManager().hasPermission(player, "quickshop.other.open")) {
             plugin.text().of(player, "not-managed-shop").send();
             event.setCancelled(true);
         }
@@ -255,8 +259,8 @@ public class BlockListener extends AbstractProtectionListener {
             if (!QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.double")) {
                 e.setCancelled(true);
                 plugin.text().of(player, "no-double-chests").send();
-
-            } else if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)) {
+            } else if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)
+                    && !QuickShop.getPermissionManager().hasPermission(player, "quickshop.other.open")) {
                 e.setCancelled(true);
                 plugin.text().of(player, "not-managed-shop").send();
             }
