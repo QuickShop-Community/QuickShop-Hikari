@@ -164,7 +164,6 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         }
 
         if (requireStack.isSimilar(givenStack)) {
-            Log.debug("Bukkit matches passed!");
             return true;
         }
         /* If they are the same type, they should also have item meta
