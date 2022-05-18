@@ -105,7 +105,8 @@ public class SimpleShopControlPanel implements ShopControlPanel {
         }
         // Buying/Selling Mode
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.buy")
-                && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.sell") && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE)) {
+                && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.sell")
+                && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE)) {
             if (shop.isSelling()) {
                 Component text = plugin.text().of(sender, "controlpanel.mode-selling").forLocale();
                 Component hoverText = plugin.text().of(sender, "controlpanel.mode-selling-hover").forLocale();
