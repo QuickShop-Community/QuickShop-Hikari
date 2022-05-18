@@ -44,7 +44,8 @@ public class SubCommand_Item implements CommandHandler<Player> {
         // Loop through every block they're looking at upto 10 blocks away
         final Shop shop = getLookingShop(sender);
         if (shop != null) {
-            if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_ITEM) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.item")) {
+            if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_ITEM)
+                    && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.item")) {
                 plugin.text().of(sender, "not-managed-shop").send();
                 return;
             }

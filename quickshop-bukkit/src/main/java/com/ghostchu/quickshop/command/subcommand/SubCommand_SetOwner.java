@@ -52,7 +52,8 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
             return;
         }
 
-        if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.OWNERSHIP_TRANSFER)) {
+        if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.OWNERSHIP_TRANSFER)
+                && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.setowner")) {
             plugin.text().of(sender, "no-permission").send();
             return;
         }

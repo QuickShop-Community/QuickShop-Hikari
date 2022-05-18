@@ -27,9 +27,9 @@ blacklisted-item: <red>Vous ne pouvez pas vendre cet objet car il se trouve sur 
 command-type-mismatch: <red>Cette commande ne peut être exécutée que par <aqua>{0}.
 server-crash-warning: '<red>Le serveur peut planter après l’éxécution de la commande /qs reload si vous remplacez ou supprimez le fichier Jar du plugin QuickShop pendant l’exécution du serveur.'
 you-cant-afford-to-change-price: <red>Cela coûte {0} de changer le prix de ta boutique.
-safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
+safe-mode: <red>QuickShop est à présent en mode sans échec, vous ne pouvez pas ouvrir ce conteneur, veuillez contacter l'administrateur du serveur pour corriger les erreurs.
 forbidden-vanilla-behavior: <red>L'opération est indisponible car elle n'est pas compatible avec la version vanilla
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>Votre boutique {0} est pleine !
 paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
@@ -49,7 +49,7 @@ quick-fill:
     - '&eEmplacement: &b{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
-  entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
+  entry-cooperation: ' <yellow> <red> [co] <aqua> {0} <light_purple> {1}'
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Prix moyen à proximité : <yellow>{0}'
 digits-reach-the-limit: <red>Vous avez atteint les limites de décimales dans le prix.
@@ -222,7 +222,7 @@ nearby-shop-entry: '<green>- Info:{0} <green>Prix:<aqua>{1} <green>x:<aqua>{2} <
 chest-title: Boutique QuickShop
 console-only: <red>Cette commande ne peut être exécutée que par la console.
 failed-to-put-sign: <red>Il n'y a pas assez de place autour de la boutique pour placer un panneau d'information.
-shop-name-unset: <red>This shop's name now removed
+shop-name-unset: <red>Le nom de cette boutique a été supprimé
 shop-nolonger-freezed: <green>Vous avez dégelé la boutique. C'est de retour à la normale!
 no-permission-build: <red>Tu ne peux pas créer une boutique ici.
 tableformat:
@@ -235,12 +235,12 @@ translate-not-completed-yet-click: La traduction de la langue {0} a terminé {1}
 taxaccount-invalid: <red>Le compte que vous avez défini est invalide, veuillez entrer un nom de joueur ou un uuid (avec les tirets) valide.
 player-bought-from-your-store: <red>{0} a acheté {1} {2} dans ta boutique, et tu as reçu ou payé {3} ( de taxes.
 reached-maximum-can-create: '<red>Tu as atteint ton nombre de coffre de boutiques maximal : {0}/{1}!'
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
+reached-maximum-create-limit: <red>Vous avez atteint le nombre maximum de boutiques que vous pouvez créer
 translation-version: 'Support Version: Hikari'
 no-double-chests: <red>Vous ne pouvez pas créer de boutique avec un double coffre.
 price-too-cheap: <red>Le prix doit être supérieur à <yellow>${0}
 shop-not-exist: <red>Il n'y a aucune boutique.
-bad-command-usage: <red>Bad command arguments!
+bad-command-usage: <red>Arguments de commande incorrects !
 clean-warning: <yellow>Cette commande va purger <green>ppeler <yellow>shops si la boutique est endommagée, a été créée dans des mondes non autorisés, vende/achète des objets non autorisés ou <red><bold>EXISTS DANS UN MONDE DÉCHARGÉ. Assurez-vous d'abord de créer une sauvegarde complète des données de votre boutique et utilisez <aqua>/qs cleanghost confirmer <yellow>pour continuer.
 shop-purchase-cancelled: <red>Achat de la boutique annulé.
 bypassing-lock: <red>Contournement d'un verrou de QuickShop!
@@ -419,6 +419,7 @@ command:
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Activer/désactiver l'affichage de l'item de la boutique
     permission: <yellow>Shop permission management
+    lookup: <yellow>Manage lookup-able items table
   bulk-size-not-set: '<red>Utilisation: /qs size <quantité>'
   no-type-given: '<red>Utilisation: /qs find <objet>'
   feature-not-enabled: Cette fonctionnalité n'est pas activée dans le fichier de configuration.
@@ -512,3 +513,8 @@ command-incorrect: "<red>Command usage incorrect, type /qs help to check help. U
 successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
 successfully-unset-player-group: "<green>Successfully remove player group in this shop."
 successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
+lookup-item-created: "<green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now."
+lookup-item-exists: "<red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name."
+lookup-item-not-found: "<red>An item named <yellow>{0}</yellow> not exists."
+lookup-item-name-illegal: "<red>Item name illegal. Only alphanumeric characters and underscores are allowed."
+lookup-item-name-regex: "<red>The name must match this regex: <aqua>{0}</aqua>."

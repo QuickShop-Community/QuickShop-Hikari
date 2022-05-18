@@ -50,7 +50,8 @@ public class SubCommand_Name implements CommandHandler<Player> {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
-        if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_NAME) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.shopnaming")) {
+        if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_NAME)
+                && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.shopnaming")) {
             plugin.text().of(sender, "not-managed-shop").send();
         }
 

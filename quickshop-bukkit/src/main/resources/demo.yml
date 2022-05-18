@@ -1,0 +1,8 @@
+demo-item:
+  name:
+    - match-method: include
+      value: "demo"
+  lore:
+    - match-method: exclude
+      value: "blacklisted"
+

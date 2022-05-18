@@ -419,6 +419,7 @@ command:
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Toggle the shop display item status
     permission: <yellow>Shop permission management
+    lookup: <yellow>Manage lookup-able items table
   bulk-size-not-set: '<red>Gebruik: /qs grootte <amount>'
   no-type-given: '<red>Gebruik: /qs vinden <item>'
   feature-not-enabled: De functie niet ingeschakeld in de config.
@@ -512,3 +513,8 @@ command-incorrect: "<red>Command usage incorrect, type /qs help to check help. U
 successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
 successfully-unset-player-group: "<green>Successfully remove player group in this shop."
 successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
+lookup-item-created: "<green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now."
+lookup-item-exists: "<red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name."
+lookup-item-not-found: "<red>An item named <yellow>{0}</yellow> not exists."
+lookup-item-name-illegal: "<red>Item name illegal. Only alphanumeric characters and underscores are allowed."
+lookup-item-name-regex: "<red>The name must match this regex: <aqua>{0}</aqua>."
