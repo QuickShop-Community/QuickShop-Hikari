@@ -29,7 +29,6 @@ import com.ghostchu.quickshop.shop.InteractionController;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -508,8 +507,6 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     private void openControlPanel(@NotNull Player p, @NotNull Shop shop) {
-        if (shop.getPlayerGroup(p.getUniqueId()).equals(BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode()))
-            return;
         MsgUtil.sendControlPanelInfo(p, shop);
         this.playClickSound(p);
         shop.setSignText();

@@ -166,9 +166,6 @@ permissions:
   quickshop.other.destroy:
     description: Allows a staff member to destroy other player's shops even if they are locked.
     default: op
-  quickshop.other.control:
-    description: Allows a staff member to open the control panel for other player's shops.
-    default: op
   quickshop.other.open:
     description: Allows a staff member to open someone else's shop even if it is locked.
     default: op
