@@ -230,6 +230,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private BukkitAudiences audience;
     @Getter
     private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
+    @Getter
+    private final ItemMarker itemMarker = new ItemMarker(this);
     private Map<String, String> translationMapping;
     private final Map<String, String> addonRegisteredMapping = new HashMap<>();
     @Getter
