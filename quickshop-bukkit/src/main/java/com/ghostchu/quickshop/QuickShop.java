@@ -236,6 +236,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private final Map<String, String> addonRegisteredMapping = new HashMap<>();
     @Getter
     private PlayerFinder playerFinder;
+    @Getter
+    private ShopItemBlackList shopItemBlackList;
 
     /**
      * Use for mock bukkit
@@ -307,6 +309,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         metrics = new Metrics(this, 14281);
         loadErrorReporter();
         loadItemMatcher();
+        this.shopItemBlackList = new ShopItemBlackList(this);
         Util.initialize();
         load3rdParty();
         //Load the database

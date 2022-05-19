@@ -80,7 +80,6 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class Util {
-    private static final EnumSet<Material> BLACKLIST = EnumSet.noneOf(Material.class);
     private static final EnumMap<Material, Integer> CUSTOM_STACKSIZE = new EnumMap<>(Material.class);
     private static final EnumSet<Material> SHOPABLES = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> VERTICAL_FACING = List.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
@@ -587,18 +586,6 @@ public class Util {
                 SHOPABLES.add(mat);
             }
         }
-        List<String> configBlacklist = plugin.getConfig().getStringList("blacklist");
-        for (String s : configBlacklist) {
-            Material mat = Material.getMaterial(s.toUpperCase());
-            if (mat == null) {
-                mat = Material.matchMaterial(s);
-            }
-            if (mat == null) {
-                plugin.getLogger().warning(s + " is not a valid material.  Check your spelling or ID");
-                continue;
-            }
-            BLACKLIST.add(mat);
-        }
 
         for (String material : plugin.getConfig().getStringList("custom-item-stacksize")) {
             String[] data = material.split(":");
@@ -697,24 +684,13 @@ public class Util {
      * @return true if the ItemStack is black listed. False if not.
      */
     public static boolean isBlacklisted(@NotNull ItemStack stack) {
-        if (BLACKLIST.contains(stack.getType())) {
-            return true;
-        }
-        if (!stack.hasItemMeta()) {
-            return false;
-        }
-        if (!Objects.requireNonNull(stack.getItemMeta()).hasLore()) {
-            return false;
-        }
-        for (String lore : Objects.requireNonNull(stack.getItemMeta().getLore())) {
-            List<String> blacklistLores = plugin.getConfig().getStringList("shop.blacklist-lores");
-            for (String blacklistLore : blacklistLores) {
-                if (lore.contains(blacklistLore)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        if (plugin == null)
+            throw new IllegalStateException("Plugin not fully started yet");
+        if (plugin.getItemMarker() == null)
+            throw new IllegalStateException("Plugin not fully started yet");
+        if (plugin.getShopItemBlackList() == null)
+            throw new IllegalStateException("Plugin not fully started yet");
+        return plugin.getShopItemBlackList().isBlacklisted(stack);
     }
 
     /**
