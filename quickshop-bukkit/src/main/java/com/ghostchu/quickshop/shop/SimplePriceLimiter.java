@@ -154,11 +154,13 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
     private boolean performMigrate(@NotNull FileConfiguration configuration) {
         boolean anyChanges = false;
         if (configuration.getInt("version", 1) == 1) {
+            Log.debug("Migrating price-restriction.yml from version 1 to version 2");
             ConfigurationSection rules = configuration.getConfigurationSection("rules");
             if (rules != null) {
                 for (String ruleName : rules.getKeys(false)) {
                     ConfigurationSection rule = rules.getConfigurationSection(ruleName);
                     if (rule != null) {
+                        Log.debug("Migrating: Structure upgrading for rule " + ruleName);
                         rule.set("items", rule.getStringList("materials"));
                         rule.set("materials", null);
                     }
