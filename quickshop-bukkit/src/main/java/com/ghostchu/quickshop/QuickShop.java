@@ -490,16 +490,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             getLogger().info("Shutting down update watcher...");
             this.updateWatcher.uninit();
         }
-        getLogger().info("Cleanup scheduled tasks...");
-        Bukkit.getScheduler().cancelTasks(this);
         getLogger().info("Cleanup listeners...");
         HandlerList.unregisterAll(this);
+        getLogger().info("Cleanup scheduled tasks...");
+        Bukkit.getScheduler().cancelTasks(this);
         getLogger().info("Unregistering plugin services...");
         getServer().getServicesManager().unregisterAll(this);
-        getLogger().info("Shutting down Unirest instances...");
-        Unirest.shutDown(true);
         getLogger().info("Shutting down database...");
         EasySQL.shutdownManager(this.sqlManager);
+        getLogger().info("Shutting down Unirest instances...");
+        Unirest.shutDown(true);
         getLogger().info("Finishing remaining misc work...");
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
         getLogger().info("All shutdown work has been completed.");
