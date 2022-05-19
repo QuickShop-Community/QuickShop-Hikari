@@ -569,7 +569,6 @@ public class Util {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
-        BLACKLIST.clear();
         SHOPABLES.clear();
         // RESTRICTED_PRICES.clear();
         CUSTOM_STACKSIZE.clear();
