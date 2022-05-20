@@ -1089,7 +1089,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 return;
             }
         } else {
-            if (!shop.playerAuthorize(seller, BuiltInShopPermission.PURCHASE) && !QuickShop.getPermissionManager().hasPermission(player, "quickshop.other.use")) {
+            if (!shop.playerAuthorize(seller, BuiltInShopPermission.PURCHASE)) {
                 plugin.text().of("no-permission").send();
                 return;
             }
