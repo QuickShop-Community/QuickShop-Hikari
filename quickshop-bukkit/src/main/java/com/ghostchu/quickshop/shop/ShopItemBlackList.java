@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -62,5 +63,12 @@ public class ShopItemBlackList implements Reloadable {
             }
         }
         return false;
+    }
+
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return Reloadable.super.reloadModule();
     }
 }
