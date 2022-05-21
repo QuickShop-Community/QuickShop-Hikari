@@ -21,14 +21,18 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.ReloadableContainer;
 import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @AllArgsConstructor
 public class SubCommand_Reload implements CommandHandler<CommandSender> {
@@ -41,5 +45,13 @@ public class SubCommand_Reload implements CommandHandler<CommandSender> {
         plugin.reloadConfig();
         Map<ReloadableContainer, ReloadResult> container = plugin.getReloadManager().reload();
         sender.sendMessage(ChatColor.GOLD + "Reloaded " + container.size() + " modules.");
+        if (Util.isDevMode()) {
+            Map<ReloadStatus, AtomicInteger> status = new HashMap<>();
+            for (ReloadResult value : container.values()) {
+                AtomicInteger integer = status.computeIfAbsent(value.getStatus(), k -> new AtomicInteger(0));
+                integer.incrementAndGet();
+            }
+            status.forEach((key, value) -> sender.sendMessage(ChatColor.GOLD + Util.firstUppercase(key.name()) + ": " + value.get()));
+        }
     }
 }

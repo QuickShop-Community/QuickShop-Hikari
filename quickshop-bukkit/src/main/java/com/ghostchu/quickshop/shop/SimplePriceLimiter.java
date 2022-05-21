@@ -47,6 +47,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -79,7 +80,6 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
     @Override
     @NotNull
     public PriceLimiterCheckResult check(@NotNull CommandSender sender, @NotNull ItemStack itemStack, @Nullable String currency, double price) {
-        Material material = itemStack.getType();
         if (Double.isInfinite(price) || Double.isNaN(price)) {
             return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_VALID, undefinedMin, undefinedMax);
         }
@@ -92,7 +92,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
             }
         }
         for (RuleSet rule : rules.values()) {
-            if (!rule.isApply(sender, material, currency)) {
+            if (!rule.isApply(sender, itemStack, currency)) {
                 continue;
             }
             if (rule.isAllowed(price)) {
@@ -120,7 +120,15 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
                 plugin.getLogger().log(Level.WARNING, "Failed to copy price-restriction.yml.yml to plugin folder!", e);
             }
         }
+
         FileConfiguration configuration = YamlConfiguration.loadConfiguration(configFile);
+        if (performMigrate(configuration)) {
+            try {
+                configuration.save(configFile);
+            } catch (IOException e) {
+                plugin.getLogger().log(Level.WARNING, "Failed to save migrated  price-restriction.yml.yml to plugin folder!", e);
+            }
+        }
         this.undefinedMax = configuration.getDouble("undefined.max", Double.MAX_VALUE);
         this.undefinedMin = configuration.getDouble("undefined.min", 0.0d);
         this.wholeNumberOnly = configuration.getBoolean("whole-number-only", false);
@@ -143,6 +151,27 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
         plugin.getLogger().info("Loaded " + this.rules.size() + " price restriction rules!");
     }
 
+    private boolean performMigrate(@NotNull FileConfiguration configuration) {
+        boolean anyChanges = false;
+        if (configuration.getInt("version", 1) == 1) {
+            Log.debug("Migrating price-restriction.yml from version 1 to version 2");
+            ConfigurationSection rules = configuration.getConfigurationSection("rules");
+            if (rules != null) {
+                for (String ruleName : rules.getKeys(false)) {
+                    ConfigurationSection rule = rules.getConfigurationSection(ruleName);
+                    if (rule != null) {
+                        Log.debug("Migrating: Structure upgrading for rule " + ruleName);
+                        rule.set("items", rule.getStringList("materials"));
+                        rule.set("materials", null);
+                    }
+                }
+            }
+            configuration.set("version", 2);
+            anyChanges = true;
+        }
+        return anyChanges;
+    }
+
     @Nullable
     @Contract("_,null -> null")
     private RuleSet readRule(@NotNull String ruleName, @Nullable ConfigurationSection section) {
@@ -150,16 +179,22 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
             return null;
         }
         String bypassPermission = "quickshop.price.restriction.bypass." + ruleName;
-        List<Material> materials = new ArrayList<>();
+        List<Function<ItemStack, Boolean>> items = new ArrayList<>();
         double min = section.getDouble("min", 0d);
         double max = section.getDouble("max", Double.MAX_VALUE);
-        for (String material : section.getStringList("materials")) {
-            Material mat = Material.matchMaterial(material);
-            if (mat == null) {
-                plugin.getLogger().warning("Failed to read rule " + ruleName + "'s a Material option, invalid material " + material + "! Skipping...");
-                continue;
+        for (String item : section.getStringList("items")) {
+            if (item.startsWith("@")) {
+                String reference = item.substring(1);
+                ItemStack stack = plugin.getItemMarker().get(reference);
+                items.add(itemStack -> plugin.getItemMatcher().matches(stack, itemStack));
+            } else {
+                Material mat = Material.matchMaterial(item);
+                if (mat == null) {
+                    plugin.getLogger().warning("Failed to read rule " + ruleName + "'s a ItemRule option, invalid item " + item + "! Skipping...");
+                    continue;
+                }
+                items.add(itemStack -> itemStack.getType() == mat);
             }
-            materials.add(mat);
         }
         List<Pattern> currency = new ArrayList<>();
         for (String currencyStr1 : section.getStringList("currency")) {
@@ -170,7 +205,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
                 plugin.getLogger().warning("Failed to read rule " + ruleName + "'s a Currency option, invalid pattern " + currencyStr1 + "! Skipping...");
             }
         }
-        return new RuleSet(materials, bypassPermission, currency, min, max);
+        return new RuleSet(items, bypassPermission, currency, min, max);
     }
 
     @Override
@@ -182,7 +217,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
     @AllArgsConstructor
     @Data
     static class RuleSet {
-        private final List<Material> materials;
+        private final List<Function<ItemStack, Boolean>> items;
         private final String bypassPermission;
         private final List<Pattern> currency;
         private final double min;
@@ -196,17 +231,20 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
          * @param currency the currency
          * @return true if the rule is allowed to apply
          */
-        public boolean isApply(@NotNull CommandSender sender, @NotNull Material item, @Nullable String currency) {
+        public boolean isApply(@NotNull CommandSender sender, @NotNull ItemStack item, @Nullable String currency) {
             if (QuickShop.getPermissionManager().hasPermission(sender, this.bypassPermission)) {
                 return false;
             }
-            if (!this.materials.contains(item)) {
-                return false;
+            if (currency != null) {
+                if (this.currency.stream().noneMatch(pattern -> pattern.matcher(currency).matches()))
+                    return false;
             }
-            if (currency == null) {
-                return true;
+            for (Function<ItemStack, Boolean> fun : items) {
+                if (fun.apply(item)) {
+                    return true;
+                }
             }
-            return this.currency.stream().anyMatch(pattern -> pattern.matcher(currency).matches());
+            return false;
         }
 
         /**

@@ -230,10 +230,14 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private BukkitAudiences audience;
     @Getter
     private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
+    @Getter
+    private ItemMarker itemMarker;
     private Map<String, String> translationMapping;
     private final Map<String, String> addonRegisteredMapping = new HashMap<>();
     @Getter
     private PlayerFinder playerFinder;
+    @Getter
+    private ShopItemBlackList shopItemBlackList;
 
     /**
      * Use for mock bukkit
@@ -305,6 +309,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         metrics = new Metrics(this, 14281);
         loadErrorReporter();
         loadItemMatcher();
+        this.itemMarker = new ItemMarker(this);
+        this.shopItemBlackList = new ShopItemBlackList(this);
         Util.initialize();
         load3rdParty();
         //Load the database
@@ -490,16 +496,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             getLogger().info("Shutting down update watcher...");
             this.updateWatcher.uninit();
         }
-        getLogger().info("Cleanup scheduled tasks...");
-        Bukkit.getScheduler().cancelTasks(this);
         getLogger().info("Cleanup listeners...");
         HandlerList.unregisterAll(this);
+        getLogger().info("Cleanup scheduled tasks...");
+        Bukkit.getScheduler().cancelTasks(this);
         getLogger().info("Unregistering plugin services...");
         getServer().getServicesManager().unregisterAll(this);
-        getLogger().info("Shutting down Unirest instances...");
-        Unirest.shutDown(true);
         getLogger().info("Shutting down database...");
         EasySQL.shutdownManager(this.sqlManager);
+        getLogger().info("Shutting down Unirest instances...");
+        Unirest.shutDown(true);
         getLogger().info("Finishing remaining misc work...");
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
         getLogger().info("All shutdown work has been completed.");

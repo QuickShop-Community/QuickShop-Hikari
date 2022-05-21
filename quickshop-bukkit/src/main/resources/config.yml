@@ -443,6 +443,8 @@ shop:
   force-use-item-original-name: false
 #List of items that can't be sold in shops.
 #Anyone with the quickshop.bypass.<itemID> permission can bypass it.
+#Add the reference the item lookup table by adding @ before the name.
+#For referenced item, the permission quickshop.bypass.reference will be used.
 blacklist:
   - Bedrock
 
