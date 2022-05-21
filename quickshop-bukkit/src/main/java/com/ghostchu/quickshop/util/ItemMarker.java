@@ -68,7 +68,7 @@ public class ItemMarker implements Reloadable {
         if (stacks.containsKey(itemName)) {
             return OperationResult.NAME_CONFLICT;
         }
-        if (namePattern.matcher(itemName).matches()) {
+        if (!namePattern.matcher(itemName).matches()) {
             return OperationResult.REGEXP_FAILURE;
         }
         stacks.put(itemName, itemStack);

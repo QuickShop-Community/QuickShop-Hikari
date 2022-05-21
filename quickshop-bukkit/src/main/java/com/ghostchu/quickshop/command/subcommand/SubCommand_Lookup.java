@@ -39,18 +39,18 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (sender.getInventory().getItemInMainHand().getType().isAir()) {
-            plugin.text().of(sender, "no-anythings-in-your-hand").send();
-            return;
-        }
         ItemStack item = sender.getInventory().getItemInMainHand();
-        if (cmdArg.length < 2) {
+        if (cmdArg.length < 1) {
             plugin.text().of(sender, "command-incorrect", "/qs lookup <create/remove/test> <name>").send();
             return;
         }
 
-        if (cmdArg.length == 2) {
-            if ("test".equals(cmdArg[1].toLowerCase(Locale.ROOT))) {
+        if (cmdArg.length == 1) {
+            if ("test".equals(cmdArg[0].toLowerCase(Locale.ROOT))) {
+                if (sender.getInventory().getItemInMainHand().getType().isAir()) {
+                    plugin.text().of(sender, "no-anythings-in-your-hand").send();
+                    return;
+                }
                 String name = plugin.getItemMarker().get(item);
                 if (name == null) {
                     plugin.text().of(sender, "lookup-item-test-not-found").send();
@@ -62,23 +62,27 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
             plugin.text().of(sender, "command-incorrect", "/qs lookup <create/remove/test> <name>").send();
             return;
         }
-        switch (cmdArg[1].toLowerCase(Locale.ROOT)) {
+        switch (cmdArg[0].toLowerCase(Locale.ROOT)) {
             case "create" -> {
-                ItemMarker.OperationResult result = plugin.getItemMarker().save(cmdArg[2], item);
+                if (sender.getInventory().getItemInMainHand().getType().isAir()) {
+                    plugin.text().of(sender, "no-anythings-in-your-hand").send();
+                    return;
+                }
+                ItemMarker.OperationResult result = plugin.getItemMarker().save(cmdArg[1], item);
                 switch (result) {
-                    case SUCCESS -> plugin.text().of(sender, "lookup-item-created", cmdArg[0]).send();
+                    case SUCCESS -> plugin.text().of(sender, "lookup-item-created", cmdArg[1]).send();
                     case REGEXP_FAILURE ->
-                            plugin.text().of(sender, "lookup-item-name-regex", plugin.getItemMarker().getNameRegExp(), cmdArg[0]).send();
-                    case NAME_CONFLICT -> plugin.text().of(sender, "lookup-item-exists", cmdArg[0]).send();
-                    default -> plugin.text().of(sender, "internal-error", cmdArg[0]).send();
+                            plugin.text().of(sender, "lookup-item-name-regex", plugin.getItemMarker().getNameRegExp(), cmdArg[1]).send();
+                    case NAME_CONFLICT -> plugin.text().of(sender, "lookup-item-exists", cmdArg[1]).send();
+                    default -> plugin.text().of(sender, "internal-error", cmdArg[1]).send();
                 }
             }
             case "remove" -> {
-                ItemMarker.OperationResult result = plugin.getItemMarker().remove(cmdArg[2]);
+                ItemMarker.OperationResult result = plugin.getItemMarker().remove(cmdArg[1]);
                 switch (result) {
-                    case SUCCESS -> plugin.text().of(sender, "lookup-item-removed", cmdArg[0]).send();
-                    case NOT_EXISTS -> plugin.text().of(sender, "lookup-item-not-found", cmdArg[0]).send();
-                    default -> plugin.text().of(sender, "internal-error", cmdArg[0]).send();
+                    case SUCCESS -> plugin.text().of(sender, "lookup-item-removed", cmdArg[1]).send();
+                    case NOT_EXISTS -> plugin.text().of(sender, "lookup-item-not-found", cmdArg[1]).send();
+                    default -> plugin.text().of(sender, "internal-error", cmdArg[1]).send();
                 }
             }
             default -> plugin.text().of(sender, "command-incorrect", "/qs lookup <create/remove/test> <name>").send();
