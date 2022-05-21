@@ -6,7 +6,6 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -51,11 +50,7 @@ public class ItemMarker implements Reloadable {
         }
         for (String key : section.getKeys(false)) {
             if (section.isString(key)) {
-                try {
-                    stacks.put(key, Util.deserialize(key));
-                } catch (InvalidConfigurationException e) {
-                    Log.debug(Level.WARNING, "Failed to load item " + key + " from items.yml");
-                }
+                stacks.put(key, section.getItemStack(key));
             }
         }
     }
@@ -72,7 +67,7 @@ public class ItemMarker implements Reloadable {
         ConfigurationSection section = configuration.getConfigurationSection("item-template");
         if (section == null)
             section = configuration.createSection("item-template");
-        section.set(itemName, Util.serialize(itemStack));
+        section.set(itemName, itemStack);
         try {
             configuration.save(file);
         } catch (IOException e) {
