@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import lombok.Getter;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +32,7 @@ public class ItemMarker implements Reloadable {
 
     public ItemMarker(@NotNull QuickShop plugin) {
         this.plugin = plugin;
-        file = new File(plugin.getDataFolder(), "items.yml");
+        file = new File(plugin.getDataFolder(), "items-lookup.yml");
         init();
         plugin.getReloadManager().register(this);
     }
@@ -44,13 +43,9 @@ public class ItemMarker implements Reloadable {
             initDefaultConfiguration(file);
         }
         configuration = YamlConfiguration.loadConfiguration(file);
-        ConfigurationSection section = configuration.getConfigurationSection("item-template");
-        if (section == null) {
-            section = configuration.createSection("item-template");
-        }
-        for (String key : section.getKeys(false)) {
-            if (section.isString(key)) {
-                stacks.put(key, section.getItemStack(key));
+        for (String key : configuration.getKeys(false)) {
+            if (configuration.isItemStack(key)) {
+                stacks.put(key, configuration.getItemStack(key));
             }
         }
     }
@@ -64,18 +59,13 @@ public class ItemMarker implements Reloadable {
             return OperationResult.REGEXP_FAILURE;
         }
         stacks.put(itemName, itemStack);
-        ConfigurationSection section = configuration.getConfigurationSection("item-template");
-        if (section == null)
-            section = configuration.createSection("item-template");
-        section.set(itemName, itemStack);
-        try {
-            configuration.save(file);
-        } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to save items.yml", e);
+        configuration.set(itemName, itemStack);
+        if (saveConfig()) {
+            Log.debug("Removed item " + itemName + " !");
+            return OperationResult.SUCCESS;
+        } else {
             return OperationResult.UNKNOWN;
         }
-        Log.debug("Saved item " + itemName + " !");
-        return OperationResult.SUCCESS;
     }
 
     @NotNull
@@ -83,21 +73,24 @@ public class ItemMarker implements Reloadable {
         if (!stacks.containsKey(itemName)) {
             return OperationResult.NOT_EXISTS;
         }
-        if (stacks.remove(itemName) == null) {
-            return OperationResult.NOT_EXISTS;
-        }
-        ConfigurationSection section = configuration.getConfigurationSection("item-template");
-        if (section == null)
-            return OperationResult.NOT_EXISTS;
-        section.set(itemName, null);
-        try {
-            configuration.save(file);
-        } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to save items.yml", e);
+        stacks.remove(itemName);
+        configuration.set(itemName, null);
+        if (saveConfig()) {
+            Log.debug("Removed item " + itemName + " !");
+            return OperationResult.SUCCESS;
+        } else {
             return OperationResult.UNKNOWN;
         }
-        Log.debug("Removed item " + itemName + " !");
-        return OperationResult.SUCCESS;
+    }
+
+    private boolean saveConfig() {
+        try {
+            configuration.save(file);
+            return true;
+        } catch (IOException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to save items.yml", e);
+            return false;
+        }
     }
 
     @Nullable
