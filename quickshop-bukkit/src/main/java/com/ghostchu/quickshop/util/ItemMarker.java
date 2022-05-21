@@ -1,8 +1,6 @@
 package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -22,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class ItemMarker implements Reloadable {
     private final QuickShop plugin;
@@ -44,16 +41,16 @@ public class ItemMarker implements Reloadable {
 
     public void init() {
         stacks.clear();
-
         if (!file.exists()) {
             initDefaultConfiguration(file);
         }
         configuration = YamlConfiguration.loadConfiguration(file);
         ConfigurationSection section = configuration.getConfigurationSection("item-template");
-        if (section == null)
+        if (section == null) {
             section = configuration.createSection("item-template");
+        }
         for (String key : section.getKeys(false)) {
-            if (section.isItemStack(key)) {
+            if (section.isString(key)) {
                 try {
                     stacks.put(key, Util.deserialize(key));
                 } catch (InvalidConfigurationException e) {
@@ -131,9 +128,6 @@ public class ItemMarker implements Reloadable {
     private void initDefaultConfiguration(@NotNull File file) {
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         yamlConfiguration.set("version", 1);
-        for (BuiltInShopPermissionGroup group : BuiltInShopPermissionGroup.values()) {
-            yamlConfiguration.set(group.getNamespacedNode(), group.getPermissions().stream().map(BuiltInShopPermission::getNamespacedNode).collect(Collectors.toList()));
-        }
         try {
             //noinspection ResultOfMethodCallIgnored
             file.createNewFile();
