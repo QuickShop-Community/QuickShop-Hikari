@@ -231,7 +231,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     @Getter
     private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
     @Getter
-    private final ItemMarker itemMarker = new ItemMarker(this);
+    private ItemMarker itemMarker;
     private Map<String, String> translationMapping;
     private final Map<String, String> addonRegisteredMapping = new HashMap<>();
     @Getter
@@ -309,6 +309,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         metrics = new Metrics(this, 14281);
         loadErrorReporter();
         loadItemMatcher();
+        this.itemMarker = new ItemMarker(this);
         this.shopItemBlackList = new ShopItemBlackList(this);
         Util.initialize();
         load3rdParty();
