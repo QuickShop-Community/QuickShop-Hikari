@@ -274,7 +274,7 @@ public class MsgUtil {
         if (!(sender instanceof Player)) {
             return;
         }
-        if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use") && (shop.getOwner().equals(((Player) sender).getUniqueId()) || !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.control"))) {
+        if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")) {
             return;
         }
         if (Util.fireCancellableEvent(new ShopControlPanelOpenEvent(shop, sender))) {

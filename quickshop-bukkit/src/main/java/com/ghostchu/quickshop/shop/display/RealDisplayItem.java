@@ -256,7 +256,6 @@ public class RealDisplayItem extends AbstractDisplayItem {
         this.guardedIstack = AbstractDisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack, this::safeGuard);
         new ShopDisplayItemSafeGuardEvent(shop, this.item).callEvent();
-        removeDupe();
     }
 
     @Override

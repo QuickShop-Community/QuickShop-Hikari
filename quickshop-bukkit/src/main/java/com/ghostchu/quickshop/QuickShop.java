@@ -128,7 +128,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private final InventoryWrapperRegistry inventoryWrapperRegistry = new InventoryWrapperRegistry(this);
     @Getter
     private final InventoryWrapperManager inventoryWrapperManager = new BukkitInventoryWrapperManager();
-
     @Getter
     private DatabaseDriverType databaseDriverType = null;
 
@@ -231,10 +230,14 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private BukkitAudiences audience;
     @Getter
     private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
+    @Getter
+    private ItemMarker itemMarker;
     private Map<String, String> translationMapping;
     private final Map<String, String> addonRegisteredMapping = new HashMap<>();
     @Getter
     private PlayerFinder playerFinder;
+    @Getter
+    private ShopItemBlackList shopItemBlackList;
 
     /**
      * Use for mock bukkit
@@ -306,6 +309,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         metrics = new Metrics(this, 14281);
         loadErrorReporter();
         loadItemMatcher();
+        this.itemMarker = new ItemMarker(this);
+        this.shopItemBlackList = new ShopItemBlackList(this);
         Util.initialize();
         load3rdParty();
         //Load the database
@@ -491,16 +496,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             getLogger().info("Shutting down update watcher...");
             this.updateWatcher.uninit();
         }
-        getLogger().info("Cleanup scheduled tasks...");
-        Bukkit.getScheduler().cancelTasks(this);
         getLogger().info("Cleanup listeners...");
         HandlerList.unregisterAll(this);
+        getLogger().info("Cleanup scheduled tasks...");
+        Bukkit.getScheduler().cancelTasks(this);
         getLogger().info("Unregistering plugin services...");
         getServer().getServicesManager().unregisterAll(this);
-        getLogger().info("Shutting down Unirest instances...");
-        Unirest.shutDown(true);
         getLogger().info("Shutting down database...");
         EasySQL.shutdownManager(this.sqlManager);
+        getLogger().info("Shutting down Unirest instances...");
+        Unirest.shutDown(true);
         getLogger().info("Finishing remaining misc work...");
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
         getLogger().info("All shutdown work has been completed.");
@@ -967,31 +972,17 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
 
     private void submitMetrics() {
         if (!getConfig().getBoolean("disabled-metrics")) {
-            String vaultVer;
-            Plugin vault = Bukkit.getPluginManager().getPlugin("Vault");
-            if (vault != null) {
-                vaultVer = vault.getDescription().getVersion();
-            } else {
-                vaultVer = "Vault not found";
-            }
             // Use internal Metric class not Maven for solve plugin name issues
             String economyType = AbstractEconomy.getNowUsing().name();
             if (getEconomy() != null) {
                 economyType = this.getEconomy().getName();
             }
             // Version
-            metrics.addCustomChart(new Metrics.SimplePie("server_version", Bukkit::getVersion));
-            metrics.addCustomChart(new Metrics.SimplePie("bukkit_version", Bukkit::getBukkitVersion));
-            metrics.addCustomChart(new Metrics.SimplePie("vault_version", () -> vaultVer));
             metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> Util.boolean2Status(getConfig().getBoolean("shop.display-items"))));
             metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> Util.boolean2Status(getConfig().getBoolean("shop.lock"))));
-            metrics.addCustomChart(new Metrics.SimplePie("use_sneak_action", () -> Util.boolean2Status(getConfig().getBoolean("shop.interact.sneak-to-create") || getConfig().getBoolean("shop.interact.sneak-to-trade") || getConfig().getBoolean("shop.interact.sneak-to-control"))));
             String finalEconomyType = economyType;
             metrics.addCustomChart(new Metrics.SimplePie("economy_type", () -> finalEconomyType));
             metrics.addCustomChart(new Metrics.SimplePie("use_display_auto_despawn", () -> String.valueOf(getConfig().getBoolean("shop.display-auto-despawn"))));
-            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_display_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-display-protect"))));
-            metrics.addCustomChart(new Metrics.SimplePie("use_enhance_shop_protect", () -> String.valueOf(getConfig().getBoolean("shop.enchance-shop-protect"))));
-            metrics.addCustomChart(new Metrics.SimplePie("use_ongoing_fee", () -> String.valueOf(getConfig().getBoolean("shop.ongoing-fee.enable"))));
             metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> AbstractDisplayItem.getNowUsing().name()));
             metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));
             metrics.addCustomChart(new Metrics.SimplePie("use_stack_item", () -> String.valueOf(this.isAllowStack())));

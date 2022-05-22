@@ -143,4 +143,5 @@ public interface QuickShopAPI {
      * @param key            the key to map to or a fixed string
      */
     void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key);
+
 }

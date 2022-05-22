@@ -419,6 +419,7 @@ command:
     name: <yellow>Setzt einen bestimmten Namen für den Shop
     toggledisplay: <yellow>Ändere den Anzeigestatus des Items für den Shop
     permission: <yellow>Shop-Berechtigungsverwaltung
+    lookup: <yellow>Tabelle der nachschlagbaren Gegenstände verwalten
   bulk-size-not-set: '<red>Verwendung: /qs size <Anzahl>'
   no-type-given: '<red>Verwendung: /qs find <item>'
   feature-not-enabled: Dieses Feature ist nicht in der Config Datei aktiviert.
@@ -512,3 +513,12 @@ command-incorrect: "<red>Befehlsnutzung falsch, schreibe /qs help um die Hilfe z
 successfully-set-player-group: "<green>Spieler {0} Gruppe erfolgreich zu <aqua>{1}</aqua> geändert."
 successfully-unset-player-group: "<green>Spielergruppe erfolgreich vom Shop entfernt."
 successfully-set-player-permission: "<green>Spieler {0} Berechtigung erfolgreich zu <aqua>{1}</aqua> in Shop <aqua>{2}</aqua> geändert."
+lookup-item-created: "<green>Ein Gegenstand namens <aqua>{0}</aqua> wurde in der Nachschlagetabelle erstellt. Du kannst diesen Eintrag jetzt in den Konfigurationen verwenden."
+lookup-item-exists: "<red>Ein Gegenstand namens <yellow>{0}</yellow> existiert bereits in der Nachschlagetabelle, lösche ihn oder wähle einen anderen Namen."
+lookup-item-not-found: "<red>Ein Gegenstand namens <yellow>{0}</yellow> existiert nicht."
+lookup-item-name-illegal: "<red>Gegenstandsname unzulässig. Nur alphanumerische Zeichen und Unterstriche sind erlaubt."
+lookup-item-name-regex: "<red>Der Name muss diesem Regex entsprechen: <aqua>{0}</aqua>."
+lookup-item-test-not-found: "<gold>Test: <yellow>Das Item in deiner Hand ist nicht in der Suchtabelle registriert."
+lookup-item-test-found: "<gold>Test: <green>Das Item in deiner Hand wurde als <aqua>{0}</aqua> in der Suchtabelle registriert."
+lookup-item-removed: "<green>Das angegebene Item <aqua>{0}</aqua> wurde erfolgreich von der Suchtabelle entfernt."
+internal-error: "<red>Ein interner Fehler ist aufgetreten. Bitte kontaktiere den Serveradministrator."

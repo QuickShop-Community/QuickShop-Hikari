@@ -86,7 +86,8 @@ public class SubCommand_Find implements CommandHandler<Player> {
             if (aroundShops.size() == shopLimit) {
                 break;
             }
-            if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SEARCH)) {
+            if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SEARCH)
+                    || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.search")) {
                 continue;
             }
             Vector shopVector = shop.getLocation().toVector();

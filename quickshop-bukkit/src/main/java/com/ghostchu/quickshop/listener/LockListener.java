@@ -124,7 +124,8 @@ public class LockListener extends AbstractProtectionListener {
             return;
         }
         Player player = event.getPlayer();
-        if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.DELETE)) {
+        if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.DELETE)
+                && !QuickShop.getPermissionManager().hasPermission(player, "quickshop.other.open")) {
             plugin.text().of(player, "that-is-locked").send();
             event.setCancelled(true);
         }

@@ -419,6 +419,7 @@ command:
     name: <yellow>Pojmenování obchodu na konkrétní název
     toggledisplay: <white>Přepne obchodu status ukazovaného předmětu
     permission: <yellow>Správa oprávnění obchodu
+    lookup: <yellow>Spravovat tabulku položek pro vyhledávání
   bulk-size-not-set: '<red>Použití: <gray>/qs size <amount>'
   no-type-given: '<red>Použití: <gray>/qs find <item>'
   feature-not-enabled: Funkce není v konfiguraci povolena.
@@ -512,3 +513,12 @@ command-incorrect: "<red>Chybné použití příkazu, napište /qs help pro kont
 successfully-set-player-group: "<green>Skupina hráče {0} byla úspěšně nastavena na <aqua>{1}</aqua>."
 successfully-unset-player-group: "<green>Skupina hráčů byla úspěšně odstraněna z tohoto obchodu."
 successfully-set-player-permission: "<green>Úspěšně nastaveno oprávnění hráče {0} <aqua>{1}</aqua> v obchodě <aqua>{2}</aqua>."
+lookup-item-created: "<green>Položka s názvem <aqua>{0}</aqua> byla vytvořena v tabulce vyhledávání. Nyní můžete odkazovat na tuto položku v konfiguracích."
+lookup-item-exists: "<red>Položka s názvem <yellow>{0}</yellow> již existuje v tabulce vyhledávání, smaž ji nebo vyber jiné jméno."
+lookup-item-not-found: "<red>Položka s názvem <yellow>{0}</yellow> neexistuje."
+lookup-item-name-illegal: "<red>Název položky je nezákonný. Jsou povoleny pouze alfanumerické znaky a podtržítka."
+lookup-item-name-regex: "<red>Název musí odpovídat tomuto regexu: <aqua>{0}</aqua>."
+lookup-item-test-not-found: "<gold>Test: <yellow>Položka v ruce není zaregistrována ve vyhledávací tabulce."
+lookup-item-test-found: "<gold>Test: <green>Položka v ruce byla zaregistrována v tabulce vyhledávání pod názvem <aqua>{0}</aqua>."
+lookup-item-removed: "<green>Zadaná položka <aqua>{0}</aqua> byla úspěšně odstraněna z tabulky vyhledávání."
+internal-error: "<red>Došlo k vnitřní chybě, kontaktujte prosím správce serveru."

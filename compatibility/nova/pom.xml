@@ -32,7 +32,7 @@
     <artifactId>nova</artifactId>
     <packaging>jar</packaging>
 
-    <name>quickshop-compatibility-nova</name>
+    <name>Compat-Nova</name>
 
     <properties>
         <java.version>16</java.version>

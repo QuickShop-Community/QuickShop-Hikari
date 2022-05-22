@@ -50,7 +50,7 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(Админ) <light_purple>{0} <dark_gray>ошибка при проверке разрешения. Если это не ожидаемое поведение попробуйте добавить <light_purple>{1} <gray>в чёрный список. <gray>Гайд по настройке: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Средняя цена: <yellow>{0}'
 digits-reach-the-limit: <red>Вы достигли пределов десятичных знаков в цене.
 currency-unset: <green>Магазин успешно удален. Использование настроек теперь по умолчанию.
@@ -124,7 +124,7 @@ success-change-owner-to-server: <green>Владелец магазина усп�
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
 shop-name-too-long: <red>Это имя магазина слишком длинное (максимальная длинна {0}), пожалуйста выберете другое!
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>Транзакции игрока {0} {1} {2}:'
   action-hover: <yellow>{0}
   entry-header-shop: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66) <aqua>|'
   price-hover: <yellow>Всего {0}, включая {1} налогов.
@@ -419,6 +419,7 @@ command:
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Переключает отображение товара в магазине (над сундука)
     permission: <yellow>Shop permission management
+    lookup: <yellow>Manage lookup-able items table
   bulk-size-not-set: '<red>Используйте: /qs size <amount>'
   no-type-given: '<red>Используйте: /qs find <item>'
   feature-not-enabled: Функция не включена в конфигурации.
@@ -512,3 +513,12 @@ command-incorrect: "<red>Command usage incorrect, type /qs help to check help. U
 successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
 successfully-unset-player-group: "<green>Successfully remove player group in this shop."
 successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
+lookup-item-created: "<green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now."
+lookup-item-exists: "<red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name."
+lookup-item-not-found: "<red>An item named <yellow>{0}</yellow> not exists."
+lookup-item-name-illegal: "<red>Item name illegal. Only alphanumeric characters and underscores are allowed."
+lookup-item-name-regex: "<red>The name must match this regex: <aqua>{0}</aqua>."
+lookup-item-test-not-found: "<gold>Test: <yellow>The item in your hand not registered in lookup table."
+lookup-item-test-found: "<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table."
+lookup-item-removed: "<green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table."
+internal-error: "<red>An internal error occurred, please contact the server administrator."

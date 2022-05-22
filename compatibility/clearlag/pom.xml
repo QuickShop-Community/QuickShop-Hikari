@@ -25,14 +25,14 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>2.0.0.3</version>
+        <version>2.0.1.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
     <artifactId>clearlag</artifactId>
     <packaging>jar</packaging>
 
-    <name>Compatibility-Clearlag</name>
+    <name>Compat-Clearlag</name>
 
     <description>Compatibility module for ClearLagg</description>
     <properties>

@@ -28,7 +28,7 @@ import java.text.NumberFormat;
 
 public class CachePerformanceItem implements SubPasteItem {
     private final QuickShop plugin = QuickShop.getInstance();
-    
+
     @Override
     public @NotNull String getTitle() {
         return "Cache Performance";

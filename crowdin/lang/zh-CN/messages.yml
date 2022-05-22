@@ -419,6 +419,7 @@ command:
     name: <yellow>将商店命名为特定名称
     toggledisplay: <yellow>切换商店是否显示悬浮物
     permission: <yellow>商店权限管理
+    lookup: <yellow>管理物品引用查找表
   bulk-size-not-set: '<red>用法: /qs size <数量>'
   no-type-given: '<red>用法: /qs find <物品名称>'
   feature-not-enabled: 该功能未在配置文件中启用。
@@ -512,3 +513,12 @@ command-incorrect: "<red>指令用法错误，输入/qs help检查帮助。用�
 successfully-set-player-group: "<green>成功地将玩家 {0} 组设置为 <aqua>{1}</aqua>。"
 successfully-unset-player-group: "<green>成功地移除此商店中的玩家权限组。"
 successfully-set-player-permission: "<green>成功设置玩家 {0} 权限 <aqua>{1}</aqua> 在商店 <aqua>{2}</aqua>"
+lookup-item-created: "<green>一个名为 <aqua>{0}</aqua> 的物品成功注册到物品引用查找表中。 现在你可以在配置文件中引用此物品了。"
+lookup-item-exists: "<red>一个名为 <yellow>{0}</yellow> 的物品已存在于物品引用查找表中，请先将其删除或者起一个新名字。"
+lookup-item-not-found: "<red>物品 <yellow>{0}</yellow> 不存在于物品引用查找表中。"
+lookup-item-name-illegal: "<red>非法物品名，只有数字、字母和下划线可以使用。"
+lookup-item-name-regex: "<red>物品名不符合正则表达式: <aqua>{0}</aqua>."
+lookup-item-test-not-found: "<gold>测试: <yellow>你手中的物品未注册到物品引用查找表中。"
+lookup-item-test-found: "<gold>测试: <green>你手中的物品在物品引用查找表中注册的名字为 <aqua>{0}</aqua>。"
+lookup-item-removed: "<green>指定的物品 <aqua>{0}</aqua> 现已从物品引用查找表中删除。"
+internal-error: "<red>发生了一个内部错误，请联系服务器管理员。"
