@@ -357,13 +357,13 @@ timeunit:
   second: <red>{0} секунд
   std-past-format: '{5}{4}{3}{2}{1}{0}назад'
   std-time-format: "HH:mm:ss"
-  seconds: <red>{0} seconds
-  hour: <red>{0} hour
-  scheduled-at: scheduled at {0}
-  after: after
-  day: <red>{0} day
-  recent: recent
-  between: between
+  seconds: <red>{0} секунд
+  hour: <red>{0} час
+  scheduled-at: запланировано на {0}
+  after: после
+  day: <red>{0} день
+  recent: недавно
+  between: между
   hours: <red>{0} hours
   months: <red>{0} months
   longtimeago: long time ago
