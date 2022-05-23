@@ -266,11 +266,15 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         //BEWARE THESE ONLY RUN ONCE
         this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
         getLogger().info("Self testing...");
-        runtimeCheck(EnvCheckEntry.Stage.ON_LOAD);
-        getLogger().info("Loading player name and unique id mapping...");
-        this.playerFinder = new PlayerFinder();
+        if (!runtimeCheck(EnvCheckEntry.Stage.ON_LOAD)) {
+            return;
+        }
         getLogger().info("Reading the configuration...");
         initConfiguration();
+        getLogger().info("Loading up platform modules...");
+        loadPlatform();
+        getLogger().info("Loading player name and unique id mapping...");
+        this.playerFinder = new PlayerFinder();
         // Reset the BootError status to normal.
         this.bootError = null;
         setupUnirest();
@@ -278,8 +282,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         loadTextManager();
         getLogger().info("Register InventoryWrapper...");
         this.inventoryWrapperRegistry.register(this, this.inventoryWrapperManager);
-        getLogger().info("Loading up platform modules...");
-        loadPlatform();
+
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Complete");
     }
 
@@ -753,7 +756,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         updateConfig();
     }
 
-    private void runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
+    private boolean runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
         environmentChecker = new EnvironmentChecker(this);
         ResultReport resultReport = environmentChecker.run(stage);
         StringJoiner joiner = new StringJoiner("\n", "", "");
@@ -767,7 +770,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         // Check If we need kill the server or disable plugin
 
         switch (resultReport.getFinalResult()) {
-            case DISABLE_PLUGIN -> Bukkit.getPluginManager().disablePlugin(this);
+            case DISABLE_PLUGIN -> {
+                Bukkit.getPluginManager().disablePlugin(this);
+                return false;
+            }
             case STOP_WORKING -> {
                 setupBootError(new BootError(this.getLogger(), joiner.toString()), true);
                 PluginCommand command = getCommand("qs");
@@ -778,6 +784,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             default -> {
             }
         }
+        return true;
     }
 
 
