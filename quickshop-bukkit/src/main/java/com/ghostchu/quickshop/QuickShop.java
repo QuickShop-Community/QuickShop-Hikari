@@ -259,6 +259,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     @Override
     public final void onLoad() {
         instance = this;
+        // Reset the BootError status to normal.
+        this.bootError = null;
         Util.setPlugin(this);
         this.onLoadCalled = true;
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up");
@@ -275,8 +277,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         loadPlatform();
         getLogger().info("Loading player name and unique id mapping...");
         this.playerFinder = new PlayerFinder();
-        // Reset the BootError status to normal.
-        this.bootError = null;
         setupUnirest();
         loadChatProcessor();
         loadTextManager();
