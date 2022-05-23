@@ -20,7 +20,6 @@
 package com.ghostchu.quickshop.papi;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Getter;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -28,50 +27,37 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.UUID;
-
 public class QuickShopPAPI extends PlaceholderExpansion {
-    private QuickShop plugin;
+    
     @Getter
     private final PAPICache papiCache = new PAPICache();
 
     @Override
     public boolean canRegister() {
-        this.plugin = QuickShop.getInstance();
         return true;
     }
 
-    /**
-     * The placeholder identifier of this expansion. May not contain {@literal %},
-     * {@literal {}} or _
-     *
-     * @return placeholder identifier that is associated with this expansion
-     */
     @Override
     public @NotNull String getIdentifier() {
         return "qs";
     }
 
-    /**
-     * The author of this expansion
-     *
-     * @return name of the author for this expansion
-     */
     @Override
     public @NotNull String getAuthor() {
         return "QuickShopBundled";
     }
 
-    /**
-     * The version of this expansion
-     *
-     * @return current version of this expansion
-     */
     @Override
     public @NotNull String getVersion() {
         return QuickShop.getVersion();
     }
-
+    
+    // Prevent the expansion being unregistered on /papi reload
+    @Override
+    public boolean persist(){
+        return true;
+    }
+    
     @Override
     public @Nullable String onRequest(@NotNull OfflinePlayer player, @NotNull String params) {
         String cached = papiCache.readCache(player.getUniqueId(), params);
@@ -83,36 +69,7 @@ public class QuickShopPAPI extends PlaceholderExpansion {
         if (args.length < 1) {
             return null;
         }
-        switch (args[0]) {
-            case "server-total" -> {
-                return String.valueOf(plugin.getShopManager().getAllShops().size());
-            }
-            case "server-loaded" -> {
-                return String.valueOf(plugin.getShopManager().getLoadedShops().size());
-            }
-            case "default-currency" -> {
-                return String.valueOf(plugin.getCurrency());
-            }
-            case "player" -> {
-                UUID uuid = null;
-                if (args.length >= 3) {
-                    if (Util.isUUID(args[1])) {
-                        uuid = UUID.fromString(args[1]);
-                    }
-                }
-                if (uuid == null)
-                    uuid = player.getUniqueId();
-                //noinspection SwitchStatementWithTooFewBranches
-                switch (args[2]) {
-                    case "count" -> {
-                        return String.valueOf(plugin.getShopManager().getPlayerAllShops(uuid).size());
-                    }
-                }
-
-                return null;
-            }
-        }
-
-        return super.onRequest(player, params);
+        
+        return papiCache.getCached(player.getUniqueId(), args);
     }
 }
