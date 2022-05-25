@@ -25,7 +25,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>2.0.1.1</version>
+        <version>2.0.1.2</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -99,7 +99,7 @@
         <dependency>
             <groupId>com.palmergames.bukkit.towny</groupId>
             <artifactId>towny</artifactId>
-            <version>0.98.1.12</version>
+            <version>0.98.1.13</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

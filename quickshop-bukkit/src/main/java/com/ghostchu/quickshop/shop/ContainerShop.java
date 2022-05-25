@@ -36,6 +36,8 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.quickshop.util.serialize.BlockPos;
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
@@ -68,7 +70,7 @@ import java.util.logging.Level;
  * ChestShop core
  */
 @EqualsAndHashCode
-public class ContainerShop implements Shop {
+public class ContainerShop implements Shop, Reloadable {
     @NotNull
     private final Location location;
     private final YamlConfiguration extra;
@@ -83,6 +85,9 @@ public class ContainerShop implements Shop {
     private boolean isAlwaysCountingContainer;
     @NotNull
     private ItemStack item;
+
+    @NotNull
+    private ItemStack originalItem;
     @Nullable
     @EqualsAndHashCode.Exclude
     private AbstractDisplayItem displayItem;
@@ -124,6 +129,7 @@ public class ContainerShop implements Shop {
         Util.ensureThread(false);
         this.shopType = s.shopType;
         this.item = s.item.clone();
+        this.originalItem = s.originalItem.clone();
         this.location = s.location.clone();
         this.plugin = s.plugin;
         this.unlimited = s.unlimited;
@@ -186,6 +192,7 @@ public class ContainerShop implements Shop {
         // Upgrade the shop moderator
         this.owner = owner;
         this.item = item.clone();
+        this.originalItem = item.clone();
         this.plugin = plugin;
         this.playerGroup = new HashMap<>(playerGroup);
         if (!plugin.isAllowStack()) {
@@ -1030,7 +1037,7 @@ public class ContainerShop implements Shop {
         int unlimited = this.isUnlimited() ? 1 : 0;
         try {
             plugin.getDatabaseHelper()
-                    .updateShop(this.owner.toString(), this.getItem(),
+                    .updateShop(this.owner.toString(), this.originalItem,
                             unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
                             this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), saveToSymbolLink(), this.inventoryWrapperProvider, this.shopName, this.playerGroup);
             this.dirty = false;
@@ -1095,6 +1102,7 @@ public class ContainerShop implements Shop {
             return;
         }
         this.item = item;
+        this.originalItem = item;
         notifyDisplayItemChange();
         update();
         refresh();
@@ -1741,11 +1749,21 @@ public class ContainerShop implements Shop {
 
     @Override
     public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(getLocation().getWorld().getName(), new BlockPos(getLocation()), getOwner(), getPrice(), Util.serialize(getItem()), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount(), inventoryWrapperProvider, saveToSymbolLink(), getPermissionAudiences());
+        return new ShopInfoStorage(getLocation().getWorld().getName(), new BlockPos(getLocation()), getOwner(), getPrice(), Util.serialize(this.originalItem), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount(), inventoryWrapperProvider, saveToSymbolLink(), getPermissionAudiences());
     }
 
     @Override
     public @NotNull String getInventoryWrapperProvider() {
         return inventoryWrapperProvider;
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        if (!plugin.isAllowStack()) {
+            this.item.setAmount(1);
+        } else {
+            this.item.setAmount(this.originalItem.getAmount());
+        }
+        return Reloadable.super.reloadModule();
     }
 }
