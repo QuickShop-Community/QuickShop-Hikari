@@ -1761,6 +1761,8 @@ public class ContainerShop implements Shop, Reloadable {
     public ReloadResult reloadModule() throws Exception {
         if (!plugin.isAllowStack()) {
             this.item.setAmount(1);
+        } else {
+            this.item.setAmount(this.originalItem.getAmount());
         }
         return Reloadable.super.reloadModule();
     }
