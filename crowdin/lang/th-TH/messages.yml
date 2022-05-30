@@ -1,7 +1,7 @@
 ---
 break-shop-use-supertool: <yellow>You can break the shop by using the SuperTool.
 fee-charged-for-price-change: <green>You paid <red>{0}<green> to change the price.
-not-allowed-to-create: <red>You may not create a shop here.
+not-allowed-to-create: <red>ไม่สามารถสร้างร้านตรงนี้ได้
 disabled-in-this-world: <red>QuickShop  ถูกปิดในโลกนี้
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
@@ -9,12 +9,12 @@ shops-backingup: Creating Shop-backup from database...
 _comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
-thats-not-a-number: <red>Invalid number
+thats-not-a-number: <red>ตัวเลขไม่ถูกต้อง
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
-console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
-not-a-number: <red>You can only input a number, your input was {0}.
+console-only-danger: <red>คำสั่งนี้เป็นคำสั่งอันตราย สามารถใช้ได้ผ่าน Console เท่านั้น
+not-a-number: <red>สามารถใส่ได้แค่ตัวเลข แต่คุณใส่ {0}
 not-looking-at-valid-shop-block: ไม่พบบล็อกสำหรับสร้างร้านค้า คุณต้องมองดูที่ป้ายหีบ
-shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
+shop-removed-cause-ongoing-fee: <red>ร้านของคุณที่ {0} โดนปิดเพราะคุณมีเงินไม่พอที่จะเปิดต่อได้
 tabcomplete:
   amount: '[amount]'
   item: '[item]'
@@ -23,30 +23,30 @@ tabcomplete:
   range: '[range]'
   currency: '[currency name]'
 taxaccount-unset: <green>This shop's tax account now following server global setting.
-blacklisted-item: <red>You cannot sell this item because it is on the blacklist
+blacklisted-item: <red>คุณไม่สามารถขายของชิ้นนี้ได้เพราะเป็นของที่ไม่ได้รับอนุญาต
 command-type-mismatch: <red>This command only can executed by <aqua>{0}.
 server-crash-warning: '<red>Server may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running.'
-you-cant-afford-to-change-price: <red>It costs {0} to change the price in your shop.
+you-cant-afford-to-change-price: <red>มีค่าใช้จ่ายทั้งหมด {0} ที่จะเปลี่ยนราคาในร้านของคุณ
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
 forbidden-vanilla-behavior: <red>The operation is forbidden due to it not being consisten with vanilla behaviour
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>ร้านของคุณ {0} เต็ม
 paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '&eName: &b{0}'
-    - '&eOwner: &b{0}'
-    - '&eType: &b{0}'
-    - '&ePrice: &b{0}'
-    - '&eItem: &b{0}'
-    - '&eLocation: &b{0}'
+    - '&eชื่อ: &b{0}'
+    - '&eเจ้าของ: &b{0}'
+    - '&eชนิด: &b{0}'
+    - '&eราคา: &b{0}'
+    - '&eของ: &b{0}'
+    - '&eสถานที่: &b{0}'
   hover-arg-filled:
-    - '&eName: &b{name}'
-    - '&eOwner: &b{owner}'
-    - '&eType: &b{type}'
-    - '&ePrice: &b{price}'
-    - '&eItem: &b{item}'
-    - '&eLocation: &b{location}'
+    - '&eชื่อ: &b{name}'
+    - '&eเจ้าของ: &b{owner}'
+    - '&eชนิด: &b{type}'
+    - '&eราคา: &b{price}'
+    - '&eของ: &b{item}'
+    - '&eสถานที่: &b{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -56,7 +56,7 @@ digits-reach-the-limit: <red>You have reached the limits of decimals in the pric
 currency-unset: <green>Shop currency removed successfully. Using default settings now.
 you-cant-create-shop-in-there: <red>You don't have permission to create a shop at this location.
 no-pending-action: <red>You do not have any pending actions
-refill-success: <green>Refill successful
+refill-success: <green>เติมของสำเร็จ
 failed-to-paste: <red>Failed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)
 shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
@@ -69,39 +69,39 @@ not-a-integer: <red>You must input a integer, your input was {0}.
 translation-country: 'โซนภาษา: ไทย (th_TH)'
 buying-more-than-selling: '<red>WARNING: You are buying items for more than you are selling them!'
 purchase-failed: '<red>Purchase failed: Internal Error. Please contact the Server Administrator.'
-denied-put-in-item: <red>You cannot put this item into your shop!
+denied-put-in-item: <red>ไม่สามารถใส่ของชิ้นนี้เข้าไปในร้านของคุณได้
 shop-has-changed: <red>The shop you tried to use has changed since you clicked it!
 flush-finished: <green>Successfully flushed the messages.
 no-price-given: <red>Please give a valid price.
 shop-already-owned: <red>หีบนี้ได้สร้างร้านแล้ว
 backup-success: <green>Backup successfull.
 not-looking-at-shop: ไม่พบหีบสำหรับสร้างร้านค้า คุณต้องมองดูที่ป้ายหีบ
-you-cant-afford-a-new-shop: <red>It costs {0} to create a new shop.
+you-cant-afford-a-new-shop: <red>สร้างร้านใหม่ใช้เงิน {0}
 success-created-shop: <red>ได้สร้างร้านค้าสำเร็จ
 shop-creation-cancelled: <red>การสร้างร้านค้าได้ถูกยกเลิกแล้ว
 shop-owner-self-trade: <yellow>You trading with yourself shop, so you might won't gain any balance.
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
-  success: <green>Reload completed without any errors.
+  success: <green>โหลดใหม่สำเร็จ
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
-  failed: <red>Reload failed, check the server console
+  failed: <red>โหลดใหม่เกิดข้อผิดพลาด กรุณาดู Console ของเซิร์ฟเวอร์
 player-bought-from-your-store-tax: <red>{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).
 not-enough-space: <red>You only have room for {0} more!
-shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
+shop-name-success: <green>เปลี่ยนชื่อร้านเป็น <yellow>{0}<green>
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
 shops-recovering: Recovering shops from backup...
 menu:
   sell-tax: <green>You paid <yellow>{0} <green>in taxes.
-  owner: '<green>Owner: {0}'
+  owner: '<green>เจ้าของ: {0}'
   preview: <aqua>[Item Preview]
   enchants: <dark_purple>Enchantments
   sell-tax-self: <green>You didn't pay taxes because you own this shop.
-  shop-information: '<green>Shop Information:'
-  item: '<green>Item: <yellow>{0}'
+  shop-information: '<green>ข้อมูลร้าน:'
+  item: '<green>ของ: <yellow>{0}'
   price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
-  successful-purchase: '<green>Successfully purchased:'
+  successful-purchase: '<green>ซื้อสำเร็จ:'
   price-per-stack: <green>Price per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Stored Enchantments
   item-holochat-error: <red>[Error]
@@ -109,11 +109,11 @@ menu:
   shop-stack: '<green>Amount of bulk: <yellow>{0}'
   space: '<green>Space: <yellow>{0}'
   effects: <green>Effects
-  damage-percent-remaining: <yellow>{0}% <green>remaining.
+  damage-percent-remaining: <green>เหลือ <yellow>{0}%
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock <yellow>{0}'
   this-shop-is-buying: <green>This shop is <light_purple>BUYING<green> items.
-  successfully-sold: '<green>Successfully sold:'
+  successfully-sold: '<green>ขายสำเร็จ:'
   total-value-of-chest: '<green>Total value of chest: <yellow>{0}'
 currency-not-exists: <red>Cannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.
 no-nearby-shop: <red>No nearby shop matching {0}.
