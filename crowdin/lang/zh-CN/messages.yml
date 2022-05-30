@@ -306,7 +306,7 @@ language-info-panel:
   name: '语言：'
   progress: '进度：'
   translate-on-crowdin: '[在 Crowdin 上翻译]'
-item-not-exist: '&物品 <yellow>{0} <red>不存在，请检查您的拼写。'
+item-not-exist: <red>物品 <yellow>{0}</yellow> 不存在，请检查您的拼写。
 shop-creation-failed: <red>商店创建失败，请与服务器管理员联系。
 inventory-space-full: <red>你的背包只能放入<green>{1}x <red>个物品。请尝试清理你的背包空间！
 no-creative-break: <red>你不能在创造模式破坏其他玩家的商店, 请使用生存模式或用超级工具 {0} 来破坏。

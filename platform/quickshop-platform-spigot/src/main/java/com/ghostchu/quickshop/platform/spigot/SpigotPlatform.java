@@ -89,7 +89,14 @@ public class SpigotPlatform implements Platform {
     public @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack) {
         NamespacedKey namespacedKey = stack.getType().getKey();
         Key key = Key.key(namespacedKey.toString());
-        return HoverEvent.showItem(key, stack.getAmount(), BinaryTagHolder.of(ReflectFactory.getMaterialMinecraftNamespacedKey(stack.getType())));
+        BinaryTagHolder holder;
+        if (Util.methodExists(BinaryTagHolder.class, "binaryTagHolder")) {
+            holder = BinaryTagHolder.binaryTagHolder(ReflectFactory.getMaterialMinecraftNamespacedKey(stack.getType()));
+        } else {
+            //noinspection UnstableApiUsage
+            holder = BinaryTagHolder.of(ReflectFactory.getMaterialMinecraftNamespacedKey(stack.getType()));
+        }
+        return HoverEvent.showItem(key, stack.getAmount(), holder);
     }
 
     @Override

@@ -99,9 +99,6 @@ public class ReflectFactory {
 
     @NotNull
     public static Class<?> getNMSClass(@Nullable String className) {
-        if (cachedNMSClass != null) {
-            return cachedNMSClass;
-        }
         if (className == null) {
             className = "MinecraftServer";
         }
@@ -225,36 +222,38 @@ public class ReflectFactory {
 
     @Nullable
     public static String getMaterialMinecraftNamespacedKey(Material material) {
-        Object nmsItem;
-        try {
-            nmsItem = Class.forName("org.bukkit.craftbukkit." + getNMSVersion() + ".util.CraftMagicNumbers").getMethod("getItem", Material.class).invoke(null, material);
-            if (nmsItem == null) {
-                return null;
-            }
-            if (getMinecraftKeyNameMethod == null) {
-                try {
-                    getMinecraftKeyNameMethod = nmsItem.getClass().getMethod("getName");
-                } catch (NoSuchMethodException exception) {
-                    getMinecraftKeyNameMethod = findMethod(nmsItem.getClass(), String.class, method -> {
-                        try {
-                            return !"toString".equals(method.getName()) && ((String) method.invoke(nmsItem)).toLowerCase().contains(material.getKey().getKey().toLowerCase(Locale.ROOT));
-                        } catch (Throwable throwable) {
-                            return false;
-                        }
-                    });
-                }
-            }
-
-            if (getMinecraftKeyNameMethod == null) {
-                return null;
-            } else {
-                return (String) getMinecraftKeyNameMethod.invoke(nmsItem);
-            }
-        } catch (IllegalAccessException | ClassNotFoundException | NoSuchMethodException |
-                 InvocationTargetException e) {
-            e.printStackTrace();
-            return null;
-        }
+        // TODO: Handle it with NMS on Spigot platform
+        return "minecraft:" + material.name().toLowerCase(Locale.ROOT);
+//        Object nmsItem;
+//        try {
+//            nmsItem = Class.forName("org.bukkit.craftbukkit." + getNMSVersion() + ".util.CraftMagicNumbers").getMethod("getItem", Material.class).invoke(null, material);
+//            if (nmsItem == null) {
+//                return null;
+//            }
+//            if (getMinecraftKeyNameMethod == null) {
+//                try {
+//                    getMinecraftKeyNameMethod = nmsItem.getClass().getMethod("getName");
+//                } catch (NoSuchMethodException exception) {
+//                    getMinecraftKeyNameMethod = findMethod(nmsItem.getClass(), String.class, method -> {
+//                        try {
+//                            return !"toString".equals(method.getName()) && ((String) method.invoke(nmsItem)).toLowerCase().contains(material.getKey().getKey().toLowerCase(Locale.ROOT));
+//                        } catch (Throwable throwable) {
+//                            return false;
+//                        }
+//                    });
+//                }
+//            }
+//
+//            if (getMinecraftKeyNameMethod == null) {
+//                return null;
+//            } else {
+//                return (String) getMinecraftKeyNameMethod.invoke(nmsItem);
+//            }
+//        } catch (IllegalAccessException | ClassNotFoundException | NoSuchMethodException |
+//                 InvocationTargetException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
     }
 
 }
