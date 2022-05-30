@@ -80,7 +80,7 @@ public class PlayerListener extends AbstractQSListener {
 
         // ----Adventure dupe click workaround start----
         if (e.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-            if (cooldownMap.getIfPresent(e.getPlayer().getUniqueId()) != null) {
+            if (cooldownMap.getIfPresent(e.getPlayer().getUniqueId()) == null) {
                 return;
             }
             cooldownMap.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
