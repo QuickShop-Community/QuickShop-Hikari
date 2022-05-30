@@ -112,7 +112,7 @@ menu:
   damage-percent-remaining: <green>Kalan <yellow>{0}%.
   item-holochat-data-too-large: <red>[Error] Öğe NBT'si gösterilemeyecek kadar büyük
   stock: '<green>Stok <yellow>{0}'
-  this-shop-is-buying: <green>Bu market öğe %dSATIN ALIYOR<green>.
+  this-shop-is-buying: <green>Bu market öğe <light_purple>SATIN ALIYOR<green>.
   successfully-sold: '<green>Başarıyla satıldı:'
   total-value-of-chest: '<green>Sandığın toplam değeri: <yellow>{0}'
 currency-not-exists: <red>Ayarlamak istediğiniz para birimi bulunamadı. Belki imlâ hatası yaptığınız ya da o para birimi dünyada mevcut değil.
