@@ -37,7 +37,7 @@ quick-fill:
     - '&eName: &b{0}'
     - '&eOwner: &b{0}'
     - '&eType: &b{0}'
-    - '&ePrice: &b{0}'
+    - '&eHinta: &b{0}'
     - '&eItem: &b{0}'
     - '&eLocation: &b{0}'
   hover-arg-filled:
