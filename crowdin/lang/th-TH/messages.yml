@@ -298,7 +298,7 @@ shop-staff-cleared: <green>Successfully removed all staff members from your shop
 price-too-high: <red>The shop price is too high! You cannot create one with a price higher than {0}.
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <green>{0} sold {1} {2} to your shop.
-shop-out-of-stock: <dark_purple>Your shop at {0}, {1}, {2} has run out of {3}!
+shop-out-of-stock: <dark_purple>ร้าน {0}, {1}, {2} ของคุณ {3} หมด
 how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}<green>. Enter <aqua>{1}<green> to buy them all.
 language-info-panel:
   help: 'Help us: '
@@ -307,7 +307,7 @@ language-info-panel:
   progress: 'Progress: '
   translate-on-crowdin: '[Translate on Crowdin]'
 item-not-exist: <red>The item <yellow>{0} <red>does not exist, please check your spelling.
-shop-creation-failed: <red>Shop creation failed, please contact with server administrator.
+shop-creation-failed: <red>การสร้างร้านไม่สำเร็จ กรุณาติดต่อผู้ดูแลเซิร์ฟเวอร์
 inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items into it, try empty the your inventory!
 no-creative-break: <red>You cannot break other players shops in creative mode, switch to survival mode or try to use the supertool {0} instead.
 booleanformat:
@@ -315,8 +315,8 @@ booleanformat:
   failed: <red>✘
 controlpanel:
   stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  price-hover: <yellow>Click to set a new price for the item.
-  remove: <red><bold>[Remove Shop]
+  price-hover: <yellow>คลิกเพื่อตั้งราคาใหม่สำหรับของ
+  remove: <red><bold>[ลบร้านค้า]
   mode-buying-hover: <yellow>Click to change the shop to SELL mode.
   empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>Click to set the amount of item per bulk. Set to 1 for normal behaviour.
