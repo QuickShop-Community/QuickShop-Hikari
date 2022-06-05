@@ -19,7 +19,7 @@ game-language: default
 #The language files will automatically update thorough Crowdin OTA system, you can translate it there:
 #https://crowdin.com/project/quickshop-reremake
 #If you want custom the language file, use language override system:
-#https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-translation-override-system
+#https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-translation-override-system
 enabled-languages:
   - '*'
 
