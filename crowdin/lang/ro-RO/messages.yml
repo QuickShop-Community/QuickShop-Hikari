@@ -95,9 +95,9 @@ menu:
   sell-tax: <green>You paid <yellow>{0} <green>in taxes.
   owner: '<green>Proprietar: {0}'
   preview: <aqua>[Previzualizare articol]
-  enchants: <dark_purple>Enchantments
+  enchants: <dark_purple>Enchant-uri
   sell-tax-self: <green>You didn't pay taxes because you own this shop.
-  shop-information: '<green>Shop Information:'
+  shop-information: '<green>Informații despre magazin:'
   item: '<green>Item: <yellow>{0}'
   price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
