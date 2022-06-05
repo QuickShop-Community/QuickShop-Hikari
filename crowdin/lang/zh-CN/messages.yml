@@ -1,7 +1,7 @@
 ---
 break-shop-use-supertool: <yellow>您可以使用超级工具来破坏商店。
 fee-charged-for-price-change: <green>您已支付 <red>{0}<green> 来更改了价格。
-not-allowed-to-create: <red>你不能在这里创建商店
+not-allowed-to-create: <red>您不能在这里创建商店
 disabled-in-this-world: <red>QuickShop 在这个世界中被禁用
 how-much-to-trade-for: <green>请在聊天中输入交易<yellow>{1}个{0}<green>所需的价格。
 client-language-changed: <green>QuickShop检测到您的客户端语言已更改，我们正在为您使用 {0} 语言。
@@ -56,7 +56,7 @@ digits-reach-the-limit: <red>您的价格中的小数点后位数超过上限。
 currency-unset: <green>商店货币已被成功删除。现在会使用默认货币。
 you-cant-create-shop-in-there: <red>你没有在这个位置创建商店的权限。
 no-pending-action: <red>你没有任何进行中的操作
-refill-success: <green>填货成功
+refill-success: <green>补货成功
 failed-to-paste: <red>无法将数据上传到Pastebin，请检查你的网络连接并重试。（查看后台获取详情）
 shop-out-of-stock-name: <dark_purple>你名为 {0} 的商店的 {1} 脱销了!
 shop-name-invalid: <red>商店名称<yellow>{0} <red>无效。请换一个名称后再试！
