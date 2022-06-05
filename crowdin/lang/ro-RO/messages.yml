@@ -1,20 +1,20 @@
 ---
-break-shop-use-supertool: <yellow>You can break the shop by using the SuperTool.
+break-shop-use-supertool: '„<yellow>Poți distruge magazinul folosind SuperUnealta”.'
 fee-charged-for-price-change: <green>Ai achitat{0}<green> pentru a schimba pretul.
 not-allowed-to-create: <red>Nu poti crea un magazin aici.
-disabled-in-this-world: <red>QuickShop is disabled in this world
+disabled-in-this-world: '„<red>QuickShop este dezactivat in aceasta lume.”'
 how-much-to-trade-for: <green>Intra in chat, cat de mult doresti sa tranzacționezi &{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Creating Shop-backup from database...
 _comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
-thats-not-a-number: <red>Invalid number
+bad-command-usage-detailed: '„<red>Argumente de comandă nepotrivite! Acceptă următorii parametri: <gray>{0}”'
+thats-not-a-number: '„<red>Număr Invalid”'
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
-console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
+console-only-danger: '„<red>Aceasta este o comandă periculoasă, deci se poate executa doar in Consola”.'
 not-a-number: <red>Poti sa introduci doar un numar, intrarea ta a fost {0}.
 not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
-shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
+shop-removed-cause-ongoing-fee: '„<red> Magazinul tău de la {0} a fost șters deoarece nu ai suficienți bani pentru a-l păstra”!'
 tabcomplete:
   amount: '[amount]'
   item: '[item]'
@@ -22,20 +22,20 @@ tabcomplete:
   name: '[name]'
   range: '[range]'
   currency: '[currency name]'
-taxaccount-unset: <green>This shop's tax account now following server global setting.
+taxaccount-unset: '„<green>Contul fiscal al acestui magazin urmează acum setările globale ale serverului”.'
 blacklisted-item: <red>Nu poti vinde acest obiect pentru ca este pe lista neagra
 command-type-mismatch: <red>This command only can executed by <aqua>{0}.
 server-crash-warning: '<red>Server may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running.'
 you-cant-afford-to-change-price: <red>Schimbarea pretului magazinului tau costa {0}.
-safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
+safe-mode: '„<red>QuickShop acum în modul sigur, nu puteți deschide acest container, vă rugăm să contactați administratorul serverului pentru a remedia erorile”.'
 forbidden-vanilla-behavior: <red>The operation is forbidden due to it not being consisten with vanilla behaviour
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: '„<dark_purple>Magazinul tău {0} este plin”!'
 paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '&eName: &b{0}'
-    - '&eOwner: &b{0}'
+    - '&eNume: &b{0}'
+    - '&eProprietar: &b{0}'
     - '&eType: &b{0}'
     - '&ePrice: &b{0}'
     - '&eItem: &b{0}'
