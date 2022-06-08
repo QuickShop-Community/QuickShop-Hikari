@@ -479,20 +479,35 @@
                 <version>4.11.0</version>
                 <scope>compile</scope>
             </dependency>
-            <dependency>
-                <groupId>com.github.juliomarcopineda</groupId>
-                <artifactId>jdbc-stream</artifactId>
-                <version>0.1.1</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>one.util</groupId>
-                <artifactId>streamex</artifactId>
-                <version>0.8.1</version>
-                <scope>provided</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
+    <!-- GLOBAL DEPENDENCY -->
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>23.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.juliomarcopineda</groupId>
+            <artifactId>jdbc-stream</artifactId>
+            <version>0.1.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>one.util</groupId>
+            <artifactId>streamex</artifactId>
+            <version>0.8.1</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
     <modules>
         <module>platform/quickshop-platform-interface</module>
@@ -513,4 +528,5 @@
         <module>compatibility/plotsquared</module>
         <module>compatibility/lands</module>
     </modules>
+
 </project>
