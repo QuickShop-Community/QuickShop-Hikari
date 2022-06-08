@@ -95,7 +95,7 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
     }
 
     @Override
-    public void callEvent(Event event) {
+    public void callEvent(@NotNull Event event) {
         if (event.isAsynchronous()) {
             if (Thread.holdsLock(plugin.getServer().getPluginManager())) {
                 throw new IllegalStateException(

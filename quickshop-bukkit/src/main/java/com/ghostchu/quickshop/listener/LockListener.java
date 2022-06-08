@@ -22,7 +22,7 @@ package com.ghostchu.quickshop.listener;
 import com.ghostchu.quickshop.Cache;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;

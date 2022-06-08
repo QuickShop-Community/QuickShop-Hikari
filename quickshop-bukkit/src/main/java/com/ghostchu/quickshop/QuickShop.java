@@ -22,22 +22,28 @@ package com.ghostchu.quickshop;
 import cc.carm.lib.easysql.EasySQL;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.hikari.HikariConfig;
+import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.QuickShopAPI;
+import com.ghostchu.quickshop.api.QuickShopProvider;
 import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.economy.EconomyType;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
-import com.ghostchu.quickshop.api.shop.*;
+import com.ghostchu.quickshop.api.shop.ItemMatcher;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
+import com.ghostchu.quickshop.api.shop.ShopManager;
+import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.command.SimpleCommandManager;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelper;
 import com.ghostchu.quickshop.economy.Economy_GemsEconomy;
 import com.ghostchu.quickshop.economy.Economy_TNE;
 import com.ghostchu.quickshop.economy.Economy_Vault;
-import com.ghostchu.quickshop.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.listener.*;
 import com.ghostchu.quickshop.localization.text.SimpleTextManager;
 import com.ghostchu.quickshop.metric.MetricListener;
@@ -49,6 +55,7 @@ import com.ghostchu.quickshop.platform.spigot.SpigotPlatform;
 import com.ghostchu.quickshop.shop.*;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanel;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
+import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.util.Timer;
@@ -82,6 +89,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.enginehub.squirrelid.Profile;
@@ -125,7 +133,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     @Getter
     private SimpleShopPermissionManager shopPermissionManager;
     private boolean priceChangeRequiresFee = false;
-    private final InventoryWrapperRegistry inventoryWrapperRegistry = new InventoryWrapperRegistry(this);
+    private final InventoryWrapperRegistry inventoryWrapperRegistry = new InventoryWrapperRegistry();
     @Getter
     private final InventoryWrapperManager inventoryWrapperManager = new BukkitInventoryWrapperManager();
     @Getter
@@ -259,6 +267,17 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     @Override
     public final void onLoad() {
         instance = this;
+        Bukkit.getServicesManager().register(QuickShopProvider.class, new QuickShopProvider() {
+            @Override
+            public @NotNull Plugin getInstance() {
+                return instance;
+            }
+
+            @Override
+            public @NotNull QuickShopAPI getApiInstance() {
+                return instance;
+            }
+        }, this, ServicePriority.High);
         // Reset the BootError status to normal.
         this.bootError = null;
         Util.setPlugin(this);
@@ -528,9 +547,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         return instance;
     }
 
-    @NotNull
     @Override
-    public InventoryWrapperRegistry getInventoryWrapperRegistry() {
+    public @NotNull InventoryWrapperRegistry getInventoryWrapperRegistry() {
         return inventoryWrapperRegistry;
     }
 
@@ -980,15 +998,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private void submitMetrics() {
         if (!getConfig().getBoolean("disabled-metrics")) {
             // Use internal Metric class not Maven for solve plugin name issues
-            String economyType = AbstractEconomy.getNowUsing().name();
-            if (getEconomy() != null) {
-                economyType = this.getEconomy().getName();
-            }
             // Version
             metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> Util.boolean2Status(getConfig().getBoolean("shop.display-items"))));
             metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> Util.boolean2Status(getConfig().getBoolean("shop.lock"))));
-            String finalEconomyType = economyType;
-            metrics.addCustomChart(new Metrics.SimplePie("economy_type", () -> finalEconomyType));
             metrics.addCustomChart(new Metrics.SimplePie("use_display_auto_despawn", () -> String.valueOf(getConfig().getBoolean("shop.display-auto-despawn"))));
             metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> AbstractDisplayItem.getNowUsing().name()));
             metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));

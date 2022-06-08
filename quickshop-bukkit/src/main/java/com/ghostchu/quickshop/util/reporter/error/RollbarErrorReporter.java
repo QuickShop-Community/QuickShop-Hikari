@@ -20,7 +20,7 @@
 package com.ghostchu.quickshop.util.reporter.error;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.GameVersion;
+import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.collect.Lists;

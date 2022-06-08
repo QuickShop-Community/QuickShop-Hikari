@@ -19,8 +19,8 @@
 
 package com.ghostchu.quickshop.util.logging.container;
 
+import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
-import com.ghostchu.quickshop.util.serialize.BlockPos;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

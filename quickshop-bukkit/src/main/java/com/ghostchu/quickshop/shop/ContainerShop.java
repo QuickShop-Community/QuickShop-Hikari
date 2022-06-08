@@ -21,21 +21,25 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
-import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
-import com.ghostchu.quickshop.api.shop.*;
+import com.ghostchu.quickshop.api.serialize.BlockPos;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
+import com.ghostchu.quickshop.api.shop.ShopModerator;
+import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.economy.EconomyTransaction;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
+import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.RealDisplayItem;
 import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
-import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
-import com.ghostchu.quickshop.util.serialize.BlockPos;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.collect.ImmutableList;
@@ -46,6 +50,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -71,6 +76,7 @@ import java.util.logging.Level;
  */
 @EqualsAndHashCode
 public class ContainerShop implements Shop, Reloadable {
+    private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
     @NotNull
     private final Location location;
     private final YamlConfiguration extra;
@@ -1431,11 +1437,6 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
-    public @Nullable AbstractDisplayItem getDisplay() {
-        return this.displayItem;
-    }
-
-    @Override
     public void setDirty() {
         this.dirty = true;
     }
@@ -1515,6 +1516,45 @@ public class ContainerShop implements Shop, Reloadable {
         plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
         Log.debug("Inventory doesn't exist anymore: " + this + " shop was deleted.");
         return null;
+    }
+
+    /**
+     * Checks if a Sign is a ShopSign
+     *
+     * @param sign Target {@link Sign}
+     * @return Is shop info sign
+     */
+    @Override
+    public boolean isShopSign(@NotNull Sign sign) {
+        // Check for new shop sign
+        Component[] lines = new Component[sign.getLines().length];
+        for (int i = 0; i < sign.getLines().length; i++) {
+            lines[i] = QuickShop.getInstance().getPlatform().getLine(sign, i);
+        }
+        // Can be claim
+
+        boolean empty = true;
+        for (Component line : lines) {
+            if (!Util.isEmptyComponent(line)) {
+                empty = false;
+                break;
+            }
+        }
+
+        if (empty) {
+            return true;
+        }
+
+        // Check for exists shop sign (modern)
+        ShopSignStorage shopSignStorage = sign.getPersistentDataContainer().get(SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
+        if (shopSignStorage == null) {
+            // Try to read Reremake sign namespaced key
+            shopSignStorage = sign.getPersistentDataContainer().get(LEGACY_SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
+        }
+        if (shopSignStorage != null) {
+            return shopSignStorage.equals(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ());
+        }
+        return false;
     }
 
     /**

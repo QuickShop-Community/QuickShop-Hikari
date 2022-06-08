@@ -105,6 +105,12 @@
     </build>
     <dependencies>
         <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-hikari-api</artifactId>
+            <version>${version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
         </dependency>

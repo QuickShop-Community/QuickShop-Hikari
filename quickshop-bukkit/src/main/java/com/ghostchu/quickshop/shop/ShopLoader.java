@@ -24,7 +24,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.ShopType;
-import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Timer;

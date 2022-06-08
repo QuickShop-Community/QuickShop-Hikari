@@ -21,12 +21,12 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.*;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.economy.EconomyTransaction;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
-import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.*;
 import com.ghostchu.quickshop.util.economyformatter.EconomyFormatter;
 import com.ghostchu.quickshop.util.holder.Result;

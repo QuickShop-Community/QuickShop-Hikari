@@ -20,6 +20,8 @@
 package com.ghostchu.quickshop.metric;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.database.ShopMetricRecord;
+import com.ghostchu.quickshop.api.database.ShopOperationEnum;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopDeleteEvent;
 import com.ghostchu.quickshop.api.event.ShopOngoingFeeEvent;

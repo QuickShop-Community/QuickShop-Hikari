@@ -20,10 +20,10 @@
 package com.ghostchu.quickshop.util.envcheck;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
-import com.ghostchu.quickshop.api.shop.DisplayType;
+import com.ghostchu.quickshop.api.GameVersion;
+import com.ghostchu.quickshop.api.shop.display.DisplayType;
+import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
-import com.ghostchu.quickshop.util.GameVersion;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.Util;
@@ -194,10 +194,7 @@ public final class EnvironmentChecker {
         if (Util.isClassAvailable("cpw.mods.modlauncher.serviceapi.ILaunchPluginService")) {
             return true;
         }
-        if (Util.isClassAvailable("net.minecraftforge.forgespi.locating.IModLocator")) {
-            return true;
-        }
-        return false;
+        return Util.isClassAvailable("net.minecraftforge.forgespi.locating.IModLocator");
     }
 
     public boolean isFabricBasedServer() {
