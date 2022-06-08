@@ -343,5 +343,9 @@
             <version>0.1.1</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>simplereloadlib</artifactId>
+        </dependency>
     </dependencies>
 </project>
