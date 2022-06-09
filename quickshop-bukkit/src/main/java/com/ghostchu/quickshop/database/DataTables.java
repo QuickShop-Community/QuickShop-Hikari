@@ -129,6 +129,8 @@ public enum DataTables {
 
         table.addColumn("before", "MEDIUMTEXT"); // BEFORE DATA
         table.addColumn("after", "MEDIUMTEXT"); // AFTER DATA
+
+        // table.setIndex(IndexType.INDEX, "idx_qs_changed_shop", "shop");
     }),
 
     LOG_OTHERS("log_others", (table) -> {
