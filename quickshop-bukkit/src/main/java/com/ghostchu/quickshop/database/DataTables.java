@@ -4,7 +4,6 @@ import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.action.PreparedSQLUpdateAction;
 import cc.carm.lib.easysql.api.action.PreparedSQLUpdateBatchAction;
 import cc.carm.lib.easysql.api.builder.*;
-import cc.carm.lib.easysql.api.enums.ForeignKeyRule;
 import cc.carm.lib.easysql.api.enums.IndexType;
 import cc.carm.lib.easysql.api.function.SQLHandler;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +12,7 @@ import java.sql.SQLException;
 
 public enum DataTables {
 
-    SHOPS("shops", (table) -> {
+    DATA("data", (table) -> {
         table.addAutoIncrementColumn("id", true); // SHOP ID
         table.addColumn("owner", "VARCHAR(36)"); // SHOP OWNER (NULL if this is a server shop)
 
@@ -36,12 +35,20 @@ public enum DataTables {
         table.addColumn("inv_data", "TEXT NOT NULL"); // INVENTORY DATA (to read the inventory info)
 
         table.addColumn("create_time", "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"); // SHOP CREATE TIME
-        table.addColumn("remove_time", "DATETIME"); // SHOP REMOVE TIME (NULL if not removed)
+        // table.addColumn("remove_time", "DATETIME"); // SHOP REMOVE TIME (NULL if not removed)
 
-        table.setIndex(IndexType.INDEX, "idx_qs_owner", "owner");
+        table.setIndex(IndexType.INDEX, "index_qs_data_owner", "owner");
     }),
 
-    MAP("map", (table) -> {
+    SHOPS("shops", (table) -> {
+        // SHOP ID
+        table.addColumn("shop", "INT UNSIGNED NOT NULL");
+        // DATA ID
+        table.addColumn("data", "INT UNSIGNED NOT NULL");
+        table.setIndex(IndexType.PRIMARY_KEY, "index_qs_shops", "world", "x", "y", "z");
+    }),
+
+    SHOP_MAP("shop_map", (table) -> {
         // BLOCK LOCATION DATA
         table.addColumn("world", "VARCHAR(32) NOT NULL");
         table.addColumn("x", "INT NOT NULL");
@@ -51,11 +58,11 @@ public enum DataTables {
         // SHOP ID
         table.addColumn("shop", "INT UNSIGNED NOT NULL");
 
-        table.setIndex(IndexType.PRIMARY_KEY, "uk_qs_location", "world", "x", "y", "z");
-        table.addForeignKey(
-                "shop", "fk_qs_shop_map", SHOPS.getName(), "id",
-                ForeignKeyRule.CASCADE, ForeignKeyRule.CASCADE
-        );
+        table.setIndex(IndexType.PRIMARY_KEY, "index_qs_shop_map", "world", "x", "y", "z");
+//        table.addForeignKey(
+//                "shop", "fk_qs_shop_map", SHOPS.getName(), "id",
+//                ForeignKeyRule.CASCADE, ForeignKeyRule.CASCADE
+//        );
     }),
 
     MESSAGES("message", (table) -> {
@@ -127,8 +134,8 @@ public enum DataTables {
         table.addColumn("shop", "INT UNSIGNED NOT NULL"); // SHOP ID
         table.addColumn("type", "VARCHAR(32) NOT NULL"); // CHANGE TYPE (use enum name)
 
-        table.addColumn("before", "MEDIUMTEXT"); // BEFORE DATA
-        table.addColumn("after", "MEDIUMTEXT"); // AFTER DATA
+        table.addColumn("before", "INT UNSIGNED NOT NULL"); // BEFORE DATA
+        table.addColumn("after", "INT UNSIGNED NOT NULL"); // AFTER DATA
 
         // table.setIndex(IndexType.INDEX, "idx_qs_changed_shop", "shop");
     }),
