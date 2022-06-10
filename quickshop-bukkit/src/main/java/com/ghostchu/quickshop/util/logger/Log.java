@@ -254,15 +254,15 @@ public class Log {
         }
 
         @NotNull
-        public static Cal
-        String threadName = Thread.currentThread().getName();
-        String className = frame.getClassName();
-        String methodName = frame.getMethodName();
-        int codeLine = frame.getLineNumber();
-            return new
-
-        Caller(threadName, className, methodName, codeLine);
-    }
+        public static Caller create(int steps) {
+            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(steps + 1).toList());
+            StackWalker.StackFrame frame = caller.get(steps);
+            String threadName = Thread.currentThread().getName();
+            String className = frame.getClassName();
+            String methodName = frame.getMethodName();
+            int codeLine = frame.getLineNumber();
+            return new Caller(threadName, className, methodName, codeLine);
+        }
     }
 
 
