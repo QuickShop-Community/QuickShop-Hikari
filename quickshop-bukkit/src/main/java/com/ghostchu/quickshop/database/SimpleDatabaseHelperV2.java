@@ -30,11 +30,13 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
@@ -404,6 +406,18 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    @Override
+    public void insertTransactionRecord(@Nullable UUID from, @Nullable UUID to, double amount, @Nullable String currency, double taxAmount, @Nullable UUID taxAccount, @Nullable String error) {
+        if (from == null)
+            from = Util.getNilUniqueId();
+        if (to == null)
+            to = Util.getNilUniqueId();
+        DataTables.LOG_TRANSACTION.createInsert(manager)
+                .setColumnNames("from", "to", "currency", "amount", "tax_amount", "tax_account", "error")
+                .setParams(from.toString(), to.toString(), currency, amount, taxAmount, taxAccount == null ? null : taxAccount.toString(), error)
+                .executeAsync();
     }
 
     /**
