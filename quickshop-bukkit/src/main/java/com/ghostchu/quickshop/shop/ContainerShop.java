@@ -31,11 +31,13 @@ import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.database.bean.DataRecord;
 import com.ghostchu.quickshop.economy.EconomyTransaction;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.RealDisplayItem;
 import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
+import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -121,7 +123,7 @@ public class ContainerShop implements Shop, Reloadable {
     private UUID taxAccount;
     @NotNull
     private String inventoryWrapperProvider;
-    @Nullable
+    @NotNull
     @EqualsAndHashCode.Exclude
     private InventoryWrapper inventoryWrapper;
     @NotNull
@@ -698,7 +700,13 @@ public class ContainerShop implements Shop, Reloadable {
                 }
             }
             plugin.getShopManager().removeShop(this);
-            plugin.getDatabaseHelper().removeShop(this);
+            Location loc = getLocation();
+            try {
+                plugin.getDatabaseHelper().removeShopMap(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+            } catch (Exception e) {
+                e.printStackTrace();
+                plugin.getLogger().warning("Failed to remove the shop mapping from database.");
+            }
         }
         // Use that copy we saved earlier (which is now deleted) to refresh it's now alone neighbor
         if (neighbor != null) {
@@ -1036,16 +1044,8 @@ public class ContainerShop implements Shop, Reloadable {
             return;
         }
         updating = true;
-        int x = this.getLocation().getBlockX();
-        int y = this.getLocation().getBlockY();
-        int z = this.getLocation().getBlockZ();
-        String world = Objects.requireNonNull(this.getLocation().getWorld()).getName();
-        int unlimited = this.isUnlimited() ? 1 : 0;
         try {
-            plugin.getDatabaseHelper()
-                    .updateShop(this.owner.toString(), this.originalItem,
-                            unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
-                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), saveToSymbolLink(), this.inventoryWrapperProvider, this.shopName, this.playerGroup);
+            plugin.getDatabaseHelper().updateShop(this);
             this.dirty = false;
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING,
@@ -1699,6 +1699,7 @@ public class ContainerShop implements Shop, Reloadable {
         }
     }
 
+
     @Override
     public @NotNull String saveExtraToYaml() {
         return extra.saveToString();
@@ -1795,6 +1796,21 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public @NotNull String getInventoryWrapperProvider() {
         return inventoryWrapperProvider;
+    }
+
+    public @NotNull DataRecord createDataRecord() {
+        return new DataRecord(Util.serialize(getItem()),
+                getShopName(),
+                getShopType().toID(),
+                getCurrency(),
+                getPrice(),
+                isUnlimited(),
+                isDisableDisplay(),
+                getTaxAccount(),
+                JsonUtil.getGson().toJson(getPermissionAudiences()),
+                getInventoryWrapperProvider(),
+                saveToSymbolLink()
+        );
     }
 
     @Override

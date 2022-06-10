@@ -13,13 +13,13 @@ import java.sql.SQLException;
 public enum DataTables {
 
     DATA("data", (table) -> {
-        table.addAutoIncrementColumn("id", true); // SHOP ID
-        table.addColumn("owner", "VARCHAR(36)"); // SHOP OWNER (NULL if this is a server shop)
+        table.addAutoIncrementColumn("id", true); // SHOP DATA ID
+        table.addColumn("owner", "VARCHAR(36) NOT NULL"); // SHOP DATA OWNER (ALL-ZERO if this is a server shop)
 
-        table.addColumn("item", "TEXT NOT NULL"); // SHOP ITEM INFO
+        table.addColumn("item", "TEXT NOT NULL"); // SHOP DATA ITEM INFO
         table.addColumn("name", "TEXT"); // SHOP NAME
 
-        table.addColumn("type", "TINYINT NOT NULL DEFAULT 0"); // SHOP TYPE (see ShopType enum)
+        table.addColumn("type", "INT NOT NULL DEFAULT 0"); // SHOP TYPE (see ShopType enum)
         table.addColumn("currency", "VARCHAR(64)");  // CURRENCY (NULL means use the default currency)
         table.addColumn("price", "DECIMAL(32,2) NOT NULL"); // SHOP ITEM PRICE
 
@@ -31,8 +31,8 @@ public enum DataTables {
         table.addColumn("tax_account", "VARCHAR(36)"); // TAX ACCOUNT
         table.addColumn("permissions", "MEDIUMTEXT"); // PERMISSIONS (JSON)
 
-        table.addColumn("inv_type", "VARCHAR(255) NOT NULL"); // INVENTORY TYPE
-        table.addColumn("inv_data", "TEXT NOT NULL"); // INVENTORY DATA (to read the inventory info)
+        table.addColumn("inv_wrapper", "VARCHAR(255) NOT NULL"); // INVENTORY TYPE
+        table.addColumn("inv_symbol_link", "TEXT NOT NULL"); // INVENTORY DATA (to read the inventory info)
 
         table.addColumn("create_time", "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"); // SHOP CREATE TIME
         // table.addColumn("remove_time", "DATETIME"); // SHOP REMOVE TIME (NULL if not removed)
@@ -42,7 +42,7 @@ public enum DataTables {
 
     SHOPS("shops", (table) -> {
         // SHOP ID
-        table.addColumn("shop", "INT UNSIGNED NOT NULL");
+        table.addAutoIncrementColumn("id", true); // SHOP ID
         // DATA ID
         table.addColumn("data", "INT UNSIGNED NOT NULL");
         table.setIndex(IndexType.PRIMARY_KEY, "index_qs_shops", "world", "x", "y", "z");
@@ -85,8 +85,8 @@ public enum DataTables {
     LOG_PURCHASE("log_purchase", (table) -> {
         table.addAutoIncrementColumn("id", true);
         table.addColumn("time", "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP");
-
         table.addColumn("shop", "INT UNSIGNED NOT NULL"); // SHOP ID
+        table.addColumn("data", "INT UNSIGNED NOT NULL"); // DATA ID
         table.addColumn("buyer", "VARCHAR(36) NOT NULL"); // BUYER
 
         table.addColumn("type", "VARCHAR(32) NOT NULL"); // SHOP TYPE (use enum name)
@@ -163,13 +163,9 @@ public enum DataTables {
     }
 
     public static void initializeTables(@NotNull SQLManager sqlManager,
-                                        @NotNull String tablePrefix) {
+                                        @NotNull String tablePrefix) throws SQLException {
         for (DataTables value : values()) {
-            try {
-                value.create(sqlManager, tablePrefix);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            value.create(sqlManager, tablePrefix);
         }
     }
 

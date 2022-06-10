@@ -40,7 +40,7 @@ import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.command.SimpleCommandManager;
 import com.ghostchu.quickshop.database.HikariUtil;
-import com.ghostchu.quickshop.database.SimpleDatabaseHelper;
+import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.economy.Economy_GemsEconomy;
 import com.ghostchu.quickshop.economy.Economy_TNE;
 import com.ghostchu.quickshop.economy.Economy_Vault;
@@ -125,7 +125,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     /* Public QuickShop API End */
     boolean onLoadCalled = false;
     private GameVersion gameVersion;
-    private SimpleDatabaseHelper databaseHelper;
+    private SimpleDatabaseHelperV2 databaseHelper;
     private SimpleCommandManager commandManager;
     private ItemMatcher itemMatcher;
     private SimpleShopManager shopManager;
@@ -984,7 +984,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 this.sqlManager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode
             }
             // Make the database up to date
-            this.databaseHelper = new SimpleDatabaseHelper(this, this.sqlManager, this.getDbPrefix());
+            this.databaseHelper = new SimpleDatabaseHelperV2(this, this.sqlManager, this.getDbPrefix());
             return true;
         } catch (Exception e) {
             getLogger().log(Level.SEVERE, "Error when connecting to the database", e);

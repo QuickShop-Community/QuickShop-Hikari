@@ -148,7 +148,7 @@ public class ShopLoader {
                 if (shopNullCheck(shop)) {
                     if (deleteCorruptShops) {
                         plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
-                        plugin.getDatabaseHelper().removeShop(origin.getWorld(), origin.getX(), origin.getY(), origin.getZ());
+                        plugin.getDatabaseHelper().removeShopMap(origin.getWorld(), origin.getX(), origin.getY(), origin.getZ());
                     } else {
                         Log.debug("Trouble database loading debug: " + data);
                         Log.debug("Somethings gone wrong, skipping the loading...");
@@ -291,7 +291,7 @@ public class ShopLoader {
             plugin.getLogger().info("Loading recovered shops...");
             for (ShopRawDatabaseInfo rawDatabaseInfo : list) {
                 ShopDatabaseInfo data = new ShopDatabaseInfo(rawDatabaseInfo);
-                Shop shop =
+                ContainerShop shop =
                         new ContainerShop(plugin,
                                 data.getLocation(),
                                 data.getPrice(),
@@ -310,11 +310,12 @@ public class ShopLoader {
                 if (shopNullCheck(shop)) {
                     continue;
                 }
-                plugin.getDatabaseHelper().createShop(shop, null, null);
-                plugin.getShopManager().loadShop(data.getWorld().getName(), shop);
-                shop.update();
-                if (Util.isLoaded(shop.getLocation()) && !shop.isLoaded()) {
-                    shop.onLoad();
+                try {
+                    long dataId = plugin.getDatabaseHelper().createData(shop);
+                    long shopId = plugin.getDatabaseHelper().createShop(dataId);
+                    plugin.getDatabaseHelper().createShopMap(shopId, shop.getLocation());
+                } catch (SQLException e) {
+                    plugin.getLogger().warning("Failed to recover: " + rawDatabaseInfo);
                 }
             }
             plugin.getLogger().info("Finished!");
