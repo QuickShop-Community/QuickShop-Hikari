@@ -39,6 +39,7 @@ public enum DataTables {
         // table.addColumn("remove_time", "DATETIME"); // SHOP REMOVE TIME (NULL if not removed)
 
         table.setIndex(IndexType.INDEX, "index_qs_data_owner", "owner");
+        table.setIndex(IndexType.INDEX, "index_qs_data_name", "name");
     }),
 
     SHOPS("shops", (table) -> {
@@ -58,7 +59,7 @@ public enum DataTables {
         // SHOP ID
         table.addColumn("shop", "INT UNSIGNED NOT NULL");
 
-        table.setIndex(IndexType.PRIMARY_KEY, "index_qs_shop_map", "world", "x", "y", "z");
+        table.setIndex(IndexType.PRIMARY_KEY, "world", "x", "y", "z");
 //        table.addForeignKey(
 //                "shop", "fk_qs_shop_map", SHOPS.getName(), "id",
 //                ForeignKeyRule.CASCADE, ForeignKeyRule.CASCADE
