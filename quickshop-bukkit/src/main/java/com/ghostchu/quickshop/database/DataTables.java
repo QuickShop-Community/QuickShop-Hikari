@@ -59,7 +59,7 @@ public enum DataTables {
         // SHOP ID
         table.addColumn("shop", "INT UNSIGNED NOT NULL");
 
-        table.setIndex(IndexType.PRIMARY_KEY, "world", "x", "y", "z");
+        table.setIndex(IndexType.PRIMARY_KEY, null, "world", "x", "y", "z");
 //        table.addForeignKey(
 //                "shop", "fk_qs_shop_map", SHOPS.getName(), "id",
 //                ForeignKeyRule.CASCADE, ForeignKeyRule.CASCADE
