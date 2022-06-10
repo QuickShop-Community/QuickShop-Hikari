@@ -33,10 +33,10 @@ public interface DataRecord {
     @NotNull
     String getPermissions();
 
-    @NotNull
+    @Nullable
     String getInventoryWrapper();
 
-    @NotNull
+    @Nullable
     String getInventorySymbolLink();
 
     @NotNull

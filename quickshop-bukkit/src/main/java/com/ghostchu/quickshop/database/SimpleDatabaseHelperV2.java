@@ -235,7 +235,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                         location.getBlockY(),
                         location.getBlockZ(),
                         shopId)
-                .returnGeneratedKey()
                 .execute();
     }
 
@@ -541,7 +540,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             if (dataId < 1)
                 throw new IllegalStateException("DataId creation failed.");
             long shopId = DataTables.SHOPS.createInsert(manager)
-                    .setColumnNames("data").setParams(dataId).execute();
+                    .setColumnNames("data").setParams(dataId)
+                    .returnGeneratedKey().execute();
             if (shopId < 1)
                 throw new IllegalStateException("ShopId creation failed.");
             DataTables.SHOP_MAP.createReplace(manager)
@@ -553,7 +553,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         pos = 0;
         total = oldMessageData.size();
         for (OldMessageData data : oldMessageData) {
-            DataTables.DATA.createInsert(manager)
+            DataTables.MESSAGES.createInsert(manager)
                     .setColumnNames("receiver", "time", "content")
                     .setParams(data.owner, data.time, data.message)
                     .execute();
@@ -562,7 +562,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         pos = 0;
         total = oldPlayerData.size();
         for (OldPlayerData data : oldPlayerData) {
-            DataTables.DATA.createInsert(manager)
+            DataTables.PLAYERS.createInsert(manager)
                     .setColumnNames("uuid", "locale")
                     .setParams(data.uuid, data.locale)
                     .execute();
