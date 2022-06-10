@@ -82,6 +82,12 @@ public enum DataTables {
         table.addColumn("locale", "TEXT NOT NULL");
     }),
 
+    EXTERNAL_CACHE("external_cache", (table) -> {
+        table.addColumn("shop", "LONG UNSIGNED NOT NULL PRIMARY KEY");
+        table.addColumn("stock", "INT NOT NULL");
+        table.addColumn("space", "INT NOT NULL");
+    }),
+
     LOG_PURCHASE("log_purchase", (table) -> {
         table.addAutoIncrementColumn("id", true);
         table.addColumn("time", "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP");

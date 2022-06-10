@@ -25,8 +25,9 @@ import cc.carm.lib.easysql.api.builder.TableQueryBuilder;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.database.ShopMetricRecord;
+import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.database.bean.DataRecord;
+import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -65,149 +66,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     public void checkTables() throws SQLException {
         DataTables.initializeTables(manager, prefix);
-//        if (!hasTable(prefix + "metadata")) {
-//            createMetadataTable();
-//        }
-//        if (!hasTable(prefix + "shops")) {
-//            createShopsTable();
-//        }
-//        if (!hasTable(prefix + "messages")) {
-//            createMessagesTable();
-//        }
-//        if (!hasTable(prefix + "logs")) {
-//            createLogsTable();
-//        }
-//        if (!hasTable(prefix + "external_cache")) {
-//            createExternalCacheTable();
-//        }
-//        if (!hasTable(prefix + "players")) {
-//            createPlayerTable();
-//        }
-//        if (!hasTable(prefix + "metrics")) {
-//            createMetricsTable();
-//        }
     }
-
-//    /**
-//     * Creates the database table 'shops'.
-//     */
-//
-//    public void createShopsTable() {
-//        manager.createTable(prefix + "shops")
-//                .addColumn("owner", "MEDIUMTEXT NOT NULL")
-//                .addColumn("price", "DECIMAL(32,2) NOT NULL")
-//                .addColumn("itemConfig", "LONGTEXT NOT NULL")
-//                .addColumn("x", "INT(32) NOT NULL")
-//                .addColumn("y", "INT(32) NOT NULL")
-//                .addColumn("z", "INT(32) NOT NULL")
-//                .addColumn("world", "VARCHAR(255) NOT NULL")
-//                .addColumn("unlimited", "TINYINT NOT NULL")
-//                .addColumn("type", "INTEGER(8) NOT NULL")
-//                .addColumn("extra", "LONGTEXT NULL")
-//                .addColumn("currency", "TEXT NULL")
-//                .addColumn("disableDisplay", "TINYINT NULL DEFAULT 0")
-//                .addColumn("taxAccount", "VARCHAR(255) NULL")
-//                .addColumn("inventorySymbolLink", "TEXT NULL")
-//                .addColumn("inventoryWrapperName", "VARCHAR(255) NULL")
-//                .addColumn("name", "TEXT NULL")
-//                .setIndex(IndexType.PRIMARY_KEY, null, "x", "y", "z", "world")
-//                .build().execute((i) -> {
-//                    return i;
-//                    // Do nothing
-//                }, ((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed while trying create the shop table! SQL: " + sqlAction.getSQLContent(), exception)));
-//    }
-//
-//    /**
-//     * Creates the database table 'metrics'
-//     */
-//    public void createMetricsTable() {
-//        manager.createTable(prefix + "metrics")
-//                .addColumn("time", "BIGINT NOT NULL")
-//                .addColumn("x", "INT NOT NULL")
-//                .addColumn("y", "INT NOT NULL")
-//                .addColumn("z", "INT NOT NULL")
-//                .addColumn("world", "VARCHAR(255) NOT NULL")
-//                .addColumn("type", "VARCHAR(255) NOT NULL")
-//                .addColumn("total", "DECIMAL(32,2) NOT NULL")
-//                .addColumn("tax", "DECIMAL(32,2) NOT NULL")
-//                .addColumn("amount", "INT(32) NOT NULL")
-//                .addColumn("player", "VARCHAR(255) NOT NULL")
-//                .setIndex(IndexType.PRIMARY_KEY, null, "time")
-//                .setIndex(IndexType.INDEX, "player_based", "time", "x", "y", "z", "world", "player")
-//                .setIndex(IndexType.INDEX, "type_based", "time", "x", "y", "z", "world", "type")
-//                .build()
-//                .execute(((exception, sqlAction) -> {
-//                    if (exception != null) {
-//                        plugin.getLogger().log(Level.WARNING, "Failed to create messages table! SQL:" + sqlAction.getSQLContent(), exception);
-//                    }
-//                }));
-//
-//        DataTables.LOG_CHANGES.create(manager,prefix);
-//
-//
-//
-//    }
-//
-//    /**
-//     * Creates the database table 'messages'
-//     */
-//    public void createMessagesTable() {
-//        manager.createTable(prefix + "messages")
-//                .addColumn("owner", "VARCHAR(255) NOT NULL")
-//                .addColumn("message", "TEXT NOT NULL")
-//                .addColumn("time", "BIGINT(32) NOT NULL")
-//                .build()
-//                .execute(((exception, sqlAction) -> {
-//                    if (exception != null) {
-//                        plugin.getLogger().log(Level.WARNING, "Failed to create messages table! SQL:" + sqlAction.getSQLContent(), exception);
-//                    }
-//                }));
-//    }
-//
-//    public void createLogsTable() {
-//        manager.createTable(prefix + "logs")
-//                .addColumn("time", "BIGINT(32) NOT NULL")
-//                .addColumn("classname", "TEXT NULL")
-//                .addColumn("data", "LONGTEXT NULL")
-//                .build()
-//                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create logs table! SQL:" + sqlAction.getSQLContent(), exception)));
-//    }
-//
-//    public void createExternalCacheTable() {
-//        manager.createTable(prefix + "external_cache")
-//                .addColumn("x", "INT(32) NOT NULL")
-//                .addColumn("y", "INT(32) NOT NULL")
-//                .addColumn("z", "INT(32) NOT NULL")
-//                .addColumn("world", "VARCHAR(255) NOT NULL")
-//                .addColumn("space", "INT NULL")
-//                .addColumn("stock", "INT NULL")
-//                .setIndex(IndexType.PRIMARY_KEY, null, "x", "y", "z", "world")
-//                .build()
-//                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create extrenal_cache table! SQL:" + sqlAction.getSQLContent(), exception)));
-//    }
-//
-//    public void createMetadataTable() {
-//        manager.createTable(prefix + "metadata")
-//                .addColumn("key", "VARCHAR(255) NOT NULL")
-//                .addColumn("value", "LONGTEXT NOT NULL")
-//                .setIndex(IndexType.PRIMARY_KEY, null, "key")
-//                .build()
-//                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create metadata table! SQL:" + sqlAction.getSQLContent(), exception)));
-//        try {
-//            setDatabaseVersion(2);
-//        } catch (SQLException e) {
-//            plugin.getLogger().log(Level.WARNING, "Failed to update database version!", e);
-//        }
-//    }
-//
-//    public void createPlayerTable() {
-//        manager.createTable(prefix + "players")
-//                .addColumn("uuid", "VARCHAR(255) NOT NULL")
-//                .addColumn("locale", "TEXT NOT NULL")
-//                .setIndex(IndexType.PRIMARY_KEY, null, "uuid")
-//                .build()
-//                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create players table! SQL:" + sqlAction.getSQLContent(), exception)));
-//    }
 
     @Override
     public void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
@@ -323,17 +182,17 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @Override
     public void cleanMessageForPlayer(@NotNull UUID player) {
         DataTables.MESSAGES.createDelete(manager)
-                .addCondition("owner", player.toString())
+                .addCondition("receiver", player.toString())
                 .build().executeAsync();
     }
 
     @Override
     public long createData(@NotNull Shop shop) throws SQLException {
-        DataRecord dataRecord = ((ContainerShop) shop).createDataRecord();
-        long id = queryDataId(dataRecord);
+        SimpleDataRecord simpleDataRecord = ((ContainerShop) shop).createDataRecord();
+        long id = queryDataId(simpleDataRecord);
 
         if (id < 1) {
-            Map<String, Object> map = dataRecord.generateParams();
+            Map<String, Object> map = simpleDataRecord.generateParams();
             return DataTables.DATA.createInsert(manager)
                     .setColumnNames(new ArrayList<>(map.keySet()))
                     .setParams(map.values())
@@ -341,6 +200,18 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                     .execute();
         } else {
             return id;
+        }
+    }
+
+    @Override
+    public DataRecord getDataRecord(long dataId) throws SQLException {
+        try (SQLQuery query = DataTables.DATA.createQuery(manager)
+                .addCondition("id", dataId)
+                .build().execute(); ResultSet result = query.getResultSet()) {
+            if (result.next()) {
+                return new SimpleDataRecord(result);
+            }
+            return null;
         }
     }
 
@@ -430,7 +301,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public @NotNull SQLQuery selectAllMessages() throws SQLException {
-        return selectTable("messages");
+        return DataTables.MESSAGES.createQuery(manager).build().execute();
     }
 
     @Override
@@ -443,47 +314,36 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public @NotNull SQLQuery selectAllShops() throws SQLException {
-        return selectTable("shops");
+        return DataTables.SHOP_MAP.createQuery(manager).build().execute();
     }
 
     @Override
     public void saveOfflineTransactionMessage(@NotNull UUID player, @NotNull String message, long time) {
-        manager.createInsert(prefix + "messages")
-                .setColumnNames("owner", "message", "time")
-                .setParams(player.toString(), message, time)
+        DataTables.MESSAGES.createInsert(manager)
+                .setColumnNames("receiver", "time", "content")
+                .setParams(player.toString(), time, message)
                 .executeAsync((handler) -> Log.debug("Operation completed, saveOfflineTransaction for " + player + ", " + handler + " lines affected"));
     }
 
     @Override
-    public void updateOwner2UUID(@NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName) {
-        manager.createUpdate(prefix + "shops")
-                .addColumnValue("owner", ownerUUID)
-                .addCondition("x", x)
-                .addCondition("y", y)
-                .addCondition("z", z)
-                .addCondition("world", worldName)
-                .build().executeAsync((handler) -> Log.debug("Operation completed, updateOwner2UUID " + ownerUUID + ", " + handler + "lines affected"));
-    }
-
-    @Override
-    public void updateExternalInventoryProfileCache(@NotNull Shop shop, int space, int stock) {
-        manager.createReplace(prefix + "external_cache")
-                .setColumnNames("x", "y", "z", "world", "space", "stock")
-                .setParams(shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ(), shop.getLocation().getWorld().getName(), space, stock)
+    public void updateExternalInventoryProfileCache(@NotNull long shopId, int space, int stock) {
+        DataTables.EXTERNAL_CACHE.createReplace(manager)
+                .setColumnNames("shop", "space", "stock")
+                .setParams(shopId, space, stock)
                 .executeAsync();
     }
 
     @Override
     public void updateShop(@NotNull Shop shop) throws SQLException {
-        DataRecord dataRecord = ((ContainerShop) shop).createDataRecord();
+        SimpleDataRecord simpleDataRecord = ((ContainerShop) shop).createDataRecord();
         Location loc = shop.getLocation();
         // check if datarecord exists
-        long shopId = locateShopId(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        long shopId = shop.getShopId();
         if (shopId < 1) {
             Log.debug("Warning: Failed to update shop because the shop id locate result for " + loc + ", because the query shopId is " + shopId);
         } else {
             // Check if any data record already exists
-            long dataId = queryDataId(dataRecord);
+            long dataId = queryDataId(simpleDataRecord);
             if (dataId > 0) {
                 DataTables.SHOPS.createReplace(manager)
                         .setColumnNames("data")
@@ -499,9 +359,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
     }
 
-    public long queryDataId(@NotNull DataRecord dataRecord) {
+    public long queryDataId(@NotNull SimpleDataRecord simpleDataRecord) {
         // Check if dataRecord exists in database with same values
-        Map<String, Object> map = dataRecord.generateParams();
+        Map<String, Object> map = simpleDataRecord.generateParams();
         TableQueryBuilder builder = DataTables.DATA.createQuery(manager);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             builder.addCondition(entry.getKey(), entry.getValue());
@@ -509,12 +369,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         try (SQLQuery query = builder.build().execute(); ResultSet set = query.getResultSet()) {
             if (set.next()) {
                 int id = set.getInt("id");
-                Log.debug("Found data record with id " + id + " for record " + dataRecord);
+                Log.debug("Found data record with id " + id + " for record " + simpleDataRecord);
             }
-            Log.debug("No data record found for record " + dataRecord);
+            Log.debug("No data record found for record " + simpleDataRecord);
             return 0;
         } catch (SQLException e) {
-            Log.debug("Failed to query data record for " + dataRecord + " Err: " + e.getMessage());
+            Log.debug("Failed to query data record for " + simpleDataRecord + " Err: " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -721,6 +581,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                     .execute();
             plugin.getLogger().info("Converting purchase metric...  (" + (++pos) + "/" + total + ")");
         }
+        checkTables();
         plugin.getLogger().info("Migrate completed, previous versioned data was renamed to <PREFIX>_<TABLE_NAME>_<ACTION_ID>.");
     }
 

@@ -22,7 +22,6 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -30,7 +29,6 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.util.logging.Level;
 
 @AllArgsConstructor
 public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender> {
@@ -44,14 +42,15 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
             MsgUtil.sendDirectMessage(sender, Component.text("recovery.txt doesn't exist! Do not execute this command unless you know what are you doing.").color(NamedTextColor.RED));
             return;
         }
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            try {
-                //Util.backupDatabase();
-                plugin.getShopLoader().recoverFromFile(Util.readToString(file));
-            } catch (Exception e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to recover the data because of the following error:", e);
-            }
-        });
+        sender.sendMessage("Recovery command hadn't available in this version yet!");
+//        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+//            try {
+//                //Util.backupDatabase();
+//                plugin.getShopLoader().recoverFromFile(Util.readToString(file));
+//            } catch (Exception e) {
+//                plugin.getLogger().log(Level.WARNING, "Failed to recover the data because of the following error:", e);
+//            }
+//        });
 
     }
 

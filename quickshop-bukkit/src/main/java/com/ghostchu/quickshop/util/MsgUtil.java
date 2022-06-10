@@ -186,14 +186,14 @@ public class MsgUtil {
         OUTGOING_MESSAGES.clear(); // Delete old messages
         try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllMessages(); ResultSet rs = warpRS.getResultSet()) {
             while (rs.next()) {
-                String owner = rs.getString("owner");
+                String owner = rs.getString("receiver");
                 UUID ownerUUID;
                 if (Util.isUUID(owner)) {
                     ownerUUID = UUID.fromString(owner);
                 } else {
                     ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
                 }
-                String message = rs.getString("message");
+                String message = rs.getString("content");
                 List<String> msgs = OUTGOING_MESSAGES.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
                 msgs.add(message);
             }

@@ -21,37 +21,30 @@ package com.ghostchu.quickshop.shop;
 
 import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.ShopType;
-import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Timer;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
-import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -98,43 +91,60 @@ public class ShopLoader {
             this.plugin.getLogger().info("Loading shops from the database...");
             while (rs.next()) {
                 ++total;
-                ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
-                if (worldName != null && !origin.getWorld().equals(worldName)) {
+                long shopId = rs.getLong("shop");
+                int x = rs.getInt("x");
+                int y = rs.getInt("y");
+                int z = rs.getInt("z");
+                String world = rs.getString("world");
+                if (worldName != null)
+                    if (!worldName.equals(world))
+                        continue;
+                if (world == null)
                     continue;
-                }
-                ShopDatabaseInfo data;
-                try {
-                    data = new ShopDatabaseInfo(origin);
-                } catch (Exception e) {
-                    exceptionHandler(e, null);
-                    continue;
-                }
-                //World unloaded and not found
-                if (data.getWorld() == null) {
+                if (Bukkit.getWorld(world) == null) {
                     ++loadAfterWorldLoaded;
                     continue;
                 }
-                if (data.getInventoryWrapperProvider() != null && !data.getInventoryWrapperProvider().isEmpty() && plugin.getInventoryWrapperRegistry().get(data.getInventoryWrapperProvider()) == null) {
+                long dataId = plugin.getDatabaseHelper().locateShopDataId(shopId);
+                if (dataId < 1) {
+                    if (deleteCorruptShops) {
+                        plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
+                    }
+                    continue;
+                }
+                DataRecord record = plugin.getDatabaseHelper().getDataRecord(dataId);
+                if (record == null) {
+                    if (deleteCorruptShops) {
+                        plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
+                    }
+                    continue;
+                }
+
+                if (record.getInventorySymbolLink() != null && !record.getInventoryWrapper().isEmpty() && plugin.getInventoryWrapperRegistry().get(record.getInventoryWrapper()) == null) {
                     Log.debug("InventoryWrapperProvider not exists! Shop won't be loaded!");
                     continue;
                 }
+
+                DataRawDatabaseInfo rawInfo = new DataRawDatabaseInfo(record);
+
                 Shop shop;
                 try {
                     shop = new ContainerShop(plugin,
-                            data.getLocation(),
-                            data.getPrice(),
-                            data.getItem(),
-                            data.getOwner(),
-                            data.isUnlimited(),
-                            data.getType(),
-                            data.getExtra(),
-                            data.getCurrency(),
-                            data.isDisableDisplay(),
-                            data.getTaxAccount(),
-                            data.getInventoryWrapperProvider(),
-                            data.getSymbolLink(),
-                            data.getShopName(),
-                            data.getPlayerGroup());
+                            shopId,
+                            new Location(Bukkit.getWorld(world), x, y, z),
+                            rawInfo.getPrice(),
+                            rawInfo.getItem(),
+                            rawInfo.getOwner(),
+                            rawInfo.isUnlimited(),
+                            rawInfo.getType(),
+                            rawInfo.getExtra(),
+                            rawInfo.getCurrency(),
+                            rawInfo.isHologram(),
+                            rawInfo.getTaxAccount(),
+                            rawInfo.getInvWrapper(),
+                            rawInfo.getInvSymbolLink(),
+                            rawInfo.getName(),
+                            rawInfo.getPermissions());
                 } catch (Exception e) {
                     if (e instanceof IllegalStateException) {
                         plugin.getLogger().log(Level.WARNING, "Failed to load the shop, skipping...", e);
@@ -142,15 +152,15 @@ public class ShopLoader {
                     exceptionHandler(e, null);
                     continue;
                 }
-                if (data.needUpdate.get()) {
+                if (rawInfo.needUpdate) {
                     shop.setDirty();
                 }
                 if (shopNullCheck(shop)) {
                     if (deleteCorruptShops) {
                         plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
-                        plugin.getDatabaseHelper().removeShopMap(origin.getWorld(), origin.getX(), origin.getY(), origin.getZ());
+                        plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
                     } else {
-                        Log.debug("Trouble database loading debug: " + data);
+                        Log.debug("Trouble database loading debug: " + rawInfo);
                         Log.debug("Somethings gone wrong, skipping the loading...");
                     }
                     continue;
@@ -228,24 +238,6 @@ public class ShopLoader {
         return false;
     }
 
-//    @NotNull
-//    private YamlConfiguration extraUpgrade(@NotNull String extraString) {
-//        if (!StringUtils.isEmpty(extraString) && !"QuickShop: {}".equalsIgnoreCase(extraString)) {
-//            Log.debug("Extra API -> Upgrading -> " + extraString.replace("\n", ""));
-//        }
-//        YamlConfiguration yamlConfiguration = new YamlConfiguration();
-//        JsonConfiguration jsonConfiguration = new JsonConfiguration();
-//        try {
-//            jsonConfiguration.loadFromString(extraString);
-//        } catch (InvalidConfigurationException e) {
-//            plugin.getLogger().log(Level.WARNING, "Cannot upgrade extra data: " + extraString, e);
-//        }
-//        for (String key : jsonConfiguration.getKeys(true)) {
-//            yamlConfiguration.set(key, jsonConfiguration.get(key));
-//        }
-//        return yamlConfiguration;
-//    }
-
 
     private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
         errors++;
@@ -269,143 +261,135 @@ public class ShopLoader {
                     "QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
         }
     }
+//
+//    public synchronized void recoverFromFile(@NotNull String fileContent) {
+//        plugin.getLogger().info("Processing the shop data...");
+//        String[] shopsPlain = fileContent.split("\n");
+//        plugin.getLogger().info("Recovering shops...");
+//        Gson gson = JsonUtil.getGson();
+//        int total = shopsPlain.length;
+//        List<DataRawDatabaseInfo> list = new ArrayList<>(total);
+//        for (String s : shopsPlain) {
+//            String shopStr = s.trim();
+//            try {
+//                list.add(gson.fromJson(shopStr, DataRawDatabaseInfo.class));
+//            } catch (JsonSyntaxException jsonSyntaxException) {
+//                plugin.getLogger().log(Level.WARNING, "Failed to read shop Json " + shopStr, jsonSyntaxException);
+//            }
+//        }
+//        plugin.getLogger().info("Processed " + total + "/" + total + " - [ Valid " + list.size() + "]");
+//        // Load to RAM
+//        Util.mainThreadRun(() -> {
+//            plugin.getLogger().info("Loading recovered shops...");
+//            for (ShopRawDatabaseInfo rawDatabaseInfo : list) {
+//                ShopDatabaseInfo data = new ShopDatabaseInfo(rawDatabaseInfo);
+//                ContainerShop shop =
+//                        new ContainerShop(plugin,
+//                                data.getLocation(),
+//                                data.getPrice(),
+//                                data.getItem(),
+//                                data.getOwner(),
+//                                data.isUnlimited(),
+//                                data.getType(),
+//                                data.getExtra(),
+//                                data.getCurrency(),
+//                                data.isDisableDisplay(),
+//                                data.getTaxAccount(),
+//                                data.getInventoryWrapperProvider(),
+//                                data.getSymbolLink(),
+//                                data.getShopName(),
+//                                data.getPlayerGroup());
+//                if (shopNullCheck(shop)) {
+//                    continue;
+//                }
+//                try {
+//                    long dataId = plugin.getDatabaseHelper().createData(shop);
+//                    long shopId = plugin.getDatabaseHelper().createShop(dataId);
+//                    plugin.getDatabaseHelper().createShopMap(shopId, shop.getLocation());
+//                } catch (SQLException e) {
+//                    plugin.getLogger().warning("Failed to recover: " + rawDatabaseInfo);
+//                }
+//            }
+//            plugin.getLogger().info("Finished!");
+//        });
+//    }
 
-    public synchronized void recoverFromFile(@NotNull String fileContent) {
-        plugin.getLogger().info("Processing the shop data...");
-        String[] shopsPlain = fileContent.split("\n");
-        plugin.getLogger().info("Recovering shops...");
-        Gson gson = JsonUtil.getGson();
-        int total = shopsPlain.length;
-        List<ShopRawDatabaseInfo> list = new ArrayList<>(total);
-        for (String s : shopsPlain) {
-            String shopStr = s.trim();
-            try {
-                list.add(gson.fromJson(shopStr, ShopRawDatabaseInfo.class));
-            } catch (JsonSyntaxException jsonSyntaxException) {
-                plugin.getLogger().log(Level.WARNING, "Failed to read shop Json " + shopStr, jsonSyntaxException);
-            }
-        }
-        plugin.getLogger().info("Processed " + total + "/" + total + " - [ Valid " + list.size() + "]");
-        // Load to RAM
-        Util.mainThreadRun(() -> {
-            plugin.getLogger().info("Loading recovered shops...");
-            for (ShopRawDatabaseInfo rawDatabaseInfo : list) {
-                ShopDatabaseInfo data = new ShopDatabaseInfo(rawDatabaseInfo);
-                ContainerShop shop =
-                        new ContainerShop(plugin,
-                                data.getLocation(),
-                                data.getPrice(),
-                                data.getItem(),
-                                data.getOwner(),
-                                data.isUnlimited(),
-                                data.getType(),
-                                data.getExtra(),
-                                data.getCurrency(),
-                                data.isDisableDisplay(),
-                                data.getTaxAccount(),
-                                data.getInventoryWrapperProvider(),
-                                data.getSymbolLink(),
-                                data.getShopName(),
-                                data.getPlayerGroup());
-                if (shopNullCheck(shop)) {
-                    continue;
-                }
-                try {
-                    long dataId = plugin.getDatabaseHelper().createData(shop);
-                    long shopId = plugin.getDatabaseHelper().createShop(dataId);
-                    plugin.getDatabaseHelper().createShopMap(shopId, shop.getLocation());
-                } catch (SQLException e) {
-                    plugin.getLogger().warning("Failed to recover: " + rawDatabaseInfo);
-                }
-            }
-            plugin.getLogger().info("Finished!");
-        });
-    }
-
-    @NotNull
-    public List<ShopRawDatabaseInfo> getOriginShopsInDatabase() {
-        errors = 0;
-        List<ShopRawDatabaseInfo> shopRawDatabaseInfoList = new ArrayList<>();
-        try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
-            while (rs.next()) {
-                ShopRawDatabaseInfo origin = new ShopRawDatabaseInfo(rs);
-                shopRawDatabaseInfoList.add(origin);
-            }
-        } catch (SQLException e) {
-            exceptionHandler(e, null);
-            return Collections.emptyList();
-        }
-        return shopRawDatabaseInfoList;
-    }
 
     @Getter
     @Setter
-    public static class ShopRawDatabaseInfo {
-        private String item;
+    public static class DataRawDatabaseInfo {
+        private UUID owner;
 
-        private String owner;
-
-        private double price;
-
-        private int type;
-
-        private boolean unlimited;
-
-        private String world;
-
-        private int x;
-
-        private int y;
-
-        private int z;
-
-        private String extra;
-
+        private String name;
+        private ShopType type;
         private String currency;
 
-        private boolean disableDisplay;
+        private double price;
+        private boolean unlimited;
 
-        private String taxAccount;
+        private boolean hologram;
+        private UUID taxAccount;
+        private Map<UUID, String> permissions;
+        private YamlConfiguration extra;
+        private String invWrapper;
+        private String invSymbolLink;
+        private long createTime;
+        private ItemStack item;
 
-        private String inventoryWrapperProvider;
+        private boolean needUpdate = false;
 
-        private String symbolLink;
-
-        private String shopName;
-
-        private Map<UUID, String> playerGroup;
 
         @SuppressWarnings("UnstableApiUsage")
-        ShopRawDatabaseInfo(ResultSet rs) throws SQLException {
-            this.x = rs.getInt("x");
-            this.y = rs.getInt("y");
-            this.z = rs.getInt("z");
-            this.world = rs.getString("world");
-            this.item = rs.getString("itemConfig");
-            this.owner = rs.getString("owner");
-            this.price = rs.getDouble("price");
-            this.type = rs.getInt("type");
-            this.unlimited = rs.getBoolean("unlimited");
-            this.extra = rs.getString("extra");
+        DataRawDatabaseInfo(@NotNull DataRecord record) {
+            this.owner = record.getOwner();
+            this.price = record.getPrice();
+            this.type = ShopType.fromID(record.getType());
+            this.unlimited = record.isUnlimited();
+            String extraStr = record.getExtra();
+            this.name = record.getName();
             //handle old shops
-            if (extra == null) {
-                extra = "";
+            if (extraStr == null) {
+                extraStr = "";
+                needUpdate = true;
             }
-            this.currency = rs.getString("currency");
-            this.disableDisplay = rs.getInt("disableDisplay") != 0;
-            this.taxAccount = rs.getString("taxAccount");
-            this.symbolLink = rs.getString("inventorySymbolLink");
-            this.inventoryWrapperProvider = rs.getString("inventoryWrapperName");
-            this.shopName = rs.getString("name");
-            String permissionJson = rs.getString("permission");
+            this.currency = record.getCurrency();
+            this.hologram = record.isHologram();
+            this.taxAccount = record.getTaxAccount();
+            this.invSymbolLink = record.getInventorySymbolLink();
+            this.invWrapper = record.getInventoryWrapper();
+            String permissionJson = record.getPermissions();
             if (!StringUtils.isEmpty(permissionJson) && MsgUtil.isJson(permissionJson)) {
                 Type type = new TypeToken<Map<UUID, String>>() {
                 }.getType();
-                this.playerGroup = new HashMap<>(JsonUtil.getGson().fromJson(rs.getString("permission"), type));
+                this.permissions = new HashMap<>(JsonUtil.getGson().fromJson(permissionJson, type));
             } else {
-                this.playerGroup = new HashMap<>();
+                this.permissions = new HashMap<>();
+            }
+            this.item = deserializeItem(record.getItem());
+            this.extra = deserializeExtra(extraStr);
+        }
+
+        private @Nullable ItemStack deserializeItem(@NotNull String itemConfig) {
+            try {
+                return Util.deserialize(itemConfig);
+            } catch (InvalidConfigurationException e) {
+                QuickShop.getInstance().getLogger().log(Level.WARNING, "Failed load shop data, because target config can't deserialize the ItemStack", e);
+                Log.debug("Failed to load data to the ItemStack: " + itemConfig);
+                return null;
             }
         }
+
+        private @NotNull YamlConfiguration deserializeExtra(@NotNull String extraString) {
+            YamlConfiguration yamlConfiguration = new YamlConfiguration();
+            try {
+                yamlConfiguration.loadFromString(extraString);
+            } catch (InvalidConfigurationException e) {
+                yamlConfiguration = new YamlConfiguration();
+                needUpdate = true;
+            }
+            return yamlConfiguration;
+        }
+
 
         @Override
         public String toString() {
@@ -415,122 +399,41 @@ public class ShopLoader {
 
     @Getter
     @Setter
-    public class ShopDatabaseInfo {
-        private ItemStack item;
+    public static class ShopDatabaseInfo {
+        private int shopId;
+        private int dataId;
 
-        private Location location;
+        ShopDatabaseInfo(ResultSet origin) {
+            try {
+                this.shopId = origin.getInt("id");
+                this.dataId = origin.getInt("data");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
 
-        private UUID owner;
 
-        private double price;
-
-        private ShopType type;
-
-        private boolean unlimited;
-
-        private World world;
-
+    @Getter
+    @Setter
+    public static class ShopMappingInfo {
+        private int shopId;
+        private String world;
         private int x;
-
         private int y;
-
         private int z;
 
-        private YamlConfiguration extra;
-
-        private AtomicBoolean needUpdate = new AtomicBoolean(false);
-
-        private String currency;
-
-        private UUID taxAccount;
-
-        private boolean disableDisplay;
-
-        private String inventoryWrapperProvider;
-
-        private String symbolLink;
-
-        private String shopName;
-
-        private Map<UUID, String> playerGroup;
-
-        ShopDatabaseInfo(ShopRawDatabaseInfo origin) {
+        ShopMappingInfo(ResultSet origin) {
             try {
-                this.x = origin.getX();
-                this.y = origin.getY();
-                this.z = origin.getZ();
-                this.world = plugin.getServer().getWorld(origin.getWorld());
-                this.location = new Location(world, x, y, z);
-                this.price = origin.getPrice();
-                this.unlimited = origin.isUnlimited();
-                this.playerGroup = origin.getPlayerGroup();
-                this.owner = deserializeOwner(origin.getOwner(), needUpdate);
-                this.type = ShopType.fromID(origin.getType());
-                this.item = deserializeItem(origin.getItem());
-                this.extra = deserializeExtra(origin.getExtra(), needUpdate);
-                this.currency = origin.getCurrency();
-                this.disableDisplay = origin.isDisableDisplay();
-                this.taxAccount = origin.getTaxAccount() != null ? UUID.fromString(origin.getTaxAccount()) : null;
-                this.inventoryWrapperProvider = origin.getInventoryWrapperProvider();
-                this.symbolLink = origin.getSymbolLink();
-                this.shopName = origin.getShopName();
+                this.shopId = origin.getInt("shop");
+                this.x = origin.getInt("x");
+                this.y = origin.getInt("y");
+                this.z = origin.getInt("z");
+                this.world = origin.getString("world");
             } catch (Exception ex) {
-                exceptionHandler(ex, this.location);
+                ex.printStackTrace();
             }
         }
-
-
-        private @Nullable ItemStack deserializeItem(@NotNull String itemConfig) {
-            try {
-                return Util.deserialize(itemConfig);
-            } catch (InvalidConfigurationException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed load shop data, because target config can't deserialize the ItemStack", e);
-                Log.debug("Failed to load data to the ItemStack: " + itemConfig);
-                return null;
-            }
-        }
-
-        private @NotNull UUID deserializeOwner(@NotNull String moderatorJson, @NotNull AtomicBoolean needUpdate) {
-            if (Util.isUUID(moderatorJson)) {
-                return UUID.fromString(moderatorJson);
-            } else {
-                ShopModerator shopModerator;
-                try {
-                    shopModerator = SimpleShopModerator.deserialize(moderatorJson);
-                    shopModerator.getStaffs().forEach(uuid -> {
-                        Log.debug("Loaded moderator: " + uuid + ", upgrading to PlayerGroups...");
-                        this.playerGroup.put(uuid, BuiltInShopPermissionGroup.STAFF.getNamespacedNode());
-                    });
-                    needUpdate.set(true);
-                    return shopModerator.getOwner();
-                } catch (JsonSyntaxException ex) {
-                    Log.debug("Updating old shop data... for " + moderatorJson);
-                    Profile profile = plugin.getPlayerFinder().find(moderatorJson);
-                    UUID uuid;
-                    if (profile == null) {
-                        Log.debug("Failed to find the player: " + moderatorJson);
-                        uuid = Bukkit.getOfflinePlayer(moderatorJson).getUniqueId();
-                    } else {
-                        uuid = profile.getUniqueId();
-                    }
-                    needUpdate.set(true);
-                    return uuid;
-
-                }
-            }
-        }
-
-        private @NotNull YamlConfiguration deserializeExtra(@NotNull String extraString, @NotNull AtomicBoolean needUpdate) {
-            YamlConfiguration yamlConfiguration = new YamlConfiguration();
-            try {
-                yamlConfiguration.loadFromString(extraString);
-            } catch (InvalidConfigurationException e) {
-                yamlConfiguration = new YamlConfiguration();
-                needUpdate.set(true);
-            }
-            return yamlConfiguration;
-        }
-
     }
 
 }

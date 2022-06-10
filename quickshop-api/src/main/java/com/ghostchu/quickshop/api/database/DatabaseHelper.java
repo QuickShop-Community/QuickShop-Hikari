@@ -20,9 +20,11 @@
 package com.ghostchu.quickshop.api.database;
 
 import cc.carm.lib.easysql.api.SQLQuery;
+import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -69,6 +71,9 @@ public interface DatabaseHelper {
      * @param shop The shop object
      */
     long createData(@NotNull Shop shop) throws SQLException;
+
+    @Nullable
+    DataRecord getDataRecord(long dataId) throws SQLException;
 
     long createShop(long dataId) throws SQLException;
 
@@ -128,27 +133,7 @@ public interface DatabaseHelper {
      */
     void saveOfflineTransactionMessage(@NotNull UUID player, @NotNull String message, long time);
 
-
-    /**
-     * Upgrade legacy name based data record to uniqueId based record
-     *
-     * @param ownerUUID The owner unique id
-     * @param x         Shop X
-     * @param y         Shop Y
-     * @param z         Shop Z
-     * @param worldName Shop World
-     */
-    void updateOwner2UUID(@NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName);
-
-    /**
-     * Update external cache data
-     * (Used for Web UI or other something like that)
-     *
-     * @param shop  The shop
-     * @param space The shop remaining space
-     * @param stock The shop remaining stock
-     */
-    void updateExternalInventoryProfileCache(@NotNull Shop shop, int space, int stock);
+    void updateExternalInventoryProfileCache(long shopId, int space, int stock);
 
     void updateShop(@NotNull Shop shop) throws SQLException;
 

@@ -20,12 +20,9 @@
 package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +33,8 @@ public class SubCommand_Export implements CommandHandler<ConsoleCommandSender> {
     @SneakyThrows
     public synchronized void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         Util.makeExportBackup(null);
-        MsgUtil.sendDirectMessage(sender, Component.text("Done.").color(NamedTextColor.GREEN));
+        sender.sendMessage("Recovery command hadn't available in this version yet!");
+        // MsgUtil.sendDirectMessage(sender, Component.text("Done.").color(NamedTextColor.GREEN));
     }
 
 

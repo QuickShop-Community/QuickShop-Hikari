@@ -1011,18 +1011,20 @@ public class Util {
         }
         file.createNewFile();
 
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            StringBuilder finalReport = new StringBuilder();
-            plugin.getShopLoader()
-                    .getOriginShopsInDatabase()
-                    .forEach((shop -> finalReport.append(shop).append("\n")));
-            try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
-                outputStream.write(finalReport.toString());
-            } catch (IOException exception) {
-                plugin.getLogger().log(Level.WARNING, "Backup failed", exception);
-            }
+        plugin.getLogger().log(Level.WARNING, "Backup hadn't available in this version yet!");
 
-        });
+//        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+//            StringBuilder finalReport = new StringBuilder();
+//            plugin.getShopLoader()
+//                    .getOriginShopsInDatabase()
+//                    .forEach((shop -> finalReport.append(shop).append("\n")));
+//            try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
+//                outputStream.write(finalReport.toString());
+//            } catch (IOException exception) {
+//                plugin.getLogger().log(Level.WARNING, "Backup failed", exception);
+//            }
+//
+//        });
     }
 
 

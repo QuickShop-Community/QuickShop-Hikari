@@ -31,7 +31,7 @@ import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
-import com.ghostchu.quickshop.database.bean.DataRecord;
+import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.economy.EconomyTransaction;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
@@ -79,6 +79,7 @@ import java.util.logging.Level;
 @EqualsAndHashCode
 public class ContainerShop implements Shop, Reloadable {
     private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
+    private long shopId;
     @NotNull
     private final Location location;
     private final YamlConfiguration extra;
@@ -135,6 +136,7 @@ public class ContainerShop implements Shop, Reloadable {
 
     ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
+        this.shopId = s.shopId;
         this.shopType = s.shopType;
         this.item = s.item.clone();
         this.originalItem = s.originalItem.clone();
@@ -158,6 +160,7 @@ public class ContainerShop implements Shop, Reloadable {
         this.symbolLink = s.symbolLink;
         this.shopName = s.shopName;
         this.playerGroup = s.playerGroup;
+
         initDisplayItem();
     }
 
@@ -177,6 +180,7 @@ public class ContainerShop implements Shop, Reloadable {
      */
     public ContainerShop(
             @NotNull QuickShop plugin,
+            long shopId,
             @NotNull Location location,
             double price,
             @NotNull ItemStack item,
@@ -192,6 +196,7 @@ public class ContainerShop implements Shop, Reloadable {
             @Nullable String shopName,
             @NotNull Map<UUID, String> playerGroup) {
         Util.ensureThread(false);
+        this.shopId = shopId;
         this.shopName = shopName;
         this.location = location;
         this.price = price;
@@ -364,6 +369,11 @@ public class ContainerShop implements Shop, Reloadable {
         }
         Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + Util.list2String(result.stream().map(UUID::toString).toList()));
         return result;
+    }
+
+    @Override
+    public long getShopId() {
+        return this.shopId;
     }
 
     /**
@@ -1036,6 +1046,10 @@ public class ContainerShop implements Shop, Reloadable {
         //TODO: check isDirty()
         Util.ensureThread(false);
         if (updating) {
+            return;
+        }
+        if (this.shopId == -1) {
+            Log.debug("Skip shop database update because it not fully setup!");
             return;
         }
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
@@ -1798,8 +1812,10 @@ public class ContainerShop implements Shop, Reloadable {
         return inventoryWrapperProvider;
     }
 
-    public @NotNull DataRecord createDataRecord() {
-        return new DataRecord(Util.serialize(getItem()),
+    public @NotNull SimpleDataRecord createDataRecord() {
+        return new SimpleDataRecord(
+                getOwner(),
+                Util.serialize(getItem()),
                 getShopName(),
                 getShopType().toID(),
                 getCurrency(),
@@ -1808,8 +1824,10 @@ public class ContainerShop implements Shop, Reloadable {
                 isDisableDisplay(),
                 getTaxAccount(),
                 JsonUtil.getGson().toJson(getPermissionAudiences()),
+                saveExtraToYaml(),
                 getInventoryWrapperProvider(),
-                saveToSymbolLink()
+                saveToSymbolLink(),
+                System.currentTimeMillis()
         );
     }
 
@@ -1821,5 +1839,12 @@ public class ContainerShop implements Shop, Reloadable {
             this.item.setAmount(this.originalItem.getAmount());
         }
         return Reloadable.super.reloadModule();
+    }
+
+    @Override
+    public void setShopId(long newId) {
+        if (this.shopId != -1)
+            throw new IllegalStateException("Cannot set shop id once it fully created.");
+        this.shopId = newId;
     }
 }

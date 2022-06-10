@@ -46,6 +46,7 @@ import java.util.UUID;
 public interface Shop {
     NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShopAPI.getPluginInstance(), "shopsign");
 
+    long getShopId();
 
     /**
      * Check if player have authorized for specific permission on specific shop
@@ -711,4 +712,6 @@ public interface Shop {
      */
     @NotNull
     String saveToSymbolLink();
+
+    void setShopId(long newId);
 }

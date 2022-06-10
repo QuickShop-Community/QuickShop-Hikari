@@ -292,6 +292,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
             long dataId = plugin.getDatabaseHelper().createData(shop);
             long shopId = plugin.getDatabaseHelper().createShop(dataId);
+            shop.setShopId(shopId);
             plugin.getDatabaseHelper().createShopMap(shopId, shop.getLocation());
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1048,6 +1049,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             // Create the basic shop
             ContainerShop shop = new ContainerShop(
                     plugin,
+                    -1,
                     info.getLocation(),
                     price,
                     info.getItem(),
