@@ -28,7 +28,6 @@ import com.ghostchu.quickshop.api.event.ShopOngoingFeeEvent;
 import com.ghostchu.quickshop.api.event.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.listener.AbstractQSListener;
-import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -47,14 +46,10 @@ public class MetricListener extends AbstractQSListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPurchase(ShopSuccessPurchaseEvent event) {
-        Location loc = event.getShop().getLocation();
         plugin.getDatabaseHelper().insertMetricRecord(
                 ShopMetricRecord.builder()
                         .time(System.currentTimeMillis())
-                        .x(loc.getBlockX())
-                        .y(loc.getBlockY())
-                        .z(loc.getBlockZ())
-                        .world(loc.getWorld().getName())
+                        .shopId(event.getShop().getShopId())
                         .player(event.getPurchaser())
                         .tax(event.getTax())
                         .total(event.getBalanceWithoutTax())
@@ -65,14 +60,10 @@ public class MetricListener extends AbstractQSListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onCreate(ShopCreateEvent event) {
-        Location loc = event.getShop().getLocation();
         plugin.getDatabaseHelper().insertMetricRecord(
                 ShopMetricRecord.builder()
                         .time(System.currentTimeMillis())
-                        .x(loc.getBlockX())
-                        .y(loc.getBlockY())
-                        .z(loc.getBlockZ())
-                        .world(loc.getWorld().getName())
+                        .shopId(event.getShop().getShopId())
                         .player(event.getCreator())
                         .tax(0.0d)
                         .total(plugin.getConfig().getDouble("shop.cost"))
@@ -83,14 +74,10 @@ public class MetricListener extends AbstractQSListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onDelete(ShopDeleteEvent event) {
-        Location loc = event.getShop().getLocation();
         plugin.getDatabaseHelper().insertMetricRecord(
                 ShopMetricRecord.builder()
                         .time(System.currentTimeMillis())
-                        .x(loc.getBlockX())
-                        .y(loc.getBlockY())
-                        .z(loc.getBlockZ())
-                        .world(loc.getWorld().getName())
+                        .shopId(event.getShop().getShopId())
                         .player(event.getShop().getOwner())
                         .tax(0.0d)
                         .total(plugin.getConfig().getBoolean("shop.refund") ? plugin.getConfig().getDouble("shop.cost", 0.0d) : 0.0d)
@@ -101,14 +88,10 @@ public class MetricListener extends AbstractQSListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onDelete(ShopOngoingFeeEvent event) {
-        Location loc = event.getShop().getLocation();
         plugin.getDatabaseHelper().insertMetricRecord(
                 ShopMetricRecord.builder()
                         .time(System.currentTimeMillis())
-                        .x(loc.getBlockX())
-                        .y(loc.getBlockY())
-                        .z(loc.getBlockZ())
-                        .world(loc.getWorld().getName())
+                        .shopId(event.getShop().getShopId())
                         .player(event.getShop().getOwner())
                         .tax(0.0d)
                         .total(event.getCost())

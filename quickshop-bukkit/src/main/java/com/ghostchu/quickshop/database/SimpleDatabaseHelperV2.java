@@ -32,11 +32,13 @@ import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Data;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
+import java.util.Date;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.Level;
@@ -382,27 +384,27 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void insertHistoryRecord(@NotNull Object rec) {
-        manager.createInsert(prefix + "logs")
-                .setColumnNames("time", "classname", "data")
-                .setParams(System.currentTimeMillis(), rec.getClass().getName(), JsonUtil.getGson().toJson(rec))
+        DataTables.LOG_OTHERS.createInsert(manager)
+                .setColumnNames("type", "data")
+                .setParams(rec.getClass().getName(), JsonUtil.getGson().toJson(rec))
                 .executeAsync();
     }
 
     @Override
     public void insertMetricRecord(@NotNull ShopMetricRecord record) {
-        manager.createInsert(prefix + "metrics")
-                .setColumnNames("time", "x", "y", "z", "world", "type", "total", "tax", "amount", "player")
-                .setParams(record.getTime(),
-                        record.getX(),
-                        record.getY(),
-                        record.getZ(),
-                        record.getWorld(),
-                        record.getType().name(),
-                        record.getTotal(),
-                        record.getTax(),
-                        record.getAmount(),
-                        record.getPlayer().toString())
-                .executeAsync();
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            try {
+                long dataId = plugin.getDatabaseHelper().locateShopDataId(record.getShopId());
+                DataTables.LOG_PURCHASE
+                        .createInsert(manager)
+                        .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
+                        .setParams(new Date(record.getTime()), record.getShopId()
+                                , dataId, record.getPlayer(), record.getType().name(),
+                                record.getAmount(), record.getTotal(), record.getTax());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     /**

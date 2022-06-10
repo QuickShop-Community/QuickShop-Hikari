@@ -1026,8 +1026,6 @@ public class Util {
 //
 //        });
     }
-
-
     /**
      * Check QuickShop is running on dev edition or not.
      *
