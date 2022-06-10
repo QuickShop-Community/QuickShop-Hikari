@@ -30,14 +30,13 @@ import com.ghostchu.quickshop.database.bean.DataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
+import lombok.Data;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
@@ -276,8 +275,18 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             }
             setDatabaseVersion(3);
         }
+        if (getDatabaseVersion() == 3) {
+            try {
+                doV2Migate();
+                setDatabaseVersion(4);
+            } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
+                     IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
         plugin.getLogger().info("Finished!");
     }
+
 
     public void setDatabaseVersion(int version) throws SQLException {
         DataTables.METADATA
@@ -591,4 +600,213 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     public String getPrefix() {
         return prefix;
     }
+
+
+    private void doV2Migate() throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        plugin.getLogger().info("Please wait... QuickShop-Hikari preparing for database migration...");
+        String actionId = UUID.randomUUID().toString().replace("-", "");
+        plugin.getLogger().info("Action ID: " + actionId);
+        plugin.getLogger().info("Cloning the tables for data copy...");
+        manager.alterTable(getPrefix() + "shops")
+                .renameTo(getPrefix() + "shops_" + actionId)
+                .execute();
+        try {
+            manager.alterTable(getPrefix() + "messages")
+                    .renameTo(getPrefix() + "messages_" + actionId)
+                    .execute();
+            manager.alterTable(getPrefix() + "logs")
+                    .renameTo(getPrefix() + "logs_" + actionId)
+                    .execute();
+            manager.alterTable(getPrefix() + "external_cache")
+                    .renameTo(getPrefix() + "external_cache_" + actionId)
+                    .execute();
+            manager.alterTable(getPrefix() + "player")
+                    .renameTo(getPrefix() + "player_" + actionId)
+                    .execute();
+            manager.alterTable(getPrefix() + "metrics")
+                    .renameTo(getPrefix() + "metrics_" + actionId)
+                    .execute();
+        } catch (SQLException ignored) {
+            plugin.getLogger().log(Level.INFO, "Error while rename tables! CHECK:Recoverable + Skip-able, Skipping...");
+        }
+        plugin.getLogger().info("Ensuring everything getting ready...");
+        if (!hasTable(getPrefix() + "shops_" + actionId)) {
+            throw new IllegalStateException("Failed to rename tables!");
+        }
+        plugin.getLogger().info("Rebuilding database structure...");
+        // Create new tables
+        checkTables();
+        plugin.getLogger().info("Downloading the data that need to converting to memory...");
+        List<OldShopData> oldShopData = new LinkedList<>();
+        List<OldMessageData> oldMessageData = new LinkedList<>();
+        List<OldShopMetricData> oldMetricData = new LinkedList<>();
+        List<OldPlayerData> oldPlayerData = new LinkedList<>();
+        downloadData("shops", "shops", actionId, OldShopData.class, oldShopData);
+        downloadData("shops", "messages", actionId, OldMessageData.class, oldMessageData);
+        downloadData("shops", "player", actionId, OldPlayerData.class, oldPlayerData);
+        downloadData("shops", "metric", actionId, OldShopMetricData.class, oldMetricData);
+        plugin.getLogger().info("Converting data and write into database...");
+        // Convert data
+        int pos = 0;
+        int total = oldShopData.size();
+        for (OldShopData data : oldShopData) {
+            long dataId = DataTables.DATA.createInsert(manager)
+                    .setColumnNames("owner", "item", "name", "type", "currency", "price", "unlimited", "hologram", "tax_account", "permissions", "extra", "inv_wrapper", "inv_symbol_link")
+                    .setParams(data.owner, data.itemConfig, data.name, data.type, data.currency, data.price, data.unlimited, data.disableDisplay, data.taxAccount, data.permission, data.extra, data.inventoryWrapperName, data.inventorySymbolLink)
+                    .execute();
+            if (dataId < 1)
+                throw new IllegalStateException("DataId creation failed.");
+            long shopId = DataTables.SHOPS.createInsert(manager)
+                    .setColumnNames("data").setParams(dataId).execute();
+            if (shopId < 1)
+                throw new IllegalStateException("ShopId creation failed.");
+            DataTables.SHOP_MAP.createReplace(manager)
+                    .setColumnNames("world", "x", "y", "z", "shop")
+                    .setParams(data.world, data.x, data.y, data.z, shopId);
+            plugin.getLogger().info("Converting shops...  (" + (++pos) + "/" + total + ")");
+        }
+        pos = 0;
+        total = oldMessageData.size();
+        for (OldMessageData data : oldMessageData) {
+            DataTables.DATA.createInsert(manager)
+                    .setColumnNames("receiver", "time", "content")
+                    .setParams(data.owner, data.time, data.message)
+                    .execute();
+            plugin.getLogger().info("Converting messages...  (" + (++pos) + "/" + total + ")");
+        }
+        pos = 0;
+        total = oldPlayerData.size();
+        for (OldPlayerData data : oldPlayerData) {
+            DataTables.DATA.createInsert(manager)
+                    .setColumnNames("uuid", "locale")
+                    .setParams(data.uuid, data.locale)
+                    .execute();
+            plugin.getLogger().info("Converting players properties...  (" + (++pos) + "/" + total + ")");
+        }
+        pos = 0;
+        total = oldMetricData.size();
+        for (OldShopMetricData data : oldMetricData) {
+            long shopId = locateShopId(data.getWorld(), data.getX(), data.getY(), data.getZ());
+            if (shopId < 1)
+                throw new IllegalStateException("ShopId not found.");
+            long dataId = locateShopDataId(shopId);
+            if (dataId < 1)
+                throw new IllegalStateException("DataId not found.");
+            DataTables.LOG_PURCHASE.createInsert(manager)
+                    .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
+                    .setParams(data.time, shopId, dataId, data.player, data.type, data.amount, data.total, data.tax)
+                    .execute();
+            plugin.getLogger().info("Converting purchase metric...  (" + (++pos) + "/" + total + ")");
+        }
+        plugin.getLogger().info("Migrate completed, previous versioned data was renamed to <PREFIX>_<TABLE_NAME>_<ACTION_ID>.");
+    }
+
+    private <T> void downloadData(@NotNull String name, @NotNull String tableLegacyName, @NotNull String actionId, @NotNull Class<T> clazz, @NotNull List<T> target) throws NoSuchMethodException, SQLException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        plugin.getLogger().info("Performing query for data downloading (" + name + ")...");
+        try (SQLQuery query = manager.createQuery().inTable(getPrefix() + tableLegacyName + "_" + actionId)
+                .build().execute(); ResultSet set = query.getResultSet()) {
+            int count = 0;
+            while (set.next()) {
+                target.add(clazz.getConstructor(ResultSet.class).newInstance(set));
+                count++;
+                plugin.getLogger().info("Downloaded " + count + " data to memory (" + name + ")...");
+            }
+            plugin.getLogger().info("Downloaded " + count + " total, completed. (" + name + ")");
+        }
+    }
+
+    @Data
+    static class OldShopData {
+        private final String owner;
+        private final double price;
+        private final String itemConfig;
+        private final int x;
+        private final int y;
+        private final int z;
+        private final String world;
+        private final boolean unlimited;
+        private final int type;
+        private final String extra;
+        private final String currency;
+        private final boolean disableDisplay;
+        private final String taxAccount;
+        private final String inventorySymbolLink;
+        private final String inventoryWrapperName;
+        private final String name;
+
+        private final String permission;
+
+        public OldShopData(ResultSet set) throws SQLException {
+            owner = set.getString("owner");
+            price = set.getDouble("price");
+            itemConfig = set.getString("itemConfig");
+            x = set.getInt("x");
+            y = set.getInt("y");
+            z = set.getInt("z");
+            world = set.getString("world");
+            unlimited = set.getBoolean("unlimited");
+            type = set.getInt("type");
+            extra = set.getString("extra");
+            currency = set.getString("currency");
+            disableDisplay = set.getBoolean("disableDisplay");
+            taxAccount = set.getString("taxAccount");
+            inventorySymbolLink = set.getString("inventorySymbolLink");
+            inventoryWrapperName = set.getString("inventoryWrapperName");
+            name = set.getString("name");
+            permission = set.getString("permission");
+
+        }
+    }
+
+    @Data
+    static class OldMessageData {
+        private final String owner;
+        private final String message;
+        private final long time;
+
+        public OldMessageData(ResultSet set) throws SQLException {
+            owner = set.getString("owner");
+            message = set.getString("message");
+            time = set.getLong("time");
+        }
+    }
+
+    @Data
+    static class OldShopMetricData {
+        private final long time;
+        private final int x;
+        private final int y;
+        private final int z;
+        private final String world;
+        private final String type;
+        private final double total;
+        private final double tax;
+        private final int amount;
+        private final String player;
+
+        public OldShopMetricData(ResultSet set) throws SQLException {
+            time = set.getLong("time");
+            x = set.getInt("x");
+            y = set.getInt("y");
+            z = set.getInt("z");
+            world = set.getString("world");
+            type = set.getString("type");
+            total = set.getDouble("total");
+            tax = set.getDouble("tax");
+            amount = set.getInt("amount");
+            player = set.getString("player");
+        }
+    }
+
+    @Data
+    static class OldPlayerData {
+        private final String uuid;
+        private final String locale;
+
+        public OldPlayerData(ResultSet set) throws SQLException {
+            uuid = set.getString("owner");
+            locale = set.getString("locale");
+        }
+    }
+
 }

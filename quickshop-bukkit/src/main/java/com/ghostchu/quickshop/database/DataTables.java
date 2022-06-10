@@ -30,6 +30,7 @@ public enum DataTables {
 
         table.addColumn("tax_account", "VARCHAR(36)"); // TAX ACCOUNT
         table.addColumn("permissions", "MEDIUMTEXT"); // PERMISSIONS (JSON)
+        table.addColumn("extra", "LONGTEXT"); // EXTRA
 
         table.addColumn("inv_wrapper", "VARCHAR(255) NOT NULL"); // INVENTORY TYPE
         table.addColumn("inv_symbol_link", "TEXT NOT NULL"); // INVENTORY DATA (to read the inventory info)
@@ -94,9 +95,6 @@ public enum DataTables {
 
         table.addColumn("money", "DECIMAL(32,2) NOT NULL"); // TOTAL MONEY
         table.addColumn("tax", "DECIMAL(32,2) NOT NULL DEFAULT 0"); // TAX
-
-        table.addColumn("item_name", "TEXT NOT NULL"); // ITEM NAME
-        table.addColumn("item_data", "TEXT NOT NULL"); // ITEM FULL DATA
     }),
 
     LOG_TRANSACTION("log_transaction", (table) -> {

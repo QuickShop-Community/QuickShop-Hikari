@@ -270,6 +270,7 @@
 //                plugin.getLogger().log(Level.INFO, "Failed to add name column to shops table! SQL: " + e.getMessage());
 //            }
 //            setDatabaseVersion(3);
+//            setDatabaseVersion(3);
 //        }
 //        plugin.getLogger().info("Finished!");
 //    }
