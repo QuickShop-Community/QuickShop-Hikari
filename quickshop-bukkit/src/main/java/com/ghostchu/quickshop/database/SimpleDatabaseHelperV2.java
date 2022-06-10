@@ -641,10 +641,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         List<OldMessageData> oldMessageData = new LinkedList<>();
         List<OldShopMetricData> oldMetricData = new LinkedList<>();
         List<OldPlayerData> oldPlayerData = new LinkedList<>();
-        downloadData("shops", "shops", actionId, OldShopData.class, oldShopData);
-        downloadData("shops", "messages", actionId, OldMessageData.class, oldMessageData);
-        downloadData("shops", "player", actionId, OldPlayerData.class, oldPlayerData);
-        downloadData("shops", "metric", actionId, OldShopMetricData.class, oldMetricData);
+        downloadData("Shops", "shops", actionId, OldShopData.class, oldShopData);
+        downloadData("Messages", "messages", actionId, OldMessageData.class, oldMessageData);
+        downloadData("Players Properties", "player", actionId, OldPlayerData.class, oldPlayerData);
+        downloadData("Shop Metrics", "metric", actionId, OldShopMetricData.class, oldMetricData);
         plugin.getLogger().info("Converting data and write into database...");
         // Convert data
         int pos = 0;

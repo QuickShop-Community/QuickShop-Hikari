@@ -38,8 +38,7 @@ public enum DataTables {
         table.addColumn("create_time", "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"); // SHOP CREATE TIME
         // table.addColumn("remove_time", "DATETIME"); // SHOP REMOVE TIME (NULL if not removed)
 
-        table.setIndex(IndexType.INDEX, "index_qs_data_owner", "owner");
-        table.setIndex(IndexType.INDEX, "index_qs_data_name", "name");
+        table.setIndex(IndexType.INDEX, "idx_qs_data_owner", "owner");
     }),
 
     SHOPS("shops", (table) -> {
