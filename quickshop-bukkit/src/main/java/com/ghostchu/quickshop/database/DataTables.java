@@ -46,7 +46,6 @@ public enum DataTables {
         table.addAutoIncrementColumn("id", true); // SHOP ID
         // DATA ID
         table.addColumn("data", "INT UNSIGNED NOT NULL");
-        table.setIndex(IndexType.PRIMARY_KEY, "index_qs_shops", "world", "x", "y", "z");
     }),
 
     SHOP_MAP("shop_map", (table) -> {
