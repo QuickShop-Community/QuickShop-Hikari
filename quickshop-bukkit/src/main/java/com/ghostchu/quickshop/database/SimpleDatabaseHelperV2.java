@@ -508,10 +508,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
         try (SQLQuery query = builder.build().execute(); ResultSet set = query.getResultSet()) {
             if (set.next()) {
-                return set.getInt("id");
+                int id = set.getInt("id");
+                Log.debug("Found data record with id " + id + " for record " + dataRecord);
             }
+            Log.debug("No data record found for record " + dataRecord);
             return 0;
         } catch (SQLException e) {
+            Log.debug("Failed to query data record for " + dataRecord + " Err: " + e.getMessage());
             e.printStackTrace();
         }
         return 0;
@@ -610,25 +613,43 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         manager.alterTable(getPrefix() + "shops")
                 .renameTo(getPrefix() + "shops_" + actionId)
                 .execute();
+
         try {
             manager.alterTable(getPrefix() + "messages")
                     .renameTo(getPrefix() + "messages_" + actionId)
                     .execute();
+        } catch (SQLException ignored) {
+            plugin.getLogger().log(Level.INFO, "Error while rename tables! CHECK:Recoverable + Skip-able, Skipping...");
+        }
+        try {
             manager.alterTable(getPrefix() + "logs")
                     .renameTo(getPrefix() + "logs_" + actionId)
                     .execute();
+        } catch (SQLException ignored) {
+            plugin.getLogger().log(Level.INFO, "Error while rename tables! CHECK:Recoverable + Skip-able, Skipping...");
+        }
+        try {
             manager.alterTable(getPrefix() + "external_cache")
                     .renameTo(getPrefix() + "external_cache_" + actionId)
                     .execute();
+        } catch (SQLException ignored) {
+            plugin.getLogger().log(Level.INFO, "Error while rename tables! CHECK:Recoverable + Skip-able, Skipping...");
+        }
+        try {
             manager.alterTable(getPrefix() + "player")
                     .renameTo(getPrefix() + "player_" + actionId)
                     .execute();
+        } catch (SQLException ignored) {
+            plugin.getLogger().log(Level.INFO, "Error while rename tables! CHECK:Recoverable + Skip-able, Skipping...");
+        }
+        try {
             manager.alterTable(getPrefix() + "metrics")
                     .renameTo(getPrefix() + "metrics_" + actionId)
                     .execute();
         } catch (SQLException ignored) {
             plugin.getLogger().log(Level.INFO, "Error while rename tables! CHECK:Recoverable + Skip-able, Skipping...");
         }
+
         plugin.getLogger().info("Ensuring everything getting ready...");
         if (!hasTable(getPrefix() + "shops_" + actionId)) {
             throw new IllegalStateException("Failed to rename tables!");
@@ -653,6 +674,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             long dataId = DataTables.DATA.createInsert(manager)
                     .setColumnNames("owner", "item", "name", "type", "currency", "price", "unlimited", "hologram", "tax_account", "permissions", "extra", "inv_wrapper", "inv_symbol_link")
                     .setParams(data.owner, data.itemConfig, data.name, data.type, data.currency, data.price, data.unlimited, data.disableDisplay, data.taxAccount, data.permission, data.extra, data.inventoryWrapperName, data.inventorySymbolLink)
+                    .returnGeneratedKey()
                     .execute();
             if (dataId < 1)
                 throw new IllegalStateException("DataId creation failed.");
@@ -662,7 +684,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 throw new IllegalStateException("ShopId creation failed.");
             DataTables.SHOP_MAP.createReplace(manager)
                     .setColumnNames("world", "x", "y", "z", "shop")
-                    .setParams(data.world, data.x, data.y, data.z, shopId);
+                    .setParams(data.world, data.x, data.y, data.z, shopId)
+                    .execute();
             plugin.getLogger().info("Converting shops...  (" + (++pos) + "/" + total + ")");
         }
         pos = 0;
@@ -703,15 +726,19 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     private <T> void downloadData(@NotNull String name, @NotNull String tableLegacyName, @NotNull String actionId, @NotNull Class<T> clazz, @NotNull List<T> target) throws NoSuchMethodException, SQLException, InvocationTargetException, InstantiationException, IllegalAccessException {
         plugin.getLogger().info("Performing query for data downloading (" + name + ")...");
-        try (SQLQuery query = manager.createQuery().inTable(getPrefix() + tableLegacyName + "_" + actionId)
-                .build().execute(); ResultSet set = query.getResultSet()) {
-            int count = 0;
-            while (set.next()) {
-                target.add(clazz.getConstructor(ResultSet.class).newInstance(set));
-                count++;
-                plugin.getLogger().info("Downloaded " + count + " data to memory (" + name + ")...");
+        if (hasTable(getPrefix() + tableLegacyName + "_" + actionId)) {
+            try (SQLQuery query = manager.createQuery().inTable(getPrefix() + tableLegacyName + "_" + actionId)
+                    .build().execute(); ResultSet set = query.getResultSet()) {
+                int count = 0;
+                while (set.next()) {
+                    target.add(clazz.getConstructor(ResultSet.class).newInstance(set));
+                    count++;
+                    plugin.getLogger().info("Downloaded " + count + " data to memory (" + name + ")...");
+                }
+                plugin.getLogger().info("Downloaded " + count + " total, completed. (" + name + ")");
             }
-            plugin.getLogger().info("Downloaded " + count + " total, completed. (" + name + ")");
+        } else {
+            plugin.getLogger().info("Skipping for table " + tableLegacyName);
         }
     }
 
