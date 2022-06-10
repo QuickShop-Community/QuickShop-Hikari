@@ -1,17 +1,24 @@
 package com.ghostchu.quickshop.api.database.bean;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Date;
 import java.util.UUID;
 
 public interface DataRecord {
-
+    @NotNull
     UUID getOwner();
 
+    @NotNull
     String getItem();
 
+    @Nullable
     String getName();
 
     int getType();
 
+    @Nullable
     String getCurrency();
 
     double getPrice();
@@ -20,15 +27,21 @@ public interface DataRecord {
 
     boolean isHologram();
 
+    @Nullable
     UUID getTaxAccount();
 
+    @NotNull
     String getPermissions();
 
+    @NotNull
     String getInventoryWrapper();
 
+    @NotNull
     String getInventorySymbolLink();
 
-    long getCreateTime();
+    @NotNull
+    Date getCreateTime();
 
+    @NotNull
     String getExtra();
 }

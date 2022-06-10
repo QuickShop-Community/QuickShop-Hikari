@@ -1827,7 +1827,7 @@ public class ContainerShop implements Shop, Reloadable {
                 saveExtraToYaml(),
                 getInventoryWrapperProvider(),
                 saveToSymbolLink(),
-                System.currentTimeMillis()
+                new Date()
         );
     }
 

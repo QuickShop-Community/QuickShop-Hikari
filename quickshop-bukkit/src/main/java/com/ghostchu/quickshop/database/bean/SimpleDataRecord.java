@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -25,7 +26,7 @@ public class SimpleDataRecord implements DataRecord {
     private final String extra;
     private final String inventoryWrapper;
     private final String inventorySymbolLink;
-    private final long createTime;
+    private final Date createTime;
 
     @NotNull
     public Map<String, Object> generateParams() {
@@ -61,16 +62,16 @@ public class SimpleDataRecord implements DataRecord {
         this.extra = set.getString("extra");
         this.inventorySymbolLink = set.getString("inv_symbol_link");
         this.inventoryWrapper = set.getString("inv_wrapper");
-        this.createTime = set.getLong("create_time");
+        this.createTime = set.getDate("create_time");
     }
 
     @Override
-    public UUID getOwner() {
+    public @NotNull UUID getOwner() {
         return owner;
     }
 
     @Override
-    public String getItem() {
+    public @NotNull String getItem() {
         return item;
     }
 
@@ -110,27 +111,27 @@ public class SimpleDataRecord implements DataRecord {
     }
 
     @Override
-    public String getPermissions() {
+    public @NotNull String getPermissions() {
         return permissions;
     }
 
     @Override
-    public String getExtra() {
+    public @NotNull String getExtra() {
         return extra;
     }
 
     @Override
-    public String getInventoryWrapper() {
+    public @NotNull String getInventoryWrapper() {
         return inventoryWrapper;
     }
 
     @Override
-    public String getInventorySymbolLink() {
+    public @NotNull String getInventorySymbolLink() {
         return inventorySymbolLink;
     }
 
     @Override
-    public long getCreateTime() {
+    public @NotNull Date getCreateTime() {
         return createTime;
     }
 }
