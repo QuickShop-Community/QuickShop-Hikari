@@ -50,8 +50,8 @@ import com.ghostchu.quickshop.metric.MetricListener;
 import com.ghostchu.quickshop.papi.QuickShopPAPI;
 import com.ghostchu.quickshop.permission.PermissionManager;
 import com.ghostchu.quickshop.platform.Platform;
+import com.ghostchu.quickshop.platform.mixedspigot.MixedSpigotPlatform;
 import com.ghostchu.quickshop.platform.paper.PaperPlatform;
-import com.ghostchu.quickshop.platform.spigot.SpigotPlatform;
 import com.ghostchu.quickshop.shop.*;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanel;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
@@ -1123,7 +1123,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         if (PaperLib.isPaper()) {
             this.platform = new PaperPlatform(this.translationMapping);
         } else if (PaperLib.isSpigot()) {
-            this.platform = new SpigotPlatform(this.translationMapping);
+            this.platform = new MixedSpigotPlatform(this.translationMapping);
         } else {
             throw new UnsupportedOperationException("Unsupported platform");
         }
