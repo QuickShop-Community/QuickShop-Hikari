@@ -72,11 +72,6 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public boolean isServerStopping() {
-        return Bukkit.isStopping();
-    }
-
-    @Override
     public @NotNull String getMinecraftVersion() {
         return Bukkit.getMinecraftVersion();
     }
@@ -214,4 +209,5 @@ public class PaperPlatform implements Platform {
     public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
         return meta.lore();
     }
+
 }

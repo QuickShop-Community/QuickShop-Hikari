@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.platform.spigot;
+package com.ghostchu.quickshop.platform;
 
 public class Util {
     public static boolean methodExists(Class<?> clazz, String methodName) {

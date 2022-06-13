@@ -22,15 +22,13 @@ package com.ghostchu.quickshop.platform.spigot;
 import com.ghostchu.quickshop.platform.Platform;
 import de.tr7zw.nbtapi.NBTTileEntity;
 import de.tr7zw.nbtapi.plugin.NBTAPI;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.nbt.api.BinaryTagHolder;
+import me.pikamug.localelib.LocaleManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.block.Sign;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.enchantments.Enchantment;
@@ -48,14 +46,13 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-public class SpigotPlatform implements Platform {
-    private NBTAPI nbtapi;
-    private final ReflServerStateProvider provider;
-    private Map<String, String> translationMapping;
-    private final Logger logger = Logger.getLogger("QuickShop-Hikari");
+public abstract class AbstractSpigotPlatform implements Platform {
+    protected NBTAPI nbtapi;
+    protected Map<String, String> translationMapping;
+    protected final Logger logger = Logger.getLogger("QuickShop-Hikari");
+    protected final LocaleManager localeManager = new LocaleManager();
 
-    public SpigotPlatform(@NotNull Map<String, String> mapping) {
-        this.provider = new ReflServerStateProvider();
+    public AbstractSpigotPlatform(@NotNull Map<String, String> mapping) {
         if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
             if (NBTAPI.getInstance().isCompatible()) {
                 nbtapi = NBTAPI.getInstance();
@@ -86,37 +83,18 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
-    public @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack) {
-        NamespacedKey namespacedKey = stack.getType().getKey();
-        Key key = Key.key(namespacedKey.toString());
-        BinaryTagHolder holder;
-        if (Util.methodExists(BinaryTagHolder.class, "binaryTagHolder")) {
-            holder = BinaryTagHolder.binaryTagHolder(ReflectFactory.getMaterialMinecraftNamespacedKey(stack.getType()));
-        } else {
-            //noinspection UnstableApiUsage
-            holder = BinaryTagHolder.of(ReflectFactory.getMaterialMinecraftNamespacedKey(stack.getType()));
-        }
-        return HoverEvent.showItem(key, stack.getAmount(), holder);
-    }
+    public abstract @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack);
 
     @Override
-    public void registerCommand(@NotNull String prefix, @NotNull PluginCommand command) {
-        try {
-            ReflectFactory.getCommandMap().register(prefix, command);
-            ReflectFactory.syncCommands();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    public abstract void registerCommand(@NotNull String prefix, @NotNull PluginCommand command);
 
     @Override
-    public boolean isServerStopping() {
-        return this.provider.isStopping();
-    }
+    public abstract @NotNull String getMinecraftVersion();
 
-    @Override
-    public @NotNull String getMinecraftVersion() {
-        return ReflectFactory.getServerVersion();
+    @NotNull
+    public static String getNMSVersion() {
+        String name = Bukkit.getServer().getClass().getPackage().getName();
+        return name.substring(name.lastIndexOf('.') + 1);
     }
 
     private String postProcessingTranslationKey(String key) {
@@ -125,19 +103,12 @@ public class SpigotPlatform implements Platform {
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
-        String key;
-        if (!material.isBlock())
-            key = "item." + material.getKey().getNamespace() + "." + material.getKey().getKey();
-        else
-            key = "block." + material.getKey().getNamespace() + "." + material.getKey().getKey();
-        return postProcessingTranslationKey(key);
+        return postProcessingTranslationKey(localeManager.queryMaterial(material));
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull EntityType type) {
-        String key;
-        key = "entity." + type.getKey().getNamespace() + "." + type.getKey().getKey();
-        return postProcessingTranslationKey(key);
+        return postProcessingTranslationKey(localeManager.queryEntityType(type, null));
     }
 
     @Override
@@ -149,9 +120,7 @@ public class SpigotPlatform implements Platform {
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
-        String key;
-        key = enchantment.getKey().getNamespace() + "." + enchantment.getKey().getKey();
-        return postProcessingTranslationKey(key);
+        return postProcessingTranslationKey(localeManager.queryEnchantments(Map.of(enchantment, 1)).getOrDefault(enchantment, "Unknown"));
     }
 
     @Override

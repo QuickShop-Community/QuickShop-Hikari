@@ -20,13 +20,13 @@
 package com.ghostchu.quickshop.api.database;
 
 import cc.carm.lib.easysql.api.SQLQuery;
+import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.SQLException;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -68,28 +68,34 @@ public interface DatabaseHelper {
     /**
      * Create a shop data record sand save into database
      *
-     * @param shop      The shop object
-     * @param onSuccess Success callback
-     * @param onFailed  Fails callback
+     * @param shop The shop object
      */
-    void createShop(@NotNull Shop shop, @Nullable Runnable onSuccess, @Nullable Consumer<SQLException> onFailed);
+    long createData(@NotNull Shop shop) throws SQLException;
+
+    @Nullable
+    DataRecord getDataRecord(long dataId) throws SQLException;
+
+    long createShop(long dataId) throws SQLException;
+
+    void createShopMap(long shopId, @NotNull Location location) throws SQLException;
 
     /**
-     * Remove a shop data record from database
-     *
-     * @param shop The shop
-     */
-    void removeShop(@NotNull Shop shop);
-
-    /**
-     * Remove a shop data record from database
+     * Remove a shop data mapping record from database
      *
      * @param world Shop world
      * @param x     Shop X
      * @param y     Shop Y
      * @param z     Shop Z
      */
-    void removeShop(@NotNull String world, int x, int y, int z);
+    void removeShopMap(@NotNull String world, int x, int y, int z) throws SQLException;
+
+    void removeShop(long shopId);
+
+    void removeData(long dataId);
+
+    long locateShopId(@NotNull String world, int x, int y, int z) throws SQLException;
+
+    long locateShopDataId(long shopId) throws SQLException;
 
     /**
      * Select all messages that saved in the database
@@ -127,50 +133,9 @@ public interface DatabaseHelper {
      */
     void saveOfflineTransactionMessage(@NotNull UUID player, @NotNull String message, long time);
 
+    void updateExternalInventoryProfileCache(long shopId, int space, int stock);
 
-    /**
-     * Upgrade legacy name based data record to uniqueId based record
-     *
-     * @param ownerUUID The owner unique id
-     * @param x         Shop X
-     * @param y         Shop Y
-     * @param z         Shop Z
-     * @param worldName Shop World
-     */
-    void updateOwner2UUID(@NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName);
-
-    /**
-     * Update external cache data
-     * (Used for Web UI or other something like that)
-     *
-     * @param shop  The shop
-     * @param space The shop remaining space
-     * @param stock The shop remaining stock
-     */
-    void updateExternalInventoryProfileCache(@NotNull Shop shop, int space, int stock);
-
-    /**
-     * Update a shop data into the database
-     *
-     * @param owner          Shop owner
-     * @param item           Shop item
-     * @param unlimited      Shop unlimited
-     * @param shopType       Shop type
-     * @param price          Shop price
-     * @param x              Shop x
-     * @param y              Shop y
-     * @param z              Shop z
-     * @param world          Shop world
-     * @param extra          Shop extra data
-     * @param currency       Shop currency
-     * @param disableDisplay Shop display disabled status
-     * @param taxAccount     Shop specific tax account
-     */
-    void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
-                    double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
-                    @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
-                    @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName, @NotNull String shopName,
-                    @NotNull Map<UUID, String> playerGroup);
+    void updateShop(@NotNull Shop shop) throws SQLException;
 
     /**
      * Insert a history record into logs table
@@ -181,4 +146,5 @@ public interface DatabaseHelper {
 
     void insertMetricRecord(@NotNull ShopMetricRecord record);
 
+    void insertTransactionRecord(@Nullable UUID from, @Nullable UUID to, double amount, @Nullable String currency, double taxAmount, @Nullable UUID taxAccount, @Nullable String error);
 }

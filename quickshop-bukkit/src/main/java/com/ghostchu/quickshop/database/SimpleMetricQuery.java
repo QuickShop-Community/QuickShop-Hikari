@@ -34,10 +34,10 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class SimpleMetricQuery implements MetricQuery {
-    private final SimpleDatabaseHelper databaseHelper;
+    private final SimpleDatabaseHelperV2 databaseHelper;
     private final QuickShop plugin;
 
-    public SimpleMetricQuery(QuickShop plugin, SimpleDatabaseHelper databaseHelper) {
+    public SimpleMetricQuery(QuickShop plugin, SimpleDatabaseHelperV2 databaseHelper) {
         this.databaseHelper = databaseHelper;
         this.plugin = plugin;
     }

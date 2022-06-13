@@ -40,7 +40,7 @@ import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.command.SimpleCommandManager;
 import com.ghostchu.quickshop.database.HikariUtil;
-import com.ghostchu.quickshop.database.SimpleDatabaseHelper;
+import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.economy.Economy_GemsEconomy;
 import com.ghostchu.quickshop.economy.Economy_TNE;
 import com.ghostchu.quickshop.economy.Economy_Vault;
@@ -51,7 +51,10 @@ import com.ghostchu.quickshop.papi.QuickShopPAPI;
 import com.ghostchu.quickshop.permission.PermissionManager;
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.paper.PaperPlatform;
-import com.ghostchu.quickshop.platform.spigot.SpigotPlatform;
+import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
+import com.ghostchu.quickshop.platform.spigot.v1_18_1.Spigot1181Platform;
+import com.ghostchu.quickshop.platform.spigot.v1_18_2.Spigot1182Platform;
+import com.ghostchu.quickshop.platform.v1_19_1.Spigot1191Platform;
 import com.ghostchu.quickshop.shop.*;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanel;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
@@ -125,7 +128,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     /* Public QuickShop API End */
     boolean onLoadCalled = false;
     private GameVersion gameVersion;
-    private SimpleDatabaseHelper databaseHelper;
+    private SimpleDatabaseHelperV2 databaseHelper;
     private SimpleCommandManager commandManager;
     private ItemMatcher itemMatcher;
     private SimpleShopManager shopManager;
@@ -469,9 +472,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
 
     @Override
     public final void onDisable() {
-        if (!this.platform.isServerStopping()) {
-            getLogger().log(Level.WARNING, "/reload command is unsupported, don't expect any support from QuickShop support team after you execute this command.", new IllegalStateException("/reload command is unsupported, restart your server!"));
-        }
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
         if (sentryErrorReporter != null) {
             getLogger().info("Shutting down error reporter...");
@@ -984,7 +984,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 this.sqlManager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode
             }
             // Make the database up to date
-            this.databaseHelper = new SimpleDatabaseHelper(this, this.sqlManager, this.getDbPrefix());
+            this.databaseHelper = new SimpleDatabaseHelperV2(this, this.sqlManager, this.getDbPrefix());
             return true;
         } catch (Exception e) {
             getLogger().log(Level.SEVERE, "Error when connecting to the database", e);
@@ -1123,7 +1123,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         if (PaperLib.isPaper()) {
             this.platform = new PaperPlatform(this.translationMapping);
         } else if (PaperLib.isSpigot()) {
-            this.platform = new SpigotPlatform(this.translationMapping);
+            this.platform = switch (AbstractSpigotPlatform.getNMSVersion()) {
+                case "v1_18_R1" -> new Spigot1181Platform(this.translationMapping);
+                case "v1_18_R2" -> new Spigot1182Platform(this.translationMapping);
+                case "v1_19_R1" -> new Spigot1191Platform(this.translationMapping);
+                default ->
+                        throw new IllegalArgumentException("This server running " + AbstractSpigotPlatform.getNMSVersion() + " not supported by Hikari. (Try update?)");
+            };
         } else {
             throw new UnsupportedOperationException("Unsupported platform");
         }

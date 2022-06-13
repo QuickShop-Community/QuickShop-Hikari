@@ -17,7 +17,7 @@
  *
  */
 
-package com.ghostchu.quickshop.platform.spigot;
+package com.ghostchu.quickshop.platform;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

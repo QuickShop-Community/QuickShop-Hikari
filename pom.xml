@@ -134,6 +134,11 @@
                                         <shadedPattern>com.ghostchu.quickshop.shade.co.aikar.taskchain.
                                         </shadedPattern>
                                     </relocation>
+                                    <relocation>
+                                        <pattern>com.github.PikaMug.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.com.github.PikaMug.LocaleLib.
+                                        </shadedPattern>
+                                    </relocation>
                                     <!--                                    <relocation>-->
                                     <!--                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>-->
                                     <!--                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.adventure.text.minimessage.-->
@@ -327,6 +332,10 @@
             <id>bg-repo</id>
             <url>https://repo.bg-software.com/repository/api/</url>
         </repository>
+        <repository>
+            <id>nms-repo</id>
+            <url>https://repo.codemc.io/repository/nms/</url>
+        </repository>
     </repositories>
 
 
@@ -508,7 +517,10 @@
     <modules>
         <module>quickshop-api</module>
         <module>platform/quickshop-platform-interface</module>
-        <module>platform/quickshop-platform-spigot</module>
+        <module>platform/quickshop-platform-spigot-abstract</module>
+        <module>platform/quickshop-platform-spigot-v1_18_R1</module>
+        <module>platform/quickshop-platform-spigot-v1_18_R2</module>
+        <module>platform/quickshop-platform-spigot-v1_19_R1</module>
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>

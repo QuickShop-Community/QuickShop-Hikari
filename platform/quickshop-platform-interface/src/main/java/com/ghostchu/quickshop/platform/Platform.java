@@ -50,7 +50,6 @@ public interface Platform {
 
     void registerCommand(@NotNull String prefix, @NotNull PluginCommand command);
 
-    boolean isServerStopping();
 
     @NotNull
     String getMinecraftVersion();
@@ -113,4 +112,5 @@ public interface Platform {
     @Nullable List<Component> getLore(@NotNull ItemStack stack);
 
     @Nullable List<Component> getLore(@NotNull ItemMeta meta);
+
 }

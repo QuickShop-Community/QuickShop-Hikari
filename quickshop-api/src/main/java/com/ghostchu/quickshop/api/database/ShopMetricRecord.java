@@ -30,10 +30,7 @@ import java.util.UUID;
 @Builder
 public class ShopMetricRecord {
     private long time;
-    private int x;
-    private int y;
-    private int z;
-    private String world;
+    private long shopId;
     private ShopOperationEnum type;
     private double total;
     private double tax;

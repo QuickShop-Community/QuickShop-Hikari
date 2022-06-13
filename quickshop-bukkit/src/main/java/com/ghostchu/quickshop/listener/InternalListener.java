@@ -127,7 +127,7 @@ public class InternalListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopInventoryCalc(ShopInventoryCalculateEvent event) {
-        plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop(), event.getSpace(), event.getStock());
+        plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop().getShopId(), event.getSpace(), event.getStock());
     }
 
 
