@@ -518,9 +518,9 @@
         <module>quickshop-api</module>
         <module>platform/quickshop-platform-interface</module>
         <module>platform/quickshop-platform-spigot-abstract</module>
-        <module>platform/quickshop-platform-spigot-v1_18_1</module>
-        <module>platform/quickshop-platform-spigot-v1_18_2</module>
-        <module>platform/quickshop-platform-spigot-v1_19_1</module>
+        <module>platform/quickshop-platform-spigot-v1_18_R1</module>
+        <module>platform/quickshop-platform-spigot-v1_18_R2</module>
+        <module>platform/quickshop-platform-spigot-v1_19_R1</module>
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>

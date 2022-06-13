@@ -128,19 +128,19 @@
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-spigot-v1_18_1</artifactId>
+            <artifactId>quickshop-platform-spigot-v1_18_R1</artifactId>
             <version>${parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-spigot-v1_18_2</artifactId>
+            <artifactId>quickshop-platform-spigot-v1_18_R2</artifactId>
             <version>${parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-spigot-v1_19_1</artifactId>
+            <artifactId>quickshop-platform-spigot-v1_19_R1</artifactId>
             <version>${parent.version}</version>
             <scope>compile</scope>
         </dependency>
