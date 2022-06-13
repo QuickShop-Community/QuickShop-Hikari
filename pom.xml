@@ -134,6 +134,11 @@
                                         <shadedPattern>com.ghostchu.quickshop.shade.co.aikar.taskchain.
                                         </shadedPattern>
                                     </relocation>
+                                    <relocation>
+                                        <pattern>com.github.PikaMug.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.com.github.PikaMug.LocaleLib.
+                                        </shadedPattern>
+                                    </relocation>
                                     <!--                                    <relocation>-->
                                     <!--                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>-->
                                     <!--                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.adventure.text.minimessage.-->
