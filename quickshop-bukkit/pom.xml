@@ -122,7 +122,25 @@
         </dependency>
         <dependency>
             <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-spigot</artifactId>
+            <artifactId>quickshop-platform-spigot-abstract</artifactId>
+            <version>${parent.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-platform-spigot-v1_18_1</artifactId>
+            <version>${parent.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-platform-spigot-v1_18_2</artifactId>
+            <version>${parent.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ghostchu</groupId>
+            <artifactId>quickshop-platform-spigot-v1_19_1</artifactId>
             <version>${parent.version}</version>
             <scope>compile</scope>
         </dependency>

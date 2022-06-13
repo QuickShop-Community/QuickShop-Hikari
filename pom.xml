@@ -332,6 +332,10 @@
             <id>bg-repo</id>
             <url>https://repo.bg-software.com/repository/api/</url>
         </repository>
+        <repository>
+            <id>nms-repo</id>
+            <url>https://repo.codemc.io/repository/nms/</url>
+        </repository>
     </repositories>
 
 
@@ -513,7 +517,10 @@
     <modules>
         <module>quickshop-api</module>
         <module>platform/quickshop-platform-interface</module>
-        <module>platform/quickshop-platform-spigot</module>
+        <module>platform/quickshop-platform-spigot-abstract</module>
+        <module>platform/quickshop-platform-spigot-v1_18_1</module>
+        <module>platform/quickshop-platform-spigot-v1_18_2</module>
+        <module>platform/quickshop-platform-spigot-v1_19_1</module>
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>

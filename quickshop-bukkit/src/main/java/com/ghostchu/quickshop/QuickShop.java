@@ -50,8 +50,11 @@ import com.ghostchu.quickshop.metric.MetricListener;
 import com.ghostchu.quickshop.papi.QuickShopPAPI;
 import com.ghostchu.quickshop.permission.PermissionManager;
 import com.ghostchu.quickshop.platform.Platform;
-import com.ghostchu.quickshop.platform.mixedspigot.MixedSpigotPlatform;
 import com.ghostchu.quickshop.platform.paper.PaperPlatform;
+import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
+import com.ghostchu.quickshop.platform.spigot.v1_18_1.Spigot1181Platform;
+import com.ghostchu.quickshop.platform.spigot.v1_18_2.Spigot1182Platform;
+import com.ghostchu.quickshop.platform.v1_19_1.Spigot1191Platform;
 import com.ghostchu.quickshop.shop.*;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanel;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
@@ -469,9 +472,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
 
     @Override
     public final void onDisable() {
-        if (!this.platform.isServerStopping()) {
-            getLogger().log(Level.WARNING, "/reload command is unsupported, don't expect any support from QuickShop support team after you execute this command.", new IllegalStateException("/reload command is unsupported, restart your server!"));
-        }
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
         if (sentryErrorReporter != null) {
             getLogger().info("Shutting down error reporter...");
@@ -1123,7 +1123,13 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         if (PaperLib.isPaper()) {
             this.platform = new PaperPlatform(this.translationMapping);
         } else if (PaperLib.isSpigot()) {
-            this.platform = new MixedSpigotPlatform(this.translationMapping);
+            this.platform = switch (AbstractSpigotPlatform.getNMSVersion()) {
+                case "v1_18_1" -> new Spigot1181Platform(this.translationMapping);
+                case "v1_18_2" -> new Spigot1182Platform(this.translationMapping);
+                case "v1_19_1" -> new Spigot1191Platform(this.translationMapping);
+                default ->
+                        throw new IllegalArgumentException("This server running " + AbstractSpigotPlatform.getNMSVersion() + " not supported by Hikari. (Try update?)");
+            };
         } else {
             throw new UnsupportedOperationException("Unsupported platform");
         }

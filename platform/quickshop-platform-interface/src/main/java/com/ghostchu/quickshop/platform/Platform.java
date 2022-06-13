@@ -50,7 +50,6 @@ public interface Platform {
 
     void registerCommand(@NotNull String prefix, @NotNull PluginCommand command);
 
-    boolean isServerStopping();
 
     @NotNull
     String getMinecraftVersion();
