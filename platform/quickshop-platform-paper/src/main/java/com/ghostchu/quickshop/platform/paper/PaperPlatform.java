@@ -209,4 +209,5 @@ public class PaperPlatform implements Platform {
     public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
         return meta.lore();
     }
+
 }
