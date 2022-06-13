@@ -1327,13 +1327,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.shop-information").forLocale());
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.owner", shop.ownerName()).forLocale());
         // Enabled
-        long startTime = System.currentTimeMillis();
-        plugin.getLogger().info("Start time: " + startTime);
-        MsgUtil.getTranslateText(shop.getItem());
-        plugin.getLogger().info("Translate time: " + (System.currentTimeMillis() - startTime) + "ms.");
-        startTime = System.currentTimeMillis();
-        plugin.getPlatform().getItemStackHoverEvent(shop.getItem());
-        plugin.getLogger().info("HoverEvent time: " + (System.currentTimeMillis() - startTime) + "ms.");
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", MsgUtil.getTranslateText(shop.getItem())).forLocale()
                 .append(Component.text("   "))
                 .append(plugin.text().of(p, "menu.preview", Component.text(shop.getItem().getAmount())).forLocale())

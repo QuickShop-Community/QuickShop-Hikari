@@ -80,9 +80,9 @@ public class PlayerFinder {
 
     @Nullable
     public Profile find(@NotNull UUID uuid) {
-        if (Bukkit.getServer().getOnlineMode() || forceOnlineMode) {
-            return findOnline(uuid);
-        }
+//        if (Bukkit.getServer().getOnlineMode() || forceOnlineMode) {
+//            return findOnline(uuid);
+//        }
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
         String name = offlinePlayer.getName();
         if (name == null)
@@ -96,9 +96,9 @@ public class PlayerFinder {
         if (Util.isUUID(name)) {
             return find(UUID.fromString(name));
         }
-        if (Bukkit.getServer().getOnlineMode() || forceOnlineMode) {
-            return findOnline(name);
-        }
+//        if (Bukkit.getServer().getOnlineMode() || forceOnlineMode) {
+//            return findOnline(name);
+//        }
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
         if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline())
             return null;
