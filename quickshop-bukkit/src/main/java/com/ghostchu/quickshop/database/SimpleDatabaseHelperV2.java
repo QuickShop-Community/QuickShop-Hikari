@@ -164,7 +164,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .createQuery()
                 .addCondition("key", "database_version")
                 .selectColumns("value")
-                .build().execute();) {
+                .build().execute()) {
             ResultSet result = query.getResultSet();
             if (!result.next()) {
                 return 0;
@@ -181,14 +181,14 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         DataTables.MESSAGES.createDelete()
                 .addCondition("time", "<", weekAgo)
                 .build()
-                .executeAsync();
+                .executeAsync((handler) -> Log.debug("Operation completed, clean outdated messages for " + weekAgo + " weeks ago, " + handler + " lines affected"));
     }
 
     @Override
     public void cleanMessageForPlayer(@NotNull UUID player) {
         DataTables.MESSAGES.createDelete()
                 .addCondition("receiver", player.toString())
-                .build().executeAsync();
+                .build().executeAsync((handler) -> Log.debug("Operation completed, clean messages for " + player + ", " + handler + " lines affected"));
     }
 
     @Override
@@ -212,7 +212,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     public DataRecord getDataRecord(long dataId) throws SQLException {
         try (SQLQuery query = DataTables.DATA.createQuery()
                 .addCondition("id", dataId)
-                .build().execute();) {
+                .build().execute()) {
             ResultSet result = query.getResultSet();
             if (result.next()) {
                 return new SimpleDataRecord(result);
@@ -274,7 +274,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)
-                .build().execute();) {
+                .build().execute()) {
             ResultSet result = query.getResultSet();
             if (result.next()) {
                 return result.getInt("shop");
@@ -335,7 +335,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         DataTables.EXTERNAL_CACHE.createReplace()
                 .setColumnNames("shop", "space", "stock")
                 .setParams(shopId, space, stock)
-                .executeAsync();
+                .executeAsync((handler) -> Log.debug("Operation completed, update inventory status for shopId=" + shopId + ", " + handler + " lines affected"));
     }
 
     @Override
@@ -391,7 +391,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         DataTables.LOG_OTHERS.createInsert()
                 .setColumnNames("type", "data")
                 .setParams(rec.getClass().getName(), JsonUtil.getGson().toJson(rec))
-                .executeAsync();
+                .executeAsync((handler) -> Log.debug("Operation completed, insertHistoryRecord, " + handler + " lines affected"));
     }
 
     @Override
@@ -420,7 +420,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         DataTables.LOG_TRANSACTION.createInsert()
                 .setColumnNames("from", "to", "currency", "amount", "tax_amount", "tax_account", "error")
                 .setParams(from.toString(), to.toString(), currency, amount, taxAmount, taxAccount == null ? null : taxAccount.toString(), error)
-                .executeAsync();
+                .executeAsync((handler) -> Log.debug("Operation completed, insertTransactionRecord, " + handler + " lines affected"));
     }
 
     /**
