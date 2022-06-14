@@ -184,7 +184,8 @@ public class MsgUtil {
      */
     public static void loadTransactionMessages() {
         OUTGOING_MESSAGES.clear(); // Delete old messages
-        try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllMessages(); ResultSet rs = warpRS.getResultSet()) {
+        try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllMessages()) {
+            ResultSet rs = warpRS.getResultSet();
             while (rs.next()) {
                 String owner = rs.getString("receiver");
                 UUID ownerUUID;

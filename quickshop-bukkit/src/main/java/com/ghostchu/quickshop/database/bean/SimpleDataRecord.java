@@ -62,7 +62,7 @@ public class SimpleDataRecord implements DataRecord {
         this.extra = set.getString("extra");
         this.inventorySymbolLink = set.getString("inv_symbol_link");
         this.inventoryWrapper = set.getString("inv_wrapper");
-        this.createTime = set.getDate("create_time");
+        this.createTime = set.getTimestamp("create_time");
     }
 
     @Override
