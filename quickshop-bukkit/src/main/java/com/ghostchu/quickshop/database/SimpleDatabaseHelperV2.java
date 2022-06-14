@@ -93,11 +93,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .selectColumns("locale")
                 .build()
                 .executeAsync(sqlQuery -> {
-                            try (ResultSet set = sqlQuery.getResultSet()) {
-                                if (set.next()) {
-                                    callback.accept(Optional.of(set.getString("locale")));
-                                }
+                            ResultSet set = sqlQuery.getResultSet();
+                            if (set.next()) {
+                                callback.accept(Optional.of(set.getString("locale")));
                             }
+
                         }, (exception, sqlAction) -> {
                             callback.accept(Optional.empty());
                             plugin.getLogger().log(Level.WARNING, "Failed to get player locale! SQL:" + sqlAction.getSQLContent(), exception);
@@ -164,7 +164,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .createQuery()
                 .addCondition("key", "database_version")
                 .selectColumns("value")
-                .build().execute(); ResultSet result = query.getResultSet()) {
+                .build().execute();) {
+            ResultSet result = query.getResultSet();
             if (!result.next()) {
                 return 0;
             }
@@ -211,7 +212,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     public DataRecord getDataRecord(long dataId) throws SQLException {
         try (SQLQuery query = DataTables.DATA.createQuery()
                 .addCondition("id", dataId)
-                .build().execute(); ResultSet result = query.getResultSet()) {
+                .build().execute();) {
+            ResultSet result = query.getResultSet();
             if (result.next()) {
                 return new SimpleDataRecord(result);
             }
@@ -272,7 +274,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)
-                .build().execute(); ResultSet result = query.getResultSet()) {
+                .build().execute();) {
+            ResultSet result = query.getResultSet();
             if (result.next()) {
                 return result.getInt("shop");
             } else {
@@ -288,7 +291,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     public long locateShopDataId(long shopId) {
         try (SQLQuery query = DataTables.SHOPS.createQuery()
                 .addCondition("id", shopId)
-                .build().execute(); ResultSet result = query.getResultSet()) {
+                .build().execute()) {
+            ResultSet result = query.getResultSet();
             if (result.next()) {
                 return result.getInt("data");
             } else {
@@ -367,7 +371,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             builder.addCondition(entry.getKey(), entry.getValue());
         }
-        try (SQLQuery query = builder.build().execute(); ResultSet set = query.getResultSet()) {
+        try (SQLQuery query = builder.build().execute()) {
+            ResultSet set = query.getResultSet();
             if (set.next()) {
                 int id = set.getInt("id");
                 Log.debug("Found data record with id " + id + " for record " + simpleDataRecord);
@@ -603,7 +608,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         plugin.getLogger().info("Performing query for data downloading (" + name + ")...");
         if (hasTable(getPrefix() + tableLegacyName + "_" + actionId)) {
             try (SQLQuery query = manager.createQuery().inTable(getPrefix() + tableLegacyName + "_" + actionId)
-                    .build().execute(); ResultSet set = query.getResultSet()) {
+                    .build().execute()) {
+                ResultSet set = query.getResultSet();
                 int count = 0;
                 while (set.next()) {
                     target.add(clazz.getConstructor(ResultSet.class).newInstance(set));
