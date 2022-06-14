@@ -937,7 +937,7 @@ public class ContainerShop implements Shop, Reloadable {
         List<Component> lines = new ArrayList<>();
         //Line 1
         String headerKey = inventoryAvailable() ? "signs.header-available" : "signs.header-unavailable";
-        lines.add(plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(headerKey).forLocale(locale)).forLocale(locale));
+        lines.add(plugin.text().of(headerKey, this.ownerName(false), plugin.text().of(headerKey).forLocale(locale)).forLocale(locale));
         //Line 2
         String tradingStringKey;
         String noRemainingStringKey;
