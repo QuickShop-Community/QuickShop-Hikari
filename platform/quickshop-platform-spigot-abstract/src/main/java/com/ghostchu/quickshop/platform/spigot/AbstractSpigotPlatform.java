@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractSpigotPlatform implements Platform {
     private final Plugin plugin;
-    private final BukkitAudiences audience;
+    private BukkitAudiences audience;
     protected NBTAPI nbtapi;
     protected Map<String, String> translationMapping;
     protected final Logger logger = Logger.getLogger("QuickShop-Hikari");
@@ -59,7 +59,6 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     public AbstractSpigotPlatform(@NotNull Plugin instance, @NotNull Map<String, String> mapping) {
         this.plugin = instance;
-        this.audience = BukkitAudiences.create(instance);
         if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
             if (NBTAPI.getInstance().isCompatible()) {
                 nbtapi = NBTAPI.getInstance();
@@ -231,6 +230,8 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     @Override
     public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
+        if (this.audience == null)
+            this.audience = BukkitAudiences.create(this.plugin);
         this.audience.sender(sender).sendMessage(component);
     }
 }
