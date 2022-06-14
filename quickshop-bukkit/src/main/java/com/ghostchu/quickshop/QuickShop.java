@@ -1105,11 +1105,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         return this.gameVersion;
     }
 
-    @SuppressWarnings("DeprecatedIsStillUsed")
     @NotNull
-    @Deprecated
+    @Deprecated(forRemoval = true)
     public BukkitAudiences getAudience() {
-        return audience;
+        return this.audience;
     }
 
     @Override

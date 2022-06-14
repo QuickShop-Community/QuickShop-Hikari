@@ -115,4 +115,6 @@ public interface Platform {
     @Nullable List<Component> getLore(@NotNull ItemMeta meta);
 
     void sendMessage(@NotNull CommandSender sender, @NotNull Component component);
+
+    B
 }
