@@ -1126,9 +1126,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             this.platform = new PaperPlatform(this.translationMapping);
         } else if (PaperLib.isSpigot()) {
             this.platform = switch (AbstractSpigotPlatform.getNMSVersion()) {
-                case "v1_18_R1" -> new Spigot1181Platform(this.translationMapping);
-                case "v1_18_R2" -> new Spigot1182Platform(this.translationMapping);
-                case "v1_19_R1" -> new Spigot1191Platform(this.translationMapping);
+                case "v1_18_R1" -> new Spigot1181Platform(this, this.translationMapping);
+                case "v1_18_R2" -> new Spigot1182Platform(this, this.translationMapping);
+                case "v1_19_R1" -> new Spigot1191Platform(this, this.translationMapping);
                 default ->
                         throw new IllegalArgumentException("This server running " + AbstractSpigotPlatform.getNMSVersion() + " not supported by Hikari. (Try update?)");
             };
