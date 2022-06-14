@@ -286,6 +286,8 @@ signs:
   price: '{0} egy darab'
   buying: Vétel {0}
   header: '{1}{0}'
+  header-available: '<green>{0}'
+  header-unavailable: '<red>{0}'
   selling: Eladás {0}
   status-available: <green>
   item-left: ''
