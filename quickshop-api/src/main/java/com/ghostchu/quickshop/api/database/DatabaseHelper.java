@@ -20,6 +20,7 @@
 package com.ghostchu.quickshop.api.database;
 
 import cc.carm.lib.easysql.api.SQLQuery;
+import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -73,18 +74,19 @@ public interface DatabaseHelper {
 
     /**
      * Query and getting the data record by data Id
+     *
      * @param dataId The data Id
      * @return The data record, null for not exists
      * @throws SQLException something going wrong
      */
+    @Nullable DataRecord getDataRecord(long dataId) throws SQLException;
+
     /**
-     * @param dataId The data record id
-     * @return The shop record id
+     * Create a shop record in database
+     *
+     * @param dataId The data Id that shop id point to
+     * @return The shop id
      * @throws SQLException something going wrong
-     * @Nullable DataRecord getDataRecord(long dataId) throws SQLException;
-     * <p>
-     * /**
-     * Creates a shop record that point to specific data record id
      */
     long createShop(long dataId) throws SQLException;
 
