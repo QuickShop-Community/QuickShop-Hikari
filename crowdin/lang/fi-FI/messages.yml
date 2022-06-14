@@ -286,6 +286,8 @@ signs:
   price: '{0} kpl'
   buying: Ostetaan {0}
   header: '{1}{0}'
+  header-available: '<green>{0}'
+  header-unavailable: '<red>{0}'
   selling: '{0} kpl'
   status-available: <green>
   item-left: ''

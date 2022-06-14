@@ -286,6 +286,8 @@ signs:
   price: '개당 {0}'
   buying: '&b구매 {0} 개'
   header: '{1}{0}의 상점'
+  header-available: '<green>{0}'
+  header-unavailable: '<red>{0}'
   selling: '&6판매 {0} 개'
   status-available: <green>
   item-left: ''

@@ -286,6 +286,8 @@ signs:
   price: 'по {0}'
   buying: Покупает {0}
   header: '{1}{0}'
+  header-available: '<green>{0}'
+  header-unavailable: '<red>{0}'
   selling: Продает {0}
   status-available: <green>
   item-left: ''
