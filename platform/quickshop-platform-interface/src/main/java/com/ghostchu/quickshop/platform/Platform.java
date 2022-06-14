@@ -116,5 +116,4 @@ public interface Platform {
 
     void sendMessage(@NotNull CommandSender sender, @NotNull Component component);
 
-    B
 }
