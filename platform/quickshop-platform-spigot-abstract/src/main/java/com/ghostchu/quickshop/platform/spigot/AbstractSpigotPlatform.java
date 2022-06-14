@@ -26,6 +26,7 @@ import me.pikamug.localelib.LocaleManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
@@ -233,5 +234,10 @@ public abstract class AbstractSpigotPlatform implements Platform {
         if (this.audience == null)
             this.audience = BukkitAudiences.create(this.plugin);
         this.audience.sender(sender).sendMessage(component);
+    }
+
+    @Override
+    public @NotNull MiniMessage miniMessage() {
+        return MiniMessage.miniMessage();
     }
 }

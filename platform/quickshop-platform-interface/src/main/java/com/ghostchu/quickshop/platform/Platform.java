@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.platform;
 import de.tr7zw.nbtapi.NBTItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
@@ -116,4 +117,6 @@ public interface Platform {
 
     void sendMessage(@NotNull CommandSender sender, @NotNull Component component);
 
+    @NotNull
+    MiniMessage miniMessage();
 }

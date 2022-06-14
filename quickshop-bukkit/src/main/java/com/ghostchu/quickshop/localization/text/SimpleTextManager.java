@@ -37,7 +37,6 @@ import com.google.common.cache.CacheBuilder;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.compress.archivers.zip.ZipFile;
 import org.bukkit.Bukkit;
@@ -72,7 +71,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
     private final Set<String> availableLanguages = new LinkedHashSet<>();
     private final Cache<String, String> languagesCache =
             CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
-    private final MiniMessage miniMessage = MiniMessage.builder().strict(false).build();
 
     public SimpleTextManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -592,7 +590,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
                     return Collections.singletonList(LegacyComponentSerializer.legacySection().deserialize(path));
                 }
-                List<Component> components = str.stream().map(manager.miniMessage::deserialize).toList();
+                List<Component> components = str.stream().map(s -> manager.plugin.getPlatform().miniMessage().deserialize(s)).toList();
                 return postProcess(components);
             }
         }
@@ -710,7 +708,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     Log.debug("Missing Language Key: " + path + ", report to QuickShop!");
                     return LegacyComponentSerializer.legacySection().deserialize(path);
                 }
-                Component component = manager.miniMessage.deserialize(str);
+                Component component = manager.plugin.getPlatform().miniMessage().deserialize(str);
                 return postProcess(component);
             }
         }

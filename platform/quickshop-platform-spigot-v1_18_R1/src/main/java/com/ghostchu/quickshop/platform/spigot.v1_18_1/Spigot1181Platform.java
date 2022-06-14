@@ -24,13 +24,23 @@ import com.ghostchu.quickshop.platform.Util;
 import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
+import net.kyori.adventure.platform.bukkit.MinecraftComponentSerializer;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.Sign;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.craftbukkit.v1_18_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_18_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_18_R1.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_18_R1.potion.CraftPotionEffectType;
 import org.bukkit.craftbukkit.v1_18_R1.util.CraftMagicNumbers;
@@ -50,6 +60,20 @@ public class Spigot1181Platform extends AbstractSpigotPlatform implements Platfo
         super(plugin, mapping);
     }
 
+    @Override
+    public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
+        Location location = sign.getLocation();
+        CraftWorld craftWorld = (CraftWorld) sign.getWorld();
+        ServerLevel serverLevel = craftWorld.getHandle();
+        BlockPos blockPos = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        BlockEntity blockEntity = serverLevel.getBlockEntity(blockPos);
+        if (blockEntity instanceof SignBlockEntity signBlockEntity) {
+            signBlockEntity.setMessage(line, (net.minecraft.network.chat.Component) MinecraftComponentSerializer.get().serialize(component));
+            serverLevel.setBlockEntity(signBlockEntity);
+        } else {
+            sign.setLine(line, LegacyComponentSerializer.legacySection().serialize(component));
+        }
+    }
 
     @Override
     public @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack) {

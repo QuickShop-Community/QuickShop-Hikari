@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.platform.paper;
 import com.ghostchu.quickshop.platform.Platform;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
@@ -216,4 +217,8 @@ public class PaperPlatform implements Platform {
         sender.sendMessage(component);
     }
 
+    @Override
+    public @NotNull MiniMessage miniMessage() {
+        return MiniMessage.miniMessage();
+    }
 }
