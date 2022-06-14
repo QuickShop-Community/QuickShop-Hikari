@@ -20,7 +20,6 @@
 package com.ghostchu.quickshop.api.database;
 
 import cc.carm.lib.easysql.api.SQLQuery;
-import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -72,11 +71,30 @@ public interface DatabaseHelper {
      */
     long createData(@NotNull Shop shop) throws SQLException;
 
-    @Nullable
-    DataRecord getDataRecord(long dataId) throws SQLException;
-
+    /**
+     * Query and getting the data record by data Id
+     * @param dataId The data Id
+     * @return The data record, null for not exists
+     * @throws SQLException something going wrong
+     */
+    /**
+     * @param dataId The data record id
+     * @return The shop record id
+     * @throws SQLException something going wrong
+     * @Nullable DataRecord getDataRecord(long dataId) throws SQLException;
+     * <p>
+     * /**
+     * Creates a shop record that point to specific data record id
+     */
     long createShop(long dataId) throws SQLException;
 
+    /**
+     * Creates a shop mapping that mapping a location to specific shop record id
+     *
+     * @param shopId   The shop record id
+     * @param location The shop location
+     * @throws SQLException something going wrong
+     */
     void createShopMap(long shopId, @NotNull Location location) throws SQLException;
 
     /**
@@ -89,12 +107,39 @@ public interface DatabaseHelper {
      */
     void removeShopMap(@NotNull String world, int x, int y, int z) throws SQLException;
 
+    /**
+     * Remove a shop data record from database
+     *
+     * @param shopId The shop record id
+     */
     void removeShop(long shopId);
 
+    /**
+     * Remove a data record from database
+     *
+     * @param dataId The data record id
+     */
     void removeData(long dataId);
 
+    /**
+     * Locate a shop record from database by location
+     *
+     * @param world The shop world
+     * @param x     The shop X
+     * @param y     The shop Y
+     * @param z     The shop Z
+     * @return The shop record id
+     * @throws SQLException something going wrong
+     */
     long locateShopId(@NotNull String world, int x, int y, int z) throws SQLException;
 
+    /**
+     * Locate a shop record from database by shop record id
+     *
+     * @param shopId The shop record id
+     * @return The shop record
+     * @throws SQLException something going wrong
+     */
     long locateShopDataId(long shopId) throws SQLException;
 
     /**
@@ -133,8 +178,21 @@ public interface DatabaseHelper {
      */
     void saveOfflineTransactionMessage(@NotNull UUID player, @NotNull String message, long time);
 
+    /**
+     * Update inventory data to external cache table
+     *
+     * @param shopId The shop record id
+     * @param space  The inventory space
+     * @param stock  The inventory stock
+     */
     void updateExternalInventoryProfileCache(long shopId, int space, int stock);
 
+    /**
+     * Update the shop profile to database
+     *
+     * @param shop The shop object
+     * @throws SQLException something going wrong
+     */
     void updateShop(@NotNull Shop shop) throws SQLException;
 
     /**

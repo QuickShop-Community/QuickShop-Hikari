@@ -132,6 +132,13 @@ public interface ShopManager {
     @NotNull String format(double d, @NotNull Shop shop);
 
     /**
+     * Gets a shop by shop Id
+     *
+     * @return The shop object
+     */
+    @Nullable Shop getShop(long shopId);
+
+    /**
      * Gets a shop in a specific location
      * ATTENTION: This not include attached shops (double-chest)
      *

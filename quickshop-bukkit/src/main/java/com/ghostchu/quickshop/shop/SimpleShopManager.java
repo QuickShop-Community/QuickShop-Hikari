@@ -340,6 +340,21 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     /**
+     * Gets a shop by shop Id
+     *
+     * @param shopId shop Id
+     * @return The shop object
+     */
+    @Override
+    public @Nullable Shop getShop(long shopId) {
+        for (Shop shop : getAllShops()) {
+            if (shop.getShopId() == shopId)
+                return shop;
+        }
+        return null;
+    }
+
+    /**
      * Gets a shop in a specific location
      *
      * @param loc The location to get the shop from
