@@ -209,35 +209,35 @@ public enum DataTables {
         return sqlManager.createUpdate(this.getName());
     }
 
-    public @NotNull InsertBuilder<PreparedSQLUpdateAction> createInsert() {
+    public @NotNull InsertBuilder<PreparedSQLUpdateAction<Integer>> createInsert() {
         return this.createInsert(this.manager);
     }
 
-    public @NotNull InsertBuilder<PreparedSQLUpdateAction> createInsert(@NotNull SQLManager sqlManager) {
+    public @NotNull InsertBuilder<PreparedSQLUpdateAction<Integer>> createInsert(@NotNull SQLManager sqlManager) {
         return sqlManager.createInsert(this.getName());
     }
 
-    public @NotNull InsertBuilder<PreparedSQLUpdateBatchAction> createInsertBatch() {
+    public @NotNull InsertBuilder<PreparedSQLUpdateBatchAction<Integer>> createInsertBatch() {
         return this.createInsertBatch(this.manager);
     }
 
-    public @NotNull InsertBuilder<PreparedSQLUpdateBatchAction> createInsertBatch(@NotNull SQLManager sqlManager) {
+    public @NotNull InsertBuilder<PreparedSQLUpdateBatchAction<Integer>> createInsertBatch(@NotNull SQLManager sqlManager) {
         return sqlManager.createInsertBatch(this.getName());
     }
 
-    public @NotNull ReplaceBuilder<PreparedSQLUpdateAction> createReplace() {
+    public @NotNull ReplaceBuilder<PreparedSQLUpdateAction<Integer>> createReplace() {
         return this.createReplace(this.manager);
     }
 
-    public @NotNull ReplaceBuilder<PreparedSQLUpdateAction> createReplace(@NotNull SQLManager sqlManager) {
+    public @NotNull ReplaceBuilder<PreparedSQLUpdateAction<Integer>> createReplace(@NotNull SQLManager sqlManager) {
         return sqlManager.createReplace(this.getName());
     }
 
-    public @NotNull ReplaceBuilder<PreparedSQLUpdateBatchAction> createReplaceBatch() {
+    public @NotNull ReplaceBuilder<PreparedSQLUpdateBatchAction<Integer>> createReplaceBatch() {
         return this.createReplaceBatch(this.manager);
     }
 
-    public @NotNull ReplaceBuilder<PreparedSQLUpdateBatchAction> createReplaceBatch(@NotNull SQLManager sqlManager) {
+    public @NotNull ReplaceBuilder<PreparedSQLUpdateBatchAction<Integer>> createReplaceBatch(@NotNull SQLManager sqlManager) {
         return sqlManager.createReplaceBatch(this.getName());
     }
 
