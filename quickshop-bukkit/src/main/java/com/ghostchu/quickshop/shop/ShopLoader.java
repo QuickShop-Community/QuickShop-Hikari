@@ -84,7 +84,8 @@ public class ShopLoader {
         int valid = 0;
         List<Shop> pendingLoading = new ArrayList<>();
 
-        try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllShops(); ResultSet rs = warpRS.getResultSet()) {
+        try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllShops()) {
+            ResultSet rs = warpRS.getResultSet();
             Timer timer = new Timer();
             timer.start();
             boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);

@@ -75,7 +75,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @Override
     public void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
         Log.debug("Update: " + uuid + " last locale to " + locale);
-        DataTables.PLAYERS.createReplace(manager)
+        DataTables.PLAYERS.createReplace()
                 .setColumnNames("uuid", "locale")
                 .setParams(uuid.toString(), locale)
                 .executeAsync(integer -> {
@@ -88,16 +88,16 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void getPlayerLocale(@NotNull UUID uuid, @NotNull Consumer<Optional<String>> callback) {
-        DataTables.PLAYERS.createQuery(manager)
+        DataTables.PLAYERS.createQuery()
                 .addCondition("uuid", uuid.toString())
                 .selectColumns("locale")
                 .build()
                 .executeAsync(sqlQuery -> {
-                            try (ResultSet set = sqlQuery.getResultSet()) {
-                                if (set.next()) {
-                                    callback.accept(Optional.of(set.getString("locale")));
-                                }
+                            ResultSet set = sqlQuery.getResultSet();
+                            if (set.next()) {
+                                callback.accept(Optional.of(set.getString("locale")));
                             }
+
                         }, (exception, sqlAction) -> {
                             callback.accept(Optional.empty());
                             plugin.getLogger().log(Level.WARNING, "Failed to get player locale! SQL:" + sqlAction.getSQLContent(), exception);
@@ -143,7 +143,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 doV2Migate();
                 setDatabaseVersion(4);
             } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
-                     IllegalAccessException e) {
+                    IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
@@ -153,7 +153,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     public void setDatabaseVersion(int version) throws SQLException {
         DataTables.METADATA
-                .createReplace(manager)
+                .createReplace()
                 .setColumnNames("key", "value")
                 .setParams("database_version", version)
                 .execute();
@@ -161,10 +161,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     public int getDatabaseVersion() {
         try (SQLQuery query = DataTables.METADATA
-                .createQuery(manager)
+                .createQuery()
                 .addCondition("key", "database_version")
                 .selectColumns("value")
-                .build().execute(); ResultSet result = query.getResultSet()) {
+                .build().execute();) {
+            ResultSet result = query.getResultSet();
             if (!result.next()) {
                 return 0;
             }
@@ -177,7 +178,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void cleanMessage(long weekAgo) {
-        DataTables.MESSAGES.createDelete(manager)
+        DataTables.MESSAGES.createDelete()
                 .addCondition("time", "<", weekAgo)
                 .build()
                 .executeAsync();
@@ -185,7 +186,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void cleanMessageForPlayer(@NotNull UUID player) {
-        DataTables.MESSAGES.createDelete(manager)
+        DataTables.MESSAGES.createDelete()
                 .addCondition("receiver", player.toString())
                 .build().executeAsync();
     }
@@ -197,10 +198,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
         if (id < 1) {
             Map<String, Object> map = simpleDataRecord.generateParams();
-            return DataTables.DATA.createInsert(manager)
+            return DataTables.DATA.createInsert()
                     .setColumnNames(new ArrayList<>(map.keySet()))
                     .setParams(map.values())
-                    .returnGeneratedKey()
+                    .returnGeneratedKey(Long.class)
                     .execute();
         } else {
             return id;
@@ -209,9 +210,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public DataRecord getDataRecord(long dataId) throws SQLException {
-        try (SQLQuery query = DataTables.DATA.createQuery(manager)
+        try (SQLQuery query = DataTables.DATA.createQuery()
                 .addCondition("id", dataId)
-                .build().execute(); ResultSet result = query.getResultSet()) {
+                .build().execute();) {
+            ResultSet result = query.getResultSet();
             if (result.next()) {
                 return new SimpleDataRecord(result);
             }
@@ -221,16 +223,16 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public long createShop(long dataId) throws SQLException {
-        return DataTables.SHOPS.createReplace(manager)
+        return DataTables.SHOPS.createReplace()
                 .setColumnNames("data")
                 .setParams(dataId)
-                .returnGeneratedKey()
+                .returnGeneratedKey(Long.class)
                 .execute();
     }
 
     @Override
     public void createShopMap(long shopId, @NotNull Location location) throws SQLException {
-        DataTables.SHOP_MAP.createReplace(manager)
+        DataTables.SHOP_MAP.createReplace()
                 .setColumnNames("world", "x", "y", "z", "shop")
                 .setParams(location.getWorld().getName(),
                         location.getBlockX(),
@@ -242,7 +244,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void removeShopMap(@NotNull String world, int x, int y, int z) throws SQLException {
-        DataTables.SHOP_MAP.createDelete(manager)
+        DataTables.SHOP_MAP.createDelete()
                 .addCondition("world", world)
                 .addCondition("x", x)
                 .addCondition("y", y)
@@ -253,28 +255,27 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void removeShop(long shopId) {
-        DataTables.SHOPS.createDelete(manager)
+        DataTables.SHOPS.createDelete()
                 .addCondition("id", shopId)
-                .build()
-                .executeAsync();
+                .build().executeAsync();
     }
 
     @Override
     public void removeData(long dataId) {
-        DataTables.DATA.createDelete(manager)
+        DataTables.DATA.createDelete()
                 .addCondition("id", dataId)
-                .build()
-                .executeAsync();
+                .build().executeAsync();
     }
 
     @Override
     public long locateShopId(@NotNull String world, int x, int y, int z) {
-        try (SQLQuery query = DataTables.SHOP_MAP.createQuery(manager)
+        try (SQLQuery query = DataTables.SHOP_MAP.createQuery()
                 .addCondition("world", world)
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)
-                .build().execute(); ResultSet result = query.getResultSet()) {
+                .build().execute();) {
+            ResultSet result = query.getResultSet();
             if (result.next()) {
                 return result.getInt("shop");
             } else {
@@ -288,9 +289,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public long locateShopDataId(long shopId) {
-        try (SQLQuery query = DataTables.SHOPS.createQuery(manager)
+        try (SQLQuery query = DataTables.SHOPS.createQuery()
                 .addCondition("id", shopId)
-                .build().execute(); ResultSet result = query.getResultSet()) {
+                .build().execute()) {
+            ResultSet result = query.getResultSet();
             if (result.next()) {
                 return result.getInt("data");
             } else {
@@ -304,7 +306,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public @NotNull SQLQuery selectAllMessages() throws SQLException {
-        return DataTables.MESSAGES.createQuery(manager).build().execute();
+        return DataTables.MESSAGES.createQuery().build().execute();
     }
 
     @Override
@@ -317,12 +319,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public @NotNull SQLQuery selectAllShops() throws SQLException {
-        return DataTables.SHOP_MAP.createQuery(manager).build().execute();
+        return DataTables.SHOP_MAP.createQuery().build().execute();
     }
 
     @Override
     public void saveOfflineTransactionMessage(@NotNull UUID player, @NotNull String message, long time) {
-        DataTables.MESSAGES.createInsert(manager)
+        DataTables.MESSAGES.createInsert()
                 .setColumnNames("receiver", "time", "content")
                 .setParams(player.toString(), time, message)
                 .executeAsync((handler) -> Log.debug("Operation completed, saveOfflineTransaction for " + player + ", " + handler + " lines affected"));
@@ -330,7 +332,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void updateExternalInventoryProfileCache(@NotNull long shopId, int space, int stock) {
-        DataTables.EXTERNAL_CACHE.createReplace(manager)
+        DataTables.EXTERNAL_CACHE.createReplace()
                 .setColumnNames("shop", "space", "stock")
                 .setParams(shopId, space, stock)
                 .executeAsync();
@@ -348,13 +350,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             // Check if any data record already exists
             long dataId = queryDataId(simpleDataRecord);
             if (dataId > 0) {
-                DataTables.SHOPS.createReplace(manager)
+                DataTables.SHOPS.createReplace()
                         .setColumnNames("data")
                         .setParams(dataId)
                         .executeAsync(handler -> Log.debug("Operation completed, updateShop " + shop + ", " + handler + " lines affected"));
             } else {
                 long newDataId = createData(shop);
-                DataTables.SHOPS.createReplace(manager)
+                DataTables.SHOPS.createReplace()
                         .setColumnNames("data")
                         .setParams(newDataId)
                         .executeAsync(handler -> Log.debug("Operation completed, updateShop " + shop + ", " + handler + " lines affected"));
@@ -365,11 +367,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     public long queryDataId(@NotNull SimpleDataRecord simpleDataRecord) {
         // Check if dataRecord exists in database with same values
         Map<String, Object> map = simpleDataRecord.generateParams();
-        TableQueryBuilder builder = DataTables.DATA.createQuery(manager);
+        TableQueryBuilder builder = DataTables.DATA.createQuery();
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             builder.addCondition(entry.getKey(), entry.getValue());
         }
-        try (SQLQuery query = builder.build().execute(); ResultSet set = query.getResultSet()) {
+        try (SQLQuery query = builder.build().execute()) {
+            ResultSet set = query.getResultSet();
             if (set.next()) {
                 int id = set.getInt("id");
                 Log.debug("Found data record with id " + id + " for record " + simpleDataRecord);
@@ -385,7 +388,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void insertHistoryRecord(@NotNull Object rec) {
-        DataTables.LOG_OTHERS.createInsert(manager)
+        DataTables.LOG_OTHERS.createInsert()
                 .setColumnNames("type", "data")
                 .setParams(rec.getClass().getName(), JsonUtil.getGson().toJson(rec))
                 .executeAsync();
@@ -397,7 +400,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             try {
                 long dataId = plugin.getDatabaseHelper().locateShopDataId(record.getShopId());
                 DataTables.LOG_PURCHASE
-                        .createInsert(manager)
+                        .createInsert()
                         .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
                         .setParams(new Date(record.getTime()), record.getShopId()
                                 , dataId, record.getPlayer(), record.getType().name(),
@@ -414,7 +417,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             from = Util.getNilUniqueId();
         if (to == null)
             to = Util.getNilUniqueId();
-        DataTables.LOG_TRANSACTION.createInsert(manager)
+        DataTables.LOG_TRANSACTION.createInsert()
                 .setColumnNames("from", "to", "currency", "amount", "tax_amount", "tax_account", "error")
                 .setParams(from.toString(), to.toString(), currency, amount, taxAmount, taxAccount == null ? null : taxAccount.toString(), error)
                 .executeAsync();
@@ -546,19 +549,19 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         int pos = 0;
         int total = oldShopData.size();
         for (OldShopData data : oldShopData) {
-            long dataId = DataTables.DATA.createInsert(manager)
+            long dataId = DataTables.DATA.createInsert()
                     .setColumnNames("owner", "item", "name", "type", "currency", "price", "unlimited", "hologram", "tax_account", "permissions", "extra", "inv_wrapper", "inv_symbol_link")
                     .setParams(data.owner, data.itemConfig, data.name, data.type, data.currency, data.price, data.unlimited, data.disableDisplay, data.taxAccount, data.permission, data.extra, data.inventoryWrapperName, data.inventorySymbolLink)
-                    .returnGeneratedKey()
+                    .returnGeneratedKey(Long.class)
                     .execute();
             if (dataId < 1)
                 throw new IllegalStateException("DataId creation failed.");
-            long shopId = DataTables.SHOPS.createInsert(manager)
+            long shopId = DataTables.SHOPS.createInsert()
                     .setColumnNames("data").setParams(dataId)
-                    .returnGeneratedKey().execute();
+                    .returnGeneratedKey(Long.class).execute();
             if (shopId < 1)
                 throw new IllegalStateException("ShopId creation failed.");
-            DataTables.SHOP_MAP.createReplace(manager)
+            DataTables.SHOP_MAP.createReplace()
                     .setColumnNames("world", "x", "y", "z", "shop")
                     .setParams(data.world, data.x, data.y, data.z, shopId)
                     .execute();
@@ -567,7 +570,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         pos = 0;
         total = oldMessageData.size();
         for (OldMessageData data : oldMessageData) {
-            DataTables.MESSAGES.createInsert(manager)
+            DataTables.MESSAGES.createInsert()
                     .setColumnNames("receiver", "time", "content")
                     .setParams(data.owner, data.time, data.message)
                     .execute();
@@ -576,7 +579,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         pos = 0;
         total = oldPlayerData.size();
         for (OldPlayerData data : oldPlayerData) {
-            DataTables.PLAYERS.createInsert(manager)
+            DataTables.PLAYERS.createInsert()
                     .setColumnNames("uuid", "locale")
                     .setParams(data.uuid, data.locale)
                     .execute();
@@ -591,7 +594,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             long dataId = locateShopDataId(shopId);
             if (dataId < 1)
                 throw new IllegalStateException("DataId not found.");
-            DataTables.LOG_PURCHASE.createInsert(manager)
+            DataTables.LOG_PURCHASE.createInsert()
                     .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
                     .setParams(data.time, shopId, dataId, data.player, data.type, data.amount, data.total, data.tax)
                     .execute();
@@ -605,7 +608,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         plugin.getLogger().info("Performing query for data downloading (" + name + ")...");
         if (hasTable(getPrefix() + tableLegacyName + "_" + actionId)) {
             try (SQLQuery query = manager.createQuery().inTable(getPrefix() + tableLegacyName + "_" + actionId)
-                    .build().execute(); ResultSet set = query.getResultSet()) {
+                    .build().execute()) {
+                ResultSet set = query.getResultSet();
                 int count = 0;
                 while (set.next()) {
                     target.add(clazz.getConstructor(ResultSet.class).newInstance(set));
