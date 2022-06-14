@@ -25,6 +25,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -208,6 +209,11 @@ public class PaperPlatform implements Platform {
     @Override
     public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
         return meta.lore();
+    }
+
+    @Override
+    public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
+        sender.sendMessage(component);
     }
 
 }

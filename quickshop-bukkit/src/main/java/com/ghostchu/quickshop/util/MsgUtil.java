@@ -89,7 +89,7 @@ public class MsgUtil {
             List<String> msgs = OUTGOING_MESSAGES.get(pName);
             if (msgs != null) {
                 for (String msg : msgs) {
-                    plugin.getAudience().player(player).sendMessage(GsonComponentSerializer.gson().deserialize(msg));
+                    plugin.getPlatform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
                 }
                 plugin.getDatabaseHelper().cleanMessageForPlayer(pName);
                 msgs.clear();
@@ -245,7 +245,7 @@ public class MsgUtil {
         } else {
             Player player = p.getPlayer();
             if (player != null) {
-                plugin.getAudience().player(player).sendMessage(shopTransactionMessage);
+                plugin.getPlatform().sendMessage(player, shopTransactionMessage);
             }
         }
     }
@@ -422,7 +422,7 @@ public class MsgUtil {
             if (Util.isEmptyComponent(msg)) {
                 return;
             }
-            plugin.getAudience().sender(sender).sendMessage(msg);
+            plugin.getPlatform().sendMessage(sender, msg);
         }
     }
 
