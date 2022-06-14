@@ -25,6 +25,7 @@ import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -113,4 +114,5 @@ public interface Platform {
 
     @Nullable List<Component> getLore(@NotNull ItemMeta meta);
 
+    void sendMessage(@NotNull CommandSender sender, @NotNull Component component);
 }

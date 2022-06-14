@@ -23,6 +23,7 @@ import com.ghostchu.quickshop.platform.Platform;
 import de.tr7zw.nbtapi.NBTTileEntity;
 import de.tr7zw.nbtapi.plugin.NBTAPI;
 import me.pikamug.localelib.LocaleManager;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
@@ -30,12 +31,14 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -47,12 +50,16 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public abstract class AbstractSpigotPlatform implements Platform {
+    private final Plugin plugin;
+    private final BukkitAudiences audience;
     protected NBTAPI nbtapi;
     protected Map<String, String> translationMapping;
     protected final Logger logger = Logger.getLogger("QuickShop-Hikari");
     protected final LocaleManager localeManager = new LocaleManager();
 
-    public AbstractSpigotPlatform(@NotNull Map<String, String> mapping) {
+    public AbstractSpigotPlatform(@NotNull Plugin instance, @NotNull Map<String, String> mapping) {
+        this.plugin = instance;
+        this.audience = BukkitAudiences.create(instance);
         if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
             if (NBTAPI.getInstance().isCompatible()) {
                 nbtapi = NBTAPI.getInstance();
@@ -220,5 +227,10 @@ public abstract class AbstractSpigotPlatform implements Platform {
         if (!meta.hasLore())
             return null;
         return meta.getLore().stream().map(LegacyComponentSerializer.legacySection()::deserialize).collect(Collectors.toList());
+    }
+
+    @Override
+    public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
+        this.audience.sender(sender).sendMessage(component);
     }
 }
