@@ -22,25 +22,20 @@ package com.ghostchu.quickshop.platform.spigot.v1_18_2;
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.Util;
 import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
+import de.tr7zw.nbtapi.NBTTileEntity;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
 import net.kyori.adventure.platform.bukkit.MinecraftComponentSerializer;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.SignBlockEntity;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Sign;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_18_R2.potion.CraftPotionEffectType;
 import org.bukkit.craftbukkit.v1_18_R2.util.CraftMagicNumbers;
@@ -62,14 +57,13 @@ public class Spigot1182Platform extends AbstractSpigotPlatform implements Platfo
 
     @Override
     public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
-        Location location = sign.getLocation();
-        CraftWorld craftWorld = (CraftWorld) sign.getWorld();
-        ServerLevel serverLevel = craftWorld.getHandle();
-        BlockPos blockPos = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-        BlockEntity blockEntity = serverLevel.getBlockEntity(blockPos);
-        if (blockEntity instanceof SignBlockEntity signBlockEntity) {
-            signBlockEntity.setMessage(line, (net.minecraft.network.chat.Component) MinecraftComponentSerializer.get().serialize(component));
-            serverLevel.setBlockEntity(signBlockEntity);
+        if (super.nbtapi != null) {
+            NBTTileEntity tileSign = new NBTTileEntity(sign);
+            try {
+                tileSign.setObject("Text" + (line + 1), MinecraftComponentSerializer.get().serialize(component));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             sign.setLine(line, LegacyComponentSerializer.legacySection().serialize(component));
         }
