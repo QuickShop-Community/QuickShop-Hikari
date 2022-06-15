@@ -32,6 +32,7 @@ import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonParser;
 import lombok.Data;
 import org.bukkit.Bukkit;
@@ -626,7 +627,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Data
     static class OldShopData {
-        private final String owner;
+        private String owner;
         private final double price;
         private final String itemConfig;
         private final int x;
@@ -643,10 +644,15 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         private final String inventoryWrapperName;
         private final String name;
 
-        private final String permission;
+        private final Map<UUID, String> permission = new HashMap<>();
 
         public OldShopData(ResultSet set) throws SQLException {
             owner = set.getString("owner");
+            JsonArray array = JsonParser.parseString(owner).getAsJsonObject().getAsJsonArray("staffs");
+            array.iterator().forEachRemaining(element -> {
+                permission.put(UUID.fromString(element.getAsString()), "quickshop.staff");
+            });
+            owner = JsonParser.parseString(owner).getAsJsonObject().get("owner").getAsString();
             price = set.getDouble("price");
             itemConfig = set.getString("itemConfig");
             x = set.getInt("x");
@@ -662,8 +668,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             inventorySymbolLink = set.getString("inventorySymbolLink");
             inventoryWrapperName = set.getString("inventoryWrapperName");
             name = set.getString("name");
-            permission = set.getString("permission");
-
         }
     }
 
