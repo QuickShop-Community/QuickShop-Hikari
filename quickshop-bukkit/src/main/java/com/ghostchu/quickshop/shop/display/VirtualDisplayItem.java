@@ -341,26 +341,27 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
             //Reference: https://wiki.vg/Protocol#Spawn_Object
             fakeItemPacket.getIntegers()
                     //Entity ID
-                    .write(0, entityID)
-                    //Velocity x
-                    .write(1, 0)
-                    //Velocity y
-                    .write(2, 0)
-                    //Velocity z
-                    .write(3, 0)
-                    //Pitch
-                    .write(4, 0)
-                    //Yaw
-                    .write(5, 0);
-
-            //noinspection SwitchStatementWithTooFewBranches
+                    .write(0, entityID);
+            //Velocity x
             switch (VERSION) {
                 //int data to mark
-                default -> {
-                    //For 1.14+, we should use EntityType
+                case v1_18_R1, v1_18_R2 -> {
                     fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
+                    fakeItemPacket.getIntegers().write(1, 0)
+                            //Velocity y
+                            .write(2, 0)
+                            //Velocity z
+                            .write(3, 0)
+                            //Pitch
+                            .write(4, 0)
+                            //Yaw
+                            .write(5, 0);
                     //int data to mark
                     fakeItemPacket.getIntegers().write(6, 1);
+                }
+                default -> {
+                    fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
+                    //For 1.14+, we should use EntityType
                 }
             }
             //UUID
