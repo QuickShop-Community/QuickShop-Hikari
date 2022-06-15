@@ -190,6 +190,7 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
             }
             instance.getLogger().info("Checking and creating for database tables... ");
             // Database Helper will resolve all we need while starting up.
+            //noinspection deprecation
             new SimpleDatabaseHelperV1(plugin, liveDatabase, config.getPrefix());
             instance.getLogger().info("Migrating old data to new database...");
             pushShops(units, config.getPrefix(), liveDatabase);

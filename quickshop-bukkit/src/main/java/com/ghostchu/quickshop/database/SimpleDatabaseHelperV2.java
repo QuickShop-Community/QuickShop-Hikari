@@ -33,6 +33,7 @@ import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import lombok.Data;
 import org.bukkit.Bukkit;
@@ -553,7 +554,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         for (OldShopData data : oldShopData) {
             long dataId = DataTables.DATA.createInsert()
                     .setColumnNames("owner", "item", "name", "type", "currency", "price", "unlimited", "hologram", "tax_account", "permissions", "extra", "inv_wrapper", "inv_symbol_link")
-                    .setParams(JsonParser.parseString(data.owner).getAsJsonObject().getAsJsonObject("owner").getAsString(), data.itemConfig, data.name, data.type, data.currency, data.price, data.unlimited, data.disableDisplay, data.taxAccount, data.permission, data.extra, data.inventoryWrapperName, data.inventorySymbolLink)
+                    .setParams(data.owner, data.itemConfig, data.name, data.type, data.currency, data.price, data.unlimited, data.disableDisplay, data.taxAccount, JsonUtil.getGson().toJson(data.permission), data.extra, data.inventoryWrapperName, data.inventorySymbolLink)
                     .returnGeneratedKey(Long.class)
                     .execute();
             if (dataId < 1)
@@ -647,12 +648,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         private final Map<UUID, String> permission = new HashMap<>();
 
         public OldShopData(ResultSet set) throws SQLException {
-            owner = set.getString("owner");
-            JsonArray array = JsonParser.parseString(owner).getAsJsonObject().getAsJsonArray("staffs");
-            array.iterator().forEachRemaining(element -> {
-                permission.put(UUID.fromString(element.getAsString()), "quickshop.staff");
-            });
-            owner = JsonParser.parseString(owner).getAsJsonObject().get("owner").getAsString();
+            String oldOwner = set.getString("owner");
+            JsonElement oldOwnerElement = JsonParser.parseString(oldOwner);
+            JsonArray array = oldOwnerElement.getAsJsonObject().getAsJsonArray("staffs");
+            array.iterator().forEachRemaining(element -> permission.put(UUID.fromString(element.getAsString()), "quickshop.staff"));
+            owner = oldOwnerElement.getAsJsonObject().get("owner").getAsString();
             price = set.getDouble("price");
             itemConfig = set.getString("itemConfig");
             x = set.getInt("x");

@@ -23,25 +23,18 @@ import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.SQLQuery;
 import cc.carm.lib.easysql.api.enums.IndexType;
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.JsonUtil;
-import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import org.bukkit.Location;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.sql.*;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.function.Consumer;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.Level;
 
 /**
  * A Util to execute all SQLs.
  */
+@Deprecated
 public class SimpleDatabaseHelperV1 {
 
 
@@ -203,38 +196,6 @@ public class SimpleDatabaseHelperV1 {
     }
 
 
-    public void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
-        Log.debug("Update: " + uuid + " last locale to " + locale);
-        manager.createReplace(prefix + "players")
-                .setColumnNames("uuid", "locale")
-                .setParams(uuid.toString(), locale)
-                .executeAsync(integer -> {
-                }, (exception, sqlAction) -> {
-                    if (exception != null) {
-                        Log.debug("Failed to update player locale! Err: " + exception.getMessage() + "; SQL: " + sqlAction.getSQLContent());
-                    }
-                });
-    }
-
-
-    public void getPlayerLocale(@NotNull UUID uuid, @NotNull Consumer<Optional<String>> callback) {
-        manager.createQuery()
-                .inTable(prefix + "players")
-                .addCondition("uuid", uuid.toString())
-                .selectColumns("locale")
-                .build()
-                .executeAsync(sqlQuery -> {
-                            try (ResultSet set = sqlQuery.getResultSet()) {
-                                if (set.next()) {
-                                    callback.accept(Optional.of(set.getString("locale")));
-                                }
-                            }
-                        }, (exception, sqlAction) -> {
-                            callback.accept(Optional.empty());
-                            plugin.getLogger().log(Level.WARNING, "Failed to get player locale! SQL:" + sqlAction.getSQLContent(), exception);
-                        }
-                );
-    }
 
     /**
      * Verifies that all required columns exist.
@@ -296,159 +257,6 @@ public class SimpleDatabaseHelperV1 {
     }
 
 
-    public void cleanMessage(long weekAgo) {
-        manager.createDelete(prefix + "messages")
-                .addCondition("time", "<", weekAgo)
-                .build()
-                .executeAsync();
-
-    }
-
-
-    public void cleanMessageForPlayer(@NotNull UUID player) {
-        manager.createDelete(prefix + "messages")
-                .addCondition("owner", player.toString())
-                .build().executeAsync();
-    }
-
-
-    public void createShop(@NotNull Shop shop, @Nullable Runnable onSuccess, @Nullable Consumer<SQLException> onFailed) {
-        Location location = shop.getLocation();
-        String worldName = null;
-        if (shop.getLocation().getWorld() != null) {
-            worldName = shop.getLocation().getWorld().getName();
-        }
-        manager.createReplace(prefix + "shops")
-                .setColumnNames("owner", "price", "itemConfig",
-                        "x", "y", "z", "world", "unlimited", "type", "extra",
-                        "currency", "disableDisplay", "taxAccount", "inventorySymbolLink", "inventoryWrapperName",
-                        "permission"
-                )
-                .setParams(shop.getOwner(), shop.getPrice(), Util.serialize(shop.getItem()),
-                        location.getBlockX(),
-                        location.getBlockY(),
-                        location.getBlockZ(),
-                        worldName,
-                        shop.isUnlimited() ? 1 : 0,
-                        shop.getShopType().toID(),
-                        shop.saveExtraToYaml(),
-                        shop.getCurrency(),
-                        shop.isDisableDisplay(),
-                        shop.getTaxAccountActual(),
-                        plugin.getInventoryWrapperManager().mklink(shop.getInventory()),
-                        shop.getInventoryWrapperProvider(),
-                        JsonUtil.getGson().toJson(shop.getPermissionAudiences())
-                )
-                .executeAsync(integer -> {
-                }, ((exception, sqlAction) -> plugin.getLogger().log(Level.SEVERE, "Failed to create the shop " + shop + " cause database returns an error while executing create SQL: " + sqlAction.getSQLContent() + ". The shop may loss after server restart!", exception)));
-    }
-
-
-    public void removeShop(@NotNull Shop shop) {
-        removeShop(shop.getLocation().getWorld().getName(),
-                shop.getLocation().getBlockX(),
-                shop.getLocation().getBlockY(),
-                shop.getLocation().getBlockZ());
-    }
-
-
-    public void removeShop(@NotNull String world, int x, int y, int z) {
-        manager.createDelete(prefix + "shops")
-                .addCondition("x", x)
-                .addCondition("y", y)
-                .addCondition("z", z)
-                .addCondition("world", world)
-                .build()
-                .executeAsync((handler) -> Log.debug("Operation completed, Remove shop for w:" + world + "x:" + x + ",y:" + y + ",z:" + z + ", " + handler + " lines affected"));
-    }
-
-
-    public @NotNull SQLQuery selectAllMessages() throws SQLException {
-        return selectTable("messages");
-    }
-
-
-    public @NotNull SQLQuery selectTable(@NotNull String table) throws SQLException {
-        return manager.createQuery()
-                .inTable(prefix + table)
-                .build()
-                .execute();
-    }
-
-
-    public @NotNull SQLQuery selectAllShops() throws SQLException {
-        return selectTable("shops");
-    }
-
-
-    public void saveOfflineTransactionMessage(@NotNull UUID player, @NotNull String message, long time) {
-        manager.createInsert(prefix + "messages")
-                .setColumnNames("owner", "message", "time")
-                .setParams(player.toString(), message, time)
-                .executeAsync((handler) -> Log.debug("Operation completed, saveOfflineTransaction for " + player + ", " + handler + " lines affected"));
-    }
-
-
-    public void updateOwner2UUID(@NotNull String ownerUUID, int x, int y, int z, @NotNull String worldName) {
-        manager.createUpdate(prefix + "shops")
-                .addColumnValue("owner", ownerUUID)
-                .addCondition("x", x)
-                .addCondition("y", y)
-                .addCondition("z", z)
-                .addCondition("world", worldName)
-                .build().executeAsync((handler) -> Log.debug("Operation completed, updateOwner2UUID " + ownerUUID + ", " + handler + "lines affected"));
-    }
-
-
-    public void updateExternalInventoryProfileCache(@NotNull Shop shop, int space, int stock) {
-        manager.createReplace(prefix + "external_cache")
-                .setColumnNames("x", "y", "z", "world", "space", "stock")
-                .setParams(shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ(), shop.getLocation().getWorld().getName(), space, stock)
-                .executeAsync();
-    }
-
-
-    public void updateShop(@NotNull String owner, @NotNull ItemStack item, int unlimited, int shopType,
-                           double price, int x, int y, int z, @NotNull String world, @NotNull String extra,
-                           @Nullable String currency, boolean disableDisplay, @Nullable String taxAccount,
-                           @NotNull String inventorySymbolLink, @NotNull String inventoryWrapperName, @Nullable String shopName,
-                           @NotNull Map<UUID, String> playerGroups) {
-        Log.debug("Shop updating: " + x + "," + y + "," + z + "," + world + ", " + inventorySymbolLink + ", " + inventoryWrapperName);
-        manager.createUpdate(prefix + "shops")
-                .addColumnValue("owner", owner)
-                .addColumnValue("itemConfig", Util.serialize(item))
-                .addColumnValue("unlimited", unlimited)
-                .addColumnValue("type", shopType)
-                .addColumnValue("price", price)
-                .addColumnValue("extra", extra)
-                .addColumnValue("currency", currency)
-                .addColumnValue("disableDisplay", disableDisplay ? 1 : 0)
-                .addColumnValue("taxAccount", taxAccount)
-                .addColumnValue("inventorySymbolLink", inventorySymbolLink)
-                .addColumnValue("inventoryWrapperName", inventoryWrapperName)
-                .addColumnValue("name", shopName)
-                .addColumnValue("permission", JsonUtil.getGson().toJson(playerGroups))
-                .addCondition("x", x)
-                .addCondition("y", y)
-                .addCondition("z", z)
-                .addCondition("world", world)
-                .build()
-                .executeAsync(null, (exception, sqlAction) -> {
-                    if (exception != null) {
-                        Log.debug("Failed to execute SQL:" + sqlAction.getSQLContent() + ", error: " + exception.getMessage());
-                    }
-                });
-    }
-
-
-    public void insertHistoryRecord(@NotNull Object rec) {
-        manager.createInsert(prefix + "logs")
-                .setColumnNames("time", "classname", "data")
-                .setParams(System.currentTimeMillis(), rec.getClass().getName(), JsonUtil.getGson().toJson(rec))
-                .executeAsync();
-    }
-
-
     /**
      * Returns true if the table exists
      *
@@ -470,34 +278,6 @@ public class SimpleDatabaseHelperV1 {
             connection.close();
         }
         return match;
-    }
-
-    /**
-     * Returns true if the given table has the given column
-     *
-     * @param table  The table
-     * @param column The column
-     * @return True if the given table has the given column
-     * @throws SQLException If the database isn't connected
-     */
-    public boolean hasColumn(@NotNull String table, @NotNull String column) throws SQLException {
-        if (!hasTable(table)) {
-            return false;
-        }
-        String query = "SELECT * FROM " + table + " LIMIT 1";
-        boolean match = false;
-        try (Connection connection = manager.getConnection(); PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
-            ResultSetMetaData metaData = rs.getMetaData();
-            for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                if (metaData.getColumnLabel(i).equals(column)) {
-                    match = true;
-                    break;
-                }
-            }
-        } catch (SQLException e) {
-            return match;
-        }
-        return match; // Uh, wtf.
     }
 
     public SQLManager getManager() {
