@@ -976,7 +976,17 @@ public class ContainerShop implements Shop, Reloadable {
             Component left = plugin.text().of("signs.item-left").forLocale();
             Component right = plugin.text().of("signs.item-right").forLocale();
             Component itemName = Util.getItemCustomName(getItem());
-            Component itemComponents = itemName == null ? plugin.getPlatform().getTranslation(getItem().getType()) : itemName;
+            Component itemComponents;
+            if (itemName == null) {
+                // We can't insert translatable components into a sign.
+                if (PaperLib.isPaper()) {
+                    itemComponents = plugin.getPlatform().getTranslation(getItem().getType());
+                } else {
+                    itemComponents = Component.text(Util.prettifyText(getItem().getType().name()));
+                }
+            } else {
+                itemComponents = itemName;
+            }
             lines.add(left.append(itemComponents).append(right));
         } else {
             lines.add(plugin.text().of("signs.item-left").forLocale().append(Util.getItemStackName(getItem()).append(plugin.text().of("signs.item-right").forLocale())));

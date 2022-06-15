@@ -20,14 +20,11 @@
 package com.ghostchu.quickshop.platform.spigot;
 
 import com.ghostchu.quickshop.platform.Platform;
-import de.tr7zw.nbtapi.NBTTileEntity;
-import de.tr7zw.nbtapi.plugin.NBTAPI;
 import me.pikamug.localelib.LocaleManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -53,35 +50,18 @@ import java.util.stream.Collectors;
 public abstract class AbstractSpigotPlatform implements Platform {
     private final Plugin plugin;
     private BukkitAudiences audience;
-    protected NBTAPI nbtapi;
     protected Map<String, String> translationMapping;
     protected final Logger logger = Logger.getLogger("QuickShop-Hikari");
     protected final LocaleManager localeManager = new LocaleManager();
 
     public AbstractSpigotPlatform(@NotNull Plugin instance, @NotNull Map<String, String> mapping) {
         this.plugin = instance;
-        if (Bukkit.getPluginManager().isPluginEnabled("NBTAPI")) {
-            if (NBTAPI.getInstance().isCompatible()) {
-                nbtapi = NBTAPI.getInstance();
-            } else {
-                logger.warning("NBTAPI not compatible with this minecraft version, disabling NBTAPI support.");
-            }
-        }
         this.translationMapping = mapping;
     }
 
     @Override
     public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
-        if (this.nbtapi != null) {
-            NBTTileEntity tileSign = new NBTTileEntity(sign);
-            try {
-                tileSign.setString("Text" + (line + 1), GsonComponentSerializer.gson().serialize(component));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            sign.setLine(line, LegacyComponentSerializer.legacySection().serialize(component));
-        }
+        sign.setLine(line, LegacyComponentSerializer.legacySection().serialize(component));
     }
 
     @Override

@@ -22,18 +22,13 @@ package com.ghostchu.quickshop.platform.v1_19_1;
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.Util;
 import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
-import de.tr7zw.nbtapi.NBTTileEntity;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.nbt.api.BinaryTagHolder;
-import net.kyori.adventure.platform.bukkit.MinecraftComponentSerializer;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.minecraft.nbt.CompoundTag;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.Sign;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
@@ -53,20 +48,6 @@ public class Spigot1191Platform extends AbstractSpigotPlatform implements Platfo
 
     public Spigot1191Platform(@NotNull Plugin plugin, @NotNull Map<String, String> mapping) {
         super(plugin, mapping);
-    }
-
-    @Override
-    public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
-        if (super.nbtapi != null) {
-            NBTTileEntity tileSign = new NBTTileEntity(sign);
-            try {
-                tileSign.setObject("Text" + (line + 1), MinecraftComponentSerializer.get().serialize(component));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            sign.setLine(line, LegacyComponentSerializer.legacySection().serialize(component));
-        }
     }
 
     @Override

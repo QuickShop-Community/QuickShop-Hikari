@@ -1124,6 +1124,14 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         if (PaperLib.isPaper()) {
             this.platform = new PaperPlatform(this.translationMapping);
         } else if (PaperLib.isSpigot()) {
+
+            getLogger().warning("Use Paper to get best performance and enhanced features!");
+            getLogger().warning("");
+            getLogger().warning("QuickShop-Hikari cannot handle translatable components");
+            getLogger().warning("on Spigot platform! Make sure you're using Paper or Paper's fork");
+            getLogger().warning("to unlock full functions!");
+            getLogger().warning("Due the limitation of Spigot, QuickShop-Hikari running under compatibility mode.");
+
             this.platform = switch (AbstractSpigotPlatform.getNMSVersion()) {
                 case "v1_18_R1" -> new Spigot1181Platform(this, this.translationMapping);
                 case "v1_18_R2" -> new Spigot1182Platform(this, this.translationMapping);
