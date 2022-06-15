@@ -182,7 +182,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @Override
     public void cleanMessage(long weekAgo) {
         DataTables.MESSAGES.createDelete()
-                .addCondition("time", "<", weekAgo)
+                .addTimeCondition("time", -1L, weekAgo)
                 .build()
                 .executeAsync((handler) -> Log.debug("Operation completed, clean outdated messages for " + weekAgo + " weeks ago, " + handler + " lines affected"));
     }
