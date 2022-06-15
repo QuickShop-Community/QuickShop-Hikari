@@ -83,7 +83,7 @@ public enum DataTables {
     }),
 
     EXTERNAL_CACHE("external_cache", (table) -> {
-        table.addColumn("shop", "LONG UNSIGNED NOT NULL PRIMARY KEY");
+        table.addColumn("shop", "INT UNSIGNED NOT NULL PRIMARY KEY");
         table.addColumn("stock", "INT NOT NULL");
         table.addColumn("space", "INT NOT NULL");
     }),
