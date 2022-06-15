@@ -32,6 +32,7 @@ import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.google.gson.JsonParser;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -551,7 +552,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         for (OldShopData data : oldShopData) {
             long dataId = DataTables.DATA.createInsert()
                     .setColumnNames("owner", "item", "name", "type", "currency", "price", "unlimited", "hologram", "tax_account", "permissions", "extra", "inv_wrapper", "inv_symbol_link")
-                    .setParams(data.owner, data.itemConfig, data.name, data.type, data.currency, data.price, data.unlimited, data.disableDisplay, data.taxAccount, data.permission, data.extra, data.inventoryWrapperName, data.inventorySymbolLink)
+                    .setParams(JsonParser.parseString(data.owner).getAsJsonObject().getAsJsonObject("owner").getAsString(), data.itemConfig, data.name, data.type, data.currency, data.price, data.unlimited, data.disableDisplay, data.taxAccount, data.permission, data.extra, data.inventoryWrapperName, data.inventorySymbolLink)
                     .returnGeneratedKey(Long.class)
                     .execute();
             if (dataId < 1)
