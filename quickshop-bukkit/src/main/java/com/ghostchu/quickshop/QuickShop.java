@@ -22,22 +22,28 @@ package com.ghostchu.quickshop;
 import cc.carm.lib.easysql.EasySQL;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.hikari.HikariConfig;
+import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.QuickShopAPI;
+import com.ghostchu.quickshop.api.QuickShopProvider;
 import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.economy.EconomyType;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
+import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
-import com.ghostchu.quickshop.api.shop.*;
+import com.ghostchu.quickshop.api.shop.ItemMatcher;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
+import com.ghostchu.quickshop.api.shop.ShopManager;
+import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.command.SimpleCommandManager;
 import com.ghostchu.quickshop.database.HikariUtil;
-import com.ghostchu.quickshop.database.SimpleDatabaseHelper;
+import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.economy.Economy_GemsEconomy;
 import com.ghostchu.quickshop.economy.Economy_TNE;
 import com.ghostchu.quickshop.economy.Economy_Vault;
-import com.ghostchu.quickshop.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.listener.*;
 import com.ghostchu.quickshop.localization.text.SimpleTextManager;
 import com.ghostchu.quickshop.metric.MetricListener;
@@ -45,10 +51,14 @@ import com.ghostchu.quickshop.papi.QuickShopPAPI;
 import com.ghostchu.quickshop.permission.PermissionManager;
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.paper.PaperPlatform;
-import com.ghostchu.quickshop.platform.spigot.SpigotPlatform;
+import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
+import com.ghostchu.quickshop.platform.spigot.v1_18_1.Spigot1181Platform;
+import com.ghostchu.quickshop.platform.spigot.v1_18_2.Spigot1182Platform;
+import com.ghostchu.quickshop.platform.v1_19_1.Spigot1191Platform;
 import com.ghostchu.quickshop.shop.*;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanel;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
+import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.util.Timer;
@@ -82,6 +92,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.enginehub.squirrelid.Profile;
@@ -117,7 +128,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     /* Public QuickShop API End */
     boolean onLoadCalled = false;
     private GameVersion gameVersion;
-    private SimpleDatabaseHelper databaseHelper;
+    private SimpleDatabaseHelperV2 databaseHelper;
     private SimpleCommandManager commandManager;
     private ItemMatcher itemMatcher;
     private SimpleShopManager shopManager;
@@ -125,7 +136,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     @Getter
     private SimpleShopPermissionManager shopPermissionManager;
     private boolean priceChangeRequiresFee = false;
-    private final InventoryWrapperRegistry inventoryWrapperRegistry = new InventoryWrapperRegistry(this);
+    private final InventoryWrapperRegistry inventoryWrapperRegistry = new InventoryWrapperRegistry();
     @Getter
     private final InventoryWrapperManager inventoryWrapperManager = new BukkitInventoryWrapperManager();
     @Getter
@@ -259,6 +270,17 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     @Override
     public final void onLoad() {
         instance = this;
+        Bukkit.getServicesManager().register(QuickShopProvider.class, new QuickShopProvider() {
+            @Override
+            public @NotNull Plugin getInstance() {
+                return instance;
+            }
+
+            @Override
+            public @NotNull QuickShopAPI getApiInstance() {
+                return instance;
+            }
+        }, this, ServicePriority.High);
         // Reset the BootError status to normal.
         this.bootError = null;
         Util.setPlugin(this);
@@ -450,9 +472,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
 
     @Override
     public final void onDisable() {
-        if (!this.platform.isServerStopping()) {
-            getLogger().log(Level.WARNING, "/reload command is unsupported, don't expect any support from QuickShop support team after you execute this command.", new IllegalStateException("/reload command is unsupported, restart your server!"));
-        }
         getLogger().info("QuickShop is finishing remaining work, this may need a while...");
         if (sentryErrorReporter != null) {
             getLogger().info("Shutting down error reporter...");
@@ -528,9 +547,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         return instance;
     }
 
-    @NotNull
     @Override
-    public InventoryWrapperRegistry getInventoryWrapperRegistry() {
+    public @NotNull InventoryWrapperRegistry getInventoryWrapperRegistry() {
         return inventoryWrapperRegistry;
     }
 
@@ -966,7 +984,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 this.sqlManager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode
             }
             // Make the database up to date
-            this.databaseHelper = new SimpleDatabaseHelper(this, this.sqlManager, this.getDbPrefix());
+            this.databaseHelper = new SimpleDatabaseHelperV2(this, this.sqlManager, this.getDbPrefix());
             return true;
         } catch (Exception e) {
             getLogger().log(Level.SEVERE, "Error when connecting to the database", e);
@@ -980,15 +998,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private void submitMetrics() {
         if (!getConfig().getBoolean("disabled-metrics")) {
             // Use internal Metric class not Maven for solve plugin name issues
-            String economyType = AbstractEconomy.getNowUsing().name();
-            if (getEconomy() != null) {
-                economyType = this.getEconomy().getName();
-            }
             // Version
             metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> Util.boolean2Status(getConfig().getBoolean("shop.display-items"))));
             metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> Util.boolean2Status(getConfig().getBoolean("shop.lock"))));
-            String finalEconomyType = economyType;
-            metrics.addCustomChart(new Metrics.SimplePie("economy_type", () -> finalEconomyType));
             metrics.addCustomChart(new Metrics.SimplePie("use_display_auto_despawn", () -> String.valueOf(getConfig().getBoolean("shop.display-auto-despawn"))));
             metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> AbstractDisplayItem.getNowUsing().name()));
             metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));
@@ -1094,8 +1106,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     }
 
     @NotNull
+    @Deprecated(forRemoval = true)
     public BukkitAudiences getAudience() {
-        return audience;
+        return this.audience;
     }
 
     @Override
@@ -1111,7 +1124,21 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         if (PaperLib.isPaper()) {
             this.platform = new PaperPlatform(this.translationMapping);
         } else if (PaperLib.isSpigot()) {
-            this.platform = new SpigotPlatform(this.translationMapping);
+
+            getLogger().warning("Use Paper to get best performance and enhanced features!");
+            getLogger().warning("");
+            getLogger().warning("QuickShop-Hikari cannot handle translatable components");
+            getLogger().warning("on Spigot platform! Make sure you're using Paper or Paper's fork");
+            getLogger().warning("to unlock full functions!");
+            getLogger().warning("Due the limitation of Spigot, QuickShop-Hikari running under compatibility mode.");
+
+            this.platform = switch (AbstractSpigotPlatform.getNMSVersion()) {
+                case "v1_18_R1" -> new Spigot1181Platform(this, this.translationMapping);
+                case "v1_18_R2" -> new Spigot1182Platform(this, this.translationMapping);
+                case "v1_19_R1" -> new Spigot1191Platform(this, this.translationMapping);
+                default ->
+                        throw new IllegalArgumentException("This server running " + AbstractSpigotPlatform.getNMSVersion() + " not supported by Hikari. (Try update?)");
+            };
         } else {
             throw new UnsupportedOperationException("Unsupported platform");
         }

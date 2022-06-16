@@ -21,9 +21,9 @@ package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.*;
-import com.ghostchu.quickshop.util.serialize.BlockPos;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -127,7 +127,7 @@ public class InternalListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopInventoryCalc(ShopInventoryCalculateEvent event) {
-        plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop(), event.getSpace(), event.getStock());
+        plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop().getShopId(), event.getSpace(), event.getStock());
     }
 
 

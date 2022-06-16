@@ -21,8 +21,8 @@ package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.quickshop.Cache;
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
-import com.ghostchu.quickshop.api.shop.DisplayType;
+import com.ghostchu.quickshop.api.shop.display.DisplayType;
+import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;

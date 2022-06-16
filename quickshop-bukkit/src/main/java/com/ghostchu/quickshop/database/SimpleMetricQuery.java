@@ -23,8 +23,8 @@ import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.MetricQuery;
 import com.ghostchu.quickshop.api.database.MetricRecord;
+import com.ghostchu.quickshop.api.database.ShopOperationEnum;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.metric.ShopOperationEnum;
 import com.ghostchu.quickshop.util.logger.Log;
 import jdbc.stream.JdbcStream;
 import org.jetbrains.annotations.NotNull;
@@ -34,10 +34,10 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class SimpleMetricQuery implements MetricQuery {
-    private final SimpleDatabaseHelper databaseHelper;
+    private final SimpleDatabaseHelperV2 databaseHelper;
     private final QuickShop plugin;
 
-    public SimpleMetricQuery(QuickShop plugin, SimpleDatabaseHelper databaseHelper) {
+    public SimpleMetricQuery(QuickShop plugin, SimpleDatabaseHelperV2 databaseHelper) {
         this.databaseHelper = databaseHelper;
         this.plugin = plugin;
     }

@@ -37,7 +37,7 @@ quick-fill:
     - '&eName: &b{0}'
     - '&eOwner: &b{0}'
     - '&eType: &b{0}'
-    - '&ePrice: &b{0}'
+    - '&eHinta: &b{0}'
     - '&eItem: &b{0}'
     - '&eLocation: &b{0}'
   hover-arg-filled:
@@ -286,6 +286,8 @@ signs:
   price: '{0} kpl'
   buying: Ostetaan {0}
   header: '{1}{0}'
+  header-available: '<green>{0}'
+  header-unavailable: '<red>{0}'
   selling: '{0} kpl'
   status-available: <green>
   item-left: ''

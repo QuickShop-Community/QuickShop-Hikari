@@ -21,21 +21,27 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
-import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
-import com.ghostchu.quickshop.api.shop.*;
+import com.ghostchu.quickshop.api.serialize.BlockPos;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
+import com.ghostchu.quickshop.api.shop.ShopModerator;
+import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
+import com.ghostchu.quickshop.economy.EconomyTransaction;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
+import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.RealDisplayItem;
 import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
-import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
-import com.ghostchu.quickshop.util.serialize.BlockPos;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.collect.ImmutableList;
@@ -46,6 +52,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -71,6 +78,8 @@ import java.util.logging.Level;
  */
 @EqualsAndHashCode
 public class ContainerShop implements Shop, Reloadable {
+    private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
+    private long shopId;
     @NotNull
     private final Location location;
     private final YamlConfiguration extra;
@@ -115,7 +124,7 @@ public class ContainerShop implements Shop, Reloadable {
     private UUID taxAccount;
     @NotNull
     private String inventoryWrapperProvider;
-    @Nullable
+    @NotNull
     @EqualsAndHashCode.Exclude
     private InventoryWrapper inventoryWrapper;
     @NotNull
@@ -127,6 +136,7 @@ public class ContainerShop implements Shop, Reloadable {
 
     ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
+        this.shopId = s.shopId;
         this.shopType = s.shopType;
         this.item = s.item.clone();
         this.originalItem = s.originalItem.clone();
@@ -150,6 +160,7 @@ public class ContainerShop implements Shop, Reloadable {
         this.symbolLink = s.symbolLink;
         this.shopName = s.shopName;
         this.playerGroup = s.playerGroup;
+
         initDisplayItem();
     }
 
@@ -169,6 +180,7 @@ public class ContainerShop implements Shop, Reloadable {
      */
     public ContainerShop(
             @NotNull QuickShop plugin,
+            long shopId,
             @NotNull Location location,
             double price,
             @NotNull ItemStack item,
@@ -184,6 +196,7 @@ public class ContainerShop implements Shop, Reloadable {
             @Nullable String shopName,
             @NotNull Map<UUID, String> playerGroup) {
         Util.ensureThread(false);
+        this.shopId = shopId;
         this.shopName = shopName;
         this.location = location;
         this.price = price;
@@ -356,6 +369,11 @@ public class ContainerShop implements Shop, Reloadable {
         }
         Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + Util.list2String(result.stream().map(UUID::toString).toList()));
         return result;
+    }
+
+    @Override
+    public long getShopId() {
+        return this.shopId;
     }
 
     /**
@@ -692,7 +710,13 @@ public class ContainerShop implements Shop, Reloadable {
                 }
             }
             plugin.getShopManager().removeShop(this);
-            plugin.getDatabaseHelper().removeShop(this);
+            Location loc = getLocation();
+            try {
+                plugin.getDatabaseHelper().removeShopMap(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+            } catch (Exception e) {
+                e.printStackTrace();
+                plugin.getLogger().warning("Failed to remove the shop mapping from database.");
+            }
         }
         // Use that copy we saved earlier (which is now deleted) to refresh it's now alone neighbor
         if (neighbor != null) {
@@ -912,9 +936,8 @@ public class ContainerShop implements Shop, Reloadable {
         Util.ensureThread(false);
         List<Component> lines = new ArrayList<>();
         //Line 1
-        String statusStringKey = inventoryAvailable() ? "signs.status-available" : "signs.status-unavailable";
-        lines.add(plugin.text().of("signs.header", this.ownerName(false), plugin.text().of(statusStringKey).forLocale(locale)).forLocale(locale));
-
+        String headerKey = inventoryAvailable() ? "signs.header-available" : "signs.header-unavailable";
+        lines.add(plugin.text().of(headerKey, this.ownerName(false), plugin.text().of(headerKey).forLocale(locale)).forLocale(locale));
         //Line 2
         String tradingStringKey;
         String noRemainingStringKey;
@@ -953,7 +976,17 @@ public class ContainerShop implements Shop, Reloadable {
             Component left = plugin.text().of("signs.item-left").forLocale();
             Component right = plugin.text().of("signs.item-right").forLocale();
             Component itemName = Util.getItemCustomName(getItem());
-            Component itemComponents = itemName == null ? plugin.getPlatform().getTranslation(getItem().getType()) : itemName;
+            Component itemComponents;
+            if (itemName == null) {
+                // We can't insert translatable components into a sign.
+                if (PaperLib.isPaper()) {
+                    itemComponents = plugin.getPlatform().getTranslation(getItem().getType());
+                } else {
+                    itemComponents = Component.text(Util.prettifyText(getItem().getType().name()));
+                }
+            } else {
+                itemComponents = itemName;
+            }
             lines.add(left.append(itemComponents).append(right));
         } else {
             lines.add(plugin.text().of("signs.item-left").forLocale().append(Util.getItemStackName(getItem()).append(plugin.text().of("signs.item-right").forLocale())));
@@ -1024,22 +1057,18 @@ public class ContainerShop implements Shop, Reloadable {
         if (updating) {
             return;
         }
+        if (this.shopId == -1) {
+            Log.debug("Skip shop database update because it not fully setup!");
+            return;
+        }
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
         if (Util.fireCancellableEvent(shopUpdateEvent)) {
             Log.debug("The Shop update action was canceled by a plugin.");
             return;
         }
         updating = true;
-        int x = this.getLocation().getBlockX();
-        int y = this.getLocation().getBlockY();
-        int z = this.getLocation().getBlockZ();
-        String world = Objects.requireNonNull(this.getLocation().getWorld()).getName();
-        int unlimited = this.isUnlimited() ? 1 : 0;
         try {
-            plugin.getDatabaseHelper()
-                    .updateShop(this.owner.toString(), this.originalItem,
-                            unlimited, shopType.toID(), this.getPrice(), x, y, z, world,
-                            this.saveExtraToYaml(), this.currency, this.disableDisplay, this.taxAccount == null ? null : this.taxAccount.toString(), saveToSymbolLink(), this.inventoryWrapperProvider, this.shopName, this.playerGroup);
+            plugin.getDatabaseHelper().updateShop(this);
             this.dirty = false;
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING,
@@ -1431,11 +1460,6 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
-    public @Nullable AbstractDisplayItem getDisplay() {
-        return this.displayItem;
-    }
-
-    @Override
     public void setDirty() {
         this.dirty = true;
     }
@@ -1515,6 +1539,45 @@ public class ContainerShop implements Shop, Reloadable {
         plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
         Log.debug("Inventory doesn't exist anymore: " + this + " shop was deleted.");
         return null;
+    }
+
+    /**
+     * Checks if a Sign is a ShopSign
+     *
+     * @param sign Target {@link Sign}
+     * @return Is shop info sign
+     */
+    @Override
+    public boolean isShopSign(@NotNull Sign sign) {
+        // Check for new shop sign
+        Component[] lines = new Component[sign.getLines().length];
+        for (int i = 0; i < sign.getLines().length; i++) {
+            lines[i] = QuickShop.getInstance().getPlatform().getLine(sign, i);
+        }
+        // Can be claim
+
+        boolean empty = true;
+        for (Component line : lines) {
+            if (!Util.isEmptyComponent(line)) {
+                empty = false;
+                break;
+            }
+        }
+
+        if (empty) {
+            return true;
+        }
+
+        // Check for exists shop sign (modern)
+        ShopSignStorage shopSignStorage = sign.getPersistentDataContainer().get(SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
+        if (shopSignStorage == null) {
+            // Try to read Reremake sign namespaced key
+            shopSignStorage = sign.getPersistentDataContainer().get(LEGACY_SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
+        }
+        if (shopSignStorage != null) {
+            return shopSignStorage.equals(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ());
+        }
+        return false;
     }
 
     /**
@@ -1659,6 +1722,7 @@ public class ContainerShop implements Shop, Reloadable {
         }
     }
 
+
     @Override
     public @NotNull String saveExtraToYaml() {
         return extra.saveToString();
@@ -1757,6 +1821,25 @@ public class ContainerShop implements Shop, Reloadable {
         return inventoryWrapperProvider;
     }
 
+    public @NotNull SimpleDataRecord createDataRecord() {
+        return new SimpleDataRecord(
+                getOwner(),
+                Util.serialize(getItem()),
+                getShopName(),
+                getShopType().toID(),
+                getCurrency(),
+                getPrice(),
+                isUnlimited(),
+                isDisableDisplay(),
+                getTaxAccount(),
+                JsonUtil.getGson().toJson(getPermissionAudiences()),
+                saveExtraToYaml(),
+                getInventoryWrapperProvider(),
+                saveToSymbolLink(),
+                new Date()
+        );
+    }
+
     @Override
     public ReloadResult reloadModule() throws Exception {
         if (!plugin.isAllowStack()) {
@@ -1765,5 +1848,12 @@ public class ContainerShop implements Shop, Reloadable {
             this.item.setAmount(this.originalItem.getAmount());
         }
         return Reloadable.super.reloadModule();
+    }
+
+    @Override
+    public void setShopId(long newId) {
+        if (this.shopId != -1)
+            throw new IllegalStateException("Cannot set shop id once it fully created.");
+        this.shopId = newId;
     }
 }

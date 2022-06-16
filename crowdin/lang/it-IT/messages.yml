@@ -286,6 +286,8 @@ signs:
   price: '{0} ciascuno'
   buying: Acquisto {0}
   header: '{1}{0}'
+  header-available: '<green>{0}'
+  header-unavailable: '<red>{0}'
   selling: Vendi {0}
   status-available: <green>
   item-left: ''

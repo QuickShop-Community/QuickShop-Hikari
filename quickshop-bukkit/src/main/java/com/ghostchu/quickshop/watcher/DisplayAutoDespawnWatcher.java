@@ -20,8 +20,9 @@
 package com.ghostchu.quickshop.watcher;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.ContainerShop;
+import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
@@ -64,7 +65,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
             }
             Location location = shop.getLocation();
             World world = shop.getLocation().getWorld(); //Cache this, because it will took some time.
-            AbstractDisplayItem displayItem = shop.getDisplay();
+            AbstractDisplayItem displayItem = ((ContainerShop) shop).getDisplayItem();
             if (displayItem != null) {
                 // Check the range has player?
                 boolean anyPlayerInRegion = false;

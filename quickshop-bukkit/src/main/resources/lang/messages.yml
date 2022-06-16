@@ -377,6 +377,8 @@ signs:
   price: '{0} each'
   buying: Buying {0}
   header: '{1}{0}'
+  header-available: '<green>{0}'
+  header-unavailable: '<red>{0}'
   selling: Selling {0}
   status-available: <green>
   item-left: ''

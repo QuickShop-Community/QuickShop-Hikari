@@ -49,7 +49,7 @@ quick-fill:
     - '&e位置: &b{location}'
   header: '<yellow>您有多個名為"<green>{0}<yellow>"的商店，請選擇一個以繼續：'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
-  entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
+  entry-cooperation: ' <yellow> <red> [co] <aqua> {0} <light_purple> {1}'
 3rd-plugin-build-check-failed-admin: '<gray>（僅限管理員）<light_purple>{0} <dark_gray>拒絕權限檢查。<gray>如果不是預期所見到的，請新增 <light_purple>{1} <gray>進監聽黑名單。<gray>配置指南：https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>附近的平均價格 ： <yellow>{0} 元。'
 digits-reach-the-limit: <red>你的價格超過小數點後位數上限。
@@ -141,7 +141,7 @@ metric:
   query-argument: '查詢參數: {0}'
   entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  amount-hover: <yellow>{0}x
+  amount-hover: <yellow>{0}個
   entry-header-global: '<aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591) <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
   header-shop: '<yellow>{0} 商店的 {1} {2} 交易:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
@@ -235,7 +235,7 @@ translate-not-completed-yet-click: '{0} 的翻譯完成度為 {1}，你想幫助
 taxaccount-invalid: <red>無效的目標帳戶，請輸入有效的玩家名稱或 uuid（須加破折號）。
 player-bought-from-your-store: <red>{0} 從你的商店購買了 {1} {2}，你總共賺了 {3}。
 reached-maximum-can-create: <red>你建立的商店數量 {0}/{1} 已達到上限 ！
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
+reached-maximum-create-limit: <red>你創造的商店數量已達上限
 translation-version: '支援版本: Hikari'
 no-double-chests: <red>你沒有建立大型儲物箱商店的權限。
 price-too-cheap: <red>價格必須大於 <yellow>${0}
@@ -286,6 +286,8 @@ signs:
   price: '每個 {0} 元'
   buying: 收購 {0} 個
   header: '{1}{0}'
+  header-available: '<green>{0}'
+  header-unavailable: '<red>{0}'
   selling: 出售 {0} 個
   status-available: <green>
   item-left: ''
@@ -314,37 +316,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  stack: '<green>一次交易數量: <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
   price-hover: <yellow>點擊修改商品價格。
   remove: <red><bold>[刪除商店]
   mode-buying-hover: <yellow>點擊商店修改為出售模式。
-  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>清空：移除所有商品 <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>點擊設置每份的物品數量。設置為 1 以恢復為普通單物品商店。
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  alwayscounting: '<green>持續計算數量: {0} <yellow>[<light_purple><bold>修改<yellow>]'
+  setowner: '<green>擁有者: <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  freeze: '<yellow> 凍結模式: <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
+  price: '<green>價格 ： <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
   currency-hover: <yellow>點擊設置或移除目前正在使用的商店貨幣
-  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  lock: '<yellow>商店上鎖 ： <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
   mode-selling: '<green>商店模式 ： <aqua>出售 <yellow>[<light_purple><bold>修改<yellow>]'
-  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
+  currency: '<green>使用貨幣: <aqua>{0} <yellow>[<light_purple><bold>設定<yellow>]'
   setowner-hover: <yellow>點擊修改店主。
-  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
-  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  mode-buying: '<green>商店模式: <aqua>收購 <yellow>[<light_purple><bold>修改<yellow>]'
+  item: '<green>商店物品 ： {0} <yellow>[<light_purple><bold>修改<yellow>]'
+  unlimited: '<green>無限 ： {0} <yellow>[<light_purple><bold>修改<yellow>]'
   unlimited-hover: <yellow>點擊修改商店模式為無限。
   refill-hover: <yellow>點擊重新填充商品。
   remove-hover: <yellow>點擊刪除商店。
   toggledisplay-hover: <yellow>切換商店是否顯示懸浮物
-  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
+  refill: '<green>補貨 ： 重新填充商品 <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>切換商店凍結狀態。
   lock-hover: <yellow>開啟/關閉商店鎖保護。
   item-hover: <yellow>點擊修改商店物品
   infomation: '<green>商店控制面板 ： '
   mode-selling-hover: <yellow>點擊商店修改為收購模式。
   empty-hover: <yellow>點擊清除商店內庫存。
-  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  toggledisplay: '<yellow>商店懸浮物品顯示 ： <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
 timeunit:
   behind: 後面
   week: <red>{0} 星期
@@ -377,7 +379,7 @@ timeunit:
   future: 在 {0}
   days: <red>{0} 天
 command:
-  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
+  reloading: '<green>配置檔案已經重新載入，<yellow>某些更改可能需要重新啟動才能生效。<newline><gray>(注意 ： 4.0.9.10 版本後的重新載入發生了變化，我們現在只重新載入配置檔案而不是整個插件，以確保伺服器不會崩潰。)'
   description:
     buy: <yellow>修改成 <light_purple>收購 <yellow>模式
     about: <yellow>顯示關於 QuickShop 的資訊
@@ -418,8 +420,8 @@ command:
     taxaccount: <yellow>設定商店使用的稅金帳戶
     name: <yellow>命名商店一個專有名稱
     toggledisplay: <yellow>切換商店顯示物品狀態
-    permission: <yellow>Shop permission management
-    lookup: <yellow>Manage lookup-able items table
+    permission: <yellow>商店權限管理
+    lookup: <yellow>管理物品索引表
   bulk-size-not-set: '<red>用法 ： /qs size <amount>'
   no-type-given: '<red>用法 ： /qs find <item>'
   feature-not-enabled: 該功能沒有在配置檔案中啟用
@@ -468,57 +470,57 @@ client-language-unsupported: <yellow>QuickShop 不支援你的客戶端語言，
 language-version: '63'
 not-managed-shop: 你沒有管理此商店的權限
 shop-cannot-trade-when-freezing: <red>你不能與這間商店交易，因為它已被凍結。
-invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
+invalid-container: <red>無效的收納方塊，你只能在有空間放東西的方塊上創建商店。
 permission:
-  header: "<green>Shop Permission Details"
-  header-player: "<green>Shop Permission Details for {0}"
-  header-group: "<green>Shop Permission Details for group {0}"
+  header: "<green>商店權限細節"
+  header-player: "<green>{0} 的商店權限細節"
+  header-group: "<green>{0} 商店群的權限細節"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
   item:
-    purchase: "<yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)"
-    show-information: "<yellow>Permission to allow users who have this to see the shop information. (open shop info panel)"
-    preview-shop: "<yellow>Permission to allow users who have this to preview the shop. (preview item)"
-    search: "<yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)"
-    delete: "<yellow>Permission to allow users who have this to delete the shop."
-    receive-alert: "<yellow>Permission to allow users who have this to receive alert message (e.g out-of-stock or new trade)."
-    access-inventory: "<yellow>Permission to allow users who have this to access the shop inventory."
-    ownership-transfer: "<yellow>Permission to allow users who have this to transfer the shop ownership."
-    management-permission: "<yellow>Permission to allow users who have this to manage the groups permissions and edit user's group."
-    toggle-display: "<yellow>Permission to allow users who have this to toggle the shop display item."
-    set-shoptype: "<yellow>Permission to allow users who have this to set the shop type (switch buying or selling)."
-    set-price: "<yellow>Permission to allow users who have this to set the shop price."
-    set-item: "<yellow>Permission to allow users who have this to set the shop item."
-    set-stack-amount: "<yellow>Permission to allow users who have this to set the shop stack amount."
-    set-currency: "<yellow>Permission to allow users who have this to set the shop currency."
-    set-name: "<yellow>Permission to allow users who have this to set the shop name."
+    purchase: "<yellow>擁有此權限者可以進行購買或販售(商店物品或商店本身)"
+    show-information: "<yellow>擁有此權限者可以查看商店資訊(打開商店資訊面板)"
+    preview-shop: "<yellow>擁有此權限者可以預覽商店(預覽物品)"
+    search: "<yellow>擁有此權限者可以利用搜尋找到此商店(移除此權限將會使此商店自搜尋結果隱藏)"
+    delete: "<yellow>擁有此權限者得以刪除此商店"
+    receive-alert: "<yellow>擁有此權限者將可以收到警報(例如當缺貨時或物品售出)"
+    access-inventory: "<yellow>擁有此權限者可以打開商店的倉庫"
+    ownership-transfer: "<yellow>擁有此權限者得以將商店所有權轉移"
+    management-permission: "<yellow>擁有此權限者得以編輯玩家身分組與設定身分組權限"
+    toggle-display: "<yellow>擁有此權限者可以控制商店懸浮物品顯示與否"
+    set-shoptype: "<yellow>擁有此權限者得以控制商店類型(收購或出售)"
+    set-price: "<yellow>擁有此權限者得以設定商品價格"
+    set-item: "<yellow>擁有此權限者得以設定商店所擺的物品"
+    set-stack-amount: "<yellow>擁有此權限者得以設定商店堆疊數量"
+    set-currency: "<yellow>擁有此權限者得以設定商店交易貨幣"
+    set-name: "<yellow>擁有此權限者得以設定商店名稱"
   group:
-    everyone: "<yellow>Default group for all users excepted shop owner."
-    staff: "<yellow>System group for shop staffs."
-    administrator: "<red>System group for administrators, the users in this group will have permissions almost same with shop owner."
-invalid-group: "<red>Invalid group name."
-invalid-permission: "<red>Invalid permission."
-invalid-operation: "<red>Invalid operation, only {0} are allowed."
-player-no-group: "<yellow>Player {0} not in any group in this shop."
-player-in-group: "<green>Player {0} is in group <aqua>{1}</aqua> in this shop."
-permission-required: "<red>You don't have permission {0} in this shop to do this."
-no-permission-detailed: "<red>You don't have permission <yellow>{0}</yellow> to do this."
-paste-uploading: "<aqua>Please wait... Uploading the paste to pastebin......"
-paste-created: "<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don't trust."
-paste-created-local: "<green>Paste created and saved to your local disk at: {0}<newline><red>Warning: <gray>Never send paste to who you don't trust."
-paste-created-local-failed: "<red>Failed to save paste to your local disk, please check your disk."
-paste-451: "<gray><b>TIPS: </b> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file additional parameter to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>"
-paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin provider..."
-paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
-command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
-successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
-successfully-unset-player-group: "<green>Successfully remove player group in this shop."
-successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
-lookup-item-created: "<green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now."
-lookup-item-exists: "<red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name."
-lookup-item-not-found: "<red>An item named <yellow>{0}</yellow> not exists."
-lookup-item-name-illegal: "<red>Item name illegal. Only alphanumeric characters and underscores are allowed."
-lookup-item-name-regex: "<red>The name must match this regex: <aqua>{0}</aqua>."
-lookup-item-test-not-found: "<gold>Test: <yellow>The item in your hand not registered in lookup table."
-lookup-item-test-found: "<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table."
-lookup-item-removed: "<green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table."
-internal-error: "<red>An internal error occurred, please contact the server administrator."
+    everyone: "<yellow>預設身分組，商店主人不在其中"
+    staff: "<yellow>商店管理員的系統身分組"
+    administrator: "<red>管理員的系統身分組，在其中的玩家會擁有與商店主人幾乎相同的權限"
+invalid-group: "<red>組名無效"
+invalid-permission: "<red>無效的權限"
+invalid-operation: "<red>無效的操作，只有 {0} 是被允許的"
+player-no-group: "<yellow>玩家 {0} 在這個商店不屬於任何身分組"
+player-in-group: "<green>玩家 {0} 在這個商店屬於 <aqua>{1}</aqua> 身分組"
+permission-required: "<red>你需要權限 {0} 來在這個商店執行此操作"
+no-permission-detailed: "<red>你需要權限<yellow>{0}</yellow> 來在這個商店執行此操作"
+paste-uploading: "<aqua>請稍等，正在將複製內容上傳到黏貼板"
+paste-created: "<green>黏貼板已創立，點擊以在瀏覽器中打開: <yellow>{0}</yellow><newline><red>警告: <gray>永遠別將黏貼板丟給你不信任的人"
+paste-created-local: "<green>黏貼板已創立並且已儲存在你的硬碟路徑:{0}<newline><red>警告: <gray>永遠別將黏貼板丟給你不信任的人"
+paste-created-local-failed: "<red>儲存黏貼板至硬碟失敗，請檢查一下你的硬碟"
+paste-451: "<gray><b>小提示: </b> 你目前所在的地區貌似不讓你連結到CloudFlare Workers服務，因此黏貼板功能可能沒辦法正常讀取。<newline><gray>如果接下來的操作失敗了，你可以試試加上 --file 變數來將黏貼板儲存在硬碟上: <dark_gray>/qs paste --file</dark_gray>"
+paste-upload-failed: "<red>失敗將黏貼板傳送至 {0} 自動嘗試其他的提供服務..."
+paste-upload-failed-local: "<red>上傳黏貼板失敗，嘗試在硬碟上產生黏貼板..."
+command-incorrect: "<red>指令用法錯誤，輸入/qs help 來尋求幫助。用法： {0}。"
+successfully-set-player-group: "<green>成功將玩家 {0} 的身分組設置為 <aqua>{1}</aqua>."
+successfully-unset-player-group: "<green>成功移除此商店中的玩家身分組"
+successfully-set-player-permission: "<green>成功將玩家 {0} 在 <aqua>{2}</aqua> 商店的身分組設置為 <aqua>{1}</aqua>"
+lookup-item-created: "<green>物品<aqua>{0}</aqua> 已經在索引表上被創造，你可以在設定中引用此物品了"
+lookup-item-exists: "<red>物品 <yellow>{0}</yellow> 已經存在索引表中，刪除它或取另外一個名字"
+lookup-item-not-found: "<red>物品名稱: <yellow>{0} </yellow>並不存在。"
+lookup-item-name-illegal: "<red>無效的物品名稱，只能用數字、英文字母和底線"
+lookup-item-name-regex: "<red>物品名稱必須符合這個正規表示式: <aqua>{0}</aqua>."
+lookup-item-test-not-found: "<gold>測試: <yellow>在你手中的物品並未上傳到物品索引表"
+lookup-item-test-found: "<gold>測試: <green>你手中的物品在索引表中被命名為 <aqua>{0}</aqua>"
+lookup-item-removed: "<green>物品 <aqua>{0}</aqua>已成功自物品索引表中刪除"
+internal-error: "<red>發生了內部錯誤！請聯繫管理員。"

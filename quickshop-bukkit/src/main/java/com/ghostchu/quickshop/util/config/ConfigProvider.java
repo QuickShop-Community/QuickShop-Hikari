@@ -20,7 +20,7 @@
 package com.ghostchu.quickshop.util.config;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.holder.QuickShopInstanceHolder;
+import com.ghostchu.quickshop.api.QuickShopInstanceHolder;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

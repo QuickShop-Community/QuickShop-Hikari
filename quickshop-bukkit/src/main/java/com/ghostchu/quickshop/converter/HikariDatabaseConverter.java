@@ -24,7 +24,7 @@ import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.hikari.HikariConfig;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.database.HikariUtil;
-import com.ghostchu.quickshop.database.SimpleDatabaseHelper;
+import com.ghostchu.quickshop.database.SimpleDatabaseHelperV1;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -190,7 +190,8 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
             }
             instance.getLogger().info("Checking and creating for database tables... ");
             // Database Helper will resolve all we need while starting up.
-            new SimpleDatabaseHelper(plugin, liveDatabase, config.getPrefix());
+            //noinspection deprecation
+            new SimpleDatabaseHelperV1(plugin, liveDatabase, config.getPrefix());
             instance.getLogger().info("Migrating old data to new database...");
             pushShops(units, config.getPrefix(), liveDatabase);
         }

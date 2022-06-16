@@ -21,8 +21,8 @@ package com.ghostchu.quickshop.command.subcommand.silent;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.shop.ContainerShop;
-import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 

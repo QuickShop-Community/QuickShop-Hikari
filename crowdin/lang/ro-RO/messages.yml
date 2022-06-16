@@ -1,20 +1,20 @@
 ---
-break-shop-use-supertool: <yellow>You can break the shop by using the SuperTool.
+break-shop-use-supertool: <yellow>Poți distruge magazinul folosind SuperUnealta.
 fee-charged-for-price-change: <green>Ai achitat{0}<green> pentru a schimba pretul.
 not-allowed-to-create: <red>Nu poti crea un magazin aici.
-disabled-in-this-world: <red>QuickShop is disabled in this world
+disabled-in-this-world: <red>QuickShop este dezactivat in aceasta lume
 how-much-to-trade-for: <green>Intra in chat, cat de mult doresti sa tranzacționezi &{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Creating Shop-backup from database...
 _comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
-thats-not-a-number: <red>Invalid number
+bad-command-usage-detailed: '<red>Argumente de comandă nepotrivite! Acceptă următorii parametri: <gray>{0}'
+thats-not-a-number: <red>Număr Invalid
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
-console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
+console-only-danger: <red>Aceasta este o comandă periculoasă, deci se poate executa doar in Consola.
 not-a-number: <red>Poti sa introduci doar un numar, intrarea ta a fost {0}.
 not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
-shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
+shop-removed-cause-ongoing-fee: <red> Magazinul tău de la {0} a fost șters deoarece nu ai suficienți bani pentru a-l păstra!
 tabcomplete:
   amount: '[amount]'
   item: '[item]'
@@ -22,59 +22,59 @@ tabcomplete:
   name: '[name]'
   range: '[range]'
   currency: '[currency name]'
-taxaccount-unset: <green>This shop's tax account now following server global setting.
+taxaccount-unset: <green>Contul fiscal al acestui magazin urmează acum setările globale ale serverului.
 blacklisted-item: <red>Nu poti vinde acest obiect pentru ca este pe lista neagra
 command-type-mismatch: <red>This command only can executed by <aqua>{0}.
 server-crash-warning: '<red>Server may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running.'
 you-cant-afford-to-change-price: <red>Schimbarea pretului magazinului tau costa {0}.
-safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
+safe-mode: <red>QuickShop acum în modul sigur, nu puteți deschide acest container, vă rugăm să contactați administratorul serverului pentru a remedia erorile.
 forbidden-vanilla-behavior: <red>The operation is forbidden due to it not being consisten with vanilla behaviour
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>Magazinul tău {0} este plin!
 paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '&eName: &b{0}'
-    - '&eOwner: &b{0}'
-    - '&eType: &b{0}'
-    - '&ePrice: &b{0}'
-    - '&eItem: &b{0}'
-    - '&eLocation: &b{0}'
+    - '&eNume: &b{0}'
+    - '&eProprietar: &b{0}'
+    - '&eTip: &b{0}'
+    - '&ePreț: &b{0}'
+    - '&eArticol: &b{0}'
+    - '&eLocație: &b{0}'
   hover-arg-filled:
-    - '&eName: &b{name}'
-    - '&eOwner: &b{owner}'
-    - '&eType: &b{type}'
-    - '&ePrice: &b{price}'
-    - '&eItem: &b{item}'
-    - '&eLocation: &b{location}'
+    - '&eNume: &b{name}'
+    - '&eProprietar: &b{owner}'
+    - '&eTip: &b{type}'
+    - '&ePreț: &b{price}'
+    - '&eArticol: &b{item}'
+    - '&eLocație: &b{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>a respins verificările de permisiune, dacă acesta nu este exceptată, încercați să o adăugați <light_purple>{1} <gray>la lista neagră. <gray>Ghidul de configurare: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filtru'
 average-price-nearby: '<green>Pret mediu apropiat: <yellow>{0}'
-digits-reach-the-limit: <red>You have reached the limits of decimals in the price.
-currency-unset: <green>Shop currency removed successfully. Using default settings now.
+digits-reach-the-limit: <red>Ați atins limita de zecimale din preț.
+currency-unset: <green>Valuta magazinului a fost ștearsă cu succes. Utilizarea setărilor implicite acum.
 you-cant-create-shop-in-there: <red>You don't have permission to create a shop at this location.
 no-pending-action: <red>You do not have any pending actions
 refill-success: <green>Reîncărcare reușită
-failed-to-paste: <red>Failed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+failed-to-paste: <red>Nu s-a reușit încărcarea informațiilor în Pastebin. Verificați conexiunea la internet și încercați din nou. (Vezi consola pentru detalii)
+shop-out-of-stock-name: <dark_purple>Magazinul tău. {0} a rămas fără {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
-how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
-exceeded-maximum: <red>The value exceeded the maximum value in Java.
+how-many-buy-stack: <yellow>Introdu in chat, cat de multe pachete stack-uri sa <aqua>CUMPERI<green>. Sunt <yellow>{0}<green> obiecte în fiecare stack și puteți cumpăra <yellow>{1}<green> stack-uri. Introdu <aqua>{2}<green> în chat pentru a cumpăra toate.
+exceeded-maximum: <red>Valoarea a depășit valoarea maximă pe care Java o permite.
 unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.'
 no-enough-money-to-keep-shops: <red>Nu ai destui bani pentru a-ti pastra magazinele! Toate magazinele au fost sterse...
 3rd-plugin-build-check-failed: <red>3rd plugin <bold>{0}<reset><red> a respins verificarile permisiunilor, ai permisiunile setari acolo?
 not-a-integer: <red>You must input a integer, your input was {0}.
 translation-country: 'Zona de Limbă: Engleză (ro_US)'
 buying-more-than-selling: '<red>ATENTIE: Cumpari articole pentru mai mult decat le vindeti!'
-purchase-failed: '<red>Purchase failed: Internal Error. Please contact the Server Administrator.'
-denied-put-in-item: <red>You cannot put this item into your shop!
+purchase-failed: '<red>Achiziția a eșuat: Eroare Internă. Vă rugăm să contactați Administratorul Serverului.'
+denied-put-in-item: <red>Nu poți pune acest articol în magazinul tău!
 shop-has-changed: <red>Magazinul pe care ai incercat sa il folosesti s-a schimbat de cand ai apasat pe el!
 flush-finished: <green>Successfully flushed the messages.
 no-price-given: <red>Te rugam sa dai un pret valid.
 shop-already-owned: <red>Acesta este deja un magazin.
-backup-success: <green>Backup successfull.
+backup-success: <green>Backup reușit.
 not-looking-at-shop: <red>Nu am putut gasi un magazin. Trebuie sa te uiti la unul.
 you-cant-afford-a-new-shop: <red>Crearea unui magazin nou costa {0}.
 success-created-shop: <red>Magazin creat.
@@ -82,22 +82,22 @@ shop-creation-cancelled: Crearea <red>Shop a fost anulata.
 shop-owner-self-trade: <yellow>You trading with yourself shop, so you might won't gain any balance.
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
-  success: <green>Reload completed without any errors.
+  success: <green>Reîncărcare finalizată fără erori.
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
-  failed: <red>Reload failed, check the server console
+  failed: <red>Reîncărcare eșuată, verificați consola serverului
 player-bought-from-your-store-tax: <red>{0} purchased {1} {2} from your shop, and you earned {3} ({4} in taxes).
 not-enough-space: <red>Magazinul are loc doar pentru {0} inca!
-shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
+shop-name-success: <green>Numele magazinului a fost setat cu succes în <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
 shops-recovering: Recovering shops from backup...
 menu:
   sell-tax: <green>You paid <yellow>{0} <green>in taxes.
-  owner: '<green>Owner: {0}'
-  preview: <aqua>[Item Preview]
-  enchants: <dark_purple>Enchantments
+  owner: '<green>Proprietar: {0}'
+  preview: <aqua>[Previzualizare articol]
+  enchants: <dark_purple>Enchant-uri
   sell-tax-self: <green>You didn't pay taxes because you own this shop.
-  shop-information: '<green>Shop Information:'
+  shop-information: '<green>Informații despre magazin:'
   item: '<green>Item: <yellow>{0}'
   price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
@@ -286,6 +286,8 @@ signs:
   price: '{0} each'
   buying: Buying {0}
   header: '{1}{0}'
+  header-available: '<green>{0}'
+  header-unavailable: '<red>{0}'
   selling: Selling {0}
   status-available: <green>
   item-left: ''

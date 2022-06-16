@@ -20,7 +20,7 @@
 package com.ghostchu.quickshop.database;
 
 import com.ghostchu.quickshop.api.database.MetricRecord;
-import com.ghostchu.quickshop.metric.ShopOperationEnum;
+import com.ghostchu.quickshop.api.database.ShopOperationEnum;
 import lombok.AllArgsConstructor;
 
 import java.util.UUID;

@@ -21,12 +21,12 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.*;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.economy.EconomyTransaction;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
-import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.*;
 import com.ghostchu.quickshop.util.economyformatter.EconomyFormatter;
 import com.ghostchu.quickshop.util.holder.Result;
@@ -65,6 +65,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -283,33 +284,37 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         shop.setSignText();
         // save to database
         // TODO: Optimize logic
-        plugin.getDatabaseHelper().createShop(shop, null, e ->
-                Util.mainThreadRun(() -> {
-                    // also remove from memory when failed
-                    shop.delete(true);
-                    plugin.getLogger()
-                            .log(Level.WARNING, "Shop create failed, trying to auto fix the database...", e);
-                    boolean backupSuccess = false; // Database backup
-                    if (backupSuccess) {
-                        plugin.getDatabaseHelper().removeShop(shop);
-                    } else {
-                        plugin.getLogger().warning(
-                                "Failed to backup the database, all changes will revert after a reboot.");
-                    }
-                    plugin.getDatabaseHelper().createShop(shop, null, e2 -> {
-                        plugin.getLogger()
-                                .log(Level.SEVERE, "Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
-                        Player player = plugin.getServer().getPlayer(shop.getOwner());
-                        if (player != null) {
-                            plugin.text().of(player, "shop-creation-failed").send();
-                        }
-                        Util.mainThreadRun(() -> {
-                            shop.onUnload();
-                            removeShop(shop);
-                            shop.delete();
-                        });
-                    });
-                }));
+        String world = shop.getLocation().getWorld().getName();
+        int x = shop.getLocation().getBlockX();
+        int y = shop.getLocation().getBlockY();
+        int z = shop.getLocation().getBlockZ();
+        try {
+            plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
+            long dataId = plugin.getDatabaseHelper().createData(shop);
+            long shopId = plugin.getDatabaseHelper().createShop(dataId);
+            shop.setShopId(shopId);
+            plugin.getDatabaseHelper().createShopMap(shopId, shop.getLocation());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            plugin.getLogger().warning("Failed register the shop to database");
+            processCreationFail(shop, shop.getOwner(), e);
+        }
+
+
+    }
+
+    private void processCreationFail(@NotNull Shop shop, @NotNull UUID owner, @NotNull Throwable e2) {
+        plugin.getLogger()
+                .log(Level.SEVERE, "Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
+        Player player = plugin.getServer().getPlayer(owner);
+        if (player != null) {
+            plugin.text().of(player, "shop-creation-failed").send();
+        }
+        Util.mainThreadRun(() -> {
+            shop.onUnload();
+            removeShop(shop);
+            shop.delete();
+        });
     }
 
     /**
@@ -332,6 +337,21 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     @Override
     public @NotNull String format(double d, @NotNull Shop shop) {
         return formatter.format(d, shop);
+    }
+
+    /**
+     * Gets a shop by shop Id
+     *
+     * @param shopId shop Id
+     * @return The shop object
+     */
+    @Override
+    public @Nullable Shop getShop(long shopId) {
+        for (Shop shop : getAllShops()) {
+            if (shop.getShopId() == shopId)
+                return shop;
+        }
+        return null;
     }
 
     /**
@@ -1044,6 +1064,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             // Create the basic shop
             ContainerShop shop = new ContainerShop(
                     plugin,
+                    -1,
                     info.getLocation(),
                     price,
                     info.getItem(),

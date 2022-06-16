@@ -42,8 +42,8 @@ quick-fill:
     - '&eLocation: &b{0}'
   hover-arg-filled:
     - '&eName: &b{name}'
-    - '&eOwner: &b{owner}'
-    - '&eType: &b{type}'
+    - '&eSahip: &b{owner}'
+    - '&eTür: &b{type}'
     - '&ePrice: &b{price}'
     - '&eItem: &b{item}'
     - '&eLocation: &b{location}'
@@ -122,7 +122,7 @@ integrations-check-failed-trade: <red>{0} entegrasyonu market ticaretini reddett
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Market sahibi başarıyla Sunucu yapıldı.
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>Bu isim çok uzun (maks. {0} uzunluğunda olmalı), başka bir tane seçin!
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
   action-hover: <yellow>{0}
@@ -286,6 +286,8 @@ signs:
   price: 'her biri {0}'
   buying: 'Alıyor: {0}'
   header: '{1}{0}'
+  header-available: '<green>{0}'
+  header-unavailable: '<red>{0}'
   selling: 'Satıyor: {0}'
   status-available: <green>
   item-left: ''

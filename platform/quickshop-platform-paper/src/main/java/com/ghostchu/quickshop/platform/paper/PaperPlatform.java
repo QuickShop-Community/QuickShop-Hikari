@@ -22,9 +22,11 @@ package com.ghostchu.quickshop.platform.paper;
 import com.ghostchu.quickshop.platform.Platform;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -69,11 +71,6 @@ public class PaperPlatform implements Platform {
     public void registerCommand(@NotNull String prefix, @NotNull PluginCommand command) {
         Bukkit.getCommandMap().register(prefix, command);
         Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
-    }
-
-    @Override
-    public boolean isServerStopping() {
-        return Bukkit.isStopping();
     }
 
     @Override
@@ -213,5 +210,15 @@ public class PaperPlatform implements Platform {
     @Override
     public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
         return meta.lore();
+    }
+
+    @Override
+    public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
+        sender.sendMessage(component);
+    }
+
+    @Override
+    public @NotNull MiniMessage miniMessage() {
+        return MiniMessage.miniMessage();
     }
 }

@@ -23,10 +23,10 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.inventory.CountableInventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperIterator;
-import com.ghostchu.quickshop.api.shop.AbstractDisplayItem;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.lib.PaperLib;
 import lombok.*;
@@ -1011,21 +1011,21 @@ public class Util {
         }
         file.createNewFile();
 
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            StringBuilder finalReport = new StringBuilder();
-            plugin.getShopLoader()
-                    .getOriginShopsInDatabase()
-                    .forEach((shop -> finalReport.append(shop).append("\n")));
-            try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
-                outputStream.write(finalReport.toString());
-            } catch (IOException exception) {
-                plugin.getLogger().log(Level.WARNING, "Backup failed", exception);
-            }
+        plugin.getLogger().log(Level.WARNING, "Backup hadn't available in this version yet!");
 
-        });
+//        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+//            StringBuilder finalReport = new StringBuilder();
+//            plugin.getShopLoader()
+//                    .getOriginShopsInDatabase()
+//                    .forEach((shop -> finalReport.append(shop).append("\n")));
+//            try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
+//                outputStream.write(finalReport.toString());
+//            } catch (IOException exception) {
+//                plugin.getLogger().log(Level.WARNING, "Backup failed", exception);
+//            }
+//
+//        });
     }
-
-
     /**
      * Check QuickShop is running on dev edition or not.
      *

@@ -89,7 +89,7 @@ public class MsgUtil {
             List<String> msgs = OUTGOING_MESSAGES.get(pName);
             if (msgs != null) {
                 for (String msg : msgs) {
-                    plugin.getAudience().player(player).sendMessage(GsonComponentSerializer.gson().deserialize(msg));
+                    plugin.getPlatform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
                 }
                 plugin.getDatabaseHelper().cleanMessageForPlayer(pName);
                 msgs.clear();
@@ -184,16 +184,17 @@ public class MsgUtil {
      */
     public static void loadTransactionMessages() {
         OUTGOING_MESSAGES.clear(); // Delete old messages
-        try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllMessages(); ResultSet rs = warpRS.getResultSet()) {
+        try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllMessages()) {
+            ResultSet rs = warpRS.getResultSet();
             while (rs.next()) {
-                String owner = rs.getString("owner");
+                String owner = rs.getString("receiver");
                 UUID ownerUUID;
                 if (Util.isUUID(owner)) {
                     ownerUUID = UUID.fromString(owner);
                 } else {
                     ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
                 }
-                String message = rs.getString("message");
+                String message = rs.getString("content");
                 List<String> msgs = OUTGOING_MESSAGES.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
                 msgs.add(message);
             }
@@ -245,7 +246,7 @@ public class MsgUtil {
         } else {
             Player player = p.getPlayer();
             if (player != null) {
-                plugin.getAudience().player(player).sendMessage(shopTransactionMessage);
+                plugin.getPlatform().sendMessage(player, shopTransactionMessage);
             }
         }
     }
@@ -422,7 +423,7 @@ public class MsgUtil {
             if (Util.isEmptyComponent(msg)) {
                 return;
             }
-            plugin.getAudience().sender(sender).sendMessage(msg);
+            plugin.getPlatform().sendMessage(sender, msg);
         }
     }
 

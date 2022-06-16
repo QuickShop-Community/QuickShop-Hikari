@@ -63,12 +63,13 @@ libraries:
   - com.rollbar:rollbar-java:1.8.1
   - commons-codec:commons-codec:1.15
   - org.slf4j:slf4j-nop:1.7.35
-  - cc.carm.lib:easysql-hikaricp:0.3.11
+  - cc.carm.lib:easysql-hikaricp:0.4.0
   - com.h2database:h2:2.1.210
   - com.ghostchu:simplereloadlib:1.1.2
   - com.konghq:unirest-java:3.13.7
   - com.github.juliomarcopineda:jdbc-stream:0.1.1
   - one.util:streamex:0.8.1
+  - commons-lang:commons-lang:2.6
 
 commands:
   qs:

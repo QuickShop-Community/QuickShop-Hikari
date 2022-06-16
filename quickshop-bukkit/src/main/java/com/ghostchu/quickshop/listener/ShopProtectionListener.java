@@ -22,11 +22,10 @@ package com.ghostchu.quickshop.listener;
 import com.ghostchu.quickshop.Cache;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.shop.datatype.HopperPersistentData;
 import com.ghostchu.quickshop.shop.datatype.HopperPersistentDataType;
-import com.ghostchu.quickshop.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
@@ -34,22 +33,14 @@ import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.Hopper;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.world.WorldLoadEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.io.File;
-import java.lang.reflect.Field;
-import java.util.Objects;
-import java.util.logging.Level;
 
 public class ShopProtectionListener extends AbstractProtectionListener {
 
@@ -64,7 +55,6 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     private void init() {
         this.hopperProtect = plugin.getConfig().getBoolean("protect.hopper", true);
         this.hopperOwnerExclude = plugin.getConfig().getBoolean("protect.hopper-owner-exclude", false);
-        scanAndFixPaperListener();
     }
 
     @Override
@@ -72,62 +62,6 @@ public class ShopProtectionListener extends AbstractProtectionListener {
         init();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onWorldLoad(WorldLoadEvent event) {
-        scanAndFixPaperListener();
-    }
-
-    public void scanAndFixPaperListener() {
-        if (!plugin.getConfig().getBoolean("protect.hopper")) {
-            return;
-        }
-        if (!Util.isClassAvailable("com.destroystokyo.paper.PaperWorldConfig")) {
-            return;
-        }
-        Log.debug("QuickShop is scanning all worlds settings about disableHopperMoveEvents disabled worlds");
-        plugin.getServer().getWorlds().forEach(world -> {
-            if (plugin.getShopManager().getShopsInWorld(world).isEmpty()) {
-                return;
-            }
-            try {
-                Field worldServerF = world.getClass().getDeclaredField("world");
-                worldServerF.setAccessible(true);
-                Object worldServer = worldServerF.get(world);
-                Object paperWorldConfig = worldServer.getClass().getSuperclass().getDeclaredField("paperConfig").get(worldServer);
-                boolean disableHopperMoveEvents = paperWorldConfig.getClass().getDeclaredField("disableHopperMoveEvents").getBoolean(paperWorldConfig);
-                if (disableHopperMoveEvents) {
-                    plugin.getLogger()
-                            .warning("World " + world.getName()
-                                    + " have shops and Hopper protection is enabled. But we detected" +
-                                    " \"disableHopperMoveEvents\" options in \"paper.yml\" is activated, so QuickShop already automatic disabled it.");
-                    plugin.getLogger()
-                            .warning("If you still want keep enable disableHopperMoveEvents enables " +
-                                    "in this world, please disable Hopper protection or make sure no shops in this world.");
-                    paperWorldConfig.getClass().getDeclaredField("disableHopperMoveEvents").setBoolean(paperWorldConfig, false);
-                    File serverRoot = plugin.getDataFolder().getParentFile().getParentFile();
-                    File paperConfigYaml = new File(serverRoot, "paper.yml");
-                    if (paperConfigYaml.exists()) {
-                        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(paperConfigYaml);
-                        ConfigurationSection worldsSection =
-                                Objects.requireNonNull(yamlConfiguration.getConfigurationSection("world-settings"));
-                        ConfigurationSection worldSection;
-                        if (Objects.requireNonNull(worldsSection).getConfigurationSection(world.getName()) == null) {
-                            worldSection = worldsSection.getConfigurationSection("default");
-                        } else {
-                            worldSection = worldsSection.getConfigurationSection(world.getName());
-                        }
-                        Objects.requireNonNull(worldSection).set("hopper.disable-move-event", false);
-                        Objects.requireNonNull(worldSection).set("hopper.disable-move-event-quickshop-tips", "QuickShop automatic disabled this due it will allow other players steal items from shop. This notice only shown when have shops in current world and hopper protection is on and also disable-move-event turned on.");
-                        yamlConfiguration.save(paperConfigYaml);
-                    }
-                }
-            } catch (Exception ex) {
-                plugin.getLogger().log(Level.WARNING, "Failed to automatic disable disable-move-event for world [" + world.getName() + "], please disable it by yourself or player can steal items from shops.", ex);
-            }
-        });
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockExplode(BlockExplodeEvent e) {
         for (int i = 0, a = e.blockList().size(); i < a; i++) {

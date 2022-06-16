@@ -1,53 +1,22 @@
-<!--
-  ~  This file is a part of project QuickShop, the name is pom.xml
-  ~  Copyright (C) Ghost_chu and contributors
-  ~
-  ~  This program is free software: you can redistribute it and/or modify it
-  ~  under the terms of the GNU General Public License as published by the
-  ~  Free Software Foundation, either version 3 of the License, or
-  ~  (at your option) any later version.
-  ~
-  ~  This program is distributed in the hope that it will be useful, but WITHOUT
-  ~  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-  ~  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
-  ~  for more details.
-  ~
-  ~  You should have received a copy of the GNU General Public License
-  ~  along with this program. If not, see <http://www.gnu.org/licenses/>.
-  ~
-  -->
-
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>2.0.1.3</version>
+    <version>3.0.0.0</version>
     <packaging>pom</packaging>
+    <name>quickshop-hikari</name>
+    <description>Another QuickShop fork</description>
+    <url>https://github.com/${developer}/${artifactId}</url>
 
     <properties>
         <java.version>17</java.version>
         <developer>Ghost-chu</developer>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <profiles>
-        <profile>
-            <id>github</id>
-            <properties>
-                <rootDir>${maven.multiModuleProjectDirectory}</rootDir>
-            </properties>
-        </profile>
-        <profile>
-            <id>jenkins</id>
-            <properties>
-                <rootDir>${WORKSPACE}</rootDir>
-            </properties>
-        </profile>
-    </profiles>
-
 
     <licenses>
         <license>
@@ -56,10 +25,6 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
-    <name>quickshop-hikari</name>
-    <description>Another QuickShop fork</description>
-    <url>https://github.com/${developer}/${artifactId}</url>
 
     <developers>
         <developer>
@@ -106,6 +71,7 @@
         </pluginRepository>
     </pluginRepositories>
 
+
     <build>
         <pluginManagement>
             <plugins>
@@ -149,21 +115,10 @@
                                         <shadedPattern>com.ghostchu.quickshop.shade.io.papermc.lib.</shadedPattern>
                                     </relocation>
                                     <relocation>
-                                        <pattern>de.leonhard.storage.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.de.leonhard.storage.</shadedPattern>
-                                    </relocation>
-                                    <!-- MineDown -->
-                                    <relocation>
-                                        <pattern>de.themoep.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.</shadedPattern>
-                                    </relocation>
-                                    <!-- JsonConfiguration Related -->
-                                    <relocation>
                                         <pattern>net.minidev.json.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.net.minidev.json.minidev.json.
                                         </shadedPattern>
                                     </relocation>
-                                    <!-- SID -->
                                     <relocation>
                                         <pattern>org.enginehub.squirrelid.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.org.enginehub.squirrelid.
@@ -177,6 +132,11 @@
                                     <relocation>
                                         <pattern>co.aikar.taskchain.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.co.aikar.taskchain.
+                                        </shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>com.github.PikaMug.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.com.github.PikaMug.LocaleLib.
                                         </shadedPattern>
                                     </relocation>
                                     <!--                                    <relocation>-->
@@ -216,12 +176,8 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>3.4.0</version>
                     <configuration>
-                        <!--                        <outputDirectory>${rootDir}/build-artifacts/javadoc</outputDirectory>-->
                         <encoding>UTF-8</encoding>
                         <excludePackageNames>com.ghostchu.quickshop.nonquickshopstuff.*</excludePackageNames>
-                        <!--<aggregate>true</aggregate>
-                        <charmvnset>UTF-8</charmvnset>
-                        <docencoding>UTF-8</docencoding>-->
                     </configuration>
                     <executions>
                         <execution>
@@ -272,7 +228,6 @@
                     <version>1.2.7</version>
                     <configuration>
                         <updatePomFile>true</updatePomFile>
-                        <!--                    <flattenMode>resolveCiFriendliesOnly</flattenMode>-->
                         <flattenMode>oss</flattenMode>
                     </configuration>
                     <executions>
@@ -292,9 +247,9 @@
                         </execution>
                     </executions>
                 </plugin>
-
             </plugins>
         </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -314,55 +269,258 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>Sonatype-public</id>
+            <name>SnakeYAML repository</name>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>md_5-snapshots</id>
+            <url>https://repo.md-5.net/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>sonatype-oss</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>enginehub-repo</id>
+            <url>https://maven.enginehub.org/repo/</url>
+        </repository>
+        <repository>
+            <id>sonatype-oss-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>aikar</id>
+            <url>https://repo.aikar.co/content/groups/aikar/</url>
+        </repository>
+        <repository>
+            <id>onarandombox</id>
+            <url>https://repo.onarandombox.com/content/groups/public</url>
+        </repository>
+        <repository>
+            <id>glaremasters repo</id>
+            <url>https://repo.glaremasters.me/repository/towny/</url>
+        </repository>
+        <repository>
+            <id>bg-repo</id>
+            <url>https://repo.bg-software.com/repository/api/</url>
+        </repository>
+        <repository>
+            <id>nms-repo</id>
+            <url>https://repo.codemc.io/repository/nms/</url>
+        </repository>
+    </repositories>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.spigotmc</groupId>
+                <artifactId>spigot-api</artifactId>
+                <version>1.19-R0.1-SNAPSHOT</version>
+                <scope>provided</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-lang</groupId>
+                        <artifactId>commons-lang</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>1.21</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+                <version>5.8.2</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>5.8.2</version>
+                <scope>test</scope>
+            </dependency>
+            <!-- Documentation of MockBukkit: https://github.com/seeseemelk/MockBukkit -->
+            <dependency>
+                <groupId>com.github.seeseemelk</groupId>
+                <artifactId>MockBukkit-v1.18</artifactId>
+                <version>2.0.0</version>
+                <scope>test</scope>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>spigot-api</artifactId>
+                        <groupId>org.spigotmc</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>annotations</artifactId>
+                        <groupId>org.jetbrains</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>junit-jupiter</artifactId>
+                        <groupId>org.junit.jupiter</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- Database lib for testing-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>[8.0.25,)</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.12.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>1.9</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.rollbar</groupId>
+                <version>1.8.1</version>
+                <artifactId>rollbar-java</artifactId>
+                <scope>provided</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>1.15</version>
+                <scope>provided</scope>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-nop -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-nop</artifactId>
+                <version>1.7.35</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>cc.carm.lib</groupId>
+                <artifactId>easysql-hikaricp</artifactId>
+                <version>0.4.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.konghq</groupId>
+                <artifactId>unirest-java</artifactId>
+                <version>3.13.10</version>
+                <scope>provided</scope>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-codec</artifactId>
+                        <groupId>commons-codec</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>gson</artifactId>
+                        <groupId>com.google.code.gson</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.24</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains</groupId>
+                <artifactId>annotations</artifactId>
+                <version>23.0.0</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.ghostchu</groupId>
+                <artifactId>simplereloadlib</artifactId>
+                <version>1.1.2</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.kyori</groupId>
+                <artifactId>adventure-platform-bukkit</artifactId>
+                <version>4.1.1</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>net.kyori</groupId>
+                <artifactId>adventure-text-minimessage</artifactId>
+                <version>4.11.0</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.juliomarcopineda</groupId>
+                <artifactId>jdbc-stream</artifactId>
+                <version>0.1.1</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>one.util</groupId>
+                <artifactId>streamex</artifactId>
+                <version>0.8.1</version>
+                <scope>provided</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <!-- GLOBAL DEPENDENCY -->
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>23.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>simplereloadlib</artifactId>
-            <version>1.1.2</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.1.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-text-minimessage</artifactId>
-            <version>4.10.1</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.juliomarcopineda</groupId>
-            <artifactId>jdbc-stream</artifactId>
-            <version>0.1.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>one.util</groupId>
-            <artifactId>streamex</artifactId>
-            <version>0.8.1</version>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 
-
     <modules>
+        <module>quickshop-api</module>
         <module>platform/quickshop-platform-interface</module>
-        <module>platform/quickshop-platform-spigot</module>
+        <module>platform/quickshop-platform-spigot-abstract</module>
+        <module>platform/quickshop-platform-spigot-v1_18_R1</module>
+        <module>platform/quickshop-platform-spigot-v1_18_R2</module>
+        <module>platform/quickshop-platform-spigot-v1_19_R1</module>
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>
@@ -378,5 +536,7 @@
         <module>compatibility/towny</module>
         <module>compatibility/plotsquared</module>
         <module>compatibility/lands</module>
+
     </modules>
+
 </project>

@@ -22,9 +22,11 @@ package com.ghostchu.quickshop.platform;
 import de.tr7zw.nbtapi.NBTItem;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -50,7 +52,6 @@ public interface Platform {
 
     void registerCommand(@NotNull String prefix, @NotNull PluginCommand command);
 
-    boolean isServerStopping();
 
     @NotNull
     String getMinecraftVersion();
@@ -113,4 +114,9 @@ public interface Platform {
     @Nullable List<Component> getLore(@NotNull ItemStack stack);
 
     @Nullable List<Component> getLore(@NotNull ItemMeta meta);
+
+    void sendMessage(@NotNull CommandSender sender, @NotNull Component component);
+
+    @NotNull
+    MiniMessage miniMessage();
 }
