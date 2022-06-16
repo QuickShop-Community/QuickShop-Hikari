@@ -1003,13 +1003,17 @@ public class Util {
     @SneakyThrows
     public static void makeExportBackup(@Nullable String backupName) {
         if (StringUtils.isEmpty(backupName)) {
-            backupName = "export.txt";
+            backupName = "export-" + QuickShop.getFork() + "-" + QuickShop.getVersion()+ ".txt";
         }
-        File file = new File(plugin.getDataFolder(), backupName + ".txt");
+        File file = new File(plugin.getDataFolder(), backupName);
         if (file.exists()) {
             Files.move(file.toPath(), new File(file.getParentFile(), file.getName() + UUID.randomUUID().toString().replace("-", "")).toPath());
         }
-        file.createNewFile();
+        
+        if(!file.createNewFile()) {
+            plugin.getLogger().warning("Failed to create new backup file!");
+            return;
+        }
 
         plugin.getLogger().log(Level.WARNING, "Backup hadn't available in this version yet!");
 
@@ -1020,6 +1024,7 @@ public class Util {
 //                    .forEach((shop -> finalReport.append(shop).append("\n")));
 //            try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
 //                outputStream.write(finalReport.toString());
+//                plugin.getLogger().info("Successfully created file " + backupName);
 //            } catch (IOException exception) {
 //                plugin.getLogger().log(Level.WARNING, "Backup failed", exception);
 //            }
