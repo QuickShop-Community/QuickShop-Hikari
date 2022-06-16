@@ -30,13 +30,9 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.JsonUtil;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.reflect.TypeToken;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -149,7 +145,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 doV2Migate();
                 setDatabaseVersion(4);
             } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
-                    IllegalAccessException e) {
+                     IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
@@ -651,20 +647,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         private Map<UUID, String> permission = new HashMap<>();
 
         public OldShopData(ResultSet set) throws SQLException {
-
-            String oldOwner = set.getString("owner");
-            if (MsgUtil.isJson(oldOwner)) {
-                JsonElement oldOwnerElement = JsonParser.parseString(oldOwner);
-                JsonArray array = oldOwnerElement.getAsJsonObject().getAsJsonArray("staffs");
-                array.iterator().forEachRemaining(element -> permission.put(UUID.fromString(element.getAsString()), "quickshop.staff"));
-                owner = oldOwnerElement.getAsJsonObject().get("owner").getAsString();
-            } else {
-                owner = oldOwner;
-                Type type = new TypeToken<Map<UUID, String>>() {
-                }.getType();
-                permission = new HashMap<>(JsonUtil.getGson().fromJson(set.getString("permission"), type));
-            }
-
+            owner = set.getString("owner");
+            Type t = new TypeToken<Map<UUID, String>>() {
+            }.getType();
+            permission = new HashMap<>(JsonUtil.getGson().fromJson(set.getString("permission"), t));
             price = set.getDouble("price");
             itemConfig = set.getString("itemConfig");
             x = set.getInt("x");
