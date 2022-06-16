@@ -1003,7 +1003,7 @@ public class Util {
     @SneakyThrows
     public static void makeExportBackup(@Nullable String backupName) {
         if (StringUtils.isEmpty(backupName)) {
-            backupName = "export-" + QuickShop.getFork() + QuickShop.getVersion()  + "-" + ".txt";
+            backupName = "export-" + QuickShop.getFork() + "-" + QuickShop.getVersion()+ ".txt";
         }
         File file = new File(plugin.getDataFolder(), backupName);
         if (file.exists()) {
