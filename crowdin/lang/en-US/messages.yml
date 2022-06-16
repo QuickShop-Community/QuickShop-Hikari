@@ -8,10 +8,10 @@ client-language-changed: <green>QuickShop detected that your client language has
 shops-backingup: Creating Shop-backup from database...
 _comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-reremake instead.
 unlimited-shop-owner-changed: <yellow>The unlimited Shop Owner has been changed to {0}.
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
+bad-command-usage-detailed: '<red>Bad command arguments! Following parameters are accepted: <gray>{0}'
 thats-not-a-number: <red>Invalid number
-shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is disallowed. Pick another one!
-console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
+shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is not allowed. Pick another one!
+console-only-danger: <red>This is a dangerous command, so only the Console can execute it.
 not-a-number: <red>You can only input a number, your input was {0}.
 not-looking-at-valid-shop-block: <red>Could not create a shop. Please look at a supported block type and try again.
 shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
@@ -22,12 +22,12 @@ tabcomplete:
   name: '[name]'
   range: '[range]'
   currency: '[currency name]'
-taxaccount-unset: <green>This shop's tax account now following server global setting.
-blacklisted-item: <red>You cannot sell this item because it is on the blacklist
+taxaccount-unset: <green>This shop's tax account is now following the global server setting.
+blacklisted-item: <red>This item cannot be sold as it is on the blacklist
 command-type-mismatch: <red>This command can only be executed by <aqua>{0}</aqua>.
 server-crash-warning: '<red>WARNING: Using the /qs reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
 you-cant-afford-to-change-price: <red>It costs {0} to change the price in your shop.
-safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
+safe-mode: <red>QuickShop is in safe mode. You cannot open this shop container, please contact the Server Administrator to fix this issue.
 forbidden-vanilla-behavior: <red>This operation is not allowed due to it not being consistent with vanilla behaviours
 shop-out-of-space-name: <dark_purple>Your shop {0} is full!
 paste-disabled: '<red>Paste function has been disabled! You cannot request technical support.<newline>Reason: {0}'
@@ -47,14 +47,14 @@ quick-fill:
     - '&ePrice: &b{price}'
     - '&eItem: &b{item}'
     - '&eLocation: &b{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}</green>", choose one to continue:'
+  header: '<yellow>You have multiple shops with the name "<green>{0}</green>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. <gray>Configuration Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Nearby average prices: <yellow>{0}'
 digits-reach-the-limit: <red>You have reached the limits of decimals in the price.
 currency-unset: <green>Shop currency removed successfully. Using default settings now.
-you-cant-create-shop-in-there: <red>You don't have permissions to create a shop at this location.
+you-cant-create-shop-in-there: <red>You don't have permission to create a shop at this location.
 no-pending-action: <red>You don't have any pending actions
 refill-success: <green>Refill successful
 failed-to-paste: <red>Failed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)
@@ -121,7 +121,7 @@ translation-author: 'Translator: Ghost_chu, Andre_601'
 integrations-check-failed-trade: <red>Integration {0} denied the Shop trading
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Please contact the server administrators if this error persists.
 success-change-owner-to-server: <green>Successfully set the shop owner to Server.
-shop-name-not-found: <red>The shop named <yellow>{0}</yellow> not exists.
+shop-name-not-found: <red>The shop named <yellow>{0}</yellow> does not exist.
 shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
@@ -132,8 +132,8 @@ metric:
   undefined: <gray>(noname)
   no-results: <red>No transactions found.
   action-description:
-    DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
-    ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
+    DELETE: <yellow>Player deleted a shop. Refunded the shop creation fee to the owner if possible.
+    ONGOING_FEE: <yellow>Player paid the ongoing fee because of the payment period.
     PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
     CREATE: <yellow>Player created a shop.
     PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
@@ -379,7 +379,7 @@ timeunit:
   future: in {0}
   days: <red>{0} days
 command:
-  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
     buy: <yellow>Changes a shop to <light_purple>BUY<yellow> mode
     about: <yellow>Shows QuickShop info
