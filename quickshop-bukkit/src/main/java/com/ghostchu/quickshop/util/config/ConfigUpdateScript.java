@@ -27,8 +27,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.logging.Level;
 
 @SuppressWarnings("unused")
@@ -105,7 +107,11 @@ public class ConfigUpdateScript {
                 YamlConfiguration yamlConfiguration = new YamlConfiguration();
                 JsonConfiguration jsonConfiguration = JsonConfiguration.loadConfiguration(jsonFile);
                 jsonConfiguration.getKeys(true).forEach(key -> yamlConfiguration.set(key, translate(jsonConfiguration.get(key))));
-                Files.copy(jsonFile.toPath(), new File(jsonFile.getParent(), jsonFile.getName() + ".bak").toPath());
+                try {
+                    Files.copy(jsonFile.toPath(), new File(jsonFile.getParent(), jsonFile.getName() + ".bak").toPath());
+                } catch (IOException e) {
+                    Files.copy(jsonFile.toPath(), new File(jsonFile.getParent(), jsonFile.getName() + ".bak." + UUID.randomUUID().toString().replace("-", "")).toPath());
+                }
                 jsonFile.deleteOnExit();
                 yamlConfiguration.save(yamlFile);
             } catch (Exception e) {

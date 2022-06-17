@@ -650,7 +650,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             owner = set.getString("owner");
             Type t = new TypeToken<Map<UUID, String>>() {
             }.getType();
-            permission = new HashMap<>(JsonUtil.getGson().fromJson(set.getString("permission"), t));
+            Map<UUID, String> map = JsonUtil.getGson().fromJson(set.getString("permission"), t);
+            if (map == null) {
+                permission = new HashMap<>();
+            } else {
+                permission = new HashMap<>(map);
+            }
             price = set.getDouble("price");
             itemConfig = set.getString("itemConfig");
             x = set.getInt("x");
