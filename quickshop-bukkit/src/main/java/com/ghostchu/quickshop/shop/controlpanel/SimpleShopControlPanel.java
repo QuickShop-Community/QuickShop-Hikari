@@ -126,7 +126,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
         }
         // Set Price
         if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price")
-                || shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_PRICE)) {
+                || (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeprice") && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_PRICE))) {
             Component text = MsgUtil.fillArgs(
                     plugin.text().of(sender, "controlpanel.price").forLocale(),
                     LegacyComponentSerializer.legacySection().deserialize(
