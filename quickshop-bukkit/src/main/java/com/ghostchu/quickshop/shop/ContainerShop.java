@@ -49,6 +49,7 @@ import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -276,6 +277,8 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public void setDisableDisplay(boolean disabled) {
+        if (this.disableDisplay == disabled)
+            return;
         this.disableDisplay = disabled;
         setDirty();
         update();
@@ -301,6 +304,8 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public void setTaxAccount(@Nullable UUID taxAccount) {
+        if (this.taxAccount.equals(taxAccount))
+            return;
         this.taxAccount = taxAccount;
         setDirty();
         update();
@@ -425,6 +430,8 @@ public class ContainerShop implements Shop, Reloadable {
         } else {
             this.playerGroup.put(player, group);
         }
+        setDirty();
+        update();
     }
 
     @Override
@@ -437,7 +444,8 @@ public class ContainerShop implements Shop, Reloadable {
         } else {
             setPlayerGroup(player, group.getNamespacedNode());
         }
-
+        setDirty();
+        update();
     }
 
     /**
@@ -457,6 +465,8 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public void setShopName(@Nullable String shopName) {
+        if (StringUtils.equals(this.shopName, shopName))
+            return;
         this.shopName = shopName;
         setDirty();
         update();
@@ -824,6 +834,8 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public void setAlwaysCountingContainer(boolean value) {
+        if (isAlwaysCountingContainer == value)
+            return;
         isAlwaysCountingContainer = value;
         getExtra(plugin).set("is-always-counting-container", value);
         setDirty();
@@ -1126,6 +1138,8 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public void setItem(@NotNull ItemStack item) {
         Util.ensureThread(false);
+        if (matches(item))
+            return;
         ShopItemChangeEvent event = new ShopItemChangeEvent(this, this.item, item);
         if (Util.fireCancellableEvent(event)) {
             Log.debug("A plugin cancelled the item change event.");
@@ -1258,6 +1272,8 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public void setOwner(@NotNull UUID owner) {
         Util.ensureThread(false);
+        if (this.owner.equals(owner))
+            return;
         this.owner = owner;
         setSignText();
         update();
@@ -1278,6 +1294,8 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public void setPrice(double price) {
+        if (this.price == price)
+            return;
         Util.ensureThread(false);
         ShopPriceChangeEvent event = new ShopPriceChangeEvent(this, this.price, price);
         if (Util.fireCancellableEvent(event)) {
@@ -1435,6 +1453,8 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public void setUnlimited(boolean unlimited) {
+        if (this.unlimited == unlimited)
+            return;
         Util.ensureThread(false);
         this.unlimited = unlimited;
         this.setSignText();
@@ -1798,6 +1818,9 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public void setCurrency(@Nullable String currency) {
+        if (this.currency.equals(currency)) {
+            return;
+        }
         this.currency = currency;
         setDirty();
         this.update();

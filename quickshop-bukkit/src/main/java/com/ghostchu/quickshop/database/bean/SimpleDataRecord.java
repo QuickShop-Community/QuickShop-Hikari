@@ -6,10 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @AllArgsConstructor
 public class SimpleDataRecord implements DataRecord {
@@ -45,6 +42,13 @@ public class SimpleDataRecord implements DataRecord {
         map.put("inv_wrapper", inventoryWrapper);
         map.put("inv_symbol_link", inventorySymbolLink);
         map.put("create_time", createTime);
+        return map;
+    }
+
+    @NotNull
+    public Map<String, Object> generateLookupParams() {
+        Map<String, Object> map = new HashMap<>(generateParams());
+        map.remove("create_time");
         return map;
     }
 
