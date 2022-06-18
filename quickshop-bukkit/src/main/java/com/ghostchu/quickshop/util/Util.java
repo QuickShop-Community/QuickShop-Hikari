@@ -1186,6 +1186,20 @@ public class Util {
     }
 
     /**
+     * Execute the Runnable in async thread.
+     * If it already on main-thread, will be move to async thread.
+     *
+     * @param runnable The runnable
+     */
+    public static void asyncThreadRun(@NotNull Runnable runnable) {
+        if (!Bukkit.isPrimaryThread()) {
+            runnable.run();
+        } else {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
+        }
+    }
+
+    /**
      * Convert timestamp to LocalDateTime instance
      *
      * @param timestamp Timestamp

@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.Paste;
 import com.ghostchu.quickshop.util.paste.PasteGenerator;
@@ -47,7 +48,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         // do actions
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+        Util.asyncThreadRun(() -> {
             if (plugin.getServer().getPluginManager().getPlugin("ConsoleSpamFix") != null) {
                 if (cmdArg.length < 1) {
                     sender.sendMessage("Warning: ConsoleSpamFix is installed! Please disable it before reporting any errors!");
