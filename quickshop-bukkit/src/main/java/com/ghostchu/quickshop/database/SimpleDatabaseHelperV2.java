@@ -382,10 +382,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     public long queryDataId(@NotNull SimpleDataRecord simpleDataRecord) {
         // Check if dataRecord exists in database with same values
-        Map<String, Object> map = simpleDataRecord.generateParams();
+        Map<String, Object> lookupParams = simpleDataRecord.generateLookupParams();
         TableQueryBuilder builder = DataTables.DATA.createQuery();
         builder.setLimit(1);
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
+        for (Map.Entry<String, Object> entry : lookupParams.entrySet()) {
             builder.addCondition(entry.getKey(), entry.getValue());
         }
         try (SQLQuery query = builder.build().execute()) {
