@@ -868,6 +868,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             shop.getItem().setAmount(1);
         }
 
+        ShopPreCreateEvent spce = new ShopPreCreateEvent(p, shop.getLocation());
+        if (Util.fireCancellableEvent(spce)) {
+            plugin.text().of(p, "plugin-cancelled", spce.getCancelReason()).send();
+            Log.debug("ShopPreCreateEvent cancelled");
+            return;
+        }
+
         // Checking the shop can be created
         Log.debug("Calling for protection check...");
 
@@ -913,11 +920,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     return;
                 }
             }
-        }
-        ShopPreCreateEvent spce = new ShopPreCreateEvent(p, shop.getLocation());
-        if (Util.fireCancellableEvent(spce)) {
-            Log.debug("ShopPreCreateEvent cancelled");
-            return;
         }
 
 

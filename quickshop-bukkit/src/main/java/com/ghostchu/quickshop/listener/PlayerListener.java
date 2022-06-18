@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
+import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -442,6 +443,11 @@ public class PlayerListener extends AbstractQSListener {
         // Send creation menu.
         final SimpleInfo info = new SimpleInfo(block.getLocation(), action, stack, last, false);
         plugin.getShopManager().getActions().put(player.getUniqueId(), info);
+        ShopPreCreateEvent spce = new ShopPreCreateEvent(player, block.getLocation());
+        if (Util.fireCancellableEvent(spce)) {
+            Log.debug("ShopPreCreateEvent cancelled");
+            return true;
+        }
         plugin.text().of(player, "how-much-to-trade-for", MsgUtil.getTranslateText(stack),
                 plugin.isAllowStack() &&
                         QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.stacks")
