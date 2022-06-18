@@ -141,7 +141,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     @Override
     public ReloadResult reloadModule() {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, this::init);
+        Util.asyncThreadRun(this::init);
         return ReloadResult.builder().status(ReloadStatus.SCHEDULED).build();
     }
 
@@ -283,24 +283,23 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // first init
         shop.setSignText();
         // save to database
-        // TODO: Optimize logic
-        String world = shop.getLocation().getWorld().getName();
-        int x = shop.getLocation().getBlockX();
-        int y = shop.getLocation().getBlockY();
-        int z = shop.getLocation().getBlockZ();
-        try {
-            plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
-            long dataId = plugin.getDatabaseHelper().createData(shop);
-            long shopId = plugin.getDatabaseHelper().createShop(dataId);
-            shop.setShopId(shopId);
-            plugin.getDatabaseHelper().createShopMap(shopId, shop.getLocation());
-        } catch (SQLException e) {
-            e.printStackTrace();
-            plugin.getLogger().warning("Failed register the shop to database");
-            processCreationFail(shop, shop.getOwner(), e);
-        }
-
-
+        Util.asyncThreadRun(() -> {
+            String world = shop.getLocation().getWorld().getName();
+            int x = shop.getLocation().getBlockX();
+            int y = shop.getLocation().getBlockY();
+            int z = shop.getLocation().getBlockZ();
+            try {
+                plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
+                long dataId = plugin.getDatabaseHelper().createData(shop);
+                long shopId = plugin.getDatabaseHelper().createShop(dataId);
+                shop.setShopId(shopId);
+                plugin.getDatabaseHelper().createShopMap(shopId, shop.getLocation());
+            } catch (SQLException e) {
+                e.printStackTrace();
+                plugin.getLogger().warning("Failed register the shop to database");
+                processCreationFail(shop, shop.getOwner(), e);
+            }
+        });
     }
 
     private void processCreationFail(@NotNull Shop shop, @NotNull UUID owner, @NotNull Throwable e2) {

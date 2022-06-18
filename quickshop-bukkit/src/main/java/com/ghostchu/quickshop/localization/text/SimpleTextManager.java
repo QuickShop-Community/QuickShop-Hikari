@@ -515,7 +515,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
 
     @Override
     public ReloadResult reloadModule() {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, this::load);
+        Util.asyncThreadRun(this::load);
 
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }

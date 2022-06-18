@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
+import com.ghostchu.quickshop.util.Util;
 import com.google.common.collect.ImmutableList;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
@@ -99,7 +100,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
                     case "list" -> {
                         sheet.printHeader();
                         sheet.printLine(plugin.text().of(sender, "permission.header").forLocale());
-                        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                        Util.asyncThreadRun(() -> {
                             for (Map.Entry<UUID, String> map : shop.getPermissionAudiences().entrySet()) {
                                 String name;
                                 Profile s = plugin.getPlayerFinder().find(map.getKey());

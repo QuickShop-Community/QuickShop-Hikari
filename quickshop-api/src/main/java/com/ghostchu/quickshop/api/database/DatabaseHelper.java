@@ -192,10 +192,10 @@ public interface DatabaseHelper {
     /**
      * Update the shop profile to database
      *
-     * @param shop The shop object
-     * @throws SQLException something going wrong
+     * @param shop           The shop object
+     * @param updateCallback The callback
      */
-    void updateShop(@NotNull Shop shop) throws SQLException;
+    void updateShop(@NotNull Shop shop, @NotNull Consumer<Exception> updateCallback);
 
     /**
      * Insert a history record into logs table

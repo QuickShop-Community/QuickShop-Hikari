@@ -34,7 +34,6 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.reflect.TypeToken;
 import lombok.Data;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -341,29 +340,39 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @Override
-    public void updateShop(@NotNull Shop shop) throws SQLException {
-        SimpleDataRecord simpleDataRecord = ((ContainerShop) shop).createDataRecord();
-        Location loc = shop.getLocation();
-        // check if datarecord exists
-        long shopId = shop.getShopId();
-        if (shopId < 1) {
-            Log.debug("Warning: Failed to update shop because the shop id locate result for " + loc + ", because the query shopId is " + shopId);
-        } else {
-            // Check if any data record already exists
-            long dataId = queryDataId(simpleDataRecord);
-            if (dataId > 0) {
-                DataTables.SHOPS.createReplace()
-                        .setColumnNames("data")
-                        .setParams(dataId)
-                        .executeAsync(handler -> Log.debug("Operation completed, updateShop " + shop + ", " + handler + " lines affected"));
+    public void updateShop(@NotNull Shop shop, @NotNull Consumer<Exception> callback) {
+        Util.asyncThreadRun(() -> {
+            SimpleDataRecord simpleDataRecord = ((ContainerShop) shop).createDataRecord();
+            Location loc = shop.getLocation();
+            // check if datarecord exists
+            long shopId = shop.getShopId();
+            if (shopId < 1) {
+                Log.debug("Warning: Failed to update shop because the shop id locate result for " + loc + ", because the query shopId is " + shopId);
             } else {
-                long newDataId = createData(shop);
-                DataTables.SHOPS.createReplace()
-                        .setColumnNames("data")
-                        .setParams(newDataId)
-                        .executeAsync(handler -> Log.debug("Operation completed, updateShop " + shop + ", " + handler + " lines affected"));
+                // Check if any data record already exists
+                long dataId = queryDataId(simpleDataRecord);
+                if (dataId > 0) {
+                    DataTables.SHOPS.createReplace()
+                            .setColumnNames("data")
+                            .setParams(dataId)
+                            .executeAsync(handler -> Log.debug("Operation completed, updateShop " + shop + ", " + handler + " lines affected"));
+                } else {
+                    long newDataId;
+                    try {
+                        newDataId = createData(shop);
+                        DataTables.SHOPS.createReplace()
+                                .setColumnNames("data")
+                                .setParams(newDataId)
+                                .executeAsync(handler -> Log.debug("Operation completed, updateShop " + shop + ", " + handler + " lines affected"));
+                    } catch (SQLException e) {
+                        callback.accept(e);
+                    }
+                }
             }
-        }
+            callback.accept(null);
+        });
+
+
     }
 
     public long queryDataId(@NotNull SimpleDataRecord simpleDataRecord) {
@@ -398,7 +407,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void insertMetricRecord(@NotNull ShopMetricRecord record) {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+        Util.asyncThreadRun(() -> {
             try {
                 long dataId = plugin.getDatabaseHelper().locateShopDataId(record.getShopId());
                 DataTables.LOG_PURCHASE

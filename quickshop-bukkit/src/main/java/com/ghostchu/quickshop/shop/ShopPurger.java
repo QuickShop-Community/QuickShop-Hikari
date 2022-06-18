@@ -49,7 +49,7 @@ public class ShopPurger {
         if (executing) {
             plugin.getLogger().info("[Shop Purger] Another purge task still running!");
         } else {
-            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, this::run);
+            Util.asyncThreadRun(this::run);
         }
     }
 
