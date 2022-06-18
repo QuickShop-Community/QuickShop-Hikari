@@ -92,6 +92,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         DataTables.PLAYERS.createQuery()
                 .addCondition("uuid", uuid.toString())
                 .selectColumns("locale")
+                .setLimit(1)
                 .build()
                 .executeAsync(sqlQuery -> {
                             ResultSet set = sqlQuery.getResultSet();
@@ -165,6 +166,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .createQuery()
                 .addCondition("key", "database_version")
                 .selectColumns("value")
+                .setLimit(1)
                 .build().execute()) {
             ResultSet result = query.getResultSet();
             if (!result.next()) {
@@ -213,6 +215,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     public DataRecord getDataRecord(long dataId) throws SQLException {
         try (SQLQuery query = DataTables.DATA.createQuery()
                 .addCondition("id", dataId)
+                .setLimit(1)
                 .build().execute()) {
             ResultSet result = query.getResultSet();
             if (result.next()) {
@@ -275,6 +278,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)
+                .setLimit(1)
                 .build().execute()) {
             ResultSet result = query.getResultSet();
             if (result.next()) {
@@ -292,6 +296,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     public long locateShopDataId(long shopId) {
         try (SQLQuery query = DataTables.SHOPS.createQuery()
                 .addCondition("id", shopId)
+                .setLimit(1)
                 .build().execute()) {
             ResultSet result = query.getResultSet();
             if (result.next()) {
@@ -379,6 +384,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         // Check if dataRecord exists in database with same values
         Map<String, Object> map = simpleDataRecord.generateParams();
         TableQueryBuilder builder = DataTables.DATA.createQuery();
+        builder.setLimit(1);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             builder.addCondition(entry.getKey(), entry.getValue());
         }
