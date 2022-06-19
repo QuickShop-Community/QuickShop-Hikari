@@ -695,6 +695,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 Log.debug("DataId usage found: LOG_OTHERS: " + dataId + ", skipping");
                 continue;
             }
+            Log.debug("Mark dataId for purging: " + dataId);
             toPurge.add(dataId);
         }
         return toPurge;
@@ -704,7 +705,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         plugin.getLogger().info("Pulling isolated SHOP_ID data...");
         plugin.getLogger().info("Purging " + toPurge.size() + " isolated SHOP_ID data...");
         for (long shopId : toPurge) {
-            DataTables.DATA.createDelete().addCondition("id", shopId).build().execute();
+            DataTables.SHOPS.createDelete().addCondition("id", shopId).build().execute();
             DataTables.EXTERNAL_CACHE.createDelete().addCondition("shop", shopId).build().execute();
             Log.debug("Purged shop_id=" + shopId + ".");
         }
@@ -735,6 +736,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 Log.debug("ShopId usage found: LOG_CHANGES: " + shopId + ", skipping");
                 continue;
             }
+            Log.debug("Mark shopid for purging: " + shopId);
             toPurge.add(shopId);
         }
         return toPurge;
