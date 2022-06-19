@@ -646,6 +646,32 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
     }
 
+    /**
+     * DELETE unused data with related keys from query table.
+     *
+     * @param targetTable  the table to be cleaned
+     * @param targetColumn the column to be cleaned
+     * @param queryTable   Table used for keys' query
+     * @param queryColumn  Column used for keys' query
+     * @return the number of deleted rows
+     */
+    @SuppressWarnings("SQLInjection")
+    public Integer clearUnusedData(@NotNull DataTables targetTable, @NotNull String targetColumn,
+                                   @NotNull DataTables queryTable, @NotNull String queryColumn) {
+        String sql = "DELETE FROM `%(targetTable)` WHERE NOT EXISTS (" +
+                     " SELECT `%(queryColumn)` FROM `%(queryTable)`" +
+                     " WHERE `%(queryTable)`.`%(queryColumn)` = `%(targetTable)`.`%(targetColumn)` " +
+                     ")";
+
+        sql = sql.replace("%(targetTable)", targetTable.getName())
+                .replace("%(queryTable)", queryTable.getName())
+                .replace("%(targetColumn)", targetColumn)
+                .replace("%(queryColumn)", queryColumn);
+
+        return manager.executeSQL(sql);
+    }
+
+
     @Data
     static class OldShopData {
         private String owner;
