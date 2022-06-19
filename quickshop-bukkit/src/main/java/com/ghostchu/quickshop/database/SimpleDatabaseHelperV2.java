@@ -682,12 +682,18 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             }
         }
         for (long dataId : dataIds) {
-            if (checkIdUsage(DataTables.SHOPS, "data", dataId))
+            if (checkIdUsage(DataTables.SHOPS, "data", dataId)) {
+                Log.debug("DataId usage found: SHOPS: " + dataId + ", skipping");
                 continue;
-            if (checkIdUsage(DataTables.LOG_PURCHASE, "data", dataId))
+            }
+            if (checkIdUsage(DataTables.LOG_PURCHASE, "data", dataId)) {
+                Log.debug("DataId usage found: LOG_PURCHASE: " + dataId + ", skipping");
                 continue;
-            if (checkIdUsage(DataTables.LOG_OTHERS, "data", dataId))
+            }
+            if (checkIdUsage(DataTables.LOG_OTHERS, "data", dataId)) {
+                Log.debug("DataId usage found: LOG_OTHERS: " + dataId + ", skipping");
                 continue;
+            }
             toPurge.add(dataId);
         }
         return toPurge;
@@ -716,12 +722,18 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
         plugin.getLogger().info("Total " + shopIds.size() + " data found.");
         for (long shopId : shopIds) {
-            if (checkIdUsage(DataTables.SHOP_MAP, "shop", shopId))
+            if (checkIdUsage(DataTables.SHOP_MAP, "shop", shopId)) {
+                Log.debug("ShopId usage found: SHOP_MAP: " + shopId + ", skipping");
                 continue;
-            if (checkIdUsage(DataTables.LOG_PURCHASE, "shop", shopId))
+            }
+            if (checkIdUsage(DataTables.LOG_PURCHASE, "shop", shopId)) {
+                Log.debug("ShopId usage found: LOG_PURCHASE: " + shopId + ", skipping");
                 continue;
-            if (checkIdUsage(DataTables.LOG_CHANGES, "shop", shopId))
+            }
+            if (checkIdUsage(DataTables.LOG_CHANGES, "shop", shopId)) {
+                Log.debug("ShopId usage found: LOG_CHANGES: " + shopId + ", skipping");
                 continue;
+            }
             toPurge.add(shopId);
         }
         return toPurge;
