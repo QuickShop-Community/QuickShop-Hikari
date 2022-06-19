@@ -656,8 +656,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     public void purgeIsolatedData() throws SQLException {
-        purgeDataTableIsolatedData(scanIsolatedDataIds());
         purgeShopTableIsolatedData(scanIsolatedShopIds());
+        purgeDataTableIsolatedData(scanIsolatedDataIds());
+
     }
 
     public void purgeDataTableIsolatedData(@NotNull List<Long> toPurge) throws SQLException {
@@ -695,9 +696,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     public void purgeShopTableIsolatedData(@NotNull List<Long> toPurge) throws SQLException {
         plugin.getLogger().info("Pulling isolated SHOP_ID data...");
         plugin.getLogger().info("Purging " + toPurge.size() + " isolated SHOP_ID data...");
-        for (long dataId : toPurge) {
-            int line = DataTables.DATA.createDelete().addCondition("id", dataId).build().execute();
-            Log.debug("Purged shop_id=" + dataId + ", " + line + " rows effected.");
+        for (long shopId : toPurge) {
+            DataTables.DATA.createDelete().addCondition("id", shopId).build().execute();
+            DataTables.EXTERNAL_CACHE.createDelete().addCondition("shop", shopId).build().execute();
+            Log.debug("Purged shop_id=" + shopId + ".");
         }
         plugin.getLogger().info("Purging completed.");
     }
@@ -715,8 +717,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         plugin.getLogger().info("Total " + shopIds.size() + " data found.");
         for (long shopId : shopIds) {
             if (checkIdUsage(DataTables.SHOP_MAP, "shop", shopId))
-                continue;
-            if (checkIdUsage(DataTables.EXTERNAL_CACHE, "shop", shopId))
                 continue;
             if (checkIdUsage(DataTables.LOG_PURCHASE, "shop", shopId))
                 continue;
