@@ -153,6 +153,16 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 e.printStackTrace();
             }
         }
+        if (getDatabaseVersion() == 4) {
+            try {
+                plugin.getLogger().info("Data upgrading: Performing purge isolated data...");
+                purgeIsolatedData();
+                plugin.getLogger().info("Data upgrading: All completed!");
+                setDatabaseVersion(5);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         plugin.getLogger().info("Finished!");
     }
 
@@ -646,6 +656,69 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
     }
 
+    public void purgeIsolatedData() throws SQLException {
+        purgeDataTableIsolatedData();
+        purgeShopTableIsolatedData();
+    }
+
+    public void purgeDataTableIsolatedData() throws SQLException {
+        plugin.getLogger().info("Pulling isolated DATA_ID data...");
+        List<Long> dataIds = new LinkedList<>();
+        List<Long> toPurge = new LinkedList<>();
+        try (SQLQuery query = DataTables.DATA.createQuery().selectColumns("id").build().execute()) {
+            ResultSet set = query.getResultSet();
+            while (set.next()) {
+                dataIds.add(set.getLong("id"));
+            }
+        }
+        plugin.getLogger().info("Total " + dataIds.size() + " data found.");
+        for (long dataId : dataIds) {
+            if (checkIdUsage(DataTables.SHOPS, "data", dataId))
+                continue;
+            if (checkIdUsage(DataTables.LOG_PURCHASE, "data", dataId))
+                continue;
+            if (checkIdUsage(DataTables.LOG_OTHERS, "data", dataId))
+                continue;
+            toPurge.add(dataId);
+        }
+        plugin.getLogger().info("Purging " + toPurge.size() + " isolated DATA_ID data...");
+        for (long dataId : toPurge) {
+            int line = DataTables.DATA.createDelete().addCondition("id", dataId).build().execute();
+            Log.debug("Purged data_id=" + dataId + ", " + line + " rows effected.");
+        }
+        plugin.getLogger().info("Purging completed.");
+    }
+
+    public void purgeShopTableIsolatedData() throws SQLException {
+        plugin.getLogger().info("Pulling isolated SHOP_ID data...");
+        List<Long> shopIds = new LinkedList<>();
+        List<Long> toPurge = new LinkedList<>();
+        try (SQLQuery query = DataTables.SHOPS.createQuery().selectColumns("id").build().execute()) {
+            ResultSet set = query.getResultSet();
+            while (set.next()) {
+                shopIds.add(set.getLong("id"));
+            }
+        }
+        plugin.getLogger().info("Total " + shopIds.size() + " data found.");
+        for (long shopId : shopIds) {
+            if (checkIdUsage(DataTables.SHOP_MAP, "shop", shopId))
+                continue;
+            if (checkIdUsage(DataTables.EXTERNAL_CACHE, "shop", shopId))
+                continue;
+            if (checkIdUsage(DataTables.LOG_PURCHASE, "shop", shopId))
+                continue;
+            if (checkIdUsage(DataTables.LOG_CHANGES, "shop", shopId))
+                continue;
+            toPurge.add(shopId);
+        }
+        plugin.getLogger().info("Purging " + toPurge.size() + " isolated SHOP_ID data...");
+        for (long dataId : toPurge) {
+            int line = DataTables.DATA.createDelete().addCondition("id", dataId).build().execute();
+            Log.debug("Purged shop_id=" + dataId + ", " + line + " rows effected.");
+        }
+        plugin.getLogger().info("Purging completed.");
+    }
+
     /**
      * DELETE unused data with related keys from query table.
      *
@@ -660,8 +733,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                                    @NotNull DataTables queryTable, @NotNull String queryColumn) {
         String sql = "DELETE FROM `%(targetTable)` WHERE NOT EXISTS (" +
                      " SELECT `%(queryColumn)` FROM `%(queryTable)`" +
-                     " WHERE `%(queryTable)`.`%(queryColumn)` = `%(targetTable)`.`%(targetColumn)` " +
-                     ")";
+                " WHERE `%(queryTable)`.`%(queryColumn)` = `%(targetTable)`.`%(targetColumn)` " +
+                ")";
 
         sql = sql.replace("%(targetTable)", targetTable.getName())
                 .replace("%(queryTable)", queryTable.getName())
@@ -669,6 +742,24 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .replace("%(queryColumn)", queryColumn);
 
         return manager.executeSQL(sql);
+    }
+
+    /**
+     * Check if specified id exists.
+     *
+     * @param targetTable the table to be cleaned
+     * @param column      The column that will be checked
+     * @param id          The id that will be checked
+     */
+    @SuppressWarnings("SQLInjection")
+    public boolean checkIdUsage(@NotNull DataTables targetTable, @NotNull String column, long id) throws SQLException {
+        try (SQLQuery queryTableResult = targetTable.createQuery()
+                .addCondition(column, id)
+                .selectColumns(column)
+                .setLimit(1).build().execute()) {
+            ResultSet set = queryTableResult.getResultSet();
+            return set.next();
+        }
     }
 
 
