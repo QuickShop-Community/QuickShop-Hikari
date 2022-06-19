@@ -27,6 +27,8 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.Paste;
 import com.ghostchu.quickshop.util.paste.PasteGenerator;
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -76,7 +78,10 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     private boolean pasteToPastebin(@NotNull CommandSender sender) {
         final String string = Paste.paste(new PasteGenerator(sender).render());
         if (string != null) {
-            plugin.text().of(sender, "paste-created", "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8)).send();
+            String url = "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8);
+            Component component = plugin.text().of(sender, "paste-created", url).forLocale();
+            component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, url));
+            MsgUtil.sendDirectMessage(sender, component);
             if (MsgUtil.getDefaultGameLanguageCode().equalsIgnoreCase("zh_cn") || Locale.getDefault().equals(Locale.CHINA)) {
                 plugin.text().of(sender, "paste-451").send();
             }

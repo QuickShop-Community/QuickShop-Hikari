@@ -39,6 +39,7 @@ public class ConfigCollectorItem implements SubPasteItem {
 
     public ConfigCollectorItem() {
         file.add(new File(QuickShop.getInstance().getDataFolder(), "config.yml"));
+        file.add(new File(QuickShop.getInstance().getDataFolder(), "group.yml"));
         file.add(new File(QuickShop.getInstance().getDataFolder(), "interaction.yml"));
         file.add(new File(QuickShop.getInstance().getDataFolder(), "price-restriction.yml"));
         file.add(new File("server.properties"));

@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.database.bean;
 
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.ResultSet;
@@ -9,6 +10,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 @AllArgsConstructor
+@Data
 public class SimpleDataRecord implements DataRecord {
     private final UUID owner;
     private final String item;

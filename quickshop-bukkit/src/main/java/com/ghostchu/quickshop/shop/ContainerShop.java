@@ -929,7 +929,7 @@ public class ContainerShop implements Shop, Reloadable {
             }
         }
     }
-
+    @Override
     public boolean inventoryAvailable() {
         if (isUnlimited() && !isAlwaysCountingContainer()) {
             return true;

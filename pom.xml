@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>3.0.0.6</version>
+    <version>3.0.0.7</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>

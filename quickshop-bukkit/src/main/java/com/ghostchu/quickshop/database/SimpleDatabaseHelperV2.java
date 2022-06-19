@@ -153,6 +153,16 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 e.printStackTrace();
             }
         }
+        if (getDatabaseVersion() == 4 || getDatabaseVersion() == 5) {
+            try {
+                plugin.getLogger().info("Data upgrading: Performing purge isolated data...");
+                purgeIsolatedData();
+                plugin.getLogger().info("Data upgrading: All completed!");
+                setDatabaseVersion(6);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         plugin.getLogger().info("Finished!");
     }
 
@@ -251,14 +261,15 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @Override
-    public void removeShopMap(@NotNull String world, int x, int y, int z) throws SQLException {
+    public void removeShopMap(@NotNull String world, int x, int y, int z) {
+        // TODO: Execute isolated data check in async thread
         DataTables.SHOP_MAP.createDelete()
                 .addCondition("world", world)
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)
                 .build()
-                .execute();
+                .executeAsync();
     }
 
     @Override
@@ -341,7 +352,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @Override
-    public void updateExternalInventoryProfileCache(@NotNull long shopId, int space, int stock) {
+    public void updateExternalInventoryProfileCache(long shopId, int space, int stock) {
         DataTables.EXTERNAL_CACHE.createReplace()
                 .setColumnNames("shop", "space", "stock")
                 .setParams(shopId, space, stock)
@@ -359,6 +370,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 Log.debug("Warning: Failed to update shop because the shop id locate result for " + loc + ", because the query shopId is " + shopId);
             } else {
                 // Check if any data record already exists
+                // TODO: Combine to one SQL (query -> exists return id -> not exists create)
                 long dataId = queryDataId(simpleDataRecord);
                 if (dataId > 0) {
                     DataTables.SHOPS.createReplace()
@@ -397,8 +409,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             if (set.next()) {
                 int id = set.getInt("id");
                 Log.debug("Found data record with id " + id + " for record " + simpleDataRecord);
+                return id;
             }
-            Log.debug("No data record found for record " + simpleDataRecord);
+            Log.debug("No data record found for record basic data: " + simpleDataRecord);
             return 0;
         } catch (SQLException e) {
             Log.debug("Failed to query data record for " + simpleDataRecord + " Err: " + e.getMessage());
@@ -642,6 +655,121 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             plugin.getLogger().info("Skipping for table " + tableLegacyName);
         }
     }
+
+    public void purgeIsolatedData() throws SQLException {
+        purgeShopTableIsolatedData(scanIsolatedShopIds());
+        purgeDataTableIsolatedData(scanIsolatedDataIds());
+    }
+
+    public void purgeDataTableIsolatedData(@NotNull List<Long> toPurge) throws SQLException {
+        plugin.getLogger().info("Pulling isolated DATA_ID data...");
+        plugin.getLogger().info("Purging " + toPurge.size() + " isolated DATA_ID data...");
+        for (long dataId : toPurge) {
+            int line = DataTables.DATA.createDelete().addCondition("id", dataId).build().execute();
+            Log.debug("Purged data_id=" + dataId + ", " + line + " rows effected.");
+        }
+        plugin.getLogger().info("Purging completed.");
+    }
+
+    @NotNull
+    public List<Long> scanIsolatedDataIds() throws SQLException {
+        List<Long> dataIds = new LinkedList<>();
+        List<Long> toPurge = new LinkedList<>();
+        try (SQLQuery query = DataTables.DATA.createQuery().selectColumns("id").build().execute()) {
+            ResultSet set = query.getResultSet();
+            while (set.next()) {
+                dataIds.add(set.getLong("id"));
+            }
+        }
+        for (long dataId : dataIds) {
+            if (checkIdUsage(DataTables.SHOPS, "data", dataId))
+                continue;
+            if (checkIdUsage(DataTables.LOG_PURCHASE, "data", dataId))
+                continue;
+            if (checkIdUsage(DataTables.LOG_OTHERS, "data", dataId))
+                continue;
+            toPurge.add(dataId);
+        }
+        return toPurge;
+    }
+
+    public void purgeShopTableIsolatedData(@NotNull List<Long> toPurge) throws SQLException {
+        plugin.getLogger().info("Pulling isolated SHOP_ID data...");
+        plugin.getLogger().info("Purging " + toPurge.size() + " isolated SHOP_ID data...");
+        for (long shopId : toPurge) {
+            int shopRows = DataTables.SHOPS.createDelete().addCondition("id", shopId).build().execute();
+            int cacheRows = DataTables.EXTERNAL_CACHE.createDelete().addCondition("shop", shopId).build().execute();
+            Log.debug("Purged shop_id=" + shopId + ", " + (shopRows + cacheRows) + " rows affected.");
+        }
+        plugin.getLogger().info("Purging completed.");
+    }
+
+    @NotNull
+    public List<Long> scanIsolatedShopIds() throws SQLException {
+        List<Long> shopIds = new LinkedList<>();
+        List<Long> toPurge = new LinkedList<>();
+        try (SQLQuery query = DataTables.SHOPS.createQuery().selectColumns("id").build().execute()) {
+            ResultSet set = query.getResultSet();
+            while (set.next()) {
+                shopIds.add(set.getLong("id"));
+            }
+        }
+        plugin.getLogger().info("Total " + shopIds.size() + " data found.");
+        for (long shopId : shopIds) {
+            if (checkIdUsage(DataTables.SHOP_MAP, "shop", shopId))
+                continue;
+            if (checkIdUsage(DataTables.LOG_PURCHASE, "shop", shopId))
+                continue;
+            if (checkIdUsage(DataTables.LOG_CHANGES, "shop", shopId))
+                continue;
+            toPurge.add(shopId);
+        }
+        return toPurge;
+    }
+
+    /**
+     * DELETE unused data with related keys from query table.
+     *
+     * @param targetTable  the table to be cleaned
+     * @param targetColumn the column to be cleaned
+     * @param queryTable   Table used for keys' query
+     * @param queryColumn  Column used for keys' query
+     * @return the number of deleted rows
+     */
+    @SuppressWarnings("SQLInjection")
+    public Integer clearUnusedData(@NotNull DataTables targetTable, @NotNull String targetColumn,
+                                   @NotNull DataTables queryTable, @NotNull String queryColumn) {
+        String sql = "DELETE FROM `%(targetTable)` WHERE NOT EXISTS (" +
+                " SELECT `%(queryColumn)` FROM `%(queryTable)`" +
+                " WHERE `%(queryTable)`.`%(queryColumn)` = `%(targetTable)`.`%(targetColumn)` " +
+                ")";
+
+        sql = sql.replace("%(targetTable)", targetTable.getName())
+                .replace("%(queryTable)", queryTable.getName())
+                .replace("%(targetColumn)", targetColumn)
+                .replace("%(queryColumn)", queryColumn);
+
+        return manager.executeSQL(sql);
+    }
+
+    /**
+     * Check if specified id exists.
+     *
+     * @param targetTable the table to be cleaned
+     * @param column      The column that will be checked
+     * @param id          The id that will be checked
+     */
+    @SuppressWarnings("SQLInjection")
+    public boolean checkIdUsage(@NotNull DataTables targetTable, @NotNull String column, long id) throws SQLException {
+        try (SQLQuery queryTableResult = targetTable.createQuery()
+                .addCondition(column, id)
+                .selectColumns(column)
+                .setLimit(1).build().execute()) {
+            ResultSet set = queryTableResult.getResultSet();
+            return set.next();
+        }
+    }
+
 
     @Data
     static class OldShopData {

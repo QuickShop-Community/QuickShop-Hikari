@@ -278,6 +278,13 @@ public interface Shop {
     void setSignText();
 
     /**
+     * Check if shop out of space or out of stock
+     *
+     * @return true if out of space or out of stock
+     */
+    boolean inventoryAvailable();
+
+    /**
      * Get sign texts on shop's sign.
      *
      * @param locale The locale to be created for
