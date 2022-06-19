@@ -442,12 +442,12 @@ public class PlayerListener extends AbstractQSListener {
         }
         // Send creation menu.
         final SimpleInfo info = new SimpleInfo(block.getLocation(), action, stack, last, false);
-        plugin.getShopManager().getActions().put(player.getUniqueId(), info);
         ShopPreCreateEvent spce = new ShopPreCreateEvent(player, block.getLocation());
         if (Util.fireCancellableEvent(spce)) {
             Log.debug("ShopPreCreateEvent cancelled");
             return true;
         }
+        plugin.getShopManager().getActions().put(player.getUniqueId(), info);
         plugin.text().of(player, "how-much-to-trade-for", MsgUtil.getTranslateText(stack),
                 plugin.isAllowStack() &&
                         QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.stacks")
