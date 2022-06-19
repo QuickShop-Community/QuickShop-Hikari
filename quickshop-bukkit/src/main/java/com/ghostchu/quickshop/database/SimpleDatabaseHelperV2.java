@@ -710,12 +710,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     static class OldMessageData {
         private final String owner;
         private final String message;
-        private final long time;
+        private final Date time;
 
         public OldMessageData(ResultSet set) throws SQLException {
             owner = set.getString("owner");
             message = set.getString("message");
-            time = set.getLong("time");
+            long timeStamp = set.getLong("time");
+            time = new Date(timeStamp);
         }
     }
 
