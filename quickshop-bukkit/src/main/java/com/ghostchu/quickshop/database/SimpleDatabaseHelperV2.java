@@ -157,6 +157,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
 
+
     public void setDatabaseVersion(int version) throws SQLException {
         DataTables.METADATA
                 .createReplace()
@@ -397,8 +398,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             if (set.next()) {
                 int id = set.getInt("id");
                 Log.debug("Found data record with id " + id + " for record " + simpleDataRecord);
+                return id;
             }
-            Log.debug("No data record found for record " + simpleDataRecord);
+            Log.debug("No data record found for record basic data: " + simpleDataRecord);
             return 0;
         } catch (SQLException e) {
             Log.debug("Failed to query data record for " + simpleDataRecord + " Err: " + e.getMessage());
