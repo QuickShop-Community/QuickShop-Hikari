@@ -705,9 +705,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         plugin.getLogger().info("Pulling isolated SHOP_ID data...");
         plugin.getLogger().info("Purging " + toPurge.size() + " isolated SHOP_ID data...");
         for (long shopId : toPurge) {
-            DataTables.SHOPS.createDelete().addCondition("id", shopId).build().execute();
-            DataTables.EXTERNAL_CACHE.createDelete().addCondition("shop", shopId).build().execute();
-            Log.debug("Purged shop_id=" + shopId + ".");
+            int shopRows = DataTables.SHOPS.createDelete().addCondition("id", shopId).build().execute();
+            int cacheRows = DataTables.EXTERNAL_CACHE.createDelete().addCondition("shop", shopId).build().execute();
+            Log.debug("Purged shop_id=" + shopId + ", " + (shopRows + cacheRows) + " rows affected.");
         }
         plugin.getLogger().info("Purging completed.");
     }
