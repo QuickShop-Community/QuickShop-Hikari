@@ -157,7 +157,7 @@ public class PAPICache implements Reloadable {
                         // %qs_shops-loaded%
                         if (Util.isNullOrEmpty(args[2]))
                             return String.valueOf(getLoadedPlayerShops(player));
-                        
+
                         // Not valid UUID provided
                         if (!Util.isUUID(args[2]))
                             return null;
@@ -165,7 +165,21 @@ public class PAPICache implements Reloadable {
                         // %qs_shops-loaded_<uuid>%
                         return String.valueOf(getLoadedPlayerShops(UUID.fromString(args[2])));
                     }
-                    
+
+                    // %qs_player_shops-inventory-unavailable[_uuid]%
+                    case "shops-inventory-unavailable" -> {
+                        // %qs_player_shops-inventory-unavailable%
+                        if (Util.isNullOrEmpty(args[2]))
+                            return String.valueOf(getPlayerShopsInventoryUnavailable(player));
+
+                        // Not valid UUID provided
+                        if (!Util.isUUID(args[2]))
+                            return null;
+
+                        // %qs_player_shops-inventory-unavailable[_uuid]%
+                        return String.valueOf(getPlayerShopsInventoryUnavailable(UUID.fromString(args[2])));
+                    }
+
                     // Unknown QS player placeholder
                     default -> {
                         return null;
@@ -183,17 +197,23 @@ public class PAPICache implements Reloadable {
     private long getShopsInWorld(@NotNull String world, boolean loadedOnly) {
         return plugin.getShopManager().getAllShops().stream()
             .filter(shop -> shop.getLocation().getWorld() != null)
-            .filter(shop -> shop.getLocation().getWorld().getName().equals(world))
-            .filter(shop -> !loadedOnly || shop.isLoaded())
-            .count();
+                .filter(shop -> shop.getLocation().getWorld().getName().equals(world))
+                .filter(shop -> !loadedOnly || shop.isLoaded())
+                .count();
     }
-    
+
     private long getLoadedPlayerShops(@NotNull UUID uuid) {
         return plugin.getShopManager().getPlayerAllShops(uuid).stream()
-            .filter(Shop::isLoaded)
-            .count();
+                .filter(Shop::isLoaded)
+                .count();
     }
-    
+
+    private long getPlayerShopsInventoryUnavailable(@NotNull UUID uuid) {
+        return plugin.getShopManager().getPlayerAllShops(uuid).stream()
+                .filter(Shop::inventoryAvailable)
+                .count();
+    }
+
     @AllArgsConstructor
     @Data
     static class CompiledUniqueKey {
