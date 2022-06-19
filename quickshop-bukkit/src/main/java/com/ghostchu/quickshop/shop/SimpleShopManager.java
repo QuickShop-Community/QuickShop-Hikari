@@ -1336,12 +1336,21 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.shop-information").forLocale());
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.owner", shop.ownerName()).forLocale());
         // Enabled
-        chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", MsgUtil.getTranslateText(shop.getItem())).forLocale()
-                .append(Component.text("   "))
-                .append(plugin.text().of(p, "menu.preview", Component.text(shop.getItem().getAmount())).forLocale())
-                .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()))
-                .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/qs silentpreview {0}", shop.getRuntimeRandomUniqueId().toString())))
-        );
+        if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PREVIEW_SHOP)
+                || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.preview")) {
+            chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", MsgUtil.getTranslateText(shop.getItem())).forLocale()
+                    .append(Component.text("   "))
+                    .append(plugin.text().of(p, "menu.preview", Component.text(shop.getItem().getAmount())).forLocale())
+                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()))
+                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, MsgUtil.fillArgs("/qs silentpreview {0}", shop.getRuntimeRandomUniqueId().toString())))
+            );
+        } else {
+            chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", MsgUtil.getTranslateText(shop.getItem())).forLocale()
+                    .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()))
+            );
+        }
+
+
         if (Util.isTool(items.getType())) {
             chatSheetPrinter.printLine(
                     plugin.text().of(p, "menu.damage-percent-remaining", Component.text(Util.getToolPercentage(items))).forLocale());
