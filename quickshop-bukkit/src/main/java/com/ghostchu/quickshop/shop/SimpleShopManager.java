@@ -914,11 +914,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 }
             }
         }
-        ShopPreCreateEvent spce = new ShopPreCreateEvent(p, shop.getLocation());
-        if (Util.fireCancellableEvent(spce)) {
-            Log.debug("ShopPreCreateEvent cancelled");
-            return;
-        }
 
 
         // Price limit checking

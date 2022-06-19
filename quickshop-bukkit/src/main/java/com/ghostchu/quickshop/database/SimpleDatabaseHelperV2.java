@@ -27,9 +27,13 @@ import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.database.ShopMetricRecord;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopModerator;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
+import com.ghostchu.quickshop.shop.SimpleShopModerator;
 import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.reflect.TypeToken;
@@ -508,7 +512,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         manager.alterTable(getPrefix() + "shops")
                 .renameTo(getPrefix() + "shops_" + actionId)
                 .execute();
-
         try {
             manager.alterTable(getPrefix() + "messages")
                     .renameTo(getPrefix() + "messages_" + actionId)
@@ -661,15 +664,24 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
         private Map<UUID, String> permission = new HashMap<>();
 
-        public OldShopData(ResultSet set) throws SQLException {
-            owner = set.getString("owner");
-            Type t = new TypeToken<Map<UUID, String>>() {
-            }.getType();
-            Map<UUID, String> map = JsonUtil.getGson().fromJson(set.getString("permission"), t);
-            if (map == null) {
-                permission = new HashMap<>();
+        public OldShopData(ResultSet set) throws Exception {
+            String ownerData = set.getString("owner");
+            if (!MsgUtil.isJson(ownerData)) {
+                owner = set.getString("owner");
+                Type t = new TypeToken<Map<UUID, String>>() {
+                }.getType();
+                Map<UUID, String> map = JsonUtil.getGson().fromJson(set.getString("permission"), t);
+                if (map == null) {
+                    permission = new HashMap<>();
+                } else {
+                    permission = new HashMap<>(map);
+                }
             } else {
-                permission = new HashMap<>(map);
+                Log.debug(Level.WARNING, "Found a data-record that data mismatch with excepted, fixing...");
+                //noinspection deprecation
+                ShopModerator simpleShopModeratorLegacy = SimpleShopModerator.deserialize(ownerData);
+                owner = simpleShopModeratorLegacy.getOwner().toString();
+                simpleShopModeratorLegacy.getStaffs().forEach(staff -> permission.put(staff, BuiltInShopPermissionGroup.STAFF.getNamespacedNode()));
             }
             price = set.getDouble("price");
             itemConfig = set.getString("itemConfig");
@@ -693,12 +705,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     static class OldMessageData {
         private final String owner;
         private final String message;
-        private final long time;
+        private final Date time;
 
         public OldMessageData(ResultSet set) throws SQLException {
             owner = set.getString("owner");
             message = set.getString("message");
-            time = set.getLong("time");
+            long timeStamp = set.getLong("time");
+            time = new Date(timeStamp);
         }
     }
 

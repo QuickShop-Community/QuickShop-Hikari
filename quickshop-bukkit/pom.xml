@@ -26,7 +26,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>3.0.0.5</version>
+        <version>3.0.0.6</version>
     </parent>
 
     <artifactId>quickshop-bukkit</artifactId>
