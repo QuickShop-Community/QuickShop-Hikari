@@ -153,12 +153,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 e.printStackTrace();
             }
         }
-        if (getDatabaseVersion() == 4) {
+        if (getDatabaseVersion() == 4 || getDatabaseVersion() == 5) {
             try {
                 plugin.getLogger().info("Data upgrading: Performing purge isolated data...");
                 purgeIsolatedData();
                 plugin.getLogger().info("Data upgrading: All completed!");
-                setDatabaseVersion(5);
+                setDatabaseVersion(6);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -659,7 +659,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     public void purgeIsolatedData() throws SQLException {
         purgeShopTableIsolatedData(scanIsolatedShopIds());
         purgeDataTableIsolatedData(scanIsolatedDataIds());
-
     }
 
     public void purgeDataTableIsolatedData(@NotNull List<Long> toPurge) throws SQLException {
@@ -683,19 +682,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             }
         }
         for (long dataId : dataIds) {
-            if (checkIdUsage(DataTables.SHOPS, "data", dataId)) {
-                Log.debug("DataId usage found: SHOPS: " + dataId + ", skipping");
+            if (checkIdUsage(DataTables.SHOPS, "data", dataId))
                 continue;
-            }
-            if (checkIdUsage(DataTables.LOG_PURCHASE, "data", dataId)) {
-                Log.debug("DataId usage found: LOG_PURCHASE: " + dataId + ", skipping");
+            if (checkIdUsage(DataTables.LOG_PURCHASE, "data", dataId))
                 continue;
-            }
-            if (checkIdUsage(DataTables.LOG_OTHERS, "data", dataId)) {
-                Log.debug("DataId usage found: LOG_OTHERS: " + dataId + ", skipping");
+            if (checkIdUsage(DataTables.LOG_OTHERS, "data", dataId))
                 continue;
-            }
-            Log.debug("Mark dataId for purging: " + dataId);
             toPurge.add(dataId);
         }
         return toPurge;
@@ -724,19 +716,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
         plugin.getLogger().info("Total " + shopIds.size() + " data found.");
         for (long shopId : shopIds) {
-            if (checkIdUsage(DataTables.SHOP_MAP, "shop", shopId)) {
-                Log.debug("ShopId usage found: SHOP_MAP: " + shopId + ", skipping");
+            if (checkIdUsage(DataTables.SHOP_MAP, "shop", shopId))
                 continue;
-            }
-            if (checkIdUsage(DataTables.LOG_PURCHASE, "shop", shopId)) {
-                Log.debug("ShopId usage found: LOG_PURCHASE: " + shopId + ", skipping");
+            if (checkIdUsage(DataTables.LOG_PURCHASE, "shop", shopId))
                 continue;
-            }
-            if (checkIdUsage(DataTables.LOG_CHANGES, "shop", shopId)) {
-                Log.debug("ShopId usage found: LOG_CHANGES: " + shopId + ", skipping");
+            if (checkIdUsage(DataTables.LOG_CHANGES, "shop", shopId))
                 continue;
-            }
-            Log.debug("Mark shopid for purging: " + shopId);
             toPurge.add(shopId);
         }
         return toPurge;
