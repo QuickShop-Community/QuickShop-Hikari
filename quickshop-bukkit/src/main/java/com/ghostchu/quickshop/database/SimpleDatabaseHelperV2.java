@@ -683,7 +683,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 owner = simpleShopModeratorLegacy.getOwner().toString();
                 simpleShopModeratorLegacy.getStaffs().forEach(staff -> permission.put(staff, BuiltInShopPermissionGroup.STAFF.getNamespacedNode()));
             }
-
             price = set.getDouble("price");
             itemConfig = set.getString("itemConfig");
             x = set.getInt("x");
@@ -700,10 +699,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             inventoryWrapperName = set.getString("inventoryWrapperName");
             name = set.getString("name");
         }
-    }
-
-    private void handleOwnerUUID(String owner) {
-
     }
 
     @Data
