@@ -167,7 +167,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
 
-
     public void setDatabaseVersion(int version) throws SQLException {
         DataTables.METADATA
                 .createReplace()
@@ -657,12 +656,22 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     public void purgeIsolatedData() throws SQLException {
-        purgeDataTableIsolatedData();
-        purgeShopTableIsolatedData();
+        purgeDataTableIsolatedData(scanIsolatedDataIds());
+        purgeShopTableIsolatedData(scanIsolatedShopIds());
     }
 
-    public void purgeDataTableIsolatedData() throws SQLException {
+    public void purgeDataTableIsolatedData(@NotNull List<Long> toPurge) throws SQLException {
         plugin.getLogger().info("Pulling isolated DATA_ID data...");
+        plugin.getLogger().info("Purging " + toPurge.size() + " isolated DATA_ID data...");
+        for (long dataId : toPurge) {
+            int line = DataTables.DATA.createDelete().addCondition("id", dataId).build().execute();
+            Log.debug("Purged data_id=" + dataId + ", " + line + " rows effected.");
+        }
+        plugin.getLogger().info("Purging completed.");
+    }
+
+    @NotNull
+    public List<Long> scanIsolatedDataIds() throws SQLException {
         List<Long> dataIds = new LinkedList<>();
         List<Long> toPurge = new LinkedList<>();
         try (SQLQuery query = DataTables.DATA.createQuery().selectColumns("id").build().execute()) {
@@ -671,7 +680,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 dataIds.add(set.getLong("id"));
             }
         }
-        plugin.getLogger().info("Total " + dataIds.size() + " data found.");
         for (long dataId : dataIds) {
             if (checkIdUsage(DataTables.SHOPS, "data", dataId))
                 continue;
@@ -681,16 +689,21 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 continue;
             toPurge.add(dataId);
         }
-        plugin.getLogger().info("Purging " + toPurge.size() + " isolated DATA_ID data...");
+        return toPurge;
+    }
+
+    public void purgeShopTableIsolatedData(@NotNull List<Long> toPurge) throws SQLException {
+        plugin.getLogger().info("Pulling isolated SHOP_ID data...");
+        plugin.getLogger().info("Purging " + toPurge.size() + " isolated SHOP_ID data...");
         for (long dataId : toPurge) {
             int line = DataTables.DATA.createDelete().addCondition("id", dataId).build().execute();
-            Log.debug("Purged data_id=" + dataId + ", " + line + " rows effected.");
+            Log.debug("Purged shop_id=" + dataId + ", " + line + " rows effected.");
         }
         plugin.getLogger().info("Purging completed.");
     }
 
-    public void purgeShopTableIsolatedData() throws SQLException {
-        plugin.getLogger().info("Pulling isolated SHOP_ID data...");
+    @NotNull
+    public List<Long> scanIsolatedShopIds() throws SQLException {
         List<Long> shopIds = new LinkedList<>();
         List<Long> toPurge = new LinkedList<>();
         try (SQLQuery query = DataTables.SHOPS.createQuery().selectColumns("id").build().execute()) {
@@ -711,12 +724,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 continue;
             toPurge.add(shopId);
         }
-        plugin.getLogger().info("Purging " + toPurge.size() + " isolated SHOP_ID data...");
-        for (long dataId : toPurge) {
-            int line = DataTables.DATA.createDelete().addCondition("id", dataId).build().execute();
-            Log.debug("Purged shop_id=" + dataId + ", " + line + " rows effected.");
-        }
-        plugin.getLogger().info("Purging completed.");
+        return toPurge;
     }
 
     /**
@@ -732,7 +740,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     public Integer clearUnusedData(@NotNull DataTables targetTable, @NotNull String targetColumn,
                                    @NotNull DataTables queryTable, @NotNull String queryColumn) {
         String sql = "DELETE FROM `%(targetTable)` WHERE NOT EXISTS (" +
-                     " SELECT `%(queryColumn)` FROM `%(queryTable)`" +
+                " SELECT `%(queryColumn)` FROM `%(queryTable)`" +
                 " WHERE `%(queryTable)`.`%(queryColumn)` = `%(targetTable)`.`%(targetColumn)` " +
                 ")";
 
