@@ -268,7 +268,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .addCondition("y", y)
                 .addCondition("z", z)
                 .build()
-                .execute();
+                .executeAsync();
     }
 
     @Override
