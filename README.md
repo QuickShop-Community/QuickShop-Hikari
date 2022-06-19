@@ -114,9 +114,9 @@ the latest versions of Minecraft.
 - Powerful API.
 - Optimized performance.
 - MiniMessage syntax support.
-- H2 (local) or MySQL (remote) datasource supports.
+- H2 (local) or MySQL (remote) datasource support.
 - Supports custom inventory! Use the InventoryWrapper API.
-- Optimized for Paper, but also runs on Spigot (Tho slower and with a more "hacky" aproach).
+- Optimized for Paper, but also runs on Spigot (Though slower and with a more "hacky" approach).
 - Advanced Transaction System. Undo any Inventory/Economy operation with a shop when it failed to prevent duplications
   and exploits.
 - Per-shop permission management.
@@ -127,53 +127,52 @@ Obtain the latest version from [ci.codemc.io][codemc]
 
 ## Compatibility Modules
 
-You can download optional modules for compatability with other plugins.
+You can download optional modules for compatibility with other plugins.
 
 ### clearlagg
 
 Stops [ClearLagg][clearlagg] from deleting the Display Item on any Shop.
 
-### nocheatplus
+### NoCheatPlus
 
-Prevents NCP's anti-cheat checks from triggering when creating a shop.
+- Prevents NCP's anti-cheat checks from triggering when creating a shop.
 
-### openinv
+### OpenInv
 
-Allow the usage of a Player's Ender Chest as Shop inventory by using `/qs echest`.
+- Allow the usage of a Player's Ender Chest as Shop inventory by using `/qs echest`.
 
-### worldedit
+### Worldedit
 
-Removes Shops that got deleted during a WorldEdit operation, to reduce "Ghost Shops".
+- Removes Shops that got deleted during a WorldEdit operation, to reduce "Ghost Shops".
 
-### worldguard
+### Worldguard
 
-Flag-based shop control.
+- Flag-based shop control.
 
 ## Contribute
 
 If you're a developer, you can contribute to the QuickShop source code! Just make a fork, install the Lombok plugin if
-not done automatically),
-make your changes and create a pull request when you're done!  
+not done automatically), make your changes and create a pull request when you're done!  
 Please try to follow [Google's Java Code Style][googlejava] and do not increase the Plugin version. Thank you!
 
 ### Distributing forks
 
 You're allowed to create your own fork to share. No permission needed.  
-Tho it would be nice if you could pr your changes into this repository when they are good ones.
+Though it would be nice if you could pull-request your changes into this repository when they are good ones.
 
 ### Compile and Debugging
 
 To compile and debug QuickShop, please do the following steps:
 
-0. Make sure you're using Java 17 or 18. You can get the latest Java versions from the [Adoptium project][adoptium].
-1. Compile the main project without a signature by using `mvn install -Pgithub` with the GitHub Profile selected.
-2. Put the compiled jar into your Test-server's `plugins` folder, start the server and begin debugging!
+1. Make sure you're using Java 17 or 18. You can get the latest Java versions from the [Adoptium project][adoptium].
+2. Compile the main project without a signature by using `mvn install -Pgithub` with the GitHub Profile selected.
+3. Put the compiled jar into your Test-server's `plugins` folder, start the server and begin debugging!
 
 To compile the QuickShop and debug it by yourself, please follow these steps:
 
-0. Make sure you're using Java17+ JDK in your PATH.
-1. Compile main-project without signature by using profile: `mvn install -Pgithub` with github profile selected.
-2. Start your server and go on.
+1. Make sure you're using Java17+ JDK in your PATH.
+2. Compile main-project without signature by using profile: `mvn install -Pgithub` with github profile selected.
+3. Start your server and go on.
 
 ## Bstats
 
