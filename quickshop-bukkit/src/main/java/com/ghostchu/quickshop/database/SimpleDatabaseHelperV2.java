@@ -342,7 +342,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @Override
-    public void updateExternalInventoryProfileCache(@NotNull long shopId, int space, int stock) {
+    public void updateExternalInventoryProfileCache(long shopId, int space, int stock) {
         DataTables.EXTERNAL_CACHE.createReplace()
                 .setColumnNames("shop", "space", "stock")
                 .setParams(shopId, space, stock)
@@ -360,6 +360,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 Log.debug("Warning: Failed to update shop because the shop id locate result for " + loc + ", because the query shopId is " + shopId);
             } else {
                 // Check if any data record already exists
+                // TODO: Combine to one SQL (query -> exists return id -> not exists create)
                 long dataId = queryDataId(simpleDataRecord);
                 if (dataId > 0) {
                     DataTables.SHOPS.createReplace()

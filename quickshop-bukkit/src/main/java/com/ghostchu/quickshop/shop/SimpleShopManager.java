@@ -289,6 +289,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             int y = shop.getLocation().getBlockY();
             int z = shop.getLocation().getBlockZ();
             try {
+                // TODO: Combine remove old and create new to single SQL
                 plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
                 long dataId = plugin.getDatabaseHelper().createData(shop);
                 long shopId = plugin.getDatabaseHelper().createShop(dataId);
