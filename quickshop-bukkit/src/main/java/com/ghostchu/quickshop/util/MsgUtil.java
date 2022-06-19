@@ -29,6 +29,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import net.kyori.adventure.text.Component;
@@ -429,8 +430,8 @@ public class MsgUtil {
 
     public static boolean isJson(String str) {
         try {
-            JsonParser.parseString(str);
-            return true;
+            JsonElement element = JsonParser.parseString(str);
+            return element.isJsonObject() || element.isJsonArray();
         } catch (JsonParseException exception) {
             return false;
         }

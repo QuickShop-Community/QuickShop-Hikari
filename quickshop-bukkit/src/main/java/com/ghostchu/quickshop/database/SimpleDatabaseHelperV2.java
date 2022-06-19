@@ -27,17 +27,16 @@ import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.database.ShopMetricRecord;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
+import com.ghostchu.quickshop.shop.SimpleShopModerator;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.reflect.TypeToken;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import lombok.Data;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -665,7 +664,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
         private Map<UUID, String> permission = new HashMap<>();
 
-        public OldShopData(ResultSet set) throws SQLException {
+        public OldShopData(ResultSet set) throws Exception {
             String ownerData = set.getString("owner");
             if (!MsgUtil.isJson(ownerData)) {
                 owner = set.getString("owner");
@@ -679,14 +678,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 }
             } else {
                 Log.debug(Level.WARNING, "Found a data-record that data mismatch with excepted, fixing...");
-                owner = JsonParser.parseString(ownerData).getAsJsonObject().get("owner").getAsString();
-                List<String> staffs = new ArrayList<>();
-                JsonArray staffsArray = JsonParser.parseString(ownerData).getAsJsonObject().get("staff").getAsJsonArray();
-                for (JsonElement element : staffsArray) {
-                    staffs.add(element.getAsString());
-                }
-                staffs.stream().map(UUID::fromString)
-                        .forEach(uuid -> permission.put(uuid, BuiltInShopPermissionGroup.STAFF.getNamespacedNode()));
+                //noinspection deprecation
+                ShopModerator simpleShopModeratorLegacy = SimpleShopModerator.deserialize(ownerData);
+                owner = simpleShopModeratorLegacy.getOwner().toString();
+                simpleShopModeratorLegacy.getStaffs().forEach(staff -> permission.put(staff, BuiltInShopPermissionGroup.STAFF.getNamespacedNode()));
             }
 
             price = set.getDouble("price");
