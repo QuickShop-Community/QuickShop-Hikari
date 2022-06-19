@@ -27,12 +27,17 @@ import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.database.ShopMetricRecord;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.reflect.TypeToken;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import lombok.Data;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -508,7 +513,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         manager.alterTable(getPrefix() + "shops")
                 .renameTo(getPrefix() + "shops_" + actionId)
                 .execute();
-
         try {
             manager.alterTable(getPrefix() + "messages")
                     .renameTo(getPrefix() + "messages_" + actionId)
@@ -662,15 +666,29 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         private Map<UUID, String> permission = new HashMap<>();
 
         public OldShopData(ResultSet set) throws SQLException {
-            owner = set.getString("owner");
-            Type t = new TypeToken<Map<UUID, String>>() {
-            }.getType();
-            Map<UUID, String> map = JsonUtil.getGson().fromJson(set.getString("permission"), t);
-            if (map == null) {
-                permission = new HashMap<>();
+            String ownerData = set.getString("owner");
+            if (!MsgUtil.isJson(ownerData)) {
+                owner = set.getString("owner");
+                Type t = new TypeToken<Map<UUID, String>>() {
+                }.getType();
+                Map<UUID, String> map = JsonUtil.getGson().fromJson(set.getString("permission"), t);
+                if (map == null) {
+                    permission = new HashMap<>();
+                } else {
+                    permission = new HashMap<>(map);
+                }
             } else {
-                permission = new HashMap<>(map);
+                Log.debug(Level.WARNING, "Found a data-record that data mismatch with excepted, fixing...");
+                owner = JsonParser.parseString(ownerData).getAsJsonObject().get("owner").getAsString();
+                List<String> staffs = new ArrayList<>();
+                JsonArray staffsArray = JsonParser.parseString(ownerData).getAsJsonObject().get("staff").getAsJsonArray();
+                for (JsonElement element : staffsArray) {
+                    staffs.add(element.getAsString());
+                }
+                staffs.stream().map(UUID::fromString)
+                        .forEach(uuid -> permission.put(uuid, BuiltInShopPermissionGroup.STAFF.getNamespacedNode()));
             }
+
             price = set.getDouble("price");
             itemConfig = set.getString("itemConfig");
             x = set.getInt("x");
@@ -687,6 +705,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             inventoryWrapperName = set.getString("inventoryWrapperName");
             name = set.getString("name");
         }
+    }
+
+    private void handleOwnerUUID(String owner) {
+
     }
 
     @Data
