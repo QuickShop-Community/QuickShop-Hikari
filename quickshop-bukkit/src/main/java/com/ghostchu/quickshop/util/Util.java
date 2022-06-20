@@ -1195,6 +1195,7 @@ public class Util {
         if (!plugin.isEnabled()) {
             Log.debug(Level.WARNING, "Scheduler not available, executing task on current thread...");
             runnable.run();
+            return;
         }
         if (!Bukkit.isPrimaryThread()) {
             runnable.run();
