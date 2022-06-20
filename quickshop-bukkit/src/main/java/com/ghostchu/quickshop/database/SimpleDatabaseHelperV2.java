@@ -153,12 +153,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 e.printStackTrace();
             }
         }
-        if (getDatabaseVersion() == 4 || getDatabaseVersion() == 5 || getDatabaseVersion() == 6) {
+        if (getDatabaseVersion() < 8) {
             try {
                 plugin.getLogger().info("Data upgrading: Performing purge isolated data...");
                 purgeIsolatedData();
                 plugin.getLogger().info("Data upgrading: All completed!");
-                setDatabaseVersion(7);
+                setDatabaseVersion(8);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -241,7 +241,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public long createShop(long dataId) throws SQLException {
-        return DataTables.SHOPS.createReplace()
+        return DataTables.SHOPS.createInsert()
                 .setColumnNames("data")
                 .setParams(dataId)
                 .returnGeneratedKey(Long.class)
@@ -373,9 +373,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 // TODO: Combine to one SQL (query -> exists return id -> not exists create)
                 long dataId = queryDataId(simpleDataRecord);
                 if (dataId > 0) {
-                    DataTables.SHOPS.createReplace()
-                            .setColumnNames("data")
-                            .setParams(dataId)
+                    DataTables.SHOPS.createUpdate()
+                            .addCondition("id", shopId)
+                            .setColumnValues("data", dataId)
+                            .build()
                             .executeAsync(handler -> Log.debug("Operation completed, updateShop " + shop + ", " + handler + " lines affected"));
                 } else {
                     long newDataId;
