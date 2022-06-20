@@ -381,16 +381,16 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY<yellow> mode
+    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
     about: <yellow>Shows QuickShop info
     language: <yellow>Change the currently used language
-    purge: <yellow>Start the shop purge task in background
+    purge: <yellow>Start the shop purge task in the background
     paste: <yellow>Uploads server data to Pastebin
     title: <green>QuickShop help
     remove: <yellow>Removes the shop you're looking at
     ban: <yellow>Ban a player from the shop
     empty: <yellow>Removes all items from a shop
-    alwayscounting: <yellow>Set if shop always counting container even is unlimited
+    alwayscounting: <yellow>Set if the shop should always count the content of its container even while unlimited
     setowner: <yellow>Changes the ownership of a shop.
     reload: <yellow>Reloads the config.yml of QuickShop
     freeze: <yellow>Disable or Enable shop trading
@@ -508,8 +508,8 @@ paste-uploading: "<aqua>Please wait... Uploading the paste to pastebin......"
 paste-created: "<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send pastea to people you don't trust."
 paste-created-local: "<green>Paste created and saved to your local disk at {0}<newline><red>Warning: <gray>Never send pastes to people you don't trust."
 paste-created-local-failed: "<red>Failed to save paste to your local disk, please check your disk."
-paste-451: "<gray><b>TIPS: </b> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file additional parameter to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>"
-paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin provider..."
+paste-451: "<gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>"
+paste-upload-failed: "<red>Failed to upload paste to {0}, trying different pastebin provider..."
 paste-upload-failed-local: "<red>Failed to upload paste, now trying to generate local paste..."
 command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
 successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
