@@ -153,12 +153,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 e.printStackTrace();
             }
         }
-        if (getDatabaseVersion() == 4 || getDatabaseVersion() == 5) {
+        if (getDatabaseVersion() == 4 || getDatabaseVersion() == 5 || getDatabaseVersion() == 6) {
             try {
                 plugin.getLogger().info("Data upgrading: Performing purge isolated data...");
                 purgeIsolatedData();
                 plugin.getLogger().info("Data upgrading: All completed!");
-                setDatabaseVersion(6);
+                setDatabaseVersion(7);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -381,9 +381,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                     long newDataId;
                     try {
                         newDataId = createData(shop);
-                        DataTables.SHOPS.createReplace()
-                                .setColumnNames("data")
-                                .setParams(newDataId)
+                        DataTables.SHOPS.createUpdate()
+                                .addCondition("id", shopId)
+                                .addColumnValue("data", newDataId)
+                                .build()
                                 .executeAsync(handler -> Log.debug("Operation completed, updateShop " + shop + ", " + handler + " lines affected"));
                     } catch (SQLException e) {
                         callback.accept(e);
