@@ -26,6 +26,16 @@
 
 [clearlagg]: https://www.spigotmc.org/resources/68271/
 
+[worldguard]: https://dev.bukkit.org/projects/worldguard
+
+[nocheatplus]: https://www.spigotmc.org/resources/nocheatplus.26/
+
+[openinv]: https://dev.bukkit.org/projects/openinv
+
+[worldedit]: https://dev.bukkit.org/projects/worldedit
+
+[optional_modules]: https://ci.codemc.io/job/Ghost-chu/job/QuickShop-Hikari/
+
 [googlejava]: https://google.github.io/styleguide/javaguide.html
 
 [adoptium]: https://adoptium.net/
@@ -80,23 +90,21 @@
 
 QuickShop Hikari is a Shop plugin that allows players to create Chest Shops to easily sell and buy items, without the
 need of any commands.  
-In fact are all available commands in QuickShop not needed for normal gameplay.
+In fact, all commands in QuickShop are not even needed for normal gameplay.
 
 This version of QuickShop ([Ghost-chu/QuickShop-Hikari][quickshop-hikari]) is a fork
 from [PotatoCraft-Studio's version][quickshop-potato] which itself is a fork from the [Reremake][quickshop-ghostchu] of
 the [original QuickShop][quickshop-original].
 
-QuickShop Hikari is maintained by Ghost-Chu and has the goal to modernize the core content of QuickShop and adabt it to
+QuickShop Hikari is maintained by Ghost-Chu and has the goal to modernize the core content of QuickShop and adapt it to
 the latest versions of Minecraft.
 
 ## Community & Support
-
 [Discussions](https://github.com/Ghost-chu/QuickShop-Hikari/discussions)  
 [Bug Tracker](https://github.com/Ghost-chu/QuickShop-Hikari/issues)  
 [Discord](https://discord.gg/Bu3dVtmsD3)
 
 ## Features
-
 - Easy to use
 - Toggleable Display Item on top of the chest.
 - NBT Data, Enchantment, Tool Damage, Potion, and Mob Egg support.
@@ -114,73 +122,61 @@ the latest versions of Minecraft.
 - Powerful API.
 - Optimized performance.
 - MiniMessage syntax support.
-- H2 (local) or MySQL (remote) datasource supports.
+- H2 (local) or MySQL (remote) datasource support.
 - Supports custom inventory! Use the InventoryWrapper API.
-- Optimized for Paper, but also runs on Spigot (Tho slower and with a more "hacky" aproach).
+- Optimized for Paper, but also runs on Spigot (Though slower and with a more "hacky" approach).
 - Advanced Transaction System. Undo any Inventory/Economy operation with a shop when it failed to prevent duplications
   and exploits.
 - Per-shop permission management.
 
 ## Downloads
-
 Obtain the latest version from [ci.codemc.io][codemc]
 
 ## Compatibility Modules
+You can download optional modules [here][optional_modules] for compatibility with other plugins.
 
-You can download optional modules for compatability with other plugins.
+### [ClearLagg][clearlagg]
+- Stops clearlagg from deleting the Display Item on any Shop.
 
-### clearlagg
+### [NoCheatPlus][nocheatplus]
+- Prevents NCP's anti-cheat checks from triggering when creating a shop.
 
-Stops [ClearLagg][clearlagg] from deleting the Display Item on any Shop.
+### [OpenInv][openinv]
+- Allow the usage of a Player's Ender Chest as Shop inventory by using `/qs echest`.
 
-### nocheatplus
+### [Worldedit][worldedit]
+- Removes Shops that got deleted during a WorldEdit operation, to reduce "Ghost Shops".
 
-Prevents NCP's anti-cheat checks from triggering when creating a shop.
-
-### openinv
-
-Allow the usage of a Player's Ender Chest as Shop inventory by using `/qs echest`.
-
-### worldedit
-
-Removes Shops that got deleted during a WorldEdit operation, to reduce "Ghost Shops".
-
-### worldguard
-
-Flag-based shop control.
+### [Worldguard][worldguard]
+- Flag-based shop control.
 
 ## Contribute
-
 If you're a developer, you can contribute to the QuickShop source code! Just make a fork, install the Lombok plugin if
-not done automatically),
-make your changes and create a pull request when you're done!  
+not done automatically), make your changes and create a pull request when you're done!  
 Please try to follow [Google's Java Code Style][googlejava] and do not increase the Plugin version. Thank you!
 
 ### Distributing forks
-
 You're allowed to create your own fork to share. No permission needed.  
-Tho it would be nice if you could pr your changes into this repository when they are good ones.
+Though it would be nice if you could pull-request your changes into this repository when they are good ones.
 
 ### Compile and Debugging
-
 To compile and debug QuickShop, please do the following steps:
 
-0. Make sure you're using Java 17 or 18. You can get the latest Java versions from the [Adoptium project][adoptium].
-1. Compile the main project without a signature by using `mvn install -Pgithub` with the GitHub Profile selected.
-2. Put the compiled jar into your Test-server's `plugins` folder, start the server and begin debugging!
+1. Make sure you're using Java 17 or 18. You can get the latest Java versions from the [Adoptium project][adoptium].
+2. Compile the main project without a signature by using `mvn install -Pgithub` with the GitHub Profile selected.
+3. Put the compiled jar into your Test-server's `plugins` folder, start the server and begin debugging!
 
 To compile the QuickShop and debug it by yourself, please follow these steps:
 
-0. Make sure you're using Java17+ JDK in your PATH.
-1. Compile main-project without signature by using profile: `mvn install -Pgithub` with github profile selected.
-2. Start your server and go on.
+1. Make sure you're using Java17+ JDK in your PATH.
+2. Compile main-project without signature by using profile: `mvn install -Pgithub` with github profile selected.
+3. Start your server and go on.
 
 ## Bstats
 
 [![bStatsImage]][bStats]
 
 ## License
-
 [![fossaStatusImageLarge]][fossaStatusLarge]
 
 ## Developer API
