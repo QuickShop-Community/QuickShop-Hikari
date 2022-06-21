@@ -8,7 +8,7 @@ client-language-changed: <green>QuickShop はクライアントの言語設定�
 shops-backingup: データベースからショップのバックアップを作成しています...
 _comment: 翻訳者さんこんにちは！Githubから、もしくはコードソースから編集している場合は、https://crowdin.com/project/quickshop-reremakeにアクセスしてください。
 unlimited-shop-owner-changed: <yellow>この無制限の店主は {0} に変更されました。
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
+bad-command-usage-detailed: '<red>コマンド引数が不正です! 次のパラメータを受け付けます: <gray>{0}'
 thats-not-a-number: <red>無効な番号です
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>これは危険なコマンドなので、コンソールのみが実行できます。
