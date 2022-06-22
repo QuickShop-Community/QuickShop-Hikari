@@ -66,7 +66,9 @@ libraries:
   - cc.carm.lib:easysql-hikaricp:0.4.0
   - com.h2database:h2:2.1.214
   - com.ghostchu:simplereloadlib:1.1.2
-  - com.konghq:unirest-java:3.13.10
+  - com.konghq:unirest-java:3.13.7
+  - com.github.juliomarcopineda:jdbc-stream:0.1.1
+  - one.util:streamex:0.8.1
   - commons-lang:commons-lang:2.6
 
 commands:
