@@ -422,6 +422,7 @@ command:
     toggledisplay: <yellow>Ändere den Anzeigestatus des Items für den Shop
     permission: <yellow>Shop-Berechtigungsverwaltung
     lookup: <yellow>Tabelle der nachschlagbaren Gegenstände verwalten
+    database: <yellow>QuickShop-Datenbank anzeigen und verwalten
   bulk-size-not-set: '<red>Verwendung: /qs size <Anzahl>'
   no-type-given: '<red>Verwendung: /qs find <item>'
   feature-not-enabled: Dieses Feature ist nicht in der Config Datei aktiviert.
@@ -524,3 +525,19 @@ lookup-item-test-not-found: "<gold>Test: <yellow>Das Item in deiner Hand ist nic
 lookup-item-test-found: "<gold>Test: <green>Das Item in deiner Hand wurde als <aqua>{0}</aqua> in der Suchtabelle registriert."
 lookup-item-removed: "<green>Das angegebene Item <aqua>{0}</aqua> wurde erfolgreich von der Suchtabelle entfernt."
 internal-error: "<red>Ein interner Fehler ist aufgetreten. Bitte kontaktiere den Serveradministrator."
+database:
+  scanning: "<green>Beim Scannen der isolierten Daten in QuickShop-Datenbanken kann die Datenbankauslastung während des Scanvorgangs zunehmen, dies kann eine Weile dauern..."
+  trim-warning: "<yellow><red><bold>Warnung: </red>Bevor du mit dem Trimmen der Datenbank fortfährst, solltest du eine Sicherungskopie deiner Datenbank erstellen, um Datenverluste zu vermeiden. Sobald du bereit bist, führe <aqua>/qs database trim confirm</aqua> aus, um fortzufahren."
+  status: "<yellow>Status: {0}"
+  status-good: "<green>Gut"
+  status-bad: "<yellow>Wartungsarbeiten erforderlich"
+  isolated: "<yellow>Isolierte Daten:"
+  isolated-data-ids: "<yellow><aqua>└</aqua> Datenaufzeichnungen: <gold>{0}</gold>"
+  isolated-shop-ids: "<yellow><aqua>└</aqua> Shopindexe: <gold>{0}</gold>"
+  isolated-logs: "<yellow><aqua>└</aqua> Logs: <gold>{0}</gold>"
+  isolated-external-caches: "<yellow><aqua>└</aqua> Externe Caches: <gold>{0}</gold>"
+  last-purge-time: "<yellow>Letzter Trimmzeitpunkt um {0}"
+  auto-scan-alert: "<yellow>Die QuickShop-Datenbank auf diesem Server benötigt eine Wartung. Es wurden <gold>{0}</gold> isolierte Daten gefunden, die auf das Trimmen warten."
+  auto-trim: "<green>Die automatische Trimmung wurde auf diesem Server aktiviert, eine manuelle Trimmung ist nicht erforderlich."
+  trim-complete: "<green>Datenbanktrimmung abgeschlossen, <yellow>{0}</yellow> isolierte wurden getrimmt."
+
