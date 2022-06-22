@@ -280,11 +280,11 @@ public class SimpleDatabaseHelperV1 {
         return match;
     }
 
-    public SQLManager getManager() {
+    public @NotNull SQLManager getManager() {
         return manager;
     }
 
-    public String getPrefix() {
+    public @NotNull String getPrefix() {
         return prefix;
     }
 }

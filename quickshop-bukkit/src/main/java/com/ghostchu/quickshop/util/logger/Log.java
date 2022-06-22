@@ -209,7 +209,6 @@ public class Log {
             StringBuilder sb = new StringBuilder();
             Log.Caller caller = this.getCaller();
 
-            //noinspection IfStatementWithIdenticalBranches
             if (caller != null) {
                 String simpleClassName = caller.getClassName().substring(caller.getClassName().lastIndexOf('.') + 1);
                 sb.append("[");

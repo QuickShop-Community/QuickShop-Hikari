@@ -61,9 +61,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                 case 1:
                     switch (cmdArg[0]) {
                         case "clear" -> {
-                            shop.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(staff -> {
-                                shop.setPlayerGroup(staff, BuiltInShopPermissionGroup.EVERYONE);
-                            });
+                            shop.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(staff -> shop.setPlayerGroup(staff, BuiltInShopPermissionGroup.EVERYONE));
                             plugin.text().of(sender, "shop-staff-cleared").send();
                             return;
                         }

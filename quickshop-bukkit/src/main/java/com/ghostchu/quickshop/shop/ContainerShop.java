@@ -125,7 +125,6 @@ public class ContainerShop implements Shop, Reloadable {
     private UUID taxAccount;
     @NotNull
     private String inventoryWrapperProvider;
-    @NotNull
     @EqualsAndHashCode.Exclude
     private InventoryWrapper inventoryWrapper;
     @NotNull
