@@ -349,9 +349,9 @@ controlpanel:
   toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
 timeunit:
   behind: behind
-  week: <red>{0} week
-  weeks: <red>{0} weeks
-  year: <red>{0} year
+  week: <red>{0} 週間
+  weeks: <red>{0} 週間
+  year: <red>{0} 年
   before: before
   scheduled: scheduled
   years: <red>{0} years
