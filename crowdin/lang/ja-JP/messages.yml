@@ -8,7 +8,7 @@ client-language-changed: <green>QuickShop はクライアントの言語設定�
 shops-backingup: データベースからショップのバックアップを作成しています...
 _comment: 翻訳者さんこんにちは！Githubから、もしくはコードソースから編集している場合は、https://crowdin.com/project/quickshop-reremakeにアクセスしてください。
 unlimited-shop-owner-changed: <yellow>この無制限の店主は {0} に変更されました。
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
+bad-command-usage-detailed: '<red>コマンド引数が不正です! 次のパラメータを受け付けます: <gray>{0}'
 thats-not-a-number: <red>無効な番号です
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>これは危険なコマンドなので、コンソールのみが実行できます。
@@ -29,28 +29,28 @@ server-crash-warning: '<red>サーバーの実行中にQuickShopプラグイン�
 you-cant-afford-to-change-price: <red>ショップの価格を変更するには {0} かかります。
 safe-mode: <red>クイックショップはセーフモードです。このショップのコンテナを開くことができません。エラーを修正するにはサーバー管理者に問い合わせてください。
 forbidden-vanilla-behavior: この操作はバニラの動作に反したため、禁止されています
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>あなたのショップ {0} がいっぱいです！
 paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '&eName: &b{0}'
-    - '&eOwner: &b{0}'
-    - '&eType: &b{0}'
-    - '&ePrice: &b{0}'
-    - '&eItem: &b{0}'
-    - '&eLocation: &b{0}'
+    - '&e名前: &6{0}'
+    - '&e名前: &b{0}'
+    - '&eタイプ: &b{0}'
+    - '&e価格: &b{0}'
+    - '&eアイテム: &b{0}'
+    - '&e座標: &b{0}'
   hover-arg-filled:
-    - '&eName: &b{name}'
-    - '&eOwner: &b{owner}'
-    - '&eType: &b{type}'
-    - '&ePrice: &b{price}'
-    - '&eItem: &b{item}'
-    - '&eLocation: &b{location}'
+    - '&e名前: &b{name}'
+    - '&e店主: &b{owner}'
+    - '&eタイプ: &b{type}'
+    - '価格: &b{price}'
+    - '&eアイテム: &b{item}'
+    - '&e座標: &b{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(管理者のみ) <light_purple>{0} <dark_gray>が権限チェックを拒否しました。このチェックを除外しない場合は、<light_purple>{1} <gray>をリスナーブラックリストに追加してみてください。 <gray>設定ガイド: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>近所の平均価格: <yellow>{0}'
 digits-reach-the-limit: 価格が小数点以下の制限に達しました。
 currency-unset: <green>ショップの通貨は正常に削除されました。現在、デフォルトの設定を使用しています。
@@ -58,7 +58,7 @@ you-cant-create-shop-in-there: <red>この場所にショップを作成する�
 no-pending-action: <red>保留中のアクションはありません
 refill-success: <green>補充成功
 failed-to-paste: <red>Pastebinへのデータのアップロードに失敗しました。インターネット接続を確認して、もう一度お試しください。(詳細についてはコンソールをご覧ください)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+shop-out-of-stock-name: <dark_purple>あなたのショップ {0} の {1} の在庫がなくなりました！!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>チャットで<aqua>購入<green>したい商品の数を入力して下さい。1つの商品に <yellow>{0} 個<green> のアイテムが含まれており、あなたは<yellow>{1} つ<green> の商品を購入することができます。すべて購入するにはチャットで <aqua>{2}<green> と入力して下さい。
 exceeded-maximum: この値はJavaの最大値を越えました
@@ -88,7 +88,7 @@ reloading-status:
   failed: <red>リロードに失敗しました。サーバーコンソールを確認してください
 player-bought-from-your-store-tax: <red>{0} が {1} 個の {2} をあなたのショップから購入したので {3} を獲得しました。(うち消費税 {4})
 not-enough-space: <red>あなたには {0} 個分のスペースしかありません！
-shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
+shop-name-success: <green>ショップ名を <yellow>{0}<green> に設定することに成功しました。
 shop-staff-added: <green>あなたのショップスタッフに {0} を追加しました。
 shops-recovering: バックアップからショップを復元しています...
 menu:
@@ -122,12 +122,12 @@ integrations-check-failed-trade: <red>{0} 統合がショップの取引を拒�
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>ショップの店主をサーバーに設定しました。
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>このショップ名は長すぎます(最大長 {0})。別な名前を設定して下さい！
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>{0} の {1} {2} トランザクション:'
   action-hover: <yellow>{0}
   entry-header-shop: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66) <aqua>|'
-  price-hover: <yellow>Total {0}, including {1} taxes.
+  price-hover: <yellow>合計 {0}, {1} 税を含む。
   unknown: <gray>(unknown)
   undefined: <gray>(noname)
   no-results: <red>No transactions found.
@@ -222,7 +222,7 @@ nearby-shop-entry: '<green>- 情報:{0} <green>価格:<aqua>{1} <green>x:<aqua>{
 chest-title: QuickShopストア
 console-only: <red>このコマンドはコンソールでのみ実行できます。
 failed-to-put-sign: <red>情報看板を設置する十分なスペースがショップの周囲にありません。
-shop-name-unset: <red>This shop's name now removed
+shop-name-unset: <red>このショップの名前が削除されました
 shop-nolonger-freezed: <green>ショップを凍結解除しました。通常の状態に戻ります！
 no-permission-build: <red>あなたはここではショップを作成できません。
 tableformat:
@@ -235,7 +235,7 @@ translate-not-completed-yet-click: '{1} では言語 {0} の翻訳が完了し�
 taxaccount-invalid: <red>対象アカウントが無効です。有効なプレイヤー名またはuuid(ダッシュ付き)を入力してください。
 player-bought-from-your-store: <red>{0} が {1} 個の {2} をあなたのショップから購入したので {3} を獲得しました。
 reached-maximum-can-create: <red>あなたはすでに最大値を超えて {0} / {1} のショップを作成しています！
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
+reached-maximum-create-limit: <red>作成可能なショップ数の上限に達しました
 translation-version: 'サポートバージョン: Hikari'
 no-double-chests: <red>ラージチェストのショップを作成することはできません。
 price-too-cheap: <red>価格は<yellow>${0}<red>以上である必要があります。
@@ -324,7 +324,7 @@ controlpanel:
   stack-hover: <yellow>クリックして1商品の内容量を設定します。通常動作の場合は1に設定します。
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>店主: <aqua>{0} <yellow>[<light_purple><bold>変更<yellow>]'
   freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>このショップが使用している通貨を設定または削除する場合はクリックしてください
@@ -349,22 +349,22 @@ controlpanel:
   toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
 timeunit:
   behind: behind
-  week: <red>{0} week
-  weeks: <red>{0} weeks
-  year: <red>{0} year
+  week: <red>{0} 週間
+  weeks: <red>{0} 週間
+  year: <red>{0} 年
   before: before
   scheduled: scheduled
   years: <red>{0} years
   scheduled-in: scheduled in {0}
-  second: <red>{0} second
+  second: <red>{0} 秒
   std-past-format: '{5}{4}{3}{2}{1}{0}ago'
   std-time-format: "HH:mm:ss"
-  seconds: <red>{0} seconds
-  hour: <red>{0} hour
+  seconds: <red>{0} 秒
+  hour: <red>{0} 時間
   scheduled-at: scheduled at {0}
-  after: after
-  day: <red>{0} day
-  recent: recent
+  after: 後
+  day: <red>{0} 日
+  recent: 最近
   between: between
   hours: <red>{0} hours
   months: <red>{0} months
@@ -523,4 +523,4 @@ lookup-item-name-regex: "<red>The name must match this regex: <aqua>{0}</aqua>."
 lookup-item-test-not-found: "<gold>Test: <yellow>The item in your hand not registered in lookup table."
 lookup-item-test-found: "<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table."
 lookup-item-removed: "<green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table."
-internal-error: "<red>An internal error occurred, please contact the server administrator."
+internal-error: "<red>内部エラーが発生しました。サーバー管理者に連絡してください。"

@@ -368,7 +368,6 @@ public interface Shop {
      * @deprecated Replaced by {@link #setPlayerGroup(UUID, String)}
      */
     @Deprecated(forRemoval = true, since = "2.0.0.0")
-    @NotNull
     void setModerator(@NotNull ShopModerator shopModerator);
 
     /**

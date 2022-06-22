@@ -125,7 +125,6 @@ public class ContainerShop implements Shop, Reloadable {
     private UUID taxAccount;
     @NotNull
     private String inventoryWrapperProvider;
-    @NotNull
     @EqualsAndHashCode.Exclude
     private InventoryWrapper inventoryWrapper;
     @NotNull
@@ -1818,7 +1817,7 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public void setCurrency(@Nullable String currency) {
-        if (this.currency.equals(currency)) {
+        if (Objects.equals(this.currency, currency)) {
             return;
         }
         this.currency = currency;

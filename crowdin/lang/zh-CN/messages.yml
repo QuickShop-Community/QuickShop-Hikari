@@ -436,7 +436,7 @@ command:
   cleaning: <green>正在移除脱销的商店...
   now-nolonger-debuging: <green>成功切换到了生产模式，插件重载中...
   toggle-unlimited:
-    limited: <green>商店已更改为普通模式。
+    limited: <green>商店已更改为普通模式
     unlimited: <green>商店已更改为无限模式
   transfer-success-other: <green>已将玩家<yellow> {1} 的<green> {0} 个商店转移到玩家<yellow> {2}
   no-trade-item: <green>请在主手手持想要切换到的新物品

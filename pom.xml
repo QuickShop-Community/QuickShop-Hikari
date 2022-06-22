@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>3.0.0.9</version>
+    <version>3.0.0.10</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -132,11 +132,6 @@
                                     <relocation>
                                         <pattern>co.aikar.taskchain.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.co.aikar.taskchain.
-                                        </shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>com.github.PikaMug.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.com.github.PikaMug.LocaleLib.
                                         </shadedPattern>
                                     </relocation>
                                     <!--                                    <relocation>-->
@@ -487,18 +482,6 @@
                 <artifactId>adventure-text-minimessage</artifactId>
                 <version>4.11.0</version>
                 <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.github.juliomarcopineda</groupId>
-                <artifactId>jdbc-stream</artifactId>
-                <version>0.1.1</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>one.util</groupId>
-                <artifactId>streamex</artifactId>
-                <version>0.8.1</version>
-                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
