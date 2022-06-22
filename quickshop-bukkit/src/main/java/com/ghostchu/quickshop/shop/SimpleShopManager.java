@@ -65,7 +65,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -289,13 +288,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             int y = shop.getLocation().getBlockY();
             int z = shop.getLocation().getBlockZ();
             try {
-                // TODO: Combine remove old and create new to single SQL
-                plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
                 long dataId = plugin.getDatabaseHelper().createData(shop);
                 long shopId = plugin.getDatabaseHelper().createShop(dataId);
                 shop.setShopId(shopId);
                 plugin.getDatabaseHelper().createShopMap(shopId, shop.getLocation());
-            } catch (SQLException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 plugin.getLogger().warning("Failed register the shop to database");
                 processCreationFail(shop, shop.getOwner(), e);

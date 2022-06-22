@@ -422,6 +422,7 @@ command:
     toggledisplay: <yellow>Переключает отображение товара в магазине (над сундука)
     permission: <yellow>Управление разрешениями магазина
     lookup: <yellow>Управление справочной таблицей предметов
+    database: <yellow>View and maintain QuickShop database
   bulk-size-not-set: '<red>Используйте: /qs size <amount>'
   no-type-given: '<red>Используйте: /qs find <item>'
   feature-not-enabled: Функция не включена в конфигурации.
@@ -524,3 +525,19 @@ lookup-item-test-not-found: "<gold>Тест: <yellow>предмет в ваше�
 lookup-item-test-found: "<gold>Тест: <green>предмет в вашей руке был зарегистрирован в качестве имени <aqua>{0}</aqua> в справочной таблице."
 lookup-item-removed: "<green>Предмет <aqua>{0}</aqua> успешно удален из справочной таблицы."
 internal-error: "<red>Произошла внутренняя ошибка, пожалуйста, свяжитесь с администратором сервера."
+database:
+  scanning: "<green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while..."
+  trim-warning: "<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue."
+  status: "<yellow>Status: {0}"
+  status-good: "<green>Good"
+  status-bad: "<yellow>Maintenance Required"
+  isolated: "<yellow>Isolated Data:"
+  isolated-data-ids: "<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>"
+  isolated-shop-ids: "<yellow><aqua>└</aqua> Shop Indexes: <gold>{0}</gold>"
+  isolated-logs: "<yellow><aqua>└</aqua> Logs: <gold>{0}</gold>"
+  isolated-external-caches: "<yellow><aqua>└</aqua> External Caches: <gold>{0}</gold>"
+  last-purge-time: "<yellow>Last time of trim at {0}"
+  auto-scan-alert: "<yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming."
+  auto-trim: "<green>Auto trim has been enabled on this server, no manually trim required."
+  trim-complete: "<green>Database trim completed, <yellow>{0}</yellow> isolated trimmed."
+
