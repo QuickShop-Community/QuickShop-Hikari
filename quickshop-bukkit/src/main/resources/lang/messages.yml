@@ -636,7 +636,7 @@ lookup-item-test-found: "<gold>Test: <green>The item in your hand was registered
 lookup-item-removed: "<green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table."
 internal-error: "<red>An internal error occurred, please contact the server administrator."
 database:
-  scanning: "<green>Scanning the isolated data in QuickShop databases, the database load may increase in scan prograss, this might need a while..."
+  scanning: "<green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while..."
   status: "<yellow>Status: {0}"
   status-good: "<green>Good"
   status-bad: "<yellow>Maintenance Required"
