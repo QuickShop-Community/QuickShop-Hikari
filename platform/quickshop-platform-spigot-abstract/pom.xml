@@ -96,11 +96,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>com.github.PikaMug</groupId>
-            <artifactId>LocaleLib</artifactId>
-            <version>2.7</version>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/commons-lang/commons-lang -->
         <dependency>
             <groupId>commons-lang</groupId>

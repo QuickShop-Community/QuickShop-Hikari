@@ -134,11 +134,6 @@
                                         <shadedPattern>com.ghostchu.quickshop.shade.co.aikar.taskchain.
                                         </shadedPattern>
                                     </relocation>
-                                    <relocation>
-                                        <pattern>com.github.PikaMug.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.com.github.PikaMug.LocaleLib.
-                                        </shadedPattern>
-                                    </relocation>
                                     <!--                                    <relocation>-->
                                     <!--                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>-->
                                     <!--                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.adventure.text.minimessage.-->
@@ -487,18 +482,6 @@
                 <artifactId>adventure-text-minimessage</artifactId>
                 <version>4.11.0</version>
                 <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.github.juliomarcopineda</groupId>
-                <artifactId>jdbc-stream</artifactId>
-                <version>0.1.1</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>one.util</groupId>
-                <artifactId>streamex</artifactId>
-                <version>0.8.1</version>
-                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
