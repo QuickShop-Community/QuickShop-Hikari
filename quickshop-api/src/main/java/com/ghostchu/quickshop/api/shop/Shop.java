@@ -33,6 +33,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,6 +47,11 @@ import java.util.UUID;
 public interface Shop {
     NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShopAPI.getPluginInstance(), "shopsign");
 
+    /**
+     * Gets the Shop ID to identify the shop.
+     *
+     * @return Shop ID -1 if shop in creating state.
+     */
     long getShopId();
 
     /**
@@ -719,5 +725,11 @@ public interface Shop {
     @NotNull
     String saveToSymbolLink();
 
+    /**
+     * Internal Only: Give shop that under id_waiting state an ShopId.
+     *
+     * @param newId The new shop id, once set will cannot change anymore.
+     */
+    @ApiStatus.Internal
     void setShopId(long newId);
 }
