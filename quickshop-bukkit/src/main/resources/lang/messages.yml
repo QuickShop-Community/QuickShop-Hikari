@@ -645,6 +645,7 @@ database:
   isolated-data-ids: "<yellow><aqua>└</aqua> DataRecords: <gold>{0}</gold>"
   isolated-shop-ids: "<yellow><aqua>└</aqua> ShopIndex: <gold>{0}</gold>"
   last-purge-time: "<yellow>Last time of trim at {0}"
+  auto-scan-alert: "<yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming."
   auto-trim: "<green>Auto trim has been enabled on this server, no manually trim required."
-  trim-complete: "<green>Database trim completed, <yellow>{0}</yellow>isolated trimmed."
+  trim-complete: "<green>Database trim completed, <yellow>{0}</yellow> isolated trimmed."
 
