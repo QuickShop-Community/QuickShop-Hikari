@@ -242,7 +242,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public long createShop(long dataId) throws SQLException {
-        Validate.isTrue(dataId < 1, "Data ID must be greater than 0!");
+        Validate.isTrue(dataId > 1, "Data ID must be greater than 0!");
         return DataTables.SHOPS.createInsert()
                 .setColumnNames("data")
                 .setParams(dataId)
@@ -252,7 +252,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void createShopMap(long shopId, @NotNull Location location) throws SQLException {
-        Validate.isTrue(shopId < 1, "Shop ID must be greater than 0!");
+        Validate.isTrue(shopId > 1, "Shop ID must be greater than 0!");
         DataTables.SHOP_MAP.createReplace()
                 .setColumnNames("world", "x", "y", "z", "shop")
                 .setParams(location.getWorld().getName(),
@@ -277,7 +277,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void removeShop(long shopId) {
-        Validate.isTrue(shopId < 1, "Shop ID must be greater than 0!");
+        Validate.isTrue(shopId > 1, "Shop ID must be greater than 0!");
         DataTables.SHOPS.createDelete()
                 .addCondition("id", shopId)
                 .build().executeAsync();
@@ -285,7 +285,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void removeData(long dataId) {
-        Validate.isTrue(dataId < 1, "Data ID must be greater than 0!");
+        Validate.isTrue(dataId > 1, "Data ID must be greater than 0!");
         DataTables.DATA.createDelete()
                 .addCondition("id", dataId)
                 .build().executeAsync();
@@ -314,7 +314,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public long locateShopDataId(long shopId) {
-        Validate.isTrue(shopId < 1, "Shop ID must be greater than 0!");
+        Validate.isTrue(shopId > 1, "Shop ID must be greater than 0!");
         try (SQLQuery query = DataTables.SHOPS.createQuery()
                 .addCondition("id", shopId)
                 .setLimit(1)
@@ -359,7 +359,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void updateExternalInventoryProfileCache(long shopId, int space, int stock) {
-        Validate.isTrue(shopId < 1, "Shop ID must be greater than 0!");
+        Validate.isTrue(shopId > 1, "Shop ID must be greater than 0!");
         DataTables.EXTERNAL_CACHE.createReplace()
                 .setColumnNames("shop", "space", "stock")
                 .setParams(shopId, space, stock)
