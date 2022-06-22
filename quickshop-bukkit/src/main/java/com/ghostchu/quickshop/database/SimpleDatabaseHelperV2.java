@@ -314,7 +314,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public long locateShopDataId(long shopId) {
-        Validate.isTrue(shopId > 1, "Shop ID must be greater than 0!");
         try (SQLQuery query = DataTables.SHOPS.createQuery()
                 .addCondition("id", shopId)
                 .setLimit(1)
