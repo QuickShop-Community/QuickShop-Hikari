@@ -2,13 +2,13 @@
 break-shop-use-supertool: <yellow>Você pode quebrar a loja usando a SuperTool.
 fee-charged-for-price-change: <green>Você pagou <red>{0}<green> para mudar o valor.
 not-allowed-to-create: <red>Você não pode criar uma loja aqui.
-disabled-in-this-world: <red>QuickShop is disabled in this world
+disabled-in-this-world: <red>O QuickShop está desativado neste mundo
 how-much-to-trade-for: <green>Digite no chat, por quanto você deseja vender <yellow>{1}x {0}<green>.
 client-language-changed: <green>O plugin detectou sua linguagem, agora estamos usando a linguagem {0} com você.
 shops-backingup: Criando backup de lojas no banco de dados...
 _comment: Olá, tradutor! Se você editar isso do Github ou de fontes de código, você deve ir https://crowdin.com/project/quickshop-remake
 unlimited-shop-owner-changed: <yellow>Este proprietário de loja ilimitado foi alterado para {0}.
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
+bad-command-usage-detailed: '<red>Argumentos de comando inválidos! Aceita os seguintes parâmetros: <gray>{0}'
 thats-not-a-number: <red>Numero inválido
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>Este é um comando perigoso, de modo que apenas o Console possa executá-lo.
@@ -29,28 +29,28 @@ server-crash-warning: '<red>O servidor pode falhar após executar o comando /qs 
 you-cant-afford-to-change-price: <red>Custa {0} para alterar o preço na sua loja.
 safe-mode: <red>QuickShop agora está em modo seguro, você não pode abrir esta loja, por favor entre em contato com o administrador do servidor para corrigir os erros.
 forbidden-vanilla-behavior: <red>A operação é proibida porque não é compatível com o comportamento de baunilha
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>Sua loja {0} está cheia!
 paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '&eName: &b{0}'
-    - '&eOwner: &b{0}'
+    - '&eNome: &6{0}'
+    - '&aProprietário: {0}'
     - '&eType: &b{0}'
-    - '&ePrice: &b{0}'
-    - '&eItem: &b{0}'
-    - '&eLocation: &b{0}'
+    - '&7Preço: &b{0}'
+    - '&aItem: &e{0}'
+    - '&eLocalização: &b{0}'
   hover-arg-filled:
-    - '&eName: &b{name}'
-    - '&eOwner: &b{owner}'
+    - '&eNome: &6{name}'
+    - '&aProprietário: {owner}'
     - '&eType: &b{type}'
-    - '&ePrice: &b{price}'
-    - '&eItem: &b{item}'
-    - '&eLocation: &b{location}'
+    - '&7Preço: &b{price}'
+    - '&aItem: &e{item}'
+    - '&eLocalização: &b{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '&(AdminOnly) &d{0} &8negou as verificações de permissão, se isto não for experado, tente adicionar &d{1} &7para os listeners restritos. &7Guia de Configuração: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Preço médio: <yellow>{0}'
 digits-reach-the-limit: <red>Você atingiu os limites de números no preço.
 currency-unset: <green>Moeda da loja removida com sucesso. Usando as configurações padrão agora.
@@ -58,7 +58,7 @@ you-cant-create-shop-in-there: <red>Você não tem permissão para criar uma loj
 no-pending-action: <red>Você não tem nenhuma ação pendente
 refill-success: <green>Re-estocado com sucesso
 failed-to-paste: <red>Falha ao carregar os dados no Pastebin. Verifique sua conexão com a internet e tente novamente. (Veja o console para detalhes)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+shop-out-of-stock-name: <dark_purple>Sua loja em {0}, {1}, {2} ficou sem {3}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <green>Digite no chat, quantos packs você deseja <aqua>COMPRAR<green>. Tem <yellow>{0}<green> itens em cada pack. Você pode comprar <yellow>{1}<green> packs. Digite <aqua>{2}<green> para comprar todos.
 exceeded-maximum: <red>O valor excedeu o valor máximo em Java.
@@ -88,7 +88,7 @@ reloading-status:
   failed: <red>Recarregar falhou, verifique o console do servidor
 player-bought-from-your-store-tax: <red>{0} comprou {1} {2} da sua loja e você pagou {3} em impostos).
 not-enough-space: <red>Você só tem espaço para mais {0}!
-shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
+shop-name-success: <green>Defina o nome da loja com sucesso para <yellow>{0}<green>.
 shop-staff-added: <green>Adicionado com sucesso {0} como membro da equipe da sua loja.
 shops-recovering: Recuperando lojas do backup...
 menu:
