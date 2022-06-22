@@ -111,5 +111,10 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.PikaMug</groupId>
+            <artifactId>LocaleLib</artifactId>
+            <version>2.7</version>
+        </dependency>
     </dependencies>
 </project>
