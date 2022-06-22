@@ -264,7 +264,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @Override
-    public void removeShopMap(@NotNull String world, int x, int y, int z, @Nullable Consumer<Exception> callback) {
+    public void removeShopMap(@NotNull String world, int x, int y, int z) {
         // TODO: Execute isolated data check in async thread
         DataTables.SHOP_MAP.createDelete()
                 .addCondition("world", world)
