@@ -1818,7 +1818,7 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public void setCurrency(@Nullable String currency) {
-        if (this.currency.equals(currency)) {
+        if (Objects.equals(this.currency, currency)) {
             return;
         }
         this.currency = currency;
