@@ -20,6 +20,7 @@
 package com.ghostchu.quickshop.platform.spigot;
 
 import com.ghostchu.quickshop.platform.Platform;
+import me.pikamug.localelib.LocaleManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -51,6 +52,7 @@ public abstract class AbstractSpigotPlatform implements Platform {
     private BukkitAudiences audience;
     protected Map<String, String> translationMapping;
     protected final Logger logger = Logger.getLogger("QuickShop-Hikari");
+    protected final LocaleManager localeManager = new LocaleManager();
 
     public AbstractSpigotPlatform(@NotNull Plugin instance, @NotNull Map<String, String> mapping) {
         this.plugin = instance;
@@ -88,22 +90,24 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
-        return material.getKey().toString();
+        return postProcessingTranslationKey(localeManager.queryMaterial(material));
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull EntityType type) {
-        return type.getKey().toString();
+        return postProcessingTranslationKey(localeManager.queryEntityType(type, null));
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
-        return postProcessingTranslationKey(potionEffectType.getKey().toString());
+        String key;
+        key = "effect." + potionEffectType.getKey().getNamespace() + "." + potionEffectType.getKey().getKey();
+        return postProcessingTranslationKey(key);
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
-        return enchantment.getKey().toString();
+        return postProcessingTranslationKey(localeManager.queryEnchantments(Map.of(enchantment, 1)).getOrDefault(enchantment, "Unknown"));
     }
 
     @Override
