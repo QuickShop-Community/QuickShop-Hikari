@@ -16,11 +16,11 @@ not-a-number: <red>U kunt alleen een nummer invoeren, uw invoer was {0}.
 not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
 shop-removed-cause-ongoing-fee: <red>Uw winkel op {0} is verwijderd omdat u niet genoeg geld heeft om het te behouden!
 tabcomplete:
-  amount: '[amount]'
-  item: '[item]'
-  price: '[price]'
+  amount: '[aantal]'
+  item: '[ding]'
+  price: '[prijs]'
   name: '[name]'
-  range: '[range]'
+  range: '[bereik]'
   currency: '[valuta naam]'
 taxaccount-unset: <green>This shop's tax account now following server global setting.
 blacklisted-item: <red>Je kunt dit item niet verkopen omdat het op de zwarte lijst staat
@@ -460,7 +460,7 @@ you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to 
 inventory-error: '<red>Failed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.'
 integrations-check-failed-create: <red>Integratie {0} heeft de aanmaak van de winkel geweigerd
 shop-out-of-space: <dark_purple>Uw winkel op {0}, {1}, {2} is nu vol.
-admin-shop: AdminShop
+admin-shop: Administrator Winkel
 no-anythings-in-your-hand: <red>Je hebt niks in je hand.
 no-permission: <red>Je hebt hiervoor geen rechten.
 chest-was-removed: <red>De kist is verwijderd.
