@@ -422,6 +422,7 @@ command:
     toggledisplay: <white>Přepne obchodu status ukazovaného předmětu
     permission: <yellow>Správa oprávnění obchodu
     lookup: <yellow>Spravovat tabulku položek pro vyhledávání
+    database: <yellow>View and maintain QuickShop database
   bulk-size-not-set: '<red>Použití: <gray>/qs size <amount>'
   no-type-given: '<red>Použití: <gray>/qs find <item>'
   feature-not-enabled: Funkce není v konfiguraci povolena.
@@ -524,3 +525,19 @@ lookup-item-test-not-found: "<gold>Test: <yellow>Položka v ruce není zaregistr
 lookup-item-test-found: "<gold>Test: <green>Položka v ruce byla zaregistrována v tabulce vyhledávání pod názvem <aqua>{0}</aqua>."
 lookup-item-removed: "<green>Zadaná položka <aqua>{0}</aqua> byla úspěšně odstraněna z tabulky vyhledávání."
 internal-error: "<red>Došlo k vnitřní chybě, kontaktujte prosím správce serveru."
+database:
+  scanning: "<green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while..."
+  trim-warning: "<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue."
+  status: "<yellow>Status: {0}"
+  status-good: "<green>Good"
+  status-bad: "<yellow>Maintenance Required"
+  isolated: "<yellow>Isolated Data:"
+  isolated-data-ids: "<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>"
+  isolated-shop-ids: "<yellow><aqua>└</aqua> Shop Indexes: <gold>{0}</gold>"
+  isolated-logs: "<yellow><aqua>└</aqua> Logs: <gold>{0}</gold>"
+  isolated-external-caches: "<yellow><aqua>└</aqua> External Caches: <gold>{0}</gold>"
+  last-purge-time: "<yellow>Last time of trim at {0}"
+  auto-scan-alert: "<yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming."
+  auto-trim: "<green>Auto trim has been enabled on this server, no manually trim required."
+  trim-complete: "<green>Database trim completed, <yellow>{0}</yellow> isolated trimmed."
+
