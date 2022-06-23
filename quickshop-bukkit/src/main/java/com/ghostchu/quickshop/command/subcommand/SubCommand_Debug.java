@@ -120,7 +120,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                 UUID uuid = UUID.randomUUID();
                 sqlCachePool.put(uuid, sql);
                 plugin.getLogger().warning("An SQL query operation scheduled: uuid=" + uuid + ", sender=" + sender.getName() + ", sql=" + sql);
-                plugin.text().of(sender, "warning-sql", uuid, sender.getName()).send();
+                plugin.text().of(sender, "debug.warning-sql", uuid, sender.getName()).send();
                 Component component = plugin.text().of(sender, "debug.warning-sql-confirm", uuid, sender.getName()).forLocale()
                         .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/qs debug database sql confirm " + uuid))
                         .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, plugin.text().of(sender, "debug.warning-sql-confirm-hover").forLocale()));
