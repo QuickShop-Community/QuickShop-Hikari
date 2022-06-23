@@ -135,7 +135,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                     UUID uuid = UUID.fromString(cmdArg[1]);
                     String sql = sqlCachePool.getIfPresent(uuid);
                     if (sql == null) {
-                        plugin.text().of(sender, "sql-confirm-not-found", cmdArg[1]).send();
+                        plugin.text().of(sender, "debug.sql-confirm-not-found", cmdArg[1]).send();
                         return;
                     }
                     sqlCachePool.invalidate(uuid);
