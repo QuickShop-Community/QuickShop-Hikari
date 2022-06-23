@@ -103,6 +103,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         }
         switch (cmdArg[0]) {
             case "sql" -> handleDatabaseSQL(sender, ArrayUtils.remove(cmdArg, 0));
+            default -> MsgUtil.sendDirectMessage(sender, Component.text("You must specific a valid operation!"));
         }
     }
 
