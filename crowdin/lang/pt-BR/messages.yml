@@ -527,6 +527,8 @@ lookup-item-removed: "<green>O item especificado <aqua>{0}</aqua> foi removido c
 internal-error: "<red>Um erro interno ocorreu, entre em contato com o administrador do servidor."
 database:
   scanning: "<green>Verificando os dados isolados nos bancos de dados QuickShop, o carregamento do banco de dados pode aumentar em progresso de verificação, isso pode demorar um pouco..."
+  scanning-async: "<yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later."
+  already-scanning: "<red>An scan task has been started, please wait until it finished."
   trim-warning: "<yellow><red><bold>Aviso: </red>Faça backup do seu banco de dados antes de continuar a limpeza do banco de dados para evitar a perda dos dados. Uma vez que estiver pronto, execute <aqua>/qs banco de dados aparar confirmação</aqua> para continuar."
   status: "<yellow>Estado: {0}"
   status-good: "<green>Bom"
@@ -537,7 +539,13 @@ database:
   isolated-logs: "<yellow><aqua>「</aqua> Logs: <gold>{0}</gold>"
   isolated-external-caches: "<yellow><aqua>「</aqua> Caixas Externas: <gold>{0}</gold>"
   last-purge-time: "<yellow>Última vez que aparar as {0}"
+  report-time: "<yellow>Last time of scan at {0}"
   auto-scan-alert: "<yellow>O banco de dados da Loja Rápida neste servidor requer uma manutenção. Encontrado <gold>{0}</gold> dados isolados aguardando desmontagem."
   auto-trim: "<green>O corte automático foi ativado neste servidor, não é necessário recortar manualmente."
   trim-complete: "<green>Banco de dados aparado concluído, <yellow>{0}</yellow> isolado recortado."
+  auto-trim-started: "<green>Auto trim has been started, please wait..."
+  trim-start: "<green>Database trim started, please wait..."
+  trim-exception: "<red>Database trim failed, an exception raised during database trimming, check the server console."
+  suggestion:
+    trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
 
