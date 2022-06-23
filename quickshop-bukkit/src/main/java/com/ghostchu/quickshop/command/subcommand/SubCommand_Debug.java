@@ -105,7 +105,6 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             MsgUtil.sendDirectMessage(sender, Component.text("You must enter an valid Base64 encoded SQL!"));
             return;
         }
-
         if (cmdArg.length == 1) {
             try {
                 byte[] b = Base64.getDecoder().decode(cmdArg[0]);
@@ -117,11 +116,11 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                 MsgUtil.sendDirectMessage(sender, Component.text("SQL Content: " + sql));
                 MsgUtil.sendDirectMessage(sender, Component.text("Type /qs debug sql confirm " + uuid + " to confirm the query.")
                         .color(NamedTextColor.YELLOW)
-                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/qs debug sql confirm " + uuid)));
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/qs debug database sql confirm " + uuid)));
                 MsgUtil.sendDirectMessage(sender, Component.text("Don't and confirm unless you trust it.")
                         .color(NamedTextColor.RED)
                         .decorate(TextDecoration.BOLD)
-                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/qs debug sql confirm " + uuid)));
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/qs debug database sql confirm " + uuid)));
             } catch (Exception e) {
                 MsgUtil.sendDirectMessage(sender, Component.text("You must enter an valid Base64 encoded SQL!"));
                 e.printStackTrace();
