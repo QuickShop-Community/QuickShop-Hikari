@@ -1137,8 +1137,6 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public void setItem(@NotNull ItemStack item) {
         Util.ensureThread(false);
-        if (matches(item))
-            return;
         ShopItemChangeEvent event = new ShopItemChangeEvent(this, this.item, item);
         if (Util.fireCancellableEvent(event)) {
             Log.debug("A plugin cancelled the item change event.");

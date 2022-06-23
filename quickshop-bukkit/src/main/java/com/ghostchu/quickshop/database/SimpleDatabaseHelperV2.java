@@ -29,6 +29,7 @@ import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.database.bean.IsolatedScanResult;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopModerator;
@@ -242,7 +243,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public long createShop(long dataId) throws SQLException {
-        Validate.isTrue(dataId > 1, "Data ID must be greater than 0!");
+        Validate.isTrue(dataId > 0, "Data ID must be greater than 0!");
         return DataTables.SHOPS.createInsert()
                 .setColumnNames("data")
                 .setParams(dataId)
@@ -252,7 +253,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void createShopMap(long shopId, @NotNull Location location) throws SQLException {
-        Validate.isTrue(shopId > 1, "Shop ID must be greater than 0!");
+        Validate.isTrue(shopId > 0, "Shop ID must be greater than 0!");
         DataTables.SHOP_MAP.createReplace()
                 .setColumnNames("world", "x", "y", "z", "shop")
                 .setParams(location.getWorld().getName(),
@@ -277,7 +278,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void removeShop(long shopId) {
-        Validate.isTrue(shopId > 1, "Shop ID must be greater than 0!");
+        Validate.isTrue(shopId > 0, "Shop ID must be greater than 0!");
         DataTables.SHOPS.createDelete()
                 .addCondition("id", shopId)
                 .build().executeAsync();
@@ -285,7 +286,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void removeData(long dataId) {
-        Validate.isTrue(dataId > 1, "Data ID must be greater than 0!");
+        Validate.isTrue(dataId > 0, "Data ID must be greater than 0!");
         DataTables.DATA.createDelete()
                 .addCondition("id", dataId)
                 .build().executeAsync();
@@ -358,7 +359,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     public void updateExternalInventoryProfileCache(long shopId, int space, int stock) {
-        Validate.isTrue(shopId > 1, "Shop ID must be greater than 0!");
+        Validate.isTrue(shopId > 0, "Shop ID must be greater than 0!");
         DataTables.EXTERNAL_CACHE.createReplace()
                 .setColumnNames("shop", "space", "stock")
                 .setParams(shopId, space, stock)
@@ -664,15 +665,25 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
     }
 
-    public void purgeIsolatedData() throws SQLException {
-        purgeShopTableIsolatedData(scanIsolatedShopIds());
-        purgeDataTableIsolatedData(scanIsolatedDataIds());
+    @NotNull
+    public IsolatedScanResult<Long> purgeIsolatedData() throws SQLException {
+        IsolatedScanResult<Long> shopIds = scanIsolatedShopIds();
+        purgeShopTableIsolatedData(shopIds);
+        IsolatedScanResult<Long> dataIds = scanIsolatedDataIds();
+        purgeDataTableIsolatedData(dataIds);
+        List<Long> total = new LinkedList<>();
+        total.addAll(shopIds.getTotal());
+        total.addAll(dataIds.getTotal());
+        List<Long> isolated = new LinkedList<>();
+        isolated.addAll(shopIds.getIsolated());
+        isolated.addAll(dataIds.getIsolated());
+        return new IsolatedScanResult<>(total, isolated);
     }
 
-    public void purgeDataTableIsolatedData(@NotNull List<Long> toPurge) throws SQLException {
+    public void purgeDataTableIsolatedData(@NotNull IsolatedScanResult<Long> toPurge) throws SQLException {
         plugin.getLogger().info("Pulling isolated DATA_ID data...");
-        plugin.getLogger().info("Purging " + toPurge.size() + " isolated DATA_ID data...");
-        for (long dataId : toPurge) {
+        plugin.getLogger().info("Purging " + toPurge.getIsolated().size() + " isolated DATA_ID data...");
+        for (long dataId : toPurge.getIsolated()) {
             int line = DataTables.DATA.createDelete().addCondition("id", dataId).build().execute();
             Log.debug("Purged data_id=" + dataId + ", " + line + " rows effected.");
         }
@@ -680,7 +691,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @NotNull
-    public List<Long> scanIsolatedDataIds() throws SQLException {
+    public IsolatedScanResult<Long> scanIsolatedDataIds() throws SQLException {
         List<Long> dataIds = new LinkedList<>();
         List<Long> toPurge = new LinkedList<>();
         try (SQLQuery query = DataTables.DATA.createQuery().selectColumns("id").build().execute()) {
@@ -698,13 +709,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 continue;
             toPurge.add(dataId);
         }
-        return toPurge;
+        return new IsolatedScanResult<>(dataIds, toPurge);
     }
 
-    public void purgeShopTableIsolatedData(@NotNull List<Long> toPurge) throws SQLException {
+    public void purgeShopTableIsolatedData(@NotNull IsolatedScanResult<Long> toPurge) throws SQLException {
         plugin.getLogger().info("Pulling isolated SHOP_ID data...");
-        plugin.getLogger().info("Purging " + toPurge.size() + " isolated SHOP_ID data...");
-        for (long shopId : toPurge) {
+        plugin.getLogger().info("Purging " + toPurge.getIsolated().size() + " isolated SHOP_ID data...");
+        for (long shopId : toPurge.getIsolated()) {
             int shopRows = DataTables.SHOPS.createDelete().addCondition("id", shopId).build().execute();
             int cacheRows = DataTables.EXTERNAL_CACHE.createDelete().addCondition("shop", shopId).build().execute();
             Log.debug("Purged shop_id=" + shopId + ", " + (shopRows + cacheRows) + " rows affected.");
@@ -713,7 +724,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @NotNull
-    public List<Long> scanIsolatedShopIds() throws SQLException {
+    public IsolatedScanResult<Long> scanIsolatedShopIds() throws SQLException {
         List<Long> shopIds = new LinkedList<>();
         List<Long> toPurge = new LinkedList<>();
         try (SQLQuery query = DataTables.SHOPS.createQuery().selectColumns("id").build().execute()) {
@@ -732,8 +743,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 continue;
             toPurge.add(shopId);
         }
-        return toPurge;
+        return new IsolatedScanResult<>(shopIds, toPurge);
     }
+
 
     /**
      * DELETE unused data with related keys from query table.

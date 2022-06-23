@@ -37,7 +37,6 @@ import java.util.logging.Level;
 @Deprecated
 public class SimpleDatabaseHelperV1 {
 
-
     @NotNull
     private final SQLManager manager;
 
