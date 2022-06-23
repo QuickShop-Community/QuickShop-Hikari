@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
@@ -46,7 +47,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
         if (cmdArg.length < 2) {
             return List.of("status", "trim");
         }
-        return null;
+        return Collections.emptyList();
     }
 
     private void handleTrim(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
