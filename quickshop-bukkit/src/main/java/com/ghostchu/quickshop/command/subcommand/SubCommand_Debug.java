@@ -102,7 +102,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             return;
         }
         switch (cmdArg[0]) {
-            case "sql" -> handleDatabaseSQL(sender, ArrayUtils.remove(cmdArg, 0));
+            //case "sql" -> handleDatabaseSQL(sender, ArrayUtils.remove(cmdArg, 0));
             default -> plugin.text().of(sender, "debug.operation-invalid", cmdArg[0]).send();
         }
     }
