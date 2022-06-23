@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.external.com.ti.ems.jacky.ResultSetToJson;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.google.common.cache.Cache;
@@ -43,6 +44,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
@@ -51,6 +56,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
+    private final Cache<UUID, String> sqlCachePool = CacheBuilder.newBuilder().expireAfterWrite(60, TimeUnit.SECONDS).build();
 
     public SubCommand_Debug(QuickShop plugin) {
         this.plugin = plugin;
@@ -68,23 +74,25 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         switch (cmdArg[0]) {
             case "debug", "dev", "devmode" -> switchDebug(sender);
             case "handlerlist" -> handleHandlerList(sender, ArrayUtils.remove(cmdArg, 0));
-            case "signs" -> {
-                final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
-                if (!bIt.hasNext()) {
-                    plugin.text().of(sender, "not-looking-at-shop").send();
-                    return;
-                }
-                while (bIt.hasNext()) {
-                    final Block b = bIt.next();
-                    final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-                    if (shop != null) {
-                        shop.getSigns().forEach(sign -> MsgUtil.sendDirectMessage(sender, Component.text("Sign located at: " + sign.getLocation()).color(NamedTextColor.GREEN)));
-                        break;
-                    }
-                }
-            }
+            case "signs" -> handleSigns(sender);
             case "database" -> handleDatabase(sender, ArrayUtils.remove(cmdArg, 0));
             default -> MsgUtil.sendDirectMessage(sender, Component.text("Error! No correct arguments were entered!."));
+        }
+    }
+
+    private void handleSigns(@NotNull CommandSender sender) {
+        final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
+        if (!bIt.hasNext()) {
+            plugin.text().of(sender, "not-looking-at-shop").send();
+            return;
+        }
+        while (bIt.hasNext()) {
+            final Block b = bIt.next();
+            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
+            if (shop != null) {
+                shop.getSigns().forEach(sign -> MsgUtil.sendDirectMessage(sender, Component.text("Sign located at: " + sign.getLocation()).color(NamedTextColor.GREEN)));
+                break;
+            }
         }
     }
 
@@ -98,7 +106,6 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         }
     }
 
-    private final Cache<UUID, String> sqlCachePool = CacheBuilder.newBuilder().expireAfterWrite(60, TimeUnit.SECONDS).build();
 
     private void handleDatabaseSQL(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
@@ -114,7 +121,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                 plugin.getLogger().warning("An SQL query pending for confirm executed by " + sender.getName() + " with UUID " + uuid + " and content " + sql);
                 MsgUtil.sendDirectMessage(sender, Component.text("Warning: You're running a SQL query, please make sure you know what you're doing!").color(NamedTextColor.RED));
                 MsgUtil.sendDirectMessage(sender, Component.text("SQL Content: " + sql));
-                MsgUtil.sendDirectMessage(sender, Component.text("Type /qs debug sql confirm " + uuid + " to confirm the query.")
+                MsgUtil.sendDirectMessage(sender, Component.text("Type /qs debug sql confirm " + uuid + " in 60 seconds to confirm the query.")
                         .color(NamedTextColor.YELLOW)
                         .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/qs debug database sql confirm " + uuid)));
                 MsgUtil.sendDirectMessage(sender, Component.text("Don't and confirm unless you trust it.")
@@ -134,18 +141,26 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                     if (sql == null) {
                         MsgUtil.sendDirectMessage(sender, Component.text("No pending SQL query found with UUID " + uuid));
                         return;
-                    } else {
-                        sqlCachePool.invalidate(uuid);
-                        plugin.getLogger().warning("An SQL query executed by " + sender.getName() + " with UUID " + uuid + " and content " + sql);
-                        MsgUtil.sendDirectMessage(sender, Component.text("SQL Content: " + sql));
-                        MsgUtil.sendDirectMessage(sender, Component.text("Executed SQL query with UUID " + uuid));
-                        MsgUtil.sendDirectMessage(sender, Component.text("Executing..."));
-                        Integer affected = plugin.getSqlManager().executeSQL(sql);
-                        MsgUtil.sendDirectMessage(sender, Component.text("Executed SQL query with UUID " + uuid + " and affected " + affected + " rows."));
-                        plugin.getLogger().log(Level.INFO, "Executed SQL query with UUID " + uuid + " and affected " + affected + " rows.");
+                    }
+                    sqlCachePool.invalidate(uuid);
+                    plugin.getLogger().warning("An SQL query executed by " + sender.getName() + " with UUID " + uuid + " and content " + sql);
+                    MsgUtil.sendDirectMessage(sender, Component.text("SQL Content: " + sql + ", executing..."));
+                    try (Connection connection = plugin.getSqlManager().getConnection()) {
+                        Statement statement = connection.createStatement();
+                        boolean success = statement.execute(sql);
+                        if (!success) {
+                            MsgUtil.sendDirectMessage(sender, Component.text("An error occurred while executing the SQL query!"));
+                        } else {
+                            ResultSet set = statement.getResultSet();
+                            MsgUtil.sendDirectMessage(sender, Component.text(ResultSetToJson.resultSetToJsonString(set)));
+                            MsgUtil.sendDirectMessage(sender, Component.text("Completed, " + statement.getLargeUpdateCount() + ".").color(NamedTextColor.GREEN));
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                        MsgUtil.sendDirectMessage(sender, Component.text("An error occurred while executing the SQL query, check the Console!").color(NamedTextColor.RED));
                     }
                 } else {
-                    MsgUtil.sendDirectMessage(sender, Component.text("You must enter an valid UUID that already registered into caches!"));
+                    MsgUtil.sendDirectMessage(sender, Component.text("You must enter an valid index UUID that already registered into caches!"));
                 }
             }
         }
@@ -157,13 +172,6 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             return;
         }
         printHandlerList(sender, cmdArg[1]);
-    }
-
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
     }
 
     public void switchDebug(@NotNull CommandSender sender) {
@@ -205,6 +213,13 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             MsgUtil.sendDirectMessage(sender, Component.text("ERR " + th.getMessage()).color(NamedTextColor.RED));
             plugin.getLogger().log(Level.WARNING, "An error has occurred while getting the HandlerList", th);
         }
+    }
+
+    @NotNull
+    @Override
+    public List<String> onTabComplete(
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return Collections.emptyList();
     }
 
 }
