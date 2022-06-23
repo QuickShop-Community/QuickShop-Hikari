@@ -27,6 +27,7 @@ import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -37,6 +38,9 @@ import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -44,7 +48,6 @@ import java.util.logging.Level;
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
-    private final List<String> tabCompleteList = List.of("debug", "dev", "devmode", "handlerlist", "jvm", "signs");
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
@@ -55,13 +58,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
         switch (cmdArg[0]) {
             case "debug", "dev", "devmode" -> switchDebug(sender);
-            case "handlerlist" -> {
-                if (cmdArg.length < 2) {
-                    MsgUtil.sendDirectMessage(sender, Component.text("You must enter an event class"));
-                    break;
-                }
-                printHandlerList(sender, cmdArg[1]);
-            }
+            case "handlerlist" -> handleHandlerList(sender, ArrayUtils.remove(cmdArg, 0));
             case "signs" -> {
                 final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
                 if (!bIt.hasNext()) {
@@ -77,15 +74,52 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                     }
                 }
             }
+            case "database" -> handleDatabase(sender, ArrayUtils.remove(cmdArg, 0));
             default -> MsgUtil.sendDirectMessage(sender, Component.text("Error! No correct arguments were entered!."));
         }
+    }
+
+    private void handleDatabase(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
+        if (cmdArg.length < 1) {
+            MsgUtil.sendDirectMessage(sender, Component.text("You must specific a operation!"));
+            return;
+        }
+        switch (cmdArg[0]) {
+            case "sql" -> {
+                handleDatabaseSQL(sender, ArrayUtils.remove(cmdArg, 0));
+            }
+        }
+    }
+
+    private void handleDatabaseSQL(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
+        if (cmdArg.length < 1) {
+            MsgUtil.sendDirectMessage(sender, Component.text("You must enter an valid Base64 encoded SQL!"));
+            return;
+        }
+        try {
+            byte[] b = Base64.getDecoder().decode(cmdArg[0]);
+            String sql = new String(b, StandardCharsets.UTF_8);
+            Integer lines = plugin.getSqlManager().executeSQL(sql);
+            MsgUtil.sendDirectMessage(sender, Component.text("Executed SQL and affected " + lines + " lines."));
+        } catch (Exception e) {
+            MsgUtil.sendDirectMessage(sender, Component.text("You must enter an valid Base64 encoded SQL!"));
+            e.printStackTrace();
+        }
+    }
+
+    private void handleHandlerList(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
+        if (cmdArg.length < 1) {
+            MsgUtil.sendDirectMessage(sender, Component.text("You must enter an Bukkit Event class"));
+            return;
+        }
+        printHandlerList(sender, cmdArg[1]);
     }
 
     @NotNull
     @Override
     public List<String> onTabComplete(
             @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return tabCompleteList;
+        return Collections.emptyList();
     }
 
     public void switchDebug(@NotNull CommandSender sender) {
