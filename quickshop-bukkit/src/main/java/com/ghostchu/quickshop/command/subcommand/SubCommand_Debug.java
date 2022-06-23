@@ -29,8 +29,8 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.ChatColor;
@@ -76,7 +76,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "handlerlist" -> handleHandlerList(sender, ArrayUtils.remove(cmdArg, 0));
             case "signs" -> handleSigns(sender);
             case "database" -> handleDatabase(sender, ArrayUtils.remove(cmdArg, 0));
-            default -> MsgUtil.sendDirectMessage(sender, Component.text("Error! No correct arguments were entered!."));
+            default -> plugin.text().of(sender, "debug.arguments-invalid", cmdArg[0]).send();
         }
     }
 
@@ -90,7 +90,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             final Block b = bIt.next();
             final Shop shop = plugin.getShopManager().getShop(b.getLocation());
             if (shop != null) {
-                shop.getSigns().forEach(sign -> MsgUtil.sendDirectMessage(sender, Component.text("Sign located at: " + sign.getLocation()).color(NamedTextColor.GREEN)));
+                shop.getSigns().forEach(sign -> plugin.text().of(sender, "debug.sign-located", sign.getLocation()).send());
                 break;
             }
         }
@@ -98,19 +98,19 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
     private void handleDatabase(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendDirectMessage(sender, Component.text("You must specific a operation!"));
+            plugin.text().of("debug.operation-missing");
             return;
         }
         switch (cmdArg[0]) {
             case "sql" -> handleDatabaseSQL(sender, ArrayUtils.remove(cmdArg, 0));
-            default -> MsgUtil.sendDirectMessage(sender, Component.text("You must specific a valid operation!"));
+            default -> plugin.text().of(sender, "debug.operation-invalid", cmdArg[0]).send();
         }
     }
 
 
     private void handleDatabaseSQL(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendDirectMessage(sender, Component.text("You must enter an valid Base64 encoded SQL!"));
+            plugin.text().of(sender, "debug.invalid-base64-encoded-sql").send();
             return;
         }
         if (cmdArg.length == 1) {
@@ -119,19 +119,14 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                 String sql = new String(b, StandardCharsets.UTF_8);
                 UUID uuid = UUID.randomUUID();
                 sqlCachePool.put(uuid, sql);
-                plugin.getLogger().warning("An SQL query pending for confirm executed by " + sender.getName() + " with UUID " + uuid + " and content " + sql);
-                MsgUtil.sendDirectMessage(sender, Component.text("Warning: You're running a SQL query, please make sure you know what you're doing!").color(NamedTextColor.RED));
-                MsgUtil.sendDirectMessage(sender, Component.text("SQL Content: " + sql));
-                MsgUtil.sendDirectMessage(sender, Component.text("Type /qs debug sql confirm " + uuid + " in 60 seconds to confirm the query.")
-                        .color(NamedTextColor.YELLOW)
-                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/qs debug database sql confirm " + uuid)));
-                MsgUtil.sendDirectMessage(sender, Component.text("Don't confirm unless you trust it.")
-                        .color(NamedTextColor.RED)
-                        .decorate(TextDecoration.BOLD)
-                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/qs debug database sql confirm " + uuid)));
+                plugin.getLogger().warning("An SQL query operation scheduled: uuid=" + uuid + ", sender=" + sender.getName() + ", sql=" + sql);
+                plugin.text().of(sender, "warning-sql", uuid, sender.getName()).send();
+                Component component = plugin.text().of(sender, "debug.warning-sql-confirm", uuid, sender.getName()).forLocale()
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/qs debug database sql confirm " + uuid))
+                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, plugin.text().of(sender, "debug.warning-sql-confirm-hover").forLocale()));
+                MsgUtil.sendDirectMessage(sender, component);
             } catch (Exception e) {
-                MsgUtil.sendDirectMessage(sender, Component.text("You must enter an valid Base64 encoded SQL!"));
-                e.printStackTrace();
+                plugin.text().of(sender, "debug.invalid-base64-encoded-sql").send();
             }
         }
         if (cmdArg.length == 2) {
@@ -140,28 +135,24 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                     UUID uuid = UUID.fromString(cmdArg[1]);
                     String sql = sqlCachePool.getIfPresent(uuid);
                     if (sql == null) {
-                        MsgUtil.sendDirectMessage(sender, Component.text("No pending SQL query found with UUID " + uuid));
+                        plugin.text().of(sender, "sql-confirm-not-found", cmdArg[1]).send();
                         return;
                     }
                     sqlCachePool.invalidate(uuid);
                     plugin.getLogger().warning("An SQL query executed by " + sender.getName() + " with UUID " + uuid + " and content " + sql);
-                    MsgUtil.sendDirectMessage(sender, Component.text("SQL Content: " + sql + ", executing..."));
+                    plugin.text().of(sender, "debug.sql-executing", sql, sender.getName()).send();
                     try (Connection connection = plugin.getSqlManager().getConnection()) {
                         Statement statement = connection.createStatement();
-                        boolean success = statement.execute(sql);
-                        if (!success) {
-                            MsgUtil.sendDirectMessage(sender, Component.text("An error occurred while executing the SQL query!"));
-                        } else {
-                            ResultSet set = statement.getResultSet();
-                            MsgUtil.sendDirectMessage(sender, Component.text(ResultSetToJson.resultSetToJsonString(set)));
-                            MsgUtil.sendDirectMessage(sender, Component.text("Completed, " + statement.getLargeUpdateCount() + ".").color(NamedTextColor.GREEN));
-                        }
+                        statement.execute(sql);
+                        ResultSet set = statement.getResultSet();
+                        MsgUtil.sendDirectMessage(sender, Component.text(ResultSetToJson.resultSetToJsonString(set)));
+                        plugin.text().of(sender, "debug.sql-completed", statement.getLargeUpdateCount());
                     } catch (SQLException e) {
-                        e.printStackTrace();
-                        MsgUtil.sendDirectMessage(sender, Component.text("An error occurred while executing the SQL query, check the Console!").color(NamedTextColor.RED));
+                        plugin.text().of(sender, "debug.sql-exception", e.getMessage()).send();
+                        plugin.getLogger().log(Level.WARNING, "Failed to execute custom SQL: " + sql, e);
                     }
                 } else {
-                    MsgUtil.sendDirectMessage(sender, Component.text("You must enter an valid index UUID that already registered into caches!"));
+                    plugin.text().of("debug.invalid-base64-encoded-sql").send();
                 }
             }
         }
