@@ -648,6 +648,7 @@ debug:
   sql-executing: "<yellow>Executing SQL statement: <aqua>{0}</aqua>"
   sql-completed: "<green>Completed, {0} rows affected."
   sql-exception: "<red>An error occurred while executing the SQL query, check the Console for details!"
+  sql-disabled: "<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it."
 database:
   scanning: "<green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while..."
   scanning-async: "<yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later."

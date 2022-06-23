@@ -109,6 +109,11 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
 
     private void handleDatabaseSQL(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
+        Util.SysPropertiesParseResult parseResult = Util.parsePackageProperly("enable-sql");
+        if (!parseResult.asBoolean()) {
+            plugin.text().of(sender, "debug.sql-disabled", parseResult.getParseKey()).send();
+            return;
+        }
         if (cmdArg.length < 1) {
             plugin.text().of(sender, "debug.invalid-base64-encoded-sql").send();
             return;

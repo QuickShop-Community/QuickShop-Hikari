@@ -1441,6 +1441,13 @@ public class Util {
     public static class SysPropertiesParseResult {
         private final String value;
 
+        private final String key;
+
+        @NotNull
+        public String getParseKey() {
+            return key;
+        }
+
         public boolean isPresent() {
             return value != null;
         }
