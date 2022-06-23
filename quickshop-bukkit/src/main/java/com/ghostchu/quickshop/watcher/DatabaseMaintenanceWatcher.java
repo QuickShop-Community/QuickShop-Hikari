@@ -44,10 +44,16 @@ public class DatabaseMaintenanceWatcher extends BukkitRunnable {
             }
             Timer timer = new Timer();
             SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2) plugin.getDatabaseHelper();
-            IsolatedScanResult<Long> dataIds = databaseHelper.scanIsolatedDataIds();
             IsolatedScanResult<Long> shopIds = databaseHelper.scanIsolatedShopIds();
+            IsolatedScanResult<Long> dataIds = databaseHelper.scanIsolatedDataIds();
             long reportGeneratedAt = System.currentTimeMillis();
-            this.result = new DatabaseStatusHolder(DatabaseStatusHolder.Status.GOOD, dataIds, shopIds, reportGeneratedAt);
+            long total = shopIds.getTotal().size() + dataIds.getTotal().size();
+            long totalIsolated = shopIds.getIsolated().size() + dataIds.getIsolated().size();
+            if (total > 100 && totalIsolated > 500) {
+                this.result = new DatabaseStatusHolder(DatabaseStatusHolder.Status.MAINTENANCE_REQUIRED, dataIds, shopIds, reportGeneratedAt);
+            } else {
+                this.result = new DatabaseStatusHolder(DatabaseStatusHolder.Status.GOOD, dataIds, shopIds, reportGeneratedAt);
+            }
             Log.debug("Database Maintenance Watcher: Report generated in " + timer.stopAndGetTimePassed() + "ms, content=" + this.result.toString());
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING, "Database Maintenance Watcher exited with an error", e);

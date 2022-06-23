@@ -746,6 +746,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         return new IsolatedScanResult<>(shopIds, toPurge);
     }
 
+
     /**
      * DELETE unused data with related keys from query table.
      *
