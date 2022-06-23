@@ -125,7 +125,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                 MsgUtil.sendDirectMessage(sender, Component.text("Type /qs debug sql confirm " + uuid + " in 60 seconds to confirm the query.")
                         .color(NamedTextColor.YELLOW)
                         .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/qs debug database sql confirm " + uuid)));
-                MsgUtil.sendDirectMessage(sender, Component.text("Don't and confirm unless you trust it.")
+                MsgUtil.sendDirectMessage(sender, Component.text("Don't confirm unless you trust it.")
                         .color(NamedTextColor.RED)
                         .decorate(TextDecoration.BOLD)
                         .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/qs debug database sql confirm " + uuid)));
