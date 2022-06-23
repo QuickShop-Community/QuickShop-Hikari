@@ -83,8 +83,8 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
         printer.printHeader();
         printer.printLine(plugin.text().of(sender, "database.status", statusComponent).forLocale());
         printer.printLine(plugin.text().of(sender, "database.isolated").forLocale());
-        printer.printLine(plugin.text().of(sender, "database.isolated-data-ids", holder.getDataIds().getIsolated()).forLocale());
-        printer.printLine(plugin.text().of(sender, "database.isolated-shop-ids", holder.getShopIds().getIsolated()).forLocale());
+        printer.printLine(plugin.text().of(sender, "database.isolated-data-ids", holder.getDataIds().getIsolated().size()).forLocale());
+        printer.printLine(plugin.text().of(sender, "database.isolated-shop-ids", holder.getShopIds().getIsolated().size()).forLocale());
         if (holder.getStatus() == DatabaseStatusHolder.Status.MAINTENANCE_REQUIRED) {
             printer.printLine(plugin.text().of(sender, "database.suggestion.trim").forLocale());
         }
