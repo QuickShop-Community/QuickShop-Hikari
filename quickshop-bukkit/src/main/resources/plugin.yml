@@ -293,3 +293,6 @@ permissions:
   quickshop.other.use:
     description: Permission to bypass the purchase restriction
     default: op
+  quickshop.database:
+    description: Permission to use /qs database
+    default: op
