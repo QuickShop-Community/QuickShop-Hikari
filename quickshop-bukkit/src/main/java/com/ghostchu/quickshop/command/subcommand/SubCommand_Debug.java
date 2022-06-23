@@ -23,9 +23,13 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.MsgUtil;
-import lombok.AllArgsConstructor;
+import com.ghostchu.quickshop.util.Util;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.ChatColor;
@@ -42,10 +46,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
-@AllArgsConstructor
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
+
+    public SubCommand_Debug(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     private final QuickShop plugin;
 
@@ -85,25 +94,61 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             return;
         }
         switch (cmdArg[0]) {
-            case "sql" -> {
-                handleDatabaseSQL(sender, ArrayUtils.remove(cmdArg, 0));
-            }
+            case "sql" -> handleDatabaseSQL(sender, ArrayUtils.remove(cmdArg, 0));
         }
     }
+
+    private final Cache<UUID, String> sqlCachePool = CacheBuilder.newBuilder().expireAfterWrite(60, TimeUnit.SECONDS).build();
 
     private void handleDatabaseSQL(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             MsgUtil.sendDirectMessage(sender, Component.text("You must enter an valid Base64 encoded SQL!"));
             return;
         }
-        try {
-            byte[] b = Base64.getDecoder().decode(cmdArg[0]);
-            String sql = new String(b, StandardCharsets.UTF_8);
-            Integer lines = plugin.getSqlManager().executeSQL(sql);
-            MsgUtil.sendDirectMessage(sender, Component.text("Executed SQL and affected " + lines + " lines."));
-        } catch (Exception e) {
-            MsgUtil.sendDirectMessage(sender, Component.text("You must enter an valid Base64 encoded SQL!"));
-            e.printStackTrace();
+
+        if (cmdArg.length == 1) {
+            try {
+                byte[] b = Base64.getDecoder().decode(cmdArg[0]);
+                String sql = new String(b, StandardCharsets.UTF_8);
+                UUID uuid = UUID.randomUUID();
+                sqlCachePool.put(uuid, sql);
+                plugin.getLogger().warning("An SQL query pending for confirm executed by " + sender.getName() + " with UUID " + uuid + " and content " + sql);
+                MsgUtil.sendDirectMessage(sender, Component.text("Warning: You're running a SQL query, please make sure you know what you're doing!").color(NamedTextColor.RED));
+                MsgUtil.sendDirectMessage(sender, Component.text("SQL Content: " + sql));
+                MsgUtil.sendDirectMessage(sender, Component.text("Type /qs debug sql confirm " + uuid + " to confirm the query.")
+                        .color(NamedTextColor.YELLOW)
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/qs debug sql confirm " + uuid)));
+                MsgUtil.sendDirectMessage(sender, Component.text("Don't and confirm unless you trust it.")
+                        .color(NamedTextColor.RED)
+                        .decorate(TextDecoration.BOLD)
+                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/qs debug sql confirm " + uuid)));
+            } catch (Exception e) {
+                MsgUtil.sendDirectMessage(sender, Component.text("You must enter an valid Base64 encoded SQL!"));
+                e.printStackTrace();
+            }
+        }
+        if (cmdArg.length == 2) {
+            if (cmdArg[0].equals("confirm")) {
+                if (Util.isUUID(cmdArg[1])) {
+                    UUID uuid = UUID.fromString(cmdArg[1]);
+                    String sql = sqlCachePool.getIfPresent(uuid);
+                    if (sql == null) {
+                        MsgUtil.sendDirectMessage(sender, Component.text("No pending SQL query found with UUID " + uuid));
+                        return;
+                    } else {
+                        sqlCachePool.invalidate(uuid);
+                        plugin.getLogger().warning("An SQL query executed by " + sender.getName() + " with UUID " + uuid + " and content " + sql);
+                        MsgUtil.sendDirectMessage(sender, Component.text("SQL Content: " + sql));
+                        MsgUtil.sendDirectMessage(sender, Component.text("Executed SQL query with UUID " + uuid));
+                        MsgUtil.sendDirectMessage(sender, Component.text("Executing..."));
+                        Integer affected = plugin.getSqlManager().executeSQL(sql);
+                        MsgUtil.sendDirectMessage(sender, Component.text("Executed SQL query with UUID " + uuid + " and affected " + affected + " rows."));
+                        plugin.getLogger().log(Level.INFO, "Executed SQL query with UUID " + uuid + " and affected " + affected + " rows.");
+                    }
+                } else {
+                    MsgUtil.sendDirectMessage(sender, Component.text("You must enter an valid UUID that already registered into caches!"));
+                }
+            }
         }
     }
 
