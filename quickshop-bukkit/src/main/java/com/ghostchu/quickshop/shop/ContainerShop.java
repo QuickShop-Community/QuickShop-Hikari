@@ -547,7 +547,8 @@ public class ContainerShop implements Shop, Reloadable {
                     .amount(amount)
                     .build();
             if (!transaction.failSafeCommit()) {
-                plugin.getSentryErrorReporter().ignoreThrow();
+                if (plugin.getSentryErrorReporter() != null)
+                    plugin.getSentryErrorReporter().ignoreThrow();
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         } else {
@@ -565,7 +566,8 @@ public class ContainerShop implements Shop, Reloadable {
                     .amount(amount)
                     .build();
             if (!transaction.failSafeCommit()) {
-                plugin.getSentryErrorReporter().ignoreThrow();
+                if (plugin.getSentryErrorReporter() != null)
+                    plugin.getSentryErrorReporter().ignoreThrow();
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         }
@@ -905,7 +907,8 @@ public class ContainerShop implements Shop, Reloadable {
                     .amount(amount)
                     .build();
             if (!transaction.failSafeCommit()) {
-                plugin.getSentryErrorReporter().ignoreThrow();
+                if (plugin.getSentryErrorReporter() != null)
+                    plugin.getSentryErrorReporter().ignoreThrow();
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         } else {
@@ -922,7 +925,8 @@ public class ContainerShop implements Shop, Reloadable {
                     .amount(amount)
                     .build();
             if (!transactionTake.failSafeCommit()) {
-                plugin.getSentryErrorReporter().ignoreThrow();
+                if (plugin.getSentryErrorReporter() != null)
+                    plugin.getSentryErrorReporter().ignoreThrow();
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transactionTake.getLastError());
             }
             this.setSignText(plugin.getTextManager().findRelativeLanguages(seller));

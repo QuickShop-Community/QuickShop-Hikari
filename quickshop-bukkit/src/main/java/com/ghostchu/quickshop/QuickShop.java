@@ -190,6 +190,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
      * The error reporter to help devs report errors to Sentry.io
      */
     @Getter
+    @Nullable
     private RollbarErrorReporter sentryErrorReporter;
     /**
      * The server UniqueID, use to the ErrorReporter
@@ -713,7 +714,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             }
             economy = ServiceInjector.getInjectedService(AbstractEconomy.class, economy);
         } catch (Throwable e) {
-            this.getSentryErrorReporter().ignoreThrow();
+            if (sentryErrorReporter != null)
+                sentryErrorReporter.ignoreThrow();
             getLogger().severe("Something went wrong while trying to load the economy system!");
             getLogger().severe("QuickShop was unable to hook into an economy system (Couldn't find Vault or Reserve)!");
             getLogger().severe("QuickShop can NOT enable properly!");
