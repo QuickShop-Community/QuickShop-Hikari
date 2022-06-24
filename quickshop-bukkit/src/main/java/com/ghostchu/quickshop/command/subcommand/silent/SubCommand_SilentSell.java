@@ -46,7 +46,7 @@ public class SubCommand_SilentSell extends SubCommand_SilentBase {
         }
 
         shop.setShopType(ShopType.SELLING);
-        shop.update();
+        shop.setSignText(plugin.text().findRelativeLanguages(sender));
         MsgUtil.sendControlPanelInfo(sender, shop);
         plugin.text().of(sender,
                 "command.now-selling", MsgUtil.getTranslateText(shop.getItem())).send();

@@ -21,6 +21,7 @@ package com.ghostchu.quickshop.api.event;
 
 import com.ghostchu.quickshop.api.shop.Shop;
 import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +32,7 @@ public class ShopClickEvent extends AbstractQSEvent implements QSCancellable {
 
     @NotNull
     private final Shop shop;
+    private final Player player;
 
     private boolean cancelled;
 
@@ -41,8 +43,9 @@ public class ShopClickEvent extends AbstractQSEvent implements QSCancellable {
      *
      * @param shop The shop bought from
      */
-    public ShopClickEvent(@NotNull Shop shop) {
+    public ShopClickEvent(@NotNull Shop shop, @NotNull Player player) {
         this.shop = shop;
+        this.player = player;
     }
 
     @Override
@@ -68,6 +71,15 @@ public class ShopClickEvent extends AbstractQSEvent implements QSCancellable {
      */
     public @NotNull Shop getShop() {
         return this.shop;
+    }
+
+    /**
+     * Getting the player who clicked shop
+     *
+     * @return The player
+     */
+    public @NotNull Player getClicker() {
+        return this.player;
     }
 
 

@@ -34,7 +34,6 @@ public class SubCommand_SilentAlwaysCounting extends SubCommand_SilentBase {
     @Override
     protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull String[] cmdArg) {
         shop.setAlwaysCountingContainer(!shop.isAlwaysCountingContainer());
-        shop.update();
         MsgUtil.sendControlPanelInfo(sender, shop);
         if (shop.isAlwaysCountingContainer()) {
             plugin.text().of(sender, "command.toggle-always-counting.counting").send();

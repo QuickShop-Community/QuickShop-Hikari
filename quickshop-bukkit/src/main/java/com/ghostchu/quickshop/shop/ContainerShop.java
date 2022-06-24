@@ -24,6 +24,7 @@ import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
+import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
@@ -569,9 +570,9 @@ public class ContainerShop implements Shop, Reloadable {
             }
         }
         //Update sign
-        this.setSignText();
+        this.setSignText(plugin.text().findRelativeLanguages(buyer));
         if (attachedShop != null) {
-            attachedShop.setSignText();
+            attachedShop.setSignText(plugin.text().findRelativeLanguages(buyer));
         }
     }
 
@@ -758,15 +759,15 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
-    public void onClick() {
+    public void onClick(@NotNull Player clicker) {
         Util.ensureThread(false);
-        ShopClickEvent event = new ShopClickEvent(this);
+        ShopClickEvent event = new ShopClickEvent(this, clicker);
         if (Util.fireCancellableEvent(event)) {
             Log.debug("Ignore shop click, because some plugin cancel it.");
             return;
         }
         refresh();
-        setSignText();
+        setSignText(plugin.getTextManager().findRelativeLanguages(clicker));
     }
 
     /**
@@ -922,12 +923,13 @@ public class ContainerShop implements Shop, Reloadable {
                 plugin.getSentryErrorReporter().ignoreThrow();
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transactionTake.getLastError());
             }
-            this.setSignText();
+            this.setSignText(plugin.getTextManager().findRelativeLanguages(seller));
             if (attachedShop != null) {
-                attachedShop.setSignText();
+                attachedShop.setSignText(plugin.getTextManager().findRelativeLanguages(seller));
             }
         }
     }
+
     @Override
     public boolean inventoryAvailable() {
         if (isUnlimited() && !isAlwaysCountingContainer()) {
@@ -943,12 +945,12 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
-    public List<Component> getSignText(@NotNull String locale) {
+    public List<Component> getSignText(@NotNull ProxiedLocale locale) {
         Util.ensureThread(false);
         List<Component> lines = new ArrayList<>();
         //Line 1
         String headerKey = inventoryAvailable() ? "signs.header-available" : "signs.header-unavailable";
-        lines.add(plugin.text().of(headerKey, this.ownerName(false), plugin.text().of(headerKey).forLocale(locale)).forLocale(locale));
+        lines.add(plugin.text().of(headerKey, this.ownerName(false), plugin.text().of(headerKey).forLocale(locale.getLocale())).forLocale(locale.getLocale()));
         //Line 2
         String tradingStringKey;
         String noRemainingStringKey;
@@ -974,11 +976,11 @@ public class ContainerShop implements Shop, Reloadable {
         Component line2 = switch (shopRemaining) {
             //Unlimited
             case -1 ->
-                    plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale)).forLocale(locale);
+                    plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale.getLocale())).forLocale(locale.getLocale());
             //No remaining
-            case 0 -> plugin.text().of(noRemainingStringKey).forLocale(locale);
+            case 0 -> plugin.text().of(noRemainingStringKey).forLocale(locale.getLocale());
             //Has remaining
-            default -> plugin.text().of(tradingStringKey, Component.text(shopRemaining)).forLocale(locale);
+            default -> plugin.text().of(tradingStringKey, Component.text(shopRemaining)).forLocale(locale.getLocale());
         };
         lines.add(line2);
 
@@ -1055,7 +1057,21 @@ public class ContainerShop implements Shop, Reloadable {
         if (!Util.isLoaded(this.location)) {
             return;
         }
-        this.setSignText(getSignText(MsgUtil.getDefaultGameLanguageCode()));
+        this.setSignText(getSignText(plugin.getTextManager().findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode())));
+    }
+
+    /**
+     * Updates signs attached to the shop
+     *
+     * @param locale The locale to use for the sign text
+     */
+    @Override
+    public void setSignText(@NotNull ProxiedLocale locale) {
+        Util.ensureThread(false);
+        if (!Util.isLoaded(this.location)) {
+            return;
+        }
+        this.setSignText(getSignText(locale));
     }
 
     /**
@@ -1272,7 +1288,7 @@ public class ContainerShop implements Shop, Reloadable {
         if (this.owner.equals(owner))
             return;
         this.owner = owner;
-        setSignText();
+        setSignText(plugin.getTextManager().findRelativeLanguages(owner));
         update();
     }
 

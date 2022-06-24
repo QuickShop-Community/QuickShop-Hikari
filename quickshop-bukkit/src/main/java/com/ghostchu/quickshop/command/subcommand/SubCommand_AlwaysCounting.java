@@ -36,7 +36,6 @@ public class SubCommand_AlwaysCounting implements CommandHandler<Player> {
         final Shop shop = getLookingShop(sender);
         if (shop != null) {
             shop.setAlwaysCountingContainer(!shop.isAlwaysCountingContainer());
-            shop.update();
             if (shop.isAlwaysCountingContainer()) {
                 plugin.text().of(sender, "command.toggle-always-counting.counting").send();
             } else {

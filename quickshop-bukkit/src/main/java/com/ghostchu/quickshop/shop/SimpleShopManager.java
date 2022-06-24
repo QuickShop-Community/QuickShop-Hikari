@@ -280,7 +280,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // load the shop finally
         shop.onLoad();
         // first init
-        shop.setSignText();
+        shop.setSignText(plugin.getTextManager().findRelativeLanguages(shop.getOwner()));
         // save to database
         Util.asyncThreadRun(() -> {
             String world = shop.getLocation().getWorld().getName();
@@ -730,7 +730,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         sendSellSuccess(buyer, shop, amount, total, transaction.getTax());
         new ShopSuccessPurchaseEvent(shop, buyer, buyerInventory, amount, total, transaction.getTax()).callEvent();
-        shop.setSignText(); // Update the signs count
+        shop.setSignText(plugin.text().findRelativeLanguages(buyer)); // Update the signs count
         notifySold(buyer, shop, amount, space);
     }
 
@@ -1629,9 +1629,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      * It defined in configuration.
      */
     @Override
-    public void migrateOwnerToUnlimitedShopOwner(Shop shop) {
+    public void migrateOwnerToUnlimitedShopOwner(@NotNull Shop shop) {
         shop.setOwner(this.cacheUnlimitedShopAccount);
-        shop.setSignText();
+        shop.setSignText(plugin.text().findRelativeLanguages(shop.getOwner()));
     }
 
     @Override

@@ -50,6 +50,7 @@ public class SubCommand_SilentEmpty extends SubCommand_SilentBase {
         }
 
         inventory.clear();
+        shop.setSignText(plugin.text().findRelativeLanguages(sender));
         MsgUtil.sendControlPanelInfo(sender, shop);
         plugin.text().of(sender, "empty-success").send();
     }

@@ -200,7 +200,7 @@ public class PlayerListener extends AbstractQSListener {
 
         this.playClickSound(p);
         plugin.getShopManager().sendShopInfo(p, shop);
-        shop.setSignText();
+        shop.setSignText(plugin.text().findRelativeLanguages(p));
         if (shop.getRemainingSpace() == 0) {
             plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
             return true;
@@ -341,7 +341,7 @@ public class PlayerListener extends AbstractQSListener {
         }
         this.playClickSound(p);
         plugin.getShopManager().sendShopInfo(p, shop);
-        shop.setSignText();
+        shop.setSignText(plugin.text().findRelativeLanguages(p));
         if (shop.getRemainingStock() == 0) {
             plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
             return true;
@@ -518,7 +518,7 @@ public class PlayerListener extends AbstractQSListener {
     private void openControlPanel(@NotNull Player p, @NotNull Shop shop) {
         MsgUtil.sendControlPanelInfo(p, shop);
         this.playClickSound(p);
-        shop.setSignText();
+        shop.setSignText(plugin.text().findRelativeLanguages(p));
     }
 
     private int getPlayerCanBuy(@NotNull Shop shop, double traderBalance, double price, @NotNull InventoryWrapper playerInventory) {
@@ -575,7 +575,7 @@ public class PlayerListener extends AbstractQSListener {
             }
             final Shop shop = plugin.getShopManager().getShopIncludeAttached(location);
             if (shop != null) {
-                shop.setSignText();
+                shop.setSignText(plugin.text().findRelativeLanguages(e.getPlayer()));
             }
         } catch (NullPointerException ignored) {
         }

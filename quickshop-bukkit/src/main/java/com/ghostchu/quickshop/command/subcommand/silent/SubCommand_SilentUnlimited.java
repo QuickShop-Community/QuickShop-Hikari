@@ -39,7 +39,7 @@ public class SubCommand_SilentUnlimited extends SubCommand_SilentBase {
     @Override
     protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull String[] cmdArg) {
         shop.setUnlimited(!shop.isUnlimited());
-        shop.update();
+        shop.setSignText(plugin.text().findRelativeLanguages(sender));
         MsgUtil.sendControlPanelInfo(sender, shop);
 
         if (shop.isUnlimited()) {

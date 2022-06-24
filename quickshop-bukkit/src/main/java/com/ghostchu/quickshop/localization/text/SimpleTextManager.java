@@ -20,6 +20,7 @@
 package com.ghostchu.quickshop.localization.text;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.localization.text.postprocessor.PostProcessor;
 import com.ghostchu.quickshop.localization.text.distributions.Distribution;
@@ -316,10 +317,12 @@ public class SimpleTextManager implements TextManager, Reloadable {
 
     }
 
-    private String findRelativeLanguages(String langCode) {
+    @Override
+    @NotNull
+    public ProxiedLocale findRelativeLanguages(@Nullable String langCode) {
         //langCode may null when some plugins providing fake player
         if (langCode == null || langCode.isEmpty()) {
-            return "en_us";
+            return new ProxiedLocale(langCode, "en_us");
         }
         String result = languagesCache.getIfPresent(langCode);
         if (result == null) {
@@ -344,7 +347,25 @@ public class SimpleTextManager implements TextManager, Reloadable {
             Log.debug("Registering relative language " + langCode + " to " + result);
             languagesCache.put(langCode, result);
         }
-        return result;
+        return new ProxiedLocale(langCode, result);
+    }
+
+    @Override
+    public @NotNull ProxiedLocale findRelativeLanguages(@Nullable CommandSender sender) {
+        if (sender instanceof Player)
+            return findRelativeLanguages(((Player) sender).getLocale());
+        return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
+    }
+
+    @Override
+    public @NotNull ProxiedLocale findRelativeLanguages(@Nullable UUID sender) {
+        if (sender == null)
+            return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
+        Player player = Bukkit.getPlayer(sender);
+        if (player != null)
+            return findRelativeLanguages(player);
+        return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
+
     }
 
     /**
@@ -408,8 +429,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
         return new Text(this, sender, languageFilesManager.getDistributions(), path, convert(args));
     }
 
+    @Override
     @NotNull
-    private Component[] convert(@Nullable Object... args) {
+    public Component[] convert(@Nullable Object... args) {
         if (args == null || args.length == 0)
             return new Component[0];
         Component[] components = new Component[args.length];
@@ -574,7 +596,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         @Override
         @NotNull
         public List<Component> forLocale(@NotNull String locale) {
-            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
             if (index == null) {
                 Log.debug("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
                 String languageCode = MsgUtil.getDefaultGameLanguageCode();
@@ -623,7 +645,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             } else {
                 locale = MsgUtil.getDefaultGameLanguageCode();
             }
-            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
             return index != null;
         }
 
@@ -691,7 +713,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         @Override
         @NotNull
         public Component forLocale(@NotNull String locale) {
-            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
             if (index == null) {
                 Log.debug("Index for " + locale + " is null");
                 Log.debug("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
@@ -741,7 +763,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             } else {
                 locale = MsgUtil.getDefaultGameLanguageCode();
             }
-            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale));
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
             return index != null;
         }
 

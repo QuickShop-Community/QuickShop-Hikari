@@ -139,6 +139,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
         // Update the shop
         shop.setPrice(price);
         shop.update();
+        shop.setSignText(plugin.text().findRelativeLanguages(sender));
         plugin.text().of(sender,
                 "price-is-now", LegacyComponentSerializer.legacySection().deserialize(plugin.getEconomy().format(shop.getPrice(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency()))).send();
         // Chest shops can be double shops.

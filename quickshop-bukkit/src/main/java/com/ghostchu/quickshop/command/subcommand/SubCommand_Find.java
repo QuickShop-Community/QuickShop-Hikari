@@ -133,8 +133,8 @@ public class SubCommand_Find implements CommandHandler<Player> {
                 Location location = shop.getLocation();
                 //  "nearby-shop-entry": "&a- Info:{0} &aPrice:&b{1} &ax:&b{2} &ay:&b{3} &az:&b{4} &adistance: &b{5} &ablock(s)"
                 stringBuilder = stringBuilder.append(plugin.text().of(sender, "nearby-shop-entry",
-                        shop.getSignText(sender.getLocale()).get(1),
-                        shop.getSignText(sender.getLocale()).get(3),
+                        shop.getSignText(plugin.text().findRelativeLanguages(sender)).get(1),
+                        shop.getSignText(plugin.text().findRelativeLanguages(sender)).get(3),
                         location.getBlockX(),
                         location.getBlockY(),
                         location.getBlockZ(),
