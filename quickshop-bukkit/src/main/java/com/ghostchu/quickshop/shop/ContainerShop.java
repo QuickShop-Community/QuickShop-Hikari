@@ -833,6 +833,7 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
+    @Deprecated(forRemoval = true)
     public void setAlwaysCountingContainer(boolean value) {
         if (isAlwaysCountingContainer == value)
             return;
@@ -840,6 +841,7 @@ public class ContainerShop implements Shop, Reloadable {
         getExtra(plugin).set("is-always-counting-container", value);
         setDirty();
         update();
+        plugin.getLogger().log(Level.WARNING, "Plugin " + Log.Caller.create() + " calling deprecated method Shop.setAlwaysCountingContainer(boolean), which this feature will be removed in future!");
     }
 
     @Override

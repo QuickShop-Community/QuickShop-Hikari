@@ -698,6 +698,7 @@ public interface Shop {
     /**
      * If this shop is always counting space or stocks, even is unlimited
      */
+    @Deprecated(forRemoval = true)
     default boolean isAlwaysCountingContainer() {
         return false;
     }
@@ -707,6 +708,7 @@ public interface Shop {
      *
      * @param value is always counting space or stocks
      */
+    @Deprecated(forRemoval = true)
     default void setAlwaysCountingContainer(boolean value) {
         //For back-ward compatibility
         throw new UnsupportedOperationException("setAlwaysCountingContainer is not implemented");

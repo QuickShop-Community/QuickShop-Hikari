@@ -24,13 +24,14 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
+@Deprecated(forRemoval = true)
 public class SubCommand_SilentAlwaysCounting extends SubCommand_SilentBase {
-
+    @Deprecated(forRemoval = true)
     public SubCommand_SilentAlwaysCounting(QuickShop plugin) {
         super(plugin);
     }
 
+    @Deprecated(forRemoval = true)
     @Override
     protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull String[] cmdArg) {
         shop.setAlwaysCountingContainer(!shop.isAlwaysCountingContainer());
