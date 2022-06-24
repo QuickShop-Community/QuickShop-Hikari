@@ -27,6 +27,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
+@Deprecated
 public class SubCommand_AlwaysCounting implements CommandHandler<Player> {
 
     private final QuickShop plugin;
@@ -41,6 +42,7 @@ public class SubCommand_AlwaysCounting implements CommandHandler<Player> {
             } else {
                 plugin.text().of(sender, "command.toggle-always-counting.not-counting").send();
             }
+            plugin.text().of(sender, "always-counting-removal-early-warning").send();
             return;
         }
         plugin.text().of(sender, "not-looking-at-shop").send();

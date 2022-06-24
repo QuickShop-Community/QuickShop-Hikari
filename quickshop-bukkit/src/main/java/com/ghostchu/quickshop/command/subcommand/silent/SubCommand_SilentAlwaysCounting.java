@@ -41,6 +41,7 @@ public class SubCommand_SilentAlwaysCounting extends SubCommand_SilentBase {
         } else {
             plugin.text().of(sender, "command.toggle-always-counting.not-counting").send();
         }
+        plugin.text().of(sender, "always-counting-removal-early-warning").send();
     }
 
 }
