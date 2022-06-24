@@ -61,7 +61,7 @@ public class ItemMarker implements Reloadable {
         stacks.put(itemName, itemStack);
         configuration.set(itemName, itemStack);
         if (saveConfig()) {
-            Log.debug("Removed item " + itemName + " !");
+            Log.debug("Saved item " + itemName + " !");
             return OperationResult.SUCCESS;
         } else {
             return OperationResult.UNKNOWN;
