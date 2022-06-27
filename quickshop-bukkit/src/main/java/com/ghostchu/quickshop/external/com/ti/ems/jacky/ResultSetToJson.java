@@ -13,7 +13,7 @@ import java.sql.SQLException;
  */
 public class ResultSetToJson {
     @NotNull
-    public static JsonArray resultSetToJsonArray(ResultSet rs) {
+    public static JsonArray resultSetToJsonArray(@NotNull ResultSet rs) {
         JsonArray ja = new JsonArray();
         try {
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -33,7 +33,7 @@ public class ResultSetToJson {
     }
 
     @NotNull
-    public static JsonObject resultSetToJsonObject(ResultSet rs) {
+    public static JsonObject resultSetToJsonObject(@NotNull ResultSet rs) {
         JsonArray ja = new JsonArray();
         JsonObject jo = new JsonObject();
         try {
