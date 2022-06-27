@@ -32,6 +32,8 @@ public class ResultSetToJson {
         return ja;
     }
 
+
+
     @NotNull
     public static JsonObject resultSetToJsonObject(@NotNull ResultSet rs) {
         JsonArray ja = new JsonArray();
