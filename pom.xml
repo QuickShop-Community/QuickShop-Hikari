@@ -139,11 +139,16 @@
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.github.PikaMug.LocaleLib.
                                         </shadedPattern>
                                     </relocation>
+                                    <relocation>
+                                        <pattern>de.themoep.minedown.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.minedown.</shadedPattern>
+                                    </relocation>
                                     <!--                                    <relocation>-->
                                     <!--                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>-->
                                     <!--                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.adventure.text.minimessage.-->
                                     <!--                                        </shadedPattern>-->
                                     <!--                                    </relocation>-->
+
                                 </relocations>
                                 <transformers>
                                     <transformer
@@ -335,6 +340,10 @@
         <repository>
             <id>nms-repo</id>
             <url>https://repo.codemc.io/repository/nms/</url>
+        </repository>
+        <repository>
+            <id>minebench-repo</id>
+            <url>https://repo.minebench.de/</url>
         </repository>
     </repositories>
 
