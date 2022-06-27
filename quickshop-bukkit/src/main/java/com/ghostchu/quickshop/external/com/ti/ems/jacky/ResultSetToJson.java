@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.external.com.ti.ems.jacky;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
  * @author jackypan1989 (<a href="https://jackypan1989.wordpress.com/2012/07/18/java-%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98-convert-resultset-to-json/">...</a>)
  */
 public class ResultSetToJson {
+    @NotNull
     public static JsonArray resultSetToJsonArray(ResultSet rs) {
         JsonArray ja = new JsonArray();
         try {
@@ -30,6 +32,7 @@ public class ResultSetToJson {
         return ja;
     }
 
+    @NotNull
     public static JsonObject resultSetToJsonObject(ResultSet rs) {
         JsonArray ja = new JsonArray();
         JsonObject jo = new JsonObject();
