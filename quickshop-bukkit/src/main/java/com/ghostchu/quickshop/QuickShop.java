@@ -22,6 +22,7 @@ package com.ghostchu.quickshop;
 import cc.carm.lib.easysql.EasySQL;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.hikari.HikariConfig;
+import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
 import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.QuickShopProvider;
@@ -563,6 +564,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
      *
      * @return Plugin Version
      */
+    @NotNull
     public static String getVersion() {
         return QuickShop.getInstance().getDescription().getVersion();
     }
@@ -572,7 +574,18 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
      *
      * @return the permission Manager.
      */
+    @NotNull
     public static PermissionManager getPermissionManager() {
+        return permissionManager;
+    }
+
+    /**
+     * Get the permissionManager as static
+     *
+     * @return the permission Manager.
+     */
+    @NotNull
+    public PermissionManager perm() {
         return permissionManager;
     }
 

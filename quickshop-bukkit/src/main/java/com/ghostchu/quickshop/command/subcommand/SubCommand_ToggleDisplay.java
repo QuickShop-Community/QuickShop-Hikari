@@ -40,7 +40,7 @@ public class SubCommand_ToggleDisplay implements CommandHandler<Player> {
         final Shop shop = getLookingShop(sender);
         if (shop != null) {
             if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.TOGGLE_DISPLAY)
-                    || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.toggledisplay")) {
+                    || plugin.perm().hasPermission(sender, "quickshop.other.toggledisplay")) {
                 if (shop.isDisableDisplay()) {
                     shop.setDisableDisplay(false);
                     plugin.text().of(sender, "display-turn-on").send();

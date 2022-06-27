@@ -79,7 +79,7 @@ public class BlockListener extends AbstractProtectionListener {
             }
             // If they're either survival or the owner, they can break it
             if (p.getGameMode() == GameMode.CREATIVE
-                    && (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE) || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destory"))) {
+                    && (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE) || plugin.perm().hasPermission(p, "quickshop.other.destory"))) {
                 // Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
                     if (getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {
@@ -113,7 +113,7 @@ public class BlockListener extends AbstractProtectionListener {
             // (accidents happen)
             if (p.getGameMode() == GameMode.CREATIVE
                     && (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE)
-                    || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destory"))) {
+                    || plugin.perm().hasPermission(p, "quickshop.other.destory"))) {
                 // Check SuperTool
                 if (p.getInventory().getItemInMainHand().getType() == Material.GOLDEN_AXE) {
                     if (getPlugin().getConfig().getBoolean("shop.disable-super-tool")) {
@@ -196,7 +196,7 @@ public class BlockListener extends AbstractProtectionListener {
         }
         Player player = event.getPlayer();
         if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)
-                && !QuickShop.getPermissionManager().hasPermission(player, "quickshop.other.open")) {
+                && !plugin.perm().hasPermission(player, "quickshop.other.open")) {
             plugin.text().of(player, "not-managed-shop").send();
             event.setCancelled(true);
         }
@@ -256,11 +256,11 @@ public class BlockListener extends AbstractProtectionListener {
 
         Shop shop = getShopPlayer(chest.getLocation(), false);
         if (shop != null) {
-            if (!QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.double")) {
+            if (!plugin.perm().hasPermission(player, "quickshop.create.double")) {
                 e.setCancelled(true);
                 plugin.text().of(player, "no-double-chests").send();
             } else if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)
-                    && !QuickShop.getPermissionManager().hasPermission(player, "quickshop.other.open")) {
+                    && !plugin.perm().hasPermission(player, "quickshop.other.open")) {
                 e.setCancelled(true);
                 plugin.text().of(player, "not-managed-shop").send();
             }

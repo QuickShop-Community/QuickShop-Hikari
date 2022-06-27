@@ -51,7 +51,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
             return;
         }
         if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_NAME)
-                && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.shopnaming")) {
+                && !plugin.perm().hasPermission(sender, "quickshop.other.shopnaming")) {
             plugin.text().of(sender, "not-managed-shop").send();
         }
 
@@ -76,7 +76,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
         double fee = plugin.getConfig().getDouble("shop.name-fee", 0);
         EconomyTransaction transaction = null;
         if (fee > 0) {
-            if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.bypass.namefee")) {
+            if (!plugin.perm().hasPermission(sender, "quickshop.bypass.namefee")) {
                 transaction = EconomyTransaction.builder()
                         .world(shop.getLocation().getWorld())
                         .from(sender.getUniqueId())

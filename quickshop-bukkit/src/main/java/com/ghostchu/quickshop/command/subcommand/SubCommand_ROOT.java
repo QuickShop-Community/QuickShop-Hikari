@@ -59,7 +59,7 @@ public class SubCommand_ROOT implements CommandHandler<CommandSender> {
                 for (String requirePermission : requirePermissions) {
                     if (requirePermission != null
                             && !requirePermission.isEmpty()
-                            && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
+                            && !plugin.perm().hasPermission(sender, requirePermission)) {
                         if (Util.isDevMode()) {
                             Log.debug(
                                     "Player "

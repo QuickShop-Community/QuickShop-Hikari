@@ -58,7 +58,7 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
                 if (selectivePermissions != null && !selectivePermissions.isEmpty()) {
                     for (String selectivePermission : container.getSelectivePermissions()) {
                         if (selectivePermission != null && !selectivePermission.isEmpty()) {
-                            if (QuickShop.getPermissionManager().hasPermission(s, selectivePermission)) {
+                            if (plugin.perm().hasPermission(s, selectivePermission)) {
                                 passed = true;
                                 break;
                             }
@@ -69,7 +69,7 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
                 final List<String> requirePermissions = container.getPermissions();
                 if (requirePermissions != null && !requirePermissions.isEmpty()) {
                     for (String requirePermission : requirePermissions) {
-                        if (requirePermission != null && !requirePermission.isEmpty() && !QuickShop.getPermissionManager().hasPermission(s, requirePermission)) {
+                        if (requirePermission != null && !requirePermission.isEmpty() && !plugin.perm().hasPermission(s, requirePermission)) {
                             continue commandPrintingLoop;
                         }
                     }
@@ -86,7 +86,7 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
                     }
                 }
                 if (container.isDisabled() || (container.getDisabledSupplier() != null && container.getDisabledSupplier().get())) {
-                    if (QuickShop.getPermissionManager().hasPermission(s, "quickshop.showdisabled")) {
+                    if (plugin.perm().hasPermission(s, "quickshop.showdisabled")) {
                         plugin.text().of(s, "command.format-disabled", commandLabel, container.getPrefix(), container.getDisableText(s)).send();
                     }
                 } else {

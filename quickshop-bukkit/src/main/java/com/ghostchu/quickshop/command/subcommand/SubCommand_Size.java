@@ -59,7 +59,7 @@ public class SubCommand_Size implements CommandHandler<Player> {
         final Shop shop = getLookingShop(sender);
         if (shop != null) {
             if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_STACK_AMOUNT)
-                    || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount")) {
+                    || plugin.perm().hasPermission(sender, "quickshop.other.amount")) {
                 if (amount <= 0 || amount > Util.getItemMaxStackSize(shop.getItem().getType())) {
                     plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
                     return;

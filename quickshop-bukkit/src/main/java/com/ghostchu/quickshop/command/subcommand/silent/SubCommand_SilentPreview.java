@@ -41,7 +41,7 @@ public class SubCommand_SilentPreview extends SubCommand_SilentBase {
             return;
         }
         if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.PREVIEW_SHOP)
-                || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.preview")) {
+                || plugin.perm().hasPermission(sender, "quickshop.other.preview")) {
             shop.openPreview(sender);
         }
     }

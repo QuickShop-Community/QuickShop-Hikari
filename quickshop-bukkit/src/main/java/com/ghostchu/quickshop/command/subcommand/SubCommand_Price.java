@@ -82,7 +82,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
         }
 
         if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_PRICE)
-                && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price")) {
+                && !plugin.perm().hasPermission(sender, "quickshop.other.price")) {
             plugin.text().of(sender, "not-managed-shop").send();
             return;
         }

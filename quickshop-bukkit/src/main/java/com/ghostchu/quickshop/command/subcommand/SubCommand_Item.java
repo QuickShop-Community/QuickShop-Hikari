@@ -45,7 +45,7 @@ public class SubCommand_Item implements CommandHandler<Player> {
         final Shop shop = getLookingShop(sender);
         if (shop != null) {
             if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_ITEM)
-                    && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.item")) {
+                    && !plugin.perm().hasPermission(sender, "quickshop.other.item")) {
                 plugin.text().of(sender, "not-managed-shop").send();
                 return;
             }
@@ -54,11 +54,11 @@ public class SubCommand_Item implements CommandHandler<Player> {
                 plugin.text().of(sender, "command.no-trade-item").send();
                 return;
             }
-            if (Util.isBlacklisted(itemStack) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.bypass." + itemStack.getType().name())) {
+            if (Util.isBlacklisted(itemStack) && !plugin.perm().hasPermission(sender, "quickshop.bypass." + itemStack.getType().name())) {
                 plugin.text().of(sender, "blacklisted-item").send();
                 return;
             }
-            if (!plugin.isAllowStack() && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stacks")) {
+            if (!plugin.isAllowStack() && !plugin.perm().hasPermission(sender, "quickshop.create.stacks")) {
                 itemStack.setAmount(1);
             }
             PriceLimiter limiter = plugin.getShopManager().getPriceLimiter();

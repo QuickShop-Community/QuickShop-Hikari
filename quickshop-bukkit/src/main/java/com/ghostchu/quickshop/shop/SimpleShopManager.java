@@ -633,7 +633,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
         Player player = Bukkit.getPlayer(buyer);
         if (player != null) {
-            if (!QuickShop.getPermissionManager().hasPermission(player, "quickshop.other.use") && !shop.playerAuthorize(buyer, BuiltInShopPermission.PURCHASE)) {
+            if (!plugin.perm().hasPermission(player, "quickshop.other.use") && !shop.playerAuthorize(buyer, BuiltInShopPermission.PURCHASE)) {
                 plugin.text().of("no-permission").send();
                 return;
             }
@@ -795,11 +795,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         double tax = plugin.getConfig().getDouble("tax");
         Player player = plugin.getServer().getPlayer(p);
         if (player != null) {
-            if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.tax")) {
+            if (plugin.perm().hasPermission(player, "quickshop.tax")) {
                 tax = 0;
                 Log.debug("Disable the Tax for player " + player + " cause they have permission quickshop.tax");
             }
-            if (shop.isUnlimited() && QuickShop.getPermissionManager().hasPermission(player, "quickshop.tax.bypassunlimited")) {
+            if (shop.isUnlimited() && plugin.perm().hasPermission(player, "quickshop.tax.bypassunlimited")) {
                 tax = 0;
                 Log.debug("Disable the Tax for player " + player + " cause they have permission quickshop.tax.bypassunlimited and shop is unlimited.");
             }
@@ -855,13 +855,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         // Check if item has been blacklisted
         if (Util.isBlacklisted(shop.getItem())
-                && !QuickShop.getPermissionManager()
+                && !plugin.perm()
                 .hasPermission(p, "quickshop.bypass." + shop.getItem().getType().name().toLowerCase(Locale.ROOT))) {
             plugin.text().of(p, "blacklisted-item").send();
             return;
         }
         // Check if server/player allowed to create stacking shop
-        if (plugin.isAllowStack() && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.stacks")) {
+        if (plugin.isAllowStack() && !plugin.perm().hasPermission(p, "quickshop.create.stacks")) {
             Log.debug("Player " + p.getName() + " no permission to create stacks shop, forcing creating single item shop");
             shop.getItem().setAmount(1);
         }
@@ -874,7 +874,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             Result result = plugin.getPermissionChecker().canBuild(p, shop.getLocation());
             if (!result.isSuccess()) {
                 plugin.text().of(p, "3rd-plugin-build-check-failed", result.getMessage()).send();
-                if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.alert")) {
+                if (plugin.perm().hasPermission(p, "quickshop.alert")) {
                     plugin.text().of(p, "3rd-plugin-build-check-failed-admin", result.getMessage(), result.getListener()).send();
                 }
                 Log.debug("Failed to create shop because protection check failed, found:" + result.getMessage());
@@ -890,7 +890,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
         // Check if player and server allow double chest shop
         if (Util.isDoubleChest(shop.getLocation().getBlock().getBlockData())
-                && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.create.double")) {
+                && !plugin.perm().hasPermission(p, "quickshop.create.double")) {
             plugin.text().of(p, "no-double-chests").send();
             return;
         }
@@ -958,7 +958,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // Else, if the event is cancelled, they won't get their
         // money back.
         double createCost = plugin.getConfig().getDouble("shop.cost");
-        if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.bypasscreatefee")) {
+        if (plugin.perm().hasPermission(p, "quickshop.bypasscreatefee")) {
             createCost = 0;
         }
         if (createCost > 0) {
@@ -1097,7 +1097,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
         Player player = Bukkit.getPlayer(seller);
         if (player != null) {
-            if (!QuickShop.getPermissionManager().hasPermission(player, "quickshop.other.use") && !shop.playerAuthorize(seller, BuiltInShopPermission.PURCHASE)) {
+            if (!plugin.perm().hasPermission(player, "quickshop.other.use") && !shop.playerAuthorize(seller, BuiltInShopPermission.PURCHASE)) {
                 plugin.text().of("no-permission").send();
                 return;
             }
@@ -1324,7 +1324,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     @Override
     public void sendShopInfo(@NotNull Player p, @NotNull Shop shop) {
         if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.SHOW_INFORMATION)
-                && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.use")) {
+                && !plugin.perm().hasPermission(p, "quickshop.other.use")) {
             return;
         }
         // Potentially faster with an array?
@@ -1335,7 +1335,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.owner", shop.ownerName()).forLocale());
         // Enabled
         if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PREVIEW_SHOP)
-                || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.preview")) {
+                || plugin.perm().hasPermission(p, "quickshop.other.preview")) {
             chatSheetPrinter.printLine(plugin.text().of(p, "menu.item", MsgUtil.getTranslateText(shop.getItem())).forLocale()
                     .append(Component.text("   "))
                     .append(plugin.text().of(p, "menu.preview", Component.text(shop.getItem().getAmount())).forLocale())

@@ -481,7 +481,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
             for (String requirePermission : permissionList) {
                 if (requirePermission != null
                         && !requirePermission.isEmpty()
-                        && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
+                        && !plugin.perm().hasPermission(sender, requirePermission)) {
                     Log.debug(
                             "Sender "
                                     + sender.getName()
@@ -498,7 +498,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         } else {
             for (String selectivePermission : permissionList) {
                 if (selectivePermission != null && !selectivePermission.isEmpty()) {
-                    if (QuickShop.getPermissionManager().hasPermission(sender, selectivePermission)) {
+                    if (plugin.perm().hasPermission(sender, selectivePermission)) {
                         return true;
                     }
                 }

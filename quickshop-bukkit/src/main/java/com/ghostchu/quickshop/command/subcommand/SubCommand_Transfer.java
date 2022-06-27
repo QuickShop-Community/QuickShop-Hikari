@@ -57,7 +57,7 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
             }
             plugin.text().of(sender, "command.transfer-success", shopList.size(), profile.getName()).send();
         } else if (cmdArg.length == 2) {
-            if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.transfer.other")) {
+            if (!plugin.perm().hasPermission(sender, "quickshop.transfer.other")) {
                 plugin.text().of(sender, "no-permission").send();
                 return;
             }
