@@ -363,9 +363,6 @@ public class Util {
         }
     }
 
-
-    private static final StackWalker stackWalker = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE), 2);
-
     /**
      * Print debug log when plugin running on dev mode.
      *
