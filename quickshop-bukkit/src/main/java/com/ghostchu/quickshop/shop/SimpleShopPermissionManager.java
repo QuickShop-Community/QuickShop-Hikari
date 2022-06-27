@@ -41,9 +41,9 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
             initDefaultConfiguration(file);
         }
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-        if (!yamlConfiguration.isSet(QuickShop.getInstance().getName().toLowerCase(Locale.ROOT) + ".everyone")
-                || !yamlConfiguration.isSet(QuickShop.getInstance().getName().toLowerCase(Locale.ROOT) + ".staff")
-                || !yamlConfiguration.isSet(QuickShop.getInstance().getName().toLowerCase(Locale.ROOT) + ".blocked")) {
+        if (!yamlConfiguration.isSet(plugin.getName().toLowerCase(Locale.ROOT) + ".everyone")
+                || !yamlConfiguration.isSet(plugin.getName().toLowerCase(Locale.ROOT) + ".staff")
+                || !yamlConfiguration.isSet(plugin.getName().toLowerCase(Locale.ROOT) + ".blocked")) {
             plugin.getLogger().warning("Corrupted group configuration file, creating new one...");
             try {
                 Files.move(file.toPath(), file.toPath().resolveSibling(file.getName() + ".corrupted." + UUID.randomUUID().toString().replace("-", "")));
@@ -131,7 +131,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
     }
 
     public boolean hasPermission(@NotNull String group, @NotNull BuiltInShopPermission permission) {
-        return hasPermission(group, QuickShop.getInstance(), permission.getRawNode());
+        return hasPermission(group, plugin, permission.getRawNode());
     }
 
     @Override

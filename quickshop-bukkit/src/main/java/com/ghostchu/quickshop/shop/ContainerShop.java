@@ -346,12 +346,12 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public boolean playerAuthorize(@NotNull UUID player, @NotNull BuiltInShopPermission permission) {
-        return playerAuthorize(player, QuickShop.getInstance(), permission.getRawNode());
+        return playerAuthorize(player, plugin, permission.getRawNode());
     }
 
     @Override
     public List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermission permission) {
-        return playersCanAuthorize(QuickShop.getInstance(), permission.getRawNode());
+        return playersCanAuthorize(plugin, permission.getRawNode());
     }
 
     @Override
@@ -700,7 +700,7 @@ public class ContainerShop implements Shop, Reloadable {
                             EconomyTransaction.builder()
                                     .amount(cost)
                                     .allowLoan(false)
-                                    .core(QuickShop.getInstance().getEconomy())
+                                    .core(plugin.getEconomy())
                                     .currency(plugin.getCurrency())
                                     .world(this.getLocation().getWorld())
                                     .from(taxAccount)
@@ -711,7 +711,7 @@ public class ContainerShop implements Shop, Reloadable {
                             EconomyTransaction.builder()
                                     .amount(cost)
                                     .allowLoan(false)
-                                    .core(QuickShop.getInstance().getEconomy())
+                                    .core(plugin.getEconomy())
                                     .currency(plugin.getCurrency())
                                     .world(this.getLocation().getWorld())
                                     .to(this.getOwner())
@@ -1592,7 +1592,7 @@ public class ContainerShop implements Shop, Reloadable {
         // Check for new shop sign
         Component[] lines = new Component[sign.getLines().length];
         for (int i = 0; i < sign.getLines().length; i++) {
-            lines[i] = QuickShop.getInstance().getPlatform().getLine(sign, i);
+            lines[i] = plugin.getPlatform().getLine(sign, i);
         }
         // Can be claim
 

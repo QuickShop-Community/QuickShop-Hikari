@@ -104,7 +104,7 @@ public class ShopPurger {
                                 EconomyTransaction.builder()
                                         .amount(plugin.getConfig().getDouble("shop.cost"))
                                         .allowLoan(false)
-                                        .core(QuickShop.getInstance().getEconomy())
+                                        .core(plugin.getEconomy())
                                         .currency(shop.getCurrency())
                                         .world(shop.getLocation().getWorld())
                                         .to(shop.getOwner())

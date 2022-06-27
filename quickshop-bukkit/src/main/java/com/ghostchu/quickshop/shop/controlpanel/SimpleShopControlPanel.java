@@ -142,7 +142,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
                     .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, clickCommand)));
         }
         //Set amount per bulk
-        if (QuickShop.getInstance().isAllowStack()) {
+        if (plugin.isAllowStack()) {
             if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount") ||
                     shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_STACK_AMOUNT) &&
                             QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeamount")) {

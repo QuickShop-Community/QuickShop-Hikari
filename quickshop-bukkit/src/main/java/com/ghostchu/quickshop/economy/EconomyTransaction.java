@@ -111,13 +111,7 @@ public class EconomyTransaction {
             lastError = "From and To cannot be null in same time.";
             throw new IllegalArgumentException("From and To cannot be null in same time.");
         }
-        //For passing Test
-        //noinspection ConstantConditions
-        if (QuickShop.getInstance() != null) {
-            this.tryingFixBalanceInsufficient = QuickShop.getInstance().getConfig().getBoolean("trying-fix-banlance-insuffient");
-        } else {
-            this.tryingFixBalanceInsufficient = false;
-        }
+        this.tryingFixBalanceInsufficient = QuickShop.getInstance().getConfig().getBoolean("trying-fix-banlance-insuffient");
         if (tryingFixBalanceInsufficient) {
             //Fetch some stupid plugin caching
             if (from != null) {
