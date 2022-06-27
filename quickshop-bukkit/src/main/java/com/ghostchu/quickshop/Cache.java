@@ -93,6 +93,10 @@ public class Cache {
         accessCaching.invalidate(location);
     }
 
+    public void invalidateAll() {
+        accessCaching.invalidateAll();
+    }
+
 
     private static class BoxedShop {
         @Nullable
