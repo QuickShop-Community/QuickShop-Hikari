@@ -12,17 +12,14 @@ import java.sql.SQLException;
  */
 public class ResultSetToJson {
     public static JsonArray resultSetToJsonArray(ResultSet rs) {
-        JsonObject element;
         JsonArray ja = new JsonArray();
-        ResultSetMetaData rsmd;
-        String columnName, columnValue;
         try {
-            rsmd = rs.getMetaData();
+            ResultSetMetaData rsmd = rs.getMetaData();
             while (rs.next()) {
-                element = new JsonObject();
+                JsonObject element = new JsonObject();
                 for (int i = 0; i < rsmd.getColumnCount(); i++) {
-                    columnName = rsmd.getColumnName(i + 1);
-                    columnValue = rs.getString(columnName);
+                    String columnName = rsmd.getColumnName(i + 1);
+                    String columnValue = rs.getString(columnName);
                     element.addProperty(columnName, columnValue);
                 }
                 ja.add(element);
@@ -34,18 +31,15 @@ public class ResultSetToJson {
     }
 
     public static JsonObject resultSetToJsonObject(ResultSet rs) {
-        JsonObject element;
         JsonArray ja = new JsonArray();
         JsonObject jo = new JsonObject();
-        ResultSetMetaData rsmd;
-        String columnName, columnValue;
         try {
-            rsmd = rs.getMetaData();
+            ResultSetMetaData rsmd = rs.getMetaData();
             while (rs.next()) {
-                element = new JsonObject();
+                JsonObject element = new JsonObject();
                 for (int i = 0; i < rsmd.getColumnCount(); i++) {
-                    columnName = rsmd.getColumnName(i + 1);
-                    columnValue = rs.getString(columnName);
+                    String columnName = rsmd.getColumnName(i + 1);
+                    String columnValue = rs.getString(columnName);
                     element.addProperty(columnName, columnValue);
                 }
                 ja.add(element);
