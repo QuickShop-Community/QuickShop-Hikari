@@ -24,18 +24,16 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.AllArgsConstructor;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.logging.Level;
 
 @AllArgsConstructor
 public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender> {
@@ -46,9 +44,16 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
     public void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         File file = new File(plugin.getDataFolder(), "recovery.zip");
         if (!file.exists()) {
-            MsgUtil.sendDirectMessage(sender, Component.text("recovery.zip doesn't exist! Do not execute this command unless you know what are you doing.").color(NamedTextColor.RED));
+            plugin.text().of(sender, "importing-not-found").send();
             return;
         }
+
+        if (cmdArg.length < 1 || !cmdArg[0].equalsIgnoreCase("confirm")) {
+            plugin.text().of(sender, "importing-early-warning").send();
+            return;
+        }
+
+        plugin.text().of(sender, "importing-database").send();
         Log.debug("Initializing database recovery...");
         DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
         Log.debug("Unloading all shops...");
@@ -64,10 +69,11 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
                 Log.debug("Re-loading shop from database...");
                 Util.mainThreadRun(() -> {
                     plugin.getShopLoader().loadShops();
-                    MsgUtil.sendDirectMessage(sender, Component.text("Recovery shops data from database completed"));
+                    plugin.text().of(sender,"imported-database").send();
                 });
             } catch (SQLException | IOException | ClassNotFoundException e) {
-                MsgUtil.sendDirectMessage(sender, Component.text("Error occurred during recovery progress: " + e.getMessage()));
+                plugin.text().of(sender,"importing-failed",e.getMessage()).send();
+                plugin.getLogger().log(Level.WARNING,"Failed to import the database from backup file.",e);
             }
         });
 

@@ -34,20 +34,20 @@ import java.sql.SQLException;
 
 @AllArgsConstructor
 public class SubCommand_Export implements CommandHandler<ConsoleCommandSender> {
-
+    private final QuickShop plugin;
     @Override
     public synchronized void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        QuickShop.getInstance().text().of(sender,"exporting-database").send();
+        plugin.text().of(sender,"exporting-database").send();
         File file = new File(QuickShop.getInstance().getDataFolder(), "export-" + System.currentTimeMillis() + ".zip");
-        DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) QuickShop.getInstance().getDatabaseHelper());
+        DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
         Util.asyncThreadRun(() -> {
             try {
                 databaseIOUtil.exportTables(file);
             } catch (SQLException | IOException e) {
-                QuickShop.getInstance().text().of(sender,"exporting-failed",e.getMessage()).send();
+                plugin.text().of(sender,"exporting-failed",e.getMessage()).send();
             }
         });
-        QuickShop.getInstance().text().of(sender,"exported-database",file.toString()).send();
+        plugin.text().of(sender,"exported-database",file.toString()).send();
     }
 
 

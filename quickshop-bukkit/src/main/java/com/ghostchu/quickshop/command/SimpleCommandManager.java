@@ -85,13 +85,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .permission("quickshop.alwayscounting")
                         .executor(new SubCommand_AlwaysCounting(plugin))
                         .build());
-        registerCmd(
-                CommandContainer.builder()
-                        .prefix("silentalwayscounting")
-                        .hidden(true)
-                        .permission("quickshop.alwayscounting")
-                        .executor(new SubCommand_SilentAlwaysCounting(plugin))
-                        .build());
+//        registerCmd(
+//                CommandContainer.builder()
+//                        .prefix("silentalwayscounting")
+//                        .hidden(true)
+//                        .permission("quickshop.alwayscounting")
+//                        .executor(new SubCommand_SilentAlwaysCounting(plugin))
+//                        .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("transfer")
@@ -289,7 +289,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .prefix("export")
                         .hidden(true)
                         .permission("quickshop.export")
-                        .executor(new SubCommand_Export())
+                        .executor(new SubCommand_Export(plugin))
                         .build());
 //        registerCmd(
 //                CommandContainer.builder()
