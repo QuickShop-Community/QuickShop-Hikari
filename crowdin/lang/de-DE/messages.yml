@@ -169,7 +169,7 @@ edition-confilct: QuicShop-Hikari mit QuickShop-Reremake installiert können geg
 inventory-unavailable: '<red>Dieser Shop Inventar-Wrapper existiert nicht oder ist ungültig. Verwendest du ein Add-on um das Shop-Inventar neu zu verbinden? Information: Inventar-Wrapper={0}, Wrapper Bereitstellung={1}, Symbol-Link={2}. Bitte kontaktiere die Server-Administratoren.'
 file-test: Dies ist eine Text Testdatei. Wir verwenden sie um zu testen ob die messages.json kaputt ist. Du kannst sie mit jedem Easter Egg füllen wie du willst :)
 unknown-player: <red>Dieser Spieler existiert nicht. Bitte überprüfe, ob der Name korrekt geschrieben wurde.
-player-offline: "<red>The target player currently is offline."
+player-offline: "<red>Der Spieler ist derzeit offline."
 language:
   qa-issues: '<yellow>Qualitätssicherungs-Probleme: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -567,14 +567,14 @@ always-counting-removal-early-warning: "<red>Die 'Immer zählen' Funktion ist zu
 exporting-database: "<green>Datenbank wird exportiert, bitte warten..."
 exporting-failed: "<red>Der Export der Datenbank ist fehlgeschlagen, bitte überprüfe die Serverkonsole."
 exported-database: "<green>Datenbank exportiert nach <yellow>{0}</yellow>."
-importing-not-found: "<red>The <yellow>{0}</yellow> file not found, please check the file path."
-importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/qs recovery confirm</aqua> to continue."
+importing-not-found: "<red>Datei <yellow>{0}</yellow> nicht gefunden. Überprfüfe den Dateipfad."
+importing-early-warning: "<red><bold>Warnung:</bold> <yellow>Das Backup wird in die aktuelle Datenbank importiert und allo vorhandenen Daten werden gelöscht und sind permanent verloren, sofern du kein Backup hast.<newline><red>Bist du sicher, dass du den Import fortsetzen willst?<yellow>Schreibe <aqua>/qs recovery confirm</aqua> zum fortfahren."
 importing-database: "<green>Datenbank wird aus dem Backup importiert, bitte warten..."
 importing-failed: "<red>Import der Datenbank fehlgeschlagen, bitte überprüfe die Serverkonsole."
 imported-database: "<green>Datenbank importiert von <yellow>{0}</yellow>."
-transfer-sent: "<green>Shops transfer sent to <yellow>{0}</yellow>."
-transfer-request: "<yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?"
-transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds."
+transfer-sent: "<green>Shops transfer request sent to <yellow>{0}</yellow>."
+transfer-request: "<yellow>Spieler <aqua>{0}</aqua> möchte seine Shops an dich übergeben. Möchtest du den transfer akzeptieren?"
+transfer-ask: "<gold>Schreibe <red>/qs transfer accept</red> zum akzeptieren.<newline>Schreibe <red>/qs transfer deny</red> zum ablehnen.<newline>Die Anfrage wird nach <red>{0}</red> Sekunden ablaufen."
 transfer-accepted-fromside: "<green>Player <aqua>{0}</aqua> accepted your shop transfer request."
 transfer-accepted-toside: "<green>You accepted <aqua>{0}</aqua>'s transfer request."
 transfer-rejected-fromside: "<red>Player <aqua>{0}</aqua> rejected your shop transfer request."
