@@ -566,8 +566,6 @@ always-counting-removal-early-warning: "<red>总是计数功能将移除，您�
 exporting-database: "<green>正在导出数据，请稍候..."
 exporting-failed: "<red>导出数据失败，请检查服务器控制台。"
 exported-database: "<green>数据已导出到 <yellow>{0}</yellow>。"
-importing-not-found: "<red>The <yellow>{0}</yellow> file not found, please check the file path."
-importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/qs recovery confirm</aqua> to continue."
 importing-database: "<green>正在从备份导入数据，请稍候..."
 importing-failed: "<red>导入数据失败，请检查服务器控制台。"
 imported-database: "<green>数据从 <yellow>{0}</yellow> 导入。"
