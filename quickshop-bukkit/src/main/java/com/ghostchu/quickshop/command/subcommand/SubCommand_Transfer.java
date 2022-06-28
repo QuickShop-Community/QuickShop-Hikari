@@ -60,7 +60,7 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
         }
         if (cmdArg.length == 1) {
             switch (cmdArg[0]) {
-                case "accept" -> {
+                case "accept", "allow", "yes" -> {
                     PendingTransferTask task = taskCache.getIfPresent(sender.getUniqueId());
                     taskCache.invalidate(sender.getUniqueId());
                     if (task == null) {
@@ -69,7 +69,7 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                     }
                     task.commit(true);
                 }
-                case "reject" -> {
+                case "reject", "deny", "no" -> {
                     PendingTransferTask task = taskCache.getIfPresent(sender.getUniqueId());
                     taskCache.invalidate(sender.getUniqueId());
                     if (task == null) {
