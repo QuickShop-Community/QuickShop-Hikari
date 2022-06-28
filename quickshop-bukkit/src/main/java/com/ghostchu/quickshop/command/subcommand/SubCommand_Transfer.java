@@ -124,7 +124,10 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length <= 2 ? Util.getPlayerList() : Collections.emptyList();
+        List<String> list = Util.getPlayerList();
+        list.add("accept");
+        list.add("deny");
+        return cmdArg.length <= 2 ? list : Collections.emptyList();
     }
 
     @AllArgsConstructor
