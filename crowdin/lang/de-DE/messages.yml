@@ -169,6 +169,7 @@ edition-confilct: QuicShop-Hikari mit QuickShop-Reremake installiert können geg
 inventory-unavailable: '<red>Dieser Shop Inventar-Wrapper existiert nicht oder ist ungültig. Verwendest du ein Add-on um das Shop-Inventar neu zu verbinden? Information: Inventar-Wrapper={0}, Wrapper Bereitstellung={1}, Symbol-Link={2}. Bitte kontaktiere die Server-Administratoren.'
 file-test: Dies ist eine Text Testdatei. Wir verwenden sie um zu testen ob die messages.json kaputt ist. Du kannst sie mit jedem Easter Egg füllen wie du willst :)
 unknown-player: <red>Dieser Spieler existiert nicht. Bitte überprüfe, ob der Name korrekt geschrieben wurde.
+player-offline: "<red>The target player currently is offline."
 language:
   qa-issues: '<yellow>Qualitätssicherungs-Probleme: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -571,3 +572,11 @@ importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup wi
 importing-database: "<green>Datenbank wird aus dem Backup importiert, bitte warten..."
 importing-failed: "<red>Import der Datenbank fehlgeschlagen, bitte überprüfe die Serverkonsole."
 imported-database: "<green>Datenbank importiert von <yellow>{0}</yellow>."
+transfer-sent: "<green>Shops transfer sent to <yellow>{0}</yellow>."
+transfer-request: "<yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you.<yellow>Did you want accept the transfer?</yellow>"
+transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds."
+transfer-accepted-fromside: "<green>Player <aqua>{0}</aqua> accepted your shop transfer request."
+transfer-accepted-toside: "<green>You accepted <aqua>{0}</aqua>'s transfer request."
+transfer-rejected-fromside: "<red>Player <aqua>{0}</aqua> rejected your shop transfer request."
+transfer-rejected-toside: "<red>You rejected <aqua>{0}</aqua>'s shop transfer request."
+transfer-no-pending-operation: "<red>You don't have pending transfer request yet."
