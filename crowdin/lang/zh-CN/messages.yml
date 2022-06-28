@@ -169,6 +169,7 @@ edition-confilct: QuickShop-Hikari 与 QuickShop-Reremake 同时安装在服务�
 inventory-unavailable: '<red>此商店InventoryWrapper不存在或无效。 你是否使用附属插件重新绑定商店库存？信息：InventoryWrapper={0}，WrapperProvider={1}，SymbolLink={2}。请联系服务器管理员。'
 file-test: 这是个测试文件，我们可以用它来测试 messages.json 文件是否损坏。你可以在这里填入任何喜欢的彩蛋 :)
 unknown-player: <red>目标玩家不存在，请检查你输入的玩家名字。
+player-offline: "<red>The target player currently is offline."
 language:
   qa-issues: '<yellow>质量问题：<aqua>{0}%'
   code: '<yellow>代码： <gold>{0}'
@@ -571,3 +572,11 @@ importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup wi
 importing-database: "<green>正在从备份导入数据，请稍候..."
 importing-failed: "<red>导入数据失败，请检查服务器控制台。"
 imported-database: "<green>数据从 <yellow>{0}</yellow> 导入。"
+transfer-sent: "<green>Shops transfer sent to <yellow>{0}</yellow>."
+transfer-request: "<yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you.<yellow>Did you want accept the transfer?</yellow>"
+transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds."
+transfer-accepted-fromside: "<green>Player <aqua>{0}</aqua> accepted your shop transfer request."
+transfer-accepted-toside: "<green>You accepted <aqua>{0}</aqua>'s transfer request."
+transfer-rejected-fromside: "<red>Player <aqua>{0}</aqua> rejected your shop transfer request."
+transfer-rejected-toside: "<red>You rejected <aqua>{0}</aqua>'s shop transfer request."
+transfer-no-pending-operation: "<red>You don't have pending transfer request yet."
