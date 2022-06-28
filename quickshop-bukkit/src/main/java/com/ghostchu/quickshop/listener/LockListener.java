@@ -80,7 +80,7 @@ public class LockListener extends AbstractProtectionListener {
             }
             // If they owned it or have bypass perms, they can destroy it
             if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE)
-                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
+                    && !plugin.perm().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
                 plugin.text().of(p, "no-permission").send();
             }
@@ -99,7 +99,7 @@ public class LockListener extends AbstractProtectionListener {
             // If they're the shop owner or have bypass perms, they can destroy
             // it.
             if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.DELETE)
-                    && !QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.destroy")) {
+                    && !plugin.perm().hasPermission(p, "quickshop.other.destroy")) {
                 e.setCancelled(true);
                 plugin.text().of(p, "no-permission").send();
             }
@@ -125,7 +125,7 @@ public class LockListener extends AbstractProtectionListener {
         }
         Player player = event.getPlayer();
         if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.DELETE)
-                && !QuickShop.getPermissionManager().hasPermission(player, "quickshop.other.open")) {
+                && !plugin.perm().hasPermission(player, "quickshop.other.open")) {
             plugin.text().of(player, "that-is-locked").send();
             event.setCancelled(true);
         }
@@ -157,7 +157,7 @@ public class LockListener extends AbstractProtectionListener {
         }
 
         if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)) {
-            if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.open")) {
+            if (plugin.perm().hasPermission(p, "quickshop.other.open")) {
                 plugin.text().of(p, "bypassing-lock").send();
                 return;
             }
@@ -184,7 +184,7 @@ public class LockListener extends AbstractProtectionListener {
             return;
         }
 
-        if (QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.open")) {
+        if (plugin.perm().hasPermission(p, "quickshop.other.open")) {
             plugin.text().of(p, "bypassing-lock").send();
             return;
         }

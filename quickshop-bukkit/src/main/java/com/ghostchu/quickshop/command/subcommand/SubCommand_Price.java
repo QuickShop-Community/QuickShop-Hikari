@@ -82,7 +82,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
         }
 
         if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_PRICE)
-                && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price")) {
+                && !plugin.perm().hasPermission(sender, "quickshop.other.price")) {
             plugin.text().of(sender, "not-managed-shop").send();
             return;
         }
@@ -139,6 +139,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
         // Update the shop
         shop.setPrice(price);
         shop.update();
+        shop.setSignText(plugin.text().findRelativeLanguages(sender));
         plugin.text().of(sender,
                 "price-is-now", LegacyComponentSerializer.legacySection().deserialize(plugin.getEconomy().format(shop.getPrice(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency()))).send();
         // Chest shops can be double shops.
@@ -172,7 +173,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
     @Override
     public List<String> onTabComplete(
             @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(QuickShop.getInstance().text().of(sender, "tabcomplete.price").forLocale())) : Collections.emptyList();
+        return cmdArg.length == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.price").forLocale())) : Collections.emptyList();
     }
 
 }

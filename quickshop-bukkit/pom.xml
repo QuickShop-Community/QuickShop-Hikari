@@ -26,7 +26,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>3.0.1.0</version>
+        <version>3.0.2.0</version>
     </parent>
 
     <artifactId>quickshop-bukkit</artifactId>
@@ -369,6 +369,19 @@
         <dependency>
             <groupId>com.ghostchu</groupId>
             <artifactId>simplereloadlib</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.themoep</groupId>
+            <artifactId>minedown-adventure</artifactId>
+            <version>1.7.2-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.sourceforge.csvjdbc/csvjdbc -->
+        <dependency>
+            <groupId>net.sourceforge.csvjdbc</groupId>
+            <artifactId>csvjdbc</artifactId>
+            <version>1.0.40</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>3.0.1.0</version>
+    <version>3.0.2.0</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -139,11 +139,16 @@
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.github.PikaMug.LocaleLib.
                                         </shadedPattern>
                                     </relocation>
+                                    <relocation>
+                                        <pattern>de.themoep.minedown.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.minedown.</shadedPattern>
+                                    </relocation>
                                     <!--                                    <relocation>-->
                                     <!--                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>-->
                                     <!--                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.adventure.text.minimessage.-->
                                     <!--                                        </shadedPattern>-->
                                     <!--                                    </relocation>-->
+
                                 </relocations>
                                 <transformers>
                                     <transformer
@@ -336,6 +341,10 @@
             <id>nms-repo</id>
             <url>https://repo.codemc.io/repository/nms/</url>
         </repository>
+        <repository>
+            <id>minebench-repo</id>
+            <url>https://repo.minebench.de/</url>
+        </repository>
     </repositories>
 
 
@@ -439,7 +448,7 @@
             <dependency>
                 <groupId>cc.carm.lib</groupId>
                 <artifactId>easysql-hikaricp</artifactId>
-                <version>0.4.0</version>
+                <version>0.4.1</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>

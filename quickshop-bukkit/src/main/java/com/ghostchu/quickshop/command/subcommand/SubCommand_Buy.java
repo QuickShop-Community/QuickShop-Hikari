@@ -38,13 +38,13 @@ public class SubCommand_Buy implements CommandHandler<Player> {
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         final Shop shop = getLookingShop(sender);
         if (shop != null) {
-            if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.buy")) {
+            if (!plugin.perm().hasPermission(sender, "quickshop.create.buy")) {
                 plugin.text().of("no-permission").send();
                 return;
             }
-            if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE) || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.admin")) {
+            if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE) || plugin.perm().hasPermission(sender, "quickshop.create.admin")) {
                 shop.setShopType(ShopType.BUYING);
-                shop.update();
+                shop.setSignText(plugin.text().findRelativeLanguages(sender));
                 plugin.text().of(sender, "command.now-buying", MsgUtil.getTranslateText(shop.getItem())).send();
             } else {
                 plugin.text().of(sender, "not-managed-shop").send();

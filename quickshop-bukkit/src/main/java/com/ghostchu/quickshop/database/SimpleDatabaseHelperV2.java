@@ -43,7 +43,11 @@ import org.apache.commons.lang3.Validate;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.relique.jdbc.csv.CsvDriver;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.sql.*;
@@ -787,6 +791,45 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .setLimit(1).build().execute()) {
             ResultSet set = queryTableResult.getResultSet();
             return set.next();
+        }
+    }
+
+    public void writeToCSV(@NotNull ResultSet set, @NotNull File csvFile) throws SQLException, IOException {
+        if (!csvFile.getParentFile().exists())
+            csvFile.getParentFile().mkdirs();
+        if (!csvFile.exists())
+            csvFile.createNewFile();
+        try (PrintStream stream = new PrintStream(csvFile)) {
+            Log.debug("Writing to CSV file: " + csvFile.getAbsolutePath());
+            CsvDriver.writeToCsv(set, stream, true);
+        }
+    }
+
+    public void importFromCSV(@NotNull File zipFile, @NotNull DataTables table) throws SQLException, ClassNotFoundException {
+        Log.debug("Loading CsvDriver...S");
+        Class.forName("org.relique.jdbc.csv.CsvDriver");
+        try (Connection conn = DriverManager.getConnection("jdbc:relique:csv:zip:" + zipFile);
+             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                     ResultSet.CONCUR_READ_ONLY);
+             ResultSet results = stmt.executeQuery("SELECT * FROM " + table.getName())) {
+            ResultSetMetaData metaData = results.getMetaData();
+            String[] columns = new String[metaData.getColumnCount()];
+            for (int i = 0; i < columns.length; i++) {
+                columns[i] = metaData.getColumnName(i + 1);
+            }
+            Log.debug("Parsed " + columns.length + " columns: "+Util.array2String(columns));
+            while (results.next()) {
+                Object[] values = new String[columns.length];
+                for (int i = 0; i < values.length; i++) {
+                    Log.debug("Copying column: " + columns[i]);
+                    values[i] = results.getObject(columns[i]);
+                }
+                Log.debug("Inserting row: " + Util.array2String(Arrays.stream(values).map(Object::toString).toArray(String[]::new)));
+                table.createInsert()
+                        .setColumnNames(columns)
+                        .setParams(values)
+                        .execute();
+            }
         }
     }
 

@@ -72,7 +72,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
         QuickShop plugin = QuickShop.getInstance();
         List<Component> components = new ArrayList<>();
         // Owner
-        if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.setowner")) {
+        if (!plugin.perm().hasPermission(sender, "quickshop.setowner")) {
             components.add(plugin.text().of(sender, "menu.owner", shop.ownerName()).forLocale());
         } else {
             Component text;
@@ -86,7 +86,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
                     .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/qs setowner ")));
         }
         // Unlimited
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.unlimited")) {
+        if (plugin.perm().hasPermission(sender, "quickshop.unlimited")) {
             Component text = plugin.text().of(sender, "controlpanel.unlimited", MsgUtil.bool2String(shop.isUnlimited())).forLocale();
             Component hoverText = plugin.text().of(sender, "controlpanel.unlimited-hover").forLocale();
             String clickCommand = MsgUtil.fillArgs("/qs silentunlimited {0}", shop.getRuntimeRandomUniqueId().toString());
@@ -94,20 +94,20 @@ public class SimpleShopControlPanel implements ShopControlPanel {
                     .hoverEvent(HoverEvent.showText(hoverText))
                     .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand)));
         }
-        // Always Counting
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.alwayscounting")) {
-            Component text = plugin.text().of(sender, "controlpanel.alwayscounting", MsgUtil.bool2String(shop.isAlwaysCountingContainer())).forLocale();
-            Component hoverText = plugin.text().of(sender, "controlpanel.alwayscounting-hover").forLocale();
-            String clickCommand = MsgUtil.fillArgs("/qs silentalwayscounting {0}", shop.getRuntimeRandomUniqueId().toString());
-            components.add(text
-                    .hoverEvent(HoverEvent.showText(hoverText))
-                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand)));
-        }
+//        // Always Counting
+//        if (plugin.perm().hasPermission(sender, "quickshop.alwayscounting")) {
+//            Component text = plugin.text().of(sender, "controlpanel.alwayscounting", MsgUtil.bool2String(shop.isAlwaysCountingContainer())).forLocale();
+//            Component hoverText = plugin.text().of(sender, "controlpanel.alwayscounting-hover").forLocale();
+//            String clickCommand = MsgUtil.fillArgs("/qs silentalwayscounting {0}", shop.getRuntimeRandomUniqueId().toString());
+//            components.add(text
+//                    .hoverEvent(HoverEvent.showText(hoverText))
+//                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand)));
+//        }
         // Buying/Selling Mode
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.buy")
-                && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.sell")
+        if (plugin.perm().hasPermission(sender, "quickshop.create.buy")
+                && plugin.perm().hasPermission(sender, "quickshop.create.sell")
                 && (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE) ||
-                QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.admin"))) {
+                plugin.perm().hasPermission(sender, "quickshop.create.admin"))) {
             if (shop.isSelling()) {
                 Component text = plugin.text().of(sender, "controlpanel.mode-selling").forLocale();
                 Component hoverText = plugin.text().of(sender, "controlpanel.mode-selling-hover").forLocale();
@@ -125,8 +125,8 @@ public class SimpleShopControlPanel implements ShopControlPanel {
             }
         }
         // Set Price
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.price")
-                || (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeprice") && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_PRICE))) {
+        if (plugin.perm().hasPermission(sender, "quickshop.other.price")
+                || (plugin.perm().hasPermission(sender, "quickshop.create.changeprice") && shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_PRICE))) {
             Component text = MsgUtil.fillArgs(
                     plugin.text().of(sender, "controlpanel.price").forLocale(),
                     LegacyComponentSerializer.legacySection().deserialize(
@@ -142,10 +142,10 @@ public class SimpleShopControlPanel implements ShopControlPanel {
                     .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, clickCommand)));
         }
         //Set amount per bulk
-        if (QuickShop.getInstance().isAllowStack()) {
-            if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount") ||
+        if (plugin.isAllowStack()) {
+            if (plugin.perm().hasPermission(sender, "quickshop.other.amount") ||
                     shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_STACK_AMOUNT) &&
-                            QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.changeamount")) {
+                            plugin.perm().hasPermission(sender, "quickshop.create.changeamount")) {
                 Component text = plugin.text().of(sender, "controlpanel.stack", shop.getItem().getAmount()).forLocale();
                 Component hoverText = plugin.text().of(sender, "controlpanel.stack-hover").forLocale();
                 String clickCommand = "/qs size ";
@@ -156,7 +156,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
         }
         if (!shop.isUnlimited()) {
             // Refill
-            if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.refill")) {
+            if (plugin.perm().hasPermission(sender, "quickshop.refill")) {
                 Component text = plugin.text().of(sender, "controlpanel.refill", Component.text(shop.getPrice())).forLocale();
                 Component hoverText = plugin.text().of(sender, "controlpanel.refill-hover").forLocale();
                 String clickCommand = "/qs refill ";
@@ -165,7 +165,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
                         .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.SUGGEST_COMMAND, clickCommand)));
             }
             // Empty
-            if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.empty")) {
+            if (plugin.perm().hasPermission(sender, "quickshop.empty")) {
                 Component text = plugin.text().of(sender, "controlpanel.empty", Component.text(shop.getPrice())).forLocale();
                 Component hoverText = plugin.text().of(sender, "controlpanel.empty-hover").forLocale();
                 String clickCommand = MsgUtil.fillArgs("/qs silentempty {0}", shop.getRuntimeRandomUniqueId().toString());
@@ -175,7 +175,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
             }
         }
         // Remove
-        if (QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy") || shop.playerAuthorize(((OfflinePlayer) sender).getUniqueId(), BuiltInShopPermission.DELETE)) {
+        if (plugin.perm().hasPermission(sender, "quickshop.other.destroy") || shop.playerAuthorize(((OfflinePlayer) sender).getUniqueId(), BuiltInShopPermission.DELETE)) {
             Component text = plugin.text().of(sender, "controlpanel.remove", Component.text(shop.getPrice())).forLocale();
             Component hoverText = plugin.text().of(sender, "controlpanel.remove-hover").forLocale();
             String clickCommand = MsgUtil.fillArgs("/qs silentremove {0}", shop.getRuntimeRandomUniqueId().toString());

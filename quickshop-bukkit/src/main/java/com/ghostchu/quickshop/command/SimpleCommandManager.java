@@ -80,20 +80,6 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .build());
         registerCmd(
                 CommandContainer.builder()
-                        .prefix("alwayscounting")
-                        .hidden(false)
-                        .permission("quickshop.alwayscounting")
-                        .executor(new SubCommand_AlwaysCounting(plugin))
-                        .build());
-        registerCmd(
-                CommandContainer.builder()
-                        .prefix("silentalwayscounting")
-                        .hidden(true)
-                        .permission("quickshop.alwayscounting")
-                        .executor(new SubCommand_SilentAlwaysCounting(plugin))
-                        .build());
-        registerCmd(
-                CommandContainer.builder()
                         .prefix("transfer")
                         .permission("quickshop.transfer")
                         .executor(new SubCommand_Transfer(plugin))
@@ -277,20 +263,20 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .permission("quickshop.reset")
                         .executor(new SubCommand_Reset(plugin))
                         .build());
-//        registerCmd(
-//                CommandContainer.builder()
-//                        .prefix("recovery")
-//                        .hidden(true)
-//                        .permission("quickshop.recovery")
-//                        .executor(new SubCommand_Recovery(plugin))
-//                        .build());
-//        registerCmd(
-//                CommandContainer.builder()
-//                        .prefix("export")
-//                        .hidden(true)
-//                        .permission("quickshop.export")
-//                        .executor(new SubCommand_Export())
-//                        .build());
+        registerCmd(
+                CommandContainer.builder()
+                        .prefix("recovery")
+                        .hidden(true)
+                        .permission("quickshop.recovery")
+                        .executor(new SubCommand_Recovery(plugin))
+                        .build());
+        registerCmd(
+                CommandContainer.builder()
+                        .prefix("export")
+                        .hidden(true)
+                        .permission("quickshop.export")
+                        .executor(new SubCommand_Export(plugin))
+                        .build());
 //        registerCmd(
 //                CommandContainer.builder()
 //                        .prefix("convert")
@@ -481,7 +467,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
             for (String requirePermission : permissionList) {
                 if (requirePermission != null
                         && !requirePermission.isEmpty()
-                        && !QuickShop.getPermissionManager().hasPermission(sender, requirePermission)) {
+                        && !plugin.perm().hasPermission(sender, requirePermission)) {
                     Log.debug(
                             "Sender "
                                     + sender.getName()
@@ -498,7 +484,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         } else {
             for (String selectivePermission : permissionList) {
                 if (selectivePermission != null && !selectivePermission.isEmpty()) {
-                    if (QuickShop.getPermissionManager().hasPermission(sender, selectivePermission)) {
+                    if (plugin.perm().hasPermission(sender, selectivePermission)) {
                         return true;
                     }
                 }

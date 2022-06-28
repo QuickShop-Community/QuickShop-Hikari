@@ -24,6 +24,7 @@ import com.ghostchu.quickshop.ServiceInjector;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
+import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopInfoStorage;
@@ -92,7 +93,6 @@ public class ContainerShop implements Shop, Reloadable {
     private double price;
     private ShopType shopType;
     private boolean unlimited;
-    private boolean isAlwaysCountingContainer;
     @NotNull
     private ItemStack item;
 
@@ -154,7 +154,6 @@ public class ContainerShop implements Shop, Reloadable {
         this.currency = s.currency;
         this.disableDisplay = s.disableDisplay;
         this.taxAccount = s.taxAccount;
-        this.isAlwaysCountingContainer = s.isAlwaysCountingContainer;
         this.inventoryWrapper = s.inventoryWrapper;
         this.inventoryWrapperProvider = s.inventoryWrapperProvider;
         this.symbolLink = s.symbolLink;
@@ -228,7 +227,6 @@ public class ContainerShop implements Shop, Reloadable {
         this.disableDisplay = disableDisplay;
         this.taxAccount = taxAccount;
         this.dirty = false;
-        this.isAlwaysCountingContainer = getExtra(plugin).getBoolean("is-always-counting-container", false);
         //noinspection ConstantConditions
         if (symbolLink == null)
             throw new IllegalArgumentException("SymbolLink cannot be null");
@@ -345,12 +343,12 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public boolean playerAuthorize(@NotNull UUID player, @NotNull BuiltInShopPermission permission) {
-        return playerAuthorize(player, QuickShop.getInstance(), permission.getRawNode());
+        return playerAuthorize(player, plugin, permission.getRawNode());
     }
 
     @Override
     public List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermission permission) {
-        return playersCanAuthorize(QuickShop.getInstance(), permission.getRawNode());
+        return playersCanAuthorize(plugin, permission.getRawNode());
     }
 
     @Override
@@ -537,7 +535,7 @@ public class ContainerShop implements Shop, Reloadable {
             return;
         }
         // InventoryWrapperIterator buyerIterator = buyerInventory.iterator();
-        if (this.isUnlimited() && !isAlwaysCountingContainer) {
+        if (this.isUnlimited()) {
             InventoryTransaction transaction = InventoryTransaction
                     .builder()
                     .from(buyerInventory)
@@ -546,7 +544,8 @@ public class ContainerShop implements Shop, Reloadable {
                     .amount(amount)
                     .build();
             if (!transaction.failSafeCommit()) {
-                plugin.getSentryErrorReporter().ignoreThrow();
+                if (plugin.getSentryErrorReporter() != null)
+                    plugin.getSentryErrorReporter().ignoreThrow();
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         } else {
@@ -564,14 +563,15 @@ public class ContainerShop implements Shop, Reloadable {
                     .amount(amount)
                     .build();
             if (!transaction.failSafeCommit()) {
-                plugin.getSentryErrorReporter().ignoreThrow();
+                if (plugin.getSentryErrorReporter() != null)
+                    plugin.getSentryErrorReporter().ignoreThrow();
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         }
         //Update sign
-        this.setSignText();
+        this.setSignText(plugin.text().findRelativeLanguages(buyer));
         if (attachedShop != null) {
-            attachedShop.setSignText();
+            attachedShop.setSignText(plugin.text().findRelativeLanguages(buyer));
         }
     }
 
@@ -697,7 +697,7 @@ public class ContainerShop implements Shop, Reloadable {
                             EconomyTransaction.builder()
                                     .amount(cost)
                                     .allowLoan(false)
-                                    .core(QuickShop.getInstance().getEconomy())
+                                    .core(plugin.getEconomy())
                                     .currency(plugin.getCurrency())
                                     .world(this.getLocation().getWorld())
                                     .from(taxAccount)
@@ -708,7 +708,7 @@ public class ContainerShop implements Shop, Reloadable {
                             EconomyTransaction.builder()
                                     .amount(cost)
                                     .allowLoan(false)
-                                    .core(QuickShop.getInstance().getEconomy())
+                                    .core(plugin.getEconomy())
                                     .currency(plugin.getCurrency())
                                     .world(this.getLocation().getWorld())
                                     .to(this.getOwner())
@@ -758,15 +758,15 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
-    public void onClick() {
+    public void onClick(@NotNull Player clicker) {
         Util.ensureThread(false);
-        ShopClickEvent event = new ShopClickEvent(this);
+        ShopClickEvent event = new ShopClickEvent(this, clicker);
         if (Util.fireCancellableEvent(event)) {
             Log.debug("Ignore shop click, because some plugin cancel it.");
             return;
         }
         refresh();
-        setSignText();
+        setSignText(plugin.getTextManager().findRelativeLanguages(clicker));
     }
 
     /**
@@ -827,21 +827,6 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
-    public boolean isAlwaysCountingContainer() {
-        return isAlwaysCountingContainer;
-    }
-
-    @Override
-    public void setAlwaysCountingContainer(boolean value) {
-        if (isAlwaysCountingContainer == value)
-            return;
-        isAlwaysCountingContainer = value;
-        getExtra(plugin).set("is-always-counting-container", value);
-        setDirty();
-        update();
-    }
-
-    @Override
     public @NotNull Component ownerName() {
         return ownerName(false);
     }
@@ -893,7 +878,7 @@ public class ContainerShop implements Shop, Reloadable {
             return;
         }
         // Items to drop on floor
-        if (this.isUnlimited() && !isAlwaysCountingContainer()) {
+        if (this.isUnlimited()) {
             InventoryTransaction transaction = InventoryTransaction
                     .builder()
                     .from(null)
@@ -902,7 +887,8 @@ public class ContainerShop implements Shop, Reloadable {
                     .amount(amount)
                     .build();
             if (!transaction.failSafeCommit()) {
-                plugin.getSentryErrorReporter().ignoreThrow();
+                if (plugin.getSentryErrorReporter() != null)
+                    plugin.getSentryErrorReporter().ignoreThrow();
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         } else {
@@ -919,18 +905,20 @@ public class ContainerShop implements Shop, Reloadable {
                     .amount(amount)
                     .build();
             if (!transactionTake.failSafeCommit()) {
-                plugin.getSentryErrorReporter().ignoreThrow();
+                if (plugin.getSentryErrorReporter() != null)
+                    plugin.getSentryErrorReporter().ignoreThrow();
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transactionTake.getLastError());
             }
-            this.setSignText();
+            this.setSignText(plugin.getTextManager().findRelativeLanguages(seller));
             if (attachedShop != null) {
-                attachedShop.setSignText();
+                attachedShop.setSignText(plugin.getTextManager().findRelativeLanguages(seller));
             }
         }
     }
+
     @Override
     public boolean inventoryAvailable() {
-        if (isUnlimited() && !isAlwaysCountingContainer()) {
+        if (isUnlimited()) {
             return true;
         }
         if (isSelling()) {
@@ -943,12 +931,12 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
-    public List<Component> getSignText(@NotNull String locale) {
+    public List<Component> getSignText(@NotNull ProxiedLocale locale) {
         Util.ensureThread(false);
         List<Component> lines = new ArrayList<>();
         //Line 1
         String headerKey = inventoryAvailable() ? "signs.header-available" : "signs.header-unavailable";
-        lines.add(plugin.text().of(headerKey, this.ownerName(false), plugin.text().of(headerKey).forLocale(locale)).forLocale(locale));
+        lines.add(plugin.text().of(headerKey, this.ownerName(false), plugin.text().of(headerKey).forLocale(locale.getLocale())).forLocale(locale.getLocale()));
         //Line 2
         String tradingStringKey;
         String noRemainingStringKey;
@@ -974,11 +962,11 @@ public class ContainerShop implements Shop, Reloadable {
         Component line2 = switch (shopRemaining) {
             //Unlimited
             case -1 ->
-                    plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale)).forLocale(locale);
+                    plugin.text().of(tradingStringKey, plugin.text().of("signs.unlimited").forLocale(locale.getLocale())).forLocale(locale.getLocale());
             //No remaining
-            case 0 -> plugin.text().of(noRemainingStringKey).forLocale(locale);
+            case 0 -> plugin.text().of(noRemainingStringKey).forLocale(locale.getLocale());
             //Has remaining
-            default -> plugin.text().of(tradingStringKey, Component.text(shopRemaining)).forLocale(locale);
+            default -> plugin.text().of(tradingStringKey, Component.text(shopRemaining)).forLocale(locale.getLocale());
         };
         lines.add(line2);
 
@@ -1055,7 +1043,21 @@ public class ContainerShop implements Shop, Reloadable {
         if (!Util.isLoaded(this.location)) {
             return;
         }
-        this.setSignText(getSignText(MsgUtil.getDefaultGameLanguageCode()));
+        this.setSignText(getSignText(plugin.getTextManager().findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode())));
+    }
+
+    /**
+     * Updates signs attached to the shop
+     *
+     * @param locale The locale to use for the sign text
+     */
+    @Override
+    public void setSignText(@NotNull ProxiedLocale locale) {
+        Util.ensureThread(false);
+        if (!Util.isLoaded(this.location)) {
+            return;
+        }
+        this.setSignText(getSignText(locale));
     }
 
     /**
@@ -1272,7 +1274,7 @@ public class ContainerShop implements Shop, Reloadable {
         if (this.owner.equals(owner))
             return;
         this.owner = owner;
-        setSignText();
+        setSignText(plugin.getTextManager().findRelativeLanguages(owner));
         update();
     }
 
@@ -1313,7 +1315,7 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public int getRemainingSpace() {
         Util.ensureThread(false);
-        if (this.unlimited && !isAlwaysCountingContainer()) {
+        if (this.unlimited) {
             return -1;
         }
         if (this.getInventory() == null) {
@@ -1334,7 +1336,7 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public int getRemainingStock() {
         Util.ensureThread(false);
-        if (this.unlimited && !isAlwaysCountingContainer()) {
+        if (this.unlimited) {
             return -1;
         }
         if (this.getInventory() == null) {
@@ -1570,7 +1572,7 @@ public class ContainerShop implements Shop, Reloadable {
         // Check for new shop sign
         Component[] lines = new Component[sign.getLines().length];
         for (int i = 0; i < sign.getLines().length; i++) {
-            lines[i] = QuickShop.getInstance().getPlatform().getLine(sign, i);
+            lines[i] = plugin.getPlatform().getLine(sign, i);
         }
         // Can be claim
 

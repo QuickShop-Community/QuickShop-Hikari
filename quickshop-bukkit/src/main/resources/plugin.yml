@@ -1,6 +1,33 @@
 name: QuickShop-Hikari
 main: com.ghostchu.quickshop.QuickShop
-version: ${project.version}
+softdepend:
+  - Vault
+  - Reserve
+  - PlaceholderAPI
+  - LuckPerms
+  - PermissionEx
+  - GroupManager
+  - Essentials
+  - CMI
+  - ProtocolLib
+  - NBTAPI
+api-version: 1.18
+# TODO: https://github.com/PaperMC/Paper/pull/7177
+libraries:
+  - org.apache.commons:commons-compress:1.21
+  - org.apache.commons:commons-lang3:3.12.0
+  - org.apache.commons:commons-text:1.9
+  - com.rollbar:rollbar-java:1.8.1
+  - commons-codec:commons-codec:1.15
+  - org.slf4j:slf4j-nop:1.7.35
+  - cc.carm.lib:easysql-hikaricp:0.4.1
+  - com.h2database:h2:2.1.214
+  - com.ghostchu:simplereloadlib:1.1.2
+  - com.konghq:unirest-java:3.13.7
+  - com.github.juliomarcopineda:jdbc-stream:0.1.1
+  - one.util:streamex:0.8.1
+  - commons-lang:commons-lang:2.6
+  - net.sourceforge.csvjdbc:csvjdbc:1.0.40
 authors:
   - Ghost_chu
   - PotatoCraft Studio
@@ -41,36 +68,8 @@ authors:
   - Nlkomaru
   - Warriorrrr
 description: Economy Shops plugin
-softdepend:
-  - Vault
-  - Reserve
-  - PlaceholderAPI
-  - LuckPerms
-  - PermissionEx
-  - GroupManager
-  - Essentials
-  - CMI
-  - ProtocolLib
-  - NBTAPI
 
-api-version: 1.18
-
-# TODO: https://github.com/PaperMC/Paper/pull/7177
-libraries:
-  - org.apache.commons:commons-compress:1.21
-  - org.apache.commons:commons-lang3:3.12.0
-  - org.apache.commons:commons-text:1.9
-  - com.rollbar:rollbar-java:1.8.1
-  - commons-codec:commons-codec:1.15
-  - org.slf4j:slf4j-nop:1.7.35
-  - cc.carm.lib:easysql-hikaricp:0.4.0
-  - com.h2database:h2:2.1.214
-  - com.ghostchu:simplereloadlib:1.1.2
-  - com.konghq:unirest-java:3.13.7
-  - com.github.juliomarcopineda:jdbc-stream:0.1.1
-  - one.util:streamex:0.8.1
-  - commons-lang:commons-lang:2.6
-
+version: ${project.version}
 commands:
   qs:
     description: QuickShop command

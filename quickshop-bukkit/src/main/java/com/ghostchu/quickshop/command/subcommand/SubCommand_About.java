@@ -42,7 +42,7 @@ public class SubCommand_About implements CommandHandler<CommandSender> {
                 + ">> "
                 + ChatColor.GREEN
                 + QuickShop.getVersion()));
-        if (QuickShop.getInstance().getBuildInfo().getGitInfo().getBranch().toUpperCase().contains("ORIGIN/LTS")) {
+        if (plugin.getBuildInfo().getGitInfo().getBranch().toUpperCase().contains("ORIGIN/LTS")) {
             MsgUtil.sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(
                     ChatColor.AQUA
                             + "Release "
@@ -50,7 +50,7 @@ public class SubCommand_About implements CommandHandler<CommandSender> {
                             + ">> "
                             + ChatColor.GREEN
                             + LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "updatenotify.label.lts").forLocale())));
-        } else if (QuickShop.getInstance().getBuildInfo().getGitInfo().getBranch().toUpperCase().contains("ORIGIN/RELEASE")) {
+        } else if (plugin.getBuildInfo().getGitInfo().getBranch().toUpperCase().contains("ORIGIN/RELEASE")) {
             MsgUtil.sendDirectMessage(sender,
                     LegacyComponentSerializer.legacySection().deserialize(ChatColor.AQUA
                             + "Release "

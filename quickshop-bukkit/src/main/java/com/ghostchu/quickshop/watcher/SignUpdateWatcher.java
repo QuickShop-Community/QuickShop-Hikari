@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.watcher;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +41,7 @@ public class SignUpdateWatcher extends BukkitRunnable {
     public void run() {
         Shop shop = signUpdateQueue.poll();
         while (shop != null && !shop.isDeleted()) {
-            shop.setSignText();
+            shop.setSignText(QuickShop.getInstance().text().findRelativeLanguages(shop.getOwner()));
             shop = signUpdateQueue.poll();
         }
     }

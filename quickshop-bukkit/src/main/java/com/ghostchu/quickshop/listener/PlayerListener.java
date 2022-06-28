@@ -200,7 +200,7 @@ public class PlayerListener extends AbstractQSListener {
 
         this.playClickSound(p);
         plugin.getShopManager().sendShopInfo(p, shop);
-        shop.setSignText();
+        shop.setSignText(plugin.text().findRelativeLanguages(p));
         if (shop.getRemainingSpace() == 0) {
             plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
             return true;
@@ -213,7 +213,7 @@ public class PlayerListener extends AbstractQSListener {
         int items = getPlayerCanSell(shop, ownerBalance, price, new BukkitInventoryWrapper(playerInventory));
         Map<UUID, Info> actions = plugin.getShopManager().getActions();
         if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
-                || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.use")) {
+                || plugin.perm().hasPermission(p, "quickshop.other.use")) {
             Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
             actions.put(p.getUniqueId(), info);
             if (!direct) {
@@ -241,7 +241,7 @@ public class PlayerListener extends AbstractQSListener {
         int amount;
         int shopHaveItems = shop.getRemainingStock();
         int invHaveSpaces = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
-        if (shop.isAlwaysCountingContainer() || !shop.isUnlimited()) {
+        if (!shop.isUnlimited()) {
             amount = Math.min(shopHaveItems, invHaveSpaces);
         } else {
             // should check not having items but having empty slots, cause player is trying to buy
@@ -255,7 +255,7 @@ public class PlayerListener extends AbstractQSListener {
         amount = Math.min(amount, (int) Math.floor(balance / price));
         if (amount < 1) { // typed 'all' but the auto set amount is 0
             // when typed 'all' but player can't buy any items
-            if ((shop.isAlwaysCountingContainer() || !shop.isUnlimited()) && shopHaveItems < 1) {
+            if (!shop.isUnlimited() && shopHaveItems < 1) {
                 // but also the shop's stock is 0
                 plugin.text().of(p, "shop-stock-too-low",
                         shop.getRemainingStock(),
@@ -294,7 +294,7 @@ public class PlayerListener extends AbstractQSListener {
         } else {
             ownerCanAfford = Integer.MAX_VALUE;
         }
-        if (shop.isAlwaysCountingContainer() || !shop.isUnlimited()) {
+        if (!shop.isUnlimited()) {
             amount = Math.min(shopHaveSpaces, invHaveItems);
             amount = Math.min(amount, ownerCanAfford);
         } else {
@@ -341,7 +341,7 @@ public class PlayerListener extends AbstractQSListener {
         }
         this.playClickSound(p);
         plugin.getShopManager().sendShopInfo(p, shop);
-        shop.setSignText();
+        shop.setSignText(plugin.text().findRelativeLanguages(p));
         if (shop.getRemainingStock() == 0) {
             plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
             return true;
@@ -354,7 +354,7 @@ public class PlayerListener extends AbstractQSListener {
         final double traderBalance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
         int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
         if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
-                || QuickShop.getPermissionManager().hasPermission(p, "quickshop.other.use")) {
+                || plugin.perm().hasPermission(p, "quickshop.other.use")) {
             Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BUY, null, null, shop, false);
             actions.put(p.getUniqueId(), info);
             if (!direct) {
@@ -396,9 +396,9 @@ public class PlayerListener extends AbstractQSListener {
         }
         ItemStack stack = player.getInventory().getItemInMainHand();
         ShopAction action = null;
-        if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.sell")) {
+        if (plugin.perm().hasPermission(player, "quickshop.create.sell")) {
             action = ShopAction.CREATE_SELL;
-        } else if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.buy")) {
+        } else if (plugin.perm().hasPermission(player, "quickshop.create.buy")) {
             action = ShopAction.CREATE_BUY;
         }
         if (action == null) {
@@ -407,20 +407,20 @@ public class PlayerListener extends AbstractQSListener {
         }
         // Double chest creation permission check
         if (Util.isDoubleChest(block.getBlockData()) &&
-                !QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.double")) {
+                !plugin.perm().hasPermission(player, "quickshop.create.double")) {
             plugin.text().of(player, "no-double-chests").send();
             return false;
         }
         // Blacklist check
         if (Util.isBlacklisted(stack)
-                && !QuickShop.getPermissionManager()
+                && !plugin.perm()
                 .hasPermission(player, "quickshop.bypass." + stack.getType().name())) {
             plugin.text().of(player, "blacklisted-item").send();
             return false;
         }
         // Check if had enderchest shop creation permission
         if (block.getType() == Material.ENDER_CHEST
-                && !QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.enderchest")) {
+                && !plugin.perm().hasPermission(player, "quickshop.create.enderchest")) {
             return false;
         }
         // Check if block is a wall sign
@@ -450,7 +450,7 @@ public class PlayerListener extends AbstractQSListener {
         plugin.getShopManager().getActions().put(player.getUniqueId(), info);
         plugin.text().of(player, "how-much-to-trade-for", MsgUtil.getTranslateText(stack),
                 plugin.isAllowStack() &&
-                        QuickShop.getPermissionManager().hasPermission(player, "quickshop.create.stacks")
+                        plugin.perm().hasPermission(player, "quickshop.create.stacks")
                         ? stack.getAmount() : 1).send();
         return false;
     }
@@ -518,11 +518,11 @@ public class PlayerListener extends AbstractQSListener {
     private void openControlPanel(@NotNull Player p, @NotNull Shop shop) {
         MsgUtil.sendControlPanelInfo(p, shop);
         this.playClickSound(p);
-        shop.setSignText();
+        shop.setSignText(plugin.text().findRelativeLanguages(p));
     }
 
     private int getPlayerCanBuy(@NotNull Shop shop, double traderBalance, double price, @NotNull InventoryWrapper playerInventory) {
-        boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
+        boolean isContainerCountingNeeded = shop.isUnlimited();
         if (shop.isFreeShop()) { // Free shop
             return isContainerCountingNeeded ? Util.countSpace(playerInventory, shop) : Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop));
         }
@@ -537,7 +537,7 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     private int getPlayerCanSell(@NotNull Shop shop, double ownerBalance, double price, @NotNull InventoryWrapper playerInventory) {
-        boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
+        boolean isContainerCountingNeeded = shop.isUnlimited();
         if (shop.isFreeShop()) {
             return isContainerCountingNeeded ? Util.countItems(playerInventory, shop) : Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop));
         }
@@ -575,7 +575,7 @@ public class PlayerListener extends AbstractQSListener {
             }
             final Shop shop = plugin.getShopManager().getShopIncludeAttached(location);
             if (shop != null) {
-                shop.setSignText();
+                shop.setSignText(plugin.text().findRelativeLanguages(e.getPlayer()));
             }
         } catch (NullPointerException ignored) {
         }

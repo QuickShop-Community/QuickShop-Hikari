@@ -35,7 +35,7 @@ public class SubCommand_SilentRemove extends SubCommand_SilentBase {
     @Override
     protected void doSilentCommand(@NotNull Player sender, @NotNull Shop shop, @NotNull String[] cmdArg) {
         if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.DELETE)
-                && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.destroy")) {
+                && !plugin.perm().hasPermission(sender, "quickshop.other.destroy")) {
             plugin.text().of(sender, "no-permission").send();
             return;
         }

@@ -201,7 +201,7 @@ public class RealDisplayItem extends AbstractDisplayItem {
         // Set item protect in the armorstand's hand
 
         if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
-            QuickShop.getInstance().getPlatform().setDisplayName(itemEntity, Util.getItemStackName(this.originalItemStack));
+            PLUGIN.getPlatform().setDisplayName(itemEntity, Util.getItemStackName(this.originalItemStack));
             itemEntity.setCustomNameVisible(true);
         } else {
             itemEntity.setCustomNameVisible(false);

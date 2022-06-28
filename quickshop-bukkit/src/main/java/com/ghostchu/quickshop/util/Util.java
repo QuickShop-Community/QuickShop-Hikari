@@ -363,9 +363,6 @@ public class Util {
         }
     }
 
-
-    private static final StackWalker stackWalker = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE), 2);
-
     /**
      * Print debug log when plugin running on dev mode.
      *
@@ -1003,14 +1000,14 @@ public class Util {
     @SneakyThrows
     public static void makeExportBackup(@Nullable String backupName) {
         if (StringUtils.isEmpty(backupName)) {
-            backupName = "export-" + QuickShop.getFork() + "-" + QuickShop.getVersion()+ ".txt";
+            backupName = "export-" + QuickShop.getFork() + "-" + QuickShop.getVersion() + ".txt";
         }
         File file = new File(plugin.getDataFolder(), backupName);
         if (file.exists()) {
             Files.move(file.toPath(), new File(file.getParentFile(), file.getName() + UUID.randomUUID().toString().replace("-", "")).toPath());
         }
-        
-        if(!file.createNewFile()) {
+
+        if (!file.createNewFile()) {
             plugin.getLogger().warning("Failed to create new backup file!");
             return;
         }
@@ -1031,6 +1028,7 @@ public class Util {
 //
 //        });
     }
+
     /**
      * Check QuickShop is running on dev edition or not.
      *
@@ -1091,10 +1089,10 @@ public class Util {
         Bukkit.getPluginManager().callEvent((Event) event);
         return event.isCancelled();
     }
-    
+
     /**
      * Simply method to check if the provided String is either {@code null} or empty.
-     * 
+     *
      * @param text The text to check for null or empty value.
      * @return Whether the text is null or empty.
      */
@@ -1431,7 +1429,7 @@ public class Util {
         Log.Caller caller = Log.Caller.create();
         String str = caller.getClassName() + "." + name;
         String value = System.getProperty(str);
-        SysPropertiesParseResult result = new SysPropertiesParseResult(value);
+        SysPropertiesParseResult result = new SysPropertiesParseResult(str, value);
         Log.debug("Parsing the system properly for " + str + ": " + result);
         return result;
     }
@@ -1439,7 +1437,13 @@ public class Util {
     @Data
     @AllArgsConstructor
     public static class SysPropertiesParseResult {
+        private final String key;
         private final String value;
+
+        @NotNull
+        public String getParseKey() {
+            return key;
+        }
 
         public boolean isPresent() {
             return value != null;

@@ -19,6 +19,7 @@
 
 package com.ghostchu.quickshop.api.localization.text;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,6 +40,12 @@ public interface TextManager {
      */
     boolean localeEnabled(@NotNull String locale, @NotNull List<String> regex);
 
+
+    @NotNull ProxiedLocale findRelativeLanguages(@Nullable String langCode);
+
+    @NotNull ProxiedLocale findRelativeLanguages(@Nullable CommandSender sender);
+
+    @NotNull ProxiedLocale findRelativeLanguages(@Nullable UUID sender);
 
     /**
      * Getting the translation with path with default locale
@@ -71,6 +78,8 @@ public interface TextManager {
      */
     @NotNull
     Text of(@Nullable UUID sender, @NotNull String path, @Nullable Object... args);
+
+    @NotNull Component[] convert(@Nullable Object... args);
 
     /**
      * Getting the translation with path with default locale (if available)

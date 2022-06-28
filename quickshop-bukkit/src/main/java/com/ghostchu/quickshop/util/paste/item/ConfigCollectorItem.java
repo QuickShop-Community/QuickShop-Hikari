@@ -46,6 +46,9 @@ public class ConfigCollectorItem implements SubPasteItem {
         file.add(new File("bukkit.yml"));
         file.add(new File("spigot.yml"));
         file.add(new File("paper.yml"));
+        // 1.19 and up paper configuration
+        file.add(new File("config/paper-global.yml"));
+        file.add(new File("config/paper-world-defaults.yml"));
         file.add(new File("purpur.yml"));
         file.add(new File("pufferfish.yml"));
         file.add(new File("tuinity.yml"));

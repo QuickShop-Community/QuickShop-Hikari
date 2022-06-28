@@ -59,7 +59,7 @@ public class SubCommand_Size implements CommandHandler<Player> {
         final Shop shop = getLookingShop(sender);
         if (shop != null) {
             if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_STACK_AMOUNT)
-                    || QuickShop.getPermissionManager().hasPermission(sender, "quickshop.other.amount")) {
+                    || plugin.perm().hasPermission(sender, "quickshop.other.amount")) {
                 if (amount <= 0 || amount > Util.getItemMaxStackSize(shop.getItem().getType())) {
                     plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
                     return;
@@ -88,6 +88,6 @@ public class SubCommand_Size implements CommandHandler<Player> {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(QuickShop.getInstance().text().of(sender, "tabcomplete.amount").forLocale())) : Collections.emptyList();
+        return cmdArg.length == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.amount").forLocale())) : Collections.emptyList();
     }
 }

@@ -37,13 +37,13 @@ public class SubCommand_SilentBuy extends SubCommand_SilentBase {
     @Override
     protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull String[] cmdArg) {
         if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE)
-                && !QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.admin")) {
+                && !plugin.perm().hasPermission(sender, "quickshop.create.admin")) {
             plugin.text().of(sender, "not-permission").send();
             return;
         }
 
         shop.setShopType(ShopType.BUYING);
-        shop.update();
+        shop.setSignText(plugin.text().findRelativeLanguages(sender));
         MsgUtil.sendControlPanelInfo(sender, shop);
         plugin.text().of(sender, "command.now-buying", MsgUtil.getTranslateText(shop.getItem())).send();
     }

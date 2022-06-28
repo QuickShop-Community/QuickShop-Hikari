@@ -67,7 +67,6 @@ public class ConfigurationUpdater {
                 UpdateScript updateScript = method.getAnnotation(UpdateScript.class);
                 int current = getConfiguration().getInt("config-version");
                 if (current >= updateScript.version()) {
-                    Log.debug("Skipping update script v" + updateScript.version() + " older than v" + current + " .");
                     continue;
                 }
                 plugin.getLogger().info("[ConfigUpdater] Updating configuration from " + current + " to " + updateScript.version());

@@ -63,7 +63,7 @@ public class SubCommand_SuperCreate implements CommandHandler<Player> {
             final SimpleInfo info = new SimpleInfo(b.getLocation(), ShopAction.CREATE_SELL, sender.getInventory().getItemInMainHand(), b.getRelative(sender.getFacing().getOppositeFace()), true);
 
             plugin.getShopManager().getActions().put(sender.getUniqueId(), info);
-            plugin.text().of(sender, "how-much-to-trade-for", MsgUtil.getTranslateText(info.getItem()), plugin.isAllowStack() && QuickShop.getPermissionManager().hasPermission(sender, "quickshop.create.stacks") ? item.getAmount() : 1).send();
+            plugin.text().of(sender, "how-much-to-trade-for", MsgUtil.getTranslateText(info.getItem()), plugin.isAllowStack() && plugin.perm().hasPermission(sender, "quickshop.create.stacks") ? item.getAmount() : 1).send();
             return;
         }
         plugin.text().of(sender, "not-looking-at-shop").send();
@@ -73,7 +73,7 @@ public class SubCommand_SuperCreate implements CommandHandler<Player> {
     @Override
     public List<String> onTabComplete(
             @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(QuickShop.getInstance().text().of(sender, "tabcomplete.amount").forLocale())) : Collections.emptyList();
+        return cmdArg.length == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.amount").forLocale())) : Collections.emptyList();
     }
 
 }

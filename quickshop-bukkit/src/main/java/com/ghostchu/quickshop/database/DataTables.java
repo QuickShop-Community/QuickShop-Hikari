@@ -6,6 +6,7 @@ import cc.carm.lib.easysql.api.action.PreparedSQLUpdateBatchAction;
 import cc.carm.lib.easysql.api.builder.*;
 import cc.carm.lib.easysql.api.enums.IndexType;
 import cc.carm.lib.easysql.api.function.SQLHandler;
+import com.ghostchu.quickshop.util.logger.Log;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
@@ -240,5 +241,18 @@ public enum DataTables {
     public @NotNull ReplaceBuilder<PreparedSQLUpdateBatchAction<Integer>> createReplaceBatch(@NotNull SQLManager sqlManager) {
         return sqlManager.createReplaceBatch(this.getName());
     }
-
+    public boolean purgeTable() {
+        return purgeTable(this.manager);
+    }
+    public boolean purgeTable(@NotNull SQLManager sqlManager) {
+        try {
+            sqlManager.createDelete(this.getName())
+                    .addCondition("1=1")
+                    .build().execute();
+            return true;
+        } catch (SQLException e) {
+            Log.debug("Failed to purge table " + this.getName()+e);
+            return false;
+        }
+    }
 }

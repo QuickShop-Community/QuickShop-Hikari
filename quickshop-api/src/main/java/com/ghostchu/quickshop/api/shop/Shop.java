@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.api.shop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
+import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import net.kyori.adventure.text.Component;
@@ -229,7 +230,7 @@ public interface Shop {
     /**
      * Execute codes when player click the shop will did things
      */
-    void onClick();
+    void onClick(@NotNull Player clicker);
 
     /**
      * Load shop to the world
@@ -301,7 +302,7 @@ public interface Shop {
      * Line 2: Shop Item Name
      * Line 3: Price
      */
-    default List<Component> getSignText(@NotNull String locale) {
+    default List<Component> getSignText(@NotNull ProxiedLocale locale) {
         //backward support
         throw new UnsupportedOperationException();
     }
@@ -312,6 +313,8 @@ public interface Shop {
      * @param paramArrayOfString The texts you want set
      */
     void setSignText(@NotNull List<Component> paramArrayOfString);
+
+    void setSignText(@NotNull ProxiedLocale locale);
 
     /**
      * Update shop data to database
@@ -691,23 +694,6 @@ public interface Shop {
      * @return Free Shop
      */
     boolean isFreeShop();
-
-    /**
-     * If this shop is always counting space or stocks, even is unlimited
-     */
-    default boolean isAlwaysCountingContainer() {
-        return false;
-    }
-
-    /**
-     * Set if this shop is always a limited shop, even is unlimited
-     *
-     * @param value is always counting space or stocks
-     */
-    default void setAlwaysCountingContainer(boolean value) {
-        //For back-ward compatibility
-        throw new UnsupportedOperationException("setAlwaysCountingContainer is not implemented");
-    }
 
     /**
      * Gets the InventoryWrapper provider name (the plugin name who register it), usually is QuickShop

@@ -169,6 +169,7 @@ edition-confilct: QuicShop-Hikari med QuickShop-Reremake installerat kan strida 
 inventory-unavailable: '<red>This shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.'
 file-test: Detta är en testtextfil. Vi använder den för att testa om messages.json är trasig. Du kan fylla den med valfria påskägg som du gillar här :)
 unknown-player: <red>Angiven spelare finns inte, kontrollera användarnamnet du angav.
+player-offline: "<red>The target player currently is offline."
 language:
   qa-issues: '<yellow>Kvalitetsförsäkringsfrågor: <aqua>{0}%'
   code: '<yellow>Kod: <gold>{0}'
@@ -532,12 +533,13 @@ debug:
   operation-invalid: "<red>You must specific an valid operation."
   invalid-base64-encoded-sql: "<red>The SQL provided must be base64 encoded."
   warning-sql: "<red><bold>Warning:</bold></red><yellow>You're executing a SQL statement, this may corrupt your database or destroy any data in database even it belongs to other plugins.\n<red>Don't confirm if you don't trust who send you this command."
-  warning-sql-confirm: "<yellow>To confirm this dangerous operation, please type <aqua>/qs debug database sql {0}</aqua> in 60 seconds."
+  warning-sql-confirm: "<yellow>To confirm this dangerous operation, please type <aqua>/qs debug database sql confirm {0}</aqua> in 60 seconds."
   warning-sql-confirm-hover: "<yellow>Click to confirm this dangerous operation."
   sql-confirm-not-found: "<yellow>Didn't found the operation that you given, it may invalid or expired."
   sql-executing: "<yellow>Executing SQL statement: <aqua>{0}</aqua>"
   sql-completed: "<green>Completed, {0} rows affected."
   sql-exception: "<red>An error occurred while executing the SQL query, check the Console for details!"
+  sql-disabled: "<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it."
 database:
   scanning: "<green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while..."
   scanning-async: "<yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later."
@@ -561,4 +563,20 @@ database:
   trim-exception: "<red>Database trim failed, an exception raised during database trimming, check the server console."
   suggestion:
     trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
-
+always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."
+exporting-database: "<green>Exporting database, please wait..."
+exporting-failed: "<red>Failed to export database, please check the server console."
+exported-database: "<green>Database exported to <yellow>{0}</yellow>."
+importing-not-found: "<red>The <yellow>{0}</yellow> file not found, please check the file path."
+importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/qs recovery confirm</aqua> to continue."
+importing-database: "<green>Importing database from backup, please wait..."
+importing-failed: "<red>Failed to import database, please check the server console."
+imported-database: "<green>Database imported from <yellow>{0}</yellow>."
+transfer-sent: "<green>Shops transfer sent to <yellow>{0}</yellow>."
+transfer-request: "<yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?"
+transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds."
+transfer-accepted-fromside: "<green>Player <aqua>{0}</aqua> accepted your shop transfer request."
+transfer-accepted-toside: "<green>You accepted <aqua>{0}</aqua>'s transfer request."
+transfer-rejected-fromside: "<red>Player <aqua>{0}</aqua> rejected your shop transfer request."
+transfer-rejected-toside: "<red>You rejected <aqua>{0}</aqua>'s shop transfer request."
+transfer-no-pending-operation: "<red>You don't have pending transfer request yet."
