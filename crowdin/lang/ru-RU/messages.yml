@@ -169,6 +169,7 @@ edition-confilct: QuickShop-Hikari и QuickShop-Remake могут конфлик
 inventory-unavailable: '<red>Не существует или неверный InventoryWrapper. Вы используете аддон для повторной привязки инвентаря магазина?<newline> Информация: InventoryWrapper ={0}, WrapperProvider={1}, SymbolLink={2}. Пожалуйста, свяжитесь с администраторами сервера.'
 file-test: Это тестовый файл. Мы используем его для тестирования, если файл messages.json поломан. Вы тут можете заполнить любым пасхальными яйцами, которые вам нравятся :) Как же так, ректор Кудрявцев?
 unknown-player: <red>Такой игрок не существует, пожалуйста, проверьте имя, которое вы ввели.
+player-offline: "<red>The target player currently is offline."
 language:
   qa-issues: '<yellow>Вопросы обеспечения качества: <aqua>{0}%'
   code: '<yellow>Код: <gold>{0}'
@@ -571,3 +572,11 @@ importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup wi
 importing-database: "<green>Importing database from backup, please wait..."
 importing-failed: "<red>Failed to import database, please check the server console."
 imported-database: "<green>Database imported from <yellow>{0}</yellow>."
+transfer-sent: "<green>Shops transfer sent to <yellow>{0}</yellow>."
+transfer-request: "<yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you.<yellow>Did you want accept the transfer?</yellow>"
+transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds."
+transfer-accepted-fromside: "<green>Player <aqua>{0}</aqua> accepted your shop transfer request."
+transfer-accepted-toside: "<green>You accepted <aqua>{0}</aqua>'s transfer request."
+transfer-rejected-fromside: "<red>Player <aqua>{0}</aqua> rejected your shop transfer request."
+transfer-rejected-toside: "<red>You rejected <aqua>{0}</aqua>'s shop transfer request."
+transfer-no-pending-operation: "<red>You don't have pending transfer request yet."
