@@ -76,7 +76,7 @@
         <dependency>
             <groupId>fr.neatmonster</groupId>
             <artifactId>nocheatplus</artifactId>
-            <version>3.16.1-SNAPSHOT</version>
+            <version>3.17-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
