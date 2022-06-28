@@ -56,6 +56,7 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             plugin.text().of(sender, "command.wrong-args").send();
+            return;
         }
 
         if (cmdArg.length == 1) {
@@ -92,9 +93,12 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                     List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(sender.getUniqueId());
                     PendingTransferTask task = new PendingTransferTask(sender.getUniqueId(), targetPlayerUUID, shopList);
                     taskCache.put(targetPlayerUUID, task);
+                    Player receiver = Bukkit.getPlayer(targetPlayerUUID);
                     plugin.text().of(sender, "transfer-sent", profile.getName()).send();
-                    plugin.text().of(targetPlayerUUID, "transfer-request", sender.getName());
-                    plugin.text().of(targetPlayerUUID, "transfer-ask", sender.getName());
+                    if (receiver != null) {
+                        plugin.text().of(targetPlayerUUID, "transfer-request", sender.getName());
+                        plugin.text().of(targetPlayerUUID, "transfer-ask", sender.getName());
+                    }
                 }
             }
         }
