@@ -566,6 +566,8 @@ always-counting-removal-early-warning: "<red>Die 'Immer zählen' Funktion ist zu
 exporting-database: "<green>Datenbank wird exportiert, bitte warten..."
 exporting-failed: "<red>Der Export der Datenbank ist fehlgeschlagen, bitte überprüfe die Serverkonsole."
 exported-database: "<green>Datenbank exportiert nach <yellow>{0}</yellow>."
+importing-not-found: "<red>The <yellow>{0}</yellow> file not found, please check the file path."
+importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/qs recovery confirm</aqua> to continue."
 importing-database: "<green>Datenbank wird aus dem Backup importiert, bitte warten..."
 importing-failed: "<red>Import der Datenbank fehlgeschlagen, bitte überprüfe die Serverkonsole."
 imported-database: "<green>Datenbank importiert von <yellow>{0}</yellow>."
