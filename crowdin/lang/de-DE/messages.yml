@@ -572,7 +572,7 @@ importing-early-warning: "<red><bold>Warnung:</bold> <yellow>Das Backup wird in 
 importing-database: "<green>Datenbank wird aus dem Backup importiert, bitte warten..."
 importing-failed: "<red>Import der Datenbank fehlgeschlagen, bitte überprüfe die Serverkonsole."
 imported-database: "<green>Datenbank importiert von <yellow>{0}</yellow>."
-transfer-sent: "<green>Shops transfer sent to <yellow>{0}</yellow>."
+transfer-sent: "<green>Shop-Transferanfrage an <yellow>{0}</yellow> gesendet."
 transfer-request: "<yellow>Spieler <aqua>{0}</aqua> möchte seine Shops an dich übergeben. Möchtest du den transfer akzeptieren?"
 transfer-ask: "<gold>Schreibe <red>/qs transfer accept</red> zum akzeptieren.<newline>Schreibe <red>/qs transfer deny</red> zum ablehnen.<newline>Die Anfrage wird nach <red>{0}</red> Sekunden ablaufen."
 transfer-accepted-fromside: "<green>Spieler <aqua>{0}</aqua> hat deine Shop-Überweisungsanfrage akzeptiert."
