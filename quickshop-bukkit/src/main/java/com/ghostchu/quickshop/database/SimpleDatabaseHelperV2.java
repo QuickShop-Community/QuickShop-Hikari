@@ -46,7 +46,6 @@ import org.jetbrains.annotations.Nullable;
 import org.relique.jdbc.csv.CsvDriver;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
@@ -807,7 +806,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     public void importFromCSV(@NotNull File zipFile, @NotNull DataTables table) throws SQLException, ClassNotFoundException {
-        Log.debug("Loading CsvDriver...");
+        Log.debug("Loading CsvDriver...S");
         Class.forName("org.relique.jdbc.csv.CsvDriver");
         try (Connection conn = DriverManager.getConnection("jdbc:relique:csv:zip:" + zipFile);
              Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
