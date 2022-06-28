@@ -93,7 +93,6 @@ public class ContainerShop implements Shop, Reloadable {
     private double price;
     private ShopType shopType;
     private boolean unlimited;
-    private boolean isAlwaysCountingContainer;
     @NotNull
     private ItemStack item;
 
@@ -155,7 +154,6 @@ public class ContainerShop implements Shop, Reloadable {
         this.currency = s.currency;
         this.disableDisplay = s.disableDisplay;
         this.taxAccount = s.taxAccount;
-        this.isAlwaysCountingContainer = s.isAlwaysCountingContainer;
         this.inventoryWrapper = s.inventoryWrapper;
         this.inventoryWrapperProvider = s.inventoryWrapperProvider;
         this.symbolLink = s.symbolLink;
@@ -229,7 +227,6 @@ public class ContainerShop implements Shop, Reloadable {
         this.disableDisplay = disableDisplay;
         this.taxAccount = taxAccount;
         this.dirty = false;
-        this.isAlwaysCountingContainer = getExtra(plugin).getBoolean("is-always-counting-container", false);
         //noinspection ConstantConditions
         if (symbolLink == null)
             throw new IllegalArgumentException("SymbolLink cannot be null");
@@ -538,7 +535,7 @@ public class ContainerShop implements Shop, Reloadable {
             return;
         }
         // InventoryWrapperIterator buyerIterator = buyerInventory.iterator();
-        if (this.isUnlimited() && !isAlwaysCountingContainer) {
+        if (this.isUnlimited()) {
             InventoryTransaction transaction = InventoryTransaction
                     .builder()
                     .from(buyerInventory)
@@ -827,23 +824,6 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public boolean isFreeShop() {
         return this.price == 0.0d;
-    }
-
-    @Override
-    public boolean isAlwaysCountingContainer() {
-        return isAlwaysCountingContainer;
-    }
-
-    @Override
-    @Deprecated(forRemoval = true)
-    public void setAlwaysCountingContainer(boolean value) {
-        if (isAlwaysCountingContainer == value)
-            return;
-        isAlwaysCountingContainer = value;
-        getExtra(plugin).set("is-always-counting-container", value);
-        setDirty();
-        update();
-        plugin.getLogger().log(Level.WARNING, "Plugin " + Log.Caller.create() + " calling deprecated method Shop.setAlwaysCountingContainer(boolean), which this feature will be removed in future!");
     }
 
     @Override
