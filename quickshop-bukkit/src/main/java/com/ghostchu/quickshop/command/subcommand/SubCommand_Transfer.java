@@ -95,7 +95,7 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                     taskCache.put(targetPlayerUUID, task);
                     plugin.text().of(sender, "transfer-sent", profile.getName()).send();
                     plugin.text().of(receiver, "transfer-request", sender.getName()).send();
-                    plugin.text().of(receiver, "transfer-ask", sender.getName()).send();
+                    plugin.text().of(receiver, "transfer-ask", 60).send();
                     return;
                 }
             }
