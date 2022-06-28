@@ -58,7 +58,6 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
             plugin.text().of(sender, "command.wrong-args").send();
             return;
         }
-
         if (cmdArg.length == 1) {
             switch (cmdArg[0]) {
                 case "accept" -> {
@@ -85,7 +84,8 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                         plugin.text().of(sender, "unknown-player").send();
                         return;
                     }
-                    if (Bukkit.getPlayer(profile.getUniqueId()) == null) {
+                    Player receiver = Bukkit.getPlayer(profile.getUniqueId());
+                    if (receiver == null) {
                         plugin.text().of(sender, "player-offline", profile.getName()).send();
                         return;
                     }
@@ -93,12 +93,10 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                     List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(sender.getUniqueId());
                     PendingTransferTask task = new PendingTransferTask(sender.getUniqueId(), targetPlayerUUID, shopList);
                     taskCache.put(targetPlayerUUID, task);
-                    Player receiver = Bukkit.getPlayer(targetPlayerUUID);
                     plugin.text().of(sender, "transfer-sent", profile.getName()).send();
-                    if (receiver != null) {
-                        plugin.text().of(targetPlayerUUID, "transfer-request", sender.getName());
-                        plugin.text().of(targetPlayerUUID, "transfer-ask", sender.getName());
-                    }
+                    plugin.text().of(receiver, "transfer-request", sender.getName()).send();
+                    plugin.text().of(receiver, "transfer-ask", sender.getName()).send();
+                    return;
                 }
             }
         }
@@ -121,8 +119,6 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
             PendingTransferTask task = new PendingTransferTask(fromPlayer.getUniqueId(), targetPlayer.getUniqueId(), shopList);
             task.commit(false);
             plugin.text().of(sender, "command.transfer-success-other", shopList.size(), fromPlayer.getName(), targetPlayer.getName()).send();
-        } else {
-            plugin.text().of(sender, "command.wrong-args").send();
         }
     }
 
@@ -149,13 +145,11 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
             if (sendMessage) {
                 Profile fromPlayerProfile = QuickShop.getInstance().getPlayerFinder().find(from);
                 Profile toPlayerProfile = QuickShop.getInstance().getPlayerFinder().find(to);
-                Player fromPlayer = Bukkit.getPlayer(from);
-                Player toPlayer = Bukkit.getPlayer(to);
-                if (fromPlayer != null && toPlayerProfile != null) {
-                    QuickShop.getInstance().text().of(fromPlayer, "transfer-accepted-fromside", toPlayerProfile.getName()).send();
+                if (toPlayerProfile != null) {
+                    QuickShop.getInstance().text().of(from, "transfer-accepted-fromside", toPlayerProfile.getName()).send();
                 }
-                if (toPlayer != null && fromPlayerProfile != null) {
-                    QuickShop.getInstance().text().of(toPlayer, "transfer-accepted-toside", fromPlayerProfile.getName()).send();
+                if (fromPlayerProfile != null) {
+                    QuickShop.getInstance().text().of(to, "transfer-accepted-toside", fromPlayerProfile.getName()).send();
                 }
             }
         }
