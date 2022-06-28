@@ -19,12 +19,22 @@
 
 package com.ghostchu.quickshop.command.subcommand;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.database.DatabaseIOUtil;
+import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
+import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import net.kyori.adventure.text.Component;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
 
 @AllArgsConstructor
 public class SubCommand_Export implements CommandHandler<ConsoleCommandSender> {
@@ -32,9 +42,18 @@ public class SubCommand_Export implements CommandHandler<ConsoleCommandSender> {
     @Override
     @SneakyThrows
     public synchronized void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        Util.makeExportBackup(null);
-        sender.sendMessage("Recovery command hadn't available in this version yet!");
-        // MsgUtil.sendDirectMessage(sender, Component.text("Done.").color(NamedTextColor.GREEN));
+        File file = new File(QuickShop.getInstance().getDataFolder(), "export-" + System.currentTimeMillis() + ".zip");
+        Log.debug("Initializing database export...");
+        DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) QuickShop.getInstance().getDatabaseHelper());
+        Log.debug("Exporting database...");
+        Util.asyncThreadRun(() -> {
+            try {
+                databaseIOUtil.exportTables(file);
+            } catch (SQLException | IOException e) {
+                MsgUtil.sendDirectMessage(sender, Component.text("Error occurred during recovery progress: " + e.getMessage()));
+            }
+        });
+        MsgUtil.sendDirectMessage(sender, Component.text("Exported database to " + file.getAbsolutePath()));
     }
 
 

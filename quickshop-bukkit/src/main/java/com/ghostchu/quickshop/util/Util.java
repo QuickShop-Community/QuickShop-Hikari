@@ -1437,9 +1437,8 @@ public class Util {
     @Data
     @AllArgsConstructor
     public static class SysPropertiesParseResult {
-        private final String value;
-
         private final String key;
+        private final String value;
 
         @NotNull
         public String getParseKey() {

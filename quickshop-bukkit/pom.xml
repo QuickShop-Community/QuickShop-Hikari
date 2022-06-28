@@ -376,5 +376,12 @@
             <version>1.7.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/net.sourceforge.csvjdbc/csvjdbc -->
+        <dependency>
+            <groupId>net.sourceforge.csvjdbc</groupId>
+            <artifactId>csvjdbc</artifactId>
+            <version>1.0.40</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

@@ -27,6 +27,7 @@ libraries:
   - com.github.juliomarcopineda:jdbc-stream:0.1.1
   - one.util:streamex:0.8.1
   - commons-lang:commons-lang:2.6
+  - net.sourceforge.csvjdbc:csvjdbc:1.0.40
 authors:
   - Ghost_chu
   - PotatoCraft Studio

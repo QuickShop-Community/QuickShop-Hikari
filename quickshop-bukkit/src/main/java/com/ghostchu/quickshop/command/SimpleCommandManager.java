@@ -277,20 +277,20 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .permission("quickshop.reset")
                         .executor(new SubCommand_Reset(plugin))
                         .build());
-//        registerCmd(
-//                CommandContainer.builder()
-//                        .prefix("recovery")
-//                        .hidden(true)
-//                        .permission("quickshop.recovery")
-//                        .executor(new SubCommand_Recovery(plugin))
-//                        .build());
-//        registerCmd(
-//                CommandContainer.builder()
-//                        .prefix("export")
-//                        .hidden(true)
-//                        .permission("quickshop.export")
-//                        .executor(new SubCommand_Export())
-//                        .build());
+        registerCmd(
+                CommandContainer.builder()
+                        .prefix("recovery")
+                        .hidden(true)
+                        .permission("quickshop.recovery")
+                        .executor(new SubCommand_Recovery(plugin))
+                        .build());
+        registerCmd(
+                CommandContainer.builder()
+                        .prefix("export")
+                        .hidden(true)
+                        .permission("quickshop.export")
+                        .executor(new SubCommand_Export())
+                        .build());
 //        registerCmd(
 //                CommandContainer.builder()
 //                        .prefix("convert")
