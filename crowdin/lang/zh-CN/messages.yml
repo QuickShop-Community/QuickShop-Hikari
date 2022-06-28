@@ -572,7 +572,7 @@ importing-early-warning: "<yellow><red><bold>警告: </bold></red>备份即将�
 importing-database: "<green>正在从备份导入数据，请稍候..."
 importing-failed: "<red>导入数据失败，请检查服务器控制台。"
 imported-database: "<green>数据从 <yellow>{0}</yellow> 导入。"
-transfer-sent: "<green>Shops transfer sent to <yellow>{0}</yellow>."
+transfer-sent: "<green>Shops transfer request sent to <yellow>{0}</yellow>."
 transfer-request: "<yellow>玩家 <aqua>{0}</aqua> 请求将他们的商店转移给您。您想接受这次来自 <aqua>{0}</aqua> 的商店吗？"
 transfer-ask: "<gold>输入 <red>/qs transfer accept</red> 来接受。</gold><newline><gold>输入 <red>/qs transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。"
 transfer-accepted-fromside: "<green>玩家 <aqua>{0}</aqua> 接受了您的商店转移请求。"
