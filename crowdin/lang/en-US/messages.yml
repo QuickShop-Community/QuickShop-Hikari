@@ -563,3 +563,9 @@ database:
   suggestion:
     trim: "<yellow>This database requires a trimming of isolated data. Execute <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>The 'Always counting' Feature is scheduled for removal. You shouldn't use it anymore as it will stop working in the future."
+exporting-database: "<green>Exporting database, please wait..."
+exporting-failed: "<red>Failed to export database, please check the server console."
+exported-database: "<green>Database exported to <yellow>{0}</yellow>."
+importing-database: "<green>Importing database from backup, please wait..."
+importing-failed: "<red>Failed to import database, please check the server console."
+imported-database: "<green>Database imported from <yellow>{0}</yellow>."
