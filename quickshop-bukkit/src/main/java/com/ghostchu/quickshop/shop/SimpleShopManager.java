@@ -1531,7 +1531,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         int amount;
         int shopHaveItems = shop.getRemainingStock();
         int invHaveSpaces = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
-        if (shop.isAlwaysCountingContainer() || !shop.isUnlimited()) {
+        if (!shop.isUnlimited()) {
             amount = Math.min(shopHaveItems, invHaveSpaces);
         } else {
             // should check not having items but having empty slots, cause player is trying to buy
@@ -1545,7 +1545,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         amount = Math.min(amount, (int) Math.floor(balance / price));
         if (amount < 1) { // typed 'all' but the auto set amount is 0
             // when typed 'all' but player can't buy any items
-            if ((shop.isAlwaysCountingContainer() || !shop.isUnlimited()) && shopHaveItems < 1) {
+            if (!shop.isUnlimited() && shopHaveItems < 1) {
                 // but also the shop's stock is 0
                 plugin.text().of(p, "shop-stock-too-low",
                         Component.text(shop.getRemainingStock()),
@@ -1584,7 +1584,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         } else {
             ownerCanAfford = Integer.MAX_VALUE;
         }
-        if (shop.isAlwaysCountingContainer() || !shop.isUnlimited()) {
+        if (!shop.isUnlimited()) {
             amount = Math.min(shopHaveSpaces, invHaveItems);
             amount = Math.min(amount, ownerCanAfford);
         } else {

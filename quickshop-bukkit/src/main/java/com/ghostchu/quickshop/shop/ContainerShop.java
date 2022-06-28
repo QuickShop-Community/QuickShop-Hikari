@@ -878,7 +878,7 @@ public class ContainerShop implements Shop, Reloadable {
             return;
         }
         // Items to drop on floor
-        if (this.isUnlimited() && !isAlwaysCountingContainer()) {
+        if (this.isUnlimited()) {
             InventoryTransaction transaction = InventoryTransaction
                     .builder()
                     .from(null)
@@ -918,7 +918,7 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public boolean inventoryAvailable() {
-        if (isUnlimited() && !isAlwaysCountingContainer()) {
+        if (isUnlimited()) {
             return true;
         }
         if (isSelling()) {
@@ -1315,7 +1315,7 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public int getRemainingSpace() {
         Util.ensureThread(false);
-        if (this.unlimited && !isAlwaysCountingContainer()) {
+        if (this.unlimited) {
             return -1;
         }
         if (this.getInventory() == null) {
@@ -1336,7 +1336,7 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public int getRemainingStock() {
         Util.ensureThread(false);
-        if (this.unlimited && !isAlwaysCountingContainer()) {
+        if (this.unlimited) {
             return -1;
         }
         if (this.getInventory() == null) {

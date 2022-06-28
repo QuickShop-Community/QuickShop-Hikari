@@ -241,7 +241,7 @@ public class PlayerListener extends AbstractQSListener {
         int amount;
         int shopHaveItems = shop.getRemainingStock();
         int invHaveSpaces = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
-        if (shop.isAlwaysCountingContainer() || !shop.isUnlimited()) {
+        if (!shop.isUnlimited()) {
             amount = Math.min(shopHaveItems, invHaveSpaces);
         } else {
             // should check not having items but having empty slots, cause player is trying to buy
@@ -255,7 +255,7 @@ public class PlayerListener extends AbstractQSListener {
         amount = Math.min(amount, (int) Math.floor(balance / price));
         if (amount < 1) { // typed 'all' but the auto set amount is 0
             // when typed 'all' but player can't buy any items
-            if ((shop.isAlwaysCountingContainer() || !shop.isUnlimited()) && shopHaveItems < 1) {
+            if (!shop.isUnlimited() && shopHaveItems < 1) {
                 // but also the shop's stock is 0
                 plugin.text().of(p, "shop-stock-too-low",
                         shop.getRemainingStock(),
@@ -294,7 +294,7 @@ public class PlayerListener extends AbstractQSListener {
         } else {
             ownerCanAfford = Integer.MAX_VALUE;
         }
-        if (shop.isAlwaysCountingContainer() || !shop.isUnlimited()) {
+        if (!shop.isUnlimited()) {
             amount = Math.min(shopHaveSpaces, invHaveItems);
             amount = Math.min(amount, ownerCanAfford);
         } else {
@@ -522,7 +522,7 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     private int getPlayerCanBuy(@NotNull Shop shop, double traderBalance, double price, @NotNull InventoryWrapper playerInventory) {
-        boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
+        boolean isContainerCountingNeeded = shop.isUnlimited();
         if (shop.isFreeShop()) { // Free shop
             return isContainerCountingNeeded ? Util.countSpace(playerInventory, shop) : Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop));
         }
@@ -537,7 +537,7 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     private int getPlayerCanSell(@NotNull Shop shop, double ownerBalance, double price, @NotNull InventoryWrapper playerInventory) {
-        boolean isContainerCountingNeeded = shop.isUnlimited() && !shop.isAlwaysCountingContainer();
+        boolean isContainerCountingNeeded = shop.isUnlimited();
         if (shop.isFreeShop()) {
             return isContainerCountingNeeded ? Util.countItems(playerInventory, shop) : Math.min(shop.getRemainingSpace(), Util.countItems(playerInventory, shop));
         }
