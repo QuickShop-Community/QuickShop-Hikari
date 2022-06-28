@@ -563,3 +563,9 @@ database:
   suggestion:
     trim: "<yellow>Diese Datenbank benötigt eine bereinigung von isolierten Daten. Führe <aqua>/qs database trim</aqua> aus um die Datenbank zu reinigen."
 always-counting-removal-early-warning: "<red>Die 'Immer zählen' Funktion ist zur entfernung geplant. Du solltest es nicht mehr verwenden, da es in naher Zukunft nicht mehr funktioniert."
+exporting-database: "<green>Exporting database, please wait..."
+exporting-failed: "<red>Failed to export database, please check the server console."
+exported-database: "<green>Database exported to <yellow>{0}</yellow>."
+importing-database: "<green>Importing database from backup, please wait..."
+importing-failed: "<red>Failed to import database, please check the server console."
+imported-database: "<green>Database imported from <yellow>{0}</yellow>."
