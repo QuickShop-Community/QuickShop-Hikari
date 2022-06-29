@@ -20,6 +20,7 @@
 package com.ghostchu.quickshop.shop.controlpanel;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopControlPanel;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelPriority;
@@ -71,15 +72,16 @@ public class SimpleShopControlPanel implements ShopControlPanel {
     public @NotNull List<Component> generate(@NotNull Player sender, @NotNull Shop shop) {
         QuickShop plugin = QuickShop.getInstance();
         List<Component> components = new ArrayList<>();
+        ProxiedLocale locale = plugin.text().findRelativeLanguages(sender.getLocale());
         // Owner
         if (!plugin.perm().hasPermission(sender, "quickshop.setowner")) {
-            components.add(plugin.text().of(sender, "menu.owner", shop.ownerName()).forLocale());
+            components.add(plugin.text().of(sender, "menu.owner", shop.ownerName(locale)).forLocale());
         } else {
             Component text;
             if (plugin.getConfig().getBoolean("shop.show-owner-uuid-in-controlpanel-if-op") && shop.isUnlimited()) {
-                text = plugin.text().of(sender, "controlpanel.setowner-uuid", shop.ownerName(), shop.getOwner().toString()).forLocale();
+                text = plugin.text().of(sender, "controlpanel.setowner-uuid", shop.ownerName(locale), shop.getOwner().toString()).forLocale();
             } else {
-                text = plugin.text().of(sender, "controlpanel.setowner", shop.ownerName()).forLocale();
+                text = plugin.text().of(sender, "controlpanel.setowner", shop.ownerName(locale)).forLocale();
             }
             components.add(text
                     .hoverEvent(HoverEvent.showText(plugin.text().of(sender, "controlpanel.setowner-hover").forLocale()))
