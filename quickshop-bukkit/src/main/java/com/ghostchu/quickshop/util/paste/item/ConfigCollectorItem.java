@@ -28,10 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
 
 public class ConfigCollectorItem implements SubPasteItem {
     private final List<File> file = new ArrayList<>();
@@ -47,8 +44,12 @@ public class ConfigCollectorItem implements SubPasteItem {
         file.add(new File("spigot.yml"));
         file.add(new File("paper.yml"));
         // 1.19 and up paper configuration
-        file.add(new File("config/paper-global.yml"));
-        file.add(new File("config/paper-world-defaults.yml"));
+        File newConfigFolder = new File("config");
+        if (newConfigFolder.exists() && newConfigFolder.isDirectory()) {
+            File[] filesInsideConfig = newConfigFolder.listFiles();
+            if (filesInsideConfig != null)
+                Collections.addAll(file, filesInsideConfig);
+        }
         file.add(new File("purpur.yml"));
         file.add(new File("pufferfish.yml"));
         file.add(new File("tuinity.yml"));
