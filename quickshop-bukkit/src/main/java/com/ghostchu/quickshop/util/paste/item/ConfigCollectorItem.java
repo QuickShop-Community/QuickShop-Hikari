@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
@@ -46,7 +47,7 @@ public class ConfigCollectorItem implements SubPasteItem {
         // 1.19 and up paper configuration
         File newConfigFolder = new File("config");
         if (newConfigFolder.exists() && newConfigFolder.isDirectory()) {
-            File[] filesInsideConfig = newConfigFolder.listFiles();
+            File[] filesInsideConfig = newConfigFolder.listFiles((dir, name) -> name.endsWith(".yml") || name.endsWith(".yaml") || name.endsWith(".json") || name.endsWith(".toml"));
             if (filesInsideConfig != null)
                 Collections.addAll(file, filesInsideConfig);
         }
