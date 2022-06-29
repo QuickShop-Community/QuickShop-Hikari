@@ -48,6 +48,7 @@ import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
+import me.clip.placeholderapi.util.Msg;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -799,22 +800,32 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
-    public @NotNull Component ownerName(boolean forceUsername) {
+    public @NotNull Component ownerName(boolean forceUsername, @NotNull ProxiedLocale locale) {
         Profile player = plugin.getPlayerFinder().find(this.getOwner());
         Component name;
         if (player == null) {
-            name = plugin.text().of("unknown-owner").forLocale();
+            name = plugin.text().of("unknown-owner").forLocale(locale.getLocale());
         } else {
             name = Component.text(player.getName());
         }
         if (!forceUsername && isUnlimited()) {
-            name = plugin.text().of("admin-shop").forLocale();
+            name = plugin.text().of("admin-shop").forLocale(locale.getLocale());
         }
         ShopOwnerNameGettingEvent event = new ShopOwnerNameGettingEvent(this, getOwner(), name);
         event.callEvent();
         name = event.getName();
         return name;
     }
+
+    @Override
+    public @NotNull Component ownerName(@NotNull ProxiedLocale locale) {
+        return ownerName(false, locale);
+    }
+    @Override
+    public @NotNull Component ownerName() {
+        return ownerName(false, MsgUtil.getDefaultGameLanguageLocale());
+    }
+
 
     /**
      * Check if this shop is free shop
@@ -824,11 +835,6 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public boolean isFreeShop() {
         return this.price == 0.0d;
-    }
-
-    @Override
-    public @NotNull Component ownerName() {
-        return ownerName(false);
     }
 
     /**
@@ -936,7 +942,7 @@ public class ContainerShop implements Shop, Reloadable {
         List<Component> lines = new ArrayList<>();
         //Line 1
         String headerKey = inventoryAvailable() ? "signs.header-available" : "signs.header-unavailable";
-        lines.add(plugin.text().of(headerKey, this.ownerName(false), plugin.text().of(headerKey).forLocale(locale.getLocale())).forLocale(locale.getLocale()));
+        lines.add(plugin.text().of(headerKey, this.ownerName(false, locale)).forLocale(locale.getLocale()));
         //Line 2
         String tradingStringKey;
         String noRemainingStringKey;
@@ -997,9 +1003,9 @@ public class ContainerShop implements Shop, Reloadable {
             line4 = plugin.text().of("signs.stack-price",
                     plugin.getShopManager().format(this.getPrice(), this),
                     item.getAmount(),
-                    Util.getItemStackName(item)).forLocale();
+                    Util.getItemStackName(item)).forLocale(locale.getLocale());
         } else {
-            line4 = plugin.text().of("signs.price", LegacyComponentSerializer.legacySection().deserialize(plugin.getShopManager().format(this.getPrice(), this))).forLocale();
+            line4 = plugin.text().of("signs.price", LegacyComponentSerializer.legacySection().deserialize(plugin.getShopManager().format(this.getPrice(), this))).forLocale(locale.getLocale());
         }
         lines.add(line4);
 
@@ -1506,7 +1512,7 @@ public class ContainerShop implements Shop, Reloadable {
                 ", " +
                 location.getBlockZ() +
                 ")" +
-                " Owner: " + LegacyComponentSerializer.legacySection().serialize(this.ownerName(false)) + " - " + getOwner() +
+                " Owner: " + LegacyComponentSerializer.legacySection().serialize(this.ownerName(false, MsgUtil.getDefaultGameLanguageLocale())) + " - " + getOwner() +
                 ", Unlimited: " + isUnlimited() +
                 " Price: " + getPrice();
     }

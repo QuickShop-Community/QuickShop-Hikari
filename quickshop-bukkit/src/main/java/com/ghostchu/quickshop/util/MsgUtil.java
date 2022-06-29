@@ -22,6 +22,7 @@ package com.ghostchu.quickshop.util;
 import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopControlPanelOpenEvent;
+import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.PluginGlobalAlertLog;
@@ -147,6 +148,11 @@ public class MsgUtil {
         String result = getGameLanguageCode(languageCode);
         cachedGameLanguageCode = new AbstractMap.SimpleEntry<>(languageCode, result);
         return result;
+    }
+
+    @NotNull
+    public static ProxiedLocale getDefaultGameLanguageLocale() {
+       return plugin.text().findRelativeLanguages(getDefaultGameLanguageCode());
     }
 
     @ApiStatus.Experimental

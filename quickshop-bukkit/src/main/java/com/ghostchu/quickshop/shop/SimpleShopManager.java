@@ -23,6 +23,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
+import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.economy.EconomyTransaction;
@@ -1018,6 +1019,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         registerShop(shop);
     }
 
+
     @Override
     public void actionCreate(@NotNull Player p, Info info, @NotNull String message) {
         Util.ensureThread(false);
@@ -1327,12 +1329,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 && !plugin.perm().hasPermission(p, "quickshop.other.use")) {
             return;
         }
+        ProxiedLocale locale = plugin.text().findRelativeLanguages(p.getLocale());
         // Potentially faster with an array?
         ItemStack items = shop.getItem();
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(p);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(plugin.text().of(p, "menu.shop-information").forLocale());
-        chatSheetPrinter.printLine(plugin.text().of(p, "menu.owner", shop.ownerName()).forLocale());
+        chatSheetPrinter.printLine(plugin.text().of(p, "menu.owner", shop.ownerName(locale)).forLocale());
         // Enabled
         if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PREVIEW_SHOP)
                 || plugin.perm().hasPermission(p, "quickshop.other.preview")) {
