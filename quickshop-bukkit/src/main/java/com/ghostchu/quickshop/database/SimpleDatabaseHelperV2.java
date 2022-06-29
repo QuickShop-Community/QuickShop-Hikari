@@ -152,7 +152,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
         if (getDatabaseVersion() == 3) {
             try {
-                doV2Migate();
+                doV2Migrate();
                 setDatabaseVersion(4);
             } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
                      IllegalAccessException e) {
@@ -530,7 +530,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
 
-    private void doV2Migate() throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    private void doV2Migrate() throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         plugin.getLogger().info("Please wait... QuickShop-Hikari preparing for database migration...");
         String actionId = UUID.randomUUID().toString().replace("-", "");
         plugin.getLogger().info("Action ID: " + actionId);
@@ -578,9 +578,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         if (!hasTable(getPrefix() + "shops_" + actionId)) {
             throw new IllegalStateException("Failed to rename tables!");
         }
-        plugin.getLogger().info("Rebuilding database structure...");
-        // Create new tables
-        checkTables();
+
         plugin.getLogger().info("Downloading the data that need to converting to memory...");
         List<OldShopData> oldShopData = new LinkedList<>();
         List<OldMessageData> oldMessageData = new LinkedList<>();
@@ -594,6 +592,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         // Convert data
         int pos = 0;
         int total = oldShopData.size();
+        plugin.getLogger().info("Rebuilding database structure...");
+        // Create new tables
+        checkTables();
         for (OldShopData data : oldShopData) {
             long dataId = DataTables.DATA.createInsert()
                     .setColumnNames("owner", "item", "name", "type", "currency", "price", "unlimited", "hologram", "tax_account", "permissions", "extra", "inv_wrapper", "inv_symbol_link")
