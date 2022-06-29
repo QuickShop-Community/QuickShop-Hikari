@@ -139,7 +139,7 @@ public class ConfigUpdateScript {
     private Object translate(Object o) {
         if (o instanceof String str) {
             Component component = MineDown.parse(str);
-            return plugin.getPlatform().miniMessage().serialize(component);
+            return MiniMessage.miniMessage().serialize(component);
         }
         return o;
     }

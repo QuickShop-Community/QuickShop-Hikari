@@ -184,6 +184,7 @@ public enum DataTables {
         TableCreateBuilder tableBuilder = sqlManager.createTable(this.getName());
         tableHandler.accept(tableBuilder);
         tableBuilder.build().execute();
+        Log.debug("Table creating:" + this.getName());
     }
 
     public @NotNull TableQueryBuilder createQuery(@NotNull SQLManager sqlManager) {
@@ -241,9 +242,11 @@ public enum DataTables {
     public @NotNull ReplaceBuilder<PreparedSQLUpdateBatchAction<Integer>> createReplaceBatch(@NotNull SQLManager sqlManager) {
         return sqlManager.createReplaceBatch(this.getName());
     }
+
     public boolean purgeTable() {
         return purgeTable(this.manager);
     }
+
     public boolean purgeTable(@NotNull SQLManager sqlManager) {
         try {
             sqlManager.createDelete(this.getName())
@@ -251,7 +254,7 @@ public enum DataTables {
                     .build().execute();
             return true;
         } catch (SQLException e) {
-            Log.debug("Failed to purge table " + this.getName()+e);
+            Log.debug("Failed to purge table " + this.getName() + e);
             return false;
         }
     }

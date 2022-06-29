@@ -594,7 +594,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         int total = oldShopData.size();
         plugin.getLogger().info("Rebuilding database structure...");
         // Create new tables
-        checkTables();
+        Log.debug("Table prefix: "+getPrefix());
+        Log.debug("Global prefix: "+plugin.getDbPrefix());
+        Log.debug("SQLManager: "+manager);
+
+        DataTables.initializeTables(manager, getPrefix());
         for (OldShopData data : oldShopData) {
             long dataId = DataTables.DATA.createInsert()
                     .setColumnNames("owner", "item", "name", "type", "currency", "price", "unlimited", "hologram", "tax_account", "permissions", "extra", "inv_wrapper", "inv_symbol_link")
