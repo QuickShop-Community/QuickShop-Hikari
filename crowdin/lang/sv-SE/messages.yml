@@ -1,4 +1,3 @@
----
 break-shop-use-supertool: <yellow>Du kan förstöra butiken med SuperVerktyget.
 fee-charged-for-price-change: <green>Du betalade <red>{0}<green> för att ändra priset.
 not-allowed-to-create: <red>Du får inte skapa en butik här.
