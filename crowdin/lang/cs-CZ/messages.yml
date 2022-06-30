@@ -1,4 +1,3 @@
----
 break-shop-use-supertool: <yellow>Obchod můžete rozbít pomocí super nástroje.
 fee-charged-for-price-change: <green>Zaplatili jste <red>{0}</red> za změnu ceny.
 not-allowed-to-create: <red>Zde nemůžete vytvořit obchod.
