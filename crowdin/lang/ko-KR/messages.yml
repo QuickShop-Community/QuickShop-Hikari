@@ -1,4 +1,3 @@
----
 break-shop-use-supertool: <yellow> 당신은 SuperTool을 이용해 상점을 파괴할 수 있습니다.
 fee-charged-for-price-change: <green>가격 변경비<red>{0} 원을 <green>지불 하였습니다.
 not-allowed-to-create: <red> 당신은 이곳에 상점을 만들수 없습니다.
@@ -342,7 +341,7 @@ controlpanel:
   toggledisplay-hover: <yellow>상점 표시 항목 상태 전환
   refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>상점 동결 상태 전환.
-  lock-hover: <yellow>상점 잠금 보호를 활성화/비활성화 합니다. 
+  lock-hover: <yellow>상점 잠금 보호를 활성화/비활성화 합니다.
   item-hover: <yellow>클릭하여 상점의 아이템을 변경합니다
   infomation: '<green>상점 컨트롤 패널:'
   mode-selling-hover: <yellow>클릭하여 상점을 구매 모드로 전환합니다.
