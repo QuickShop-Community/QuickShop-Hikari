@@ -401,7 +401,7 @@ command:
     currency: <yellow>Đặt hoặc xóa cài đặt tiền tệ của cửa hàng
     removeworld: <yellow>Xóa TẤT CẢ các cửa hàng trong thế giới được chỉ định
     info: <yellow>Hiển thị thống kê QuickShop
-    owner: <yellow>Changes the ownership of a shop.
+    owner: <yellow>Thay đổi quyền sở hữu của một cửa hàng.
     amount: <yellow>Để đặt số lượng vật phẩm.
     item: <yellow>Thay đổi vật phẩm của cửa hàng
     debug: <yellow>Bật chế độ nhà phát triển
@@ -449,7 +449,7 @@ command:
   now-buying: '<green>Trạng thái: <light_purple>ĐANG BÁN <yellow>{0}'
   now-selling: '<green>Trạng thái: <light_purple>ĐANG MUA <yellow>{0}'
   cleaned: <green>Đã xoá <yellow>{0}<green> shops.
-  trade-item-now: <green>Now trading <yellow>{0}x {1}
+  trade-item-now: <green>Đang giao dịch <yellow>{0}x {1}
   no-world-given: <red>Xin vui lòng chỉ rõ một tên hợp lệ.
   format-disabled: <red>/{0} {1} <gray>- {2}
   invalid-bulk-amount: <red>Giá trị đưa vào {0} đang lớn hơn số lượng max của 1 stack hoặc có thể đang nhỏ hơn
