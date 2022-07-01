@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop is disabled in this world
 how-much-to-trade-for: <green>채팅에 {0}의 {1}개당 가격을 얼마로 할건지 입력해주세요.
 client-language-changed: <green>퀵샵이 당신의 클라이언트의 언어설정이 변경된것을 확인했습니다, 지금부터 저희는 당신을 위해 {0} 를 적용합니다.
 shops-backingup: 상점백업을 데이터베이스에 만들고 있습니다
-_comment: 안녕하세요 번역가님! 만약 당신이 깃헙이나 소스코드에서 번역 중이라면 다음 사이트를 가보시기 바래요! https://crowdin.com/project/quickshop-reremake
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>무제한 상점의 주인이 {0}으로 변경되었습니다.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>잘못된 숫자입니다.
@@ -138,8 +138,8 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
     PURCHASE: <yellow>Purchased item with a shop
   query-argument: 'Query Argument: {0}'
-  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}x
   entry-header-global: '<aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591) <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
   header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
