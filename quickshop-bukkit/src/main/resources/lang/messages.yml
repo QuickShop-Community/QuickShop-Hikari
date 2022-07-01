@@ -8,7 +8,7 @@ client-language-changed: <green>QuickShop detected that your client language has
   changed. We now use the {0} locale for you.
 shops-backingup: Creating Shop-backup from database...
 _comment: Hi translator! If you're editing this on GitHub or through the source code
-  should you go to https://crowdin.com/project/quickshop-reremake instead.
+  should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>The unlimited Shop Owner has been changed to
   {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters:
@@ -178,10 +178,10 @@ metric:
   query-argument: 'Query Argument: {0}'
   entry-global: <aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591
     hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355
-    hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|
+    hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|
   entry-player: <aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591
     hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355
-    hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|
+    hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|
   amount-hover: <yellow>{0}x
   entry-header-global: <aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591)
     <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66)

@@ -357,7 +357,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     public void saveOfflineTransactionMessage(@NotNull UUID player, @NotNull String message, long time) {
         DataTables.MESSAGES.createInsert()
                 .setColumnNames("receiver", "time", "content")
-                .setParams(player.toString(), time, message)
+                .setParams(player.toString(), new Date(time), message)
                 .executeAsync((handler) -> Log.debug("Operation completed, saveOfflineTransaction for " + player + ", " + handler + " lines affected"));
     }
 
