@@ -178,8 +178,7 @@ public class MsgUtil {
                     languageCode = language + '_' + country;
                 }
             }
-            languageCode = languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
-            return languageCode;
+            return languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
         } else {
             return languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
         }
