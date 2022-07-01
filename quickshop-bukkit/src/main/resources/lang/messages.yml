@@ -8,7 +8,7 @@ client-language-changed: <green>QuickShop detected that your client language has
   changed. We now use the {0} locale for you.
 shops-backingup: Creating Shop-backup from database...
 _comment: Hi translator! If you're editing this on GitHub or through the source code
-  should you go to https://crowdin.com/project/quickshop-reremake instead.
+  should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>The unlimited Shop Owner has been changed to
   {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters:
