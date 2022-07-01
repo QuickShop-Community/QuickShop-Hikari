@@ -48,7 +48,7 @@ import java.util.Map;
 
 public class CrowdinOTA implements Distribution {
     //DO NOT final it! Unit-test needs to change it to prevent network flow
-    protected static String CROWDIN_OTA_HOST = "https://distributions.crowdin.net/17c22941a7edcba09821517xrm4/";
+    protected static String CROWDIN_OTA_HOST = "https://distributions.crowdin.net/91b97508fdf19626f2977b7xrm4/";
     private final QuickShop plugin;
     private final OTACacheControl otaCacheControl = new OTACacheControl();
     private Manifest manifest;
@@ -60,7 +60,7 @@ public class CrowdinOTA implements Distribution {
             CROWDIN_OTA_HOST = configDefine;
         Util.SysPropertiesParseResult parseResult = Util.parsePackageProperly("custom-crowdin-ota-host");
         if(parseResult.isPresent()){
-            CROWDIN_OTA_HOST = parseResult.asString("https://distributions.crowdin.net/17c22941a7edcba09821517xrm4/");
+            CROWDIN_OTA_HOST = parseResult.asString("https://distributions.crowdin.net/91b97508fdf19626f2977b7xrm4/");
         }
         this.plugin = plugin;
         Util.getCacheFolder().mkdirs();
