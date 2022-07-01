@@ -1,35 +1,35 @@
-break-shop-use-supertool: <yellow>You can break the shop by using the SuperTool.
-fee-charged-for-price-change: <green>You paid <red>{0}</red> to change the price.
-not-allowed-to-create: <red>You may not create a shop here.
+break-shop-use-supertool: <yellow>Du kan förstöra butiken med SuperVerktyget.
+fee-charged-for-price-change: <green>Du betalade <red>{0}<green> för att ändra priset.
+not-allowed-to-create: <red>Du får inte skapa en butik här.
 disabled-in-this-world: <red>QuickShop is disabled in this world
-how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}</yellow> for.
-client-language-changed: <green>QuickShop detected that your client language has been changed. We now use the {0} locale for you.
-shops-backingup: Creating Shop-backup from database...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-reremake instead.
-unlimited-shop-owner-changed: <yellow>The unlimited Shop Owner has been changed to {0}.
+how-much-to-trade-for: <green>Ange i chatten, hur mycket du vill sälja <yellow>{1}x {0}<green> för.
+client-language-changed: <green>QuickShop upptäckte att ditt klientspråk har ändrats, vi använder nu {0} språk för dig.
+shops-backingup: Skapar butik-backup från databasen...
+_comment: Hej översättare! Om du redigerar detta från Github eller från kodkällor, besök https://crowdin.com/project/quickshop-reremake
+unlimited-shop-owner-changed: <yellow>Denna obegränsade butikens ägare har ändrats till {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
-thats-not-a-number: <red>Invalid number
-shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is disallowed. Pick another one!
-console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
-not-a-number: <red>You can only input a number, your input was {0}.
-not-looking-at-valid-shop-block: <red>Could not create a shop. Please look at a supported block type and try again.
-shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
+thats-not-a-number: <red>Ogiltig siffra
+shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
+console-only-danger: <red>Detta är ett farligt kommando, varför endast konsolen kan exekvera det.
+not-a-number: <red>Du kan bara ange ett nummer, din inmatning var {0}.
+not-looking-at-valid-shop-block: <red>Kunde inte hitta ett block för att skapa butik. Du måste titta på ett.
+shop-removed-cause-ongoing-fee: <red>Din butik vid {0} togs bort eftersom du inte hade tillräckligt med pengar för att behålla den!
 tabcomplete:
-  amount: '[amount]'
+  amount: '[antal]'
   item: '[item]'
-  price: '[price]'
+  price: '[pris]'
   name: '[name]'
-  range: '[range]'
-  currency: '[currency name]'
-taxaccount-unset: <green>This shop's tax account now following server global setting.
-blacklisted-item: <red>You cannot sell this item because it is on the blacklist
-command-type-mismatch: <red>This command can only be executed by <aqua>{0}</aqua>.
-server-crash-warning: '<red>WARNING: Using the /qs reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
-you-cant-afford-to-change-price: <red>It costs {0} to change the price in your shop.
-safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
-forbidden-vanilla-behavior: <red>This operation is not allowed due to it not being consistent with vanilla behaviours
+  range: '[intervall]'
+  currency: '[valutans namn]'
+taxaccount-unset: <green>Denna butiks momskonto följer nu serverns globala inställningar.
+blacklisted-item: <red>Du kan inte sälja detta föremål eftersom det finns på svartlistan
+command-type-mismatch: <red>Detta kommando kan endast exekveras av <aqua>{0}.
+server-crash-warning: '<red>Server kan krascha efter körning av /qs reload om du ersätter/tar bort QuickShop plugin Jar-fil medan servern körs.'
+you-cant-afford-to-change-price: <red>Det kostar {0} att ändra priset i din butik.
+safe-mode: <red>QuickShop är nu i säkert läge, du kan inte öppna den här butiksbehållaren, kontakta serveradministratören för att åtgärda felen.
+forbidden-vanilla-behavior: <red>Operationen är förbjuden på grund av att den inte är konsekvent med vanilla-beteendet
 shop-out-of-space-name: <dark_purple>Your shop {0} is full!
-paste-disabled: '<red>Paste function has been disabled! You cannot request technical support.<newline>Reason: {0}'
+paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
@@ -46,81 +46,81 @@ quick-fill:
     - '<yellow>Price: <aqua>{price}'
     - '<yellow>Item: <aqua>{item}'
     - '<yellow>Location: <aqua>{location}'
-  header: '<yellow>You have multiple shops with name "<green>{0}</green>", choose one to continue:'
+  header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
-average-price-nearby: '<green>Nearby average prices: <yellow>{0}'
-digits-reach-the-limit: <red>You have reached the limits of decimals in the price.
-currency-unset: <green>Shop currency removed successfully. Using default settings now.
-you-cant-create-shop-in-there: <red>You don't have permissions to create a shop at this location.
-no-pending-action: <red>You don't have any pending actions
-refill-success: <green>Refill successful
-failed-to-paste: <red>Failed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)
+average-price-nearby: '<green>Närliggande genomsnittspris: <yellow>{0}'
+digits-reach-the-limit: <red>Du har nått gränsen för decimaler i priset.
+currency-unset: <green>Butikens valuta har tagits bort. Använder standardinställningar nu.
+you-cant-create-shop-in-there: <red>Du har inte behörighet att skapa en butik på den här platsen.
+no-pending-action: <red>Du har inga väntande transaktioner
+refill-success: <green>Påfyllningen lyckades
+failed-to-paste: <red>Misslyckades att ladda upp data till Pastebin. Kontrollera din internetanslutning och försök igen. (Se konsolen för detaljer)
 shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
-shop-name-invalid: <red>The shop name <yellow>{0}</yellow> is invalid. Pick another one!
-how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
-exceeded-maximum: <red>The value exceeded the maximum value in Java.
-unlimited-shop-owner-keeped: '<yellow>Attention: The Shop owner is still owning an unlimited shop and you have to re-set the new Shop owner by yourself.'
-no-enough-money-to-keep-shops: <red>You didn't had enough money to keep your shops! All your shops have been removed...
-3rd-plugin-build-check-failed: <red>3rd-party plugin <bold>{0}</bold> denied the permission checks, did you have permission set up in there?
-not-a-integer: <red>You must input an integer, your input was {0}.
-translation-country: 'Language Zone: English (en_US)'
-buying-more-than-selling: '<red>WARNING: You are buying items for more than what you are selling them for!'
-purchase-failed: '<red>Purchase failed: Internal Error. Please contact the Server Administrator.'
-denied-put-in-item: <red>You cannot put this item into your shop!
-shop-has-changed: <red>The shop you tried to use has changed since you last clicked it!
-flush-finished: <green>Successfully cleared recent messages.
-no-price-given: <red>Please provide a valid price.
-shop-already-owned: <red>This is already a shop.
-backup-success: <green>Backup successfull.
-not-looking-at-shop: <red>Couldn't find a QuickShop. Make sure you look at one.
-you-cant-afford-a-new-shop: <red>It costs {0} to create a new shop.
-success-created-shop: <green>Shop created.
-shop-creation-cancelled: <red>Shop creation cancelled.
-shop-owner-self-trade: <yellow>You trade with your own shop. You may not gain any money.
-purchase-out-of-space: <red>This shop has run out of space. Contact the shop owner or staff to get it emptied.
+shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
+how-many-buy-stack: <yellow>Ange i chatten, hur många paket du vill <aqua>KÖPA<green>. Det finns <yellow>{0}<green> föremål i varje paket och du kan köpa <yellow>{1}<green> paket. Ange <aqua>{2}<green> i chatten för att köpa alla.
+exceeded-maximum: <red>Värdet överskred det maximala värdet i Java.
+unlimited-shop-owner-keeped: '<yellow>Observera: Butiksägaren är fortfarande ägare av obegränsad butik, du behöver själv byta ny butiksägare igen.'
+no-enough-money-to-keep-shops: <red>Du har inte tillräckligt med pengar för att behålla dina butiker! Alla butiker har tagits bort...
+3rd-plugin-build-check-failed: <red>3:e parts plugin <bold>{0}<reset><red> nekade behörighetskontroller, har du konfigurerat behörigheter där?
+not-a-integer: <red>Du måste ange en siffra, din inmatning var {0}.
+translation-country: 'Språkområde: Svenska (sv_SE)'
+buying-more-than-selling: '<red>VARNING: Du köper föremål för mer än du säljer dem!'
+purchase-failed: '<red>Köpet misslyckades: Internt fel. Kontakta serveradministratören.'
+denied-put-in-item: <red>Du kan inte lägga in detta objekt i din butik!
+shop-has-changed: <red>Butiken du försökte använda har ändrats sedan du klickade på den!
+flush-finished: <green>Framgångsrikt rensat meddelandena.
+no-price-given: <red>Var god ange ett giltigt pris.
+shop-already-owned: <red>Det här är redan en butik.
+backup-success: <green>Backup framgångsrik.
+not-looking-at-shop: <red>Kunde inte hitta en QuickShop. Du måste titta på en.
+you-cant-afford-a-new-shop: <red>Det kostar {0} att skapa en ny butik.
+success-created-shop: <red>Butik skapad.
+shop-creation-cancelled: <red>Butik-skapelsen avbröts!
+shop-owner-self-trade: <yellow>You handlar med din egen butik, så du kanske inte kommer att få något saldo.
+purchase-out-of-space: <red>Denna butik har slut på tillgängligt utrymme, Kontakta butiksägare eller personal för att tömma butiken.
 reloading-status:
-  success: <green>Reload completed without any errors.
-  scheduled: <green>Reload complete. <gray>(Some changes take a while to become active)
-  require-restart: <green>Reload complete. <yellow>(Some changes require a server restart to take effect)
-  failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: <green>{0} purchased{1} {2} from your shop and you earned {3} ({4} in taxes).
-not-enough-space: <red>You only have room left for {0} more!
+  success: <green>Omladdning slutförd utan några fel.
+  scheduled: <green>Omladdning slutförd. &(Vissa ändringar kräver att servern startar om för att påverka)
+  require-restart: <green>Omladdning slutförd. &(Vissa ändringar kräver att servern startar om för att påverka)
+  failed: <red>Reload misslyckades, kontrollera serverkonsolen
+player-bought-from-your-store-tax: <red>{0} köpte {1} {2} från din butik, du tjänade {3} ({4} i skatt).
+not-enough-space: <red>Du har bara plats för {0} mer!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
-shop-staff-added: <green>Successfully added {0} as a staff member to your shop.
-shops-recovering: Recovering shops from backup...
+shop-staff-added: <green>Framgångsrikt lagt till {0} som personal för din butik.
+shops-recovering: Återställer butiker från backup...
 menu:
-  sell-tax: <green>You paid <yellow>{0}</yellow> in taxes.
-  owner: '<green>Owner: {0}'
-  preview: <aqua>[Item Preview]
-  enchants: <dark_purple>Enchantments
-  sell-tax-self: <green>You didn't had to pay taxes because you own this shop.
-  shop-information: '<green>Shop Information:'
-  item: '<green>Item: <yellow>{0}'
-  price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
-  item-name-and-price: <yellow>{0} {1} <green>for</green> {2}
-  successful-purchase: '<green>Successfully purchased:'
-  price-per-stack: <green>Price per <yellow>{2}x {0} - {1}
-  stored-enchants: <dark_purple>Stored Enchantments
-  item-holochat-error: <red>[Error]
-  this-shop-is-selling: <green>This shop is <aqua>SELLING</aqua> items.
-  shop-stack: '<green>Amount of bulk: <yellow>{0}'
-  space: '<green>Space: <yellow>{0}'
-  effects: <green>Effects
-  damage-percent-remaining: <yellow>{0}% <green>remaining.
-  item-holochat-data-too-large: <red>[Error] Item NBT is too large to display
-  stock: '<green>Stock: <yellow>{0}'
-  this-shop-is-buying: <green>This shop is <light_purple>BUYING<green> items.
-  successfully-sold: '<green>Successfully sold:'
-  total-value-of-chest: '<green>Total value of chest: <yellow>{0}'
-currency-not-exists: <red>Cannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.
-no-nearby-shop: <red>No nearby shops matching {0}.
-translation-author: 'Translator: Ghost_chu, Andre_601'
-integrations-check-failed-trade: <red>Integration {0} denied the Shop trading
-shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any other operations have been rolled back. Please contact the server administrators if this error persists.
-success-change-owner-to-server: <green>Successfully set the shop owner to Server.
-shop-name-not-found: <red>The shop named <yellow>{0}</yellow> not exists.
+  sell-tax: <green>Du betalade <yellow>{0} <green>i moms.
+  owner: '<green>Ägare: {0}'
+  preview: <aqua>[Förhandsgranska]
+  enchants: <dark_purple>Förtrollningar
+  sell-tax-self: <green>Du betalade ingen moms eftersom du äger den här butiken.
+  shop-information: '<green>Butiksinformation:'
+  item: '<green>Föremål: <yellow>{0}'
+  price-per: <green>Pris per <yellow>{0} <green>- <yellow>{1}
+  item-name-and-price: <yellow>{0} {1} <green>för <yellow>{2}
+  successful-purchase: '<green>Framgångsrikt köpt:'
+  price-per-stack: <green>Pris per <yellow>{2}x {0} - {1}
+  stored-enchants: <dark_purple>Lagrade förtrollningar
+  item-holochat-error: <red>[Fel]
+  this-shop-is-selling: <green>Denna butik <aqua>SÄLJER& föremål.
+  shop-stack: '<green>Antal i paket: <yellow>{0}'
+  space: '<green>Utrymme: <yellow>{0}'
+  effects: <green>Effekter
+  damage-percent-remaining: <yellow>{0}% <green>kvarstående.
+  item-holochat-data-too-large: <red>[Error] Objektets NBT är för stort för att visa
+  stock: '<green>Lagersaldo <yellow>{0}'
+  this-shop-is-buying: <green>Denna butik <light_purple>KÖPER& föremål.
+  successfully-sold: '<green>Framgångsrikt sålt:'
+  total-value-of-chest: '<green>Totalt värde av butik: <yellow>{0}'
+currency-not-exists: <red>Kan inte hitta den valuta som du vill ställa in. Stavningen är kanske fel eller att valutan inte är tillgänglig i denna värld.
+no-nearby-shop: <red>Ingen butik som matchar {0} i närheten.
+translation-author: 'Översättare: Ghost_chu, Andre_601'
+integrations-check-failed-trade: <red>Integration {0} nekade butiksbytet
+shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
+success-change-owner-to-server: <green>Framgångsrikt ändrat butiksägaren till Server.
+shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
 shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
@@ -154,198 +154,198 @@ metric:
   shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}'
   time-hover: '<yellow>Time: {0}'
   amount-stack-hover: <yellow>{0}x stack
-permission-denied-3rd-party: <red>Permission denied by 3rd-party Plugin {0}.
-you-dont-have-that-many-items: <red>You only have {0} {1}.
-complete: <green>Complete!
-translate-not-completed-yet-url: 'The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}'
-success-removed-shop: <green>Shop removed.
-currency-set: <green>Shop currency successfully set to {0}.
-shop-purged-start: <green>Shop purge started, check the console for details.
-economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economic changes have been rolled back. Please contact the server administrators if this error persists.
-nothing-to-flush: <green>You have no new shop messages.
-no-price-change: <red>This wouldn't result in a price change!
-edition-confilct: QuickShop-Hikari with QuickShop-Reremake installed may cause conflicts between each other. Uninstall one of them.
-inventory-unavailable: '<red>Non-existant or invalid InventoryWrapper. Do you use an Addon to re-bind the Shop Inventory?<newline>Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the Server administrators.'
-file-test: This is a test text file. We use it to test if the messages.json file is broken. You can fill it with any easter eggs you like :)
-unknown-player: <red>The target player doesn't exist. Please check the username you typed.
+permission-denied-3rd-party: '<red>Tillstånd nekat: tredje parts plugin [{0}].'
+you-dont-have-that-many-items: <red>Du har endast {0} {1}.
+complete: <green>Färdig!
+translate-not-completed-yet-url: 'Översättningen av språket {0} slutfördes inte av {1}. Vill du hjälpa oss att förbättra översättningen? Klicka här: {2}'
+success-removed-shop: <green>Butik borttagen.
+currency-set: <green>Butikens valuta har angetts till {0}.
+shop-purged-start: <green>Shop rensning startade, kontrollera konsolen för detaljer.
+economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
+nothing-to-flush: <green>Du har inga nya butiksmeddelanden.
+no-price-change: <red>Detta skulle inte resultera i en prisändring!
+edition-confilct: QuicShop-Hikari med QuickShop-Reremake installerat kan strida mot varandra, avinstallera en av dem.
+inventory-unavailable: '<red>This shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.'
+file-test: Detta är en testtextfil. Vi använder den för att testa om messages.json är trasig. Du kan fylla den med valfria påskägg som du gillar här :)
+unknown-player: <red>Angiven spelare finns inte, kontrollera användarnamnet du angav.
 player-offline: "<red>The target player currently is offline."
 language:
-  qa-issues: '<yellow>Quality assurance issues: <aqua>{0}%'
-  code: '<yellow>Code: <gold>{0}'
-  approval-progress: '<yellow>Approval Progress: <aqua>{0}%'
-  translate-progress: '<yellow>Translation Progress: <aqua>{0}%'
-  name: '<yellow>Name: <gold>{0}'
-  help-us: <green>[Help us improve the translation quality]
-warn-to-paste: '<yellow>Collecting data and uploading to Pastebin, this may take a while. <red><bold>Warning: <red>The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+  qa-issues: '<yellow>Kvalitetsförsäkringsfrågor: <aqua>{0}%'
+  code: '<yellow>Kod: <gold>{0}'
+  approval-progress: '<yellow>Godkända Framsteg: <aqua>{0}%'
+  translate-progress: '<yellow>Översättningsframsteg: <aqua>{0}%'
+  name: '<yellow>Namn: <gold>{0}'
+  help-us: <green>[Hjälp oss att förbättra översättningens kvalitet]
+warn-to-paste: '<yellow>Samlar in data och laddar upp det till Pastebin, det kan ta ett tag. <red><bold>Varning:<red> Datan hålls offentlig i en vecka! Det kan läcka din serverkonfiguration och annan känslig information. Se till att du bara skickar den till <bold>betrodd personal/utvecklas.'
+how-many-sell-stack: <green>Ange i chatten, hur många föremål du vill <light_purple>SÄLJA<green> per paket. Det finns <yellow>{0}<green> föremål per paket och du har <yellow>{1}<green> paket tillgängliga. Ange <aqua>{2}<green> i chatten för att sälja alla.
 updatenotify:
-  buttontitle: '[Update Now]'
-  onekeybuttontitle: '[OneKey Update]'
+  buttontitle: '[Uppdatera nu]'
+  onekeybuttontitle: '[OneKey-uppdatering]'
   label:
     github: '[GitHub]'
     ore: '[Ore]'
     lts: '[LTS]'
     nbtapi: '[+NBTAPI]'
-    qualityverifyed: '[Quality]'
+    qualityverifyed: '[Kvalitet]'
     master: '[Master]'
-    unstable: '[Unstable]'
+    unstable: '[Ostabil]'
     paper: '[+Paper Optimized]'
-    stable: '[Stable]'
+    stable: '[Stabil]'
     spigotmc: '[SpigotMC]'
     papermc: '[PaperMC]'
     bukkitdev: '[BukkitDev]'
     polymart: '[Polymart]'
     basic: '[Basic]'
   list:
-    - '{0} was released. You are still using {1}!'
-    - Boom! New update {0} incoming. Update!
-    - Surprise! {0} came out. You are on {1}
-    - Looks like you need to update. {0} was released!
-    - Ooops! {0} was now released. You are on {1}!
-    - I swear, QS has been updated to {0}. Why have you not updated yet?
-    - Fixing and re... Sorry, but {0} was released!
-    - Err! Nope. This is not an error. {0} has been released!
-    - OMG! {0} came out! Why are you still using {1}?
-    - 'Todays News: QuickShop has been updated to {0}!'
-    - Plugin k.i.a. You should update to {0}!
-    - Update {0} ignited. Save update!
-    - There is an update available Commander. {0} has just came out!
-    - Look my style---{0} updated. You're still using {1}
-    - Ahhhhhhh! New update {0}! Update!
-    - What do you think? {0} has been released! Update!
-    - Doctor, QuickShop has a new update {0}! You should update~
-    - Ko~ko~da~yo~ QuickShop has a new update {0} ~
-    - Paimon want told you the QuickShop have new update {0}!
-  remote-disable-warning: '<red>This version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server''s performance.'
-purchase-out-of-stock: <red>This shop has run out of stock. Contact the shop owner or staff to get it refilled.
-nearby-shop-entry: '<green>- Info: {0} <green>Price: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Distance: <aqua>{5} <green>block(s)'
-chest-title: QuickShop Store
-console-only: <red>This command can only be executed by Console.
-failed-to-put-sign: <red>Not enough space around the shop to place the info sign.
+    - '{0} släpptes. Du använder fortfarande {1}!'
+    - Boom! Ny uppdatering {0} på gång. Uppdatera!
+    - Överraskning! {0} kom ut. Du är kvar på {1}
+    - Ser ut som du behöver uppdatera. {0} har släppts!
+    - Hoppsan! {0} släpptes. Du är på {1}!
+    - Jag svär, QS har uppdaterats till {0}. Varför har du inte uppdaterat ännu?
+    - Fixar och donar... Tyvärr, men {0} har släppts!
+    - Fel! Nej. Detta är inget fel. {0} har släppts!
+    - OMG! {0} kom ut! Varför använder du fortfarande {1}?
+    - 'Dagens nyheter: QuickShop har uppdaterats till {0}!'
+    - Plugin k.i.a. Du bör uppdatera till {0}!
+    - Uppdatering {0} antände. Spara uppdatering!
+    - Det finns en uppdatering tillgänglig Befälhavare. {0} har just kommit ut!
+    - Se min stil---{0} uppdaterad. Du använder fortfarande {1}
+    - Uppdatering! Ny uppdatering {0}! Uppdatera!
+    - Vad tror du? {0} har släppts! Uppdatera!
+    - Läkare, QuickShop har en ny uppdatering {0}! Du bör uppdatera~
+    - Ko~ko~da~yo~ QuickShop har en ny uppdatering {0}~
+    - Paimon vill berätta för dig att QuickShop har en ny uppdatering {0}!
+  remote-disable-warning: '<red>Denna version av QuickShop har markerats som inaktiverad av fjärrservern. Det innebär att denna version kan ha allvarliga problem. Få information från vår SpigotMC-sida: {0}. Denna varning kommer att visas och spammas i din konsol tills du växlar till en icke inaktiverad version. Detta kommer dock inte att påverka din server.'
+purchase-out-of-stock: <red>Denna butik har slut på lagret, Kontakta butiksägare eller personal för att fylla på lagret.
+nearby-shop-entry: '<green>- Info:{0} <green>Pris:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>distans: <aqua>{5} <green>block'
+chest-title: QuickShop-butik
+console-only: <red>Detta kommando kan endast exekveras av Konsolen.
+failed-to-put-sign: <red>Inte tillräckligt med utrymme runt butiken för att placera butiksskylten.
 shop-name-unset: <red>This shop's name now removed
-shop-nolonger-freezed: <green>You unfroze the shop. It's back to normal now!
-no-permission-build: <red>You cannot build a shop here.
+shop-nolonger-freezed: <green>Du tinade upp butiken. Det är tillbaka till det normala nu!
+no-permission-build: <red>Du kan inte skapa en butik här.
 tableformat:
   left_half_line: <dark_purple>+--------------------
   right_half_line: <dark_purple>--------------------+
   full_line: <dark_purple>+---------------------------------------------------+
   left_begin: '<dark_purple>| '
-quickshop-gui-preview: QuickShop GUI Item Preview
-translate-not-completed-yet-click: The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Click here!
-taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
-player-bought-from-your-store: <green>{0} purchased {1} {2} from your shop, and you earned {3}.
-reached-maximum-can-create: <red>You already created a maximum of {0}/{1} shops!
+quickshop-gui-preview: QuickShop GUI Föremål Förhandsgranskning
+translate-not-completed-yet-click: Översättningen av språket {0} slutfördes inte ännu av {1}. Vill du hjälpa oss att förbättra översättningen? Klicka här!
+taxaccount-invalid: <red>Angivet konto är ogiltigt, ange ett giltigt spelarnamn eller uuid(med bindestreck).
+player-bought-from-your-store: <red>{0} köpte {1} {2} från din butik, och du tjänade {3}.
+reached-maximum-can-create: <red>Du har redan skapat {0}/{1} butiker vilket är max!
 reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
-no-double-chests: <red>You cannot create a double chest shop.
-price-too-cheap: <red>Price must be greater than <yellow>${0}
-shop-not-exist: <red>There is no shop.
+no-double-chests: <red>Du kan inte skapa den dubbla kistbutiken.
+price-too-cheap: <red>Priset måste vara högre än <yellow>${0}
+shop-not-exist: <red>Det finns ingen butik.
 bad-command-usage: <red>Bad command arguments!
-clean-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
-shop-purchase-cancelled: <red>Shop purchase cancelled.
-bypassing-lock: <red>Bypassing a QuickShop lock!
+clean-warning: <yellow>Detta kommando kommer att rensa <yellow>butiker som är skadade eller skapade i otillåtna världar eller säljer/köper otillåtna föremål eller <red><bold>EXISTERAR I OLADDADE VÄRLDAR<yellow>. Se till att du har full säkerhetskopiering av dina butikers data och använd <aqua>/qs cleanghost confirm <yellow>för att fortsätta.
+shop-purchase-cancelled: <red>Butiksköp avbrutet.
+bypassing-lock: <red>Ignorerar ett butikslås!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
-saved-to-path: The Backup was saved to {0}.
-shop-now-freezed: <green>You have frozen the shop. Nobody can trade with this shop now!
-price-is-now: <green>The new price of the shop is <yellow>{0}
-shops-arent-locked: <red>Remember, shops are NOT protected from theft! If you want to stop thieves, lock it with LWC, Lockette, or similar!
-that-is-locked: <red>This shop is locked.
-shop-has-no-space: <red>The shop only has room for {0} more {1}.
-safe-mode-admin: '<red><bold>WARNING: </bold>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs </yellow> command to check any errors.'
-shop-stock-too-low: <red>The shop only has {0} {1} left!
-world-not-exists: <red>The world <yellow>{0}</yellow> doesn't exist
-how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL</light_purple>. You can sell <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> in chat, to sell all.
-shop-freezed-at-location: <yellow>Your shop {0} at {1} got frozen!
-translation-contributors: 'Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601'
-empty-success: <green>Emptying shop successful
-taxaccount-set: <green>This shop's tax account has been set to <yellow>{0}
+saved-to-path: Säkerhetskopian sparades till {0}.
+shop-now-freezed: <green>Du har fryst butiken. Ingen kan handla med denna butik nu!
+price-is-now: <green>Det nya priset för butiken är <yellow>{0}
+shops-arent-locked: <red>Kom ihåg, butiker är INTE skyddade från stöld! Om du vill stoppa tjuvar, lås den med LWC, Lockette, m.m!
+that-is-locked: <red>Denna butik är låst.
+shop-has-no-space: <red>Butiken har endast plats för {0} fler {1}.
+safe-mode-admin: '<red><bold>VARNING: <red>QuickShop på denna server som körs nu under safe-mode, inga funktioner kommer att fungera, skriv <yellow>/qs <red> kommandot för att kontrollera eventuella fel.'
+shop-stock-too-low: <red>Butiken har endast {0} {1} kvar!
+world-not-exists: <red>Världen <yellow>{0}<red> finns inte
+how-many-sell: <green>Ange i chatten, hur många du vill <light_purple>SÄLJA<green>. Du har &{0}& tillgängliga. Ange &{1}<green> i chatten, för att sälja alla.
+shop-freezed-at-location: <yellow>Din butik {0} vid {1} blev frusen!
+translation-contributors: 'Medhjälpare: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken och Andre_601'
+empty-success: <green>Tömning av butik lyckades
+taxaccount-set: <green>Denna butiks momskonto har satts till <yellow>{0}
 support-disable-reason:
-  hot-reload: <yellow>Unsupported hot-reload. Restart the server and check again.
-  outdated: <yellow>This version of QuickShop is already outdated. Update before requesting support!
-  bad-hosts: '<yellow>The server''s HOSTS has been modified and certain QuickShop-functions require a connection to the Mojang API to work. Please fix the HOSTS settings before asking for support.<newline>Windows: C:\windows\system32\drivers\etc\hosts<newline>Linux: /etc/hosts'
-  privacy: <yellow>This server is running in Cracked (Offline) mode. If you're running the server under a proxy and online-mode is set to true in the proxy, configure the proxy-related settings correctly.
-  modified: <yellow>File-integrity-check failed. This QuickShop build has been modified by others.
-  consolespamfix-installed: <yellow>ConsoleSpamFix is installed. It will hide Exception-details. Disable it temporarily during support requests.
-  authlib-injector-detected: <yellow>This server runs with a 3rd-party Auth-library provided such as AuthLib-Injector.
-  unsupported-server-software: <yellow>Unsupported Server software. Any modded Hybrid-Server software is not supported, including MCPC, Cauldron, CatServer, Mohis, Magma, Fukkit, Cardboard, etc.
-supertool-is-disabled: <red>Supertool is disabled. Cannot break any shops.
-unknown-owner: Unknown
-restricted-prices: '<red>Restricted price for {0}: Min {1}, max {2}'
-nearby-shop-this-way: <green>Shop is {0} block(s) away from you.
-owner-bypass-check: <yellow>Bypassed all checks. Trade successful! (You are now the shop owner!)
+  hot-reload: <yellow>Unsupported hot reloaded, restart the server and check again.
+  outdated: <yellow>This version of QuickShop already outdated, up-to-date before requesting support!
+  bad-hosts: '<yellow>This server HOSTS has been modified and QuickShop some functions require connect to Mojang API correctly. Fix the HOSTS before asking support, Windows at C:\windows\system32\drivers\etc\hosts, Linux at /etc/hosts.'
+  privacy: <yellow>This server running under cracked (offline) mode. If you are running bukkit server under proxy and online-mode=true on proxy, please configure the proxy related settings correctly.
+  modified: <yellow>File integrity check failed, this QuickShop build has been modified by others.
+  consolespamfix-installed: <yellow>ConsoleSpamFix installed, it will hidden exception details, temporarily disable it during asking support.
+  authlib-injector-detected: <yellow>This server running under 3rd-party authlib provider like authlib-injector.
+  unsupported-server-software: <yellow>Unsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.
+supertool-is-disabled: <red>Superredskapet är inaktiverat. Du kan inte förstöra någon butik.
+unknown-owner: Okänd
+restricted-prices: '<red>Begränsat pris för {0}: Minst {1}, högst {2}'
+nearby-shop-this-way: <green>Butiken är {0} block från dig.
+owner-bypass-check: <yellow>Ignorerade alla checkar. Bytet lyckades! (Du är nu butiksägaren!)
 signs:
   item-right: ''
-  out-of-space: Out of Space
-  unlimited: Unlimited
-  stack-selling: Selling {0}
+  out-of-space: Slut på utrymme
+  unlimited: Obegränsat
+  stack-selling: Säljer {0}
   stack-price: '{0} per {1}x {2}'
   status-unavailable: <red>
-  out-of-stock: Out of Stock
-  stack-buying: Buying {0}
-  freeze: Trading disabled
-  price: '{0} each'
-  buying: Buying {0}
+  out-of-stock: Slut i Lager
+  stack-buying: Köper {0}
+  freeze: Handel inaktiverad
+  price: '{0} st'
+  buying: Köper {0}
   header: '{1}{0}'
   header-available: '<green>{0}'
   header-unavailable: '<red>{0}'
-  selling: Selling {0}
+  selling: Säljer {0}
   status-available: <green>
   item-left: ''
-negative-amount: <red>You can't trade negative amounts
-display-turn-on: <green>Successfully turn on the shop display.
-shop-staff-deleted: <green>Successfully removed {0} as a staff member from your shop.
-nearby-shop-header: '<green>Nearby Shops matching <aqua>{0}</aqua>:'
-backup-failed: Cannot backup the database. Check the console for details.
-shop-staff-cleared: <green>Successfully removed all staff members from your shop.
-price-too-high: <red>The shop price is too high! You cannot create a shop with a price higher than {0}.
-plugin-cancelled: '<red>Operation cancelled. Reason: {0}'
-player-sold-to-your-store: <green>{0} sold {1} {2} to your shop.
-shop-out-of-stock: <dark_purple>Your shop at {0}, {1}, {2} has run out of {3}!
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY<green>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+negative-amount: <red>You kan inte handla med negativa belopp
+display-turn-on: <green>Lyckades aktivera butiksdisplayen.
+shop-staff-deleted: <green>Framgångsrikt tagit bort {0} som personal för din butik.
+nearby-shop-header: '<green>Närliggande butik som matchar <aqua>{0}<green>:'
+backup-failed: Kan inte säkerhetskopiera databasen. Kontrollera konsolen för detaljer.
+shop-staff-cleared: <green>Lyckades ta bort all personal från din butik.
+price-too-high: <red>Butikspriset är för högt! Du kan inte skapa ett med ett pris högre än {0}.
+plugin-cancelled: '<red>Operationen avbruten, Orsak: {0}'
+player-sold-to-your-store: <green>{0} sålde {1} {2} till din butik.
+shop-out-of-stock: <dark_purple>Din butik vid {0}, {1}, {2} har fått slut på {3}!
+how-many-buy: <green>Ange i chatten, hur många du vill <aqua>KÖPA<green>. Du kan köpa <yellow>{0}<green>. Ange <aqua>{1}<green> för att köpa alla.
 language-info-panel:
-  help: 'Help us: '
-  code: 'Code: '
-  name: 'Language: '
-  progress: 'Progress: '
-  translate-on-crowdin: '[Translate on Crowdin]'
-item-not-exist: <red>The item <yellow>{0}</yellow> does not exist, please check your spelling.
-shop-creation-failed: <red>Shop creation failed, please contact with server administrator.
-inventory-space-full: <red>Your remaining inventory space can only have <green>{1}x</green> more items added to it. Try emptying your inventory!
-no-creative-break: <red>You cannot break the shops of other players while in creative mode. Switch to survival mode or try to use the supertool {0} instead.
+  help: 'Hjälp oss: '
+  code: 'Kod: '
+  name: 'Språk: '
+  progress: 'Förlopp: '
+  translate-on-crowdin: '[Översätt på Crowdin]'
+item-not-exist: <red>Objektet <yellow>{0} <red>existerar inte, kontrollera din stavning.
+shop-creation-failed: <red>Skapandet av butiken misslyckades, kontakta serveradministratören.
+inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items into it, try empty the your inventory!
+no-creative-break: <red>Du kan inte förstöra andra spelarbutiker i kreativt läge, byt till överlevnadsläge eller försök använda superverktyget {0} istället.
 booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
   stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  price-hover: <yellow>Click to set a new price for the item.
-  remove: <red><bold>[Remove Shop]
-  mode-buying-hover: <yellow>Click to change the shop to SELL mode.
+  price-hover: <yellow>Klicka för att ange ett nytt pris för föremålet.
+  remove: <red><bold>[Ta bort butik]
+  mode-buying-hover: <yellow>Klicka för att ändra butiken till SÄLJ-läge.
   empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
-  stack-hover: <yellow>Click to set the amount of item per bulk. Set to 1 for normal behaviour.
-  alwayscounting-hover: <yellow>Click to toggle if the shop should always count the container's content.
+  stack-hover: <yellow>Klicka för att ställa in mängden föremål per paket. Ange 1 för normalt beteende.
+  alwayscounting-hover: <yellow>Klicka för att växla om butiken alltid räknar behållarens utrymme.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  currency-hover: <yellow>Click to set or remove the currency that this shop is using
+  currency-hover: <yellow>Klicka för att ändra eller ta bort den valuta som denna butik använder
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<light_purple><bold>Change<yellow>]'
+  mode-selling: '<green>Butiksläge: <aqua>Säljer <yellow>[<light_purple><bold>Ändra<yellow>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
-  setowner-hover: <yellow>Click to switch owner.
+  setowner-hover: <yellow>Klicka för att byta ägare.
   mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
   item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  unlimited-hover: <yellow>Click to toggle if the shop is unlimited.
-  refill-hover: <yellow>Click to refill the shop.
-  remove-hover: <yellow>Click to remove this shop.
-  toggledisplay-hover: <yellow>Toggle the shop's displayitem status
+  unlimited-hover: <yellow>Klicka för att växla huruvida butiken är obegränsad.
+  refill-hover: <yellow>Klicka för att fylla på butiken.
+  remove-hover: <yellow>Klicka för att ta bort denna butik.
+  toggledisplay-hover: <yellow>Växla butikens status för visningsföremålet
   refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
-  freeze-hover: <yellow>Toggle the shop's freeze status.
-  lock-hover: <yellow>Enable/Disable the shop's lock protection.
-  item-hover: <yellow>Click to change shop Item
-  infomation: '<green>Shop Control panel:'
-  mode-selling-hover: <yellow>Click to change the shop to BUY mode.
-  empty-hover: <yellow>Click to clear the inventory of the shop.
+  freeze-hover: <yellow>Växla butikens frysningsstatus.
+  lock-hover: <yellow>Aktivera/Inaktivera butikens låsskydd.
+  item-hover: <yellow>Klicka för att ändra butiksprodukten
+  infomation: '<green>Butiksadministration:'
+  mode-selling-hover: <yellow>Klicka för att ändra butiken till KÖP-läge.
+  empty-hover: <yellow>Klicka för att rensa butikens lager.
   toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
 timeunit:
   behind: behind
@@ -381,96 +381,96 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY<yellow> mode
-    about: <yellow>Shows QuickShop info
-    language: <yellow>Change the currently used language
-    purge: <yellow>Start the shop purge task in background
-    paste: <yellow>Uploads server data to Pastebin
-    title: <green>QuickShop help
-    remove: <yellow>Removes the shop you're looking at
-    ban: <yellow>Ban a player from the shop
-    empty: <yellow>Removes all items from a shop
-    alwayscounting: <yellow>Set if shop always counting container even is unlimited
-    setowner: <yellow>Changes the ownership of a shop.
-    reload: <yellow>Reloads the config.yml of QuickShop
-    freeze: <yellow>Disable or Enable shop trading
-    price: <yellow>Changes the buy/sell price of a shop
-    find: <yellow>Locates the nearest shop of a specific type.
-    create: <yellow>Creates a new shop from the targeted chest
-    lock: <yellow>Switch the shop's lock status
-    currency: <yellow>Set or remove the currency setting of the shop
-    removeworld: <yellow>Remove ALL shops in a specified world
-    info: <yellow>Show QuickShop statistics
-    owner: <yellow>Changes the ownership of a shop.
-    amount: <yellow>To set item amount (Useful when having chat issues)
-    item: <yellow>Change shop item of a shop
-    debug: <yellow>Enables Developer mode
-    unlimited: <yellow>Gives a shop unlimited stock.
-    sell: <yellow>Changes a shop to <aqua>SELL<yellow> mode
-    fetchmessage: <yellow>Show unread shop messages
-    staff: <yellow>Manage your shop staff
-    clean: <yellow>Removes all (loaded) shops without any stock
-    refill: <yellow>Adds a given number of items to a shop
-    help: <yellow>Shows QuickShop help
-    removeall: <yellow>Remove ALL shops of a specified player
-    unban: <yellow>Unban a player from the shop
-    transfer: <yellow>Transfer someone's ALL shops to other
-    size: <yellow>Change per bulk amount of a shop
-    supercreate: <yellow>Create a shop while bypassing all protection checks
-    taxaccount: <yellow>Set the tax account that shop using
+    buy: <yellow>Ändrar en butik till <light_purple>KÖP<yellow>-läge
+    about: <yellow>Visar QuickShop-info
+    language: <yellow>Ändra det språk som används för nuvarande
+    purge: <yellow>Starta rensningsuppgifter för butiker i bakgrunden
+    paste: '&Laddar upp serverdata till Pastebin'
+    title: <green>QuickShop-hjälp
+    remove: <yellow>Tar bort butiken du tittar på
+    ban: <yellow>Bannlyser en spelare från butiken
+    empty: <yellow>Tar bort alla föremål från en butik
+    alwayscounting: <green>Ange om butiken alltid räknar behållarens kapacitet även om den är obegränsad
+    setowner: <yellow>Ändrar ägare av en butik.
+    reload: <yellow>Laddar om config.yml för QuickShop
+    freeze: <yellow>Inaktivera eller aktivera butikshandel
+    price: <yellow>Ändrar köp-/säljpris för en butik
+    find: <yellow>Lokaliserar närmsta butik av specifik typ.
+    create: <yellow>Skapar en ny butik av aktuella kistan
+    lock: <yellow>Växla butikens låsstatus
+    currency: <yellow>Ange eller ta bort valutainställningarna i butiken
+    removeworld: <yellow>Ta bort ALLA butiker i angiven värld
+    info: <yellow>Visa QuickShop-statistik
+    owner: <yellow>Ändrar ägare av en butik.
+    amount: <yellow>För att ställa in antal (Användbar när du har chattproblem)
+    item: <yellow>Ändra föremålet i en butik
+    debug: <yellow>Aktiverar utvecklarläge
+    unlimited: <yellow>Ger en butik obegränsat lager.
+    sell: <yellow>Ändrar en butik till <aqua>SÄLJ<yellow>-läge
+    fetchmessage: <yellow>Visa olästa butiksmeddelanden
+    staff: <yellow>Hantera din butikspersonal
+    clean: <yellow>Tar bort alla (laddade) butiker med tomt lagersaldo
+    refill: '&Lägger till ett visst antal föremål i en butik'
+    help: <yellow>Visar QuickShop-hjälp
+    removeall: <yellow>Ta bort alla butiker från en angiven spelare
+    unban: <yellow>Unbannar en spelare från butiken
+    transfer: <yellow>Överför alla butiker från en spelare till en annan
+    size: <yellow>Ändra paketmängd i en butik
+    supercreate: <yellow>Skapa en butik genom att kringgå alla skyddskontroller
+    taxaccount: <yellow>Ange skattekontot som butiken använder
     name: <yellow>Naming a shop to specific name
-    toggledisplay: <yellow>Toggle the shop display item status
+    toggledisplay: <yellow>Växla butikens status för visningsobjekt
     permission: <yellow>Shop permission management
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain QuickShop database
-  bulk-size-not-set: '<red>Usage: /qs size <amount>'
-  no-type-given: '<red>Usage: /qs find <item>'
-  feature-not-enabled: This feature is not enabled in the config file.
-  now-debuging: <green>Successfully enabled developer mode. Reloading QuickShop...
-  no-amount-given: <red>No amount provided. Use <green>/qs refill <amount></green>
-  no-owner-given: <red>No owner provided
-  disabled: '<red>This command is disabled: <yellow>{0}'
-  bulk-size-now: <green>Now trading <yellow>{0}x {1}
+  bulk-size-not-set: '<red>Kommando: /qs size <antal>'
+  no-type-given: '<red>Kommando: /qs find <föremål>'
+  feature-not-enabled: Funktionen är inte aktiverad i konfigurationsfilen.
+  now-debuging: '&Framgångsrikt aktiverat utvecklarläge. Laddar om QuickShop...'
+  no-amount-given: <red>Inget belopp angivet. Använd <green>/qs refill <antal><red>
+  no-owner-given: <red>Ingen ägare angiven
+  disabled: '<red>Detta kommando är inaktiverat: <yellow>{0}'
+  bulk-size-now: <green>Byter nu <yellow>{0}x {1}
   toggle-always-counting:
-    counting: <green>Shop is now always counting the container's content, even when set to unlimited
-    not-counting: <green>Shop is now respect if shop is unlimited
-  cleaning: <green>Removing shops without any stock...
-  now-nolonger-debuging: <green>Successfully disabled Developer mode. Reloading QuickShop...
+    counting: <green>Butiken räknar nu alltid behållarens kapacitet även om den är obegränsad
+    not-counting: <green>Butiken tar nu hänsyn till huruvida den är obegränsad
+  cleaning: <green>Tar bort tomma butiker...
+  now-nolonger-debuging: <green>Framgångsrikt inaktiverat utvecklarläge. Laddar om QuickShop...
   toggle-unlimited:
-    limited: <green>Shop is now limited
-    unlimited: <green>Shop is now unlimited
-  transfer-success-other: <green>Transferred <yellow>{0} {1}</yellow>'s shop(s) to <yellow>{2}
-  no-trade-item: <green>Please hold a trade item to change in main hand
-  wrong-args: <red>Invalid argument. Use <bold>/qs help <red>to see a list of commands.
-  some-shops-removed: <yellow>{0} <green>shop(s) removed
-  new-owner: '<green>New owner: <yellow>{0}'
+    limited: <green>Butiken är nu begränsad
+    unlimited: <green>Butiken är nu obegränsad
+  transfer-success-other: <green>Överförde <yellow>{0} {1}<green>'s butik(er) till <yellow>{2}
+  no-trade-item: <green>Var god håll en bytesvara i handen för att byta
+  wrong-args: <red>Ogiltiga argument. Använd <bold>/qs help <reset>för att se en lista över kommandon.
+  some-shops-removed: '&{0} <green>butik(er) borttagen'
+  new-owner: '<green>Ny ägare: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
-  transfer-success: <green>Transferred <yellow>{0}</yellow> shop(s) to <yellow>{1}
-  now-buying: <green>Now <light_purple>BUYING</light_purple> {0}
-  now-selling: <green>Now <aqua>SELLING</aqua> {0}
-  cleaned: <green>Removed <yellow>{0}</yellow> shops.
-  trade-item-now: <green>Now trading <yellow>{0}x {1}
-  no-world-given: <red>Please specify a world name
+  transfer-success: <green>Överförde <yellow>{0} <green>butik(er) till <yellow>{1}
+  now-buying: <light_purple>KÖPER<green> numera <yellow>{0}
+  now-selling: <aqua>SÄLJER <green>numera <yellow>{0}
+  cleaned: <green>Tog bort &{0}<green> butiker.
+  trade-item-now: <green>Byter nu <yellow>{0}x {1}
+  no-world-given: <red>Var god ange ett världsnamn
   format-disabled: <red>/{0} {1} <gray>- {2}
-  invalid-bulk-amount: <red>The given value {0} is larger than max stack size or lower than one
-currency-not-support: <red>The economy plugin doesn't support the multi-economy feature.
-trading-in-creative-mode-is-disabled: <red>You cannot trade with this shop while in creative mode.
-the-owner-cant-afford-to-buy-from-you: <red>This item is worth {0}, but the shop-owner only has {1}
+  invalid-bulk-amount: <red>Det angivna värdet {0} är större än max eller lägre än ett
+currency-not-support: <red>Ekonomi-pluginet stöder inte flervaluta-funktionen.
+trading-in-creative-mode-is-disabled: <red>Du kan inte handla med den här butiken när du är i kreativt läge.
+the-owner-cant-afford-to-buy-from-you: <red>Detta kostar {0} men butiksägaren har endast {1}
 you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to naming.
-inventory-error: '<red>Failed to process the InventoryWrapper. Do you use an addon to re-bind the shop Inventory?<newline>Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.'
-integrations-check-failed-create: <red>Integration {0} denied the shop-creation
-shop-out-of-space: <dark_purple>Your shop at {0}, {1}, {2} is full!
-admin-shop: AdminShop
-no-anythings-in-your-hand: <red>There is nothing in your hand.
-no-permission: <red>You do not have permission to do that.
-chest-was-removed: <red>The chest was removed.
-you-cant-afford-to-buy: <red>It costs {0}, but you only have {1}
-shops-removed-in-world: <yellow>A total of <aqua>{0}</aqua> shops have been deleted in world <aqua>{1}</aqua>.
-display-turn-off: <green>Successfully turn off the shop display.
-client-language-unsupported: <yellow>QuickShop doesn't support your client language. Falling back to locale {0}...
+inventory-error: '<red>Failed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.'
+integrations-check-failed-create: <red>Integration {0} nekade butiksskapande
+shop-out-of-space: <dark_purple>Din butik vid {0}, {1}, {2} är nu full.
+admin-shop: Adminbutik
+no-anythings-in-your-hand: <red>Det finns inget i din hand.
+no-permission: <red>Du har inte tillåtelse till att göra detta.
+chest-was-removed: <red>Kistan har tagits bort.
+you-cant-afford-to-buy: <red>Det kostar {0} men du har bara {1}
+shops-removed-in-world: <yellow>Totalt <aqua>{0}<yellow> butiker har tagits bort i världen <aqua>{1}<yellow>.
+display-turn-off: <green>Lyckades aktivera butiksdisplayen.
+client-language-unsupported: <yellow>QuickShop stöder inte ditt klientspråk, vi återgår till {0} språk nu.
 language-version: '63'
-not-managed-shop: <red>You are not the owner nor a moderator of this Shop
-shop-cannot-trade-when-freezing: <red>You cannot trade with this shop because it is frozen.
+not-managed-shop: <red>Du är inte ägare eller moderator av denna butik
+shop-cannot-trade-when-freezing: <red>Du kan inte handla med denna butik eftersom den är fryst.
 invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
 permission:
   header: "<green>Shop Permission Details"
