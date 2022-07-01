@@ -22,6 +22,8 @@ package com.ghostchu.quickshop;
 import cc.carm.lib.easysql.EasySQL;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.hikari.HikariConfig;
+import cc.carm.lib.easysql.hikari.HikariDataSource;
+import cc.carm.lib.easysql.manager.SQLManagerImpl;
 import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
 import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.QuickShopAPI;
@@ -991,7 +993,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=" + useSSL);
                 config.setUsername(user);
                 config.setPassword(pass);
-                this.sqlManager = EasySQL.createManager(config);
+                this.sqlManager = new SQLManagerImpl(new HikariDataSource(config), "QuickShop-Hikari-SQLManager");
             } else {
                 // H2 database - Doing this handles file creation
                 databaseDriverType = DatabaseDriverType.H2;
@@ -999,7 +1001,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 getLogger().info("Create database backup...");
                 new DatabaseBackupUtil().backup();
                 config.setJdbcUrl("jdbc:h2:" + new File(this.getDataFolder(), "shops").getCanonicalFile().getAbsolutePath() + ";DB_CLOSE_DELAY=-1;MODE=MYSQL");
-                this.sqlManager = EasySQL.createManager(config);
+                this.sqlManager = new SQLManagerImpl(new HikariDataSource(config), "QuickShop-Hikari-SQLManager");
                 this.sqlManager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode
             }
             // Make the database up to date
