@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop отключен в этом мире
 how-much-to-trade-for: <green>Введите в чат за сколько вы хотите продавать <yellow>{1}x {0}</yellow>.
 client-language-changed: <green>QuickShop обнаружил, что вы изменили язык. Теперь для вас используется {0} язык.
 shops-backingup: Создание резервной копии магазина из базы данных...
-_comment: Привет, переводчик! Если вы редактируете это в Github или в исходниках, вам следует перейти сюда https://crowdin.com/project/quickshop-reremake и помочь нам всем в переводе.
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: '<yellow>Владелец бездонного магазина был изменен на: {0}.'
 bad-command-usage-detailed: '<red>Неправильные аргументы для команды! Принимаются только эти параметры: <gray>{0}'
 thats-not-a-number: <red>Неверное число
@@ -138,8 +138,8 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>Игрок купил предметы в магазине
     PURCHASE: <yellow>Купил предмет в магазине
   query-argument: 'Аргумент запроса: {0}'
-  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}х
   entry-header-global: '<aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591) <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
   header-shop: '<yellow>Транзакции магазина {0} {1} {2}:'

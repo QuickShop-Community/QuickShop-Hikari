@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop este dezactivat in aceasta lume
 how-much-to-trade-for: <green>Intra in chat, cat de mult doresti sa tranzacționezi &{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Creating Shop-backup from database...
-_comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-reremake
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Argumente de comandă nepotrivite! Acceptă următorii parametri: <gray>{0}'
 thats-not-a-number: <red>Număr Invalid
@@ -33,19 +33,19 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '&eNume: &b{0}'
+    - '&eProprietar: &b{0}'
+    - '&eTip: &b{0}'
+    - '&ePreț: &b{0}'
+    - '&eArticol: &b{0}'
+    - '&eLocație: &b{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '&eNume: &b{name}'
+    - '&eProprietar: &b{owner}'
+    - '&eTip: &b{type}'
+    - '&ePreț: &b{price}'
+    - '&eArticol: &b{item}'
+    - '&eLocație: &b{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -138,8 +138,8 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
     PURCHASE: <yellow>Purchased item with a shop
   query-argument: 'Query Argument: {0}'
-  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}x
   entry-header-global: '<aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591) <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
   header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'

@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop ist in dieser Welt deaktiviert
 how-much-to-trade-for: <green>Gib im Chat ein, für wieviel du {1}x <yellow>{0}<green> handeln willst.
 client-language-changed: <green>QuickShop hat festgestellt, dass deine Client-Spracheinstellungen geändert wurden. Wir verwenden jetzt die Spracheinstellung {0} für dich.
 shops-backingup: Erstelle Shop-Backup von der Datenbank...
-_comment: Hallo Übersetzer! Wenn du dies auf GitHub oder im Quellcode bearbeitest, solltest du zu https:/crowdin.com/projects/quickshop-reremake wechseln
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>Der Besitzer des unbegrenzten Shops wurde zu {0} geändert.
 bad-command-usage-detailed: '<red>Schlechte Befehlsargumente! Volgende Argumente werden unterstützt: <gray>{0}'
 thats-not-a-number: <red>Ungültige Zahl
