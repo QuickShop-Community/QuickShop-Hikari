@@ -1,4 +1,3 @@
----
 break-shop-use-supertool: <yellow>Bạn có thể phá vỡ cửa hàng bằng cách sử dụng SuperTool.
 fee-charged-for-price-change: <green>You đã trả <red>{0}<green> để được thay đổi giá.
 not-allowed-to-create: <red>Bạn không thể tạo cửa hàng ở đây.
@@ -6,7 +5,7 @@ disabled-in-this-world: <red>QuickShop bị vô hiệu hóa trong thế giới n
 how-much-to-trade-for: <green>Nhập vào khung chat số tiền bạn muốn giao dịch <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Creating Shop-backup from database...
-_comment: Xin chào, Nếu bạn chỉnh sửa nội dung này từ Github hoặc từ các source code, bạn nên truy cập vào https://crowdin.com/project/quickshop-reremake
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Số không hợp lệ
@@ -34,19 +33,19 @@ paste-disabled: '<red>Chức năng dán đã bị vô hiệu hóa! Bạn không 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '&eName: &b{0}'
-    - '&eOwner: &b{0}'
-    - '&eType: &b{0}'
-    - '&ePrice: &b{0}'
-    - '&eItem: &b{0}'
-    - '&eLocation: &b{0}'
+    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>Owner: <aqua>{0}'
+    - '<yellow>Type: <aqua>{0}'
+    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '&eName: &b{name}'
-    - '&eOwner: &b{owner}'
-    - '&eType: &b{type}'
-    - '&ePrice: &b{price}'
-    - '&eItem: &b{item}'
-    - '&eLocation: &b{location}'
+    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Owner: <aqua>{owner}'
+    - '<yellow>Type: <aqua>{type}'
+    - '<yellow>Price: <aqua>{price}'
+    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Location: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -139,8 +138,8 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
     PURCHASE: <yellow>Purchased item with a shop
   query-argument: 'Query Argument: {0}'
-  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}x
   entry-header-global: '<aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591) <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
   header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
@@ -402,11 +401,11 @@ command:
     currency: <yellow>Đặt hoặc xóa cài đặt tiền tệ của cửa hàng
     removeworld: <yellow>Xóa TẤT CẢ các cửa hàng trong thế giới được chỉ định
     info: <yellow>Hiển thị thống kê QuickShop
-    owner: <yellow>Changes the ownership of a shop.
+    owner: <yellow>Thay đổi quyền sở hữu của một cửa hàng.
     amount: <yellow>Để đặt số lượng vật phẩm.
     item: <yellow>Thay đổi vật phẩm của cửa hàng
     debug: <yellow>Bật chế độ nhà phát triển
-    unlimited: <yellow>Cung cấp cho một cửa hàng kho không giới hạn. 
+    unlimited: <yellow>Cung cấp cho một cửa hàng kho không giới hạn.
     sell: Thay đổi cửa hàng sang chế độ <light_purple>BÁN
     fetchmessage: <yellow>Hiển thị tin nhắn cửa hàng chưa đọc
     staff: <yellow>Quản lý nhân viên cửa hàng của bạn
@@ -415,7 +414,7 @@ command:
     help: <yellow>Hiển thị trợ giúp QuickShop
     removeall: <yellow>Xóa TẤT CẢ các cửa hàng của người chơi được chỉ định
     unban: <yellow>Unbans a player from the shop
-    transfer: <yellow>Chuyển TẤT CẢ các cửa hàng từ người này sang người khác. 
+    transfer: <yellow>Chuyển TẤT CẢ các cửa hàng từ người này sang người khác.
     size: <yellow>Thay đổi theo số lượng lớn của cửa hàng
     supercreate: <yellow>Tạo cửa hàng trong khi bỏ qua tất cả các kiểm tra bảo vệ
     taxaccount: <yellow>Đặt tài khoản thuế mà cửa hàng sử dụng
@@ -450,7 +449,7 @@ command:
   now-buying: '<green>Trạng thái: <light_purple>ĐANG BÁN <yellow>{0}'
   now-selling: '<green>Trạng thái: <light_purple>ĐANG MUA <yellow>{0}'
   cleaned: <green>Đã xoá <yellow>{0}<green> shops.
-  trade-item-now: <green>Now trading <yellow>{0}x {1}
+  trade-item-now: <green>Đang giao dịch <yellow>{0}x {1}
   no-world-given: <red>Xin vui lòng chỉ rõ một tên hợp lệ.
   format-disabled: <red>/{0} {1} <gray>- {2}
   invalid-bulk-amount: <red>Giá trị đưa vào {0} đang lớn hơn số lượng max của 1 stack hoặc có thể đang nhỏ hơn
@@ -572,7 +571,7 @@ importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup wi
 importing-database: "<green>Importing database from backup, please wait..."
 importing-failed: "<red>Failed to import database, please check the server console."
 imported-database: "<green>Database imported from <yellow>{0}</yellow>."
-transfer-sent: "<green>Shops transfer sent to <yellow>{0}</yellow>."
+transfer-sent: "<green>Shops transfer request sent to <yellow>{0}</yellow>."
 transfer-request: "<yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?"
 transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds."
 transfer-accepted-fromside: "<green>Player <aqua>{0}</aqua> accepted your shop transfer request."

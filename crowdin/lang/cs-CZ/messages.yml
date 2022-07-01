@@ -1,4 +1,3 @@
----
 break-shop-use-supertool: <yellow>Obchod můžete rozbít pomocí super nástroje.
 fee-charged-for-price-change: <green>Zaplatili jste <red>{0}</red> za změnu ceny.
 not-allowed-to-create: <red>Zde nemůžete vytvořit obchod.
@@ -6,7 +5,7 @@ disabled-in-this-world: <red>Obchod je v tomto světě zakázán
 how-much-to-trade-for: <green>Zadejte v chatu, kolik chcete obchodovat <yellow>{1}krát {0}</yellow>.
 client-language-changed: <green>Plugin zjistil, že nastavení jazyka vašeho klienta bylo změněno, nyní pro Vás používáme {0} jazyků.
 shops-backingup: Vytváření zálohy obchodu z databáze...
-_comment: Ahoj překladatel! Pokud to upravujete na GitHubu nebo pomocí zdrojového kódu, měli byste místo toho jít na https://crowdin.com/project/quickshop-reremake.
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>Majitel tohoto neomezeného obchodu byl změněn na {0}.
 bad-command-usage-detailed: '<red>Špatné parametry příkazů! Povoleny jsou následující parametry: <gray>{0}'
 thats-not-a-number: <red>Neplatné číslo
@@ -34,19 +33,19 @@ paste-disabled: '<red>Vložení funkce bylo zakázáno! Nemůžete požádat o t
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '&eJméno: &b{0}'
-    - '&r &fVlastník: &b{0}'
-    - '&eTyp: &b{0}'
-    - '&eCena: &b{0}'
-    - '&eItem: &b{0}'
-    - '&eUmístění: &b{0}'
+    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>Owner: <aqua>{0}'
+    - '<yellow>Type: <aqua>{0}'
+    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '&eJméno: &b{name}'
-    - '&r &fVlastník: &b{owner}'
-    - '&eTyp: &b{type}'
-    - '&eCena: &b{price}'
-    - '&eItem: &b{item}'
-    - '&eUmístění: &b{location}'
+    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Owner: <aqua>{owner}'
+    - '<yellow>Type: <aqua>{type}'
+    - '<yellow>Price: <aqua>{price}'
+    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Location: <aqua>{location}'
   header: '<yellow>Máte více obchodů s názvem "<green>{0}</green>", vyberte jeden pro pokračování:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -139,8 +138,8 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>Hráč koupil některé předměty z obchodu
     PURCHASE: <yellow>Zakoupené položky z obchodu
   query-argument: 'Argument dotazu: {0}'
-  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}x
   entry-header-global: '<aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591) <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
   header-shop: '<yellow>Transakce {1} {2} obchodu {0}:'
@@ -572,7 +571,7 @@ importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup wi
 importing-database: "<green>Importing database from backup, please wait..."
 importing-failed: "<red>Failed to import database, please check the server console."
 imported-database: "<green>Database imported from <yellow>{0}</yellow>."
-transfer-sent: "<green>Shops transfer sent to <yellow>{0}</yellow>."
+transfer-sent: "<green>Shops transfer request sent to <yellow>{0}</yellow>."
 transfer-request: "<yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?"
 transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds."
 transfer-accepted-fromside: "<green>Player <aqua>{0}</aqua> accepted your shop transfer request."

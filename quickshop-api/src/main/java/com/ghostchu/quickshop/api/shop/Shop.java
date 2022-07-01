@@ -246,10 +246,20 @@ public interface Shop {
      * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
      *
      * @param forceUsername Force returns username of shop
+     * @param locale        The locale to parse the message
      * @return owner name
      */
     @NotNull
-    Component ownerName(boolean forceUsername);
+    Component ownerName(boolean forceUsername, @NotNull ProxiedLocale locale);
+
+    /**
+     * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
+     *
+     * @param locale The locale to parse the message
+     * @return owner name
+     */
+    @NotNull
+    Component ownerName(@NotNull ProxiedLocale locale);
 
     /**
      * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited

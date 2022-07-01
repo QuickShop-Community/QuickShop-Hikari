@@ -1,4 +1,3 @@
----
 break-shop-use-supertool: <yellow>你可以使用超級工具破壞商店。
 fee-charged-for-price-change: <green>你付了 <red>{0}<green> 元修改商店定價。
 not-allowed-to-create: <red>你無法在此建立商店。
@@ -6,7 +5,7 @@ disabled-in-this-world: <red>該世界已停用 QuickShop
 how-much-to-trade-for: <green>請在聊天室中輸入你想買賣 <yellow>{1} 個 {0} <green>的價格。
 client-language-changed: <green>QuickShop 偵測到你的客戶端語言已切換，我們現在為你切換為 {0}。
 shops-backingup: 正在把商店資料備份到資料庫……
-_comment: 你好翻譯者 ！ 假若你正在從 Github 或其他代管平台編輯，你應該前往 https://crowdin.com/project/quickshop-reremake 進行翻譯
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>這個無限商店的店主已經更換成 {0}。
 bad-command-usage-detailed: '&壞命令參數！接受以下參數：<gray>{0}'
 thats-not-a-number: <red>無效的數字
@@ -34,26 +33,26 @@ paste-disabled: '<red>原始碼儲存功能被禁止! 你將無法請求技術�
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '&e名稱: &b{0}'
-    - '&a商店主人：{0}'
-    - '&e類型: &b{0}'
-    - '&e價格: &b{0}'
-    - '&a商品：&e{0}'
-    - '&e位置: &b{0}'
+    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>Owner: <aqua>{0}'
+    - '<yellow>Type: <aqua>{0}'
+    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '&e名稱: &b{name}'
-    - '&a商店主人：{owner}'
-    - '&e類型: &b{type}'
-    - '&e價格: &b{price}'
-    - '&e商品：&b{item}'
-    - '&e位置: &b{location}'
+    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Owner: <aqua>{owner}'
+    - '<yellow>Type: <aqua>{type}'
+    - '<yellow>Price: <aqua>{price}'
+    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Location: <aqua>{location}'
   header: '<yellow>您有多個名為"<green>{0}<yellow>"的商店，請選擇一個以繼續：'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow> <red> [co] <aqua> {0} <light_purple> {1}'
 3rd-plugin-build-check-failed-admin: '<gray>（僅限管理員）<light_purple>{0} <dark_gray>拒絕權限檢查。<gray>如果不是預期所見到的，請新增 <light_purple>{1} <gray>進監聽黑名單。<gray>配置指南：https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>附近的平均價格 ： <yellow>{0} 元。'
 digits-reach-the-limit: <red>你的價格超過小數點後位數上限。
-currency-unset: <green>已成功刪除商店貨幣。現在使用預設設置。 
+currency-unset: <green>已成功刪除商店貨幣。現在使用預設設置。
 you-cant-create-shop-in-there: <red>你沒有在這個地方建立商店的權限。
 no-pending-action: <red>你沒有待處理的操作
 refill-success: <green>補貨成功
@@ -61,7 +60,7 @@ failed-to-paste: <red>無法將資料上傳至 Pastebin ，請檢查你的連線
 shop-out-of-stock-name: <dark_purple>你在 X {0} 出售 {1} 的商店已售罄一空 ！
 shop-name-invalid: <red>此商店的名稱 <yellow>{0} <red>無效. 請嘗試使用另一個名稱!
 how-many-buy-stack: <green>在聊天室中輸入你想 <aqua>購買<green> 的數量，每份中有 <yellow>{0}<green> 個物品，你目前可以買 <yellow>{1}<green> 份。輸入 <aqua>{2}<green> 來購買所有物品。
-exceeded-maximum: <red>該值超出了 Java 中的最大值。 
+exceeded-maximum: <red>該值超出了 Java 中的最大值。
 unlimited-shop-owner-keeped: '<yellow>注意 ： 該商店店主還是屬於無限商店店主類型，你需要自己重新設定新的商店店主。'
 no-enough-money-to-keep-shops: <red>你的金錢不夠繳稅，所以你所有的商店已被刪除……
 3rd-plugin-build-check-failed: <red>第三方插件 <bold>{0}<reset><red> 拒絕檢查權限操作，請問你有權限建立商店嗎 ？
@@ -139,8 +138,8 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>玩家從商店購買了一些物品。
     PURCHASE: <yellow>從商店購買了物品
   query-argument: '查詢參數: {0}'
-  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}個
   entry-header-global: '<aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591) <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
   header-shop: '<yellow>{0} 商店的 {1} {2} 交易:'
@@ -160,7 +159,7 @@ you-dont-have-that-many-items: <red>你的身上只有 {0} 個 {1}!
 complete: <green>完成 ！
 translate-not-completed-yet-url: '{0} 的翻譯完成度為 {1}，你想幫助我們改進翻譯嗎？前往 Crowdin：{2}'
 success-removed-shop: <green>已刪除商店。
-currency-set: <green>商店貨幣成功設置為 {0}。 
+currency-set: <green>商店貨幣成功設置為 {0}。
 shop-purged-start: <green>已開始商店清理，請查看控制台以獲得詳細資訊。
 economy-transaction-failed: <red>抱歉，由於系統發生錯誤，你的交易已被取消，款項已返回原本的地方。如果問題持續發生，請聯絡伺服器管理員。
 nothing-to-flush: <green>沒有關於商店的新訊息。
@@ -309,7 +308,7 @@ language-info-panel:
   name: '語言：'
   progress: '進度：'
   translate-on-crowdin: '[在 Crowdin 上翻譯]'
-item-not-exist: <red>物品<yellow> {0}<red>不存在，請檢查你的拼寫。 
+item-not-exist: <red>物品<yellow> {0}<red>不存在，請檢查你的拼寫。
 shop-creation-failed: <red>商店建立失敗，請與伺服器管理員聯繫。
 inventory-space-full: <red>你的背包只有<green>{1}x <red>空位，請你先清空一下背包再嘗試!
 no-creative-break: <red>你不能在創造模式中破壞其他玩家的商店，請使用生存模式或使用超級工具 {0} 來破壞。
@@ -572,7 +571,7 @@ importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup wi
 importing-database: "<green>Importing database from backup, please wait..."
 importing-failed: "<red>Failed to import database, please check the server console."
 imported-database: "<green>Database imported from <yellow>{0}</yellow>."
-transfer-sent: "<green>Shops transfer sent to <yellow>{0}</yellow>."
+transfer-sent: "<green>Shops transfer request sent to <yellow>{0}</yellow>."
 transfer-request: "<yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?"
 transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds."
 transfer-accepted-fromside: "<green>Player <aqua>{0}</aqua> accepted your shop transfer request."
