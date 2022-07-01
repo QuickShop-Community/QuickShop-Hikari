@@ -60,21 +60,21 @@
 
 [fossaStatusImageLarge]: https://app.fossa.com/api/projects/git%2Bgithub.com%2FGhost-chu%2FQuickShop-Hikari.svg?type=large
 
-[javaVersion]: https://img.shields.io/badge/Java-Versions_17_+_18-orange.svg
+[JavaVersion]: https://img.shields.io/badge/Java-Versions_17_+_18-orange.svg
 
-[minecraftVersion]: https://img.shields.io/badge/Minecraft-Java_Edition_1.18.x-blueviolet.svg
+[MinecraftVersion]: https://img.shields.io/badge/Minecraft-Java%20Edition%201.18%2B-blueviolet
 
 [bStatsImage]: https://bstats.org/signatures/bukkit/QuickShop-Hikari.svg
 
+[Ver]: https://img.shields.io/spiget/version/100125?label=version  
+
 <!-- Unused? -->
-<!-- [//]: # (![Ver]&#40;https://img.shields.io/spiget/version/62575?label=version&#41;) -->
 <!-- [//]: # (![Downloads]&#40;https://img.shields.io/spiget/downloads/62575?label=downloads&#41;) -->
 <!-- [//]: # (![Rating]&#40;https://img.shields.io/spiget/rating/62575?label=rating&#41;) -->
 
 <!-- Start of README -->
 
 # QuickShop-Hikari
-
 [![codacyBadge]][codacy]
 [![codeFactorBadge]][codeFactor]
 [![codeScoreBadge]][codeScore]
@@ -83,8 +83,9 @@
 ![passedTests]
 [![fossaStatusBadge]][fossaStatus]
 
-![javaVersion]
-![minecraftVersion]
+![JavaVersion]
+![MinecraftVersion]
+![Ver]
 
 ## Introduction
 
