@@ -62,9 +62,11 @@
 
 [javaVersion]: https://img.shields.io/badge/Java-Versions_17_+_18-orange.svg
 
-[minecraftVersion]: https://img.shields.io/badge/Minecraft-Java_Edition_1.18.x-blueviolet.svg
+[minecraftVersion]: https://img.shields.io/badge/minecraft-java%20edition%201.18%2B-blueviolet
 
 [bStatsImage]: https://bstats.org/signatures/bukkit/QuickShop-Hikari.svg
+
+[Ver]: https://img.shields.io/spiget/version/100125?label=version  
 
 <!-- Unused? -->
 <!-- [//]: # (![Ver]&#40;https://img.shields.io/spiget/version/62575?label=version&#41;) -->
@@ -74,7 +76,6 @@
 <!-- Start of README -->
 
 # QuickShop-Hikari
-
 [![codacyBadge]][codacy]
 [![codeFactorBadge]][codeFactor]
 [![codeScoreBadge]][codeScore]
@@ -85,6 +86,7 @@
 
 ![javaVersion]
 ![minecraftVersion]
+![Ver]
 
 ## Introduction
 
