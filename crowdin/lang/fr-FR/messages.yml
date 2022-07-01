@@ -5,9 +5,9 @@ disabled-in-this-world: <red>QuickShop est désactivé dans ce monde
 how-much-to-trade-for: <green>Entrez dans le chat, combien vous souhaitez échanger <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop a détecté que votre paramètre de langue client a été modifié, nous utilisons maintenant la locale {0} pour vous.
 shops-backingup: Création d'une sauvegarde de la boutique à partir de la base de données...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Bonjour, traducteur ! Si vous éditez ceci sur Github ou depuis le code source, rendez-vous plutôt sur https://crowdin.com/project/quickshop-hikari.
 unlimited-shop-owner-changed: <yellow>Ce propriétaire de magasin illimité a été remplacé par {0}.
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
+bad-command-usage-detailed: '<red>Arguments de commande incorrects ! Paramètres acceptés : <gray>{0}'
 thats-not-a-number: <red>Nombre invalide.
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>Cette commande est dangereuse pour que seule la console puisse l'exécuter.
@@ -33,19 +33,19 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Nom : <aqua>{0}'
+    - '<yellow>Propriétaire : <aqua>{0}'
+    - '<yellow>Type : <aqua>{0}'
+    - '<yellow>Prix : <aqua>{0}'
+    - '<yellow>Item : <aqua>{0}'
+    - '<yellow>Emplacement : <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Nom : <aqua>{name}'
+    - '<yellow>Propriétaire : <aqua>{owner}'
+    - '<yellow>Type : <aqua>{type}'
+    - '<yellow>Prix : <aqua>{price}'
+    - '<yellow>Item : <aqua>{item}'
+    - '<yellow>Emplacement : <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow> <red> [co] <aqua> {0} <light_purple> {1}'
@@ -57,7 +57,7 @@ you-cant-create-shop-in-there: <red>Tu n'as pas la permission de créer une bout
 no-pending-action: <red>Tu n'as aucune action en attente
 refill-success: <green>Remplissage de la boutique effectué avec succès
 failed-to-paste: <red>Erreur lors de l'upload des données vers PasteBin, verifier la connection internet et rééssayez. (Voir la console)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+shop-out-of-stock-name: <dark_purple>Votre boutique {0} est à court de {1} !
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
 exceeded-maximum: <red>La valeur maximal à ne pas dépasser en Java.
@@ -87,7 +87,7 @@ reloading-status:
   failed: <red>Rechargement échoué, vérifiez la console du serveur
 player-bought-from-your-store-tax: <red>{0} a acheté {1} {2} dans ta boutique, et tu as reçu ou payé {3} ({4} de taxes).
 not-enough-space: <red>Il ne vous reste que {0} place(s) restante(s) pour ceci!
-shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
+shop-name-success: <green>Le nom de votre boutique a bien été défini à <yellow>{0}<green>.
 shop-staff-added: <green> {0} a été ajouté avec succès comme membre du personnel pour votre boutique.
 shops-recovering: Récupération des boutiques à partir de la sauvegarde...
 menu:
@@ -121,15 +121,15 @@ integrations-check-failed-trade: <red>Intégration {0} à refusé la création d
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Le propriétaire de la boutique à été définit au Serveur avec succès.
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>Ce nom de boutique est trop long (longueur max. {0}), veuillez en choisir un autre !
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
   action-hover: <yellow>{0}
   entry-header-shop: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66) <aqua>|'
   price-hover: <yellow>Total {0}, including {1} taxes.
-  unknown: <gray>(unknown)
-  undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  unknown: <gray>(inconnu)
+  undefined: <gray>(sans nom)
+  no-results: <red>Aucune transaction.
   action-description:
     DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
@@ -168,7 +168,7 @@ edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict
 inventory-unavailable: '<red>This shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.'
 file-test: Ceci est un fichier texte de test. Nous l'utilisons pour tester si les messages sont cassé. Vous pouvez le remplir avec n'importe quel "easter eggs" que vous aimez ici :)
 unknown-player: <red>Le joueur cible n'existe pas, merci de vérifier le pseudo que tu as entré.
-player-offline: "<red>The target player currently is offline."
+player-offline: "<red>Le joueur spécifié est actuellement hors-ligne."
 language:
   qa-issues: '<yellow>Problèmes d''assurance qualité : <aqua>{0}%'
   code: '<yellow>Nom: <gold>{0}'
@@ -379,7 +379,7 @@ timeunit:
   future: in {0}
   days: <red>{0} days
 command:
-  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
+  reloading: '<green>Configuration rechargée. <yellow>Certains changements peuvent nécessiter un redémarrage pour être appliqués.<newline><gray>(Note : Le comportement du rechargement a été modifié après la 4.0.9.10, nous rechargeons désormais uniquement la configuration plutôt que l''ensemble du plugin, afin de garantir que le serveur ne plante pas.)'
   description:
     buy: <yellow>Transforme la boutique en mode <light_purple>ACHAT
     about: <yellow>Afficher l'aide QuickShop
@@ -478,7 +478,7 @@ permission:
   header-group: "<green>Shop Permission Details for group {0}"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
   item:
-    purchase: "<yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)"
+    purchase: "<yellow>Permission qui autorise les utilisateurs qui l'ont à acheter la boutique. (y compris l'achat et la vente)"
     show-information: "<yellow>Permission to allow users who have this to see the shop information. (open shop info panel)"
     preview-shop: "<yellow>Permission to allow users who have this to preview the shop. (preview item)"
     search: "<yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)"
