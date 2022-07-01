@@ -34,18 +34,18 @@ quick-fill:
   entry-own: ' <yellow>- <red>[eigener] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Name: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Besitzer: <aqua>{0}'
+    - '<yellow>Typ: <aqua>{0}'
+    - '<yellow>Preis: <aqua>{0}'
     - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Ort: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Name: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
+    - '<yellow>Besitzer: <aqua>{owner}'
+    - '<yellow>Typ: <aqua>{type}'
+    - '<yellow>Preis: <aqua>{price}'
     - '<yellow>Item: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Ort: <aqua>{location}'
   header: '<yellow>Du hast mehrere Shops mit dem Namen "<green>{0}<yellow>". Wähle einen um fortzufahren:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -138,15 +138,15 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>Spieler hat einige Items von einem verkaufenden Shop gekauft
     PURCHASE: <yellow>Gekaufte Items mit Shop
   query-argument: 'Such-Argumente: {0}'
-  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}x
   entry-header-global: '<aqua>| [Eigentümer](color=#FFD39B) <aqua>| [Spieler](color=#EEC591) <aqua>| [Aktion](color=#CDAA7D) <aqua>| [Shop](color=#8B7355) <aqua>| [Preis](color=#8B7E66) <aqua>| '
   header-shop: '<yellow>Shop {0}''s Transaktionen von {1} {2}:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
   looking-up: <yellow>Führe erstellung von Statistiken aus, bitte warten...
   entry-header-player: '<aqua>| [Käufer](color=#FFD39B) <aqua>| [Aktion](color=#EEC591) <aqua>| [Shop](color=#CDAA7D) <aqua>| [Menge](color=#8B7355) <aqua>| [Preis](color=#8B7E66) <aqua>|'
-  entry-shop: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-shop: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   tax-hover: <yellow>{0} Steuern
   header-global: '<yellow>Transaktionen des Server für {0} {1}:'
   na: <gray>N/A
