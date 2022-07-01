@@ -62,7 +62,7 @@
 
 [JavaVersion]: https://img.shields.io/badge/Java-Versions_17_+_18-orange.svg
 
-[MinecraftVersion]: https://img.shields.io/badge/minecraft-java%20edition%201.18%2B-blueviolet
+[MinecraftVersion]: https://img.shields.io/badge/Minecraft-Java%20Edition%201.18%2B-blueviolet
 
 [bStatsImage]: https://bstats.org/signatures/bukkit/QuickShop-Hikari.svg
 
