@@ -178,10 +178,10 @@ metric:
   query-argument: 'Query Argument: {0}'
   entry-global: <aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591
     hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355
-    hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|
+    hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|
   entry-player: <aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591
     hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355
-    hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|
+    hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|
   amount-hover: <yellow>{0}x
   entry-header-global: <aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591)
     <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66)
