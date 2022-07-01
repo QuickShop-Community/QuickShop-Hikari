@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop 在这个世界中被禁用
 how-much-to-trade-for: <green>请在聊天中输入交易<yellow>{1}个{0}<green>所需的价格。
 client-language-changed: <green>QuickShop检测到您的客户端语言已更改，我们正在为您使用 {0} 语言。
 shops-backingup: 从数据库创建商店备份...
-_comment: 嗨 翻译者！如果您正在Github上或直接编辑源文件的方式进行翻译，请您前往：https://crowdin.com/project/quickshop-reremake
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>这个无限商店的店主已更改为 {0}。
 bad-command-usage-detailed: '<red>错误的命令参数! 尝试以下参数: <gray>{0}'
 thats-not-a-number: <red>输入的内容不是数字
@@ -138,8 +138,8 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>玩家从一个出售商店购买了一些物品
     PURCHASE: <yellow>通过商店购买的物品
   query-argument: '查询参数： {0}'
-  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
+  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}个
   entry-header-global: '[类型](color=#CDAA7D) <aqua>| [商店](color=#8B7355) <aqua>| [价格](color=#8B7E66) <aqua>|'
   header-shop: '<yellow>商店 {0}的 {1} {2} 交易：'
