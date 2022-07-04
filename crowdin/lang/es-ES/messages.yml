@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop está deshabilitado en este mundo.
 how-much-to-trade-for: <green>Ingresa en el chat, por cuánto deseas intercambiar <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop ha detectado que la configuración de idioma del cliente ha sido cambiada, ahora estamos usando la configuración regional de {0} para tí.
 shops-backingup: Creando copia de seguridad de la tienda desde la base de datos...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: '¡Hola traductor! Si está editando esto en GitHub o a través del código fuente, debe ir a https://crowdin.com/project/quickshop-hikari.'
 unlimited-shop-owner-changed: <yellow>El propietario de esta tienda ilimitada ha cambiado a {0}.
 bad-command-usage-detailed: '<red>¡Argumentos incorrectos del comando! Acepta los siguientes parámetros: <gray>{0}'
 thats-not-a-number: <red>Número inválido.
@@ -33,19 +33,19 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Nombre: <aqua>{0}'
+    - '<yellow>Propietario: <aqua>{0}'
+    - '<yellow>Tipo: <aqua>{0}'
+    - '<yellow>Precio: <aqua>{0}'
+    - '<yellow>Objeto: <aqua>{0}'
+    - '<yellow>Ubicación: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Nombre: <aqua>{name}'
+    - '<yellow>Propietario: <aqua>{owner}'
+    - '<yellow>Tipo: <aqua>{type}'
+    - '<yellow>Precio: <aqua>{price}'
+    - '<yellow>Objeto: <aqua>{item}'
+    - '<yellow>Ubicación: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -57,7 +57,7 @@ you-cant-create-shop-in-there: <red>No tienes permiso para crear una tienda en e
 no-pending-action: <red>No tienes ninguna acción pendiente
 refill-success: <green>Reabastecido con éxito
 failed-to-paste: <red>Fallo al subir datos a Pastebin. Comprueba tu conexión a internet e intenta de nuevo. (Revisa la consola para más detalles)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+shop-out-of-stock-name: <dark_purple>¡Tu tienda {0} se ha quedado sin {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Ingrese en el chat, cuantos bultos desea <aqua>COMPRAR<green>. Hay elementos <yellow>{0}<green> en cada lote y puede comprar <yellow>{1}<green> lote. Ingresa <aqua>{2}<green> en el chat para comprar todo.
 exceeded-maximum: <red>El valor excedió el valor máximo en Java.
@@ -87,7 +87,7 @@ reloading-status:
   failed: <red>Recarga fallida, comprueba la consola del servidor
 player-bought-from-your-store-tax: <red>{0} ha comprado {1} {2} por un valor de {3} en tu tienda, (has pagado {4} en impuestos).
 not-enough-space: <red>¡Sólo tienes sitio para {0} más!
-shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
+shop-name-success: <green>Nombre de la tienda establecido a <yellow>{0}<green>.
 shop-staff-added: <green>Agregado a {0} como personal de tu tienda con éxito.
 shops-recovering: Recuperando tiendas desde la copia de seguridad...
 menu:
@@ -349,35 +349,35 @@ controlpanel:
   toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
 timeunit:
   behind: behind
-  week: <red>{0} week
-  weeks: <red>{0} weeks
-  year: <red>{0} year
+  week: <red>{0} semana
+  weeks: <red>{0} semanas
+  year: <red>{0} año
   before: before
   scheduled: scheduled
-  years: <red>{0} years
+  years: <red>{0} años
   scheduled-in: scheduled in {0}
-  second: <red>{0} second
+  second: <red>{0} segundo
   std-past-format: '{5}{4}{3}{2}{1}{0}ago'
   std-time-format: "HH:mm:ss"
-  seconds: <red>{0} seconds
-  hour: <red>{0} hour
+  seconds: <red>{0} segundos
+  hour: <red>{0} hora
   scheduled-at: scheduled at {0}
   after: after
-  day: <red>{0} day
+  day: <red>{0} día
   recent: recent
   between: between
-  hours: <red>{0} hours
-  months: <red>{0} months
+  hours: <red>{0} horas
+  months: <red>{0} meses
   longtimeago: long time ago
   between-format: between {0} and {1}
-  minutes: <red>{0} minutes
-  justnow: just now
-  minute: <red>{0} minute
+  minutes: <red>{0} minutos
+  justnow: justo ahora
+  minute: <red>{0} minuto
   std-format: MM/dd/yyyy HH:mm:ss
   future-plain-text: future
-  month: <red>{0} month
-  future: in {0}
-  days: <red>{0} days
+  month: <red>{0} mes
+  future: en {0}
+  days: <red>{0} días
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
@@ -456,7 +456,7 @@ command:
 currency-not-support: <red>El plugin de economía no soporta funciones multidivisas.
 trading-in-creative-mode-is-disabled: <red>No puedes comerciar con esta tienda mientras estás en modo creativo.
 the-owner-cant-afford-to-buy-from-you: <red>Esto cuesta {0} pero el propietario de la tienda sólo dispone de {1}
-you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to naming.
+you-cant-afford-shop-naming: <red>No puedes pagar el cambio de nombre de la tienda, cuesta {0}.
 inventory-error: '<red>Failed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.'
 integrations-check-failed-create: La integración {0} impide la creación de la tienda
 shop-out-of-space: <dark_purple>Tu tienda en {0}, {1}, {2} ahora está llena.
