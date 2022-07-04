@@ -6,9 +6,12 @@ import cc.carm.lib.easysql.api.action.PreparedSQLUpdateBatchAction;
 import cc.carm.lib.easysql.api.builder.*;
 import cc.carm.lib.easysql.api.enums.IndexType;
 import cc.carm.lib.easysql.api.function.SQLHandler;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public enum DataTables {
@@ -241,6 +244,30 @@ public enum DataTables {
 
     public @NotNull ReplaceBuilder<PreparedSQLUpdateBatchAction<Integer>> createReplaceBatch(@NotNull SQLManager sqlManager) {
         return sqlManager.createReplaceBatch(this.getName());
+    }
+
+    public boolean isExists(@NotNull SQLManager manager){
+        boolean match = false;
+        try {
+            try (Connection connection = manager.getConnection(); ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {
+                while (rs.next()) {
+                    if (getName().equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
+                        match = true;
+                        break;
+                    }
+                }
+            }
+        }  catch (SQLException e){
+            if(Util.isDevMode()){
+                e.printStackTrace();
+            }
+            Log.debug("Error while checking table existence: " + getName());
+        }
+        return match;
+    }
+
+    public boolean isExists(){
+       return isExists(this.manager);
     }
 
     public boolean purgeTable() {
