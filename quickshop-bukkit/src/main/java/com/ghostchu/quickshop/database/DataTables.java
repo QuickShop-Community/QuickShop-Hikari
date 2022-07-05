@@ -246,7 +246,7 @@ public enum DataTables {
         return sqlManager.createReplaceBatch(this.getName());
     }
 
-    public boolean isExists(@NotNull SQLManager manager){
+    public boolean isExists(@NotNull SQLManager manager) {
         boolean match = false;
         try {
             try (Connection connection = manager.getConnection(); ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {
@@ -257,8 +257,8 @@ public enum DataTables {
                     }
                 }
             }
-        }  catch (SQLException e){
-            if(Util.isDevMode()){
+        } catch (SQLException e) {
+            if (Util.isDevMode()) {
                 e.printStackTrace();
             }
             Log.debug("Error while checking table existence: " + getName());
@@ -266,8 +266,8 @@ public enum DataTables {
         return match;
     }
 
-    public boolean isExists(){
-       return isExists(this.manager);
+    public boolean isExists() {
+        return isExists(this.manager);
     }
 
     public boolean purgeTable() {
