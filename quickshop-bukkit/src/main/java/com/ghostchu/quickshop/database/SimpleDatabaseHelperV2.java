@@ -550,7 +550,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         plugin.getLogger().info("Action ID: " + actionId);
 
         plugin.getLogger().info("Cloning the tables for data copy...");
-        if (!silentTableRenaming(getPrefix() + "shops", getPrefix() + "messages_" + actionId)) {
+        if (!silentTableRenaming(getPrefix() + "shops", getPrefix() + "shops_" + actionId)) {
             throw new IllegalStateException("Cannot rename critical tables");
         }
         // Backup tables
