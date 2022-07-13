@@ -16,7 +16,7 @@ import java.sql.SQLException;
 
 public enum DataTables {
 
-    DATA("data", (table) -> {
+    DATA("shop_data", (table) -> {
         table.addAutoIncrementColumn("id", true); // SHOP DATA ID
         table.addColumn("owner", "VARCHAR(36) NOT NULL"); // SHOP DATA OWNER (ALL-ZERO if this is a server shop)
 
