@@ -75,6 +75,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         this.plugin = plugin;
         this.manager = manager;
         this.prefix = prefix;
+        manager.setDebugMode(Util.isDevMode());
         checkTables();
         checkColumns();
     }
@@ -529,18 +530,14 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         return prefix;
     }
 
-    private boolean silentTableRenaming(@NotNull String originTableName, @NotNull String newTableName) {
-        try {
-            manager.alterTable(originTableName)
-                    .renameTo(newTableName)
-                    .execute();
-            return true;
-        } catch (SQLException exception) {
-            if (Util.isDevMode()) {
-                exception.printStackTrace();
-            }
-            return false;
+    private boolean silentTableMoving(@NotNull String originTableName, @NotNull String newTableName) {
+        manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
+        manager.executeSQL("DROP TABLE " + originTableName);
+        Integer integer = manager.executeSQL("ALTER TABLE " + originTableName + " DISCARD TABLESPACE;");
+        if (integer != null) {
+            Log.debug("Discarded tablespace for table " + originTableName + ": " + integer);
         }
+        return true;
     }
 
 
@@ -550,19 +547,19 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         plugin.getLogger().info("Action ID: " + actionId);
 
         plugin.getLogger().info("Cloning the tables for data copy...");
-        if (!silentTableRenaming(getPrefix() + "shops", getPrefix() + "shops_" + actionId)) {
+        if (!silentTableMoving(getPrefix() + "shops", getPrefix() + "shops_" + actionId)) {
             throw new IllegalStateException("Cannot rename critical tables");
         }
         // Backup tables
-        silentTableRenaming(getPrefix() + "messages", getPrefix() + "messages_" + actionId);
-        silentTableRenaming(getPrefix() + "logs", getPrefix() + "logs_" + actionId);
-        silentTableRenaming(getPrefix() + "external_cache", getPrefix() + "external_cache_" + actionId);
-        silentTableRenaming(getPrefix() + "player", getPrefix() + "player_" + actionId);
-        silentTableRenaming(getPrefix() + "metrics", getPrefix() + "metrics_" + actionId);
+        silentTableMoving(getPrefix() + "messages", getPrefix() + "messages_" + actionId);
+        silentTableMoving(getPrefix() + "logs", getPrefix() + "logs_" + actionId);
+        silentTableMoving(getPrefix() + "external_cache", getPrefix() + "external_cache_" + actionId);
+        silentTableMoving(getPrefix() + "player", getPrefix() + "player_" + actionId);
+        silentTableMoving(getPrefix() + "metrics", getPrefix() + "metrics_" + actionId);
         plugin.getLogger().info("Cleaning resources...");
         // Backup current ver tables to prevent last converting failure or data loss
         for (DataTables value : DataTables.values()) {
-            silentTableRenaming(value.getName(), value.getName() + "_" + actionId);
+            silentTableMoving(value.getName(), value.getName() + "_" + actionId);
         }
         plugin.getLogger().info("Ensuring shops ready for migrate...");
         if (!hasTable(getPrefix() + "shops_" + actionId)) {
@@ -589,7 +586,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         DataTables.initializeTables(manager, getPrefix());
         plugin.getLogger().info("Validating tables exists...");
         for (DataTables value : DataTables.values()) {
-            if(!value.isExists())
+            if (!value.isExists())
                 throw new IllegalStateException("Table " + value.getName() + " doesn't exists even rebuild structure!");
         }
 

@@ -210,22 +210,10 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
     private String renameTables(@NotNull UUID actionId, @NotNull DatabaseConfig config) throws Exception {
         if (config.isMysql()) {
             SQLManager manager = getLiveDatabase();
-            manager.alterTable(config.getPrefix() + "shops")
-                    .renameTo(config.getPrefix() + "shops_" + actionId.toString().replace("-", ""))
-                    .execute();
-            try {
-                manager.alterTable(config.getPrefix() + "messages")
-                        .renameTo(config.getPrefix() + "messages_" + actionId.toString().replace("-", ""))
-                        .execute();
-                manager.alterTable(config.getPrefix() + "logs")
-                        .renameTo(config.getPrefix() + "logs_" + actionId.toString().replace("-", ""))
-                        .execute();
-                manager.alterTable(config.getPrefix() + "external_cache")
-                        .renameTo(config.getPrefix() + "external_cache_" + actionId.toString().replace("-", ""))
-                        .execute();
-            } catch (SQLException ignored) {
-                instance.getLogger().log(Level.INFO, "Error while rename tables! CHECK:Recoverable + Skip-able, Skipping...");
-            }
+            silentTableCopy(manager, config.getPrefix() + "shops",config.getPrefix() + "shops_" + actionId.toString().replace("-", ""));
+            silentTableCopy(manager, config.getPrefix() + "messages",config.getPrefix() + "messages_" + actionId.toString().replace("-", ""));
+            silentTableCopy(manager, config.getPrefix() + "logs",config.getPrefix() + "logs_" + actionId.toString().replace("-", ""));
+            silentTableCopy(manager, config.getPrefix() + "external_cache",config.getPrefix() + "external_cache_" + actionId.toString().replace("-", ""));
             try (Connection connection = manager.getConnection()) {
                 if (!hasTable(config.getPrefix() + "shops_" + actionId.toString().replace("-", ""), connection)) {
                     throw new IllegalStateException("Failed to rename tables!");
@@ -261,7 +249,7 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
             throw new ConnectException("Failed to connect to SQLite database!" + exception.getMessage());
         }
     }
-
+    private SQLManager liveDatabase = null;
     /**
      * Returns a valid SQLManager for the live database.
      *
@@ -271,6 +259,7 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
      */
     @NotNull
     private SQLManager getLiveDatabase() throws IllegalStateException, ConnectException {
+        if(liveDatabase != null) return liveDatabase;
         HikariConfig config = HikariUtil.createHikariConfig();
         SQLManager manager;
         try {
@@ -281,11 +270,13 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
                 config.setUsername(databaseConfig.getUser());
                 config.setPassword(databaseConfig.getPass());
                 manager = EasySQL.createManager(config);
+                liveDatabase = manager;
             } else {
                 // SQLite database - Doing this handles file creation
                 Driver.load();
                 config.setJdbcUrl("jdbc:h2:" + new File(plugin.getDataFolder(), "shops").getCanonicalFile().getAbsolutePath() + ";DB_CLOSE_DELAY=-1;MODE=MYSQL");
                 manager = EasySQL.createManager(config);
+                liveDatabase = manager;
                 manager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode
             }
             if (!manager.getConnection().isValid(10)) {
@@ -400,6 +391,15 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         instance.getLogger().info("Completed! Pulled " + (count - fails) + " shops from database! Total " + fails + " fails.");
         return units;
 
+    }
+
+    private boolean silentTableCopy(@NotNull SQLManager manager, @NotNull String originTableName, @NotNull String newTableName) {
+        manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
+        return true;
+    }
+
+    void close(){
+        EasySQL.shutdownManager(this.liveDatabase);
     }
 
     @AllArgsConstructor
