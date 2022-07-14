@@ -533,10 +533,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     private boolean silentTableMoving(@NotNull String originTableName, @NotNull String newTableName) {
         manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
         manager.executeSQL("DROP TABLE " + originTableName);
-        Integer integer = manager.executeSQL("ALTER TABLE " + originTableName + " DISCARD TABLESPACE;");
-        if (integer != null) {
-            Log.debug("Discarded tablespace for table " + originTableName + ": " + integer);
-        }
         return true;
     }
 
