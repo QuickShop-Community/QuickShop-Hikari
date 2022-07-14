@@ -172,7 +172,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         if (getDatabaseVersion() == 8) {
             try {
                 plugin.getLogger().info("Data upgrading: Renaming table...");
-                silentTableRenaming(getPrefix() + "shop_data", getPrefix()+"shop_data_"+UUID.randomUUID().toString().replace("-", ""));
                 silentTableRenaming(getPrefix() + "data", getPrefix()+"shop_data");
                 plugin.getLogger().info("Data upgrading: All completed!");
                 setDatabaseVersion(9);
