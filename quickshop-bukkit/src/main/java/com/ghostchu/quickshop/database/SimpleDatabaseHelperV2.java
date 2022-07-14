@@ -169,16 +169,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 e.printStackTrace();
             }
         }
-        if (getDatabaseVersion() == 8) {
-            try {
-                plugin.getLogger().info("Data upgrading: Renaming table...");
-                silentTableRenaming(getPrefix() + "data", getPrefix()+"shop_data");
-                plugin.getLogger().info("Data upgrading: All completed!");
-                setDatabaseVersion(9);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
         plugin.getLogger().info("Finished!");
     }
 
