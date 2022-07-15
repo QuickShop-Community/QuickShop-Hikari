@@ -448,7 +448,7 @@
             <dependency>
                 <groupId>cc.carm.lib</groupId>
                 <artifactId>easysql-hikaricp</artifactId>
-                <version>0.4.2</version>
+                <version>0.4.3</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
