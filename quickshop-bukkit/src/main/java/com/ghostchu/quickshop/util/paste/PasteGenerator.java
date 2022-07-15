@@ -44,6 +44,7 @@ public class PasteGenerator {
         add(new HeaderItem(System.currentTimeMillis(), Map.of()));
         add(new ServerInfoItem());
         add(new SystemInfoItem());
+        add(new DatabaseInfoItem());
         add(new ChatProcessorInfoItem());
         add(new ShopsInfoItem());
         add(new ReplaceableModulesItem());

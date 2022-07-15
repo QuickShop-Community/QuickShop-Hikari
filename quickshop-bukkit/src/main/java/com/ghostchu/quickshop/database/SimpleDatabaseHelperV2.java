@@ -75,6 +75,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         this.plugin = plugin;
         this.manager = manager;
         this.prefix = prefix;
+        manager.setDebugMode(Util.isDevMode());
         checkTables();
         checkColumns();
     }
@@ -529,52 +530,34 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         return prefix;
     }
 
+    private boolean silentTableMoving(@NotNull String originTableName, @NotNull String newTableName) {
+        manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
+        manager.executeSQL("DROP TABLE " + originTableName);
+        return true;
+    }
+
 
     private void doV2Migrate() throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         plugin.getLogger().info("Please wait... QuickShop-Hikari preparing for database migration...");
         String actionId = UUID.randomUUID().toString().replace("-", "");
         plugin.getLogger().info("Action ID: " + actionId);
-        plugin.getLogger().info("Cloning the tables for data copy...");
-        manager.alterTable(getPrefix() + "shops")
-                .renameTo(getPrefix() + "shops_" + actionId)
-                .execute();
-        try {
-            manager.alterTable(getPrefix() + "messages")
-                    .renameTo(getPrefix() + "messages_" + actionId)
-                    .execute();
-        } catch (SQLException ignored) {
-            plugin.getLogger().log(Level.INFO, "Error while rename tables! CHECK:Recoverable + Skip-able, Skipping...");
-        }
-        try {
-            manager.alterTable(getPrefix() + "logs")
-                    .renameTo(getPrefix() + "logs_" + actionId)
-                    .execute();
-        } catch (SQLException ignored) {
-            plugin.getLogger().log(Level.INFO, "Error while rename tables! CHECK:Recoverable + Skip-able, Skipping...");
-        }
-        try {
-            manager.alterTable(getPrefix() + "external_cache")
-                    .renameTo(getPrefix() + "external_cache_" + actionId)
-                    .execute();
-        } catch (SQLException ignored) {
-            plugin.getLogger().log(Level.INFO, "Error while rename tables! CHECK:Recoverable + Skip-able, Skipping...");
-        }
-        try {
-            manager.alterTable(getPrefix() + "player")
-                    .renameTo(getPrefix() + "player_" + actionId)
-                    .execute();
-        } catch (SQLException ignored) {
-            plugin.getLogger().log(Level.INFO, "Error while rename tables! CHECK:Recoverable + Skip-able, Skipping...");
-        }
-        try {
-            manager.alterTable(getPrefix() + "metrics")
-                    .renameTo(getPrefix() + "metrics_" + actionId)
-                    .execute();
-        } catch (SQLException ignored) {
-            plugin.getLogger().log(Level.INFO, "Error while rename tables! CHECK:Recoverable + Skip-able, Skipping...");
-        }
 
-        plugin.getLogger().info("Ensuring everything getting ready...");
+        plugin.getLogger().info("Cloning the tables for data copy...");
+        if (!silentTableMoving(getPrefix() + "shops", getPrefix() + "shops_" + actionId)) {
+            throw new IllegalStateException("Cannot rename critical tables");
+        }
+        // Backup tables
+        silentTableMoving(getPrefix() + "messages", getPrefix() + "messages_" + actionId);
+        silentTableMoving(getPrefix() + "logs", getPrefix() + "logs_" + actionId);
+        silentTableMoving(getPrefix() + "external_cache", getPrefix() + "external_cache_" + actionId);
+        silentTableMoving(getPrefix() + "player", getPrefix() + "player_" + actionId);
+        silentTableMoving(getPrefix() + "metrics", getPrefix() + "metrics_" + actionId);
+        plugin.getLogger().info("Cleaning resources...");
+        // Backup current ver tables to prevent last converting failure or data loss
+        for (DataTables value : DataTables.values()) {
+            silentTableMoving(value.getName(), value.getName() + "_" + actionId);
+        }
+        plugin.getLogger().info("Ensuring shops ready for migrate...");
         if (!hasTable(getPrefix() + "shops_" + actionId)) {
             throw new IllegalStateException("Failed to rename tables!");
         }
@@ -594,11 +577,15 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         int total = oldShopData.size();
         plugin.getLogger().info("Rebuilding database structure...");
         // Create new tables
-        Log.debug("Table prefix: "+getPrefix());
-        Log.debug("Global prefix: "+plugin.getDbPrefix());
-        Log.debug("SQLManager: "+manager);
-
+        Log.debug("Table prefix: " + getPrefix());
+        Log.debug("Global prefix: " + plugin.getDbPrefix());
         DataTables.initializeTables(manager, getPrefix());
+        plugin.getLogger().info("Validating tables exists...");
+        for (DataTables value : DataTables.values()) {
+            if (!value.isExists())
+                throw new IllegalStateException("Table " + value.getName() + " doesn't exists even rebuild structure!");
+        }
+
         for (OldShopData data : oldShopData) {
             long dataId = DataTables.DATA.createInsert()
                     .setColumnNames("owner", "item", "name", "type", "currency", "price", "unlimited", "hologram", "tax_account", "permissions", "extra", "inv_wrapper", "inv_symbol_link")
@@ -822,7 +809,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             for (int i = 0; i < columns.length; i++) {
                 columns[i] = metaData.getColumnName(i + 1);
             }
-            Log.debug("Parsed " + columns.length + " columns: "+Util.array2String(columns));
+            Log.debug("Parsed " + columns.length + " columns: " + Util.array2String(columns));
             while (results.next()) {
                 Object[] values = new String[columns.length];
                 for (int i = 0; i < values.length; i++) {
