@@ -128,15 +128,15 @@ metric:
   entry-header-shop: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66) <aqua>|'
   price-hover: <yellow>Tổng {0}, bao gồm {1} thuế.
   unknown: <gray>(không xác định)
-  undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  undefined: <gray>(không có tên)
+  no-results: <red>Không tìm thấy giao dịch.
   action-description:
-    DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
-    ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
-    PURCHASE: <yellow>Purchased item with a shop
+    DELETE: <yellow>Người chơi đã xóa cửa hàng. Và hoàn lại phí tạo cửa hàng cho chủ nếu có thể.
+    ONGOING_FEE: <yellow>Người chơi đã trả tiền liên tục vì thời gian thanh toán.
+    PURCHASE_BUYING_SHOP: <yellow>Người chơi đã bán một số vật phẩm cho một cửa hàng mua lại.
+    CREATE: <yellow>Người chơi đã tạo một cửa hàng.
+    PURCHASE_SELLING_SHOP: <yellow>Người chơi đã mua một số vật phẩm từ một cửa hàng
+    PURCHASE: <yellow>Mua vật phẩm từ cửa hàng
   query-argument: 'Query Argument: {0}'
   entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
@@ -215,14 +215,14 @@ updatenotify:
     - What do you think? {0} has been released! Update!
     - Doctor, QuickShop has a new update {0}! You should update~
     - Ko~ko~da~yo~ QuickShop has a new update {0} ~
-    - Paimon want told you the QuickShop have new update {0}!
-  remote-disable-warning: '<red>This version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server''s performance.'
+    - Paimon muốn cho bạn biết QuickShop có bản cập nhật mới {0}!
+  remote-disable-warning: '<red>Phiên bản QuickShop này bị máy chủ vô hiệu hóa, có nghĩa là phiên bản này có thể có vấn đề nghiêm trọng, hãy lấy thông tin chi tiết từ trang SpigotMC của chúng tôi: {0}. Cảnh báo này sẽ tiếp tục xuất hiện cho đến khi bạn chuyển sang phiên bản ổn định, nhưng nó sẽ không ảnh hưởng đến hiệu suất máy chủ của bạn.'
 purchase-out-of-stock: <red>This shop run out of the stock, Contact shop owner or staffs to refill the stock.
 nearby-shop-entry: '<green>- Info:{0} <green>Price:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>distance: <aqua>{5} <green>block(s)'
 chest-title: Cửa hàng QuickShop
 console-only: <dark_red>Lệnh chỉ có thể dùng bởi người chơi
 failed-to-put-sign: <red>Không đủ không gian xung quanh cửa hàng để đặt biển.
-shop-name-unset: <red>This shop's name now removed
+shop-name-unset: <red>Tên cửa hàng đã bị xóa
 shop-nolonger-freezed: <green>Bạn mở cửa hàng. Nó trở lại bình thường bây giờ!
 no-permission-build: <red>Bạn không thể đặt cửa hàng ở đây.
 tableformat:
@@ -230,22 +230,22 @@ tableformat:
   right_half_line: <dark_purple>--------------------+
   full_line: <dark_purple>+---------------------------------------------------+
   left_begin: '<dark_purple>| '
-quickshop-gui-preview: QuickShop GUI Item Preview
-translate-not-completed-yet-click: The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Click here!
-taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
+quickshop-gui-preview: Xem trước vật phẩm QuickShop
+translate-not-completed-yet-click: Bản dịch ngôn ngữ {0} chưa được hoàn thành bởi {1}. Bạn có muốn giúp chúng tôi cải thiện bản dịch không? Bấm vào đây!
+taxaccount-invalid: <red>Tài khoản không hợp lệ, vui lòng nhập tên người chơi hợp lệ hoặc uuid (có dấu gạch ngang).
 player-bought-from-your-store: <red>{0} đã mua {1} {2} từ shop của bạn, bạn nhận được {3}.
 reached-maximum-can-create: <red>Bạn đã tạo tối đa {0}/{1} cửa hàng!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
+reached-maximum-create-limit: <red>Bạn đã đạt đến số lượng tối đa tạo cửa hàng
 translation-version: 'Phiên bản hỗ trợ: Hikari'
 no-double-chests: <red>Bạn không thể tạo ra Shop gương đôi.
 price-too-cheap: <red>Giá tiền phải lớn hơn <yellow>${0}
 shop-not-exist: <red>Không có shop nào.
-bad-command-usage: <red>Bad command arguments!
+bad-command-usage: <red>Lệnh không hợp lệ!
 clean-warning: <yellow>This command will purge <red>all <yellow>shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD<yellow>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm <yellow>to continue.
 shop-purchase-cancelled: <red>Tính năng mua bán của shop đã bị huỷ.
 bypassing-lock: <red>Bỏ qua khóa QuickShop!
 bungee-cross-server-msg: '<green>QuickShop CSM: <green>{0}'
-saved-to-path: The Backup was saved to {0}.
+saved-to-path: Bản sao lưu đã được lưu vào {0}.
 shop-now-freezed: <green>Bạn đã đóng băng cửa hàng. Không ai có thể giao dịch với cửa hàng này bây giờ!
 price-is-now: <green>Giá mới của shop hiện giờ là <yellow>{0}
 shops-arent-locked: <red>Xin hãy lưu ý, Các shop không có cơ chế bảo vệ khỏi trộm! Nếu không muốn bị trộm, khoá nó lại với các plugin LWC, Lockette, v. v!
