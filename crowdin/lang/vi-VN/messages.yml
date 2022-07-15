@@ -4,10 +4,10 @@ not-allowed-to-create: <red>Bạn không thể tạo cửa hàng ở đây.
 disabled-in-this-world: <red>QuickShop bị vô hiệu hóa trong thế giới này
 how-much-to-trade-for: <green>Nhập vào khung chat số tiền bạn muốn giao dịch <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
-shops-backingup: Creating Shop-backup from database...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+shops-backingup: Tạo bản sao lưu shop từ cơ sở dữ liệu...
+_comment: Chào người biên dịch! Nếu bạn đang chỉnh sửa code trên GitHub hoặc thông qua mã nguồn, bạn nên truy cập https://crowdin.com/project/quickshop-hikari.
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
+bad-command-usage-detailed: '<red>Lệnh không hợp lệ! Chấp nhận các lệnh sau:<gray>{0}'
 thats-not-a-number: <red>Số không hợp lệ
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>Đây là một lệnh nguy hiểm nên chỉ có Console mới có thể thực thi nó.
@@ -21,33 +21,33 @@ tabcomplete:
   name: '[name]'
   range: '[range]'
   currency: '[currency name]'
-taxaccount-unset: <green>This shop's tax account now following server global setting.
+taxaccount-unset: <green>Tài khoản thuế của cửa hàng này hiện đang thiết lập theo máy chủ.
 blacklisted-item: <red>Bạn không thể bán vật phẩm này vì nó nằm trong danh sách đen
 command-type-mismatch: <red>This command only can executed by <aqua>{0}.
 server-crash-warning: '<red>Server may crash after execute /qs reload command if you replace/delete QuickShop plugin Jar file while server running.'
 you-cant-afford-to-change-price: <red>Tiêu tốn {0} để thay đổi giá của shop.
-safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
+safe-mode: <red>QuickShop hiện đang ở chế độ an toàn, bạn không thể mở cửa hàng này, vui lòng liên hệ với quản trị viên máy chủ để sửa lỗi.
 forbidden-vanilla-behavior: <red>Hoạt động bị cấm do nó không phù hợp với hành vi vanilla
 shop-out-of-space-name: <dark_purple>Cửa hàng {0} của bạn đã đầy!
 paste-disabled: '<red>Chức năng dán đã bị vô hiệu hóa! Bạn không thể yêu cầu hỗ trợ kỹ thuật.<newline>Lý do: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Tên: <aqua>{0}'
+    - '<yellow>Chủ: <aqua>{0}'
+    - '<yellow>Loại: <aqua>{0}'
+    - '<yellow>Giá: <aqua>{0}'
+    - '<yellow>Vật phẩm: <aqua>{0}'
+    - '<yellow>Vị trí: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Tên: <aqua>{name}'
+    - '<yellow>Chủ: <aqua>{owner}'
+    - '<yellow>Loại: <aqua>{type}'
+    - '<yellow>Giá: <aqua>{price}'
+    - '<yellow>Vật phẩm: <aqua>{item}'
+    - '<yellow>Vị trí: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
-  entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
+  entry-normal: ' <yellow>- <aqua>{0}<light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(Chỉ admin) <light_purple>{0} <dark_gray>đã từ chối kiểm tra quyền, Nếu điều này không bị ngoại trừ, hãy thử thêm <light_purple>{1} <gray>vào danh sách đen. <gray>Hướng dẫn cấu hình:https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Giá trung bình lân cận: <yellow>{0}'
@@ -56,7 +56,7 @@ currency-unset: <green>Đã xóa thành công đơn vị tiền tệ của cửa
 you-cant-create-shop-in-there: <red>You don't have permission to create a shop at this location.
 no-pending-action: <red>You do not have any pending actions
 refill-success: <green>Nạp tiền thành công
-failed-to-paste: <red>Failed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)
+failed-to-paste: <red>Không thể tải dữ liệu lên Pastebin. Kiểm tra kết nối internet của bạn và thử lại. (Xem bảng điều khiển để biết chi tiết)
 shop-out-of-stock-name: <dark_purple>Cửa hàng của bạn {0} đã hết {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Nhập vào khung chat số  lượng bạn muốn<light_purple> MUA<yellow>. Có<green> {0} <yellow>vật phẩm trong mỗi số lượng lớn và bạn có thể mua <green>{1}<yellow> hàng loạt. Nhập <green>{2} <yellow>vào trò chuyện để mua tất cả.
@@ -81,20 +81,20 @@ shop-creation-cancelled: <red>Khởi tạo shop đã bị huỷ.
 shop-owner-self-trade: <yellow>You trading with yourself shop, so you might won't gain any balance.
 purchase-out-of-space: <red>This shop run out of the space, Contact shop owner or staffs to empty the shop.
 reloading-status:
-  success: <green>Reload completed without any errors.
+  success: <green>Tải lại hoàn tất và không có bất kỳ lỗi nào.
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
-  failed: <red>Reload failed, check the server console
+  failed: <red>Tải lại không thành công, hãy kiểm tra bảng điều khiển máy chủ
 player-bought-from-your-store-tax: <red>{0} đã mua {1} {2} từ shop của bạn, bạn được nhận {3} ({4} tiền thuế).
 not-enough-space: <red>You only have room for {0} more!
-shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
+shop-name-success: <green>Đặt tên cửa hàng thành công thành <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
-shops-recovering: Recovering shops from backup...
+shops-recovering: Đang khôi phục cửa hàng từ bản sao lưu...
 menu:
   sell-tax: <green>Bạn đã trả <yellow>{0} <green>tiền thuế.
   owner: '<green>Chủ: {0}'
   preview: <aqua>[Xem trước item]
-  enchants: <dark_purple>Enchantments
+  enchants: <dark_purple>Phù phép
   sell-tax-self: <green>You didn't pay taxes because you own this shop.
   shop-information: '<green>Thông tin shop:'
   item: '<green>Vật phẩm: <yellow>{0}'
@@ -102,7 +102,7 @@ menu:
   item-name-and-price: <yellow>{0} {1} <green>cho <yellow>{2}
   successful-purchase: '<green>Mua thành công:'
   price-per-stack: <green>Giá mỗi <yellow>{2}x {0} - {1}
-  stored-enchants: <dark_purple>Stored Enchantments
+  stored-enchants: <dark_purple>Phù phép được lưu trữ
   item-holochat-error: <red>[Lỗi]
   this-shop-is-selling: <green>Cửa hàng này đang <aqua>BÁN <green>các vật phẩm.
   shop-stack: '<green>Số lượng: <yellow>{0}'
@@ -121,13 +121,13 @@ integrations-check-failed-trade: <red>Tích hợp {0} đã từ chối Shop trao
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Đã đặt thành công chủ cửa hàng thành Máy chủ.
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>Tên cửa hàng quá dài (chiều dài tối đa {0}), vui lòng chọn tên khác!
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
   action-hover: <yellow>{0}
   entry-header-shop: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66) <aqua>|'
-  price-hover: <yellow>Total {0}, including {1} taxes.
-  unknown: <gray>(unknown)
+  price-hover: <yellow>Tổng {0}, bao gồm {1} thuế.
+  unknown: <gray>(không xác định)
   undefined: <gray>(noname)
   no-results: <red>No transactions found.
   action-description:
