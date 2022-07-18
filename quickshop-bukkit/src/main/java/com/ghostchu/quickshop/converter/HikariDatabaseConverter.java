@@ -325,9 +325,12 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         int port = dbCfg.getInt("port", 3306);
         String database = dbCfg.getString("database", "mc");
         boolean useSSL = dbCfg.getBoolean("usessl", false);
-        String dbPrefix = dbCfg.getString("prefix", "");
-        if ("none".equals(dbPrefix)) {
-            dbPrefix = "";
+        String dbPrefix = "";
+        if(mysql) {
+            dbPrefix = dbCfg.getString("prefix", "");
+            if ("none".equals(dbPrefix)) {
+                dbPrefix = "";
+            }
         }
         return new DatabaseConfig(mysql, host, user, pass, port, database, useSSL, dbPrefix);
     }
@@ -394,7 +397,11 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
     }
 
     private boolean silentTableCopy(@NotNull SQLManager manager, @NotNull String originTableName, @NotNull String newTableName) {
-        manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
+        if(getDatabaseConfig().isMysql()){
+            manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
+        }else{
+            manager.executeSQL("CREATE TABLE " + newTableName + " AS SELECT * FROM " + originTableName);
+        }
         return true;
     }
 
