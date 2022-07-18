@@ -252,6 +252,20 @@
                         </execution>
                     </executions>
                 </plugin>
+                <!-- 2022/07/08 CodeMC CI seems deployed a buggy toolchains util -->
+                <plugin>
+                    <groupId>io.codemc.maven.plugins.toolchain</groupId>
+                    <artifactId>codemc-toolchain-selector</artifactId>
+                    <version>0.0.2-SNAPSHOT</version>
+                    <executions>
+                        <execution>
+                            <id>sel</id>
+                            <goals>
+                                <goal>select</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
 
