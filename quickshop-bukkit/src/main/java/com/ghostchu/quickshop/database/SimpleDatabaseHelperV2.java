@@ -531,12 +531,18 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     private boolean silentTableMoving(@NotNull String originTableName, @NotNull String newTableName) {
-        if(plugin.getDatabaseDriverType() == QuickShop.DatabaseDriverType.MYSQL){
-            manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
-        }else{
-            manager.executeSQL("CREATE TABLE " + newTableName + " AS SELECT * FROM " + originTableName);
+        try {
+            if(hasTable(originTableName)) {
+                if (plugin.getDatabaseDriverType() == QuickShop.DatabaseDriverType.MYSQL) {
+                    manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
+                } else {
+                    manager.executeSQL("CREATE TABLE " + newTableName + " AS SELECT * FROM " + originTableName);
+                }
+                manager.executeSQL("DROP TABLE " + originTableName);
+            }
+        } catch (SQLException e) {
+            return false;
         }
-        manager.executeSQL("DROP TABLE " + originTableName);
         return true;
     }
 
