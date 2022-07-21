@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>重载成功。<gray>(一些更改需要一段时间才能生效)
   require-restart: <green>重载完成。<yellow>(一些更改需要重启服务器后生效)
   failed: <red>重载失败，请检查服务器控制台
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3} (扣税{4})
 not-enough-space: <red>背包空间不足，剩余 {0}
 shop-name-success: <green>成功地将商店名称设置为 <yellow>{0}<green>
 shop-staff-added: <green>成功将 {0} 添加到你的商店助手列表中。
@@ -100,7 +100,7 @@ menu:
   item: '<green>物品：<yellow>{0}'
   price-per: <green>每个<yellow>{0}<green>价格<yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>共 <yellow>{2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
+  item-name-and-price-tax: <yellow>{0} {1} <green></green> {2} <green><yellow>{3}</yellow> 税)</green>'
   successful-purchase: '<green>支付成功：'
   price-per-stack: <green>每<yellow>{2}<green>个<yellow>{0}<green>价格<yellow>{1}
   stored-enchants: <dark_purple>附魔
