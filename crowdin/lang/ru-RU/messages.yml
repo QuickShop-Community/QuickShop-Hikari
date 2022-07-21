@@ -100,7 +100,7 @@ menu:
   item: '<green>Товар: <yellow>{0}'
   price-per: <green>Цена за <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>за <yellow>{2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>
+  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>Успешно куплено:'
   price-per-stack: <green>Цена за <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Хранимые чары

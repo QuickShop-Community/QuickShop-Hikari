@@ -100,7 +100,7 @@ menu:
   item: '<green>Gegenstand: <yellow>{0}'
   price-per: <green>Preis pro <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>für <yellow>{2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>
+  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>Erfolgreich gekauft:'
   price-per-stack: <green>Preis pro <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Gespeicherte Verzauberungen

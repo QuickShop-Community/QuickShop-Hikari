@@ -100,7 +100,7 @@ menu:
   item: '<green>Öğe: <yellow>{0}'
   price-per: <yellow>{0} <green>başına fiyat - <yellow>{1}
   item-name-and-price: <yellow>{2} <green>için <yellow>{0} <green>tane {1}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>
+  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>Başarıyla satın alındı:'
   price-per-stack: <yellow>{2} <green>tane <yellow>{0} <green>başına fiyat <yellow>{1}
   stored-enchants: <dark_purple>Depolanmış Büyüler
