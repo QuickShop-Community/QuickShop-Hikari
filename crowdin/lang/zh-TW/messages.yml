@@ -100,7 +100,7 @@ menu:
   item: '<green>商品 ： <yellow>{0}'
   price-per: <green>價格 ： <yellow>1 個 {0} {1} 元
   item-name-and-price: <green>共 <yellow>{2} <green>元的 <yellow>{0} <green>個 <yellow>{1}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
+  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
   successful-purchase: '<green>成功購買 ： '
   price-per-stack: <green>價格 ： <yellow>{2} 個 {0} {1} 元
   stored-enchants: <dark_purple>附魔
@@ -126,7 +126,6 @@ shop-name-too-long: <green>此商店的名稱太長了（最大長度 {0}<newlin
 metric:
   header-player: '<yellow>{0} 的 {1} {2} 交易:'
   action-hover: <yellow>{0}
-  entry-header-shop: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66) <aqua>|'
   price-hover: <yellow>總共 {0}, 包括 {1} 稅款.
   unknown: <gray>(未知)
   undefined: <gray>(無名)
@@ -139,15 +138,10 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>玩家從商店購買了一些物品。
     PURCHASE: <yellow>從商店購買了物品
   query-argument: '查詢參數: {0}'
-  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}個
-  entry-header-global: '<aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591) <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
   header-shop: '<yellow>{0} 商店的 {1} {2} 交易:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
   looking-up: <yellow>正在進行指標搜尋，請稍後...
-  entry-header-player: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [shop](color=#CDAA7D) <aqua>| [amount](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
-  entry-shop: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   tax-hover: <yellow>{0} 稅款
   header-global: '<yellow>伺服器{0} {1} 交易:'
   na: <gray>N/A
