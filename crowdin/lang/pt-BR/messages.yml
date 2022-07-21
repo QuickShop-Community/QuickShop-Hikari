@@ -100,7 +100,7 @@ menu:
   item: '<green>Item: <yellow>{0}'
   price-per: <green>Preço de <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>por <yellow>{2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
+  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>
   successful-purchase: '<green>Comprado com sucesso:'
   price-per-stack: <green>Preço de <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Encantamentos armazenados
