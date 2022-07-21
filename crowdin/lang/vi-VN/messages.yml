@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Tải lại không thành công, hãy kiểm tra bảng điều khiển máy chủ
-player-bought-from-your-store-tax: <red>{0} đã mua {1} {2} từ shop của bạn, bạn được nhận {3} ({4} tiền thuế).
+player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
 not-enough-space: <red>You only have room for {0} more!
 shop-name-success: <green>Đặt tên cửa hàng thành công thành <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
@@ -100,6 +100,7 @@ menu:
   item: '<green>Vật phẩm: <yellow>{0}'
   price-per: <green>Giá mỗi <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>cho <yellow>{2}
+  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>Mua thành công:'
   price-per-stack: <green>Giá mỗi <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Phù phép được lưu trữ

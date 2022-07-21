@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>Перезагрузка завершена. <gray>(Для вступления в силу некоторых изменений потребуется время)
   require-restart: <green>Перезагрузка завершена. <yellow>(Для изменения интерфейса потребуется перезапуск сервера)
   failed: <red>Перезагрузка не удалась, проверьте консоль сервера
-player-bought-from-your-store-tax: <green>{0} купил{1} {2} в вашем магазине и вы заработали {3} ({4} налоги).
+player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
 not-enough-space: <red>В вашем инвентаре осталось место только для {0} предметов!
 shop-name-success: <green>Название магазина успешно изменено на <yellow>{0}<green>.
 shop-staff-added: <green>{0} успешно добавлен в качестве сотрудника вашего магазина.
@@ -100,6 +100,7 @@ menu:
   item: '<green>Товар: <yellow>{0}'
   price-per: <green>Цена за <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>за <yellow>{2}
+  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>Успешно куплено:'
   price-per-stack: <green>Цена за <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Хранимые чары

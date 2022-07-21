@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>Yeniden yükleme tamamlandı. <gray>(Bazı değişikliklerin etki etmesi biraz zaman aldı)
   require-restart: <green>Yeniden yükleme tamamlandı. <yellow>(Bazı değişikliklerin etkilenmesi için sunucuyu yeniden başlatmak gerekebilir)
   failed: <red>Yeniden yükleme başarısız, sunucu konsolunu kontrol edin
-player-bought-from-your-store-tax: <red>{0} marketinden {1} tane {2} aldı ve {3} ({4} vergi) kazandın.
+player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
 not-enough-space: <red>Sadece {0} için daha fazla yerin var!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>{0} başarıyla market personellerinize eklendi.
@@ -100,6 +100,7 @@ menu:
   item: '<green>Öğe: <yellow>{0}'
   price-per: <yellow>{0} <green>başına fiyat - <yellow>{1}
   item-name-and-price: <yellow>{2} <green>için <yellow>{0} <green>tane {1}
+  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>Başarıyla satın alındı:'
   price-per-stack: <yellow>{2} <green>tane <yellow>{0} <green>başına fiyat <yellow>{1}
   stored-enchants: <dark_purple>Depolanmış Büyüler

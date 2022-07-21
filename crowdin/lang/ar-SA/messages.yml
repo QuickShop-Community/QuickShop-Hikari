@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: '&ج{0} اشترى {1} {2} من متجرك، وكسبت {3} ({4} كضرائب).'
+player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
 not-enough-space: <red>You only have room for {0} more!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
@@ -100,6 +100,7 @@ menu:
   item: '<green>Item: <yellow>{0}'
   price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
+  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>Successfully purchased:'
   price-per-stack: <green>Price per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Stored Enchantments
