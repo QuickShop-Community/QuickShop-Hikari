@@ -100,7 +100,7 @@ menu:
   item: '<green>物品：<yellow>{0}'
   price-per: <green>每个<yellow>{0}<green>价格<yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>共 <yellow>{2}
-  item-name-and-price-tax: <yellow>{0} {1} <green></green> {2} <green><yellow>{3}</yellow> 税)</green>'
+  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>
   successful-purchase: '<green>支付成功：'
   price-per-stack: <green>每<yellow>{2}<green>个<yellow>{0}<green>价格<yellow>{1}
   stored-enchants: <dark_purple>附魔
