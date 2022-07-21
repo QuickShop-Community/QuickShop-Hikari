@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>Rechargement terminé. <gray>(Certaines modifications nécessitent un certain temps)
   require-restart: <green>Rechargement terminé. <yellow>(Certaines modifications nécessitent un redémarrage du serveur pour prendre effet)
   failed: <red>Rechargement échoué, vérifiez la console du serveur
-player-bought-from-your-store-tax: <red>{0} a acheté {1} {2} dans ta boutique, et tu as reçu ou payé {3} ({4} de taxes).
+player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
 not-enough-space: <red>Il ne vous reste que {0} place(s) restante(s) pour ceci!
 shop-name-success: <green>Le nom de votre boutique a bien été défini à <yellow>{0}<green>.
 shop-staff-added: <green> {0} a été ajouté avec succès comme membre du personnel pour votre boutique.
@@ -100,6 +100,7 @@ menu:
   item: '<green>Objet: <yellow>{0}'
   price-per: <green>Prix unitaire de <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>pour <yellow>{2}
+  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>Achat réussi :'
   price-per-stack: <green>Prix unitaire de <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Enchantements stockés

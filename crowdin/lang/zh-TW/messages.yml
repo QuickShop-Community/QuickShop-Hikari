@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>重新載入完成。<yellow>（一些更改需要一段時間後作用）
   require-restart: <green>重新載入完成。<yellow>（一些更改需要重新啟動伺服器後作用）
   failed: <red>無法重新載入，請檢查伺服器控制台
-player-bought-from-your-store-tax: <red>{0} 從你的商店購買了 {1} {2}，你總共賺了 {3} 元 （{4} 元的稅） 。
+player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
 not-enough-space: <red>你只剩下 {0} 格空間可以裝東西 ！
 shop-name-success: <green>成功轉交商店擁有者給<yellow>{0}<green>。
 shop-staff-added: <green>已新增員工 {0} 到你的商店。
@@ -100,6 +100,7 @@ menu:
   item: '<green>商品 ： <yellow>{0}'
   price-per: <green>價格 ： <yellow>1 個 {0} {1} 元
   item-name-and-price: <green>共 <yellow>{2} <green>元的 <yellow>{0} <green>個 <yellow>{1}
+  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>成功購買 ： '
   price-per-stack: <green>價格 ： <yellow>{2} 個 {0} {1} 元
   stored-enchants: <dark_purple>附魔

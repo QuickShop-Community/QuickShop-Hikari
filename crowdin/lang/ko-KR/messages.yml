@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>리로드를 완료했습니다. <gray>(일부 변경사항이 적용되려면 시간이 필요합니다.)
   require-restart: <green>리로드를 완료했습니다. <yellow>(일부 변경사항은 서버를 재부팅해야 적용됩니다.)
   failed: <red>리로드를 하지 못했습니다, 콘솔을 확인해주세요.
-player-bought-from-your-store-tax: '<red>{0} 님이 상점 에서 {2} 을(를) {1}개 구입했으며 {3} 원 을(를) 얻으셨습니다! (세금 : {4}원)'
+player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
 not-enough-space: <red>이 중 {0} 개를 더 사용할 수 있는 공간만 있습니다!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>{0} 님을(를) 상점 관리자로 추가했습니다.
@@ -100,6 +100,7 @@ menu:
   item: '<green>아이템 : <yellow>{0}'
   price-per: <yellow>{0}<green>의 개당 가격 <green>- <yellow>{1}
   item-name-and-price: <yellow>{0}개<green>의 <yellow>{1} <green>(총 <yellow>{2}<green>)
+  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>성공적으로 구매했습니다:'
   price-per-stack: '{0}의 {2}개당 가격 - {1}'
   stored-enchants: <dark_purple>인첸트 저장
