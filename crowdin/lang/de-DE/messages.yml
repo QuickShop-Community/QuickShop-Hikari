@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop ist in dieser Welt deaktiviert
 how-much-to-trade-for: <green>Gib im Chat ein, für wieviel du {1}x <yellow>{0}<green> handeln willst.
 client-language-changed: <green>QuickShop hat festgestellt, dass deine Client-Spracheinstellungen geändert wurden. Wir verwenden jetzt die Spracheinstellung {0} für dich.
 shops-backingup: Erstelle Shop-Backup von der Datenbank...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hallo Übersetzer! Wenn du dies auf GitHub oder im Quellcode bearbeitest, solltest du zu https://crowdin.com/project/quickshop-hikari wechseln.
 unlimited-shop-owner-changed: <yellow>Der Besitzer des unbegrenzten Shops wurde zu {0} geändert.
 bad-command-usage-detailed: '<red>Schlechte Befehlsargumente! Volgende Argumente werden unterstützt: <gray>{0}'
 thats-not-a-number: <red>Ungültige Zahl
@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>Neu laden abgeschlossen. <gray>(Einige Änderungen benötigen eine Weile um aktiv zu werden)
   require-restart: <green>Neu laden abgeschlossen. <yellow>(Einige Einstellungen benötigen einen Serverneustart um aktiv zu werden)
   failed: <red>Neu laden fehlgeschlagen. Überprüfe die Serverkonsole
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} hat {1} {2} von deinem Shop gekauft und du hast {3} ({4} an Steuern) verdient.
 not-enough-space: <red>Du hast nur platz für {0} weitere!
 shop-name-success: <green>Shopname erfolgreich zu <yellow>{0} <green>gesetzt.
 shop-staff-added: <green>{0} erfolgreich als Shopmitarbeiter für deinen Shop hinzugefügt.
@@ -100,7 +100,7 @@ menu:
   item: '<green>Gegenstand: <yellow>{0}'
   price-per: <green>Preis pro <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>für <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
+  item-name-and-price-tax: '<yellow>{0} {1} <green>für</green> {2} <gray>(<green>{3}</green> an Steuern)</gray>'
   successful-purchase: '<green>Erfolgreich gekauft:'
   price-per-stack: <green>Preis pro <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Gespeicherte Verzauberungen
