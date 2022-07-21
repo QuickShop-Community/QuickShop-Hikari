@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
+import com.google.common.cache.CacheBuilder;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -39,11 +40,17 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 public class LockListener extends AbstractProtectionListener {
     public LockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
         super(plugin, cache);
     }
-
+    private final com.google.common.cache.Cache<UUID, Object> lockCoolDown = CacheBuilder.newBuilder()
+            .expireAfterAccess(1, TimeUnit.SECONDS)
+            .build();
+    private static final Object emptyObject=  new Object();
     @Override
     public void register() {
         if (plugin.getConfig().getBoolean("shop.lock")) {
@@ -158,7 +165,10 @@ public class LockListener extends AbstractProtectionListener {
 
         if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)) {
             if (plugin.perm().hasPermission(p, "quickshop.other.open")) {
-                plugin.text().of(p, "bypassing-lock").send();
+                if(lockCoolDown.getIfPresent(p.getUniqueId()) == null){
+                    plugin.text().of(p, "bypassing-lock").send();
+                    lockCoolDown.put(p.getUniqueId(), emptyObject);
+                }
                 return;
             }
             plugin.text().of(p, "that-is-locked").send();
@@ -170,7 +180,7 @@ public class LockListener extends AbstractProtectionListener {
      * Handles hopper placement
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onPlace(BlockPlaceEvent e) {
+    public void onHopperPlace(BlockPlaceEvent e) {
 
         final Block b = e.getBlock();
 
@@ -185,7 +195,10 @@ public class LockListener extends AbstractProtectionListener {
         }
 
         if (plugin.perm().hasPermission(p, "quickshop.other.open")) {
-            plugin.text().of(p, "bypassing-lock").send();
+            if(lockCoolDown.getIfPresent(p.getUniqueId()) == null){
+                plugin.text().of(p, "bypassing-lock").send();
+                lockCoolDown.put(p.getUniqueId(), emptyObject);
+            }
             return;
         }
 
