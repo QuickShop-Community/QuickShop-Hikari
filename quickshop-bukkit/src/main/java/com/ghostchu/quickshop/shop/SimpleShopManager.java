@@ -1215,7 +1215,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 msg = plugin.text().of("player-bought-from-your-store-tax",
                                 player != null ? player.getName() : seller.toString(),
                                 amount * shop.getItem().getAmount(),
-                                shop.getItem(),
+                                MsgUtil.getTranslateText(shop.getItem()),
                                 this.formatter.format(total - tax, shop),
                                 this.formatter.format(tax, shop)).forLocale(langCode)
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));

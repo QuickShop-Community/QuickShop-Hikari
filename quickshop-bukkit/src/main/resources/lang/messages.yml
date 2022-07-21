@@ -115,7 +115,7 @@ reloading-status:
   require-restart: <green>Reload complete. <yellow>(Some changes require a server
     restart to take effect)
   failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: <green>{0} purchased{1} {2} from your shop and
+player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and
   you earned {3} ({4} in taxes).
 not-enough-space: <red>You only have room left for {0} more!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
