@@ -1276,7 +1276,18 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(plugin.text().of(sender, "menu.successful-purchase").forLocale());
-        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price", Component.text(amount * shop.getItem().getAmount()), MsgUtil.getTranslateText(shop.getItem()), format(total, shop)).forLocale());
+        if(plugin.getConfig().getBoolean("show-tax")){
+            chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price-tax",
+                    Component.text(amount * shop.getItem().getAmount()),
+                    MsgUtil.getTranslateText(shop.getItem()),
+                    format(total, shop),
+                    tax).forLocale());
+        }else {
+            chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price",
+                    Component.text(amount * shop.getItem().getAmount()),
+                    MsgUtil.getTranslateText(shop.getItem()),
+                    format(total, shop)).forLocale());
+        }
         MsgUtil.printEnchantment(sender, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
