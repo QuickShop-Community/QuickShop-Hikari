@@ -397,10 +397,18 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
     }
 
     private boolean silentTableCopy(@NotNull SQLManager manager, @NotNull String originTableName, @NotNull String newTableName) {
-        if(getDatabaseConfig().isMysql()){
-            manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
-        }else{
-            manager.executeSQL("CREATE TABLE " + newTableName + " AS SELECT * FROM " + originTableName);
+        try(Connection conn = manager.getConnection()) {
+            if(hasTable(originTableName,conn)) {
+                if (getDatabaseConfig().isMysql()) {
+                    manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
+                } else {
+                    manager.executeSQL("CREATE TABLE " + newTableName + " AS SELECT * FROM " + originTableName);
+                }
+            }else{
+                return false;
+            }
+        }catch (SQLException e) {
+            return false;
         }
         return true;
     }

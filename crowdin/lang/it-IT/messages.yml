@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>Ricarica completata. <gray>(Alcune modifiche hanno richiesto del tempo per essere applicate)
   require-restart: <green>Ricarica completata. <yellow>(Alcune modifiche richiedono il riavvio del server per avere effetto)
   failed: <red>Ricarica non riuscita, controlla la console del server
-player-bought-from-your-store-tax: <red>{0} ha acquistato {1} {2} dal tuo negozio, e hai guadagnato {3} ({4} in tasse).
+player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
 not-enough-space: <red>Hai spazio solo per altri {0}!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Aggiunto con successo {0} come membro dello staff per il tuo negozio.
@@ -100,6 +100,7 @@ menu:
   item: '<green>Oggetto: <yellow>{0}'
   price-per: <green>Prezzo per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>per <yellow>{2}
+  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>Acquistato con successo:'
   price-per-stack: <green>Prezzo per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Incantesimi memorizzati

@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>Omladdning slutförd. &(Vissa ändringar kräver att servern startar om för att påverka)
   require-restart: <green>Omladdning slutförd. &(Vissa ändringar kräver att servern startar om för att påverka)
   failed: <red>Reload misslyckades, kontrollera serverkonsolen
-player-bought-from-your-store-tax: <red>{0} köpte {1} {2} från din butik, du tjänade {3} ({4} i skatt).
+player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
 not-enough-space: <red>Du har bara plats för {0} mer!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Framgångsrikt lagt till {0} som personal för din butik.
@@ -100,6 +100,7 @@ menu:
   item: '<green>Föremål: <yellow>{0}'
   price-per: <green>Pris per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>för <yellow>{2}
+  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>Framgångsrikt köpt:'
   price-per-stack: <green>Pris per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Lagrade förtrollningar

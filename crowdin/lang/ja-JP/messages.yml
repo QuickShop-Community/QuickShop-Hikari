@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>リロードが完了しました。<gray>(一部の変更は反映に時間が掛かる場合があります)
   require-restart: <green>リロードが完了しました。<yellow>(一部の変更については、サーバーの再起動が必要です)
   failed: <red>リロードに失敗しました。サーバーコンソールを確認してください
-player-bought-from-your-store-tax: <red>{0} が {1} 個の {2} をあなたのショップから購入したので {3} を獲得しました。(うち消費税 {4})
+player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
 not-enough-space: <red>あなたには {0} 個分のスペースしかありません！
 shop-name-success: <green>ショップ名を <yellow>{0}<green> に設定することに成功しました。
 shop-staff-added: <green>あなたのショップスタッフに {0} を追加しました。
@@ -100,6 +100,7 @@ menu:
   item: '<green>アイテム : <yellow>{0}'
   price-per: '<green>単価: <yellow>{0} <green>- <yellow>{1}'
   item-name-and-price: <yellow>{0} {1} <green>を <yellow>{2}
+  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>購入成功:'
   price-per-stack: '<green>単価: <yellow>{2}x {0} - {1}'
   stored-enchants: <dark_purple>エンチャント保管

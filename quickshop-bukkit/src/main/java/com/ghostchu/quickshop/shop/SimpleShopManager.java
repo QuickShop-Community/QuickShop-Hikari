@@ -1215,7 +1215,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 msg = plugin.text().of("player-bought-from-your-store-tax",
                                 player != null ? player.getName() : seller.toString(),
                                 amount * shop.getItem().getAmount(),
-                                shop.getItem(),
+                                MsgUtil.getTranslateText(shop.getItem()),
                                 this.formatter.format(total - tax, shop),
                                 this.formatter.format(tax, shop)).forLocale(langCode)
                         .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
@@ -1276,7 +1276,18 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(sender);
         chatSheetPrinter.printHeader();
         chatSheetPrinter.printLine(plugin.text().of(sender, "menu.successful-purchase").forLocale());
-        chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price", Component.text(amount * shop.getItem().getAmount()), MsgUtil.getTranslateText(shop.getItem()), format(total, shop)).forLocale());
+        if(plugin.getConfig().getBoolean("show-tax")){
+            chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price-tax",
+                    Component.text(amount * shop.getItem().getAmount()),
+                    MsgUtil.getTranslateText(shop.getItem()),
+                    format(total, shop),
+                    tax).forLocale());
+        }else {
+            chatSheetPrinter.printLine(plugin.text().of(sender, "menu.item-name-and-price",
+                    Component.text(amount * shop.getItem().getAmount()),
+                    MsgUtil.getTranslateText(shop.getItem()),
+                    format(total, shop)).forLocale());
+        }
         MsgUtil.printEnchantment(sender, shop, chatSheetPrinter);
         chatSheetPrinter.printFooter();
     }
@@ -1307,7 +1318,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (tax != 0) {
                 if (!seller.equals(shop.getOwner())) {
                     chatSheetPrinter.printLine(
-                            plugin.text().of(sender, "menu.sell-tax", format(tax * total, shop)).forLocale());
+                            plugin.text().of(sender, "menu.sell-tax", format(tax, shop)).forLocale());
                 } else {
                     chatSheetPrinter.printLine(plugin.text().of(sender, "menu.sell-tax-self").forLocale());
                 }

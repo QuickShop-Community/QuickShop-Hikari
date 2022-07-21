@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>Opplasting fullført. <gray>(Noen endringer tok en stund for å påvirke)
   require-restart: <green>Omlasting fullført. &(Noen endringer krever at serveren starter på nytt)
   failed: <red>Omlastningen mislyktes, sjekk serverkonsollen
-player-bought-from-your-store-tax: <red>{0} kjøpte {1} {2} fra butikken din og du tjente {3} ({4} i skatter).
+player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
 not-enough-space: <red>Du har bare plass til {0} mer!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <red>Du ansatte {0} som medarbeider i din butikk.
@@ -100,6 +100,7 @@ menu:
   item: '<green>Gjenstand: <yellow>{0}'
   price-per: <green>Pris per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
+  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>Vellykket kjøp:'
   price-per-stack: <green>Pris per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Lagret Fortryllelser

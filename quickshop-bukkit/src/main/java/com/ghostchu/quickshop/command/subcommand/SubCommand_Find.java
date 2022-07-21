@@ -87,7 +87,7 @@ public class SubCommand_Find implements CommandHandler<Player> {
                 break;
             }
             if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SEARCH)
-                    || plugin.perm().hasPermission(sender, "quickshop.other.search")) {
+                    && !plugin.perm().hasPermission(sender, "quickshop.other.search")) {
                 continue;
             }
             Vector shopVector = shop.getLocation().toVector();
