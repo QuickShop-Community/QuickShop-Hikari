@@ -100,7 +100,7 @@ menu:
   item: '<green>Gegenstand: <yellow>{0}'
   price-per: <green>Preis pro <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>für <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
+  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
   successful-purchase: '<green>Erfolgreich gekauft:'
   price-per-stack: <green>Preis pro <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Gespeicherte Verzauberungen
@@ -126,7 +126,6 @@ shop-name-too-long: <red>Dieser Shopname ist zu lang (Maximal {0}). Bitte wähle
 metric:
   header-player: '<yellow>{0}''s Transaktionen von {1} {2}:'
   action-hover: <yellow>{0}
-  entry-header-shop: '<aqua>| [Käufer](color=#FFD39B) <aqua>| [Aktion](color=#EEC591) <aqua>| [Menge](color=#CDAA7D) <aqua>| [Preis](color=#8B7355) <aqua>| [Steuern](color=#8B7E66) <aqua>|'
   price-hover: <yellow>Total {0}, inklusive {1} steuern.
   unknown: <gray>(Unbekannt)
   undefined: <gray>(Kein Name)
@@ -139,15 +138,10 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>Spieler hat einige Items von einem verkaufenden Shop gekauft
     PURCHASE: <yellow>Gekaufte Items mit Shop
   query-argument: 'Such-Argumente: {0}'
-  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}x
-  entry-header-global: '<aqua>| [Eigentümer](color=#FFD39B) <aqua>| [Spieler](color=#EEC591) <aqua>| [Aktion](color=#CDAA7D) <aqua>| [Shop](color=#8B7355) <aqua>| [Preis](color=#8B7E66) <aqua>| '
   header-shop: '<yellow>Shop {0}''s Transaktionen von {1} {2}:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
   looking-up: <yellow>Führe erstellung von Statistiken aus, bitte warten...
-  entry-header-player: '<aqua>| [Käufer](color=#FFD39B) <aqua>| [Aktion](color=#EEC591) <aqua>| [Shop](color=#CDAA7D) <aqua>| [Menge](color=#8B7355) <aqua>| [Preis](color=#8B7E66) <aqua>|'
-  entry-shop: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   tax-hover: <yellow>{0} Steuern
   header-global: '<yellow>Transaktionen des Server für {0} {1}:'
   na: <gray>N/A
