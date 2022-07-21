@@ -1307,7 +1307,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (tax != 0) {
                 if (!seller.equals(shop.getOwner())) {
                     chatSheetPrinter.printLine(
-                            plugin.text().of(sender, "menu.sell-tax", format(tax * total, shop)).forLocale());
+                            plugin.text().of(sender, "menu.sell-tax", format(tax, shop)).forLocale());
                 } else {
                     chatSheetPrinter.printLine(plugin.text().of(sender, "menu.sell-tax-self").forLocale());
                 }
