@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: <red>{0} ha comprat {1} {2} de la teva botiga, i has guanyat {3} ({4} amb impostos).
+player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
 not-enough-space: <red>Només tens espai per {0} més!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>S'ha afegit {0} com a moderador de la teva botiga.
@@ -100,6 +100,7 @@ menu:
   item: '<green>Ítem: <yellow>{0}'
   price-per: <green>Preu per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>per <yellow>{2}
+  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>Comprat amb èxit:'
   price-per-stack: <green>Preu per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Encanteris guardats
