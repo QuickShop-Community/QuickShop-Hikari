@@ -101,6 +101,7 @@ public class OTACacheControl {
         LOCK.lock();
         try {
             this.metadata.set("objects." + cacheKey + ".time", manifestTimestamp);
+            this.metadata.set("objects." + cacheKey + ".path", path);
         } finally {
             LOCK.unlock();
             save();
