@@ -232,6 +232,7 @@ public class MyPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // Remember to add QuickShop-Hikari as (soft) depend.
         Plugin plugin = Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
         
         if (plugin != null && plugin.isEnabled()) {
