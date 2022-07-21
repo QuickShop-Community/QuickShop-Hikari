@@ -100,7 +100,7 @@ menu:
   item: '<green>Przedmiot: <yellow>{0}'
   price-per: <green>Cena za <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>za <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
+  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
   successful-purchase: '<green>Zakupiono:'
   price-per-stack: <green>Cena za <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Przechowywane Enchanty
@@ -126,7 +126,6 @@ shop-name-too-long: <red>Nazwa tego sklepu jest zbyt długa (maksymalna długoś
 metric:
   header-player: '<yellow>{0} transakcji {1} {2} transakcje/transakcji:'
   action-hover: <yellow>{0}
-  entry-header-shop: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [amount](color=#CDAA7D) <aqua>| [price](color=#8B7355) <aqua>| [tax](color=#8B7E66) <aqua>|'
   price-hover: <yellow>Suma {0}, łącznie z {1} podatkami.
   unknown: <gray>(nieznany)
   undefined: <gray>(brak nazwy)
@@ -139,15 +138,10 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>Gracz sprzedał kilka przedmiotów w sklepie do sprzedawania
     PURCHASE: <yellow>Zakupiony przedmiot ze sklepem
   query-argument: 'Argument zapytania: {0}'
-  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}
-  entry-header-global: '<aqua>| [owner](color=#FFD39B) <aqua>| [player](color=#EEC591) <aqua>| [action](color=#CDAA7D) <aqua>| [shop](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
   header-shop: '<yellow>{0} transakcji {1} {2} transakcje/transakcji:'
   player-hover: '<yellow>{0}<newline><gold>UUUID: <gray>{1}'
   looking-up: <yellow>Wykonywanie wyszukiwania metrycznego, proszę czekać...
-  entry-header-player: '<aqua>| [purchaser](color=#FFD39B) <aqua>| [action](color=#EEC591) <aqua>| [shop](color=#CDAA7D) <aqua>| [amount](color=#8B7355) <aqua>| [price](color=#8B7E66) <aqua>|'
-  entry-shop: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   tax-hover: <yellow>{0}
   header-global: '<yellow>{0} transakcji {1} transakcje/transakcji:'
   na: <gray>N/A
