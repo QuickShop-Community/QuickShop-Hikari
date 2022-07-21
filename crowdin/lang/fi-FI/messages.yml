@@ -100,7 +100,7 @@ menu:
   item: '<green>Tuote: <yellow>{0}'
   price-per: <green>Hinta per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>hintaan <yellow>{2}
-  item-name-and-price-tax: <yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>
+  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
   successful-purchase: '<green>Onnistuneesti ostettu:'
   price-per-stack: <green>Hinta per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Varastoidut Lumoukset
