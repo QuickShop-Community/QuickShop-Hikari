@@ -66,6 +66,17 @@ public class TownCommand implements CommandHandler<Player> {
             OfflinePlayer player = Bukkit.getOfflinePlayer(vaultAccountName);
             profile = new Profile(player.getUniqueId(), vaultAccountName);
         }
+        // Check if item and type are allowed
+        if (plugin.getConfig().getBoolean("bank-mode.enable")) {
+            Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType());
+            if (price == null) {
+                plugin.getApi().getTextManager().of(sender, "item-not-allowed").send();
+                return;
+            }
+            if (shop.isStackingShop()) {
+                shop.setPrice(price * shop.getShopStackingAmount());
+            }
+        }
         TownyShopUtil.setShopOriginalOwner(shop, shop.getOwner());
         TownyShopUtil.setShopTown(shop, town);
         shop.setPlayerGroup(shop.getOwner(), BuiltInShopPermissionGroup.ADMINISTRATOR);
