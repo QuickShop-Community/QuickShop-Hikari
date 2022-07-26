@@ -19,7 +19,6 @@
 
 package com.ghostchu.quickshop.shop.display;
 
-import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopDisplayItemDespawnEvent;
 import com.ghostchu.quickshop.api.event.ShopDisplayItemSafeGuardEvent;
 import com.ghostchu.quickshop.api.event.ShopDisplayItemSpawnEvent;
