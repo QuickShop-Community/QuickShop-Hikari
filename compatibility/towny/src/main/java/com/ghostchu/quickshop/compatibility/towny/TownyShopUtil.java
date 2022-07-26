@@ -36,7 +36,7 @@ public class TownyShopUtil {
         if (town == null) {
             section.set("towny-town-uuid", null);
         } else {
-            section.set("towny-town-uuid", town.getUUID());
+            section.set("towny-town-uuid", town.getUUID().toString());
         }
     }
 
@@ -45,7 +45,7 @@ public class TownyShopUtil {
         if (nation == null) {
             section.set("towny-nation-uuid", null);
         } else {
-            section.set("towny-nation-uuid", nation.getUUID());
+            section.set("towny-nation-uuid", nation.getUUID().toString());
         }
     }
 
