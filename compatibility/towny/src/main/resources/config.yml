@@ -1,5 +1,19 @@
+#Should allow Mayor and King grant the shop administrator permission on they town / nation.
+allow-permission-override: true
+
 #If QS should ignore disabled worlds.
 ignore-disabled-worlds: true
+
+#Should we also check flags and other stuff even target world not enabled in Towny
+whitelist-mode: true
+
+#Should we delete player's shops in town when they leaved the that town
+delete-shop-on-resident-leave: false
+#Should we remove the shops in plot when plot cleared
+delete-shop-on-plot-clear: true
+#Should we remove the shops in plot when plot unclaimed
+delete-shop-on-plot-unclaimed: true
+
 #Which checks does a player need to pass to create a shop?
 #You can use multiple checks at the same time.
 #Priority: UP > DOWN
@@ -20,8 +34,3 @@ create:
 #MODIFY = The player must have the ability to build on the target plot to trade with a shop.
 #SHOPTYPE = The player must trade with the shop on a SHOP type plot.
 trade: [ ]
-delete-shop-on-resident-leave: false
-delete-shop-on-plot-clear: true
-delete-shop-on-plot-destroy: true
-#Should we prevent the creation of a shop or trade with a shop outside Towny's area
-whitelist-mode: true

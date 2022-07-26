@@ -26,11 +26,9 @@ import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.logger.Log;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.event.PlotClearEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
@@ -48,42 +46,47 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public final class Main extends CompatibilityModule implements Listener {
     private QuickShopAPI api;
     private List<TownyFlags> createFlags;
     private List<TownyFlags> tradeFlags;
-    private boolean ignoreDisabledWorlds;
-    private boolean deleteShopOnLeave;
-    private boolean deleteShopOnPlotClear;
-    private boolean deleteShopOnPlotDestroy;
     private boolean whiteList;
 
     @Override
     public void init() {
+        api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
         createFlags = TownyFlags.deserialize(getConfig().getStringList("create"));
         tradeFlags = TownyFlags.deserialize(getConfig().getStringList("trade"));
-        ignoreDisabledWorlds = getConfig().getBoolean("ignore-disabled-worlds");
-        deleteShopOnLeave = getConfig().getBoolean("delete-shop-on-resident-leave");
-        deleteShopOnPlotClear = getConfig().getBoolean("delete-shop-on-plot-clear");
-        deleteShopOnPlotDestroy = getConfig().getBoolean("delete-shop-on-plot-destroy");
-        whiteList = getConfig().getBoolean("towny.whitelist-mode");
+        whiteList = getConfig().getBoolean("whitelist-mode");
+    }
+
+    private boolean isWorldIgnored(World world) {
+        if (getConfig().getBoolean("ignore-disabled-worlds", false)) {
+            return !TownyAPI.getInstance().isTownyWorld(world);
+        }
+        return false;
     }
 
     @EventHandler(ignoreCancelled = true)
     public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        if (!getConfig().getBoolean("allow-permission-override", true))
+            return;
         Location shopLoc = event.getShop().getLocation();
+        if (isWorldIgnored(shopLoc.getWorld())) return;
         Town town = TownyAPI.getInstance().getTown(shopLoc);
         if (town == null) return;
         if (town.getMayor().getUUID().equals(event.getAuthorizer())) {
             if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);
+                return;
             }
-            return;
         }
         try {
             Nation nation = town.getNation();
@@ -99,6 +102,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPreCreation(ShopPreCreateEvent event) {
+        if (isWorldIgnored(event.getLocation().getWorld())) return;
         if (checkFlags(event.getPlayer(), event.getLocation(), this.createFlags)) {
             return;
         }
@@ -107,6 +111,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onCreation(ShopCreateEvent event) {
+        if (isWorldIgnored(event.getShop().getLocation().getWorld())) return;
         //noinspection ConstantConditions
         if (checkFlags(event.getPlayer(), event.getShop().getLocation(), this.createFlags)) {
             return;
@@ -116,6 +121,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onTrading(ShopPurchaseEvent event) {
+        if (isWorldIgnored(event.getShop().getLocation().getWorld())) return;
         //noinspection ConstantConditions
         if (checkFlags(event.getPlayer(), event.getShop().getLocation(), this.tradeFlags)) {
             return;
@@ -123,117 +129,55 @@ public final class Main extends CompatibilityModule implements Listener {
         event.setCancelled(true, "Towny Blocked");
     }
 
-    public void deleteShops(UUID owner, Town town) {
-        if (!deleteShopOnLeave) {
-            return;
-        }
-
-        if (owner == null) {
-            return;
-        }
-        String worldName = town.getHomeblockWorld().getName();
-        //Getting all shop with world-chunk-shop mapping
-        for (Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : api.getShopManager().getShops().entrySet()) {
-            //Matching world
-            if (worldName.equals(entry.getKey())) {
-                World world = Bukkit.getWorld(entry.getKey());
-                if (world != null) {
-                    //Matching Location
-                    for (Map.Entry<ShopChunk, Map<Location, Shop>> chunkedShopEntry : entry.getValue().entrySet()) {
-                        Map<Location, Shop> shopMap = chunkedShopEntry.getValue();
-                        for (Shop shop : shopMap.values()) {
-                            //Matching Owner
-                            if (shop.getOwner().equals(owner)) {
-                                try {
-                                    //It should be equal in address
-                                    if (WorldCoord.parseWorldCoord(shop.getLocation()).getTownBlock().getTown() == town) {
-                                        //delete it
-                                        recordDeletion(owner, shop, "Town leaved");
-                                        shop.delete();
-                                    }
-                                } catch (NotRegisteredException ignored) {
-                                    //Is not in town, continue
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void purgeShops(TownBlock townBlock) {
-        purgeShops(townBlock.getWorldCoord());
-    }
-
-    public void purgeShops(WorldCoord worldCoord) {
-        if (worldCoord == null) {
-            return;
-        }
-        String worldName;
-        worldName = worldCoord.getBukkitWorld().getName();
-        //Getting all shop with world-chunk-shop mapping
-        for (Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : api.getShopManager().getShops().entrySet()) {
-            //Matching world
-            if (worldName.equals(entry.getKey())) {
-                World world = Bukkit.getWorld(entry.getKey());
-                if (world != null) {
-                    //Matching Location
-                    for (Map.Entry<ShopChunk, Map<Location, Shop>> chunkedShopEntry : entry.getValue().entrySet()) {
-                        Map<Location, Shop> shopMap = chunkedShopEntry.getValue();
-                        for (Shop shop : shopMap.values()) {
-                            //Matching Owner
-                            if (WorldCoord.parseWorldCoord(shop.getLocation()).equals(worldCoord)) {
-                                //delete it
-
-                                shop.delete();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     @EventHandler
     public void onPlayerLeave(TownRemoveResidentEvent event) {
-        if (Bukkit.isPrimaryThread()) {
-            deleteShops(TownyAPI.getInstance().getPlayerUUID(event.getResident()), event.getTown());
-        } else {
-            Util.mainThreadRun(() -> deleteShops(TownyAPI.getInstance().getPlayerUUID(event.getResident()), event.getTown()));
+        if (isWorldIgnored(event.getTown().getWorld())) return;
+        if (!getConfig().getBoolean("delete-shop-on-resident-leave", false)) {
+            return;
         }
+        Util.mainThreadRun(() -> purgeShops(event.getTown().getTownBlocks(), event.getResident().getUUID(),null,"Town removed a resident"));
     }
 
     @EventHandler
     public void onPlotClear(PlotClearEvent event) {
-        if (!deleteShopOnPlotClear) {
+        if (isWorldIgnored(event.getTownBlock().getWorldCoord().getBukkitWorld())) return;
+        if (!getConfig().getBoolean("delete-shop-on-plot-clear", false)) {
             return;
         }
-        if (Bukkit.isPrimaryThread()) {
-            purgeShops(event.getTownBlock());
-        } else {
-            Util.mainThreadRun(() -> purgeShops(event.getTownBlock()));
-        }
+        Util.mainThreadRun(() -> purgeShops(event.getTownBlock().getWorldCoord(), null,null,"Plot cleared"));
     }
 
     @EventHandler
-    public void onPlotDestroy(TownUnclaimEvent event) {
-        if (!deleteShopOnPlotDestroy) {
+    public void onPlotUnclaim(TownUnclaimEvent event) {
+        if (isWorldIgnored(event.getWorldCoord().getBukkitWorld())) return;
+        if (!getConfig().getBoolean("delete-shop-on-plot-unclaimed")) {
             return;
         }
-        if (Bukkit.isPrimaryThread()) {
-            purgeShops(event.getWorldCoord());
-        } else {
-            Util.mainThreadRun(() -> purgeShops(event.getWorldCoord()));
+        Util.mainThreadRun(() -> purgeShops(event.getWorldCoord(), null, null, "Town Unclaimed"));
+    }
+
+    public void purgeShops(@NotNull Collection<TownBlock> worldCoords, @Nullable UUID owner, @Nullable UUID deleter, @NotNull String reason) {
+        for (TownBlock townBlock : worldCoords) {
+            purgeShops(townBlock.getWorldCoord(), owner, deleter, reason);
         }
     }
 
+    public void purgeShops(@NotNull WorldCoord worldCoord, @Nullable UUID owner, @Nullable UUID deleter, @NotNull String reason) {
+        //Getting all shop with world-chunk-shop mapping
+        for (Shop shop : api.getShopManager().getAllShops()) {
+            if (!Objects.equals(shop.getLocation().getWorld(), worldCoord.getBukkitWorld()))
+                continue;
+            if (WorldCoord.parseWorldCoord(shop.getLocation()).equals(worldCoord)) {
+                if (owner != null && shop.getOwner().equals(owner)) {
+                    recordDeletion(deleter, shop, reason);
+                    shop.delete();
+                }
+            }
+        }
+    }
 
     private boolean checkFlags(@NotNull Player player, @NotNull Location location, @NotNull List<TownyFlags> flags) {
-        if (ignoreDisabledWorlds && !TownyAPI.getInstance().isTownyWorld(location.getWorld())) {
-            Log.debug("This world disabled Towny.");
-            return true;
-        }
+        if (isWorldIgnored(location.getWorld())) return true;
         if (!whiteList && !ShopPlotUtil.isShopPlot(location)) {
             return true;
         }
@@ -259,9 +203,4 @@ public final class Main extends CompatibilityModule implements Listener {
         }
         return true;
     }
-
-    public boolean canTradeShopHere(@NotNull Player player, @NotNull Location location) {
-        return checkFlags(player, location, tradeFlags);
-    }
-
 }
