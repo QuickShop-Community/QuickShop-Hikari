@@ -112,7 +112,6 @@ public final class Main extends CompatibilityModule implements Listener {
         }
     }
 
-
     @Override
     public void onDisable() {
         api.getCommandManager().unregisterCmd("town");
@@ -125,6 +124,46 @@ public final class Main extends CompatibilityModule implements Listener {
             return !TownyAPI.getInstance().isTownyWorld(world);
         }
         return false;
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void shopTypeChanged(ShopTypeChangeEvent event) {
+        Shop shop = event.getShop();
+        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
+            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void shopPriceChanged(ShopPriceChangeEvent event) {
+        Shop shop = event.getShop();
+        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
+            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void shopItemChanged(ShopItemChangeEvent event) {
+        Shop shop = event.getShop();
+        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
+            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void shopItemChanged(ShopOwnershipTransferEvent event) {
+        Shop shop = event.getShop();
+        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
+            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void shopTaxAccountChanged(ShopTaxAccountChangeEvent event) {
+        Shop shop = event.getShop();
+        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
+            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
