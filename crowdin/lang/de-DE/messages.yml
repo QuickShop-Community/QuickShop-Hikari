@@ -574,3 +574,14 @@ transfer-accepted-toside: "<green>Du hast <aqua>{0}</aqua>'s Transfer-Anfrage ak
 transfer-rejected-fromside: "<red>Spieler <aqua>{0}</aqua> hat deine Transfer-Anfrage abgelehnt."
 transfer-rejected-toside: "<red>Du hast <aqua>{0}</aqua>'s Transfer-Anfrage abgelehnt."
 transfer-no-pending-operation: "<red>Du hat keine ausstehenden Transfer-Anfragen."
+addon:
+  towny:
+    make-shop-owned-by-town: "<green>You have made the shop owned by town <yellow>{0}</yellow>."
+    make-shop-no-longer-owned-by-town: "<green>You have reset shop ownership, it now transfer back to original shop owner."
+    make-shop-owned-by-nation: "<green>You have made the shop owned by nation <yellow>{0}</yellow>."
+    make-shop-no-longer-owned-by-nation: "<green>You have reset shop ownership, it now transfer back to original shop owner."
+    shop-owning-changing-notice: "<grey>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission"
+    target-shop-already-is-town-shop: "<red>The target shop is already owned by a town."
+    target-shop-already-is-nation-shop: "<red>The target shop is already owned by a nation."
+    target-shop-not-in-town-region: "<red>The target shop is not in the town."
+    target-shop-not-in-nation-region: "<red>The target shop is not in the nation."
