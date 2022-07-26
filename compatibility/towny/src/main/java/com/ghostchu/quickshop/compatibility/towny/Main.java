@@ -64,6 +64,7 @@ public final class Main extends CompatibilityModule implements Listener {
     private List<TownyFlags> createFlags;
     private List<TownyFlags> tradeFlags;
     private boolean whiteList;
+    @Getter
     private TownyMaterialPriceLimiter priceLimiter;
 
     @Override

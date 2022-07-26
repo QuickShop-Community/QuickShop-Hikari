@@ -57,6 +57,8 @@ public class NationCommand implements CommandHandler<Player> {
             plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-no-longer-owned-by-nation").send();
             return;
         }
+
+
         // Set as a nation shop
         Town town = TownyAPI.getInstance().getTown(shop.getLocation());
         if (town == null) {
@@ -73,6 +75,17 @@ public class NationCommand implements CommandHandler<Player> {
         if (profile == null) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(vaultAccountName);
             profile = new Profile(player.getUniqueId(), vaultAccountName);
+        }
+        // Check if item and type are allowed
+        if (plugin.getConfig().getBoolean("bank-mode.enable")) {
+            Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType());
+            if (price == null) {
+                plugin.getApi().getTextManager().of(sender, "item-not-allowed").send();
+                return;
+            }
+            if (shop.isStackingShop()) {
+                shop.setPrice(price * shop.getShopStackingAmount());
+            }
         }
         TownyShopUtil.setShopOriginalOwner(shop, shop.getOwner());
         TownyShopUtil.setShopNation(shop, nation);
