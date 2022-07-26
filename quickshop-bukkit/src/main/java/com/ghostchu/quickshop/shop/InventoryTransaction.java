@@ -29,6 +29,7 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,9 +41,11 @@ import java.util.logging.Level;
 
 public class InventoryTransaction {
     @Getter
-    private final InventoryWrapper from;
+    @Setter
+    private InventoryWrapper from;
     @Getter
-    private final InventoryWrapper to;
+    @Setter
+    private InventoryWrapper to;
     @Getter
     private final ItemStack item;
     @Getter
