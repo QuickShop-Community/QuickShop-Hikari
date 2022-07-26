@@ -574,3 +574,14 @@ transfer-accepted-toside: "<green>您接受了 <aqua>{0}</aqua> 的商店转移�
 transfer-rejected-fromside: "<red>玩家 <aqua>{0}</aqua> 拒绝了您的商店转移请求。"
 transfer-rejected-toside: "<red>您拒绝了 <aqua>{0}</aqua> 的商店转移请求。"
 transfer-no-pending-operation: "<red>您没有待处理的商店转移请求。"
+addon:
+  towny:
+    make-shop-owned-by-town: "<green>You have made the shop owned by town <yellow>{0}</yellow>."
+    make-shop-no-longer-owned-by-town: "<green>You have reset shop ownership, it now transfer back to original shop owner."
+    make-shop-owned-by-nation: "<green>You have made the shop owned by nation <yellow>{0}</yellow>."
+    make-shop-no-longer-owned-by-nation: "<green>You have reset shop ownership, it now transfer back to original shop owner."
+    shop-owning-changing-notice: "<grey>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission"
+    target-shop-already-is-town-shop: "<red>The target shop is already owned by a town."
+    target-shop-already-is-nation-shop: "<red>The target shop is already owned by a nation."
+    target-shop-not-in-town-region: "<red>The target shop is not in the town."
+    target-shop-not-in-nation-region: "<red>The target shop is not in the nation."
