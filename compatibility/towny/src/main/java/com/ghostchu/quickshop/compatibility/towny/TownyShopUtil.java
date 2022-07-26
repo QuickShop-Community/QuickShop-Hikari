@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.compatibility.towny;
 
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Town;
@@ -58,15 +59,20 @@ public class TownyShopUtil {
         String uuid = section.getString("towny-town-uuid");
         if (uuid == null)
             return null;
-        return TownyAPI.getInstance().getTown(uuid);
+        Town town = TownyAPI.getInstance().getTown(uuid);
+        Log.debug("Nation finding for shop " + shop + " => town uuid: " + uuid + " town: " + town);
+        return town;
     }
+
     @Nullable
     public static Nation getShopNation(@NotNull Shop shop) {
         ConfigurationSection section = shop.getExtra(Main.getPlugin(Main.class));
         String uuid = section.getString("towny-nation-uuid");
         if (uuid == null)
             return null;
-        return TownyAPI.getInstance().getNation(uuid);
+        Nation nation = TownyAPI.getInstance().getNation(uuid);
+        Log.debug("Nation finding for shop " + shop + " => nation uuid: " + uuid + " nation: " + nation);
+        return nation;
     }
 }
 

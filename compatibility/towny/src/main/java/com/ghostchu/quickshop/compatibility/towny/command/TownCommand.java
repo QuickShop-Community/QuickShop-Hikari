@@ -52,6 +52,7 @@ public class TownCommand implements CommandHandler<Player> {
                 return;
             } else {
                 plugin.getApi().getTextManager().of(sender, "no-permission").send();
+                return;
             }
         }
         // Set as a town shop

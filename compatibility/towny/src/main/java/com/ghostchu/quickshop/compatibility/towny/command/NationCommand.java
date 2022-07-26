@@ -46,6 +46,7 @@ public class NationCommand implements CommandHandler<Player> {
                 return;
             } else {
                 plugin.getApi().getTextManager().of(sender, "no-permission").send();
+                return;
             }
         }
         // Check if anybody already set it to nation shop
