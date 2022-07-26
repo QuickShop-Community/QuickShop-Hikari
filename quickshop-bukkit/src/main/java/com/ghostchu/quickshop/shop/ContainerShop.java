@@ -536,7 +536,7 @@ public class ContainerShop implements Shop, Reloadable {
         }
         // InventoryWrapperIterator buyerIterator = buyerInventory.iterator();
         if (this.isUnlimited()) {
-            InventoryTransaction transaction = InventoryTransaction
+            SimpleInventoryTransaction transaction = SimpleInventoryTransaction
                     .builder()
                     .from(buyerInventory)
                     .to(null) // To void
@@ -555,7 +555,7 @@ public class ContainerShop implements Shop, Reloadable {
                 Log.debug("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
                 return;
             }
-            InventoryTransaction transaction = InventoryTransaction
+            SimpleInventoryTransaction transaction = SimpleInventoryTransaction
                     .builder()
                     .from(buyerInventory)
                     .to(chestInv) // To void
@@ -884,7 +884,7 @@ public class ContainerShop implements Shop, Reloadable {
         }
         // Items to drop on floor
         if (this.isUnlimited()) {
-            InventoryTransaction transaction = InventoryTransaction
+            SimpleInventoryTransaction transaction = SimpleInventoryTransaction
                     .builder()
                     .from(null)
                     .to(sellerInventory) // To void
@@ -902,7 +902,7 @@ public class ContainerShop implements Shop, Reloadable {
                 plugin.getLogger().warning("Failed to process sell, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
                 return;
             }
-            InventoryTransaction transactionTake = InventoryTransaction
+            SimpleInventoryTransaction transactionTake = SimpleInventoryTransaction
                     .builder()
                     .from(chestInv)
                     .to(sellerInventory) // To void
