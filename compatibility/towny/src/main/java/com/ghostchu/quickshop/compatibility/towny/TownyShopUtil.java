@@ -38,7 +38,7 @@ public class TownyShopUtil {
         if (town == null) {
             section.set("towny-town-uuid", null);
         } else {
-            section.set("towny-town-uuid", town.getUUID().toString());
+            section.set("towny-town-uuid", town.toString());
         }
         shop.setExtra(Main.getPlugin(Main.class), section);
     }
@@ -59,8 +59,8 @@ public class TownyShopUtil {
         String uuid = section.getString("towny-town-uuid");
         if (uuid == null)
             return null;
-        Town town = TownyAPI.getInstance().getTown(uuid);
-        Log.debug("Nation finding for shop " + shop + " => town uuid: " + uuid + " town: " + town);
+        Town town = TownyAPI.getInstance().getTown(UUID.fromString(uuid));
+        Log.debug("Town finding for shop " + shop.getLocation() + " => town uuid: " + uuid + " town: " + town);
         return town;
     }
 
@@ -70,8 +70,8 @@ public class TownyShopUtil {
         String uuid = section.getString("towny-nation-uuid");
         if (uuid == null)
             return null;
-        Nation nation = TownyAPI.getInstance().getNation(uuid);
-        Log.debug("Nation finding for shop " + shop + " => nation uuid: " + uuid + " nation: " + nation);
+        Nation nation = TownyAPI.getInstance().getNation(UUID.fromString(uuid));
+        Log.debug("Nation finding for shop " + shop.getLocation() + " => nation uuid: " + uuid + " nation: " + nation);
         return nation;
     }
 }
