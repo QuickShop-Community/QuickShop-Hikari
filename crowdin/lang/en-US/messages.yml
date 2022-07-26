@@ -555,6 +555,7 @@ database:
   auto-trim-started: "<green>Auto-trimming started, please wait..."
   trim-start: "<green>Database trimming started, please wait..."
   trim-exception: "<red>Database trimming failed. An Exception was raised during the operation. Check the server console."
+  generated-at: "<yellow>Generated at: <gold>{0}</gold>"
   suggestion:
     trim: "<yellow>This database requires a trimming of isolated data. Execute <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>The 'Always counting' Feature is scheduled for removal. You shouldn't use it anymore as it will stop working in the future."
