@@ -555,6 +555,7 @@ database:
   auto-trim-started: "<green>自动清理已经开始，请稍候..."
   trim-start: "<green>数据库清理已开始，请稍候..."
   trim-exception: "<red>数据库清理失败，数据库清理过程中出现异常，请检查服务器控制台。"
+  generated-at: "<yellow>Generated at: <gold>{0}</gold>"
   suggestion:
     trim: "<yellow>此数据库需要进行清理，执行命令 <aqua>/qs database trim</aqua> 来清理数据库。"
 always-counting-removal-early-warning: "<red>总是计数功能将移除，您不应该再使用它，并将在将来停止工作。"

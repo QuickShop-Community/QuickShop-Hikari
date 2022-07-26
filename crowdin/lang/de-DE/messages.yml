@@ -555,6 +555,7 @@ database:
   auto-trim-started: "<green>Auto-entfernen wurde gestarted. Bitter warten..."
   trim-start: "<green>Datenbank bereinigung gestartet. Bitte warten..."
   trim-exception: "<red>Datenbank bereinigung fehlgeschlagen. Ein Fehler ist während der Datenbankbereinigung aufgetreten. Überprüfe die Server Konsole."
+  generated-at: "<yellow>Generated at: <gold>{0}</gold>"
   suggestion:
     trim: "<yellow>Diese Datenbank benötigt eine bereinigung von isolierten Daten. Führe <aqua>/qs database trim</aqua> aus um die Datenbank zu reinigen."
 always-counting-removal-early-warning: "<red>Die 'Immer zählen' Funktion ist zur entfernung geplant. Du solltest es nicht mehr verwenden, da es in naher Zukunft nicht mehr funktioniert."
