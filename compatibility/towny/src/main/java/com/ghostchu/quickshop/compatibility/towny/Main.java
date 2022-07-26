@@ -21,10 +21,13 @@ package com.ghostchu.quickshop.compatibility.towny;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
+import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
+import com.ghostchu.quickshop.compatibility.towny.command.NationCommand;
+import com.ghostchu.quickshop.compatibility.towny.command.TownCommand;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -68,6 +71,26 @@ public final class Main extends CompatibilityModule implements Listener {
         createFlags = TownyFlags.deserialize(getConfig().getStringList("create"));
         tradeFlags = TownyFlags.deserialize(getConfig().getStringList("trade"));
         whiteList = getConfig().getBoolean("whitelist-mode");
+        api.getCommandManager().registerCmd(CommandContainer.builder()
+                .prefix("town")
+                .permission("quickshop.addon.towny.town")
+                .description((locale) -> api.getTextManager().of("addon.towny.commands.town").forLocale(locale))
+                .executor(new TownCommand(this))
+                .build());
+        api.getCommandManager().registerCmd(CommandContainer.builder()
+                .prefix("nation")
+                .permission("quickshop.addon.towny.nation")
+                .description((locale) -> api.getTextManager().of("addon.towny.commands.nation").forLocale(locale))
+                .executor(new NationCommand(this))
+                .build());
+    }
+
+
+    @Override
+    public void onDisable() {
+        api.getCommandManager().unregisterCmd("town");
+        api.getCommandManager().unregisterCmd("nation");
+        super.onDisable();
     }
 
     private boolean isWorldIgnored(World world) {

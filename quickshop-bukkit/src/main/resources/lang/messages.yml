@@ -675,6 +675,9 @@ transfer-rejected-toside: "<red>You rejected <aqua>{0}</aqua>'s shop transfer re
 transfer-no-pending-operation: "<red>You don't have pending transfer request yet."
 addon:
   towny:
+    commands:
+      town: "<yellow>Set or unset a shop to a Town shop"
+      nation: "<yellow>Set or unset a shop to a Nation shop"
     make-shop-owned-by-town: "<green>You have made the shop owned by town <yellow>{0}</yellow>."
     make-shop-no-longer-owned-by-town: "<green>You have reset shop ownership, it now transfer back to original shop owner."
     make-shop-owned-by-nation: "<green>You have made the shop owned by nation <yellow>{0}</yellow>."
