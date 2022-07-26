@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.compatibility.towny.Main;
 import com.ghostchu.quickshop.compatibility.towny.TownyShopUtil;
 import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -28,20 +29,30 @@ public class TownCommand implements CommandHandler<Player> {
             plugin.getApi().getTextManager().of(sender, "not-looking-at-shop").send();
             return;
         }
-
         // Check if anybody already set it to nation shop
         if(TownyShopUtil.getShopNation(shop) != null){
             plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-already-is-nation-shop").send();
             return;
         }
+
+        // Player permission check
+
         // Check if anybody already set it to town shop
-        if(TownyShopUtil.getShopTown(shop) != null){
-            // Turn it back to a normal shop
-            shop.setPlayerGroup(TownyShopUtil.getShopOriginalOwner(shop), BuiltInShopPermissionGroup.EVERYONE);
-            shop.setOwner(TownyShopUtil.getShopOriginalOwner(shop));
-            TownyShopUtil.setShopTown(shop, null);
-            plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-no-longer-owned-by-town").send();
-            return;
+        Town recordTown = TownyShopUtil.getShopTown(shop);
+        if(recordTown != null){
+            if(TownyShopUtil.getShopOriginalOwner(shop).equals(sender.getUniqueId())
+                    || recordTown.getMayor().getUUID().equals(sender.getUniqueId())
+                    || recordTown.getTrustedResidents().stream().map(Resident::getUUID)
+                    .anyMatch(uuid->uuid.equals(sender.getUniqueId()))){
+                // Turn it back to a normal shop
+                shop.setPlayerGroup(TownyShopUtil.getShopOriginalOwner(shop), BuiltInShopPermissionGroup.EVERYONE);
+                shop.setOwner(TownyShopUtil.getShopOriginalOwner(shop));
+                TownyShopUtil.setShopTown(shop, null);
+                plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-no-longer-owned-by-town").send();
+                return;
+            }else{
+                plugin.getApi().getTextManager().of(sender,"no-permission").send();
+            }
         }
         // Set as a town shop
         Town town = TownyAPI.getInstance().getTown(shop.getLocation());

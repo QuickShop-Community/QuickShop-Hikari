@@ -30,12 +30,26 @@ public class NationCommand implements CommandHandler<Player> {
             return;
         }
         // Check if anybody already set it to town shop
-        if(TownyShopUtil.getShopTown(shop) != null){
+        if (TownyShopUtil.getShopTown(shop) != null) {
             plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-already-is-town-shop").send();
             return;
         }
+        Nation recordNation = TownyShopUtil.getShopNation(shop);
+        if (recordNation != null) {
+            if (TownyShopUtil.getShopOriginalOwner(shop).equals(sender.getUniqueId())
+                    || recordNation.getKing().getUUID().equals(sender.getUniqueId())) {
+                // Turn it back to a normal shop
+                shop.setPlayerGroup(TownyShopUtil.getShopOriginalOwner(shop), BuiltInShopPermissionGroup.EVERYONE);
+                shop.setOwner(TownyShopUtil.getShopOriginalOwner(shop));
+                TownyShopUtil.setShopTown(shop, null);
+                plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-no-longer-owned-by-town").send();
+                return;
+            } else {
+                plugin.getApi().getTextManager().of(sender, "no-permission").send();
+            }
+        }
         // Check if anybody already set it to nation shop
-        if(TownyShopUtil.getShopNation(shop) != null){
+        if (TownyShopUtil.getShopNation(shop) != null) {
             // Turn it back to a normal shop
             shop.setPlayerGroup(TownyShopUtil.getShopOriginalOwner(shop), BuiltInShopPermissionGroup.EVERYONE);
             shop.setOwner(TownyShopUtil.getShopOriginalOwner(shop));
