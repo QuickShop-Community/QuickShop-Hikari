@@ -159,7 +159,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         this.core = core;
     }
     @Override
-    public Stack<Operation> getProcessingStack() {
+    public @NotNull Stack<Operation> getProcessingStack() {
         return processingStack;
     }
 
