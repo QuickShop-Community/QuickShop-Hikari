@@ -29,6 +29,7 @@ public class TownyShopUtil {
         } else {
             section.set("towny-original-owner", owner.toString());
         }
+        shop.setExtra(Main.getPlugin(Main.class), section);
     }
 
     public static void setShopTown(@NotNull Shop shop, @Nullable Town town) {
@@ -38,6 +39,7 @@ public class TownyShopUtil {
         } else {
             section.set("towny-town-uuid", town.getUUID().toString());
         }
+        shop.setExtra(Main.getPlugin(Main.class), section);
     }
 
     public static void setShopNation(@NotNull Shop shop, @Nullable Nation nation) {
@@ -47,6 +49,7 @@ public class TownyShopUtil {
         } else {
             section.set("towny-nation-uuid", nation.getUUID().toString());
         }
+        shop.setExtra(Main.getPlugin(Main.class), section);
     }
 
     @Nullable
