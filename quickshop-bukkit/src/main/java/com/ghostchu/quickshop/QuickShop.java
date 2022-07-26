@@ -24,7 +24,6 @@ import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.hikari.HikariConfig;
 import cc.carm.lib.easysql.hikari.HikariDataSource;
 import cc.carm.lib.easysql.manager.SQLManagerImpl;
-import com.fasterxml.jackson.databind.annotation.JacksonStdImpl;
 import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.QuickShopProvider;
@@ -73,6 +72,7 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
+import com.ghostchu.quickshop.util.updater.NexusManager;
 import com.ghostchu.quickshop.watcher.*;
 import com.ghostchu.simplereloadlib.ReloadManager;
 import com.ghostchu.simplereloadlib.ReloadResult;
@@ -256,6 +256,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     @Getter
     private ShopItemBlackList shopItemBlackList;
 
+    @Getter
+    private NexusManager nexusManager;
+
     /**
      * Use for mock bukkit
      */
@@ -310,7 +313,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         loadTextManager();
         getLogger().info("Register InventoryWrapper...");
         this.inventoryWrapperRegistry.register(this, this.inventoryWrapperManager);
-
+        getLogger().info("Initializing NexusManager...");
+        this.nexusManager = new NexusManager(this);
         getLogger().info("QuickShop " + getFork() + " - Early boot step - Complete");
     }
 
