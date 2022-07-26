@@ -16,8 +16,10 @@ taxes-to-town: true
 
 #Should we delete player's shops in town when they leaved the that town
 delete-shop-on-resident-leave: false
+
 #Should we remove the shops in plot when plot cleared
 delete-shop-on-plot-clear: true
+
 #Should we remove the shops in plot when plot unclaimed
 delete-shop-on-plot-unclaimed: true
 
@@ -32,6 +34,7 @@ delete-shop-on-plot-unclaimed: true
 create:
   - SHOPTYPE
   - MODIFY
+
 #Which checks does a player need to pass to trade with a shop?
 #You can use multiple checks at the same time.
 #Priority: UP > DOWN
@@ -42,15 +45,28 @@ create:
 #SHOPTYPE = The player must trade with the shop on a SHOP type plot.
 trade: [ ]
 
-
 #The shops under bank mode will only accept items from player but money goes to the town bank account.
 #And all
 bank-mode:
   #The shops created on these types of plot will force turn to a Bank shop.
   plot-type:
   - BANK
+  #Enforce the bank mode shops to use price that specified in the config.
+  #The items not included will deny to be turned a bank mode shop
   force-prices: true
+  #Extra percent of money they can make from the bank mode shop to bank account so bank can make money.
   extra-percent: 10.0
+  #Any items that into the bank mode shop inventory will just discard and turn to nothing.
+  void-inventory: true
+  #Should we only allow the buying mode shops was created?
+  #Turn this on will disallow any new bank mode shops that mode is selling to be transform/created.
+  #Highly recommended to turn this on to avoid player dupe money by a selling and a buying shops.
+  buying-only: true
+  #Item list
+  #Only allow the bank mode shops created if they trade those items.
+  #To add a price for an item to lock the item price (if force-prices enabled)
+  #Set -1 for price will disable price lock for this type of item even force-prices turned on.
+  # MATERIAL: PRICE
   item-list:
     COAL_ORE: 0.01
     COPPER_ORE: 0.05

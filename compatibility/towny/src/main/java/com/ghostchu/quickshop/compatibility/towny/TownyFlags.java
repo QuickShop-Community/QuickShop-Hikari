@@ -25,7 +25,8 @@ import java.util.List;
 public enum TownyFlags {
     OWN,
     MODIFY,
-    SHOPTYPE;
+    SHOPTYPE,
+    BANKTYPE;
 
     public static List<TownyFlags> deserialize(List<String> list) {
         List<TownyFlags> result = new ArrayList<>();
