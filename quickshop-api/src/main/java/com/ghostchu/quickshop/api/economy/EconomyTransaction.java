@@ -31,6 +31,7 @@ public interface EconomyTransaction {
 
     void setCore(@NotNull EconomyCore core);
 
+    @NotNull
     Stack<Operation> getProcessingStack();
 
 

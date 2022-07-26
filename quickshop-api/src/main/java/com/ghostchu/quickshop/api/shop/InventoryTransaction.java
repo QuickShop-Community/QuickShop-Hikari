@@ -4,31 +4,37 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.operation.Operation;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Stack;
 
 public interface InventoryTransaction {
+    @Nullable
     InventoryWrapper getFrom();
 
-    void setFrom(InventoryWrapper from);
+    void setFrom(@NotNull InventoryWrapper from);
 
+    @Nullable
     InventoryWrapper getTo();
 
-    void setTo(InventoryWrapper to);
+    void setTo(@Nullable InventoryWrapper to);
 
+    @NotNull
     ItemStack getItem();
 
-    void setItem(ItemStack item);
+    void setItem(@NotNull ItemStack item);
 
+    @Nullable
     String getLastError();
 
-    void setLastError(String lastError);
+    void setLastError(@Nullable String lastError);
 
     int getAmount();
 
     void setAmount(int amount);
 
+    @NotNull
     Stack<Operation> getProcessingStack();
 
     /**
