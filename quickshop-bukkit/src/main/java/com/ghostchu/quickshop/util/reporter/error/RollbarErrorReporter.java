@@ -218,7 +218,7 @@ public class RollbarErrorReporter {
             return false;
         }
         try {
-            if (!plugin.getUpdateWatcher().getUpdater().isLatest(plugin.getUpdateWatcher().getUpdater().getCurrentRunning())) { // We only receive latest reports.
+            if (!plugin.getNexusManager().isLatest()) { // We only receive latest reports.
                 return false;
             }
         } catch (Exception exception) {

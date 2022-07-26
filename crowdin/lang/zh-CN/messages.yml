@@ -100,7 +100,7 @@ menu:
   item: '<green>物品：<yellow>{0}'
   price-per: <green>每个<yellow>{0}<green>价格<yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>共 <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
+  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
   successful-purchase: '<green>支付成功：'
   price-per-stack: <green>每<yellow>{2}<green>个<yellow>{0}<green>价格<yellow>{1}
   stored-enchants: <dark_purple>附魔
@@ -126,7 +126,6 @@ shop-name-too-long: <red>此商店名称过长 (最大长度 {0})，请缩短名
 metric:
   header-player: '<yellow>{0}的 {1} {2} 交易：'
   action-hover: <yellow>{0}个
-  entry-header-shop: '[数量](color=#CDAA7D) <aqua>| [价格](color=#8B7355) <aqua>| [税](color=#8B7E66) <aqua>|'
   price-hover: <yellow>总计 {0}, 包括 {1} 税
   unknown: <gray>(未知)
   undefined: <gray>(无名)
@@ -139,15 +138,10 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>玩家从一个出售商店购买了一些物品
     PURCHASE: <yellow>通过商店购买的物品
   query-argument: '查询参数： {0}'
-  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}个
-  entry-header-global: '[类型](color=#CDAA7D) <aqua>| [商店](color=#8B7355) <aqua>| [价格](color=#8B7E66) <aqua>|'
   header-shop: '<yellow>商店 {0}的 {1} {2} 交易：'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
   looking-up: <yellow>查询中，请稍候...
-  entry-header-player: '[商店](color=#CDAA7D) <aqua>| [数量](color=#8B7355) <aqua>| [价格](color=#8B7E66) <aqua>|'
-  entry-shop: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7} <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   tax-hover: <yellow>{0} 税
   header-global: '<yellow>服务器 {0} {1} 交易：'
   na: <gray>N/A

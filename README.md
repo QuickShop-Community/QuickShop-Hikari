@@ -40,7 +40,9 @@
 
 [adoptium]: https://adoptium.net/
 
-[bStats]: https://bstats.org/plugin/bukkit/QuickShop-Hikari/14281
+[bStats-site]: https://bstats.org
+
+[bStats-plugin]: https://bstats.org/plugin/bukkit/QuickShop-Hikari/14281
 
 <!-- Images/Badges -->
 
@@ -152,7 +154,7 @@ You can download optional modules [here][optional_modules] for compatibility wit
 - Flag-based shop control.
 
 ## Contribute
-If you're a developer, you can contribute to the QuickShop source code! Just make a fork, install the Lombok plugin if
+If you're a developer, you can contribute to the QuickShop source code! Just make a fork, install the Lombok plugin (if
 not done automatically), make your changes and create a pull request when you're done!  
 Please try to follow [Google's Java Code Style][googlejava] and do not increase the Plugin version. Thank you!
 
@@ -173,41 +175,75 @@ To compile the QuickShop and debug it by yourself, please follow these steps:
 2. Compile main-project without signature by using profile: `mvn install -Pgithub` with github profile selected.
 3. Start your server and go on.
 
-## Bstats
+## bStats
 
-[![bStatsImage]][bStats]
+QuickShop-Hikari collects certain statistic through [bStats][bstats-site].  
+You may opt-out by setting `disabled-metrics` to `true` in the config.yml.
+
+[![bStatsImage]][bStats-plugin]
 
 ## License
+
 [![fossaStatusImageLarge]][fossaStatusLarge]
 
 ## Developer API
 
-```java
-Plugin plugin=Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
-        if(plugin!=null){
-        QuickShopAPI api=(QuickShopAPI)plugin;
-        api.xxxx;
-        }
-```
+QuickShop-Hikari offers an API for you to use features such as retrieving active shops of a player.
 
-## Maven
+### Maven
 
 ```xml
-
 <repositories>
     <repository>
         <id>codemc</id>
         <url>https://repo.codemc.io/repository/maven-public/</url>
     </repository>
 </repositories>
+
 <dependencies>
-<!-- QuickShop Main Module -->
-<dependency>
-    <groupId>com.ghostchu</groupId>
-    <artifactId>quickshop-bukkit</artifactId>
-    <version>VERSION HERE</version>
-    <scope>provided</scope>
-    <classifier>shaded</classifier>
-</dependency>
+    <!-- QuickShop Main Module -->
+    <dependency>
+        <groupId>com.ghostchu</groupId>
+        <artifactId>quickshop-bukkit</artifactId>
+        <version>VERSION HERE</version>
+        <scope>provided</scope>
+        <classifier>shaded</classifier>
+    </dependency>
 </dependencies>
+```
+
+### Gradle
+
+```groovy
+repositories {
+    maven { url = "https://repo.codemc.io/repository/maven-public/" }
+}
+
+dependencies {
+    compileOnly "com.ghostchu:quickshop-bukkit:VERSION HERE";
+}
+```
+
+### Hook into the API
+
+```java
+public class MyPlugin extends JavaPlugin {
+    private QuickShopAPI api = null;
+
+    @Override
+    public void onEnable() {
+        // Remember to add QuickShop-Hikari as (soft) depend.
+        Plugin plugin = Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
+        
+        if (plugin != null && plugin.isEnabled()) {
+            api = (QuickShopAPI) plugin;
+        }
+        
+        // Check if api is not null and use it in such a case
+    }
+
+    public QuickShopAPI getQuickShopAPI() {
+        return api;
+    }
+}
 ```

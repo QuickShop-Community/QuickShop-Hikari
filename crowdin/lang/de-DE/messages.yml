@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop ist in dieser Welt deaktiviert
 how-much-to-trade-for: <green>Gib im Chat ein, für wieviel du {1}x <yellow>{0}<green> handeln willst.
 client-language-changed: <green>QuickShop hat festgestellt, dass deine Client-Spracheinstellungen geändert wurden. Wir verwenden jetzt die Spracheinstellung {0} für dich.
 shops-backingup: Erstelle Shop-Backup von der Datenbank...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hallo Übersetzer! Wenn du dies auf GitHub oder im Quellcode bearbeitest, solltest du zu https://crowdin.com/project/quickshop-hikari wechseln.
 unlimited-shop-owner-changed: <yellow>Der Besitzer des unbegrenzten Shops wurde zu {0} geändert.
 bad-command-usage-detailed: '<red>Schlechte Befehlsargumente! Volgende Argumente werden unterstützt: <gray>{0}'
 thats-not-a-number: <red>Ungültige Zahl
@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>Neu laden abgeschlossen. <gray>(Einige Änderungen benötigen eine Weile um aktiv zu werden)
   require-restart: <green>Neu laden abgeschlossen. <yellow>(Einige Einstellungen benötigen einen Serverneustart um aktiv zu werden)
   failed: <red>Neu laden fehlgeschlagen. Überprüfe die Serverkonsole
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} hat {1} {2} von deinem Shop gekauft und du hast {3} ({4} an Steuern) verdient.
 not-enough-space: <red>Du hast nur platz für {0} weitere!
 shop-name-success: <green>Shopname erfolgreich zu <yellow>{0} <green>gesetzt.
 shop-staff-added: <green>{0} erfolgreich als Shopmitarbeiter für deinen Shop hinzugefügt.
@@ -100,7 +100,7 @@ menu:
   item: '<green>Gegenstand: <yellow>{0}'
   price-per: <green>Preis pro <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>für <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <green>(<yellow>{3}</yellow> in taxes)</green>'
+  item-name-and-price-tax: '<yellow>{0} {1} <green>für</green> {2} <gray>(<green>{3}</green> an Steuern)</gray>'
   successful-purchase: '<green>Erfolgreich gekauft:'
   price-per-stack: <green>Preis pro <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Gespeicherte Verzauberungen
@@ -126,7 +126,6 @@ shop-name-too-long: <red>Dieser Shopname ist zu lang (Maximal {0}). Bitte wähle
 metric:
   header-player: '<yellow>{0}''s Transaktionen von {1} {2}:'
   action-hover: <yellow>{0}
-  entry-header-shop: '<aqua>| [Käufer](color=#FFD39B) <aqua>| [Aktion](color=#EEC591) <aqua>| [Menge](color=#CDAA7D) <aqua>| [Preis](color=#8B7355) <aqua>| [Steuern](color=#8B7E66) <aqua>|'
   price-hover: <yellow>Total {0}, inklusive {1} steuern.
   unknown: <gray>(Unbekannt)
   undefined: <gray>(Kein Name)
@@ -139,15 +138,10 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>Spieler hat einige Items von einem verkaufenden Shop gekauft
     PURCHASE: <yellow>Gekaufte Items mit Shop
   query-argument: 'Such-Argumente: {0}'
-  entry-global: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
-  entry-player: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   amount-hover: <yellow>{0}x
-  entry-header-global: '<aqua>| [Eigentümer](color=#FFD39B) <aqua>| [Spieler](color=#EEC591) <aqua>| [Aktion](color=#CDAA7D) <aqua>| [Shop](color=#8B7355) <aqua>| [Preis](color=#8B7E66) <aqua>| '
   header-shop: '<yellow>Shop {0}''s Transaktionen von {1} {2}:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
   looking-up: <yellow>Führe erstellung von Statistiken aus, bitte warten...
-  entry-header-player: '<aqua>| [Käufer](color=#FFD39B) <aqua>| [Aktion](color=#EEC591) <aqua>| [Shop](color=#CDAA7D) <aqua>| [Menge](color=#8B7355) <aqua>| [Preis](color=#8B7E66) <aqua>|'
-  entry-shop: '<aqua>| [{0}](color=#FFD39B hover={1}) <aqua>| [{2}](color=#EEC591 hover={3}) <aqua>| [{4}](color=#CDAA7D hover={5}) <aqua>| [{6}](color=#8B7355 hover={7}) <aqua>| [{8}](color=#8B7E66 hover={9}) <aqua>|'
   tax-hover: <yellow>{0} Steuern
   header-global: '<yellow>Transaktionen des Server für {0} {1}:'
   na: <gray>N/A
