@@ -30,7 +30,7 @@ import java.util.UUID;
  * Calling when shop price was changed
  */
 public class ShopTaxAccountChangeEvent extends AbstractQSEvent implements QSCancellable {
-
+    @Nullable
     private final UUID newTaxAccount;
     @NotNull
     private final Shop shop;
@@ -44,7 +44,7 @@ public class ShopTaxAccountChangeEvent extends AbstractQSEvent implements QSCanc
      * @param shop     Target shop
      * @param newTaxAccount The new shop tax account
      */
-    public ShopTaxAccountChangeEvent(@NotNull Shop shop, @NotNull UUID newTaxAccount) {
+    public ShopTaxAccountChangeEvent(@NotNull Shop shop, @Nullable UUID newTaxAccount) {
         this.shop = shop;
         this.newTaxAccount = newTaxAccount;
     }

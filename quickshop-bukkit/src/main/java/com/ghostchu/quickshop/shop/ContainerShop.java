@@ -303,6 +303,9 @@ public class ContainerShop implements Shop, Reloadable {
     public void setTaxAccount(@Nullable UUID taxAccount) {
         if (this.taxAccount.equals(taxAccount))
             return;
+        ShopTaxAccountChangeEvent event = new ShopTaxAccountChangeEvent(this, taxAccount);
+        if(Util.fireCancellableEvent(event))
+            return;
         this.taxAccount = taxAccount;
         setDirty();
         update();

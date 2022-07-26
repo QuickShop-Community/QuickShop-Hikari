@@ -21,7 +21,6 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
-import com.ghostchu.quickshop.api.event.ShopTaxAccountChangeEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
 import lombok.AllArgsConstructor;
@@ -47,23 +46,11 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
                 return;
             }
             if (Util.isUUID(cmdArg[0])) {
-                ShopTaxAccountChangeEvent event = new ShopTaxAccountChangeEvent(shop, UUID.fromString(cmdArg[0]));
-                plugin.getServer().getPluginManager().callEvent(event);
-                if(event.isCancelled()){
-                    plugin.text().of(sender, "plugin-cancelled",event.getCancelReason()).send();
-                    return;
-                }
                 shop.setTaxAccount(UUID.fromString(cmdArg[0]));
             } else {
                 Profile profile = plugin.getPlayerFinder().find(cmdArg[0]);
                 if (profile == null) {
                     plugin.text().of(sender, "unknown-player").send();
-                    return;
-                }
-                ShopTaxAccountChangeEvent event = new ShopTaxAccountChangeEvent(shop, profile.getUniqueId());
-                plugin.getServer().getPluginManager().callEvent(event);
-                if(event.isCancelled()){
-                    plugin.text().of(sender, "plugin-cancelled",event.getCancelReason()).send();
                     return;
                 }
                 shop.setTaxAccount(profile.getUniqueId());

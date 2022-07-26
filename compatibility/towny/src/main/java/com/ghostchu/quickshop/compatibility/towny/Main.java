@@ -175,13 +175,13 @@ public final class Main extends CompatibilityModule implements Listener {
         // Town name override check
         Town town = TownyShopUtil.getShopTown(shop);
         if (town != null) {
-            event.setName(LegacyComponentSerializer.legacySection().deserialize(town.getFormattedName()));
+            event.setName(LegacyComponentSerializer.legacySection().deserialize(town.getName()));
             return;
         }
         // Nation name override check
         Nation nation = TownyShopUtil.getShopNation(shop);
         if (nation != null) {
-            event.setName(LegacyComponentSerializer.legacySection().deserialize(nation.getFormattedName()));
+            event.setName(LegacyComponentSerializer.legacySection().deserialize(nation.getName()));
         }
     }
 
