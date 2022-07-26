@@ -9,8 +9,6 @@ import com.ghostchu.quickshop.compatibility.towny.TownyShopUtil;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Town;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
@@ -71,12 +69,8 @@ public class NationCommand implements CommandHandler<Player> {
             plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-not-in-nation-region").send();
             return;
         }
-        String vaultAccountName = nation.getAccount().getName();
+        String vaultAccountName = Main.processTownyAccount(town.getAccount().getName());
         Profile profile = QuickShop.getInstance().getPlayerFinder().find(vaultAccountName);
-        if (profile == null) {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(vaultAccountName);
-            profile = new Profile(player.getUniqueId(), vaultAccountName);
-        }
         // Check if item and type are allowed
         if (plugin.getConfig().getBoolean("bank-mode.enable")) {
             Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType(), shop.isSelling());
@@ -91,6 +85,7 @@ public class NationCommand implements CommandHandler<Player> {
         TownyShopUtil.setShopOriginalOwner(shop, shop.getOwner());
         TownyShopUtil.setShopNation(shop, nation);
         shop.setPlayerGroup(shop.getOwner(), BuiltInShopPermissionGroup.ADMINISTRATOR);
+        //noinspection ConstantConditions
         shop.setOwner(profile.getUniqueId());
         plugin.getApi().getTextManager().of(sender, "make-shop-owned-by-nation", nation.getName()).send();
         plugin.getApi().getTextManager().of(sender, "shop-owning-changing-notice").send();

@@ -336,4 +336,11 @@ public final class Main extends CompatibilityModule implements Listener {
         }
         return true;
     }
+    @NotNull
+    public static String processTownyAccount(String accountName){
+        if(Main.getPlugin(Main.class).getConfig().getBoolean("workaround-for-account-name")){
+            return EssStirngUtil.safeString(accountName);
+        }
+        return accountName;
+    }
 }

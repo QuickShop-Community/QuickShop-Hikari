@@ -100,8 +100,6 @@ public class PlayerFinder {
 //            return findOnline(name);
 //        }
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
-        if (!offlinePlayer.hasPlayedBefore() && !offlinePlayer.isOnline())
-            return null;
         return new Profile(offlinePlayer.getUniqueId(), name);
     }
 
