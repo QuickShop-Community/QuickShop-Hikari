@@ -1,6 +1,9 @@
 #Should allow Mayor and King grant the shop administrator permission on they town / nation.
 allow-permission-override: true
 
+#Should allow override the owner name from town/nation vault name to town/nation display name.
+allow-owner-name-override: true
+
 #If QS should ignore disabled worlds.
 ignore-disabled-worlds: true
 
