@@ -74,6 +74,8 @@ public abstract class AbstractEconomy implements EconomyCore, Reloadable {
         return "BuiltIn-Economy Processor";
     }
 
+    public abstract String getProviderName();
+
     /**
      * Callback for reloading
      *

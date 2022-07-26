@@ -244,6 +244,11 @@ public class Economy_Reserve extends AbstractEconomy {
     }
 
     @Override
+    public String getProviderName() {
+        return "Reserve";
+    }
+
+    @Override
     public @NotNull Plugin getPlugin() {
         return plugin;
     }

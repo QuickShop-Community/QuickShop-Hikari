@@ -238,6 +238,11 @@ public class Economy_TNE extends AbstractEconomy {
     }
 
     @Override
+    public String getProviderName() {
+        return "TNE";
+    }
+
+    @Override
     public @NotNull Plugin getPlugin() {
         return this.plugin;
     }

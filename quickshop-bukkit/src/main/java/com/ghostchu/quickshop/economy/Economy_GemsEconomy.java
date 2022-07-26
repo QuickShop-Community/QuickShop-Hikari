@@ -233,6 +233,11 @@ public class Economy_GemsEconomy extends AbstractEconomy {
     }
 
     @Override
+    public String getProviderName() {
+        return "GemsEconomy";
+    }
+
+    @Override
     public @NotNull Plugin getPlugin() {
         return this.plugin;
     }
