@@ -38,7 +38,7 @@ public class TownyShopUtil {
         if (town == null) {
             section.set("towny-town-uuid", null);
         } else {
-            section.set("towny-town-uuid", town.toString());
+            section.set("towny-town-uuid", town.getUUID().toString());
         }
         shop.setExtra(Main.getPlugin(Main.class), section);
     }
