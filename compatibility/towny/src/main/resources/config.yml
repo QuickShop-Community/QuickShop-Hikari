@@ -10,6 +10,10 @@ ignore-disabled-worlds: true
 #Should we also check flags and other stuff even target world not enabled in Towny
 whitelist-mode: true
 
+#Should we send the taxes to the town/nation vault account if shop inside a town or nation.
+#NOTE: If shop belongs to a Town or Nation, taxes will still send to Server taxes account.
+taxes-to-town: true
+
 #Should we delete player's shops in town when they leaved the that town
 delete-shop-on-resident-leave: false
 #Should we remove the shops in plot when plot cleared

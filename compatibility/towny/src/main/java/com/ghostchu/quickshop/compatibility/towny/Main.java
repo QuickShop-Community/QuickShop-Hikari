@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.event.PlotClearEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
@@ -40,10 +41,12 @@ import lombok.Getter;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -116,6 +119,28 @@ public final class Main extends CompatibilityModule implements Listener {
             }
         } catch (NotRegisteredException ignored) {
 
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void taxesAccountOverride(ShopTaxAccountGettingEvent event){
+        if(!getConfig().getBoolean("taxes-to-town",true)){
+            return;
+        }
+        Shop shop = event.getShop();
+        // Send tax to server if shop is a town shop or nation shop.
+        if(TownyShopUtil.getShopTown(shop) != null || TownyShopUtil.getShopNation(shop) != null)
+            return;
+        // Modify tax account to town account if they aren't town shop or nation shop but inside town or nation
+        Town town = TownyAPI.getInstance().getTown(shop.getLocation());
+        if(town != null){
+            Profile profile = QuickShop.getInstance().getPlayerFinder().find(town.getAccount().getName());
+            if(profile == null){
+                OfflinePlayer player = Bukkit.getOfflinePlayer(town.getAccount().getName());
+                profile = new Profile(player.getUniqueId(), town.getAccount().getName());
+            }
+            event.setTaxAccount(profile.getUniqueId());
+            Log.debug("Tax account override: " + profile.getUniqueId()+" = "+profile.getName());
         }
     }
 
