@@ -47,6 +47,13 @@ public interface CommandManager {
     void unregisterCmd(@NotNull CommandContainer container);
 
     /**
+     * This is a interface to allow addons to unregister the registered/butil-in subcommand from command manager.
+     *
+     * @param prefix The prefix of command need to be unregistered
+     */
+    void unregisterCmd(@NotNull String prefix);
+
+    /**
      * Gets a list contains all registered commands
      *
      * @return All registered {@link CommandContainer}s.

@@ -380,6 +380,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         cmds.remove(container);
     }
 
+    @Override
+    public void unregisterCmd(@NotNull String prefix) {
+        cmds.removeIf(commandContainer -> commandContainer.getPrefix().equalsIgnoreCase(prefix));
+    }
+
     /**
      * Gets a list contains all registered commands
      *
