@@ -30,7 +30,7 @@ public class TownCommand implements CommandHandler<Player> {
             return;
         }
         // Check if anybody already set it to nation shop
-        if(TownyShopUtil.getShopNation(shop) != null){
+        if (TownyShopUtil.getShopNation(shop) != null) {
             plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-already-is-nation-shop").send();
             return;
         }
@@ -39,19 +39,19 @@ public class TownCommand implements CommandHandler<Player> {
 
         // Check if anybody already set it to town shop
         Town recordTown = TownyShopUtil.getShopTown(shop);
-        if(recordTown != null){
-            if(TownyShopUtil.getShopOriginalOwner(shop).equals(sender.getUniqueId())
+        if (recordTown != null) {
+            if (TownyShopUtil.getShopOriginalOwner(shop).equals(sender.getUniqueId())
                     || recordTown.getMayor().getUUID().equals(sender.getUniqueId())
                     || recordTown.getTrustedResidents().stream().map(Resident::getUUID)
-                    .anyMatch(uuid->uuid.equals(sender.getUniqueId()))){
+                    .anyMatch(uuid -> uuid.equals(sender.getUniqueId()))) {
                 // Turn it back to a normal shop
                 shop.setPlayerGroup(TownyShopUtil.getShopOriginalOwner(shop), BuiltInShopPermissionGroup.EVERYONE);
                 shop.setOwner(TownyShopUtil.getShopOriginalOwner(shop));
                 TownyShopUtil.setShopTown(shop, null);
                 plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-no-longer-owned-by-town").send();
                 return;
-            }else{
-                plugin.getApi().getTextManager().of(sender,"no-permission").send();
+            } else {
+                plugin.getApi().getTextManager().of(sender, "no-permission").send();
             }
         }
         // Set as a town shop
@@ -68,7 +68,7 @@ public class TownCommand implements CommandHandler<Player> {
         }
         // Check if item and type are allowed
         if (plugin.getConfig().getBoolean("bank-mode.enable")) {
-            Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType());
+            Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType(), shop.isSelling());
             if (price == null) {
                 plugin.getApi().getTextManager().of(sender, "item-not-allowed").send();
                 return;

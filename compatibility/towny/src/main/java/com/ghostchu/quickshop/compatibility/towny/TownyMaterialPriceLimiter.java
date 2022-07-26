@@ -10,11 +10,13 @@ import java.util.Map;
 
 public class TownyMaterialPriceLimiter {
     private final Map<Material, Double> prices = new HashMap<>();
+    private final double percentage;
 
-    public TownyMaterialPriceLimiter(ConfigurationSection section) {
+    public TownyMaterialPriceLimiter(ConfigurationSection section, double percentage) {
+        this.percentage = percentage;
         for (String key : section.getKeys(false)) {
             Material mat = Material.matchMaterial(key);
-            if(mat == null)
+            if (mat == null)
                 Main.getPlugin(Main.class).getLogger().warning("Invalid material in config: " + key);
             double price = section.getDouble(key);
             prices.put(mat, price);
@@ -22,8 +24,12 @@ public class TownyMaterialPriceLimiter {
     }
 
     @Nullable
-    public Double getPrice(@NotNull Material material){
-        return prices.get(material);
+    public Double getPrice(@NotNull Material material, boolean selling) {
+        double basePrice = prices.get(material);
+        if (selling)
+            return basePrice + (basePrice * percentage);
+        else
+            return basePrice;
     }
 
 }

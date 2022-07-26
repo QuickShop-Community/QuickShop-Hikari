@@ -78,7 +78,7 @@ public class NationCommand implements CommandHandler<Player> {
         }
         // Check if item and type are allowed
         if (plugin.getConfig().getBoolean("bank-mode.enable")) {
-            Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType());
+            Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType(), shop.isSelling());
             if (price == null) {
                 plugin.getApi().getTextManager().of(sender, "item-not-allowed").send();
                 return;

@@ -50,17 +50,14 @@ trade: [ ]
 bank-mode:
   #Enforce the bank mode shops to use price that specified in the config.
   #The items not included will deny to be turned a bank mode shop
-  #This option won't affect any shops that already exists.
   enable: true
   #Extra percent of money they can make from the bank mode shop to bank account so bank can make money.
-  #This option won't affect any shops that already exists.
-  extra-percent: 10.0
+  extra-percent: 0.10 # 0.10 = 10%
   #Item list
   #Only allow the bank mode shops created if they trade those items.
   #To add a price for an item to lock the item price (if force-prices enabled)
   #Set -1 for price will disable price lock for this type of item even force-prices turned on.
   # MATERIAL: PRICE
-  # This option won't affect any shops that already exists.
   item-list:
     COAL_ORE: 0.01
     COPPER_ORE: 0.05

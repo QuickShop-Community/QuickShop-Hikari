@@ -73,7 +73,7 @@ public final class Main extends CompatibilityModule implements Listener {
         createFlags = TownyFlags.deserialize(getConfig().getStringList("create"));
         tradeFlags = TownyFlags.deserialize(getConfig().getStringList("trade"));
         whiteList = getConfig().getBoolean("whitelist-mode");
-        priceLimiter = new TownyMaterialPriceLimiter(Objects.requireNonNull(getConfig().getConfigurationSection("bank-mode.item-list")));
+        priceLimiter = new TownyMaterialPriceLimiter(Objects.requireNonNull(getConfig().getConfigurationSection("bank-mode.item-list")), getConfig().getDouble("bank-mode.extra-percent", 0.1));
         api.getCommandManager().registerCmd(CommandContainer.builder()
                 .prefix("town")
                 .permission("quickshop.addon.towny.town")
@@ -86,6 +86,30 @@ public final class Main extends CompatibilityModule implements Listener {
                 .description((locale) -> api.getTextManager().of("addon.towny.commands.nation").forLocale(locale))
                 .executor(new NationCommand(this))
                 .build());
+        reflectChanges();
+    }
+
+    private void reflectChanges() {
+        if (getConfig().getBoolean("bank-mode.enable")) {
+            getLogger().info("Scanning and reflecting configuration changes...");
+            long startTime = System.currentTimeMillis();
+            for (Shop shop : getApi().getShopManager().getAllShops()) {
+                if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
+                    Double price = priceLimiter.getPrice(shop.getItem().getType(), shop.isSelling());
+                    if (price == null) {
+                        shop.delete();
+                        recordDeletion(null, shop, "Towny settings disallowed this item as town/nation shop anymore");
+                        continue;
+                    }
+                    if (shop.isStackingShop()) {
+                        shop.setPrice(price * shop.getShopStackingAmount());
+                    } else {
+                        shop.setPrice(price);
+                    }
+                }
+            }
+            getLogger().info("Finished to scan shops, used " + (System.currentTimeMillis() - startTime) + "ms");
+        }
     }
 
 
@@ -104,20 +128,20 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void ownerDisplayOverride(ShopOwnerNameGettingEvent event){
-        if(!getConfig().getBoolean("allow-owner-name-override",true)){
+    public void ownerDisplayOverride(ShopOwnerNameGettingEvent event) {
+        if (!getConfig().getBoolean("allow-owner-name-override", true)) {
             return;
         }
         Shop shop = event.getShop();
         // Town name override check
         Town town = TownyShopUtil.getShopTown(shop);
-        if(town != null){
+        if (town != null) {
             event.setName(LegacyComponentSerializer.legacySection().deserialize(town.getFormattedName()));
             return;
         }
         // Nation name override check
         Nation nation = TownyShopUtil.getShopNation(shop);
-        if(nation != null){
+        if (nation != null) {
             event.setName(LegacyComponentSerializer.legacySection().deserialize(nation.getFormattedName()));
         }
     }
@@ -149,24 +173,24 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void taxesAccountOverride(ShopTaxAccountGettingEvent event){
-        if(!getConfig().getBoolean("taxes-to-town",true)){
+    public void taxesAccountOverride(ShopTaxAccountGettingEvent event) {
+        if (!getConfig().getBoolean("taxes-to-town", true)) {
             return;
         }
         Shop shop = event.getShop();
         // Send tax to server if shop is a town shop or nation shop.
-        if(TownyShopUtil.getShopTown(shop) != null || TownyShopUtil.getShopNation(shop) != null)
+        if (TownyShopUtil.getShopTown(shop) != null || TownyShopUtil.getShopNation(shop) != null)
             return;
         // Modify tax account to town account if they aren't town shop or nation shop but inside town or nation
         Town town = TownyAPI.getInstance().getTown(shop.getLocation());
-        if(town != null){
+        if (town != null) {
             Profile profile = QuickShop.getInstance().getPlayerFinder().find(town.getAccount().getName());
-            if(profile == null){
+            if (profile == null) {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(town.getAccount().getName());
                 profile = new Profile(player.getUniqueId(), town.getAccount().getName());
             }
             event.setTaxAccount(profile.getUniqueId());
-            Log.debug("Tax account override: " + profile.getUniqueId()+" = "+profile.getName());
+            Log.debug("Tax account override: " + profile.getUniqueId() + " = " + profile.getName());
         }
     }
 
@@ -205,7 +229,7 @@ public final class Main extends CompatibilityModule implements Listener {
         if (!getConfig().getBoolean("delete-shop-on-resident-leave", false)) {
             return;
         }
-        Util.mainThreadRun(() -> purgeShops(event.getTown().getTownBlocks(), event.getResident().getUUID(),null,"Town removed a resident"));
+        Util.mainThreadRun(() -> purgeShops(event.getTown().getTownBlocks(), event.getResident().getUUID(), null, "Town removed a resident"));
     }
 
     @EventHandler
@@ -214,7 +238,7 @@ public final class Main extends CompatibilityModule implements Listener {
         if (!getConfig().getBoolean("delete-shop-on-plot-clear", false)) {
             return;
         }
-        Util.mainThreadRun(() -> purgeShops(event.getTownBlock().getWorldCoord(), null,null,"Plot cleared"));
+        Util.mainThreadRun(() -> purgeShops(event.getTownBlock().getWorldCoord(), null, null, "Plot cleared"));
     }
 
     @EventHandler
