@@ -21,10 +21,7 @@ package com.ghostchu.quickshop.compatibility.towny;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
-import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
-import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
@@ -39,6 +36,8 @@ import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.utils.ShopPlotUtil;
+import lombok.Getter;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -54,6 +53,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public final class Main extends CompatibilityModule implements Listener {
+    @Getter
     private QuickShopAPI api;
     private List<TownyFlags> createFlags;
     private List<TownyFlags> tradeFlags;
@@ -72,6 +72,25 @@ public final class Main extends CompatibilityModule implements Listener {
             return !TownyAPI.getInstance().isTownyWorld(world);
         }
         return false;
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void ownerDisplayOverride(ShopOwnerNameGettingEvent event){
+        if(!getConfig().getBoolean("allow-owner-name-override",true)){
+            return;
+        }
+        Shop shop = event.getShop();
+        // Town name override check
+        Town town = TownyShopUtil.getShopTown(shop);
+        if(town != null){
+            event.setName(LegacyComponentSerializer.legacySection().deserialize(town.getFormattedName()));
+            return;
+        }
+        // Nation name override check
+        Nation nation = TownyShopUtil.getShopNation(shop);
+        if(nation != null){
+            event.setName(LegacyComponentSerializer.legacySection().deserialize(nation.getFormattedName()));
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
