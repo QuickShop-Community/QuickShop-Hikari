@@ -25,7 +25,8 @@ public class TownyMaterialPriceLimiter {
 
     @Nullable
     public Double getPrice(@NotNull Material material, boolean selling) {
-        double basePrice = prices.get(material);
+        Double basePrice = prices.get(material);
+        if(basePrice == null) return null;
         if (selling)
             return basePrice + (basePrice * percentage);
         else

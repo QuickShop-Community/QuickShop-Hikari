@@ -311,7 +311,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
     private boolean checkFlags(@NotNull Player player, @NotNull Location location, @NotNull List<TownyFlags> flags) {
         if (isWorldIgnored(location.getWorld())) return true;
-        if (!whiteList && !ShopPlotUtil.isShopPlot(location)) {
+        if (!whiteList) {
             return true;
         }
         for (TownyFlags flag : flags) {
