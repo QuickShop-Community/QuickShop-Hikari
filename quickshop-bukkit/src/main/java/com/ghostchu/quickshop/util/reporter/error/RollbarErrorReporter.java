@@ -30,6 +30,7 @@ import com.rollbar.notifier.config.ConfigBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidPluginException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -60,9 +61,7 @@ public class RollbarErrorReporter {
     //private final GlobalExceptionFilter globalExceptionFilter;
     @Getter
     private volatile boolean enabled;
-    private final Thread asyncErrorReportThread;
-    private final Queue<ErrorBundle> reportQueue = new LinkedBlockingQueue<>();
-    private final Object reportLock = new Object();
+    private final LinkedBlockingQueue<ErrorBundle> reportQueue = new LinkedBlockingQueue<>();
 
 
     public RollbarErrorReporter(@NotNull QuickShop plugin) {
@@ -84,36 +83,28 @@ public class RollbarErrorReporter {
         Log.debug("Rollbar error reporter success loaded.");
         enabled = true;
 
-        asyncErrorReportThread = new Thread(() -> {
-            synchronized (reportLock) {
-                while (enabled) {
-                    try {
-                        reportLock.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    ErrorBundle errorBundle = reportQueue.poll();
-                    while (errorBundle != null) {
-                        Log.debug("Sending error: " + errorBundle.getThrowable().getMessage()
-                                + " with context: " + Util.array2String(errorBundle.getContext()));
-                        sendError0(errorBundle.getThrowable(), errorBundle.getContext());
-                        errorBundle = reportQueue.poll();
-                    }
+        Thread asyncErrorReportThread = new Thread(() -> {
+            ErrorBundle errorBundle;
+            while (enabled) {
+                try {
+                    errorBundle = reportQueue.take();
+                    Log.debug("Sending error: " + errorBundle.getThrowable().getMessage()
+                            + " with context: " + Util.array2String(errorBundle.getContext()));
+                    sendError0(errorBundle.getThrowable(), errorBundle.getContext());
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
             }
         });
+
         asyncErrorReportThread.setDaemon(true);
         asyncErrorReportThread.start();
-
     }
 
     public void unregister() {
         enabled = false;
         plugin.getLogger().setFilter(quickShopExceptionFilter.preFilter);
         plugin.getServer().getLogger().setFilter(serverExceptionFilter.preFilter);
-        synchronized (reportLock) {
-            reportLock.notifyAll(); // Exit all threads
-        }
         //Logger.getGlobal().setFilter(globalExceptionFilter.preFilter);
     }
 
@@ -133,6 +124,10 @@ public class RollbarErrorReporter {
     }
 
     private void sendError0(@NotNull Throwable throwable, @NotNull String... context) {
+        if(Bukkit.isPrimaryThread()){
+            plugin.getLogger().warning("Cannot send error on primary thread (I/O blocking). This error has been discard.");
+            return;
+        }
         try {
             if (plugin.getBootError() != null) {
                 return; // Don't report any errors if boot failed.
@@ -190,11 +185,7 @@ public class RollbarErrorReporter {
      * @param context   BreadCrumb
      */
     public void sendError(@NotNull Throwable throwable, @NotNull String... context) {
-        this.reportQueue.add(new ErrorBundle(throwable, context));
-        synchronized (reportLock) {
-            reportLock.notifyAll();
-        }
-        Log.debug("Wake up asyncErrorReportThread to sending errors...");
+        this.reportQueue.offer(new ErrorBundle(throwable, context));
     }
 
     @AllArgsConstructor
