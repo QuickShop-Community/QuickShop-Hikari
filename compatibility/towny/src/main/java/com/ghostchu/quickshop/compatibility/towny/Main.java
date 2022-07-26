@@ -64,6 +64,7 @@ public final class Main extends CompatibilityModule implements Listener {
     private List<TownyFlags> createFlags;
     private List<TownyFlags> tradeFlags;
     private boolean whiteList;
+    private TownyMaterialPriceLimiter priceLimiter;
 
     @Override
     public void init() {
@@ -71,6 +72,7 @@ public final class Main extends CompatibilityModule implements Listener {
         createFlags = TownyFlags.deserialize(getConfig().getStringList("create"));
         tradeFlags = TownyFlags.deserialize(getConfig().getStringList("trade"));
         whiteList = getConfig().getBoolean("whitelist-mode");
+        priceLimiter = new TownyMaterialPriceLimiter(Objects.requireNonNull(getConfig().getConfigurationSection("bank-mode.item-list")));
         api.getCommandManager().registerCmd(CommandContainer.builder()
                 .prefix("town")
                 .permission("quickshop.addon.towny.town")
