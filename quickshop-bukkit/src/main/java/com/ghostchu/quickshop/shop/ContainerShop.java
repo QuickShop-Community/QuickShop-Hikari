@@ -33,7 +33,7 @@ import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
-import com.ghostchu.quickshop.economy.EconomyTransaction;
+import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.RealDisplayItem;
@@ -48,7 +48,6 @@ import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.collect.ImmutableList;
 import io.papermc.lib.PaperLib;
 import lombok.EqualsAndHashCode;
-import me.clip.placeholderapi.util.Msg;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -691,11 +690,11 @@ public class ContainerShop implements Shop, Reloadable {
 //                plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"),
 //                        Objects.requireNonNull(getLocation().getWorld()), getCurrency());
                 double cost = plugin.getConfig().getDouble("shop.cost");
-                EconomyTransaction transaction;
+                SimpleEconomyTransaction transaction;
                 if (plugin.getConfig().getBoolean("shop.refund-from-tax-account", false) && taxAccount != null) {
                     cost = Math.min(cost, plugin.getEconomy().getBalance(taxAccount, this.getLocation().getWorld(), plugin.getCurrency()));
                     transaction =
-                            EconomyTransaction.builder()
+                            SimpleEconomyTransaction.builder()
                                     .amount(cost)
                                     .allowLoan(false)
                                     .core(plugin.getEconomy())
@@ -706,7 +705,7 @@ public class ContainerShop implements Shop, Reloadable {
                                     .build();
                 } else {
                     transaction =
-                            EconomyTransaction.builder()
+                            SimpleEconomyTransaction.builder()
                                     .amount(cost)
                                     .allowLoan(false)
                                     .core(plugin.getEconomy())

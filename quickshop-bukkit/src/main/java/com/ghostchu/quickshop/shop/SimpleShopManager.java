@@ -26,7 +26,7 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.economy.EconomyTransaction;
+import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.*;
 import com.ghostchu.quickshop.util.economyformatter.EconomyFormatter;
@@ -688,8 +688,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (this.cacheTaxAccount != null)
                 taxAccount = this.cacheTaxAccount;
         }
-        EconomyTransaction transaction;
-        EconomyTransaction.EconomyTransactionBuilder builder = EconomyTransaction.builder()
+        SimpleEconomyTransaction transaction;
+        SimpleEconomyTransaction.SimpleEconomyTransactionBuilder builder = SimpleEconomyTransaction.builder()
                 .core(eco)
                 .amount(total)
                 .taxModifier(taxModifier)
@@ -963,8 +963,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             createCost = 0;
         }
         if (createCost > 0) {
-            EconomyTransaction economyTransaction =
-                    EconomyTransaction.builder()
+            SimpleEconomyTransaction economyTransaction =
+                    SimpleEconomyTransaction.builder()
                             .taxAccount(cacheTaxAccount)
                             .taxModifier(0.0)
                             .core(plugin.getEconomy())
@@ -1149,7 +1149,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         // Money handling
         // SELLING Player -> Shop Owner
-        EconomyTransaction transaction;
+        SimpleEconomyTransaction transaction;
         UUID taxAccount = null;
         if (shop.getTaxAccount() != null) {
             taxAccount = shop.getTaxAccount();
@@ -1158,7 +1158,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 taxAccount = this.cacheTaxAccount;
             }
         }
-        EconomyTransaction.EconomyTransactionBuilder builder = EconomyTransaction.builder()
+        SimpleEconomyTransaction.SimpleEconomyTransactionBuilder builder = SimpleEconomyTransaction.builder()
                 .allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false))
                 .core(eco)
                 .from(seller)

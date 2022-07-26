@@ -22,7 +22,7 @@ package com.ghostchu.quickshop.watcher;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopOngoingFeeEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.economy.EconomyTransaction;
+import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -92,7 +92,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
 
                     UUID finalTaxAccount = taxAccount;
                     Util.mainThreadRun(() -> {
-                        EconomyTransaction transaction = EconomyTransaction.builder()
+                        SimpleEconomyTransaction transaction = SimpleEconomyTransaction.builder()
                                 .allowLoan(allowLoan)
                                 .currency(plugin.getCurrency())
                                 .core(plugin.getEconomy())

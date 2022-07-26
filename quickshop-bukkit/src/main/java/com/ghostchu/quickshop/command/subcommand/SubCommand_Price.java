@@ -25,7 +25,7 @@ import com.ghostchu.quickshop.api.shop.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.economy.EconomyTransaction;
+import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -117,7 +117,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
         }
 
         if (fee > 0) {
-            EconomyTransaction transaction = EconomyTransaction.builder()
+            SimpleEconomyTransaction transaction = SimpleEconomyTransaction.builder()
                     .allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false))
                     .core(plugin.getEconomy())
                     .from(sender.getUniqueId())

@@ -21,7 +21,7 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.economy.EconomyTransaction;
+import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.Bukkit;
@@ -100,8 +100,8 @@ public class ShopPurger {
                 for (Shop shop : pendingRemovalShops) {
                     shop.delete(false);
                     if (returnCreationFee) {
-                        EconomyTransaction transaction =
-                                EconomyTransaction.builder()
+                        SimpleEconomyTransaction transaction =
+                                SimpleEconomyTransaction.builder()
                                         .amount(plugin.getConfig().getDouble("shop.cost"))
                                         .allowLoan(false)
                                         .core(plugin.getEconomy())

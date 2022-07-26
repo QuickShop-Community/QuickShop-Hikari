@@ -24,7 +24,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.event.ShopNamingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import com.ghostchu.quickshop.economy.EconomyTransaction;
+import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.AllArgsConstructor;
@@ -74,10 +74,10 @@ public class SubCommand_Name implements CommandHandler<Player> {
         }
 
         double fee = plugin.getConfig().getDouble("shop.name-fee", 0);
-        EconomyTransaction transaction = null;
+        SimpleEconomyTransaction transaction = null;
         if (fee > 0) {
             if (!plugin.perm().hasPermission(sender, "quickshop.bypass.namefee")) {
-                transaction = EconomyTransaction.builder()
+                transaction = SimpleEconomyTransaction.builder()
                         .world(shop.getLocation().getWorld())
                         .from(sender.getUniqueId())
                         .to(shop.getTaxAccount())
