@@ -17,7 +17,6 @@ import com.plotsquared.core.plot.Plot;
 import com.plotsquared.core.plot.flag.GlobalFlagContainer;
 import com.plotsquared.core.plot.flag.types.BooleanFlag;
 import com.sk89q.worldedit.regions.CuboidRegion;
-import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -85,13 +84,12 @@ public final class Main extends CompatibilityModule implements Listener {
         Plot plot = pLocation.getPlot();
         if (plot == null) {
             if (!whiteList) {
-                event.setCancelled(true, Component.text("PlotSquared-Compat: WhiteList Mode is on and no plot found in this position."));
-                return;
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.no-plot-whitelist-creation").forLocale());
             }
             return;
         }
         if (!plot.getFlag(tradeFlag)) {
-            event.setCancelled(true, Component.text("PlotSquared-Compat: Trade Flag is not enabled."));
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.trade-denied").forLocale());
         }
     }
 
@@ -106,13 +104,12 @@ public final class Main extends CompatibilityModule implements Listener {
         Plot plot = pLocation.getPlot();
         if (plot == null) {
             if (!whiteList) {
-                event.setCancelled(true, Component.text("PlotSquared-Compat: WhiteList Mode is on and no plot found in this position."));
-                return;
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.no-plot-whitelist-creation").forLocale());
             }
             return;
         }
         if (!plot.getFlag(tradeFlag)) {
-            event.setCancelled(true, Component.text("PlotSquared-Compat: Trade Flag is not enabled."));
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.trade-denied").forLocale());
         }
     }
 

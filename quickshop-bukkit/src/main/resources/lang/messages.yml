@@ -701,3 +701,8 @@ addon:
   lands:
     world-not-enabled: "<red>You are not allowed to create or purchase in this world."
     creation-denied: "<red>You don't have permission to create shops in this Land."
+  plotsquared:
+    no-plot-whitelist-creation: "<red>You cannot create shop outside of Plot."
+    no-plot-whitelist-trade: "<red>You cannot purchase shop outside of Plot."
+    creation-denied: "<red>You don't have permission to create shops in this Plot."
+    trade-denied: "<red>You don't have permission to purchase shops in this Plot."
