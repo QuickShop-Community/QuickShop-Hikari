@@ -695,3 +695,6 @@ addon:
     creation-flag-denied: "<red>You don't have permission to create shops in this residence."
     trade-flag-denied: "<red>You don't have permission to purchase in this residence."
     you-cannot-create-shop-in-wildness: "<red>You can't create shop in wildness."
+  griefprevention:
+    creation-denied: "<red>You don't have permission to create shops in this claim."
+    trade-denied: "<red>You don't have permission to purchase shops in this claim."

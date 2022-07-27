@@ -81,7 +81,7 @@ public final class Main extends CompatibilityModule implements Listener {
         if (checkPermission(event.getPlayer(), event.getLocation(), Collections.singletonList(createLimit))) {
             return;
         }
-        event.setCancelled(true, "GriefPrevention Blocked");
+        event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.griefprevention.creation-denied").forLocale());
     }
 
     private boolean checkPermission(@NotNull Player player, @NotNull Location location, List<Flag> limits) {
@@ -106,7 +106,7 @@ public final class Main extends CompatibilityModule implements Listener {
         if (checkPermission(event.getPlayer(), event.getShop().getLocation(), Collections.singletonList(createLimit))) {
             return;
         }
-        event.setCancelled(true, "GriefPrevention Blocked");
+        event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.griefprevention.creation-denied").forLocale());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -115,7 +115,7 @@ public final class Main extends CompatibilityModule implements Listener {
         if (checkPermission(event.getPlayer(), event.getShop().getLocation(), tradeLimits)) {
             return;
         }
-        event.setCancelled(true, "GriefPrevention Blocked");
+        event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.griefprevention.trade-denied").forLocale());
     }
 
     // We will check if the shop belongs to user whose permissions were changed.
