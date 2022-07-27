@@ -127,9 +127,7 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements QSCance
      * Gets the purchaser
      *
      * @return Player or null if purchaser is offline/virtual player.
-     * @deprecated Purchaser may is a online/offline/virtual player.
      */
-    @Deprecated
     public @Nullable Player getPlayer() {
         return this.player;
     }

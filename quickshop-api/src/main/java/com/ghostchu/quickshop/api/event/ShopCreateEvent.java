@@ -67,9 +67,7 @@ public class ShopCreateEvent extends AbstractQSEvent implements QSCancellable {
      * Gets the creator that is the shop
      *
      * @return Player or null when player not exists or offline
-     * @deprecated Now creator not only players but also virtual or offline
      */
-    @Deprecated
     public @Nullable Player getPlayer() {
         return this.player;
     }
