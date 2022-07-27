@@ -505,7 +505,7 @@
         <module>compatibility/towny</module>
         <module>compatibility/plotsquared</module>
         <module>compatibility/lands</module>
-
+        <module>compatibility/residence</module>
     </modules>
 
 </project>
