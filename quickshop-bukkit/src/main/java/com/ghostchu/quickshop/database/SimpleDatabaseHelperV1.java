@@ -96,13 +96,6 @@ public class SimpleDatabaseHelperV1 {
         plugin.getLogger().info("Finished!");
     }
 
-    public void setDatabaseVersion(int version) throws SQLException {
-        manager.createReplace(prefix + "metadata")
-                .setColumnNames("key", "value")
-                .setParams("database_version", version)
-                .execute();
-    }
-
     /**
      * Returns true if the table exists
      *
@@ -124,6 +117,20 @@ public class SimpleDatabaseHelperV1 {
             connection.close();
         }
         return match;
+    }
+
+    public void createMetadataTable() {
+        manager.createTable(prefix + "metadata")
+                .addColumn("key", "VARCHAR(255) NOT NULL")
+                .addColumn("value", "LONGTEXT NOT NULL")
+                .setIndex(IndexType.PRIMARY_KEY, null, "key")
+                .build()
+                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create metadata table! SQL:" + sqlAction.getSQLContent(), exception)));
+        try {
+            setDatabaseVersion(2);
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to update database version!", e);
+        }
     }
 
     /**
@@ -202,35 +209,6 @@ public class SimpleDatabaseHelperV1 {
                 .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create players table! SQL:" + sqlAction.getSQLContent(), exception)));
     }
 
-    public void createMetadataTable() {
-        manager.createTable(prefix + "metadata")
-                .addColumn("key", "VARCHAR(255) NOT NULL")
-                .addColumn("value", "LONGTEXT NOT NULL")
-                .setIndex(IndexType.PRIMARY_KEY, null, "key")
-                .build()
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create metadata table! SQL:" + sqlAction.getSQLContent(), exception)));
-        try {
-            setDatabaseVersion(2);
-        } catch (SQLException e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to update database version!", e);
-        }
-    }
-
-    public int getDatabaseVersion() {
-        try (SQLQuery query = manager.createQuery().inTable(prefix + "metadata")
-                .addCondition("key", "database_version")
-                .selectColumns("value")
-                .build().execute(); ResultSet result = query.getResultSet()) {
-            if (!result.next()) {
-                return 0;
-            }
-            return Integer.parseInt(result.getString("value"));
-        } catch (SQLException e) {
-            Log.debug("Failed to getting database version! Err: " + e.getMessage());
-            return -1;
-        }
-    }
-
     /**
      * Creates the database table 'metrics'
      */
@@ -255,6 +233,28 @@ public class SimpleDatabaseHelperV1 {
                         plugin.getLogger().log(Level.WARNING, "Failed to create messages table! SQL:" + sqlAction.getSQLContent(), exception);
                     }
                 }));
+    }
+
+    public int getDatabaseVersion() {
+        try (SQLQuery query = manager.createQuery().inTable(prefix + "metadata")
+                .addCondition("key", "database_version")
+                .selectColumns("value")
+                .build().execute(); ResultSet result = query.getResultSet()) {
+            if (!result.next()) {
+                return 0;
+            }
+            return Integer.parseInt(result.getString("value"));
+        } catch (SQLException e) {
+            Log.debug("Failed to getting database version! Err: " + e.getMessage());
+            return -1;
+        }
+    }
+
+    public void setDatabaseVersion(int version) throws SQLException {
+        manager.createReplace(prefix + "metadata")
+                .setColumnNames("key", "value")
+                .setParams("database_version", version)
+                .execute();
     }
 
     public @NotNull SQLManager getManager() {

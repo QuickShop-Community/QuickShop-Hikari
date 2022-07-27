@@ -56,6 +56,17 @@ public class Economy_GemsEconomy extends AbstractEconomy {
         return "GemsEconomy";
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
+
     @Nullable
     private Currency getCurrency(@NotNull World world, @Nullable String currency) {
         if (!isValid()) {
@@ -67,16 +78,6 @@ public class Economy_GemsEconomy extends AbstractEconomy {
         return this.api.getCurrency(currency);
     }
 
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() {
-        init();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
-    }
 
     /**
      * Deposits a given amount of money from thin air to the given username.

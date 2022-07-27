@@ -260,7 +260,7 @@ public class MsgUtil {
         if (!(sender instanceof Player)) {
             return;
         }
-        if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshop.use")) {
+        if (!plugin.perm().hasPermission(sender, "quickshop.use")) {
             return;
         }
         if (Util.fireCancellableEvent(new ShopControlPanelOpenEvent(shop, sender))) {

@@ -87,6 +87,11 @@ public class Economy_Reserve extends AbstractEconomy {
         return "BuiltIn-Reserve";
     }
 
+    @Override
+    public String getProviderName() {
+        return "Reserve";
+    }
+
     /**
      * Deposits a given amount of money from thin air to the given username.
      *
@@ -107,10 +112,6 @@ public class Economy_Reserve extends AbstractEconomy {
         }
     }
 
-    @Override
-    public String getProviderName() {
-        return "Reserve";
-    }
 
     @Override
     public boolean deposit(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency) {

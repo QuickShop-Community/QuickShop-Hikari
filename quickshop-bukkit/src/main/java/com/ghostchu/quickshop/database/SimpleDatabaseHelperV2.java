@@ -256,6 +256,21 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         plugin.getLogger().info("Migrate completed, previous versioned data was renamed to <PREFIX>_<TABLE_NAME>_<ACTION_ID>.");
     }
 
+    @NotNull
+    public IsolatedScanResult<Long> purgeIsolatedData() throws SQLException {
+        IsolatedScanResult<Long> shopIds = scanIsolatedShopIds();
+        purgeShopTableIsolatedData(shopIds);
+        IsolatedScanResult<Long> dataIds = scanIsolatedDataIds();
+        purgeDataTableIsolatedData(dataIds);
+        List<Long> total = new LinkedList<>();
+        total.addAll(shopIds.getTotal());
+        total.addAll(dataIds.getTotal());
+        List<Long> isolated = new LinkedList<>();
+        isolated.addAll(shopIds.getIsolated());
+        isolated.addAll(dataIds.getIsolated());
+        return new IsolatedScanResult<>(total, isolated);
+    }
+
     private boolean silentTableMoving(@NotNull String originTableName, @NotNull String newTableName) {
         try {
             if (hasTable(originTableName)) {
@@ -316,21 +331,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         } else {
             plugin.getLogger().info("Skipping for table " + tableLegacyName);
         }
-    }
-
-    @NotNull
-    public IsolatedScanResult<Long> purgeIsolatedData() throws SQLException {
-        IsolatedScanResult<Long> shopIds = scanIsolatedShopIds();
-        purgeShopTableIsolatedData(shopIds);
-        IsolatedScanResult<Long> dataIds = scanIsolatedDataIds();
-        purgeDataTableIsolatedData(dataIds);
-        List<Long> total = new LinkedList<>();
-        total.addAll(shopIds.getTotal());
-        total.addAll(dataIds.getTotal());
-        List<Long> isolated = new LinkedList<>();
-        isolated.addAll(shopIds.getIsolated());
-        isolated.addAll(dataIds.getIsolated());
-        return new IsolatedScanResult<>(total, isolated);
     }
 
     @NotNull

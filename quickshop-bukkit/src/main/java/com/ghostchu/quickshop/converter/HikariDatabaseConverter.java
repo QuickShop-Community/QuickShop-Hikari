@@ -215,6 +215,62 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
     }
 
     /**
+     * Getting the live database configuration.
+     *
+     * @return The live database configuration.
+     * @throws IllegalStateException If any configuration key not set correct.
+     */
+    @NotNull
+    private DatabaseConfig getDatabaseConfig() throws IllegalStateException {
+        ConfigurationSection dbCfg = plugin.getConfig().getConfigurationSection("database");
+        if (dbCfg == null) {
+            throw new IllegalStateException("Database configuration section not found!");
+        }
+        if (!dbCfg.isSet("mysql")) {
+            throw new IllegalStateException("Database configuration section -> type not set!");
+        }
+        if (!dbCfg.isSet("prefix")) {
+            throw new IllegalStateException("Database configuration section -> prefix not set!");
+        }
+        boolean mysql = dbCfg.getBoolean("mysql");
+        if (mysql) {
+            if (!dbCfg.isSet("host")) {
+                throw new IllegalStateException("Database configuration section -> host not set!");
+            }
+            if (!dbCfg.isSet("port")) {
+                throw new IllegalStateException("Database configuration section -> port not set!");
+            }
+            if (!dbCfg.isSet("user")) {
+                throw new IllegalStateException("Database configuration section -> user not set!");
+            }
+            if (!dbCfg.isSet("password")) {
+                throw new IllegalStateException("Database configuration section -> password not set!");
+            }
+            if (!dbCfg.isSet("database")) {
+                throw new IllegalStateException("Database configuration section -> name not set!");
+            }
+            if (!dbCfg.isSet("usessl")) {
+                throw new IllegalStateException("Database configuration section -> SSL not set!");
+            }
+        }
+
+        String user = dbCfg.getString("user", "mc");
+        String pass = dbCfg.getString("password", "minecraft");
+        String host = dbCfg.getString("host", "localhost");
+        int port = dbCfg.getInt("port", 3306);
+        String database = dbCfg.getString("database", "mc");
+        boolean useSSL = dbCfg.getBoolean("usessl", false);
+        String dbPrefix = "";
+        if (mysql) {
+            dbPrefix = dbCfg.getString("prefix", "");
+            if ("none".equals(dbPrefix)) {
+                dbPrefix = "";
+            }
+        }
+        return new DatabaseConfig(mysql, host, user, pass, port, database, useSSL, dbPrefix);
+    }
+
+    /**
      * Rename tables
      *
      * @param actionId ActionID
@@ -380,62 +436,6 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         instance.getLogger().info("Completed! Pulled " + (count - fails) + " shops from database! Total " + fails + " fails.");
         return units;
 
-    }
-
-    /**
-     * Getting the live database configuration.
-     *
-     * @return The live database configuration.
-     * @throws IllegalStateException If any configuration key not set correct.
-     */
-    @NotNull
-    private DatabaseConfig getDatabaseConfig() throws IllegalStateException {
-        ConfigurationSection dbCfg = plugin.getConfig().getConfigurationSection("database");
-        if (dbCfg == null) {
-            throw new IllegalStateException("Database configuration section not found!");
-        }
-        if (!dbCfg.isSet("mysql")) {
-            throw new IllegalStateException("Database configuration section -> type not set!");
-        }
-        if (!dbCfg.isSet("prefix")) {
-            throw new IllegalStateException("Database configuration section -> prefix not set!");
-        }
-        boolean mysql = dbCfg.getBoolean("mysql");
-        if (mysql) {
-            if (!dbCfg.isSet("host")) {
-                throw new IllegalStateException("Database configuration section -> host not set!");
-            }
-            if (!dbCfg.isSet("port")) {
-                throw new IllegalStateException("Database configuration section -> port not set!");
-            }
-            if (!dbCfg.isSet("user")) {
-                throw new IllegalStateException("Database configuration section -> user not set!");
-            }
-            if (!dbCfg.isSet("password")) {
-                throw new IllegalStateException("Database configuration section -> password not set!");
-            }
-            if (!dbCfg.isSet("database")) {
-                throw new IllegalStateException("Database configuration section -> name not set!");
-            }
-            if (!dbCfg.isSet("usessl")) {
-                throw new IllegalStateException("Database configuration section -> SSL not set!");
-            }
-        }
-
-        String user = dbCfg.getString("user", "mc");
-        String pass = dbCfg.getString("password", "minecraft");
-        String host = dbCfg.getString("host", "localhost");
-        int port = dbCfg.getInt("port", 3306);
-        String database = dbCfg.getString("database", "mc");
-        boolean useSSL = dbCfg.getBoolean("usessl", false);
-        String dbPrefix = "";
-        if (mysql) {
-            dbPrefix = dbCfg.getString("prefix", "");
-            if ("none".equals(dbPrefix)) {
-                dbPrefix = "";
-            }
-        }
-        return new DatabaseConfig(mysql, host, user, pass, port, database, useSSL, dbPrefix);
     }
 
     void close() {

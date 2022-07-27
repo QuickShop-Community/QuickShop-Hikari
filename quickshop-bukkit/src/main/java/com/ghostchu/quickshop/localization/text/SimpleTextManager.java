@@ -467,24 +467,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
     }
 
     /**
-     * Generate the override files storage path
-     *
-     * @param localeCode The language localeCode
-     * @return Override files storage path
-     */
-    @SneakyThrows
-    @NotNull
-    private File getOverrideFilesFolder(@NotNull String localeCode) {
-        File moduleFolder = new File(new File(plugin.getDataFolder(), "overrides"), localeCode);
-        moduleFolder.mkdirs();
-        File fileFolder = new File(moduleFolder, localeCode);
-        if (fileFolder.isDirectory()) {
-            Files.deleteIfExists(fileFolder.toPath()); //TODO Workaround for v5 beta stage a bug, delete it in future
-        }
-        return moduleFolder;
-    }
-
-    /**
      * Merge override data into distribution configuration to override texts
      *
      * @param distributionConfiguration The configuration that from distribution (will override it)
@@ -527,6 +509,24 @@ public class SimpleTextManager implements TextManager, Reloadable {
             plugin.getLogger().log(Level.WARNING, "Cannot load language file from distribution platform, some strings may missing!", exception);
         }
         return configuration;
+    }
+
+    /**
+     * Generate the override files storage path
+     *
+     * @param localeCode The language localeCode
+     * @return Override files storage path
+     */
+    @SneakyThrows
+    @NotNull
+    private File getOverrideFilesFolder(@NotNull String localeCode) {
+        File moduleFolder = new File(new File(plugin.getDataFolder(), "overrides"), localeCode);
+        moduleFolder.mkdirs();
+        File fileFolder = new File(moduleFolder, localeCode);
+        if (fileFolder.isDirectory()) {
+            Files.deleteIfExists(fileFolder.toPath()); //TODO Workaround for v5 beta stage a bug, delete it in future
+        }
+        return moduleFolder;
     }
 
     public static class TextList implements com.ghostchu.quickshop.api.localization.text.TextList {

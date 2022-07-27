@@ -188,16 +188,16 @@ public enum DataTables {
         Log.debug("Table creating:" + this.getName());
     }
 
-    public @NotNull TableQueryBuilder createQuery(@NotNull SQLManager sqlManager) {
-        return sqlManager.createQuery().inTable(this.getName());
+    public @NotNull String getName() {
+        return this.prefix + this.name;
     }
 
     public @NotNull TableQueryBuilder createQuery() {
         return this.createQuery(this.manager);
     }
 
-    public @NotNull String getName() {
-        return this.prefix + this.name;
+    public @NotNull TableQueryBuilder createQuery(@NotNull SQLManager sqlManager) {
+        return sqlManager.createQuery().inTable(this.getName());
     }
 
     public @NotNull DeleteBuilder createDelete() {

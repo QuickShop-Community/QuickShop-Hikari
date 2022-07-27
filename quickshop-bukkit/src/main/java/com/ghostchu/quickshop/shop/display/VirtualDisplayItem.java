@@ -206,14 +206,6 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
         }
     }
 
-    private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
-        try {
-            PROTOCOL_MANAGER.sendServerPacket(player, packet);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException("An error occurred when sending a packet", e);
-        }
-    }
-
     private void unload() {
         packetSenders.clear();
         VirtualDisplayItemManager.remove(chunkLocation, this);
@@ -223,6 +215,14 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
         sendPacket(player, fakeItemSpawnPacket);
         sendPacket(player, fakeItemMetaPacket);
         sendPacket(player, fakeItemVelocityPacket);
+    }
+
+    private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
+        try {
+            PROTOCOL_MANAGER.sendServerPacket(player, packet);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException("An error occurred when sending a packet", e);
+        }
     }
 
     public static class VirtualDisplayItemManager {

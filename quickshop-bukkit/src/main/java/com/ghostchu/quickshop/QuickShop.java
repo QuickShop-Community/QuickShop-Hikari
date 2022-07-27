@@ -279,16 +279,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     }
 
     /**
-     * Get the permissionManager as static
-     *
-     * @return the permission Manager.
-     */
-    @NotNull
-    public static PermissionManager getPermissionManager() {
-        return permissionManager;
-    }
-
-    /**
      * Return the QuickShop fork name.
      *
      * @return The fork name.
@@ -407,6 +397,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         return max;
     }
 
+    /**
+     * Get the permissionManager as static
+     *
+     * @return the permission Manager.
+     */
+    @NotNull
+    public static PermissionManager getPermissionManager() {
+        return permissionManager;
+    }
+
     @Override
     public ReloadResult reloadModule() throws Exception {
         registerDisplayAutoDespawn();
@@ -416,6 +416,175 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         registerDisplayItem();
         registerLimitRanks();
         return Reloadable.super.reloadModule();
+    }
+
+    private void registerDisplayAutoDespawn() {
+        if (this.display && getConfig().getBoolean("shop.display-auto-despawn")) {
+            this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
+            //BUKKIT METHOD SHOULD ALWAYS EXECUTE ON THE SERVER MAIN THEAD
+            this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
+            getLogger().warning("Unrecommended use of display-auto-despawn. This feature may have a heavy impact on the server's performance!");
+        } else {
+            if (this.displayAutoDespawnWatcher != null) {
+                this.displayAutoDespawnWatcher.cancel();
+                this.displayAutoDespawnWatcher = null;
+            }
+        }
+    }
+
+    private void registerOngoingFee() {
+        if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
+            ongoingFeeWatcher = new OngoingFeeWatcher(this);
+            ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks"));
+            getLogger().info("Ongoing fee feature is enabled.");
+        } else {
+            if (ongoingFeeWatcher != null) {
+                ongoingFeeWatcher.cancel();
+                ongoingFeeWatcher = null;
+            }
+        }
+    }
+
+    private void registerUpdater() {
+        if (this.getConfig().getBoolean("updater", true)) {
+            updateWatcher = new UpdateWatcher();
+            updateWatcher.init();
+        } else {
+            if (updateWatcher != null) {
+                updateWatcher.uninit();
+                updateWatcher = null;
+            }
+        }
+    }
+
+    private void registerShopLock() {
+        if (getConfig().getBoolean("shop.lock")) {
+            new LockListener(this, this.shopCache).register();
+        } else {
+            Util.unregisterListenerClazz(this, LockListener.class);
+        }
+    }
+
+    private void registerDisplayItem() {
+        if (this.display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
+            if (getDisplayItemCheckTicks() > 0) {
+                if (getConfig().getInt("shop.display-items-check-ticks") < 3000) {
+                    getLogger().severe("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
+                }
+                getLogger().info("Registering DisplayCheck task....");
+                getServer().getScheduler().runTaskTimer(this, () -> {
+                    for (Shop shop : getShopManager().getLoadedShops()) {
+                        //Shop may be deleted or unloaded when iterating
+                        if (shop.isDeleted() || !shop.isLoaded()) {
+                            continue;
+                        }
+                        shop.checkDisplay();
+                    }
+                }, 1L, getDisplayItemCheckTicks());
+            } else if (getDisplayItemCheckTicks() == 0) {
+                getLogger().info("shop.display-items-check-ticks was set to 0. Display Check has been disabled");
+            } else {
+                getLogger().severe("shop.display-items-check-ticks has been set to an invalid value. Please use a value above 3000.");
+            }
+            new DisplayProtectionListener(this, this.shopCache).register();
+        } else {
+            Util.unregisterListenerClazz(this, DisplayProtectionListener.class);
+        }
+    }
+
+    @Override
+    public ShopManager getShopManager() {
+        return this.shopManager;
+    }
+
+    @Override
+    public boolean isDisplayEnabled() {
+        return this.display;
+    }
+
+    @Override
+    public boolean isLimit() {
+        return this.limit;
+    }
+
+    @Override
+    public Map<String, Integer> getLimits() {
+        return this.limits;
+    }
+
+    @Override
+    public DatabaseHelper getDatabaseHelper() {
+        return this.databaseHelper;
+    }
+
+    @Override
+    public TextManager getTextManager() {
+        return this.textManager;
+    }
+
+    @Override
+    public ItemMatcher getItemMatcher() {
+        return this.itemMatcher;
+    }
+
+    @Override
+    public boolean isPriceChangeRequiresFee() {
+        return this.priceChangeRequiresFee;
+    }
+
+    @Override
+    public CommandManager getCommandManager() {
+        return this.commandManager;
+    }
+
+    @Override
+    public GameVersion getGameVersion() {
+        if (gameVersion == null) {
+            gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
+        }
+        return this.gameVersion;
+    }
+
+    @Override
+    public @NotNull InventoryWrapperRegistry getInventoryWrapperRegistry() {
+        return inventoryWrapperRegistry;
+    }
+
+    @Override
+    public void logEvent(@NotNull Object eventObject) {
+        if (this.getLogWatcher() == null) {
+            return;
+        }
+        if (loggingLocation == 0) {
+            this.getLogWatcher().log(JsonUtil.getGson().toJson(eventObject));
+        } else {
+            getDatabaseHelper().insertHistoryRecord(eventObject);
+        }
+
+    }
+
+    @Override
+    public void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key) {
+        addonRegisteredMapping.put(translationKey, key);
+        translationMapping.putAll(addonRegisteredMapping);
+        if (this.platform != null) {
+            this.platform.updateTranslationMappingSection(translationMapping);
+        }
+    }
+
+    private void registerLimitRanks() {
+        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
+        ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
+        if (limitCfg != null) {
+            this.limit = limitCfg.getBoolean("use", false);
+            limitCfg = limitCfg.getConfigurationSection("ranks");
+            for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
+                limits.put(key, limitCfg.getInt(key));
+            }
+        } else {
+            this.limit = false;
+            limits.clear();
+        }
     }
 
     /**
@@ -565,19 +734,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         }
         // Schedule this event can be run in next tick.
         Util.mainThreadRun(() -> new QSConfigurationReloadEvent(this).callEvent());
-    }
-
-    private void registerOngoingFee() {
-        if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
-            ongoingFeeWatcher = new OngoingFeeWatcher(this);
-            ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks"));
-            getLogger().info("Ongoing fee feature is enabled.");
-        } else {
-            if (ongoingFeeWatcher != null) {
-                ongoingFeeWatcher.cancel();
-                ongoingFeeWatcher = null;
-            }
-        }
     }
 
     /**
@@ -767,86 +923,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
     }
 
-    @Override
-    public ShopManager getShopManager() {
-        return this.shopManager;
-    }
-
-    @Override
-    public boolean isDisplayEnabled() {
-        return this.display;
-    }
-
-    @Override
-    public boolean isLimit() {
-        return this.limit;
-    }
-
-    @Override
-    public Map<String, Integer> getLimits() {
-        return this.limits;
-    }
-
-    @Override
-    public DatabaseHelper getDatabaseHelper() {
-        return this.databaseHelper;
-    }
-
-    @Override
-    public TextManager getTextManager() {
-        return this.textManager;
-    }
-
-    @Override
-    public ItemMatcher getItemMatcher() {
-        return this.itemMatcher;
-    }
-
-    @Override
-    public boolean isPriceChangeRequiresFee() {
-        return this.priceChangeRequiresFee;
-    }
-
-    @Override
-    public CommandManager getCommandManager() {
-        return this.commandManager;
-    }
-
-    @Override
-    public GameVersion getGameVersion() {
-        if (gameVersion == null) {
-            gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
-        }
-        return this.gameVersion;
-    }
-
-    @Override
-    public @NotNull InventoryWrapperRegistry getInventoryWrapperRegistry() {
-        return inventoryWrapperRegistry;
-    }
-
-    @Override
-    public void logEvent(@NotNull Object eventObject) {
-        if (this.getLogWatcher() == null) {
-            return;
-        }
-        if (loggingLocation == 0) {
-            this.getLogWatcher().log(JsonUtil.getGson().toJson(eventObject));
-        } else {
-            getDatabaseHelper().insertHistoryRecord(eventObject);
-        }
-
-    }
-
-    @Override
-    public void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key) {
-        addonRegisteredMapping.put(translationKey, key);
-        translationMapping.putAll(addonRegisteredMapping);
-        if (this.platform != null) {
-            this.platform.updateTranslationMappingSection(translationMapping);
-        }
-    }
-
     private void initConfiguration() {
         /* Process the config */
         //noinspection ResultOfMethodCallIgnored
@@ -894,85 +970,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             }
         }
         return true;
-    }
-
-
-
-    private void registerDisplayAutoDespawn() {
-        if (this.display && getConfig().getBoolean("shop.display-auto-despawn")) {
-            this.displayAutoDespawnWatcher = new DisplayAutoDespawnWatcher(this);
-            //BUKKIT METHOD SHOULD ALWAYS EXECUTE ON THE SERVER MAIN THEAD
-            this.displayAutoDespawnWatcher.runTaskTimer(this, 20, getConfig().getInt("shop.display-check-time")); // not worth async
-            getLogger().warning("Unrecommended use of display-auto-despawn. This feature may have a heavy impact on the server's performance!");
-        } else {
-            if (this.displayAutoDespawnWatcher != null) {
-                this.displayAutoDespawnWatcher.cancel();
-                this.displayAutoDespawnWatcher = null;
-            }
-        }
-    }
-
-
-    private void registerUpdater() {
-        if (this.getConfig().getBoolean("updater", true)) {
-            updateWatcher = new UpdateWatcher();
-            updateWatcher.init();
-        } else {
-            if (updateWatcher != null) {
-                updateWatcher.uninit();
-                updateWatcher = null;
-            }
-        }
-    }
-
-    private void registerShopLock() {
-        if (getConfig().getBoolean("shop.lock")) {
-            new LockListener(this, this.shopCache).register();
-        } else {
-            Util.unregisterListenerClazz(this, LockListener.class);
-        }
-    }
-
-    private void registerDisplayItem() {
-        if (this.display && AbstractDisplayItem.getNowUsing() != DisplayType.VIRTUALITEM) {
-            if (getDisplayItemCheckTicks() > 0) {
-                if (getConfig().getInt("shop.display-items-check-ticks") < 3000) {
-                    getLogger().severe("Shop.display-items-check-ticks is too low! It may cause HUGE lag! Pick a number > 3000");
-                }
-                getLogger().info("Registering DisplayCheck task....");
-                getServer().getScheduler().runTaskTimer(this, () -> {
-                    for (Shop shop : getShopManager().getLoadedShops()) {
-                        //Shop may be deleted or unloaded when iterating
-                        if (shop.isDeleted() || !shop.isLoaded()) {
-                            continue;
-                        }
-                        shop.checkDisplay();
-                    }
-                }, 1L, getDisplayItemCheckTicks());
-            } else if (getDisplayItemCheckTicks() == 0) {
-                getLogger().info("shop.display-items-check-ticks was set to 0. Display Check has been disabled");
-            } else {
-                getLogger().severe("shop.display-items-check-ticks has been set to an invalid value. Please use a value above 3000.");
-            }
-            new DisplayProtectionListener(this, this.shopCache).register();
-        } else {
-            Util.unregisterListenerClazz(this, DisplayProtectionListener.class);
-        }
-    }
-
-    private void registerLimitRanks() {
-        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
-        ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
-        if (limitCfg != null) {
-            this.limit = limitCfg.getBoolean("use", false);
-            limitCfg = limitCfg.getConfigurationSection("ranks");
-            for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
-                limits.put(key, limitCfg.getInt(key));
-            }
-        } else {
-            this.limit = false;
-            limits.clear();
-        }
     }
 
     private void bakeShopsOwnerCache() {
