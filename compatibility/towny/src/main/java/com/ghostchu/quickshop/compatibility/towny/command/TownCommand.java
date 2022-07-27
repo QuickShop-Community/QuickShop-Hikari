@@ -6,9 +6,12 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.compatibility.towny.Main;
 import com.ghostchu.quickshop.compatibility.towny.TownyShopUtil;
+import com.ghostchu.quickshop.util.CalculateUtil;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
+import com.palmergames.bukkit.towny.object.TownBlock;
+import com.palmergames.bukkit.towny.object.TownBlockType;
 import org.bukkit.entity.Player;
 import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
@@ -32,9 +35,7 @@ public class TownCommand implements CommandHandler<Player> {
             plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-already-is-nation-shop").send();
             return;
         }
-
         // Player permission check
-
         // Check if anybody already set it to town shop
         Town recordTown = TownyShopUtil.getShopTown(shop);
         if (recordTown != null) {
@@ -59,6 +60,18 @@ public class TownCommand implements CommandHandler<Player> {
             plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-not-in-town-region").send();
             return;
         }
+        if(plugin.getConfig().getBoolean("bank-mode.bank-plot-only",false)){
+            TownBlock townBlock = TownyAPI.getInstance().getTownBlock(shop.getLocation());
+            if(townBlock == null){
+                plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-not-in-town-region").send();
+                plugin.getLogger().warning("Failed to get townBlock at "+ shop.getLocation() +" maybe a bug?");
+                return;
+            }
+            if(townBlock.getType() != TownBlockType.BANK){
+                plugin.getApi().getTextManager().of(sender, "addon.towny.plot-type-disallowed").send();
+                return;
+            }
+        }
         String vaultAccountName = Main.processTownyAccount(town.getAccount().getName());
         Profile profile = QuickShop.getInstance().getPlayerFinder().find(vaultAccountName);
         // Check if item and type are allowed
@@ -69,7 +82,7 @@ public class TownCommand implements CommandHandler<Player> {
                 return;
             }
             if (shop.isStackingShop()) {
-                shop.setPrice(price * shop.getShopStackingAmount());
+                shop.setPrice(CalculateUtil.multiply(price, shop.getShopStackingAmount()));
             }
         }
         TownyShopUtil.setShopOriginalOwner(shop, shop.getOwner());

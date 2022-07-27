@@ -690,3 +690,4 @@ addon:
     target-shop-not-in-nation-region: "<red>The target shop is not in the nation."
     item-not-allowed: "<red>This shop's item are not allowed used by town/nation shop, pick another one!"
     operation-disabled-due-shop-status: "<red>This shop operation has been disabled due this already is a town/nation shop."
+    plot-type-disallowed: "<red>You can't create town/nation shop on this type of plot."

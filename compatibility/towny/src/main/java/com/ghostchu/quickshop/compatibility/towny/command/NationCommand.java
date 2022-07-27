@@ -6,6 +6,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.compatibility.towny.Main;
 import com.ghostchu.quickshop.compatibility.towny.TownyShopUtil;
+import com.ghostchu.quickshop.util.CalculateUtil;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Nation;
 import com.palmergames.bukkit.towny.object.Town;
@@ -41,11 +42,10 @@ public class NationCommand implements CommandHandler<Player> {
                 shop.setOwner(TownyShopUtil.getShopOriginalOwner(shop));
                 TownyShopUtil.setShopTown(shop, null);
                 plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-no-longer-owned-by-town").send();
-                return;
             } else {
                 plugin.getApi().getTextManager().of(sender, "no-permission").send();
-                return;
             }
+            return;
         }
         // Check if anybody already set it to nation shop
         if (TownyShopUtil.getShopNation(shop) != null) {
@@ -56,7 +56,6 @@ public class NationCommand implements CommandHandler<Player> {
             plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-no-longer-owned-by-nation").send();
             return;
         }
-
 
         // Set as a nation shop
         Town town = TownyAPI.getInstance().getTown(shop.getLocation());
@@ -69,6 +68,7 @@ public class NationCommand implements CommandHandler<Player> {
             plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-not-in-nation-region").send();
             return;
         }
+
         String vaultAccountName = Main.processTownyAccount(town.getAccount().getName());
         Profile profile = QuickShop.getInstance().getPlayerFinder().find(vaultAccountName);
         // Check if item and type are allowed
@@ -79,14 +79,14 @@ public class NationCommand implements CommandHandler<Player> {
                 return;
             }
             if (shop.isStackingShop()) {
-                shop.setPrice(price * shop.getShopStackingAmount());
+                shop.setPrice(CalculateUtil.multiply(price, shop.getShopStackingAmount()));
             }
         }
         TownyShopUtil.setShopOriginalOwner(shop, shop.getOwner());
-        TownyShopUtil.setShopNation(shop, nation);
         shop.setPlayerGroup(shop.getOwner(), BuiltInShopPermissionGroup.ADMINISTRATOR);
         //noinspection ConstantConditions
         shop.setOwner(profile.getUniqueId());
+        TownyShopUtil.setShopNation(shop, nation);
         plugin.getApi().getTextManager().of(sender, "make-shop-owned-by-nation", nation.getName()).send();
         plugin.getApi().getTextManager().of(sender, "shop-owning-changing-notice").send();
     }

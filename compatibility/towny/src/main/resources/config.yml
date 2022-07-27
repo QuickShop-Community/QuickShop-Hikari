@@ -51,6 +51,8 @@ trade: [ ]
 #The shops under bank mode will only accept items from player but money goes to the town bank account.
 #And all
 bank-mode:
+  #Only allow shop transform to bank mode when shop at bank plot
+  bank-plot-only: true
   #Enforce the bank mode shops to use price that specified in the config.
   #The items not included will deny to be turned a bank mode shop
   enable: true
@@ -62,25 +64,24 @@ bank-mode:
   #Set -1 for price will disable price lock for this type of item even force-prices turned on.
   # MATERIAL: PRICE
   item-list:
-    COAL_ORE: 0.01
-    COPPER_ORE: 0.05
-    IRON_ORE: 0.10
+    COPPER_ORE: 0.01
+    IRON_ORE: 0.05
+    COAL_ORE: 0.10
     LAPIS_ORE: 0.25
     REDSTONE_ORE: 1.00
     GOLD_ORE: 5.00
-    DIAMOND_ORE: 50.00
-    EMERALD_ORE: 1000.00
-    DEEPSLATE_COAL_ORE: 0.01
-    DEEPSLATE_COPPER_ORE: 0.05
-    DEEPSLATE_IRON_ORE: 0.10
+    DIAMOND_ORE: 20.00
+    EMERALD_ORE: 500.00
+    DEEPSLATE_COPPER_ORE: 0.01
+    DEEPSLATE_IRON_ORE: 0.05
+    DEEPSLATE_COAL_ORE: 0.10
     DEEPSLATE_LAPIS_ORE: 0.25
     DEEPSLATE_REDSTONE_ORE: 1.00
     DEEPSLATE_GOLD_ORE: 5.00
-    DEEPSLATE_DIAMOND_ORE: 50.00
-    DEEPSLATE_EMERALD_ORE: 1000.00
+    DEEPSLATE_DIAMOND_ORE: 20.00
+    DEEPSLATE_EMERALD_ORE: 500.00
     # NETHER_QUARTZ_ORE: 0.50
     # NETHER_GOLD_ORE: 1.25
-    ANCIENT_DEBRIS: 500.00
-    # HEART_OF_THE_SEA: 25000.00
-    # ENCHANTED_GOLDEN_APPLE: 250000.00
-
+    ANCIENT_DEBRIS: 250.00
+    # HEART_OF_THE_SEA: 2500.00
+    # ENCHANTED_GOLDEN_APPLE: 25000.00
