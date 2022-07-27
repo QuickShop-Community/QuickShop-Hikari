@@ -62,12 +62,12 @@ public final class Main extends CompatibilityModule implements Listener {
         }
         if (onlyOwnerCanCreateShop) {
             if (!island.getOwner().equals(superiorPlayer)) {
-                event.setCancelled(true, "Only owner can create shop there.");
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.superiorskyblock.owner-create-only").forLocale());
             }
         } else {
             if (!island.getOwner().equals(superiorPlayer)) {
                 if (!island.isMember(superiorPlayer)) {
-                    event.setCancelled(true, "Only owner or member can create shop there.");
+                    event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.superiorskyblock.owner-member-create-only").forLocale());
                 }
             }
         }
@@ -82,12 +82,12 @@ public final class Main extends CompatibilityModule implements Listener {
         }
         if (onlyOwnerCanCreateShop) {
             if (!island.getOwner().equals(superiorPlayer)) {
-                event.setCancelled(true, "Only owner can create shop there.");
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-create-only").forLocale());
             }
         } else {
             if (!island.getOwner().equals(superiorPlayer)) {
                 if (!island.isMember(superiorPlayer)) {
-                    event.setCancelled(true, "Only owner or member can create shop there.");
+                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-member-create-only").forLocale());
                 }
             }
         }
