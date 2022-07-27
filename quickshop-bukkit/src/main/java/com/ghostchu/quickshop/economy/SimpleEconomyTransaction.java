@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.economy.EconomyCore;
 import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.economy.operation.DepositEconomyOperation;
 import com.ghostchu.quickshop.api.economy.operation.WithdrawEconomyOperation;
+import com.ghostchu.quickshop.api.event.EconomyTransactionEvent;
 import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.util.CalculateUtil;
 import com.ghostchu.quickshop.util.JsonUtil;
@@ -98,6 +99,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
                 this.core.getBalance(to, world, currency);
             }
         }
+        new EconomyTransactionEvent(this).callEvent();
     }
 
     @Override

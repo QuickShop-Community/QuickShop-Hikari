@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.InventoryTransactionEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.api.shop.InventoryTransaction;
@@ -37,6 +38,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
         this.to = to;
         this.item = item.clone();
         this.amount = amount;
+        new InventoryTransactionEvent(this).callEvent();
     }
 
     @Override
