@@ -6,7 +6,6 @@ import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
-import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -18,10 +17,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 
-@AllArgsConstructor
 public class SubCommand_SuperCreate implements CommandHandler<Player> {
 
     private final QuickShop plugin;
+
+    public SubCommand_SuperCreate(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

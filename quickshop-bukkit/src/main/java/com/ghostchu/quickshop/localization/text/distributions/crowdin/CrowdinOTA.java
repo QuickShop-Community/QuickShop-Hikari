@@ -14,7 +14,6 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSyntaxException;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
@@ -198,13 +197,18 @@ public class CrowdinOTA implements Distribution {
     }
 
 
-    @AllArgsConstructor
     @Builder
     @Data
     public static class CrowdinGetFileRequest {
         private String fileCrowdinPath;
         private String crowdinLocale;
         private boolean forceFlush;
+
+        public CrowdinGetFileRequest(String fileCrowdinPath, String crowdinLocale, boolean forceFlush) {
+            this.fileCrowdinPath = fileCrowdinPath;
+            this.crowdinLocale = crowdinLocale;
+            this.forceFlush = forceFlush;
+        }
     }
 
 }

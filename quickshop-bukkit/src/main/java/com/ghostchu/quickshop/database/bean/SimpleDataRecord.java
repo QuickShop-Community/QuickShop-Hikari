@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.database.bean;
 
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-@AllArgsConstructor
 @Data
 public class SimpleDataRecord implements DataRecord {
     private final UUID owner;
@@ -26,6 +24,23 @@ public class SimpleDataRecord implements DataRecord {
     private final String inventoryWrapper;
     private final String inventorySymbolLink;
     private final Date createTime;
+
+    public SimpleDataRecord(UUID owner, String item, String name, int type, String currency, double price, boolean unlimited, boolean hologram, UUID taxAccount, String permissions, String extra, String inventoryWrapper, String inventorySymbolLink, Date createTime) {
+        this.owner = owner;
+        this.item = item;
+        this.name = name;
+        this.type = type;
+        this.currency = currency;
+        this.price = price;
+        this.unlimited = unlimited;
+        this.hologram = hologram;
+        this.taxAccount = taxAccount;
+        this.permissions = permissions;
+        this.extra = extra;
+        this.inventoryWrapper = inventoryWrapper;
+        this.inventorySymbolLink = inventorySymbolLink;
+        this.createTime = createTime;
+    }
 
     @NotNull
     public Map<String, Object> generateParams() {

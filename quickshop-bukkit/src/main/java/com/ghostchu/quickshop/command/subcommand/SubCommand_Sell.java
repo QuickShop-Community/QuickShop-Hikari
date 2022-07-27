@@ -6,14 +6,16 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.MsgUtil;
-import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-@AllArgsConstructor
 public class SubCommand_Sell implements CommandHandler<Player> {
 
     private final QuickShop plugin;
+
+    public SubCommand_Sell(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

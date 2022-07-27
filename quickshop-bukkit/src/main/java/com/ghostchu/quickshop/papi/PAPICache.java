@@ -9,7 +9,6 @@ import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -205,10 +204,14 @@ public class PAPICache implements Reloadable {
                 .count();
     }
 
-    @AllArgsConstructor
     @Data
     static class CompiledUniqueKey {
         private UUID player;
         private String queryString;
+
+        public CompiledUniqueKey(UUID player, String queryString) {
+            this.player = player;
+            this.queryString = queryString;
+        }
     }
 }

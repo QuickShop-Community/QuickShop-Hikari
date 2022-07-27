@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
-import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -18,10 +17,13 @@ import java.util.List;
 
 import static com.ghostchu.quickshop.util.Util.getPlayerList;
 
-@AllArgsConstructor
 public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
+
+    public SubCommand_RemoveAll(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

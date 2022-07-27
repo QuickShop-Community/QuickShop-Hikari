@@ -10,7 +10,10 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.lib.PaperLib;
-import lombok.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -1421,10 +1424,14 @@ public class Util {
     }
 
     @Data
-    @AllArgsConstructor
     public static class SysPropertiesParseResult {
         private final String key;
         private final String value;
+
+        public SysPropertiesParseResult(String key, String value) {
+            this.key = key;
+            this.value = value;
+        }
 
         @NotNull
         public String getParseKey() {

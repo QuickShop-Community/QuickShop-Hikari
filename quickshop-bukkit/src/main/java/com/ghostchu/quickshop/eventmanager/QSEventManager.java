@@ -6,7 +6,6 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
-import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.*;
@@ -147,12 +146,16 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
     }
 }
 
-@AllArgsConstructor
 class ListenerContainer {
     @Nullable
     private final Class<?> clazz;
     @NotNull
     private final String clazzName;
+
+    public ListenerContainer(@Nullable Class<?> clazz, @NotNull String clazzName) {
+        this.clazz = clazz;
+        this.clazzName = clazzName;
+    }
 
     public boolean matches(@NotNull Class<?> matching, @NotNull Plugin plugin) {
         if (clazz != null) {

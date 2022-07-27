@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.api.shop;
 
 import com.ghostchu.quickshop.api.serialize.BlockPos;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,7 +10,6 @@ import java.util.UUID;
 /**
  * Minimal information about a shop.
  */
-@AllArgsConstructor
 @Data
 @Builder
 public class ShopInfoStorage {
@@ -29,4 +27,21 @@ public class ShopInfoStorage {
     private final String inventoryWrapperName;
     private final String symbolLink;
     private final Map<UUID, String> permission;
+
+    public ShopInfoStorage(String world, BlockPos position, UUID owner, double price, String item, int unlimited, int shopType, String extra, String currency, boolean disableDisplay, UUID taxAccount, String inventoryWrapperName, String symbolLink, Map<UUID, String> permission) {
+        this.world = world;
+        this.position = position;
+        this.owner = owner;
+        this.price = price;
+        this.item = item;
+        this.unlimited = unlimited;
+        this.shopType = shopType;
+        this.extra = extra;
+        this.currency = currency;
+        this.disableDisplay = disableDisplay;
+        this.taxAccount = taxAccount;
+        this.inventoryWrapperName = inventoryWrapperName;
+        this.symbolLink = symbolLink;
+        this.permission = permission;
+    }
 }

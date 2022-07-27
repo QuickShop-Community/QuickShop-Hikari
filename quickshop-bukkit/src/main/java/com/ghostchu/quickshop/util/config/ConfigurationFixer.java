@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.util.config;
 
 import com.ghostchu.quickshop.QuickShop;
-import lombok.AllArgsConstructor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -16,12 +15,18 @@ import java.util.logging.Level;
  *
  * @author sandtechnology
  */
-@AllArgsConstructor
 public class ConfigurationFixer {
     private final QuickShop plugin;
     private final File externalConfigFile;
     private final FileConfiguration externalConfig;
     private final FileConfiguration builtInConfig;
+
+    public ConfigurationFixer(QuickShop plugin, File externalConfigFile, FileConfiguration externalConfig, FileConfiguration builtInConfig) {
+        this.plugin = plugin;
+        this.externalConfigFile = externalConfigFile;
+        this.externalConfig = externalConfig;
+        this.builtInConfig = builtInConfig;
+    }
 
 
     public boolean fix() {

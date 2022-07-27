@@ -8,7 +8,6 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
@@ -18,10 +17,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.List;
 
-@AllArgsConstructor
 public class SubCommand_Name implements CommandHandler<Player> {
 
     private final QuickShop plugin;
+
+    public SubCommand_Name(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     @SneakyThrows

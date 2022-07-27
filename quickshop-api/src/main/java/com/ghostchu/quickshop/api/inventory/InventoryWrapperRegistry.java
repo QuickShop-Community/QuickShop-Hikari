@@ -1,16 +1,17 @@
 package com.ghostchu.quickshop.api.inventory;
 
 import com.google.common.collect.MapMaker;
-import lombok.AllArgsConstructor;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-@AllArgsConstructor
 public class InventoryWrapperRegistry {
     private final Map<String, InventoryWrapperManager> registry = new MapMaker().makeMap();
+
+    public InventoryWrapperRegistry() {
+    }
 
     public void register(@NotNull Plugin plugin, @NotNull InventoryWrapperManager manager) {
         if (registry.containsKey(plugin.getName())) {

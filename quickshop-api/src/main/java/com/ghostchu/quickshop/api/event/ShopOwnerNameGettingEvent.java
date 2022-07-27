@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.api.event;
 
 import com.ghostchu.quickshop.api.shop.Shop;
-import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 
 import java.util.UUID;
@@ -9,11 +8,16 @@ import java.util.UUID;
 /**
  * Fire when quickshop processing the shop owner name
  */
-@AllArgsConstructor
 public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
     private final Shop shop;
     private final UUID owner;
     private Component name;
+
+    public ShopOwnerNameGettingEvent(Shop shop, UUID owner, Component name) {
+        this.shop = shop;
+        this.owner = owner;
+        this.name = name;
+    }
 
     /**
      * Getting the shop that trying getting the shop owner name

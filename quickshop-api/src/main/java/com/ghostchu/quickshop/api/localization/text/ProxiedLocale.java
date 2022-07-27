@@ -1,15 +1,18 @@
 package com.ghostchu.quickshop.api.localization.text;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.Nullable;
 
-@AllArgsConstructor
 @Data
 public class ProxiedLocale {
     @Nullable
     private String origin;
     private String relative;
+
+    public ProxiedLocale(@Nullable String origin, String relative) {
+        this.origin = origin;
+        this.relative = relative;
+    }
 
     public String getLocale() {
         return relative;

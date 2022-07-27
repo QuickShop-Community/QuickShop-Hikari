@@ -8,7 +8,6 @@ import com.google.common.collect.Lists;
 import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.Config;
 import com.rollbar.notifier.config.ConfigBuilder;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -169,11 +168,15 @@ public class RollbarErrorReporter {
         this.reportQueue.offer(new ErrorBundle(throwable, context));
     }
 
-    @AllArgsConstructor
     @Data
     static class ErrorBundle {
         private final Throwable throwable;
         private final String[] context;
+
+        public ErrorBundle(Throwable throwable, String[] context) {
+            this.throwable = throwable;
+            this.context = context;
+        }
     }
 
     /**

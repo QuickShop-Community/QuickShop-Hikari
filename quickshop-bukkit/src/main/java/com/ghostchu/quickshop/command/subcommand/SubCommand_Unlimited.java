@@ -5,17 +5,19 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-@AllArgsConstructor
 public class SubCommand_Unlimited implements CommandHandler<Player> {
 
     private final QuickShop plugin;
+
+    public SubCommand_Unlimited(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

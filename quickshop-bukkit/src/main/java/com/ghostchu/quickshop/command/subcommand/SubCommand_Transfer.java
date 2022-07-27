@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -111,12 +110,17 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
         return cmdArg.length <= 2 ? list : Collections.emptyList();
     }
 
-    @AllArgsConstructor
     @Data
     static class PendingTransferTask {
         private final UUID from;
         private final UUID to;
         private final List<Shop> shops;
+
+        public PendingTransferTask(UUID from, UUID to, List<Shop> shops) {
+            this.from = from;
+            this.to = to;
+            this.shops = shops;
+        }
 
         public void commit(boolean sendMessage) {
             for (Shop shop : shops) {

@@ -8,7 +8,6 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
-import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -16,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-@AllArgsConstructor
 public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloadable {
     private final QuickShop plugin;
     private int range;
@@ -25,6 +23,11 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
         init();
+    }
+
+    public DisplayAutoDespawnWatcher(QuickShop plugin, int range) {
+        this.plugin = plugin;
+        this.range = range;
     }
 
     private void init() {

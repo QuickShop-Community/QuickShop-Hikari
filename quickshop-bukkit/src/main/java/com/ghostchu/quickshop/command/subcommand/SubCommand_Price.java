@@ -10,7 +10,6 @@ import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
@@ -20,10 +19,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@AllArgsConstructor
 public class SubCommand_Price implements CommandHandler<Player> {
 
     private final QuickShop plugin;
+
+    public SubCommand_Price(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

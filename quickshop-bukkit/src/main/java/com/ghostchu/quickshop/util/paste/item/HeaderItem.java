@@ -1,13 +1,11 @@
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-@AllArgsConstructor
 @Data
 public class HeaderItem implements PasteItem {
     private final long timestamp;
@@ -26,6 +24,11 @@ public class HeaderItem implements PasteItem {
                 </tbody>
             </table>
             """;
+
+    public HeaderItem(long timestamp, Map<String, String> items) {
+        this.timestamp = timestamp;
+        this.items = items;
+    }
 
     @NotNull
     private String buildContent() {

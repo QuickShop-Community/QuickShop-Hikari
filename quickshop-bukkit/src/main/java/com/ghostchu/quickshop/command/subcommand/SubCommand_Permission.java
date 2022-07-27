@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.Util;
 import com.google.common.collect.ImmutableList;
-import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.enginehub.squirrelid.Profile;
@@ -16,9 +15,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-@AllArgsConstructor
 public class SubCommand_Permission implements CommandHandler<Player> {
     private final QuickShop plugin;
+
+    public SubCommand_Permission(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * Calling while command executed by specified sender

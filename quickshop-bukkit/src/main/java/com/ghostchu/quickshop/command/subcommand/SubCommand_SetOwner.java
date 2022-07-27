@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
-import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
@@ -15,10 +14,13 @@ import java.util.List;
 
 import static com.ghostchu.quickshop.util.Util.getPlayerList;
 
-@AllArgsConstructor
 public class SubCommand_SetOwner implements CommandHandler<Player> {
 
     private final QuickShop plugin;
+
+    public SubCommand_SetOwner(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

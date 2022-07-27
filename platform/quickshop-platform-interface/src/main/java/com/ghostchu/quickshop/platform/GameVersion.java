@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.platform;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Ghost_chu and sandtechnology
  */
-@AllArgsConstructor
 @Getter
 public enum GameVersion {
     v1_5_R1(false, true, false, false, false, false),
@@ -73,6 +71,15 @@ public enum GameVersion {
      * Sign Glowing Support
      */
     private final boolean signTextDyeSupport;
+
+    private GameVersion(boolean coreSupports, boolean endOfLife, boolean virtualDisplaySupports, boolean newNmsName, boolean signGlowingSupport, boolean signTextDyeSupport) {
+        this.coreSupports = coreSupports;
+        this.endOfLife = endOfLife;
+        this.virtualDisplaySupports = virtualDisplaySupports;
+        this.newNmsName = newNmsName;
+        this.signGlowingSupport = signGlowingSupport;
+        this.signTextDyeSupport = signTextDyeSupport;
+    }
 
 
     /**

@@ -3,7 +3,6 @@ package com.ghostchu.quickshop.util.paste;
 import com.ghostchu.quickshop.util.JsonUtil;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -53,11 +52,14 @@ public class LuckoPastebinPaster implements PasteInterface {
         private String key;
     }
 
-    @AllArgsConstructor
     @Data
     static class JsonPadding {
         private final String _paster = "QuickShop";
         private String data;
+
+        public JsonPadding(String data) {
+            this.data = data;
+        }
     }
 }
 

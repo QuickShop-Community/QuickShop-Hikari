@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,9 +12,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-@AllArgsConstructor
 public abstract class SubCommand_SilentBase implements CommandHandler<Player> {
     protected final QuickShop plugin;
+
+    public SubCommand_SilentBase(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

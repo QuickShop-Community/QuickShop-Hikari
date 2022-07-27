@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -10,11 +9,14 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.List;
 
-@AllArgsConstructor
 public class SubCommand_Reset implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
     private final List<String> tabCompleteList = List.of("lang", "config", "messages");
+
+    public SubCommand_Reset(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
 
     @Override

@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.Paste;
 import com.ghostchu.quickshop.util.paste.PasteGenerator;
-import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.command.CommandSender;
@@ -23,10 +22,13 @@ import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Level;
 
-@AllArgsConstructor
 public class SubCommand_Paste implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
+
+    public SubCommand_Paste(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

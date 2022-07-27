@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.permission;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -8,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Data
-@AllArgsConstructor
 public class PermissionInformationContainer {
     @NotNull
     private CommandSender sender;
@@ -21,6 +19,13 @@ public class PermissionInformationContainer {
 
     @Nullable
     private String otherInfos;
+
+    public PermissionInformationContainer(@NotNull CommandSender sender, @NotNull String permission, @Nullable String groupName, @Nullable String otherInfos) {
+        this.sender = sender;
+        this.permission = permission;
+        this.groupName = groupName;
+        this.otherInfos = otherInfos;
+    }
 
     /**
      * Get sender is console

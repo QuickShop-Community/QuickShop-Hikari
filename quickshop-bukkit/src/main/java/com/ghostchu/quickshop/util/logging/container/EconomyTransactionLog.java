@@ -1,12 +1,10 @@
 package com.ghostchu.quickshop.util.logging.container;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 import java.util.UUID;
 
-@AllArgsConstructor
 @Builder
 @Data
 public class EconomyTransactionLog {
@@ -19,4 +17,15 @@ public class EconomyTransactionLog {
     private UUID taxAccount;
     private double amount;
     private String lastError;
+
+    public EconomyTransactionLog(boolean success, UUID from, UUID to, String currency, double tax, UUID taxAccount, double amount, String lastError) {
+        this.success = success;
+        this.from = from;
+        this.to = to;
+        this.currency = currency;
+        this.tax = tax;
+        this.taxAccount = taxAccount;
+        this.amount = amount;
+        this.lastError = lastError;
+    }
 }

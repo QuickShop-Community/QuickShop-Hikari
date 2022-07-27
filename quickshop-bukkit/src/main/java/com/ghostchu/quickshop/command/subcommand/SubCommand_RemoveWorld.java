@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -12,10 +11,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-@AllArgsConstructor
 public class SubCommand_RemoveWorld implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
+
+    public SubCommand_RemoveWorld(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

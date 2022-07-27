@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -195,7 +194,6 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
         return Reloadable.super.reloadModule();
     }
 
-    @AllArgsConstructor
     @Data
     static class RuleSet {
         private final List<Function<ItemStack, Boolean>> items;
@@ -203,6 +201,14 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
         private final List<Pattern> currency;
         private final double min;
         private final double max;
+
+        public RuleSet(List<Function<ItemStack, Boolean>> items, String bypassPermission, List<Pattern> currency, double min, double max) {
+            this.items = items;
+            this.bypassPermission = bypassPermission;
+            this.currency = currency;
+            this.min = min;
+            this.max = max;
+        }
 
         /**
          * Check if the rule is allowed to apply to the given price.

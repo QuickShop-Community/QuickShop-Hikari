@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.api.shop.ShopChunk;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.World;
@@ -9,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 
 @EqualsAndHashCode
 @ToString
-@AllArgsConstructor
 public class SimpleShopChunk implements ShopChunk {
     @NotNull
     private final String world;
@@ -17,6 +15,12 @@ public class SimpleShopChunk implements ShopChunk {
     private final int x;
 
     private final int z;
+
+    public SimpleShopChunk(@NotNull String world, int x, int z) {
+        this.world = world;
+        this.x = x;
+        this.z = z;
+    }
 
     @Override
     public boolean isSame(@NotNull World world, int x, int z) {

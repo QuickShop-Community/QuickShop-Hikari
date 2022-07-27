@@ -3,7 +3,6 @@ package com.ghostchu.quickshop.util.logger;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.Util;
 import com.google.common.collect.EvictingQueue;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -220,7 +219,6 @@ public class Log {
 
     }
 
-    @AllArgsConstructor
     @Data
     public static class Caller {
         @NotNull
@@ -232,6 +230,13 @@ public class Log {
         @NotNull
         private final String methodName;
         private final int lineNumber;
+
+        public Caller(@NotNull String threadName, @NotNull String className, @NotNull String methodName, int lineNumber) {
+            this.threadName = threadName;
+            this.className = className;
+            this.methodName = methodName;
+            this.lineNumber = lineNumber;
+        }
 
         @NotNull
         public static Caller create() {

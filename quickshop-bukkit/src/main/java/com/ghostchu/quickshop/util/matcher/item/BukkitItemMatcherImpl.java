@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.util.matcher.item;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
-import lombok.AllArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -13,9 +12,12 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Ghost_chu
  */
-@AllArgsConstructor
 public class BukkitItemMatcherImpl implements ItemMatcher {
     private final QuickShop plugin;
+
+    public BukkitItemMatcherImpl(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * Gets the ItemMatcher provider name

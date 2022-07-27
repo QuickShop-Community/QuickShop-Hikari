@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.util.MsgUtil;
-import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
@@ -14,10 +13,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-@AllArgsConstructor
 public class SubCommand_Info implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
+
+    public SubCommand_Info(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

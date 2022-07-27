@@ -9,7 +9,10 @@ import com.ghostchu.quickshop.database.SimpleDatabaseHelperV1;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.ToString;
 import net.kyori.adventure.text.Component;
 import org.bukkit.configuration.ConfigurationSection;
 import org.h2.Driver;
@@ -440,7 +443,6 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         EasySQL.shutdownManager(this.liveDatabase);
     }
 
-    @AllArgsConstructor
     @Data
     static class DatabaseConfig {
         private final boolean mysql;
@@ -451,6 +453,17 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         private final String database;
         private final boolean useSSL;
         private final String prefix;
+
+        public DatabaseConfig(boolean mysql, String host, String user, String pass, int port, String database, boolean useSSL, String prefix) {
+            this.mysql = mysql;
+            this.host = host;
+            this.user = user;
+            this.pass = pass;
+            this.port = port;
+            this.database = database;
+            this.useSSL = useSSL;
+            this.prefix = prefix;
+        }
     }
 
     /**
@@ -496,7 +509,6 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
     }
 
     @Builder
-    @AllArgsConstructor
     @Getter
     @ToString
     static class ShopStorageUnit {
@@ -513,6 +525,22 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         private final String currency;
         private final int disableDisplay;
         private final String taxAccount;
+
+        public ShopStorageUnit(String owner, double price, String itemConfig, int x, int y, int z, String world, int unlimited, int type, String extra, String currency, int disableDisplay, String taxAccount) {
+            this.owner = owner;
+            this.price = price;
+            this.itemConfig = itemConfig;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.world = world;
+            this.unlimited = unlimited;
+            this.type = type;
+            this.extra = extra;
+            this.currency = currency;
+            this.disableDisplay = disableDisplay;
+            this.taxAccount = taxAccount;
+        }
 
         @NotNull
         public String getInventoryWrapperName() {

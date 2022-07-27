@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.api.event;
 
 import com.ghostchu.quickshop.api.shop.Shop;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -10,11 +9,16 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@AllArgsConstructor
 public class ShopInventoryCalculateEvent extends AbstractQSEvent {
     private final Shop shop;
     private final int space;
     private final int stock;
+
+    public ShopInventoryCalculateEvent(Shop shop, int space, int stock) {
+        this.shop = shop;
+        this.space = space;
+        this.stock = stock;
+    }
 
     /**
      * Gets the shop that inventory has been calculated

@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.AllArgsConstructor;
 import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,10 +14,13 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.logging.Level;
 
-@AllArgsConstructor
 public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender> {
 
     private final QuickShop plugin;
+
+    public SubCommand_Recovery(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

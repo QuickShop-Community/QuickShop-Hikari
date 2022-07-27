@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.api.event;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.bukkit.entity.Player;
@@ -11,11 +10,15 @@ import org.bukkit.entity.Player;
  * @author Ghost_chu
  */
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
 @Data
 public class QSHandleChatEvent extends AbstractQSEvent {
     private final Player sender;
     private String message;
+
+    public QSHandleChatEvent(Player sender, String message) {
+        this.sender = sender;
+        this.message = message;
+    }
 
     /**
      * Getting the chat sender

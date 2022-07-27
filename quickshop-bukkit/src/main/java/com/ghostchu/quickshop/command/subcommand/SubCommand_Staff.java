@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
-import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -21,11 +20,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-@AllArgsConstructor
 public class SubCommand_Staff implements CommandHandler<Player> {
 
     private final QuickShop plugin;
     private final List<String> tabCompleteList = List.of("add", "del", "list", "clear");
+
+    public SubCommand_Staff(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

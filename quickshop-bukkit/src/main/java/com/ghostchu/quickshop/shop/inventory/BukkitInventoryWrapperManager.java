@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.util.JsonUtil;
 import io.papermc.lib.PaperLib;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.bukkit.Bukkit;
@@ -54,11 +53,14 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
         }
     }
 
-    @AllArgsConstructor
     public
     enum HolderType {
         BLOCK("block"), UNKNOWN("unknown");
         private final String typeString;
+
+        private HolderType(String typeString) {
+            this.typeString = typeString;
+        }
 
         @NotNull
         public HolderType fromType(@NotNull String str) {
@@ -77,21 +79,31 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     }
 
     @Data
-    @AllArgsConstructor
     @Builder
     public static class CommonHolder {
         private HolderType holder;
         private String content;
+
+        public CommonHolder(HolderType holder, String content) {
+            this.holder = holder;
+            this.content = content;
+        }
     }
 
 
     @Data
-    @AllArgsConstructor
     @Builder
     public static class BlockHolder {
         private String world;
         private int x;
         private int y;
         private int z;
+
+        public BlockHolder(String world, int x, int y, int z) {
+            this.world = world;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
     }
 }

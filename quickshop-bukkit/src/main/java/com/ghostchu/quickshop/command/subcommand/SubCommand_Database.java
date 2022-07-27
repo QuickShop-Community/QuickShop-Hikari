@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.database.bean.IsolatedScanResult;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.holder.DatabaseStatusHolder;
-import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.command.CommandSender;
@@ -18,9 +17,12 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
-@AllArgsConstructor
 public class SubCommand_Database implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
+
+    public SubCommand_Database(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * Calling while command executed by specified sender

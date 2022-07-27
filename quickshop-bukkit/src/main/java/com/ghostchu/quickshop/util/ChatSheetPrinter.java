@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.QuickShop;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
@@ -9,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
 
-@AllArgsConstructor
 @Getter
 @Setter
 /*
@@ -17,6 +15,10 @@ import org.jetbrains.annotations.NotNull;
 */
 public class ChatSheetPrinter {
     private final CommandSender p;
+
+    public ChatSheetPrinter(CommandSender p) {
+        this.p = p;
+    }
 
     public void printCenterLine(@NotNull Component text) {
         if (Util.isEmptyComponent(text)) {

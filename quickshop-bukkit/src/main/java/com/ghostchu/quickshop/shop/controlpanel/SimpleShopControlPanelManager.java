@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopControlPanel;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
-import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -18,11 +17,14 @@ import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-@AllArgsConstructor
 public class SimpleShopControlPanelManager implements ShopControlPanelManager {
     private final QuickShop plugin;
     private final Lock LOCK = new ReentrantLock();
     private final Map<ShopControlPanel, Integer> registry = new LinkedHashMap<>();
+
+    public SimpleShopControlPanelManager(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     private void resort() {
         if (!LOCK.tryLock()) {

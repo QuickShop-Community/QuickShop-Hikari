@@ -8,7 +8,6 @@ import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.MsgUtil;
-import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -17,10 +16,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@AllArgsConstructor
 public class SubCommand_Currency implements CommandHandler<Player> {
 
     private final QuickShop plugin;
+
+    public SubCommand_Currency(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

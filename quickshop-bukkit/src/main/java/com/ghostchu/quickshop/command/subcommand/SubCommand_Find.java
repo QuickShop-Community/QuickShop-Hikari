@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import io.papermc.lib.PaperLib;
-import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
@@ -19,10 +18,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-@AllArgsConstructor
 public class SubCommand_Find implements CommandHandler<Player> {
 
     private final QuickShop plugin;
+
+    public SubCommand_Find(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

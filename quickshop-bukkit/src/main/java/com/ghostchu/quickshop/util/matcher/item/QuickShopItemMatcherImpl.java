@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
-import lombok.AllArgsConstructor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.configuration.ConfigurationSection;
@@ -21,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-@AllArgsConstructor
 public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
     private final QuickShop plugin;
 
@@ -34,6 +32,12 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
         init();
+    }
+
+    public QuickShopItemMatcherImpl(QuickShop plugin, ItemMetaMatcher itemMetaMatcher, int workType) {
+        this.plugin = plugin;
+        this.itemMetaMatcher = itemMetaMatcher;
+        this.workType = workType;
     }
 
     private void init() {

@@ -3,7 +3,6 @@ package com.ghostchu.quickshop.database;
 import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,10 +15,13 @@ import java.sql.SQLException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-@AllArgsConstructor
 @Data
 public class DatabaseIOUtil {
     private final SimpleDatabaseHelperV2 helper;
+
+    public DatabaseIOUtil(SimpleDatabaseHelperV2 helper) {
+        this.helper = helper;
+    }
 
     public void exportTables(@NotNull File zipFile) throws SQLException, IOException {
         try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {

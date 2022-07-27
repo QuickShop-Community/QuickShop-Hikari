@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.util.MsgUtil;
-import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,10 +11,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@AllArgsConstructor
 public class SubCommand_Help implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
+
+    public SubCommand_Help(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     @Override
     public void onCommand(

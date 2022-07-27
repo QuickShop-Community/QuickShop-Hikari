@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.api.event;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,11 +8,14 @@ import lombok.EqualsAndHashCode;
  * Useful for quickshop simple scheduler.
  */
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
 @Data
 
 public class CalendarEvent extends AbstractQSEvent {
     private CalendarTriggerType calendarTriggerType;
+
+    public CalendarEvent(CalendarTriggerType calendarTriggerType) {
+        this.calendarTriggerType = calendarTriggerType;
+    }
 
     public enum CalendarTriggerType {
         NOTHING_CHANGED, SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR

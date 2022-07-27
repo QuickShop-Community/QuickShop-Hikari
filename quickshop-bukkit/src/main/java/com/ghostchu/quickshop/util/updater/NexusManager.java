@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.logger.Log;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.dom4j.Document;
@@ -82,11 +81,16 @@ public class NexusManager {
     }
 
     @Data
-    @AllArgsConstructor
     static class NexusMetadata {
         private long lastUpdate;
         private String latestVersion;
         private String releaseVersion;
+
+        public NexusMetadata(long lastUpdate, String latestVersion, String releaseVersion) {
+            this.lastUpdate = lastUpdate;
+            this.latestVersion = latestVersion;
+            this.releaseVersion = releaseVersion;
+        }
 
         @NotNull
         public static NexusMetadata parse(@NotNull String xml) throws DocumentException, IllegalStateException {

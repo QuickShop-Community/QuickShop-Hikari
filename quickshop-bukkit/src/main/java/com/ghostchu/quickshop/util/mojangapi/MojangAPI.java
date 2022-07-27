@@ -9,7 +9,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
@@ -48,11 +47,16 @@ public class MojangAPI {
 
 
     @Data
-    @AllArgsConstructor
     public static class AssetsFileData {
         private String content;
         private String sha1;
         private String id;
+
+        public AssetsFileData(String content, String sha1, String id) {
+            this.content = content;
+            this.sha1 = sha1;
+            this.id = id;
+        }
     }
 
     @Data
