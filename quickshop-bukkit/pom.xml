@@ -292,6 +292,10 @@
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+                <exclusion>
                     <artifactId>paper-api</artifactId>
                     <groupId>com.destroystokyo.paper</groupId>
                 </exclusion>
