@@ -92,7 +92,7 @@
 ## Introduction
 
 QuickShop Hikari is a Shop plugin that allows players to create Chest Shops to easily sell and buy items, without the
-need of any commands.  
+need for any commands.  
 In fact, all commands in QuickShop are not even needed for normal gameplay.
 
 This version of QuickShop ([Ghost-chu/QuickShop-Hikari][quickshop-hikari]) is a fork
@@ -114,7 +114,7 @@ the latest versions of Minecraft.
 - Unlimited chest support.
 - Blacklist support & bypass permissions.
 - Shops that buy and sell items at the same time (Using double chests).
-- Customisable permission checks.
+- Customizable permission checks.
 - UUID support.
 - Better shop protection.
 - i18n support for displayed Item names.
@@ -159,7 +159,7 @@ not done automatically), make your changes and create a pull request when you're
 Please try to follow [Google's Java Code Style][googlejava] and do not increase the Plugin version. Thank you!
 
 ### Distributing forks
-You're allowed to create your own fork to share. No permission needed.  
+You're allowed to create your fork to share. No permission is needed.  
 Though it would be nice if you could pull-request your changes into this repository when they are good ones.
 
 ### Compile and Debugging
