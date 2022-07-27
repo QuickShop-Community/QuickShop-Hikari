@@ -54,7 +54,7 @@ public final class Main extends CompatibilityModule {
     public void onPreCreation(ShopPreCreateEvent event) {
         if (landsIntegration.getLandWorld(event.getLocation().getWorld()) == null) {
             if (!ignoreDisabledWorlds) {
-                event.setCancelled(true, "Lands: this world not in list and ignore-disabled-worlds is disabled");
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.world-not-enabled").forLocale());
                 return;
             }
         }
@@ -75,7 +75,7 @@ public final class Main extends CompatibilityModule {
     public void onCreation(ShopCreateEvent event) {
         if (landsIntegration.getLandWorld(event.getShop().getLocation().getWorld()) == null) {
             if (!ignoreDisabledWorlds) {
-                event.setCancelled(true, "Lands: this world not in list and ignore-disabled-worlds is disabled");
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.world-not-enabled").forLocale());
                 return;
             }
         }
@@ -84,10 +84,10 @@ public final class Main extends CompatibilityModule {
             if (land.getOwnerUID().equals(event.getPlayer().getUniqueId()) || land.isTrusted(event.getPlayer().getUniqueId())) {
                 return;
             }
-            event.setCancelled(true, "Lands: you don't have permission to create shop here");
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.creation-denied").forLocale());
         } else {
             if (whitelist) {
-                event.setCancelled(true, "Lands: you don't have permission to create shop here (whitelist)");
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.creation-denied").forLocale());
             }
         }
     }
@@ -98,7 +98,7 @@ public final class Main extends CompatibilityModule {
             if (ignoreDisabledWorlds) {
                 return;
             }
-            event.setCancelled(true, "Lands: this world not in list and ignore-disabled-worlds is disabled");
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.world-not-enabled").forLocale());
         }
     }
 
