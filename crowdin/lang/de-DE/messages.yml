@@ -591,8 +591,22 @@ addon:
     target-shop-not-in-nation-region: "<red>Der Zielshop ist nicht in der Nation."
     item-not-allowed: "<red>Das Item dieses Shops ist nicht in Stadt/Nation Shops erlaubt. Wähle ein anderes aus!"
     operation-disabled-due-shop-status: "<red>Diese Shop-Operation wurde deaktiviert da es bereits ein Stadt/Nation-Shop ist."
-    plot-type-disallowed: "<red>You can't create town/nation shop on this type of plot."
+    plot-type-disallowed: "<red>Du kannst keinen Stadt-/Nationen-Shop auf dieser Art von Plot erstellen."
   residence:
-    creation-flag-denied: "<red>You don't have permission to create shops in this residence."
-    trade-flag-denied: "<red>You don't have permission to purchase in this residence."
-    you-cannot-create-shop-in-wildness: "<red>You can't create shop in wildness."
+    creation-flag-denied: "<red>Du hast keine Berechtigung in dieser Residenz einen Shop zu erstellen."
+    trade-flag-denied: "<red>Du hast keine Berechtigung in dieser Residenz etwas zu kaufen."
+    you-cannot-create-shop-in-wildness: "<red>Du kannst keinen Shop in der Wildnis erstellen."
+  griefprevention:
+    creation-denied: "<red>You don't have permission to create shops in this claim."
+    trade-denied: "<red>You don't have permission to purchase shops in this claim."
+  lands:
+    world-not-enabled: "<red>You are not allowed to create or purchase in this world."
+    creation-denied: "<red>You don't have permission to create shops in this Land."
+  plotsquared:
+    no-plot-whitelist-creation: "<red>You cannot create shop outside of Plot."
+    no-plot-whitelist-trade: "<red>You cannot purchase shop outside of Plot."
+    creation-denied: "<red>You don't have permission to create shops in this Plot."
+    trade-denied: "<red>You don't have permission to purchase shops in this Plot."
+  superiorskyblock:
+    owner-create-only: "<red>Only island owner can create shop there."
+    owner-member-create-only: "<red>Only island owner or member can create shop there."
