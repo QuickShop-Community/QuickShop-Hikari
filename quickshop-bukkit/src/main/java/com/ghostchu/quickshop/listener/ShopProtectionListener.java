@@ -37,6 +37,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.jetbrains.annotations.NotNull;
@@ -103,7 +104,6 @@ public class ShopProtectionListener extends AbstractProtectionListener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplode(EntityExplodeEvent e) {
-
         for (int i = 0, a = e.blockList().size(); i < a; i++) {
             final Block b = e.blockList().get(i);
             final Shop shop = getShopNature(b.getLocation(), true);
@@ -117,6 +117,19 @@ public class ShopProtectionListener extends AbstractProtectionListener {
                 plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "BlockBreak(explode)", shop.saveToInfoStorage()));
                 shop.delete();
             }
+        }
+    }
+
+    /*
+     * Handles shops breaking through entity changes (like Wither etc.)
+     */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityBlockChange(EntityChangeBlockEvent e) {
+        if(!plugin.getConfig().getBoolean("protect.entity",true)){
+            return;
+        }
+        if(getShopNature(e.getBlock().getLocation(),true) != null){
+            e.setCancelled(true);
         }
     }
 
