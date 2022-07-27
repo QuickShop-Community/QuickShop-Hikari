@@ -42,7 +42,7 @@ public class NexusManager {
             cachedResult = true;
             return true;
         }
-        this.cachedResult = plugin.getDescription().getVersion().equals(cachedMetadata.getLatestVersion());
+        this.cachedResult = plugin.getDescription().getVersion().equals(cachedMetadata.getReleaseVersion());
         return this.cachedResult;
     }
 
@@ -78,7 +78,7 @@ public class NexusManager {
         if (!plugin.getConfig().getBoolean("updater", false) || cachedMetadata == null) {
             return plugin.getDescription().getVersion();
         }
-        return cachedMetadata.getLatestVersion();
+        return cachedMetadata.getReleaseVersion();
     }
 
     @Data
