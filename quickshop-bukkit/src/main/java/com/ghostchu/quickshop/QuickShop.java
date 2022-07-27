@@ -862,7 +862,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
         getLogger().info("Reading the configuration...");
         initConfiguration();
-        new ServerInternalExporter(this);
         getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
         getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood, sandtechnology");
         getLogger().info("Let's start loading the plugin");
