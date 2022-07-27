@@ -63,7 +63,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
             Component component = plugin.text().of(sender, "paste-created", url).forLocale();
             component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, url));
             MsgUtil.sendDirectMessage(sender, component);
-            if (MsgUtil.getDefaultGameLanguageCode().equalsIgnoreCase("zh_cn") || Locale.getDefault().equals(Locale.CHINA)) {
+            if ("zh_cn".equalsIgnoreCase(MsgUtil.getDefaultGameLanguageCode()) || Locale.getDefault().equals(Locale.CHINA)) {
                 plugin.text().of(sender, "paste-451").send();
             }
             return true;
@@ -86,8 +86,9 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
             plugin.text().of(sender, "paste-created-local", file.getAbsolutePath()).send();
             return true;
         } catch (IOException e) {
-            if (plugin.getSentryErrorReporter() != null)
+            if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
+            }
             plugin.getLogger().log(Level.WARNING, "Failed to save paste locally! The content will be send to the console", e);
             plugin.text().of("paste-created-local-failed").send();
             return false;

@@ -17,8 +17,9 @@ public class ServerInternalExporter {
     @SneakyThrows
     public ServerInternalExporter(QuickShop plugin) {
         File exportFolder = new File(plugin.getDataFolder(), "server-internal-export");
-        if(!exportFolder.exists())
+        if (!exportFolder.exists()) {
             exportFolder.mkdirs();
+        }
         exportMaterial().save(new File(exportFolder, "material.yml"));
         exportEnchantments().save(new File(exportFolder, "enchantment.yml"));
         exportPotionEffectType().save(new File(exportFolder, "potion-effect.yml"));

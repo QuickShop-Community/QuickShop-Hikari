@@ -27,7 +27,7 @@ public final class Main extends CompatibilityModule {
     private boolean whitelist;
     private LandsIntegration landsIntegration;
     private boolean deleteWhenLosePermission;
-
+    @Override
     public void init() {
         landsIntegration = new me.angeschossen.lands.api.integration.LandsIntegration(this);
         ignoreDisabledWorlds = getConfig().getBoolean("ignore-disabled-worlds");
@@ -39,7 +39,9 @@ public final class Main extends CompatibilityModule {
     public void permissionOverride(ShopAuthorizeCalculateEvent event) {
         Location shopLoc = event.getShop().getLocation();
         Land land = landsIntegration.getLand(shopLoc);
-        if (land == null) return;
+        if (land == null) {
+            return;
+        }
         if (land.getOwnerUID().equals(event.getAuthorizer())) {
             if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);

@@ -103,8 +103,9 @@ public class ConfigurationUpdater {
             plugin.getLogger().info("Save changes & Reloading configurations...");
             plugin.saveConfig();
             plugin.reloadConfig();
-            if (plugin.getReloadManager() != null)
+            if (plugin.getReloadManager() != null) {
                 plugin.getReloadManager().reload();
+            }
         }
     }
 

@@ -35,17 +35,21 @@ public class SubCommand_Permission implements CommandHandler<Player> {
             return;
         }
         String type = null;
-        if (cmdArg.length > 0)
+        if (cmdArg.length > 0) {
             type = cmdArg[0].toLowerCase(Locale.ROOT);
+        }
         String operation = null;
-        if (cmdArg.length > 1)
+        if (cmdArg.length > 1) {
             operation = cmdArg[1].toLowerCase(Locale.ROOT);
+        }
         String target = null;
-        if (cmdArg.length > 2)
+        if (cmdArg.length > 2) {
             target = cmdArg[2];
+        }
         String group = null;
-        if (cmdArg.length > 3)
+        if (cmdArg.length > 3) {
             group = cmdArg[3];
+        }
         ChatSheetPrinter sheet = new ChatSheetPrinter(sender);
         if (type == null) {
             plugin.text().of(sender, "bad-command-usage-detailed", "user,group").send();
@@ -136,19 +140,19 @@ public class SubCommand_Permission implements CommandHandler<Player> {
             return ImmutableList.of("user", "group");
         }
         if (cmdArg.length == 2) {
-            if (cmdArg[0].equalsIgnoreCase("user")) {
+            if ("user".equalsIgnoreCase(cmdArg[0])) {
                 return ImmutableList.of("set", "unset");
-            } else if (cmdArg[0].equalsIgnoreCase("group")) {
+            } else if ("group".equalsIgnoreCase(cmdArg[0])) {
                 return ImmutableList.of("list");
             }
         }
         if (cmdArg.length == 3) {
-            if (cmdArg[0].equalsIgnoreCase("user")) {
+            if ("user".equalsIgnoreCase(cmdArg[0])) {
                 return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
             }
         }
         if (cmdArg.length == 4) {
-            if (cmdArg[0].equalsIgnoreCase("user")) {
+            if ("user".equalsIgnoreCase(cmdArg[0])) {
                 return plugin.getShopPermissionManager().getGroups();
             }
         }

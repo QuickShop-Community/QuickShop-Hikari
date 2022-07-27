@@ -57,69 +57,99 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         try (Connection liveDatabase = getLiveDatabase().getConnection()) {
             if (!config.isMysql()) {
                 try (Connection sqliteDatabase = getSQLiteDatabase()) {
-                    if (hasTable(config.getPrefix() + "shops", liveDatabase))
+                    if (hasTable(config.getPrefix() + "shops", liveDatabase)) {
                         throw new IllegalStateException("The target database has exists shops data!");
-                    if (hasTable(config.getPrefix() + "messages", liveDatabase))
+                    }
+                    if (hasTable(config.getPrefix() + "messages", liveDatabase)) {
                         throw new IllegalStateException("The target database has exists messages data!");
-                    if (hasTable(config.getPrefix() + "external_cache", liveDatabase))
+                    }
+                    if (hasTable(config.getPrefix() + "external_cache", liveDatabase)) {
                         throw new IllegalStateException("The target database has external_data data!");
-                    if (!hasTable(config.getPrefix() + "shops", sqliteDatabase))
+                    }
+                    if (!hasTable(config.getPrefix() + "shops", sqliteDatabase)) {
                         throw new IllegalStateException("The sources database had no exists shops data! shops.db file data missing!");
-                    if (!hasTable(config.getPrefix() + "messages", sqliteDatabase))
+                    }
+                    if (!hasTable(config.getPrefix() + "messages", sqliteDatabase)) {
                         throw new IllegalStateException("The sources database had no exists messages data! shops.db file data missing!");
-                    if (!hasTable(config.getPrefix() + "external_cache", sqliteDatabase))
+                    }
+                    if (!hasTable(config.getPrefix() + "external_cache", sqliteDatabase)) {
                         throw new IllegalStateException("The sources database had no external_data data! shops.db file data missing!");
-                    if (!hasColumn(config.getPrefix() + "shops", "owner", sqliteDatabase))
+                    }
+                    if (!hasColumn(config.getPrefix() + "shops", "owner", sqliteDatabase)) {
                         entries.add(Component.text("The sources database has not exists owner column!"));
-                    if (!hasColumn(config.getPrefix() + "shops", "price", sqliteDatabase))
+                    }
+                    if (!hasColumn(config.getPrefix() + "shops", "price", sqliteDatabase)) {
                         throw new IllegalStateException("The sources database has not exists price column!");
-                    if (!hasColumn(config.getPrefix() + "shops", "itemConfig", sqliteDatabase))
+                    }
+                    if (!hasColumn(config.getPrefix() + "shops", "itemConfig", sqliteDatabase)) {
                         entries.add(Component.text("The sources database has not exists itemConfig column!"));
-                    if (!hasColumn(config.getPrefix() + "shops", "x", sqliteDatabase))
+                    }
+                    if (!hasColumn(config.getPrefix() + "shops", "x", sqliteDatabase)) {
                         entries.add(Component.text("The sources database has not exists x column!"));
-                    if (!hasColumn(config.getPrefix() + "shops", "y", sqliteDatabase))
+                    }
+                    if (!hasColumn(config.getPrefix() + "shops", "y", sqliteDatabase)) {
                         entries.add(Component.text("The sources database has not exists y column!"));
-                    if (!hasColumn(config.getPrefix() + "shops", "z", sqliteDatabase))
+                    }
+                    if (!hasColumn(config.getPrefix() + "shops", "z", sqliteDatabase)) {
                         entries.add(Component.text("The sources database has not exists z column!"));
-                    if (!hasColumn(config.getPrefix() + "shops", "world", sqliteDatabase))
+                    }
+                    if (!hasColumn(config.getPrefix() + "shops", "world", sqliteDatabase)) {
                         entries.add(Component.text("The sources database has not exists world column!"));
-                    if (!hasColumn(config.getPrefix() + "shops", "unlimited", sqliteDatabase))
+                    }
+                    if (!hasColumn(config.getPrefix() + "shops", "unlimited", sqliteDatabase)) {
                         entries.add(Component.text("The sources database has not exists unlimited column!"));
-                    if (!hasColumn(config.getPrefix() + "shops", "type", sqliteDatabase))
+                    }
+                    if (!hasColumn(config.getPrefix() + "shops", "type", sqliteDatabase)) {
                         entries.add(Component.text("The sources database has not exists type column!"));
-                    if (!hasColumn(config.getPrefix() + "shops", "extra", sqliteDatabase))
+                    }
+                    if (!hasColumn(config.getPrefix() + "shops", "extra", sqliteDatabase)) {
                         entries.add(Component.text("The sources database has not exists extra column!"));
-                    if (!hasColumn(config.getPrefix() + "shops", "disableDisplay", sqliteDatabase))
+                    }
+                    if (!hasColumn(config.getPrefix() + "shops", "disableDisplay", sqliteDatabase)) {
                         entries.add(Component.text("The sources database has not exists disableDisplay column!"));
-                    if (!hasColumn(config.getPrefix() + "shops", "taxAccount", sqliteDatabase))
+                    }
+                    if (!hasColumn(config.getPrefix() + "shops", "taxAccount", sqliteDatabase)) {
                         entries.add(Component.text("The sources database has not exists taxAccount column!"));
+                    }
                 }
             } else {
                 // mysql
-                if (!hasColumn(config.getPrefix() + "shops", "owner", liveDatabase))
+                if (!hasColumn(config.getPrefix() + "shops", "owner", liveDatabase)) {
                     entries.add(Component.text("The sources database has not exists owner column!"));
-                if (!hasColumn(config.getPrefix() + "shops", "price", liveDatabase))
+                }
+                if (!hasColumn(config.getPrefix() + "shops", "price", liveDatabase)) {
                     throw new IllegalStateException("The sources database has not exists price column!");
-                if (!hasColumn(config.getPrefix() + "shops", "itemConfig", liveDatabase))
+                }
+                if (!hasColumn(config.getPrefix() + "shops", "itemConfig", liveDatabase)) {
                     entries.add(Component.text("The sources database has not exists itemConfig column!"));
-                if (!hasColumn(config.getPrefix() + "shops", "x", liveDatabase))
+                }
+                if (!hasColumn(config.getPrefix() + "shops", "x", liveDatabase)) {
                     entries.add(Component.text("The sources database has not exists x column!"));
-                if (!hasColumn(config.getPrefix() + "shops", "y", liveDatabase))
+                }
+                if (!hasColumn(config.getPrefix() + "shops", "y", liveDatabase)) {
                     entries.add(Component.text("The sources database has not exists y column!"));
-                if (!hasColumn(config.getPrefix() + "shops", "z", liveDatabase))
+                }
+                if (!hasColumn(config.getPrefix() + "shops", "z", liveDatabase)) {
                     entries.add(Component.text("The sources database has not exists z column!"));
-                if (!hasColumn(config.getPrefix() + "shops", "world", liveDatabase))
+                }
+                if (!hasColumn(config.getPrefix() + "shops", "world", liveDatabase)) {
                     entries.add(Component.text("The sources database has not exists world column!"));
-                if (!hasColumn(config.getPrefix() + "shops", "unlimited", liveDatabase))
+                }
+                if (!hasColumn(config.getPrefix() + "shops", "unlimited", liveDatabase)) {
                     entries.add(Component.text("The sources database has not exists unlimited column!"));
-                if (!hasColumn(config.getPrefix() + "shops", "type", liveDatabase))
+                }
+                if (!hasColumn(config.getPrefix() + "shops", "type", liveDatabase)) {
                     entries.add(Component.text("The sources database has not exists type column!"));
-                if (!hasColumn(config.getPrefix() + "shops", "extra", liveDatabase))
+                }
+                if (!hasColumn(config.getPrefix() + "shops", "extra", liveDatabase)) {
                     entries.add(Component.text("The sources database has not exists extra column!"));
-                if (!hasColumn(config.getPrefix() + "shops", "disableDisplay", liveDatabase))
+                }
+                if (!hasColumn(config.getPrefix() + "shops", "disableDisplay", liveDatabase)) {
                     entries.add(Component.text("The sources database has not exists disableDisplay column!"));
-                if (!hasColumn(config.getPrefix() + "shops", "taxAccount", liveDatabase))
+                }
+                if (!hasColumn(config.getPrefix() + "shops", "taxAccount", liveDatabase)) {
                     entries.add(Component.text("The sources database has not exists taxAccount column!"));
+                }
             }
         }
 
@@ -152,8 +182,9 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
      */
     @Override
     public void migrate(@NotNull UUID actionId) throws Exception {
-        if (!checkReady().isEmpty())
+        if (!checkReady().isEmpty()) {
             throw new IllegalStateException("Not ready!");
+        }
         DatabaseConfig config = getDatabaseConfig();
         instance.getLogger().info("Renaming tables...");
         String shopsTmpTable = renameTables(actionId, config);
@@ -240,7 +271,9 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
      */
     @NotNull
     private SQLManager getLiveDatabase() throws IllegalStateException, ConnectException {
-        if(liveDatabase != null) return liveDatabase;
+        if (liveDatabase != null) {
+            return liveDatabase;
+        }
         HikariConfig config = HikariUtil.createHikariConfig();
         SQLManager manager;
         try {
@@ -278,26 +311,35 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
     @NotNull
     private DatabaseConfig getDatabaseConfig() throws IllegalStateException {
         ConfigurationSection dbCfg = plugin.getConfig().getConfigurationSection("database");
-        if (dbCfg == null)
+        if (dbCfg == null) {
             throw new IllegalStateException("Database configuration section not found!");
-        if (!dbCfg.isSet("mysql"))
+        }
+        if (!dbCfg.isSet("mysql")) {
             throw new IllegalStateException("Database configuration section -> type not set!");
-        if (!dbCfg.isSet("prefix"))
+        }
+        if (!dbCfg.isSet("prefix")) {
             throw new IllegalStateException("Database configuration section -> prefix not set!");
+        }
         boolean mysql = dbCfg.getBoolean("mysql");
         if (mysql) {
-            if (!dbCfg.isSet("host"))
+            if (!dbCfg.isSet("host")) {
                 throw new IllegalStateException("Database configuration section -> host not set!");
-            if (!dbCfg.isSet("port"))
+            }
+            if (!dbCfg.isSet("port")) {
                 throw new IllegalStateException("Database configuration section -> port not set!");
-            if (!dbCfg.isSet("user"))
+            }
+            if (!dbCfg.isSet("user")) {
                 throw new IllegalStateException("Database configuration section -> user not set!");
-            if (!dbCfg.isSet("password"))
+            }
+            if (!dbCfg.isSet("password")) {
                 throw new IllegalStateException("Database configuration section -> password not set!");
-            if (!dbCfg.isSet("database"))
+            }
+            if (!dbCfg.isSet("database")) {
                 throw new IllegalStateException("Database configuration section -> name not set!");
-            if (!dbCfg.isSet("usessl"))
+            }
+            if (!dbCfg.isSet("usessl")) {
                 throw new IllegalStateException("Database configuration section -> SSL not set!");
+            }
         }
 
         String user = dbCfg.getString("user", "mc");

@@ -77,14 +77,17 @@ public class ConfigUpdateScript {
     @UpdateScript(version = 1006)
     public void migrateToMiniMessage() {
         File locales = new File(plugin.getDataFolder(), "overrides");
-        if (!locales.exists())
+        if (!locales.exists()) {
             return;
+        }
         for (File file : locales.listFiles()) {
-            if (!file.isDirectory())
+            if (!file.isDirectory()) {
                 continue;
+            }
             File jsonFile = new File(file, "messages.json");
-            if (!jsonFile.exists())
+            if (!jsonFile.exists()) {
                 continue;
+            }
             try {
                 File yamlFile = new File(jsonFile.getParent(), jsonFile.getName().replace(".json", ".yml"));
                 yamlFile.createNewFile();

@@ -76,7 +76,7 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
             return Arrays.asList("create", "remove", "test");
         }
         if (cmdArg.length > 1) {
-            if (cmdArg[0].equalsIgnoreCase("remove")) {
+            if ("remove".equalsIgnoreCase(cmdArg[0])) {
                 return plugin.getItemMarker().getRegisteredItems();
             }
         }

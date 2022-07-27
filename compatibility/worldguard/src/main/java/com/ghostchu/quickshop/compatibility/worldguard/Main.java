@@ -78,7 +78,9 @@ public final class Main extends CompatibilityModule implements Listener {
         Location shopLoc = event.getShop().getLocation();
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager manager = container.get(BukkitAdapter.adapt(shopLoc.getWorld()));
-        if (manager == null) return;
+        if (manager == null) {
+            return;
+        }
         ApplicableRegionSet set = manager.getApplicableRegions(BlockVector3.at(shopLoc.getX(), shopLoc.getY(), shopLoc.getZ()));
         for (ProtectedRegion region : set.getRegions()) {
             if (region.getOwners().contains(event.getAuthorizer())) {

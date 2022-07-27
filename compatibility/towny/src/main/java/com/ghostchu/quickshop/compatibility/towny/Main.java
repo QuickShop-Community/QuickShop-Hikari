@@ -168,12 +168,17 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void permissionOverride(ShopAuthorizeCalculateEvent event) {
-        if (!getConfig().getBoolean("allow-permission-override", true))
+        if (!getConfig().getBoolean("allow-permission-override", true)) {
             return;
+        }
         Location shopLoc = event.getShop().getLocation();
-        if (isWorldIgnored(shopLoc.getWorld())) return;
+        if (isWorldIgnored(shopLoc.getWorld())) {
+            return;
+        }
         Town town = TownyAPI.getInstance().getTown(shopLoc);
-        if (town == null) return;
+        if (town == null) {
+            return;
+        }
         if (town.getMayor().getUUID().equals(event.getAuthorizer())) {
             if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);
@@ -199,8 +204,9 @@ public final class Main extends CompatibilityModule implements Listener {
         }
         Shop shop = event.getShop();
         // Send tax to server if shop is a town shop or nation shop.
-        if (TownyShopUtil.getShopTown(shop) != null || TownyShopUtil.getShopNation(shop) != null)
+        if (TownyShopUtil.getShopTown(shop) != null || TownyShopUtil.getShopNation(shop) != null) {
             return;
+        }
         // Modify tax account to town account if they aren't town shop or nation shop but inside town or nation
         Town town = TownyAPI.getInstance().getTown(shop.getLocation());
         if (town != null) {
@@ -216,7 +222,9 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPreCreation(ShopPreCreateEvent event) {
-        if (isWorldIgnored(event.getLocation().getWorld())) return;
+        if (isWorldIgnored(event.getLocation().getWorld())) {
+            return;
+        }
         if (checkFlags(event.getPlayer(), event.getLocation(), this.createFlags)) {
             return;
         }
@@ -225,7 +233,9 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onCreation(ShopCreateEvent event) {
-        if (isWorldIgnored(event.getShop().getLocation().getWorld())) return;
+        if (isWorldIgnored(event.getShop().getLocation().getWorld())) {
+            return;
+        }
         //noinspection ConstantConditions
         if (checkFlags(event.getPlayer(), event.getShop().getLocation(), this.createFlags)) {
             return;
@@ -235,7 +245,9 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onTrading(ShopPurchaseEvent event) {
-        if (isWorldIgnored(event.getShop().getLocation().getWorld())) return;
+        if (isWorldIgnored(event.getShop().getLocation().getWorld())) {
+            return;
+        }
         //noinspection ConstantConditions
         if (checkFlags(event.getPlayer(), event.getShop().getLocation(), this.tradeFlags)) {
             return;
@@ -245,7 +257,9 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler
     public void onPlayerLeave(TownRemoveResidentEvent event) {
-        if (isWorldIgnored(event.getTown().getWorld())) return;
+        if (isWorldIgnored(event.getTown().getWorld())) {
+            return;
+        }
         if (!getConfig().getBoolean("delete-shop-on-resident-leave", false)) {
             return;
         }
@@ -254,7 +268,9 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler
     public void onPlotClear(PlotClearEvent event) {
-        if (isWorldIgnored(event.getTownBlock().getWorldCoord().getBukkitWorld())) return;
+        if (isWorldIgnored(event.getTownBlock().getWorldCoord().getBukkitWorld())) {
+            return;
+        }
         if (!getConfig().getBoolean("delete-shop-on-plot-clear", false)) {
             return;
         }
@@ -263,7 +279,9 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler
     public void onPlotUnclaim(TownUnclaimEvent event) {
-        if (isWorldIgnored(event.getWorldCoord().getBukkitWorld())) return;
+        if (isWorldIgnored(event.getWorldCoord().getBukkitWorld())) {
+            return;
+        }
         if (!getConfig().getBoolean("delete-shop-on-plot-unclaimed")) {
             return;
         }
@@ -279,8 +297,9 @@ public final class Main extends CompatibilityModule implements Listener {
     public void purgeShops(@NotNull WorldCoord worldCoord, @Nullable UUID owner, @Nullable UUID deleter, @NotNull String reason) {
         //Getting all shop with world-chunk-shop mapping
         for (Shop shop : api.getShopManager().getAllShops()) {
-            if (!Objects.equals(shop.getLocation().getWorld(), worldCoord.getBukkitWorld()))
+            if (!Objects.equals(shop.getLocation().getWorld(), worldCoord.getBukkitWorld())) {
                 continue;
+            }
             if (WorldCoord.parseWorldCoord(shop.getLocation()).equals(worldCoord)) {
                 if (owner != null && shop.getOwner().equals(owner)) {
                     recordDeletion(deleter, shop, reason);
@@ -291,7 +310,9 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     private boolean checkFlags(@NotNull Player player, @NotNull Location location, @NotNull List<TownyFlags> flags) {
-        if (isWorldIgnored(location.getWorld())) return true;
+        if (isWorldIgnored(location.getWorld())) {
+            return true;
+        }
         if (!whiteList) {
             return true;
         }
@@ -320,7 +341,7 @@ public final class Main extends CompatibilityModule implements Listener {
     @NotNull
     public static String processTownyAccount(String accountName){
         String providerName =QuickShop.getInstance().getEconomy().getProviderName();
-        if(Main.getPlugin(Main.class).getConfig().getBoolean("workaround-for-account-name") || providerName != null && providerName.equals("Essentials")){
+        if (Main.getPlugin(Main.class).getConfig().getBoolean("workaround-for-account-name") || providerName != null && "Essentials".equals(providerName)) {
             return EssStirngUtil.safeString(accountName);
         }
         return accountName;

@@ -65,8 +65,9 @@ public class BuildInfo {
 
         @NotNull
         public String getBranch() {
-            if (branch == null)
+            if (branch == null) {
                 return "undefined";
+            }
             return branch;
         }
 
@@ -76,92 +77,105 @@ public class BuildInfo {
 
         @NotNull
         public String getRemoteOriginUrl() {
-            if (remoteOriginUrl == null)
+            if (remoteOriginUrl == null) {
                 return "undefined";
+            }
             return remoteOriginUrl;
         }
 
         @NotNull
         public String getId() {
-            if (id == null)
+            if (id == null) {
                 return "undefined";
+            }
             return id;
         }
 
         @NotNull
         public String getAbbrev() {
-            if (abbrev == null)
+            if (abbrev == null) {
                 return "undefined";
+            }
             return abbrev;
         }
 
         @NotNull
         public String getDescribe() {
-            if (describe == null)
+            if (describe == null) {
                 return "undefined";
+            }
             return describe;
         }
 
         @NotNull
         public String getDescribeShort() {
-            if (describeShort == null)
+            if (describeShort == null) {
                 return "undefined";
+            }
             return describeShort;
         }
 
         @NotNull
         public String getCommitUsername() {
-            if (commitUsername == null)
+            if (commitUsername == null) {
                 return "undefined";
+            }
             return commitUsername;
         }
 
         @NotNull
         public String getCommitEmail() {
-            if (commitEmail == null)
+            if (commitEmail == null) {
                 return "undefined";
+            }
             return commitEmail;
         }
 
         @NotNull
         public String getCommitMessage() {
-            if (commitMessage == null)
+            if (commitMessage == null) {
                 return "undefined";
+            }
             return commitMessage;
         }
 
         @NotNull
         public String getCommitDate() {
-            if (commitDate == null)
+            if (commitDate == null) {
                 return "undefined";
+            }
             return commitDate;
         }
 
         @NotNull
         public String getBuildTime() {
-            if (buildTime == null)
+            if (buildTime == null) {
                 return "undefined";
+            }
             return buildTime;
         }
 
         @NotNull
         public String getBuildVersion() {
-            if (buildVersion == null)
+            if (buildVersion == null) {
                 return "undefined";
+            }
             return buildVersion;
         }
 
         @NotNull
         public String getBuildNumber() {
-            if (buildNumber == null)
+            if (buildNumber == null) {
                 return "undefined";
+            }
             return buildNumber;
         }
 
         @NotNull
         public String getTags() {
-            if (tags == null)
+            if (tags == null) {
                 return "undefined";
+            }
             return tags;
         }
 
@@ -212,43 +226,49 @@ public class BuildInfo {
 
         @NotNull
         public String getIdName() {
-            if (idName == null)
+            if (idName == null) {
                 return "undefined";
+            }
             return idName;
         }
 
         @NotNull
         public String getTag() {
-            if (tag == null)
+            if (tag == null) {
                 return "undefined";
+            }
             return tag;
         }
 
         @NotNull
         public String getUrl() {
-            if (url == null)
+            if (url == null) {
                 return "undefined";
+            }
             return url;
         }
 
         @NotNull
         public String getProjectName() {
-            if (projectName == null)
+            if (projectName == null) {
                 return "undefined";
+            }
             return projectName;
         }
 
         @NotNull
         public String getProjectUrl() {
-            if (projectUrl == null)
+            if (projectUrl == null) {
                 return "undefined";
+            }
             return projectUrl;
         }
 
         @NotNull
         public String getProjectBaseName() {
-            if (projectBaseName == null)
+            if (projectBaseName == null) {
                 return "undefined";
+            }
             return projectBaseName;
         }
 

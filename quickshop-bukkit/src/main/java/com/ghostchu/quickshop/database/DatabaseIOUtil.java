@@ -41,7 +41,7 @@ public class DatabaseIOUtil {
         }
     }
 
-    public void importTables(@NotNull File zipFile) throws SQLException, IOException, ClassNotFoundException {
+    public void importTables(@NotNull File zipFile) throws SQLException, ClassNotFoundException {
         // Import from CSV
         for (DataTables table : DataTables.values()) {
             Log.debug("Purging table " + table.name());

@@ -30,8 +30,9 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
 
     @Builder
     public SimpleInventoryTransaction(@Nullable InventoryWrapper from, @Nullable InventoryWrapper to, @NotNull ItemStack item, int amount) {
-        if (from == null && to == null)
+        if (from == null && to == null) {
             throw new IllegalArgumentException("Both from and to are null");
+        }
         this.from = from;
         this.to = to;
         this.item = item.clone();

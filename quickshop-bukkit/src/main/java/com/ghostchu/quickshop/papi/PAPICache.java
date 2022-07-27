@@ -84,15 +84,17 @@ public class PAPICache implements Reloadable {
         String[] args = Arrays.copyOf(original, 3);
         
         // Invalid placeholder (%qs_%). Shouldn't happen at all, but you never know...
-        if (Util.isNullOrEmpty(args[0]))
+        if (Util.isNullOrEmpty(args[0])) {
             return null;
+        }
         
         switch(args[0].toLowerCase(Locale.ROOT)) {
             // %qs_shops-total[_world]%
             case "shops-total" -> {
                 // %qs_shops-total%
-                if (Util.isNullOrEmpty(args[1]))
+                if (Util.isNullOrEmpty(args[1])) {
                     return String.valueOf(plugin.getShopManager().getAllShops().size());
+                }
                 
                 // %qs_shops-total_<world>%
                 return String.valueOf(getShopsInWorld(args[1], false));
@@ -101,8 +103,9 @@ public class PAPICache implements Reloadable {
             // %qs_shops-loaded[_world]%
             case "shops-loaded" -> {
                 //%qs_shops-loaded%
-                if (Util.isNullOrEmpty(args[1]))
+                if (Util.isNullOrEmpty(args[1])) {
                     return String.valueOf(plugin.getShopManager().getLoadedShops().size());
+                }
                 
                 // %qs_shops-loaded_<world>%
                 return String.valueOf(getShopsInWorld(args[1], true));
@@ -115,19 +118,22 @@ public class PAPICache implements Reloadable {
             
             case "player" -> {
                 // Invalid placeholder (%qs_player_%)
-                if (Util.isNullOrEmpty(args[1]))
+                if (Util.isNullOrEmpty(args[1])) {
                     return null;
+                }
                 
                 switch (args[1].toLowerCase(Locale.ROOT)) {
                     // %qs_player_shops-total[_uuid]%
                     case "shops-total" -> {
                         // %qs_player_shops-total%
-                        if (Util.isNullOrEmpty(args[2]))
+                        if (Util.isNullOrEmpty(args[2])) {
                             return String.valueOf(plugin.getShopManager().getPlayerAllShops(player));
+                        }
                         
                         // Not valid UUID provided
-                        if (!Util.isUUID(args[2]))
+                        if (!Util.isUUID(args[2])) {
                             return null;
+                        }
                         
                         // %qs_player_shop-total_<uuid>%
                         return String.valueOf(plugin.getShopManager().getPlayerAllShops(UUID.fromString(args[2])));
@@ -136,12 +142,14 @@ public class PAPICache implements Reloadable {
                     // %qs_player_shops-loaded[_uuid]%
                     case "shops-loaded" -> {
                         // %qs_shops-loaded%
-                        if (Util.isNullOrEmpty(args[2]))
+                        if (Util.isNullOrEmpty(args[2])) {
                             return String.valueOf(getLoadedPlayerShops(player));
+                        }
 
                         // Not valid UUID provided
-                        if (!Util.isUUID(args[2]))
+                        if (!Util.isUUID(args[2])) {
                             return null;
+                        }
                         
                         // %qs_shops-loaded_<uuid>%
                         return String.valueOf(getLoadedPlayerShops(UUID.fromString(args[2])));
@@ -150,12 +158,14 @@ public class PAPICache implements Reloadable {
                     // %qs_player_shops-inventory-unavailable[_uuid]%
                     case "shops-inventory-unavailable" -> {
                         // %qs_player_shops-inventory-unavailable%
-                        if (Util.isNullOrEmpty(args[2]))
+                        if (Util.isNullOrEmpty(args[2])) {
                             return String.valueOf(getPlayerShopsInventoryUnavailable(player));
+                        }
 
                         // Not valid UUID provided
-                        if (!Util.isUUID(args[2]))
+                        if (!Util.isUUID(args[2])) {
                             return null;
+                        }
 
                         // %qs_player_shops-inventory-unavailable[_uuid]%
                         return String.valueOf(getPlayerShopsInventoryUnavailable(UUID.fromString(args[2])));

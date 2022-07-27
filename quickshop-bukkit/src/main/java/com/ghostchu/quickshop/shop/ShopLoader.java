@@ -78,11 +78,14 @@ public class ShopLoader {
                 int y = rs.getInt("y");
                 int z = rs.getInt("z");
                 String world = rs.getString("world");
-                if (worldName != null)
-                    if (!worldName.equals(world))
+                if (worldName != null) {
+                    if (!worldName.equals(world)) {
                         continue;
-                if (world == null)
+                    }
+                }
+                if (world == null) {
                     continue;
+                }
                 if (Bukkit.getWorld(world) == null) {
                     ++loadAfterWorldLoaded;
                     continue;

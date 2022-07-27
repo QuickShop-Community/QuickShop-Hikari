@@ -16,8 +16,9 @@ public class TownyMaterialPriceLimiter {
         this.percentage = percentage;
         for (String key : section.getKeys(false)) {
             Material mat = Material.matchMaterial(key);
-            if (mat == null)
+            if (mat == null) {
                 Main.getPlugin(Main.class).getLogger().warning("Invalid material in config: " + key);
+            }
             double price = section.getDouble(key);
             prices.put(mat, price);
         }
@@ -26,11 +27,14 @@ public class TownyMaterialPriceLimiter {
     @Nullable
     public Double getPrice(@NotNull Material material, boolean selling) {
         Double basePrice = prices.get(material);
-        if(basePrice == null) return null;
-        if (selling)
+        if (basePrice == null) {
+            return null;
+        }
+        if (selling) {
             return basePrice + (basePrice * percentage);
-        else
+        } else {
             return basePrice;
+        }
     }
 
 }

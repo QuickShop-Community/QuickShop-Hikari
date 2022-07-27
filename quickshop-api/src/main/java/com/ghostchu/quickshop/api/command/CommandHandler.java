@@ -32,8 +32,9 @@ public interface CommandHandler<T extends CommandSender> {
             while (bIt.hasNext()) {
                 final Block b = bIt.next();
                 final Shop shop = QuickShopAPI.getInstance().getShopManager().getShop(b.getLocation());
-                if (shop == null)
+                if (shop == null) {
                     continue;
+                }
                 return shop;
             }
             return null;

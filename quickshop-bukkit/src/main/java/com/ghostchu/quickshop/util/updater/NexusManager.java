@@ -93,17 +93,27 @@ public class NexusManager {
             SAXReader reader = new SAXReader();
             Document document = reader.read(new StringReader(xml));
             Element metadataElement = document.getRootElement();
-            if (metadataElement == null) throw new IllegalStateException("No root element found");
+            if (metadataElement == null) {
+                throw new IllegalStateException("No root element found");
+            }
             Element versioning = metadataElement.element("versioning");
-            if (versioning == null) throw new IllegalStateException("No versioning element found");
+            if (versioning == null) {
+                throw new IllegalStateException("No versioning element found");
+            }
             Element latest = versioning.element("latest");
-            if (latest == null) throw new IllegalStateException("No latest element found");
+            if (latest == null) {
+                throw new IllegalStateException("No latest element found");
+            }
             Element release = versioning.element("release");
-            if (release == null) throw new IllegalStateException("No release element found");
+            if (release == null) {
+                throw new IllegalStateException("No release element found");
+            }
             Element lastUpdate = versioning.element("lastUpdated");
-            if (lastUpdate == null) throw new IllegalStateException("No lastUpdated element found");
+            if (lastUpdate == null) {
+                throw new IllegalStateException("No lastUpdated element found");
+            }
             NexusMetadata metadata = new NexusMetadata(Long.parseLong(lastUpdate.getText()), latest.getText(), release.getText());
-            Log.debug("Parsed NexusMetadata: "+metadata);
+            Log.debug("Parsed NexusMetadata: " + metadata);
             return metadata;
         }
     }

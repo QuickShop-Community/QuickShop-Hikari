@@ -73,8 +73,9 @@ public class Economy_Reserve extends AbstractEconomy {
         try {
             return Objects.requireNonNull(reserve).addHoldings(name, BigDecimal.valueOf(amount), world.getName(), currency);
         } catch (Exception throwable) {
-            if (plugin.getSentryErrorReporter() != null)
+            if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
+            }
             plugin.getLogger().log(Level.WARNING, ERROR_MESSAGE, throwable);
             return false;
         }
@@ -96,8 +97,9 @@ public class Economy_Reserve extends AbstractEconomy {
         try {
             return Objects.requireNonNull(reserve).format(BigDecimal.valueOf(balance), world.getName(), currency);
         } catch (Exception throwable) {
-            if (plugin.getSentryErrorReporter() != null)
+            if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
+            }
             plugin.getLogger().log(Level.WARNING, ERROR_MESSAGE, throwable);
             return formatInternal(balance);
         }
@@ -122,8 +124,9 @@ public class Economy_Reserve extends AbstractEconomy {
         try {
             return Objects.requireNonNull(reserve).getHoldings(name, world.getName(), currency).doubleValue();
         } catch (Exception throwable) {
-            if (plugin.getSentryErrorReporter() != null)
+            if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
+            }
             plugin.getLogger().log(Level.WARNING, ERROR_MESSAGE, throwable);
             return 0.0;
         }
@@ -148,8 +151,9 @@ public class Economy_Reserve extends AbstractEconomy {
         try {
             return Objects.requireNonNull(reserve).transferHoldings(from, to, BigDecimal.valueOf(amount), world.getName(), currency);
         } catch (Exception throwable) {
-            if (plugin.getSentryErrorReporter() != null)
+            if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
+            }
             plugin.getLogger().log(Level.WARNING, ERROR_MESSAGE, throwable);
             return false;
         }
@@ -167,8 +171,9 @@ public class Economy_Reserve extends AbstractEconomy {
         try {
             return Objects.requireNonNull(reserve).removeHoldings(name, BigDecimal.valueOf(amount));
         } catch (Exception throwable) {
-            if (plugin.getSentryErrorReporter() != null)
+            if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
+            }
             plugin.getLogger().log(Level.WARNING, ERROR_MESSAGE, throwable);
             return false;
         }

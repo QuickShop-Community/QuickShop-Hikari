@@ -69,10 +69,11 @@ public class Log {
     public static void debug(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         Record record;
-        if (disableLocationRecording)
+        if (disableLocationRecording) {
             record = new Record(level, Type.DEBUG, message, null);
-        else
+        } else {
             record = new Record(level, Type.DEBUG, message, caller);
+        }
         loggerBuffer.offer(record);
         debugStdOutputs(record);
         LOCK.writeLock().unlock();
@@ -82,10 +83,11 @@ public class Log {
     public static void cron(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         Record record;
-        if (disableLocationRecording)
+        if (disableLocationRecording) {
             record = new Record(level, Type.CRON, message, null);
-        else
+        } else {
             record = new Record(level, Type.CRON, message, caller);
+        }
         loggerBuffer.offer(record);
         debugStdOutputs(record);
         LOCK.writeLock().unlock();
@@ -95,10 +97,11 @@ public class Log {
     public static void transaction(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         Record record;
-        if (disableLocationRecording)
+        if (disableLocationRecording) {
             record = new Record(level, Type.TRANSACTION, message, null);
-        else
+        } else {
             record = new Record(level, Type.TRANSACTION, message, caller);
+        }
         loggerBuffer.offer(record);
         debugStdOutputs(record);
         LOCK.writeLock().unlock();
@@ -108,10 +111,11 @@ public class Log {
     public static void permission(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         Record record;
-        if (disableLocationRecording)
+        if (disableLocationRecording) {
             record = new Record(level, Type.PERMISSION, message, null);
-        else
+        } else {
             record = new Record(level, Type.PERMISSION, message, caller);
+        }
         loggerBuffer.offer(record);
         debugStdOutputs(record);
         LOCK.writeLock().unlock();
@@ -185,8 +189,9 @@ public class Log {
 
         @Override
         public String toString() {
-            if (toStringCache != null)
+            if (toStringCache != null) {
                 return toStringCache;
+            }
             StringBuilder sb = new StringBuilder();
             Log.Caller caller = this.getCaller();
 

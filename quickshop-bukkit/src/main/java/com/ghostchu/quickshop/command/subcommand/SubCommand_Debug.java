@@ -116,7 +116,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             }
         }
         if (cmdArg.length == 2) {
-            if (cmdArg[0].equals("confirm")) {
+            if ("confirm".equals(cmdArg[0])) {
                 if (Util.isUUID(cmdArg[1])) {
                     UUID uuid = UUID.fromString(cmdArg[1]);
                     String sql = sqlCachePool.getIfPresent(uuid);

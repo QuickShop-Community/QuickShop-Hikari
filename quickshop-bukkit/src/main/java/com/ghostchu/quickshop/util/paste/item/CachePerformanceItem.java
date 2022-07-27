@@ -32,8 +32,9 @@ public class CachePerformanceItem implements SubPasteItem {
 
     @NotNull
     private String buildShopCacheContent() {
-        if (plugin.getShopCache() == null)
+        if (plugin.getShopCache() == null) {
             return "<p>Shop Cache disabled.</p>";
+        }
         CacheStats stats = plugin.getShopCache().getStats();
         return renderTable(stats);
     }

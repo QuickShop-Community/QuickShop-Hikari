@@ -52,7 +52,7 @@ public final class Main extends CompatibilityModule implements Listener {
         super.onDisable();
         PlotSquared.get().getEventDispatcher().unregisterListener(this);
     }
-
+    @Override
     public void init() {
         this.whiteList = getConfig().getBoolean("whitelist-mode");
         this.deleteUntrusted = getConfig().getBoolean("delete-when-user-untrusted");
@@ -63,7 +63,9 @@ public final class Main extends CompatibilityModule implements Listener {
         Location shopLoc = event.getShop().getLocation();
         com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(shopLoc.getWorld().getName(), shopLoc.getBlockX(), shopLoc.getBlockY(), shopLoc.getBlockZ());
         Plot plot = pLocation.getPlot();
-        if (plot == null) return;
+        if (plot == null) {
+            return;
+        }
         if (plot.getOwners().contains(event.getAuthorizer())) {
             if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);

@@ -327,8 +327,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     @Override
     public @Nullable Shop getShop(long shopId) {
         for (Shop shop : getAllShops()) {
-            if (shop.getShopId() == shopId)
+            if (shop.getShopId() == shopId) {
                 return shop;
+            }
         }
         return null;
     }
@@ -666,8 +667,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         if (shop.getTaxAccount() != null) {
             taxAccount = shop.getTaxAccount();
         } else {
-            if (this.cacheTaxAccount != null)
+            if (this.cacheTaxAccount != null) {
                 taxAccount = this.cacheTaxAccount;
+            }
         }
         SimpleEconomyTransaction transaction;
         SimpleEconomyTransaction.SimpleEconomyTransactionBuilder builder = SimpleEconomyTransaction.builder()
@@ -720,8 +722,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         Player player = plugin.getServer().getPlayer(buyer);
         plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner(), (locale) -> {
             String langCode = MsgUtil.getDefaultGameLanguageCode();
-            if (locale.isPresent())
+            if (locale.isPresent()) {
                 langCode = locale.get();
+            }
             Component msg = plugin.text().of("player-sold-to-your-store", player != null ? player.getName() : buyer.toString(),
                             amount,
                             MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
@@ -1189,8 +1192,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         Player player = plugin.getServer().getPlayer(seller);
         plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner(), (locale) -> {
             String langCode = MsgUtil.getDefaultGameLanguageCode();
-            if (locale.isPresent())
+            if (locale.isPresent()) {
                 langCode = locale.get();
+            }
             Component msg;
             if (plugin.getConfig().getBoolean("show-tax")) {
                 msg = plugin.text().of("player-bought-from-your-store-tax",

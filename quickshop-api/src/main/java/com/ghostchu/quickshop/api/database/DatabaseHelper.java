@@ -88,7 +88,7 @@ public interface DatabaseHelper {
      * @param y     Shop Y
      * @param z     Shop Z
      */
-    void removeShopMap(@NotNull String world, int x, int y, int z) throws SQLException;
+    void removeShopMap(@NotNull String world, int x, int y, int z);
 
     /**
      * Remove a shop data record from database
@@ -112,18 +112,16 @@ public interface DatabaseHelper {
      * @param y     The shop Y
      * @param z     The shop Z
      * @return The shop record id
-     * @throws SQLException something going wrong
      */
-    long locateShopId(@NotNull String world, int x, int y, int z) throws SQLException;
+    long locateShopId(@NotNull String world, int x, int y, int z);
 
     /**
      * Locate a shop record from database by shop record id
      *
      * @param shopId The shop record id
      * @return The shop record
-     * @throws SQLException something going wrong
      */
-    long locateShopDataId(long shopId) throws SQLException;
+    long locateShopDataId(long shopId);
 
     /**
      * Select all messages that saved in the database

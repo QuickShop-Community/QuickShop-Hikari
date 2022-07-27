@@ -21,10 +21,12 @@ public class DatabaseBackupUtil {
     );
 
     public void backup() {
-        if (QuickShop.getInstance().getDatabaseDriverType() != QuickShop.DatabaseDriverType.H2)
+        if (QuickShop.getInstance().getDatabaseDriverType() != QuickShop.DatabaseDriverType.H2) {
             return;
-        if (!databaseBackupFolder.exists())
+        }
+        if (!databaseBackupFolder.exists()) {
             databaseBackupFolder.mkdirs();
+        }
         File backupFolder = new File(databaseBackupFolder, String.valueOf(System.currentTimeMillis()));
         backupFolder.mkdirs();
         for (String fileName : databaseBackupList) {
@@ -44,8 +46,9 @@ public class DatabaseBackupUtil {
 
     private void cleanup() {
         File[] fileArray = databaseBackupFolder.listFiles();
-        if (fileArray == null)
+        if (fileArray == null) {
             return;
+        }
         List<File> files = new ArrayList<>(List.of(fileArray));
         // sort files with lastModified date (reserve)
         files.sort((o1, o2) -> Long.compare(o2.lastModified(), o1.lastModified()));

@@ -630,7 +630,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             }
         }
     }
-
+    @Override
     public void logEvent(@NotNull Object eventObject) {
         if (this.getLogWatcher() == null) {
             return;
@@ -715,8 +715,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             }
             economy = ServiceInjector.getInjectedService(AbstractEconomy.class, economy);
         } catch (Throwable e) {
-            if (sentryErrorReporter != null)
+            if (sentryErrorReporter != null) {
                 sentryErrorReporter.ignoreThrow();
+            }
             getLogger().severe("Something went wrong while trying to load the economy system!");
             getLogger().severe("QuickShop was unable to hook into an economy system (Couldn't find Vault or Reserve)!");
             getLogger().severe("QuickShop can NOT enable properly!");
@@ -928,8 +929,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 });
             });
 
-            if (waitingForBake.isEmpty())
+            if (waitingForBake.isEmpty()) {
                 return;
+            }
             getLogger().info("Resolving " + waitingForBake.size() + " player UUID and Name mappings...");
             waitingForBake.forEach(uuid -> {
                 Profile profile = playerFinder.find(uuid);

@@ -341,10 +341,8 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                     //int data to mark
                     fakeItemPacket.getIntegers().write(6, 1);
                 }
-                default -> {
-                    fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
-                    //For 1.14+, we should use EntityType
-                }
+                default -> //For 1.14+, we should use EntityType
+                        fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
             }
             //UUID
             fakeItemPacket.getUUIDs().write(0, UUID.randomUUID());

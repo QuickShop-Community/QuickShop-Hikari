@@ -68,10 +68,11 @@ public class PaperPlatform implements Platform {
             try {
                 key = material.getTranslationKey();
             } catch (Error error2) {
-                if (!material.isBlock())
+                if (!material.isBlock()) {
                     key = "item." + material.getKey().getNamespace() + "." + material.getKey().getKey();
-                else
+                } else {
                     key = "block." + material.getKey().getNamespace() + "." + material.getKey().getKey();
+                }
             }
         }
         return postProcessingTranslationKey(key);
@@ -146,8 +147,9 @@ public class PaperPlatform implements Platform {
     @Override
     public @NotNull Component getDisplayName(@NotNull ItemMeta meta) {
         Component displayName = meta.displayName();
-        if (displayName == null)
+        if (displayName == null) {
             return Component.empty();
+        }
         return displayName;
     }
 

@@ -39,6 +39,7 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
      * @param permission The permission to check.
      * @return True if the given permission is/or contains the given permission.
      */
+    @Override
     public boolean hasPermission(@NotNull BuiltInShopPermission permission) {
         return this.getPermissions().contains(permission);
     }

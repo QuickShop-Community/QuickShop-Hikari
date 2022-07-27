@@ -658,12 +658,15 @@ public class Util {
      * @return true if the ItemStack is black listed. False if not.
      */
     public static boolean isBlacklisted(@NotNull ItemStack stack) {
-        if (plugin == null)
+        if (plugin == null) {
             throw new IllegalStateException("Plugin not fully started yet");
-        if (plugin.getItemMarker() == null)
+        }
+        if (plugin.getItemMarker() == null) {
             throw new IllegalStateException("Plugin not fully started yet");
-        if (plugin.getShopItemBlackList() == null)
+        }
+        if (plugin.getShopItemBlackList() == null) {
             throw new IllegalStateException("Plugin not fully started yet");
+        }
         return plugin.getShopItemBlackList().isBlacklisted(stack);
     }
 
@@ -1348,8 +1351,9 @@ public class Util {
     public static boolean deleteDirectory(@NotNull File dir) {
         if (dir.isDirectory()) {
             String[] children = dir.list();
-            if (children == null)
+            if (children == null) {
                 return false;
+            }
             for (String child : children) {
                 if (!deleteDirectory(new File(dir, child))) {
                     return false;
@@ -1382,8 +1386,9 @@ public class Util {
     public static File getPluginJarFile(@NotNull Plugin plugin) throws FileNotFoundException {
         String path = getPluginJarPath(plugin);
         File file = new File(path);
-        if (!file.exists())
+        if (!file.exists()) {
             throw new FileNotFoundException("File not found: " + path);
+        }
         return file;
     }
 
@@ -1435,7 +1440,9 @@ public class Util {
         }
 
         public int asInteger(int def) {
-            if (value == null) return def;
+            if (value == null) {
+                return def;
+            }
             try {
                 return Integer.parseInt(value);
             } catch (NumberFormatException exception) {
@@ -1444,7 +1451,9 @@ public class Util {
         }
 
         public double asDouble(double def) {
-            if (value == null) return def;
+            if (value == null) {
+                return def;
+            }
             try {
                 return Double.parseDouble(value);
             } catch (NumberFormatException exception) {
@@ -1453,7 +1462,9 @@ public class Util {
         }
 
         public byte asByte(byte def) {
-            if (value == null) return def;
+            if (value == null) {
+                return def;
+            }
             try {
                 return Byte.parseByte(value);
             } catch (NumberFormatException exception) {
@@ -1464,12 +1475,16 @@ public class Util {
 
         @Nullable
         public String asString(@NotNull String def) {
-            if (value == null) return def;
+            if (value == null) {
+                return def;
+            }
             return value;
         }
 
         public long asLong(long def) {
-            if (value == null) return def;
+            if (value == null) {
+                return def;
+            }
             try {
                 return Long.parseLong(value);
             } catch (NumberFormatException exception) {
@@ -1478,7 +1493,9 @@ public class Util {
         }
 
         public short asShort(short def) {
-            if (value == null) return def;
+            if (value == null) {
+                return def;
+            }
             try {
                 return Short.parseShort(value);
             } catch (NumberFormatException exception) {

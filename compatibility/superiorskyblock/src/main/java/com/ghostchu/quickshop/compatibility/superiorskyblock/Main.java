@@ -43,7 +43,9 @@ public final class Main extends CompatibilityModule implements Listener {
     public void permissionOverride(ShopAuthorizeCalculateEvent event) {
         Location shopLoc = event.getShop().getLocation();
         Island island = SuperiorSkyblockAPI.getIslandAt(shopLoc);
-        if (island == null) return;
+        if (island == null) {
+            return;
+        }
         if (island.getOwner().getUniqueId().equals(event.getAuthorizer())) {
             if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);

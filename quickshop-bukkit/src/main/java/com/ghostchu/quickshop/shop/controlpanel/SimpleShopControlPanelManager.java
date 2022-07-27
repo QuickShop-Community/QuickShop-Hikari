@@ -38,30 +38,40 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager {
     @Override
     public void register(@NotNull ShopControlPanel panel) {
         LOCK.lock();
-        registry.put(panel, panel.getInternalPriority());
-        LOCK.unlock();
+        try {
+            registry.put(panel, panel.getInternalPriority());
+        } finally {
+            LOCK.unlock();
+        }
         resort();
     }
 
     @Override
     public void unregister(@NotNull ShopControlPanel panel) {
         LOCK.lock();
-        registry.remove(panel);
-        LOCK.unlock();
+        try {
+            registry.remove(panel);
+        } finally {
+            LOCK.unlock();
+        }
         // Doesn't need resort
     }
 
     @Override
     public void unregister(@NotNull Plugin plugin) {
         LOCK.lock();
-        List<ShopControlPanel> pending = new ArrayList<>();
-        for (Map.Entry<ShopControlPanel, Integer> entry : registry.entrySet()) {
-            if (entry.getKey().getPlugin().equals(plugin)) {
-                pending.add(entry.getKey());
+        try {
+            List<ShopControlPanel> pending = new ArrayList<>();
+            for (Map.Entry<ShopControlPanel, Integer> entry : registry.entrySet()) {
+                if (entry.getKey().getPlugin().equals(plugin)) {
+                    pending.add(entry.getKey());
+                }
             }
+            pending.forEach(this::unregister);
+        } finally {
+            LOCK.unlock();
         }
-        LOCK.unlock();
-        pending.forEach(this::unregister);
+
     }
 
     @Override

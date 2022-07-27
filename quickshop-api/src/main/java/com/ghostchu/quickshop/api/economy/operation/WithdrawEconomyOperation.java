@@ -31,16 +31,18 @@ public class WithdrawEconomyOperation implements Operation {
     @Override
     public boolean commit() {
         boolean result = economyCore.withdraw(account, amount, world, currency);
-        if (result)
+        if (result) {
             committed = true;
+        }
         return result;
     }
 
     @Override
     public boolean rollback() {
         boolean result = economyCore.deposit(account, amount, world, currency);
-        if (result)
+        if (result) {
             rollback = true;
+        }
         return result;
     }
 

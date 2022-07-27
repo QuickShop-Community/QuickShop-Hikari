@@ -20,8 +20,9 @@ public class ShopsInfoItem implements SubPasteItem {
                 .filter(shop -> shop.getLocation().getWorld() != null)
                 .forEach(shop -> {
                     List<Shop> worldShops = shopsMapping.get(shop.getLocation().getWorld().getName());
-                    if (worldShops == null)
+                    if (worldShops == null) {
                         worldShops = new ArrayList<>();
+                    }
 
                     worldShops.add(shop);
                     shopsMapping.put(shop.getLocation().getWorld().getName(), worldShops);

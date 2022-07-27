@@ -56,6 +56,7 @@ public class HikariConfigConverter implements HikariConverterInterface {
      * @param folder   The target folder for backup.
      * @throws Exception Backup fails.
      */
+    @Override
     public void backup(@NotNull UUID actionId, @NotNull File folder) throws Exception {
         Files.copy(new File(plugin.getDataFolder(), "config.yml").toPath(), new File(folder, "config.yml").toPath());
     }
@@ -65,9 +66,11 @@ public class HikariConfigConverter implements HikariConverterInterface {
      *
      * @param actionId Action Identifier for this upgrade operation.
      */
+    @Override
     public void migrate(@NotNull UUID actionId) {
-        if (!checkReady().isEmpty())
+        if (!checkReady().isEmpty()) {
             throw new IllegalStateException("Not ready!");
+        }
         remakeUpgrade(plugin.getConfig().getInt("config-version"));
         legacyPriceLimiter();
         configCleanup();

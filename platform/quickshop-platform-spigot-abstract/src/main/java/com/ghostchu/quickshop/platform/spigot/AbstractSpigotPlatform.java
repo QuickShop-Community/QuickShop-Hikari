@@ -129,30 +129,34 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     @Override
     public void setDisplayName(@NotNull ItemMeta meta, @Nullable Component component) {
-        if (component == null)
+        if (component == null) {
             meta.setDisplayName(null);
-        else
+        } else {
             meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component));
+        }
     }
 
     @Override
     public void setDisplayName(@NotNull ItemStack stack, @Nullable Component component) {
-        if (stack.getItemMeta() == null)
+        if (stack.getItemMeta() == null) {
             return;
+        }
         ItemMeta meta = stack.getItemMeta();
-        if (component == null)
+        if (component == null) {
             meta.setDisplayName(null);
-        else
+        } else {
             meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component));
+        }
         stack.setItemMeta(meta);
     }
 
     @Override
     public void setDisplayName(@NotNull Item stack, @Nullable Component component) {
-        if (component == null)
+        if (component == null) {
             stack.setCustomName(null);
-        else
+        } else {
             stack.setCustomName(LegacyComponentSerializer.legacySection().serialize(component));
+        }
     }
 
     @Override
@@ -162,8 +166,9 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     @Override
     public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
-        if (!stack.hasItemMeta())
+        if (!stack.hasItemMeta()) {
             return;
+        }
         ItemMeta meta = stack.getItemMeta();
         meta.setLore(components.stream().map(LegacyComponentSerializer.legacySection()::serialize).collect(Collectors.toList()));
         stack.setItemMeta(meta);
@@ -176,24 +181,28 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     @Override
     public @Nullable List<Component> getLore(@NotNull ItemStack stack) {
-        if (!stack.hasItemMeta())
+        if (!stack.hasItemMeta()) {
             return null;
-        if (!stack.getItemMeta().hasLore())
+        }
+        if (!stack.getItemMeta().hasLore()) {
             return null;
+        }
         return stack.getItemMeta().getLore().stream().map(LegacyComponentSerializer.legacySection()::deserialize).collect(Collectors.toList());
     }
 
     @Override
     public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
-        if (!meta.hasLore())
+        if (!meta.hasLore()) {
             return null;
+        }
         return meta.getLore().stream().map(LegacyComponentSerializer.legacySection()::deserialize).collect(Collectors.toList());
     }
 
     @Override
     public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
-        if (this.audience == null)
+        if (this.audience == null) {
             this.audience = BukkitAudiences.create(this.plugin);
+        }
         this.audience.sender(sender).sendMessage(component);
     }
 

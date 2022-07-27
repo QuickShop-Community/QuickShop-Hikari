@@ -217,8 +217,9 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
                 return false;
             }
             if (currency != null) {
-                if (this.currency.stream().noneMatch(pattern -> pattern.matcher(currency).matches()))
+                if (this.currency.stream().noneMatch(pattern -> pattern.matcher(currency).matches())) {
                     return false;
+                }
             }
             for (Function<ItemStack, Boolean> fun : items) {
                 if (fun.apply(item)) {

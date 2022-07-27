@@ -35,7 +35,7 @@ public final class Main extends CompatibilityModule implements Listener {
     private boolean deleteOnClaimResized;
     private boolean deleteOnSubClaimCreated;
     private Flag createLimit;
-
+    @Override
     public void init() {
         this.whiteList = getConfig().getBoolean("whitelist-mode");
         this.deleteOnClaimTrustChanged = getConfig().getBoolean("delete-on-claim-trust-changed");

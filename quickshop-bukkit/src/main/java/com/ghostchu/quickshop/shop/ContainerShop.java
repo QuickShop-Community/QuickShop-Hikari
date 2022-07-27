@@ -209,11 +209,13 @@ public class ContainerShop implements Shop, Reloadable {
         this.taxAccount = taxAccount;
         this.dirty = false;
         //noinspection ConstantConditions
-        if (symbolLink == null)
+        if (symbolLink == null) {
             throw new IllegalArgumentException("SymbolLink cannot be null");
+        }
         //noinspection ConstantConditions
-        if (inventoryWrapperProvider == null)
+        if (inventoryWrapperProvider == null) {
             throw new IllegalArgumentException("InventoryWrapperProvider cannot be null");
+        }
         this.symbolLink = symbolLink;
         this.inventoryWrapperProvider = inventoryWrapperProvider;
         initDisplayItem();
@@ -255,8 +257,9 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public void setDisableDisplay(boolean disabled) {
-        if (this.disableDisplay == disabled)
+        if (this.disableDisplay == disabled) {
             return;
+        }
         this.disableDisplay = disabled;
         setDirty();
         update();
@@ -282,11 +285,13 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public void setTaxAccount(@Nullable UUID taxAccount) {
-        if (this.taxAccount.equals(taxAccount))
+        if (this.taxAccount.equals(taxAccount)) {
             return;
+        }
         ShopTaxAccountChangeEvent event = new ShopTaxAccountChangeEvent(this, taxAccount);
-        if(Util.fireCancellableEvent(event))
+        if (Util.fireCancellableEvent(event)) {
             return;
+        }
         this.taxAccount = taxAccount;
         setDirty();
         update();
@@ -308,7 +313,6 @@ public class ContainerShop implements Shop, Reloadable {
                 } else {
                     this.displayItem = switch (AbstractDisplayItem.getNowUsing()) {
                         case REALITEM -> new RealDisplayItem(this);
-                        case VIRTUALITEM -> new VirtualDisplayItem(this);
                         default -> new VirtualDisplayItem(this);
                     };
                 }
@@ -393,7 +397,9 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public @NotNull String getPlayerGroup(@NotNull UUID player) {
-        if (player.equals(getOwner())) return BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode();
+        if (player.equals(getOwner())) {
+            return BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode();
+        }
         String group = this.playerGroup.getOrDefault(player, BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode());
         if (plugin.getShopPermissionManager().hasGroup(group)) {
             return group;
@@ -403,8 +409,9 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public void setPlayerGroup(@NotNull UUID player, @Nullable String group) {
-        if (group == null)
+        if (group == null) {
             group = BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode();
+        }
         new ShopPlayerGroupSetEvent(this, getPlayerGroup(player), group).callEvent();
         if (group.equals(BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode())) {
             this.playerGroup.remove(player);
@@ -417,8 +424,9 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public void setPlayerGroup(@NotNull UUID player, @Nullable BuiltInShopPermissionGroup group) {
-        if (group == null)
+        if (group == null) {
             group = BuiltInShopPermissionGroup.EVERYONE;
+        }
         new ShopPlayerGroupSetEvent(this, getPlayerGroup(player), group.getNamespacedNode()).callEvent();
         if (group == BuiltInShopPermissionGroup.EVERYONE) {
             this.playerGroup.remove(player);
@@ -446,8 +454,9 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public void setShopName(@Nullable String shopName) {
-        if (StringUtils.equals(this.shopName, shopName))
+        if (StringUtils.equals(this.shopName, shopName)) {
             return;
+        }
         this.shopName = shopName;
         setDirty();
         update();
@@ -528,8 +537,9 @@ public class ContainerShop implements Shop, Reloadable {
                     .amount(amount)
                     .build();
             if (!transaction.failSafeCommit()) {
-                if (plugin.getSentryErrorReporter() != null)
+                if (plugin.getSentryErrorReporter() != null) {
                     plugin.getSentryErrorReporter().ignoreThrow();
+                }
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         } else {
@@ -547,8 +557,9 @@ public class ContainerShop implements Shop, Reloadable {
                     .amount(amount)
                     .build();
             if (!transaction.failSafeCommit()) {
-                if (plugin.getSentryErrorReporter() != null)
+                if (plugin.getSentryErrorReporter() != null) {
                     plugin.getSentryErrorReporter().ignoreThrow();
+                }
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         }
@@ -876,8 +887,9 @@ public class ContainerShop implements Shop, Reloadable {
                     .amount(amount)
                     .build();
             if (!transaction.failSafeCommit()) {
-                if (plugin.getSentryErrorReporter() != null)
+                if (plugin.getSentryErrorReporter() != null) {
                     plugin.getSentryErrorReporter().ignoreThrow();
+                }
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transaction.getLastError());
             }
         } else {
@@ -894,8 +906,9 @@ public class ContainerShop implements Shop, Reloadable {
                     .amount(amount)
                     .build();
             if (!transactionTake.failSafeCommit()) {
-                if (plugin.getSentryErrorReporter() != null)
+                if (plugin.getSentryErrorReporter() != null) {
                     plugin.getSentryErrorReporter().ignoreThrow();
+                }
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transactionTake.getLastError());
             }
             this.setSignText(plugin.getTextManager().findRelativeLanguages(seller));
@@ -1260,8 +1273,9 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public void setOwner(@NotNull UUID owner) {
         Util.ensureThread(false);
-        if (this.owner.equals(owner))
+        if (this.owner.equals(owner)) {
             return;
+        }
         this.owner = owner;
         setSignText(plugin.getTextManager().findRelativeLanguages(owner));
         update();
@@ -1282,8 +1296,9 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public void setPrice(double price) {
-        if (this.price == price)
+        if (this.price == price) {
             return;
+        }
         Util.ensureThread(false);
         ShopPriceChangeEvent event = new ShopPriceChangeEvent(this, this.price, price);
         if (Util.fireCancellableEvent(event)) {
@@ -1441,8 +1456,9 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public void setUnlimited(boolean unlimited) {
-        if (this.unlimited == unlimited)
+        if (this.unlimited == unlimited) {
             return;
+        }
         Util.ensureThread(false);
         this.unlimited = unlimited;
         this.setSignText();
@@ -1596,6 +1612,7 @@ public class ContainerShop implements Shop, Reloadable {
      * @return true if this shop is a double chest, and the other half is selling/buying the same as
      * this is buying/selling.
      */
+    @Override
     public boolean isDoubleShop() {
         Util.ensureThread(false);
         if (attachedShop == null) {
@@ -1864,8 +1881,9 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public void setShopId(long newId) {
-        if (this.shopId != -1)
+        if (this.shopId != -1) {
             throw new IllegalStateException("Cannot set shop id once it fully created.");
+        }
         this.shopId = newId;
     }
 }

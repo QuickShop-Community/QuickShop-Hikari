@@ -12,7 +12,6 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
 
@@ -29,7 +28,7 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
             return;
         }
 
-        if (cmdArg.length < 1 || !cmdArg[0].equalsIgnoreCase("confirm")) {
+        if (cmdArg.length < 1 || !"confirm".equalsIgnoreCase(cmdArg[0])) {
             plugin.text().of(sender, "importing-early-warning").send();
             return;
         }
@@ -50,11 +49,11 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
                 Log.debug("Re-loading shop from database...");
                 Util.mainThreadRun(() -> {
                     plugin.getShopLoader().loadShops();
-                    plugin.text().of(sender,"imported-database").send();
+                    plugin.text().of(sender, "imported-database").send();
                 });
-            } catch (SQLException | IOException | ClassNotFoundException e) {
-                plugin.text().of(sender,"importing-failed",e.getMessage()).send();
-                plugin.getLogger().log(Level.WARNING,"Failed to import the database from backup file.",e);
+            } catch (SQLException | ClassNotFoundException e) {
+                plugin.text().of(sender, "importing-failed", e.getMessage()).send();
+                plugin.getLogger().log(Level.WARNING, "Failed to import the database from backup file.", e);
             }
         });
 

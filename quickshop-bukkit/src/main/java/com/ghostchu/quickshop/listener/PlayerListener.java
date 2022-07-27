@@ -210,8 +210,9 @@ public class PlayerListener extends AbstractQSListener {
                 } else {
                     arg = shop.getShopStackingAmount();
                 }
-                if (arg == 0)
+                if (arg == 0) {
                     return true;
+                }
                 plugin.getShopManager().actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
         }
@@ -351,8 +352,9 @@ public class PlayerListener extends AbstractQSListener {
                 } else {
                     arg = shop.getShopStackingAmount();
                 }
-                if (arg == 0)
+                if (arg == 0) {
                     return true;
+                }
                 plugin.getShopManager().actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
         }

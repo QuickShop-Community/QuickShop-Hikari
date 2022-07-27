@@ -385,7 +385,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
             @NotNull String commandLabel,
             @NotNull String[] cmdArg) {
         if (plugin.getBootError() != null) {
-            if (cmdArg.length <= 0) {
+            if (cmdArg.length == 0) {
                 plugin.getBootError().printErrors(sender);
                 return true;
             }

@@ -66,8 +66,9 @@ public class PlayerFinder {
 //        }
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
         String name = offlinePlayer.getName();
-        if (name == null)
+        if (name == null) {
             return null;
+        }
         return new Profile(offlinePlayer.getUniqueId(), name);
     }
 

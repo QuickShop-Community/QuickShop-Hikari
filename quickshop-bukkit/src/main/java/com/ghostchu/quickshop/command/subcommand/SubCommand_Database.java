@@ -51,7 +51,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
     }
 
     private void handleTrim(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1 || !cmdArg[0].equalsIgnoreCase("confirm")) {
+        if (cmdArg.length < 1 || !"confirm".equalsIgnoreCase(cmdArg[0])) {
             plugin.text().of(sender, "database.trim-warning").send();
             return;
         }

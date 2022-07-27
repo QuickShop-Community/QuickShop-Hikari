@@ -300,8 +300,9 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         }
         try {
             boolean result = operation.commit();
-            if (!result)
+            if (!result) {
                 return false;
+            }
             processingStack.push(operation);
             return true;
         } catch (Exception exception) {

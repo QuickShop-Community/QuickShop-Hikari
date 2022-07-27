@@ -426,26 +426,24 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @Override
     public void insertMetricRecord(@NotNull ShopMetricRecord record) {
         Util.asyncThreadRun(() -> {
-            try {
-                long dataId = plugin.getDatabaseHelper().locateShopDataId(record.getShopId());
-                DataTables.LOG_PURCHASE
-                        .createInsert()
-                        .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
-                        .setParams(new Date(record.getTime()), record.getShopId()
-                                , dataId, record.getPlayer(), record.getType().name(),
-                                record.getAmount(), record.getTotal(), record.getTax());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            long dataId = plugin.getDatabaseHelper().locateShopDataId(record.getShopId());
+            DataTables.LOG_PURCHASE
+                    .createInsert()
+                    .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
+                    .setParams(new Date(record.getTime()), record.getShopId()
+                            , dataId, record.getPlayer(), record.getType().name(),
+                            record.getAmount(), record.getTotal(), record.getTax());
         });
     }
 
     @Override
     public void insertTransactionRecord(@Nullable UUID from, @Nullable UUID to, double amount, @Nullable String currency, double taxAmount, @Nullable UUID taxAccount, @Nullable String error) {
-        if (from == null)
+        if (from == null) {
             from = Util.getNilUniqueId();
-        if (to == null)
+        }
+        if (to == null) {
             to = Util.getNilUniqueId();
+        }
         DataTables.LOG_TRANSACTION.createInsert()
                 .setColumnNames("from", "to", "currency", "amount", "tax_amount", "tax_account", "error")
                 .setParams(from.toString(), to.toString(), currency, amount, taxAmount, taxAccount == null ? null : taxAccount.toString(), error)
@@ -573,8 +571,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         DataTables.initializeTables(manager, getPrefix());
         plugin.getLogger().info("Validating tables exists...");
         for (DataTables value : DataTables.values()) {
-            if (!value.isExists())
+            if (!value.isExists()) {
                 throw new IllegalStateException("Table " + value.getName() + " doesn't exists even rebuild structure!");
+            }
         }
 
         for (OldShopData data : oldShopData) {
@@ -583,13 +582,15 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                     .setParams(data.owner, data.itemConfig, data.name, data.type, data.currency, data.price, data.unlimited, data.disableDisplay, data.taxAccount, JsonUtil.getGson().toJson(data.permission), data.extra, data.inventoryWrapperName, data.inventorySymbolLink)
                     .returnGeneratedKey(Long.class)
                     .execute();
-            if (dataId < 1)
+            if (dataId < 1) {
                 throw new IllegalStateException("DataId creation failed.");
+            }
             long shopId = DataTables.SHOPS.createInsert()
                     .setColumnNames("data").setParams(dataId)
                     .returnGeneratedKey(Long.class).execute();
-            if (shopId < 1)
+            if (shopId < 1) {
                 throw new IllegalStateException("ShopId creation failed.");
+            }
             DataTables.SHOP_MAP.createReplace()
                     .setColumnNames("world", "x", "y", "z", "shop")
                     .setParams(data.world, data.x, data.y, data.z, shopId)
@@ -618,11 +619,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         total = oldMetricData.size();
         for (OldShopMetricData data : oldMetricData) {
             long shopId = locateShopId(data.getWorld(), data.getX(), data.getY(), data.getZ());
-            if (shopId < 1)
+            if (shopId < 1) {
                 throw new IllegalStateException("ShopId not found.");
+            }
             long dataId = locateShopDataId(shopId);
-            if (dataId < 1)
+            if (dataId < 1) {
                 throw new IllegalStateException("DataId not found.");
+            }
             DataTables.LOG_PURCHASE.createInsert()
                     .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
                     .setParams(data.time, shopId, dataId, data.player, data.type, data.amount, data.total, data.tax)
@@ -688,12 +691,15 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             }
         }
         for (long dataId : dataIds) {
-            if (checkIdUsage(DataTables.SHOPS, "data", dataId))
+            if (checkIdUsage(DataTables.SHOPS, "data", dataId)) {
                 continue;
-            if (checkIdUsage(DataTables.LOG_PURCHASE, "data", dataId))
+            }
+            if (checkIdUsage(DataTables.LOG_PURCHASE, "data", dataId)) {
                 continue;
-            if (checkIdUsage(DataTables.LOG_OTHERS, "data", dataId))
+            }
+            if (checkIdUsage(DataTables.LOG_OTHERS, "data", dataId)) {
                 continue;
+            }
             toPurge.add(dataId);
         }
         return new IsolatedScanResult<>(dataIds, toPurge);
@@ -722,12 +728,15 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
         plugin.getLogger().info("Total " + shopIds.size() + " data found.");
         for (long shopId : shopIds) {
-            if (checkIdUsage(DataTables.SHOP_MAP, "shop", shopId))
+            if (checkIdUsage(DataTables.SHOP_MAP, "shop", shopId)) {
                 continue;
-            if (checkIdUsage(DataTables.LOG_PURCHASE, "shop", shopId))
+            }
+            if (checkIdUsage(DataTables.LOG_PURCHASE, "shop", shopId)) {
                 continue;
-            if (checkIdUsage(DataTables.LOG_CHANGES, "shop", shopId))
+            }
+            if (checkIdUsage(DataTables.LOG_CHANGES, "shop", shopId)) {
                 continue;
+            }
             toPurge.add(shopId);
         }
         return new IsolatedScanResult<>(shopIds, toPurge);
@@ -778,10 +787,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     public void writeToCSV(@NotNull ResultSet set, @NotNull File csvFile) throws SQLException, IOException {
-        if (!csvFile.getParentFile().exists())
+        if (!csvFile.getParentFile().exists()) {
             csvFile.getParentFile().mkdirs();
-        if (!csvFile.exists())
+        }
+        if (!csvFile.exists()) {
             csvFile.createNewFile();
+        }
         try (PrintStream stream = new PrintStream(csvFile)) {
             Log.debug("Writing to CSV file: " + csvFile.getAbsolutePath());
             CsvDriver.writeToCsv(set, stream, true);

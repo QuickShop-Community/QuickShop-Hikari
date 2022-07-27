@@ -68,8 +68,9 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
     public abstract void init();
 
     public void recordDeletion(@Nullable UUID uuid, @NotNull Shop shop, @NotNull String reason) {
-        if (uuid == null)
+        if (uuid == null) {
             uuid = Util.getNilUniqueId();
+        }
         this.api.logEvent(new ShopRemoveLog(uuid, reason, shop.saveToInfoStorage()));
     }
 

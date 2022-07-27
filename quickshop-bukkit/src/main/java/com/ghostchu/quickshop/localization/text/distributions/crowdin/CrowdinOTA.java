@@ -37,8 +37,9 @@ public class CrowdinOTA implements Distribution {
 
     public CrowdinOTA(QuickShop plugin) throws IOException, JsonSyntaxException {
         String configDefine = plugin.getConfig().getString("custom-crowdin-ota-host");
-        if(configDefine != null)
+        if (configDefine != null) {
             CROWDIN_OTA_HOST = configDefine;
+        }
         Util.SysPropertiesParseResult parseResult = Util.parsePackageProperly("custom-crowdin-ota-host");
         if(parseResult.isPresent()){
             CROWDIN_OTA_HOST = parseResult.asString("https://distributions.crowdin.net/91b97508fdf19626f2977b7xrm4/");
@@ -169,8 +170,9 @@ public class CrowdinOTA implements Distribution {
     private Map<String, String> genLanguageMapping() {
         Map<String, String> mapping = new HashMap<>();
         String json = getManifestJson();
-        if (json == null)
+        if (json == null) {
             return null;
+        }
         JsonElement parser = JsonParser.parseString(json);
         for (Map.Entry<String, JsonElement> set : parser.getAsJsonObject().getAsJsonObject("language_mapping").entrySet()) {
             if (!set.getValue().isJsonObject()) {

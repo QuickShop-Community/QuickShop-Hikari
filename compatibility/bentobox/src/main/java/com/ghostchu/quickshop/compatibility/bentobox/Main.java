@@ -40,8 +40,9 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onIslandResetted(IslandResettedEvent event) {
-        if (!deleteShopOnReset)
+        if (!deleteShopOnReset) {
             return;
+        }
         getShops(event.getOldIsland()).forEach(shop -> {
             recordDeletion(event.getPlayerUUID(), shop, "Island " + event.getIsland().getName() + " was resetted");
             shop.delete();
@@ -50,8 +51,9 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onIslandDeleted(IslandDeletedEvent event) {
-        if (!deleteShopOnReset)
+        if (!deleteShopOnReset) {
             return;
+        }
         getShops(event.getDeletedIslandInfo()).forEach(shop -> {
             recordDeletion(event.getPlayerUUID(), shop, "Island " + event.getIsland().getName() + " was deleted");
             shop.delete();
@@ -60,8 +62,9 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onIslandKick(world.bentobox.bentobox.api.events.team.TeamKickEvent event) {
-        if (!deleteShopOnLeave)
+        if (!deleteShopOnLeave) {
             return;
+        }
         getShops(event.getIsland()).forEach((shop) -> {
             if (shop.getOwner().equals(event.getPlayerUUID())) {
                 recordDeletion(event.getOwner(), shop, "Player " + event.getPlayerUUID() + " was kicked from the island");
@@ -72,8 +75,9 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onIslandLeave(world.bentobox.bentobox.api.events.team.TeamLeaveEvent event) {
-        if (!deleteShopOnLeave)
+        if (!deleteShopOnLeave) {
             return;
+        }
         getShops(event.getIsland()).forEach((shop) -> {
             if (shop.getOwner().equals(event.getPlayerUUID())) {
                 recordDeletion(null, shop, "Player " + event.getPlayerUUID() + " was leaved from the island");

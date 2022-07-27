@@ -30,14 +30,18 @@ public class ServerInfoItem implements SubPasteItem {
         this.nmsVersion = ReflectFactory.getNMSVersion();
         this.dataVersion = String.valueOf(plugin.getServer().getUnsafe().getDataVersion());
         this.moddedServerType = "Bukkit";
-        if (PaperLib.isSpigot())
+        if (PaperLib.isSpigot()) {
             this.moddedServerType = "Spigot";
-        if (PaperLib.isPaper())
+        }
+        if (PaperLib.isPaper()) {
             this.moddedServerType = "Paper";
-        if (plugin.getEnvironmentChecker().isFabricBasedServer())
+        }
+        if (plugin.getEnvironmentChecker().isFabricBasedServer()) {
             this.moddedServerType = "Fabric";
-        if (plugin.getEnvironmentChecker().isForgeBasedServer())
+        }
+        if (plugin.getEnvironmentChecker().isForgeBasedServer()) {
             this.moddedServerType = "Forge";
+        }
         this.players = Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers();
         this.onlineMode = Util.boolean2Status(Bukkit.getOnlineMode());
         this.bukkitVersion = plugin.getServer().getVersion();

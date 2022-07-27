@@ -100,8 +100,9 @@ public class HTMLTable {
     @NotNull
     private String renderHead() {
         StringBuilder tdBuilder = new StringBuilder();
-        if (title == null || title.length == 0)
+        if (title == null || title.length == 0) {
             return "";
+        }
         for (String title : title) {
             tdBuilder.append("<th>").append(title).append("</th>");
         }

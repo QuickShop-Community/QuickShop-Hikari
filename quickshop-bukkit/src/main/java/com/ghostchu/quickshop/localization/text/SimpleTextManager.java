@@ -161,8 +161,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
         try {
             // Load the locale file from local cache if available
             // Or load the locale file from remote server if it had updates or not exists.
-            if (distribution == null)
+            if (distribution == null) {
                 throw new IllegalStateException("Distribution hadn't initialized yet!");
+            }
             configuration.loadFromString(distribution.getFile(distributionFile, distributionCode));
         } catch (InvalidConfigurationException exception) {
             // Force loading the locale file form remote server because file not valid.
@@ -191,12 +192,15 @@ public class SimpleTextManager implements TextManager, Reloadable {
             // jar/lang/<region_code>/
             Map<String, FileConfiguration> availableLang = new HashMap<>();
             zipFile.getEntries().asIterator().forEachRemaining(entry -> {
-                if (entry.isDirectory())
+                if (entry.isDirectory()) {
                     return;
-                if (!entry.getName().startsWith("lang/"))
+                }
+                if (!entry.getName().startsWith("lang/")) {
                     return;
-                if (!entry.getName().endsWith("messages.yml"))
+                }
+                if (!entry.getName().endsWith("messages.yml")) {
                     return;
+                }
                 String[] split = entry.getName().split("/");
                 String locale = split[split.length - 2];
                 if (zipFile.canReadEntryData(entry)) {
@@ -333,18 +337,21 @@ public class SimpleTextManager implements TextManager, Reloadable {
 
     @Override
     public @NotNull ProxiedLocale findRelativeLanguages(@Nullable CommandSender sender) {
-        if (sender instanceof Player)
+        if (sender instanceof Player) {
             return findRelativeLanguages(((Player) sender).getLocale());
+        }
         return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
     }
 
     @Override
     public @NotNull ProxiedLocale findRelativeLanguages(@Nullable UUID sender) {
-        if (sender == null)
+        if (sender == null) {
             return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
+        }
         Player player = Bukkit.getPlayer(sender);
-        if (player != null)
+        if (player != null) {
             return findRelativeLanguages(player);
+        }
         return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
 
     }
@@ -413,8 +420,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
     @Override
     @NotNull
     public Component[] convert(@Nullable Object... args) {
-        if (args == null || args.length == 0)
+        if (args == null || args.length == 0) {
             return new Component[0];
+        }
         Component[] components = new Component[args.length];
         for (int i = 0; i < args.length; i++) {
             Object obj = args[i];
@@ -468,8 +476,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
             } catch (Exception exception) {
                 Log.debug("Failed to process the object: " + obj);
-                if (plugin.getSentryErrorReporter() != null)
+                if (plugin.getSentryErrorReporter() != null) {
                     plugin.getSentryErrorReporter().sendError(exception, "Failed to process the object: " + obj);
+                }
                 components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
             }
             // undefined

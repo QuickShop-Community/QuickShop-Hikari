@@ -37,7 +37,7 @@ public class ShopPlayerGroupSetEvent extends AbstractQSEvent {
     /**
      * Get the new group.
      *
-     * @return The new group. ({@link com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup#EVERYONE} if removing)
+     * @return The new group. ({@link com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup#EVERYONE} if removing)
      */
     @NotNull
     public String getNewGroup() {
@@ -47,7 +47,7 @@ public class ShopPlayerGroupSetEvent extends AbstractQSEvent {
     /**
      * Get the old group.
      *
-     * @return The old group. ({@link com.ghostchu.quickshop.shop.permission.BuiltInShopPermissionGroup#EVERYONE} if adding)
+     * @return The old group. ({@link com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup#EVERYONE} if adding)
      */
     @NotNull
     public String getOldGroup() {

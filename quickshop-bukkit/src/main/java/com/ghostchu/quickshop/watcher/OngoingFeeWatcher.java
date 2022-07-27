@@ -59,8 +59,9 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                         taxAccount = shop.getTaxAccount();
                     } else {
                         UUID uuid = ((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount();
-                        if (uuid != null)
+                        if (uuid != null) {
                             taxAccount = uuid;
+                        }
                     }
 
                     ShopOngoingFeeEvent event = new ShopOngoingFeeEvent(shop, shopOwner, cost);

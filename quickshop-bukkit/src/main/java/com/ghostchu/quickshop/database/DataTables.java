@@ -181,7 +181,9 @@ public enum DataTables {
     }
 
     private void create(@NotNull SQLManager sqlManager, @NotNull String tablePrefix) throws SQLException {
-        if (this.manager == null) this.manager = sqlManager;
+        if (this.manager == null) {
+            this.manager = sqlManager;
+        }
         this.prefix = tablePrefix;
 
         TableCreateBuilder tableBuilder = sqlManager.createTable(this.getName());

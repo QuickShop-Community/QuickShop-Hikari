@@ -28,8 +28,9 @@ public class ConfigCollectorItem implements SubPasteItem {
         File newConfigFolder = new File("config");
         if (newConfigFolder.exists() && newConfigFolder.isDirectory()) {
             File[] filesInsideConfig = newConfigFolder.listFiles((dir, name) -> name.endsWith(".yml") || name.endsWith(".yaml") || name.endsWith(".json") || name.endsWith(".toml"));
-            if (filesInsideConfig != null)
+            if (filesInsideConfig != null) {
                 Collections.addAll(file, filesInsideConfig);
+            }
         }
         file.add(new File("purpur.yml"));
         file.add(new File("pufferfish.yml"));
@@ -49,7 +50,9 @@ public class ConfigCollectorItem implements SubPasteItem {
         for (File file : file) {
             String fileContent = readBuildFile(file);
             if (readBuildFile(file) != null) // Hide the file in paste if file doesn't exist
+            {
                 htmlBuilder.append(fileContent);
+            }
         }
         return htmlBuilder.toString();
     }
