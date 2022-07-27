@@ -31,6 +31,9 @@ import java.util.logging.Level;
  */
 @ToString
 public class SimpleEconomyTransaction implements EconomyTransaction {
+    @JsonUtil.Hidden
+    private final QuickShop plugin = QuickShop.getInstance();
+    private final Stack<Operation> processingStack = new Stack<>();
     @Nullable
     private UUID from;
     @Nullable
@@ -48,11 +51,8 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
     private World world;
     @Nullable
     private String currency;
-    @JsonUtil.Hidden
-    private final QuickShop plugin = QuickShop.getInstance();
     @Nullable
     private String lastError = null;
-    private final Stack<Operation> processingStack = new Stack<>();
 
 
     /**
@@ -99,46 +99,57 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
             }
         }
     }
+
     @Override
     public @Nullable UUID getFrom() {
         return from;
     }
+
     @Override
     public void setFrom(@Nullable UUID from) {
         this.from = from;
     }
+
     @Override
     public @Nullable UUID getTo() {
         return to;
     }
+
     @Override
     public void setTo(@Nullable UUID to) {
         this.to = to;
     }
+
     @Override
     public double getAmount() {
         return amount;
     }
+
     @Override
     public void setAmount(double amount) {
         this.amount = amount;
     }
+
     @Override
     public double getAmountAfterTax() {
         return amountAfterTax;
     }
+
     @Override
     public void setAmountAfterTax(double amountAfterTax) {
         this.amountAfterTax = amountAfterTax;
     }
+
     @Override
     public @NotNull EconomyCore getCore() {
         return core;
     }
+
     @Override
     public void setCore(@NotNull EconomyCore core) {
         this.core = core;
     }
+
     @Override
     public @NotNull Stack<Operation> getProcessingStack() {
         return processingStack;
@@ -148,44 +159,49 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
     public @Nullable String getCurrency() {
         return currency;
     }
+
     @Override
     public void setCurrency(@Nullable String currency) {
         this.currency = currency;
     }
+
     @Override
     public @Nullable UUID getTaxer() {
         return taxer;
     }
+
     @Override
     public void setTaxer(@Nullable UUID taxer) {
         this.taxer = taxer;
     }
+
     @Override
     @NotNull
     public World getWorld() {
         return world;
     }
+
     @Override
     public void setWorld(@NotNull World world) {
         this.world = world;
     }
+
     @Nullable
     @Override
     public String getLastError() {
         return lastError;
     }
+
     @Override
     public void setLastError(@NotNull String lastError) {
         this.lastError = lastError;
     }
-    @Override
-    public void setTax(double tax) {
-        this.tax = tax;
-    }
+
     @Override
     public void setAllowLoan(boolean allowLoan) {
         this.allowLoan = allowLoan;
     }
+
     @Override
     public void setTryingFixBalanceInsufficient(boolean tryingFixBalanceInsufficient) {
         this.tryingFixBalanceInsufficient = tryingFixBalanceInsufficient;
@@ -230,7 +246,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
             }
         });
     }
-
 
     /**
      * Commit the transaction with callback
@@ -291,24 +306,9 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         return tax;
     }
 
-    private boolean executeOperation(@NotNull Operation operation) {
-        if (operation.isCommitted()) {
-            throw new IllegalStateException("Operation already committed");
-        }
-        if (operation.isRollback()) {
-            throw new IllegalStateException("Operation already rolled back, you must create another new operation.");
-        }
-        try {
-            boolean result = operation.commit();
-            if (!result) {
-                return false;
-            }
-            processingStack.push(operation);
-            return true;
-        } catch (Exception exception) {
-            this.lastError = "Failed to execute operation: " + core.getLastError() + "; Operation: " + operation;
-            return false;
-        }
+    @Override
+    public void setTax(double tax) {
+        this.tax = tax;
     }
 
     /**
@@ -354,8 +354,28 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         return operations;
     }
 
+    private boolean executeOperation(@NotNull Operation operation) {
+        if (operation.isCommitted()) {
+            throw new IllegalStateException("Operation already committed");
+        }
+        if (operation.isRollback()) {
+            throw new IllegalStateException("Operation already rolled back, you must create another new operation.");
+        }
+        try {
+            boolean result = operation.commit();
+            if (!result) {
+                return false;
+            }
+            processingStack.push(operation);
+            return true;
+        } catch (Exception exception) {
+            this.lastError = "Failed to execute operation: " + core.getLastError() + "; Operation: " + operation;
+            return false;
+        }
+    }
 
-    public interface SimpleTransactionCallback extends TransactionCallback{
+
+    public interface SimpleTransactionCallback extends TransactionCallback {
         /**
          * Calling while Transaction commit
          *

@@ -32,27 +32,6 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
         this.rescan();
     }
 
-    @Override
-    public ReloadResult reloadModule() {
-        rescan();
-        return new ReloadResult(ReloadStatus.SUCCESS, null, null);
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void serverReloaded(ServerLoadEvent event) {
-        this.rescan();
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void pluginDisable(PluginDisableEvent event) {
-        this.rescan();
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void pluginEnable(PluginEnableEvent event) {
-        this.rescan();
-    }
-
     private synchronized void rescan() {
         this.ignoredListener.clear();
         plugin
@@ -72,6 +51,27 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
                                 Log.debug("Successfully added blacklist: [DYNAMIC] " + input);
                             }
                         });
+    }
+
+    @Override
+    public ReloadResult reloadModule() {
+        rescan();
+        return new ReloadResult(ReloadStatus.SUCCESS, null, null);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void serverReloaded(ServerLoadEvent event) {
+        this.rescan();
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void pluginDisable(PluginDisableEvent event) {
+        this.rescan();
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void pluginEnable(PluginEnableEvent event) {
+        this.rescan();
     }
 
     @Override

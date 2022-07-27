@@ -15,70 +15,6 @@ import java.util.List;
 import java.util.Map;
 
 public class PasteGenerator {
-    @Getter
-    private final List<PasteItem> pasteItems = new LinkedList<>();
-    private final long timestamp = System.currentTimeMillis();
-    private final CommandSender sender;
-
-    public PasteGenerator(@Nullable CommandSender sender) {
-        this.sender = sender;
-        add(new HeaderItem(System.currentTimeMillis(), Map.of()));
-        add(new ServerInfoItem());
-        add(new SystemInfoItem());
-        add(new DatabaseInfoItem());
-        add(new ChatProcessorInfoItem());
-        add(new ShopsInfoItem());
-        add(new ReplaceableModulesItem());
-        add(new PluginsInfoItem());
-        add(new CachePerformanceItem());
-        add(new ConfigCollectorItem());
-        add(new DebugLogsItem());
-        add(new PermissionLogsItem());
-    }
-
-    public void add(@NotNull PasteItem pasteItem) {
-        pasteItems.add(pasteItem);
-    }
-
-    @NotNull
-    public String render() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(bakeHeader()).append("\n");
-        for (PasteItem pasteItem : pasteItems) {
-            builder.append(pasteItem.toHTML()).append("\n");
-        }
-        builder.append(bakeFooter());
-        return builder.toString();
-    }
-
-    @NotNull
-    private String bakeHeader() {
-        return DOCUMENT_HEADER
-                .replace("{title}", "QuickShop-" + QuickShop.getFork() + " // Paste")
-                .replace("{inline_style}", INLINE_STYLE);
-    }
-
-    @NotNull
-    private String bakeFooter() {
-        return DOCUMENT_FOOTER
-                .replace("{product}", "QuickShop-" + QuickShop.getFork() + " v" + QuickShop.getVersion())
-                .replace("{time}", formatTime(timestamp))
-                .replace("{pastecreator}", sender == null ? "Automatic" : sender.getName());
-    }
-
-    @NotNull
-    private String formatTime(long time) {
-        String timeUnit = LegacyComponentSerializer.legacySection().serialize(QuickShop.getInstance().text().of("timeunit.std-format").forLocale(MsgUtil.getDefaultGameLanguageCode()));
-        SimpleDateFormat format;
-        try {
-            format = new SimpleDateFormat(timeUnit);
-        } catch (Exception e) {
-            format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-        }
-        return format.format(time);
-    }
-
-
     private final static String DOCUMENT_HEADER = """
             <!DOCTYPE html>
             <html lang="en">
@@ -92,7 +28,6 @@ public class PasteGenerator {
                 <body style = "max-width: 70em !important;">
                 <main>
             """;
-
     private final static String DOCUMENT_FOOTER = """
                 </main>
                 </body>
@@ -107,7 +42,6 @@ public class PasteGenerator {
                 </footer>
             </html>
             """;
-
     private final static String INLINE_STYLE = """
             /* Sakura.css v1.3.0
              * ================
@@ -296,4 +230,66 @@ public class PasteGenerator {
               margin-bottom: .5rem;
               font-weight: 600; }
             """;
+    @Getter
+    private final List<PasteItem> pasteItems = new LinkedList<>();
+    private final long timestamp = System.currentTimeMillis();
+    private final CommandSender sender;
+
+    public PasteGenerator(@Nullable CommandSender sender) {
+        this.sender = sender;
+        add(new HeaderItem(System.currentTimeMillis(), Map.of()));
+        add(new ServerInfoItem());
+        add(new SystemInfoItem());
+        add(new DatabaseInfoItem());
+        add(new ChatProcessorInfoItem());
+        add(new ShopsInfoItem());
+        add(new ReplaceableModulesItem());
+        add(new PluginsInfoItem());
+        add(new CachePerformanceItem());
+        add(new ConfigCollectorItem());
+        add(new DebugLogsItem());
+        add(new PermissionLogsItem());
+    }
+
+    public void add(@NotNull PasteItem pasteItem) {
+        pasteItems.add(pasteItem);
+    }
+
+    @NotNull
+    public String render() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(bakeHeader()).append("\n");
+        for (PasteItem pasteItem : pasteItems) {
+            builder.append(pasteItem.toHTML()).append("\n");
+        }
+        builder.append(bakeFooter());
+        return builder.toString();
+    }
+
+    @NotNull
+    private String bakeHeader() {
+        return DOCUMENT_HEADER
+                .replace("{title}", "QuickShop-" + QuickShop.getFork() + " // Paste")
+                .replace("{inline_style}", INLINE_STYLE);
+    }
+
+    @NotNull
+    private String bakeFooter() {
+        return DOCUMENT_FOOTER
+                .replace("{product}", "QuickShop-" + QuickShop.getFork() + " v" + QuickShop.getVersion())
+                .replace("{time}", formatTime(timestamp))
+                .replace("{pastecreator}", sender == null ? "Automatic" : sender.getName());
+    }
+
+    @NotNull
+    private String formatTime(long time) {
+        String timeUnit = LegacyComponentSerializer.legacySection().serialize(QuickShop.getInstance().text().of("timeunit.std-format").forLocale(MsgUtil.getDefaultGameLanguageCode()));
+        SimpleDateFormat format;
+        try {
+            format = new SimpleDateFormat(timeUnit);
+        } catch (Exception e) {
+            format = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        }
+        return format.format(time);
+    }
 }

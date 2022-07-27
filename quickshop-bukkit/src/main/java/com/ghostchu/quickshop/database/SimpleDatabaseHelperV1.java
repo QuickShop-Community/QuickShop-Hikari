@@ -60,124 +60,6 @@ public class SimpleDatabaseHelperV1 {
     }
 
     /**
-     * Creates the database table 'shops'.
-     */
-
-    public void createShopsTable() {
-        manager.createTable(prefix + "shops")
-                .addColumn("owner", "MEDIUMTEXT NOT NULL")
-                .addColumn("price", "DECIMAL(32,2) NOT NULL")
-                .addColumn("itemConfig", "LONGTEXT NOT NULL")
-                .addColumn("x", "INT(32) NOT NULL")
-                .addColumn("y", "INT(32) NOT NULL")
-                .addColumn("z", "INT(32) NOT NULL")
-                .addColumn("world", "VARCHAR(255) NOT NULL")
-                .addColumn("unlimited", "TINYINT NOT NULL")
-                .addColumn("type", "INTEGER(8) NOT NULL")
-                .addColumn("extra", "LONGTEXT NULL")
-                .addColumn("currency", "TEXT NULL")
-                .addColumn("disableDisplay", "TINYINT NULL DEFAULT 0")
-                .addColumn("taxAccount", "VARCHAR(255) NULL")
-                .addColumn("inventorySymbolLink", "TEXT NULL")
-                .addColumn("inventoryWrapperName", "VARCHAR(255) NULL")
-                .addColumn("name", "TEXT NULL")
-                .setIndex(IndexType.PRIMARY_KEY, null, "x", "y", "z", "world")
-                .build().execute((i) -> {
-                    return i;
-                    // Do nothing
-                }, ((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed while trying create the shop table! SQL: " + sqlAction.getSQLContent(), exception)));
-    }
-
-    /**
-     * Creates the database table 'metrics'
-     */
-    public void createMetricsTable() {
-        manager.createTable(prefix + "metrics")
-                .addColumn("time", "BIGINT NOT NULL")
-                .addColumn("x", "INT NOT NULL")
-                .addColumn("y", "INT NOT NULL")
-                .addColumn("z", "INT NOT NULL")
-                .addColumn("world", "VARCHAR(255) NOT NULL")
-                .addColumn("type", "VARCHAR(255) NOT NULL")
-                .addColumn("total", "DECIMAL(32,2) NOT NULL")
-                .addColumn("tax", "DECIMAL(32,2) NOT NULL")
-                .addColumn("amount", "INT(32) NOT NULL")
-                .addColumn("player", "VARCHAR(255) NOT NULL")
-                .setIndex(IndexType.PRIMARY_KEY, null, "time")
-                .setIndex(IndexType.INDEX, "player_based", "time", "x", "y", "z", "world", "player")
-                .setIndex(IndexType.INDEX, "type_based", "time", "x", "y", "z", "world", "type")
-                .build()
-                .execute(((exception, sqlAction) -> {
-                    if (exception != null) {
-                        plugin.getLogger().log(Level.WARNING, "Failed to create messages table! SQL:" + sqlAction.getSQLContent(), exception);
-                    }
-                }));
-    }
-
-    /**
-     * Creates the database table 'messages'
-     */
-    public void createMessagesTable() {
-        manager.createTable(prefix + "messages")
-                .addColumn("owner", "VARCHAR(255) NOT NULL")
-                .addColumn("message", "TEXT NOT NULL")
-                .addColumn("time", "BIGINT(32) NOT NULL")
-                .build()
-                .execute(((exception, sqlAction) -> {
-                    if (exception != null) {
-                        plugin.getLogger().log(Level.WARNING, "Failed to create messages table! SQL:" + sqlAction.getSQLContent(), exception);
-                    }
-                }));
-    }
-
-    public void createLogsTable() {
-        manager.createTable(prefix + "logs")
-                .addColumn("time", "BIGINT(32) NOT NULL")
-                .addColumn("classname", "TEXT NULL")
-                .addColumn("data", "LONGTEXT NULL")
-                .build()
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create logs table! SQL:" + sqlAction.getSQLContent(), exception)));
-    }
-
-    public void createExternalCacheTable() {
-        manager.createTable(prefix + "external_cache")
-                .addColumn("x", "INT(32) NOT NULL")
-                .addColumn("y", "INT(32) NOT NULL")
-                .addColumn("z", "INT(32) NOT NULL")
-                .addColumn("world", "VARCHAR(255) NOT NULL")
-                .addColumn("space", "INT NULL")
-                .addColumn("stock", "INT NULL")
-                .setIndex(IndexType.PRIMARY_KEY, null, "x", "y", "z", "world")
-                .build()
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create extrenal_cache table! SQL:" + sqlAction.getSQLContent(), exception)));
-    }
-
-    public void createMetadataTable() {
-        manager.createTable(prefix + "metadata")
-                .addColumn("key", "VARCHAR(255) NOT NULL")
-                .addColumn("value", "LONGTEXT NOT NULL")
-                .setIndex(IndexType.PRIMARY_KEY, null, "key")
-                .build()
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create metadata table! SQL:" + sqlAction.getSQLContent(), exception)));
-        try {
-            setDatabaseVersion(2);
-        } catch (SQLException e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to update database version!", e);
-        }
-    }
-
-    public void createPlayerTable() {
-        manager.createTable(prefix + "players")
-                .addColumn("uuid", "VARCHAR(255) NOT NULL")
-                .addColumn("locale", "TEXT NOT NULL")
-                .setIndex(IndexType.PRIMARY_KEY, null, "uuid")
-                .build()
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create players table! SQL:" + sqlAction.getSQLContent(), exception)));
-    }
-
-
-
-    /**
      * Verifies that all required columns exist.
      */
     public void checkColumns() throws SQLException {
@@ -221,22 +103,6 @@ public class SimpleDatabaseHelperV1 {
                 .execute();
     }
 
-    public int getDatabaseVersion() {
-        try (SQLQuery query = manager.createQuery().inTable(prefix + "metadata")
-                .addCondition("key", "database_version")
-                .selectColumns("value")
-                .build().execute(); ResultSet result = query.getResultSet()) {
-            if (!result.next()) {
-                return 0;
-            }
-            return Integer.parseInt(result.getString("value"));
-        } catch (SQLException e) {
-            Log.debug("Failed to getting database version! Err: " + e.getMessage());
-            return -1;
-        }
-    }
-
-
     /**
      * Returns true if the table exists
      *
@@ -258,6 +124,137 @@ public class SimpleDatabaseHelperV1 {
             connection.close();
         }
         return match;
+    }
+
+    /**
+     * Creates the database table 'shops'.
+     */
+
+    public void createShopsTable() {
+        manager.createTable(prefix + "shops")
+                .addColumn("owner", "MEDIUMTEXT NOT NULL")
+                .addColumn("price", "DECIMAL(32,2) NOT NULL")
+                .addColumn("itemConfig", "LONGTEXT NOT NULL")
+                .addColumn("x", "INT(32) NOT NULL")
+                .addColumn("y", "INT(32) NOT NULL")
+                .addColumn("z", "INT(32) NOT NULL")
+                .addColumn("world", "VARCHAR(255) NOT NULL")
+                .addColumn("unlimited", "TINYINT NOT NULL")
+                .addColumn("type", "INTEGER(8) NOT NULL")
+                .addColumn("extra", "LONGTEXT NULL")
+                .addColumn("currency", "TEXT NULL")
+                .addColumn("disableDisplay", "TINYINT NULL DEFAULT 0")
+                .addColumn("taxAccount", "VARCHAR(255) NULL")
+                .addColumn("inventorySymbolLink", "TEXT NULL")
+                .addColumn("inventoryWrapperName", "VARCHAR(255) NULL")
+                .addColumn("name", "TEXT NULL")
+                .setIndex(IndexType.PRIMARY_KEY, null, "x", "y", "z", "world")
+                .build().execute((i) -> {
+                    return i;
+                    // Do nothing
+                }, ((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed while trying create the shop table! SQL: " + sqlAction.getSQLContent(), exception)));
+    }
+
+    /**
+     * Creates the database table 'messages'
+     */
+    public void createMessagesTable() {
+        manager.createTable(prefix + "messages")
+                .addColumn("owner", "VARCHAR(255) NOT NULL")
+                .addColumn("message", "TEXT NOT NULL")
+                .addColumn("time", "BIGINT(32) NOT NULL")
+                .build()
+                .execute(((exception, sqlAction) -> {
+                    if (exception != null) {
+                        plugin.getLogger().log(Level.WARNING, "Failed to create messages table! SQL:" + sqlAction.getSQLContent(), exception);
+                    }
+                }));
+    }
+
+    public void createLogsTable() {
+        manager.createTable(prefix + "logs")
+                .addColumn("time", "BIGINT(32) NOT NULL")
+                .addColumn("classname", "TEXT NULL")
+                .addColumn("data", "LONGTEXT NULL")
+                .build()
+                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create logs table! SQL:" + sqlAction.getSQLContent(), exception)));
+    }
+
+    public void createExternalCacheTable() {
+        manager.createTable(prefix + "external_cache")
+                .addColumn("x", "INT(32) NOT NULL")
+                .addColumn("y", "INT(32) NOT NULL")
+                .addColumn("z", "INT(32) NOT NULL")
+                .addColumn("world", "VARCHAR(255) NOT NULL")
+                .addColumn("space", "INT NULL")
+                .addColumn("stock", "INT NULL")
+                .setIndex(IndexType.PRIMARY_KEY, null, "x", "y", "z", "world")
+                .build()
+                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create extrenal_cache table! SQL:" + sqlAction.getSQLContent(), exception)));
+    }
+
+    public void createPlayerTable() {
+        manager.createTable(prefix + "players")
+                .addColumn("uuid", "VARCHAR(255) NOT NULL")
+                .addColumn("locale", "TEXT NOT NULL")
+                .setIndex(IndexType.PRIMARY_KEY, null, "uuid")
+                .build()
+                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create players table! SQL:" + sqlAction.getSQLContent(), exception)));
+    }
+
+    public void createMetadataTable() {
+        manager.createTable(prefix + "metadata")
+                .addColumn("key", "VARCHAR(255) NOT NULL")
+                .addColumn("value", "LONGTEXT NOT NULL")
+                .setIndex(IndexType.PRIMARY_KEY, null, "key")
+                .build()
+                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create metadata table! SQL:" + sqlAction.getSQLContent(), exception)));
+        try {
+            setDatabaseVersion(2);
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to update database version!", e);
+        }
+    }
+
+    public int getDatabaseVersion() {
+        try (SQLQuery query = manager.createQuery().inTable(prefix + "metadata")
+                .addCondition("key", "database_version")
+                .selectColumns("value")
+                .build().execute(); ResultSet result = query.getResultSet()) {
+            if (!result.next()) {
+                return 0;
+            }
+            return Integer.parseInt(result.getString("value"));
+        } catch (SQLException e) {
+            Log.debug("Failed to getting database version! Err: " + e.getMessage());
+            return -1;
+        }
+    }
+
+    /**
+     * Creates the database table 'metrics'
+     */
+    public void createMetricsTable() {
+        manager.createTable(prefix + "metrics")
+                .addColumn("time", "BIGINT NOT NULL")
+                .addColumn("x", "INT NOT NULL")
+                .addColumn("y", "INT NOT NULL")
+                .addColumn("z", "INT NOT NULL")
+                .addColumn("world", "VARCHAR(255) NOT NULL")
+                .addColumn("type", "VARCHAR(255) NOT NULL")
+                .addColumn("total", "DECIMAL(32,2) NOT NULL")
+                .addColumn("tax", "DECIMAL(32,2) NOT NULL")
+                .addColumn("amount", "INT(32) NOT NULL")
+                .addColumn("player", "VARCHAR(255) NOT NULL")
+                .setIndex(IndexType.PRIMARY_KEY, null, "time")
+                .setIndex(IndexType.INDEX, "player_based", "time", "x", "y", "z", "world", "player")
+                .setIndex(IndexType.INDEX, "type_based", "time", "x", "y", "z", "world", "type")
+                .build()
+                .execute(((exception, sqlAction) -> {
+                    if (exception != null) {
+                        plugin.getLogger().log(Level.WARNING, "Failed to create messages table! SQL:" + sqlAction.getSQLContent(), exception);
+                    }
+                }));
     }
 
     public @NotNull SQLManager getManager() {

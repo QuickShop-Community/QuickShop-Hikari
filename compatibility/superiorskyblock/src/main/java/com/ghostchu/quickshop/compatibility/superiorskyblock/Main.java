@@ -101,25 +101,6 @@ public final class Main extends CompatibilityModule implements Listener {
 
     }
 
-    @EventHandler
-    public void deleteShops(IslandKickEvent event) {
-        if (deleteShopOnMemberLeave) {
-            deleteShops(event.getIsland(), event.getTarget().getUniqueId());
-        }
-    }
-
-
-    @EventHandler
-    public void deleteShops(IslandUncoopPlayerEvent event) {
-        deleteShops(event.getIsland(), event.getTarget().getUniqueId());
-    }
-
-
-    @EventHandler
-    public void deleteShopsOnChunkReset(IslandChunkResetEvent event) {
-        deleteShops(event.getIsland(), null);
-    }
-
     private void deleteShops(@NotNull Island island, @Nullable UUID uuid) {
         island.getAllChunks().forEach((chunk) -> {
             Map<Location, Shop> shops = QuickShop.getInstance().getShopManager().getShops(chunk);
@@ -135,5 +116,22 @@ public final class Main extends CompatibilityModule implements Listener {
                 });
             }
         });
+    }
+
+    @EventHandler
+    public void deleteShops(IslandKickEvent event) {
+        if (deleteShopOnMemberLeave) {
+            deleteShops(event.getIsland(), event.getTarget().getUniqueId());
+        }
+    }
+
+    @EventHandler
+    public void deleteShops(IslandUncoopPlayerEvent event) {
+        deleteShops(event.getIsland(), event.getTarget().getUniqueId());
+    }
+
+    @EventHandler
+    public void deleteShopsOnChunkReset(IslandChunkResetEvent event) {
+        deleteShops(event.getIsland(), null);
     }
 }

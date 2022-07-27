@@ -195,6 +195,29 @@ public class ShopLoader {
         }
     }
 
+    private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
+        errors++;
+        Logger logger = plugin.getLogger();
+        logger.warning("##########FAILED TO LOAD SHOP##########");
+        logger.warning("  >> Error Info:");
+        String err = ex.getMessage();
+        if (err == null) {
+            err = "null";
+        }
+        logger.warning(err);
+        logger.warning("  >> Error Trace");
+        ex.printStackTrace();
+        logger.warning("  >> Target Location Info");
+        logger.warning("Location: " + ((shopLocation == null) ? "NULL" : shopLocation.toString()));
+        logger.warning(
+                "Block: " + ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
+        logger.warning("#######################################");
+        if (errors > 10) {
+            logger.severe(
+                    "QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
+        }
+    }
+
     @SuppressWarnings("ConstantConditions")
     private boolean shopNullCheck(@Nullable Shop shop) {
         if (shop == null) {
@@ -221,30 +244,6 @@ public class ShopLoader {
             Log.debug("Shop owner not exist on this server, did you have reset the playerdata?");
         }
         return false;
-    }
-
-
-    private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
-        errors++;
-        Logger logger = plugin.getLogger();
-        logger.warning("##########FAILED TO LOAD SHOP##########");
-        logger.warning("  >> Error Info:");
-        String err = ex.getMessage();
-        if (err == null) {
-            err = "null";
-        }
-        logger.warning(err);
-        logger.warning("  >> Error Trace");
-        ex.printStackTrace();
-        logger.warning("  >> Target Location Info");
-        logger.warning("Location: " + ((shopLocation == null) ? "NULL" : shopLocation.toString()));
-        logger.warning(
-                "Block: " + ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
-        logger.warning("#######################################");
-        if (errors > 10) {
-            logger.severe(
-                    "QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
-        }
     }
 //
 //    public synchronized void recoverFromFile(@NotNull String fileContent) {
@@ -298,7 +297,6 @@ public class ShopLoader {
 //            plugin.getLogger().info("Finished!");
 //        });
 //    }
-
 
     @Getter
     @Setter

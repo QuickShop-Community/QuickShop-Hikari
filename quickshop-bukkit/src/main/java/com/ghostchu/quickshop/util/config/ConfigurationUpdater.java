@@ -31,13 +31,6 @@ public class ConfigurationUpdater {
         this.configuration = plugin.getConfig();
     }
 
-    private void writeServerUniqueId() {
-        String serverUUID = plugin.getConfig().getString("server-uuid");
-        if (serverUUID == null || serverUUID.isEmpty() || !Util.isUUID(serverUUID)) {
-            plugin.getConfig().set("server-uuid", UUID.randomUUID().toString());
-        }
-    }
-
     public void update(@NotNull Object configUpdateScript) {
         Log.debug("Starting configuration update...");
         writeServerUniqueId();
@@ -87,13 +80,10 @@ public class ConfigurationUpdater {
 
     }
 
-    private void brokenConfigurationFix() {
-        try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(plugin.getResource("config.yml"))), StandardCharsets.UTF_8)) {
-            if (new ConfigurationFixer(plugin, new File(plugin.getDataFolder(), "config.yml"), plugin.getConfig(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
-                plugin.reloadConfig();
-            }
-        } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to fix config.yml, plugin may not working properly.", e);
+    private void writeServerUniqueId() {
+        String serverUUID = plugin.getConfig().getString("server-uuid");
+        if (serverUUID == null || serverUUID.isEmpty() || !Util.isUUID(serverUUID)) {
+            plugin.getConfig().set("server-uuid", UUID.randomUUID().toString());
         }
     }
 
@@ -109,6 +99,19 @@ public class ConfigurationUpdater {
         }
     }
 
+    @NotNull
+    public List<Method> getUpdateScripts(@NotNull Object configUpdateScript) {
+        List<Method> methods = new ArrayList<>();
+        for (Method declaredMethod : configUpdateScript.getClass().getDeclaredMethods()) {
+            if (declaredMethod.getAnnotation(UpdateScript.class) == null) {
+                continue;
+            }
+            methods.add(declaredMethod);
+        }
+        methods.sort(Comparator.comparingInt(o -> o.getAnnotation(UpdateScript.class).version()));
+        return methods;
+    }
+
     private void cleanupOldConfigs() throws IOException {
         Files.deleteIfExists(new File(plugin.getDataFolder(), "example.config.yml").toPath());
         Files.deleteIfExists(new File(plugin.getDataFolder(), "example-configuration.txt").toPath());
@@ -121,16 +124,13 @@ public class ConfigurationUpdater {
         }
     }
 
-    @NotNull
-    public List<Method> getUpdateScripts(@NotNull Object configUpdateScript) {
-        List<Method> methods = new ArrayList<>();
-        for (Method declaredMethod : configUpdateScript.getClass().getDeclaredMethods()) {
-            if (declaredMethod.getAnnotation(UpdateScript.class) == null) {
-                continue;
+    private void brokenConfigurationFix() {
+        try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(plugin.getResource("config.yml"))), StandardCharsets.UTF_8)) {
+            if (new ConfigurationFixer(plugin, new File(plugin.getDataFolder(), "config.yml"), plugin.getConfig(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
+                plugin.reloadConfig();
             }
-            methods.add(declaredMethod);
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to fix config.yml, plugin may not working properly.", e);
         }
-        methods.sort(Comparator.comparingInt(o -> o.getAnnotation(UpdateScript.class).version()));
-        return methods;
     }
 }

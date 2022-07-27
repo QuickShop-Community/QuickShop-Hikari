@@ -36,12 +36,12 @@ public class RollbarErrorReporter {
     private final QuickShop plugin;
     private final QuickShopExceptionFilter quickShopExceptionFilter;
     private final GlobalExceptionFilter serverExceptionFilter;
+    private final LinkedBlockingQueue<ErrorBundle> reportQueue = new LinkedBlockingQueue<>();
     private boolean disable;
     private boolean tempDisable;
     //private final GlobalExceptionFilter globalExceptionFilter;
     @Getter
     private volatile boolean enabled;
-    private final LinkedBlockingQueue<ErrorBundle> reportQueue = new LinkedBlockingQueue<>();
 
 
     public RollbarErrorReporter(@NotNull QuickShop plugin) {
@@ -104,7 +104,7 @@ public class RollbarErrorReporter {
     }
 
     private void sendError0(@NotNull Throwable throwable, @NotNull String... context) {
-        if(Bukkit.isPrimaryThread()){
+        if (Bukkit.isPrimaryThread()) {
             plugin.getLogger().warning("Cannot send error on primary thread (I/O blocking). This error has been discard.");
             return;
         }
@@ -166,17 +166,6 @@ public class RollbarErrorReporter {
      */
     public void sendError(@NotNull Throwable throwable, @NotNull String... context) {
         this.reportQueue.offer(new ErrorBundle(throwable, context));
-    }
-
-    @Data
-    static class ErrorBundle {
-        private final Throwable throwable;
-        private final String[] context;
-
-        public ErrorBundle(Throwable throwable, String[] context) {
-            this.throwable = throwable;
-            this.context = context;
-        }
     }
 
     /**
@@ -307,6 +296,17 @@ public class RollbarErrorReporter {
         disable = false;
     }
 
+    @Data
+    static class ErrorBundle {
+        private final Throwable throwable;
+        private final String[] context;
+
+        public ErrorBundle(Throwable throwable, String[] context) {
+            this.throwable = throwable;
+            this.context = context;
+        }
+    }
+
 //    private String getPluginInfo() {
 //        StringBuilder buffer = new StringBuilder();
 //        for (Plugin bPlugin : plugin.getServer().getPluginManager().getPlugins()) {
@@ -320,12 +320,6 @@ public class RollbarErrorReporter {
 //        return buffer.toString();
 //    }
 
-    enum PossiblyLevel {
-        CONFIRM,
-        MAYBE,
-        IMPOSSIBLE
-    }
-
     class GlobalExceptionFilter implements Filter {
 
         @Nullable
@@ -334,10 +328,6 @@ public class RollbarErrorReporter {
 
         GlobalExceptionFilter(@Nullable Filter preFilter) {
             this.preFilter = preFilter;
-        }
-
-        private boolean defaultValue(LogRecord rec) {
-            return preFilter == null || preFilter.isLoggable(rec);
         }
 
         /**
@@ -375,6 +365,10 @@ public class RollbarErrorReporter {
             }
         }
 
+        private boolean defaultValue(LogRecord rec) {
+            return preFilter == null || preFilter.isLoggable(rec);
+        }
+
     }
 
     class QuickShopExceptionFilter implements Filter {
@@ -384,10 +378,6 @@ public class RollbarErrorReporter {
 
         QuickShopExceptionFilter(@Nullable Filter preFilter) {
             this.preFilter = preFilter;
-        }
-
-        private boolean defaultValue(LogRecord rec) {
-            return preFilter == null || preFilter.isLoggable(rec);
         }
 
         /**
@@ -425,5 +415,15 @@ public class RollbarErrorReporter {
             }
         }
 
+        private boolean defaultValue(LogRecord rec) {
+            return preFilter == null || preFilter.isLoggable(rec);
+        }
+
+    }
+
+    enum PossiblyLevel {
+        CONFIRM,
+        MAYBE,
+        IMPOSSIBLE
     }
 }

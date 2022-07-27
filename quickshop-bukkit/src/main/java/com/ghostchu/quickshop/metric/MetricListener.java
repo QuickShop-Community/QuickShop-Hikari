@@ -18,13 +18,6 @@ public class MetricListener extends AbstractQSListener implements Listener {
         super(plugin);
     }
 
-    private ShopOperationEnum wrapShopOperation(Shop shop) {
-        return switch (shop.getShopType()) {
-            case SELLING -> ShopOperationEnum.PURCHASE_SELLING_SHOP;
-            case BUYING -> ShopOperationEnum.PURCHASE_BUYING_SHOP;
-        };
-    }
-
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPurchase(ShopSuccessPurchaseEvent event) {
         plugin.getDatabaseHelper().insertMetricRecord(
@@ -37,6 +30,13 @@ public class MetricListener extends AbstractQSListener implements Listener {
                         .type(wrapShopOperation(event.getShop()))
                         .build()
         );
+    }
+
+    private ShopOperationEnum wrapShopOperation(Shop shop) {
+        return switch (shop.getShopType()) {
+            case SELLING -> ShopOperationEnum.PURCHASE_SELLING_SHOP;
+            case BUYING -> ShopOperationEnum.PURCHASE_BUYING_SHOP;
+        };
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)

@@ -11,12 +11,13 @@ import java.util.Objects;
 
 public class PluginsInfoItem implements SubPasteItem {
     @Override
-    public @NotNull String getTitle() {
-        return "Plugins";
+    public @NotNull String genBody() {
+        return buildContent();
     }
 
-    private boolean isAddon(Plugin plugin) {
-        return plugin.getDescription().getDepend().contains(QuickShop.getInstance().getName()) || plugin.getDescription().getSoftDepend().contains(QuickShop.getInstance().getName());
+    @Override
+    public @NotNull String getTitle() {
+        return "Plugins";
     }
 
     @NotNull
@@ -34,9 +35,7 @@ public class PluginsInfoItem implements SubPasteItem {
         return table.render();
     }
 
-
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
+    private boolean isAddon(Plugin plugin) {
+        return plugin.getDescription().getDepend().contains(QuickShop.getInstance().getName()) || plugin.getDescription().getSoftDepend().contains(QuickShop.getInstance().getName());
     }
 }

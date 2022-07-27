@@ -92,6 +92,11 @@ import java.util.logging.Level;
 
 public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     /**
+     * If running environment test
+     */
+    @Getter
+    private static final boolean testing = false;
+    /**
      * The active instance of QuickShop
      * You shouldn't use this if you really need it.
      */
@@ -101,14 +106,15 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
      * The manager to check permissions.
      */
     private static PermissionManager permissionManager;
-    /**
-     * If running environment test
-     */
-    @Getter
-    private static final boolean testing = false;
     private final Map<String, Integer> limits = new HashMap<>(15);
     @Getter
     private final ReloadManager reloadManager = new ReloadManager();
+    private final InventoryWrapperRegistry inventoryWrapperRegistry = new InventoryWrapperRegistry();
+    @Getter
+    private final InventoryWrapperManager inventoryWrapperManager = new BukkitInventoryWrapperManager();
+    @Getter
+    private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
+    private final Map<String, String> addonRegisteredMapping = new HashMap<>();
     /* Public QuickShop API End */
     boolean onLoadCalled = false;
     private GameVersion gameVersion;
@@ -120,12 +126,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     @Getter
     private SimpleShopPermissionManager shopPermissionManager;
     private boolean priceChangeRequiresFee = false;
-    private final InventoryWrapperRegistry inventoryWrapperRegistry = new InventoryWrapperRegistry();
-    @Getter
-    private final InventoryWrapperManager inventoryWrapperManager = new BukkitInventoryWrapperManager();
     @Getter
     private DatabaseDriverType databaseDriverType = null;
-
     /**
      * The BootError, if it not NULL, plugin will stop loading and show setted errors when use /qs
      */
@@ -227,11 +229,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private Platform platform;
     private BukkitAudiences audience;
     @Getter
-    private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
-    @Getter
     private ItemMarker itemMarker;
     private Map<String, String> translationMapping;
-    private final Map<String, String> addonRegisteredMapping = new HashMap<>();
     @Getter
     private PlayerFinder playerFinder;
     @Getter
@@ -255,127 +254,47 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     }
 
     /**
-     * Early than onEnable, make sure instance was loaded in first time.
+     * Returns QS version, this method only exist on QuickShop forks If running other QuickShop forks, result
+     * may not is "Reremake x.x.x" If running QS official, Will throw exception.
+     *
+     * @return Plugin Version
      */
-    @Override
-    public final void onLoad() {
-        instance = this;
-        Bukkit.getServicesManager().register(QuickShopProvider.class, new QuickShopProvider() {
-            @Override
-            public @NotNull Plugin getInstance() {
-                return instance;
-            }
-
-            @Override
-            public @NotNull QuickShopAPI getApiInstance() {
-                return instance;
-            }
-        }, this, ServicePriority.High);
-        // Reset the BootError status to normal.
-        this.bootError = null;
-        Util.setPlugin(this);
-        this.onLoadCalled = true;
-        getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up");
-        getReloadManager().register(this);
-        //BEWARE THESE ONLY RUN ONCE
-        this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
-        getLogger().info("Self testing...");
-        if (!runtimeCheck(EnvCheckEntry.Stage.ON_LOAD)) {
-            return;
-        }
-        getLogger().info("Reading the configuration...");
-        initConfiguration();
-        getLogger().info("Loading up platform modules...");
-        loadPlatform();
-        getLogger().info("Loading player name and unique id mapping...");
-        this.playerFinder = new PlayerFinder();
-        setupUnirest();
-        loadChatProcessor();
-        loadTextManager();
-        getLogger().info("Register InventoryWrapper...");
-        this.inventoryWrapperRegistry.register(this, this.inventoryWrapperManager);
-        getLogger().info("Initializing NexusManager...");
-        this.nexusManager = new NexusManager(this);
-        getLogger().info("QuickShop " + getFork() + " - Early boot step - Complete");
+    @NotNull
+    public static String getVersion() {
+        return QuickShop.getInstance().getDescription().getVersion();
     }
 
-    @Override
-    public final void onEnable() {
-        if (!this.onLoadCalled) {
-            getLogger().severe("FATAL: onLoad has not been called for QuickShop. Trying to fix it... Some integrations may not work properly!");
-            try {
-                onLoad();
-            } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "Failed to fix onLoad", ex);
-            }
-        }
-        Timer enableTimer = new Timer(true);
-        getLogger().info("QuickShop " + getFork());
-        this.audience = BukkitAudiences.create(this);
-        /* Check the running envs is support or not. */
-        getLogger().info("Starting plugin self-test, please wait...");
-        runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
-        getLogger().info("Reading the configuration...");
-        initConfiguration();
-        new ServerInternalExporter(this);
-        getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
-        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood, sandtechnology");
-        getLogger().info("Let's start loading the plugin");
-        getLogger().info("Chat processor selected: Hardcoded BungeeChat Lib");
-        /* Process Metrics and Sentry error reporter. */
-        metrics = new Metrics(this, 14281);
-        loadErrorReporter();
-        loadItemMatcher();
-        this.itemMarker = new ItemMarker(this);
-        this.shopItemBlackList = new ShopItemBlackList(this);
-        Util.initialize();
-        load3rdParty();
-        //Load the database
-        initDatabase();
-        /* Initalize the tools */
-        // Create the shop manager.
-        permissionManager = new PermissionManager(this);
-        shopPermissionManager = new SimpleShopPermissionManager(this);
-        // This should be inited before shop manager
-        this.registerDisplayAutoDespawn();
-        getLogger().info("Registering commands...");
-        loadCommandHandler();
-        this.shopManager = new SimpleShopManager(this);
-        this.permissionChecker = new PermissionChecker(this);
-        // Limit
-        this.registerLimitRanks();
-        // Limit end
-        if (getConfig().getInt("shop.finding.distance") > 100 && getConfig().getBoolean("shop.finding.exclude-out-of-stock")) {
-            getLogger().severe("Shop find distance is too high with chunk loading feature turned on! It may cause lag! Pick a number below 100!");
-        }
-        setupShopCaches();
-        signUpdateWatcher = new SignUpdateWatcher();
-        shopContainerWatcher = new ShopContainerWatcher();
-        /* Load all shops. */
-        shopLoader = new ShopLoader(this);
-        shopLoader.loadShops();
-        bakeShopsOwnerCache();
-        getLogger().info("Registering listeners...");
-        this.interactionController = new InteractionController(this);
-        // Register events
-        // Listeners (These don't)
-        registerListeners();
-        this.shopControlPanelManager.register(new SimpleShopControlPanel());
-        this.registerDisplayItem();
-        this.registerShopLock();
-        getLogger().info("Cleaning MsgUtils...");
-        MsgUtil.clean();
-        MsgUtil.loadTransactionMessages();
-        this.registerUpdater();
-        /* Delay the Economy system load, give a chance to let economy system register. */
-        /* And we have a listener to listen the ServiceRegisterEvent :) */
-        Log.debug("Scheduled economy system loading.");
-        getServer().getScheduler().runTaskLater(this, this::loadEcon, 1);
-        registerTasks();
-        Log.debug("DisplayItem selected: " + AbstractDisplayItem.getNowUsing().name());
-        registerCommunicationChannels();
-        new QSConfigurationReloadEvent(this).callEvent();
-        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
+    /**
+     * Get the QuickShop instance
+     * You should use QuickShopAPI if possible, we don't promise the internal access will be stable
+     *
+     * @return QuickShop instance
+     * @apiNote This method is internal only.
+     * @hidden This method is hidden in documentation.
+     */
+    @ApiStatus.Internal
+    @NotNull
+    public static QuickShop getInstance() {
+        return instance;
+    }
+
+    /**
+     * Get the permissionManager as static
+     *
+     * @return the permission Manager.
+     */
+    @NotNull
+    public static PermissionManager getPermissionManager() {
+        return permissionManager;
+    }
+
+    /**
+     * Return the QuickShop fork name.
+     *
+     * @return The fork name.
+     */
+    public static String getFork() {
+        return "Hikari";
     }
 
     private void registerCommunicationChannels() {
@@ -405,7 +324,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         databaseMaintenanceWatcher = new DatabaseMaintenanceWatcher(this);
         databaseMaintenanceWatcher.runTaskTimerAsynchronously(this, 0, 20 * 60 * 60 * 24);
     }
-
 
     private void registerListeners() {
         new BlockListener(this, this.shopCache).register();
@@ -463,110 +381,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         }
     }
 
-
-    @Override
-    public final void onDisable() {
-        getLogger().info("QuickShop is finishing remaining work, this may need a while...");
-        if (sentryErrorReporter != null) {
-            getLogger().info("Shutting down error reporter...");
-            sentryErrorReporter.unregister();
-        }
-        if (this.quickShopPAPI != null) {
-            getLogger().info("Unregistering PlaceHolderAPI hooks...");
-            if (this.quickShopPAPI.unregister()) {
-                getLogger().info("Successfully unregistered PlaceholderAPI hook!");
-            } else {
-                getLogger().info("Unregistering not successful. Was it already unloaded?");
-            }
-        }
-        if (getShopManager() != null) {
-            getLogger().info("Unloading all loaded shops...");
-            getShopManager().getLoadedShops().forEach(Shop::onUnload);
-        }
-        getLogger().info("Unregistering compatibility hooks...");
-        /* Remove all display items, and any dupes we can find */
-        if (shopManager != null) {
-            getLogger().info("Cleaning up shop manager...");
-            shopManager.clear();
-        }
-        if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
-            getLogger().info("Cleaning up display manager...");
-            VirtualDisplayItem.VirtualDisplayItemManager.unload();
-        }
-        if (this.getSqlManager() != null) {
-            getLogger().info("Shutting down database connections...");
-            EasySQL.shutdownManager(this.getSqlManager());
-        }
-        if (logWatcher != null) {
-            getLogger().info("Stopping log watcher...");
-            logWatcher.close();
-        }
-        getLogger().info("Shutting down scheduled timers...");
-        Bukkit.getScheduler().cancelTasks(this);
-        if (calendarWatcher != null) {
-            getLogger().info("Shutting down event calendar watcher...");
-            calendarWatcher.stop();
-        }
-        /* Unload UpdateWatcher */
-        if (this.updateWatcher != null) {
-            getLogger().info("Shutting down update watcher...");
-            this.updateWatcher.uninit();
-        }
-        getLogger().info("Cleanup listeners...");
-        HandlerList.unregisterAll(this);
-        getLogger().info("Cleanup scheduled tasks...");
-        Bukkit.getScheduler().cancelTasks(this);
-        getLogger().info("Unregistering plugin services...");
-        getServer().getServicesManager().unregisterAll(this);
-        getLogger().info("Shutting down database...");
-        EasySQL.shutdownManager(this.sqlManager);
-        getLogger().info("Shutting down Unirest instances...");
-        Unirest.shutDown(true);
-        getLogger().info("Finishing remaining misc work...");
-        this.getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
-        getLogger().info("All shutdown work has been completed.");
-    }
-
-    /**
-     * Get the QuickShop instance
-     * You should use QuickShopAPI if possible, we don't promise the internal access will be stable
-     *
-     * @return QuickShop instance
-     * @apiNote This method is internal only.
-     * @hidden This method is hidden in documentation.
-     */
-    @ApiStatus.Internal
-    @NotNull
-    public static QuickShop getInstance() {
-        return instance;
-    }
-
-    @Override
-    public @NotNull InventoryWrapperRegistry getInventoryWrapperRegistry() {
-        return inventoryWrapperRegistry;
-    }
-
-    /**
-     * Returns QS version, this method only exist on QuickShop forks If running other QuickShop forks, result
-     * may not is "Reremake x.x.x" If running QS official, Will throw exception.
-     *
-     * @return Plugin Version
-     */
-    @NotNull
-    public static String getVersion() {
-        return QuickShop.getInstance().getDescription().getVersion();
-    }
-
-    /**
-     * Get the permissionManager as static
-     *
-     * @return the permission Manager.
-     */
-    @NotNull
-    public static PermissionManager getPermissionManager() {
-        return permissionManager;
-    }
-
     /**
      * Get the permissionManager as static
      *
@@ -575,15 +389,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     @NotNull
     public PermissionManager perm() {
         return permissionManager;
-    }
-
-    /**
-     * Return the QuickShop fork name.
-     *
-     * @return The fork name.
-     */
-    public static String getFork() {
-        return "Hikari";
     }
 
     /**
@@ -600,6 +405,17 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             }
         }
         return max;
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        registerDisplayAutoDespawn();
+        registerOngoingFee();
+        registerUpdater();
+        registerShopLock();
+        registerDisplayItem();
+        registerLimitRanks();
+        return Reloadable.super.reloadModule();
     }
 
     /**
@@ -629,18 +445,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 }
             }
         }
-    }
-    @Override
-    public void logEvent(@NotNull Object eventObject) {
-        if (this.getLogWatcher() == null) {
-            return;
-        }
-        if (loggingLocation == 0) {
-            this.getLogWatcher().log(JsonUtil.getGson().toJson(eventObject));
-        } else {
-            getDatabaseHelper().insertHistoryRecord(eventObject);
-        }
-
     }
 
     /**
@@ -763,6 +567,285 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         Util.mainThreadRun(() -> new QSConfigurationReloadEvent(this).callEvent());
     }
 
+    private void registerOngoingFee() {
+        if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
+            ongoingFeeWatcher = new OngoingFeeWatcher(this);
+            ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks"));
+            getLogger().info("Ongoing fee feature is enabled.");
+        } else {
+            if (ongoingFeeWatcher != null) {
+                ongoingFeeWatcher.cancel();
+                ongoingFeeWatcher = null;
+            }
+        }
+    }
+
+    /**
+     * Early than onEnable, make sure instance was loaded in first time.
+     */
+    @Override
+    public final void onLoad() {
+        instance = this;
+        Bukkit.getServicesManager().register(QuickShopProvider.class, new QuickShopProvider() {
+            @Override
+            public @NotNull Plugin getInstance() {
+                return instance;
+            }
+
+            @Override
+            public @NotNull QuickShopAPI getApiInstance() {
+                return instance;
+            }
+        }, this, ServicePriority.High);
+        // Reset the BootError status to normal.
+        this.bootError = null;
+        Util.setPlugin(this);
+        this.onLoadCalled = true;
+        getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up");
+        getReloadManager().register(this);
+        //BEWARE THESE ONLY RUN ONCE
+        this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
+        getLogger().info("Self testing...");
+        if (!runtimeCheck(EnvCheckEntry.Stage.ON_LOAD)) {
+            return;
+        }
+        getLogger().info("Reading the configuration...");
+        initConfiguration();
+        getLogger().info("Loading up platform modules...");
+        loadPlatform();
+        getLogger().info("Loading player name and unique id mapping...");
+        this.playerFinder = new PlayerFinder();
+        setupUnirest();
+        loadChatProcessor();
+        loadTextManager();
+        getLogger().info("Register InventoryWrapper...");
+        this.inventoryWrapperRegistry.register(this, this.inventoryWrapperManager);
+        getLogger().info("Initializing NexusManager...");
+        this.nexusManager = new NexusManager(this);
+        getLogger().info("QuickShop " + getFork() + " - Early boot step - Complete");
+    }
+
+    @Override
+    public final void onDisable() {
+        getLogger().info("QuickShop is finishing remaining work, this may need a while...");
+        if (sentryErrorReporter != null) {
+            getLogger().info("Shutting down error reporter...");
+            sentryErrorReporter.unregister();
+        }
+        if (this.quickShopPAPI != null) {
+            getLogger().info("Unregistering PlaceHolderAPI hooks...");
+            if (this.quickShopPAPI.unregister()) {
+                getLogger().info("Successfully unregistered PlaceholderAPI hook!");
+            } else {
+                getLogger().info("Unregistering not successful. Was it already unloaded?");
+            }
+        }
+        if (getShopManager() != null) {
+            getLogger().info("Unloading all loaded shops...");
+            getShopManager().getLoadedShops().forEach(Shop::onUnload);
+        }
+        getLogger().info("Unregistering compatibility hooks...");
+        /* Remove all display items, and any dupes we can find */
+        if (shopManager != null) {
+            getLogger().info("Cleaning up shop manager...");
+            shopManager.clear();
+        }
+        if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+            getLogger().info("Cleaning up display manager...");
+            VirtualDisplayItem.VirtualDisplayItemManager.unload();
+        }
+        if (this.getSqlManager() != null) {
+            getLogger().info("Shutting down database connections...");
+            EasySQL.shutdownManager(this.getSqlManager());
+        }
+        if (logWatcher != null) {
+            getLogger().info("Stopping log watcher...");
+            logWatcher.close();
+        }
+        getLogger().info("Shutting down scheduled timers...");
+        Bukkit.getScheduler().cancelTasks(this);
+        if (calendarWatcher != null) {
+            getLogger().info("Shutting down event calendar watcher...");
+            calendarWatcher.stop();
+        }
+        /* Unload UpdateWatcher */
+        if (this.updateWatcher != null) {
+            getLogger().info("Shutting down update watcher...");
+            this.updateWatcher.uninit();
+        }
+        getLogger().info("Cleanup listeners...");
+        HandlerList.unregisterAll(this);
+        getLogger().info("Cleanup scheduled tasks...");
+        Bukkit.getScheduler().cancelTasks(this);
+        getLogger().info("Unregistering plugin services...");
+        getServer().getServicesManager().unregisterAll(this);
+        getLogger().info("Shutting down database...");
+        EasySQL.shutdownManager(this.sqlManager);
+        getLogger().info("Shutting down Unirest instances...");
+        Unirest.shutDown(true);
+        getLogger().info("Finishing remaining misc work...");
+        this.getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
+        getLogger().info("All shutdown work has been completed.");
+    }
+
+    @Override
+    public final void onEnable() {
+        if (!this.onLoadCalled) {
+            getLogger().severe("FATAL: onLoad has not been called for QuickShop. Trying to fix it... Some integrations may not work properly!");
+            try {
+                onLoad();
+            } catch (Throwable ex) {
+                getLogger().log(Level.WARNING, "Failed to fix onLoad", ex);
+            }
+        }
+        Timer enableTimer = new Timer(true);
+        getLogger().info("QuickShop " + getFork());
+        this.audience = BukkitAudiences.create(this);
+        /* Check the running envs is support or not. */
+        getLogger().info("Starting plugin self-test, please wait...");
+        runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
+        getLogger().info("Reading the configuration...");
+        initConfiguration();
+        new ServerInternalExporter(this);
+        getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
+        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood, sandtechnology");
+        getLogger().info("Let's start loading the plugin");
+        getLogger().info("Chat processor selected: Hardcoded BungeeChat Lib");
+        /* Process Metrics and Sentry error reporter. */
+        metrics = new Metrics(this, 14281);
+        loadErrorReporter();
+        loadItemMatcher();
+        this.itemMarker = new ItemMarker(this);
+        this.shopItemBlackList = new ShopItemBlackList(this);
+        Util.initialize();
+        load3rdParty();
+        //Load the database
+        initDatabase();
+        /* Initalize the tools */
+        // Create the shop manager.
+        permissionManager = new PermissionManager(this);
+        shopPermissionManager = new SimpleShopPermissionManager(this);
+        // This should be inited before shop manager
+        this.registerDisplayAutoDespawn();
+        getLogger().info("Registering commands...");
+        loadCommandHandler();
+        this.shopManager = new SimpleShopManager(this);
+        this.permissionChecker = new PermissionChecker(this);
+        // Limit
+        this.registerLimitRanks();
+        // Limit end
+        if (getConfig().getInt("shop.finding.distance") > 100 && getConfig().getBoolean("shop.finding.exclude-out-of-stock")) {
+            getLogger().severe("Shop find distance is too high with chunk loading feature turned on! It may cause lag! Pick a number below 100!");
+        }
+        setupShopCaches();
+        signUpdateWatcher = new SignUpdateWatcher();
+        shopContainerWatcher = new ShopContainerWatcher();
+        /* Load all shops. */
+        shopLoader = new ShopLoader(this);
+        shopLoader.loadShops();
+        bakeShopsOwnerCache();
+        getLogger().info("Registering listeners...");
+        this.interactionController = new InteractionController(this);
+        // Register events
+        // Listeners (These don't)
+        registerListeners();
+        this.shopControlPanelManager.register(new SimpleShopControlPanel());
+        this.registerDisplayItem();
+        this.registerShopLock();
+        getLogger().info("Cleaning MsgUtils...");
+        MsgUtil.clean();
+        MsgUtil.loadTransactionMessages();
+        this.registerUpdater();
+        /* Delay the Economy system load, give a chance to let economy system register. */
+        /* And we have a listener to listen the ServiceRegisterEvent :) */
+        Log.debug("Scheduled economy system loading.");
+        getServer().getScheduler().runTaskLater(this, this::loadEcon, 1);
+        registerTasks();
+        Log.debug("DisplayItem selected: " + AbstractDisplayItem.getNowUsing().name());
+        registerCommunicationChannels();
+        new QSConfigurationReloadEvent(this).callEvent();
+        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
+    }
+
+    @Override
+    public ShopManager getShopManager() {
+        return this.shopManager;
+    }
+
+    @Override
+    public boolean isDisplayEnabled() {
+        return this.display;
+    }
+
+    @Override
+    public boolean isLimit() {
+        return this.limit;
+    }
+
+    @Override
+    public Map<String, Integer> getLimits() {
+        return this.limits;
+    }
+
+    @Override
+    public DatabaseHelper getDatabaseHelper() {
+        return this.databaseHelper;
+    }
+
+    @Override
+    public TextManager getTextManager() {
+        return this.textManager;
+    }
+
+    @Override
+    public ItemMatcher getItemMatcher() {
+        return this.itemMatcher;
+    }
+
+    @Override
+    public boolean isPriceChangeRequiresFee() {
+        return this.priceChangeRequiresFee;
+    }
+
+    @Override
+    public CommandManager getCommandManager() {
+        return this.commandManager;
+    }
+
+    @Override
+    public GameVersion getGameVersion() {
+        if (gameVersion == null) {
+            gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
+        }
+        return this.gameVersion;
+    }
+
+    @Override
+    public @NotNull InventoryWrapperRegistry getInventoryWrapperRegistry() {
+        return inventoryWrapperRegistry;
+    }
+
+    @Override
+    public void logEvent(@NotNull Object eventObject) {
+        if (this.getLogWatcher() == null) {
+            return;
+        }
+        if (loggingLocation == 0) {
+            this.getLogWatcher().log(JsonUtil.getGson().toJson(eventObject));
+        } else {
+            getDatabaseHelper().insertHistoryRecord(eventObject);
+        }
+
+    }
+
+    @Override
+    public void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key) {
+        addonRegisteredMapping.put(translationKey, key);
+        translationMapping.putAll(addonRegisteredMapping);
+        if (this.platform != null) {
+            this.platform.updateTranslationMappingSection(translationMapping);
+        }
+    }
 
     private void initConfiguration() {
         /* Process the config */
@@ -814,20 +897,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     }
 
 
-    private void registerLimitRanks() {
-        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
-        ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
-        if (limitCfg != null) {
-            this.limit = limitCfg.getBoolean("use", false);
-            limitCfg = limitCfg.getConfigurationSection("ranks");
-            for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
-                limits.put(key, limitCfg.getInt(key));
-            }
-        } else {
-            this.limit = false;
-            limits.clear();
-        }
-    }
 
     private void registerDisplayAutoDespawn() {
         if (this.display && getConfig().getBoolean("shop.display-auto-despawn")) {
@@ -840,6 +909,27 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 this.displayAutoDespawnWatcher.cancel();
                 this.displayAutoDespawnWatcher = null;
             }
+        }
+    }
+
+
+    private void registerUpdater() {
+        if (this.getConfig().getBoolean("updater", true)) {
+            updateWatcher = new UpdateWatcher();
+            updateWatcher.init();
+        } else {
+            if (updateWatcher != null) {
+                updateWatcher.uninit();
+                updateWatcher = null;
+            }
+        }
+    }
+
+    private void registerShopLock() {
+        if (getConfig().getBoolean("shop.lock")) {
+            new LockListener(this, this.shopCache).register();
+        } else {
+            Util.unregisterListenerClazz(this, LockListener.class);
         }
     }
 
@@ -870,48 +960,19 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         }
     }
 
-    private void registerShopLock() {
-        if (getConfig().getBoolean("shop.lock")) {
-            new LockListener(this, this.shopCache).register();
-        } else {
-            Util.unregisterListenerClazz(this, LockListener.class);
-        }
-    }
-
-    private void registerUpdater() {
-        if (this.getConfig().getBoolean("updater", true)) {
-            updateWatcher = new UpdateWatcher();
-            updateWatcher.init();
-        } else {
-            if (updateWatcher != null) {
-                updateWatcher.uninit();
-                updateWatcher = null;
+    private void registerLimitRanks() {
+        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
+        ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
+        if (limitCfg != null) {
+            this.limit = limitCfg.getBoolean("use", false);
+            limitCfg = limitCfg.getConfigurationSection("ranks");
+            for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
+                limits.put(key, limitCfg.getInt(key));
             }
-        }
-    }
-
-    private void registerOngoingFee() {
-        if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
-            ongoingFeeWatcher = new OngoingFeeWatcher(this);
-            ongoingFeeWatcher.runTaskTimerAsynchronously(this, 0, getConfig().getInt("shop.ongoing-fee.ticks"));
-            getLogger().info("Ongoing fee feature is enabled.");
         } else {
-            if (ongoingFeeWatcher != null) {
-                ongoingFeeWatcher.cancel();
-                ongoingFeeWatcher = null;
-            }
+            this.limit = false;
+            limits.clear();
         }
-    }
-
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        registerDisplayAutoDespawn();
-        registerOngoingFee();
-        registerUpdater();
-        registerShopLock();
-        registerDisplayItem();
-        registerLimitRanks();
-        return Reloadable.super.reloadModule();
     }
 
     private void bakeShopsOwnerCache() {
@@ -1062,72 +1123,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         return this.textManager;
     }
 
-    @Override
-    public ShopManager getShopManager() {
-        return this.shopManager;
-    }
-
-    @Override
-    public boolean isDisplayEnabled() {
-        return this.display;
-    }
-
-    @Override
-    public boolean isLimit() {
-        return this.limit;
-    }
-
-    @Override
-    public DatabaseHelper getDatabaseHelper() {
-        return this.databaseHelper;
-    }
-
-    @Override
-    public TextManager getTextManager() {
-        return this.textManager;
-    }
-
-    @Override
-    public ItemMatcher getItemMatcher() {
-        return this.itemMatcher;
-    }
-
-    @Override
-    public boolean isPriceChangeRequiresFee() {
-        return this.priceChangeRequiresFee;
-    }
-
-    @Override
-    public CommandManager getCommandManager() {
-        return this.commandManager;
-    }
-
-    @Override
-    public Map<String, Integer> getLimits() {
-        return this.limits;
-    }
-
-    @Override
-    public GameVersion getGameVersion() {
-        if (gameVersion == null) {
-            gameVersion = GameVersion.get(ReflectFactory.getNMSVersion());
-        }
-        return this.gameVersion;
-    }
-
     @NotNull
     @Deprecated(forRemoval = true)
     public BukkitAudiences getAudience() {
         return this.audience;
-    }
-
-    @Override
-    public void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key) {
-        addonRegisteredMapping.put(translationKey, key);
-        translationMapping.putAll(addonRegisteredMapping);
-        if (this.platform != null) {
-            this.platform.updateTranslationMappingSection(translationMapping);
-        }
     }
 
     private void loadPlatform() {
@@ -1150,7 +1149,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                     getLogger().warning("This server running " + AbstractSpigotPlatform.getNMSVersion() + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
                     Bukkit.getPluginManager().disablePlugin(this);
                     throw new IllegalStateException("This server running " + AbstractSpigotPlatform.getNMSVersion() + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
-                }};
+                }
+            };
         } else {
             throw new UnsupportedOperationException("Unsupported platform");
         }

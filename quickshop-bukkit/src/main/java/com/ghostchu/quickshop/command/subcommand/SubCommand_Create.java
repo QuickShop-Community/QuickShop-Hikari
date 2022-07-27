@@ -27,21 +27,6 @@ public class SubCommand_Create implements CommandHandler<Player> {
         this.plugin = plugin;
     }
 
-    @Nullable
-    private Material matchMaterial(String itemName) {
-        itemName = itemName.toUpperCase();
-        itemName = itemName.replace(" ", "_");
-        Material material = Material.matchMaterial(itemName);
-        if (isValidMaterial(material)) {
-            return material;
-        }
-        return null;
-    }
-
-    private boolean isValidMaterial(@Nullable Material material) {
-        return material != null && !material.isAir();
-    }
-
     @Override
     public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         BlockIterator bIt = new BlockIterator(sender, 10);
@@ -91,6 +76,21 @@ public class SubCommand_Create implements CommandHandler<Player> {
             return;
         }
         plugin.text().of(sender, "not-looking-at-valid-shop-block").send();
+    }
+
+    @Nullable
+    private Material matchMaterial(String itemName) {
+        itemName = itemName.toUpperCase();
+        itemName = itemName.replace(" ", "_");
+        Material material = Material.matchMaterial(itemName);
+        if (isValidMaterial(material)) {
+            return material;
+        }
+        return null;
+    }
+
+    private boolean isValidMaterial(@Nullable Material material) {
+        return material != null && !material.isAir();
     }
 
     @NotNull

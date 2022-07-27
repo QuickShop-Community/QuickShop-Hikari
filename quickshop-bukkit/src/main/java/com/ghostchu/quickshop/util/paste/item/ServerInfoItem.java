@@ -13,15 +13,12 @@ public class ServerInfoItem implements SubPasteItem {
     private final String build;
     private final String nmsVersion;
     private final String dataVersion;
-    private String moddedServerType;
-
     private final String players;
-
     private final String onlineMode;
-
     private final String bukkitVersion;
     private final String mcVersion;
     private final String worldContainer;
+    private String moddedServerType;
 
     public ServerInfoItem() {
         QuickShop plugin = QuickShop.getInstance();
@@ -49,6 +46,10 @@ public class ServerInfoItem implements SubPasteItem {
         this.worldContainer = Bukkit.getWorldContainer().getPath();
     }
 
+    @Override
+    public @NotNull String genBody() {
+        return buildContent();
+    }
 
     @Override
     public @NotNull String getTitle() {
@@ -69,11 +70,5 @@ public class ServerInfoItem implements SubPasteItem {
         table.insert("MC Version", mcVersion);
         table.insert("World Container", worldContainer);
         return table.render();
-    }
-
-
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
     }
 }

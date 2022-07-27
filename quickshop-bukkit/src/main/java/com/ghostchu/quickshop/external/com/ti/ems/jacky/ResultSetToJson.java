@@ -32,7 +32,9 @@ public class ResultSetToJson {
         return ja;
     }
 
-
+    public static String resultSetToJsonString(ResultSet rs) {
+        return resultSetToJsonObject(rs).toString();
+    }
 
     @NotNull
     public static JsonObject resultSetToJsonObject(@NotNull ResultSet rs) {
@@ -54,10 +56,6 @@ public class ResultSetToJson {
             e.printStackTrace();
         }
         return jo;
-    }
-
-    public static String resultSetToJsonString(ResultSet rs) {
-        return resultSetToJsonObject(rs).toString();
     }
 
 }

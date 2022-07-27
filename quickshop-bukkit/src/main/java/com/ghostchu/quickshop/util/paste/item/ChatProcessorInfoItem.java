@@ -26,6 +26,10 @@ public class ChatProcessorInfoItem implements SubPasteItem {
         this.miniMessageSource = Util.getClassPathRelative(MiniMessage.class);
     }
 
+    @Override
+    public @NotNull String genBody() {
+        return buildContent();
+    }
 
     @Override
     public @NotNull String getTitle() {
@@ -43,11 +47,5 @@ public class ChatProcessorInfoItem implements SubPasteItem {
         table.insert("Text Serializer(Legacy)", adventureTextSerializerLegacySource);
         table.insert("MiniMessage", miniMessageSource);
         return table.render();
-    }
-
-
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
     }
 }

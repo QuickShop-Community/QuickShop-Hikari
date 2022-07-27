@@ -78,10 +78,6 @@ public class PaperPlatform implements Platform {
         return postProcessingTranslationKey(key);
     }
 
-    private String postProcessingTranslationKey(String key) {
-        return this.translationMapping.getOrDefault(key, key);
-    }
-
     @Override
     public @NotNull String getTranslationKey(@NotNull EntityType type) {
         String key;
@@ -122,6 +118,10 @@ public class PaperPlatform implements Platform {
     @Override
     public @NotNull Component getTranslation(@NotNull Material material) {
         return Component.translatable(getTranslationKey(material));
+    }
+
+    private String postProcessingTranslationKey(String key) {
+        return this.translationMapping.getOrDefault(key, key);
     }
 
     @Override

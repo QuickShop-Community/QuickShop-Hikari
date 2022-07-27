@@ -18,21 +18,6 @@ public class OTACacheControl {
         this.metadata = YamlConfiguration.loadConfiguration(this.metadataFile);
     }
 
-    private void save() {
-        LOCK.lock();
-        try {
-            this.metadata.save(this.metadataFile);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        } finally {
-            LOCK.unlock();
-        }
-    }
-
-    private String hash(String str) {
-        return DigestUtils.sha1Hex(str);
-    }
-
     public long readManifestTimestamp() {
         long l;
         LOCK.lock();
@@ -55,6 +40,21 @@ public class OTACacheControl {
         save();
     }
 
+    private void save() {
+        LOCK.lock();
+        try {
+            this.metadata.save(this.metadataFile);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        } finally {
+            LOCK.unlock();
+        }
+    }
+
+    public boolean isCachedObjectOutdated(String path, long manifestTimestamp) {
+        return readCachedObjectTimestamp(path) != manifestTimestamp;
+    }
+
     public long readCachedObjectTimestamp(String path) {
         String cacheKey = hash(path);
         long l;
@@ -67,8 +67,8 @@ public class OTACacheControl {
         return l;
     }
 
-    public boolean isCachedObjectOutdated(String path, long manifestTimestamp) {
-        return readCachedObjectTimestamp(path) != manifestTimestamp;
+    private String hash(String str) {
+        return DigestUtils.sha1Hex(str);
     }
 
     public byte[] readObjectCache(String path) throws IOException {

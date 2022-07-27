@@ -88,10 +88,6 @@ public class MojangAPI {
             this.metaAPI = new MetaAPI(apiMirror, version);
         }
 
-        public boolean isAvailable() {
-            return this.metaAPI.get().isPresent();
-        }
-
         /**
          * Gets the GameAsset file content
          *
@@ -110,7 +106,6 @@ public class MojangAPI {
             return Optional.of(new AssetsFileData(data, assetIndexBean.getSha1(), assetIndexBean.getId()));
         }
 
-
         private Optional<GameInfoAPI.DataBean> getAssetsJson() {
             if (!isAvailable()) {
                 return Optional.empty();
@@ -121,6 +116,10 @@ public class MojangAPI {
             }
             GameInfoAPI gameInfoAPI = new GameInfoAPI(content.get());
             return Optional.of(gameInfoAPI.get());
+        }
+
+        public boolean isAvailable() {
+            return this.metaAPI.get().isPresent();
         }
 
 

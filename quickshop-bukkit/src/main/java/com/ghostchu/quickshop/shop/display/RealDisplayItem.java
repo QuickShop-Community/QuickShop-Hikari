@@ -242,25 +242,6 @@ public class RealDisplayItem extends AbstractDisplayItem {
         return this.item;
     }
 
-    /**
-     * Gets either the item spawn location of this item's chest, or the attached chest.
-     * Used for checking for duplicates.
-     *
-     * @param thisItem Whether to check this item's spawn location or the attached chest's.
-     * @return The display location of the item.
-     */
-    public @Nullable Location getDoubleShopDisplayLocations(boolean thisItem) {
-        Util.ensureThread(false);
-        if (!shop.isRealDouble()) {
-            return null;
-        }
-        if (thisItem) {
-            return shop.getLocation().clone().add(0.5, 1.2, 0.5);
-        } else {
-            return shop.getAttachedShop().getLocation().clone().add(0.5, 1.2, 0.5);
-        }
-    }
-
     @Override
     public boolean isSpawned() {
         if (this.item == null) {
@@ -278,6 +259,25 @@ public class RealDisplayItem extends AbstractDisplayItem {
 
         }
         return this.item.isValid();
+    }
+
+    /**
+     * Gets either the item spawn location of this item's chest, or the attached chest.
+     * Used for checking for duplicates.
+     *
+     * @param thisItem Whether to check this item's spawn location or the attached chest's.
+     * @return The display location of the item.
+     */
+    public @Nullable Location getDoubleShopDisplayLocations(boolean thisItem) {
+        Util.ensureThread(false);
+        if (!shop.isRealDouble()) {
+            return null;
+        }
+        if (thisItem) {
+            return shop.getLocation().clone().add(0.5, 1.2, 0.5);
+        } else {
+            return shop.getAttachedShop().getLocation().clone().add(0.5, 1.2, 0.5);
+        }
     }
 
 }

@@ -60,27 +60,6 @@ public class EconomyFormatter implements Reloadable {
         return format(n, disableVaultFormat, world, currency);
     }
 
-    /**
-     * Formats the given number according to how vault would like it. E.g. $50 or 5 dollars.
-     *
-     * @param n    price
-     * @param shop shop
-     * @return The formatted string.
-     */
-    @NotNull
-    public String format(double n, @NotNull Shop shop) {
-        return format(n, disableVaultFormat, shop.getLocation().getWorld(), shop);
-    }
-
-    @NotNull
-    public String format(double n, boolean internalFormat, @NotNull World world, @Nullable Shop shop) {
-        if (shop != null) {
-            return format(n, internalFormat, world, shop.getCurrency());
-        } else {
-            return format(n, internalFormat, world, (Shop) null);
-        }
-    }
-
     @NotNull
     public String format(double n, boolean internalFormat, @NotNull World world, @Nullable String currency) {
         if (internalFormat) {
@@ -112,6 +91,27 @@ public class EconomyFormatter implements Reloadable {
             String formatted = useDecimalFormat ? MsgUtil.decimalFormat(amount) : Double.toString(amount);
             String symbol = CURRENCY_SYMBOL_MAPPING.getOrDefault(currency, currency);
             return currencySymbolOnRight ? formatted + symbol : symbol + formatted;
+        }
+    }
+
+    /**
+     * Formats the given number according to how vault would like it. E.g. $50 or 5 dollars.
+     *
+     * @param n    price
+     * @param shop shop
+     * @return The formatted string.
+     */
+    @NotNull
+    public String format(double n, @NotNull Shop shop) {
+        return format(n, disableVaultFormat, shop.getLocation().getWorld(), shop);
+    }
+
+    @NotNull
+    public String format(double n, boolean internalFormat, @NotNull World world, @Nullable Shop shop) {
+        if (shop != null) {
+            return format(n, internalFormat, world, shop.getCurrency());
+        } else {
+            return format(n, internalFormat, world, (Shop) null);
         }
     }
 }

@@ -12,14 +12,14 @@ import java.util.Map;
  * Operation to add items
  */
 public class AddItemOperation implements Operation {
-    private boolean committed;
-    private boolean rollback;
     private final ItemStack item;
     private final int amount;
     private final InventoryWrapper inv;
+    private final int itemMaxStackSize;
+    private boolean committed;
+    private boolean rollback;
     private int remains = 0;
     private int rollbackRemains = 0;
-    private final int itemMaxStackSize;
 
     /**
      * Constructor.

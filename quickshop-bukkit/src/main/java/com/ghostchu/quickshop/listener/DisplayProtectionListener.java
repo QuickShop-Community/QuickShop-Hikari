@@ -41,14 +41,6 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
         return super.reloadModule();
     }
 
-
-    private void sendAlert(@NotNull String msg) {
-        if (!plugin.getConfig().getBoolean("send-display-item-protection-alert")) {
-            return;
-        }
-        MsgUtil.sendGlobalAlert(msg);
-    }
-
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void portal(EntityPortalEvent event) {
         if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
@@ -67,6 +59,12 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
         }
     }
 
+    private void sendAlert(@NotNull String msg) {
+        if (!plugin.getConfig().getBoolean("send-display-item-protection-alert")) {
+            return;
+        }
+        MsgUtil.sendGlobalAlert(msg);
+    }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryOpenEvent event) {

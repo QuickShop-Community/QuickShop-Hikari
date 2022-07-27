@@ -35,6 +35,13 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
     }
 
     @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+        HandlerList.unregisterAll((Plugin) this);
+        getLogger().info("Unloading...");
+    }
+
+    @Override
     public void onEnable() {
         // Plugin startup logic
         try {
@@ -47,12 +54,7 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
         getLogger().info("Enabling...");
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-        HandlerList.unregisterAll((Plugin) this);
-        getLogger().info("Unloading...");
-    }
+    public abstract void init();
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onQuickShopReload(QSConfigurationReloadEvent event) {
@@ -64,8 +66,6 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
     public QuickShopAPI getApi() {
         return api;
     }
-
-    public abstract void init();
 
     public void recordDeletion(@Nullable UUID uuid, @NotNull Shop shop, @NotNull String reason) {
         if (uuid == null) {

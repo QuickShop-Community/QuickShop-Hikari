@@ -8,8 +8,6 @@ import java.util.Map;
 
 @Data
 public class HeaderItem implements PasteItem {
-    private final long timestamp;
-    private final Map<String, String> items;
     private static final String TEMPLATE = """
             <h1>{title}</h1>
             <blockquote>
@@ -24,10 +22,19 @@ public class HeaderItem implements PasteItem {
                 </tbody>
             </table>
             """;
+    private final long timestamp;
+    private final Map<String, String> items;
 
     public HeaderItem(long timestamp, Map<String, String> items) {
         this.timestamp = timestamp;
         this.items = items;
+    }
+
+    @Override
+    public @NotNull String toHTML() {
+        return TEMPLATE
+                .replace("{title}", "QuickShop-" + QuickShop.getFork() + " // Paste")
+                .replace("{content}", buildContent());
     }
 
     @NotNull
@@ -40,12 +47,5 @@ public class HeaderItem implements PasteItem {
             builder.append("</tr>");
         }
         return builder.toString();
-    }
-
-    @Override
-    public @NotNull String toHTML() {
-        return TEMPLATE
-                .replace("{title}", "QuickShop-" + QuickShop.getFork() + " // Paste")
-                .replace("{content}", buildContent());
     }
 }

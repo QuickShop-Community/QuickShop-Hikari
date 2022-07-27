@@ -55,11 +55,16 @@ public class PAPICache implements Reloadable {
         performCaches.put(compileUniqueKey(player, queryString), queryValue);
     }
 
+    @NotNull
+    private String compileUniqueKey(@NotNull UUID player, @NotNull String queryString) {
+        return JsonUtil.standard().toJson(new CompiledUniqueKey(player, queryString));
+    }
+
     @Nullable
     public String readCache(@NotNull UUID player, @NotNull String queryString) {
         return performCaches.getIfPresent(compileUniqueKey(player, queryString));
     }
-    
+
     public String getCached(@NotNull UUID player, @NotNull String[] args) {
         try {
             return performCaches.get(compileUniqueKey(player, args), () -> getValue(player, args));
@@ -67,60 +72,55 @@ public class PAPICache implements Reloadable {
             return null;
         }
     }
-    
+
     @NotNull
     private String compileUniqueKey(@NotNull UUID player, @NotNull String[] args) {
         return compileUniqueKey(player, String.join("_", args));
     }
-    
-    @NotNull
-    private String compileUniqueKey(@NotNull UUID player, @NotNull String queryString) {
-        return JsonUtil.standard().toJson(new CompiledUniqueKey(player, queryString));
-    }
-    
+
     private String getValue(@NotNull UUID player, String[] original) {
         // Make a copy with not-present values being null.
         String[] args = Arrays.copyOf(original, 3);
-        
+
         // Invalid placeholder (%qs_%). Shouldn't happen at all, but you never know...
         if (Util.isNullOrEmpty(args[0])) {
             return null;
         }
-        
-        switch(args[0].toLowerCase(Locale.ROOT)) {
+
+        switch (args[0].toLowerCase(Locale.ROOT)) {
             // %qs_shops-total[_world]%
             case "shops-total" -> {
                 // %qs_shops-total%
                 if (Util.isNullOrEmpty(args[1])) {
                     return String.valueOf(plugin.getShopManager().getAllShops().size());
                 }
-                
+
                 // %qs_shops-total_<world>%
                 return String.valueOf(getShopsInWorld(args[1], false));
             }
-            
+
             // %qs_shops-loaded[_world]%
             case "shops-loaded" -> {
                 //%qs_shops-loaded%
                 if (Util.isNullOrEmpty(args[1])) {
                     return String.valueOf(plugin.getShopManager().getLoadedShops().size());
                 }
-                
+
                 // %qs_shops-loaded_<world>%
                 return String.valueOf(getShopsInWorld(args[1], true));
             }
-            
+
             // %qs_default-currency%
             case "default-currency" -> {
                 return plugin.getCurrency();
             }
-            
+
             case "player" -> {
                 // Invalid placeholder (%qs_player_%)
                 if (Util.isNullOrEmpty(args[1])) {
                     return null;
                 }
-                
+
                 switch (args[1].toLowerCase(Locale.ROOT)) {
                     // %qs_player_shops-total[_uuid]%
                     case "shops-total" -> {
@@ -128,16 +128,16 @@ public class PAPICache implements Reloadable {
                         if (Util.isNullOrEmpty(args[2])) {
                             return String.valueOf(plugin.getShopManager().getPlayerAllShops(player));
                         }
-                        
+
                         // Not valid UUID provided
                         if (!Util.isUUID(args[2])) {
                             return null;
                         }
-                        
+
                         // %qs_player_shop-total_<uuid>%
                         return String.valueOf(plugin.getShopManager().getPlayerAllShops(UUID.fromString(args[2])));
                     }
-                    
+
                     // %qs_player_shops-loaded[_uuid]%
                     case "shops-loaded" -> {
                         // %qs_shops-loaded%
@@ -149,7 +149,7 @@ public class PAPICache implements Reloadable {
                         if (!Util.isUUID(args[2])) {
                             return null;
                         }
-                        
+
                         // %qs_shops-loaded_<uuid>%
                         return String.valueOf(getLoadedPlayerShops(UUID.fromString(args[2])));
                     }
@@ -176,17 +176,17 @@ public class PAPICache implements Reloadable {
                     }
                 }
             }
-            
+
             // Unknown QS placeholder
             default -> {
                 return null;
             }
         }
     }
-    
+
     private long getShopsInWorld(@NotNull String world, boolean loadedOnly) {
         return plugin.getShopManager().getAllShops().stream()
-            .filter(shop -> shop.getLocation().getWorld() != null)
+                .filter(shop -> shop.getLocation().getWorld() != null)
                 .filter(shop -> shop.getLocation().getWorld().getName().equals(world))
                 .filter(shop -> !loadedOnly || shop.isLoaded())
                 .count();

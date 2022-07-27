@@ -27,6 +27,7 @@ public final class Main extends CompatibilityModule {
     private boolean whitelist;
     private LandsIntegration landsIntegration;
     private boolean deleteWhenLosePermission;
+
     @Override
     public void init() {
         landsIntegration = new me.angeschossen.lands.api.integration.LandsIntegration(this);

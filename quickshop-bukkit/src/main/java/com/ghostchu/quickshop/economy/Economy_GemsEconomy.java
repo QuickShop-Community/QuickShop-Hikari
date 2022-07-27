@@ -46,6 +46,16 @@ public class Economy_GemsEconomy extends AbstractEconomy {
         this.api = new GemsEconomyAPI();
     }
 
+    @Override
+    public @NotNull String getName() {
+        return "BuiltIn-GemsEconomy";
+    }
+
+    @Override
+    public String getProviderName() {
+        return "GemsEconomy";
+    }
+
     @Nullable
     private Currency getCurrency(@NotNull World world, @Nullable String currency) {
         if (!isValid()) {
@@ -55,6 +65,17 @@ public class Economy_GemsEconomy extends AbstractEconomy {
             return null;
         }
         return this.api.getCurrency(currency);
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 
     /**
@@ -208,29 +229,11 @@ public class Economy_GemsEconomy extends AbstractEconomy {
         return this.api != null;
     }
 
-    @Override
-    public @NotNull String getName() {
-        return "BuiltIn-GemsEconomy";
-    }
-
-    @Override
-    public String getProviderName() {
-        return "GemsEconomy";
-    }
 
     @Override
     public @NotNull Plugin getPlugin() {
         return this.plugin;
     }
 
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() {
-        init();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
-    }
+
 }

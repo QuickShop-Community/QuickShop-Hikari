@@ -17,8 +17,8 @@ import java.io.StringReader;
 import java.util.logging.Level;
 
 public class NexusManager {
-    private final QuickShop plugin;
     private final static String NEXUS_ROOT_METADATA_URL = "https://repo.codemc.io/repository/maven-releases/com/ghostchu/quickshop-hikari/maven-metadata.xml";
+    private final QuickShop plugin;
     private NexusMetadata cachedMetadata;
 
     private boolean cachedResult = true;
@@ -30,7 +30,7 @@ public class NexusManager {
 
     public boolean isLatest() {
         if (Bukkit.isPrimaryThread()) {
-            Log.debug(Level.WARNING,"Warning: isLatest shouldn't be called on PrimaryThread",Log.Caller.create());
+            Log.debug(Level.WARNING, "Warning: isLatest shouldn't be called on PrimaryThread", Log.Caller.create());
             return cachedResult;
         }
         if (!plugin.getConfig().getBoolean("updater", false)) {
@@ -44,13 +44,6 @@ public class NexusManager {
         }
         this.cachedResult = plugin.getDescription().getVersion().equals(cachedMetadata.getLatestVersion());
         return this.cachedResult;
-    }
-    @NotNull
-    public String getLatestVersion(){
-        if(!plugin.getConfig().getBoolean("updater", false) || cachedMetadata == null){
-            return plugin.getDescription().getVersion();
-        }
-        return cachedMetadata.getLatestVersion();
     }
 
     private void updateCacheIfRequired() {
@@ -78,6 +71,14 @@ public class NexusManager {
             Log.debug("Failed to parse metadata from Nexus: " + e.getMessage());
             return null;
         }
+    }
+
+    @NotNull
+    public String getLatestVersion() {
+        if (!plugin.getConfig().getBoolean("updater", false) || cachedMetadata == null) {
+            return plugin.getDescription().getVersion();
+        }
+        return cachedMetadata.getLatestVersion();
     }
 
     @Data

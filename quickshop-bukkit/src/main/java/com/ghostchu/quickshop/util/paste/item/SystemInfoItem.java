@@ -33,6 +33,10 @@ public class SystemInfoItem implements SubPasteItem {
                 .collect(Collectors.joining("<br/>"));
     }
 
+    @Override
+    public @NotNull String genBody() {
+        return buildContent();
+    }
 
     @Override
     public @NotNull String getTitle() {
@@ -59,11 +63,5 @@ public class SystemInfoItem implements SubPasteItem {
             table.insert("System Properties", propertiesContent.replace("{properties}", systemProperties));
         }
         return table.render();
-    }
-
-
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
     }
 }

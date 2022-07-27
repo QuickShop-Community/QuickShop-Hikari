@@ -34,59 +34,15 @@ import java.util.regex.PatternSyntaxException;
 
 public class SimplePriceLimiter implements Reloadable, PriceLimiter {
     private final QuickShop plugin;
+    private final Map<String, RuleSet> rules = new LinkedHashMap<>();
     private boolean wholeNumberOnly = false;
     private double undefinedMin = 0.0d;
     private double undefinedMax = Double.MAX_VALUE;
-    private final Map<String, RuleSet> rules = new LinkedHashMap<>();
 
     public SimplePriceLimiter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         loadConfiguration();
         plugin.getReloadManager().register(this);
-    }
-
-    /**
-     * Check the price restriction rules
-     *
-     * @param sender    the sender
-     * @param itemStack the item to check
-     * @param currency  the currency
-     * @param price     the price
-     * @return the result
-     */
-    /*
-    Use item stack to reserve the extent ability
-     */
-    @Override
-    @NotNull
-    public PriceLimiterCheckResult check(@NotNull CommandSender sender, @NotNull ItemStack itemStack, @Nullable String currency, double price) {
-        if (Double.isInfinite(price) || Double.isNaN(price)) {
-            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_VALID, undefinedMin, undefinedMax);
-        }
-        if (wholeNumberOnly) {
-            try {
-                BigDecimal.valueOf(price).setScale(0, RoundingMode.UNNECESSARY);
-            } catch (ArithmeticException exception) {
-                Log.debug(exception.getMessage());
-                return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_A_WHOLE_NUMBER, undefinedMin, undefinedMax);
-            }
-        }
-        for (RuleSet rule : rules.values()) {
-            if (!rule.isApply(sender, itemStack, currency)) {
-                continue;
-            }
-            if (rule.isAllowed(price)) {
-                continue;
-            }
-            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, rule.getMin(), rule.getMax());
-        }
-        if (undefinedMin != -1 && price < undefinedMin) {
-            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
-        }
-        if (undefinedMax != -1 && price > undefinedMax) {
-            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
-        }
-        return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PASS, undefinedMin, undefinedMax);
     }
 
     public void loadConfiguration() {
@@ -186,6 +142,50 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
             }
         }
         return new RuleSet(items, bypassPermission, currency, min, max);
+    }
+
+    /**
+     * Check the price restriction rules
+     *
+     * @param sender    the sender
+     * @param itemStack the item to check
+     * @param currency  the currency
+     * @param price     the price
+     * @return the result
+     */
+    /*
+    Use item stack to reserve the extent ability
+     */
+    @Override
+    @NotNull
+    public PriceLimiterCheckResult check(@NotNull CommandSender sender, @NotNull ItemStack itemStack, @Nullable String currency, double price) {
+        if (Double.isInfinite(price) || Double.isNaN(price)) {
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_VALID, undefinedMin, undefinedMax);
+        }
+        if (wholeNumberOnly) {
+            try {
+                BigDecimal.valueOf(price).setScale(0, RoundingMode.UNNECESSARY);
+            } catch (ArithmeticException exception) {
+                Log.debug(exception.getMessage());
+                return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_A_WHOLE_NUMBER, undefinedMin, undefinedMax);
+            }
+        }
+        for (RuleSet rule : rules.values()) {
+            if (!rule.isApply(sender, itemStack, currency)) {
+                continue;
+            }
+            if (rule.isAllowed(price)) {
+                continue;
+            }
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, rule.getMin(), rule.getMax());
+        }
+        if (undefinedMin != -1 && price < undefinedMin) {
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
+        }
+        if (undefinedMax != -1 && price > undefinedMax) {
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
+        }
+        return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PASS, undefinedMin, undefinedMax);
     }
 
     @Override

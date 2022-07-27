@@ -16,6 +16,7 @@ import java.util.UUID;
 @Deprecated
 public interface ShopModerator {
     Gson GSON = new Gson();
+
     /**
      * Deserialize a ShopModerator using Gson
      *

@@ -34,15 +34,15 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         init();
     }
 
+    private void init() {
+        itemMetaMatcher = new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"), this);
+        workType = plugin.getConfig().getInt("matcher.work-type");
+    }
+
     public QuickShopItemMatcherImpl(QuickShop plugin, ItemMetaMatcher itemMetaMatcher, int workType) {
         this.plugin = plugin;
         this.itemMetaMatcher = itemMetaMatcher;
         this.workType = workType;
-    }
-
-    private void init() {
-        itemMetaMatcher = new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"), this);
-        workType = plugin.getConfig().getInt("matcher.work-type");
     }
 
     /**
@@ -63,40 +63,6 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
     @Override
     public @NotNull Plugin getPlugin() {
         return plugin;
-    }
-
-    /**
-     * Tests ItemStacks is matches
-     * BEWARE: Different order of itemstacks you might will got different results
-     *
-     * @param requireStack The original ItemStack
-     * @param givenStack   The ItemStack will test matches with original itemstack.
-     * @return The result of tests
-     */
-    public boolean matches(@Nullable ItemStack[] requireStack, @Nullable ItemStack[] givenStack) {
-        if (requireStack == null && givenStack == null) {
-            return true;
-        }
-
-        if (requireStack == null || givenStack == null) {
-            return false;
-        }
-
-        if (requireStack.length != givenStack.length) {
-            return false;
-        }
-        //For performance, we just check really equals in each index,check isn't contain or match will cost n^n time in most
-        for (int i = 0; i < requireStack.length; i++) {
-            if ((requireStack[i] != null) && (givenStack[i] != null) &&
-                    (requireStack[i].getAmount() != givenStack[i].getAmount())) {
-                return false;
-            }
-
-            if (!matches(requireStack[i], givenStack[i])) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -160,6 +126,40 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         }
 
         return !requireStack.hasItemMeta() && !givenStack.hasItemMeta();
+    }
+
+    /**
+     * Tests ItemStacks is matches
+     * BEWARE: Different order of itemstacks you might will got different results
+     *
+     * @param requireStack The original ItemStack
+     * @param givenStack   The ItemStack will test matches with original itemstack.
+     * @return The result of tests
+     */
+    public boolean matches(@Nullable ItemStack[] requireStack, @Nullable ItemStack[] givenStack) {
+        if (requireStack == null && givenStack == null) {
+            return true;
+        }
+
+        if (requireStack == null || givenStack == null) {
+            return false;
+        }
+
+        if (requireStack.length != givenStack.length) {
+            return false;
+        }
+        //For performance, we just check really equals in each index,check isn't contain or match will cost n^n time in most
+        for (int i = 0; i < requireStack.length; i++) {
+            if ((requireStack[i] != null) && (givenStack[i] != null) &&
+                    (requireStack[i].getAmount() != givenStack[i].getAmount())) {
+                return false;
+            }
+
+            if (!matches(requireStack[i], givenStack[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean typeMatches(ItemStack requireStack, ItemStack givenStack) {

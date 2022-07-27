@@ -31,12 +31,12 @@ public class ChatSheetPrinter {
                         .append(QuickShop.getInstance().text().of(p, "tableformat.right_half_line").forLocale()));
     }
 
-    private void printFullLine() {
-        MsgUtil.sendDirectMessage(p, QuickShop.getInstance().text().of(p, "tableformat.full_line").forLocale());
-    }
-
     public void printFooter() {
         printFullLine();
+    }
+
+    private void printFullLine() {
+        MsgUtil.sendDirectMessage(p, QuickShop.getInstance().text().of(p, "tableformat.full_line").forLocale());
     }
 
     public void printHeader() {

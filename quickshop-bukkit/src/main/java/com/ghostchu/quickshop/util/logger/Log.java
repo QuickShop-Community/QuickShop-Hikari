@@ -35,35 +35,6 @@ public class Log {
         debug(Level.INFO, message, Caller.create());
     }
 
-    public static void cron(@NotNull String message) {
-        cron(Level.INFO, message, Caller.create());
-    }
-
-    public static void transaction(@NotNull String message) {
-        transaction(Level.INFO, message, Caller.create());
-    }
-
-    public static void permission(@NotNull String message) {
-        permission(Level.INFO, message, Caller.create(3));
-    }
-
-
-    public static void debug(@NotNull Level level, @NotNull String message) {
-        debug(level, message, Caller.create());
-    }
-
-    public static void cron(@NotNull Level level, @NotNull String message) {
-        cron(level, message, Caller.create());
-    }
-
-    public static void transaction(@NotNull Level level, @NotNull String message) {
-        transaction(level, message, Caller.create());
-    }
-
-    public static void permission(@NotNull Level level, @NotNull String message) {
-        permission(level, message, Caller.create(3));
-    }
-
     @ApiStatus.Internal
     public static void debug(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
@@ -76,6 +47,16 @@ public class Log {
         loggerBuffer.offer(record);
         debugStdOutputs(record);
         LOCK.writeLock().unlock();
+    }
+
+    private static void debugStdOutputs(Record record) {
+        if (Util.isDevMode()) {
+            QuickShop.getInstance().getLogger().info("[DEBUG] " + record.toString());
+        }
+    }
+
+    public static void cron(@NotNull String message) {
+        cron(Level.INFO, message, Caller.create());
     }
 
     @ApiStatus.Internal
@@ -92,6 +73,10 @@ public class Log {
         LOCK.writeLock().unlock();
     }
 
+    public static void transaction(@NotNull String message) {
+        transaction(Level.INFO, message, Caller.create());
+    }
+
     @ApiStatus.Internal
     public static void transaction(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
@@ -104,6 +89,10 @@ public class Log {
         loggerBuffer.offer(record);
         debugStdOutputs(record);
         LOCK.writeLock().unlock();
+    }
+
+    public static void permission(@NotNull String message) {
+        permission(Level.INFO, message, Caller.create(3));
     }
 
     @ApiStatus.Internal
@@ -120,10 +109,20 @@ public class Log {
         LOCK.writeLock().unlock();
     }
 
-    private static void debugStdOutputs(Record record) {
-        if (Util.isDevMode()) {
-            QuickShop.getInstance().getLogger().info("[DEBUG] " + record.toString());
-        }
+    public static void debug(@NotNull Level level, @NotNull String message) {
+        debug(level, message, Caller.create());
+    }
+
+    public static void cron(@NotNull Level level, @NotNull String message) {
+        cron(level, message, Caller.create());
+    }
+
+    public static void transaction(@NotNull Level level, @NotNull String message) {
+        transaction(level, message, Caller.create());
+    }
+
+    public static void permission(@NotNull Level level, @NotNull String message) {
+        permission(level, message, Caller.create(3));
     }
 
     @NotNull

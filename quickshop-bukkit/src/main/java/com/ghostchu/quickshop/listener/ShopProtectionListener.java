@@ -26,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ShopProtectionListener extends AbstractProtectionListener {
 
+    private final NamespacedKey hopperKey = new NamespacedKey(QuickShop.getInstance(), "hopper-persistent-data");
     private boolean hopperProtect;
     private boolean hopperOwnerExclude;
 
@@ -44,6 +45,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
         init();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockExplode(BlockExplodeEvent e) {
         for (int i = 0, a = e.blockList().size(); i < a; i++) {
@@ -106,15 +108,13 @@ public class ShopProtectionListener extends AbstractProtectionListener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityBlockChange(EntityChangeBlockEvent e) {
-        if(!plugin.getConfig().getBoolean("protect.entity",true)){
+        if (!plugin.getConfig().getBoolean("protect.entity", true)) {
             return;
         }
-        if(getShopNature(e.getBlock().getLocation(),true) != null){
+        if (getShopNature(e.getBlock().getLocation(), true) != null) {
             e.setCancelled(true);
         }
     }
-
-    private final NamespacedKey hopperKey = new NamespacedKey(QuickShop.getInstance(), "hopper-persistent-data");
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlaceHopper(BlockPlaceEvent e) {

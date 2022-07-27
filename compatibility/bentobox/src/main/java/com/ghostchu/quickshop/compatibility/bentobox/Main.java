@@ -49,6 +49,10 @@ public final class Main extends CompatibilityModule implements Listener {
         });
     }
 
+    private List<Shop> getShops(Island island) {
+        return getShops(island.getWorld().getName(), island.getMinX(), island.getMinZ(), island.getMaxX(), island.getMaxZ());
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onIslandDeleted(IslandDeletedEvent event) {
         if (!deleteShopOnReset) {
@@ -58,6 +62,10 @@ public final class Main extends CompatibilityModule implements Listener {
             recordDeletion(event.getPlayerUUID(), shop, "Island " + event.getIsland().getName() + " was deleted");
             shop.delete();
         });
+    }
+
+    private List<Shop> getShops(IslandDeletion island) {
+        return getShops(island.getWorld().getName(), island.getMinX(), island.getMinZ(), island.getMaxX(), island.getMaxZ());
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -84,13 +92,5 @@ public final class Main extends CompatibilityModule implements Listener {
                 shop.delete();
             }
         });
-    }
-
-    private List<Shop> getShops(Island island) {
-        return getShops(island.getWorld().getName(), island.getMinX(), island.getMinZ(), island.getMaxX(), island.getMaxZ());
-    }
-
-    private List<Shop> getShops(IslandDeletion island) {
-        return getShops(island.getWorld().getName(), island.getMinX(), island.getMinZ(), island.getMaxX(), island.getMaxZ());
     }
 }

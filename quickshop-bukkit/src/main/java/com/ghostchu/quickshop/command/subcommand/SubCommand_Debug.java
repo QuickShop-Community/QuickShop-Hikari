@@ -38,12 +38,11 @@ import java.util.logging.Level;
 
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
     private final Cache<UUID, String> sqlCachePool = CacheBuilder.newBuilder().expireAfterWrite(60, TimeUnit.SECONDS).build();
+    private final QuickShop plugin;
 
     public SubCommand_Debug(QuickShop plugin) {
         this.plugin = plugin;
     }
-
-    private final QuickShop plugin;
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
@@ -59,6 +58,33 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "database" -> handleDatabase(sender, ArrayUtils.remove(cmdArg, 0));
             default -> plugin.text().of(sender, "debug.arguments-invalid", cmdArg[0]).send();
         }
+    }
+
+    public void switchDebug(@NotNull CommandSender sender) {
+        final boolean debug = plugin.getConfig().getBoolean("dev-mode");
+
+        if (debug) {
+            plugin.reloadConfig();
+            plugin.getConfig().set("dev-mode", false);
+            plugin.saveConfig();
+            plugin.getReloadManager().reload();
+            plugin.text().of(sender, "command.now-nolonger-debuging").send();
+            return;
+        }
+
+        plugin.reloadConfig();
+        plugin.getConfig().set("dev-mode", true);
+        plugin.saveConfig();
+        plugin.getReloadManager().reload();
+        plugin.text().of(sender, "command.now-debuging").send();
+    }
+
+    private void handleHandlerList(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
+        if (cmdArg.length < 1) {
+            MsgUtil.sendDirectMessage(sender, Component.text("You must enter an Bukkit Event class"));
+            return;
+        }
+        printHandlerList(sender, cmdArg[1]);
     }
 
     private void handleSigns(@NotNull CommandSender sender) {
@@ -88,6 +114,34 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         }
     }
 
+    public void printHandlerList(@NotNull CommandSender sender, String event) {
+        try {
+            final Class<?> clazz = Class.forName(event);
+            final Method method = clazz.getMethod("getHandlerList");
+            final Object[] obj = new Object[0];
+            final HandlerList list = (HandlerList) method.invoke(null, obj);
+
+            for (RegisteredListener listener1 : list.getRegisteredListeners()) {
+                MsgUtil.sendDirectMessage(sender,
+                        LegacyComponentSerializer.legacySection().deserialize(ChatColor.AQUA
+                                + listener1.getPlugin().getName()
+                                + ChatColor.YELLOW
+                                + " # "
+                                + ChatColor.GREEN
+                                + listener1.getListener().getClass().getCanonicalName()));
+            }
+        } catch (Exception th) {
+            MsgUtil.sendDirectMessage(sender, Component.text("ERR " + th.getMessage()).color(NamedTextColor.RED));
+            plugin.getLogger().log(Level.WARNING, "An error has occurred while getting the HandlerList", th);
+        }
+    }
+
+    @NotNull
+    @Override
+    public List<String> onTabComplete(
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+        return Collections.emptyList();
+    }
 
     private void handleDatabaseSQL(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
         Util.SysPropertiesParseResult parseResult = Util.parsePackageProperly("enable-sql");
@@ -142,62 +196,6 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
                 }
             }
         }
-    }
-
-    private void handleHandlerList(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
-            MsgUtil.sendDirectMessage(sender, Component.text("You must enter an Bukkit Event class"));
-            return;
-        }
-        printHandlerList(sender, cmdArg[1]);
-    }
-
-    public void switchDebug(@NotNull CommandSender sender) {
-        final boolean debug = plugin.getConfig().getBoolean("dev-mode");
-
-        if (debug) {
-            plugin.reloadConfig();
-            plugin.getConfig().set("dev-mode", false);
-            plugin.saveConfig();
-            plugin.getReloadManager().reload();
-            plugin.text().of(sender, "command.now-nolonger-debuging").send();
-            return;
-        }
-
-        plugin.reloadConfig();
-        plugin.getConfig().set("dev-mode", true);
-        plugin.saveConfig();
-        plugin.getReloadManager().reload();
-        plugin.text().of(sender, "command.now-debuging").send();
-    }
-
-    public void printHandlerList(@NotNull CommandSender sender, String event) {
-        try {
-            final Class<?> clazz = Class.forName(event);
-            final Method method = clazz.getMethod("getHandlerList");
-            final Object[] obj = new Object[0];
-            final HandlerList list = (HandlerList) method.invoke(null, obj);
-
-            for (RegisteredListener listener1 : list.getRegisteredListeners()) {
-                MsgUtil.sendDirectMessage(sender,
-                        LegacyComponentSerializer.legacySection().deserialize(ChatColor.AQUA
-                                + listener1.getPlugin().getName()
-                                + ChatColor.YELLOW
-                                + " # "
-                                + ChatColor.GREEN
-                                + listener1.getListener().getClass().getCanonicalName()));
-            }
-        } catch (Exception th) {
-            MsgUtil.sendDirectMessage(sender, Component.text("ERR " + th.getMessage()).color(NamedTextColor.RED));
-            plugin.getLogger().log(Level.WARNING, "An error has occurred while getting the HandlerList", th);
-        }
-    }
-
-    @NotNull
-    @Override
-    public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return Collections.emptyList();
     }
 
 }

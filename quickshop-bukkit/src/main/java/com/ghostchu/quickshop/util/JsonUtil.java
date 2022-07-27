@@ -34,18 +34,8 @@ public final class JsonUtil {
         return REGULAR_GSON;
     }
 
-    @NotNull
-    public static Gson standard() {
-        return STANDARD_GSON;
-    }
-
     public static Gson getGson() {
         return STANDARD_GSON;
-    }
-
-    @NotNull
-    public static Gson prettyPrinting() {
-        return PRETTY_PRINT_GSON;
     }
 
     @NotNull
@@ -62,8 +52,18 @@ public final class JsonUtil {
         standard().toJson(object, writer);
     }
 
+    @NotNull
+    public static Gson standard() {
+        return STANDARD_GSON;
+    }
+
     public static void writeObjectPretty(@NotNull Appendable writer, @NotNull JsonObject object) {
         prettyPrinting().toJson(object, writer);
+    }
+
+    @NotNull
+    public static Gson prettyPrinting() {
+        return PRETTY_PRINT_GSON;
     }
 
     public static void writeElement(@NotNull Appendable writer, @NotNull JsonElement element) {
@@ -103,13 +103,13 @@ public final class JsonUtil {
 
     public static class HiddenAnnotationExclusionStrategy implements ExclusionStrategy {
         @Override
-        public boolean shouldSkipClass(Class<?> clazz) {
-            return clazz.getDeclaredAnnotation(Hidden.class) != null;
+        public boolean shouldSkipField(FieldAttributes f) {
+            return f.getAnnotation(Hidden.class) != null;
         }
 
         @Override
-        public boolean shouldSkipField(FieldAttributes f) {
-            return f.getAnnotation(Hidden.class) != null;
+        public boolean shouldSkipClass(Class<?> clazz) {
+            return clazz.getDeclaredAnnotation(Hidden.class) != null;
         }
     }
 

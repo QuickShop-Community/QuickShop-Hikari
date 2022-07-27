@@ -54,14 +54,6 @@ public final class EnvironmentChecker {
         tests.add(method);
     }
 
-    private void sortTests() {
-        tests.sort((o1, o2) -> {
-            EnvCheckEntry e1 = o1.getAnnotation(EnvCheckEntry.class);
-            EnvCheckEntry e2 = o2.getAnnotation(EnvCheckEntry.class);
-            return Integer.compare(e1.priority(), e2.priority());
-        });
-    }
-
     public ResultReport run(EnvCheckEntry.Stage stage) {
         sortTests();
 
@@ -130,6 +122,14 @@ public final class EnvironmentChecker {
         return new ResultReport(gResult, results);
     }
 
+    private void sortTests() {
+        tests.sort((o1, o2) -> {
+            EnvCheckEntry e1 = o1.getAnnotation(EnvCheckEntry.class);
+            EnvCheckEntry e2 = o2.getAnnotation(EnvCheckEntry.class);
+            return Integer.compare(e1.priority(), e2.priority());
+        });
+    }
+
     public boolean isOutdatedJvm() {
         String jvmVersion = System.getProperty("java.version"); //Use java version not jvm version.
         String[] splitVersion = jvmVersion.split("\\.");
@@ -164,25 +164,6 @@ public final class EnvironmentChecker {
         return new ResultContainer(CheckResult.PASSED, "No old QuickShop jar installled on this server");
     }
 
-    public boolean isForgeBasedServer() {
-        //Forge server detect - Arclight
-        if (Util.isClassAvailable("net.minecraftforge.server.ServerMain")) {
-            return true;
-        }
-        if (Util.isClassAvailable("net.minecraftforge.fml.loading.ModInfo")) {
-            return true;
-        }
-        if (Util.isClassAvailable("cpw.mods.modlauncher.serviceapi.ILaunchPluginService")) {
-            return true;
-        }
-        return Util.isClassAvailable("net.minecraftforge.forgespi.locating.IModLocator");
-    }
-
-    public boolean isFabricBasedServer() {
-        //Nobody really make it right!?
-        return Util.isClassAvailable("net.fabricmc.loader.launch.knot.KnotClient"); //OMG
-    }
-
     @EnvCheckEntry(name = "ModdedServer Based Test", priority = 4)
     public ResultContainer moddedBasedTest() {
         boolean trigged = false;
@@ -202,6 +183,25 @@ public final class EnvironmentChecker {
             return new ResultContainer(CheckResult.WARNING, "No support will be given to modded servers.");
         }
         return new ResultContainer(CheckResult.PASSED, "Server is unmodified.");
+    }
+
+    public boolean isForgeBasedServer() {
+        //Forge server detect - Arclight
+        if (Util.isClassAvailable("net.minecraftforge.server.ServerMain")) {
+            return true;
+        }
+        if (Util.isClassAvailable("net.minecraftforge.fml.loading.ModInfo")) {
+            return true;
+        }
+        if (Util.isClassAvailable("cpw.mods.modlauncher.serviceapi.ILaunchPluginService")) {
+            return true;
+        }
+        return Util.isClassAvailable("net.minecraftforge.forgespi.locating.IModLocator");
+    }
+
+    public boolean isFabricBasedServer() {
+        //Nobody really make it right!?
+        return Util.isClassAvailable("net.fabricmc.loader.launch.knot.KnotClient"); //OMG
     }
 
     @EnvCheckEntry(name = "CoreSupport Test", priority = 6)

@@ -176,10 +176,6 @@ public enum DataTables {
         }
     }
 
-    public @NotNull String getName() {
-        return this.prefix + this.name;
-    }
-
     private void create(@NotNull SQLManager sqlManager, @NotNull String tablePrefix) throws SQLException {
         if (this.manager == null) {
             this.manager = sqlManager;
@@ -198,6 +194,10 @@ public enum DataTables {
 
     public @NotNull TableQueryBuilder createQuery() {
         return this.createQuery(this.manager);
+    }
+
+    public @NotNull String getName() {
+        return this.prefix + this.name;
     }
 
     public @NotNull DeleteBuilder createDelete() {
@@ -248,6 +248,10 @@ public enum DataTables {
         return sqlManager.createReplaceBatch(this.getName());
     }
 
+    public boolean isExists() {
+        return isExists(this.manager);
+    }
+
     public boolean isExists(@NotNull SQLManager manager) {
         boolean match = false;
         try {
@@ -266,10 +270,6 @@ public enum DataTables {
             Log.debug("Error while checking table existence: " + getName());
         }
         return match;
-    }
-
-    public boolean isExists() {
-        return isExists(this.manager);
     }
 
     public boolean purgeTable() {

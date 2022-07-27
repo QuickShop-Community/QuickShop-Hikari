@@ -37,6 +37,14 @@ public interface Shop {
     long getShopId();
 
     /**
+     * Internal Only: Give shop that under id_waiting state an ShopId.
+     *
+     * @param newId The new shop id, once set will cannot change anymore.
+     */
+    @ApiStatus.Internal
+    void setShopId(long newId);
+
+    /**
      * Check if player have authorized for specific permission on specific shop
      *
      * @param player     player
@@ -114,19 +122,19 @@ public interface Shop {
     Map<UUID, String> getPermissionAudiences();
 
     /**
-     * Sets shop name
-     *
-     * @param shopName shop name, null to remove currently name
-     */
-    void setShopName(@Nullable String shopName);
-
-    /**
      * Gets this shop name that set by player
      *
      * @return Shop name, or null if not set
      */
     @Nullable
     String getShopName();
+
+    /**
+     * Sets shop name
+     *
+     * @param shopName shop name, null to remove currently name
+     */
+    void setShopName(@Nullable String shopName);
 
     /**
      * Add x ItemStack to the shop inventory
@@ -515,7 +523,6 @@ public interface Shop {
      */
     void setDirty();
 
-
     /**
      * Save the plugin extra data to Json format
      *
@@ -701,12 +708,4 @@ public interface Shop {
      */
     @NotNull
     String saveToSymbolLink();
-
-    /**
-     * Internal Only: Give shop that under id_waiting state an ShopId.
-     *
-     * @param newId The new shop id, once set will cannot change anymore.
-     */
-    @ApiStatus.Internal
-    void setShopId(long newId);
 }

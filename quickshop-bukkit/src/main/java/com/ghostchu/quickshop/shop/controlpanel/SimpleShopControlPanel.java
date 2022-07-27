@@ -21,16 +21,6 @@ import java.util.List;
 
 public class SimpleShopControlPanel implements ShopControlPanel {
     /**
-     * The shop control panel impl's plugin instance.
-     *
-     * @return Your plugin instance;
-     */
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return QuickShop.getInstance();
-    }
-
-    /**
      * The shop control panel's priority.
      * HIGH = Earlier shown
      * LOW = Later shown
@@ -40,6 +30,16 @@ public class SimpleShopControlPanel implements ShopControlPanel {
     @Override
     public @NotNull ShopControlPanelPriority getPriority() {
         return ShopControlPanelPriority.HIGH;
+    }
+
+    /**
+     * The shop control panel impl's plugin instance.
+     *
+     * @return Your plugin instance;
+     */
+    @Override
+    public @NotNull Plugin getPlugin() {
+        return QuickShop.getInstance();
     }
 
     /**

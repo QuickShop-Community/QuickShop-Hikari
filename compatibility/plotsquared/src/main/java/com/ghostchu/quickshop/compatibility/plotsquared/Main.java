@@ -36,6 +36,13 @@ public final class Main extends CompatibilityModule implements Listener {
     private QuickshopTradeFlag tradeFlag;
 
     @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+        super.onDisable();
+        PlotSquared.get().getEventDispatcher().unregisterListener(this);
+    }
+
+    @Override
     public void onEnable() {
         // Plugin startup logic
         super.onEnable();
@@ -46,12 +53,6 @@ public final class Main extends CompatibilityModule implements Listener {
         PlotSquared.get().getEventDispatcher().registerListener(this);
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-        super.onDisable();
-        PlotSquared.get().getEventDispatcher().unregisterListener(this);
-    }
     @Override
     public void init() {
         this.whiteList = getConfig().getBoolean("whitelist-mode");
@@ -115,20 +116,20 @@ public final class Main extends CompatibilityModule implements Listener {
         }
     }
 
-    private List<Shop> getShops(Plot plot) {
-        List<Shop> shopsList = new ArrayList<>();
-        for (CuboidRegion region : plot.getRegions()) {
-            shopsList.addAll(getShops(region.getWorld().getName(), region.getMinimumPoint().getX(), region.getMinimumPoint().getZ(), region.getMaximumPoint().getX(), region.getMaximumPoint().getZ()));
-        }
-        return shopsList;
-    }
-
     @Subscribe
     public void onPlotDelete(PlotDeleteEvent event) {
         getShops(event.getPlot()).forEach(shop -> {
             recordDeletion(event.getPlot().getOwner(), shop, "Plot deleted");
             shop.delete();
         });
+    }
+
+    private List<Shop> getShops(Plot plot) {
+        List<Shop> shopsList = new ArrayList<>();
+        for (CuboidRegion region : plot.getRegions()) {
+            shopsList.addAll(getShops(region.getWorld().getName(), region.getMinimumPoint().getX(), region.getMinimumPoint().getZ(), region.getMaximumPoint().getX(), region.getMaximumPoint().getZ()));
+        }
+        return shopsList;
     }
 
     @Subscribe

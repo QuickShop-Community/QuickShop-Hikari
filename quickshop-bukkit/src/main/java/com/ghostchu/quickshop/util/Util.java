@@ -147,6 +147,10 @@ public class Util {
         return bs instanceof InventoryHolder;
     }
 
+    public static boolean isBlacklistWorld(@NotNull World world) {
+        return plugin.getConfig().getStringList("shop.blacklist-world").contains(world.getName());
+    }
+
     /**
      * Check a material is possible become a shop
      *
@@ -155,10 +159,6 @@ public class Util {
      */
     public static boolean isShoppables(@NotNull Material material) {
         return SHOPABLES.contains(material);
-    }
-
-    public static boolean isBlacklistWorld(@NotNull World world) {
-        return plugin.getConfig().getStringList("shop.blacklist-world").contains(world.getName());
     }
 
     /**
@@ -249,6 +249,16 @@ public class Util {
     }
 
     /**
+     * Returns a material max stacksize
+     *
+     * @param material Material
+     * @return Game StackSize or Custom
+     */
+    public static int getItemMaxStackSize(@NotNull Material material) {
+        return CUSTOM_STACKSIZE.getOrDefault(material, BYPASSED_CUSTOM_STACKSIZE == -1 ? material.getMaxStackSize() : BYPASSED_CUSTOM_STACKSIZE);
+    }
+
+    /**
      * Returns the number of items that can be given to the inventory safely.
      *
      * @param inv  The inventory to count
@@ -275,16 +285,6 @@ public class Util {
             }
             return space / item.getAmount();
         }
-    }
-
-    /**
-     * Returns a material max stacksize
-     *
-     * @param material Material
-     * @return Game StackSize or Custom
-     */
-    public static int getItemMaxStackSize(@NotNull Material material) {
-        return CUSTOM_STACKSIZE.getOrDefault(material, BYPASSED_CUSTOM_STACKSIZE == -1 ? material.getMaxStackSize() : BYPASSED_CUSTOM_STACKSIZE);
     }
 
     /**
@@ -361,23 +361,6 @@ public class Util {
     }
 
     /**
-     * return the right side for given blockFace
-     *
-     * @param blockFace given blockFace
-     * @return the right side for given blockFace, UP and DOWN will return itself
-     */
-    @NotNull
-    public static BlockFace getRightSide(@NotNull BlockFace blockFace) {
-        return switch (blockFace) {
-            case EAST -> BlockFace.SOUTH;
-            case NORTH -> BlockFace.EAST;
-            case SOUTH -> BlockFace.WEST;
-            case WEST -> BlockFace.NORTH;
-            default -> blockFace;
-        };
-    }
-
-    /**
      * Get vertical BlockFace list
      *
      * @return vertical BlockFace list (unmodifiable)
@@ -385,22 +368,6 @@ public class Util {
     @NotNull
     public static List<BlockFace> getVerticalFacing() {
         return VERTICAL_FACING;
-    }
-
-    /**
-     * Fetches the block which the given sign is attached to
-     *
-     * @param b The block which is attached
-     * @return The block the sign is attached to
-     */
-    @Nullable
-    public static Block getAttached(@NotNull Block b) {
-        final BlockData blockData = b.getBlockData();
-        if (blockData instanceof final Directional directional) {
-            return b.getRelative(directional.getFacing().getOppositeFace());
-        } else {
-            return null;
-        }
     }
 
     /**
@@ -416,8 +383,10 @@ public class Util {
         return "[" + callClassName + "-" + customClassName + "] ";
     }
 
-    public static boolean useEnchantmentForEnchantedBook() {
-        return plugin.getConfig().getBoolean("shop.use-enchantment-for-enchanted-book");
+    @NotNull
+    public static Component getItemStackName(@NotNull ItemStack itemStack) {
+        Component result = getItemCustomName(itemStack);
+        return isEmptyComponent(result) ? plugin.getPlatform().getTranslation(itemStack.getType()) : result;
     }
 
     @Nullable
@@ -453,10 +422,18 @@ public class Util {
         return null;
     }
 
-    @NotNull
-    public static Component getItemStackName(@NotNull ItemStack itemStack) {
-        Component result = getItemCustomName(itemStack);
-        return isEmptyComponent(result) ? plugin.getPlatform().getTranslation(itemStack.getType()) : result;
+    public static boolean isEmptyComponent(@Nullable Component component) {
+        if (component == null) {
+            return true;
+        }
+        if (component.equals(Component.empty())) {
+            return true;
+        }
+        return component.equals(Component.text(""));
+    }
+
+    public static boolean useEnchantmentForEnchantedBook() {
+        return plugin.getConfig().getBoolean("shop.use-enchantment-for-enchanted-book");
     }
 
     @NotNull
@@ -472,34 +449,6 @@ public class Util {
             return name.append(LegacyComponentSerializer.legacySection().deserialize(" " + RomanNumber.toRoman(entry.getValue())));
         }
     }
-
-    public static boolean isDoubleChest(@Nullable BlockData blockData) {
-        if (!(blockData instanceof org.bukkit.block.data.type.Chest chestBlockData)) {
-            return false;
-        }
-        return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
-    }
-
-//    /**
-//     * Use yaw to calc the BlockFace
-//     *
-//     * @param yaw Yaw (Player.getLocation().getYaw())
-//     * @return BlockFace blockFace
-//     * @deprecated Use Bukkit util not this one.
-//     */
-//    @Deprecated
-//    @NotNull
-//    public static BlockFace getYawFace(float yaw) {
-//        if (yaw > 315 && yaw <= 45) {
-//            return BlockFace.NORTH;
-//        } else if (yaw > 45 && yaw <= 135) {
-//            return BlockFace.EAST;
-//        } else if (yaw > 135 && yaw <= 225) {
-//            return BlockFace.SOUTH;
-//        } else {
-//            return BlockFace.WEST;
-//        }
-//    }
 
     /**
      * Get how many shop in the target world.
@@ -536,6 +485,27 @@ public class Util {
         DecimalFormat formatter = new DecimalFormat("0");
         return formatter.format((1 - dura / max) * 100.0);
     }
+
+//    /**
+//     * Use yaw to calc the BlockFace
+//     *
+//     * @param yaw Yaw (Player.getLocation().getYaw())
+//     * @return BlockFace blockFace
+//     * @deprecated Use Bukkit util not this one.
+//     */
+//    @Deprecated
+//    @NotNull
+//    public static BlockFace getYawFace(float yaw) {
+//        if (yaw > 315 && yaw <= 45) {
+//            return BlockFace.NORTH;
+//        } else if (yaw > 45 && yaw <= 135) {
+//            return BlockFace.EAST;
+//        } else if (yaw > 135 && yaw <= 225) {
+//            return BlockFace.SOUTH;
+//        } else {
+//            return BlockFace.WEST;
+//        }
+//    }
 
     /**
      * Initialize the Util tools.
@@ -610,7 +580,6 @@ public class Util {
         return out.toByteArray();
     }
 
-
     /**
      * Call this to check items in inventory and remove it.
      *
@@ -644,16 +613,6 @@ public class Util {
             }
         } catch (Exception ignored) {
         }
-    }
-
-    public static boolean isEmptyComponent(@Nullable Component component) {
-        if (component == null) {
-            return true;
-        }
-        if (component.equals(Component.empty())) {
-            return true;
-        }
-        return component.equals(Component.text(""));
     }
 
     /**
@@ -764,6 +723,22 @@ public class Util {
     }
 
     /**
+     * Fetches the block which the given sign is attached to
+     *
+     * @param b The block which is attached
+     * @return The block the sign is attached to
+     */
+    @Nullable
+    public static Block getAttached(@NotNull Block b) {
+        final BlockData blockData = b.getBlockData();
+        if (blockData instanceof final Directional directional) {
+            return b.getRelative(directional.getFacing().getOppositeFace());
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Returns the chest attached to the given chest. The given block must be a chest.
      *
      * @param block The chest block
@@ -780,6 +755,30 @@ public class Util {
         BlockFace towardsLeft = getRightSide(chest.getFacing());
         BlockFace actuallyBlockFace = chest.getType() == org.bukkit.block.data.type.Chest.Type.LEFT ? towardsLeft : towardsLeft.getOppositeFace();
         return block.getRelative(actuallyBlockFace);
+    }
+
+    public static boolean isDoubleChest(@Nullable BlockData blockData) {
+        if (!(blockData instanceof org.bukkit.block.data.type.Chest chestBlockData)) {
+            return false;
+        }
+        return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
+    }
+
+    /**
+     * return the right side for given blockFace
+     *
+     * @param blockFace given blockFace
+     * @return the right side for given blockFace, UP and DOWN will return itself
+     */
+    @NotNull
+    public static BlockFace getRightSide(@NotNull BlockFace blockFace) {
+        return switch (blockFace) {
+            case EAST -> BlockFace.SOUTH;
+            case NORTH -> BlockFace.EAST;
+            case SOUTH -> BlockFace.WEST;
+            case WEST -> BlockFace.NORTH;
+            default -> blockFace;
+        };
     }
 
     /**
@@ -1190,6 +1189,19 @@ public class Util {
     }
 
     /**
+     * Convert timestamp to LocalDate instance
+     *
+     * @param timestamp Timestamp
+     * @return LocalDate instance
+     */
+    // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
+    @Nullable
+    public static LocalDate getDateFromTimestamp(long timestamp) {
+        LocalDateTime date = getDateTimeFromTimestamp(timestamp);
+        return date == null ? null : date.toLocalDate();
+    }
+
+    /**
      * Convert timestamp to LocalDateTime instance
      *
      * @param timestamp Timestamp
@@ -1206,29 +1218,6 @@ public class Util {
     }
 
     /**
-     * Convert timestamp to LocalDate instance
-     *
-     * @param timestamp Timestamp
-     * @return LocalDate instance
-     */
-    // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
-    @Nullable
-    public static LocalDate getDateFromTimestamp(long timestamp) {
-        LocalDateTime date = getDateTimeFromTimestamp(timestamp);
-        return date == null ? null : date.toLocalDate();
-    }
-
-    /**
-     * Gets the nil unique id
-     *
-     * @return uuid which content is `00000000-0000-0000-0000-000000000000`
-     */
-    @NotNull
-    public static UUID getNilUniqueId() {
-        return new UUID(0, 0);
-    }
-
-    /**
      * Gets the CommandSender unique id.
      *
      * @param sender the sender
@@ -1240,6 +1229,16 @@ public class Util {
             return ((OfflinePlayer) sender).getUniqueId();
         }
         return getNilUniqueId();
+    }
+
+    /**
+     * Gets the nil unique id
+     *
+     * @return uuid which content is `00000000-0000-0000-0000-000000000000`
+     */
+    @NotNull
+    public static UUID getNilUniqueId() {
+        return new UUID(0, 0);
     }
 
     /**
@@ -1313,19 +1312,6 @@ public class Util {
      * @return The jar path which given class at.
      */
     @NotNull
-    public static String getClassPath(@NotNull Class<?> clazz) {
-        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
-        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
-        return jarPath;
-    }
-
-    /**
-     * Gets the location of a class inside of a jar file.
-     *
-     * @param clazz The class to get the location of.
-     * @return The jar path which given class at.
-     */
-    @NotNull
     public static String getClassPathRelative(@NotNull Class<?> clazz) {
         String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
         jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
@@ -1366,18 +1352,6 @@ public class Util {
         return dir.delete();
     }
 
-
-    /**
-     * Get class path of the given class.
-     *
-     * @param plugin Plugin plugin instance
-     * @return Class path
-     */
-    @NotNull
-    public static String getPluginJarPath(@NotNull Plugin plugin) {
-        return getClassPath(plugin.getClass());
-    }
-
     /**
      * Gets a plugin's Jar file
      *
@@ -1393,6 +1367,30 @@ public class Util {
             throw new FileNotFoundException("File not found: " + path);
         }
         return file;
+    }
+
+    /**
+     * Get class path of the given class.
+     *
+     * @param plugin Plugin plugin instance
+     * @return Class path
+     */
+    @NotNull
+    public static String getPluginJarPath(@NotNull Plugin plugin) {
+        return getClassPath(plugin.getClass());
+    }
+
+    /**
+     * Gets the location of a class inside of a jar file.
+     *
+     * @param clazz The class to get the location of.
+     * @return The jar path which given class at.
+     */
+    @NotNull
+    public static String getClassPath(@NotNull Class<?> clazz) {
+        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+        return jarPath;
     }
 
     /**

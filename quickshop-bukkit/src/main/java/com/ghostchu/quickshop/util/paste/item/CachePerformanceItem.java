@@ -10,11 +10,6 @@ import java.text.NumberFormat;
 public class CachePerformanceItem implements SubPasteItem {
     private final QuickShop plugin = QuickShop.getInstance();
 
-    @Override
-    public @NotNull String getTitle() {
-        return "Cache Performance";
-    }
-
     @NotNull
     private String buildPAPICacheContent() {
         if (plugin.getPlaceHolderAPI() == null || plugin.getQuickShopPAPI() == null) {
@@ -68,5 +63,10 @@ public class CachePerformanceItem implements SubPasteItem {
                 buildShopCacheContent() +
                 "<h5>PlaceHolderAPI Cache</h5>" +
                 buildPAPICacheContent();
+    }
+
+    @Override
+    public @NotNull String getTitle() {
+        return "Cache Performance";
     }
 }

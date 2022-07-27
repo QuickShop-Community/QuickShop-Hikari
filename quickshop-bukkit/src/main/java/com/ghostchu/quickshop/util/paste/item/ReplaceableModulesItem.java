@@ -20,6 +20,10 @@ public class ReplaceableModulesItem implements SubPasteItem {
         }
     }
 
+    @Override
+    public @NotNull String genBody() {
+        return buildContent();
+    }
 
     @Override
     public @NotNull String getTitle() {
@@ -32,11 +36,5 @@ public class ReplaceableModulesItem implements SubPasteItem {
         table.insert("Economy Core", economyCore);
         table.insert("Item Matcher", itemMatcher);
         return table.render();
-    }
-
-
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
     }
 }

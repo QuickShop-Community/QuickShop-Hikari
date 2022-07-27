@@ -53,6 +53,35 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
         }
     }
 
+    @Data
+    @Builder
+    public static class CommonHolder {
+        private HolderType holder;
+        private String content;
+
+        public CommonHolder(HolderType holder, String content) {
+            this.holder = holder;
+            this.content = content;
+        }
+    }
+
+    @Data
+    @Builder
+    public static class BlockHolder {
+        private String world;
+        private int x;
+        private int y;
+        private int z;
+
+        public BlockHolder(String world, int x, int y, int z) {
+            this.world = world;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+    }
+
+
     public
     enum HolderType {
         BLOCK("block"), UNKNOWN("unknown");
@@ -75,35 +104,6 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
         @NotNull
         public String toType() {
             return this.typeString;
-        }
-    }
-
-    @Data
-    @Builder
-    public static class CommonHolder {
-        private HolderType holder;
-        private String content;
-
-        public CommonHolder(HolderType holder, String content) {
-            this.holder = holder;
-            this.content = content;
-        }
-    }
-
-
-    @Data
-    @Builder
-    public static class BlockHolder {
-        private String world;
-        private int x;
-        private int y;
-        private int z;
-
-        public BlockHolder(String world, int x, int y, int z) {
-            this.world = world;
-            this.x = x;
-            this.y = y;
-            this.z = z;
         }
     }
 }

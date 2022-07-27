@@ -108,6 +108,14 @@ public class ConfigUpdateScript {
         getConfig().set("syntax-parser", null);
     }
 
+    private Object translate(Object o) {
+        if (o instanceof String str) {
+            Component component = MineDown.parse(str);
+            return MiniMessage.miniMessage().serialize(component);
+        }
+        return o;
+    }
+
     @UpdateScript(version = 1007)
     public void refundFromTaxAccountOption() {
         getConfig().set("shop.refund-from-tax-account", false);
@@ -116,13 +124,5 @@ public class ConfigUpdateScript {
     @UpdateScript(version = 1008)
     public void disableTaxForUnlimitedShop() {
         getConfig().set("tax-free-for-unlimited-shop", false);
-    }
-
-    private Object translate(Object o) {
-        if (o instanceof String str) {
-            Component component = MineDown.parse(str);
-            return MiniMessage.miniMessage().serialize(component);
-        }
-        return o;
     }
 }

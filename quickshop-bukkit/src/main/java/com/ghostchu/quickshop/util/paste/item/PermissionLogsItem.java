@@ -24,6 +24,10 @@ public class PermissionLogsItem implements SubPasteItem {
         }
     }
 
+    @Override
+    public @NotNull String genBody() {
+        return buildContent();
+    }
 
     @Override
     public @NotNull String getTitle() {
@@ -39,10 +43,5 @@ public class PermissionLogsItem implements SubPasteItem {
         return "<textarea readonly=\"true\" name=\"permissionquery\" style=\"height: 1000px; width: 100%;\">" +
                 StringEscapeUtils.escapeHtml4(builder.toString()) +
                 "</textarea><br />";
-    }
-
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
     }
 }

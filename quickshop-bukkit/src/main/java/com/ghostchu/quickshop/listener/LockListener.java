@@ -25,20 +25,13 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class LockListener extends AbstractProtectionListener {
-    public LockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
-        super(plugin, cache);
-    }
+    private static final Object emptyObject = new Object();
     private final com.google.common.cache.Cache<UUID, Object> lockCoolDown = CacheBuilder.newBuilder()
             .expireAfterAccess(1, TimeUnit.SECONDS)
             .build();
-    private static final Object emptyObject=  new Object();
-    @Override
-    public void register() {
-        if (plugin.getConfig().getBoolean("shop.lock")) {
-            super.register();
-        } else {
-            super.unregister();
-        }
+
+    public LockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
+        super(plugin, cache);
     }
 
     /**
@@ -50,6 +43,15 @@ public class LockListener extends AbstractProtectionListener {
     public ReloadResult reloadModule() {
         register();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
+
+    @Override
+    public void register() {
+        if (plugin.getConfig().getBoolean("shop.lock")) {
+            super.register();
+        } else {
+            super.unregister();
+        }
     }
 
     /*
@@ -146,7 +148,7 @@ public class LockListener extends AbstractProtectionListener {
 
         if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)) {
             if (plugin.perm().hasPermission(p, "quickshop.other.open")) {
-                if(lockCoolDown.getIfPresent(p.getUniqueId()) == null){
+                if (lockCoolDown.getIfPresent(p.getUniqueId()) == null) {
                     plugin.text().of(p, "bypassing-lock").send();
                     lockCoolDown.put(p.getUniqueId(), emptyObject);
                 }
@@ -176,7 +178,7 @@ public class LockListener extends AbstractProtectionListener {
         }
 
         if (plugin.perm().hasPermission(p, "quickshop.other.open")) {
-            if(lockCoolDown.getIfPresent(p.getUniqueId()) == null){
+            if (lockCoolDown.getIfPresent(p.getUniqueId()) == null) {
                 plugin.text().of(p, "bypassing-lock").send();
                 lockCoolDown.put(p.getUniqueId(), emptyObject);
             }

@@ -56,10 +56,6 @@ public class Spigot1182Platform extends AbstractSpigotPlatform implements Platfo
         return ((CraftServer) Bukkit.getServer()).getServer().getServerVersion();
     }
 
-    private String postProcessingTranslationKey(String key) {
-        return this.translationMapping.getOrDefault(key, key);
-    }
-
     @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
         if (material.isBlock()) {
@@ -67,6 +63,10 @@ public class Spigot1182Platform extends AbstractSpigotPlatform implements Platfo
         } else {
             return postProcessingTranslationKey(CraftMagicNumbers.getItem(material).getDescriptionId());
         }
+    }
+
+    private String postProcessingTranslationKey(String key) {
+        return this.translationMapping.getOrDefault(key, key);
     }
 
     @Override

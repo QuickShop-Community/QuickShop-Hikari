@@ -40,7 +40,7 @@ public class CrowdinOTA implements Distribution {
             CROWDIN_OTA_HOST = configDefine;
         }
         Util.SysPropertiesParseResult parseResult = Util.parsePackageProperly("custom-crowdin-ota-host");
-        if(parseResult.isPresent()){
+        if (parseResult.isPresent()) {
             CROWDIN_OTA_HOST = parseResult.asString("https://distributions.crowdin.net/91b97508fdf19626f2977b7xrm4/");
         }
         this.plugin = plugin;
@@ -56,6 +56,68 @@ public class CrowdinOTA implements Distribution {
         this.initManifest();
         this.initAvailableLanguages(this.manifest);
 
+    }
+
+    private void initManifest() throws IOException, JsonSyntaxException {
+        plugin.getLogger().info("[CrowdinOTA] Downloading manifest...");
+        String url = CROWDIN_OTA_HOST + "manifest.json";
+        HttpResponse<String> response = Unirest.get(url).asString();
+        if (!response.isSuccess()) {
+            throw new IOException("Failed to get Crowdin OTA manifest: " + response.getStatus());
+        }
+        this.manifest = JsonUtil.regular().fromJson(response.getBody(), Manifest.class);
+    }
+
+    private void initAvailableLanguages(@NotNull Manifest manifest) {
+        plugin.getLogger().info("[CrowdinOTA] Initializing available languages...");
+        List<String> languages = new ArrayList<>();
+        Map<String, String> mapping = genLanguageMapping();
+        for (String language : manifest.getLanguages()) {
+            languages.add(mapping.getOrDefault(language, language));
+        }
+        plugin.getLogger().info("[CrowdinOTA] Available languages: " + Util.list2String(languages));
+        this.availableLanguages = languages;
+    }
+
+    @Nullable
+    private Map<String, String> genLanguageMapping() {
+        Map<String, String> mapping = new HashMap<>();
+        String json = getManifestJson();
+        if (json == null) {
+            return null;
+        }
+        JsonElement parser = JsonParser.parseString(json);
+        for (Map.Entry<String, JsonElement> set : parser.getAsJsonObject().getAsJsonObject("language_mapping").entrySet()) {
+            if (!set.getValue().isJsonObject()) {
+                continue;
+            }
+            JsonPrimitive object = set.getValue().getAsJsonObject().getAsJsonPrimitive("locale");
+            if (object == null) {
+                continue;
+            }
+            mapping.put(set.getKey(), object.getAsString());
+        }
+        return mapping;
+    }
+
+    /**
+     * Getting the Crowdin distribution manifest json
+     *
+     * @return The distribution manifest json, return null if failed.
+     */
+    @Nullable
+    public String getManifestJson() {
+        String url = CROWDIN_OTA_HOST + "manifest.json";
+        // TODO: This is hacky
+        HttpResponse<String> response = Unirest.get(url).asString();
+        if (response.isSuccess()) {
+            return response.getBody();
+        } else {
+            if (response.getStatus() == 400 || response.getStatus() == 404) {
+                plugin.getLogger().warning("Failed to initialize QuickShop i18n files, contact the developer to get support.");
+            }
+        }
+        return null;
     }
 
     @Override
@@ -122,7 +184,6 @@ public class CrowdinOTA implements Distribution {
         return data;
     }
 
-
     /**
      * Getting the Crowdin distribution manifest
      *
@@ -133,69 +194,6 @@ public class CrowdinOTA implements Distribution {
     public Manifest getManifest() {
         return JsonUtil.regular().fromJson(getManifestJson(), Manifest.class);
     }
-
-    /**
-     * Getting the Crowdin distribution manifest json
-     *
-     * @return The distribution manifest json, return null if failed.
-     */
-    @Nullable
-    public String getManifestJson() {
-        String url = CROWDIN_OTA_HOST + "manifest.json";
-        // TODO: This is hacky
-        HttpResponse<String> response = Unirest.get(url).asString();
-        if (response.isSuccess()) {
-            return response.getBody();
-        }else{
-            if(response.getStatus() == 400 || response.getStatus() == 404){
-                plugin.getLogger().warning("Failed to initialize QuickShop i18n files, contact the developer to get support.");
-            }
-        }
-        return null;
-    }
-
-    private void initAvailableLanguages(@NotNull Manifest manifest) {
-        plugin.getLogger().info("[CrowdinOTA] Initializing available languages...");
-        List<String> languages = new ArrayList<>();
-        Map<String, String> mapping = genLanguageMapping();
-        for (String language : manifest.getLanguages()) {
-            languages.add(mapping.getOrDefault(language, language));
-        }
-        plugin.getLogger().info("[CrowdinOTA] Available languages: " + Util.list2String(languages));
-        this.availableLanguages = languages;
-    }
-
-    @Nullable
-    private Map<String, String> genLanguageMapping() {
-        Map<String, String> mapping = new HashMap<>();
-        String json = getManifestJson();
-        if (json == null) {
-            return null;
-        }
-        JsonElement parser = JsonParser.parseString(json);
-        for (Map.Entry<String, JsonElement> set : parser.getAsJsonObject().getAsJsonObject("language_mapping").entrySet()) {
-            if (!set.getValue().isJsonObject()) {
-                continue;
-            }
-            JsonPrimitive object = set.getValue().getAsJsonObject().getAsJsonPrimitive("locale");
-            if (object == null) {
-                continue;
-            }
-            mapping.put(set.getKey(), object.getAsString());
-        }
-        return mapping;
-    }
-
-    private void initManifest() throws IOException, JsonSyntaxException {
-        plugin.getLogger().info("[CrowdinOTA] Downloading manifest...");
-        String url = CROWDIN_OTA_HOST + "manifest.json";
-        HttpResponse<String> response = Unirest.get(url).asString();
-        if (!response.isSuccess()) {
-            throw new IOException("Failed to get Crowdin OTA manifest: " + response.getStatus());
-        }
-        this.manifest = JsonUtil.regular().fromJson(response.getBody(), Manifest.class);
-    }
-
 
     @Builder
     @Data

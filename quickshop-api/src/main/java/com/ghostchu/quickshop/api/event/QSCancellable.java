@@ -15,6 +15,8 @@ public interface QSCancellable extends Cancellable {
         setCancelled(cancel, (Component) null);
     }
 
+    void setCancelled(boolean cancel, @Nullable Component reason);
+
     default void setCancelled(boolean cancel, @Nullable String reason) {
         if (reason == null) {
             setCancelled(cancel, (Component) null);
@@ -22,8 +24,6 @@ public interface QSCancellable extends Cancellable {
         }
         setCancelled(cancel, LegacyComponentSerializer.legacySection().deserialize(reason));
     }
-
-    void setCancelled(boolean cancel, @Nullable Component reason);
 
     @Nullable
     Component getCancelReason();

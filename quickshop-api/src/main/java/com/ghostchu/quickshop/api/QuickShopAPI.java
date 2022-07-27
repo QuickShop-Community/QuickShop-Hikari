@@ -19,6 +19,22 @@ import java.util.Map;
  */
 public interface QuickShopAPI {
 
+    static Plugin getPluginInstance() {
+        RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
+        if (provider == null) {
+            throw new IllegalStateException("QuickShop hadn't loaded at this moment.");
+        }
+        return provider.getPlugin();
+    }
+
+    static QuickShopAPI getInstance() {
+        RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
+        if (provider == null) {
+            throw new IllegalStateException("QuickShop hadn't loaded at this moment.");
+        }
+        return provider.getProvider().getApiInstance();
+    }
+
     /**
      * Getting Shop Manager which managing most of shops
      *
@@ -125,21 +141,5 @@ public interface QuickShopAPI {
      * @param key            the key to map to or a fixed string
      */
     void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key);
-
-    static Plugin getPluginInstance() {
-        RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
-        if (provider == null) {
-            throw new IllegalStateException("QuickShop hadn't loaded at this moment.");
-        }
-        return provider.getPlugin();
-    }
-
-    static QuickShopAPI getInstance() {
-        RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
-        if (provider == null) {
-            throw new IllegalStateException("QuickShop hadn't loaded at this moment.");
-        }
-        return provider.getProvider().getApiInstance();
-    }
 
 }

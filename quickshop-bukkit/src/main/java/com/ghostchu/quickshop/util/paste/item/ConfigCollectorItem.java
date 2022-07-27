@@ -38,6 +38,10 @@ public class ConfigCollectorItem implements SubPasteItem {
         file.add(new File("airplane.air"));
     }
 
+    @Override
+    public @NotNull String genBody() {
+        return buildContent();
+    }
 
     @Override
     public @NotNull String getTitle() {
@@ -356,10 +360,5 @@ public class ConfigCollectorItem implements SubPasteItem {
         } catch (IOException e) {
             return "Fail: " + e.getMessage();
         }
-    }
-
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
     }
 }

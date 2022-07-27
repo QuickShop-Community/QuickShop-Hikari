@@ -22,7 +22,7 @@ public class ShopTaxAccountChangeEvent extends AbstractQSEvent implements QSCanc
     /**
      * Will call when shop price was changed.
      *
-     * @param shop     Target shop
+     * @param shop          Target shop
      * @param newTaxAccount The new shop tax account
      */
     public ShopTaxAccountChangeEvent(@NotNull Shop shop, @Nullable UUID newTaxAccount) {

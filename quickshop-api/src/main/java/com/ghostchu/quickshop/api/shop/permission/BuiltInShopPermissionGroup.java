@@ -18,15 +18,15 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
             SET_CURRENCY, RECEIVE_ALERT),
     ADMINISTRATOR("administrator", "administrator", BuiltInShopPermission.values());
 
+    private final String node;
+    private final String descriptionKey;
+    private final List<BuiltInShopPermission> permissions;
+
     BuiltInShopPermissionGroup(@NotNull String node, @NotNull String descriptionKey, @NotNull BuiltInShopPermission... permissions) {
         this.node = node;
         this.descriptionKey = descriptionKey;
         this.permissions = ImmutableList.copyOf(permissions);
     }
-
-    private final String node;
-    private final String descriptionKey;
-    private final List<BuiltInShopPermission> permissions;
 
     @Override
     public boolean hasPermission(@NotNull String permission) {
@@ -50,6 +50,11 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
     }
 
     @NotNull
+    public List<BuiltInShopPermission> getPermissions() {
+        return permissions;
+    }
+
+    @NotNull
     public String getDescriptionKey() {
         return descriptionKey;
     }
@@ -62,10 +67,5 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
     @NotNull
     public String getNamespacedNode() {
         return QuickShopAPI.getPluginInstance().getName().toLowerCase(Locale.ROOT) + "." + this.node;
-    }
-
-    @NotNull
-    public List<BuiltInShopPermission> getPermissions() {
-        return permissions;
     }
 }

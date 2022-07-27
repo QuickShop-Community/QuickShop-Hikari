@@ -24,6 +24,10 @@ public class DebugLogsItem implements SubPasteItem {
         }
     }
 
+    @Override
+    public @NotNull String genBody() {
+        return buildContent();
+    }
 
     @Override
     public @NotNull String getTitle() {
@@ -39,10 +43,5 @@ public class DebugLogsItem implements SubPasteItem {
         return "<textarea name=\"debuglogs\" style=\"height: 1000px; width: 100%;\">" +
                 StringEscapeUtils.escapeHtml4(builder.toString()) +
                 "</textarea><br />";
-    }
-
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
     }
 }

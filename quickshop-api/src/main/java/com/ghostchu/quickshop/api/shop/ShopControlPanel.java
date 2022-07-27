@@ -21,13 +21,6 @@ public interface ShopControlPanel {
     }
 
     /**
-     * The shop control panel impl's plugin instance.
-     *
-     * @return Your plugin instance;
-     */
-    @NotNull Plugin getPlugin();
-
-    /**
      * The shop control panel's priority.
      * HIGH = Earlier shown
      * LOW = Later shown
@@ -36,6 +29,13 @@ public interface ShopControlPanel {
      */
     @NotNull
     ShopControlPanelPriority getPriority();
+
+    /**
+     * The shop control panel impl's plugin instance.
+     *
+     * @return Your plugin instance;
+     */
+    @NotNull Plugin getPlugin();
 
     /**
      * Generate components for the shop control panel.

@@ -35,13 +35,6 @@ public class InternalListener extends AbstractQSListener {
         this.loggingAction = plugin.getConfig().getBoolean("logging.log-actions");
     }
 
-    public boolean isForbidden(@NotNull Material shopMaterial, @NotNull Material itemMaterial) {
-        if (!Objects.equals(shopMaterial, itemMaterial)) {
-            return false;
-        }
-        return shopMaterial.isBlock() && shopMaterial.name().toUpperCase().endsWith("SHULKER_BOX");
-    }
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopCreate(ShopCreateEvent event) {
         if (isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
@@ -51,6 +44,13 @@ public class InternalListener extends AbstractQSListener {
         if (loggingAction) {
             plugin.logEvent(new ShopCreationLog(event.getCreator(), event.getShop().saveToInfoStorage(), new BlockPos(event.getShop().getLocation())));
         }
+    }
+
+    public boolean isForbidden(@NotNull Material shopMaterial, @NotNull Material itemMaterial) {
+        if (!Objects.equals(shopMaterial, itemMaterial)) {
+            return false;
+        }
+        return shopMaterial.isBlock() && shopMaterial.name().toUpperCase().endsWith("SHULKER_BOX");
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

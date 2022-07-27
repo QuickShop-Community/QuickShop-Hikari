@@ -52,24 +52,6 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
         return Collections.emptyList();
     }
 
-    private void handleTrim(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1 || !"confirm".equalsIgnoreCase(cmdArg[0])) {
-            plugin.text().of(sender, "database.trim-warning").send();
-            return;
-        }
-        plugin.text().of(sender, "database.trim-start").send();
-        Util.asyncThreadRun(() -> {
-            SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2) plugin.getDatabaseHelper();
-            try {
-                IsolatedScanResult<Long> result = databaseHelper.purgeIsolatedData();
-                plugin.text().of(sender, "database.trim-complete", result.getIsolated().size()).send();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                plugin.text().of(sender, "database.trim-exception").send();
-            }
-        });
-    }
-
     private void handleStatus(@NotNull CommandSender sender) {
         DatabaseStatusHolder holder = plugin.getDatabaseMaintenanceWatcher().getResult();
         if (holder == null) {
@@ -91,5 +73,23 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
             printer.printLine(plugin.text().of(sender, "database.suggestion.trim").forLocale());
         }
         printer.printFooter();
+    }
+
+    private void handleTrim(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
+        if (cmdArg.length < 1 || !"confirm".equalsIgnoreCase(cmdArg[0])) {
+            plugin.text().of(sender, "database.trim-warning").send();
+            return;
+        }
+        plugin.text().of(sender, "database.trim-start").send();
+        Util.asyncThreadRun(() -> {
+            SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2) plugin.getDatabaseHelper();
+            try {
+                IsolatedScanResult<Long> result = databaseHelper.purgeIsolatedData();
+                plugin.text().of(sender, "database.trim-complete", result.getIsolated().size()).send();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                plugin.text().of(sender, "database.trim-exception").send();
+            }
+        });
     }
 }

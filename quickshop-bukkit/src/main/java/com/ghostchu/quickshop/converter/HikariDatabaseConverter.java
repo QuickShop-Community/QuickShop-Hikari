@@ -32,6 +32,7 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
 
     private final HikariConverter instance;
     private final QuickShop plugin;
+    private SQLManager liveDatabase = null;
 
     public HikariDatabaseConverter(@NotNull HikariConverter instance) {
         this.instance = instance;
@@ -225,10 +226,10 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
     private String renameTables(@NotNull UUID actionId, @NotNull DatabaseConfig config) throws Exception {
         if (config.isMysql()) {
             SQLManager manager = getLiveDatabase();
-            silentTableCopy(manager, config.getPrefix() + "shops",config.getPrefix() + "shops_" + actionId.toString().replace("-", ""));
-            silentTableCopy(manager, config.getPrefix() + "messages",config.getPrefix() + "messages_" + actionId.toString().replace("-", ""));
-            silentTableCopy(manager, config.getPrefix() + "logs",config.getPrefix() + "logs_" + actionId.toString().replace("-", ""));
-            silentTableCopy(manager, config.getPrefix() + "external_cache",config.getPrefix() + "external_cache_" + actionId.toString().replace("-", ""));
+            silentTableCopy(manager, config.getPrefix() + "shops", config.getPrefix() + "shops_" + actionId.toString().replace("-", ""));
+            silentTableCopy(manager, config.getPrefix() + "messages", config.getPrefix() + "messages_" + actionId.toString().replace("-", ""));
+            silentTableCopy(manager, config.getPrefix() + "logs", config.getPrefix() + "logs_" + actionId.toString().replace("-", ""));
+            silentTableCopy(manager, config.getPrefix() + "external_cache", config.getPrefix() + "external_cache_" + actionId.toString().replace("-", ""));
             try (Connection connection = manager.getConnection()) {
                 if (!hasTable(config.getPrefix() + "shops_" + actionId.toString().replace("-", ""), connection)) {
                     throw new IllegalStateException("Failed to rename tables!");
@@ -240,6 +241,22 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         }
     }
 
+    private boolean silentTableCopy(@NotNull SQLManager manager, @NotNull String originTableName, @NotNull String newTableName) {
+        try (Connection conn = manager.getConnection()) {
+            if (hasTable(originTableName, conn)) {
+                if (getDatabaseConfig().isMysql()) {
+                    manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
+                } else {
+                    manager.executeSQL("CREATE TABLE " + newTableName + " AS SELECT * FROM " + originTableName);
+                }
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Returns a valid connection for SQLite database.
@@ -264,7 +281,7 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
             throw new ConnectException("Failed to connect to SQLite database!" + exception.getMessage());
         }
     }
-    private SQLManager liveDatabase = null;
+
     /**
      * Returns a valid SQLManager for the live database.
      *
@@ -304,63 +321,6 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
             throw new ConnectException("Couldn't connect to live database! " + e.getMessage());
         }
     }
-
-    /**
-     * Getting the live database configuration.
-     *
-     * @return The live database configuration.
-     * @throws IllegalStateException If any configuration key not set correct.
-     */
-    @NotNull
-    private DatabaseConfig getDatabaseConfig() throws IllegalStateException {
-        ConfigurationSection dbCfg = plugin.getConfig().getConfigurationSection("database");
-        if (dbCfg == null) {
-            throw new IllegalStateException("Database configuration section not found!");
-        }
-        if (!dbCfg.isSet("mysql")) {
-            throw new IllegalStateException("Database configuration section -> type not set!");
-        }
-        if (!dbCfg.isSet("prefix")) {
-            throw new IllegalStateException("Database configuration section -> prefix not set!");
-        }
-        boolean mysql = dbCfg.getBoolean("mysql");
-        if (mysql) {
-            if (!dbCfg.isSet("host")) {
-                throw new IllegalStateException("Database configuration section -> host not set!");
-            }
-            if (!dbCfg.isSet("port")) {
-                throw new IllegalStateException("Database configuration section -> port not set!");
-            }
-            if (!dbCfg.isSet("user")) {
-                throw new IllegalStateException("Database configuration section -> user not set!");
-            }
-            if (!dbCfg.isSet("password")) {
-                throw new IllegalStateException("Database configuration section -> password not set!");
-            }
-            if (!dbCfg.isSet("database")) {
-                throw new IllegalStateException("Database configuration section -> name not set!");
-            }
-            if (!dbCfg.isSet("usessl")) {
-                throw new IllegalStateException("Database configuration section -> SSL not set!");
-            }
-        }
-
-        String user = dbCfg.getString("user", "mc");
-        String pass = dbCfg.getString("password", "minecraft");
-        String host = dbCfg.getString("host", "localhost");
-        int port = dbCfg.getInt("port", 3306);
-        String database = dbCfg.getString("database", "mc");
-        boolean useSSL = dbCfg.getBoolean("usessl", false);
-        String dbPrefix = "";
-        if(mysql) {
-            dbPrefix = dbCfg.getString("prefix", "");
-            if ("none".equals(dbPrefix)) {
-                dbPrefix = "";
-            }
-        }
-        return new DatabaseConfig(mysql, host, user, pass, port, database, useSSL, dbPrefix);
-    }
-
 
     private void pushShops(@NotNull List<ShopStorageUnit> units, @NotNull String prefix, @NotNull SQLManager manager) {
         instance.getLogger().info("Preparing to pushing shops into database...");
@@ -422,48 +382,64 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
 
     }
 
-    private boolean silentTableCopy(@NotNull SQLManager manager, @NotNull String originTableName, @NotNull String newTableName) {
-        try(Connection conn = manager.getConnection()) {
-            if(hasTable(originTableName,conn)) {
-                if (getDatabaseConfig().isMysql()) {
-                    manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
-                } else {
-                    manager.executeSQL("CREATE TABLE " + newTableName + " AS SELECT * FROM " + originTableName);
-                }
-            }else{
-                return false;
+    /**
+     * Getting the live database configuration.
+     *
+     * @return The live database configuration.
+     * @throws IllegalStateException If any configuration key not set correct.
+     */
+    @NotNull
+    private DatabaseConfig getDatabaseConfig() throws IllegalStateException {
+        ConfigurationSection dbCfg = plugin.getConfig().getConfigurationSection("database");
+        if (dbCfg == null) {
+            throw new IllegalStateException("Database configuration section not found!");
+        }
+        if (!dbCfg.isSet("mysql")) {
+            throw new IllegalStateException("Database configuration section -> type not set!");
+        }
+        if (!dbCfg.isSet("prefix")) {
+            throw new IllegalStateException("Database configuration section -> prefix not set!");
+        }
+        boolean mysql = dbCfg.getBoolean("mysql");
+        if (mysql) {
+            if (!dbCfg.isSet("host")) {
+                throw new IllegalStateException("Database configuration section -> host not set!");
             }
-        }catch (SQLException e) {
-            return false;
+            if (!dbCfg.isSet("port")) {
+                throw new IllegalStateException("Database configuration section -> port not set!");
+            }
+            if (!dbCfg.isSet("user")) {
+                throw new IllegalStateException("Database configuration section -> user not set!");
+            }
+            if (!dbCfg.isSet("password")) {
+                throw new IllegalStateException("Database configuration section -> password not set!");
+            }
+            if (!dbCfg.isSet("database")) {
+                throw new IllegalStateException("Database configuration section -> name not set!");
+            }
+            if (!dbCfg.isSet("usessl")) {
+                throw new IllegalStateException("Database configuration section -> SSL not set!");
+            }
         }
-        return true;
+
+        String user = dbCfg.getString("user", "mc");
+        String pass = dbCfg.getString("password", "minecraft");
+        String host = dbCfg.getString("host", "localhost");
+        int port = dbCfg.getInt("port", 3306);
+        String database = dbCfg.getString("database", "mc");
+        boolean useSSL = dbCfg.getBoolean("usessl", false);
+        String dbPrefix = "";
+        if (mysql) {
+            dbPrefix = dbCfg.getString("prefix", "");
+            if ("none".equals(dbPrefix)) {
+                dbPrefix = "";
+            }
+        }
+        return new DatabaseConfig(mysql, host, user, pass, port, database, useSSL, dbPrefix);
     }
 
-    void close(){
+    void close() {
         EasySQL.shutdownManager(this.liveDatabase);
-    }
-
-    @Data
-    static class DatabaseConfig {
-        private final boolean mysql;
-        private final String host;
-        private final String user;
-        private final String pass;
-        private final int port;
-        private final String database;
-        private final boolean useSSL;
-        private final String prefix;
-
-        public DatabaseConfig(boolean mysql, String host, String user, String pass, int port, String database, boolean useSSL, String prefix) {
-            this.mysql = mysql;
-            this.host = host;
-            this.user = user;
-            this.pass = pass;
-            this.port = port;
-            this.database = database;
-            this.useSSL = useSSL;
-            this.prefix = prefix;
-        }
     }
 
     /**
@@ -506,6 +482,29 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
             }
         }
         return match; // Uh, wtf.
+    }
+
+    @Data
+    static class DatabaseConfig {
+        private final boolean mysql;
+        private final String host;
+        private final String user;
+        private final String pass;
+        private final int port;
+        private final String database;
+        private final boolean useSSL;
+        private final String prefix;
+
+        public DatabaseConfig(boolean mysql, String host, String user, String pass, int port, String database, boolean useSSL, String prefix) {
+            this.mysql = mysql;
+            this.host = host;
+            this.user = user;
+            this.pass = pass;
+            this.port = port;
+            this.database = database;
+            this.useSSL = useSSL;
+            this.prefix = prefix;
+        }
     }
 
     @Builder

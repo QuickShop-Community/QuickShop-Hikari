@@ -29,6 +29,10 @@ public class ShopsInfoItem implements SubPasteItem {
                 });
     }
 
+    @Override
+    public @NotNull String genBody() {
+        return buildContent();
+    }
 
     @Override
     public @NotNull String getTitle() {
@@ -44,10 +48,5 @@ public class ShopsInfoItem implements SubPasteItem {
         shopsMapping.keySet().forEach(worldName -> htmlBuilder.append("<li>").append(worldName).append(": ").append(shopsMapping.get(worldName).size()).append("</li>"));
         htmlBuilder.append("</ul>");
         return htmlBuilder.toString();
-    }
-
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
     }
 }

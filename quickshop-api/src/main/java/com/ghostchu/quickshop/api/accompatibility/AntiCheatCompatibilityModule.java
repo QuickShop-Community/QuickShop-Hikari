@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.api.accompatibility;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+
 @Deprecated(forRemoval = true)
 public interface AntiCheatCompatibilityModule {
     /**

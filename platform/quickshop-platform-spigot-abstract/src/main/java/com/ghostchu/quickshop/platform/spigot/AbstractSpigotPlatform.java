@@ -29,15 +29,21 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public abstract class AbstractSpigotPlatform implements Platform {
-    private final Plugin plugin;
-    private BukkitAudiences audience;
-    protected Map<String, String> translationMapping;
     protected final Logger logger = Logger.getLogger("QuickShop-Hikari");
     protected final LocaleManager localeManager = new LocaleManager();
+    private final Plugin plugin;
+    protected Map<String, String> translationMapping;
+    private BukkitAudiences audience;
 
     public AbstractSpigotPlatform(@NotNull Plugin instance, @NotNull Map<String, String> mapping) {
         this.plugin = instance;
         this.translationMapping = mapping;
+    }
+
+    @NotNull
+    public static String getNMSVersion() {
+        String name = Bukkit.getServer().getClass().getPackage().getName();
+        return name.substring(name.lastIndexOf('.') + 1);
     }
 
     @Override
@@ -58,16 +64,6 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     @Override
     public abstract @NotNull String getMinecraftVersion();
-
-    @NotNull
-    public static String getNMSVersion() {
-        String name = Bukkit.getServer().getClass().getPackage().getName();
-        return name.substring(name.lastIndexOf('.') + 1);
-    }
-
-    private String postProcessingTranslationKey(String key) {
-        return this.translationMapping.getOrDefault(key, key);
-    }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
@@ -94,6 +90,10 @@ public abstract class AbstractSpigotPlatform implements Platform {
     @Override
     public @NotNull Component getTranslation(@NotNull Material material) {
         return Component.translatable(getTranslationKey(material));
+    }
+
+    private String postProcessingTranslationKey(String key) {
+        return this.translationMapping.getOrDefault(key, key);
     }
 
     @Override

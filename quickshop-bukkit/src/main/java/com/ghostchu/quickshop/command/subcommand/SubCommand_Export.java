@@ -28,10 +28,10 @@ public class SubCommand_Export implements CommandHandler<ConsoleCommandSender> {
             try {
                 databaseIOUtil.exportTables(file);
             } catch (SQLException | IOException e) {
-                plugin.text().of(sender,"exporting-failed",e.getMessage()).send();
+                plugin.text().of(sender, "exporting-failed", e.getMessage()).send();
             }
         });
-        plugin.text().of(sender,"exported-database",file.toString()).send();
+        plugin.text().of(sender, "exported-database", file.toString()).send();
     }
 
 

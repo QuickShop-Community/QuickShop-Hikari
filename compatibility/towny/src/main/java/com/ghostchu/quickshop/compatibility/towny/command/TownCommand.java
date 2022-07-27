@@ -60,14 +60,14 @@ public class TownCommand implements CommandHandler<Player> {
             plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-not-in-town-region").send();
             return;
         }
-        if(plugin.getConfig().getBoolean("bank-mode.bank-plot-only",false)){
+        if (plugin.getConfig().getBoolean("bank-mode.bank-plot-only", false)) {
             TownBlock townBlock = TownyAPI.getInstance().getTownBlock(shop.getLocation());
-            if(townBlock == null){
+            if (townBlock == null) {
                 plugin.getApi().getTextManager().of(sender, "addon.towny.target-shop-not-in-town-region").send();
-                plugin.getLogger().warning("Failed to get townBlock at "+ shop.getLocation() +" maybe a bug?");
+                plugin.getLogger().warning("Failed to get townBlock at " + shop.getLocation() + " maybe a bug?");
                 return;
             }
-            if(townBlock.getType() != TownBlockType.BANK){
+            if (townBlock.getType() != TownBlockType.BANK) {
                 plugin.getApi().getTextManager().of(sender, "addon.towny.plot-type-disallowed").send();
                 return;
             }

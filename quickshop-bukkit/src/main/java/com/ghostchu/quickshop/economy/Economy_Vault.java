@@ -267,14 +267,15 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
     }
 
     @Override
+    public @NotNull Plugin getPlugin() {
+        return plugin;
+    }
+
+    @Override
     public @NotNull String getName() {
         return "BuiltIn-Vault";
     }
 
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return plugin;
-    }
     @Override
     public String getProviderName() {
         if (this.vault == null) {

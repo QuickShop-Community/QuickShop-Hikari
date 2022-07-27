@@ -22,14 +22,14 @@ public abstract class AbstractQSEvent extends Event {
         super(async);
     }
 
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
-
     @NotNull
     @Override
     public HandlerList getHandlers() {
         return getHandlerList();
+    }
+
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
     }
 
     /**

@@ -51,13 +51,6 @@ public class SimpleShopModerator implements ShopModerator {
         return gson.fromJson(serilized, SimpleShopModerator.class);
     }
 
-    @NotNull
-    public static String serialize(@NotNull ShopModerator shopModerator) {
-        Gson gson = JsonUtil.getGson();
-        SimpleShopModerator gsonWorkaround = (SimpleShopModerator) shopModerator;
-        return gson.toJson(gsonWorkaround); // Use Gson serialize this class
-    }
-
     /**
      * Add moderators staff to staff list
      *
@@ -79,11 +72,6 @@ public class SimpleShopModerator implements ShopModerator {
     @Override
     public void clearStaffs() {
         staffs.clear();
-    }
-
-    @Override
-    public @NotNull String toString() {
-        return serialize(this);
     }
 
     /**
@@ -168,6 +156,18 @@ public class SimpleShopModerator implements ShopModerator {
     @Override
     public void setStaffs(@NotNull List<UUID> players) {
         this.staffs = players;
+    }
+
+    @Override
+    public @NotNull String toString() {
+        return serialize(this);
+    }
+
+    @NotNull
+    public static String serialize(@NotNull ShopModerator shopModerator) {
+        Gson gson = JsonUtil.getGson();
+        SimpleShopModerator gsonWorkaround = (SimpleShopModerator) shopModerator;
+        return gson.toJson(gsonWorkaround); // Use Gson serialize this class
     }
 
 }

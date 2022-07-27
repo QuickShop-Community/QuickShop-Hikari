@@ -52,6 +52,23 @@ public class CalendarWatcher extends BukkitRunnable {
         }
     }
 
+    public void save() {
+        try {
+            configuration.save(calendarFile);
+        } catch (IOException ioException) {
+            plugin.getLogger().log(Level.WARNING, "Cannot save calendar cache file at " + calendarFile.getAbsolutePath() + ", scheduled tasks may cannot or execute wrongly!", ioException);
+        }
+    }
+
+    /**
+     * The action to be performed by this timer task.
+     */
+    @Override
+    public void run() {
+        CalendarEvent.CalendarTriggerType type = getAndUpdate();
+        Util.mainThreadRun(() -> new CalendarEvent(type).callEvent());
+    }
+
     public CalendarEvent.CalendarTriggerType getAndUpdate() {
         Calendar c = Calendar.getInstance();
         CalendarEvent.CalendarTriggerType type = CalendarEvent.CalendarTriggerType.NOTHING_CHANGED;
@@ -108,22 +125,5 @@ public class CalendarWatcher extends BukkitRunnable {
         }
 
         return type;
-    }
-
-    public void save() {
-        try {
-            configuration.save(calendarFile);
-        } catch (IOException ioException) {
-            plugin.getLogger().log(Level.WARNING, "Cannot save calendar cache file at " + calendarFile.getAbsolutePath() + ", scheduled tasks may cannot or execute wrongly!", ioException);
-        }
-    }
-
-    /**
-     * The action to be performed by this timer task.
-     */
-    @Override
-    public void run() {
-        CalendarEvent.CalendarTriggerType type = getAndUpdate();
-        Util.mainThreadRun(() -> new CalendarEvent(type).callEvent());
     }
 }

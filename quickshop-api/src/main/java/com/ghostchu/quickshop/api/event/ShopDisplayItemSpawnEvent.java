@@ -23,6 +23,7 @@ public class ShopDisplayItemSpawnEvent extends AbstractQSEvent implements QSCanc
 
     private boolean cancelled;
     private @Nullable Component cancelReason;
+
     /**
      * This event is called before the shop display item created
      *

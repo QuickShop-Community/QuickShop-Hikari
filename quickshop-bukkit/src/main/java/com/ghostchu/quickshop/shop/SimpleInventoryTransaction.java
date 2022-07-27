@@ -157,25 +157,6 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
         return true;
     }
 
-    private boolean executeOperation(@NotNull Operation operation) {
-        if (operation.isCommitted()) {
-            throw new IllegalStateException("Operation already committed");
-        }
-        if (operation.isRollback()) {
-            throw new IllegalStateException("Operation already rolled back, you must create another new operation.");
-        }
-        try {
-            if (operation.commit()) {
-                processingStack.push(operation); // Item is special, economy fail won't do anything but item does.
-                return true;
-            }
-            return false;
-        } catch (Exception exception) {
-            this.lastError = "Failed to execute operation: " + operation;
-            return false;
-        }
-    }
-
     /**
      * Rolling back the transaction
      *
@@ -221,6 +202,25 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
             }
         }
         return operations;
+    }
+
+    private boolean executeOperation(@NotNull Operation operation) {
+        if (operation.isCommitted()) {
+            throw new IllegalStateException("Operation already committed");
+        }
+        if (operation.isRollback()) {
+            throw new IllegalStateException("Operation already rolled back, you must create another new operation.");
+        }
+        try {
+            if (operation.commit()) {
+                processingStack.push(operation); // Item is special, economy fail won't do anything but item does.
+                return true;
+            }
+            return false;
+        } catch (Exception exception) {
+            this.lastError = "Failed to execute operation: " + operation;
+            return false;
+        }
     }
 
     public interface SimpleTransactionCallback extends InventoryTransaction.TransactionCallback {

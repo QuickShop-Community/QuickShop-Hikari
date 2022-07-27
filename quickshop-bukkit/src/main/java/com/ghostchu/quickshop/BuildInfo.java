@@ -63,6 +63,24 @@ public class BuildInfo {
         @Nullable
         private final String tags;
 
+        public GitInfo(@NotNull Properties properties) {
+            this.tags = properties.getProperty("git.tags");
+            this.branch = properties.getProperty("git.branch");
+            this.dirty = "true".equalsIgnoreCase(properties.getProperty("git.dirty"));
+            this.remoteOriginUrl = properties.getProperty("git.remote.origin.url");
+            this.id = properties.getProperty("git.commit.id");
+            this.abbrev = properties.getProperty("git.commit.id.abbrev");
+            this.describe = properties.getProperty("git.commit.id.describe");
+            this.describeShort = properties.getProperty("git.commit.id.describe-short");
+            this.commitUsername = properties.getProperty("git.commit.user.name");
+            this.commitEmail = properties.getProperty("git.commit.user.email");
+            this.commitMessage = properties.getProperty("git.commit.message.short");
+            this.commitDate = properties.getProperty("git.commit.time");
+            this.buildTime = properties.getProperty("git.build.time");
+            this.buildVersion = properties.getProperty("git.build.version");
+            this.buildNumber = properties.getProperty("git.build.number");
+        }
+
         @NotNull
         public String getBranch() {
             if (branch == null) {
@@ -178,25 +196,6 @@ public class BuildInfo {
             }
             return tags;
         }
-
-
-        public GitInfo(@NotNull Properties properties) {
-            this.tags = properties.getProperty("git.tags");
-            this.branch = properties.getProperty("git.branch");
-            this.dirty = "true".equalsIgnoreCase(properties.getProperty("git.dirty"));
-            this.remoteOriginUrl = properties.getProperty("git.remote.origin.url");
-            this.id = properties.getProperty("git.commit.id");
-            this.abbrev = properties.getProperty("git.commit.id.abbrev");
-            this.describe = properties.getProperty("git.commit.id.describe");
-            this.describeShort = properties.getProperty("git.commit.id.describe-short");
-            this.commitUsername = properties.getProperty("git.commit.user.name");
-            this.commitEmail = properties.getProperty("git.commit.user.email");
-            this.commitMessage = properties.getProperty("git.commit.message.short");
-            this.commitDate = properties.getProperty("git.commit.time");
-            this.buildTime = properties.getProperty("git.build.time");
-            this.buildVersion = properties.getProperty("git.build.version");
-            this.buildNumber = properties.getProperty("git.build.number");
-        }
     }
 
     public static class JenkinsInfo {
@@ -215,6 +214,28 @@ public class BuildInfo {
         @Nullable
         private final String projectBaseName;
 
+
+        public JenkinsInfo(@NotNull Properties properties) {
+            this.ci = "true".equalsIgnoreCase(properties.getProperty("jenkins.ci"));
+            String idStr = properties.getProperty("ci.build.id");
+            if (idStr != null) {
+                int fid = -1;
+                try {
+                    fid = Integer.parseInt(properties.getProperty("ci.build.id"));
+                } catch (NumberFormatException ignored) {
+                } finally {
+                    this.id = fid;
+                }
+            } else {
+                this.id = -1;
+            }
+            this.idName = properties.getProperty("ci.build.name");
+            this.tag = properties.getProperty("ci.build.tag");
+            this.url = properties.getProperty("ci.build.url");
+            this.projectName = properties.getProperty("ci.job.name");
+            this.projectUrl = properties.getProperty("ci.job.url");
+            this.projectBaseName = properties.getProperty("ci.job.base_name");
+        }
 
         public boolean isCi() {
             return ci;
@@ -270,28 +291,6 @@ public class BuildInfo {
                 return "undefined";
             }
             return projectBaseName;
-        }
-
-        public JenkinsInfo(@NotNull Properties properties) {
-            this.ci = "true".equalsIgnoreCase(properties.getProperty("jenkins.ci"));
-            String idStr = properties.getProperty("ci.build.id");
-            if (idStr != null) {
-                int fid = -1;
-                try {
-                    fid = Integer.parseInt(properties.getProperty("ci.build.id"));
-                } catch (NumberFormatException ignored) {
-                } finally {
-                    this.id = fid;
-                }
-            } else {
-                this.id = -1;
-            }
-            this.idName = properties.getProperty("ci.build.name");
-            this.tag = properties.getProperty("ci.build.tag");
-            this.url = properties.getProperty("ci.build.url");
-            this.projectName = properties.getProperty("ci.job.name");
-            this.projectUrl = properties.getProperty("ci.job.url");
-            this.projectBaseName = properties.getProperty("ci.job.base_name");
         }
     }
 

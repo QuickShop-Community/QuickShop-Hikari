@@ -48,6 +48,22 @@ public final class Main extends CompatibilityModule implements Listener {
     @Getter
     private TownyMaterialPriceLimiter priceLimiter;
 
+    @NotNull
+    public static String processTownyAccount(String accountName) {
+        String providerName = QuickShop.getInstance().getEconomy().getProviderName();
+        if (Main.getPlugin(Main.class).getConfig().getBoolean("workaround-for-account-name") || providerName != null && "Essentials".equals(providerName)) {
+            return EssStirngUtil.safeString(accountName);
+        }
+        return accountName;
+    }
+
+    @Override
+    public void onDisable() {
+        api.getCommandManager().unregisterCmd("town");
+        api.getCommandManager().unregisterCmd("nation");
+        super.onDisable();
+    }
+
     @Override
     public void init() {
         api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
@@ -91,20 +107,6 @@ public final class Main extends CompatibilityModule implements Listener {
             }
             getLogger().info("Finished to scan shops, used " + (System.currentTimeMillis() - startTime) + "ms");
         }
-    }
-
-    @Override
-    public void onDisable() {
-        api.getCommandManager().unregisterCmd("town");
-        api.getCommandManager().unregisterCmd("nation");
-        super.onDisable();
-    }
-
-    private boolean isWorldIgnored(World world) {
-        if (getConfig().getBoolean("ignore-disabled-worlds", false)) {
-            return !TownyAPI.getInstance().isTownyWorld(world);
-        }
-        return false;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -197,6 +199,36 @@ public final class Main extends CompatibilityModule implements Listener {
         }
     }
 
+    private boolean checkFlags(@NotNull Player player, @NotNull Location location, @NotNull List<TownyFlags> flags) {
+        if (isWorldIgnored(location.getWorld())) {
+            return true;
+        }
+        if (!whiteList) {
+            return true;
+        }
+        for (TownyFlags flag : flags) {
+            switch (flag) {
+                case OWN:
+                    if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
+                        return false;
+                    }
+                    break;
+                case MODIFY:
+                    if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
+                        return false;
+                    }
+                    break;
+                case SHOPTYPE:
+                    if (!ShopPlotUtil.isShopPlot(location)) {
+                        return false;
+                    }
+                default:
+                    // Ignore
+            }
+        }
+        return true;
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void taxesAccountOverride(ShopTaxAccountGettingEvent event) {
         if (!getConfig().getBoolean("taxes-to-town", true)) {
@@ -229,6 +261,13 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
         event.setCancelled(true, "Towny Blocked");
+    }
+
+    private boolean isWorldIgnored(World world) {
+        if (getConfig().getBoolean("ignore-disabled-worlds", false)) {
+            return !TownyAPI.getInstance().isTownyWorld(world);
+        }
+        return false;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -266,28 +305,6 @@ public final class Main extends CompatibilityModule implements Listener {
         Util.mainThreadRun(() -> purgeShops(event.getTown().getTownBlocks(), event.getResident().getUUID(), null, "Town removed a resident"));
     }
 
-    @EventHandler
-    public void onPlotClear(PlotClearEvent event) {
-        if (isWorldIgnored(event.getTownBlock().getWorldCoord().getBukkitWorld())) {
-            return;
-        }
-        if (!getConfig().getBoolean("delete-shop-on-plot-clear", false)) {
-            return;
-        }
-        Util.mainThreadRun(() -> purgeShops(event.getTownBlock().getWorldCoord(), null, null, "Plot cleared"));
-    }
-
-    @EventHandler
-    public void onPlotUnclaim(TownUnclaimEvent event) {
-        if (isWorldIgnored(event.getWorldCoord().getBukkitWorld())) {
-            return;
-        }
-        if (!getConfig().getBoolean("delete-shop-on-plot-unclaimed")) {
-            return;
-        }
-        Util.mainThreadRun(() -> purgeShops(event.getWorldCoord(), null, null, "Town Unclaimed"));
-    }
-
     public void purgeShops(@NotNull Collection<TownBlock> worldCoords, @Nullable UUID owner, @Nullable UUID deleter, @NotNull String reason) {
         for (TownBlock townBlock : worldCoords) {
             purgeShops(townBlock.getWorldCoord(), owner, deleter, reason);
@@ -309,41 +326,25 @@ public final class Main extends CompatibilityModule implements Listener {
         }
     }
 
-    private boolean checkFlags(@NotNull Player player, @NotNull Location location, @NotNull List<TownyFlags> flags) {
-        if (isWorldIgnored(location.getWorld())) {
-            return true;
+    @EventHandler
+    public void onPlotClear(PlotClearEvent event) {
+        if (isWorldIgnored(event.getTownBlock().getWorldCoord().getBukkitWorld())) {
+            return;
         }
-        if (!whiteList) {
-            return true;
+        if (!getConfig().getBoolean("delete-shop-on-plot-clear", false)) {
+            return;
         }
-        for (TownyFlags flag : flags) {
-            switch (flag) {
-                case OWN:
-                    if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
-                        return false;
-                    }
-                    break;
-                case MODIFY:
-                    if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
-                        return false;
-                    }
-                    break;
-                case SHOPTYPE:
-                    if (!ShopPlotUtil.isShopPlot(location)) {
-                        return false;
-                    }
-                default:
-                    // Ignore
-            }
-        }
-        return true;
+        Util.mainThreadRun(() -> purgeShops(event.getTownBlock().getWorldCoord(), null, null, "Plot cleared"));
     }
-    @NotNull
-    public static String processTownyAccount(String accountName){
-        String providerName =QuickShop.getInstance().getEconomy().getProviderName();
-        if (Main.getPlugin(Main.class).getConfig().getBoolean("workaround-for-account-name") || providerName != null && "Essentials".equals(providerName)) {
-            return EssStirngUtil.safeString(accountName);
+
+    @EventHandler
+    public void onPlotUnclaim(TownUnclaimEvent event) {
+        if (isWorldIgnored(event.getWorldCoord().getBukkitWorld())) {
+            return;
         }
-        return accountName;
+        if (!getConfig().getBoolean("delete-shop-on-plot-unclaimed")) {
+            return;
+        }
+        Util.mainThreadRun(() -> purgeShops(event.getWorldCoord(), null, null, "Town Unclaimed"));
     }
 }

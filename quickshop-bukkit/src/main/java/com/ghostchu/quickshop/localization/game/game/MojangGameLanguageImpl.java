@@ -46,9 +46,9 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
     private static final boolean IS_POTION_SUPPORT_MINECRAFT_KEY = Util.isMethodAvailable("org.bukkit.potion.PotionEffectType", "getKey");
     private final QuickShop plugin;
     private final String languageCode;
+    private final MojangApiMirror mirror;
     @Nullable
     private volatile JsonObject lang = null;
-    private final MojangApiMirror mirror;
 
     @SneakyThrows
     public MojangGameLanguageImpl(@NotNull QuickShop plugin, @NotNull String languageCode) {
@@ -127,25 +127,6 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         }
     }
 
-    /**
-     * Get block only translations, if not found, it WON'T call getItem()
-     *
-     * @param material The material
-     * @return The translations for material
-     */
-    @NotNull
-    public String getBlock(@NotNull Material material) {
-        if (lang == null) {
-            return super.getItem(material);
-        }
-
-        JsonElement jsonElement = lang.get("block.minecraft." + material.name().toLowerCase());
-        if (jsonElement == null) {
-            return super.getItem(material);
-        }
-        return jsonElement.getAsString();
-    }
-
     @Override
     public @NotNull String getPotion(@NotNull PotionEffectType potionEffectType) {
         if (lang == null) {
@@ -184,6 +165,25 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         JsonElement jsonElement = lang.get("entity.minecraft." + entityType.name().toLowerCase());
         if (jsonElement == null) {
             return super.getEntity(entityType);
+        }
+        return jsonElement.getAsString();
+    }
+
+    /**
+     * Get block only translations, if not found, it WON'T call getItem()
+     *
+     * @param material The material
+     * @return The translations for material
+     */
+    @NotNull
+    public String getBlock(@NotNull Material material) {
+        if (lang == null) {
+            return super.getItem(material);
+        }
+
+        JsonElement jsonElement = lang.get("block.minecraft." + material.name().toLowerCase());
+        if (jsonElement == null) {
+            return super.getItem(material);
         }
         return jsonElement.getAsString();
     }

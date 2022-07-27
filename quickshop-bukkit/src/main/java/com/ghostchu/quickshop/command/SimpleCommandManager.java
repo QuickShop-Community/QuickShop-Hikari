@@ -445,6 +445,10 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         return (T2) type;
     }
 
+    private boolean isAdapt(CommandContainer container, CommandSender sender) {
+        return container.getExecutorType().isInstance(sender);
+    }
+
     private boolean checkPermissions(CommandSender sender, String commandLabel, String[] cmdArg, List<String> permissionList, PermissionType permissionType, Action action) {
         if (permissionList == null || permissionList.isEmpty()) {
             return true;
@@ -488,11 +492,6 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
             }
             return false;
         }
-    }
-
-
-    private boolean isAdapt(CommandContainer container, CommandSender sender) {
-        return container.getExecutorType().isInstance(sender);
     }
 
     @Override

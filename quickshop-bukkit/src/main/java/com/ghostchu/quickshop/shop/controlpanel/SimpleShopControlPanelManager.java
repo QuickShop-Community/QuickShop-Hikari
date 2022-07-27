@@ -26,17 +26,6 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager {
         this.plugin = plugin;
     }
 
-    private void resort() {
-        if (!LOCK.tryLock()) {
-            throw new IllegalStateException("Cannot resort while another thread is sorting");
-        }
-        List<Map.Entry<ShopControlPanel, Integer>> list = new ArrayList<>(registry.entrySet());
-        list.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
-        registry.clear();
-        list.forEach((k) -> registry.put(k.getKey(), k.getValue())); // Re-sort
-        LOCK.unlock();
-    }
-
     @Override
     public void register(@NotNull ShopControlPanel panel) {
         LOCK.lock();
@@ -46,6 +35,17 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager {
             LOCK.unlock();
         }
         resort();
+    }
+
+    private void resort() {
+        if (!LOCK.tryLock()) {
+            throw new IllegalStateException("Cannot resort while another thread is sorting");
+        }
+        List<Map.Entry<ShopControlPanel, Integer>> list = new ArrayList<>(registry.entrySet());
+        list.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+        registry.clear();
+        list.forEach((k) -> registry.put(k.getKey(), k.getValue())); // Re-sort
+        LOCK.unlock();
     }
 
     @Override

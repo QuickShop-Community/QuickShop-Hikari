@@ -62,6 +62,32 @@ public class Economy_Reserve extends AbstractEconomy {
     }
 
     /**
+     * Transfers the given amount of money from Player1 to Player2
+     *
+     * @param from   The player who is paying money
+     * @param to     The player who is receiving money
+     * @param amount The amount to transfer
+     * @return true if success (Payer had enough cash, receiver was able to receive the funds)
+     */
+    @Override
+    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @NotNull World world, @Nullable String currency) {
+        try {
+            return Objects.requireNonNull(reserve).transferHoldings(from, to, BigDecimal.valueOf(amount), world.getName(), currency);
+        } catch (Exception throwable) {
+            if (plugin.getSentryErrorReporter() != null) {
+                plugin.getSentryErrorReporter().ignoreThrow();
+            }
+            plugin.getLogger().log(Level.WARNING, ERROR_MESSAGE, throwable);
+            return false;
+        }
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "BuiltIn-Reserve";
+    }
+
+    /**
      * Deposits a given amount of money from thin air to the given username.
      *
      * @param name   The exact (case insensitive) username to give money to
@@ -79,6 +105,11 @@ public class Economy_Reserve extends AbstractEconomy {
             plugin.getLogger().log(Level.WARNING, ERROR_MESSAGE, throwable);
             return false;
         }
+    }
+
+    @Override
+    public String getProviderName() {
+        return "Reserve";
     }
 
     @Override
@@ -137,27 +168,6 @@ public class Economy_Reserve extends AbstractEconomy {
         return getBalance(player.getUniqueId(), world, currency);
     }
 
-
-    /**
-     * Transfers the given amount of money from Player1 to Player2
-     *
-     * @param from   The player who is paying money
-     * @param to     The player who is receiving money
-     * @param amount The amount to transfer
-     * @return true if success (Payer had enough cash, receiver was able to receive the funds)
-     */
-    @Override
-    public boolean transfer(@NotNull UUID from, @NotNull UUID to, double amount, @NotNull World world, @Nullable String currency) {
-        try {
-            return Objects.requireNonNull(reserve).transferHoldings(from, to, BigDecimal.valueOf(amount), world.getName(), currency);
-        } catch (Exception throwable) {
-            if (plugin.getSentryErrorReporter() != null) {
-                plugin.getSentryErrorReporter().ignoreThrow();
-            }
-            plugin.getLogger().log(Level.WARNING, ERROR_MESSAGE, throwable);
-            return false;
-        }
-    }
 
     /**
      * Withdraws a given amount of money from the given username and turns it to thin air.
@@ -224,15 +234,6 @@ public class Economy_Reserve extends AbstractEconomy {
         return reserve != null;
     }
 
-    @Override
-    public @NotNull String getName() {
-        return "BuiltIn-Reserve";
-    }
-
-    @Override
-    public String getProviderName() {
-        return "Reserve";
-    }
 
     @Override
     public @NotNull Plugin getPlugin() {

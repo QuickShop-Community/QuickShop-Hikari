@@ -20,17 +20,17 @@ public class Result {
         }
 
         @Override
-        public boolean isSuccess() {
-            return true;
-        }
-
-        @Override
         public void setResult(boolean result) {
         }
 
         @Override
         public String getListener() {
             return "";
+        }
+
+        @Override
+        public boolean isSuccess() {
+            return true;
         }
     };
     @Setter

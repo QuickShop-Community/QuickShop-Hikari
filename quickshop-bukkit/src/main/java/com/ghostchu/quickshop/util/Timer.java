@@ -35,6 +35,14 @@ public class Timer {
     }
 
     /**
+     * Start the timer. Time Unit: ms
+     */
+    public void start() {
+        this.startTime = System.currentTimeMillis();
+        isPaused = false;
+    }
+
+    /**
      * Create a empty time, use the param to init the startTime.
      *
      * @param startTime New startTime
@@ -55,6 +63,19 @@ public class Timer {
     }
 
     /**
+     * Return how long time running when timer set. THIS NOT WILL DESTORY AND STOP THE TIMER
+     *
+     * @return time
+     */
+    public long getPassedTime() {
+        if (isPaused) {
+            return passedTime;
+        } else {
+            return System.currentTimeMillis() - startTime;
+        }
+    }
+
+    /**
      * Return how long time running after a specified time. THIS NOT WILL DESTORY AND STOP THE TIMER
      *
      * @param atTime The specified time
@@ -62,14 +83,6 @@ public class Timer {
      */
     public long getPassedTimeOffsetFrom(long atTime) {
         return (atTime - startTime) + passedTime;
-    }
-
-    /**
-     * Start the timer. Time Unit: ms
-     */
-    public void start() {
-        this.startTime = System.currentTimeMillis();
-        isPaused = false;
     }
 
     /**
@@ -88,19 +101,6 @@ public class Timer {
             this.startTime = System.currentTimeMillis() - passedTime;
             passedTime = 0;
             isPaused = false;
-        }
-    }
-
-    /**
-     * Return how long time running when timer set. THIS NOT WILL DESTORY AND STOP THE TIMER
-     *
-     * @return time
-     */
-    public long getPassedTime() {
-        if (isPaused) {
-            return passedTime;
-        } else {
-            return System.currentTimeMillis() - startTime;
         }
     }
 

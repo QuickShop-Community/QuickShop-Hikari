@@ -9,14 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class QuickShopPAPI extends PlaceholderExpansion {
-    
+
     @Getter
     private final PAPICache papiCache = new PAPICache();
-
-    @Override
-    public boolean canRegister() {
-        return true;
-    }
 
     @Override
     public @NotNull String getIdentifier() {
@@ -32,13 +27,18 @@ public class QuickShopPAPI extends PlaceholderExpansion {
     public @NotNull String getVersion() {
         return QuickShop.getVersion();
     }
-    
+
     // Prevent the expansion being unregistered on /papi reload
     @Override
-    public boolean persist(){
+    public boolean persist() {
         return true;
     }
-    
+
+    @Override
+    public boolean canRegister() {
+        return true;
+    }
+
     @Override
     public @Nullable String onRequest(@NotNull OfflinePlayer player, @NotNull String params) {
         String cached = papiCache.readCache(player.getUniqueId(), params);
@@ -50,7 +50,7 @@ public class QuickShopPAPI extends PlaceholderExpansion {
         if (args.length < 1) {
             return null;
         }
-        
+
         return papiCache.getCached(player.getUniqueId(), args);
     }
 }

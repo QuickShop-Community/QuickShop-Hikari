@@ -4,6 +4,16 @@ import org.jetbrains.annotations.NotNull;
 
 public interface SubPasteItem extends PasteItem {
     /**
+     * Render this item to HTML sources
+     *
+     * @return HTML sources
+     */
+    @Override
+    default @NotNull String toHTML() {
+        return genTitle() + genBody();
+    }
+
+    /**
      * Generate and render the title part of this item
      *
      * @return the rendered title
@@ -14,14 +24,6 @@ public interface SubPasteItem extends PasteItem {
     }
 
     /**
-     * Returns this item's title (plain text), and will render to HTML
-     *
-     * @return the title
-     */
-    @NotNull
-    String getTitle();
-
-    /**
      * Generate and render the body part of this item
      *
      * @return the rendered body
@@ -30,12 +32,10 @@ public interface SubPasteItem extends PasteItem {
     String genBody();
 
     /**
-     * Render this item to HTML sources
+     * Returns this item's title (plain text), and will render to HTML
      *
-     * @return HTML sources
+     * @return the title
      */
-    @Override
-    default @NotNull String toHTML() {
-        return genTitle() + genBody();
-    }
+    @NotNull
+    String getTitle();
 }

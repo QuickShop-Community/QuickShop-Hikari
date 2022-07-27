@@ -19,8 +19,8 @@ import java.util.Random;
 
 public class UpdateWatcher implements Listener {
     private final Random random = new Random();
-    private BukkitTask cronTask = null;
     private final QuickShop plugin = QuickShop.getInstance();
+    private BukkitTask cronTask = null;
 
     public void init() {
         cronTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
@@ -40,13 +40,6 @@ public class UpdateWatcher implements Listener {
         }, 1, 20 * 60 * 60);
     }
 
-    public void uninit() {
-        if (cronTask == null) {
-            return;
-        }
-        cronTask.cancel();
-    }
-
     private Component pickRandomMessage(CommandSender sender) {
         List<Component> messages = plugin.text().ofList(sender, "updatenotify.list").forLocale();
         int notifyNum = -1;
@@ -60,6 +53,13 @@ public class UpdateWatcher implements Listener {
             notify = Component.text("New update {0} now available! Please update!");
         }
         return MsgUtil.fillArgs(notify, Component.text(plugin.getNexusManager().getLatestVersion()), Component.text(plugin.getDescription().getVersion()));
+    }
+
+    public void uninit() {
+        if (cronTask == null) {
+            return;
+        }
+        cronTask.cancel();
     }
 
     @EventHandler

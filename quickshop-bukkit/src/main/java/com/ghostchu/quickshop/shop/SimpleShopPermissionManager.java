@@ -76,6 +76,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
             plugin.getLogger().log(Level.SEVERE, "Failed to create default group configuration", e);
         }
     }
+
     @Override
     public void registerPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission) {
         if (!permissionMapping.containsKey(group)) {
@@ -131,14 +132,14 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
     }
 
     @Override
-    @NotNull
-    public List<String> getGroups() {
-        return ImmutableList.copyOf(this.permissionMapping.keySet());
+    public boolean hasPermission(@NotNull String group, @NotNull BuiltInShopPermission permission) {
+        return hasPermission(group, plugin, permission.getRawNode());
     }
 
     @Override
-    public boolean hasPermission(@NotNull String group, @NotNull BuiltInShopPermission permission) {
-        return hasPermission(group, plugin, permission.getRawNode());
+    @NotNull
+    public List<String> getGroups() {
+        return ImmutableList.copyOf(this.permissionMapping.keySet());
     }
 
     @Override

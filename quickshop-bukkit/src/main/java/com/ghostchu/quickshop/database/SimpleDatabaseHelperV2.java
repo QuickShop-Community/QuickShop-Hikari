@@ -65,40 +65,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         DataTables.initializeTables(manager, prefix);
     }
 
-    @Override
-    public void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
-        Log.debug("Update: " + uuid + " last locale to " + locale);
-        DataTables.PLAYERS.createReplace()
-                .setColumnNames("uuid", "locale")
-                .setParams(uuid.toString(), locale)
-                .executeAsync(integer -> {
-                }, ((exception, sqlAction) -> {
-                    if (exception != null) {
-                        Log.debug("Failed to update player locale! Err: " + exception.getMessage() + "; SQL: " + sqlAction.getSQLContent());
-                    }
-                }));
-    }
-
-    @Override
-    public void getPlayerLocale(@NotNull UUID uuid, @NotNull Consumer<Optional<String>> callback) {
-        DataTables.PLAYERS.createQuery()
-                .addCondition("uuid", uuid.toString())
-                .selectColumns("locale")
-                .setLimit(1)
-                .build()
-                .executeAsync(sqlQuery -> {
-                            ResultSet set = sqlQuery.getResultSet();
-                            if (set.next()) {
-                                callback.accept(Optional.of(set.getString("locale")));
-                            }
-
-                        }, (exception, sqlAction) -> {
-                            callback.accept(Optional.empty());
-                            plugin.getLogger().log(Level.WARNING, "Failed to get player locale! SQL:" + sqlAction.getSQLContent(), exception);
-                        }
-                );
-    }
-
     /**
      * Verifies that all required columns exist.
      */
@@ -154,15 +120,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         plugin.getLogger().info("Finished!");
     }
 
-
-    public void setDatabaseVersion(int version) throws SQLException {
-        DataTables.METADATA
-                .createReplace()
-                .setColumnNames("key", "value")
-                .setParams("database_version", version)
-                .execute();
-    }
-
     public int getDatabaseVersion() {
         try (SQLQuery query = DataTables.METADATA
                 .createQuery()
@@ -179,6 +136,325 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             Log.debug("Failed to getting database version! Err: " + e.getMessage());
             return -1;
         }
+    }
+
+    public void setDatabaseVersion(int version) throws SQLException {
+        DataTables.METADATA
+                .createReplace()
+                .setColumnNames("key", "value")
+                .setParams("database_version", version)
+                .execute();
+    }
+
+    private void doV2Migrate() throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        plugin.getLogger().info("Please wait... QuickShop-Hikari preparing for database migration...");
+        String actionId = UUID.randomUUID().toString().replace("-", "");
+        plugin.getLogger().info("Action ID: " + actionId);
+
+        plugin.getLogger().info("Cloning the tables for data copy...");
+        if (!silentTableMoving(getPrefix() + "shops", getPrefix() + "shops_" + actionId)) {
+            throw new IllegalStateException("Cannot rename critical tables");
+        }
+        // Backup tables
+        silentTableMoving(getPrefix() + "messages", getPrefix() + "messages_" + actionId);
+        silentTableMoving(getPrefix() + "logs", getPrefix() + "logs_" + actionId);
+        silentTableMoving(getPrefix() + "external_cache", getPrefix() + "external_cache_" + actionId);
+        silentTableMoving(getPrefix() + "player", getPrefix() + "player_" + actionId);
+        silentTableMoving(getPrefix() + "metrics", getPrefix() + "metrics_" + actionId);
+        plugin.getLogger().info("Cleaning resources...");
+        // Backup current ver tables to prevent last converting failure or data loss
+        for (DataTables value : DataTables.values()) {
+            silentTableMoving(value.getName(), value.getName() + "_" + actionId);
+        }
+        plugin.getLogger().info("Ensuring shops ready for migrate...");
+        if (!hasTable(getPrefix() + "shops_" + actionId)) {
+            throw new IllegalStateException("Failed to rename tables!");
+        }
+
+        plugin.getLogger().info("Downloading the data that need to converting to memory...");
+        List<OldShopData> oldShopData = new LinkedList<>();
+        List<OldMessageData> oldMessageData = new LinkedList<>();
+        List<OldShopMetricData> oldMetricData = new LinkedList<>();
+        List<OldPlayerData> oldPlayerData = new LinkedList<>();
+        downloadData("Shops", "shops", actionId, OldShopData.class, oldShopData);
+        downloadData("Messages", "messages", actionId, OldMessageData.class, oldMessageData);
+        downloadData("Players Properties", "player", actionId, OldPlayerData.class, oldPlayerData);
+        downloadData("Shop Metrics", "metric", actionId, OldShopMetricData.class, oldMetricData);
+        plugin.getLogger().info("Converting data and write into database...");
+        // Convert data
+        int pos = 0;
+        int total = oldShopData.size();
+        plugin.getLogger().info("Rebuilding database structure...");
+        // Create new tables
+        Log.debug("Table prefix: " + getPrefix());
+        Log.debug("Global prefix: " + plugin.getDbPrefix());
+        DataTables.initializeTables(manager, getPrefix());
+        plugin.getLogger().info("Validating tables exists...");
+        for (DataTables value : DataTables.values()) {
+            if (!value.isExists()) {
+                throw new IllegalStateException("Table " + value.getName() + " doesn't exists even rebuild structure!");
+            }
+        }
+
+        for (OldShopData data : oldShopData) {
+            long dataId = DataTables.DATA.createInsert()
+                    .setColumnNames("owner", "item", "name", "type", "currency", "price", "unlimited", "hologram", "tax_account", "permissions", "extra", "inv_wrapper", "inv_symbol_link")
+                    .setParams(data.owner, data.itemConfig, data.name, data.type, data.currency, data.price, data.unlimited, data.disableDisplay, data.taxAccount, JsonUtil.getGson().toJson(data.permission), data.extra, data.inventoryWrapperName, data.inventorySymbolLink)
+                    .returnGeneratedKey(Long.class)
+                    .execute();
+            if (dataId < 1) {
+                throw new IllegalStateException("DataId creation failed.");
+            }
+            long shopId = DataTables.SHOPS.createInsert()
+                    .setColumnNames("data").setParams(dataId)
+                    .returnGeneratedKey(Long.class).execute();
+            if (shopId < 1) {
+                throw new IllegalStateException("ShopId creation failed.");
+            }
+            DataTables.SHOP_MAP.createReplace()
+                    .setColumnNames("world", "x", "y", "z", "shop")
+                    .setParams(data.world, data.x, data.y, data.z, shopId)
+                    .execute();
+            plugin.getLogger().info("Converting shops...  (" + (++pos) + "/" + total + ")");
+        }
+        pos = 0;
+        total = oldMessageData.size();
+        for (OldMessageData data : oldMessageData) {
+            DataTables.MESSAGES.createInsert()
+                    .setColumnNames("receiver", "time", "content")
+                    .setParams(data.owner, data.time, data.message)
+                    .execute();
+            plugin.getLogger().info("Converting messages...  (" + (++pos) + "/" + total + ")");
+        }
+        pos = 0;
+        total = oldPlayerData.size();
+        for (OldPlayerData data : oldPlayerData) {
+            DataTables.PLAYERS.createInsert()
+                    .setColumnNames("uuid", "locale")
+                    .setParams(data.uuid, data.locale)
+                    .execute();
+            plugin.getLogger().info("Converting players properties...  (" + (++pos) + "/" + total + ")");
+        }
+        pos = 0;
+        total = oldMetricData.size();
+        for (OldShopMetricData data : oldMetricData) {
+            long shopId = locateShopId(data.getWorld(), data.getX(), data.getY(), data.getZ());
+            if (shopId < 1) {
+                throw new IllegalStateException("ShopId not found.");
+            }
+            long dataId = locateShopDataId(shopId);
+            if (dataId < 1) {
+                throw new IllegalStateException("DataId not found.");
+            }
+            DataTables.LOG_PURCHASE.createInsert()
+                    .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
+                    .setParams(data.time, shopId, dataId, data.player, data.type, data.amount, data.total, data.tax)
+                    .execute();
+            plugin.getLogger().info("Converting purchase metric...  (" + (++pos) + "/" + total + ")");
+        }
+        checkTables();
+        plugin.getLogger().info("Migrate completed, previous versioned data was renamed to <PREFIX>_<TABLE_NAME>_<ACTION_ID>.");
+    }
+
+    private boolean silentTableMoving(@NotNull String originTableName, @NotNull String newTableName) {
+        try {
+            if (hasTable(originTableName)) {
+                if (plugin.getDatabaseDriverType() == QuickShop.DatabaseDriverType.MYSQL) {
+                    manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
+                } else {
+                    manager.executeSQL("CREATE TABLE " + newTableName + " AS SELECT * FROM " + originTableName);
+                }
+                manager.executeSQL("DROP TABLE " + originTableName);
+            }
+        } catch (SQLException e) {
+            return false;
+        }
+        return true;
+    }
+
+    public @NotNull String getPrefix() {
+        return prefix;
+    }
+
+    /**
+     * Returns true if the table exists
+     *
+     * @param table The table to check for
+     * @return True if the table is found
+     * @throws SQLException Throw exception when failed execute somethins on SQL
+     */
+    public boolean hasTable(@NotNull String table) throws SQLException {
+        Connection connection = manager.getConnection();
+        boolean match = false;
+        try (ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {
+            while (rs.next()) {
+                if (table.equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
+                    match = true;
+                    break;
+                }
+            }
+        } finally {
+            connection.close();
+        }
+        return match;
+    }
+
+    private <T> void downloadData(@NotNull String name, @NotNull String tableLegacyName, @NotNull String actionId, @NotNull Class<T> clazz, @NotNull List<T> target) throws NoSuchMethodException, SQLException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        plugin.getLogger().info("Performing query for data downloading (" + name + ")...");
+        if (hasTable(getPrefix() + tableLegacyName + "_" + actionId)) {
+            try (SQLQuery query = manager.createQuery().inTable(getPrefix() + tableLegacyName + "_" + actionId)
+                    .build().execute()) {
+                ResultSet set = query.getResultSet();
+                int count = 0;
+                while (set.next()) {
+                    target.add(clazz.getConstructor(ResultSet.class).newInstance(set));
+                    count++;
+                    plugin.getLogger().info("Downloaded " + count + " data to memory (" + name + ")...");
+                }
+                plugin.getLogger().info("Downloaded " + count + " total, completed. (" + name + ")");
+            }
+        } else {
+            plugin.getLogger().info("Skipping for table " + tableLegacyName);
+        }
+    }
+
+    @NotNull
+    public IsolatedScanResult<Long> purgeIsolatedData() throws SQLException {
+        IsolatedScanResult<Long> shopIds = scanIsolatedShopIds();
+        purgeShopTableIsolatedData(shopIds);
+        IsolatedScanResult<Long> dataIds = scanIsolatedDataIds();
+        purgeDataTableIsolatedData(dataIds);
+        List<Long> total = new LinkedList<>();
+        total.addAll(shopIds.getTotal());
+        total.addAll(dataIds.getTotal());
+        List<Long> isolated = new LinkedList<>();
+        isolated.addAll(shopIds.getIsolated());
+        isolated.addAll(dataIds.getIsolated());
+        return new IsolatedScanResult<>(total, isolated);
+    }
+
+    @NotNull
+    public IsolatedScanResult<Long> scanIsolatedShopIds() throws SQLException {
+        List<Long> shopIds = new LinkedList<>();
+        List<Long> toPurge = new LinkedList<>();
+        try (SQLQuery query = DataTables.SHOPS.createQuery().selectColumns("id").build().execute()) {
+            ResultSet set = query.getResultSet();
+            while (set.next()) {
+                shopIds.add(set.getLong("id"));
+            }
+        }
+        plugin.getLogger().info("Total " + shopIds.size() + " data found.");
+        for (long shopId : shopIds) {
+            if (checkIdUsage(DataTables.SHOP_MAP, "shop", shopId)) {
+                continue;
+            }
+            if (checkIdUsage(DataTables.LOG_PURCHASE, "shop", shopId)) {
+                continue;
+            }
+            if (checkIdUsage(DataTables.LOG_CHANGES, "shop", shopId)) {
+                continue;
+            }
+            toPurge.add(shopId);
+        }
+        return new IsolatedScanResult<>(shopIds, toPurge);
+    }
+
+    public void purgeShopTableIsolatedData(@NotNull IsolatedScanResult<Long> toPurge) throws SQLException {
+        plugin.getLogger().info("Pulling isolated SHOP_ID data...");
+        plugin.getLogger().info("Purging " + toPurge.getIsolated().size() + " isolated SHOP_ID data...");
+        for (long shopId : toPurge.getIsolated()) {
+            int shopRows = DataTables.SHOPS.createDelete().addCondition("id", shopId).build().execute();
+            int cacheRows = DataTables.EXTERNAL_CACHE.createDelete().addCondition("shop", shopId).build().execute();
+            Log.debug("Purged shop_id=" + shopId + ", " + (shopRows + cacheRows) + " rows affected.");
+        }
+        plugin.getLogger().info("Purging completed.");
+    }
+
+    @NotNull
+    public IsolatedScanResult<Long> scanIsolatedDataIds() throws SQLException {
+        List<Long> dataIds = new LinkedList<>();
+        List<Long> toPurge = new LinkedList<>();
+        try (SQLQuery query = DataTables.DATA.createQuery().selectColumns("id").build().execute()) {
+            ResultSet set = query.getResultSet();
+            while (set.next()) {
+                dataIds.add(set.getLong("id"));
+            }
+        }
+        for (long dataId : dataIds) {
+            if (checkIdUsage(DataTables.SHOPS, "data", dataId)) {
+                continue;
+            }
+            if (checkIdUsage(DataTables.LOG_PURCHASE, "data", dataId)) {
+                continue;
+            }
+            if (checkIdUsage(DataTables.LOG_OTHERS, "data", dataId)) {
+                continue;
+            }
+            toPurge.add(dataId);
+        }
+        return new IsolatedScanResult<>(dataIds, toPurge);
+    }
+
+    public void purgeDataTableIsolatedData(@NotNull IsolatedScanResult<Long> toPurge) throws SQLException {
+        plugin.getLogger().info("Pulling isolated DATA_ID data...");
+        plugin.getLogger().info("Purging " + toPurge.getIsolated().size() + " isolated DATA_ID data...");
+        for (long dataId : toPurge.getIsolated()) {
+            int line = DataTables.DATA.createDelete().addCondition("id", dataId).build().execute();
+            Log.debug("Purged data_id=" + dataId + ", " + line + " rows effected.");
+        }
+        plugin.getLogger().info("Purging completed.");
+    }
+
+    /**
+     * Check if specified id exists.
+     *
+     * @param targetTable the table to be cleaned
+     * @param column      The column that will be checked
+     * @param id          The id that will be checked
+     */
+    @SuppressWarnings("SQLInjection")
+    public boolean checkIdUsage(@NotNull DataTables targetTable, @NotNull String column, long id) throws SQLException {
+        try (SQLQuery queryTableResult = targetTable.createQuery()
+                .addCondition(column, id)
+                .selectColumns(column)
+                .setLimit(1).build().execute()) {
+            ResultSet set = queryTableResult.getResultSet();
+            return set.next();
+        }
+    }
+
+    @Override
+    public void getPlayerLocale(@NotNull UUID uuid, @NotNull Consumer<Optional<String>> callback) {
+        DataTables.PLAYERS.createQuery()
+                .addCondition("uuid", uuid.toString())
+                .selectColumns("locale")
+                .setLimit(1)
+                .build()
+                .executeAsync(sqlQuery -> {
+                            ResultSet set = sqlQuery.getResultSet();
+                            if (set.next()) {
+                                callback.accept(Optional.of(set.getString("locale")));
+                            }
+
+                        }, (exception, sqlAction) -> {
+                            callback.accept(Optional.empty());
+                            plugin.getLogger().log(Level.WARNING, "Failed to get player locale! SQL:" + sqlAction.getSQLContent(), exception);
+                        }
+                );
+    }
+
+    @Override
+    public void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
+        Log.debug("Update: " + uuid + " last locale to " + locale);
+        DataTables.PLAYERS.createReplace()
+                .setColumnNames("uuid", "locale")
+                .setParams(uuid.toString(), locale)
+                .executeAsync(integer -> {
+                }, ((exception, sqlAction) -> {
+                    if (exception != null) {
+                        Log.debug("Failed to update player locale! Err: " + exception.getMessage() + "; SQL: " + sqlAction.getSQLContent());
+                    }
+                }));
     }
 
     @Override
@@ -451,29 +727,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     /**
-     * Returns true if the table exists
-     *
-     * @param table The table to check for
-     * @return True if the table is found
-     * @throws SQLException Throw exception when failed execute somethins on SQL
-     */
-    public boolean hasTable(@NotNull String table) throws SQLException {
-        Connection connection = manager.getConnection();
-        boolean match = false;
-        try (ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {
-            while (rs.next()) {
-                if (table.equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
-                    match = true;
-                    break;
-                }
-            }
-        } finally {
-            connection.close();
-        }
-        return match;
-    }
-
-    /**
      * Returns true if the given table has the given column
      *
      * @param table  The table
@@ -505,244 +758,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         return manager;
     }
 
-    public @NotNull String getPrefix() {
-        return prefix;
-    }
-
-    private boolean silentTableMoving(@NotNull String originTableName, @NotNull String newTableName) {
-        try {
-            if(hasTable(originTableName)) {
-                if (plugin.getDatabaseDriverType() == QuickShop.DatabaseDriverType.MYSQL) {
-                    manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
-                } else {
-                    manager.executeSQL("CREATE TABLE " + newTableName + " AS SELECT * FROM " + originTableName);
-                }
-                manager.executeSQL("DROP TABLE " + originTableName);
-            }
-        } catch (SQLException e) {
-            return false;
-        }
-        return true;
-    }
-
-
-    private void doV2Migrate() throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        plugin.getLogger().info("Please wait... QuickShop-Hikari preparing for database migration...");
-        String actionId = UUID.randomUUID().toString().replace("-", "");
-        plugin.getLogger().info("Action ID: " + actionId);
-
-        plugin.getLogger().info("Cloning the tables for data copy...");
-        if (!silentTableMoving(getPrefix() + "shops", getPrefix() + "shops_" + actionId)) {
-            throw new IllegalStateException("Cannot rename critical tables");
-        }
-        // Backup tables
-        silentTableMoving(getPrefix() + "messages", getPrefix() + "messages_" + actionId);
-        silentTableMoving(getPrefix() + "logs", getPrefix() + "logs_" + actionId);
-        silentTableMoving(getPrefix() + "external_cache", getPrefix() + "external_cache_" + actionId);
-        silentTableMoving(getPrefix() + "player", getPrefix() + "player_" + actionId);
-        silentTableMoving(getPrefix() + "metrics", getPrefix() + "metrics_" + actionId);
-        plugin.getLogger().info("Cleaning resources...");
-        // Backup current ver tables to prevent last converting failure or data loss
-        for (DataTables value : DataTables.values()) {
-            silentTableMoving(value.getName(), value.getName() + "_" + actionId);
-        }
-        plugin.getLogger().info("Ensuring shops ready for migrate...");
-        if (!hasTable(getPrefix() + "shops_" + actionId)) {
-            throw new IllegalStateException("Failed to rename tables!");
-        }
-
-        plugin.getLogger().info("Downloading the data that need to converting to memory...");
-        List<OldShopData> oldShopData = new LinkedList<>();
-        List<OldMessageData> oldMessageData = new LinkedList<>();
-        List<OldShopMetricData> oldMetricData = new LinkedList<>();
-        List<OldPlayerData> oldPlayerData = new LinkedList<>();
-        downloadData("Shops", "shops", actionId, OldShopData.class, oldShopData);
-        downloadData("Messages", "messages", actionId, OldMessageData.class, oldMessageData);
-        downloadData("Players Properties", "player", actionId, OldPlayerData.class, oldPlayerData);
-        downloadData("Shop Metrics", "metric", actionId, OldShopMetricData.class, oldMetricData);
-        plugin.getLogger().info("Converting data and write into database...");
-        // Convert data
-        int pos = 0;
-        int total = oldShopData.size();
-        plugin.getLogger().info("Rebuilding database structure...");
-        // Create new tables
-        Log.debug("Table prefix: " + getPrefix());
-        Log.debug("Global prefix: " + plugin.getDbPrefix());
-        DataTables.initializeTables(manager, getPrefix());
-        plugin.getLogger().info("Validating tables exists...");
-        for (DataTables value : DataTables.values()) {
-            if (!value.isExists()) {
-                throw new IllegalStateException("Table " + value.getName() + " doesn't exists even rebuild structure!");
-            }
-        }
-
-        for (OldShopData data : oldShopData) {
-            long dataId = DataTables.DATA.createInsert()
-                    .setColumnNames("owner", "item", "name", "type", "currency", "price", "unlimited", "hologram", "tax_account", "permissions", "extra", "inv_wrapper", "inv_symbol_link")
-                    .setParams(data.owner, data.itemConfig, data.name, data.type, data.currency, data.price, data.unlimited, data.disableDisplay, data.taxAccount, JsonUtil.getGson().toJson(data.permission), data.extra, data.inventoryWrapperName, data.inventorySymbolLink)
-                    .returnGeneratedKey(Long.class)
-                    .execute();
-            if (dataId < 1) {
-                throw new IllegalStateException("DataId creation failed.");
-            }
-            long shopId = DataTables.SHOPS.createInsert()
-                    .setColumnNames("data").setParams(dataId)
-                    .returnGeneratedKey(Long.class).execute();
-            if (shopId < 1) {
-                throw new IllegalStateException("ShopId creation failed.");
-            }
-            DataTables.SHOP_MAP.createReplace()
-                    .setColumnNames("world", "x", "y", "z", "shop")
-                    .setParams(data.world, data.x, data.y, data.z, shopId)
-                    .execute();
-            plugin.getLogger().info("Converting shops...  (" + (++pos) + "/" + total + ")");
-        }
-        pos = 0;
-        total = oldMessageData.size();
-        for (OldMessageData data : oldMessageData) {
-            DataTables.MESSAGES.createInsert()
-                    .setColumnNames("receiver", "time", "content")
-                    .setParams(data.owner, data.time, data.message)
-                    .execute();
-            plugin.getLogger().info("Converting messages...  (" + (++pos) + "/" + total + ")");
-        }
-        pos = 0;
-        total = oldPlayerData.size();
-        for (OldPlayerData data : oldPlayerData) {
-            DataTables.PLAYERS.createInsert()
-                    .setColumnNames("uuid", "locale")
-                    .setParams(data.uuid, data.locale)
-                    .execute();
-            plugin.getLogger().info("Converting players properties...  (" + (++pos) + "/" + total + ")");
-        }
-        pos = 0;
-        total = oldMetricData.size();
-        for (OldShopMetricData data : oldMetricData) {
-            long shopId = locateShopId(data.getWorld(), data.getX(), data.getY(), data.getZ());
-            if (shopId < 1) {
-                throw new IllegalStateException("ShopId not found.");
-            }
-            long dataId = locateShopDataId(shopId);
-            if (dataId < 1) {
-                throw new IllegalStateException("DataId not found.");
-            }
-            DataTables.LOG_PURCHASE.createInsert()
-                    .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
-                    .setParams(data.time, shopId, dataId, data.player, data.type, data.amount, data.total, data.tax)
-                    .execute();
-            plugin.getLogger().info("Converting purchase metric...  (" + (++pos) + "/" + total + ")");
-        }
-        checkTables();
-        plugin.getLogger().info("Migrate completed, previous versioned data was renamed to <PREFIX>_<TABLE_NAME>_<ACTION_ID>.");
-    }
-
-    private <T> void downloadData(@NotNull String name, @NotNull String tableLegacyName, @NotNull String actionId, @NotNull Class<T> clazz, @NotNull List<T> target) throws NoSuchMethodException, SQLException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        plugin.getLogger().info("Performing query for data downloading (" + name + ")...");
-        if (hasTable(getPrefix() + tableLegacyName + "_" + actionId)) {
-            try (SQLQuery query = manager.createQuery().inTable(getPrefix() + tableLegacyName + "_" + actionId)
-                    .build().execute()) {
-                ResultSet set = query.getResultSet();
-                int count = 0;
-                while (set.next()) {
-                    target.add(clazz.getConstructor(ResultSet.class).newInstance(set));
-                    count++;
-                    plugin.getLogger().info("Downloaded " + count + " data to memory (" + name + ")...");
-                }
-                plugin.getLogger().info("Downloaded " + count + " total, completed. (" + name + ")");
-            }
-        } else {
-            plugin.getLogger().info("Skipping for table " + tableLegacyName);
-        }
-    }
-
-    @NotNull
-    public IsolatedScanResult<Long> purgeIsolatedData() throws SQLException {
-        IsolatedScanResult<Long> shopIds = scanIsolatedShopIds();
-        purgeShopTableIsolatedData(shopIds);
-        IsolatedScanResult<Long> dataIds = scanIsolatedDataIds();
-        purgeDataTableIsolatedData(dataIds);
-        List<Long> total = new LinkedList<>();
-        total.addAll(shopIds.getTotal());
-        total.addAll(dataIds.getTotal());
-        List<Long> isolated = new LinkedList<>();
-        isolated.addAll(shopIds.getIsolated());
-        isolated.addAll(dataIds.getIsolated());
-        return new IsolatedScanResult<>(total, isolated);
-    }
-
-    public void purgeDataTableIsolatedData(@NotNull IsolatedScanResult<Long> toPurge) throws SQLException {
-        plugin.getLogger().info("Pulling isolated DATA_ID data...");
-        plugin.getLogger().info("Purging " + toPurge.getIsolated().size() + " isolated DATA_ID data...");
-        for (long dataId : toPurge.getIsolated()) {
-            int line = DataTables.DATA.createDelete().addCondition("id", dataId).build().execute();
-            Log.debug("Purged data_id=" + dataId + ", " + line + " rows effected.");
-        }
-        plugin.getLogger().info("Purging completed.");
-    }
-
-    @NotNull
-    public IsolatedScanResult<Long> scanIsolatedDataIds() throws SQLException {
-        List<Long> dataIds = new LinkedList<>();
-        List<Long> toPurge = new LinkedList<>();
-        try (SQLQuery query = DataTables.DATA.createQuery().selectColumns("id").build().execute()) {
-            ResultSet set = query.getResultSet();
-            while (set.next()) {
-                dataIds.add(set.getLong("id"));
-            }
-        }
-        for (long dataId : dataIds) {
-            if (checkIdUsage(DataTables.SHOPS, "data", dataId)) {
-                continue;
-            }
-            if (checkIdUsage(DataTables.LOG_PURCHASE, "data", dataId)) {
-                continue;
-            }
-            if (checkIdUsage(DataTables.LOG_OTHERS, "data", dataId)) {
-                continue;
-            }
-            toPurge.add(dataId);
-        }
-        return new IsolatedScanResult<>(dataIds, toPurge);
-    }
-
-    public void purgeShopTableIsolatedData(@NotNull IsolatedScanResult<Long> toPurge) throws SQLException {
-        plugin.getLogger().info("Pulling isolated SHOP_ID data...");
-        plugin.getLogger().info("Purging " + toPurge.getIsolated().size() + " isolated SHOP_ID data...");
-        for (long shopId : toPurge.getIsolated()) {
-            int shopRows = DataTables.SHOPS.createDelete().addCondition("id", shopId).build().execute();
-            int cacheRows = DataTables.EXTERNAL_CACHE.createDelete().addCondition("shop", shopId).build().execute();
-            Log.debug("Purged shop_id=" + shopId + ", " + (shopRows + cacheRows) + " rows affected.");
-        }
-        plugin.getLogger().info("Purging completed.");
-    }
-
-    @NotNull
-    public IsolatedScanResult<Long> scanIsolatedShopIds() throws SQLException {
-        List<Long> shopIds = new LinkedList<>();
-        List<Long> toPurge = new LinkedList<>();
-        try (SQLQuery query = DataTables.SHOPS.createQuery().selectColumns("id").build().execute()) {
-            ResultSet set = query.getResultSet();
-            while (set.next()) {
-                shopIds.add(set.getLong("id"));
-            }
-        }
-        plugin.getLogger().info("Total " + shopIds.size() + " data found.");
-        for (long shopId : shopIds) {
-            if (checkIdUsage(DataTables.SHOP_MAP, "shop", shopId)) {
-                continue;
-            }
-            if (checkIdUsage(DataTables.LOG_PURCHASE, "shop", shopId)) {
-                continue;
-            }
-            if (checkIdUsage(DataTables.LOG_CHANGES, "shop", shopId)) {
-                continue;
-            }
-            toPurge.add(shopId);
-        }
-        return new IsolatedScanResult<>(shopIds, toPurge);
-    }
-
-
     /**
      * DELETE unused data with related keys from query table.
      *
@@ -766,24 +781,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .replace("%(queryColumn)", queryColumn);
 
         return manager.executeSQL(sql);
-    }
-
-    /**
-     * Check if specified id exists.
-     *
-     * @param targetTable the table to be cleaned
-     * @param column      The column that will be checked
-     * @param id          The id that will be checked
-     */
-    @SuppressWarnings("SQLInjection")
-    public boolean checkIdUsage(@NotNull DataTables targetTable, @NotNull String column, long id) throws SQLException {
-        try (SQLQuery queryTableResult = targetTable.createQuery()
-                .addCondition(column, id)
-                .selectColumns(column)
-                .setLimit(1).build().execute()) {
-            ResultSet set = queryTableResult.getResultSet();
-            return set.next();
-        }
     }
 
     public void writeToCSV(@NotNull ResultSet set, @NotNull File csvFile) throws SQLException, IOException {
@@ -830,7 +827,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Data
     static class OldShopData {
-        private String owner;
         private final double price;
         private final String itemConfig;
         private final int x;
@@ -846,7 +842,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         private final String inventorySymbolLink;
         private final String inventoryWrapperName;
         private final String name;
-
+        private String owner;
         private Map<UUID, String> permission = new HashMap<>();
 
         public OldShopData(ResultSet set) throws Exception {

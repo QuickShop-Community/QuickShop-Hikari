@@ -46,6 +46,20 @@ public class Economy_TNE extends AbstractEconomy {
         this.api = TNE.instance().api();
     }
 
+    /**
+     * Deposits a given amount of money from thin air to the given username.
+     *
+     * @param name     The exact (case insensitive) username to give money to
+     * @param amount   The amount to give them
+     * @param currency The currency name
+     * @return True if success (Should be almost always)
+     */
+    @Override
+    public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
+        deposit(Bukkit.getOfflinePlayer(name), amount, world, currency);
+        return false;
+    }
+
     @Nullable
     private TNECurrency getCurrency(@NotNull World world, @Nullable String currency) {
         if (!isValid()) {
@@ -59,20 +73,6 @@ public class Economy_TNE extends AbstractEconomy {
             }
         }
         return this.api.getDefault(world.getName()); // Want to get some default currency available in thi world
-    }
-
-    /**
-     * Deposits a given amount of money from thin air to the given username.
-     *
-     * @param name     The exact (case insensitive) username to give money to
-     * @param amount   The amount to give them
-     * @param currency The currency name
-     * @return True if success (Should be almost always)
-     */
-    @Override
-    public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
-        deposit(Bukkit.getOfflinePlayer(name), amount, world, currency);
-        return false;
     }
 
     /**
@@ -214,6 +214,11 @@ public class Economy_TNE extends AbstractEconomy {
     }
 
     @Override
+    public @NotNull Plugin getPlugin() {
+        return this.plugin;
+    }
+
+    @Override
     public @NotNull String getName() {
         return "BuiltIn-TNE";
     }
@@ -221,11 +226,6 @@ public class Economy_TNE extends AbstractEconomy {
     @Override
     public String getProviderName() {
         return "TNE";
-    }
-
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return this.plugin;
     }
 
     /**

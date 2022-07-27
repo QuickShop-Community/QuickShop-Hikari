@@ -25,12 +25,6 @@ public class InteractionController implements Reloadable {
         plugin.getReloadManager().register(this);
     }
 
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        loadInteractionConfig();
-        return Reloadable.super.reloadModule();
-    }
-
     public void loadInteractionConfig() {
         File configFile = new File(plugin.getDataFolder(), "interaction.yml");
         if (!configFile.exists()) {
@@ -54,6 +48,12 @@ public class InteractionController implements Reloadable {
                 behaviorMap.put(value, InteractionBehavior.NONE);
             }
         }
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        loadInteractionConfig();
+        return Reloadable.super.reloadModule();
     }
 
     /**

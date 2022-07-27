@@ -42,9 +42,9 @@ import java.util.logging.Level;
 
 public class MsgUtil {
     private static final Map<UUID, List<String>> OUTGOING_MESSAGES = Maps.newConcurrentMap();
+    private static final QuickShop plugin = QuickShop.getInstance();
     //public static GameLanguage gameLanguage;
     private static DecimalFormat decimalFormat;
-    private static final QuickShop plugin = QuickShop.getInstance();
     private volatile static Entry<String, String> cachedGameLanguageCode = null;
 
 
@@ -121,6 +121,11 @@ public class MsgUtil {
     }
 
     @NotNull
+    public static ProxiedLocale getDefaultGameLanguageLocale() {
+        return plugin.text().findRelativeLanguages(getDefaultGameLanguageCode());
+    }
+
+    @NotNull
     public static String getDefaultGameLanguageCode() {
         String languageCode = plugin.getConfig().getString("game-language", "default");
         if (cachedGameLanguageCode != null && cachedGameLanguageCode.getKey().equals(languageCode)) {
@@ -129,11 +134,6 @@ public class MsgUtil {
         String result = getGameLanguageCode(languageCode);
         cachedGameLanguageCode = new AbstractMap.SimpleEntry<>(languageCode, result);
         return result;
-    }
-
-    @NotNull
-    public static ProxiedLocale getDefaultGameLanguageLocale() {
-       return plugin.text().findRelativeLanguages(getDefaultGameLanguageCode());
     }
 
     @ApiStatus.Experimental
@@ -189,6 +189,14 @@ public class MsgUtil {
     }
 
     /**
+     * @param shop The shop purchased
+     * @param uuid The uuid of the player to message
+     */
+    public static void send(@NotNull Shop shop, @NotNull UUID uuid, @NotNull Component shopTransactionMessage) {
+        send(uuid, shopTransactionMessage, shop.isUnlimited());
+    }
+
+    /**
      * @param uuid                   The uuid of the player to message
      * @param shopTransactionMessage The message to send them Sends the given player a message if they're online.
      *                               Else, if they're not online, queues it for them in the database.
@@ -234,14 +242,6 @@ public class MsgUtil {
                 plugin.getPlatform().sendMessage(player, shopTransactionMessage);
             }
         }
-    }
-
-    /**
-     * @param shop The shop purchased
-     * @param uuid The uuid of the player to message
-     */
-    public static void send(@NotNull Shop shop, @NotNull UUID uuid, @NotNull Component shopTransactionMessage) {
-        send(uuid, shopTransactionMessage, shop.isUnlimited());
     }
     // TODO: No hardcode
 
@@ -332,6 +332,24 @@ public class MsgUtil {
         }
     }
 
+    public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable Component... messages) {
+        if (messages == null) {
+            return;
+        }
+        if (sender == null) {
+            return;
+        }
+        for (Component msg : messages) {
+            if (msg == null) {
+                return;
+            }
+            if (Util.isEmptyComponent(msg)) {
+                return;
+            }
+            plugin.getPlatform().sendMessage(sender, msg);
+        }
+    }
+
     public static void printEnchantment(@NotNull Player p, @NotNull Shop shop, @NotNull ChatSheetPrinter chatSheetPrinter) {
         if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && plugin.getConfig().getBoolean("respect-item-flag")) {
             return;
@@ -391,24 +409,6 @@ public class MsgUtil {
                 return;
             }
             sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(msg));
-        }
-    }
-
-    public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable Component... messages) {
-        if (messages == null) {
-            return;
-        }
-        if (sender == null) {
-            return;
-        }
-        for (Component msg : messages) {
-            if (msg == null) {
-                return;
-            }
-            if (Util.isEmptyComponent(msg)) {
-                return;
-            }
-            plugin.getPlatform().sendMessage(sender, msg);
         }
     }
 

@@ -23,11 +23,6 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
             int currentIndex = 0;
 
             @Override
-            public void setCurrent(ItemStack stack) {
-                itemStacks[Math.max(0, currentIndex - 1)] = stack;
-            }
-
-            @Override
             public boolean hasNext() {
                 return currentIndex < itemStacks.length;
             }
@@ -35,6 +30,11 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
             @Override
             public ItemStack next() {
                 return itemStacks[currentIndex++];
+            }
+
+            @Override
+            public void setCurrent(ItemStack stack) {
+                itemStacks[Math.max(0, currentIndex - 1)] = stack;
             }
         };
     }
@@ -51,13 +51,6 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
             int currentIndex = 0;
 
             @Override
-            public void setCurrent(ItemStack stack) {
-                ItemStack[] storageItems = inventory.getStorageContents();
-                storageItems[Math.max(0, currentIndex - 1)] = stack;
-                inventory.setStorageContents(storageItems);
-            }
-
-            @Override
             public boolean hasNext() {
                 return currentIndex < size;
             }
@@ -66,18 +59,18 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
             public ItemStack next() {
                 return inventory.getStorageContents()[currentIndex++];
             }
+
+            @Override
+            public void setCurrent(ItemStack stack) {
+                ItemStack[] storageItems = inventory.getStorageContents();
+                storageItems[Math.max(0, currentIndex - 1)] = stack;
+                inventory.setStorageContents(storageItems);
+            }
         };
     }
 
     @Override
     boolean hasNext();
-
-    /**
-     * Set the current ItemStack instance
-     *
-     * @param stack the itemStack need to set
-     */
-    void setCurrent(@Nullable ItemStack stack);
 
     /**
      * Get the next ItemStack instance
@@ -96,4 +89,11 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
         setCurrent(null);
 
     }
+
+    /**
+     * Set the current ItemStack instance
+     *
+     * @param stack the itemStack need to set
+     */
+    void setCurrent(@Nullable ItemStack stack);
 }

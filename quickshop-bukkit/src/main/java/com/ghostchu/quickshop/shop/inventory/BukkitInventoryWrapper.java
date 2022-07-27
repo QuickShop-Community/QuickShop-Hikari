@@ -31,18 +31,13 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
     }
 
     @Override
-    public @NotNull Map<Integer, ItemStack> addItem(ItemStack... itemStacks) {
-        return inventory.addItem(itemStacks);
-    }
-
-    @Override
     public @Nullable Location getLocation() {
         return inventory.getLocation();
     }
 
     @Override
-    public void clear() {
-        inventory.clear();
+    public @NotNull Map<Integer, ItemStack> addItem(ItemStack... itemStacks) {
+        return inventory.addItem(itemStacks);
     }
 
     @Override
@@ -53,6 +48,11 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
     @Override
     public @NotNull InventoryWrapperManager getWrapperManager() {
         return this.manager;
+    }
+
+    @Override
+    public void clear() {
+        inventory.clear();
     }
 
     @Override

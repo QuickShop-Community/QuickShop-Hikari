@@ -62,7 +62,6 @@ import java.util.logging.Level;
 @EqualsAndHashCode
 public class ContainerShop implements Shop, Reloadable {
     private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
-    private long shopId;
     @NotNull
     private final Location location;
     private final YamlConfiguration extra;
@@ -70,13 +69,15 @@ public class ContainerShop implements Shop, Reloadable {
     private final QuickShop plugin;
     @EqualsAndHashCode.Exclude
     private final UUID runtimeRandomUniqueId = UUID.randomUUID();
+    @NotNull
+    private final Map<UUID, String> playerGroup;
+    private long shopId;
     private UUID owner;
     private double price;
     private ShopType shopType;
     private boolean unlimited;
     @NotNull
     private ItemStack item;
-
     @NotNull
     private ItemStack originalItem;
     @Nullable
@@ -112,8 +113,6 @@ public class ContainerShop implements Shop, Reloadable {
     private String symbolLink;
     @Nullable
     private String shopName;
-    @NotNull
-    private final Map<UUID, String> playerGroup;
 
     ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
@@ -142,6 +141,25 @@ public class ContainerShop implements Shop, Reloadable {
         this.playerGroup = s.playerGroup;
 
         initDisplayItem();
+    }
+
+    private void initDisplayItem() {
+        Util.ensureThread(false);
+        try {
+            if (plugin.isDisplayEnabled() && !isDisableDisplay()) {
+                DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
+                if (provider != null) {
+                    displayItem = provider.provide(this);
+                } else {
+                    this.displayItem = switch (AbstractDisplayItem.getNowUsing()) {
+                        case REALITEM -> new RealDisplayItem(this);
+                        default -> new VirtualDisplayItem(this);
+                    };
+                }
+            }
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to init display item for shop " + this + ", display item init failed!", e);
+        }
     }
 
     /**
@@ -223,6 +241,16 @@ public class ContainerShop implements Shop, Reloadable {
         // ContainerShop constructor is not allowed to write any persistent data to disk
     }
 
+    private void updateShopData() {
+        ConfigurationSection section = getExtra(plugin);
+        if (section.getString("currency") != null) {
+            this.currency = section.getString("currency");
+            section.set("currency", null);
+            Log.debug("Shop " + this + " currency data upgrade successful.");
+        }
+        setDirty();
+    }
+
     private @NotNull InventoryWrapper locateInventory(@Nullable String symbolLink) {
         if (symbolLink == null || symbolLink.isEmpty()) {
             throw new IllegalStateException("Symbol link is empty, that's not right bro.");
@@ -240,86 +268,40 @@ public class ContainerShop implements Shop, Reloadable {
         }
     }
 
-    private void updateShopData() {
-        ConfigurationSection section = getExtra(plugin);
-        if (section.getString("currency") != null) {
-            this.currency = section.getString("currency");
-            section.set("currency", null);
-            Log.debug("Shop " + this + " currency data upgrade successful.");
-        }
-        setDirty();
+    @Override
+    public long getShopId() {
+        return this.shopId;
     }
 
     @Override
-    public boolean isDisableDisplay() {
-        return disableDisplay;
+    public void setShopId(long newId) {
+        if (this.shopId != -1) {
+            throw new IllegalStateException("Cannot set shop id once it fully created.");
+        }
+        this.shopId = newId;
     }
 
+    /**
+     * Check if player has permission to authorize the specified permission node.
+     *
+     * @param player     the player
+     * @param namespace  the plugin instance for the permission node (namespace)
+     * @param permission the permission node
+     * @return true if player has permission, false otherwise
+     */
     @Override
-    public void setDisableDisplay(boolean disabled) {
-        if (this.disableDisplay == disabled) {
-            return;
+    public boolean playerAuthorize(@NotNull UUID player, @NotNull Plugin namespace, @NotNull String permission) {
+        if (player.equals(getOwner())) {
+            Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + " for " + player + " -> " + "true");
+            return true;
         }
-        this.disableDisplay = disabled;
-        setDirty();
-        update();
-        checkDisplay();
-    }
-
-    @Override
-    @Nullable
-    public UUID getTaxAccount() {
-        UUID uuid = null;
-        if (taxAccount != null) {
-            uuid = taxAccount;
-        } else {
-            if (((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount() != null) {
-                uuid = ((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount();
-            }
-        }
-        ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(this, uuid);
+        String group = getPlayerGroup(player);
+        boolean r = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
+        ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, player, namespace, permission, r);
         event.callEvent();
-        return event.getTaxAccount();
+        Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + player + " -> " + event.getResult());
+        return event.getResult();
 
-    }
-
-    @Override
-    public void setTaxAccount(@Nullable UUID taxAccount) {
-        if (this.taxAccount.equals(taxAccount)) {
-            return;
-        }
-        ShopTaxAccountChangeEvent event = new ShopTaxAccountChangeEvent(this, taxAccount);
-        if (Util.fireCancellableEvent(event)) {
-            return;
-        }
-        this.taxAccount = taxAccount;
-        setDirty();
-        update();
-    }
-
-    @Override
-    @Nullable
-    public UUID getTaxAccountActual() {
-        return taxAccount;
-    }
-
-    private void initDisplayItem() {
-        Util.ensureThread(false);
-        try {
-            if (plugin.isDisplayEnabled() && !isDisableDisplay()) {
-                DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
-                if (provider != null) {
-                    displayItem = provider.provide(this);
-                } else {
-                    this.displayItem = switch (AbstractDisplayItem.getNowUsing()) {
-                        case REALITEM -> new RealDisplayItem(this);
-                        default -> new VirtualDisplayItem(this);
-                    };
-                }
-            }
-        } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to init display item for shop " + this + ", display item init failed!", e);
-        }
     }
 
     /**
@@ -359,34 +341,6 @@ public class ContainerShop implements Shop, Reloadable {
         }
         Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + Util.list2String(result.stream().map(UUID::toString).toList()));
         return result;
-    }
-
-    @Override
-    public long getShopId() {
-        return this.shopId;
-    }
-
-    /**
-     * Check if player has permission to authorize the specified permission node.
-     *
-     * @param player     the player
-     * @param namespace  the plugin instance for the permission node (namespace)
-     * @param permission the permission node
-     * @return true if player has permission, false otherwise
-     */
-    @Override
-    public boolean playerAuthorize(@NotNull UUID player, @NotNull Plugin namespace, @NotNull String permission) {
-        if (player.equals(getOwner())) {
-            Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + " for " + player + " -> " + "true");
-            return true;
-        }
-        String group = getPlayerGroup(player);
-        boolean r = plugin.getShopPermissionManager().hasPermission(group, namespace, permission);
-        ShopAuthorizeCalculateEvent event = new ShopAuthorizeCalculateEvent(this, player, namespace, permission, r);
-        event.callEvent();
-        Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + player + " -> " + event.getResult());
-        return event.getResult();
-
     }
 
     /**
@@ -448,6 +402,16 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     /**
+     * Gets this shop name that set by player
+     *
+     * @return Shop name, or null if not set
+     */
+    @Override
+    public @Nullable String getShopName() {
+        return this.shopName;
+    }
+
+    /**
      * Sets shop name
      *
      * @param shopName shop name, null to remove currently name
@@ -460,16 +424,6 @@ public class ContainerShop implements Shop, Reloadable {
         this.shopName = shopName;
         setDirty();
         update();
-    }
-
-    /**
-     * Gets this shop name that set by player
-     *
-     * @return Shop name, or null if not set
-     */
-    @Override
-    public @Nullable String getShopName() {
-        return this.shopName;
     }
 
     /**
@@ -765,10 +719,35 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     /**
-     * @return The ItemStack type of this shop
+     * Load ContainerShop.
      */
-    public @NotNull Material getMaterial() {
-        return this.item.getType();
+    @Override
+    public void onLoad() {
+        Util.ensureThread(false);
+        if (this.isLoaded) {
+            Log.debug("Dupe load request, canceled.");
+            return;
+        }
+        Map<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(getLocation().getChunk());
+        if (shopsInChunk == null || !shopsInChunk.containsValue(this)) {
+            throw new IllegalStateException("Shop must register into ShopManager before loading.");
+        }
+        try {
+            inventoryWrapper = locateInventory(symbolLink);
+        } catch (Exception e) {
+            Log.debug("Failed to load shop: " + symbolLink + ": " + e.getClass().getName() + ": " + e.getMessage());
+            MsgUtil.debugStackTrace(e.getStackTrace());
+            this.delete(!plugin.getConfig().getBoolean("debug.delete-corrupt-shop"));
+            return;
+        }
+        if (Util.fireCancellableEvent(new ShopLoadEvent(this))) {
+            return;
+        }
+        this.isLoaded = true;
+        //Shop manager done this already
+        plugin.getShopManager().getLoadedShops().add(this);
+        plugin.getShopContainerWatcher().scheduleCheck(this);
+        checkDisplay();
     }
 
     /**
@@ -815,20 +794,10 @@ public class ContainerShop implements Shop, Reloadable {
     public @NotNull Component ownerName(@NotNull ProxiedLocale locale) {
         return ownerName(false, locale);
     }
+
     @Override
     public @NotNull Component ownerName() {
         return ownerName(false, MsgUtil.getDefaultGameLanguageLocale());
-    }
-
-
-    /**
-     * Check if this shop is free shop
-     *
-     * @return Free Shop
-     */
-    @Override
-    public boolean isFreeShop() {
-        return this.price == 0.0d;
     }
 
     /**
@@ -916,6 +885,18 @@ public class ContainerShop implements Shop, Reloadable {
                 attachedShop.setSignText(plugin.getTextManager().findRelativeLanguages(seller));
             }
         }
+    }
+
+    /**
+     * Updates signs attached to the shop
+     */
+    @Override
+    public void setSignText() {
+        Util.ensureThread(false);
+        if (!Util.isLoaded(this.location)) {
+            return;
+        }
+        this.setSignText(getSignText(plugin.getTextManager().findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode())));
     }
 
     @Override
@@ -1038,18 +1019,6 @@ public class ContainerShop implements Shop, Reloadable {
 
     /**
      * Updates signs attached to the shop
-     */
-    @Override
-    public void setSignText() {
-        Util.ensureThread(false);
-        if (!Util.isLoaded(this.location)) {
-            return;
-        }
-        this.setSignText(getSignText(plugin.getTextManager().findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode())));
-    }
-
-    /**
-     * Updates signs attached to the shop
      *
      * @param locale The locale to use for the sign text
      */
@@ -1095,12 +1064,6 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
-    @NotNull
-    public String saveToSymbolLink() {
-        return symbolLink;
-    }
-
-    @Override
     public void setInventory(@NotNull InventoryWrapper wrapper, @NotNull InventoryWrapperManager manager) {
         String provider = plugin.getInventoryWrapperRegistry().find(manager);
         if (provider == null) {
@@ -1113,13 +1076,6 @@ public class ContainerShop implements Shop, Reloadable {
         update();
         Log.debug("Inventory changed: " + this.symbolLink + ", wrapper provider:" + inventoryWrapperProvider);
         new ShopInventoryChangedEvent(wrapper, manager).callEvent();
-    }
-
-    private void notifyDisplayItemChange() {
-        isDisplayItemChanged = true;
-        if (attachedShop != null && !attachedShop.isDisplayItemChanged) {
-            attachedShop.notifyDisplayItemChange();
-        }
     }
 
     /**
@@ -1198,38 +1154,6 @@ public class ContainerShop implements Shop, Reloadable {
             }
         }
         setSignText();
-    }
-
-    /**
-     * Load ContainerShop.
-     */
-    @Override
-    public void onLoad() {
-        Util.ensureThread(false);
-        if (this.isLoaded) {
-            Log.debug("Dupe load request, canceled.");
-            return;
-        }
-        Map<Location, Shop> shopsInChunk = plugin.getShopManager().getShops(getLocation().getChunk());
-        if (shopsInChunk == null || !shopsInChunk.containsValue(this)) {
-            throw new IllegalStateException("Shop must register into ShopManager before loading.");
-        }
-        try {
-            inventoryWrapper = locateInventory(symbolLink);
-        } catch (Exception e) {
-            Log.debug("Failed to load shop: " + symbolLink + ": " + e.getClass().getName() + ": " + e.getMessage());
-            MsgUtil.debugStackTrace(e.getStackTrace());
-            this.delete(!plugin.getConfig().getBoolean("debug.delete-corrupt-shop"));
-            return;
-        }
-        if (Util.fireCancellableEvent(new ShopLoadEvent(this))) {
-            return;
-        }
-        this.isLoaded = true;
-        //Shop manager done this already
-        plugin.getShopManager().getLoadedShops().add(this);
-        plugin.getShopContainerWatcher().scheduleCheck(this);
-        checkDisplay();
     }
 
     /**
@@ -1413,16 +1337,6 @@ public class ContainerShop implements Shop, Reloadable {
         return signs;
     }
 
-    private ShopSignStorage saveToShopSignStorage() {
-        return new ShopSignStorage(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ());
-    }
-
-    @Override
-    public void claimShopSign(@NotNull Sign sign) {
-        sign.getPersistentDataContainer().set(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE, saveToShopSignStorage());
-        sign.update();
-    }
-
     /**
      * @return The list of players who can manage the shop.
      */
@@ -1485,11 +1399,6 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
-    public void setDirty() {
-        this.dirty = true;
-    }
-
-    @Override
     public boolean isDirty() {
         return this.dirty;
     }
@@ -1500,40 +1409,239 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
-    public String toString() {
+    public void setDirty() {
+        this.dirty = true;
+    }
 
-        return "Shop " +
-                (location.getWorld() == null ? "unloaded world" : location.getWorld().getName()) +
-                "(" +
-                location.getBlockX() +
-                ", " +
-                location.getBlockY() +
-                ", " +
-                location.getBlockZ() +
-                ")" +
-                " Owner: " + LegacyComponentSerializer.legacySection().serialize(this.ownerName(false, MsgUtil.getDefaultGameLanguageLocale())) + " - " + getOwner() +
-                ", Unlimited: " + isUnlimited() +
-                " Price: " + getPrice();
+    @Override
+    public @NotNull String saveExtraToYaml() {
+        return extra.saveToString();
     }
 
     /**
-     * Returns the display item associated with this shop.
+     * Gets the plugin's k-v map to storage the data. It is spilt by plugin name, different name
+     * have different map, the data won't conflict. But if you plugin name is too common, add a
+     * prefix will be a good idea.
      *
-     * @return The display item associated with this shop.
+     * @param plugin Plugin instance
+     * @return The data table
      */
-    @Nullable
-    public AbstractDisplayItem getDisplayItem() {
-        return this.displayItem;
+    @Override
+    public @NotNull ConfigurationSection getExtra(@NotNull Plugin plugin) {
+        ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
+        if (section == null) {
+            section = extra.createSection(plugin.getName());
+        }
+        return section;
     }
 
     /**
-     * @return The enchantments the shop has on its items.
+     * Save the extra data to the shop.
+     *
+     * @param plugin Plugin instace
+     * @param data   The data table
      */
-    public @NotNull Map<Enchantment, Integer> getEnchants() {
-        if (this.item.hasItemMeta() && this.item.getItemMeta().hasEnchants()) {
-            return Objects.requireNonNull(this.item.getItemMeta()).getEnchants();
+    @Override
+    public void setExtra(@NotNull Plugin plugin, @NotNull ConfigurationSection data) {
+        extra.set(plugin.getName(), data);
+        setDirty();
+        update();
+    }
+
+    /**
+     * Gets shop status is stacking shop
+     *
+     * @return The shop stacking status
+     */
+    @Override
+    public boolean isStackingShop() {
+        return plugin.isAllowStack() && this.item.getAmount() > 1;
+    }
+
+    /**
+     * WARNING: This UUID will changed after plugin reload, shop reload or server restart DO NOT USE
+     * IT TO STORE DATA!
+     *
+     * @return Random UUID
+     */
+    @Override
+    public @NotNull UUID getRuntimeRandomUniqueId() {
+        return this.runtimeRandomUniqueId;
+    }
+
+    /**
+     * Gets the currency that shop use
+     *
+     * @return The currency name
+     */
+    @Override
+    public @Nullable String getCurrency() {
+        return this.currency;
+    }
+
+    /**
+     * Sets the currency that shop use
+     *
+     * @param currency The currency name; null to use default currency
+     */
+    @Override
+    public void setCurrency(@Nullable String currency) {
+        if (Objects.equals(this.currency, currency)) {
+            return;
         }
-        return Collections.emptyMap();
+        this.currency = currency;
+        setDirty();
+        this.update();
+    }
+
+    @Override
+    public void openPreview(@NotNull Player player) {
+        if (inventoryPreview == null) {
+            inventoryPreview = new InventoryPreview(plugin, getItem().clone(), player.getLocale());
+        }
+        inventoryPreview.show(player);
+
+    }
+
+    @Override
+    public boolean isLeftShop() {
+        return isLeftShop;
+    }
+
+    /**
+     * Checks to see if it is a real double without updating anything.
+     *
+     * @return If the chest is a real double chest, as in it is a double and it has the same item.
+     */
+    @Override
+    public boolean isRealDouble() {
+        Util.ensureThread(false);
+        if (attachedShop == null) {
+            return false;
+        }
+        return attachedShop.matches(this.getItem());
+    }
+
+    /**
+     * Returns true if this shop is a double chest, and the other half is selling/buying the same as
+     * this is buying/selling.
+     *
+     * @return true if this shop is a double chest, and the other half is selling/buying the same as
+     * this is buying/selling.
+     */
+    @Override
+    public boolean isDoubleShop() {
+        Util.ensureThread(false);
+        if (attachedShop == null) {
+            return false;
+        }
+        if (attachedShop.matches(this.getItem())) {
+            // They're both trading the same item
+            // They're both buying or both selling => Not a double shop,
+            // just two shops.
+            // One is buying, one is selling.
+            return this.getShopType() != attachedShop.getShopType();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Updates the attachedShop variable to reflect the currently attached shop, if any.
+     * Also updates the left shop status.
+     */
+    @Override
+    public void updateAttachedShop() {
+        //TODO: Rewrite centering item feature, currently implement is buggy and mess
+        Util.ensureThread(false);
+        Block attachedChest = Util
+                .getSecondHalf(this.getLocation().getBlock());
+        Shop preValue = attachedShop;
+        //Prevent chain chunk loading
+        if (attachedChest == null || !Util.isLoaded(attachedChest.getLocation())) {
+            attachedShop = null;
+        } else {
+            attachedShop = (ContainerShop) plugin.getShopManager().getShop(attachedChest.getLocation());
+        }
+
+        if (attachedShop != null && attachedShop.matches(this.getItem())) {
+            updateLeftShop();
+        } else {
+            isLeftShop = false;
+        }
+
+        if (!Objects.equals(attachedShop, preValue)) {
+            notifyDisplayItemChange();
+        }
+    }
+
+    @Override
+    public ContainerShop getAttachedShop() {
+        return attachedShop;
+    }
+
+    @Override
+    public ShopInfoStorage saveToInfoStorage() {
+        return new ShopInfoStorage(getLocation().getWorld().getName(), new BlockPos(getLocation()), getOwner(), getPrice(), Util.serialize(this.originalItem), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount(), inventoryWrapperProvider, saveToSymbolLink(), getPermissionAudiences());
+    }
+
+    @Override
+    public boolean isDisableDisplay() {
+        return disableDisplay;
+    }
+
+    @Override
+    public void setDisableDisplay(boolean disabled) {
+        if (this.disableDisplay == disabled) {
+            return;
+        }
+        this.disableDisplay = disabled;
+        setDirty();
+        update();
+        checkDisplay();
+    }
+
+    @Override
+    @Nullable
+    public UUID getTaxAccount() {
+        UUID uuid = null;
+        if (taxAccount != null) {
+            uuid = taxAccount;
+        } else {
+            if (((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount() != null) {
+                uuid = ((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount();
+            }
+        }
+        ShopTaxAccountGettingEvent event = new ShopTaxAccountGettingEvent(this, uuid);
+        event.callEvent();
+        return event.getTaxAccount();
+
+    }
+
+    @Override
+    public void setTaxAccount(@Nullable UUID taxAccount) {
+        if (this.taxAccount.equals(taxAccount)) {
+            return;
+        }
+        ShopTaxAccountChangeEvent event = new ShopTaxAccountChangeEvent(this, taxAccount);
+        if (Util.fireCancellableEvent(event)) {
+            return;
+        }
+        this.taxAccount = taxAccount;
+        setDirty();
+        update();
+    }
+
+    @Override
+    @Nullable
+    public UUID getTaxAccountActual() {
+        return taxAccount;
+    }
+
+    @Override
+    public void claimShopSign(@NotNull Sign sign) {
+        sign.getPersistentDataContainer().set(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE, saveToShopSignStorage());
+        sign.update();
     }
 
     /**
@@ -1606,56 +1714,79 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     /**
-     * Returns true if this shop is a double chest, and the other half is selling/buying the same as
-     * this is buying/selling.
+     * Check if this shop is free shop
      *
-     * @return true if this shop is a double chest, and the other half is selling/buying the same as
-     * this is buying/selling.
+     * @return Free Shop
      */
     @Override
-    public boolean isDoubleShop() {
-        Util.ensureThread(false);
-        if (attachedShop == null) {
-            return false;
-        }
-        if (attachedShop.matches(this.getItem())) {
-            // They're both trading the same item
-            // They're both buying or both selling => Not a double shop,
-            // just two shops.
-            // One is buying, one is selling.
-            return this.getShopType() != attachedShop.getShopType();
-        } else {
-            return false;
-        }
+    public boolean isFreeShop() {
+        return this.price == 0.0d;
+    }
+
+    @Override
+    public @NotNull String getInventoryWrapperProvider() {
+        return inventoryWrapperProvider;
+    }
+
+    @Override
+    @NotNull
+    public String saveToSymbolLink() {
+        return symbolLink;
+    }
+
+    private ShopSignStorage saveToShopSignStorage() {
+        return new ShopSignStorage(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ());
     }
 
     /**
-     * Updates the attachedShop variable to reflect the currently attached shop, if any.
-     * Also updates the left shop status.
+     * @return The ItemStack type of this shop
      */
+    public @NotNull Material getMaterial() {
+        return this.item.getType();
+    }
+
+    private void notifyDisplayItemChange() {
+        isDisplayItemChanged = true;
+        if (attachedShop != null && !attachedShop.isDisplayItemChanged) {
+            attachedShop.notifyDisplayItemChange();
+        }
+    }
+
     @Override
-    public void updateAttachedShop() {
-        //TODO: Rewrite centering item feature, currently implement is buggy and mess
-        Util.ensureThread(false);
-        Block attachedChest = Util
-                .getSecondHalf(this.getLocation().getBlock());
-        Shop preValue = attachedShop;
-        //Prevent chain chunk loading
-        if (attachedChest == null || !Util.isLoaded(attachedChest.getLocation())) {
-            attachedShop = null;
-        } else {
-            attachedShop = (ContainerShop) plugin.getShopManager().getShop(attachedChest.getLocation());
-        }
+    public String toString() {
 
-        if (attachedShop != null && attachedShop.matches(this.getItem())) {
-            updateLeftShop();
-        } else {
-            isLeftShop = false;
-        }
+        return "Shop " +
+                (location.getWorld() == null ? "unloaded world" : location.getWorld().getName()) +
+                "(" +
+                location.getBlockX() +
+                ", " +
+                location.getBlockY() +
+                ", " +
+                location.getBlockZ() +
+                ")" +
+                " Owner: " + LegacyComponentSerializer.legacySection().serialize(this.ownerName(false, MsgUtil.getDefaultGameLanguageLocale())) + " - " + getOwner() +
+                ", Unlimited: " + isUnlimited() +
+                " Price: " + getPrice();
+    }
 
-        if (!Objects.equals(attachedShop, preValue)) {
-            notifyDisplayItemChange();
+    /**
+     * Returns the display item associated with this shop.
+     *
+     * @return The display item associated with this shop.
+     */
+    @Nullable
+    public AbstractDisplayItem getDisplayItem() {
+        return this.displayItem;
+    }
+
+    /**
+     * @return The enchantments the shop has on its items.
+     */
+    public @NotNull Map<Enchantment, Integer> getEnchants() {
+        if (this.item.hasItemMeta() && this.item.getItemMeta().hasEnchants()) {
+            return Objects.requireNonNull(this.item.getItemMeta()).getEnchants();
         }
+        return Collections.emptyMap();
     }
 
     /**
@@ -1692,30 +1823,6 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     /**
-     * Checks to see if it is a real double without updating anything.
-     *
-     * @return If the chest is a real double chest, as in it is a double and it has the same item.
-     */
-    @Override
-    public boolean isRealDouble() {
-        Util.ensureThread(false);
-        if (attachedShop == null) {
-            return false;
-        }
-        return attachedShop.matches(this.getItem());
-    }
-
-    @Override
-    public boolean isLeftShop() {
-        return isLeftShop;
-    }
-
-    @Override
-    public ContainerShop getAttachedShop() {
-        return attachedShop;
-    }
-
-    /**
      * Different with isDoubleShop, this method only check the shop is created on the double chest.
      *
      * @return true if create on double chest.
@@ -1748,108 +1855,6 @@ public class ContainerShop implements Shop, Reloadable {
         }
     }
 
-
-    @Override
-    public @NotNull String saveExtraToYaml() {
-        return extra.saveToString();
-    }
-
-    /**
-     * Gets the plugin's k-v map to storage the data. It is spilt by plugin name, different name
-     * have different map, the data won't conflict. But if you plugin name is too common, add a
-     * prefix will be a good idea.
-     *
-     * @param plugin Plugin instance
-     * @return The data table
-     */
-    @Override
-    public @NotNull ConfigurationSection getExtra(@NotNull Plugin plugin) {
-        ConfigurationSection section = extra.getConfigurationSection(plugin.getName());
-        if (section == null) {
-            section = extra.createSection(plugin.getName());
-        }
-        return section;
-    }
-
-
-    /**
-     * Save the extra data to the shop.
-     *
-     * @param plugin Plugin instace
-     * @param data   The data table
-     */
-    @Override
-    public void setExtra(@NotNull Plugin plugin, @NotNull ConfigurationSection data) {
-        extra.set(plugin.getName(), data);
-        setDirty();
-        update();
-    }
-
-    /**
-     * Gets shop status is stacking shop
-     *
-     * @return The shop stacking status
-     */
-    @Override
-    public boolean isStackingShop() {
-        return plugin.isAllowStack() && this.item.getAmount() > 1;
-    }
-
-    /**
-     * WARNING: This UUID will changed after plugin reload, shop reload or server restart DO NOT USE
-     * IT TO STORE DATA!
-     *
-     * @return Random UUID
-     */
-    @Override
-    public @NotNull UUID getRuntimeRandomUniqueId() {
-        return this.runtimeRandomUniqueId;
-    }
-
-    /**
-     * Gets the currency that shop use
-     *
-     * @return The currency name
-     */
-    @Override
-    public @Nullable String getCurrency() {
-        return this.currency;
-    }
-
-    /**
-     * Sets the currency that shop use
-     *
-     * @param currency The currency name; null to use default currency
-     */
-    @Override
-    public void setCurrency(@Nullable String currency) {
-        if (Objects.equals(this.currency, currency)) {
-            return;
-        }
-        this.currency = currency;
-        setDirty();
-        this.update();
-    }
-
-    @Override
-    public void openPreview(@NotNull Player player) {
-        if (inventoryPreview == null) {
-            inventoryPreview = new InventoryPreview(plugin, getItem().clone(), player.getLocale());
-        }
-        inventoryPreview.show(player);
-
-    }
-
-    @Override
-    public ShopInfoStorage saveToInfoStorage() {
-        return new ShopInfoStorage(getLocation().getWorld().getName(), new BlockPos(getLocation()), getOwner(), getPrice(), Util.serialize(this.originalItem), isUnlimited() ? 1 : 0, getShopType().toID(), saveExtraToYaml(), getCurrency(), isDisableDisplay(), getTaxAccount(), inventoryWrapperProvider, saveToSymbolLink(), getPermissionAudiences());
-    }
-
-    @Override
-    public @NotNull String getInventoryWrapperProvider() {
-        return inventoryWrapperProvider;
-    }
-
     public @NotNull SimpleDataRecord createDataRecord() {
         return new SimpleDataRecord(
                 getOwner(),
@@ -1877,13 +1882,5 @@ public class ContainerShop implements Shop, Reloadable {
             this.item.setAmount(this.originalItem.getAmount());
         }
         return Reloadable.super.reloadModule();
-    }
-
-    @Override
-    public void setShopId(long newId) {
-        if (this.shopId != -1) {
-            throw new IllegalStateException("Cannot set shop id once it fully created.");
-        }
-        this.shopId = newId;
     }
 }

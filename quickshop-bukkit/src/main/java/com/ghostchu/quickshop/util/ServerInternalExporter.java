@@ -24,6 +24,7 @@ public class ServerInternalExporter {
         exportEnchantments().save(new File(exportFolder, "enchantment.yml"));
         exportPotionEffectType().save(new File(exportFolder, "potion-effect.yml"));
     }
+
     public YamlConfiguration exportMaterial() {
         YamlConfiguration config = new YamlConfiguration();
         for (Material value : Material.values()) {
@@ -52,9 +53,10 @@ public class ServerInternalExporter {
         comments.add("Note: Some other plugins (or mods on Hybrid) may add custom materials.");
         comments.add("Note: and it will show raw translatable string on client (because no resource pack to add translations to client).");
         comments.add("Note: you can translate them by yourself in config.yml in custom-translation-key");
-        config.setComments("material",comments);
+        config.setComments("material", comments);
         return config;
     }
+
     public YamlConfiguration exportEnchantments() {
         YamlConfiguration config = new YamlConfiguration();
         for (Enchantment enchantment : Enchantment.values()) {
@@ -71,12 +73,13 @@ public class ServerInternalExporter {
         comments.add("Note: EcoEnchants or other plugins (or mods on Hybrid server) may add custom enchantments.");
         comments.add("Note: and it will show raw translatable string on client (because no resource pack to add translations to client).");
         comments.add("Note: you can translate them by yourself in config.yml in custom-translation-key");
-        config.setComments("enchantment",comments);
+        config.setComments("enchantment", comments);
         return config;
     }
+
     public YamlConfiguration exportPotionEffectType() {
         YamlConfiguration config = new YamlConfiguration();
-        for (PotionEffectType type: PotionEffectType.values()) {
+        for (PotionEffectType type : PotionEffectType.values()) {
             StringJoiner joiner = new StringJoiner("; ");
             joiner.add("MinecraftKey=" + type.getKey());
             joiner.add("Name=" + type.getName());
@@ -89,7 +92,7 @@ public class ServerInternalExporter {
         comments.add("Note: Some other plugins (or mods on Hybrid) may add custom potion effect types.");
         comments.add("Note: and it will show raw translatable string on client (because no resource pack to add translations to client).");
         comments.add("Note: you can translate them by yourself in config.yml in custom-translation-key");
-        config.setComments("enchantment",comments);
+        config.setComments("enchantment", comments);
         return config;
     }
 }

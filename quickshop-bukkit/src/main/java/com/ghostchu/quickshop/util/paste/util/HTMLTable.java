@@ -9,12 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class HTMLTable {
-    private final int columns;
-    private String[] title;
-    private final List<String[]> data = new LinkedList<>();
-
-    private final boolean firstColumnBold;
-
     private static final String TEMPLATE = """           
             <table style="table-layout: fixed;">
               {col}
@@ -22,6 +16,11 @@ public class HTMLTable {
               {tbody}
             </table>
             """;
+    private final int columns;
+    private final List<String[]> data = new LinkedList<>();
+
+    private final boolean firstColumnBold;
+    private String[] title;
 
     /**
      * Creates an HTML Table
@@ -85,18 +84,6 @@ public class HTMLTable {
                 .replace("{tbody}", tbody);
     }
 
-    private String renderBody() {
-        StringBuilder tdBuilder = new StringBuilder();
-        for (String[] line : data) {
-            tdBuilder.append("<tr>");
-            for (String record : line) {
-                tdBuilder.append("<td>").append(record).append("</td>");
-            }
-            tdBuilder.append("</tr>");
-        }
-        return "<tbody>" + tdBuilder + "</tbody>";
-    }
-
     @NotNull
     private String renderHead() {
         StringBuilder tdBuilder = new StringBuilder();
@@ -113,6 +100,18 @@ public class HTMLTable {
                 </tr>
                 </thead>
                 """.replace("{th}", tdBuilder.toString());
+    }
+
+    private String renderBody() {
+        StringBuilder tdBuilder = new StringBuilder();
+        for (String[] line : data) {
+            tdBuilder.append("<tr>");
+            for (String record : line) {
+                tdBuilder.append("<td>").append(record).append("</td>");
+            }
+            tdBuilder.append("</tr>");
+        }
+        return "<tbody>" + tdBuilder + "</tbody>";
     }
 
     private String renderColAttributes() {

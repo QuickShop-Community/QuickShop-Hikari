@@ -17,16 +17,6 @@ import java.util.Map;
 public interface InventoryWrapper extends Iterable<ItemStack> {
 
     /**
-     * Return the iterator for this inventory
-     * It's not thread-safe, please use that in main-thread
-     *
-     * @return the iterator for this inventory
-     */
-    @NotNull
-    @Override
-    InventoryWrapperIterator iterator();
-
-    /**
      * Change items in the inventory by index
      * Set the item-stack type to air or amount to zero will remove it
      * <p>
@@ -52,18 +42,14 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
     }
 
     /**
-     * Change the item from Inventory
+     * Return the iterator for this inventory
+     * It's not thread-safe, please use that in main-thread
+     *
+     * @return the iterator for this inventory
      */
-    interface ItemChanger {
-        /**
-         * Do item change action in the inventory
-         *
-         * @param index     the item index in the inventory, start from zero
-         * @param itemStack the item in this index
-         * @return If continue to change items in the next index
-         */
-        boolean changeItem(int index, ItemStack itemStack);
-    }
+    @NotNull
+    @Override
+    InventoryWrapperIterator iterator();
 
     /**
      * Get the location of the block or entity which corresponds to this inventory. May return null if this container
@@ -193,6 +179,20 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
      */
     default boolean isValid() {
         return true;
+    }
+
+    /**
+     * Change the item from Inventory
+     */
+    interface ItemChanger {
+        /**
+         * Do item change action in the inventory
+         *
+         * @param index     the item index in the inventory, start from zero
+         * @param itemStack the item in this index
+         * @return If continue to change items in the next index
+         */
+        boolean changeItem(int index, ItemStack itemStack);
     }
 
 }

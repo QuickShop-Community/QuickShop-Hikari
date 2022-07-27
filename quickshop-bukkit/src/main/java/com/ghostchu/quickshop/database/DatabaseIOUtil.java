@@ -32,7 +32,7 @@ public class DatabaseIOUtil {
                 try (SQLQuery query = table.createQuery().build().execute()) {
                     ResultSet result = query.getResultSet();
                     helper.writeToCSV(result, tableCsv);
-                    Log.debug("Exported table " + table.name()+" to " + tableCsv.getAbsolutePath());
+                    Log.debug("Exported table " + table.name() + " to " + tableCsv.getAbsolutePath());
                 }
                 Log.debug("Adding table " + table.name() + " to zip file");
                 out.putNextEntry(new ZipEntry(table.getName() + ".csv"));

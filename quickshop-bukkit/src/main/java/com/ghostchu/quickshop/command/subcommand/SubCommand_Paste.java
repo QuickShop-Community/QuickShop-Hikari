@@ -58,21 +58,6 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
         });
     }
 
-    private boolean pasteToPastebin(@NotNull CommandSender sender) {
-        final String string = Paste.paste(new PasteGenerator(sender).render());
-        if (string != null) {
-            String url = "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8);
-            Component component = plugin.text().of(sender, "paste-created", url).forLocale();
-            component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, url));
-            MsgUtil.sendDirectMessage(sender, component);
-            if ("zh_cn".equalsIgnoreCase(MsgUtil.getDefaultGameLanguageCode()) || Locale.getDefault().equals(Locale.CHINA)) {
-                plugin.text().of(sender, "paste-451").send();
-            }
-            return true;
-        }
-        return false;
-    }
-
     private boolean pasteToLocalFile(@NotNull CommandSender sender) {
         File file = new File(plugin.getDataFolder(), "paste");
         file.mkdirs();
@@ -95,6 +80,21 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
             plugin.text().of("paste-created-local-failed").send();
             return false;
         }
+    }
+
+    private boolean pasteToPastebin(@NotNull CommandSender sender) {
+        final String string = Paste.paste(new PasteGenerator(sender).render());
+        if (string != null) {
+            String url = "https://ghost-chu.github.io/quickshop-hikari-paste-viewer/?remote=" + URLEncoder.encode(string, StandardCharsets.UTF_8);
+            Component component = plugin.text().of(sender, "paste-created", url).forLocale();
+            component = component.clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, url));
+            MsgUtil.sendDirectMessage(sender, component);
+            if ("zh_cn".equalsIgnoreCase(MsgUtil.getDefaultGameLanguageCode()) || Locale.getDefault().equals(Locale.CHINA)) {
+                plugin.text().of(sender, "paste-451").send();
+            }
+            return true;
+        }
+        return false;
     }
 
 
