@@ -75,7 +75,7 @@ public class NationCommand implements CommandHandler<Player> {
         if (plugin.getConfig().getBoolean("bank-mode.enable")) {
             Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType(), shop.isSelling());
             if (price == null) {
-                plugin.getApi().getTextManager().of(sender, "item-not-allowed").send();
+                plugin.getApi().getTextManager().of(sender, "addon.towny.item-not-allowed").send();
                 return;
             }
             if (shop.isStackingShop()) {
@@ -89,7 +89,7 @@ public class NationCommand implements CommandHandler<Player> {
         //noinspection ConstantConditions
         shop.setOwner(profile.getUniqueId());
         TownyShopUtil.setShopNation(shop, nation);
-        plugin.getApi().getTextManager().of(sender, "make-shop-owned-by-nation", nation.getName()).send();
-        plugin.getApi().getTextManager().of(sender, "shop-owning-changing-notice").send();
+        plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-owned-by-nation", nation.getName()).send();
+        plugin.getApi().getTextManager().of(sender, "addon.towny.shop-owning-changing-notice").send();
     }
 }
