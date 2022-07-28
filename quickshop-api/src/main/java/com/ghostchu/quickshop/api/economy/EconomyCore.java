@@ -47,12 +47,12 @@ public interface EconomyCore {
     /**
      * Fetches the balance of the given account name
      *
-     * @param name     The name of the account
+     * @param uuid     The uuid of the account
      * @param currency The currency name
      * @param world    The transaction world
      * @return Their current balance.
      */
-    double getBalance(@NotNull UUID name, @NotNull World world, @Nullable String currency);
+    double getBalance(@NotNull UUID uuid, @NotNull World world, @Nullable String currency);
 
     /**
      * Fetches the balance of the given player

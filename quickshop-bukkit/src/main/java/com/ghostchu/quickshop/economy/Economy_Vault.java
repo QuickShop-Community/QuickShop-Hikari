@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -165,7 +166,6 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
         if (!isValid()) {
             return "Error";
         }
-
         return this.formatter.getInternalFormat(balance, null);
     }
 
@@ -174,17 +174,13 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
         if (!isValid()) {
             return 0.0;
         }
-
-        return getBalance(plugin.getServer().getOfflinePlayer(name), world, currency);
+        return getBalance(Bukkit.getOfflinePlayer(name), world, currency);
 
     }
 
     @Override
     public double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
-            return 0.0;
-        }
-        if (player.getName() == null) {
             return 0.0;
         }
         try {
@@ -203,7 +199,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
         if (!isValid()) {
             return false;
         }
-        return withdraw(plugin.getServer().getOfflinePlayer(name), amount, world, currency);
+        return withdraw(Bukkit.getOfflinePlayer(name), amount, world, currency);
     }
 
     @Override
