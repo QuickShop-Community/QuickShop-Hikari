@@ -597,16 +597,16 @@ addon:
     trade-flag-denied: "<red>Du hast keine Berechtigung in dieser Residenz etwas zu kaufen."
     you-cannot-create-shop-in-wildness: "<red>Du kannst keinen Shop in der Wildnis erstellen."
   griefprevention:
-    creation-denied: "<red>You don't have permission to create shops in this claim."
-    trade-denied: "<red>You don't have permission to purchase shops in this claim."
+    creation-denied: "<red>Du hast keine Berechtigung einen Shop in diesem Claim zu erstellen."
+    trade-denied: "<red>Du hast keine Berechtigung einen Shop in diesem Claim zu kaufen."
   lands:
-    world-not-enabled: "<red>You are not allowed to create or purchase in this world."
-    creation-denied: "<red>You don't have permission to create shops in this Land."
+    world-not-enabled: "<red>Du kannst keine Shops in dieser Welt kaufen oder erstellen."
+    creation-denied: "<red>Du hast keine Berechtigung einen Shop in diesem Land zu erstellen."
   plotsquared:
-    no-plot-whitelist-creation: "<red>You cannot create shop outside of Plot."
-    no-plot-whitelist-trade: "<red>You cannot purchase shop outside of Plot."
-    creation-denied: "<red>You don't have permission to create shops in this Plot."
-    trade-denied: "<red>You don't have permission to purchase shops in this Plot."
+    no-plot-whitelist-creation: "<red>Du kannst keinen Shop ausserhalb des Plots erstellen."
+    no-plot-whitelist-trade: "<red>Du kannst keine Shops ausserhalb des Plots kaufen."
+    creation-denied: "<red>Du hast keine Berechtigung Shops in diesem Plot zu erstellen."
+    trade-denied: "<red>Du hast keine Berechtigung Shops in diesem Plot zu kaufen."
   superiorskyblock:
-    owner-create-only: "<red>Only island owner can create shop there."
-    owner-member-create-only: "<red>Only island owner or member can create shop there."
+    owner-create-only: "<red>Nur der Inselbesitzer kann einen Shop hier erstellen."
+    owner-member-create-only: "<red>Nur der Inselbesitzer oder ein Mitglied können einen Shop hier erstellen."
