@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is QuickShopItemMatcherImpl.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.util.matcher.item;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -26,7 +7,6 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
-import lombok.AllArgsConstructor;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.configuration.ConfigurationSection;
@@ -40,7 +20,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-@AllArgsConstructor
 public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
     private final QuickShop plugin;
 
@@ -58,6 +37,12 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
     private void init() {
         itemMetaMatcher = new ItemMetaMatcher(plugin.getConfig().getConfigurationSection("matcher.item"), this);
         workType = plugin.getConfig().getInt("matcher.work-type");
+    }
+
+    public QuickShopItemMatcherImpl(QuickShop plugin, ItemMetaMatcher itemMetaMatcher, int workType) {
+        this.plugin = plugin;
+        this.itemMetaMatcher = itemMetaMatcher;
+        this.workType = workType;
     }
 
     /**
@@ -78,40 +63,6 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
     @Override
     public @NotNull Plugin getPlugin() {
         return plugin;
-    }
-
-    /**
-     * Tests ItemStacks is matches
-     * BEWARE: Different order of itemstacks you might will got different results
-     *
-     * @param requireStack The original ItemStack
-     * @param givenStack   The ItemStack will test matches with original itemstack.
-     * @return The result of tests
-     */
-    public boolean matches(@Nullable ItemStack[] requireStack, @Nullable ItemStack[] givenStack) {
-        if (requireStack == null && givenStack == null) {
-            return true;
-        }
-
-        if (requireStack == null || givenStack == null) {
-            return false;
-        }
-
-        if (requireStack.length != givenStack.length) {
-            return false;
-        }
-        //For performance, we just check really equals in each index,check isn't contain or match will cost n^n time in most
-        for (int i = 0; i < requireStack.length; i++) {
-            if ((requireStack[i] != null) && (givenStack[i] != null) &&
-                    (requireStack[i].getAmount() != givenStack[i].getAmount())) {
-                return false;
-            }
-
-            if (!matches(requireStack[i], givenStack[i])) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -175,6 +126,40 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         }
 
         return !requireStack.hasItemMeta() && !givenStack.hasItemMeta();
+    }
+
+    /**
+     * Tests ItemStacks is matches
+     * BEWARE: Different order of itemstacks you might will got different results
+     *
+     * @param requireStack The original ItemStack
+     * @param givenStack   The ItemStack will test matches with original itemstack.
+     * @return The result of tests
+     */
+    public boolean matches(@Nullable ItemStack[] requireStack, @Nullable ItemStack[] givenStack) {
+        if (requireStack == null && givenStack == null) {
+            return true;
+        }
+
+        if (requireStack == null || givenStack == null) {
+            return false;
+        }
+
+        if (requireStack.length != givenStack.length) {
+            return false;
+        }
+        //For performance, we just check really equals in each index,check isn't contain or match will cost n^n time in most
+        for (int i = 0; i < requireStack.length; i++) {
+            if ((requireStack[i] != null) && (givenStack[i] != null) &&
+                    (requireStack[i].getAmount() != givenStack[i].getAmount())) {
+                return false;
+            }
+
+            if (!matches(requireStack[i], givenStack[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean typeMatches(ItemStack requireStack, ItemStack givenStack) {

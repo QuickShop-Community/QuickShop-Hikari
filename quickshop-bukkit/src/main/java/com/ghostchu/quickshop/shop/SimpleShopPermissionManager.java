@@ -77,6 +77,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         }
     }
 
+    @Override
     public void registerPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission) {
         if (!permissionMapping.containsKey(group)) {
             throw new IllegalArgumentException("Group " + group + " does not exist.");
@@ -86,6 +87,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         permissionMapping.get(group).add(fullPermissionPath);
     }
 
+    @Override
     public void unregisterPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission) {
         if (!permissionMapping.containsKey(group)) {
             return;
@@ -95,10 +97,12 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         permissionMapping.get(group).remove(fullPermissionPath);
     }
 
+    @Override
     public boolean hasGroup(@NotNull String group) {
         return permissionMapping.containsKey(group);
     }
 
+    @Override
     public void registerGroup(@NotNull String group, @NotNull Collection<String> permissions) {
         if (permissionMapping.containsKey(group)) {
             throw new IllegalArgumentException("Group " + group + " already exists.");
@@ -107,6 +111,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         permissionMapping.put(group, new CopyOnWriteArraySet<>(permissions));
     }
 
+    @Override
     public void unregisterGroup(@NotNull String group) {
         if (!permissionMapping.containsKey(group)) {
             return;
@@ -115,6 +120,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         permissionMapping.remove(group);
     }
 
+    @Override
     public boolean hasPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission) {
         if (!permissionMapping.containsKey(group)) {
             return false;
@@ -125,13 +131,15 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         return result;
     }
 
+    @Override
+    public boolean hasPermission(@NotNull String group, @NotNull BuiltInShopPermission permission) {
+        return hasPermission(group, plugin, permission.getRawNode());
+    }
+
+    @Override
     @NotNull
     public List<String> getGroups() {
         return ImmutableList.copyOf(this.permissionMapping.keySet());
-    }
-
-    public boolean hasPermission(@NotNull String group, @NotNull BuiltInShopPermission permission) {
-        return hasPermission(group, plugin, permission.getRawNode());
     }
 
     @Override

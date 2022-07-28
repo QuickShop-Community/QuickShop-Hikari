@@ -14,6 +14,11 @@ import java.util.List;
 
 public class DatabaseInfoItem implements SubPasteItem {
     @Override
+    public @NotNull String genBody() {
+        return buildContent();
+    }
+
+    @Override
     public @NotNull String getTitle() {
         return "Database";
     }
@@ -66,11 +71,5 @@ public class DatabaseInfoItem implements SubPasteItem {
             }
         }
 
-    }
-
-
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
     }
 }

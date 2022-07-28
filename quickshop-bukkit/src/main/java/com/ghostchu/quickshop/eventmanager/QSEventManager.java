@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is QSEventManager.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.eventmanager;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -25,7 +6,6 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
-import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.*;
@@ -52,27 +32,6 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
         this.rescan();
     }
 
-    @Override
-    public ReloadResult reloadModule() {
-        rescan();
-        return new ReloadResult(ReloadStatus.SUCCESS, null, null);
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void serverReloaded(ServerLoadEvent event) {
-        this.rescan();
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void pluginDisable(PluginDisableEvent event) {
-        this.rescan();
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void pluginEnable(PluginEnableEvent event) {
-        this.rescan();
-    }
-
     private synchronized void rescan() {
         this.ignoredListener.clear();
         plugin
@@ -92,6 +51,27 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
                                 Log.debug("Successfully added blacklist: [DYNAMIC] " + input);
                             }
                         });
+    }
+
+    @Override
+    public ReloadResult reloadModule() {
+        rescan();
+        return new ReloadResult(ReloadStatus.SUCCESS, null, null);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void serverReloaded(ServerLoadEvent event) {
+        this.rescan();
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void pluginDisable(PluginDisableEvent event) {
+        this.rescan();
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void pluginEnable(PluginEnableEvent event) {
+        this.rescan();
     }
 
     @Override
@@ -166,12 +146,16 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
     }
 }
 
-@AllArgsConstructor
 class ListenerContainer {
     @Nullable
     private final Class<?> clazz;
     @NotNull
     private final String clazzName;
+
+    public ListenerContainer(@Nullable Class<?> clazz, @NotNull String clazzName) {
+        this.clazz = clazz;
+        this.clazzName = clazzName;
+    }
 
     public boolean matches(@NotNull Class<?> matching, @NotNull Plugin plugin) {
         if (clazz != null) {

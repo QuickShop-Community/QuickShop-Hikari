@@ -1,34 +1,16 @@
-/*
- *  This file is a part of project QuickShop, the name is InventoryTransaction.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.event.InventoryTransactionEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.operation.Operation;
+import com.ghostchu.quickshop.api.shop.InventoryTransaction;
 import com.ghostchu.quickshop.shop.operation.AddItemOperation;
 import com.ghostchu.quickshop.shop.operation.RemoveItemOperation;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Builder;
-import lombok.Getter;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,30 +20,86 @@ import java.util.List;
 import java.util.Stack;
 import java.util.logging.Level;
 
-public class InventoryTransaction {
-    @Getter
-    private final InventoryWrapper from;
-    @Getter
-    private final InventoryWrapper to;
-    @Getter
-    private final ItemStack item;
-    @Getter
-    private final int amount;
+public class SimpleInventoryTransaction implements InventoryTransaction {
     private final Stack<Operation> processingStack = new Stack<>();
     private final QuickShop plugin = QuickShop.getInstance();
-    @Getter
+    private InventoryWrapper from;
+    private InventoryWrapper to;
+    private ItemStack item;
+    private int amount;
     private String lastError;
 
     @Builder
-    public InventoryTransaction(@Nullable InventoryWrapper from, @Nullable InventoryWrapper to, @NotNull ItemStack item, int amount) {
-        if (from == null && to == null)
+    public SimpleInventoryTransaction(@Nullable InventoryWrapper from, @Nullable InventoryWrapper to, @NotNull ItemStack item, int amount) {
+        if (from == null && to == null) {
             throw new IllegalArgumentException("Both from and to are null");
+        }
         this.from = from;
         this.to = to;
         this.item = item.clone();
         this.amount = amount;
+        new InventoryTransactionEvent(this).callEvent();
     }
 
+    @Override
+    @Nullable
+    public InventoryWrapper getFrom() {
+        return from;
+    }
+
+    @Override
+    public void setFrom(@Nullable InventoryWrapper from) {
+        this.from = from;
+    }
+
+    @Override
+    @Nullable
+    public InventoryWrapper getTo() {
+        return to;
+    }
+
+    @Override
+    public void setTo(@Nullable InventoryWrapper to) {
+        this.to = to;
+    }
+
+    @Override
+    @NotNull
+    public ItemStack getItem() {
+        return item;
+    }
+
+    @Override
+    public void setItem(@NotNull ItemStack item) {
+        this.item = item;
+    }
+
+    @Override
+    @Nullable
+    public String getLastError() {
+        return lastError;
+    }
+
+    @Override
+    public void setLastError(@Nullable String lastError) {
+        this.lastError = lastError;
+    }
+
+    @Override
+    public int getAmount() {
+        return amount;
+    }
+
+    @Override
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    @Override
+    @NotNull
+    public Stack<Operation> getProcessingStack() {
+        return processingStack;
+    }
 
     /**
      * Commit the transaction by the Fail-Safe way
@@ -69,6 +107,7 @@ public class InventoryTransaction {
      *
      * @return The transaction success.
      */
+    @Override
     public boolean failSafeCommit() {
         Log.transaction("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + Util.serialize(item));
         boolean result = commit();
@@ -84,10 +123,11 @@ public class InventoryTransaction {
      *
      * @return The transaction success.
      */
+    @Override
     public boolean commit() {
-        return this.commit(new TransactionCallback() {
+        return this.commit(new SimpleTransactionCallback() {
             @Override
-            public void onSuccess(@NotNull InventoryTransaction inventoryTransaction) {
+            public void onSuccess(@NotNull SimpleInventoryTransaction inventoryTransaction) {
             }
         });
     }
@@ -98,7 +138,8 @@ public class InventoryTransaction {
      * @param callback The result callback
      * @return The transaction success.
      */
-    public boolean commit(@NotNull InventoryTransaction.TransactionCallback callback) {
+    @Override
+    public boolean commit(@NotNull TransactionCallback callback) {
         Log.transaction("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Item: " + Util.serialize(item));
         if (!callback.onCommit(this)) {
             this.lastError = "Plugin cancelled this transaction.";
@@ -118,25 +159,6 @@ public class InventoryTransaction {
         return true;
     }
 
-    private boolean executeOperation(@NotNull Operation operation) {
-        if (operation.isCommitted()) {
-            throw new IllegalStateException("Operation already committed");
-        }
-        if (operation.isRollback()) {
-            throw new IllegalStateException("Operation already rolled back, you must create another new operation.");
-        }
-        try {
-            if (operation.commit()) {
-                processingStack.push(operation); // Item is special, economy fail won't do anything but item does.
-                return true;
-            }
-            return false;
-        } catch (Exception exception) {
-            this.lastError = "Failed to execute operation: " + operation;
-            return false;
-        }
-    }
-
     /**
      * Rolling back the transaction
      *
@@ -145,6 +167,7 @@ public class InventoryTransaction {
      */
     @SuppressWarnings("UnusedReturnValue")
     @NotNull
+    @Override
     public List<Operation> rollback(boolean continueWhenFailed) {
         List<Operation> operations = new ArrayList<>();
         while (!processingStack.isEmpty()) {
@@ -183,14 +206,33 @@ public class InventoryTransaction {
         return operations;
     }
 
-    public interface TransactionCallback {
+    private boolean executeOperation(@NotNull Operation operation) {
+        if (operation.isCommitted()) {
+            throw new IllegalStateException("Operation already committed");
+        }
+        if (operation.isRollback()) {
+            throw new IllegalStateException("Operation already rolled back, you must create another new operation.");
+        }
+        try {
+            if (operation.commit()) {
+                processingStack.push(operation); // Item is special, economy fail won't do anything but item does.
+                return true;
+            }
+            return false;
+        } catch (Exception exception) {
+            this.lastError = "Failed to execute operation: " + operation;
+            return false;
+        }
+    }
+
+    public interface SimpleTransactionCallback extends InventoryTransaction.TransactionCallback {
         /**
          * Calling while Transaction commit
          *
          * @param transaction Transaction
          * @return Does commit event has been cancelled
          */
-        default boolean onCommit(@NotNull InventoryTransaction transaction) {
+        default boolean onCommit(@NotNull SimpleInventoryTransaction transaction) {
             return true;
         }
 
@@ -199,7 +241,7 @@ public class InventoryTransaction {
          *
          * @param transaction Transaction
          */
-        default void onSuccess(@NotNull InventoryTransaction transaction) {
+        default void onSuccess(@NotNull SimpleInventoryTransaction transaction) {
         }
 
         /**
@@ -209,7 +251,7 @@ public class InventoryTransaction {
          *
          * @param transaction Transaction
          */
-        default void onFailed(@NotNull InventoryTransaction transaction) {
+        default void onFailed(@NotNull SimpleInventoryTransaction transaction) {
         }
 
 

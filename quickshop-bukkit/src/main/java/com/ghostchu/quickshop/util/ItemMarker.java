@@ -22,13 +22,12 @@ import java.util.regex.Pattern;
 public class ItemMarker implements Reloadable {
     private final QuickShop plugin;
     private final Map<String, ItemStack> stacks = new HashMap<>();
-    private YamlConfiguration configuration;
     private final File file;
     @Getter
     @SuppressWarnings("RegExpSimplifiable")
     private final String nameRegExp = "[a-zA-Z0-9_]*";
-
     private final Pattern namePattern = Pattern.compile(nameRegExp);
+    private YamlConfiguration configuration;
 
     public ItemMarker(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -50,6 +49,19 @@ public class ItemMarker implements Reloadable {
         }
     }
 
+    private void initDefaultConfiguration(@NotNull File file) {
+        YamlConfiguration yamlConfiguration = new YamlConfiguration();
+        yamlConfiguration.set("version", 1);
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            file.createNewFile();
+            yamlConfiguration.save(file);
+        } catch (Exception e) {
+            Log.permission(Level.SEVERE, "Failed to create default items configuration file");
+            plugin.getLogger().log(Level.SEVERE, "Failed to create default items configuration", e);
+        }
+    }
+
     @NotNull
     public OperationResult save(@NotNull String itemName, @NotNull ItemStack itemStack) {
         if (stacks.containsKey(itemName)) {
@@ -68,6 +80,16 @@ public class ItemMarker implements Reloadable {
         }
     }
 
+    private boolean saveConfig() {
+        try {
+            configuration.save(file);
+            return true;
+        } catch (IOException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to save items.yml", e);
+            return false;
+        }
+    }
+
     @NotNull
     public OperationResult remove(@NotNull String itemName) {
         if (!stacks.containsKey(itemName)) {
@@ -80,16 +102,6 @@ public class ItemMarker implements Reloadable {
             return OperationResult.SUCCESS;
         } else {
             return OperationResult.UNKNOWN;
-        }
-    }
-
-    private boolean saveConfig() {
-        try {
-            configuration.save(file);
-            return true;
-        } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to save items.yml", e);
-            return false;
         }
     }
 
@@ -111,19 +123,6 @@ public class ItemMarker implements Reloadable {
     @NotNull
     public List<String> getRegisteredItems() {
         return new ArrayList<>(stacks.keySet());
-    }
-
-    private void initDefaultConfiguration(@NotNull File file) {
-        YamlConfiguration yamlConfiguration = new YamlConfiguration();
-        yamlConfiguration.set("version", 1);
-        try {
-            //noinspection ResultOfMethodCallIgnored
-            file.createNewFile();
-            yamlConfiguration.save(file);
-        } catch (Exception e) {
-            Log.permission(Level.SEVERE, "Failed to create default items configuration file");
-            plugin.getLogger().log(Level.SEVERE, "Failed to create default items configuration", e);
-        }
     }
 
     @Override

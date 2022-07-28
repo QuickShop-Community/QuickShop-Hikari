@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is JsonUtil.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.util;
 
 import com.google.gson.*;
@@ -53,18 +34,8 @@ public final class JsonUtil {
         return REGULAR_GSON;
     }
 
-    @NotNull
-    public static Gson standard() {
-        return STANDARD_GSON;
-    }
-
     public static Gson getGson() {
         return STANDARD_GSON;
-    }
-
-    @NotNull
-    public static Gson prettyPrinting() {
-        return PRETTY_PRINT_GSON;
     }
 
     @NotNull
@@ -81,8 +52,18 @@ public final class JsonUtil {
         standard().toJson(object, writer);
     }
 
+    @NotNull
+    public static Gson standard() {
+        return STANDARD_GSON;
+    }
+
     public static void writeObjectPretty(@NotNull Appendable writer, @NotNull JsonObject object) {
         prettyPrinting().toJson(object, writer);
+    }
+
+    @NotNull
+    public static Gson prettyPrinting() {
+        return PRETTY_PRINT_GSON;
     }
 
     public static void writeElement(@NotNull Appendable writer, @NotNull JsonElement element) {
@@ -122,13 +103,13 @@ public final class JsonUtil {
 
     public static class HiddenAnnotationExclusionStrategy implements ExclusionStrategy {
         @Override
-        public boolean shouldSkipClass(Class<?> clazz) {
-            return clazz.getDeclaredAnnotation(Hidden.class) != null;
+        public boolean shouldSkipField(FieldAttributes f) {
+            return f.getAnnotation(Hidden.class) != null;
         }
 
         @Override
-        public boolean shouldSkipField(FieldAttributes f) {
-            return f.getAnnotation(Hidden.class) != null;
+        public boolean shouldSkipClass(Class<?> clazz) {
+            return clazz.getDeclaredAnnotation(Hidden.class) != null;
         }
     }
 

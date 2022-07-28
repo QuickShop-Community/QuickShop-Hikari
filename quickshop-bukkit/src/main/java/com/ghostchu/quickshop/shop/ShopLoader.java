@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is ShopLoader.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.shop;
 
 import cc.carm.lib.easysql.api.SQLQuery;
@@ -97,11 +78,14 @@ public class ShopLoader {
                 int y = rs.getInt("y");
                 int z = rs.getInt("z");
                 String world = rs.getString("world");
-                if (worldName != null)
-                    if (!worldName.equals(world))
+                if (worldName != null) {
+                    if (!worldName.equals(world)) {
                         continue;
-                if (world == null)
+                    }
+                }
+                if (world == null) {
                     continue;
+                }
                 if (Bukkit.getWorld(world) == null) {
                     ++loadAfterWorldLoaded;
                     continue;
@@ -211,6 +195,29 @@ public class ShopLoader {
         }
     }
 
+    private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
+        errors++;
+        Logger logger = plugin.getLogger();
+        logger.warning("##########FAILED TO LOAD SHOP##########");
+        logger.warning("  >> Error Info:");
+        String err = ex.getMessage();
+        if (err == null) {
+            err = "null";
+        }
+        logger.warning(err);
+        logger.warning("  >> Error Trace");
+        ex.printStackTrace();
+        logger.warning("  >> Target Location Info");
+        logger.warning("Location: " + ((shopLocation == null) ? "NULL" : shopLocation.toString()));
+        logger.warning(
+                "Block: " + ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
+        logger.warning("#######################################");
+        if (errors > 10) {
+            logger.severe(
+                    "QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
+        }
+    }
+
     @SuppressWarnings("ConstantConditions")
     private boolean shopNullCheck(@Nullable Shop shop) {
         if (shop == null) {
@@ -237,30 +244,6 @@ public class ShopLoader {
             Log.debug("Shop owner not exist on this server, did you have reset the playerdata?");
         }
         return false;
-    }
-
-
-    private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
-        errors++;
-        Logger logger = plugin.getLogger();
-        logger.warning("##########FAILED TO LOAD SHOP##########");
-        logger.warning("  >> Error Info:");
-        String err = ex.getMessage();
-        if (err == null) {
-            err = "null";
-        }
-        logger.warning(err);
-        logger.warning("  >> Error Trace");
-        ex.printStackTrace();
-        logger.warning("  >> Target Location Info");
-        logger.warning("Location: " + ((shopLocation == null) ? "NULL" : shopLocation.toString()));
-        logger.warning(
-                "Block: " + ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
-        logger.warning("#######################################");
-        if (errors > 10) {
-            logger.severe(
-                    "QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
-        }
     }
 //
 //    public synchronized void recoverFromFile(@NotNull String fileContent) {
@@ -314,7 +297,6 @@ public class ShopLoader {
 //            plugin.getLogger().info("Finished!");
 //        });
 //    }
-
 
     @Getter
     @Setter

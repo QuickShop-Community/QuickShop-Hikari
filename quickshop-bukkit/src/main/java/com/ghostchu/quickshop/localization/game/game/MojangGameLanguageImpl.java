@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is MojangGameLanguageImpl.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.localization.game.game;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -65,9 +46,9 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
     private static final boolean IS_POTION_SUPPORT_MINECRAFT_KEY = Util.isMethodAvailable("org.bukkit.potion.PotionEffectType", "getKey");
     private final QuickShop plugin;
     private final String languageCode;
+    private final MojangApiMirror mirror;
     @Nullable
     private volatile JsonObject lang = null;
-    private final MojangApiMirror mirror;
 
     @SneakyThrows
     public MojangGameLanguageImpl(@NotNull QuickShop plugin, @NotNull String languageCode) {
@@ -146,25 +127,6 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         }
     }
 
-    /**
-     * Get block only translations, if not found, it WON'T call getItem()
-     *
-     * @param material The material
-     * @return The translations for material
-     */
-    @NotNull
-    public String getBlock(@NotNull Material material) {
-        if (lang == null) {
-            return super.getItem(material);
-        }
-
-        JsonElement jsonElement = lang.get("block.minecraft." + material.name().toLowerCase());
-        if (jsonElement == null) {
-            return super.getItem(material);
-        }
-        return jsonElement.getAsString();
-    }
-
     @Override
     public @NotNull String getPotion(@NotNull PotionEffectType potionEffectType) {
         if (lang == null) {
@@ -203,6 +165,25 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         JsonElement jsonElement = lang.get("entity.minecraft." + entityType.name().toLowerCase());
         if (jsonElement == null) {
             return super.getEntity(entityType);
+        }
+        return jsonElement.getAsString();
+    }
+
+    /**
+     * Get block only translations, if not found, it WON'T call getItem()
+     *
+     * @param material The material
+     * @return The translations for material
+     */
+    @NotNull
+    public String getBlock(@NotNull Material material) {
+        if (lang == null) {
+            return super.getItem(material);
+        }
+
+        JsonElement jsonElement = lang.get("block.minecraft." + material.name().toLowerCase());
+        if (jsonElement == null) {
+            return super.getItem(material);
         }
         return jsonElement.getAsString();
     }
@@ -355,8 +336,9 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 plugin.getLogger().info("Success! The game assets now up-to-date :)");
                 plugin.getLogger().info("Now you can execute [/qs reset lang] command to regenerate files with localized.");
             } catch (Exception e) {
-                if (plugin.getSentryErrorReporter() != null)
+                if (plugin.getSentryErrorReporter() != null) {
                     plugin.getSentryErrorReporter().ignoreThrow();
+                }
                 plugin.getLogger().log(Level.WARNING, "Something going wrong when loading game translation assets", e);
             }
         }

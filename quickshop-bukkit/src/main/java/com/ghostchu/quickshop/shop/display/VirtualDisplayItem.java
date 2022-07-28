@@ -1,21 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is VirtualDisplayItem.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
 package com.ghostchu.quickshop.shop.display;
 
 import com.comphenix.protocol.PacketType;
@@ -142,26 +124,6 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
         }
     }
 
-    private void sendPacketToAll(@NotNull PacketContainer packet) {
-        Iterator<UUID> iterator = packetSenders.iterator();
-        while (iterator.hasNext()) {
-            Player nextPlayer = PLUGIN.getServer().getPlayer(iterator.next());
-            if (nextPlayer == null) {
-                iterator.remove();
-            } else {
-                sendPacket(nextPlayer, packet);
-            }
-        }
-    }
-
-    private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
-        try {
-            PROTOCOL_MANAGER.sendServerPacket(player, packet);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException("An error occurred when sending a packet", e);
-        }
-    }
-
     @Override
     public boolean removeDupe() {
         return false;
@@ -172,12 +134,6 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
         Util.ensureThread(false);
         remove();
         spawn();
-    }
-
-    public void sendFakeItemToAll() {
-        sendPacketToAll(fakeItemSpawnPacket);
-        sendPacketToAll(fakeItemMetaPacket);
-        sendPacketToAll(fakeItemVelocityPacket);
     }
 
     @Override
@@ -215,17 +171,6 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
         isDisplay = true;
     }
 
-    private void unload() {
-        packetSenders.clear();
-        VirtualDisplayItemManager.remove(chunkLocation, this);
-    }
-
-    public void sendFakeItem(@NotNull Player player) {
-        sendPacket(player, fakeItemSpawnPacket);
-        sendPacket(player, fakeItemMetaPacket);
-        sendPacket(player, fakeItemVelocityPacket);
-    }
-
     @Override
     public @Nullable Entity getDisplay() {
         return null;
@@ -241,6 +186,43 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
 
         }
         return isDisplay;
+    }
+
+    public void sendFakeItemToAll() {
+        sendPacketToAll(fakeItemSpawnPacket);
+        sendPacketToAll(fakeItemMetaPacket);
+        sendPacketToAll(fakeItemVelocityPacket);
+    }
+
+    private void sendPacketToAll(@NotNull PacketContainer packet) {
+        Iterator<UUID> iterator = packetSenders.iterator();
+        while (iterator.hasNext()) {
+            Player nextPlayer = PLUGIN.getServer().getPlayer(iterator.next());
+            if (nextPlayer == null) {
+                iterator.remove();
+            } else {
+                sendPacket(nextPlayer, packet);
+            }
+        }
+    }
+
+    private void unload() {
+        packetSenders.clear();
+        VirtualDisplayItemManager.remove(chunkLocation, this);
+    }
+
+    public void sendFakeItem(@NotNull Player player) {
+        sendPacket(player, fakeItemSpawnPacket);
+        sendPacket(player, fakeItemMetaPacket);
+        sendPacket(player, fakeItemVelocityPacket);
+    }
+
+    private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
+        try {
+            PROTOCOL_MANAGER.sendServerPacket(player, packet);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException("An error occurred when sending a packet", e);
+        }
     }
 
     public static class VirtualDisplayItemManager {
@@ -359,10 +341,8 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                     //int data to mark
                     fakeItemPacket.getIntegers().write(6, 1);
                 }
-                default -> {
-                    fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
-                    //For 1.14+, we should use EntityType
-                }
+                default -> //For 1.14+, we should use EntityType
+                        fakeItemPacket.getEntityTypeModifier().write(0, EntityType.DROPPED_ITEM);
             }
             //UUID
             fakeItemPacket.getUUIDs().write(0, UUID.randomUUID());

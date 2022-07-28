@@ -14,16 +14,15 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
 
 public class DatabaseMaintenanceWatcher extends BukkitRunnable {
-    public DatabaseMaintenanceWatcher(QuickShop plugin) {
-        this.plugin = plugin;
-    }
-
     private final QuickShop plugin;
+    private final ReentrantLock LOCK = new ReentrantLock();
     @Getter
     @Nullable
     private DatabaseStatusHolder result = null;
-    private final ReentrantLock LOCK = new ReentrantLock();
 
+    public DatabaseMaintenanceWatcher(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * When an object implementing interface {@code Runnable} is used

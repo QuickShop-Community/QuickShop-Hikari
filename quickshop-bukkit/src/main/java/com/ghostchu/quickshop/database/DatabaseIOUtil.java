@@ -3,7 +3,6 @@ package com.ghostchu.quickshop.database;
 import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,10 +15,13 @@ import java.sql.SQLException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-@AllArgsConstructor
 @Data
 public class DatabaseIOUtil {
     private final SimpleDatabaseHelperV2 helper;
+
+    public DatabaseIOUtil(SimpleDatabaseHelperV2 helper) {
+        this.helper = helper;
+    }
 
     public void exportTables(@NotNull File zipFile) throws SQLException, IOException {
         try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
@@ -30,7 +32,7 @@ public class DatabaseIOUtil {
                 try (SQLQuery query = table.createQuery().build().execute()) {
                     ResultSet result = query.getResultSet();
                     helper.writeToCSV(result, tableCsv);
-                    Log.debug("Exported table " + table.name()+" to " + tableCsv.getAbsolutePath());
+                    Log.debug("Exported table " + table.name() + " to " + tableCsv.getAbsolutePath());
                 }
                 Log.debug("Adding table " + table.name() + " to zip file");
                 out.putNextEntry(new ZipEntry(table.getName() + ".csv"));
@@ -41,7 +43,7 @@ public class DatabaseIOUtil {
         }
     }
 
-    public void importTables(@NotNull File zipFile) throws SQLException, IOException, ClassNotFoundException {
+    public void importTables(@NotNull File zipFile) throws SQLException, ClassNotFoundException {
         // Import from CSV
         for (DataTables table : DataTables.values()) {
             Log.debug("Purging table " + table.name());

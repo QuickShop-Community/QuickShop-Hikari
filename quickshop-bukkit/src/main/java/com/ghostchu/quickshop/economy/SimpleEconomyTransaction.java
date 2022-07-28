@@ -1,28 +1,11 @@
-/*
- *  This file is a part of project QuickShop, the name is EconomyTransaction.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.economy;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.EconomyCore;
+import com.ghostchu.quickshop.api.economy.EconomyTransaction;
 import com.ghostchu.quickshop.api.economy.operation.DepositEconomyOperation;
 import com.ghostchu.quickshop.api.economy.operation.WithdrawEconomyOperation;
+import com.ghostchu.quickshop.api.event.EconomyTransactionEvent;
 import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.util.CalculateUtil;
 import com.ghostchu.quickshop.util.JsonUtil;
@@ -31,7 +14,6 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.EconomyTransactionLog;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.ToString;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
@@ -48,34 +30,30 @@ import java.util.logging.Level;
  * A secure way to transfer the money between players.
  * Support rollback :)
  */
-@Getter
 @ToString
-public class EconomyTransaction {
-    @Nullable
-    private final UUID from;
-    @Nullable
-    private final UUID to;
-    private final double amount;
-    @NotNull
-    @JsonUtil.Hidden
-    private final EconomyCore core;
-    private final double amountAfterTax;
-    private final double tax;
-    @Nullable
-    private final UUID taxer;
-    private final boolean allowLoan;
-    private final boolean tryingFixBalanceInsufficient;
-    @Getter
-    private final World world;
-    @Getter
-    @Nullable
-    private final String currency;
+public class SimpleEconomyTransaction implements EconomyTransaction {
     @JsonUtil.Hidden
     private final QuickShop plugin = QuickShop.getInstance();
-    @Nullable
-    @Getter
-    private String lastError = null;
     private final Stack<Operation> processingStack = new Stack<>();
+    @Nullable
+    private UUID from;
+    @Nullable
+    private UUID to;
+    private double amount;
+    @NotNull
+    @JsonUtil.Hidden
+    private EconomyCore core;
+    private double amountAfterTax;
+    private double tax;
+    @Nullable
+    private UUID taxer;
+    private boolean allowLoan;
+    private boolean tryingFixBalanceInsufficient;
+    private World world;
+    @Nullable
+    private String currency;
+    @Nullable
+    private String lastError = null;
 
 
     /**
@@ -91,7 +69,7 @@ public class EconomyTransaction {
      */
 
     @Builder
-    public EconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, EconomyCore core, boolean allowLoan, @NotNull World world, @Nullable String currency) {
+    public SimpleEconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, EconomyCore core, boolean allowLoan, @NotNull World world, @Nullable String currency) {
         this.from = from;
         this.to = to;
         this.core = core == null ? QuickShop.getInstance().getEconomy() : core;
@@ -121,6 +99,114 @@ public class EconomyTransaction {
                 this.core.getBalance(to, world, currency);
             }
         }
+        new EconomyTransactionEvent(this).callEvent();
+    }
+
+    @Override
+    public @Nullable UUID getFrom() {
+        return from;
+    }
+
+    @Override
+    public void setFrom(@Nullable UUID from) {
+        this.from = from;
+    }
+
+    @Override
+    public @Nullable UUID getTo() {
+        return to;
+    }
+
+    @Override
+    public void setTo(@Nullable UUID to) {
+        this.to = to;
+    }
+
+    @Override
+    public double getAmount() {
+        return amount;
+    }
+
+    @Override
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    @Override
+    public double getAmountAfterTax() {
+        return amountAfterTax;
+    }
+
+    @Override
+    public void setAmountAfterTax(double amountAfterTax) {
+        this.amountAfterTax = amountAfterTax;
+    }
+
+    @Override
+    public @NotNull EconomyCore getCore() {
+        return core;
+    }
+
+    @Override
+    public void setCore(@NotNull EconomyCore core) {
+        this.core = core;
+    }
+
+    @Override
+    public @NotNull Stack<Operation> getProcessingStack() {
+        return processingStack;
+    }
+
+    @Override
+    public @Nullable String getCurrency() {
+        return currency;
+    }
+
+    @Override
+    public void setCurrency(@Nullable String currency) {
+        this.currency = currency;
+    }
+
+    @Override
+    public @Nullable UUID getTaxer() {
+        return taxer;
+    }
+
+    @Override
+    public void setTaxer(@Nullable UUID taxer) {
+        this.taxer = taxer;
+    }
+
+    @Override
+    @NotNull
+    public World getWorld() {
+        return world;
+    }
+
+    @Override
+    public void setWorld(@NotNull World world) {
+        this.world = world;
+    }
+
+    @Nullable
+    @Override
+    public String getLastError() {
+        return lastError;
+    }
+
+    @Override
+    public void setLastError(@NotNull String lastError) {
+        this.lastError = lastError;
+    }
+
+    @Override
+    public void setAllowLoan(boolean allowLoan) {
+        this.allowLoan = allowLoan;
+    }
+
+    @Override
+    public void setTryingFixBalanceInsufficient(boolean tryingFixBalanceInsufficient) {
+        this.tryingFixBalanceInsufficient = tryingFixBalanceInsufficient;
     }
 
     /**
@@ -129,6 +215,7 @@ public class EconomyTransaction {
      *
      * @return The transaction success.
      */
+    @Override
     public boolean failSafeCommit() {
         Log.transaction("Transaction begin: FailSafe Commit --> " + from + " => " + to + "; Amount: " + amount + ", EconomyCore: " + core.getName());
         boolean result = commit();
@@ -144,10 +231,11 @@ public class EconomyTransaction {
      *
      * @return The transaction success.
      */
+    @Override
     public boolean commit() {
-        return this.commit(new TransactionCallback() {
+        return this.commit(new SimpleTransactionCallback() {
             @Override
-            public void onSuccess(@NotNull EconomyTransaction economyTransaction) {
+            public void onSuccess(@NotNull SimpleEconomyTransaction economyTransaction) {
                 if (tryingFixBalanceInsufficient) {
                     //Fetch some stupid plugin caching
                     if (from != null) {
@@ -167,6 +255,7 @@ public class EconomyTransaction {
      * @param callback The result callback
      * @return The transaction success.
      */
+    @Override
     public boolean commit(@NotNull TransactionCallback callback) {
         Log.transaction("Transaction begin: Regular Commit --> " + from + " => " + to + "; Amount: " + amount + " Total(after tax): " + amountAfterTax + " Tax: " + tax + ", EconomyCore: " + core.getName());
         if (!callback.onCommit(this)) {
@@ -204,6 +293,7 @@ public class EconomyTransaction {
      *
      * @return The transaction can be finished (had enough money)
      */
+    @Override
     public boolean checkBalance() {
         return from == null || !(core.getBalance(from, world, currency) < amount) || allowLoan;
     }
@@ -213,27 +303,14 @@ public class EconomyTransaction {
      *
      * @return The tax in this transaction
      */
+    @Override
     public double getTax() {
         return tax;
     }
 
-    private boolean executeOperation(@NotNull Operation operation) {
-        if (operation.isCommitted()) {
-            throw new IllegalStateException("Operation already committed");
-        }
-        if (operation.isRollback()) {
-            throw new IllegalStateException("Operation already rolled back, you must create another new operation.");
-        }
-        try {
-            boolean result = operation.commit();
-            if (!result)
-                return false;
-            processingStack.push(operation);
-            return true;
-        } catch (Exception exception) {
-            this.lastError = "Failed to execute operation: " + core.getLastError() + "; Operation: " + operation;
-            return false;
-        }
+    @Override
+    public void setTax(double tax) {
+        this.tax = tax;
     }
 
     /**
@@ -244,6 +321,7 @@ public class EconomyTransaction {
      */
     @SuppressWarnings("UnusedReturnValue")
     @NotNull
+    @Override
     public List<Operation> rollback(boolean continueWhenFailed) {
         List<Operation> operations = new ArrayList<>();
         while (!processingStack.isEmpty()) {
@@ -278,15 +356,35 @@ public class EconomyTransaction {
         return operations;
     }
 
+    private boolean executeOperation(@NotNull Operation operation) {
+        if (operation.isCommitted()) {
+            throw new IllegalStateException("Operation already committed");
+        }
+        if (operation.isRollback()) {
+            throw new IllegalStateException("Operation already rolled back, you must create another new operation.");
+        }
+        try {
+            boolean result = operation.commit();
+            if (!result) {
+                return false;
+            }
+            processingStack.push(operation);
+            return true;
+        } catch (Exception exception) {
+            this.lastError = "Failed to execute operation: " + core.getLastError() + "; Operation: " + operation;
+            return false;
+        }
+    }
 
-    public interface TransactionCallback {
+
+    public interface SimpleTransactionCallback extends TransactionCallback {
         /**
          * Calling while Transaction commit
          *
          * @param economyTransaction Transaction
          * @return Does commit event has been cancelled
          */
-        default boolean onCommit(@NotNull EconomyTransaction economyTransaction) {
+        default boolean onCommit(@NotNull SimpleEconomyTransaction economyTransaction) {
             return true;
         }
 
@@ -295,7 +393,7 @@ public class EconomyTransaction {
          *
          * @param economyTransaction Transaction
          */
-        default void onSuccess(@NotNull EconomyTransaction economyTransaction) {
+        default void onSuccess(@NotNull SimpleEconomyTransaction economyTransaction) {
             Log.transaction("Transaction succeed: " + economyTransaction);
             QuickShop.getInstance().logEvent(new EconomyTransactionLog(true, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
@@ -307,7 +405,7 @@ public class EconomyTransaction {
          *
          * @param economyTransaction Transaction
          */
-        default void onFailed(@NotNull EconomyTransaction economyTransaction) {
+        default void onFailed(@NotNull SimpleEconomyTransaction economyTransaction) {
             Log.transaction(Level.WARNING, "Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
             QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
@@ -319,7 +417,7 @@ public class EconomyTransaction {
          *
          * @param economyTransaction Transaction
          */
-        default void onTaxFailed(@NotNull EconomyTransaction economyTransaction) {
+        default void onTaxFailed(@NotNull SimpleEconomyTransaction economyTransaction) {
             Log.transaction(Level.WARNING, "Tax Transaction failed: " + economyTransaction.getLastError() + ", transaction: " + economyTransaction);
             QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? Util.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }

@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.database.bean.IsolatedScanResult;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.holder.DatabaseStatusHolder;
-import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.command.CommandSender;
@@ -18,9 +17,12 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
-@AllArgsConstructor
 public class SubCommand_Database implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
+
+    public SubCommand_Database(QuickShop plugin) {
+        this.plugin = plugin;
+    }
 
     /**
      * Calling while command executed by specified sender
@@ -50,24 +52,6 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
         return Collections.emptyList();
     }
 
-    private void handleTrim(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1 || !cmdArg[0].equalsIgnoreCase("confirm")) {
-            plugin.text().of(sender, "database.trim-warning").send();
-            return;
-        }
-        plugin.text().of(sender, "database.trim-start").send();
-        Util.asyncThreadRun(() -> {
-            SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2) plugin.getDatabaseHelper();
-            try {
-                IsolatedScanResult<Long> result = databaseHelper.purgeIsolatedData();
-                plugin.text().of(sender, "database.trim-complete", result.getIsolated().size()).send();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                plugin.text().of(sender, "database.trim-exception").send();
-            }
-        });
-    }
-
     private void handleStatus(@NotNull CommandSender sender) {
         DatabaseStatusHolder holder = plugin.getDatabaseMaintenanceWatcher().getResult();
         if (holder == null) {
@@ -89,5 +73,23 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
             printer.printLine(plugin.text().of(sender, "database.suggestion.trim").forLocale());
         }
         printer.printFooter();
+    }
+
+    private void handleTrim(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
+        if (cmdArg.length < 1 || !"confirm".equalsIgnoreCase(cmdArg[0])) {
+            plugin.text().of(sender, "database.trim-warning").send();
+            return;
+        }
+        plugin.text().of(sender, "database.trim-start").send();
+        Util.asyncThreadRun(() -> {
+            SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2) plugin.getDatabaseHelper();
+            try {
+                IsolatedScanResult<Long> result = databaseHelper.purgeIsolatedData();
+                plugin.text().of(sender, "database.trim-complete", result.getIsolated().size()).send();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                plugin.text().of(sender, "database.trim-exception").send();
+            }
+        });
     }
 }

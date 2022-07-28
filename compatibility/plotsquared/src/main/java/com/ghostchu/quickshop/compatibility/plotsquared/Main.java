@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is Plotsquared.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.compatibility.plotsquared;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -36,7 +17,6 @@ import com.plotsquared.core.plot.Plot;
 import com.plotsquared.core.plot.flag.GlobalFlagContainer;
 import com.plotsquared.core.plot.flag.types.BooleanFlag;
 import com.sk89q.worldedit.regions.CuboidRegion;
-import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
@@ -55,6 +35,13 @@ public final class Main extends CompatibilityModule implements Listener {
     private QuickshopTradeFlag tradeFlag;
 
     @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+        super.onDisable();
+        PlotSquared.get().getEventDispatcher().unregisterListener(this);
+    }
+
+    @Override
     public void onEnable() {
         // Plugin startup logic
         super.onEnable();
@@ -66,12 +53,6 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-        super.onDisable();
-        PlotSquared.get().getEventDispatcher().unregisterListener(this);
-    }
-
     public void init() {
         this.whiteList = getConfig().getBoolean("whitelist-mode");
         this.deleteUntrusted = getConfig().getBoolean("delete-when-user-untrusted");
@@ -82,7 +63,9 @@ public final class Main extends CompatibilityModule implements Listener {
         Location shopLoc = event.getShop().getLocation();
         com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(shopLoc.getWorld().getName(), shopLoc.getBlockX(), shopLoc.getBlockY(), shopLoc.getBlockZ());
         Plot plot = pLocation.getPlot();
-        if (plot == null) return;
+        if (plot == null) {
+            return;
+        }
         if (plot.getOwners().contains(event.getAuthorizer())) {
             if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);
@@ -101,13 +84,12 @@ public final class Main extends CompatibilityModule implements Listener {
         Plot plot = pLocation.getPlot();
         if (plot == null) {
             if (!whiteList) {
-                event.setCancelled(true, Component.text("PlotSquared-Compat: WhiteList Mode is on and no plot found in this position."));
-                return;
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.no-plot-whitelist-creation").forLocale());
             }
             return;
         }
         if (!plot.getFlag(tradeFlag)) {
-            event.setCancelled(true, Component.text("PlotSquared-Compat: Trade Flag is not enabled."));
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.trade-denied").forLocale());
         }
     }
 
@@ -122,22 +104,13 @@ public final class Main extends CompatibilityModule implements Listener {
         Plot plot = pLocation.getPlot();
         if (plot == null) {
             if (!whiteList) {
-                event.setCancelled(true, Component.text("PlotSquared-Compat: WhiteList Mode is on and no plot found in this position."));
-                return;
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.no-plot-whitelist-creation").forLocale());
             }
             return;
         }
         if (!plot.getFlag(tradeFlag)) {
-            event.setCancelled(true, Component.text("PlotSquared-Compat: Trade Flag is not enabled."));
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.trade-denied").forLocale());
         }
-    }
-
-    private List<Shop> getShops(Plot plot) {
-        List<Shop> shopsList = new ArrayList<>();
-        for (CuboidRegion region : plot.getRegions()) {
-            shopsList.addAll(getShops(region.getWorld().getName(), region.getMinimumPoint().getX(), region.getMinimumPoint().getZ(), region.getMaximumPoint().getX(), region.getMaximumPoint().getZ()));
-        }
-        return shopsList;
     }
 
     @Subscribe
@@ -146,6 +119,14 @@ public final class Main extends CompatibilityModule implements Listener {
             recordDeletion(event.getPlot().getOwner(), shop, "Plot deleted");
             shop.delete();
         });
+    }
+
+    private List<Shop> getShops(Plot plot) {
+        List<Shop> shopsList = new ArrayList<>();
+        for (CuboidRegion region : plot.getRegions()) {
+            shopsList.addAll(getShops(region.getWorld().getName(), region.getMinimumPoint().getX(), region.getMinimumPoint().getZ(), region.getMaximumPoint().getX(), region.getMaximumPoint().getZ()));
+        }
+        return shopsList;
     }
 
     @Subscribe

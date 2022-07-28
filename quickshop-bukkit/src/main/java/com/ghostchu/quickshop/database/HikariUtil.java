@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is HikariUtil.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.database;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -27,11 +8,13 @@ public class HikariUtil {
     public static cc.carm.lib.easysql.hikari.HikariConfig createHikariConfig() {
         cc.carm.lib.easysql.hikari.HikariConfig config = new cc.carm.lib.easysql.hikari.HikariConfig();
         ConfigurationSection section = QuickShop.getInstance().getConfig().getConfigurationSection("database");
-        if (section == null)
+        if (section == null) {
             throw new IllegalArgumentException("database section in configuration not found");
+        }
         section = section.getConfigurationSection("properties");
-        if (section == null)
+        if (section == null) {
             throw new IllegalArgumentException("database.properties section in configuration not found");
+        }
         for (String key : section.getKeys(false)) {
             config.addDataSourceProperty(key, section.getString(key));
         }

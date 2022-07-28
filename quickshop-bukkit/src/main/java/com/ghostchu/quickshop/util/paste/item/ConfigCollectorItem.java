@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is ConfigCollectorItem.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -26,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
@@ -48,8 +28,9 @@ public class ConfigCollectorItem implements SubPasteItem {
         File newConfigFolder = new File("config");
         if (newConfigFolder.exists() && newConfigFolder.isDirectory()) {
             File[] filesInsideConfig = newConfigFolder.listFiles((dir, name) -> name.endsWith(".yml") || name.endsWith(".yaml") || name.endsWith(".json") || name.endsWith(".toml"));
-            if (filesInsideConfig != null)
+            if (filesInsideConfig != null) {
                 Collections.addAll(file, filesInsideConfig);
+            }
         }
         file.add(new File("purpur.yml"));
         file.add(new File("pufferfish.yml"));
@@ -57,6 +38,10 @@ public class ConfigCollectorItem implements SubPasteItem {
         file.add(new File("airplane.air"));
     }
 
+    @Override
+    public @NotNull String genBody() {
+        return buildContent();
+    }
 
     @Override
     public @NotNull String getTitle() {
@@ -69,7 +54,9 @@ public class ConfigCollectorItem implements SubPasteItem {
         for (File file : file) {
             String fileContent = readBuildFile(file);
             if (readBuildFile(file) != null) // Hide the file in paste if file doesn't exist
+            {
                 htmlBuilder.append(fileContent);
+            }
         }
         return htmlBuilder.toString();
     }
@@ -373,10 +360,5 @@ public class ConfigCollectorItem implements SubPasteItem {
         } catch (IOException e) {
             return "Fail: " + e.getMessage();
         }
-    }
-
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
     }
 }

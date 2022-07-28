@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is QuickShopAPI.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.api;
 
 import com.ghostchu.quickshop.api.command.CommandManager;
@@ -26,7 +7,6 @@ import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.api.shop.ShopManager;
-import com.ghostchu.quickshop.api.shop.ShopPermissionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -38,6 +18,22 @@ import java.util.Map;
  * The unique entry point to allow you to access most features of QuickShop
  */
 public interface QuickShopAPI {
+
+    static Plugin getPluginInstance() {
+        RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
+        if (provider == null) {
+            throw new IllegalStateException("QuickShop hadn't loaded at this moment.");
+        }
+        return provider.getPlugin();
+    }
+
+    static QuickShopAPI getInstance() {
+        RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
+        if (provider == null) {
+            throw new IllegalStateException("QuickShop hadn't loaded at this moment.");
+        }
+        return provider.getProvider().getApiInstance();
+    }
 
     /**
      * Getting Shop Manager which managing most of shops
@@ -145,21 +141,5 @@ public interface QuickShopAPI {
      * @param key            the key to map to or a fixed string
      */
     void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key);
-
-    static Plugin getPluginInstance() {
-        RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
-        if (provider == null) {
-            throw new IllegalStateException("QuickShop hadn't loaded at this moment.");
-        }
-        return provider.getPlugin();
-    }
-
-    static QuickShopAPI getInstance() {
-        RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
-        if (provider == null) {
-            throw new IllegalStateException("QuickShop hadn't loaded at this moment.");
-        }
-        return provider.getProvider().getApiInstance();
-    }
 
 }

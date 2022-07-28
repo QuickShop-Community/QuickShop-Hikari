@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is HikariConfigConverter.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.converter;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -75,6 +56,7 @@ public class HikariConfigConverter implements HikariConverterInterface {
      * @param folder   The target folder for backup.
      * @throws Exception Backup fails.
      */
+    @Override
     public void backup(@NotNull UUID actionId, @NotNull File folder) throws Exception {
         Files.copy(new File(plugin.getDataFolder(), "config.yml").toPath(), new File(folder, "config.yml").toPath());
     }
@@ -84,9 +66,11 @@ public class HikariConfigConverter implements HikariConverterInterface {
      *
      * @param actionId Action Identifier for this upgrade operation.
      */
+    @Override
     public void migrate(@NotNull UUID actionId) {
-        if (!checkReady().isEmpty())
+        if (!checkReady().isEmpty()) {
             throw new IllegalStateException("Not ready!");
+        }
         remakeUpgrade(plugin.getConfig().getInt("config-version"));
         legacyPriceLimiter();
         configCleanup();

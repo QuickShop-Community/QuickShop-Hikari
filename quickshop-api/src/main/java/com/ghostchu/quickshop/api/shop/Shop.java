@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is Shop.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.api.shop;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
@@ -54,6 +35,14 @@ public interface Shop {
      * @return Shop ID -1 if shop in creating state.
      */
     long getShopId();
+
+    /**
+     * Internal Only: Give shop that under id_waiting state an ShopId.
+     *
+     * @param newId The new shop id, once set will cannot change anymore.
+     */
+    @ApiStatus.Internal
+    void setShopId(long newId);
 
     /**
      * Check if player have authorized for specific permission on specific shop
@@ -133,19 +122,19 @@ public interface Shop {
     Map<UUID, String> getPermissionAudiences();
 
     /**
-     * Sets shop name
-     *
-     * @param shopName shop name, null to remove currently name
-     */
-    void setShopName(@Nullable String shopName);
-
-    /**
      * Gets this shop name that set by player
      *
      * @return Shop name, or null if not set
      */
     @Nullable
     String getShopName();
+
+    /**
+     * Sets shop name
+     *
+     * @param shopName shop name, null to remove currently name
+     */
+    void setShopName(@Nullable String shopName);
 
     /**
      * Add x ItemStack to the shop inventory
@@ -534,7 +523,6 @@ public interface Shop {
      */
     void setDirty();
 
-
     /**
      * Save the plugin extra data to Json format
      *
@@ -720,12 +708,4 @@ public interface Shop {
      */
     @NotNull
     String saveToSymbolLink();
-
-    /**
-     * Internal Only: Give shop that under id_waiting state an ShopId.
-     *
-     * @param newId The new shop id, once set will cannot change anymore.
-     */
-    @ApiStatus.Internal
-    void setShopId(long newId);
 }

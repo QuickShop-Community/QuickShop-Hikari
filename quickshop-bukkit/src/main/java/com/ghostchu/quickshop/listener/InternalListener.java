@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is InternalListener.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -54,13 +35,6 @@ public class InternalListener extends AbstractQSListener {
         this.loggingAction = plugin.getConfig().getBoolean("logging.log-actions");
     }
 
-    public boolean isForbidden(@NotNull Material shopMaterial, @NotNull Material itemMaterial) {
-        if (!Objects.equals(shopMaterial, itemMaterial)) {
-            return false;
-        }
-        return shopMaterial.isBlock() && shopMaterial.name().toUpperCase().endsWith("SHULKER_BOX");
-    }
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopCreate(ShopCreateEvent event) {
         if (isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
@@ -70,6 +44,13 @@ public class InternalListener extends AbstractQSListener {
         if (loggingAction) {
             plugin.logEvent(new ShopCreationLog(event.getCreator(), event.getShop().saveToInfoStorage(), new BlockPos(event.getShop().getLocation())));
         }
+    }
+
+    public boolean isForbidden(@NotNull Material shopMaterial, @NotNull Material itemMaterial) {
+        if (!Objects.equals(shopMaterial, itemMaterial)) {
+            return false;
+        }
+        return shopMaterial.isBlock() && shopMaterial.name().toUpperCase().endsWith("SHULKER_BOX");
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -127,8 +108,9 @@ public class InternalListener extends AbstractQSListener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopInventoryCalc(ShopInventoryCalculateEvent event) {
-        if (event.getShop().getShopId() < 1)
+        if (event.getShop().getShopId() < 1) {
             return;
+        }
         plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop().getShopId(), event.getSpace(), event.getStock());
     }
 

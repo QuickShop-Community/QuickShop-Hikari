@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is MojangDistribution.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.localization.game.game.distributions;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -57,33 +38,6 @@ public class MojangDistribution {
 
     }
 
-    @Nullable
-    public VersionManifest getVersionManifest() {
-        String url = mirror.getLauncherMetaRoot() + "/mc/game/version_manifest.json";
-        if (requestCachePool.getIfPresent(url) != null) {
-            return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url), VersionManifest.class);
-        }
-        if (!grabIntoCaches(url)) {
-            return null;
-        }
-        return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url), VersionManifest.class);
-    }
-
-
-    @Nullable
-    public GameManifest getGameManifest(VersionManifest versionManifest, String gameVersion) {
-        for (VersionManifest.VersionsDTO version : versionManifest.getVersions()) {
-            if (version.getId().equals(gameVersion)) {
-                String url = version.getUrl();
-                if (!grabIntoCaches(url)) {
-                    return null;
-                }
-                return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url), GameManifest.class);
-            }
-        }
-        return null;
-    }
-
     @NotNull
     public List<String> getAvailableLanguages() {
         List<String> languages = new ArrayList<>();
@@ -110,6 +64,31 @@ public class MojangDistribution {
         return languages;
     }
 
+    @Nullable
+    public VersionManifest getVersionManifest() {
+        String url = mirror.getLauncherMetaRoot() + "/mc/game/version_manifest.json";
+        if (requestCachePool.getIfPresent(url) != null) {
+            return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url), VersionManifest.class);
+        }
+        if (!grabIntoCaches(url)) {
+            return null;
+        }
+        return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url), VersionManifest.class);
+    }
+
+    @Nullable
+    public GameManifest getGameManifest(VersionManifest versionManifest, String gameVersion) {
+        for (VersionManifest.VersionsDTO version : versionManifest.getVersions()) {
+            if (version.getId().equals(gameVersion)) {
+                String url = version.getUrl();
+                if (!grabIntoCaches(url)) {
+                    return null;
+                }
+                return JsonUtil.standard().fromJson(requestCachePool.getIfPresent(url), GameManifest.class);
+            }
+        }
+        return null;
+    }
 
     public boolean grabIntoCaches(String url) {
         HttpResponse<String> response = Unirest.get(url).asString();

@@ -68,7 +68,7 @@
 
 [bStatsImage]: https://bstats.org/signatures/bukkit/QuickShop-Hikari.svg
 
-[Ver]: https://img.shields.io/spiget/version/100125?label=version  
+[Ver]: https://img.shields.io/spiget/version/100125?label=version
 
 <!-- Unused? -->
 <!-- [//]: # (![Downloads]&#40;https://img.shields.io/spiget/downloads/62575?label=downloads&#41;) -->
@@ -77,6 +77,7 @@
 <!-- Start of README -->
 
 # QuickShop-Hikari
+
 [![codacyBadge]][codacy]
 [![codeFactorBadge]][codeFactor]
 [![codeScoreBadge]][codeScore]
@@ -92,7 +93,7 @@
 ## Introduction
 
 QuickShop Hikari is a Shop plugin that allows players to create Chest Shops to easily sell and buy items, without the
-need of any commands.  
+need for any commands.  
 In fact, all commands in QuickShop are not even needed for normal gameplay.
 
 This version of QuickShop ([Ghost-chu/QuickShop-Hikari][quickshop-hikari]) is a fork
@@ -103,18 +104,20 @@ QuickShop Hikari is maintained by Ghost-Chu and has the goal to modernize the co
 the latest versions of Minecraft.
 
 ## Community & Support
+
 [Discussions](https://github.com/Ghost-chu/QuickShop-Hikari/discussions)  
 [Bug Tracker](https://github.com/Ghost-chu/QuickShop-Hikari/issues)  
 [Discord](https://discord.gg/Bu3dVtmsD3)
 
 ## Features
+
 - Easy to use
 - Toggleable Display Item on top of the chest.
 - NBT Data, Enchantment, Tool Damage, Potion, and Mob Egg support.
 - Unlimited chest support.
 - Blacklist support & bypass permissions.
 - Shops that buy and sell items at the same time (Using double chests).
-- Customisable permission checks.
+- Customizable permission checks.
 - UUID support.
 - Better shop protection.
 - i18n support for displayed Item names.
@@ -133,36 +136,46 @@ the latest versions of Minecraft.
 - Per-shop permission management.
 
 ## Downloads
+
 Obtain the latest version from [ci.codemc.io][codemc]
 
 ## Compatibility Modules
+
 You can download optional modules [here][optional_modules] for compatibility with other plugins.
 
 ### [ClearLagg][clearlagg]
+
 - Stops clearlagg from deleting the Display Item on any Shop.
 
 ### [NoCheatPlus][nocheatplus]
+
 - Prevents NCP's anti-cheat checks from triggering when creating a shop.
 
 ### [OpenInv][openinv]
+
 - Allow the usage of a Player's Ender Chest as Shop inventory by using `/qs echest`.
 
 ### [Worldedit][worldedit]
+
 - Removes Shops that got deleted during a WorldEdit operation, to reduce "Ghost Shops".
 
 ### [Worldguard][worldguard]
+
 - Flag-based shop control.
 
 ## Contribute
+
 If you're a developer, you can contribute to the QuickShop source code! Just make a fork, install the Lombok plugin (if
 not done automatically), make your changes and create a pull request when you're done!  
 Please try to follow [Google's Java Code Style][googlejava] and do not increase the Plugin version. Thank you!
 
 ### Distributing forks
-You're allowed to create your own fork to share. No permission needed.  
+
+You're allowed to create your fork to share. No permission is needed.  
 Though it would be nice if you could pull-request your changes into this repository when they are good ones.
 
 ### Compile and Debugging
+
 To compile and debug QuickShop, please do the following steps:
 
 1. Make sure you're using Java 17 or 18. You can get the latest Java versions from the [Adoptium project][adoptium].

@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is Economy_TNE.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.economy;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -65,6 +46,20 @@ public class Economy_TNE extends AbstractEconomy {
         this.api = TNE.instance().api();
     }
 
+    /**
+     * Deposits a given amount of money from thin air to the given username.
+     *
+     * @param name     The exact (case insensitive) username to give money to
+     * @param amount   The amount to give them
+     * @param currency The currency name
+     * @return True if success (Should be almost always)
+     */
+    @Override
+    public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
+        deposit(Bukkit.getOfflinePlayer(name), amount, world, currency);
+        return false;
+    }
+
     @Nullable
     private TNECurrency getCurrency(@NotNull World world, @Nullable String currency) {
         if (!isValid()) {
@@ -78,20 +73,6 @@ public class Economy_TNE extends AbstractEconomy {
             }
         }
         return this.api.getDefault(world.getName()); // Want to get some default currency available in thi world
-    }
-
-    /**
-     * Deposits a given amount of money from thin air to the given username.
-     *
-     * @param name     The exact (case insensitive) username to give money to
-     * @param amount   The amount to give them
-     * @param currency The currency name
-     * @return True if success (Should be almost always)
-     */
-    @Override
-    public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
-        deposit(Bukkit.getOfflinePlayer(name), amount, world, currency);
-        return false;
     }
 
     /**
@@ -233,13 +214,18 @@ public class Economy_TNE extends AbstractEconomy {
     }
 
     @Override
+    public @NotNull Plugin getPlugin() {
+        return this.plugin;
+    }
+
+    @Override
     public @NotNull String getName() {
         return "BuiltIn-TNE";
     }
 
     @Override
-    public @NotNull Plugin getPlugin() {
-        return this.plugin;
+    public String getProviderName() {
+        return "TNE";
     }
 
     /**

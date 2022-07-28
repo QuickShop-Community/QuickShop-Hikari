@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is BuildInfo.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop;
 
 import lombok.Data;
@@ -82,109 +63,6 @@ public class BuildInfo {
         @Nullable
         private final String tags;
 
-        @NotNull
-        public String getBranch() {
-            if (branch == null)
-                return "undefined";
-            return branch;
-        }
-
-        public boolean isDirty() {
-            return dirty;
-        }
-
-        @NotNull
-        public String getRemoteOriginUrl() {
-            if (remoteOriginUrl == null)
-                return "undefined";
-            return remoteOriginUrl;
-        }
-
-        @NotNull
-        public String getId() {
-            if (id == null)
-                return "undefined";
-            return id;
-        }
-
-        @NotNull
-        public String getAbbrev() {
-            if (abbrev == null)
-                return "undefined";
-            return abbrev;
-        }
-
-        @NotNull
-        public String getDescribe() {
-            if (describe == null)
-                return "undefined";
-            return describe;
-        }
-
-        @NotNull
-        public String getDescribeShort() {
-            if (describeShort == null)
-                return "undefined";
-            return describeShort;
-        }
-
-        @NotNull
-        public String getCommitUsername() {
-            if (commitUsername == null)
-                return "undefined";
-            return commitUsername;
-        }
-
-        @NotNull
-        public String getCommitEmail() {
-            if (commitEmail == null)
-                return "undefined";
-            return commitEmail;
-        }
-
-        @NotNull
-        public String getCommitMessage() {
-            if (commitMessage == null)
-                return "undefined";
-            return commitMessage;
-        }
-
-        @NotNull
-        public String getCommitDate() {
-            if (commitDate == null)
-                return "undefined";
-            return commitDate;
-        }
-
-        @NotNull
-        public String getBuildTime() {
-            if (buildTime == null)
-                return "undefined";
-            return buildTime;
-        }
-
-        @NotNull
-        public String getBuildVersion() {
-            if (buildVersion == null)
-                return "undefined";
-            return buildVersion;
-        }
-
-        @NotNull
-        public String getBuildNumber() {
-            if (buildNumber == null)
-                return "undefined";
-            return buildNumber;
-        }
-
-        @NotNull
-        public String getTags() {
-            if (tags == null)
-                return "undefined";
-            return tags;
-        }
-
-
         public GitInfo(@NotNull Properties properties) {
             this.tags = properties.getProperty("git.tags");
             this.branch = properties.getProperty("git.branch");
@@ -201,6 +79,122 @@ public class BuildInfo {
             this.buildTime = properties.getProperty("git.build.time");
             this.buildVersion = properties.getProperty("git.build.version");
             this.buildNumber = properties.getProperty("git.build.number");
+        }
+
+        @NotNull
+        public String getBranch() {
+            if (branch == null) {
+                return "undefined";
+            }
+            return branch;
+        }
+
+        public boolean isDirty() {
+            return dirty;
+        }
+
+        @NotNull
+        public String getRemoteOriginUrl() {
+            if (remoteOriginUrl == null) {
+                return "undefined";
+            }
+            return remoteOriginUrl;
+        }
+
+        @NotNull
+        public String getId() {
+            if (id == null) {
+                return "undefined";
+            }
+            return id;
+        }
+
+        @NotNull
+        public String getAbbrev() {
+            if (abbrev == null) {
+                return "undefined";
+            }
+            return abbrev;
+        }
+
+        @NotNull
+        public String getDescribe() {
+            if (describe == null) {
+                return "undefined";
+            }
+            return describe;
+        }
+
+        @NotNull
+        public String getDescribeShort() {
+            if (describeShort == null) {
+                return "undefined";
+            }
+            return describeShort;
+        }
+
+        @NotNull
+        public String getCommitUsername() {
+            if (commitUsername == null) {
+                return "undefined";
+            }
+            return commitUsername;
+        }
+
+        @NotNull
+        public String getCommitEmail() {
+            if (commitEmail == null) {
+                return "undefined";
+            }
+            return commitEmail;
+        }
+
+        @NotNull
+        public String getCommitMessage() {
+            if (commitMessage == null) {
+                return "undefined";
+            }
+            return commitMessage;
+        }
+
+        @NotNull
+        public String getCommitDate() {
+            if (commitDate == null) {
+                return "undefined";
+            }
+            return commitDate;
+        }
+
+        @NotNull
+        public String getBuildTime() {
+            if (buildTime == null) {
+                return "undefined";
+            }
+            return buildTime;
+        }
+
+        @NotNull
+        public String getBuildVersion() {
+            if (buildVersion == null) {
+                return "undefined";
+            }
+            return buildVersion;
+        }
+
+        @NotNull
+        public String getBuildNumber() {
+            if (buildNumber == null) {
+                return "undefined";
+            }
+            return buildNumber;
+        }
+
+        @NotNull
+        public String getTags() {
+            if (tags == null) {
+                return "undefined";
+            }
+            return tags;
         }
     }
 
@@ -220,56 +214,6 @@ public class BuildInfo {
         @Nullable
         private final String projectBaseName;
 
-
-        public boolean isCi() {
-            return ci;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        @NotNull
-        public String getIdName() {
-            if (idName == null)
-                return "undefined";
-            return idName;
-        }
-
-        @NotNull
-        public String getTag() {
-            if (tag == null)
-                return "undefined";
-            return tag;
-        }
-
-        @NotNull
-        public String getUrl() {
-            if (url == null)
-                return "undefined";
-            return url;
-        }
-
-        @NotNull
-        public String getProjectName() {
-            if (projectName == null)
-                return "undefined";
-            return projectName;
-        }
-
-        @NotNull
-        public String getProjectUrl() {
-            if (projectUrl == null)
-                return "undefined";
-            return projectUrl;
-        }
-
-        @NotNull
-        public String getProjectBaseName() {
-            if (projectBaseName == null)
-                return "undefined";
-            return projectBaseName;
-        }
 
         public JenkinsInfo(@NotNull Properties properties) {
             this.ci = "true".equalsIgnoreCase(properties.getProperty("jenkins.ci"));
@@ -291,6 +235,62 @@ public class BuildInfo {
             this.projectName = properties.getProperty("ci.job.name");
             this.projectUrl = properties.getProperty("ci.job.url");
             this.projectBaseName = properties.getProperty("ci.job.base_name");
+        }
+
+        public boolean isCi() {
+            return ci;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        @NotNull
+        public String getIdName() {
+            if (idName == null) {
+                return "undefined";
+            }
+            return idName;
+        }
+
+        @NotNull
+        public String getTag() {
+            if (tag == null) {
+                return "undefined";
+            }
+            return tag;
+        }
+
+        @NotNull
+        public String getUrl() {
+            if (url == null) {
+                return "undefined";
+            }
+            return url;
+        }
+
+        @NotNull
+        public String getProjectName() {
+            if (projectName == null) {
+                return "undefined";
+            }
+            return projectName;
+        }
+
+        @NotNull
+        public String getProjectUrl() {
+            if (projectUrl == null) {
+                return "undefined";
+            }
+            return projectUrl;
+        }
+
+        @NotNull
+        public String getProjectBaseName() {
+            if (projectBaseName == null) {
+                return "undefined";
+            }
+            return projectBaseName;
         }
     }
 

@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is PaperPlatform.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.platform.paper;
 
 import com.ghostchu.quickshop.platform.Platform;
@@ -87,17 +68,14 @@ public class PaperPlatform implements Platform {
             try {
                 key = material.getTranslationKey();
             } catch (Error error2) {
-                if (!material.isBlock())
+                if (!material.isBlock()) {
                     key = "item." + material.getKey().getNamespace() + "." + material.getKey().getKey();
-                else
+                } else {
                     key = "block." + material.getKey().getNamespace() + "." + material.getKey().getKey();
+                }
             }
         }
         return postProcessingTranslationKey(key);
-    }
-
-    private String postProcessingTranslationKey(String key) {
-        return this.translationMapping.getOrDefault(key, key);
     }
 
     @Override
@@ -142,6 +120,10 @@ public class PaperPlatform implements Platform {
         return Component.translatable(getTranslationKey(material));
     }
 
+    private String postProcessingTranslationKey(String key) {
+        return this.translationMapping.getOrDefault(key, key);
+    }
+
     @Override
     public @NotNull Component getTranslation(@NotNull EntityType entity) {
         return Component.translatable(getTranslationKey(entity));
@@ -165,8 +147,9 @@ public class PaperPlatform implements Platform {
     @Override
     public @NotNull Component getDisplayName(@NotNull ItemMeta meta) {
         Component displayName = meta.displayName();
-        if (displayName == null)
+        if (displayName == null) {
             return Component.empty();
+        }
         return displayName;
     }
 

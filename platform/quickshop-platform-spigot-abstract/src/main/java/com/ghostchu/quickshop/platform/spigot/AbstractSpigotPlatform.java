@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is SpigotPlatform.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.platform.spigot;
 
 import com.ghostchu.quickshop.platform.Platform;
@@ -48,15 +29,21 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public abstract class AbstractSpigotPlatform implements Platform {
-    private final Plugin plugin;
-    private BukkitAudiences audience;
-    protected Map<String, String> translationMapping;
     protected final Logger logger = Logger.getLogger("QuickShop-Hikari");
     protected final LocaleManager localeManager = new LocaleManager();
+    private final Plugin plugin;
+    protected Map<String, String> translationMapping;
+    private BukkitAudiences audience;
 
     public AbstractSpigotPlatform(@NotNull Plugin instance, @NotNull Map<String, String> mapping) {
         this.plugin = instance;
         this.translationMapping = mapping;
+    }
+
+    @NotNull
+    public static String getNMSVersion() {
+        String name = Bukkit.getServer().getClass().getPackage().getName();
+        return name.substring(name.lastIndexOf('.') + 1);
     }
 
     @Override
@@ -77,16 +64,6 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     @Override
     public abstract @NotNull String getMinecraftVersion();
-
-    @NotNull
-    public static String getNMSVersion() {
-        String name = Bukkit.getServer().getClass().getPackage().getName();
-        return name.substring(name.lastIndexOf('.') + 1);
-    }
-
-    private String postProcessingTranslationKey(String key) {
-        return this.translationMapping.getOrDefault(key, key);
-    }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
@@ -113,6 +90,10 @@ public abstract class AbstractSpigotPlatform implements Platform {
     @Override
     public @NotNull Component getTranslation(@NotNull Material material) {
         return Component.translatable(getTranslationKey(material));
+    }
+
+    private String postProcessingTranslationKey(String key) {
+        return this.translationMapping.getOrDefault(key, key);
     }
 
     @Override
@@ -148,30 +129,34 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     @Override
     public void setDisplayName(@NotNull ItemMeta meta, @Nullable Component component) {
-        if (component == null)
+        if (component == null) {
             meta.setDisplayName(null);
-        else
+        } else {
             meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component));
+        }
     }
 
     @Override
     public void setDisplayName(@NotNull ItemStack stack, @Nullable Component component) {
-        if (stack.getItemMeta() == null)
+        if (stack.getItemMeta() == null) {
             return;
+        }
         ItemMeta meta = stack.getItemMeta();
-        if (component == null)
+        if (component == null) {
             meta.setDisplayName(null);
-        else
+        } else {
             meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component));
+        }
         stack.setItemMeta(meta);
     }
 
     @Override
     public void setDisplayName(@NotNull Item stack, @Nullable Component component) {
-        if (component == null)
+        if (component == null) {
             stack.setCustomName(null);
-        else
+        } else {
             stack.setCustomName(LegacyComponentSerializer.legacySection().serialize(component));
+        }
     }
 
     @Override
@@ -181,8 +166,9 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     @Override
     public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
-        if (!stack.hasItemMeta())
+        if (!stack.hasItemMeta()) {
             return;
+        }
         ItemMeta meta = stack.getItemMeta();
         meta.setLore(components.stream().map(LegacyComponentSerializer.legacySection()::serialize).collect(Collectors.toList()));
         stack.setItemMeta(meta);
@@ -195,24 +181,28 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     @Override
     public @Nullable List<Component> getLore(@NotNull ItemStack stack) {
-        if (!stack.hasItemMeta())
+        if (!stack.hasItemMeta()) {
             return null;
-        if (!stack.getItemMeta().hasLore())
+        }
+        if (!stack.getItemMeta().hasLore()) {
             return null;
+        }
         return stack.getItemMeta().getLore().stream().map(LegacyComponentSerializer.legacySection()::deserialize).collect(Collectors.toList());
     }
 
     @Override
     public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
-        if (!meta.hasLore())
+        if (!meta.hasLore()) {
             return null;
+        }
         return meta.getLore().stream().map(LegacyComponentSerializer.legacySection()::deserialize).collect(Collectors.toList());
     }
 
     @Override
     public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
-        if (this.audience == null)
+        if (this.audience == null) {
             this.audience = BukkitAudiences.create(this.plugin);
+        }
         this.audience.sender(sender).sendMessage(component);
     }
 

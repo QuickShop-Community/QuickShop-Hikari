@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is Griefprevention.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.compatibility.griefprevention;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -55,6 +36,7 @@ public final class Main extends CompatibilityModule implements Listener {
     private boolean deleteOnSubClaimCreated;
     private Flag createLimit;
 
+    @Override
     public void init() {
         this.whiteList = getConfig().getBoolean("whitelist-mode");
         this.deleteOnClaimTrustChanged = getConfig().getBoolean("delete-on-claim-trust-changed");
@@ -64,6 +46,17 @@ public final class Main extends CompatibilityModule implements Listener {
         this.deleteOnSubClaimCreated = getConfig().getBoolean("delete-on-subclaim-created");
         this.createLimit = Flag.getFlag(getConfig().getString("create"));
         this.tradeLimits.addAll(toFlags(getConfig().getStringList("trade")));
+    }
+
+    private List<Flag> toFlags(List<String> flags) {
+        List<Flag> result = new ArrayList<>(3);
+        for (String flagStr : flags) {
+            Flag flag = Flag.getFlag(flagStr);
+            if (flag != null) {
+                result.add(flag);
+            }
+        }
+        return result;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -88,7 +81,23 @@ public final class Main extends CompatibilityModule implements Listener {
         if (checkPermission(event.getPlayer(), event.getLocation(), Collections.singletonList(createLimit))) {
             return;
         }
-        event.setCancelled(true, "GriefPrevention Blocked");
+        event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.griefprevention.creation-denied").forLocale());
+    }
+
+    private boolean checkPermission(@NotNull Player player, @NotNull Location location, List<Flag> limits) {
+        if (!griefPrevention.claimsEnabledForWorld(location.getWorld())) {
+            return true;
+        }
+        Claim claim = griefPrevention.dataStore.getClaimAt(location, false, false, griefPrevention.dataStore.getPlayerData(player.getUniqueId()).lastClaim);
+        if (claim == null) {
+            return !whiteList;
+        }
+        for (Flag flag : limits) {
+            if (!flag.check(claim, player)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -97,7 +106,7 @@ public final class Main extends CompatibilityModule implements Listener {
         if (checkPermission(event.getPlayer(), event.getShop().getLocation(), Collections.singletonList(createLimit))) {
             return;
         }
-        event.setCancelled(true, "GriefPrevention Blocked");
+        event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.griefprevention.creation-denied").forLocale());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -106,9 +115,8 @@ public final class Main extends CompatibilityModule implements Listener {
         if (checkPermission(event.getPlayer(), event.getShop().getLocation(), tradeLimits)) {
             return;
         }
-        event.setCancelled(true, "GriefPrevention Blocked");
+        event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.griefprevention.trade-denied").forLocale());
     }
-
 
     // We will check if the shop belongs to user whose permissions were changed.
     // It will remove a shop if the shop owner no longer has permission to build a shop there.
@@ -126,70 +134,6 @@ public final class Main extends CompatibilityModule implements Listener {
         }
         for (Claim claim : event.getClaims()) {
             handleClaimTrustChanged(Objects.requireNonNullElse(claim.parent, claim), event);
-        }
-    }
-
-    // Player can unclaim the main claim or the subclaim.
-    // So we need to call either the handleMainClaimUnclaimedOrExpired or the handleSubClaimUnclaimed method.
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onClaimUnclaimed(ClaimDeletedEvent event) {
-        if (!deleteOnClaimUnclaimed) {
-            return;
-        }
-        if (event.getClaim().parent == null) {
-            handleMainClaimUnclaimedOrExpired(event.getClaim(), "[SHOP DELETE] GP Integration: Single delete (Claim Unclaimed) #");
-        } else {
-            handleSubClaimUnclaimed(event.getClaim());
-        }
-    }
-
-    // Since only the main claim expires, we will call the handleMainClaimUnclaimedOrExpired method.
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onClaimExpired(ClaimExpirationEvent event) {
-        if (!deleteOnClaimExpired) {
-            return;
-        }
-        handleMainClaimUnclaimedOrExpired(event.getClaim(), "[SHOP DELETE] GP Integration: Single delete (Claim Expired) #");
-    }
-
-    // Player can resize the main claim or the subclaim.
-    // So we need to call either the handleMainClaimResized or the handleSubClaimResized method.
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onClaimResized(ClaimModifiedEvent event) {
-        if (!deleteOnClaimResized) {
-            return;
-        }
-        Claim oldClaim = event.getFrom();
-        Claim newClaim = event.getTo();
-        if (oldClaim.parent == null) {
-            handleMainClaimResized(oldClaim, newClaim);
-        } else {
-            handleSubClaimResized(oldClaim, newClaim);
-        }
-    }
-
-    // Player can create subclaims inside a claim.
-    // So if a subclaim is created that will contain, initially, shops from others players, then we will remove them.
-    // Because they won't have, initially, permission to create a shop in that subclaim.
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onSubClaimCreated(ClaimCreatedEvent event) {
-        if (!deleteOnSubClaimCreated) {
-            return;
-        }
-        if (event.getClaim().parent == null) {
-            return;
-        }
-        for (Chunk chunk : event.getClaim().getChunks()) {
-            Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
-            if (shops != null) {
-                for (Shop shop : shops.values()) {
-                    if (!shop.getOwner().equals(event.getClaim().getOwnerID()) &&
-                            event.getClaim().contains(shop.getLocation(), false, false)) {
-                        getApi().logEvent(new ShopRemoveLog(Util.getSenderUniqueId(event.getCreator()), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Created", this.getName(), shop), shop.saveToInfoStorage()));
-                        shop.delete();
-                    }
-                }
-            }
         }
     }
 
@@ -217,6 +161,20 @@ public final class Main extends CompatibilityModule implements Listener {
             }
         }
 
+    }
+
+    // Player can unclaim the main claim or the subclaim.
+    // So we need to call either the handleMainClaimUnclaimedOrExpired or the handleSubClaimUnclaimed method.
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onClaimUnclaimed(ClaimDeletedEvent event) {
+        if (!deleteOnClaimUnclaimed) {
+            return;
+        }
+        if (event.getClaim().parent == null) {
+            handleMainClaimUnclaimedOrExpired(event.getClaim(), "[SHOP DELETE] GP Integration: Single delete (Claim Unclaimed) #");
+        } else {
+            handleSubClaimUnclaimed(event.getClaim());
+        }
     }
 
     // If it is the main claim, then we will delete all the shops that were inside of it.
@@ -248,6 +206,31 @@ public final class Main extends CompatibilityModule implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    // Since only the main claim expires, we will call the handleMainClaimUnclaimedOrExpired method.
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onClaimExpired(ClaimExpirationEvent event) {
+        if (!deleteOnClaimExpired) {
+            return;
+        }
+        handleMainClaimUnclaimedOrExpired(event.getClaim(), "[SHOP DELETE] GP Integration: Single delete (Claim Expired) #");
+    }
+
+    // Player can resize the main claim or the subclaim.
+    // So we need to call either the handleMainClaimResized or the handleSubClaimResized method.
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onClaimResized(ClaimModifiedEvent event) {
+        if (!deleteOnClaimResized) {
+            return;
+        }
+        Claim oldClaim = event.getFrom();
+        Claim newClaim = event.getTo();
+        if (oldClaim.parent == null) {
+            handleMainClaimResized(oldClaim, newClaim);
+        } else {
+            handleSubClaimResized(oldClaim, newClaim);
         }
     }
 
@@ -293,31 +276,29 @@ public final class Main extends CompatibilityModule implements Listener {
         }
     }
 
-    private boolean checkPermission(@NotNull Player player, @NotNull Location location, List<Flag> limits) {
-        if (!griefPrevention.claimsEnabledForWorld(location.getWorld())) {
-            return true;
+    // Player can create subclaims inside a claim.
+    // So if a subclaim is created that will contain, initially, shops from others players, then we will remove them.
+    // Because they won't have, initially, permission to create a shop in that subclaim.
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onSubClaimCreated(ClaimCreatedEvent event) {
+        if (!deleteOnSubClaimCreated) {
+            return;
         }
-        Claim claim = griefPrevention.dataStore.getClaimAt(location, false, false, griefPrevention.dataStore.getPlayerData(player.getUniqueId()).lastClaim);
-        if (claim == null) {
-            return !whiteList;
+        if (event.getClaim().parent == null) {
+            return;
         }
-        for (Flag flag : limits) {
-            if (!flag.check(claim, player)) {
-                return false;
+        for (Chunk chunk : event.getClaim().getChunks()) {
+            Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
+            if (shops != null) {
+                for (Shop shop : shops.values()) {
+                    if (!shop.getOwner().equals(event.getClaim().getOwnerID()) &&
+                            event.getClaim().contains(shop.getLocation(), false, false)) {
+                        getApi().logEvent(new ShopRemoveLog(Util.getSenderUniqueId(event.getCreator()), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Created", this.getName(), shop), shop.saveToInfoStorage()));
+                        shop.delete();
+                    }
+                }
             }
         }
-        return true;
-    }
-
-    private List<Flag> toFlags(List<String> flags) {
-        List<Flag> result = new ArrayList<>(3);
-        for (String flagStr : flags) {
-            Flag flag = Flag.getFlag(flagStr);
-            if (flag != null) {
-                result.add(flag);
-            }
-        }
-        return result;
     }
 
 

@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.logger.Log;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.dom4j.Document;
@@ -18,8 +17,8 @@ import java.io.StringReader;
 import java.util.logging.Level;
 
 public class NexusManager {
-    private final QuickShop plugin;
     private final static String NEXUS_ROOT_METADATA_URL = "https://repo.codemc.io/repository/maven-releases/com/ghostchu/quickshop-hikari/maven-metadata.xml";
+    private final QuickShop plugin;
     private NexusMetadata cachedMetadata;
 
     private boolean cachedResult = true;
@@ -31,7 +30,7 @@ public class NexusManager {
 
     public boolean isLatest() {
         if (Bukkit.isPrimaryThread()) {
-            Log.debug(Level.WARNING,"Warning: isLatest shouldn't be called on PrimaryThread",Log.Caller.create());
+            Log.debug(Level.WARNING, "Warning: isLatest shouldn't be called on PrimaryThread", Log.Caller.create());
             return cachedResult;
         }
         if (!plugin.getConfig().getBoolean("updater", false)) {
@@ -43,15 +42,8 @@ public class NexusManager {
             cachedResult = true;
             return true;
         }
-        this.cachedResult = plugin.getDescription().getVersion().equals(cachedMetadata.getLatestVersion());
+        this.cachedResult = plugin.getDescription().getVersion().equals(cachedMetadata.getReleaseVersion());
         return this.cachedResult;
-    }
-    @NotNull
-    public String getLatestVersion(){
-        if(!plugin.getConfig().getBoolean("updater", false) || cachedMetadata == null){
-            return plugin.getDescription().getVersion();
-        }
-        return cachedMetadata.getLatestVersion();
     }
 
     private void updateCacheIfRequired() {
@@ -81,29 +73,52 @@ public class NexusManager {
         }
     }
 
+    @NotNull
+    public String getLatestVersion() {
+        if (!plugin.getConfig().getBoolean("updater", false) || cachedMetadata == null) {
+            return plugin.getDescription().getVersion();
+        }
+        return cachedMetadata.getReleaseVersion();
+    }
+
     @Data
-    @AllArgsConstructor
     static class NexusMetadata {
         private long lastUpdate;
         private String latestVersion;
         private String releaseVersion;
+
+        public NexusMetadata(long lastUpdate, String latestVersion, String releaseVersion) {
+            this.lastUpdate = lastUpdate;
+            this.latestVersion = latestVersion;
+            this.releaseVersion = releaseVersion;
+        }
 
         @NotNull
         public static NexusMetadata parse(@NotNull String xml) throws DocumentException, IllegalStateException {
             SAXReader reader = new SAXReader();
             Document document = reader.read(new StringReader(xml));
             Element metadataElement = document.getRootElement();
-            if (metadataElement == null) throw new IllegalStateException("No root element found");
+            if (metadataElement == null) {
+                throw new IllegalStateException("No root element found");
+            }
             Element versioning = metadataElement.element("versioning");
-            if (versioning == null) throw new IllegalStateException("No versioning element found");
+            if (versioning == null) {
+                throw new IllegalStateException("No versioning element found");
+            }
             Element latest = versioning.element("latest");
-            if (latest == null) throw new IllegalStateException("No latest element found");
+            if (latest == null) {
+                throw new IllegalStateException("No latest element found");
+            }
             Element release = versioning.element("release");
-            if (release == null) throw new IllegalStateException("No release element found");
+            if (release == null) {
+                throw new IllegalStateException("No release element found");
+            }
             Element lastUpdate = versioning.element("lastUpdated");
-            if (lastUpdate == null) throw new IllegalStateException("No lastUpdated element found");
+            if (lastUpdate == null) {
+                throw new IllegalStateException("No lastUpdated element found");
+            }
             NexusMetadata metadata = new NexusMetadata(Long.parseLong(lastUpdate.getText()), latest.getText(), release.getText());
-            Log.debug("Parsed NexusMetadata: "+metadata);
+            Log.debug("Parsed NexusMetadata: " + metadata);
             return metadata;
         }
     }

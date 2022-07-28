@@ -4,11 +4,10 @@ import net.kyori.adventure.text.Component;
 import org.jetbrains.annotations.NotNull;
 
 public class ComponentJoiner {
-    private Component mainComponent = Component.empty();
     private final Component delimiter;
     private final Component prefix;
     private final Component suffix;
-
+    private Component mainComponent = Component.empty();
     private boolean first = true;
 
     public ComponentJoiner(@NotNull Component delimiter, @NotNull Component prefix, @NotNull Component suffix) {

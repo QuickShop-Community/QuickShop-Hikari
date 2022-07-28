@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is SimplePriceLimiter.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -26,7 +7,6 @@ import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -54,59 +34,15 @@ import java.util.regex.PatternSyntaxException;
 
 public class SimplePriceLimiter implements Reloadable, PriceLimiter {
     private final QuickShop plugin;
+    private final Map<String, RuleSet> rules = new LinkedHashMap<>();
     private boolean wholeNumberOnly = false;
     private double undefinedMin = 0.0d;
     private double undefinedMax = Double.MAX_VALUE;
-    private final Map<String, RuleSet> rules = new LinkedHashMap<>();
 
     public SimplePriceLimiter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         loadConfiguration();
         plugin.getReloadManager().register(this);
-    }
-
-    /**
-     * Check the price restriction rules
-     *
-     * @param sender    the sender
-     * @param itemStack the item to check
-     * @param currency  the currency
-     * @param price     the price
-     * @return the result
-     */
-    /*
-    Use item stack to reserve the extent ability
-     */
-    @Override
-    @NotNull
-    public PriceLimiterCheckResult check(@NotNull CommandSender sender, @NotNull ItemStack itemStack, @Nullable String currency, double price) {
-        if (Double.isInfinite(price) || Double.isNaN(price)) {
-            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_VALID, undefinedMin, undefinedMax);
-        }
-        if (wholeNumberOnly) {
-            try {
-                BigDecimal.valueOf(price).setScale(0, RoundingMode.UNNECESSARY);
-            } catch (ArithmeticException exception) {
-                Log.debug(exception.getMessage());
-                return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_A_WHOLE_NUMBER, undefinedMin, undefinedMax);
-            }
-        }
-        for (RuleSet rule : rules.values()) {
-            if (!rule.isApply(sender, itemStack, currency)) {
-                continue;
-            }
-            if (rule.isAllowed(price)) {
-                continue;
-            }
-            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, rule.getMin(), rule.getMax());
-        }
-        if (undefinedMin != -1 && price < undefinedMin) {
-            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
-        }
-        if (undefinedMax != -1 && price > undefinedMax) {
-            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
-        }
-        return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PASS, undefinedMin, undefinedMax);
     }
 
     public void loadConfiguration() {
@@ -208,13 +144,56 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
         return new RuleSet(items, bypassPermission, currency, min, max);
     }
 
+    /**
+     * Check the price restriction rules
+     *
+     * @param sender    the sender
+     * @param itemStack the item to check
+     * @param currency  the currency
+     * @param price     the price
+     * @return the result
+     */
+    /*
+    Use item stack to reserve the extent ability
+     */
+    @Override
+    @NotNull
+    public PriceLimiterCheckResult check(@NotNull CommandSender sender, @NotNull ItemStack itemStack, @Nullable String currency, double price) {
+        if (Double.isInfinite(price) || Double.isNaN(price)) {
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_VALID, undefinedMin, undefinedMax);
+        }
+        if (wholeNumberOnly) {
+            try {
+                BigDecimal.valueOf(price).setScale(0, RoundingMode.UNNECESSARY);
+            } catch (ArithmeticException exception) {
+                Log.debug(exception.getMessage());
+                return new SimplePriceLimiterCheckResult(PriceLimiterStatus.NOT_A_WHOLE_NUMBER, undefinedMin, undefinedMax);
+            }
+        }
+        for (RuleSet rule : rules.values()) {
+            if (!rule.isApply(sender, itemStack, currency)) {
+                continue;
+            }
+            if (rule.isAllowed(price)) {
+                continue;
+            }
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, rule.getMin(), rule.getMax());
+        }
+        if (undefinedMin != -1 && price < undefinedMin) {
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
+        }
+        if (undefinedMax != -1 && price > undefinedMax) {
+            return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PRICE_RESTRICTED, undefinedMin, undefinedMax);
+        }
+        return new SimplePriceLimiterCheckResult(PriceLimiterStatus.PASS, undefinedMin, undefinedMax);
+    }
+
     @Override
     public ReloadResult reloadModule() throws Exception {
         loadConfiguration();
         return Reloadable.super.reloadModule();
     }
 
-    @AllArgsConstructor
     @Data
     static class RuleSet {
         private final List<Function<ItemStack, Boolean>> items;
@@ -222,6 +201,14 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
         private final List<Pattern> currency;
         private final double min;
         private final double max;
+
+        public RuleSet(List<Function<ItemStack, Boolean>> items, String bypassPermission, List<Pattern> currency, double min, double max) {
+            this.items = items;
+            this.bypassPermission = bypassPermission;
+            this.currency = currency;
+            this.min = min;
+            this.max = max;
+        }
 
         /**
          * Check if the rule is allowed to apply to the given price.
@@ -236,8 +223,9 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
                 return false;
             }
             if (currency != null) {
-                if (this.currency.stream().noneMatch(pattern -> pattern.matcher(currency).matches()))
+                if (this.currency.stream().noneMatch(pattern -> pattern.matcher(currency).matches())) {
                     return false;
+                }
             }
             for (Function<ItemStack, Boolean> fun : items) {
                 if (fun.apply(item)) {

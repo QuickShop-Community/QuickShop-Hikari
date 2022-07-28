@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is MojangAPI.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.util.mojangapi;
 
 import com.ghostchu.quickshop.util.JsonUtil;
@@ -28,7 +9,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
@@ -67,11 +47,16 @@ public class MojangAPI {
 
 
     @Data
-    @AllArgsConstructor
     public static class AssetsFileData {
         private String content;
         private String sha1;
         private String id;
+
+        public AssetsFileData(String content, String sha1, String id) {
+            this.content = content;
+            this.sha1 = sha1;
+            this.id = id;
+        }
     }
 
     @Data
@@ -103,10 +88,6 @@ public class MojangAPI {
             this.metaAPI = new MetaAPI(apiMirror, version);
         }
 
-        public boolean isAvailable() {
-            return this.metaAPI.get().isPresent();
-        }
-
         /**
          * Gets the GameAsset file content
          *
@@ -125,7 +106,6 @@ public class MojangAPI {
             return Optional.of(new AssetsFileData(data, assetIndexBean.getSha1(), assetIndexBean.getId()));
         }
 
-
         private Optional<GameInfoAPI.DataBean> getAssetsJson() {
             if (!isAvailable()) {
                 return Optional.empty();
@@ -136,6 +116,10 @@ public class MojangAPI {
             }
             GameInfoAPI gameInfoAPI = new GameInfoAPI(content.get());
             return Optional.of(gameInfoAPI.get());
+        }
+
+        public boolean isAvailable() {
+            return this.metaAPI.get().isPresent();
         }
 
 

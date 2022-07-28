@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is PlayerListener.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -71,6 +52,29 @@ public class PlayerListener extends AbstractQSListener {
 
     public PlayerListener(QuickShop plugin) {
         super(plugin);
+    }
+
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onAdventureClick(PlayerAnimationEvent event) {
+        if (event.getPlayer().getGameMode() != GameMode.ADVENTURE) {
+            return;
+        }
+        // ----Adventure dupe click workaround start----
+        if (event.getPlayer().getGameMode() == GameMode.ADVENTURE) {
+            if (cooldownMap.getIfPresent(event.getPlayer().getUniqueId()) != null) {
+                return;
+            }
+            cooldownMap.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
+        }
+        // ----Adventure dupe click workaround end----
+        Block focused = event.getPlayer().getTargetBlock(null, 5);
+        PlayerInteractEvent interactEvent
+                = new PlayerInteractEvent(event.getPlayer(),
+                focused.getType() == Material.AIR ? Action.LEFT_CLICK_AIR : Action.LEFT_CLICK_BLOCK,
+                event.getPlayer().getInventory().getItemInMainHand(),
+                focused,
+                event.getPlayer().getFacing().getOppositeFace());
+        onClick(interactEvent);
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -190,192 +194,41 @@ public class PlayerListener extends AbstractQSListener {
         }
     }
 
-    public boolean sellToShop(@NotNull Player p, @Nullable Shop shop, boolean direct, boolean all) {
+    @NotNull
+    public Map.Entry<@Nullable Shop, @NotNull ClickType> searchShop(@Nullable Block b, @NotNull Player p) {
+        if (b == null) {
+            return new AbstractMap.SimpleEntry<>(null, ClickType.AIR);
+        }
+        Shop shop = plugin.getShopManager().getShop(b.getLocation());
+        // If that wasn't a shop, search nearby shops
         if (shop == null) {
-            return false;
+            final Block attached;
+            if (Util.isWallSign(b.getType())) {
+                attached = Util.getAttached(b);
+                if (attached != null) {
+                    shop = plugin.getShopManager().getShop(attached.getLocation());
+                    return new AbstractMap.SimpleImmutableEntry<>(shop, ClickType.SIGN);
+                }
+            } else if (Util.isDoubleChest(b.getBlockData())) {
+                attached = Util.getSecondHalf(b);
+                if (attached != null) {
+                    Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
+                    if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner())) {
+                        // If player not the owner of the shop, make him select the second half of the
+                        // shop
+                        // Otherwise owner will be able to create new double chest shop
+                        shop = secondHalfShop;
+                    }
+                }
+            }
         }
-        if (!shop.isBuying()) {
-            return false;
-        }
+        return new AbstractMap.SimpleImmutableEntry<>(shop, ClickType.SHOPBLOCK);
+    }
 
+    private void openControlPanel(@NotNull Player p, @NotNull Shop shop) {
+        MsgUtil.sendControlPanelInfo(p, shop);
         this.playClickSound(p);
-        plugin.getShopManager().sendShopInfo(p, shop);
         shop.setSignText(plugin.text().findRelativeLanguages(p));
-        if (shop.getRemainingSpace() == 0) {
-            plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
-            return true;
-        }
-        final AbstractEconomy eco = plugin.getEconomy();
-        final double price = shop.getPrice();
-        final Inventory playerInventory = p.getInventory();
-        final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
-        final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
-        int items = getPlayerCanSell(shop, ownerBalance, price, new BukkitInventoryWrapper(playerInventory));
-        Map<UUID, Info> actions = plugin.getShopManager().getActions();
-        if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
-                || plugin.perm().hasPermission(p, "quickshop.other.use")) {
-            Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
-            actions.put(p.getUniqueId(), info);
-            if (!direct) {
-                if (shop.isStackingShop()) {
-                    plugin.text().of(p, "how-many-sell-stack", shop.getItem().getAmount(), items, tradeAllWord).send();
-                } else {
-                    plugin.text().of(p, "how-many-sell", items, tradeAllWord).send();
-                }
-            } else {
-                int arg;
-                if (all) {
-                    arg = buyingShopAllCalc(eco, shop, p);
-                } else {
-                    arg = shop.getShopStackingAmount();
-                }
-                if (arg == 0)
-                    return true;
-                plugin.getShopManager().actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
-            }
-        }
-        return true;
-    }
-
-    private int sellingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
-        int amount;
-        int shopHaveItems = shop.getRemainingStock();
-        int invHaveSpaces = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
-        if (!shop.isUnlimited()) {
-            amount = Math.min(shopHaveItems, invHaveSpaces);
-        } else {
-            // should check not having items but having empty slots, cause player is trying to buy
-            // items from the shop.
-            amount = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
-        }
-        // typed 'all', check if player has enough money than price * amount
-        double price = shop.getPrice();
-        double balance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(),
-                shop.getCurrency());
-        amount = Math.min(amount, (int) Math.floor(balance / price));
-        if (amount < 1) { // typed 'all' but the auto set amount is 0
-            // when typed 'all' but player can't buy any items
-            if (!shop.isUnlimited() && shopHaveItems < 1) {
-                // but also the shop's stock is 0
-                plugin.text().of(p, "shop-stock-too-low",
-                        shop.getRemainingStock(),
-                        MsgUtil.getTranslateText(shop.getItem())).send();
-                return 0;
-            } else {
-                // when if player's inventory is full
-                if (invHaveSpaces <= 0) {
-                    plugin.text().of(p, "not-enough-space",
-                            invHaveSpaces).send();
-                    return 0;
-                }
-                plugin.text().of(p, "you-cant-afford-to-buy",
-                        plugin.getShopManager().format(price, shop.getLocation().getWorld(),
-                                shop.getCurrency()),
-                        plugin.getShopManager().format(balance, shop.getLocation().getWorld(),
-                                shop.getCurrency())).send();
-            }
-            return 0;
-        }
-        return amount;
-    }
-
-    private int buyingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
-        int amount;
-        int shopHaveSpaces =
-                Util.countSpace(shop.getInventory(), shop);
-        int invHaveItems = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
-        // Check if shop owner has enough money
-        double ownerBalance = eco
-                .getBalance(shop.getOwner(), shop.getLocation().getWorld(),
-                        shop.getCurrency());
-        int ownerCanAfford;
-        if (shop.getPrice() != 0) {
-            ownerCanAfford = (int) (ownerBalance / shop.getPrice());
-        } else {
-            ownerCanAfford = Integer.MAX_VALUE;
-        }
-        if (!shop.isUnlimited()) {
-            amount = Math.min(shopHaveSpaces, invHaveItems);
-            amount = Math.min(amount, ownerCanAfford);
-        } else {
-            amount = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
-            // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
-            // true,
-            // the unlimited shop owner should have enough money.
-            if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
-                amount = Math.min(amount, ownerCanAfford);
-            }
-        }
-        if (amount < 1) { // typed 'all' but the auto set amount is 0
-            if (shopHaveSpaces == 0) {
-                // when typed 'all' but the shop doesn't have any empty space
-                plugin.text().of(p, "shop-has-no-space", shopHaveSpaces,
-                        MsgUtil.getTranslateText(shop.getItem())).send();
-                return 0;
-            }
-            if (ownerCanAfford == 0
-                    && (!shop.isUnlimited()
-                    || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners"))) {
-                // when typed 'all' but the shop owner doesn't have enough money to buy at least 1
-                // item (and shop isn't unlimited or pay-unlimited is true)
-                plugin.text().of(p, "the-owner-cant-afford-to-buy-from-you",
-                        plugin.getShopManager().format(shop.getPrice(), shop.getLocation().getWorld(),
-                                shop.getCurrency()),
-                        plugin.getShopManager().format(ownerBalance, shop.getLocation().getWorld(),
-                                shop.getCurrency())).send();
-                return 0;
-            }
-            // when typed 'all' but player doesn't have any items to sell
-            plugin.text().of(p, "you-dont-have-that-many-items", amount, MsgUtil.getTranslateText(shop.getItem())).send();
-            return 0;
-        }
-        return amount;
-    }
-
-    public boolean buyFromShop(@NotNull Player p, @Nullable Shop shop, boolean direct, boolean all) {
-        if (shop == null) {
-            return false;
-        }
-        if (!shop.isSelling()) {
-            return false;
-        }
-        this.playClickSound(p);
-        plugin.getShopManager().sendShopInfo(p, shop);
-        shop.setSignText(plugin.text().findRelativeLanguages(p));
-        if (shop.getRemainingStock() == 0) {
-            plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
-            return true;
-        }
-        final AbstractEconomy eco = plugin.getEconomy();
-        final double price = shop.getPrice();
-        final Inventory playerInventory = p.getInventory();
-        final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
-        Map<UUID, Info> actions = plugin.getShopManager().getActions();
-        final double traderBalance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
-        int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
-        if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
-                || plugin.perm().hasPermission(p, "quickshop.other.use")) {
-            Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BUY, null, null, shop, false);
-            actions.put(p.getUniqueId(), info);
-            if (!direct) {
-                if (shop.isStackingShop()) {
-                    plugin.text().of(p, "how-many-buy-stack", shop.getItem().getAmount(), itemAmount, tradeAllWord).send();
-                } else {
-                    plugin.text().of(p, "how-many-buy", itemAmount, tradeAllWord).send();
-                }
-            } else {
-                int arg;
-                if (all) {
-                    arg = sellingShopAllCalc(eco, shop, p);
-                } else {
-                    arg = shop.getShopStackingAmount();
-                }
-                if (arg == 0)
-                    return true;
-                plugin.getShopManager().actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
-            }
-        }
-        return true;
     }
 
     public boolean createShop(@NotNull Player player, @Nullable Block block) {
@@ -455,85 +308,105 @@ public class PlayerListener extends AbstractQSListener {
         return false;
     }
 
-    @NotNull
-    public Map.Entry<@Nullable Shop, @NotNull ClickType> searchShop(@Nullable Block b, @NotNull Player p) {
-        if (b == null) {
-            return new AbstractMap.SimpleEntry<>(null, ClickType.AIR);
-        }
-        Shop shop = plugin.getShopManager().getShop(b.getLocation());
-        // If that wasn't a shop, search nearby shops
+    public boolean sellToShop(@NotNull Player p, @Nullable Shop shop, boolean direct, boolean all) {
         if (shop == null) {
-            final Block attached;
-            if (Util.isWallSign(b.getType())) {
-                attached = Util.getAttached(b);
-                if (attached != null) {
-                    shop = plugin.getShopManager().getShop(attached.getLocation());
-                    return new AbstractMap.SimpleImmutableEntry<>(shop, ClickType.SIGN);
+            return false;
+        }
+        if (!shop.isBuying()) {
+            return false;
+        }
+
+        this.playClickSound(p);
+        plugin.getShopManager().sendShopInfo(p, shop);
+        shop.setSignText(plugin.text().findRelativeLanguages(p));
+        if (shop.getRemainingSpace() == 0) {
+            plugin.text().of(p, "purchase-out-of-space", shop.ownerName()).send();
+            return true;
+        }
+        final AbstractEconomy eco = plugin.getEconomy();
+        final double price = shop.getPrice();
+        final Inventory playerInventory = p.getInventory();
+        final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
+        final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
+        int items = getPlayerCanSell(shop, ownerBalance, price, new BukkitInventoryWrapper(playerInventory));
+        Map<UUID, Info> actions = plugin.getShopManager().getActions();
+        if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
+                || plugin.perm().hasPermission(p, "quickshop.other.use")) {
+            Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
+            actions.put(p.getUniqueId(), info);
+            if (!direct) {
+                if (shop.isStackingShop()) {
+                    plugin.text().of(p, "how-many-sell-stack", shop.getItem().getAmount(), items, tradeAllWord).send();
+                } else {
+                    plugin.text().of(p, "how-many-sell", items, tradeAllWord).send();
                 }
-            } else if (Util.isDoubleChest(b.getBlockData())) {
-                attached = Util.getSecondHalf(b);
-                if (attached != null) {
-                    Shop secondHalfShop = plugin.getShopManager().getShop(attached.getLocation());
-                    if (secondHalfShop != null && !p.getUniqueId().equals(secondHalfShop.getOwner())) {
-                        // If player not the owner of the shop, make him select the second half of the
-                        // shop
-                        // Otherwise owner will be able to create new double chest shop
-                        shop = secondHalfShop;
-                    }
+            } else {
+                int arg;
+                if (all) {
+                    arg = buyingShopAllCalc(eco, shop, p);
+                } else {
+                    arg = shop.getShopStackingAmount();
                 }
+                if (arg == 0) {
+                    return true;
+                }
+                plugin.getShopManager().actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
         }
-        return new AbstractMap.SimpleImmutableEntry<>(shop, ClickType.SHOPBLOCK);
+        return true;
     }
 
-    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
-    public void onAdventureClick(PlayerAnimationEvent event) {
-        if (event.getPlayer().getGameMode() != GameMode.ADVENTURE) {
-            return;
+    public boolean buyFromShop(@NotNull Player p, @Nullable Shop shop, boolean direct, boolean all) {
+        if (shop == null) {
+            return false;
         }
-        // ----Adventure dupe click workaround start----
-        if (event.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-            if (cooldownMap.getIfPresent(event.getPlayer().getUniqueId()) != null) {
-                return;
+        if (!shop.isSelling()) {
+            return false;
+        }
+        this.playClickSound(p);
+        plugin.getShopManager().sendShopInfo(p, shop);
+        shop.setSignText(plugin.text().findRelativeLanguages(p));
+        if (shop.getRemainingStock() == 0) {
+            plugin.text().of(p, "purchase-out-of-stock", shop.ownerName()).send();
+            return true;
+        }
+        final AbstractEconomy eco = plugin.getEconomy();
+        final double price = shop.getPrice();
+        final Inventory playerInventory = p.getInventory();
+        final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
+        Map<UUID, Info> actions = plugin.getShopManager().getActions();
+        final double traderBalance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
+        int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
+        if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
+                || plugin.perm().hasPermission(p, "quickshop.other.use")) {
+            Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_BUY, null, null, shop, false);
+            actions.put(p.getUniqueId(), info);
+            if (!direct) {
+                if (shop.isStackingShop()) {
+                    plugin.text().of(p, "how-many-buy-stack", shop.getItem().getAmount(), itemAmount, tradeAllWord).send();
+                } else {
+                    plugin.text().of(p, "how-many-buy", itemAmount, tradeAllWord).send();
+                }
+            } else {
+                int arg;
+                if (all) {
+                    arg = sellingShopAllCalc(eco, shop, p);
+                } else {
+                    arg = shop.getShopStackingAmount();
+                }
+                if (arg == 0) {
+                    return true;
+                }
+                plugin.getShopManager().actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, arg);
             }
-            cooldownMap.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
         }
-        // ----Adventure dupe click workaround end----
-        Block focused = event.getPlayer().getTargetBlock(null, 5);
-        PlayerInteractEvent interactEvent
-                = new PlayerInteractEvent(event.getPlayer(),
-                focused.getType() == Material.AIR ? Action.LEFT_CLICK_AIR : Action.LEFT_CLICK_BLOCK,
-                event.getPlayer().getInventory().getItemInMainHand(),
-                focused,
-                event.getPlayer().getFacing().getOppositeFace());
-        onClick(interactEvent);
+        return true;
     }
 
     private void playClickSound(@NotNull Player player) {
         if (plugin.getConfig().getBoolean("effect.sound.onclick")) {
             player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.f, 1.0f);
         }
-    }
-
-    private void openControlPanel(@NotNull Player p, @NotNull Shop shop) {
-        MsgUtil.sendControlPanelInfo(p, shop);
-        this.playClickSound(p);
-        shop.setSignText(plugin.text().findRelativeLanguages(p));
-    }
-
-    private int getPlayerCanBuy(@NotNull Shop shop, double traderBalance, double price, @NotNull InventoryWrapper playerInventory) {
-        boolean isContainerCountingNeeded = shop.isUnlimited();
-        if (shop.isFreeShop()) { // Free shop
-            return isContainerCountingNeeded ? Util.countSpace(playerInventory, shop) : Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop));
-        }
-        int itemAmount = Math.min(Util.countSpace(playerInventory, shop), (int) Math.floor(traderBalance / price));
-        if (!isContainerCountingNeeded) {
-            itemAmount = Math.min(itemAmount, shop.getRemainingStock());
-        }
-        if (itemAmount < 0) {
-            itemAmount = 0;
-        }
-        return itemAmount;
     }
 
     private int getPlayerCanSell(@NotNull Shop shop, double ownerBalance, double price, @NotNull InventoryWrapper playerInventory) {
@@ -559,6 +432,116 @@ public class PlayerListener extends AbstractQSListener {
             items = 0;
         }
         return items;
+    }
+
+    private int buyingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
+        int amount;
+        int shopHaveSpaces =
+                Util.countSpace(shop.getInventory(), shop);
+        int invHaveItems = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
+        // Check if shop owner has enough money
+        double ownerBalance = eco
+                .getBalance(shop.getOwner(), shop.getLocation().getWorld(),
+                        shop.getCurrency());
+        int ownerCanAfford;
+        if (shop.getPrice() != 0) {
+            ownerCanAfford = (int) (ownerBalance / shop.getPrice());
+        } else {
+            ownerCanAfford = Integer.MAX_VALUE;
+        }
+        if (!shop.isUnlimited()) {
+            amount = Math.min(shopHaveSpaces, invHaveItems);
+            amount = Math.min(amount, ownerCanAfford);
+        } else {
+            amount = Util.countItems(new BukkitInventoryWrapper(p.getInventory()), shop);
+            // even if the shop is unlimited, the config option pay-unlimited-shop-owners is set to
+            // true,
+            // the unlimited shop owner should have enough money.
+            if (plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners")) {
+                amount = Math.min(amount, ownerCanAfford);
+            }
+        }
+        if (amount < 1) { // typed 'all' but the auto set amount is 0
+            if (shopHaveSpaces == 0) {
+                // when typed 'all' but the shop doesn't have any empty space
+                plugin.text().of(p, "shop-has-no-space", shopHaveSpaces,
+                        MsgUtil.getTranslateText(shop.getItem())).send();
+                return 0;
+            }
+            if (ownerCanAfford == 0
+                    && (!shop.isUnlimited()
+                    || plugin.getConfig().getBoolean("shop.pay-unlimited-shop-owners"))) {
+                // when typed 'all' but the shop owner doesn't have enough money to buy at least 1
+                // item (and shop isn't unlimited or pay-unlimited is true)
+                plugin.text().of(p, "the-owner-cant-afford-to-buy-from-you",
+                        plugin.getShopManager().format(shop.getPrice(), shop.getLocation().getWorld(),
+                                shop.getCurrency()),
+                        plugin.getShopManager().format(ownerBalance, shop.getLocation().getWorld(),
+                                shop.getCurrency())).send();
+                return 0;
+            }
+            // when typed 'all' but player doesn't have any items to sell
+            plugin.text().of(p, "you-dont-have-that-many-items", amount, MsgUtil.getTranslateText(shop.getItem())).send();
+            return 0;
+        }
+        return amount;
+    }
+
+    private int getPlayerCanBuy(@NotNull Shop shop, double traderBalance, double price, @NotNull InventoryWrapper playerInventory) {
+        boolean isContainerCountingNeeded = shop.isUnlimited();
+        if (shop.isFreeShop()) { // Free shop
+            return isContainerCountingNeeded ? Util.countSpace(playerInventory, shop) : Math.min(shop.getRemainingStock(), Util.countSpace(playerInventory, shop));
+        }
+        int itemAmount = Math.min(Util.countSpace(playerInventory, shop), (int) Math.floor(traderBalance / price));
+        if (!isContainerCountingNeeded) {
+            itemAmount = Math.min(itemAmount, shop.getRemainingStock());
+        }
+        if (itemAmount < 0) {
+            itemAmount = 0;
+        }
+        return itemAmount;
+    }
+
+    private int sellingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
+        int amount;
+        int shopHaveItems = shop.getRemainingStock();
+        int invHaveSpaces = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
+        if (!shop.isUnlimited()) {
+            amount = Math.min(shopHaveItems, invHaveSpaces);
+        } else {
+            // should check not having items but having empty slots, cause player is trying to buy
+            // items from the shop.
+            amount = Util.countSpace(new BukkitInventoryWrapper(p.getInventory()), shop);
+        }
+        // typed 'all', check if player has enough money than price * amount
+        double price = shop.getPrice();
+        double balance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(),
+                shop.getCurrency());
+        amount = Math.min(amount, (int) Math.floor(balance / price));
+        if (amount < 1) { // typed 'all' but the auto set amount is 0
+            // when typed 'all' but player can't buy any items
+            if (!shop.isUnlimited() && shopHaveItems < 1) {
+                // but also the shop's stock is 0
+                plugin.text().of(p, "shop-stock-too-low",
+                        shop.getRemainingStock(),
+                        MsgUtil.getTranslateText(shop.getItem())).send();
+                return 0;
+            } else {
+                // when if player's inventory is full
+                if (invHaveSpaces <= 0) {
+                    plugin.text().of(p, "not-enough-space",
+                            invHaveSpaces).send();
+                    return 0;
+                }
+                plugin.text().of(p, "you-cant-afford-to-buy",
+                        plugin.getShopManager().format(price, shop.getLocation().getWorld(),
+                                shop.getCurrency()),
+                        plugin.getShopManager().format(balance, shop.getLocation().getWorld(),
+                                shop.getCurrency())).send();
+            }
+            return 0;
+        }
+        return amount;
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -609,27 +592,6 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     /*
-     * Cancels the menu for broken shop block
-     */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerBreakShopCreationChest(BlockBreakEvent event) {
-        @Nullable Player player = event.getPlayer();
-        if (player == null) {
-            return;
-        }
-        Map<UUID, Info> actionMap = plugin.getShopManager().getActions();
-        final Info info = actionMap.get(player.getUniqueId());
-        if (info != null && info.getLocation().equals(event.getBlock().getLocation())) {
-            actionMap.remove(player.getUniqueId());
-            if (info.getAction().isTrading()) {
-                plugin.text().of(player, "shop-purchase-cancelled").send();
-            } else if (info.getAction().isCreating()) {
-                plugin.text().of(player, "shop-creation-cancelled").send();
-            }
-        }
-    }
-
-    /*
      * Waits for a player to move too far from a shop, then cancels the menu.
      */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -649,6 +611,27 @@ public class PlayerListener extends AbstractQSListener {
             }
             Log.debug(p.getName() + " too far with the shop location.");
             plugin.getShopManager().getActions().remove(p.getUniqueId());
+        }
+    }
+
+    /*
+     * Cancels the menu for broken shop block
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerBreakShopCreationChest(BlockBreakEvent event) {
+        @Nullable Player player = event.getPlayer();
+        if (player == null) {
+            return;
+        }
+        Map<UUID, Info> actionMap = plugin.getShopManager().getActions();
+        final Info info = actionMap.get(player.getUniqueId());
+        if (info != null && info.getLocation().equals(event.getBlock().getLocation())) {
+            actionMap.remove(player.getUniqueId());
+            if (info.getAction().isTrading()) {
+                plugin.text().of(player, "shop-purchase-cancelled").send();
+            } else if (info.getAction().isCreating()) {
+                plugin.text().of(player, "shop-creation-cancelled").send();
+            }
         }
     }
 

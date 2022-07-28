@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is ServerInfoItem.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -32,15 +13,12 @@ public class ServerInfoItem implements SubPasteItem {
     private final String build;
     private final String nmsVersion;
     private final String dataVersion;
-    private String moddedServerType;
-
     private final String players;
-
     private final String onlineMode;
-
     private final String bukkitVersion;
     private final String mcVersion;
     private final String worldContainer;
+    private String moddedServerType;
 
     public ServerInfoItem() {
         QuickShop plugin = QuickShop.getInstance();
@@ -49,14 +27,18 @@ public class ServerInfoItem implements SubPasteItem {
         this.nmsVersion = ReflectFactory.getNMSVersion();
         this.dataVersion = String.valueOf(plugin.getServer().getUnsafe().getDataVersion());
         this.moddedServerType = "Bukkit";
-        if (PaperLib.isSpigot())
+        if (PaperLib.isSpigot()) {
             this.moddedServerType = "Spigot";
-        if (PaperLib.isPaper())
+        }
+        if (PaperLib.isPaper()) {
             this.moddedServerType = "Paper";
-        if (plugin.getEnvironmentChecker().isFabricBasedServer())
+        }
+        if (plugin.getEnvironmentChecker().isFabricBasedServer()) {
             this.moddedServerType = "Fabric";
-        if (plugin.getEnvironmentChecker().isForgeBasedServer())
+        }
+        if (plugin.getEnvironmentChecker().isForgeBasedServer()) {
             this.moddedServerType = "Forge";
+        }
         this.players = Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers();
         this.onlineMode = Util.boolean2Status(Bukkit.getOnlineMode());
         this.bukkitVersion = plugin.getServer().getVersion();
@@ -64,6 +46,10 @@ public class ServerInfoItem implements SubPasteItem {
         this.worldContainer = Bukkit.getWorldContainer().getPath();
     }
 
+    @Override
+    public @NotNull String genBody() {
+        return buildContent();
+    }
 
     @Override
     public @NotNull String getTitle() {
@@ -84,11 +70,5 @@ public class ServerInfoItem implements SubPasteItem {
         table.insert("MC Version", mcVersion);
         table.insert("World Container", worldContainer);
         return table.render();
-    }
-
-
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
     }
 }

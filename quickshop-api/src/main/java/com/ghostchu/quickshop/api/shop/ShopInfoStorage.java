@@ -1,26 +1,6 @@
-/*
- *  This file is a part of project QuickShop, the name is ShopInfoStorage.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.api.shop;
 
 import com.ghostchu.quickshop.api.serialize.BlockPos;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -30,7 +10,6 @@ import java.util.UUID;
 /**
  * Minimal information about a shop.
  */
-@AllArgsConstructor
 @Data
 @Builder
 public class ShopInfoStorage {
@@ -48,4 +27,21 @@ public class ShopInfoStorage {
     private final String inventoryWrapperName;
     private final String symbolLink;
     private final Map<UUID, String> permission;
+
+    public ShopInfoStorage(String world, BlockPos position, UUID owner, double price, String item, int unlimited, int shopType, String extra, String currency, boolean disableDisplay, UUID taxAccount, String inventoryWrapperName, String symbolLink, Map<UUID, String> permission) {
+        this.world = world;
+        this.position = position;
+        this.owner = owner;
+        this.price = price;
+        this.item = item;
+        this.unlimited = unlimited;
+        this.shopType = shopType;
+        this.extra = extra;
+        this.currency = currency;
+        this.disableDisplay = disableDisplay;
+        this.taxAccount = taxAccount;
+        this.inventoryWrapperName = inventoryWrapperName;
+        this.symbolLink = symbolLink;
+        this.permission = permission;
+    }
 }

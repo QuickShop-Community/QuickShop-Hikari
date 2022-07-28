@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is DisplayAutoDespawnWatcher.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.watcher;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -27,7 +8,6 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
-import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -35,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-@AllArgsConstructor
 public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloadable {
     private final QuickShop plugin;
     private int range;
@@ -48,6 +27,11 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
 
     private void init() {
         this.range = plugin.getConfig().getInt("shop.display-despawn-range");
+    }
+
+    public DisplayAutoDespawnWatcher(QuickShop plugin, int range) {
+        this.plugin = plugin;
+        this.range = range;
     }
 
     @Override

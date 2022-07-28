@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is EnvironmentChecker.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.util.envcheck;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -71,14 +52,6 @@ public final class EnvironmentChecker {
             return;
         }
         tests.add(method);
-    }
-
-    private void sortTests() {
-        tests.sort((o1, o2) -> {
-            EnvCheckEntry e1 = o1.getAnnotation(EnvCheckEntry.class);
-            EnvCheckEntry e2 = o2.getAnnotation(EnvCheckEntry.class);
-            return Integer.compare(e1.priority(), e2.priority());
-        });
     }
 
     public ResultReport run(EnvCheckEntry.Stage stage) {
@@ -149,6 +122,14 @@ public final class EnvironmentChecker {
         return new ResultReport(gResult, results);
     }
 
+    private void sortTests() {
+        tests.sort((o1, o2) -> {
+            EnvCheckEntry e1 = o1.getAnnotation(EnvCheckEntry.class);
+            EnvCheckEntry e2 = o2.getAnnotation(EnvCheckEntry.class);
+            return Integer.compare(e1.priority(), e2.priority());
+        });
+    }
+
     public boolean isOutdatedJvm() {
         String jvmVersion = System.getProperty("java.version"); //Use java version not jvm version.
         String[] splitVersion = jvmVersion.split("\\.");
@@ -183,25 +164,6 @@ public final class EnvironmentChecker {
         return new ResultContainer(CheckResult.PASSED, "No old QuickShop jar installled on this server");
     }
 
-    public boolean isForgeBasedServer() {
-        //Forge server detect - Arclight
-        if (Util.isClassAvailable("net.minecraftforge.server.ServerMain")) {
-            return true;
-        }
-        if (Util.isClassAvailable("net.minecraftforge.fml.loading.ModInfo")) {
-            return true;
-        }
-        if (Util.isClassAvailable("cpw.mods.modlauncher.serviceapi.ILaunchPluginService")) {
-            return true;
-        }
-        return Util.isClassAvailable("net.minecraftforge.forgespi.locating.IModLocator");
-    }
-
-    public boolean isFabricBasedServer() {
-        //Nobody really make it right!?
-        return Util.isClassAvailable("net.fabricmc.loader.launch.knot.KnotClient"); //OMG
-    }
-
     @EnvCheckEntry(name = "ModdedServer Based Test", priority = 4)
     public ResultContainer moddedBasedTest() {
         boolean trigged = false;
@@ -221,6 +183,25 @@ public final class EnvironmentChecker {
             return new ResultContainer(CheckResult.WARNING, "No support will be given to modded servers.");
         }
         return new ResultContainer(CheckResult.PASSED, "Server is unmodified.");
+    }
+
+    public boolean isForgeBasedServer() {
+        //Forge server detect - Arclight
+        if (Util.isClassAvailable("net.minecraftforge.server.ServerMain")) {
+            return true;
+        }
+        if (Util.isClassAvailable("net.minecraftforge.fml.loading.ModInfo")) {
+            return true;
+        }
+        if (Util.isClassAvailable("cpw.mods.modlauncher.serviceapi.ILaunchPluginService")) {
+            return true;
+        }
+        return Util.isClassAvailable("net.minecraftforge.forgespi.locating.IModLocator");
+    }
+
+    public boolean isFabricBasedServer() {
+        //Nobody really make it right!?
+        return Util.isClassAvailable("net.fabricmc.loader.launch.knot.KnotClient"); //OMG
     }
 
     @EnvCheckEntry(name = "CoreSupport Test", priority = 6)

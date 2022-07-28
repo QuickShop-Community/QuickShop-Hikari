@@ -1,28 +1,9 @@
-/*
- *  This file is a part of project QuickShop, the name is OngoingFeeWatcher.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.watcher;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopOngoingFeeEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.economy.EconomyTransaction;
+import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -78,8 +59,9 @@ public class OngoingFeeWatcher extends BukkitRunnable {
                         taxAccount = shop.getTaxAccount();
                     } else {
                         UUID uuid = ((SimpleShopManager) plugin.getShopManager()).getCacheTaxAccount();
-                        if (uuid != null)
+                        if (uuid != null) {
                             taxAccount = uuid;
+                        }
                     }
 
                     ShopOngoingFeeEvent event = new ShopOngoingFeeEvent(shop, shopOwner, cost);
@@ -92,7 +74,7 @@ public class OngoingFeeWatcher extends BukkitRunnable {
 
                     UUID finalTaxAccount = taxAccount;
                     Util.mainThreadRun(() -> {
-                        EconomyTransaction transaction = EconomyTransaction.builder()
+                        SimpleEconomyTransaction transaction = SimpleEconomyTransaction.builder()
                                 .allowLoan(allowLoan)
                                 .currency(plugin.getCurrency())
                                 .core(plugin.getEconomy())

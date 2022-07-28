@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is ConfigurationUpdater.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.util.config;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -48,13 +29,6 @@ public class ConfigurationUpdater {
     public ConfigurationUpdater(QuickShop plugin) {
         this.plugin = plugin;
         this.configuration = plugin.getConfig();
-    }
-
-    private void writeServerUniqueId() {
-        String serverUUID = plugin.getConfig().getString("server-uuid");
-        if (serverUUID == null || serverUUID.isEmpty() || !Util.isUUID(serverUUID)) {
-            plugin.getConfig().set("server-uuid", UUID.randomUUID().toString());
-        }
     }
 
     public void update(@NotNull Object configUpdateScript) {
@@ -106,13 +80,10 @@ public class ConfigurationUpdater {
 
     }
 
-    private void brokenConfigurationFix() {
-        try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(plugin.getResource("config.yml"))), StandardCharsets.UTF_8)) {
-            if (new ConfigurationFixer(plugin, new File(plugin.getDataFolder(), "config.yml"), plugin.getConfig(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
-                plugin.reloadConfig();
-            }
-        } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to fix config.yml, plugin may not working properly.", e);
+    private void writeServerUniqueId() {
+        String serverUUID = plugin.getConfig().getString("server-uuid");
+        if (serverUUID == null || serverUUID.isEmpty() || !Util.isUUID(serverUUID)) {
+            plugin.getConfig().set("server-uuid", UUID.randomUUID().toString());
         }
     }
 
@@ -122,20 +93,9 @@ public class ConfigurationUpdater {
             plugin.getLogger().info("Save changes & Reloading configurations...");
             plugin.saveConfig();
             plugin.reloadConfig();
-            if (plugin.getReloadManager() != null)
+            if (plugin.getReloadManager() != null) {
                 plugin.getReloadManager().reload();
-        }
-    }
-
-    private void cleanupOldConfigs() throws IOException {
-        Files.deleteIfExists(new File(plugin.getDataFolder(), "example.config.yml").toPath());
-        Files.deleteIfExists(new File(plugin.getDataFolder(), "example-configuration.txt").toPath());
-        Files.deleteIfExists(new File(plugin.getDataFolder(), "example-configuration.yml").toPath());
-        try {
-            if (new File(plugin.getDataFolder(), "messages.yml").exists()) {
-                Files.move(new File(plugin.getDataFolder(), "messages.yml").toPath(), new File(plugin.getDataFolder(), "messages.yml.outdated").toPath());
             }
-        } catch (Exception ignore) {
         }
     }
 
@@ -150,5 +110,27 @@ public class ConfigurationUpdater {
         }
         methods.sort(Comparator.comparingInt(o -> o.getAnnotation(UpdateScript.class).version()));
         return methods;
+    }
+
+    private void cleanupOldConfigs() throws IOException {
+        Files.deleteIfExists(new File(plugin.getDataFolder(), "example.config.yml").toPath());
+        Files.deleteIfExists(new File(plugin.getDataFolder(), "example-configuration.txt").toPath());
+        Files.deleteIfExists(new File(plugin.getDataFolder(), "example-configuration.yml").toPath());
+        try {
+            if (new File(plugin.getDataFolder(), "messages.yml").exists()) {
+                Files.move(new File(plugin.getDataFolder(), "messages.yml").toPath(), new File(plugin.getDataFolder(), "messages.yml.outdated").toPath());
+            }
+        } catch (Exception ignore) {
+        }
+    }
+
+    private void brokenConfigurationFix() {
+        try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(plugin.getResource("config.yml"))), StandardCharsets.UTF_8)) {
+            if (new ConfigurationFixer(plugin, new File(plugin.getDataFolder(), "config.yml"), plugin.getConfig(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
+                plugin.reloadConfig();
+            }
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to fix config.yml, plugin may not working properly.", e);
+        }
     }
 }

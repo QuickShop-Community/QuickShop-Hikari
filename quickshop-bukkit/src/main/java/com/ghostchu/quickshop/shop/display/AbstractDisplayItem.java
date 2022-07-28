@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is AbstractDisplayItem.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.shop.display;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -67,6 +48,24 @@ public abstract class AbstractDisplayItem implements Reloadable {
         this.originalItemStack = shop.getItem().clone();
         PLUGIN.getReloadManager().register(this);
         init();
+    }
+
+    /**
+     * Get PLUGIN now is using which one DisplayType
+     *
+     * @return Using displayType.
+     */
+    @NotNull
+    public static DisplayType getNowUsing() {
+        DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
+        //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
+        if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
+            PLUGIN.getConfig().set("shop.display-type", 0);
+            PLUGIN.saveConfig();
+            PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because " + displayType.name() + " type is unsupported");
+            return DisplayType.REALITEM;
+        }
+        return displayType;
     }
 
     /**
@@ -121,6 +120,16 @@ public abstract class AbstractDisplayItem implements Reloadable {
         return false;
     }
 
+    protected void init() {
+        DISPLAY_ALLOW_STACKS = PLUGIN.getConfig().getBoolean("shop.display-allow-stacks");
+        if (DISPLAY_ALLOW_STACKS) {
+            //Prevent stack over the normal size
+            originalItemStack.setAmount(Math.min(originalItemStack.getAmount(), originalItemStack.getMaxStackSize()));
+        } else {
+            this.originalItemStack.setAmount(1);
+        }
+    }
+
     /**
      * Check the itemStack is target shop's display
      *
@@ -173,24 +182,6 @@ public abstract class AbstractDisplayItem implements Reloadable {
     }
 
     /**
-     * Get PLUGIN now is using which one DisplayType
-     *
-     * @return Using displayType.
-     */
-    @NotNull
-    public static DisplayType getNowUsing() {
-        DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
-        //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
-        if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
-            PLUGIN.getConfig().set("shop.display-type", 0);
-            PLUGIN.saveConfig();
-            PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because " + displayType.name() + " type is unsupported");
-            return DisplayType.REALITEM;
-        }
-        return displayType;
-    }
-
-    /**
      * Create a new itemStack with protect flag.
      *
      * @param itemStack Old itemStack
@@ -229,16 +220,6 @@ public abstract class AbstractDisplayItem implements Reloadable {
     public static ShopProtectionFlag createShopProtectionFlag(
             @NotNull ItemStack itemStack, @NotNull Shop shop) {
         return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
-    }
-
-    protected void init() {
-        DISPLAY_ALLOW_STACKS = PLUGIN.getConfig().getBoolean("shop.display-allow-stacks");
-        if (DISPLAY_ALLOW_STACKS) {
-            //Prevent stack over the normal size
-            originalItemStack.setAmount(Math.min(originalItemStack.getAmount(), originalItemStack.getMaxStackSize()));
-        } else {
-            this.originalItemStack.setAmount(1);
-        }
     }
 
     @Override

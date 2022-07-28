@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is LockListener.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.quickshop.Cache;
@@ -44,20 +25,13 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class LockListener extends AbstractProtectionListener {
-    public LockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
-        super(plugin, cache);
-    }
+    private static final Object emptyObject = new Object();
     private final com.google.common.cache.Cache<UUID, Object> lockCoolDown = CacheBuilder.newBuilder()
             .expireAfterAccess(1, TimeUnit.SECONDS)
             .build();
-    private static final Object emptyObject=  new Object();
-    @Override
-    public void register() {
-        if (plugin.getConfig().getBoolean("shop.lock")) {
-            super.register();
-        } else {
-            super.unregister();
-        }
+
+    public LockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
+        super(plugin, cache);
     }
 
     /**
@@ -69,6 +43,15 @@ public class LockListener extends AbstractProtectionListener {
     public ReloadResult reloadModule() {
         register();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
+
+    @Override
+    public void register() {
+        if (plugin.getConfig().getBoolean("shop.lock")) {
+            super.register();
+        } else {
+            super.unregister();
+        }
     }
 
     /*
@@ -165,7 +148,7 @@ public class LockListener extends AbstractProtectionListener {
 
         if (!shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)) {
             if (plugin.perm().hasPermission(p, "quickshop.other.open")) {
-                if(lockCoolDown.getIfPresent(p.getUniqueId()) == null){
+                if (lockCoolDown.getIfPresent(p.getUniqueId()) == null) {
                     plugin.text().of(p, "bypassing-lock").send();
                     lockCoolDown.put(p.getUniqueId(), emptyObject);
                 }
@@ -195,7 +178,7 @@ public class LockListener extends AbstractProtectionListener {
         }
 
         if (plugin.perm().hasPermission(p, "quickshop.other.open")) {
-            if(lockCoolDown.getIfPresent(p.getUniqueId()) == null){
+            if (lockCoolDown.getIfPresent(p.getUniqueId()) == null) {
                 plugin.text().of(p, "bypassing-lock").send();
                 lockCoolDown.put(p.getUniqueId(), emptyObject);
             }

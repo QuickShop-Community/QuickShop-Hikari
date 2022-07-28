@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is SimpleShopControlPanelManager.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.shop.controlpanel;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -24,7 +5,6 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopControlPanel;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
-import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -37,11 +17,25 @@ import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-@AllArgsConstructor
 public class SimpleShopControlPanelManager implements ShopControlPanelManager {
     private final QuickShop plugin;
     private final Lock LOCK = new ReentrantLock();
     private final Map<ShopControlPanel, Integer> registry = new LinkedHashMap<>();
+
+    public SimpleShopControlPanelManager(QuickShop plugin) {
+        this.plugin = plugin;
+    }
+
+    @Override
+    public void register(@NotNull ShopControlPanel panel) {
+        LOCK.lock();
+        try {
+            registry.put(panel, panel.getInternalPriority());
+        } finally {
+            LOCK.unlock();
+        }
+        resort();
+    }
 
     private void resort() {
         if (!LOCK.tryLock()) {
@@ -55,32 +49,31 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager {
     }
 
     @Override
-    public void register(@NotNull ShopControlPanel panel) {
-        LOCK.lock();
-        registry.put(panel, panel.getInternalPriority());
-        LOCK.unlock();
-        resort();
-    }
-
-    @Override
     public void unregister(@NotNull ShopControlPanel panel) {
         LOCK.lock();
-        registry.remove(panel);
-        LOCK.unlock();
+        try {
+            registry.remove(panel);
+        } finally {
+            LOCK.unlock();
+        }
         // Doesn't need resort
     }
 
     @Override
     public void unregister(@NotNull Plugin plugin) {
         LOCK.lock();
-        List<ShopControlPanel> pending = new ArrayList<>();
-        for (Map.Entry<ShopControlPanel, Integer> entry : registry.entrySet()) {
-            if (entry.getKey().getPlugin().equals(plugin)) {
-                pending.add(entry.getKey());
+        try {
+            List<ShopControlPanel> pending = new ArrayList<>();
+            for (Map.Entry<ShopControlPanel, Integer> entry : registry.entrySet()) {
+                if (entry.getKey().getPlugin().equals(plugin)) {
+                    pending.add(entry.getKey());
+                }
             }
+            pending.forEach(this::unregister);
+        } finally {
+            LOCK.unlock();
         }
-        LOCK.unlock();
-        pending.forEach(this::unregister);
+
     }
 
     @Override

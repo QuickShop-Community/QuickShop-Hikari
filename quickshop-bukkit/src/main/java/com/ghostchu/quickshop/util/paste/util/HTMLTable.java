@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is HTMLTable.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.util.paste.util;
 
 import org.apache.commons.lang3.StringUtils;
@@ -28,12 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class HTMLTable {
-    private final int columns;
-    private String[] title;
-    private final List<String[]> data = new LinkedList<>();
-
-    private final boolean firstColumnBold;
-
     private static final String TEMPLATE = """           
             <table style="table-layout: fixed;">
               {col}
@@ -41,6 +16,11 @@ public class HTMLTable {
               {tbody}
             </table>
             """;
+    private final int columns;
+    private final List<String[]> data = new LinkedList<>();
+
+    private final boolean firstColumnBold;
+    private String[] title;
 
     /**
      * Creates an HTML Table
@@ -104,23 +84,12 @@ public class HTMLTable {
                 .replace("{tbody}", tbody);
     }
 
-    private String renderBody() {
-        StringBuilder tdBuilder = new StringBuilder();
-        for (String[] line : data) {
-            tdBuilder.append("<tr>");
-            for (String record : line) {
-                tdBuilder.append("<td>").append(record).append("</td>");
-            }
-            tdBuilder.append("</tr>");
-        }
-        return "<tbody>" + tdBuilder + "</tbody>";
-    }
-
     @NotNull
     private String renderHead() {
         StringBuilder tdBuilder = new StringBuilder();
-        if (title == null || title.length == 0)
+        if (title == null || title.length == 0) {
             return "";
+        }
         for (String title : title) {
             tdBuilder.append("<th>").append(title).append("</th>");
         }
@@ -131,6 +100,18 @@ public class HTMLTable {
                 </tr>
                 </thead>
                 """.replace("{th}", tdBuilder.toString());
+    }
+
+    private String renderBody() {
+        StringBuilder tdBuilder = new StringBuilder();
+        for (String[] line : data) {
+            tdBuilder.append("<tr>");
+            for (String record : line) {
+                tdBuilder.append("<td>").append(record).append("</td>");
+            }
+            tdBuilder.append("</tr>");
+        }
+        return "<tbody>" + tdBuilder + "</tbody>";
     }
 
     private String renderColAttributes() {

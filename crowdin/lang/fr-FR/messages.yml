@@ -555,6 +555,7 @@ database:
   auto-trim-started: "<green>Auto trim has been started, please wait..."
   trim-start: "<green>Database trim started, please wait..."
   trim-exception: "<red>Database trim failed, an exception raised during database trimming, check the server console."
+  generated-at: "<yellow>Generated at: <gold>{0}</gold>"
   suggestion:
     trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."
@@ -574,3 +575,38 @@ transfer-accepted-toside: "<green>You accepted <aqua>{0}</aqua>'s transfer reque
 transfer-rejected-fromside: "<red>Player <aqua>{0}</aqua> rejected your shop transfer request."
 transfer-rejected-toside: "<red>You rejected <aqua>{0}</aqua>'s shop transfer request."
 transfer-no-pending-operation: "<red>You don't have pending transfer request yet."
+addon:
+  towny:
+    commands:
+      town: "<yellow>Set or unset a shop to a Town shop"
+      nation: "<yellow>Set or unset a shop to a Nation shop"
+    make-shop-owned-by-town: "<green>You have made the shop owned by town <yellow>{0}</yellow>."
+    make-shop-no-longer-owned-by-town: "<green>You have reset shop ownership, it now transfer back to original shop owner."
+    make-shop-owned-by-nation: "<green>You have made the shop owned by nation <yellow>{0}</yellow>."
+    make-shop-no-longer-owned-by-nation: "<green>You have reset shop ownership, it now transfer back to original shop owner."
+    shop-owning-changing-notice: "<grey>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission"
+    target-shop-already-is-town-shop: "<red>The target shop is already owned by a town."
+    target-shop-already-is-nation-shop: "<red>The target shop is already owned by a nation."
+    target-shop-not-in-town-region: "<red>The target shop is not in the town."
+    target-shop-not-in-nation-region: "<red>The target shop is not in the nation."
+    item-not-allowed: "<red>This shop's item are not allowed used by town/nation shop, pick another one!"
+    operation-disabled-due-shop-status: "<red>This shop operation has been disabled due this already is a town/nation shop."
+    plot-type-disallowed: "<red>You can't create town/nation shop on this type of plot."
+  residence:
+    creation-flag-denied: "<red>You don't have permission to create shops in this residence."
+    trade-flag-denied: "<red>You don't have permission to purchase in this residence."
+    you-cannot-create-shop-in-wildness: "<red>You can't create shop in wildness."
+  griefprevention:
+    creation-denied: "<red>You don't have permission to create shops in this claim."
+    trade-denied: "<red>You don't have permission to purchase shops in this claim."
+  lands:
+    world-not-enabled: "<red>You are not allowed to create or purchase in this world."
+    creation-denied: "<red>You don't have permission to create shops in this Land."
+  plotsquared:
+    no-plot-whitelist-creation: "<red>You cannot create shop outside of Plot."
+    no-plot-whitelist-trade: "<red>You cannot purchase shop outside of Plot."
+    creation-denied: "<red>You don't have permission to create shops in this Plot."
+    trade-denied: "<red>You don't have permission to purchase shops in this Plot."
+  superiorskyblock:
+    owner-create-only: "<red>Only island owner can create shop there."
+    owner-member-create-only: "<red>Only island owner or member can create shop there."

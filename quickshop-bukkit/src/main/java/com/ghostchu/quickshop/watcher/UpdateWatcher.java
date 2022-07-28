@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is UpdateWatcher.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.watcher;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -38,8 +19,8 @@ import java.util.Random;
 
 public class UpdateWatcher implements Listener {
     private final Random random = new Random();
-    private BukkitTask cronTask = null;
     private final QuickShop plugin = QuickShop.getInstance();
+    private BukkitTask cronTask = null;
 
     public void init() {
         cronTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
@@ -59,13 +40,6 @@ public class UpdateWatcher implements Listener {
         }, 1, 20 * 60 * 60);
     }
 
-    public void uninit() {
-        if (cronTask == null) {
-            return;
-        }
-        cronTask.cancel();
-    }
-
     private Component pickRandomMessage(CommandSender sender) {
         List<Component> messages = plugin.text().ofList(sender, "updatenotify.list").forLocale();
         int notifyNum = -1;
@@ -79,6 +53,13 @@ public class UpdateWatcher implements Listener {
             notify = Component.text("New update {0} now available! Please update!");
         }
         return MsgUtil.fillArgs(notify, Component.text(plugin.getNexusManager().getLatestVersion()), Component.text(plugin.getDescription().getVersion()));
+    }
+
+    public void uninit() {
+        if (cronTask == null) {
+            return;
+        }
+        cronTask.cancel();
     }
 
     @EventHandler

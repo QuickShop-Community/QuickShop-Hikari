@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is Lands.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.compatibility.lands;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -47,6 +28,7 @@ public final class Main extends CompatibilityModule {
     private LandsIntegration landsIntegration;
     private boolean deleteWhenLosePermission;
 
+    @Override
     public void init() {
         landsIntegration = new me.angeschossen.lands.api.integration.LandsIntegration(this);
         ignoreDisabledWorlds = getConfig().getBoolean("ignore-disabled-worlds");
@@ -58,7 +40,9 @@ public final class Main extends CompatibilityModule {
     public void permissionOverride(ShopAuthorizeCalculateEvent event) {
         Location shopLoc = event.getShop().getLocation();
         Land land = landsIntegration.getLand(shopLoc);
-        if (land == null) return;
+        if (land == null) {
+            return;
+        }
         if (land.getOwnerUID().equals(event.getAuthorizer())) {
             if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);
@@ -70,7 +54,7 @@ public final class Main extends CompatibilityModule {
     public void onPreCreation(ShopPreCreateEvent event) {
         if (landsIntegration.getLandWorld(event.getLocation().getWorld()) == null) {
             if (!ignoreDisabledWorlds) {
-                event.setCancelled(true, "Lands: this world not in list and ignore-disabled-worlds is disabled");
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.world-not-enabled").forLocale());
                 return;
             }
         }
@@ -91,7 +75,7 @@ public final class Main extends CompatibilityModule {
     public void onCreation(ShopCreateEvent event) {
         if (landsIntegration.getLandWorld(event.getShop().getLocation().getWorld()) == null) {
             if (!ignoreDisabledWorlds) {
-                event.setCancelled(true, "Lands: this world not in list and ignore-disabled-worlds is disabled");
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.world-not-enabled").forLocale());
                 return;
             }
         }
@@ -100,10 +84,10 @@ public final class Main extends CompatibilityModule {
             if (land.getOwnerUID().equals(event.getPlayer().getUniqueId()) || land.isTrusted(event.getPlayer().getUniqueId())) {
                 return;
             }
-            event.setCancelled(true, "Lands: you don't have permission to create shop here");
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.creation-denied").forLocale());
         } else {
             if (whitelist) {
-                event.setCancelled(true, "Lands: you don't have permission to create shop here (whitelist)");
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.creation-denied").forLocale());
             }
         }
     }
@@ -114,7 +98,7 @@ public final class Main extends CompatibilityModule {
             if (ignoreDisabledWorlds) {
                 return;
             }
-            event.setCancelled(true, "Lands: this world not in list and ignore-disabled-worlds is disabled");
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.world-not-enabled").forLocale());
         }
     }
 

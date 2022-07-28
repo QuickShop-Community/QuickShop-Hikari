@@ -1,25 +1,5 @@
-/*
- *  This file is a part of project QuickShop, the name is GameVersion.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.platform;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
  *
  * @author Ghost_chu and sandtechnology
  */
-@AllArgsConstructor
 @Getter
 public enum GameVersion {
     v1_5_R1(false, true, false, false, false, false),
@@ -92,6 +71,15 @@ public enum GameVersion {
      * Sign Glowing Support
      */
     private final boolean signTextDyeSupport;
+
+    private GameVersion(boolean coreSupports, boolean endOfLife, boolean virtualDisplaySupports, boolean newNmsName, boolean signGlowingSupport, boolean signTextDyeSupport) {
+        this.coreSupports = coreSupports;
+        this.endOfLife = endOfLife;
+        this.virtualDisplaySupports = virtualDisplaySupports;
+        this.newNmsName = newNmsName;
+        this.signGlowingSupport = signGlowingSupport;
+        this.signTextDyeSupport = signTextDyeSupport;
+    }
 
 
     /**

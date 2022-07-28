@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is Economy_Vault.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.economy;
 
 
@@ -151,8 +132,9 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
             Log.transaction(Level.WARNING, "Deposit player " + trader.getUniqueId() + " failed, Vault response: " + response.errorMessage);
             return false;
         } catch (Exception t) {
-            if (plugin.getSentryErrorReporter() != null)
+            if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
+            }
             if (trader.getName() == null) {
                 plugin.getLogger().warning("Deposit failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ". Provider (" + getProviderName() + ")");
                 return false;
@@ -208,8 +190,9 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
         try {
             return Objects.requireNonNull(this.vault).getBalance(player);
         } catch (Exception t) {
-            if (plugin.getSentryErrorReporter() != null)
+            if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
+            }
             plugin.getLogger().log(Level.WARNING, String.format(ERROR_MESSAGE, getProviderName()), t);
             return 0.0;
         }
@@ -240,8 +223,9 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
             Log.transaction(Level.WARNING, "Withdraw player " + trader.getUniqueId() + " failed, Vault response: " + response.errorMessage);
             return false;
         } catch (Exception t) {
-            if (plugin.getSentryErrorReporter() != null)
+            if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
+            }
             if (trader.getName() == null) {
                 plugin.getLogger().warning("Withdraw failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ", Provider: " + getProviderName());
                 return false;
@@ -283,15 +267,16 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
     }
 
     @Override
+    public @NotNull Plugin getPlugin() {
+        return plugin;
+    }
+
+    @Override
     public @NotNull String getName() {
         return "BuiltIn-Vault";
     }
 
     @Override
-    public @NotNull Plugin getPlugin() {
-        return plugin;
-    }
-
     public String getProviderName() {
         if (this.vault == null) {
             return "Provider not found.";

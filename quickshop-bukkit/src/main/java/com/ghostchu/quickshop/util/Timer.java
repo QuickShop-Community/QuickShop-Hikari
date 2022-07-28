@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is Timer.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.util;
 
 import lombok.EqualsAndHashCode;
@@ -54,6 +35,14 @@ public class Timer {
     }
 
     /**
+     * Start the timer. Time Unit: ms
+     */
+    public void start() {
+        this.startTime = System.currentTimeMillis();
+        isPaused = false;
+    }
+
+    /**
      * Create a empty time, use the param to init the startTime.
      *
      * @param startTime New startTime
@@ -74,6 +63,19 @@ public class Timer {
     }
 
     /**
+     * Return how long time running when timer set. THIS NOT WILL DESTORY AND STOP THE TIMER
+     *
+     * @return time
+     */
+    public long getPassedTime() {
+        if (isPaused) {
+            return passedTime;
+        } else {
+            return System.currentTimeMillis() - startTime;
+        }
+    }
+
+    /**
      * Return how long time running after a specified time. THIS NOT WILL DESTORY AND STOP THE TIMER
      *
      * @param atTime The specified time
@@ -81,14 +83,6 @@ public class Timer {
      */
     public long getPassedTimeOffsetFrom(long atTime) {
         return (atTime - startTime) + passedTime;
-    }
-
-    /**
-     * Start the timer. Time Unit: ms
-     */
-    public void start() {
-        this.startTime = System.currentTimeMillis();
-        isPaused = false;
     }
 
     /**
@@ -107,19 +101,6 @@ public class Timer {
             this.startTime = System.currentTimeMillis() - passedTime;
             passedTime = 0;
             isPaused = false;
-        }
-    }
-
-    /**
-     * Return how long time running when timer set. THIS NOT WILL DESTORY AND STOP THE TIMER
-     *
-     * @return time
-     */
-    public long getPassedTime() {
-        if (isPaused) {
-            return passedTime;
-        } else {
-            return System.currentTimeMillis() - startTime;
         }
     }
 

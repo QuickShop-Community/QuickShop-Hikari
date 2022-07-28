@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is ShopProtectionListener.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.quickshop.Cache;
@@ -37,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.jetbrains.annotations.NotNull;
@@ -44,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ShopProtectionListener extends AbstractProtectionListener {
 
+    private final NamespacedKey hopperKey = new NamespacedKey(QuickShop.getInstance(), "hopper-persistent-data");
     private boolean hopperProtect;
     private boolean hopperOwnerExclude;
 
@@ -62,6 +45,7 @@ public class ShopProtectionListener extends AbstractProtectionListener {
         init();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockExplode(BlockExplodeEvent e) {
         for (int i = 0, a = e.blockList().size(); i < a; i++) {
@@ -103,7 +87,6 @@ public class ShopProtectionListener extends AbstractProtectionListener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplode(EntityExplodeEvent e) {
-
         for (int i = 0, a = e.blockList().size(); i < a; i++) {
             final Block b = e.blockList().get(i);
             final Shop shop = getShopNature(b.getLocation(), true);
@@ -120,7 +103,18 @@ public class ShopProtectionListener extends AbstractProtectionListener {
         }
     }
 
-    private final NamespacedKey hopperKey = new NamespacedKey(QuickShop.getInstance(), "hopper-persistent-data");
+    /*
+     * Handles shops breaking through entity changes (like Wither etc.)
+     */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityBlockChange(EntityChangeBlockEvent e) {
+        if (!plugin.getConfig().getBoolean("protect.entity", true)) {
+            return;
+        }
+        if (getShopNature(e.getBlock().getLocation(), true) != null) {
+            e.setCancelled(true);
+        }
+    }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onPlaceHopper(BlockPlaceEvent e) {

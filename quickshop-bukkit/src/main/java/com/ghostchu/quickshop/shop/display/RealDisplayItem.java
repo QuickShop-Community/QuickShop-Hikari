@@ -1,25 +1,5 @@
-/*
- *  This file is a part of project QuickShop, the name is RealDisplayItem.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.shop.display;
 
-import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopDisplayItemDespawnEvent;
 import com.ghostchu.quickshop.api.event.ShopDisplayItemSafeGuardEvent;
 import com.ghostchu.quickshop.api.event.ShopDisplayItemSpawnEvent;
@@ -262,25 +242,6 @@ public class RealDisplayItem extends AbstractDisplayItem {
         return this.item;
     }
 
-    /**
-     * Gets either the item spawn location of this item's chest, or the attached chest.
-     * Used for checking for duplicates.
-     *
-     * @param thisItem Whether to check this item's spawn location or the attached chest's.
-     * @return The display location of the item.
-     */
-    public @Nullable Location getDoubleShopDisplayLocations(boolean thisItem) {
-        Util.ensureThread(false);
-        if (!shop.isRealDouble()) {
-            return null;
-        }
-        if (thisItem) {
-            return shop.getLocation().clone().add(0.5, 1.2, 0.5);
-        } else {
-            return shop.getAttachedShop().getLocation().clone().add(0.5, 1.2, 0.5);
-        }
-    }
-
     @Override
     public boolean isSpawned() {
         if (this.item == null) {
@@ -298,6 +259,25 @@ public class RealDisplayItem extends AbstractDisplayItem {
 
         }
         return this.item.isValid();
+    }
+
+    /**
+     * Gets either the item spawn location of this item's chest, or the attached chest.
+     * Used for checking for duplicates.
+     *
+     * @param thisItem Whether to check this item's spawn location or the attached chest's.
+     * @return The display location of the item.
+     */
+    public @Nullable Location getDoubleShopDisplayLocations(boolean thisItem) {
+        Util.ensureThread(false);
+        if (!shop.isRealDouble()) {
+            return null;
+        }
+        if (thisItem) {
+            return shop.getLocation().clone().add(0.5, 1.2, 0.5);
+        } else {
+            return shop.getAttachedShop().getLocation().clone().add(0.5, 1.2, 0.5);
+        }
     }
 
 }

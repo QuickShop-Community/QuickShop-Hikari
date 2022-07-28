@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is InventoryWrapper.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.api.inventory;
 
 import org.bukkit.Location;
@@ -34,16 +15,6 @@ import java.util.Map;
  * Wrapper to handle inventory/fake inventory/custom inventory etc.
  */
 public interface InventoryWrapper extends Iterable<ItemStack> {
-
-    /**
-     * Return the iterator for this inventory
-     * It's not thread-safe, please use that in main-thread
-     *
-     * @return the iterator for this inventory
-     */
-    @NotNull
-    @Override
-    InventoryWrapperIterator iterator();
 
     /**
      * Change items in the inventory by index
@@ -71,18 +42,14 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
     }
 
     /**
-     * Change the item from Inventory
+     * Return the iterator for this inventory
+     * It's not thread-safe, please use that in main-thread
+     *
+     * @return the iterator for this inventory
      */
-    interface ItemChanger {
-        /**
-         * Do item change action in the inventory
-         *
-         * @param index     the item index in the inventory, start from zero
-         * @param itemStack the item in this index
-         * @return If continue to change items in the next index
-         */
-        boolean changeItem(int index, ItemStack itemStack);
-    }
+    @NotNull
+    @Override
+    InventoryWrapperIterator iterator();
 
     /**
      * Get the location of the block or entity which corresponds to this inventory. May return null if this container
@@ -212,6 +179,20 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
      */
     default boolean isValid() {
         return true;
+    }
+
+    /**
+     * Change the item from Inventory
+     */
+    interface ItemChanger {
+        /**
+         * Do item change action in the inventory
+         *
+         * @param index     the item index in the inventory, start from zero
+         * @param itemStack the item in this index
+         * @return If continue to change items in the next index
+         */
+        boolean changeItem(int index, ItemStack itemStack);
     }
 
 }

@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is Economy_GemsEconomy.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.economy;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -65,6 +46,27 @@ public class Economy_GemsEconomy extends AbstractEconomy {
         this.api = new GemsEconomyAPI();
     }
 
+    @Override
+    public @NotNull String getName() {
+        return "BuiltIn-GemsEconomy";
+    }
+
+    @Override
+    public String getProviderName() {
+        return "GemsEconomy";
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
+
     @Nullable
     private Currency getCurrency(@NotNull World world, @Nullable String currency) {
         if (!isValid()) {
@@ -75,6 +77,7 @@ public class Economy_GemsEconomy extends AbstractEconomy {
         }
         return this.api.getCurrency(currency);
     }
+
 
     /**
      * Deposits a given amount of money from thin air to the given username.
@@ -227,24 +230,11 @@ public class Economy_GemsEconomy extends AbstractEconomy {
         return this.api != null;
     }
 
-    @Override
-    public @NotNull String getName() {
-        return "BuiltIn-GemsEconomy";
-    }
 
     @Override
     public @NotNull Plugin getPlugin() {
         return this.plugin;
     }
 
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() {
-        init();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
-    }
+
 }

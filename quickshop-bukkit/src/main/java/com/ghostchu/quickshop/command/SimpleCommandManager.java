@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is SimpleCommandManager.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.command;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -380,6 +361,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         cmds.remove(container);
     }
 
+    @Override
+    public void unregisterCmd(@NotNull String prefix) {
+        cmds.removeIf(commandContainer -> commandContainer.getPrefix().equalsIgnoreCase(prefix));
+    }
+
     /**
      * Gets a list contains all registered commands
      *
@@ -399,7 +385,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
             @NotNull String commandLabel,
             @NotNull String[] cmdArg) {
         if (plugin.getBootError() != null) {
-            if (cmdArg.length <= 0) {
+            if (cmdArg.length == 0) {
                 plugin.getBootError().printErrors(sender);
                 return true;
             }
@@ -459,6 +445,10 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         return (T2) type;
     }
 
+    private boolean isAdapt(CommandContainer container, CommandSender sender) {
+        return container.getExecutorType().isInstance(sender);
+    }
+
     private boolean checkPermissions(CommandSender sender, String commandLabel, String[] cmdArg, List<String> permissionList, PermissionType permissionType, Action action) {
         if (permissionList == null || permissionList.isEmpty()) {
             return true;
@@ -502,11 +492,6 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
             }
             return false;
         }
-    }
-
-
-    private boolean isAdapt(CommandContainer container, CommandSender sender) {
-        return container.getExecutorType().isInstance(sender);
     }
 
     @Override

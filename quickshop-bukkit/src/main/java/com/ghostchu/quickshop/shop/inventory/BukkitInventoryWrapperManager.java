@@ -1,29 +1,9 @@
-/*
- *  This file is a part of project QuickShop, the name is BukkitInventoryWrapperManager.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.shop.inventory;
 
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.util.JsonUtil;
 import io.papermc.lib.PaperLib;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import org.bukkit.Bukkit;
@@ -73,11 +53,43 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
         }
     }
 
-    @AllArgsConstructor
+    @Data
+    @Builder
+    public static class CommonHolder {
+        private HolderType holder;
+        private String content;
+
+        public CommonHolder(HolderType holder, String content) {
+            this.holder = holder;
+            this.content = content;
+        }
+    }
+
+    @Data
+    @Builder
+    public static class BlockHolder {
+        private String world;
+        private int x;
+        private int y;
+        private int z;
+
+        public BlockHolder(String world, int x, int y, int z) {
+            this.world = world;
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+    }
+
+
     public
     enum HolderType {
         BLOCK("block"), UNKNOWN("unknown");
         private final String typeString;
+
+        private HolderType(String typeString) {
+            this.typeString = typeString;
+        }
 
         @NotNull
         public HolderType fromType(@NotNull String str) {
@@ -93,24 +105,5 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
         public String toType() {
             return this.typeString;
         }
-    }
-
-    @Data
-    @AllArgsConstructor
-    @Builder
-    public static class CommonHolder {
-        private HolderType holder;
-        private String content;
-    }
-
-
-    @Data
-    @AllArgsConstructor
-    @Builder
-    public static class BlockHolder {
-        private String world;
-        private int x;
-        private int y;
-        private int z;
     }
 }

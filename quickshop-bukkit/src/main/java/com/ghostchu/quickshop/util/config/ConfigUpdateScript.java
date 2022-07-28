@@ -1,32 +1,11 @@
-/*
- *  This file is a part of project QuickShop, the name is ConfigUpdateScript.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.util.config;
 
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import com.ghostchu.quickshop.QuickShop;
 import de.themoep.minedown.adventure.MineDown;
-import de.themoep.minedown.adventure.MineDownParser;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
@@ -98,14 +77,17 @@ public class ConfigUpdateScript {
     @UpdateScript(version = 1006)
     public void migrateToMiniMessage() {
         File locales = new File(plugin.getDataFolder(), "overrides");
-        if (!locales.exists())
+        if (!locales.exists()) {
             return;
+        }
         for (File file : locales.listFiles()) {
-            if (!file.isDirectory())
+            if (!file.isDirectory()) {
                 continue;
+            }
             File jsonFile = new File(file, "messages.json");
-            if (!jsonFile.exists())
+            if (!jsonFile.exists()) {
                 continue;
+            }
             try {
                 File yamlFile = new File(jsonFile.getParent(), jsonFile.getName().replace(".json", ".yml"));
                 yamlFile.createNewFile();
@@ -126,6 +108,14 @@ public class ConfigUpdateScript {
         getConfig().set("syntax-parser", null);
     }
 
+    private Object translate(Object o) {
+        if (o instanceof String str) {
+            Component component = MineDown.parse(str);
+            return MiniMessage.miniMessage().serialize(component);
+        }
+        return o;
+    }
+
     @UpdateScript(version = 1007)
     public void refundFromTaxAccountOption() {
         getConfig().set("shop.refund-from-tax-account", false);
@@ -134,13 +124,5 @@ public class ConfigUpdateScript {
     @UpdateScript(version = 1008)
     public void disableTaxForUnlimitedShop() {
         getConfig().set("tax-free-for-unlimited-shop", false);
-    }
-
-    private Object translate(Object o) {
-        if (o instanceof String str) {
-            Component component = MineDown.parse(str);
-            return MiniMessage.miniMessage().serialize(component);
-        }
-        return o;
     }
 }

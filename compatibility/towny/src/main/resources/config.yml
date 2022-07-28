@@ -1,5 +1,31 @@
+#Should allow Mayor and King grant the shop administrator permission on they town / nation.
+allow-permission-override: true
+
+#Should allow override the owner name from town/nation vault name to town/nation display name.
+allow-owner-name-override: true
+
 #If QS should ignore disabled worlds.
 ignore-disabled-worlds: true
+
+#Should we also check flags and other stuff even target world not enabled in Towny
+whitelist-mode: true
+
+#Should we send the taxes to the town/nation vault account if shop inside a town or nation.
+#NOTE: If shop belongs to a Town or Nation, taxes will still send to Server taxes account.
+taxes-to-town: true
+
+#Should we delete player's shops in town when they leaved the that town
+delete-shop-on-resident-leave: false
+
+#Should we remove the shops in plot when plot cleared
+delete-shop-on-plot-clear: true
+
+#Should we remove the shops in plot when plot unclaimed
+delete-shop-on-plot-unclaimed: true
+
+#Workaround for username issue
+workaround-for-account-name: false
+
 #Which checks does a player need to pass to create a shop?
 #You can use multiple checks at the same time.
 #Priority: UP > DOWN
@@ -11,6 +37,7 @@ ignore-disabled-worlds: true
 create:
   - SHOPTYPE
   - MODIFY
+
 #Which checks does a player need to pass to trade with a shop?
 #You can use multiple checks at the same time.
 #Priority: UP > DOWN
@@ -20,8 +47,41 @@ create:
 #MODIFY = The player must have the ability to build on the target plot to trade with a shop.
 #SHOPTYPE = The player must trade with the shop on a SHOP type plot.
 trade: [ ]
-delete-shop-on-resident-leave: false
-delete-shop-on-plot-clear: true
-delete-shop-on-plot-destroy: true
-#Should we prevent the creation of a shop or trade with a shop outside Towny's area
-whitelist-mode: true
+
+#The shops under bank mode will only accept items from player but money goes to the town bank account.
+#And all
+bank-mode:
+  #Only allow shop transform to bank mode when shop at bank plot
+  bank-plot-only: true
+  #Enforce the bank mode shops to use price that specified in the config.
+  #The items not included will deny to be turned a bank mode shop
+  enable: true
+  #Extra percent of money they can make from the bank mode shop to bank account so bank can make money.
+  extra-percent: 0.10 # 0.10 = 10%
+  #Item list
+  #Only allow the bank mode shops created if they trade those items.
+  #To add a price for an item to lock the item price (if force-prices enabled)
+  #Set -1 for price will disable price lock for this type of item even force-prices turned on.
+  # MATERIAL: PRICE
+  item-list:
+    COPPER_ORE: 0.01
+    IRON_ORE: 0.05
+    COAL_ORE: 0.10
+    LAPIS_ORE: 0.25
+    REDSTONE_ORE: 1.00
+    GOLD_ORE: 5.00
+    DIAMOND_ORE: 20.00
+    EMERALD_ORE: 500.00
+    DEEPSLATE_COPPER_ORE: 0.01
+    DEEPSLATE_IRON_ORE: 0.05
+    DEEPSLATE_COAL_ORE: 0.10
+    DEEPSLATE_LAPIS_ORE: 0.25
+    DEEPSLATE_REDSTONE_ORE: 1.00
+    DEEPSLATE_GOLD_ORE: 5.00
+    DEEPSLATE_DIAMOND_ORE: 20.00
+    DEEPSLATE_EMERALD_ORE: 500.00
+    # NETHER_QUARTZ_ORE: 0.50
+    # NETHER_GOLD_ORE: 1.25
+    ANCIENT_DEBRIS: 250.00
+    # HEART_OF_THE_SEA: 2500.00
+    # ENCHANTED_GOLDEN_APPLE: 25000.00

@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.database.bean;
 
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-@AllArgsConstructor
 @Data
 public class SimpleDataRecord implements DataRecord {
     private final UUID owner;
@@ -26,6 +24,47 @@ public class SimpleDataRecord implements DataRecord {
     private final String inventoryWrapper;
     private final String inventorySymbolLink;
     private final Date createTime;
+
+    public SimpleDataRecord(UUID owner, String item, String name, int type, String currency, double price, boolean unlimited, boolean hologram, UUID taxAccount, String permissions, String extra, String inventoryWrapper, String inventorySymbolLink, Date createTime) {
+        this.owner = owner;
+        this.item = item;
+        this.name = name;
+        this.type = type;
+        this.currency = currency;
+        this.price = price;
+        this.unlimited = unlimited;
+        this.hologram = hologram;
+        this.taxAccount = taxAccount;
+        this.permissions = permissions;
+        this.extra = extra;
+        this.inventoryWrapper = inventoryWrapper;
+        this.inventorySymbolLink = inventorySymbolLink;
+        this.createTime = createTime;
+    }
+
+    public SimpleDataRecord(ResultSet set) throws SQLException {
+        this.owner = UUID.fromString(set.getString("owner"));
+        this.item = set.getString("item");
+        this.name = set.getString("name");
+        this.type = set.getInt("type");
+        this.currency = set.getString("currency");
+        this.price = set.getDouble("price");
+        this.unlimited = set.getBoolean("unlimited");
+        this.hologram = set.getBoolean("hologram");
+        this.taxAccount = set.getString("tax_account") == null ? null : UUID.fromString(set.getString("tax_account"));
+        this.permissions = set.getString("permissions");
+        this.extra = set.getString("extra");
+        this.inventorySymbolLink = set.getString("inv_symbol_link");
+        this.inventoryWrapper = set.getString("inv_wrapper");
+        this.createTime = set.getTimestamp("create_time");
+    }
+
+    @NotNull
+    public Map<String, Object> generateLookupParams() {
+        Map<String, Object> map = new HashMap<>(generateParams());
+        map.remove("create_time");
+        return map;
+    }
 
     @NotNull
     public Map<String, Object> generateParams() {
@@ -45,30 +84,6 @@ public class SimpleDataRecord implements DataRecord {
         map.put("inv_symbol_link", inventorySymbolLink);
         map.put("create_time", createTime);
         return map;
-    }
-
-    @NotNull
-    public Map<String, Object> generateLookupParams() {
-        Map<String, Object> map = new HashMap<>(generateParams());
-        map.remove("create_time");
-        return map;
-    }
-
-    public SimpleDataRecord(ResultSet set) throws SQLException {
-        this.owner = UUID.fromString(set.getString("owner"));
-        this.item = set.getString("item");
-        this.name = set.getString("name");
-        this.type = set.getInt("type");
-        this.currency = set.getString("currency");
-        this.price = set.getDouble("price");
-        this.unlimited = set.getBoolean("unlimited");
-        this.hologram = set.getBoolean("hologram");
-        this.taxAccount = set.getString("tax_account") == null ? null : UUID.fromString(set.getString("tax_account"));
-        this.permissions = set.getString("permissions");
-        this.extra = set.getString("extra");
-        this.inventorySymbolLink = set.getString("inv_symbol_link");
-        this.inventoryWrapper = set.getString("inv_wrapper");
-        this.createTime = set.getTimestamp("create_time");
     }
 
     @Override
@@ -122,11 +137,6 @@ public class SimpleDataRecord implements DataRecord {
     }
 
     @Override
-    public @NotNull String getExtra() {
-        return extra;
-    }
-
-    @Override
     public @NotNull String getInventoryWrapper() {
         return inventoryWrapper;
     }
@@ -139,5 +149,10 @@ public class SimpleDataRecord implements DataRecord {
     @Override
     public @NotNull Date getCreateTime() {
         return createTime;
+    }
+
+    @Override
+    public @NotNull String getExtra() {
+        return extra;
     }
 }

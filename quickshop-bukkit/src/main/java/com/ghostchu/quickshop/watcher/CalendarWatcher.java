@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is CalendarWatcher.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.watcher;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -69,6 +50,23 @@ public class CalendarWatcher extends BukkitRunnable {
             }
         } catch (IllegalStateException ignored) {
         }
+    }
+
+    public void save() {
+        try {
+            configuration.save(calendarFile);
+        } catch (IOException ioException) {
+            plugin.getLogger().log(Level.WARNING, "Cannot save calendar cache file at " + calendarFile.getAbsolutePath() + ", scheduled tasks may cannot or execute wrongly!", ioException);
+        }
+    }
+
+    /**
+     * The action to be performed by this timer task.
+     */
+    @Override
+    public void run() {
+        CalendarEvent.CalendarTriggerType type = getAndUpdate();
+        Util.mainThreadRun(() -> new CalendarEvent(type).callEvent());
     }
 
     public CalendarEvent.CalendarTriggerType getAndUpdate() {
@@ -127,22 +125,5 @@ public class CalendarWatcher extends BukkitRunnable {
         }
 
         return type;
-    }
-
-    public void save() {
-        try {
-            configuration.save(calendarFile);
-        } catch (IOException ioException) {
-            plugin.getLogger().log(Level.WARNING, "Cannot save calendar cache file at " + calendarFile.getAbsolutePath() + ", scheduled tasks may cannot or execute wrongly!", ioException);
-        }
-    }
-
-    /**
-     * The action to be performed by this timer task.
-     */
-    @Override
-    public void run() {
-        CalendarEvent.CalendarTriggerType type = getAndUpdate();
-        Util.mainThreadRun(() -> new CalendarEvent(type).callEvent());
     }
 }

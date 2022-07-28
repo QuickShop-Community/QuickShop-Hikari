@@ -1,22 +1,3 @@
-/*
- *  This file is a part of project QuickShop, the name is ShopsInfoItem.java
- *  Copyright (C) Ghost_chu and contributors
- *
- *  This program is free software: you can redistribute it and/or modify it
- *  under the terms of the GNU General Public License as published by the
- *  Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful, but WITHOUT
- *  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- *  FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- *  for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
@@ -39,14 +20,19 @@ public class ShopsInfoItem implements SubPasteItem {
                 .filter(shop -> shop.getLocation().getWorld() != null)
                 .forEach(shop -> {
                     List<Shop> worldShops = shopsMapping.get(shop.getLocation().getWorld().getName());
-                    if (worldShops == null)
+                    if (worldShops == null) {
                         worldShops = new ArrayList<>();
+                    }
 
                     worldShops.add(shop);
                     shopsMapping.put(shop.getLocation().getWorld().getName(), worldShops);
                 });
     }
 
+    @Override
+    public @NotNull String genBody() {
+        return buildContent();
+    }
 
     @Override
     public @NotNull String getTitle() {
@@ -62,10 +48,5 @@ public class ShopsInfoItem implements SubPasteItem {
         shopsMapping.keySet().forEach(worldName -> htmlBuilder.append("<li>").append(worldName).append(": ").append(shopsMapping.get(worldName).size()).append("</li>"));
         htmlBuilder.append("</ul>");
         return htmlBuilder.toString();
-    }
-
-    @Override
-    public @NotNull String genBody() {
-        return buildContent();
     }
 }
