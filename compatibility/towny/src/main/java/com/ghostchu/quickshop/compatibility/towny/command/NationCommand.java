@@ -80,6 +80,8 @@ public class NationCommand implements CommandHandler<Player> {
             }
             if (shop.isStackingShop()) {
                 shop.setPrice(CalculateUtil.multiply(price, shop.getShopStackingAmount()));
+            } else {
+                shop.setPrice(price);
             }
         }
         TownyShopUtil.setShopOriginalOwner(shop, shop.getOwner());
