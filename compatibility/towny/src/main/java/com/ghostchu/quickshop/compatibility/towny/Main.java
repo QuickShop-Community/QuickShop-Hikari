@@ -51,8 +51,8 @@ public final class Main extends CompatibilityModule implements Listener {
     @NotNull
     public static String processTownyAccount(String accountName) {
         String providerName = QuickShop.getInstance().getEconomy().getProviderName();
-        if (Main.getPlugin(Main.class).getConfig().getBoolean("workaround-for-account-name") && "Essentials".equals(providerName)) {
-            return EssStirngUtil.safeString(accountName);
+        if (Main.getPlugin(Main.class).getConfig().getBoolean("workaround-for-account-name") || "Essentials".equals(providerName)) {
+            return EssStringUtil.safeString(accountName);
         }
         return accountName;
     }
