@@ -38,18 +38,18 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
                     BlockHolder blockHolder = JsonUtil.standard().fromJson(commonHolder.getContent(), BlockHolder.class);
                     World world = Bukkit.getWorld(blockHolder.getWorld());
                     if (world == null) {
-                        throw new IllegalArgumentException("Invalid symbol link: invalid world name.");
+                        throw new IllegalArgumentException("Invalid symbol link: Invalid world name.");
                     }
                     BlockState block = PaperLib.getBlockState(world.getBlockAt(blockHolder.getX(), blockHolder.getY(), blockHolder.getZ()), false).getState();
                     if (!(block instanceof Container)) {
-                        throw new IllegalArgumentException("Invalid symbol link: target block not a Container");
+                        throw new IllegalArgumentException("Invalid symbol link: Target block not a Container (map changed/resetted?)");
                     }
                     return new BukkitInventoryWrapper(((Container) block).getInventory());
                 }
-                default -> throw new IllegalArgumentException("Invalid symbol link: invalid holder type.");
+                default -> throw new IllegalArgumentException("Invalid symbol link: Invalid holder type.");
             }
         } catch (Exception exception) {
-            throw new IllegalArgumentException("Invalid symbol link: " + exception.getMessage());
+            throw new IllegalArgumentException(exception.getMessage());
         }
     }
 
