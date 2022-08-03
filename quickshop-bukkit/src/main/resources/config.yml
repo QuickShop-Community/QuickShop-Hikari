@@ -170,22 +170,22 @@ database:
     useUnicode: true
     characterEncoding: utf8
 
-#Limits the number of shops a person can create and own at a time.
+#Limits the amount of shops a player can create and own.
 limits:
-  #Disable these if you're not using them! If this is false, the rest of this section gets ignored.
+  #Leave this as false if you're not using this feature! QuickShop will ignore the rest of this section.
   use: false
 
-  #The default number of shops a players can make.
+  #The default amount of shops a player can create.
   default: 10
 
   #Use old algorithm to calculate unlimited shops into limits.
   old-algorithm: false
 
-  #Here you can setup shop amount limits with permissions.
-  #You can create as many as you like!
+  #Here you can bind the limit to specific permissions.
+  #Using the same format, you can add as many as you want!
   ranks:
     quickshop:
-      #Players with the quickshop.example permission can create 20 shops.
+      #Players with quickshop.example permission can create 20 shops.
       example: 20
 
 #The list of blocks that can be used to create shops.
