@@ -810,10 +810,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             getLogger().info("Cleaning up display manager...");
             VirtualDisplayItem.VirtualDisplayItemManager.unload();
         }
-        if (this.getSqlManager() != null) {
-            getLogger().info("Shutting down database connections...");
-            EasySQL.shutdownManager(this.getSqlManager());
-        }
         if (logWatcher != null) {
             getLogger().info("Stopping log watcher...");
             logWatcher.close();
@@ -835,13 +831,37 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         Bukkit.getScheduler().cancelTasks(this);
         getLogger().info("Unregistering plugin services...");
         getServer().getServicesManager().unregisterAll(this);
-        getLogger().info("Shutting down database...");
-        EasySQL.shutdownManager(this.sqlManager);
         getLogger().info("Shutting down Unirest instances...");
         Unirest.shutDown(true);
+        if (this.getSqlManager() != null) {
+            getLogger().info("Shutting down database connections...");
+            waitDatabaseShutdown(15);
+            getLogger().info("Shutting down database connection pool...");
+            EasySQL.shutdownManager(this.getSqlManager());
+        }
         getLogger().info("Finishing remaining misc work...");
         this.getServer().getMessenger().unregisterIncomingPluginChannel(this, "BungeeCord");
         getLogger().info("All shutdown work has been completed.");
+    }
+
+    private void waitDatabaseShutdown(int timeoutSeconds) {
+        int timePassed = 0;
+        boolean finished = this.getSqlManager().getPendingQuery().isEmpty() && this.sqlManager.getActiveQuery().isEmpty();
+        if (!finished) {
+            getLogger().info("Waiting for pending queries to finish (please allow up to " + timeoutSeconds + " secs)...");
+            while (!finished) {
+                try {
+                    Thread.sleep(1000);
+                    finished = this.getSqlManager().getPendingQuery().isEmpty() && this.sqlManager.getActiveQuery().isEmpty();
+                    timePassed++;
+                    if (timePassed >= timeoutSeconds) {
+                        getLogger().warning("Shutdown timed out! Trying forcing stop the connection pool...");
+                        return;
+                    }
+                } catch (InterruptedException ignored) {
+                }
+            }
+        }
     }
 
     @Override

@@ -143,6 +143,16 @@
                                         <pattern>de.themoep.minedown.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.minedown.</shadedPattern>
                                     </relocation>
+                                    <relocation>
+                                        <pattern>com.ghostchu.fork.cc.carm.lib.easysql.</pattern>
+                                        <shadedPattern>
+                                            com.ghostchu.quickshop.shade.com.ghostchu.fork.cc.carm.lib.easysql.
+                                        </shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>cc.carm.lib.easysql.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.cc.carm.lib.easysql.</shadedPattern>
+                                    </relocation>
                                     <!--                                    <relocation>-->
                                     <!--                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>-->
                                     <!--                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.adventure.text.minimessage.-->
@@ -406,10 +416,9 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>cc.carm.lib</groupId>
+                <groupId>com.ghostchu.fork.cc.carm.lib</groupId>
                 <artifactId>easysql-hikaricp</artifactId>
                 <version>0.4.3</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.konghq</groupId>
