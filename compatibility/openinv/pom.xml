@@ -58,7 +58,7 @@
         <dependency>
             <groupId>com.github.jikoo.OpenInv</groupId>
             <artifactId>openinvapi</artifactId>
-            <version>4.2.0</version>
+            <version>4.2.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
