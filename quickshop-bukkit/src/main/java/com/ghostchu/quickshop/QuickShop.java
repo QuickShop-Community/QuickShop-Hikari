@@ -492,6 +492,21 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         }
     }
 
+    private void registerLimitRanks() {
+        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
+        ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
+        if (limitCfg != null) {
+            this.limit = limitCfg.getBoolean("use", false);
+            limitCfg = limitCfg.getConfigurationSection("ranks");
+            for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
+                limits.put(key, limitCfg.getInt(key));
+            }
+        } else {
+            this.limit = false;
+            limits.clear();
+        }
+    }
+
     @Override
     public ShopManager getShopManager() {
         return this.shopManager;
@@ -569,21 +584,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         translationMapping.putAll(addonRegisteredMapping);
         if (this.platform != null) {
             this.platform.updateTranslationMappingSection(translationMapping);
-        }
-    }
-
-    private void registerLimitRanks() {
-        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
-        ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
-        if (limitCfg != null) {
-            this.limit = limitCfg.getBoolean("use", false);
-            limitCfg = limitCfg.getConfigurationSection("ranks");
-            for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
-                limits.put(key, limitCfg.getInt(key));
-            }
-        } else {
-            this.limit = false;
-            limits.clear();
         }
     }
 
