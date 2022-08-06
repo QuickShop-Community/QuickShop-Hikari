@@ -251,23 +251,6 @@ public class ContainerShop implements Shop, Reloadable {
         setDirty();
     }
 
-    private @NotNull InventoryWrapper locateInventory(@Nullable String symbolLink) {
-        if (symbolLink == null || symbolLink.isEmpty()) {
-            throw new IllegalStateException("Symbol link is empty, that's not right bro.");
-        }
-        InventoryWrapperManager manager = plugin.getInventoryWrapperRegistry().get(getInventoryWrapperProvider());
-        if (manager == null) {
-            throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " invalid or failed to load!");
-        }
-        try {
-            InventoryWrapper inventoryWrapper = manager.locate(symbolLink);
-            this.symbolLink = manager.mklink(inventoryWrapper);
-            return inventoryWrapper;
-        } catch (IllegalArgumentException e) {
-            throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage(), e);
-        }
-    }
-
     @Override
     public long getShopId() {
         return this.shopId;
@@ -735,9 +718,14 @@ public class ContainerShop implements Shop, Reloadable {
         try {
             inventoryWrapper = locateInventory(symbolLink);
         } catch (Exception e) {
-            Log.debug("Failed to load shop: " + symbolLink + ": " + e.getClass().getName() + ": " + e.getMessage());
-            MsgUtil.debugStackTrace(e.getStackTrace());
-            this.delete(!plugin.getConfig().getBoolean("debug.delete-corrupt-shop"));
+            plugin.getLogger().warning("Failed to load shop: " + symbolLink + ": " + e.getClass().getName() + ": " + e.getMessage());
+            if (plugin.getConfig().getBoolean("debug.delete-corrupt-shop")) {
+                plugin.getLogger().warning("Deleting corrupt shop...");
+                this.delete(false);
+            } else {
+                plugin.getLogger().warning("Unloading shops from memory, set `debug.delete-corrupt-shop` to true to delete corrupted shops.");
+                this.delete(true);
+            }
             return;
         }
         if (Util.fireCancellableEvent(new ShopLoadEvent(this))) {
@@ -1732,6 +1720,23 @@ public class ContainerShop implements Shop, Reloadable {
     @NotNull
     public String saveToSymbolLink() {
         return symbolLink;
+    }
+
+    private @NotNull InventoryWrapper locateInventory(@Nullable String symbolLink) {
+        if (symbolLink == null || symbolLink.isEmpty()) {
+            throw new IllegalStateException("Symbol link is empty, that's not right bro.");
+        }
+        InventoryWrapperManager manager = plugin.getInventoryWrapperRegistry().get(getInventoryWrapperProvider());
+        if (manager == null) {
+            throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " invalid or failed to load!");
+        }
+        try {
+            InventoryWrapper inventoryWrapper = manager.locate(symbolLink);
+            this.symbolLink = manager.mklink(inventoryWrapper);
+            return inventoryWrapper;
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage(), e);
+        }
     }
 
     private ShopSignStorage saveToShopSignStorage() {
