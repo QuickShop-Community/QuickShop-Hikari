@@ -577,7 +577,7 @@ debug:
   shop-deletion: false
   #Delete corrupt shops while loading?
   #Setting this to false will disable the loading of corrupt shops!
-  delete-corrupt-shops: false
+  delete-corrupt-shops: true
 
 # Legacy data updater
 # Turn on this will make QuickShop to execute extra checks and may affect performance.
