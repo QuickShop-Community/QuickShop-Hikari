@@ -66,6 +66,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @Override
     public void init() {
+        performConfigurationUpgrade();
         api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
         createFlags = TownyFlags.deserialize(getConfig().getStringList("create"));
         tradeFlags = TownyFlags.deserialize(getConfig().getStringList("trade"));
@@ -84,6 +85,17 @@ public final class Main extends CompatibilityModule implements Listener {
                 .executor(new NationCommand(this))
                 .build());
         reflectChanges();
+    }
+
+    private void performConfigurationUpgrade() {
+        if (getConfig().getInt("config-version", 1) == 1) {
+            boolean permissionOverride = getConfig().getBoolean("allow-permission-override", true);
+            getConfig().set("allow-mayor-permission-override", permissionOverride);
+            getConfig().set("allow-king-permission-override", permissionOverride);
+            getConfig().set("allow-permission-override", null);
+            getConfig().set("config-version", 2);
+            saveConfig();
+        }
     }
 
     private void reflectChanges() {
@@ -170,9 +182,6 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void permissionOverride(ShopAuthorizeCalculateEvent event) {
-        if (!getConfig().getBoolean("allow-permission-override", true)) {
-            return;
-        }
         Location shopLoc = event.getShop().getLocation();
         if (isWorldIgnored(shopLoc.getWorld())) {
             return;
@@ -182,16 +191,20 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
         if (town.getMayor().getUUID().equals(event.getAuthorizer())) {
-            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
-                event.setResult(true);
-                return;
+            if (getConfig().getBoolean("allow-mayor-permission-override", true)) {
+                if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                    event.setResult(true);
+                    return;
+                }
             }
         }
         try {
             Nation nation = town.getNation();
             if (nation.getKing().getUUID().equals(event.getAuthorizer())) {
-                if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
-                    event.setResult(true);
+                if (getConfig().getBoolean("allow-king-permission-override", true)) {
+                    if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                        event.setResult(true);
+                    }
                 }
             }
         } catch (NotRegisteredException ignored) {
@@ -199,34 +212,11 @@ public final class Main extends CompatibilityModule implements Listener {
         }
     }
 
-    private boolean checkFlags(@NotNull Player player, @NotNull Location location, @NotNull List<TownyFlags> flags) {
-        if (isWorldIgnored(location.getWorld())) {
-            return true;
+    private boolean isWorldIgnored(World world) {
+        if (getConfig().getBoolean("ignore-disabled-worlds", false)) {
+            return !TownyAPI.getInstance().isTownyWorld(world);
         }
-        if (!whiteList) {
-            return true;
-        }
-        for (TownyFlags flag : flags) {
-            switch (flag) {
-                case OWN:
-                    if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
-                        return false;
-                    }
-                    break;
-                case MODIFY:
-                    if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
-                        return false;
-                    }
-                    break;
-                case SHOPTYPE:
-                    if (!ShopPlotUtil.isShopPlot(location)) {
-                        return false;
-                    }
-                default:
-                    // Ignore
-            }
-        }
-        return true;
+        return false;
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -263,11 +253,34 @@ public final class Main extends CompatibilityModule implements Listener {
         event.setCancelled(true, "Towny Blocked");
     }
 
-    private boolean isWorldIgnored(World world) {
-        if (getConfig().getBoolean("ignore-disabled-worlds", false)) {
-            return !TownyAPI.getInstance().isTownyWorld(world);
+    private boolean checkFlags(@NotNull Player player, @NotNull Location location, @NotNull List<TownyFlags> flags) {
+        if (isWorldIgnored(location.getWorld())) {
+            return true;
         }
-        return false;
+        if (!whiteList) {
+            return true;
+        }
+        for (TownyFlags flag : flags) {
+            switch (flag) {
+                case OWN:
+                    if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
+                        return false;
+                    }
+                    break;
+                case MODIFY:
+                    if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
+                        return false;
+                    }
+                    break;
+                case SHOPTYPE:
+                    if (!ShopPlotUtil.isShopPlot(location)) {
+                        return false;
+                    }
+                default:
+                    // Ignore
+            }
+        }
+        return true;
     }
 
     @EventHandler(ignoreCancelled = true)

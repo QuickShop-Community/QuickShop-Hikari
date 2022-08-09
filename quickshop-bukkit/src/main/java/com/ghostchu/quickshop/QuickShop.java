@@ -1066,6 +1066,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 getLogger().info("Create database backup...");
                 new DatabaseBackupUtil().backup();
                 config.setJdbcUrl("jdbc:h2:" + new File(this.getDataFolder(), "shops").getCanonicalFile().getAbsolutePath() + ";DB_CLOSE_DELAY=-1;MODE=MYSQL");
+                String driverClassName = Driver.class.getName();
+                Log.debug("Setting up H2 driver class name to: " + driverClassName);
+                config.setDriverClassName(driverClassName);
                 this.sqlManager = new SQLManagerImpl(new HikariDataSource(config), "QuickShop-Hikari-SQLManager");
                 this.sqlManager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode
             }

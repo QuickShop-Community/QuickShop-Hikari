@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>3.1.0.3</version>
+    <version>3.1.0.4</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -152,6 +152,14 @@
                                     <relocation>
                                         <pattern>cc.carm.lib.easysql.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.cc.carm.lib.easysql.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>com.h2database.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.cc.h2database.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>org.h2.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.org.h2.</shadedPattern>
                                     </relocation>
                                     <!--                                    <relocation>-->
                                     <!--                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>-->
