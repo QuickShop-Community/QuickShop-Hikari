@@ -49,7 +49,7 @@ quick-fill:
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow> <red> [co] <aqua> {0} <light_purple> {1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(Administrateur) <light_purple>{0} <dark_gray>a refusé les vérifications de permissions, si cela n''est pas exceptionnel, essayez d''ajouter <light_purple>{1} <gray>à la liste noire d''écoute. <gray>Configurer le Guide : https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Prix moyen à proximité : <yellow>{0}'
 digits-reach-the-limit: <red>Vous avez atteint les limites de décimales dans le prix.
 currency-unset: <green>La boutique a été supprimée avec succès. Utiliser les paramètres par défaut maintenant.
