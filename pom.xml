@@ -426,7 +426,7 @@
             <dependency>
                 <groupId>com.ghostchu.fork.cc.carm.lib</groupId>
                 <artifactId>easysql-hikaricp</artifactId>
-                <version>0.4.3</version>
+                <version>0.4.4</version>
             </dependency>
             <dependency>
                 <groupId>com.konghq</groupId>
