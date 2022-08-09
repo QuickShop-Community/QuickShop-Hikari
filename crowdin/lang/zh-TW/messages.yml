@@ -29,7 +29,7 @@ you-cant-afford-to-change-price: <red>你需要花費 {0} 元來修改商品價�
 safe-mode: <red>QuickShop 現在處於安全模式，您無法打開此商店容器，請與服務器管理員聯繫以修復錯誤!
 forbidden-vanilla-behavior: <red>該操作不符合原版行為，因此被禁止。
 shop-out-of-space-name: <dark_purple>你的商店 {0} 已滿!
-paste-disabled: '<red>原始碼儲存功能被禁止! 你將無法請求技術支援。<newline>原因: {0}'
+paste-disabled: '<red>原始碼儲存功能被禁止！你將無法請求技術支援。<newline>原因：{0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
@@ -124,7 +124,7 @@ success-change-owner-to-server: <green>成功將商店擁有者轉交給伺服�
 shop-name-not-found: '<red>商店名稱: <yellow>{0} <red> 並不存在。'
 shop-name-too-long: <green>此商店的名稱太長了（最大長度 {0}<newline>）<newline>請再想過一個吧!
 metric:
-  header-player: '<yellow>{0} 的 {1} {2} 交易:'
+  header-player: '<yellow>{0} 的 {1} {2} 交易：'
   action-hover: <yellow>{0}
   price-hover: <yellow>總共 {0}, 包括 {1} 稅款.
   unknown: <gray>(未知)
@@ -137,17 +137,17 @@ metric:
     CREATE: <yellow>玩家建立了一個商店。
     PURCHASE_SELLING_SHOP: <yellow>玩家從商店購買了一些物品。
     PURCHASE: <yellow>從商店購買了物品
-  query-argument: '查詢參數: {0}'
+  query-argument: '查詢參數：{0}'
   amount-hover: <yellow>{0}個
-  header-shop: '<yellow>{0} 商店的 {1} {2} 交易:'
+  header-shop: '<yellow>{0} 商店的 {1} {2} 交易：'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
   looking-up: <yellow>正在進行指標搜尋，請稍後...
   tax-hover: <yellow>{0} 稅款
-  header-global: '<yellow>伺服器{0} {1} 交易:'
+  header-global: '<yellow>伺服器{0} {1} 交易：'
   na: <gray>N/A
   transaction-count: <yellow>{0} 總共
-  shop-hover: '<yellow>{0}<newline><gold>位置: <gray>{1} {2} {3}, 地圖: {4}<newline><gold>持有人: <gray>{5}<newline><gold>商店類型: <gray>{6}<newline><gold>物品: <gray>{7}<newline><gold>價格: <gray>{8}'
-  time-hover: '<yellow>時間: {0}'
+  shop-hover: '<yellow>{0}<newline><gold>位置：<gray>{1} {2} {3}，世界：{4}<newline><gold>擁有人：<gray>{5}<newline><gold>商店類型：<gray>{6}<newline><gold>物品：<gray>{7}<newline><gold>價格：<gray>{8}'
+  time-hover: '<yellow>時間：{0}'
   amount-stack-hover: <yellow>{0}x 組
 permission-denied-3rd-party: <red>權限被拒絕 ： 第三方插件 [{0}]。
 you-dont-have-that-many-items: <red>你的身上只有 {0} 個 {1}!
@@ -160,7 +160,7 @@ economy-transaction-failed: <red>抱歉，由於系統發生錯誤，你的交�
 nothing-to-flush: <green>沒有關於商店的新訊息。
 no-price-change: <red>這不會導致價格變動 ！
 edition-confilct: QuickShop-Hikari 與 QuickShop-Reremake 同時安裝在伺服器中可能會相互沖突，你需要卸載其中一個
-inventory-unavailable: '<red>此商店的InventoryWrapper外觀不存在或不正確。你有沒有使用任何插件修改了商店的背包? 資訊: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. 請聯絡伺服器管理員。'
+inventory-unavailable: '<red>此商店的 InventoryWrapper 外觀不存在或不正確。你有沒有使用任何插件修改了商店的物品欄？資訊：InventoryWrapper={0}，WrapperProvider={1}，SymbolLink={2}。請聯絡伺服器管理員。'
 file-test: 這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)
 unknown-player: <red>找不到相對應的玩家，請檢查你輸入的玩家名稱是否正確。
 player-offline: "<red>The target player currently is offline."
