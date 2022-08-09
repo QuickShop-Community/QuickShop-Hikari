@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>3.1.0.4</version>
+    <version>3.1.0.5</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -142,24 +142,6 @@
                                     <relocation>
                                         <pattern>de.themoep.minedown.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.minedown.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>com.ghostchu.fork.cc.carm.lib.easysql.</pattern>
-                                        <shadedPattern>
-                                            com.ghostchu.quickshop.shade.com.ghostchu.fork.cc.carm.lib.easysql.
-                                        </shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>cc.carm.lib.easysql.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.cc.carm.lib.easysql.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>com.h2database.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.cc.h2database.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
-                                        <pattern>org.h2.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.org.h2.</shadedPattern>
                                     </relocation>
                                     <!--                                    <relocation>-->
                                     <!--                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>-->
@@ -424,9 +406,10 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>com.ghostchu.fork.cc.carm.lib</groupId>
+                <groupId>cc.carm.lib</groupId>
                 <artifactId>easysql-hikaricp</artifactId>
                 <version>0.4.3</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>com.konghq</groupId>
@@ -465,7 +448,7 @@
             <dependency>
                 <groupId>net.kyori</groupId>
                 <artifactId>adventure-platform-bukkit</artifactId>
-                <version>4.1.2</version>
+                <version>4.1.1</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>

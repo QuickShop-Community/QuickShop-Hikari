@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>3.1.0.4</version>
+        <version>3.1.0.5</version>
     </parent>
 
     <artifactId>quickshop-bukkit</artifactId>
@@ -270,8 +270,9 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.ghostchu.fork.cc.carm.lib</groupId>
+            <groupId>cc.carm.lib</groupId>
             <artifactId>easysql-hikaricp</artifactId>
+            <scope>provided</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
         <dependency>
