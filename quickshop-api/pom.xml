@@ -26,7 +26,7 @@
             <artifactId>adventure-platform-bukkit</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.ghostchu.fork.cc.carm.lib</groupId>
+            <groupId>cc.carm.lib</groupId>
             <artifactId>easysql-hikaricp</artifactId>
             <scope>provided</scope>
         </dependency>
