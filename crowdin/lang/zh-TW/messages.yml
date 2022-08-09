@@ -7,7 +7,7 @@ client-language-changed: <green>QuickShop 偵測到你的客戶端語言已切�
 shops-backingup: 正在把商店資料備份到資料庫……
 _comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>這個無限商店的店主已經更換成 {0}。
-bad-command-usage-detailed: '&壞命令參數！接受以下參數：<gray>{0}'
+bad-command-usage-detailed: '<red>無效指令參數！接受以下參數：<gray>{0}'
 thats-not-a-number: <red>無效的數字
 shop-name-disallowed: <red>此商店的名稱 <yellow>{0} <red>已被禁止。請嘗試使用另一個名稱!
 console-only-danger: <red>由於這個是一個有風險的指令，請你在控制台中執行。
@@ -24,12 +24,12 @@ tabcomplete:
 taxaccount-unset: <green>該商店的稅金帳戶現在按照伺服器全域設定。
 blacklisted-item: <red>由於這是黑名單的物品，所以你不能賣。
 command-type-mismatch: <red>該指令只能由 <aqua>{0} <red>執行。
-server-crash-warning: '<red>如果你更換或刪除 QuickShop 插件 Jar 檔案後，執行指令 /qs reload 可能導致伺服器崩潰。'
+server-crash-warning: '<red>警告：如果你更換或刪除 QuickShop 插件 Jar 檔案後，執行指令 /qs reload 可能導致伺服器崩潰。'
 you-cant-afford-to-change-price: <red>你需要花費 {0} 元來修改商品價格。
 safe-mode: <red>QuickShop 現在處於安全模式，您無法打開此商店容器，請與服務器管理員聯繫以修復錯誤!
 forbidden-vanilla-behavior: <red>該操作不符合原版行為，因此被禁止。
 shop-out-of-space-name: <dark_purple>你的商店 {0} 已滿!
-paste-disabled: '<red>原始碼儲存功能被禁止! 你將無法請求技術支援。<newline>原因: {0}'
+paste-disabled: '<red>原始碼儲存功能被禁止！你將無法請求技術支援。<newline>原因：{0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
@@ -46,11 +46,11 @@ quick-fill:
     - '<yellow>Price: <aqua>{price}'
     - '<yellow>Item: <aqua>{item}'
     - '<yellow>Location: <aqua>{location}'
-  header: '<yellow>您有多個名為"<green>{0}<yellow>"的商店，請選擇一個以繼續：'
+  header: '<yellow>你有多個名為「<green>{0}<yellow>」的商店，請選擇一個以繼續：'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow> <red> [co] <aqua> {0} <light_purple> {1}'
 3rd-plugin-build-check-failed-admin: '<gray>（僅限管理員）<light_purple>{0} <dark_gray>拒絕權限檢查。<gray>如果不是預期所見到的，請新增 <light_purple>{1} <gray>進監聽黑名單。<gray>配置指南：https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
-average-price-nearby: '<green>附近的平均價格 ： <yellow>{0} 元。'
+average-price-nearby: '<green>附近的平均價格：<yellow>{0} 元。'
 digits-reach-the-limit: <red>你的價格超過小數點後位數上限。
 currency-unset: <green>已成功刪除商店貨幣。現在使用預設設置。
 you-cant-create-shop-in-there: <red>你沒有在這個地方建立商店的權限。
@@ -61,13 +61,13 @@ shop-out-of-stock-name: <dark_purple>你在 X {0} 出售 {1} 的商店已售罄�
 shop-name-invalid: <red>此商店的名稱 <yellow>{0} <red>無效. 請嘗試使用另一個名稱!
 how-many-buy-stack: <green>在聊天室中輸入你想 <aqua>購買<green> 的數量，每份中有 <yellow>{0}<green> 個物品，你目前可以買 <yellow>{1}<green> 份。輸入 <aqua>{2}<green> 來購買所有物品。
 exceeded-maximum: <red>該值超出了 Java 中的最大值。
-unlimited-shop-owner-keeped: '<yellow>注意 ： 該商店店主還是屬於無限商店店主類型，你需要自己重新設定新的商店店主。'
+unlimited-shop-owner-keeped: '<yellow>注意：該商店店主還是屬於無限商店店主類型，你需要自己重新設定新的商店店主。'
 no-enough-money-to-keep-shops: <red>你的金錢不夠繳稅，所以你所有的商店已被刪除……
 3rd-plugin-build-check-failed: <red>第三方插件 <bold>{0}<reset><red> 拒絕檢查權限操作，請問你有權限建立商店嗎 ？
 not-a-integer: <red>輸入一定是數字，但你輸入了 {0}。
 translation-country: '語言：&b&l繁體中文 Chinese Traditional（zh_TW）'
-buying-more-than-selling: '<red>警告 ： 你收購的物品比出售的物品多 ！'
-purchase-failed: '<red>交易失敗 ： 發生錯誤，請聯繫伺服器管理員。'
+buying-more-than-selling: '<red>警告：你收購的物品比出售的物品多！'
+purchase-failed: '<red>交易失敗：發生錯誤，請聯繫伺服器管理員。'
 denied-put-in-item: <red>你不能將此物品放入你的商店 ！
 shop-has-changed: <red>你嘗試交易的商店在點擊後已有變動 ！
 flush-finished: <green>成功獲取所有的商店記錄 。
@@ -92,39 +92,39 @@ shop-staff-added: <green>已新增員工 {0} 到你的商店。
 shops-recovering: 正在嘗試從備份檔案中還原所有商店……
 menu:
   sell-tax: <green>你付了 <yellow>{0} <green>元的稅。
-  owner: '<green>商店主人 ： {0}'
+  owner: '<green>商店主人：{0}'
   preview: <aqua>[物品預覽]
   enchants: <dark_purple>附魔
   sell-tax-self: <green>因為你是商店主人，所以不需要繳稅。
-  shop-information: '<green>商店資訊 ： '
-  item: '<green>商品 ： <yellow>{0}'
+  shop-information: '<green>商店資訊：'
+  item: '<green>商品：<yellow>{0}'
   price-per: <green>價格 ： <yellow>1 個 {0} {1} 元
   item-name-and-price: <green>共 <yellow>{2} <green>元的 <yellow>{0} <green>個 <yellow>{1}
   item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
-  successful-purchase: '<green>成功購買 ： '
+  successful-purchase: '<green>成功購買：'
   price-per-stack: <green>價格 ： <yellow>{2} 個 {0} {1} 元
   stored-enchants: <dark_purple>附魔
   item-holochat-error: <red>[錯誤]
   this-shop-is-selling: <green>此商店正在<aqua>出售<green>物品。
-  shop-stack: '<green>每份物品的數量 ： <yellow>{0}'
-  space: '<green>空間 ： <yellow>{0}'
+  shop-stack: '<green>每份物品的數量：<yellow>{0}'
+  space: '<green>空間：<yellow>{0}'
   effects: <green>藥水效果
   damage-percent-remaining: <green>耐久度 ： <yellow>剩餘 {0}%。
   item-holochat-data-too-large: <red>[錯誤] 物品 NBT 太長無法顯示!
-  stock: '<green>庫存 ： <yellow>{0} 個'
+  stock: '<green>庫存：<yellow>{0} 個'
   this-shop-is-buying: <green>此商店是 <light_purple>收購物品<green> 的商店。
-  successfully-sold: '<green>成功出售 ： '
-  total-value-of-chest: '<green>儲物箱中的物品價值 ： <yellow>{0} 元'
+  successfully-sold: '<green>成功出售：'
+  total-value-of-chest: '<green>儲物箱中的物品價值：<yellow>{0} 元'
 currency-not-exists: <red>找不到你要設置的貨幣，可能拼寫錯誤或該貨幣在這個世界上無法使用。
 no-nearby-shop: <red>找不到符合 {0} 的商店。
 translation-author: '翻譯人員：Ghost_chu、Andre_601、flandretw'
 integrations-check-failed-trade: <red>集成模組 {0} 拒絕了與商店交易的操作。
 shop-transaction-failed: <red><red>抱歉，由於系統發生錯誤，你的購買已被取消，款項已返回原本的地方。如果問題持續發生，請聯絡伺服器管理員。
 success-change-owner-to-server: <green>成功將商店擁有者轉交給伺服器。
-shop-name-not-found: '<red>商店名稱: <yellow>{0} <red> 並不存在。'
+shop-name-not-found: <red>商店名稱：<yellow>{0}</yellow> 並不存在。
 shop-name-too-long: <green>此商店的名稱太長了（最大長度 {0}<newline>）<newline>請再想過一個吧!
 metric:
-  header-player: '<yellow>{0} 的 {1} {2} 交易:'
+  header-player: '<yellow>{0} 的 {1} {2} 交易：'
   action-hover: <yellow>{0}
   price-hover: <yellow>總共 {0}, 包括 {1} 稅款.
   unknown: <gray>(未知)
@@ -137,17 +137,17 @@ metric:
     CREATE: <yellow>玩家建立了一個商店。
     PURCHASE_SELLING_SHOP: <yellow>玩家從商店購買了一些物品。
     PURCHASE: <yellow>從商店購買了物品
-  query-argument: '查詢參數: {0}'
+  query-argument: '查詢參數：{0}'
   amount-hover: <yellow>{0}個
-  header-shop: '<yellow>{0} 商店的 {1} {2} 交易:'
+  header-shop: '<yellow>{0} 商店的 {1} {2} 交易：'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
   looking-up: <yellow>正在進行指標搜尋，請稍後...
   tax-hover: <yellow>{0} 稅款
-  header-global: '<yellow>伺服器{0} {1} 交易:'
+  header-global: '<yellow>伺服器{0} {1} 交易：'
   na: <gray>N/A
   transaction-count: <yellow>{0} 總共
-  shop-hover: '<yellow>{0}<newline><gold>位置: <gray>{1} {2} {3}, 地圖: {4}<newline><gold>持有人: <gray>{5}<newline><gold>商店類型: <gray>{6}<newline><gold>物品: <gray>{7}<newline><gold>價格: <gray>{8}'
-  time-hover: '<yellow>時間: {0}'
+  shop-hover: '<yellow>{0}<newline><gold>位置：<gray>{1} {2} {3}，世界：{4}<newline><gold>擁有人：<gray>{5}<newline><gold>商店類型：<gray>{6}<newline><gold>物品：<gray>{7}<newline><gold>價格：<gray>{8}'
+  time-hover: '<yellow>時間：{0}'
   amount-stack-hover: <yellow>{0}x 組
 permission-denied-3rd-party: <red>權限被拒絕 ： 第三方插件 [{0}]。
 you-dont-have-that-many-items: <red>你的身上只有 {0} 個 {1}!
@@ -160,18 +160,18 @@ economy-transaction-failed: <red>抱歉，由於系統發生錯誤，你的交�
 nothing-to-flush: <green>沒有關於商店的新訊息。
 no-price-change: <red>這不會導致價格變動 ！
 edition-confilct: QuickShop-Hikari 與 QuickShop-Reremake 同時安裝在伺服器中可能會相互沖突，你需要卸載其中一個
-inventory-unavailable: '<red>此商店的InventoryWrapper外觀不存在或不正確。你有沒有使用任何插件修改了商店的背包? 資訊: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. 請聯絡伺服器管理員。'
+inventory-unavailable: '<red>此商店的 InventoryWrapper 外觀不存在或不正確。你有沒有使用任何插件修改了商店的物品欄？資訊：InventoryWrapper={0}，WrapperProvider={1}，SymbolLink={2}。請聯絡伺服器管理員。'
 file-test: 這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)
 unknown-player: <red>找不到相對應的玩家，請檢查你輸入的玩家名稱是否正確。
 player-offline: "<red>The target player currently is offline."
 language:
-  qa-issues: '<yellow>品質認證問題 ： <aqua>{0}%'
-  code: '<yellow>代碼 ： <gold>{0}'
-  approval-progress: '<yellow>批准進度 ： <aqua>{0}%'
-  translate-progress: '<yellow>翻譯進度 ： <aqua>{0}%'
-  name: '<yellow>名稱 ： <gold>{0}'
+  qa-issues: '<yellow>品質認證問題：<aqua>{0}%'
+  code: '<yellow>代碼：<gold>{0}'
+  approval-progress: '<yellow>批准進度：<aqua>{0}%'
+  translate-progress: '<yellow>翻譯進度：<aqua>{0}%'
+  name: '<yellow>名稱：<gold>{0}'
   help-us: <green>[幫助我們提升翻譯品質]
-warn-to-paste: '<yellow>正在收集資料並上傳到 Pastebin ，這可能需要一點時間。<red><bold>警告 ： <red>資料上傳後，此連結會公開一星期 ！ 可能會洩漏伺服器中的設定或其它資料。請確保傳送此連結的人是 <bold>伺服器員工或開發者<red>。'
+warn-to-paste: '<yellow>正在收集資料並上傳到 Pastebin，這可能需要一點時間。<red><bold>警告：<red>資料上傳後，該連結會公開一週！所以可能會洩漏伺服器中的設定或其他資料。請確保傳送該連結的人是 <bold>伺服器員工或開發者<red>。'
 how-many-sell-stack: <green>在聊天室中輸入你想 <aqua>售出<green> 的數量，每份中有 <yellow>{0}<green> 個物品，你目前可以售出 <yellow>{1}<green> 份。輸入 <aqua>{2}<green> 來售出所有物品。
 updatenotify:
   buttontitle: '[現在更新]'
@@ -211,9 +211,9 @@ updatenotify:
     - 博士，QuickShop 有新的更新 {0}！你應該考慮一下更新了～
     - Ko～ko～da～yo～ QuickShop 有新的更新 {0}～
     - 派蒙想告訴你 QuickShop 有新的更新 {0}！
-  remote-disable-warning: '<red>該版本的 QuickShop 已被遠端伺服器標記為停用 ， 這意味著該版本可能存在嚴重問題 ， 請從我們的 Spigot 插件頁面取得詳細資訊 ： {0} 。 在你切換到穩定版本之前 ， 該警告將繼續出現 ， 但不會影響伺服器的性能。'
+  remote-disable-warning: '<red>該版本的 QuickShop 已被遠端伺服器標記為停用，這意味著該版本可能存在嚴重問題，請從我們的 Spigot 插件頁面取得詳細資訊：{0}。在你切換到穩定版本之前，該警告將繼續出現，但不會影響伺服器的效能。'
 purchase-out-of-stock: <red>該商店已缺貨，請聯繫商店商店店主或商店員工補充庫存。
-nearby-shop-entry: '<green>-資訊 ： {0} <green>價格 ： <aqua>{1} <green>x: <aqua>{2} <green>y: <aqua>{3} <green>z: <aqua>{4} <green>距離 ： <aqua>{5} <green>個方塊。'
+nearby-shop-entry: '<green>-資訊：{0} <green>價格：<aqua>{1} <green>x: <aqua>{2} <green>y: <aqua>{3} <green>z: <aqua>{4} <green>距離：<aqua>{5} <green>個方塊。'
 chest-title: QuickShop 商店
 console-only: <red>該指令只能在控制台執行。
 failed-to-put-sign: <red>你的商店周圍沒有足夠的空間，放置商店的資訊告示牌。
@@ -231,7 +231,7 @@ taxaccount-invalid: <red>無效的目標帳戶，請輸入有效的玩家名稱�
 player-bought-from-your-store: <red>{0} 從你的商店購買了 {1} {2}，你總共賺了 {3}。
 reached-maximum-can-create: <red>你建立的商店數量 {0}/{1} 已達到上限 ！
 reached-maximum-create-limit: <red>你創造的商店數量已達上限
-translation-version: '支援版本: Hikari'
+translation-version: '支援版本：Hikari'
 no-double-chests: <red>你沒有建立大型儲物箱商店的權限。
 price-too-cheap: <red>價格必須大於 <yellow>${0}
 shop-not-exist: <red>商店不存在。
@@ -239,14 +239,14 @@ bad-command-usage: <red>無效的指令!
 clean-warning: <yellow>該指令將清理<red>所有<yellow>在不允許建立商店的世界的──出售/購買不允許的物品，以及<red><bold>所有在伺服器沒有載入世界的商店，請確保你的商店資料備份完整後繼續使用 <aqua>/qs cleanghost confirm <yellow>。
 shop-purchase-cancelled: <red>已取消購買。
 bypassing-lock: <red>你繞過了 Quickshop 鎖 ！
-bungee-cross-server-msg: '<yellow>QuickShop跨服信息: <green>{0}'
+bungee-cross-server-msg: '<yellow>QuickShop 跨服訊息：<green>{0}'
 saved-to-path: 備份檔案已被儲存到 {0}。
 shop-now-freezed: <green>你已凍結了商店，現在沒有人可以與這間商店交易 ！
 price-is-now: <green>現在你的商店定價是 <yellow>{0} 元。
 shops-arent-locked: <red>請注意，商店無法防盜 ！ 如果你想要防盜功能，請使用 LWC 、 Lockette 等插件鎖住儲物箱。
 that-is-locked: <red>此商店已上鎖。
 shop-has-no-space: <red>這個商店只能再收購 {0} 個 {1} 而已。
-safe-mode-admin: '<red><bold>警告:<red>此服務器上的 QuickShop 現在在安全模式下運行，沒有任何功能可用，請輸入 <yellow>/qs <red> 命令以檢查任何錯誤!'
+safe-mode-admin: '<red><bold>警告：<red>此伺服器上的 QuickShop 現在在安全模式下運行，沒有任何功能可供使用，請輸入 <yellow>/qs <red> 指令以檢查任何錯誤！'
 shop-stock-too-low: <red>這個商店只剩 {0} 個 {1} ！
 world-not-exists: <red>世界 <yellow>{0}<red> 不存在
 how-many-sell: <green>在聊天室中輸入你想要 <light_purple>出售 <green>的數量，你有 <yellow>{0} <green>個可以出售。輸入 <aqua>{1} <green>賣出全部。
@@ -257,15 +257,15 @@ taxaccount-set: <green>已經設定 <yellow>{0} <green>為該商店的稅金帳�
 support-disable-reason:
   hot-reload: <yellow>我們不支援重新加載指令，請您重啟再試。
   outdated: <yellow>此版本的 Quickshop 已經過期，再提供技術支援前，請更新至最新版本!
-  bad-hosts: '<yellow>此伺服器的HOSTS 被修改。Quickshop 需要特定的功能去正確地連接Mojang API。請你在要求提供技術支援前，請先修改HOSTS，如果你使用Windows 系統，請在檔案的C:\windows\system32\drivers\etc\hosts 這個位置進行修改, 如果你使用Linux 系統，請在檔案的 /etc/hosts 這個位置進行修改'
+  bad-hosts: '<yellow>此伺服器的 HOSTS 被修改。Quickshop 需要特定的功能去正確地連接 Mojang API。請你在要求提供技術支援前，請先修改HOSTS，如果你使用 Windows 作業系統，請在檔案的 C:\windows\system32\drivers\etc\hosts 這個位置進行修改，如果你使用 Linux 作業系統，請在檔案的 /etc/hosts 這個位置進行修改。'
   privacy: <yellow>此伺服器在破解版（離線版）環境底下運行。如果你正在使用代理伺服器下的bukkit伺服器及在代理伺服器設置 online-mode=true，請你將代理伺服器的相關配置正確設定。
-  modified: '<yellow>檔案完整度檢查失敗: 此版本的QuickShop 並非官方正式版本，亦已經被其他人修改過。'
+  modified: <yellow>檔案完整度檢查失敗：此版本的 QuickShop 並非官方正式版本，亦已經被其他人修改過。
   consolespamfix-installed: <yellow>已安裝ConsoleSpamFix, 任何錯誤詳細訊息已被隱藏。如要提供技術支援，請先關閉此功能。
   authlib-injector-detected: <yellow>此伺服器正在運行 authlib 例如 authlib-injector.
   unsupported-server-software: <yellow>此伺服器並非運行支援的伺服器軟件，任何模組化的伺服器軟件例如MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard 將不被提供技術支援。
 supertool-is-disabled: <red>超級工具已被關閉，現在不能使用超級工具破壞任何商店。
 unknown-owner: 未知
-restricted-prices: '<red>{0} 元是無效的價格 ： 最高 {1} 元，最低 {2} 元。'
+restricted-prices: '<red>{0} 元是無效的價格：最高 {1} 元，最低 {2} 元。'
 nearby-shop-this-way: <green>商店距離你 {0} 格遠。
 owner-bypass-check: <yellow>繞過所有檢查並完成交易 （因為你是商店店主 ！ ）
 signs:
@@ -289,11 +289,11 @@ signs:
 negative-amount: <red>我的天啊，沒想到居然有人想要交易負數的數量。
 display-turn-on: <green>成功開啟商店懸浮物顯示
 shop-staff-deleted: <green>成功從你的商店刪除員工 {0} 。
-nearby-shop-header: '<green>附近匹配商店 <aqua>{0}<green> ： '
+nearby-shop-header: '<green>附近匹配商店 <aqua>{0}</aqua>：'
 backup-failed: 無法備份商店資料庫，請查看控制台以獲得詳細資訊。
 shop-staff-cleared: <green>已將所有員工從你的商店刪除。
 price-too-high: <red>商店價格太高了 ！ 請設定在 {0} 元以內。
-plugin-cancelled: '<red>操作被取消, 原因: {0}'
+plugin-cancelled: '<red>操作被取消。原因：{0}'
 player-sold-to-your-store: <green>{0} 在你的商店賣出了 {1} 個 {2}。
 shop-out-of-stock: <dark_purple>你在 X ： {0} Y ： {1} Z ： {2} 出售 {3} 的商店已售罄一空 ！
 how-many-buy: <green>在聊天室中輸入你想要 <aqua>購買 <green>的數量，你可以購買 <yellow>{0} <green>個。輸入 <aqua>{1}<green>購買全部。
@@ -311,37 +311,37 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>一次交易數量: <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  stack: '<green>一次交易數量：<aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
   price-hover: <yellow>點擊修改商品價格。
   remove: <red><bold>[刪除商店]
   mode-buying-hover: <yellow>點擊商店修改為出售模式。
   empty: '<green>清空：移除所有商品 <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>點擊設置每份的物品數量。設置為 1 以恢復為普通單物品商店。
   alwayscounting-hover: <yellow>Click to toggle if the shop is always counting container.
-  alwayscounting: '<green>持續計算數量: {0} <yellow>[<light_purple><bold>修改<yellow>]'
-  setowner: '<green>擁有者: <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
-  freeze: '<yellow> 凍結模式: <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
-  price: '<green>價格 ： <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  alwayscounting: '<green>持續計算數量：{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  setowner: '<green>擁有者：<aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  freeze: '<yellow>凍結模式：<aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
+  price: '<green>價格：<aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
   currency-hover: <yellow>點擊設置或移除目前正在使用的商店貨幣
-  lock: '<yellow>商店上鎖 ： <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
-  mode-selling: '<green>商店模式 ： <aqua>出售 <yellow>[<light_purple><bold>修改<yellow>]'
-  currency: '<green>使用貨幣: <aqua>{0} <yellow>[<light_purple><bold>設定<yellow>]'
+  lock: '<yellow>商店上鎖：<aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
+  mode-selling: '<green>商店模式：<aqua>出售 <yellow>[<light_purple><bold>修改<yellow>]'
+  currency: '<green>使用貨幣：<aqua>{0} <yellow>[<light_purple><bold>設定<yellow>]'
   setowner-hover: <yellow>點擊修改店主。
-  mode-buying: '<green>商店模式: <aqua>收購 <yellow>[<light_purple><bold>修改<yellow>]'
-  item: '<green>商店物品 ： {0} <yellow>[<light_purple><bold>修改<yellow>]'
-  unlimited: '<green>無限 ： {0} <yellow>[<light_purple><bold>修改<yellow>]'
+  mode-buying: '<green>商店模式：<aqua>收購 <yellow>[<light_purple><bold>修改<yellow>]'
+  item: '<green>商店物品：{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  unlimited: '<green>無限：{0} <yellow>[<light_purple><bold>修改<yellow>]'
   unlimited-hover: <yellow>點擊修改商店模式為無限。
   refill-hover: <yellow>點擊重新填充商品。
   remove-hover: <yellow>點擊刪除商店。
   toggledisplay-hover: <yellow>切換商店是否顯示懸浮物
-  refill: '<green>補貨 ： 重新填充商品 <yellow>[<light_purple><bold>OK<yellow>]'
+  refill: '<green>補貨：重新填充商品 <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>切換商店凍結狀態。
   lock-hover: <yellow>開啟/關閉商店鎖保護。
   item-hover: <yellow>點擊修改商店物品
   infomation: '<green>商店控制面板 ： '
   mode-selling-hover: <yellow>點擊商店修改為收購模式。
   empty-hover: <yellow>點擊清除商店內庫存。
-  toggledisplay: '<yellow>商店懸浮物品顯示 ： <aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
+  toggledisplay: '<yellow>商店懸浮物品顯示：<aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
 timeunit:
   behind: 後面
   week: <red>{0} 星期
@@ -374,7 +374,7 @@ timeunit:
   future: 在 {0}
   days: <red>{0} 天
 command:
-  reloading: '<green>配置檔案已經重新載入，<yellow>某些更改可能需要重新啟動才能生效。<newline><gray>(注意 ： 4.0.9.10 版本後的重新載入發生了變化，我們現在只重新載入配置檔案而不是整個插件，以確保伺服器不會崩潰。)'
+  reloading: "<green>配置檔案已經重新載入。<yellow>某些更改可能需要重新啟動才能生效。<newline>\n<gray>（注意：版本 4.0.9.10 後的重新載入發生了變化，我們現在只重新載入配置檔案而不是整個插件以確保伺服器不會崩潰。）"
   description:
     buy: <yellow>修改成 <light_purple>收購 <yellow>模式
     about: <yellow>顯示關於 QuickShop 的資訊
@@ -418,13 +418,13 @@ command:
     permission: <yellow>商店權限管理
     lookup: <yellow>管理物品索引表
     database: <yellow>View and maintain QuickShop database
-  bulk-size-not-set: '<red>用法 ： /qs size <amount>'
-  no-type-given: '<red>用法 ： /qs find <item>'
+  bulk-size-not-set: '<red>用法：/qs size <amount>'
+  no-type-given: '<red>用法：/qs find <item>'
   feature-not-enabled: 該功能沒有在配置檔案中啟用
   now-debuging: <green>成功開啟開發者模式，插件重新載入中……
   no-amount-given: <red>沒有提供數量，請使用 ： <green>/qs refill <amount><red>
   no-owner-given: <red>未指定新的商店店主
-  disabled: '<red>這個指令被停用 ： <yellow>{0}'
+  disabled: '<red>這個指令被停用：<yellow>{0}'
   bulk-size-now: <green>現在開始交易 <yellow>{0} 個 {1}
   toggle-always-counting:
     counting: <green>Shop is now always counting container even is unlimited
@@ -438,7 +438,7 @@ command:
   no-trade-item: <green>請在主手持有要修改的交易商品
   wrong-args: <red>無效的參數，使用 <bold>/qs help <red>查看指令列表。
   some-shops-removed: <yellow>{0} <green>的商店已刪除
-  new-owner: '<green>新商店主人 ： <yellow>{0}'
+  new-owner: '<green>新商店主人：<yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
   transfer-success: <green>將<yellow> {0} <green>商店轉移到<yellow> {1}
   now-buying: <green>商店正在 <light_purple>收購 <yellow>{0}
@@ -452,7 +452,7 @@ currency-not-support: <red>該經濟插件不支援多重經濟（multi-economy�
 trading-in-creative-mode-is-disabled: <red>你不能在創造模式中使用商店交易。
 the-owner-cant-afford-to-buy-from-you: <red>這個商店只能再收購 {0} 個 {1}。
 you-cant-afford-shop-naming: <red>你沒有足夠的金錢命名商店, 命名商店需要{0}.
-inventory-error: '<red> InventoryWrapper運行失敗。你有沒有使用其他插件覆蓋了商店的背包存取? 資訊: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}。請聯絡伺服器管理員。'
+inventory-error: '<red> InventoryWrapper 執行失敗。你有沒有使用其他插件覆蓋了商店的物品欄存取？資訊：Exception={0}，InventoryWrapper={1}，WrapperType={2}，WrapperProvider={3}，SymbolLink={4}。請聯絡伺服器管理員。'
 integrations-check-failed-create: <red>集成模組 {0} 拒絕了建立商店的操作。
 shop-out-of-space: <dark_purple>你在 {0}, {1}, {2} 的商店已滿了。
 admin-shop: 系統商店
@@ -501,23 +501,23 @@ player-in-group: "<green>玩家 {0} 在這個商店屬於 <aqua>{1}</aqua> 身�
 permission-required: "<red>你需要權限 {0} 來在這個商店執行此操作"
 no-permission-detailed: "<red>你需要權限<yellow>{0}</yellow> 來在這個商店執行此操作"
 paste-uploading: "<aqua>請稍等，正在將複製內容上傳到黏貼板"
-paste-created: "<green>黏貼板已創立，點擊以在瀏覽器中打開: <yellow>{0}</yellow><newline><red>警告: <gray>永遠別將黏貼板丟給你不信任的人"
-paste-created-local: "<green>黏貼板已創立並且已儲存在你的硬碟路徑:{0}<newline><red>警告: <gray>永遠別將黏貼板丟給你不信任的人"
+paste-created: "<green>已建立剪貼簿，點擊以在瀏覽器中打開：<yellow>{0}</yellow><newline><red>警告：<gray>永遠別將剪貼簿傳送給你不信任的人。"
+paste-created-local: "<green>已建立剪貼簿並且已儲存在你的硬碟路徑：{0}<newline><red>警告：<gray>永遠別將剪貼簿傳送給你不信任的人。"
 paste-created-local-failed: "<red>儲存黏貼板至硬碟失敗，請檢查一下你的硬碟"
-paste-451: "<gray><b>小提示: </b> 你目前所在的地區貌似不讓你連結到CloudFlare Workers服務，因此黏貼板功能可能沒辦法正常讀取。<newline><gray>如果接下來的操作失敗了，你可以試試加上 --file 變數來將黏貼板儲存在硬碟上: <dark_gray>/qs paste --file</dark_gray>"
+paste-451: "<gray><b>小提示：</b>你目前所在的地區貌似不讓你連結到 CloudFlare Workers 服務，因此剪貼簿功能可能沒辦法正常載入。<newline><gray>如果接下來的操作失敗了，你可以試試加上 --file 變數來將剪貼簿儲存在硬碟上：<dark_gray>/qs paste --file</dark_gray>"
 paste-upload-failed: "<red>失敗將黏貼板傳送至 {0} 自動嘗試其他的提供服務..."
 paste-upload-failed-local: "<red>上傳黏貼板失敗，嘗試在硬碟上產生黏貼板..."
-command-incorrect: "<red>指令用法錯誤，輸入/qs help 來尋求幫助。用法： {0}。"
+command-incorrect: "<red>指令用法錯誤，輸入/qs help 來尋求幫助。用法：{0}。"
 successfully-set-player-group: "<green>成功將玩家 {0} 的身分組設置為 <aqua>{1}</aqua>."
 successfully-unset-player-group: "<green>成功移除此商店中的玩家身分組"
 successfully-set-player-permission: "<green>成功將玩家 {0} 在 <aqua>{2}</aqua> 商店的身分組設置為 <aqua>{1}</aqua>"
 lookup-item-created: "<green>物品<aqua>{0}</aqua> 已經在索引表上被創造，你可以在設定中引用此物品了"
 lookup-item-exists: "<red>物品 <yellow>{0}</yellow> 已經存在索引表中，刪除它或取另外一個名字"
-lookup-item-not-found: "<red>物品名稱: <yellow>{0} </yellow>並不存在。"
+lookup-item-not-found: "<red>物品名稱：<yellow>{0}</yellow> 並不存在。"
 lookup-item-name-illegal: "<red>無效的物品名稱，只能用數字、英文字母和底線"
-lookup-item-name-regex: "<red>物品名稱必須符合這個正規表示式: <aqua>{0}</aqua>."
-lookup-item-test-not-found: "<gold>測試: <yellow>在你手中的物品並未上傳到物品索引表"
-lookup-item-test-found: "<gold>測試: <green>你手中的物品在索引表中被命名為 <aqua>{0}</aqua>"
+lookup-item-name-regex: "<red>物品名稱必須符合這個正規表示式：<aqua>{0}</aqua>."
+lookup-item-test-not-found: "<gold>測試：<yellow>在你手中的物品並未上傳到物品索引表"
+lookup-item-test-found: "<gold>測試：<green>你手中的物品在索引表中被命名為 <aqua>{0}</aqua>"
 lookup-item-removed: "<green>物品 <aqua>{0}</aqua>已成功自物品索引表中刪除"
 internal-error: "<red>發生了內部錯誤！請聯繫管理員。"
 debug:

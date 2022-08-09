@@ -1,5 +1,8 @@
-#Should allow Mayor and King grant the shop administrator permission on they town / nation.
-allow-permission-override: true
+#Should allow Mayor grant the shop administrator permission on they town.
+allow-mayor-permission-override: true
+
+#Should allow Mayor grant the shop administrator permission on they town.
+allow-king-permission-override: true
 
 #Should allow override the owner name from town/nation vault name to town/nation display name.
 allow-owner-name-override: true

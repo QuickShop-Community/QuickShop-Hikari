@@ -5,6 +5,8 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.database.DatabaseIOUtil;
+import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Timer;
@@ -23,8 +25,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,6 +54,60 @@ public class ShopLoader {
 
     public void loadShops() {
         loadShops(null);
+    }
+
+    private boolean hasBackupCreated = false;
+
+
+    private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
+        errors++;
+        Logger logger = plugin.getLogger();
+        logger.warning("##########FAILED TO LOAD SHOP##########");
+        logger.warning("  >> Error Info:");
+        String err = ex.getMessage();
+        if (err == null) {
+            err = "null";
+        }
+        logger.warning(err);
+        logger.warning("  >> Error Trace");
+        ex.printStackTrace();
+        logger.warning("  >> Target Location Info");
+        logger.warning("Location: " + ((shopLocation == null) ? "NULL" : shopLocation.toString()));
+        logger.warning(
+                "Block: " + ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
+        logger.warning("#######################################");
+        if (errors > 10) {
+            logger.severe(
+                    "QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
+        }
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private boolean shopNullCheck(@Nullable Shop shop) {
+        if (shop == null) {
+            Log.debug("Shop object is null");
+            return true;
+        }
+        if (shop.getItem() == null) {
+            Log.debug("Shop itemStack is null");
+            return true;
+        }
+        if (shop.getItem().getType() == Material.AIR) {
+            Log.debug("Shop itemStack type can't be AIR");
+            return true;
+        }
+        if (shop.getLocation() == null) {
+            Log.debug("Shop location is null");
+            return true;
+        }
+        if (shop.getOwner() == null) {
+            Log.debug("Shop owner is null");
+            return true;
+        }
+        if (plugin.getServer().getOfflinePlayer(shop.getOwner()).getName() == null) {
+            Log.debug("Shop owner not exist on this server, did you have reset the playerdata?");
+        }
+        return false;
     }
 
     /**
@@ -135,13 +194,17 @@ public class ShopLoader {
                         plugin.getLogger().log(Level.WARNING, "Failed to load the shop, skipping...", e);
                     }
                     exceptionHandler(e, null);
+                    if (deleteCorruptShops && hasBackupCreated) {
+                        plugin.getLogger().warning(MsgUtil.fillArgs("Deleting shop at world={0} x={1} y={2} z={3} caused by corrupted.", world, String.valueOf(x), String.valueOf(y), String.valueOf(z)));
+                        plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
+                    }
                     continue;
                 }
                 if (rawInfo.needUpdate) {
                     shop.setDirty();
                 }
                 if (shopNullCheck(shop)) {
-                    if (deleteCorruptShops) {
+                    if (deleteCorruptShops && hasBackupCreated) {
                         plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
                         plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
                     } else {
@@ -195,55 +258,17 @@ public class ShopLoader {
         }
     }
 
-    private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
-        errors++;
-        Logger logger = plugin.getLogger();
-        logger.warning("##########FAILED TO LOAD SHOP##########");
-        logger.warning("  >> Error Info:");
-        String err = ex.getMessage();
-        if (err == null) {
-            err = "null";
-        }
-        logger.warning(err);
-        logger.warning("  >> Error Trace");
-        ex.printStackTrace();
-        logger.warning("  >> Target Location Info");
-        logger.warning("Location: " + ((shopLocation == null) ? "NULL" : shopLocation.toString()));
-        logger.warning(
-                "Block: " + ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
-        logger.warning("#######################################");
-        if (errors > 10) {
-            logger.severe(
-                    "QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
-        }
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    private boolean shopNullCheck(@Nullable Shop shop) {
-        if (shop == null) {
-            Log.debug("Shop object is null");
+    public boolean backupToFile() {
+        if (hasBackupCreated) return true;
+        File file = new File(QuickShop.getInstance().getDataFolder(), "auto-backup-" + System.currentTimeMillis() + ".zip");
+        DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
+        try {
+            databaseIOUtil.exportTables(file);
+            hasBackupCreated = true;
             return true;
+        } catch (SQLException | IOException e) {
+            return false;
         }
-        if (shop.getItem() == null) {
-            Log.debug("Shop itemStack is null");
-            return true;
-        }
-        if (shop.getItem().getType() == Material.AIR) {
-            Log.debug("Shop itemStack type can't be AIR");
-            return true;
-        }
-        if (shop.getLocation() == null) {
-            Log.debug("Shop location is null");
-            return true;
-        }
-        if (shop.getOwner() == null) {
-            Log.debug("Shop owner is null");
-            return true;
-        }
-        if (plugin.getServer().getOfflinePlayer(shop.getOwner()).getName() == null) {
-            Log.debug("Shop owner not exist on this server, did you have reset the playerdata?");
-        }
-        return false;
     }
 //
 //    public synchronized void recoverFromFile(@NotNull String fileContent) {

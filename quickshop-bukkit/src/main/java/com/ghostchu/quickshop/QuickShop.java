@@ -492,6 +492,21 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         }
     }
 
+    private void registerLimitRanks() {
+        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
+        ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
+        if (limitCfg != null) {
+            this.limit = limitCfg.getBoolean("use", false);
+            limitCfg = limitCfg.getConfigurationSection("ranks");
+            for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
+                limits.put(key, limitCfg.getInt(key));
+            }
+        } else {
+            this.limit = false;
+            limits.clear();
+        }
+    }
+
     @Override
     public ShopManager getShopManager() {
         return this.shopManager;
@@ -569,21 +584,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         translationMapping.putAll(addonRegisteredMapping);
         if (this.platform != null) {
             this.platform.updateTranslationMappingSection(translationMapping);
-        }
-    }
-
-    private void registerLimitRanks() {
-        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
-        ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
-        if (limitCfg != null) {
-            this.limit = limitCfg.getBoolean("use", false);
-            limitCfg = limitCfg.getConfigurationSection("ranks");
-            for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
-                limits.put(key, limitCfg.getInt(key));
-            }
-        } else {
-            this.limit = false;
-            limits.clear();
         }
     }
 
@@ -1046,6 +1046,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 getLogger().info("Create database backup...");
                 new DatabaseBackupUtil().backup();
                 config.setJdbcUrl("jdbc:h2:" + new File(this.getDataFolder(), "shops").getCanonicalFile().getAbsolutePath() + ";DB_CLOSE_DELAY=-1;MODE=MYSQL");
+                String driverClassName = Driver.class.getName();
+                Log.debug("Setting up H2 driver class name to: " + driverClassName);
+                config.setDriverClassName(driverClassName);
                 this.sqlManager = new SQLManagerImpl(new HikariDataSource(config), "QuickShop-Hikari-SQLManager");
                 this.sqlManager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode
             }
