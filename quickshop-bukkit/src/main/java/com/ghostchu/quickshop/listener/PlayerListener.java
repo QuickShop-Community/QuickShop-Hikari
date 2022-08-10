@@ -576,14 +576,24 @@ public class PlayerListener extends AbstractQSListener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onJoin(PlayerLocaleChangeEvent e) {
         Log.debug("Player " + e.getPlayer().getName() + " using new locale " + e.getLocale() + ": " + LegacyComponentSerializer.legacySection().serialize(plugin.text().of(e.getPlayer(), "file-test").forLocale(e.getLocale())));
-        plugin.getDatabaseHelper().setPlayerLocale(e.getPlayer().getUniqueId(), e.getLocale());
+        plugin.getDatabaseHelper().setPlayerLocale(e.getPlayer().getUniqueId(), e.getLocale())
+                .whenComplete((result, throwable) -> {
+                    if (throwable != null) {
+                        Log.debug("Failed to set player locale: " + throwable.getMessage());
+                    }
+                });
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent e) {
         // Remove them from the menu
         plugin.getShopManager().getActions().remove(e.getPlayer().getUniqueId());
-        plugin.getDatabaseHelper().setPlayerLocale(e.getPlayer().getUniqueId(), e.getPlayer().getLocale());
+        plugin.getDatabaseHelper().setPlayerLocale(e.getPlayer().getUniqueId(), e.getPlayer().getLocale())
+                .whenComplete((result, throwable) -> {
+                    if (throwable != null) {
+                        Log.debug("Failed to set player locale: " + throwable.getMessage());
+                    }
+                });
     }
 
     @EventHandler(ignoreCancelled = true)

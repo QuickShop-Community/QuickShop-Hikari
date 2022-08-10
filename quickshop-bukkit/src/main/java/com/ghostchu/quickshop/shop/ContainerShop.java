@@ -1039,16 +1039,16 @@ public class ContainerShop implements Shop, Reloadable {
             return;
         }
         updating = true;
-        plugin.getDatabaseHelper().updateShop(this, (exception) -> {
-            updating = false;
-            if (exception != null) {
-                plugin.getLogger().log(Level.WARNING,
-                        "Could not update a shop in the database! Changes will revert after a reboot!", exception);
-            } else {
-                this.dirty = false;
-            }
-        });
-
+        plugin.getDatabaseHelper().updateShop(this)
+                .whenComplete((result, throwable) -> {
+                    updating = false;
+                    if (throwable == null) {
+                        this.dirty = false;
+                    } else {
+                        plugin.getLogger().log(Level.WARNING,
+                                "Could not update a shop in the database! Changes will revert after a reboot!", throwable);
+                    }
+                });
     }
 
     @Override

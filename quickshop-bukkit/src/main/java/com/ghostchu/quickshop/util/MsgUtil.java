@@ -52,11 +52,17 @@ public class MsgUtil {
      * Deletes any messages that are older than a week in the database, to save on space.
      */
     public static void clean() {
-        plugin
-                .getLogger()
+        plugin.getLogger()
                 .info("Cleaning purchase messages from the database that are over a week old...");
         // 604800,000 msec = 1 week.
-        plugin.getDatabaseHelper().cleanMessage(System.currentTimeMillis() - 604800000);
+        plugin.getDatabaseHelper().cleanMessage(System.currentTimeMillis() - 604800000)
+                .whenComplete((result, error) -> {
+                    if (error != null) {
+                        Log.debug(Level.SEVERE, "Error cleaning purchase messages from the database:" + error.getMessage());
+                    } else {
+                        Log.debug("Cleaned " + result + " messages from the database");
+                    }
+                });
     }
 
     /**
@@ -74,7 +80,14 @@ public class MsgUtil {
                 for (String msg : msgs) {
                     plugin.getPlatform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
                 }
-                plugin.getDatabaseHelper().cleanMessageForPlayer(pName);
+                plugin.getDatabaseHelper().cleanMessageForPlayer(pName)
+                        .whenComplete((result, error) -> {
+                            if (error != null) {
+                                Log.debug(Level.SEVERE, "Error cleaning purchase messages from the database:" + error.getMessage());
+                            } else {
+                                Log.debug("Cleaned " + result + " messages from the database");
+                            }
+                        });
                 msgs.clear();
                 return true;
             }
@@ -215,12 +228,17 @@ public class MsgUtil {
             List<String> msgs = OUTGOING_MESSAGES.getOrDefault(uuid, new LinkedList<>());
             msgs.add(serialized);
             OUTGOING_MESSAGES.put(uuid, msgs);
-            plugin.getDatabaseHelper().saveOfflineTransactionMessage(uuid, serialized, System.currentTimeMillis());
+            plugin.getDatabaseHelper().saveOfflineTransactionMessage(uuid, serialized, System.currentTimeMillis())
+                    .whenComplete((lines, err) -> {
+                        if (err != null) {
+                            Log.debug(Level.WARNING, "Could not save transaction message to database: " + err.getMessage());
+                        }
+                    });
             try {
                 if (p.getName() != null && plugin.getConfig().getBoolean("bungee-cross-server-msg", true)) {
-                    plugin.getDatabaseHelper().getPlayerLocale(uuid, (locale) -> {
-                        if (locale.isPresent()) {
-                            Component csmMessage = plugin.text().of("bungee-cross-server-msg", shopTransactionMessage).forLocale(locale.get());
+                    plugin.getDatabaseHelper().getPlayerLocale(uuid).whenCompleteAsync((locale, err) -> {
+                        if (locale != null) {
+                            Component csmMessage = plugin.text().of("bungee-cross-server-msg", shopTransactionMessage).forLocale(locale);
                             ByteArrayDataOutput out = ByteStreams.newDataOutput();
                             out.writeUTF("MessageRaw");
                             out.writeUTF(p.getName());
@@ -231,7 +249,6 @@ public class MsgUtil {
                             }
                         }
                     });
-
                 }
             } catch (Exception e) {
                 Log.debug("Could not send shop transaction message to player " + p.getName() + " via BungeeCord: " + e.getMessage());

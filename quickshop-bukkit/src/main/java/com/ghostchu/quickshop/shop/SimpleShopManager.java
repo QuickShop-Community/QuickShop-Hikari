@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
@@ -241,22 +242,16 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // first init
         shop.setSignText(plugin.getTextManager().findRelativeLanguages(shop.getOwner()));
         // save to database
-        Util.asyncThreadRun(() -> {
-            String world = shop.getLocation().getWorld().getName();
-            int x = shop.getLocation().getBlockX();
-            int y = shop.getLocation().getBlockY();
-            int z = shop.getLocation().getBlockZ();
-            try {
-                long dataId = plugin.getDatabaseHelper().createData(shop);
-                long shopId = plugin.getDatabaseHelper().createShop(dataId);
-                shop.setShopId(shopId);
-                plugin.getDatabaseHelper().createShopMap(shopId, shop.getLocation());
-            } catch (Exception e) {
-                e.printStackTrace();
-                plugin.getLogger().warning("Failed register the shop to database");
-                processCreationFail(shop, shop.getOwner(), e);
-            }
-        });
+        DatabaseHelper db = plugin.getDatabaseHelper();
+        db.createData(shop)
+                .thenCompose(db::createShop)
+                .thenCompose(id -> {
+                    shop.setShopId(id);
+                    return db.createShopMap(id, shop.getLocation());
+                }).exceptionally(e -> {
+                    processCreationFail(shop, shop.getOwner(), e);
+                    return 0;
+                });
     }
 
     /**
@@ -1317,10 +1312,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     private void notifySold(@NotNull UUID buyer, @NotNull Shop shop, int amount, int space) {
         Player player = plugin.getServer().getPlayer(buyer);
-        plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner(), (locale) -> {
+        plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner()).whenCompleteAsync((locale, err) -> {
             String langCode = MsgUtil.getDefaultGameLanguageCode();
-            if (locale.isPresent()) {
-                langCode = locale.get();
+            if (locale != null) {
+                // Language code override
+                langCode = locale;
             }
             Component msg = plugin.text().of("player-sold-to-your-store", player != null ? player.getName() : buyer.toString(),
                             amount,
@@ -1354,7 +1350,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 MsgUtil.send(shop, shop.getOwner(), msg);
             }
         });
-
     }
 
     private boolean shopIsNotValid(@Nullable Player p, @NotNull Info info, @NotNull Shop shop) {
@@ -1383,10 +1378,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     private void notifyBought(@NotNull UUID seller, @NotNull Shop shop, int amount, int stock, double tax, double total) {
         Player player = plugin.getServer().getPlayer(seller);
-        plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner(), (locale) -> {
+        plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner()).whenCompleteAsync((locale, err) -> {
             String langCode = MsgUtil.getDefaultGameLanguageCode();
-            if (locale.isPresent()) {
-                langCode = locale.get();
+            if (locale != null) {
+                langCode = locale;
             }
             Component msg;
             if (plugin.getConfig().getBoolean("show-tax")) {
@@ -1436,6 +1431,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 }
             }
         });
+
     }
 
     private void actionTrade(@NotNull Player p, Info info, @NotNull String message) {

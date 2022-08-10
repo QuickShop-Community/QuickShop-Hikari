@@ -125,6 +125,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private SimpleTextManager textManager;
     @Getter
     private SimpleShopPermissionManager shopPermissionManager;
+    @Getter
+    private ShopBackupUtil shopBackupUtil = new ShopBackupUtil(this);
     private boolean priceChangeRequiresFee = false;
     @Getter
     private DatabaseDriverType databaseDriverType = null;
@@ -573,7 +575,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         if (loggingLocation == 0) {
             this.getLogWatcher().log(JsonUtil.getGson().toJson(eventObject));
         } else {
-            getDatabaseHelper().insertHistoryRecord(eventObject);
+            getDatabaseHelper().insertHistoryRecord(eventObject)
+                    .whenComplete((result, throwable) -> {
+                        if (throwable != null) {
+                            Log.debug("Failed to log event: " + throwable.getMessage());
+                        }
+                    });
         }
 
     }

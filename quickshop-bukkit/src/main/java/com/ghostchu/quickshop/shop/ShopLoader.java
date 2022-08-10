@@ -1,15 +1,13 @@
 package com.ghostchu.quickshop.shop;
 
-import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
+import com.ghostchu.quickshop.api.database.bean.InfoRecord;
+import com.ghostchu.quickshop.api.database.bean.ShopRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
-import com.ghostchu.quickshop.database.DatabaseIOUtil;
-import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Timer;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.reflect.TypeToken;
@@ -22,15 +20,17 @@ import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,6 +42,7 @@ public class ShopLoader {
     private final QuickShop plugin;
     /* This may contains broken shop, must use null check before load it. */
     private int errors;
+    private boolean hasBackupCreated = false;
 
     /**
      * The shop load allow plugin load shops fast and simply.
@@ -56,8 +57,105 @@ public class ShopLoader {
         loadShops(null);
     }
 
-    private boolean hasBackupCreated = false;
+    /**
+     * Load all shops in the specified world
+     *
+     * @param worldName The world name, null if load all shops
+     */
+    public void loadShops(@Nullable String worldName) {
+        List<Shop> pendingLoading = new CopyOnWriteArrayList<>();
+        boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);
+        plugin.getLogger().info("Loading shops from database...");
+        plugin.getDatabaseHelper().listShops(deleteCorruptShops).whenComplete((records, err) -> {
+            // Select loading method.
+            for (ShopRecord record : records) {
+                InfoRecord infoRecord = record.getInfoRecord();
+                DataRecord dataRecord = record.getDataRecord();
+                // World check
+                if (worldName != null) {
+                    if (!worldName.equals(infoRecord.getWorld())) {
+                        return;
+                    }
+                }
+                if (dataRecord.getInventorySymbolLink() != null
+                        && !dataRecord.getInventoryWrapper().isEmpty()
+                        && plugin.getInventoryWrapperRegistry().get(dataRecord.getInventoryWrapper()) == null) {
+                    Log.debug("InventoryWrapperProvider not exists! Shop won't be loaded!");
+                    return;
+                }
+                String world = infoRecord.getWorld();
+                // Check if world loaded.
+                if (Bukkit.getWorld(world) == null) {
+                    continue;
+                }
+                int x = infoRecord.getX();
+                int y = infoRecord.getY();
+                int z = infoRecord.getZ();
+                Shop shop;
+                DataRawDatabaseInfo rawInfo = new DataRawDatabaseInfo(record.getDataRecord());
+                try {
+                    shop = new ContainerShop(plugin,
+                            infoRecord.getShopId(),
+                            new Location(Bukkit.getWorld(world), x, y, z),
+                            rawInfo.getPrice(),
+                            rawInfo.getItem(),
+                            rawInfo.getOwner(),
+                            rawInfo.isUnlimited(),
+                            rawInfo.getType(),
+                            rawInfo.getExtra(),
+                            rawInfo.getCurrency(),
+                            rawInfo.isHologram(),
+                            rawInfo.getTaxAccount(),
+                            rawInfo.getInvWrapper(),
+                            rawInfo.getInvSymbolLink(),
+                            rawInfo.getName(),
+                            rawInfo.getPermissions());
+                } catch (Exception e) {
+                    if (e instanceof IllegalStateException) {
+                        plugin.getLogger().log(Level.WARNING, "Failed to load the shop, skipping...", e);
+                    }
+                    exceptionHandler(e, null);
+                    if (deleteCorruptShops && hasBackupCreated) {
+                        plugin.getLogger().warning(MsgUtil.fillArgs("Deleting shop at world={0} x={1} y={2} z={3} caused by corrupted.", world, String.valueOf(x), String.valueOf(y), String.valueOf(z)));
+                        plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
+                    }
+                    continue;
+                }
+                Location shopLocation = shop.getLocation();
+                // Dirty check
+                if (rawInfo.isNeedUpdate()) {
+                    shop.setDirty();
+                }
+                // Null check
+                if (shopNullCheck(shop)) {
+                    continue;
+                }
+                // Load to RAM
+                plugin.getShopManager().loadShop(shopLocation.getWorld().getName(), shop);
+                if (Util.isLoaded(shopLocation)) {
+                    // Load to World
+                    if (!Util.canBeShop(shopLocation.getBlock())) {
+                        plugin.getShopManager().removeShop(shop); // Remove from Mem
+                    } else {
+                        pendingLoading.add(shop);
+                    }
+                }
+            }
+        });
 
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            for (Shop shop : pendingLoading) {
+                try {
+                    shop.onLoad();
+                } catch (IllegalStateException exception) {
+                    exceptionHandler(exception, shop.getLocation());
+                }
+                shop.update();
+            }
+        }, 1);
+
+        this.plugin.getLogger().info("Done!");
+    }
 
     private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
         errors++;
@@ -104,237 +202,22 @@ public class ShopLoader {
             Log.debug("Shop owner is null");
             return true;
         }
-        if (plugin.getServer().getOfflinePlayer(shop.getOwner()).getName() == null) {
+        Profile shopOwnerProfile = plugin.getPlayerFinder().find(shop.getOwner());
+        if (shopOwnerProfile == null || shopOwnerProfile.getName() == null) {
             Log.debug("Shop owner not exist on this server, did you have reset the playerdata?");
         }
         return false;
     }
 
-    /**
-     * Load all shops in the specified world
-     *
-     * @param worldName The world name, null if load all shops
-     */
-    public void loadShops(@Nullable String worldName) {
-        this.plugin.getLogger().info("Fetching shops from the database...If plugin stuck there, check your database connection.");
-        int loadAfterChunkLoaded = 0;
-        int loadAfterWorldLoaded = 0;
-        int loaded = 0;
-        int total = 0;
-        int valid = 0;
-        List<Shop> pendingLoading = new ArrayList<>();
-
-        try (SQLQuery warpRS = plugin.getDatabaseHelper().selectAllShops()) {
-            ResultSet rs = warpRS.getResultSet();
-            Timer timer = new Timer();
-            timer.start();
-            boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);
-            this.plugin.getLogger().info("Loading shops from the database...");
-            while (rs.next()) {
-                ++total;
-                long shopId = rs.getLong("shop");
-                int x = rs.getInt("x");
-                int y = rs.getInt("y");
-                int z = rs.getInt("z");
-                String world = rs.getString("world");
-                if (worldName != null) {
-                    if (!worldName.equals(world)) {
-                        continue;
-                    }
-                }
-                if (world == null) {
-                    continue;
-                }
-                if (Bukkit.getWorld(world) == null) {
-                    ++loadAfterWorldLoaded;
-                    continue;
-                }
-                long dataId = plugin.getDatabaseHelper().locateShopDataId(shopId);
-                if (dataId < 1) {
-                    if (deleteCorruptShops) {
-                        plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
-                    }
-                    continue;
-                }
-                DataRecord record = plugin.getDatabaseHelper().getDataRecord(dataId);
-                if (record == null) {
-                    if (deleteCorruptShops) {
-                        plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
-                    }
-                    continue;
-                }
-
-                if (record.getInventorySymbolLink() != null && !record.getInventoryWrapper().isEmpty() && plugin.getInventoryWrapperRegistry().get(record.getInventoryWrapper()) == null) {
-                    Log.debug("InventoryWrapperProvider not exists! Shop won't be loaded!");
-                    continue;
-                }
-
-                DataRawDatabaseInfo rawInfo = new DataRawDatabaseInfo(record);
-
-                Shop shop;
-                try {
-                    shop = new ContainerShop(plugin,
-                            shopId,
-                            new Location(Bukkit.getWorld(world), x, y, z),
-                            rawInfo.getPrice(),
-                            rawInfo.getItem(),
-                            rawInfo.getOwner(),
-                            rawInfo.isUnlimited(),
-                            rawInfo.getType(),
-                            rawInfo.getExtra(),
-                            rawInfo.getCurrency(),
-                            rawInfo.isHologram(),
-                            rawInfo.getTaxAccount(),
-                            rawInfo.getInvWrapper(),
-                            rawInfo.getInvSymbolLink(),
-                            rawInfo.getName(),
-                            rawInfo.getPermissions());
-                } catch (Exception e) {
-                    if (e instanceof IllegalStateException) {
-                        plugin.getLogger().log(Level.WARNING, "Failed to load the shop, skipping...", e);
-                    }
-                    exceptionHandler(e, null);
-                    if (deleteCorruptShops && hasBackupCreated) {
-                        plugin.getLogger().warning(MsgUtil.fillArgs("Deleting shop at world={0} x={1} y={2} z={3} caused by corrupted.", world, String.valueOf(x), String.valueOf(y), String.valueOf(z)));
-                        plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
-                    }
-                    continue;
-                }
-                if (rawInfo.needUpdate) {
-                    shop.setDirty();
-                }
-                if (shopNullCheck(shop)) {
-                    if (deleteCorruptShops && hasBackupCreated) {
-                        plugin.getLogger().warning("Deleting shop " + shop + " caused by corrupted.");
-                        plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
-                    } else {
-                        Log.debug("Trouble database loading debug: " + rawInfo);
-                        Log.debug("Somethings gone wrong, skipping the loading...");
-                    }
-                    continue;
-                }
-                ++valid;
-                Location shopLocation = shop.getLocation();
-                //World unloaded but found
-                if (!shopLocation.isWorldLoaded()) {
-                    ++loadAfterWorldLoaded;
-                    continue;
-                }
-                // Load to RAM
-                plugin.getShopManager().loadShop(shopLocation.getWorld().getName(), shop);
-                if (Util.isLoaded(shopLocation)) {
-                    // Load to World
-                    if (!Util.canBeShop(shopLocation.getBlock())) {
-                        Log.debug("Target block can't be a shop, removing it from the memory...");
-                        valid--;
-                        plugin.getShopManager().removeShop(shop); // Remove from Mem
-                    } else {
-                        pendingLoading.add(shop);
-                        ++loaded;
-                    }
-                } else {
-                    loadAfterChunkLoaded++;
-                }
-            }
-            Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                for (Shop shop : pendingLoading) {
-                    try {
-                        shop.onLoad();
-                    } catch (IllegalStateException exception) {
-                        exceptionHandler(exception, shop.getLocation());
-                    }
-                    shop.update();
-                }
-            }, 1);
-            this.plugin.getLogger().info(">> Shop Loader Information");
-            this.plugin.getLogger().info("Total           shops: " + total);
-            this.plugin.getLogger().info("Valid           shops: " + valid);
-            this.plugin.getLogger().info("Pending              : " + loaded);
-            this.plugin.getLogger().info("Waiting worlds loaded: " + loadAfterWorldLoaded);
-            this.plugin.getLogger().info("Waiting chunks loaded: " + loadAfterChunkLoaded);
-            this.plugin.getLogger().info("Done! Used " + timer.stopAndGetTimePassed() + "ms to loaded shops in database.");
-        } catch (Exception e) {
-            exceptionHandler(e, null);
-        }
-    }
-
-    public boolean backupToFile() {
-        if (hasBackupCreated) return true;
-        File file = new File(QuickShop.getInstance().getDataFolder(), "auto-backup-" + System.currentTimeMillis() + ".zip");
-        DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
-        try {
-            databaseIOUtil.exportTables(file);
-            hasBackupCreated = true;
-            return true;
-        } catch (SQLException | IOException e) {
-            return false;
-        }
-    }
-//
-//    public synchronized void recoverFromFile(@NotNull String fileContent) {
-//        plugin.getLogger().info("Processing the shop data...");
-//        String[] shopsPlain = fileContent.split("\n");
-//        plugin.getLogger().info("Recovering shops...");
-//        Gson gson = JsonUtil.getGson();
-//        int total = shopsPlain.length;
-//        List<DataRawDatabaseInfo> list = new ArrayList<>(total);
-//        for (String s : shopsPlain) {
-//            String shopStr = s.trim();
-//            try {
-//                list.add(gson.fromJson(shopStr, DataRawDatabaseInfo.class));
-//            } catch (JsonSyntaxException jsonSyntaxException) {
-//                plugin.getLogger().log(Level.WARNING, "Failed to read shop Json " + shopStr, jsonSyntaxException);
-//            }
-//        }
-//        plugin.getLogger().info("Processed " + total + "/" + total + " - [ Valid " + list.size() + "]");
-//        // Load to RAM
-//        Util.mainThreadRun(() -> {
-//            plugin.getLogger().info("Loading recovered shops...");
-//            for (ShopRawDatabaseInfo rawDatabaseInfo : list) {
-//                ShopDatabaseInfo data = new ShopDatabaseInfo(rawDatabaseInfo);
-//                ContainerShop shop =
-//                        new ContainerShop(plugin,
-//                                data.getLocation(),
-//                                data.getPrice(),
-//                                data.getItem(),
-//                                data.getOwner(),
-//                                data.isUnlimited(),
-//                                data.getType(),
-//                                data.getExtra(),
-//                                data.getCurrency(),
-//                                data.isDisableDisplay(),
-//                                data.getTaxAccount(),
-//                                data.getInventoryWrapperProvider(),
-//                                data.getSymbolLink(),
-//                                data.getShopName(),
-//                                data.getPlayerGroup());
-//                if (shopNullCheck(shop)) {
-//                    continue;
-//                }
-//                try {
-//                    long dataId = plugin.getDatabaseHelper().createData(shop);
-//                    long shopId = plugin.getDatabaseHelper().createShop(dataId);
-//                    plugin.getDatabaseHelper().createShopMap(shopId, shop.getLocation());
-//                } catch (SQLException e) {
-//                    plugin.getLogger().warning("Failed to recover: " + rawDatabaseInfo);
-//                }
-//            }
-//            plugin.getLogger().info("Finished!");
-//        });
-//    }
-
     @Getter
     @Setter
     public static class DataRawDatabaseInfo {
         private UUID owner;
-
         private String name;
         private ShopType type;
         private String currency;
-
         private double price;
         private boolean unlimited;
-
         private boolean hologram;
         private UUID taxAccount;
         private Map<UUID, String> permissions;
@@ -343,7 +226,6 @@ public class ShopLoader {
         private String invSymbolLink;
         private long createTime;
         private ItemStack item;
-
         private boolean needUpdate = false;
 
 
@@ -420,7 +302,6 @@ public class ShopLoader {
             }
         }
     }
-
 
     @Getter
     @Setter

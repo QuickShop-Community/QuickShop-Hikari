@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.*;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
@@ -111,7 +112,12 @@ public class InternalListener extends AbstractQSListener {
         if (event.getShop().getShopId() < 1) {
             return;
         }
-        plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop().getShopId(), event.getSpace(), event.getStock());
+        plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop().getShopId(), event.getSpace(), event.getStock())
+                .whenComplete((lines, err) -> {
+                    if (err != null) {
+                        Log.debug("Error updating external inventory profile cache for shop " + event.getShop().getShopId() + ": " + err.getMessage());
+                    }
+                });
     }
 
 

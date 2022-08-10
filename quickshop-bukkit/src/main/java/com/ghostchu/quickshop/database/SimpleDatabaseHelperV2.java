@@ -7,6 +7,8 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.database.ShopMetricRecord;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
+import com.ghostchu.quickshop.api.database.bean.InfoRecord;
+import com.ghostchu.quickshop.api.database.bean.ShopRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
@@ -34,7 +36,8 @@ import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.Date;
 import java.util.*;
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 
 /**
@@ -103,7 +106,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 doV2Migrate();
                 setDatabaseVersion(4);
             } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
-                     IllegalAccessException e) {
+                     IllegalAccessException | ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
         }
@@ -138,15 +141,15 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
     }
 
-    public void setDatabaseVersion(int version) throws SQLException {
-        DataTables.METADATA
+    public @NotNull CompletableFuture<@NotNull Integer> setDatabaseVersion(int version) throws SQLException {
+        return DataTables.METADATA
                 .createReplace()
                 .setColumnNames("key", "value")
                 .setParams("database_version", version)
-                .execute();
+                .executeFuture(lines -> lines);
     }
 
-    private void doV2Migrate() throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    private void doV2Migrate() throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ExecutionException, InterruptedException {
         plugin.getLogger().info("Please wait... QuickShop-Hikari preparing for database migration...");
         String actionId = UUID.randomUUID().toString().replace("-", "");
         plugin.getLogger().info("Action ID: " + actionId);
@@ -238,12 +241,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         pos = 0;
         total = oldMetricData.size();
         for (OldShopMetricData data : oldMetricData) {
-            long shopId = locateShopId(data.getWorld(), data.getX(), data.getY(), data.getZ());
-            if (shopId < 1) {
+            Long shopId = locateShopId(data.getWorld(), data.getX(), data.getY(), data.getZ()).get();
+            if (shopId == null) {
                 throw new IllegalStateException("ShopId not found.");
             }
-            long dataId = locateShopDataId(shopId);
-            if (dataId < 1) {
+            Long dataId = locateShopDataId(shopId).get();
+            if (dataId == null) {
                 throw new IllegalStateException("DataId not found.");
             }
             DataTables.LOG_PURCHASE.createInsert()
@@ -412,185 +415,174 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
      * @param column      The column that will be checked
      * @param id          The id that will be checked
      */
-    @SuppressWarnings("SQLInjection")
     public boolean checkIdUsage(@NotNull DataTables targetTable, @NotNull String column, long id) throws SQLException {
-        try (SQLQuery queryTableResult = targetTable.createQuery()
+        return Boolean.TRUE.equals(targetTable.createQuery()
                 .addCondition(column, id)
                 .selectColumns(column)
-                .setLimit(1).build().execute()) {
-            ResultSet set = queryTableResult.getResultSet();
-            return set.next();
-        }
+                .setLimit(1).build().executeFunction(query -> {
+                    ResultSet set = query.getResultSet();
+                    return set.next();
+                }));
     }
 
     @Override
-    public void getPlayerLocale(@NotNull UUID uuid, @NotNull Consumer<Optional<String>> callback) {
-        DataTables.PLAYERS.createQuery()
+    @NotNull
+    public CompletableFuture<@Nullable String> getPlayerLocale(@NotNull UUID uuid) {
+        return DataTables.PLAYERS.createQuery()
                 .addCondition("uuid", uuid.toString())
                 .selectColumns("locale")
                 .setLimit(1)
                 .build()
-                .executeAsync(sqlQuery -> {
+                .executeFuture(sqlQuery -> {
                             ResultSet set = sqlQuery.getResultSet();
                             if (set.next()) {
-                                callback.accept(Optional.of(set.getString("locale")));
+                                return set.getString("locale");
                             }
-
-                        }, (exception, sqlAction) -> {
-                            callback.accept(Optional.empty());
-                            plugin.getLogger().log(Level.WARNING, "Failed to get player locale! SQL:" + sqlAction.getSQLContent(), exception);
+                            return null;
                         }
                 );
     }
 
     @Override
-    public void setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
+    @NotNull
+    public CompletableFuture<@NotNull Integer> setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
         Log.debug("Update: " + uuid + " last locale to " + locale);
-        DataTables.PLAYERS.createReplace()
+        return DataTables.PLAYERS.createReplace()
                 .setColumnNames("uuid", "locale")
                 .setParams(uuid.toString(), locale)
-                .executeAsync(integer -> {
-                }, ((exception, sqlAction) -> {
-                    if (exception != null) {
-                        Log.debug("Failed to update player locale! Err: " + exception.getMessage() + "; SQL: " + sqlAction.getSQLContent());
-                    }
-                }));
+                .executeFuture(lines -> lines);
     }
 
     @Override
-    public void cleanMessage(long weekAgo) {
-        DataTables.MESSAGES.createDelete()
+    @NotNull
+    public CompletableFuture<@NotNull Integer> cleanMessage(long weekAgo) {
+        return DataTables.MESSAGES.createDelete()
                 .addTimeCondition("time", -1L, weekAgo)
                 .build()
-                .executeAsync((handler) -> Log.debug("Operation completed, clean outdated messages for " + weekAgo + " weeks ago, " + handler + " lines affected"));
+                .executeFuture(lines -> lines);
     }
 
     @Override
-    public void cleanMessageForPlayer(@NotNull UUID player) {
-        DataTables.MESSAGES.createDelete()
+    public @NotNull CompletableFuture<@NotNull Integer> cleanMessageForPlayer(@NotNull UUID player) {
+        return DataTables.MESSAGES.createDelete()
                 .addCondition("receiver", player.toString())
-                .build().executeAsync((handler) -> Log.debug("Operation completed, clean messages for " + player + ", " + handler + " lines affected"));
+                .build().executeFuture(lines -> lines);
     }
 
     @Override
-    public long createData(@NotNull Shop shop) throws SQLException {
+    public @NotNull CompletableFuture<@NotNull Long> createData(@NotNull Shop shop) {
         SimpleDataRecord simpleDataRecord = ((ContainerShop) shop).createDataRecord();
-        long id = queryDataId(simpleDataRecord);
-
-        if (id < 1) {
-            Map<String, Object> map = simpleDataRecord.generateParams();
-            return DataTables.DATA.createInsert()
-                    .setColumnNames(new ArrayList<>(map.keySet()))
-                    .setParams(map.values())
-                    .returnGeneratedKey(Long.class)
-                    .execute();
-        } else {
-            return id;
-        }
+        return queryDataId(simpleDataRecord).thenCompose((id) -> {
+            if (id == null) {
+                Map<String, Object> map = simpleDataRecord.generateParams();
+                return DataTables.DATA.createInsert()
+                        .setColumnNames(new ArrayList<>(map.keySet()))
+                        .setParams(map.values())
+                        .returnGeneratedKey(Long.class).executeFuture((i) -> i);
+            } else {
+                return CompletableFuture.completedFuture(id);
+            }
+        });
     }
 
     @Override
-    public DataRecord getDataRecord(long dataId) throws SQLException {
-        try (SQLQuery query = DataTables.DATA.createQuery()
+    public @NotNull CompletableFuture<@Nullable DataRecord> getDataRecord(long dataId) {
+        return DataTables.DATA.createQuery()
                 .addCondition("id", dataId)
                 .setLimit(1)
-                .build().execute()) {
-            ResultSet result = query.getResultSet();
-            if (result.next()) {
-                return new SimpleDataRecord(result);
-            }
-            return null;
-        }
+                .build()
+                .executeFuture(query -> {
+                    ResultSet result = query.getResultSet();
+                    if (result.next()) {
+                        return new SimpleDataRecord(result);
+                    }
+                    return null;
+                });
     }
 
     @Override
-    public long createShop(long dataId) throws SQLException {
+    @NotNull
+    public CompletableFuture<@NotNull Long> createShop(long dataId) {
         Validate.isTrue(dataId > 0, "Data ID must be greater than 0!");
         return DataTables.SHOPS.createInsert()
                 .setColumnNames("data")
                 .setParams(dataId)
                 .returnGeneratedKey(Long.class)
-                .execute();
+                .executeFuture(dat -> dat);
     }
 
     @Override
-    public void createShopMap(long shopId, @NotNull Location location) throws SQLException {
+    public CompletableFuture<@NotNull Integer> createShopMap(long shopId, @NotNull Location location) {
         Validate.isTrue(shopId > 0, "Shop ID must be greater than 0!");
-        DataTables.SHOP_MAP.createReplace()
+        return DataTables.SHOP_MAP.createReplace()
                 .setColumnNames("world", "x", "y", "z", "shop")
                 .setParams(location.getWorld().getName(),
                         location.getBlockX(),
                         location.getBlockY(),
                         location.getBlockZ(),
                         shopId)
-                .execute();
+                .returnGeneratedKey()
+                .executeFuture(res -> res);
     }
 
     @Override
-    public void removeShopMap(@NotNull String world, int x, int y, int z) {
+    public @NotNull CompletableFuture<@NotNull Integer> removeShopMap(@NotNull String world, int x, int y, int z) {
         // TODO: Execute isolated data check in async thread
-        DataTables.SHOP_MAP.createDelete()
+        return DataTables.SHOP_MAP.createDelete()
                 .addCondition("world", world)
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)
                 .build()
-                .executeAsync();
+                .executeFuture(lines -> lines);
     }
 
     @Override
-    public void removeShop(long shopId) {
+    public @NotNull CompletableFuture<@NotNull Integer> removeShop(long shopId) {
         Validate.isTrue(shopId > 0, "Shop ID must be greater than 0!");
-        DataTables.SHOPS.createDelete()
+        return DataTables.SHOPS.createDelete()
                 .addCondition("id", shopId)
-                .build().executeAsync();
+                .build().executeFuture(lines -> lines);
     }
 
     @Override
-    public void removeData(long dataId) {
+    public @NotNull CompletableFuture<@NotNull Integer> removeData(long dataId) {
         Validate.isTrue(dataId > 0, "Data ID must be greater than 0!");
-        DataTables.DATA.createDelete()
+        return DataTables.DATA.createDelete()
                 .addCondition("id", dataId)
-                .build().executeAsync();
+                .build().executeFuture(lines -> lines);
     }
 
     @Override
-    public long locateShopId(@NotNull String world, int x, int y, int z) {
-        try (SQLQuery query = DataTables.SHOP_MAP.createQuery()
+    @NotNull
+    public CompletableFuture<@Nullable Long> locateShopId(@NotNull String world, int x, int y, int z) {
+        return DataTables.SHOP_MAP.createQuery()
                 .addCondition("world", world)
                 .addCondition("x", x)
                 .addCondition("y", y)
                 .addCondition("z", z)
                 .setLimit(1)
-                .build().execute()) {
-            ResultSet result = query.getResultSet();
-            if (result.next()) {
-                return result.getInt("shop");
-            } else {
-                return 0;
-            }
-        } catch (SQLException e) {
-            Log.debug("Failed to locate shop id! Err: " + e.getMessage());
-            return 0;
-        }
+                .build().executeFuture(query -> {
+                    ResultSet result = query.getResultSet();
+                    if (result.next()) {
+                        return result.getLong("shop");
+                    } else {
+                        return null;
+                    }
+                });
     }
 
     @Override
-    public long locateShopDataId(long shopId) {
-        try (SQLQuery query = DataTables.SHOPS.createQuery()
+    public @NotNull CompletableFuture<@Nullable Long> locateShopDataId(long shopId) {
+        return DataTables.SHOPS.createQuery()
                 .addCondition("id", shopId)
                 .setLimit(1)
-                .build().execute()) {
-            ResultSet result = query.getResultSet();
-            if (result.next()) {
-                return result.getInt("data");
-            } else {
-                return 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 0;
-        }
+                .build()
+                .executeFuture(query -> {
+                    ResultSet result = query.getResultSet();
+                    if (result.next()) return result.getLong("data");
+                    return null;
+                });
     }
 
     @Override
@@ -607,67 +599,51 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @Override
-    public @NotNull SQLQuery selectAllShops() throws SQLException {
-        return DataTables.SHOP_MAP.createQuery().build().execute();
-    }
-
-    @Override
-    public void saveOfflineTransactionMessage(@NotNull UUID player, @NotNull String message, long time) {
-        DataTables.MESSAGES.createInsert()
+    public @NotNull CompletableFuture<@NotNull Integer> saveOfflineTransactionMessage(@NotNull UUID player, @NotNull String message, long time) {
+        return DataTables.MESSAGES.createInsert()
                 .setColumnNames("receiver", "time", "content")
                 .setParams(player.toString(), new Date(time), message)
-                .executeAsync((handler) -> Log.debug("Operation completed, saveOfflineTransaction for " + player + ", " + handler + " lines affected"));
+                .executeFuture(lines -> lines);
     }
 
     @Override
-    public void updateExternalInventoryProfileCache(long shopId, int space, int stock) {
+    public @NotNull CompletableFuture<@NotNull Integer> updateExternalInventoryProfileCache(long shopId, int space, int stock) {
         Validate.isTrue(shopId > 0, "Shop ID must be greater than 0!");
-        DataTables.EXTERNAL_CACHE.createReplace()
+        return DataTables.EXTERNAL_CACHE.createReplace()
                 .setColumnNames("shop", "space", "stock")
                 .setParams(shopId, space, stock)
-                .executeAsync((handler) -> Log.debug("Operation completed, update inventory status for shopId=" + shopId + ", " + handler + " lines affected"));
+                .executeFuture(lines -> lines);
     }
 
     @Override
-    public void updateShop(@NotNull Shop shop, @NotNull Consumer<Exception> callback) {
-        Util.asyncThreadRun(() -> {
-            SimpleDataRecord simpleDataRecord = ((ContainerShop) shop).createDataRecord();
-            Location loc = shop.getLocation();
-            // check if datarecord exists
-            long shopId = shop.getShopId();
-            if (shopId < 1) {
-                Log.debug("Warning: Failed to update shop because the shop id locate result for " + loc + ", because the query shopId is " + shopId);
+    public CompletableFuture<Void> updateShop(@NotNull Shop shop) {
+        SimpleDataRecord simpleDataRecord = ((ContainerShop) shop).createDataRecord();
+        Location loc = shop.getLocation();
+        // check if datarecord exists
+        long shopId = shop.getShopId();
+        if (shopId < 1) {
+            Log.debug("Warning: Failed to update shop because the shop id locate result for " + loc + ", because the query shopId is " + shopId);
+            return null;
+        }
+        return queryDataId(simpleDataRecord).thenCompose(dataId -> {
+            if (dataId != null) {
+                return DataTables.SHOPS.createUpdate()
+                        .addCondition("id", shopId)
+                        .setColumnValues("data", dataId)
+                        .build()
+                        .executeFuture();
             } else {
-                // Check if any data record already exists
-                // TODO: Combine to one SQL (query -> exists return id -> not exists create)
-                long dataId = queryDataId(simpleDataRecord);
-                if (dataId > 0) {
-                    DataTables.SHOPS.createUpdate()
-                            .addCondition("id", shopId)
-                            .setColumnValues("data", dataId)
-                            .build()
-                            .executeAsync(handler -> Log.debug("Operation completed, updateShop " + shop + ", " + handler + " lines affected"));
-                } else {
-                    long newDataId;
-                    try {
-                        newDataId = createData(shop);
-                        DataTables.SHOPS.createUpdate()
-                                .addCondition("id", shopId)
-                                .addColumnValue("data", newDataId)
-                                .build()
-                                .executeAsync(handler -> Log.debug("Operation completed, updateShop " + shop + ", " + handler + " lines affected"));
-                    } catch (SQLException e) {
-                        callback.accept(e);
-                    }
-                }
+                return createData(shop).thenCompose(createdDataId -> DataTables.SHOPS.createUpdate()
+                        .addCondition("id", shopId)
+                        .setColumnValues("data", createdDataId)
+                        .build()
+                        .executeFuture());
             }
-            callback.accept(null);
         });
-
-
     }
 
-    public long queryDataId(@NotNull SimpleDataRecord simpleDataRecord) {
+    @NotNull
+    public CompletableFuture<@Nullable Long> queryDataId(@NotNull SimpleDataRecord simpleDataRecord) {
         // Check if dataRecord exists in database with same values
         Map<String, Object> lookupParams = simpleDataRecord.generateLookupParams();
         TableQueryBuilder builder = DataTables.DATA.createQuery();
@@ -675,41 +651,48 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         for (Map.Entry<String, Object> entry : lookupParams.entrySet()) {
             builder.addCondition(entry.getKey(), entry.getValue());
         }
-        try (SQLQuery query = builder.build().execute()) {
-            ResultSet set = query.getResultSet();
-            if (set.next()) {
-                int id = set.getInt("id");
-                Log.debug("Found data record with id " + id + " for record " + simpleDataRecord);
-                return id;
-            }
-            Log.debug("No data record found for record basic data: " + simpleDataRecord);
-            return 0;
-        } catch (SQLException e) {
-            Log.debug("Failed to query data record for " + simpleDataRecord + " Err: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return 0;
+        return builder.build()
+                .executeFuture(query -> {
+                    ResultSet set = query.getResultSet();
+                    if (set.next()) {
+                        long id = set.getLong("id");
+                        Log.debug("Found data record with id " + id + " for record " + simpleDataRecord);
+                        return id;
+                    }
+                    Log.debug("No data record found for record basic data: " + simpleDataRecord);
+                    return null;
+                });
+
+
     }
 
     @Override
-    public void insertHistoryRecord(@NotNull Object rec) {
-        DataTables.LOG_OTHERS.createInsert()
+    public @NotNull CompletableFuture<@NotNull Integer> insertHistoryRecord(@NotNull Object rec) {
+        return DataTables.LOG_OTHERS.createInsert()
                 .setColumnNames("type", "data")
                 .setParams(rec.getClass().getName(), JsonUtil.getGson().toJson(rec))
-                .executeAsync((handler) -> Log.debug("Operation completed, insertHistoryRecord, " + handler + " lines affected"));
+                .executeFuture(lines -> lines);
     }
 
     @Override
-    public void insertMetricRecord(@NotNull ShopMetricRecord record) {
-        Util.asyncThreadRun(() -> {
-            long dataId = plugin.getDatabaseHelper().locateShopDataId(record.getShopId());
+    public @NotNull CompletableFuture<@NotNull Integer> insertMetricRecord(@NotNull ShopMetricRecord record) {
+        CompletableFuture<Integer> future = new CompletableFuture<>();
+        plugin.getDatabaseHelper().locateShopDataId(record.getShopId()).whenCompleteAsync((dataId, err) -> {
+            if (err != null)
+                future.completeExceptionally(err);
             DataTables.LOG_PURCHASE
                     .createInsert()
                     .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
                     .setParams(new Date(record.getTime()), record.getShopId()
                             , dataId, record.getPlayer(), record.getType().name(),
-                            record.getAmount(), record.getTotal(), record.getTax());
+                            record.getAmount(), record.getTotal(), record.getTax())
+                    .executeFuture(lines -> lines).whenComplete((line, err2) -> {
+                        if (err2 != null) future.completeExceptionally(err2);
+                        future.complete(line);
+                    });
         });
+        return future;
+
     }
 
     @Override
@@ -725,6 +708,79 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .setParams(from.toString(), to.toString(), currency, amount, taxAmount, taxAccount == null ? null : taxAccount.toString(), error)
                 .executeAsync((handler) -> Log.debug("Operation completed, insertTransactionRecord, " + handler + " lines affected"));
     }
+
+    @Override
+    public @NotNull CompletableFuture<@NotNull List<ShopRecord>> listShops(boolean deleteIfCorrupt) {
+        return DataTables.SHOP_MAP.createQuery().build().executeFuture((query) -> {
+            ResultSet rs = query.getResultSet();
+            List<ShopInfo> shops = new ArrayList<>();
+            while (rs.next()) {
+                long shopId = rs.getLong("shop");
+                int x = rs.getInt("x");
+                int y = rs.getInt("y");
+                int z = rs.getInt("z");
+                String world = rs.getString("world");
+                shops.add(new ShopInfo(shopId, world, x, y, z));
+            }
+            return shops; // 此时释放商店查询的连接
+        }).thenCompose((shops) -> { // 针对每个商店 one-by-one 操作
+            CompletableFuture<List<ShopRecord>> future = CompletableFuture.completedFuture(new ArrayList<>());
+            for (ShopInfo shop : shops) {
+                future.thenCombine(locateShopDataId(shop.shopID).thenCompose(dataID -> {
+                    if (dataID == null) {
+                        if (deleteIfCorrupt && plugin.getShopBackupUtil().isBreakingAllowed()) {
+                            plugin.getDatabaseHelper().removeShopMap(shop.world, shop.x, shop.y, shop.z)
+                                    .whenComplete((lines, err) -> {
+                                        if (err != null)
+                                            Log.debug("Failed to remove shop map for " + shop + " because " + err.getMessage());
+                                    });
+                        }
+                        return CompletableFuture.completedFuture(null);
+                    } else return getDataRecord(dataID);
+                }), (list, record) -> {
+                    if (record != null) list.add(new ShopRecord(record, shop));
+                    else if (deleteIfCorrupt && plugin.getShopBackupUtil().isBreakingAllowed()) {
+                        plugin.getDatabaseHelper().removeShopMap(shop.world, shop.x, shop.y, shop.z)
+                                .whenComplete((lines, err) -> {
+                                    if (err != null)
+                                        Log.debug("Failed to remove shop map for " + shop + " because " + err.getMessage());
+                                });
+                    }
+                    return list;
+                });
+            }
+            return future;
+        });
+    }
+
+//    @Override
+//    public @NotNull List<DataRecord> selectAllShops(boolean deleteCorruptShops) {
+//        return DataTables.SHOP_MAP.createQuery().build().executeFuture((query) -> {
+//            List<DataRecord> shops = new CopyOnWriteArrayList<>();
+//            CompletableFuture<List<DataRecord>> future = new CompletableFuture<>();
+//            future.complete(new ArrayList<>());
+//
+//            ResultSet rs = query.getResultSet();
+//            while (rs.next()) {
+//                long shopId = rs.getLong("shop");
+//                int x = rs.getInt("x");
+//                int y = rs.getInt("y");
+//                int z = rs.getInt("z");
+//                String world = rs.getString("world");
+//                f
+//                DataRecord record = locateShopDataId(shopId).thenCompose(dataId -> {
+//                    if (dataId == null) {
+//                        if (deleteCorruptShops) {
+//                            plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
+//                        }
+//                        return null;
+//                    }
+//                    return getDataRecord(dataId).get();
+//                });
+//            }
+//            return shops;
+//        });
+//    }
 
     /**
      * Returns true if the given table has the given column
@@ -824,6 +880,32 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
     }
 
+    private record ShopInfo(long shopID, String world, int x, int y, int z) implements InfoRecord {
+        @Override
+        public long getShopId() {
+            return shopID;
+        }
+
+        @Override
+        public String getWorld() {
+            return world;
+        }
+
+        @Override
+        public int getX() {
+            return x;
+        }
+
+        @Override
+        public int getY() {
+            return y;
+        }
+
+        @Override
+        public int getZ() {
+            return z;
+        }
+    }
 
     @Data
     static class OldShopData {

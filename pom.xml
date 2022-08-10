@@ -281,6 +281,10 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
+            <id>sonatype-s01</id>
+            <url>https://s01.oss.sonatype.org/content/groups/public/</url>
+        </repository>
+        <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
@@ -408,7 +412,7 @@
             <dependency>
                 <groupId>cc.carm.lib</groupId>
                 <artifactId>easysql-hikaricp</artifactId>
-                <version>0.4.3</version>
+                <version>0.4.5</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
