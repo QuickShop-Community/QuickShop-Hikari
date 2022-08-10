@@ -150,10 +150,8 @@ public class ShopLoader {
                 } catch (IllegalStateException exception) {
                     exceptionHandler(exception, shop.getLocation());
                 }
-                shop.update();
             }
         }, 1);
-
         this.plugin.getLogger().info("Done!");
     }
 

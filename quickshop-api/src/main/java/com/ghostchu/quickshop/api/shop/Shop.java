@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * A shop
@@ -318,7 +319,8 @@ public interface Shop {
     /**
      * Update shop data to database
      */
-    void update();
+    @NotNull
+    CompletableFuture<Void> update();
 
     void setInventory(@NotNull InventoryWrapper wrapper, @NotNull InventoryWrapperManager manager);
 

@@ -240,6 +240,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
 
     @Getter
     private NexusManager nexusManager;
+    @Getter
+    private ShopDataSaveWatcher shopSaveWatcher;
 
     /**
      * Use for mock bukkit
@@ -807,7 +809,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             getLogger().info("Unloading all loaded shops...");
             getShopManager().getLoadedShops().forEach(Shop::onUnload);
         }
-        getLogger().info("Unregistering compatibility hooks...");
+        if (getShopSaveWatcher() != null) {
+            getLogger().info("Stopping shop auto save...");
+            getShopSaveWatcher().cancel();
+        }
         /* Remove all display items, and any dupes we can find */
         if (shopManager != null) {
             getLogger().info("Cleaning up shop manager...");
@@ -902,6 +907,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         setupShopCaches();
         signUpdateWatcher = new SignUpdateWatcher();
         shopContainerWatcher = new ShopContainerWatcher();
+        shopSaveWatcher = new ShopDataSaveWatcher(this);
+        shopSaveWatcher.runTaskTimerAsynchronously(this, 0, 20 * 60 * 5);
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();

@@ -24,7 +24,6 @@ public class SubCommand_Sell implements CommandHandler<Player> {
             if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE)
                     || plugin.perm().hasPermission(sender, "quickshop.other.control")) {
                 shop.setShopType(ShopType.SELLING);
-                shop.update();
                 shop.setSignText(plugin.text().findRelativeLanguages(sender));
                 plugin.text().of(sender, "command.now-selling", MsgUtil.getTranslateText(shop.getItem())).send();
             } else {

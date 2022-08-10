@@ -54,6 +54,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 
 /**
@@ -356,7 +357,6 @@ public class ContainerShop implements Shop, Reloadable {
             this.playerGroup.put(player, group);
         }
         setDirty();
-        update();
     }
 
     @Override
@@ -371,7 +371,6 @@ public class ContainerShop implements Shop, Reloadable {
             setPlayerGroup(player, group.getNamespacedNode());
         }
         setDirty();
-        update();
     }
 
     /**
@@ -406,7 +405,6 @@ public class ContainerShop implements Shop, Reloadable {
         }
         this.shopName = shopName;
         setDirty();
-        update();
     }
 
     /**
@@ -562,7 +560,6 @@ public class ContainerShop implements Shop, Reloadable {
         Util.ensureThread(false);
         this.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(this.playerGroup::remove);
         setDirty();
-        update();
     }
 
     @SuppressWarnings("removal")
@@ -573,7 +570,6 @@ public class ContainerShop implements Shop, Reloadable {
         if (getPlayerGroup(player).equals(BuiltInShopPermissionGroup.STAFF.getNamespacedNode())) {
             setPlayerGroup(player, BuiltInShopPermissionGroup.EVERYONE);
             setDirty();
-            update();
         }
         return true;
     }
@@ -597,12 +593,12 @@ public class ContainerShop implements Shop, Reloadable {
         Util.ensureThread(false);
         // Get a copy of the attached shop to save it from deletion
         ContainerShop neighbor = getAttachedShop();
-        setDirty();
         ShopDeleteEvent shopDeleteEvent = new ShopDeleteEvent(this, memoryOnly);
         if (Util.fireCancellableEvent(shopDeleteEvent)) {
             Log.debug("Shop deletion was canceled because a plugin canceled it.");
             return;
         }
+        setDirty();
         isDeleted = true;
         // Unload the shop
         if (isLoaded) {
@@ -754,7 +750,6 @@ public class ContainerShop implements Shop, Reloadable {
         if (this.displayItem != null) {
             this.displayItem.remove();
         }
-        update();
         this.isLoaded = false;
         plugin.getShopManager().getLoadedShops().remove(this);
         new ShopUnloadEvent(this).callEvent();
@@ -1023,23 +1018,23 @@ public class ContainerShop implements Shop, Reloadable {
      * Updates the shop into the database.
      */
     @Override
-    public void update() {
-        //TODO: check isDirty()
-        Util.ensureThread(false);
+    @NotNull
+    public CompletableFuture<Void> update() {
+        // Warning! This method can be run in async thread.
         if (updating) {
-            return;
+            return CompletableFuture.completedFuture(null);
         }
         if (this.shopId == -1) {
             Log.debug("Skip shop database update because it not fully setup!");
-            return;
+            return CompletableFuture.completedFuture(null);
         }
         ShopUpdateEvent shopUpdateEvent = new ShopUpdateEvent(this);
         if (Util.fireCancellableEvent(shopUpdateEvent)) {
             Log.debug("The Shop update action was canceled by a plugin.");
-            return;
+            return CompletableFuture.completedFuture(null);
         }
         updating = true;
-        plugin.getDatabaseHelper().updateShop(this)
+        return plugin.getDatabaseHelper().updateShop(this)
                 .whenComplete((result, throwable) -> {
                     updating = false;
                     if (throwable == null) {
@@ -1061,7 +1056,6 @@ public class ContainerShop implements Shop, Reloadable {
         this.inventoryWrapperProvider = provider;
         this.symbolLink = manager.mklink(wrapper);
         setDirty();
-        update();
         Log.debug("Inventory changed: " + this.symbolLink + ", wrapper provider:" + inventoryWrapperProvider);
         new ShopInventoryChangedEvent(wrapper, manager).callEvent();
     }
@@ -1093,7 +1087,7 @@ public class ContainerShop implements Shop, Reloadable {
         this.item = item;
         this.originalItem = item;
         notifyDisplayItemChange();
-        update();
+        setDirty();
         refresh();
     }
 
@@ -1164,9 +1158,7 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public void setModerator(@NotNull ShopModerator shopModerator) {
         Util.ensureThread(false);
-
         setDirty();
-        update();
     }
 
     /**
@@ -1190,7 +1182,6 @@ public class ContainerShop implements Shop, Reloadable {
         }
         this.owner = owner;
         setSignText(plugin.getTextManager().findRelativeLanguages(owner));
-        update();
     }
 
     /**
@@ -1217,10 +1208,9 @@ public class ContainerShop implements Shop, Reloadable {
             Log.debug("A plugin cancelled the price change event.");
             return;
         }
-        setDirty();
         this.price = price;
+        setDirty();
         setSignText();
-        update();
     }
 
     /**
@@ -1280,7 +1270,6 @@ public class ContainerShop implements Shop, Reloadable {
         if (this.shopType == newShopType) {
             return; //Ignore if there actually no changes
         }
-        setDirty();
         if (Util.fireCancellableEvent(new ShopTypeChangeEvent(this, this.shopType, newShopType))) {
             Log.debug(
                     "Some addon cancelled shop type changes, target shop: " + this);
@@ -1288,7 +1277,7 @@ public class ContainerShop implements Shop, Reloadable {
         }
         this.shopType = newShopType;
         this.setSignText();
-        update();
+        setDirty();
     }
 
     /**
@@ -1363,8 +1352,8 @@ public class ContainerShop implements Shop, Reloadable {
         }
         Util.ensureThread(false);
         this.unlimited = unlimited;
+        setDirty();
         this.setSignText();
-        update();
     }
 
     /**
@@ -1433,7 +1422,6 @@ public class ContainerShop implements Shop, Reloadable {
     public void setExtra(@NotNull Plugin plugin, @NotNull ConfigurationSection data) {
         extra.set(plugin.getName(), data);
         setDirty();
-        update();
     }
 
     /**
@@ -1479,7 +1467,6 @@ public class ContainerShop implements Shop, Reloadable {
         }
         this.currency = currency;
         setDirty();
-        this.update();
     }
 
     @Override
@@ -1585,7 +1572,6 @@ public class ContainerShop implements Shop, Reloadable {
         }
         this.disableDisplay = disabled;
         setDirty();
-        update();
         checkDisplay();
     }
 
@@ -1617,7 +1603,6 @@ public class ContainerShop implements Shop, Reloadable {
         }
         this.taxAccount = taxAccount;
         setDirty();
-        update();
     }
 
     @Override

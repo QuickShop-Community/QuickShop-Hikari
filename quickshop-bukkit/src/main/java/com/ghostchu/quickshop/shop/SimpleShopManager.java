@@ -50,7 +50,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 
 /**
@@ -182,20 +185,27 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     @Override
     public void clear() {
         Util.ensureThread(false);
-        if (plugin.isDisplayEnabled()) {
-            for (World world : plugin.getServer().getWorlds()) {
-                for (Chunk chunk : world.getLoadedChunks()) {
-                    Map<Location, Shop> inChunk = this.getShops(chunk);
-                    if (inChunk == null || inChunk.isEmpty()) {
-                        continue;
-                    }
-                    for (Shop shop : inChunk.values()) {
-                        if (shop.isLoaded()) {
-                            shop.onUnload();
-                        }
-                    }
+        plugin.getLogger().info("Unloading loaded shops...");
+        getLoadedShops().forEach(Shop::onUnload);
+        plugin.getLogger().info("Saving shops, please allow up to 30 seconds for flush changes into database...");
+        CompletableFuture<Void> saveTask = CompletableFuture.runAsync(() -> {
+            for (final Shop shop : getLoadedShops()) {
+                try {
+                    shop.update().get();
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
                 }
             }
+        });
+
+        try {
+            if (Util.parsePackageProperly("unlimitedWait").asBoolean()) {
+                saveTask.get();
+            } else {
+                saveTask.get(30, TimeUnit.SECONDS);
+            }
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            plugin.getLogger().log(Level.INFO, "Shops saving interrupted, some unsaved data may lost.", e);
         }
         this.actions.clear();
         this.shops.clear();
