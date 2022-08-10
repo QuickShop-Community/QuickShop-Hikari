@@ -188,16 +188,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         plugin.getLogger().info("Unloading loaded shops...");
         getLoadedShops().forEach(Shop::onUnload);
         plugin.getLogger().info("Saving shops, please allow up to 30 seconds for flush changes into database...");
-        CompletableFuture<Void> saveTask = CompletableFuture.runAsync(() -> {
-            for (final Shop shop : getLoadedShops()) {
-                try {
-                    shop.update().get();
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
+        CompletableFuture<?> saveTask = CompletableFuture.allOf(
+                plugin.getShopManager().getAllShops().stream().filter(Shop::isDirty)
+                        .map(Shop::update)
+                        .toArray(CompletableFuture[]::new));
         try {
             if (Util.parsePackageProperly("unlimitedWait").asBoolean()) {
                 saveTask.get();
