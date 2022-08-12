@@ -33,7 +33,7 @@ paste-disabled: '<red>原始碼儲存功能被禁止！你將無法請求技術�
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>名稱：<aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Price: <aqua>{0}'
@@ -140,7 +140,7 @@ metric:
   query-argument: '查詢參數：{0}'
   amount-hover: <yellow>{0}個
   header-shop: '<yellow>{0} 商店的 {1} {2} 交易：'
-  player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
+  player-hover: '<yellow>{0}<newline><gold>UUID：<gray>{1}'
   looking-up: <yellow>正在進行指標搜尋，請稍後...
   tax-hover: <yellow>{0} 稅款
   header-global: '<yellow>伺服器{0} {1} 交易：'
@@ -581,9 +581,9 @@ addon:
       town: "<yellow>將商店設置或取消設置為城鎮商店"
       nation: "<yellow>將商店設置或取消設置為國家商店"
     make-shop-owned-by-town: "<green>You have made the shop owned by town <yellow>{0}</yellow>."
-    make-shop-no-longer-owned-by-town: "<green>You have reset shop ownership, it now transfer back to original shop owner."
+    make-shop-no-longer-owned-by-town: "<green>你已重置商店所有權，它現在轉移回原來的商店主人。"
     make-shop-owned-by-nation: "<green>You have made the shop owned by nation <yellow>{0}</yellow>."
-    make-shop-no-longer-owned-by-nation: "<green>You have reset shop ownership, it now transfer back to original shop owner."
+    make-shop-no-longer-owned-by-nation: "<green>你已重置商店所有權，它現在轉移回原來的商店主人。"
     shop-owning-changing-notice: "<grey>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission"
     target-shop-already-is-town-shop: "<red>The target shop is already owned by a town."
     target-shop-already-is-nation-shop: "<red>The target shop is already owned by a nation."
