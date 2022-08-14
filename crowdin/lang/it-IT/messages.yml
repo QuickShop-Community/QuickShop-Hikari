@@ -7,7 +7,7 @@ client-language-changed: <green>QuickShop ha rilevato che l'impostazione della l
 shops-backingup: Creazione backup negozio dal database...
 _comment: Ciao Traduttore, se stai modificando da GitHub o attraverso la sorgente di codice, dovresti andare su https://crowdin.com/project/quickshop-hikari.
 unlimited-shop-owner-changed: <yellow>Questo proprietario di negozio illimitato è stato cambiato in {0}.
-bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
+bad-command-usage-detailed: '<red>Argomenti di comando errati! Accetta i seguenti parametri: <gray>{0}'
 thats-not-a-number: <red>Numero non valido
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
 console-only-danger: <red>Questo è un comando pericoloso, quindi solo la Console può eseguirlo.
@@ -28,28 +28,28 @@ server-crash-warning: '<red>Il server potrebbe arrestarsi in modo anomalo dopo l
 you-cant-afford-to-change-price: <red>Questo costa {0} per cambiare il prezzo nel tuo negozio.
 safe-mode: <red>QuickShop ora in modalità provvisoria, non puoi aprire questo contenitore del negozio, contatta l'amministratore del server per correggere gli errori.
 forbidden-vanilla-behavior: <red>L'operazione è vietata in quanto non coerente con il comportamento vanilla
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>Il tuo negozio {0} è pieno!
 paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
-  entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
+  entry-own: ' <yellow><red>[own]<aqua>{0}<light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Nome: <aqua>{0}'
+    - '<yellow>Proprietario: <aqua>{0}'
+    - '<yellow>Tipo: <aqua>{0}'
+    - '<yellow>Prezzo: <aqua>{0}'
+    - '<yellow>Oggetto: <aqua>{0}'
+    - '<yellow>Luogo:<aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Nome: <aqua>{name}'
+    - '<yellow>Proprietario: <aqua>{owner}'
+    - '<yellow>Tipo: <aqua>{type}'
+    - '<yellow>Prezzo: <aqua>{price}'
+    - '<yellow>Oggetto: <aqua>{item}'
+    - '<yellow>Luogo:<aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0} <dark_gray>denied the permission checks, If this not excepted, try add <light_purple>{1} <gray>to listener blacklist. <gray>Configure Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> ha negato il controllo dei permessi. Se ciò non era previsto, si prega di aggiungere <light_purple>{1}<gray> alla lista nera degli ascoltatori. <gray>Guida di configurazione: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Prezzo medio nelle vicinanze: <yellow>{0}'
 digits-reach-the-limit: <red>Hai raggiunto i limiti dei decimali nel prezzo.
 currency-unset: <green>Valuta del negozio rimossa con successo. Utilizzando le impostazioni predefinite.
@@ -57,7 +57,7 @@ you-cant-create-shop-in-there: <red>Non hai il permesso di creare un negozio in 
 no-pending-action: <red>Non hai alcuna azione in sospeso
 refill-success: <green>Ricarica completata
 failed-to-paste: <red>Impossibile caricare i dati a Pastebin. Controlla la tua connessione internet e riprova. (Vedi console per dettagli)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+shop-out-of-stock-name: <dark_purple>Il tuo negozio {0} ha esaurito {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Inserisci in chat, la quantità che desideri <aqua>ACQUISTARE. Ci sono <yellow>{0}<green> articoli in ogni sfuso e puoi acquistare <yellow>{1}<green> all'ingrosso. Inserisci <aqua>{2}<green> nella chat per acquistare tutto.
 exceeded-maximum: <red>Il valore ha superato il valore massimo in Java.
@@ -85,9 +85,9 @@ reloading-status:
   scheduled: <green>Ricarica completata. <gray>(Alcune modifiche hanno richiesto del tempo per essere applicate)
   require-restart: <green>Ricarica completata. <yellow>(Alcune modifiche richiedono il riavvio del server per avere effetto)
   failed: <red>Ricarica non riuscita, controlla la console del server
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} ha acquistato {1} {2} dal tuo negozio ed hai guadagnato {3} ({4} in tasse).
 not-enough-space: <red>Hai spazio solo per altri {0}!
-shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
+shop-name-success: <green>Impostato con successo il nome del negozio a <yellow>{0}<green>.
 shop-staff-added: <green>Aggiunto con successo {0} come membro dello staff per il tuo negozio.
 shops-recovering: Recupero negozi dal backup...
 menu:
@@ -100,7 +100,7 @@ menu:
   item: '<green>Oggetto: <yellow>{0}'
   price-per: <green>Prezzo per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>per <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
+  item-name-and-price-tax: '<yellow>{0}{1}<green>per</green>{2}<gray>(<green>{3}</green> in tasse)</gray>'
   successful-purchase: '<green>Acquistato con successo:'
   price-per-stack: <green>Prezzo per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Incantesimi memorizzati
@@ -122,33 +122,33 @@ integrations-check-failed-trade: <red>L'ntegrazione {0} ha negato lo scambio del
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Impostato con successo il proprietario del negozio sul server.
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>Il nome del negozio è troppo lungo (lunghezza massima {0}), si prega di sceglierne un altro!
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: 'le transazioni per {1}{2} di <yellow>{0}:'
   action-hover: <yellow>{0}
-  price-hover: <yellow>Total {0}, including {1} taxes.
-  unknown: <gray>(unknown)
-  undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  price-hover: <yellow>Totale {0}, includendo {1} tasse.
+  unknown: <gray>(sconosciuto)
+  undefined: <gray>(nessun nome)
+  no-results: <red>Nessuna transazione trovata.
   action-description:
-    DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
-    ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
-    PURCHASE: <yellow>Purchased item with a shop
-  query-argument: 'Query Argument: {0}'
+    DELETE: <yellow>Il Giocatore ha eliminato un negozio ed ha rimborsato la tassa di creazione del negozio al proprietario se possibile.
+    ONGOING_FEE: <yellow>Il Giocatore ha pagato la tassa attuale grazie al periodo di pagamento.
+    PURCHASE_BUYING_SHOP: <yellow>Il Giocatore ha venduto degli oggetti ad un negozio che li acquistava.
+    CREATE: <yellow>Il Giocatore ha creato un negozio.
+    PURCHASE_SELLING_SHOP: <yellow>Il Giocatore ha comprato degli oggetti da un negozio che li vendeva
+    PURCHASE: <yellow>Ha comprato oggetti tramite un negozio
+  query-argument: 'Argomento della query: {0}'
   amount-hover: <yellow>{0}x
-  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
+  header-shop: '<yellow>Le transazioni {1} {2} del {0} del negozio:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
-  looking-up: <yellow>Performing metric lookup, Please wait...
-  tax-hover: <yellow>{0} taxes
-  header-global: '<yellow>The server {0} {1} transactions:'
+  looking-up: <yellow>Esecuzione della ricerca metrica in corso, per favore attendere...
+  tax-hover: <yellow>{0} tasse
+  header-global: '<yellow>Le transazioni {0} {1} del server:'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
-  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}'
-  time-hover: '<yellow>Time: {0}'
-  amount-stack-hover: <yellow>{0}x stack
+  transaction-count: <yellow>{0} totale
+  shop-hover: '<yellow>{0}<newline><gold>Posizione: <gray>{1} {2} {3}, Mondo: {4}<newline><gold>Proprietario: <gray>{5}<newline><gold>Tipo di Negozio: <gray>{6}<newline><gold>Oggetto: <gray>{7}<newline><gold>Prezzo: <gray>{8}'
+  time-hover: '<yellow>Tempo: {0}'
+  amount-stack-hover: <yellow>{0}pila x
 permission-denied-3rd-party: '<red>Permesso negato: Plugin di terze parti [{0}].'
 you-dont-have-that-many-items: <red>Hai solo {0}{1}.
 complete: <green>Completato!
