@@ -1,11 +1,11 @@
 break-shop-use-supertool: <yellow>Puoi rompere il negozio usando il SuperTool.
 fee-charged-for-price-change: <green>Hai pagato <red>{0}<green> per cambiare il prezzo.
 not-allowed-to-create: <red>Non puoi creare un negozio qui.
-disabled-in-this-world: <red>QuickShop is disabled in this world
+disabled-in-this-world: <red>QuickShop è disabilitato in questo mondo
 how-much-to-trade-for: <green>Scrivi in chat, per quanto desideri scambiare <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop ha rilevato che l'impostazione della lingua del tuo client è stata modificata, ora stiamo utilizzando {0} locale per te.
 shops-backingup: Creazione backup negozio dal database...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Ciao Traduttore, se stai modificando da GitHub o attraverso la sorgente di codice, dovresti andare su https://crowdin.com/project/quickshop-hikari.
 unlimited-shop-owner-changed: <yellow>Questo proprietario di negozio illimitato è stato cambiato in {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Numero non valido
