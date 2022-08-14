@@ -9,7 +9,7 @@ public class QuickExecutor {
         thread.setDaemon(true);
         return thread;
     });
-    private static final ExecutorService commonExecutor = new ThreadPoolExecutor(0, 16, 60L, TimeUnit.SECONDS, new SynchronousQueue<>());
+    private static final ExecutorService commonExecutor = new ThreadPoolExecutor(1, 16, 60L, TimeUnit.SECONDS, new SynchronousQueue<>());
 
     public static ExecutorService getCommonExecutor() {
         return commonExecutor;
