@@ -12,7 +12,6 @@ import com.ghostchu.quickshop.api.database.bean.ShopRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
-import com.ghostchu.quickshop.database.bean.IsolatedScanResult;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopModerator;
@@ -366,44 +365,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             e.printStackTrace();
         }
         return isolatedIds;
-    }
-
-    public void purgeShopTableIsolatedData(@NotNull IsolatedScanResult<Long> toPurge) throws SQLException {
-        plugin.getLogger().info("Pulling isolated SHOP_ID data...");
-        plugin.getLogger().info("Purging " + toPurge.getIsolated().size() + " isolated SHOP_ID data...");
-        for (long shopId : toPurge.getIsolated()) {
-            int shopRows = DataTables.SHOPS.createDelete().addCondition("id", shopId).build().execute();
-            int cacheRows = DataTables.EXTERNAL_CACHE.createDelete().addCondition("shop", shopId).build().execute();
-            Log.debug("Purged shop_id=" + shopId + ", " + (shopRows + cacheRows) + " rows affected.");
-        }
-        plugin.getLogger().info("Purging completed.");
-    }
-
-    public void purgeDataTableIsolatedData(@NotNull IsolatedScanResult<Long> toPurge) throws SQLException {
-        plugin.getLogger().info("Pulling isolated DATA_ID data...");
-        plugin.getLogger().info("Purging " + toPurge.getIsolated().size() + " isolated DATA_ID data...");
-        for (long dataId : toPurge.getIsolated()) {
-            int line = DataTables.DATA.createDelete().addCondition("id", dataId).build().execute();
-            Log.debug("Purged data_id=" + dataId + ", " + line + " rows effected.");
-        }
-        plugin.getLogger().info("Purging completed.");
-    }
-
-    /**
-     * Check if specified id exists.
-     *
-     * @param targetTable the table to be cleaned
-     * @param column      The column that will be checked
-     * @param id          The id that will be checked
-     */
-    public boolean checkIdUsage(@NotNull DataTables targetTable, @NotNull String column, long id) throws SQLException {
-        return Boolean.TRUE.equals(targetTable.createQuery()
-                .addCondition(column, id)
-                .selectColumns(column)
-                .setLimit(1).build().executeFunction(query -> {
-                    ResultSet set = query.getResultSet();
-                    return set.next();
-                }));
     }
 
     @Override
