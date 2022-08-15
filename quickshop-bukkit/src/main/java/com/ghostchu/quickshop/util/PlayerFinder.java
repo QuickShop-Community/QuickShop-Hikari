@@ -55,10 +55,6 @@ public class PlayerFinder {
         return cache.getIfPresent(uuid) != null;
     }
 
-    public void flash(@NotNull UUID uuid, @NotNull String name) {
-        this.cache.put(new Profile(uuid, name));
-    }
-
     @Nullable
     public Profile find(@NotNull String name) {
         // Fallback to UUID lookup if name is UUID.
@@ -103,5 +99,9 @@ public class PlayerFinder {
             Log.debug("Failed to find player profile: " + e.getMessage());
             return null;
         }
+    }
+
+    public void flash(@NotNull UUID uuid, @NotNull String name) {
+        this.cache.put(new Profile(uuid, name));
     }
 }

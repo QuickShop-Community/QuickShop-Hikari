@@ -13,33 +13,6 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
 
 
     /**
-     * Return the default implementation for itemStack array
-     *
-     * @param itemStacks itemStack array
-     * @return the default implementation for itemStack array
-     */
-    static InventoryWrapperIterator ofItemStacks(ItemStack[] itemStacks) {
-        return new InventoryWrapperIterator() {
-            int currentIndex = 0;
-
-            @Override
-            public boolean hasNext() {
-                return currentIndex < itemStacks.length;
-            }
-
-            @Override
-            public ItemStack next() {
-                return itemStacks[currentIndex++];
-            }
-
-            @Override
-            public void setCurrent(ItemStack stack) {
-                itemStacks[Math.max(0, currentIndex - 1)] = stack;
-            }
-        };
-    }
-
-    /**
      * Return the default implementation for bukkit inventory
      *
      * @param inventory bukkit inventory
@@ -65,6 +38,33 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
                 ItemStack[] storageItems = inventory.getStorageContents();
                 storageItems[Math.max(0, currentIndex - 1)] = stack;
                 inventory.setStorageContents(storageItems);
+            }
+        };
+    }
+
+    /**
+     * Return the default implementation for itemStack array
+     *
+     * @param itemStacks itemStack array
+     * @return the default implementation for itemStack array
+     */
+    static InventoryWrapperIterator ofItemStacks(ItemStack[] itemStacks) {
+        return new InventoryWrapperIterator() {
+            int currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < itemStacks.length;
+            }
+
+            @Override
+            public ItemStack next() {
+                return itemStacks[currentIndex++];
+            }
+
+            @Override
+            public void setCurrent(ItemStack stack) {
+                itemStacks[Math.max(0, currentIndex - 1)] = stack;
             }
         };
     }

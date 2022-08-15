@@ -29,11 +29,6 @@ public class Cache {
         this.plugin = plugin;
     }
 
-    public @NotNull CacheStats getStats() {
-        return accessCaching.stats();
-    }
-
-
     /**
      * Gets shop from plugin caching
      *
@@ -68,6 +63,10 @@ public class Cache {
      */
     public void setCache(@NotNull Location location, @Nullable Shop shop) {
         accessCaching.put(location, new BoxedShop(shop));
+    }
+
+    public @NotNull CacheStats getStats() {
+        return accessCaching.stats();
     }
 
     public void invalidate(@NotNull Location location) {

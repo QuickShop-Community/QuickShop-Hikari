@@ -13,28 +13,6 @@ import java.util.List;
  */
 public interface CommandManager {
     /**
-     * This is a interface to allow addons to register the subcommand into quickshop command manager.
-     *
-     * @param container The {@link CommandContainer} to register
-     * @throws IllegalStateException Will throw the error if register conflict.
-     */
-    void registerCmd(@NotNull CommandContainer container);
-
-    /**
-     * This is a interface to allow addons to unregister the registered/butil-in subcommand from command manager.
-     *
-     * @param container The {@link CommandContainer} to unregister
-     */
-    void unregisterCmd(@NotNull CommandContainer container);
-
-    /**
-     * This is a interface to allow addons to unregister the registered/butil-in subcommand from command manager.
-     *
-     * @param prefix The prefix of command need to be unregistered
-     */
-    void unregisterCmd(@NotNull String prefix);
-
-    /**
      * Gets a list contains all registered commands
      *
      * @return All registered {@link CommandContainer}s.
@@ -52,4 +30,26 @@ public interface CommandManager {
             @NotNull Command command,
             @NotNull String commandLabel,
             @NotNull String[] cmdArg);
+
+    /**
+     * This is a interface to allow addons to register the subcommand into quickshop command manager.
+     *
+     * @param container The {@link CommandContainer} to register
+     * @throws IllegalStateException Will throw the error if register conflict.
+     */
+    void registerCmd(@NotNull CommandContainer container);
+
+    /**
+     * This is a interface to allow addons to unregister the registered/butil-in subcommand from command manager.
+     *
+     * @param prefix The prefix of command need to be unregistered
+     */
+    void unregisterCmd(@NotNull String prefix);
+
+    /**
+     * This is a interface to allow addons to unregister the registered/butil-in subcommand from command manager.
+     *
+     * @param container The {@link CommandContainer} to unregister
+     */
+    void unregisterCmd(@NotNull CommandContainer container);
 }

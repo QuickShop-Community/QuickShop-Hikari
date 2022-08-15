@@ -36,6 +36,17 @@ public class InternalListener extends AbstractQSListener {
         this.loggingAction = plugin.getConfig().getBoolean("logging.log-actions");
     }
 
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() {
+        readConfig();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopCreate(ShopCreateEvent event) {
         if (isForbidden(event.getShop().getLocation().getBlock().getType(), event.getShop().getItem().getType())) {
@@ -65,10 +76,16 @@ public class InternalListener extends AbstractQSListener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void shopPriceChanges(ShopPriceChangeEvent event) {
-        if (loggingAction) {
-            plugin.logEvent(new ShopPriceChangedLog(event.getShop().saveToInfoStorage(), event.getOldPrice(), event.getOldPrice()));
+    public void shopInventoryCalc(ShopInventoryCalculateEvent event) {
+        if (event.getShop().getShopId() < 1) {
+            return;
         }
+        plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop().getShopId(), event.getSpace(), event.getStock())
+                .whenComplete((lines, err) -> {
+                    if (err != null) {
+                        Log.debug("Error updating external inventory profile cache for shop " + event.getShop().getShopId() + ": " + err.getMessage());
+                    }
+                });
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -80,6 +97,13 @@ public class InternalListener extends AbstractQSListener {
         if (loggingBalance) {
             plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getPurchaser(), plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
             plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getShop().getOwner(), plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void shopPriceChanges(ShopPriceChangeEvent event) {
+        if (loggingAction) {
+            plugin.logEvent(new ShopPriceChangedLog(event.getShop().saveToInfoStorage(), event.getOldPrice(), event.getOldPrice()));
         }
     }
 
@@ -105,30 +129,5 @@ public class InternalListener extends AbstractQSListener {
                 plugin.text().of(player, "shop-owner-self-trade").send();
             }
         }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void shopInventoryCalc(ShopInventoryCalculateEvent event) {
-        if (event.getShop().getShopId() < 1) {
-            return;
-        }
-        plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop().getShopId(), event.getSpace(), event.getStock())
-                .whenComplete((lines, err) -> {
-                    if (err != null) {
-                        Log.debug("Error updating external inventory profile cache for shop " + event.getShop().getShopId() + ": " + err.getMessage());
-                    }
-                });
-    }
-
-
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() {
-        readConfig();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 }

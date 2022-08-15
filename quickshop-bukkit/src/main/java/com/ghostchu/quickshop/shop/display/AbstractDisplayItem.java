@@ -120,14 +120,14 @@ public abstract class AbstractDisplayItem implements Reloadable {
         return false;
     }
 
-    protected void init() {
-        DISPLAY_ALLOW_STACKS = PLUGIN.getConfig().getBoolean("shop.display-allow-stacks");
-        if (DISPLAY_ALLOW_STACKS) {
-            //Prevent stack over the normal size
-            originalItemStack.setAmount(Math.min(originalItemStack.getAmount(), originalItemStack.getMaxStackSize()));
-        } else {
-            this.originalItemStack.setAmount(1);
-        }
+    /**
+     * Gets the original ItemStack (without protection mark, should same with shop trading item.
+     *
+     * @return ItemStack
+     */
+    @NotNull
+    public ItemStack getOriginalItemStack() {
+        return originalItemStack;
     }
 
     /**
@@ -222,22 +222,6 @@ public abstract class AbstractDisplayItem implements Reloadable {
         return new ShopProtectionFlag(shop.getLocation().toString(), Util.serialize(itemStack));
     }
 
-    @Override
-    public ReloadResult reloadModule() {
-        init();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
-    }
-
-    /**
-     * Gets the original ItemStack (without protection mark, should same with shop trading item.
-     *
-     * @return ItemStack
-     */
-    @NotNull
-    public ItemStack getOriginalItemStack() {
-        return originalItemStack;
-    }
-
     /**
      * Check the display is or not moved.
      *
@@ -271,36 +255,6 @@ public abstract class AbstractDisplayItem implements Reloadable {
     public abstract void fixDisplayNeedRegen();
 
     /**
-     * Remove the display entity.
-     */
-    public abstract void remove();
-
-    /**
-     * Remove this shop's display in the whole world.(Not whole server)
-     *
-     * @return Success
-     */
-    public abstract boolean removeDupe();
-
-    /**
-     * Respawn the displays, if it not exist, it will spawn new one.
-     */
-    public abstract void respawn();
-
-    /**
-     * Add the protect flags for entity or entity's hand item. Target entity will got protect by
-     * QuickShop
-     *
-     * @param entity Target entity
-     */
-    public abstract void safeGuard(@NotNull Entity entity);
-
-    /**
-     * Spawn new Displays
-     */
-    public abstract void spawn();
-
-    /**
      * Get the display entity
      *
      * @return Target entity
@@ -332,6 +286,21 @@ public abstract class AbstractDisplayItem implements Reloadable {
     }
 
     /**
+     * Gets this display item should be remove
+     *
+     * @return the status
+     */
+    public boolean isPendingRemoval() {
+        return pendingRemoval;
+    }
+
+    @Override
+    public ReloadResult reloadModule() {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
+
+    /**
      * Check the display is or not already spawned
      *
      * @return Spawned
@@ -345,13 +314,44 @@ public abstract class AbstractDisplayItem implements Reloadable {
         pendingRemoval = true;
     }
 
-    /**
-     * Gets this display item should be remove
-     *
-     * @return the status
-     */
-    public boolean isPendingRemoval() {
-        return pendingRemoval;
+    protected void init() {
+        DISPLAY_ALLOW_STACKS = PLUGIN.getConfig().getBoolean("shop.display-allow-stacks");
+        if (DISPLAY_ALLOW_STACKS) {
+            //Prevent stack over the normal size
+            originalItemStack.setAmount(Math.min(originalItemStack.getAmount(), originalItemStack.getMaxStackSize()));
+        } else {
+            this.originalItemStack.setAmount(1);
+        }
     }
+
+    /**
+     * Remove the display entity.
+     */
+    public abstract void remove();
+
+    /**
+     * Remove this shop's display in the whole world.(Not whole server)
+     *
+     * @return Success
+     */
+    public abstract boolean removeDupe();
+
+    /**
+     * Respawn the displays, if it not exist, it will spawn new one.
+     */
+    public abstract void respawn();
+
+    /**
+     * Add the protect flags for entity or entity's hand item. Target entity will got protect by
+     * QuickShop
+     *
+     * @param entity Target entity
+     */
+    public abstract void safeGuard(@NotNull Entity entity);
+
+    /**
+     * Spawn new Displays
+     */
+    public abstract void spawn();
 
 }

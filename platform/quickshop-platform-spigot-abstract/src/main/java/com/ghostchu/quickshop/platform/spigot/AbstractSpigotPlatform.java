@@ -47,9 +47,23 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
-        sign.setLine(line, LegacyComponentSerializer.legacySection().serialize(component));
+    public @NotNull Component getDisplayName(@NotNull ItemStack stack) {
+        if (stack.getItemMeta() != null) {
+            return LegacyComponentSerializer.legacySection().deserialize(stack.getItemMeta().getDisplayName());
+        }
+        return Component.empty();
     }
+
+    @Override
+    public @NotNull Component getDisplayName(@NotNull ItemMeta meta) {
+        if (meta.hasDisplayName()) {
+            return LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName());
+        }
+        return Component.empty();
+    }
+
+    @Override
+    public abstract @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack);
 
     @Override
     public @NotNull Component getLine(@NotNull Sign sign, int line) {
@@ -57,13 +71,51 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public abstract @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack);
+    public @Nullable List<Component> getLore(@NotNull ItemStack stack) {
+        if (!stack.hasItemMeta()) {
+            return null;
+        }
+        if (!stack.getItemMeta().hasLore()) {
+            return null;
+        }
+        return stack.getItemMeta().getLore().stream().map(LegacyComponentSerializer.legacySection()::deserialize).collect(Collectors.toList());
+    }
 
     @Override
-    public abstract void registerCommand(@NotNull String prefix, @NotNull PluginCommand command);
+    public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
+        if (!meta.hasLore()) {
+            return null;
+        }
+        return meta.getLore().stream().map(LegacyComponentSerializer.legacySection()::deserialize).collect(Collectors.toList());
+    }
 
     @Override
     public abstract @NotNull String getMinecraftVersion();
+
+    @Override
+    public @NotNull Component getTranslation(@NotNull Material material) {
+        return Component.translatable(getTranslationKey(material));
+    }
+
+    @Override
+    public @NotNull Component getTranslation(@NotNull EntityType entity) {
+        return Component.translatable(getTranslationKey(entity));
+    }
+
+    @Override
+    public @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) {
+        return Component.translatable(getTranslationKey(potionEffectType));
+    }
+
+    @Override
+    public @NotNull Component getTranslation(@NotNull Enchantment enchantment) {
+        return Component.translatable(getTranslationKey(enchantment));
+    }
+
+    @Override
+    public @NotNull MiniMessage miniMessage() {
+        return MiniMessage.miniMessage();
+    }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
@@ -88,43 +140,19 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull Material material) {
-        return Component.translatable(getTranslationKey(material));
-    }
-
-    private String postProcessingTranslationKey(String key) {
-        return this.translationMapping.getOrDefault(key, key);
-    }
+    public abstract void registerCommand(@NotNull String prefix, @NotNull PluginCommand command);
 
     @Override
-    public @NotNull Component getTranslation(@NotNull EntityType entity) {
-        return Component.translatable(getTranslationKey(entity));
-    }
-
-    @Override
-    public @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) {
-        return Component.translatable(getTranslationKey(potionEffectType));
-    }
-
-    @Override
-    public @NotNull Component getTranslation(@NotNull Enchantment enchantment) {
-        return Component.translatable(getTranslationKey(enchantment));
-    }
-
-    @Override
-    public @NotNull Component getDisplayName(@NotNull ItemStack stack) {
-        if (stack.getItemMeta() != null) {
-            return LegacyComponentSerializer.legacySection().deserialize(stack.getItemMeta().getDisplayName());
+    public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
+        if (this.audience == null) {
+            this.audience = BukkitAudiences.create(this.plugin);
         }
-        return Component.empty();
+        this.audience.sender(sender).sendMessage(component);
     }
 
     @Override
-    public @NotNull Component getDisplayName(@NotNull ItemMeta meta) {
-        if (meta.hasDisplayName()) {
-            return LegacyComponentSerializer.legacySection().deserialize(meta.getDisplayName());
-        }
-        return Component.empty();
+    public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
+        sign.setLine(line, LegacyComponentSerializer.legacySection().serialize(component));
     }
 
     @Override
@@ -179,35 +207,7 @@ public abstract class AbstractSpigotPlatform implements Platform {
         meta.setLore(components.stream().map(LegacyComponentSerializer.legacySection()::serialize).collect(Collectors.toList()));
     }
 
-    @Override
-    public @Nullable List<Component> getLore(@NotNull ItemStack stack) {
-        if (!stack.hasItemMeta()) {
-            return null;
-        }
-        if (!stack.getItemMeta().hasLore()) {
-            return null;
-        }
-        return stack.getItemMeta().getLore().stream().map(LegacyComponentSerializer.legacySection()::deserialize).collect(Collectors.toList());
-    }
-
-    @Override
-    public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
-        if (!meta.hasLore()) {
-            return null;
-        }
-        return meta.getLore().stream().map(LegacyComponentSerializer.legacySection()::deserialize).collect(Collectors.toList());
-    }
-
-    @Override
-    public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
-        if (this.audience == null) {
-            this.audience = BukkitAudiences.create(this.plugin);
-        }
-        this.audience.sender(sender).sendMessage(component);
-    }
-
-    @Override
-    public @NotNull MiniMessage miniMessage() {
-        return MiniMessage.miniMessage();
+    private String postProcessingTranslationKey(String key) {
+        return this.translationMapping.getOrDefault(key, key);
     }
 }

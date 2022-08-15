@@ -29,6 +29,14 @@ public class NexusManager {
         this.plugin = plugin;
     }
 
+    @NotNull
+    public String getLatestVersion() {
+        if (!plugin.getConfig().getBoolean("updater", false) || cachedMetadata == null) {
+            return plugin.getDescription().getVersion();
+        }
+        return cachedMetadata.getReleaseVersion();
+    }
+
     public boolean isLatest() {
         if (Bukkit.isPrimaryThread()) {
             Log.debug(Level.WARNING, "Warning: isLatest shouldn't be called on PrimaryThread", Log.Caller.create());
@@ -76,14 +84,6 @@ public class NexusManager {
             Log.debug("Failed to fetch version metadata from CodeMC.io Nexus: " + e.getMessage());
             return null;
         }
-    }
-
-    @NotNull
-    public String getLatestVersion() {
-        if (!plugin.getConfig().getBoolean("updater", false) || cachedMetadata == null) {
-            return plugin.getDescription().getVersion();
-        }
-        return cachedMetadata.getReleaseVersion();
     }
 
     @Data

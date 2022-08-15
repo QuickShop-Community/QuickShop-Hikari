@@ -65,6 +65,51 @@ public interface EconomyCore {
     double getBalance(@NotNull OfflinePlayer player, @NotNull World world, @Nullable String currency);
 
     /**
+     * Gets the economy processor last error message
+     *
+     * @return Error message or null if never happens
+     */
+    @Nullable
+    String getLastError();
+
+    /**
+     * Getting Economy impl name
+     *
+     * @return Impl name
+     */
+    @NotNull String getName();
+
+    /**
+     * Getting Economy impl owned by
+     *
+     * @return Owned by
+     */
+    @NotNull Plugin getPlugin();
+
+    /**
+     * Gets the currency does exists
+     *
+     * @param currency Currency name
+     * @param world    The transaction world
+     * @return exists
+     */
+    boolean hasCurrency(@NotNull World world, @NotNull String currency);
+
+    /**
+     * Checks that this economy is valid. Returns false if it is not valid.
+     *
+     * @return True if this economy will work, false if it will not.
+     */
+    boolean isValid();
+
+    /**
+     * Gets currency supports status
+     *
+     * @return true if supports
+     */
+    boolean supportCurrency();
+
+    /**
      * Transfers the given amount of money from Player1 to Player2
      *
      * @param from     The player who is paying money
@@ -97,51 +142,5 @@ public interface EconomyCore {
      * @return True if success, false if they didn't have enough cash
      */
     boolean withdraw(@NotNull OfflinePlayer trader, double amount, @NotNull World world, @Nullable String currency);
-
-    /**
-     * Gets the currency does exists
-     *
-     * @param currency Currency name
-     * @param world    The transaction world
-     * @return exists
-     */
-    boolean hasCurrency(@NotNull World world, @NotNull String currency);
-
-    /**
-     * Gets currency supports status
-     *
-     * @return true if supports
-     */
-    boolean supportCurrency();
-
-    /**
-     * Gets the economy processor last error message
-     *
-     * @return Error message or null if never happens
-     */
-    @Nullable
-    String getLastError();
-
-
-    /**
-     * Checks that this economy is valid. Returns false if it is not valid.
-     *
-     * @return True if this economy will work, false if it will not.
-     */
-    boolean isValid();
-
-    /**
-     * Getting Economy impl name
-     *
-     * @return Impl name
-     */
-    @NotNull String getName();
-
-    /**
-     * Getting Economy impl owned by
-     *
-     * @return Owned by
-     */
-    @NotNull Plugin getPlugin();
 
 }

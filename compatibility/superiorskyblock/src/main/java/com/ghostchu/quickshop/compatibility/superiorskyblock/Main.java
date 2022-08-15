@@ -28,71 +28,6 @@ public final class Main extends CompatibilityModule implements Listener {
     private boolean onlyOwnerCanCreateShop;
     private boolean deleteShopOnMemberLeave;
 
-    @Override
-    public void onLoad() {
-        super.onLoad();
-    }
-
-    @Override
-    public void init() {
-        onlyOwnerCanCreateShop = getConfig().getBoolean("owner-create-only");
-        deleteShopOnMemberLeave = getConfig().getBoolean("delete-shop-on-member-leave");
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
-        Location shopLoc = event.getShop().getLocation();
-        Island island = SuperiorSkyblockAPI.getIslandAt(shopLoc);
-        if (island == null) {
-            return;
-        }
-        if (island.getOwner().getUniqueId().equals(event.getAuthorizer())) {
-            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
-                event.setResult(true);
-            }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onPreCreation(ShopPreCreateEvent event) {
-        Island island = SuperiorSkyblockAPI.getIslandAt(event.getLocation());
-        SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(event.getPlayer());
-        if (island == null) {
-            return;
-        }
-        if (onlyOwnerCanCreateShop) {
-            if (!island.getOwner().equals(superiorPlayer)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.superiorskyblock.owner-create-only").forLocale());
-            }
-        } else {
-            if (!island.getOwner().equals(superiorPlayer)) {
-                if (!island.isMember(superiorPlayer)) {
-                    event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.superiorskyblock.owner-member-create-only").forLocale());
-                }
-            }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onCreation(ShopCreateEvent event) {
-        Island island = SuperiorSkyblockAPI.getIslandAt(event.getShop().getLocation());
-        SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(event.getCreator());
-        if (island == null) {
-            return;
-        }
-        if (onlyOwnerCanCreateShop) {
-            if (!island.getOwner().equals(superiorPlayer)) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-create-only").forLocale());
-            }
-        } else {
-            if (!island.getOwner().equals(superiorPlayer)) {
-                if (!island.isMember(superiorPlayer)) {
-                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-member-create-only").forLocale());
-                }
-            }
-        }
-    }
-
     @EventHandler
     public void deleteShops(IslandQuitEvent event) {
         if (deleteShopOnMemberLeave) {
@@ -133,5 +68,70 @@ public final class Main extends CompatibilityModule implements Listener {
     @EventHandler
     public void deleteShopsOnChunkReset(IslandChunkResetEvent event) {
         deleteShops(event.getIsland(), null);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onCreation(ShopCreateEvent event) {
+        Island island = SuperiorSkyblockAPI.getIslandAt(event.getShop().getLocation());
+        SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(event.getCreator());
+        if (island == null) {
+            return;
+        }
+        if (onlyOwnerCanCreateShop) {
+            if (!island.getOwner().equals(superiorPlayer)) {
+                event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-create-only").forLocale());
+            }
+        } else {
+            if (!island.getOwner().equals(superiorPlayer)) {
+                if (!island.isMember(superiorPlayer)) {
+                    event.setCancelled(true, getApi().getTextManager().of(event.getCreator(), "addon.superiorskyblock.owner-member-create-only").forLocale());
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+    }
+
+    @Override
+    public void init() {
+        onlyOwnerCanCreateShop = getConfig().getBoolean("owner-create-only");
+        deleteShopOnMemberLeave = getConfig().getBoolean("delete-shop-on-member-leave");
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPreCreation(ShopPreCreateEvent event) {
+        Island island = SuperiorSkyblockAPI.getIslandAt(event.getLocation());
+        SuperiorPlayer superiorPlayer = SuperiorSkyblockAPI.getPlayer(event.getPlayer());
+        if (island == null) {
+            return;
+        }
+        if (onlyOwnerCanCreateShop) {
+            if (!island.getOwner().equals(superiorPlayer)) {
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.superiorskyblock.owner-create-only").forLocale());
+            }
+        } else {
+            if (!island.getOwner().equals(superiorPlayer)) {
+                if (!island.isMember(superiorPlayer)) {
+                    event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.superiorskyblock.owner-member-create-only").forLocale());
+                }
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        Location shopLoc = event.getShop().getLocation();
+        Island island = SuperiorSkyblockAPI.getIslandAt(shopLoc);
+        if (island == null) {
+            return;
+        }
+        if (island.getOwner().getUniqueId().equals(event.getAuthorizer())) {
+            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                event.setResult(true);
+            }
+        }
     }
 }

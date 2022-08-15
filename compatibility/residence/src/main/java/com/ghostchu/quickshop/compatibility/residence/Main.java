@@ -37,18 +37,20 @@ public final class Main extends CompatibilityModule {
         FlagPermissions.addFlag(TRADE_FLAG);
     }
 
-
     @EventHandler(ignoreCancelled = true)
-    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
-        if (!getConfig().getBoolean("allow-permission-override"))
-            return;
+    public void onCreation(ShopCreateEvent event) {
         Location shopLoc = event.getShop().getLocation();
-        ClaimedResidence residence = ResidenceApi.getResidenceManager().getByLoc(shopLoc);
+        ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
         if (residence == null) {
+            if (whitelist) {
+                event.setCancelled(true, QuickShopAPI.getInstance().getTextManager().of(event.getPlayer(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
+            }
             return;
         }
-        if (residence.getOwnerUUID().equals(event.getAuthorizer())) {
-            event.setResult(true);
+        if (!playerHas(residence.getPermissions(), event.getPlayer(), CREATE_FLAG, false)) {
+            if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), event.getPlayer(), CREATE_FLAG, false)) {
+                event.setCancelled(true, QuickShopAPI.getInstance().getTextManager().of(event.getPlayer(), "addon.residence.creation-flag-denied").forLocale());
+            }
         }
     }
 
@@ -85,23 +87,6 @@ public final class Main extends CompatibilityModule {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onCreation(ShopCreateEvent event) {
-        Location shopLoc = event.getShop().getLocation();
-        ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
-        if (residence == null) {
-            if (whitelist) {
-                event.setCancelled(true, QuickShopAPI.getInstance().getTextManager().of(event.getPlayer(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
-            }
-            return;
-        }
-        if (!playerHas(residence.getPermissions(), event.getPlayer(), CREATE_FLAG, false)) {
-            if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), event.getPlayer(), CREATE_FLAG, false)) {
-                event.setCancelled(true, QuickShopAPI.getInstance().getTextManager().of(event.getPlayer(), "addon.residence.creation-flag-denied").forLocale());
-            }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
     public void onPurchase(ShopPurchaseEvent event) {
         Location shopLoc = event.getShop().getLocation();
         ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
@@ -112,6 +97,20 @@ public final class Main extends CompatibilityModule {
             if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), event.getPlayer(), TRADE_FLAG, false)) {
                 event.setCancelled(true, QuickShopAPI.getInstance().getTextManager().of(event.getPlayer(), "addon.residence.trade-flag-denied").forLocale());
             }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        if (!getConfig().getBoolean("allow-permission-override"))
+            return;
+        Location shopLoc = event.getShop().getLocation();
+        ClaimedResidence residence = ResidenceApi.getResidenceManager().getByLoc(shopLoc);
+        if (residence == null) {
+            return;
+        }
+        if (residence.getOwnerUUID().equals(event.getAuthorizer())) {
+            event.setResult(true);
         }
     }
 

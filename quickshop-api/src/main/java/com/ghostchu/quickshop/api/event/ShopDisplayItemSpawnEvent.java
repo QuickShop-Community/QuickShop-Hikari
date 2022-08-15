@@ -39,19 +39,14 @@ public class ShopDisplayItemSpawnEvent extends AbstractQSEvent implements QSCanc
     }
 
     @Override
-    public boolean isCancelled() {
-        return this.cancelled;
+    public @Nullable Component getCancelReason() {
+        return this.cancelReason;
     }
 
     @Override
     public void setCancelled(boolean cancel, @Nullable Component reason) {
         this.cancelled = cancel;
         this.cancelReason = reason;
-    }
-
-    @Override
-    public @Nullable Component getCancelReason() {
-        return this.cancelReason;
     }
 
     /**
@@ -79,5 +74,10 @@ public class ShopDisplayItemSpawnEvent extends AbstractQSEvent implements QSCanc
      */
     public @NotNull Shop getShop() {
         return this.shop;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return this.cancelled;
     }
 }

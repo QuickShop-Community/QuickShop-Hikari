@@ -37,41 +37,6 @@ public final class Main extends CompatibilityModule {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
-        Location shopLoc = event.getShop().getLocation();
-        Land land = landsIntegration.getLand(shopLoc);
-        if (land == null) {
-            return;
-        }
-        if (land.getOwnerUID().equals(event.getAuthorizer())) {
-            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
-                event.setResult(true);
-            }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onPreCreation(ShopPreCreateEvent event) {
-        if (landsIntegration.getLandWorld(event.getLocation().getWorld()) == null) {
-            if (!ignoreDisabledWorlds) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.world-not-enabled").forLocale());
-                return;
-            }
-        }
-        Land land = landsIntegration.getLand(event.getLocation());
-        if (land != null) {
-            if (land.getOwnerUID().equals(event.getPlayer().getUniqueId()) || land.isTrusted(event.getPlayer().getUniqueId())) {
-                return;
-            }
-            event.setCancelled(true, "Lands: you don't have permission to create shop here");
-        } else {
-            if (whitelist) {
-                event.setCancelled(true, "Lands: you don't have permission to create shop here (whitelist)");
-            }
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true)
     public void onCreation(ShopCreateEvent event) {
         if (landsIntegration.getLandWorld(event.getShop().getLocation().getWorld()) == null) {
             if (!ignoreDisabledWorlds) {
@@ -92,14 +57,12 @@ public final class Main extends CompatibilityModule {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onTrading(ShopPurchaseEvent event) {
-        if (landsIntegration.getLandWorld(event.getShop().getLocation().getWorld()) == null) {
-            if (ignoreDisabledWorlds) {
-                return;
-            }
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.world-not-enabled").forLocale());
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onLandsMember(PlayerLeaveLandEvent event) {
+        if (!deleteWhenLosePermission) {
+            return;
         }
+        deleteShopInLand(event.getLand(), event.getLandPlayer().getUID());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -134,12 +97,49 @@ public final class Main extends CompatibilityModule {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onLandsMember(PlayerLeaveLandEvent event) {
-        if (!deleteWhenLosePermission) {
+    @EventHandler(ignoreCancelled = true)
+    public void onPreCreation(ShopPreCreateEvent event) {
+        if (landsIntegration.getLandWorld(event.getLocation().getWorld()) == null) {
+            if (!ignoreDisabledWorlds) {
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.world-not-enabled").forLocale());
+                return;
+            }
+        }
+        Land land = landsIntegration.getLand(event.getLocation());
+        if (land != null) {
+            if (land.getOwnerUID().equals(event.getPlayer().getUniqueId()) || land.isTrusted(event.getPlayer().getUniqueId())) {
+                return;
+            }
+            event.setCancelled(true, "Lands: you don't have permission to create shop here");
+        } else {
+            if (whitelist) {
+                event.setCancelled(true, "Lands: you don't have permission to create shop here (whitelist)");
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onTrading(ShopPurchaseEvent event) {
+        if (landsIntegration.getLandWorld(event.getShop().getLocation().getWorld()) == null) {
+            if (ignoreDisabledWorlds) {
+                return;
+            }
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.world-not-enabled").forLocale());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        Location shopLoc = event.getShop().getLocation();
+        Land land = landsIntegration.getLand(shopLoc);
+        if (land == null) {
             return;
         }
-        deleteShopInLand(event.getLand(), event.getLandPlayer().getUID());
+        if (land.getOwnerUID().equals(event.getAuthorizer())) {
+            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                event.setResult(true);
+            }
+        }
     }
 
 }

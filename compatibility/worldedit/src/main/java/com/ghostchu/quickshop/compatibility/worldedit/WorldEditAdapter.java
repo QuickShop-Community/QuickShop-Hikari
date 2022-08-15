@@ -17,14 +17,6 @@ public class WorldEditAdapter implements Listener {
         this.weBukkit = weBukkit;
     }
 
-    public void register() {
-        weBukkit.getWorldEdit().getEventBus().register(this);
-    }
-
-    public void unregister() {
-        weBukkit.getWorldEdit().getEventBus().unregister(this);
-    }
-
     @Subscribe(priority = EventHandler.Priority.NORMAL)
     public void proxyEditSession(EditSessionEvent event) {
         Actor actor = event.getActor();
@@ -32,6 +24,14 @@ public class WorldEditAdapter implements Listener {
         if (actor != null && event.getStage() == EditSession.Stage.BEFORE_CHANGE) {
             event.setExtent(new WorldEditBlockListener(actor, world, event.getExtent(), QuickShop.getInstance()));
         }
+    }
+
+    public void register() {
+        weBukkit.getWorldEdit().getEventBus().register(this);
+    }
+
+    public void unregister() {
+        weBukkit.getWorldEdit().getEventBus().unregister(this);
     }
 
 

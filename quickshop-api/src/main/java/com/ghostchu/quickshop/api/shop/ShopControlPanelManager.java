@@ -9,19 +9,20 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface ShopControlPanelManager {
     /**
+     * Open ShopControlPanels for the player about specified shop
+     *
+     * @param player the player to open
+     * @param shop   the shop to open
+     */
+
+    void openControlPanel(@NotNull Player player, @NotNull Shop shop);
+
+    /**
      * Register a {@link ShopControlPanel} to the manager
      *
      * @param panel the panel to register
      */
     void register(@NotNull ShopControlPanel panel);
-
-    /**
-     * Unregister a {@link ShopControlPanel} from the manager
-     *
-     * @param panel the panel to unregister
-     */
-
-    void unregister(@NotNull ShopControlPanel panel);
 
     /**
      * Unregister all {@link ShopControlPanel} from the manager that registered by specified plugin
@@ -31,11 +32,10 @@ public interface ShopControlPanelManager {
     void unregister(@NotNull Plugin plugin);
 
     /**
-     * Open ShopControlPanels for the player about specified shop
+     * Unregister a {@link ShopControlPanel} from the manager
      *
-     * @param player the player to open
-     * @param shop   the shop to open
+     * @param panel the panel to unregister
      */
 
-    void openControlPanel(@NotNull Player player, @NotNull Shop shop);
+    void unregister(@NotNull ShopControlPanel panel);
 }

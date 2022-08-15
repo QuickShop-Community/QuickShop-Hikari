@@ -23,19 +23,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface Platform {
-    void setLine(@NotNull Sign sign, int line, @NotNull Component component);
-
     @NotNull
-    Component getLine(@NotNull Sign sign, int line);
+    Component getDisplayName(@NotNull ItemStack stack);
 
-    @NotNull
-    HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack);
-
-    void registerCommand(@NotNull String prefix, @NotNull PluginCommand command);
-
-
-    @NotNull
-    String getMinecraftVersion();
+    @Nullable
+    Component getDisplayName(@NotNull ItemMeta meta);
 
     @Nullable
     default String getItemShopId(@NotNull ItemStack stack) {
@@ -51,16 +43,17 @@ public interface Platform {
     }
 
     @NotNull
-    String getTranslationKey(@NotNull Material material);
+    HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack);
 
     @NotNull
-    String getTranslationKey(@NotNull EntityType entity);
+    Component getLine(@NotNull Sign sign, int line);
+
+    @Nullable List<Component> getLore(@NotNull ItemStack stack);
+
+    @Nullable List<Component> getLore(@NotNull ItemMeta meta);
 
     @NotNull
-    String getTranslationKey(@NotNull PotionEffectType potionEffectType);
-
-    @NotNull
-    String getTranslationKey(@NotNull Enchantment enchantment);
+    String getMinecraftVersion();
 
     @NotNull
     Component getTranslation(@NotNull Material material);
@@ -75,10 +68,23 @@ public interface Platform {
     Component getTranslation(@NotNull Enchantment enchantment);
 
     @NotNull
-    Component getDisplayName(@NotNull ItemStack stack);
+    String getTranslationKey(@NotNull Material material);
 
-    @Nullable
-    Component getDisplayName(@NotNull ItemMeta meta);
+    @NotNull
+    String getTranslationKey(@NotNull EntityType entity);
+
+    @NotNull
+    String getTranslationKey(@NotNull PotionEffectType potionEffectType);
+
+    @NotNull
+    String getTranslationKey(@NotNull Enchantment enchantment);
+
+    @NotNull
+    MiniMessage miniMessage();
+
+    void registerCommand(@NotNull String prefix, @NotNull PluginCommand command);
+
+    void sendMessage(@NotNull CommandSender sender, @NotNull Component component);
 
     void setDisplayName(@NotNull ItemMeta meta, @Nullable Component component);
 
@@ -86,18 +92,11 @@ public interface Platform {
 
     void setDisplayName(@NotNull Item stack, @Nullable Component component);
 
-    void updateTranslationMappingSection(@NotNull Map<String, String> mapping);
+    void setLine(@NotNull Sign sign, int line, @NotNull Component component);
 
     void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components);
 
     void setLore(@NotNull ItemMeta meta, @NotNull Collection<Component> components);
 
-    @Nullable List<Component> getLore(@NotNull ItemStack stack);
-
-    @Nullable List<Component> getLore(@NotNull ItemMeta meta);
-
-    void sendMessage(@NotNull CommandSender sender, @NotNull Component component);
-
-    @NotNull
-    MiniMessage miniMessage();
+    void updateTranslationMappingSection(@NotNull Map<String, String> mapping);
 }

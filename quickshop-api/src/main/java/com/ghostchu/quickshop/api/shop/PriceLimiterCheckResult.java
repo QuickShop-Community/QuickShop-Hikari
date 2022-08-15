@@ -7,12 +7,11 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface PriceLimiterCheckResult {
     /**
-     * Getting final result
+     * Getting this type of item max allowed price is
      *
-     * @return Result
+     * @return Max price
      */
-    @NotNull
-    PriceLimiterStatus getStatus();
+    double getMax();
 
     /**
      * Getting this type of item min allowed price is
@@ -22,9 +21,10 @@ public interface PriceLimiterCheckResult {
     double getMin();
 
     /**
-     * Getting this type of item max allowed price is
+     * Getting final result
      *
-     * @return Max price
+     * @return Result
      */
-    double getMax();
+    @NotNull
+    PriceLimiterStatus getStatus();
 }

@@ -22,23 +22,6 @@ public abstract class AbstractQSEvent extends Event {
         super(async);
     }
 
-    @NotNull
-    @Override
-    public HandlerList getHandlers() {
-        return getHandlerList();
-    }
-
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
-
-    /**
-     * Fire event on Bukkit event bus
-     */
-    public void callEvent() {
-        QuickShopAPI.getPluginInstance().getServer().getPluginManager().callEvent(this);
-    }
-
     /**
      * Call event on Bukkit event bus and check if cancelled
      *
@@ -50,6 +33,23 @@ public abstract class AbstractQSEvent extends Event {
             return ((Cancellable) this).isCancelled();
         }
         return false;
+    }
+
+    /**
+     * Fire event on Bukkit event bus
+     */
+    public void callEvent() {
+        QuickShopAPI.getPluginInstance().getServer().getPluginManager().callEvent(this);
+    }
+
+    @NotNull
+    @Override
+    public HandlerList getHandlers() {
+        return getHandlerList();
+    }
+
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
     }
 
 }

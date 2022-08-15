@@ -18,6 +18,26 @@ public class OTACacheControl {
         this.metadata = YamlConfiguration.loadConfiguration(this.metadataFile);
     }
 
+    public boolean isCachedObjectOutdated(String path, long manifestTimestamp) {
+        return readCachedObjectTimestamp(path) != manifestTimestamp;
+    }
+
+    public long readCachedObjectTimestamp(String path) {
+        String cacheKey = hash(path);
+        long l;
+        LOCK.lock();
+        try {
+            l = this.metadata.getLong("objects." + cacheKey + ".time", -1);
+        } finally {
+            LOCK.unlock();
+        }
+        return l;
+    }
+
+    private String hash(String str) {
+        return DigestUtils.sha1Hex(str);
+    }
+
     public long readManifestTimestamp() {
         long l;
         LOCK.lock();
@@ -27,6 +47,11 @@ public class OTACacheControl {
             LOCK.unlock();
         }
         return l;
+    }
+
+    public byte[] readObjectCache(String path) throws IOException {
+        String cacheKey = hash(path);
+        return Files.readAllBytes(new File(Util.getCacheFolder(), cacheKey).toPath());
     }
 
     public void writeManifestTimestamp(long timestamp) {
@@ -49,31 +74,6 @@ public class OTACacheControl {
         } finally {
             LOCK.unlock();
         }
-    }
-
-    public boolean isCachedObjectOutdated(String path, long manifestTimestamp) {
-        return readCachedObjectTimestamp(path) != manifestTimestamp;
-    }
-
-    public long readCachedObjectTimestamp(String path) {
-        String cacheKey = hash(path);
-        long l;
-        LOCK.lock();
-        try {
-            l = this.metadata.getLong("objects." + cacheKey + ".time", -1);
-        } finally {
-            LOCK.unlock();
-        }
-        return l;
-    }
-
-    private String hash(String str) {
-        return DigestUtils.sha1Hex(str);
-    }
-
-    public byte[] readObjectCache(String path) throws IOException {
-        String cacheKey = hash(path);
-        return Files.readAllBytes(new File(Util.getCacheFolder(), cacheKey).toPath());
     }
 
     public void writeObjectCache(String path, byte[] data, long manifestTimestamp) throws IOException {

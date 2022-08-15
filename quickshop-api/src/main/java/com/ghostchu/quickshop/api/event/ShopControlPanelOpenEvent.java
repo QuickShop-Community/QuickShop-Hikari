@@ -27,8 +27,8 @@ public class ShopControlPanelOpenEvent extends AbstractQSEvent implements QSCanc
     }
 
     @Override
-    public boolean isCancelled() {
-        return cancelled;
+    public @Nullable Component getCancelReason() {
+        return this.cancelReason;
     }
 
     @Override
@@ -37,9 +37,13 @@ public class ShopControlPanelOpenEvent extends AbstractQSEvent implements QSCanc
         this.cancelReason = reason;
     }
 
-    @Override
-    public @Nullable Component getCancelReason() {
-        return this.cancelReason;
+    /**
+     * Get the sender that opened control panel
+     *
+     * @return The sender
+     */
+    public CommandSender getSender() {
+        return this.sender;
     }
 
     /**
@@ -51,12 +55,8 @@ public class ShopControlPanelOpenEvent extends AbstractQSEvent implements QSCanc
         return this.shop;
     }
 
-    /**
-     * Get the sender that opened control panel
-     *
-     * @return The sender
-     */
-    public CommandSender getSender() {
-        return this.sender;
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
     }
 }

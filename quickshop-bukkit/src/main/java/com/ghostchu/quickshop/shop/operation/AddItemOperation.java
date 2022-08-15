@@ -35,24 +35,6 @@ public class AddItemOperation implements Operation {
         this.itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
     }
 
-    /**
-     * Gets the remains items hadn't added into the inventory.
-     *
-     * @return remains items
-     */
-    public int getRemains() {
-        return remains;
-    }
-
-    /**
-     * Gets the remains items hadn't rolled back.
-     *
-     * @return remains items
-     */
-    public int getRollbackRemains() {
-        return rollbackRemains;
-    }
-
     @Override
     public boolean commit() {
         committed = true;
@@ -69,6 +51,24 @@ public class AddItemOperation implements Operation {
             }
         }
         return true;
+    }
+
+    /**
+     * Gets the remains items hadn't added into the inventory.
+     *
+     * @return remains items
+     */
+    public int getRemains() {
+        return remains;
+    }
+
+    /**
+     * Gets the remains items hadn't rolled back.
+     *
+     * @return remains items
+     */
+    public int getRollbackRemains() {
+        return rollbackRemains;
     }
 
     @Override

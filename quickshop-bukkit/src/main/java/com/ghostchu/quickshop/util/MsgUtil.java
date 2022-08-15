@@ -47,6 +47,24 @@ public class MsgUtil {
     private static DecimalFormat decimalFormat;
     private volatile static Entry<String, String> cachedGameLanguageCode = null;
 
+    @NotNull
+    public static Component addLeftLine(@NotNull CommandSender sender, @NotNull Component component) {
+        return plugin.text().of(sender, "tableformat.left_begin").forLocale().append(component);
+    }
+
+    /**
+     * Translate boolean value to String, the symbon is changeable by language file.
+     *
+     * @param bool The boolean value
+     * @return The result of translate.
+     */
+    public static Component bool2String(boolean bool) {
+        if (bool) {
+            return plugin.text().of("booleanformat.success").forLocale();
+        } else {
+            return plugin.text().of("booleanformat.failed").forLocale();
+        }
+    }
 
     /**
      * Deletes any messages that are older than a week in the database, to save on space.
@@ -65,34 +83,31 @@ public class MsgUtil {
                 });
     }
 
-    /**
-     * Empties the queue of messages a player has and sends them to the player.
-     *
-     * @param p The player to message
-     * @return True if success, False if the player is offline or null
-     */
-    public static boolean flush(@NotNull OfflinePlayer p) {
-        Player player = p.getPlayer();
-        if (player != null) {
-            UUID pName = player.getUniqueId();
-            List<String> msgs = OUTGOING_MESSAGES.get(pName);
-            if (msgs != null) {
-                for (String msg : msgs) {
-                    plugin.getPlatform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
-                }
-                plugin.getDatabaseHelper().cleanMessageForPlayer(pName)
-                        .whenComplete((result, error) -> {
-                            if (error != null) {
-                                Log.debug(Level.SEVERE, "Error cleaning purchase messages from the database:" + error.getMessage());
-                            } else {
-                                Log.debug("Cleaned " + result + " messages from the database");
-                            }
-                        });
-                msgs.clear();
-                return true;
+    public static void debugStackTrace(@NotNull StackTraceElement[] traces) {
+        if (!Util.isDevMode()) {
+            return;
+        }
+        for (StackTraceElement stackTraceElement : traces) {
+            final String className = stackTraceElement.getClassName();
+            final String methodName = stackTraceElement.getMethodName();
+            final int codeLine = stackTraceElement.getLineNumber();
+            final String fileName = stackTraceElement.getFileName();
+            Log.debug("[TRACE]  at " + className + "." + methodName + " (" + fileName + ":" + codeLine + ") ");
+        }
+    }
+
+    public static String decimalFormat(double value) {
+        if (decimalFormat == null) {
+            //lazy initialize
+            try {
+                String format = plugin.getConfig().getString("decimal-format");
+                decimalFormat = format == null ? new DecimalFormat() : new DecimalFormat(format);
+            } catch (Exception e) {
+                QuickShop.getInstance().getLogger().log(Level.WARNING, "Error when processing decimal format, using system default: " + e.getMessage());
+                decimalFormat = new DecimalFormat();
             }
         }
-        return false;
+        return decimalFormat.format(value);
     }
 
     /**
@@ -133,6 +148,36 @@ public class MsgUtil {
         return origin.compact();
     }
 
+    /**
+     * Empties the queue of messages a player has and sends them to the player.
+     *
+     * @param p The player to message
+     * @return True if success, False if the player is offline or null
+     */
+    public static boolean flush(@NotNull OfflinePlayer p) {
+        Player player = p.getPlayer();
+        if (player != null) {
+            UUID pName = player.getUniqueId();
+            List<String> msgs = OUTGOING_MESSAGES.get(pName);
+            if (msgs != null) {
+                for (String msg : msgs) {
+                    plugin.getPlatform().sendMessage(player, GsonComponentSerializer.gson().deserialize(msg));
+                }
+                plugin.getDatabaseHelper().cleanMessageForPlayer(pName)
+                        .whenComplete((result, error) -> {
+                            if (error != null) {
+                                Log.debug(Level.SEVERE, "Error cleaning purchase messages from the database:" + error.getMessage());
+                            } else {
+                                Log.debug("Cleaned " + result + " messages from the database");
+                            }
+                        });
+                msgs.clear();
+                return true;
+            }
+        }
+        return false;
+    }
+
     @NotNull
     public static ProxiedLocale getDefaultGameLanguageLocale() {
         return plugin.text().findRelativeLanguages(getDefaultGameLanguageCode());
@@ -148,6 +193,7 @@ public class MsgUtil {
         cachedGameLanguageCode = new AbstractMap.SimpleEntry<>(languageCode, result);
         return result;
     }
+    // TODO: No hardcode
 
     @ApiStatus.Experimental
     @NotNull
@@ -176,6 +222,23 @@ public class MsgUtil {
         return languageCode.replace("-", "_").toLowerCase(Locale.ROOT);
     }
 
+    @NotNull
+    public static Component getTranslateText(@NotNull ItemStack stack) {
+        if (plugin.getConfig().getBoolean("shop.force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
+            return plugin.getPlatform().getTranslation(stack.getType());
+        } else {
+            return Util.getItemStackName(stack);
+        }
+    }
+
+    public static boolean isJson(String str) {
+        try {
+            JsonElement element = JsonParser.parseString(str);
+            return element.isJsonObject() || element.isJsonArray();
+        } catch (JsonParseException exception) {
+            return false;
+        }
+    }
 
     /**
      * loads all player purchase messages from the database.
@@ -198,6 +261,36 @@ public class MsgUtil {
             }
         } catch (SQLException e) {
             plugin.getLogger().log(Level.WARNING, "Could not load transaction messages from database. Skipping.", e);
+        }
+    }
+
+    public static void printEnchantment(@NotNull Player p, @NotNull Shop shop, @NotNull ChatSheetPrinter chatSheetPrinter) {
+        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && plugin.getConfig().getBoolean("respect-item-flag")) {
+            return;
+        }
+        Map<Enchantment, Integer> enchs = new HashMap<>();
+        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants()) {
+            enchs = shop.getItem().getItemMeta().getEnchants();
+        }
+        if (!enchs.isEmpty()) {
+            chatSheetPrinter.printCenterLine(plugin.text().of(p, "menu.enchants").forLocale());
+            printEnchantment(chatSheetPrinter, enchs);
+        }
+        if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta stor) {
+            stor.getStoredEnchants();
+            enchs = stor.getStoredEnchants();
+            if (!enchs.isEmpty()) {
+                chatSheetPrinter.printCenterLine(plugin.text().of(p, "menu.stored-enchants").forLocale());
+                printEnchantment(chatSheetPrinter, enchs);
+            }
+        }
+    }
+
+    private static void printEnchantment(@NotNull ChatSheetPrinter chatSheetPrinter, @NotNull Map<Enchantment, Integer> enchs) {
+        for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
+            //Use boxed object to avoid NPE
+            Integer level = entries.getValue();
+            chatSheetPrinter.printLine(Component.empty().color(NamedTextColor.YELLOW).append(plugin.getPlatform().getTranslation(entries.getKey()).append(LegacyComponentSerializer.legacySection().deserialize(" " + RomanNumber.toRoman(level == null ? 1 : level)))));
         }
     }
 
@@ -260,12 +353,6 @@ public class MsgUtil {
             }
         }
     }
-    // TODO: No hardcode
-
-    @NotNull
-    public static Component addLeftLine(@NotNull CommandSender sender, @NotNull Component component) {
-        return plugin.text().of(sender, "tableformat.left_begin").forLocale().append(component);
-    }
 
     /**
      * Send controlPanel infomation to sender
@@ -289,33 +376,23 @@ public class MsgUtil {
 
     }
 
-
-    /**
-     * Translate boolean value to String, the symbon is changeable by language file.
-     *
-     * @param bool The boolean value
-     * @return The result of translate.
-     */
-    public static Component bool2String(boolean bool) {
-        if (bool) {
-            return plugin.text().of("booleanformat.success").forLocale();
-        } else {
-            return plugin.text().of("booleanformat.failed").forLocale();
-        }
+    public static void sendDirectMessage(@NotNull UUID sender, @Nullable Component... messages) {
+        sendDirectMessage(Bukkit.getPlayer(sender), messages);
     }
 
-    public static String decimalFormat(double value) {
-        if (decimalFormat == null) {
-            //lazy initialize
-            try {
-                String format = plugin.getConfig().getString("decimal-format");
-                decimalFormat = format == null ? new DecimalFormat() : new DecimalFormat(format);
-            } catch (Exception e) {
-                QuickShop.getInstance().getLogger().log(Level.WARNING, "Error when processing decimal format, using system default: " + e.getMessage());
-                decimalFormat = new DecimalFormat();
-            }
+    public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable String... messages) {
+        if (messages == null) {
+            return;
         }
-        return decimalFormat.format(value);
+        if (sender == null) {
+            return;
+        }
+        for (String msg : messages) {
+            if (StringUtils.isEmpty(msg)) {
+                return;
+            }
+            sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(msg));
+        }
     }
 
     /**
@@ -364,86 +441,6 @@ public class MsgUtil {
                 return;
             }
             plugin.getPlatform().sendMessage(sender, msg);
-        }
-    }
-
-    public static void printEnchantment(@NotNull Player p, @NotNull Shop shop, @NotNull ChatSheetPrinter chatSheetPrinter) {
-        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasItemFlag(ItemFlag.HIDE_ENCHANTS) && plugin.getConfig().getBoolean("respect-item-flag")) {
-            return;
-        }
-        Map<Enchantment, Integer> enchs = new HashMap<>();
-        if (shop.getItem().hasItemMeta() && shop.getItem().getItemMeta().hasEnchants()) {
-            enchs = shop.getItem().getItemMeta().getEnchants();
-        }
-        if (!enchs.isEmpty()) {
-            chatSheetPrinter.printCenterLine(plugin.text().of(p, "menu.enchants").forLocale());
-            printEnchantment(chatSheetPrinter, enchs);
-        }
-        if (shop.getItem().getItemMeta() instanceof EnchantmentStorageMeta stor) {
-            stor.getStoredEnchants();
-            enchs = stor.getStoredEnchants();
-            if (!enchs.isEmpty()) {
-                chatSheetPrinter.printCenterLine(plugin.text().of(p, "menu.stored-enchants").forLocale());
-                printEnchantment(chatSheetPrinter, enchs);
-            }
-        }
-    }
-
-    private static void printEnchantment(@NotNull ChatSheetPrinter chatSheetPrinter, @NotNull Map<Enchantment, Integer> enchs) {
-        for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
-            //Use boxed object to avoid NPE
-            Integer level = entries.getValue();
-            chatSheetPrinter.printLine(Component.empty().color(NamedTextColor.YELLOW).append(plugin.getPlatform().getTranslation(entries.getKey()).append(LegacyComponentSerializer.legacySection().deserialize(" " + RomanNumber.toRoman(level == null ? 1 : level)))));
-        }
-    }
-
-    public static void debugStackTrace(@NotNull StackTraceElement[] traces) {
-        if (!Util.isDevMode()) {
-            return;
-        }
-        for (StackTraceElement stackTraceElement : traces) {
-            final String className = stackTraceElement.getClassName();
-            final String methodName = stackTraceElement.getMethodName();
-            final int codeLine = stackTraceElement.getLineNumber();
-            final String fileName = stackTraceElement.getFileName();
-            Log.debug("[TRACE]  at " + className + "." + methodName + " (" + fileName + ":" + codeLine + ") ");
-        }
-    }
-
-    public static void sendDirectMessage(@NotNull UUID sender, @Nullable Component... messages) {
-        sendDirectMessage(Bukkit.getPlayer(sender), messages);
-    }
-
-    public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable String... messages) {
-        if (messages == null) {
-            return;
-        }
-        if (sender == null) {
-            return;
-        }
-        for (String msg : messages) {
-            if (StringUtils.isEmpty(msg)) {
-                return;
-            }
-            sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(msg));
-        }
-    }
-
-    public static boolean isJson(String str) {
-        try {
-            JsonElement element = JsonParser.parseString(str);
-            return element.isJsonObject() || element.isJsonArray();
-        } catch (JsonParseException exception) {
-            return false;
-        }
-    }
-
-    @NotNull
-    public static Component getTranslateText(@NotNull ItemStack stack) {
-        if (plugin.getConfig().getBoolean("shop.force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
-            return plugin.getPlatform().getTranslation(stack.getType());
-        } else {
-            return Util.getItemStackName(stack);
         }
     }
 }

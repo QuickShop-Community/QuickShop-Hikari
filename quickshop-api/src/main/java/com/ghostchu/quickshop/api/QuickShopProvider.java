@@ -5,10 +5,10 @@ import org.jetbrains.annotations.NotNull;
 
 public interface QuickShopProvider {
     @NotNull
-    Plugin getInstance();
+    QuickShopAPI getApiInstance();
 
     @NotNull
-    QuickShopAPI getApiInstance();
+    Plugin getInstance();
 
 
 }

@@ -55,13 +55,6 @@ public class UpdateWatcher implements Listener {
         return MsgUtil.fillArgs(notify, Component.text(plugin.getNexusManager().getLatestVersion()), Component.text(plugin.getDescription().getVersion()));
     }
 
-    public void uninit() {
-        if (cronTask == null) {
-            return;
-        }
-        cronTask.cancel();
-    }
-
     @EventHandler
     public void playerJoin(PlayerJoinEvent e) {
         Util.asyncThreadRun(() -> {
@@ -73,5 +66,12 @@ public class UpdateWatcher implements Listener {
             MsgUtil.sendDirectMessage(e.getPlayer(), ChatColor.AQUA + " https://www.spigotmc.org/resources/100125/");
             MsgUtil.sendDirectMessage(e.getPlayer(), ChatColor.GREEN + "---------------------------------------------------");
         });
+    }
+
+    public void uninit() {
+        if (cronTask == null) {
+            return;
+        }
+        cronTask.cancel();
     }
 }

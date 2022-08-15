@@ -7,12 +7,12 @@ public class MojangApiBmclApiMirror implements MojangApiMirror {
     }
 
     @Override
-    public String getResourcesDownloadRoot() {
-        return "https://bmclapi2.bangbang93.com/assets";
+    public String getLibrariesRoot() {
+        return "https://bmclapi2.bangbang93.com/maven";
     }
 
     @Override
-    public String getLibrariesRoot() {
-        return "https://bmclapi2.bangbang93.com/maven";
+    public String getResourcesDownloadRoot() {
+        return "https://bmclapi2.bangbang93.com/assets";
     }
 }

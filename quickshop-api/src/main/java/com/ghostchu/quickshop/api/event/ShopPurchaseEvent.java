@@ -54,15 +54,13 @@ public class ShopPurchaseEvent extends AbstractQSEvent implements QSCancellable 
         this.player = Bukkit.getPlayer(purchaser);
     }
 
-    @Override
-    public boolean isCancelled() {
-        return this.cancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancel, @Nullable Component reason) {
-        this.cancelled = cancel;
-        this.cancelReason = reason;
+    /**
+     * Gets the item stack amounts
+     *
+     * @return Item stack amounts
+     */
+    public int getAmount() {
+        return this.amount;
     }
 
     @Override
@@ -70,22 +68,10 @@ public class ShopPurchaseEvent extends AbstractQSEvent implements QSCancellable 
         return this.cancelReason;
     }
 
-    /**
-     * Gets the shop
-     *
-     * @return the shop
-     */
-    public @NotNull Shop getShop() {
-        return this.shop;
-    }
-
-    /**
-     * Gets the purchaser, that maybe is a online/offline/virtual player.
-     *
-     * @return The purchaser uuid
-     */
-    public @NotNull UUID getPurchaser() {
-        return this.purchaser;
+    @Override
+    public void setCancelled(boolean cancel, @Nullable Component reason) {
+        this.cancelled = cancel;
+        this.cancelReason = reason;
     }
 
     /**
@@ -98,6 +84,15 @@ public class ShopPurchaseEvent extends AbstractQSEvent implements QSCancellable 
     }
 
     /**
+     * Gets the purchaser, that maybe is a online/offline/virtual player.
+     *
+     * @return The purchaser uuid
+     */
+    public @NotNull UUID getPurchaser() {
+        return this.purchaser;
+    }
+
+    /**
      * Gets the inventory of purchaser (the item will put to)
      *
      * @return The inventory
@@ -107,12 +102,12 @@ public class ShopPurchaseEvent extends AbstractQSEvent implements QSCancellable 
     }
 
     /**
-     * Gets the item stack amounts
+     * Gets the shop
      *
-     * @return Item stack amounts
+     * @return the shop
      */
-    public int getAmount() {
-        return this.amount;
+    public @NotNull Shop getShop() {
+        return this.shop;
     }
 
     /**
@@ -131,5 +126,10 @@ public class ShopPurchaseEvent extends AbstractQSEvent implements QSCancellable 
      */
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return this.cancelled;
     }
 }

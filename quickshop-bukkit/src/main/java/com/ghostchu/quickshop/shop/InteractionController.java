@@ -50,12 +50,6 @@ public class InteractionController implements Reloadable {
         }
     }
 
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        loadInteractionConfig();
-        return Reloadable.super.reloadModule();
-    }
-
     /**
      * Getting the behavior of the interaction
      *
@@ -65,6 +59,12 @@ public class InteractionController implements Reloadable {
     @NotNull
     public InteractionBehavior getBehavior(@NotNull Interaction interaction) {
         return behaviorMap.getOrDefault(interaction, InteractionBehavior.NONE);
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        loadInteractionConfig();
+        return Reloadable.super.reloadModule();
     }
 
     public enum Interaction {
@@ -77,10 +77,6 @@ public class InteractionController implements Reloadable {
         SNEAKING_LEFT_CLICK_SHOPBLOCK,
         SNEAKING_RIGHT_CLICK_SHOPBLOCK;
 
-        public boolean isSneaking() {
-            return this.name().startsWith("SNEAKING");
-        }
-
         public boolean isLeftClick() {
             return this.name().contains("_LEFT_CLICK_");
         }
@@ -89,12 +85,16 @@ public class InteractionController implements Reloadable {
             return this.name().contains("_RIGHT_CLICK_");
         }
 
+        public boolean isShopBlock() {
+            return this.name().endsWith("SHOPBLOCK");
+        }
+
         public boolean isSign() {
             return this.name().endsWith("SIGN");
         }
 
-        public boolean isShopBlock() {
-            return this.name().endsWith("SHOPBLOCK");
+        public boolean isSneaking() {
+            return this.name().startsWith("SNEAKING");
         }
     }
 

@@ -13,23 +13,11 @@ import java.util.List;
  */
 public interface ShopPermissionManager {
     /**
-     * Register a permission to specified group.
+     * Gets all groups was registered.
      *
-     * @param group      Group name.
-     * @param namespace  Plugin instance for namespace.
-     * @param permission Permission name.
-     * @throws IllegalArgumentException throws if group not exists
+     * @return Groups.
      */
-    void registerPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission);
-
-    /**
-     * Unregister specified permission from specified group.
-     *
-     * @param group      Group name.
-     * @param namespace  Plugin instance for namespace.
-     * @param permission Permission name.
-     */
-    void unregisterPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission);
+    @NotNull List<String> getGroups();
 
     /**
      * Check if specified group exists.
@@ -40,19 +28,13 @@ public interface ShopPermissionManager {
     boolean hasGroup(@NotNull String group);
 
     /**
-     * Register a group with specified permissions and name.
+     * Get permissions of specified group was granted.
      *
-     * @param group       Group name.
-     * @param permissions Permissions.
+     * @param group      Group name.
+     * @param permission Permission.
+     * @return True if granted.
      */
-    void registerGroup(@NotNull String group, @NotNull Collection<String> permissions);
-
-    /**
-     * Unregister specified group.
-     *
-     * @param group Group name.
-     */
-    void unregisterGroup(@NotNull String group);
+    boolean hasPermission(@NotNull String group, @NotNull BuiltInShopPermission permission);
 
     /**
      * Get permissions of specified group was granted.
@@ -65,18 +47,36 @@ public interface ShopPermissionManager {
     boolean hasPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission);
 
     /**
-     * Get permissions of specified group was granted.
+     * Register a group with specified permissions and name.
      *
-     * @param group      Group name.
-     * @param permission Permission.
-     * @return True if granted.
+     * @param group       Group name.
+     * @param permissions Permissions.
      */
-    boolean hasPermission(@NotNull String group, @NotNull BuiltInShopPermission permission);
+    void registerGroup(@NotNull String group, @NotNull Collection<String> permissions);
 
     /**
-     * Gets all groups was registered.
+     * Register a permission to specified group.
      *
-     * @return Groups.
+     * @param group      Group name.
+     * @param namespace  Plugin instance for namespace.
+     * @param permission Permission name.
+     * @throws IllegalArgumentException throws if group not exists
      */
-    @NotNull List<String> getGroups();
+    void registerPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission);
+
+    /**
+     * Unregister specified group.
+     *
+     * @param group Group name.
+     */
+    void unregisterGroup(@NotNull String group);
+
+    /**
+     * Unregister specified permission from specified group.
+     *
+     * @param group      Group name.
+     * @param namespace  Plugin instance for namespace.
+     * @param permission Permission name.
+     */
+    void unregisterPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission);
 }

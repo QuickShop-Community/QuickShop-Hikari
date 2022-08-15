@@ -31,6 +31,16 @@ public class ConfigurationUpdater {
         this.configuration = plugin.getConfig();
     }
 
+    private void brokenConfigurationFix() {
+        try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(plugin.getResource("config.yml"))), StandardCharsets.UTF_8)) {
+            if (new ConfigurationFixer(plugin, new File(plugin.getDataFolder(), "config.yml"), plugin.getConfig(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
+                plugin.reloadConfig();
+            }
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to fix config.yml, plugin may not working properly.", e);
+        }
+    }
+
     public void update(@NotNull Object configUpdateScript) {
         Log.debug("Starting configuration update...");
         writeServerUniqueId();
@@ -121,16 +131,6 @@ public class ConfigurationUpdater {
                 Files.move(new File(plugin.getDataFolder(), "messages.yml").toPath(), new File(plugin.getDataFolder(), "messages.yml.outdated").toPath());
             }
         } catch (Exception ignore) {
-        }
-    }
-
-    private void brokenConfigurationFix() {
-        try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(plugin.getResource("config.yml"))), StandardCharsets.UTF_8)) {
-            if (new ConfigurationFixer(plugin, new File(plugin.getDataFolder(), "config.yml"), plugin.getConfig(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
-                plugin.reloadConfig();
-            }
-        } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to fix config.yml, plugin may not working properly.", e);
         }
     }
 }

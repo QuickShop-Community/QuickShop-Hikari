@@ -9,6 +9,14 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface PermissionProvider {
     /**
+     * Get permission provider name
+     *
+     * @return The name of permission provider
+     */
+    @NotNull
+    String getName();
+
+    /**
      * Test the sender has special permission
      *
      * @param sender     CommandSender
@@ -16,13 +24,5 @@ public interface PermissionProvider {
      * @return hasPermission
      */
     boolean hasPermission(@NotNull CommandSender sender, @NotNull String permission);
-
-    /**
-     * Get permission provider name
-     *
-     * @return The name of permission provider
-     */
-    @NotNull
-    String getName();
 
 }

@@ -18,6 +18,14 @@ public interface AntiCheatCompatibilityManager {
     boolean isRegistered(String moduleName);
 
     /**
+     * Register compatibility module
+     *
+     * @param module Compatibility module
+     */
+    @Deprecated(forRemoval = true)
+    void register(@NotNull AntiCheatCompatibilityModule module);
+
+    /**
      * Switch the compatibility mode on or off, set false to disable all we known incompatiable plugin
      * listener, set true to enable back all disabled plugin liseners. WIP
      *
@@ -26,20 +34,6 @@ public interface AntiCheatCompatibilityManager {
      */
     @Deprecated(forRemoval = true)
     void toggleProtectionListeners(boolean status, @NotNull Player player);
-
-    /**
-     * Unregister all registered compatibility modules
-     */
-    @Deprecated(forRemoval = true)
-    void unregisterAll();
-
-    /**
-     * Register compatibility module
-     *
-     * @param module Compatibility module
-     */
-    @Deprecated(forRemoval = true)
-    void register(@NotNull AntiCheatCompatibilityModule module);
 
     /**
      * Unregister a registered compatibility modules
@@ -56,4 +50,10 @@ public interface AntiCheatCompatibilityManager {
      */
     @Deprecated(forRemoval = true)
     void unregister(@NotNull AntiCheatCompatibilityModule module);
+
+    /**
+     * Unregister all registered compatibility modules
+     */
+    @Deprecated(forRemoval = true)
+    void unregisterAll();
 }

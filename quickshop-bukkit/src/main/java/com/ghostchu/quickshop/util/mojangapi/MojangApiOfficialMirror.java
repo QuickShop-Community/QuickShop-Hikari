@@ -7,12 +7,12 @@ public class MojangApiOfficialMirror implements MojangApiMirror {
     }
 
     @Override
-    public String getResourcesDownloadRoot() {
-        return "https://resources.download.minecraft.net";
+    public String getLibrariesRoot() {
+        return "https://libraries.minecraft.net";
     }
 
     @Override
-    public String getLibrariesRoot() {
-        return "https://libraries.minecraft.net";
+    public String getResourcesDownloadRoot() {
+        return "https://resources.download.minecraft.net";
     }
 }

@@ -20,32 +20,6 @@ public class MetricListener extends AbstractQSListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPurchase(ShopSuccessPurchaseEvent event) {
-        plugin.getDatabaseHelper().insertMetricRecord(
-                        ShopMetricRecord.builder()
-                                .time(System.currentTimeMillis())
-                                .shopId(event.getShop().getShopId())
-                                .player(event.getPurchaser())
-                                .tax(event.getTax())
-                                .total(event.getBalanceWithoutTax())
-                                .type(wrapShopOperation(event.getShop()))
-                                .build()
-                )
-                .whenComplete((id, e) -> {
-                    if (e != null) {
-                        Log.debug("Failed to insert shop metric record: " + e.getMessage());
-                    }
-                });
-    }
-
-    private ShopOperationEnum wrapShopOperation(Shop shop) {
-        return switch (shop.getShopType()) {
-            case SELLING -> ShopOperationEnum.PURCHASE_SELLING_SHOP;
-            case BUYING -> ShopOperationEnum.PURCHASE_BUYING_SHOP;
-        };
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onCreate(ShopCreateEvent event) {
         plugin.getDatabaseHelper().insertMetricRecord(
                 ShopMetricRecord.builder()
@@ -97,5 +71,31 @@ public class MetricListener extends AbstractQSListener implements Listener {
                 Log.debug("Failed to insert shop metric record: " + e.getMessage());
             }
         });
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onPurchase(ShopSuccessPurchaseEvent event) {
+        plugin.getDatabaseHelper().insertMetricRecord(
+                        ShopMetricRecord.builder()
+                                .time(System.currentTimeMillis())
+                                .shopId(event.getShop().getShopId())
+                                .player(event.getPurchaser())
+                                .tax(event.getTax())
+                                .total(event.getBalanceWithoutTax())
+                                .type(wrapShopOperation(event.getShop()))
+                                .build()
+                )
+                .whenComplete((id, e) -> {
+                    if (e != null) {
+                        Log.debug("Failed to insert shop metric record: " + e.getMessage());
+                    }
+                });
+    }
+
+    private ShopOperationEnum wrapShopOperation(Shop shop) {
+        return switch (shop.getShopType()) {
+            case SELLING -> ShopOperationEnum.PURCHASE_SELLING_SHOP;
+            case BUYING -> ShopOperationEnum.PURCHASE_BUYING_SHOP;
+        };
     }
 }

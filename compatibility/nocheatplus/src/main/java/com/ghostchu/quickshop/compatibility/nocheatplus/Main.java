@@ -8,6 +8,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 public final class Main extends CompatibilityModule implements Listener {
+    @Override
+    public void init() {
+
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onFakeEventBegin(ShopProtectionCheckEvent event) {
         if (event.getStatus() == ProtectionCheckStatus.BEGIN) {
@@ -15,10 +20,5 @@ public final class Main extends CompatibilityModule implements Listener {
         } else if (event.getStatus() == ProtectionCheckStatus.END) {
             NCPExemptionManager.unexempt(event.getPlayer().getUniqueId());
         }
-    }
-
-    @Override
-    public void init() {
-
     }
 }

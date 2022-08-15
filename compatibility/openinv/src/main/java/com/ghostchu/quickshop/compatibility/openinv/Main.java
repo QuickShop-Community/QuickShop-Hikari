@@ -11,6 +11,14 @@ public final class Main extends CompatibilityModule implements Listener {
     public IOpenInv openInv;
     public OpenInvInventoryManager manager;
 
+    public OpenInvInventoryManager getManager() {
+        return manager;
+    }
+
+    public IOpenInv getOpenInv() {
+        return openInv;
+    }
+
     @Override
     public void onLoad() {
         super.onLoad();
@@ -28,13 +36,5 @@ public final class Main extends CompatibilityModule implements Listener {
     @Override
     public void init() {
 
-    }
-
-    public IOpenInv getOpenInv() {
-        return openInv;
-    }
-
-    public OpenInvInventoryManager getManager() {
-        return manager;
     }
 }

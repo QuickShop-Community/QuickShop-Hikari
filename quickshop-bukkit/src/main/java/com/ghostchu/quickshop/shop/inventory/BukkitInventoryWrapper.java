@@ -26,28 +26,13 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
     }
 
     @Override
-    public @NotNull InventoryWrapperIterator iterator() {
-        return InventoryWrapperIterator.ofBukkitInventory(inventory);
-    }
-
-    @Override
-    public @Nullable Location getLocation() {
-        return inventory.getLocation();
-    }
-
-    @Override
     public @NotNull Map<Integer, ItemStack> addItem(ItemStack... itemStacks) {
         return inventory.addItem(itemStacks);
     }
 
     @Override
-    public @NotNull InventoryWrapperType getInventoryType() {
-        return InventoryWrapperType.BUKKIT;
-    }
-
-    @Override
-    public @NotNull InventoryWrapperManager getWrapperManager() {
-        return this.manager;
+    public @NotNull InventoryWrapperIterator iterator() {
+        return InventoryWrapperIterator.ofBukkitInventory(inventory);
     }
 
     @Override
@@ -61,8 +46,18 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
     }
 
     @Override
-    public void setContents(ItemStack[] itemStacks) {
-        inventory.setStorageContents(itemStacks);
+    public @NotNull InventoryWrapperType getInventoryType() {
+        return InventoryWrapperType.BUKKIT;
+    }
+
+    @Override
+    public @Nullable Location getLocation() {
+        return inventory.getLocation();
+    }
+
+    @Override
+    public @NotNull InventoryWrapperManager getWrapperManager() {
+        return this.manager;
     }
 
     @Override
@@ -74,5 +69,10 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void setContents(ItemStack[] itemStacks) {
+        inventory.setStorageContents(itemStacks);
     }
 }

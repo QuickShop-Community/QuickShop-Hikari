@@ -17,9 +17,10 @@ public abstract class AbstractEconomy implements EconomyCore, Reloadable {
     protected AbstractEconomy() {
     }
 
-
     @Override
-    public abstract String toString();
+    public @NotNull String getName() {
+        return "BuiltIn-Economy Processor";
+    }
 
     /**
      * Transfer specific amount of currency from A to B
@@ -50,11 +51,6 @@ public abstract class AbstractEconomy implements EconomyCore, Reloadable {
         return false;
     }
 
-    @Override
-    public @NotNull String getName() {
-        return "BuiltIn-Economy Processor";
-    }
-
     public abstract String getProviderName();
 
     /**
@@ -66,4 +62,7 @@ public abstract class AbstractEconomy implements EconomyCore, Reloadable {
     public ReloadResult reloadModule() {
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
+
+    @Override
+    public abstract String toString();
 }

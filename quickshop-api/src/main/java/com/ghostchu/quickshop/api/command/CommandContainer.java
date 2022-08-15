@@ -51,6 +51,22 @@ public class CommandContainer {
 
     private Class<?> executorType;
 
+    /**
+     * Gets the text should be shown while command was disabled.
+     *
+     * @param sender the sender
+     * @return the text
+     */
+    public final @NotNull Component getDisableText(@NotNull CommandSender sender) {
+        if (this.getDisableCallback() != null) {
+            return this.getDisableCallback().apply(sender);
+        } else if (this.getDisablePlaceholder() != null && !CommonUtil.isEmptyComponent(this.getDisablePlaceholder().get())) {
+            return this.getDisablePlaceholder().get();
+        } else {
+            return Component.empty().color(NamedTextColor.GRAY).append(QuickShopAPI.getInstance().getTextManager().of(sender, "command.feature-not-enabled").forLocale());
+        }
+    }
+
     @ApiStatus.Internal
     @NotNull
     public Class<?> getExecutorType() {
@@ -72,21 +88,5 @@ public class CommandContainer {
             }
         }
         executorType = Object.class;
-    }
-
-    /**
-     * Gets the text should be shown while command was disabled.
-     *
-     * @param sender the sender
-     * @return the text
-     */
-    public final @NotNull Component getDisableText(@NotNull CommandSender sender) {
-        if (this.getDisableCallback() != null) {
-            return this.getDisableCallback().apply(sender);
-        } else if (this.getDisablePlaceholder() != null && !CommonUtil.isEmptyComponent(this.getDisablePlaceholder().get())) {
-            return this.getDisablePlaceholder().get();
-        } else {
-            return Component.empty().color(NamedTextColor.GRAY).append(QuickShopAPI.getInstance().getTextManager().of(sender, "command.feature-not-enabled").forLocale());
-        }
     }
 }

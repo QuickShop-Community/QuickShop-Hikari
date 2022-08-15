@@ -28,30 +28,9 @@ public class ConfigUpdateScript {
         this.plugin = plugin;
     }
 
-    @UpdateScript(version = 1000)
-    public void updateCustomTranslationKey() {
-        getConfig().set("custom-translation-key", new ArrayList<>());
-    }
-
-    @UpdateScript(version = 1001)
-    public void shopName() {
-        getConfig().set("shop.name-fee", 0);
-        getConfig().set("shop.name-max-length", 32);
-        getConfig().set("matcher.item.bundle", true);
-    }
-
     @UpdateScript(version = 1002)
     public void adventureMiniMessage() {
         getConfig().set("syntax-parser", 0);
-    }
-
-    @UpdateScript(version = 1003)
-    public void metricAndPapiController() {
-        getConfig().set("transaction-metric.enable", true);
-        boolean papiEnabled = getConfig().getBoolean("plugin.PlaceHolderAPI", true);
-        getConfig().set("plugin.PlaceHolderAPI", null);
-        getConfig().set("plugin.PlaceHolderAPI.enable", papiEnabled);
-        getConfig().set("plugin.PlaceHolderAPI.cache", 15 * 60 * 1000);
     }
 
     @UpdateScript(version = 1004)
@@ -72,6 +51,20 @@ public class ConfigUpdateScript {
         getConfig().set("database.properties.useUnicode", true);
         getConfig().set("database.properties.characterEncoding", "utf8");
         getConfig().set("database.properties.connection-timeout", 60000);
+    }
+
+    @UpdateScript(version = 1008)
+    public void disableTaxForUnlimitedShop() {
+        getConfig().set("tax-free-for-unlimited-shop", false);
+    }
+
+    @UpdateScript(version = 1003)
+    public void metricAndPapiController() {
+        getConfig().set("transaction-metric.enable", true);
+        boolean papiEnabled = getConfig().getBoolean("plugin.PlaceHolderAPI", true);
+        getConfig().set("plugin.PlaceHolderAPI", null);
+        getConfig().set("plugin.PlaceHolderAPI.enable", papiEnabled);
+        getConfig().set("plugin.PlaceHolderAPI.cache", 15 * 60 * 1000);
     }
 
     @UpdateScript(version = 1006)
@@ -121,8 +114,15 @@ public class ConfigUpdateScript {
         getConfig().set("shop.refund-from-tax-account", false);
     }
 
-    @UpdateScript(version = 1008)
-    public void disableTaxForUnlimitedShop() {
-        getConfig().set("tax-free-for-unlimited-shop", false);
+    @UpdateScript(version = 1001)
+    public void shopName() {
+        getConfig().set("shop.name-fee", 0);
+        getConfig().set("shop.name-max-length", 32);
+        getConfig().set("matcher.item.bundle", true);
+    }
+
+    @UpdateScript(version = 1000)
+    public void updateCustomTranslationKey() {
+        getConfig().set("custom-translation-key", new ArrayList<>());
     }
 }

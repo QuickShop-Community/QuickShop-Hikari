@@ -63,33 +63,6 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
         VirtualDisplayItemManager.load();
     }
 
-    //Due to the delay task in ChunkListener
-    //We must move load task to first spawn to prevent some bug and make the check lesser
-    private void load() {
-        Util.ensureThread(false);
-        //some time shop can be loaded when world isn't loaded
-        Chunk chunk = shop.getLocation().getChunk();
-        chunkLocation = new SimpleShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
-        VirtualDisplayItemManager.put(chunkLocation, this);
-        if (Util.isLoaded(shop.getLocation())) {
-            //Let nearby player can saw fake item
-            Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), PLUGIN.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), PLUGIN.getServer().getViewDistance() * 16);
-            for (Entity entity : entityCollection) {
-                if (entity instanceof Player) {
-                    packetSenders.add(entity.getUniqueId());
-                }
-            }
-        }
-    }
-
-    private void initFakeDropItemPacket() {
-        fakeItemSpawnPacket = PacketFactory.createFakeItemSpawnPacket(entityID, getDisplayLocation());
-        fakeItemMetaPacket = PacketFactory.createFakeItemMetaPacket(entityID, getOriginalItemStack().clone());
-        fakeItemVelocityPacket = PacketFactory.createFakeItemVelocityPacket(entityID);
-        fakeItemDestroyPacket = PacketFactory.createFakeItemDestroyPacket(entityID);
-        initialized = true;
-    }
-
     @Override
     public boolean checkDisplayIsMoved() {
         return false;
@@ -188,6 +161,47 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
         return isDisplay;
     }
 
+    private void initFakeDropItemPacket() {
+        fakeItemSpawnPacket = PacketFactory.createFakeItemSpawnPacket(entityID, getDisplayLocation());
+        fakeItemMetaPacket = PacketFactory.createFakeItemMetaPacket(entityID, getOriginalItemStack().clone());
+        fakeItemVelocityPacket = PacketFactory.createFakeItemVelocityPacket(entityID);
+        fakeItemDestroyPacket = PacketFactory.createFakeItemDestroyPacket(entityID);
+        initialized = true;
+    }
+
+    //Due to the delay task in ChunkListener
+    //We must move load task to first spawn to prevent some bug and make the check lesser
+    private void load() {
+        Util.ensureThread(false);
+        //some time shop can be loaded when world isn't loaded
+        Chunk chunk = shop.getLocation().getChunk();
+        chunkLocation = new SimpleShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
+        VirtualDisplayItemManager.put(chunkLocation, this);
+        if (Util.isLoaded(shop.getLocation())) {
+            //Let nearby player can saw fake item
+            Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), PLUGIN.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), PLUGIN.getServer().getViewDistance() * 16);
+            for (Entity entity : entityCollection) {
+                if (entity instanceof Player) {
+                    packetSenders.add(entity.getUniqueId());
+                }
+            }
+        }
+    }
+
+    public void sendFakeItem(@NotNull Player player) {
+        sendPacket(player, fakeItemSpawnPacket);
+        sendPacket(player, fakeItemMetaPacket);
+        sendPacket(player, fakeItemVelocityPacket);
+    }
+
+    private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
+        try {
+            PROTOCOL_MANAGER.sendServerPacket(player, packet);
+        } catch (InvocationTargetException e) {
+            throw new RuntimeException("An error occurred when sending a packet", e);
+        }
+    }
+
     public void sendFakeItemToAll() {
         sendPacketToAll(fakeItemSpawnPacket);
         sendPacketToAll(fakeItemMetaPacket);
@@ -211,39 +225,9 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
         VirtualDisplayItemManager.remove(chunkLocation, this);
     }
 
-    public void sendFakeItem(@NotNull Player player) {
-        sendPacket(player, fakeItemSpawnPacket);
-        sendPacket(player, fakeItemMetaPacket);
-        sendPacket(player, fakeItemVelocityPacket);
-    }
-
-    private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
-        try {
-            PROTOCOL_MANAGER.sendServerPacket(player, packet);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException("An error occurred when sending a packet", e);
-        }
-    }
-
     public static class VirtualDisplayItemManager {
         private static final AtomicBoolean LOADED = new AtomicBoolean(false);
         private static final Map<SimpleShopChunk, List<VirtualDisplayItem>> CHUNKS_MAPPING = new ConcurrentHashMap<>();
-
-        public static void put(@NotNull SimpleShopChunk key, @NotNull VirtualDisplayItem value) {
-            //Thread-safe was ensured by ONLY USE Map method to do something
-            List<VirtualDisplayItem> virtualDisplayItems = new ArrayList<>(Collections.singletonList(value));
-            CHUNKS_MAPPING.merge(key, virtualDisplayItems, (mapOldVal, mapNewVal) -> {
-                mapOldVal.addAll(mapNewVal);
-                return mapOldVal;
-            });
-        }
-
-        public static void remove(@NotNull SimpleShopChunk key, @NotNull VirtualDisplayItem value) {
-            CHUNKS_MAPPING.computeIfPresent(key, (mapOldKey, mapOldVal) -> {
-                mapOldVal.remove(value);
-                return mapOldVal;
-            });
-        }
 
         public static void load() {
             if (LOADED.get()) {
@@ -290,6 +274,22 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                 PROTOCOL_MANAGER.addPacketListener(packetAdapter);
                 LOADED.set(true);
             }
+        }
+
+        public static void put(@NotNull SimpleShopChunk key, @NotNull VirtualDisplayItem value) {
+            //Thread-safe was ensured by ONLY USE Map method to do something
+            List<VirtualDisplayItem> virtualDisplayItems = new ArrayList<>(Collections.singletonList(value));
+            CHUNKS_MAPPING.merge(key, virtualDisplayItems, (mapOldVal, mapNewVal) -> {
+                mapOldVal.addAll(mapNewVal);
+                return mapOldVal;
+            });
+        }
+
+        public static void remove(@NotNull SimpleShopChunk key, @NotNull VirtualDisplayItem value) {
+            CHUNKS_MAPPING.computeIfPresent(key, (mapOldKey, mapOldVal) -> {
+                mapOldVal.remove(value);
+                return mapOldVal;
+            });
         }
 
         public static void unload() {

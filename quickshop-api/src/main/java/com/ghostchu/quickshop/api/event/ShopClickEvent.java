@@ -30,8 +30,8 @@ public class ShopClickEvent extends AbstractQSEvent implements QSCancellable {
     }
 
     @Override
-    public boolean isCancelled() {
-        return this.cancelled;
+    public @Nullable Component getCancelReason() {
+        return this.cancelReason;
     }
 
     @Override
@@ -40,9 +40,13 @@ public class ShopClickEvent extends AbstractQSEvent implements QSCancellable {
         this.cancelReason = reason;
     }
 
-    @Override
-    public @Nullable Component getCancelReason() {
-        return this.cancelReason;
+    /**
+     * Getting the player who clicked shop
+     *
+     * @return The player
+     */
+    public @NotNull Player getClicker() {
+        return this.player;
     }
 
     /**
@@ -54,13 +58,9 @@ public class ShopClickEvent extends AbstractQSEvent implements QSCancellable {
         return this.shop;
     }
 
-    /**
-     * Getting the player who clicked shop
-     *
-     * @return The player
-     */
-    public @NotNull Player getClicker() {
-        return this.player;
+    @Override
+    public boolean isCancelled() {
+        return this.cancelled;
     }
 
 

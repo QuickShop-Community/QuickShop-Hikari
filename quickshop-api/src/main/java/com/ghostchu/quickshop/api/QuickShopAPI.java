@@ -19,14 +19,6 @@ import java.util.Map;
  */
 public interface QuickShopAPI {
 
-    static Plugin getPluginInstance() {
-        RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
-        if (provider == null) {
-            throw new IllegalStateException("QuickShop hadn't loaded at this moment.");
-        }
-        return provider.getPlugin();
-    }
-
     static QuickShopAPI getInstance() {
         RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
         if (provider == null) {
@@ -35,12 +27,76 @@ public interface QuickShopAPI {
         return provider.getProvider().getApiInstance();
     }
 
+    static Plugin getPluginInstance() {
+        RegisteredServiceProvider<QuickShopProvider> provider = Bukkit.getServicesManager().getRegistration(QuickShopProvider.class);
+        if (provider == null) {
+            throw new IllegalStateException("QuickShop hadn't loaded at this moment.");
+        }
+        return provider.getPlugin();
+    }
+
+    /**
+     * Getting command manager that allow addon direct access QuickShop sub-command system
+     *
+     * @return The command manager
+     */
+    CommandManager getCommandManager();
+
+    /**
+     * Getting the helper to directly access the database
+     *
+     * @return The database helper
+     */
+    DatabaseHelper getDatabaseHelper();
+
+    /**
+     * Getting this server game version
+     *
+     * @return Game version
+     */
+    GameVersion getGameVersion();
+
+    /**
+     * Gets registry of InventoryWrappers
+     *
+     * @return registry
+     */
+    @NotNull InventoryWrapperRegistry getInventoryWrapperRegistry();
+
+    /**
+     * Getting current using ItemMatcher impl
+     *
+     * @return The item matcher
+     */
+    ItemMatcher getItemMatcher();
+
+    /**
+     * Getting the mapping of permission to shop amounts
+     *
+     * @return Permissions <-> Shop Amounts mapping
+     */
+    Map<String, Integer> getLimits();
+
+    /**
+     * Getting the control panel manager
+     *
+     * @return Shop control panel manager
+     */
+    ShopControlPanelManager getShopControlPanelManager();
+
     /**
      * Getting Shop Manager which managing most of shops
      *
      * @return Shop manager
      */
     ShopManager getShopManager();
+
+    /**
+     * Getting text manager that allow addon to create a user language locale based message
+     *
+     * @return The text maanger
+     */
+    TextManager getTextManager();
 
     /**
      * Getting QuickShop current stacking item support status
@@ -65,67 +121,11 @@ public interface QuickShopAPI {
     boolean isLimit();
 
     /**
-     * Getting the mapping of permission to shop amounts
-     *
-     * @return Permissions <-> Shop Amounts mapping
-     */
-    Map<String, Integer> getLimits();
-
-    /**
-     * Getting the helper to directly access the database
-     *
-     * @return The database helper
-     */
-    DatabaseHelper getDatabaseHelper();
-
-    /**
-     * Getting text manager that allow addon to create a user language locale based message
-     *
-     * @return The text maanger
-     */
-    TextManager getTextManager();
-
-    /**
-     * Getting current using ItemMatcher impl
-     *
-     * @return The item matcher
-     */
-    ItemMatcher getItemMatcher();
-
-    /**
      * Check if fee required for changing shop price
      *
      * @return requires fee
      */
     boolean isPriceChangeRequiresFee();
-
-    /**
-     * Getting command manager that allow addon direct access QuickShop sub-command system
-     *
-     * @return The command manager
-     */
-    CommandManager getCommandManager();
-
-    /**
-     * Getting this server game version
-     *
-     * @return Game version
-     */
-    GameVersion getGameVersion();
-
-    /**
-     * Getting the control panel manager
-     *
-     * @return Shop control panel manager
-     */
-    ShopControlPanelManager getShopControlPanelManager();
-
-    /**
-     * Gets registry of InventoryWrappers
-     *
-     * @return registry
-     */
-    @NotNull InventoryWrapperRegistry getInventoryWrapperRegistry();
 
     /**
      * Logs a event into logs database / file

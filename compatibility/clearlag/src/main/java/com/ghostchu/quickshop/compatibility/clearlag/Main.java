@@ -10,6 +10,11 @@ import org.bukkit.event.Listener;
 
 public final class Main extends CompatibilityModule implements Listener {
 
+    @Override
+    public void init() {
+
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onRemove(EntityRemoveEvent event) {
         for (Entity entity : event.getEntityList()) {
@@ -19,10 +24,5 @@ public final class Main extends CompatibilityModule implements Listener {
                 }
             }
         }
-    }
-
-    @Override
-    public void init() {
-
     }
 }

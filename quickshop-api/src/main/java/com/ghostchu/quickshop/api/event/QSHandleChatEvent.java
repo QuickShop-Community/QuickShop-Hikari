@@ -21,15 +21,6 @@ public class QSHandleChatEvent extends AbstractQSEvent {
     }
 
     /**
-     * Getting the chat sender
-     *
-     * @return The chat sender
-     */
-    public Player getSender() {
-        return sender;
-    }
-
-    /**
      * Getting the player chat content
      *
      * @return The chat content
@@ -45,5 +36,14 @@ public class QSHandleChatEvent extends AbstractQSEvent {
      */
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    /**
+     * Getting the chat sender
+     *
+     * @return The chat sender
+     */
+    public Player getSender() {
+        return sender;
     }
 }

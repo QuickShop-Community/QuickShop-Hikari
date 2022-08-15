@@ -163,27 +163,6 @@ public class BlockListener extends AbstractProtectionListener {
     }
 
     /*
-     * Listens for sign update to prevent other plugin or Purpur to edit the sign
-     */
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-    public void onSignUpdate(SignChangeEvent event) {
-        Block posShopBlock = Util.getAttached(event.getBlock());
-        if (posShopBlock == null) {
-            return;
-        }
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(posShopBlock.getLocation());
-        if (shop == null) {
-            return;
-        }
-        Player player = event.getPlayer();
-        if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)
-                && !plugin.perm().hasPermission(player, "quickshop.other.open")) {
-            plugin.text().of(player, "not-managed-shop").send();
-            event.setCancelled(true);
-        }
-    }
-
-    /*
      * Listens for chest placement, so a doublechest shop can't be created.
      */
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
@@ -245,6 +224,27 @@ public class BlockListener extends AbstractProtectionListener {
                 e.setCancelled(true);
                 plugin.text().of(player, "not-managed-shop").send();
             }
+        }
+    }
+
+    /*
+     * Listens for sign update to prevent other plugin or Purpur to edit the sign
+     */
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void onSignUpdate(SignChangeEvent event) {
+        Block posShopBlock = Util.getAttached(event.getBlock());
+        if (posShopBlock == null) {
+            return;
+        }
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(posShopBlock.getLocation());
+        if (shop == null) {
+            return;
+        }
+        Player player = event.getPlayer();
+        if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.ACCESS_INVENTORY)
+                && !plugin.perm().hasPermission(player, "quickshop.other.open")) {
+            plugin.text().of(player, "not-managed-shop").send();
+            event.setCancelled(true);
         }
     }
 

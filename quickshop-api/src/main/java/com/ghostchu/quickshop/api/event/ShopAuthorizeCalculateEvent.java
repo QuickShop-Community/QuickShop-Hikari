@@ -34,14 +34,14 @@ public class ShopAuthorizeCalculateEvent extends AbstractQSEvent {
         this.result = result;
     }
 
-
     /**
-     * Getting the shops that checking for
+     * Gets the authorizer about this event
      *
-     * @return Shop
+     * @return authorizer
      */
-    public @NotNull Shop getShop() {
-        return this.shop;
+    @NotNull
+    public UUID getAuthorizer() {
+        return authorizer;
     }
 
     /**
@@ -83,12 +83,11 @@ public class ShopAuthorizeCalculateEvent extends AbstractQSEvent {
     }
 
     /**
-     * Gets the authorizer about this event
+     * Getting the shops that checking for
      *
-     * @return authorizer
+     * @return Shop
      */
-    @NotNull
-    public UUID getAuthorizer() {
-        return authorizer;
+    public @NotNull Shop getShop() {
+        return this.shop;
     }
 }

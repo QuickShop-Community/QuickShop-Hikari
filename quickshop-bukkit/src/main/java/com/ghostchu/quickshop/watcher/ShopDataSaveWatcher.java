@@ -9,10 +9,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.concurrent.CompletableFuture;
 
 public class ShopDataSaveWatcher extends BukkitRunnable {
+    private final QuickShop plugin;
     //private final AtomicBoolean saving = new AtomicBoolean(false);
     private CompletableFuture<Void> saveTask;
-
-    private final QuickShop plugin;
 
     public ShopDataSaveWatcher(QuickShop plugin) {
         this.plugin = plugin;

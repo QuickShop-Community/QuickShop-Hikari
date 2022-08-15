@@ -19,6 +19,15 @@ public class ShopTaxAccountGettingEvent extends AbstractQSEvent {
     }
 
     /**
+     * Gets the shop
+     *
+     * @return The shop
+     */
+    public Shop getShop() {
+        return shop;
+    }
+
+    /**
      * Getting the tax account
      *
      * @return The tax account, null if tax has been disabled
@@ -35,14 +44,5 @@ public class ShopTaxAccountGettingEvent extends AbstractQSEvent {
      */
     public void setTaxAccount(@Nullable UUID taxAccount) {
         this.taxAccount = taxAccount;
-    }
-
-    /**
-     * Gets the shop
-     *
-     * @return The shop
-     */
-    public Shop getShop() {
-        return shop;
     }
 }

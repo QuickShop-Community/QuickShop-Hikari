@@ -61,6 +61,15 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements QSCance
     }
 
     /**
+     * Gets the item stack amounts
+     *
+     * @return Item stack amounts
+     */
+    public int getAmount() {
+        return this.amount;
+    }
+
+    /**
      * The total money changes in this purchase. Calculate tax, if you want get total without tax,
      * please use getBalanceWithoutTax()
      *
@@ -81,46 +90,14 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements QSCance
     }
 
     @Override
-    public boolean isCancelled() {
-        return this.cancelled;
+    public @Nullable Component getCancelReason() {
+        return this.cancelReason;
     }
 
     @Override
     public void setCancelled(boolean cancel, @Nullable Component reason) {
         this.cancelled = cancel;
         this.cancelReason = reason;
-    }
-
-    @Override
-    public @Nullable Component getCancelReason() {
-        return this.cancelReason;
-    }
-
-    /**
-     * Gets the shop
-     *
-     * @return the shop
-     */
-    public @NotNull Shop getShop() {
-        return this.shop;
-    }
-
-    /**
-     * Gets the item stack amounts
-     *
-     * @return Item stack amounts
-     */
-    public int getAmount() {
-        return this.amount;
-    }
-
-    /**
-     * Gets the purchaser, that maybe is a online/offline/virtual player.
-     *
-     * @return The purchaser uuid
-     */
-    public @NotNull UUID getPurchaser() {
-        return this.purchaser;
     }
 
     /**
@@ -133,6 +110,15 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements QSCance
     }
 
     /**
+     * Gets the purchaser, that maybe is a online/offline/virtual player.
+     *
+     * @return The purchaser uuid
+     */
+    public @NotNull UUID getPurchaser() {
+        return this.purchaser;
+    }
+
+    /**
      * Gets the inventory of purchaser (the item will put to)
      *
      * @return The inventory
@@ -142,11 +128,25 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements QSCance
     }
 
     /**
+     * Gets the shop
+     *
+     * @return the shop
+     */
+    public @NotNull Shop getShop() {
+        return this.shop;
+    }
+
+    /**
      * Gets the tax in this purchase
      *
      * @return The tax
      */
     public double getTax() {
         return this.tax;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return this.cancelled;
     }
 }

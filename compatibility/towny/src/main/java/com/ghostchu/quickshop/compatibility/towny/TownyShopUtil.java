@@ -13,6 +13,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class TownyShopUtil {
+    @Nullable
+    public static Nation getShopNation(@NotNull Shop shop) {
+        ConfigurationSection section = shop.getExtra(Main.getPlugin(Main.class));
+        String uuid = section.getString("towny-nation-uuid");
+        if (uuid == null) {
+            return null;
+        }
+        Nation nation = TownyAPI.getInstance().getNation(UUID.fromString(uuid));
+        Log.debug("Nation finding for shop " + shop.getLocation() + " => nation uuid: " + uuid + " nation: " + nation);
+        return nation;
+    }
+
     @NotNull
     public static UUID getShopOriginalOwner(@NotNull Shop shop) {
         ConfigurationSection section = shop.getExtra(Main.getPlugin(Main.class));
@@ -21,6 +33,28 @@ public class TownyShopUtil {
         } else {
             return shop.getOwner();
         }
+    }
+
+    @Nullable
+    public static Town getShopTown(@NotNull Shop shop) {
+        ConfigurationSection section = shop.getExtra(Main.getPlugin(Main.class));
+        String uuid = section.getString("towny-town-uuid");
+        if (uuid == null) {
+            return null;
+        }
+        Town town = TownyAPI.getInstance().getTown(UUID.fromString(uuid));
+        Log.debug("Town finding for shop " + shop.getLocation() + " => town uuid: " + uuid + " town: " + town);
+        return town;
+    }
+
+    public static void setShopNation(@NotNull Shop shop, @Nullable Nation nation) {
+        ConfigurationSection section = shop.getExtra(Main.getPlugin(Main.class));
+        if (nation == null) {
+            section.set("towny-nation-uuid", null);
+        } else {
+            section.set("towny-nation-uuid", nation.getUUID().toString());
+        }
+        shop.setExtra(Main.getPlugin(Main.class), section);
     }
 
     public static void setShopOriginalOwner(@NotNull Shop shop, @Nullable UUID owner) {
@@ -41,40 +75,6 @@ public class TownyShopUtil {
             section.set("towny-town-uuid", town.getUUID().toString());
         }
         shop.setExtra(Main.getPlugin(Main.class), section);
-    }
-
-    public static void setShopNation(@NotNull Shop shop, @Nullable Nation nation) {
-        ConfigurationSection section = shop.getExtra(Main.getPlugin(Main.class));
-        if (nation == null) {
-            section.set("towny-nation-uuid", null);
-        } else {
-            section.set("towny-nation-uuid", nation.getUUID().toString());
-        }
-        shop.setExtra(Main.getPlugin(Main.class), section);
-    }
-
-    @Nullable
-    public static Town getShopTown(@NotNull Shop shop) {
-        ConfigurationSection section = shop.getExtra(Main.getPlugin(Main.class));
-        String uuid = section.getString("towny-town-uuid");
-        if (uuid == null) {
-            return null;
-        }
-        Town town = TownyAPI.getInstance().getTown(UUID.fromString(uuid));
-        Log.debug("Town finding for shop " + shop.getLocation() + " => town uuid: " + uuid + " town: " + town);
-        return town;
-    }
-
-    @Nullable
-    public static Nation getShopNation(@NotNull Shop shop) {
-        ConfigurationSection section = shop.getExtra(Main.getPlugin(Main.class));
-        String uuid = section.getString("towny-nation-uuid");
-        if (uuid == null) {
-            return null;
-        }
-        Nation nation = TownyAPI.getInstance().getNation(UUID.fromString(uuid));
-        Log.debug("Nation finding for shop " + shop.getLocation() + " => nation uuid: " + uuid + " nation: " + nation);
-        return nation;
     }
 }
 

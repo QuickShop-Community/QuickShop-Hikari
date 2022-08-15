@@ -25,6 +25,16 @@ public class VaultPermissionProvider implements PermissionProvider {
     }
 
     /**
+     * Get permission provider name
+     *
+     * @return The name of permission provider
+     */
+    @Override
+    public @NotNull String getName() {
+        return "Vault";
+    }
+
+    /**
      * Test the sender has special permission
      *
      * @param sender     CommandSender
@@ -34,16 +44,6 @@ public class VaultPermissionProvider implements PermissionProvider {
     @Override
     public boolean hasPermission(@NotNull CommandSender sender, @NotNull String permission) {
         return api.has(sender, permission);
-    }
-
-    /**
-     * Get permission provider name
-     *
-     * @return The name of permission provider
-     */
-    @Override
-    public @NotNull String getName() {
-        return "Vault";
     }
 
     /**

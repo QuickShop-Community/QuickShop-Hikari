@@ -37,34 +37,6 @@ public class PAPICache implements Reloadable {
                 .build();
     }
 
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        init();
-        return Reloadable.super.reloadModule();
-    }
-
-    public @NotNull CacheStats getStats() {
-        return performCaches.stats();
-    }
-
-    public long getExpiredTime() {
-        return expiredTime;
-    }
-
-    public void writeCache(@NotNull UUID player, @NotNull String queryString, @NotNull String queryValue) {
-        performCaches.put(compileUniqueKey(player, queryString), queryValue);
-    }
-
-    @NotNull
-    private String compileUniqueKey(@NotNull UUID player, @NotNull String queryString) {
-        return JsonUtil.standard().toJson(new CompiledUniqueKey(player, queryString));
-    }
-
-    @Nullable
-    public String readCache(@NotNull UUID player, @NotNull String queryString) {
-        return performCaches.getIfPresent(compileUniqueKey(player, queryString));
-    }
-
     public String getCached(@NotNull UUID player, @NotNull String[] args) {
         try {
             return performCaches.get(compileUniqueKey(player, args), () -> getValue(player, args));
@@ -202,6 +174,34 @@ public class PAPICache implements Reloadable {
         return plugin.getShopManager().getPlayerAllShops(uuid).stream()
                 .filter(Shop::inventoryAvailable)
                 .count();
+    }
+
+    public long getExpiredTime() {
+        return expiredTime;
+    }
+
+    public @NotNull CacheStats getStats() {
+        return performCaches.stats();
+    }
+
+    @Nullable
+    public String readCache(@NotNull UUID player, @NotNull String queryString) {
+        return performCaches.getIfPresent(compileUniqueKey(player, queryString));
+    }
+
+    @NotNull
+    private String compileUniqueKey(@NotNull UUID player, @NotNull String queryString) {
+        return JsonUtil.standard().toJson(new CompiledUniqueKey(player, queryString));
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return Reloadable.super.reloadModule();
+    }
+
+    public void writeCache(@NotNull UUID player, @NotNull String queryString, @NotNull String queryValue) {
+        performCaches.put(compileUniqueKey(player, queryString), queryValue);
     }
 
     @Data

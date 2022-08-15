@@ -29,13 +29,20 @@ public final class JsonUtil {
             .setPrettyPrinting()
             .create();
 
-
-    public static Gson regular() {
-        return REGULAR_GSON;
+    @NotNull
+    @Deprecated
+    public static Gson get() {
+        return standard();
     }
 
     public static Gson getGson() {
         return STANDARD_GSON;
+    }
+
+    @NotNull
+    @Deprecated
+    public static Gson getPrettyPrinting() {
+        return prettyPrinting();
     }
 
     @NotNull
@@ -46,6 +53,28 @@ public final class JsonUtil {
     @NotNull
     public static JsonObject readObject(@NotNull String s) {
         return JsonParser.parseString(s).getAsJsonObject();
+    }
+
+    public static Gson regular() {
+        return REGULAR_GSON;
+    }
+
+    @NotNull
+    public static String toString(@NotNull JsonElement element) {
+        return Objects.requireNonNull(standard().toJson(element));
+    }
+
+    @NotNull
+    public static String toStringPretty(@NotNull JsonElement element) {
+        return Objects.requireNonNull(prettyPrinting().toJson(element));
+    }
+
+    public static void writeElement(@NotNull Appendable writer, @NotNull JsonElement element) {
+        standard().toJson(element, writer);
+    }
+
+    public static void writeElementPretty(@NotNull Appendable writer, @NotNull JsonElement element) {
+        prettyPrinting().toJson(element, writer);
     }
 
     public static void writeObject(@NotNull Appendable writer, @NotNull JsonObject object) {
@@ -64,37 +93,6 @@ public final class JsonUtil {
     @NotNull
     public static Gson prettyPrinting() {
         return PRETTY_PRINT_GSON;
-    }
-
-    public static void writeElement(@NotNull Appendable writer, @NotNull JsonElement element) {
-        standard().toJson(element, writer);
-    }
-
-    public static void writeElementPretty(@NotNull Appendable writer, @NotNull JsonElement element) {
-        prettyPrinting().toJson(element, writer);
-    }
-
-    @NotNull
-    public static String toString(@NotNull JsonElement element) {
-        return Objects.requireNonNull(standard().toJson(element));
-    }
-
-    @NotNull
-    public static String toStringPretty(@NotNull JsonElement element) {
-        return Objects.requireNonNull(prettyPrinting().toJson(element));
-    }
-
-
-    @NotNull
-    @Deprecated
-    public static Gson get() {
-        return standard();
-    }
-
-    @NotNull
-    @Deprecated
-    public static Gson getPrettyPrinting() {
-        return prettyPrinting();
     }
 
     public @interface Hidden {

@@ -15,20 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
     @Override
-    public @NotNull String mklink(@NotNull InventoryWrapper wrapper) throws IllegalArgumentException {
-        if (wrapper.getLocation() != null) {
-            Block block = wrapper.getLocation().getBlock();
-            BlockState state = PaperLib.getBlockState(wrapper.getLocation().getBlock(), false).getState();
-            if (!(state instanceof Container)) {
-                throw new IllegalArgumentException("Target reporting it self not a valid Container.");
-            }
-            String holder = JsonUtil.standard().toJson(new BlockHolder(block.getWorld().getName(), block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ()));
-            return JsonUtil.standard().toJson(new CommonHolder(HolderType.BLOCK, holder));
-        }
-        throw new IllegalArgumentException("Target is invalid.");
-    }
-
-    @Override
     public @NotNull InventoryWrapper locate(@NotNull String symbolLink) throws IllegalArgumentException {
         try {
             CommonHolder commonHolder = JsonUtil.standard().fromJson(symbolLink, CommonHolder.class);
@@ -51,6 +37,20 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
         } catch (Exception exception) {
             throw new IllegalArgumentException(exception.getMessage());
         }
+    }
+
+    @Override
+    public @NotNull String mklink(@NotNull InventoryWrapper wrapper) throws IllegalArgumentException {
+        if (wrapper.getLocation() != null) {
+            Block block = wrapper.getLocation().getBlock();
+            BlockState state = PaperLib.getBlockState(wrapper.getLocation().getBlock(), false).getState();
+            if (!(state instanceof Container)) {
+                throw new IllegalArgumentException("Target reporting it self not a valid Container.");
+            }
+            String holder = JsonUtil.standard().toJson(new BlockHolder(block.getWorld().getName(), block.getLocation().getBlockX(), block.getLocation().getBlockY(), block.getLocation().getBlockZ()));
+            return JsonUtil.standard().toJson(new CommonHolder(HolderType.BLOCK, holder));
+        }
+        throw new IllegalArgumentException("Target is invalid.");
     }
 
     @Data

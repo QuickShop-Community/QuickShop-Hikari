@@ -94,22 +94,6 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
         return true;
     }
 
-    @EventHandler
-    public void onServiceRegister(ServiceRegisterEvent event) {
-        if (!(event.getProvider() instanceof net.milkbowl.vault.economy.Economy)) {
-            return;
-        }
-        setupEconomy();
-    }
-
-    @EventHandler
-    public void onServiceUnregister(ServiceUnregisterEvent event) {
-        if (!(event.getProvider() instanceof net.milkbowl.vault.economy.Economy)) {
-            return;
-        }
-        setupEconomy();
-    }
-
     @Override
     public boolean deposit(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
@@ -195,6 +179,42 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
     }
 
     @Override
+    public @Nullable String getLastError() {
+        return this.lastError;
+    }
+
+    @Override
+    public @NotNull Plugin getPlugin() {
+        return plugin;
+    }
+
+    /**
+     * Gets the currency does exists
+     *
+     * @param currency Currency name
+     * @return exists
+     */
+    @Override
+    public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
+        return false;
+    }
+
+    @Override
+    public boolean isValid() {
+        return this.vault != null;
+    }
+
+    /**
+     * Gets currency supports status
+     *
+     * @return true if supports
+     */
+    @Override
+    public boolean supportCurrency() {
+        return false;
+    }
+
+    @Override
     public boolean withdraw(@NotNull UUID name, double amount, @NotNull World world, @Nullable String currency) {
         if (!isValid()) {
             return false;
@@ -231,42 +251,6 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
         }
     }
 
-    /**
-     * Gets the currency does exists
-     *
-     * @param currency Currency name
-     * @return exists
-     */
-    @Override
-    public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
-        return false;
-    }
-
-    /**
-     * Gets currency supports status
-     *
-     * @return true if supports
-     */
-    @Override
-    public boolean supportCurrency() {
-        return false;
-    }
-
-    @Override
-    public @Nullable String getLastError() {
-        return this.lastError;
-    }
-
-    @Override
-    public boolean isValid() {
-        return this.vault != null;
-    }
-
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return plugin;
-    }
-
     @Override
     public @NotNull String getName() {
         return "BuiltIn-Vault";
@@ -289,5 +273,21 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
     public ReloadResult reloadModule() {
         init();
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
+
+    @EventHandler
+    public void onServiceRegister(ServiceRegisterEvent event) {
+        if (!(event.getProvider() instanceof net.milkbowl.vault.economy.Economy)) {
+            return;
+        }
+        setupEconomy();
+    }
+
+    @EventHandler
+    public void onServiceUnregister(ServiceUnregisterEvent event) {
+        if (!(event.getProvider() instanceof net.milkbowl.vault.economy.Economy)) {
+            return;
+        }
+        setupEconomy();
     }
 }

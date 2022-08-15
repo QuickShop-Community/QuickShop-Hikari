@@ -34,6 +34,19 @@ public class CachePerformanceItem implements SubPasteItem {
         return renderTable(stats);
     }
 
+    @Override
+    public @NotNull String genBody() {
+        return "<h5>Shop Cache</h5>" +
+                buildShopCacheContent() +
+                "<h5>PlaceHolderAPI Cache</h5>" +
+                buildPAPICacheContent();
+    }
+
+    @Override
+    public @NotNull String getTitle() {
+        return "Cache Performance";
+    }
+
     @NotNull
     private String renderTable(@NotNull CacheStats stats) {
         HTMLTable table = new HTMLTable(2, true);
@@ -55,18 +68,5 @@ public class CachePerformanceItem implements SubPasteItem {
         NumberFormat nf = NumberFormat.getNumberInstance();
         nf.setMaximumFractionDigits(3);
         return nf.format(d);
-    }
-
-    @Override
-    public @NotNull String genBody() {
-        return "<h5>Shop Cache</h5>" +
-                buildShopCacheContent() +
-                "<h5>PlaceHolderAPI Cache</h5>" +
-                buildPAPICacheContent();
-    }
-
-    @Override
-    public @NotNull String getTitle() {
-        return "Cache Performance";
     }
 }

@@ -11,16 +11,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public class BukkitPermsProvider implements PermissionProvider {
 
-    @Override
-    public boolean hasPermission(@NotNull CommandSender sender, @NotNull String permission) {
-        return sender.hasPermission(permission);
-    }
-
-    @Override
-    public @NotNull String getName() {
-        return "Bukkit";
-    }
-
     /**
      * Get the debug infos in provider
      *
@@ -31,6 +21,16 @@ public class BukkitPermsProvider implements PermissionProvider {
     public @NotNull PermissionInformationContainer getDebugInfo(
             @NotNull CommandSender sender, @NotNull String permission) {
         return new PermissionInformationContainer(sender, permission, null, null);
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "Bukkit";
+    }
+
+    @Override
+    public boolean hasPermission(@NotNull CommandSender sender, @NotNull String permission) {
+        return sender.hasPermission(permission);
     }
 
 }

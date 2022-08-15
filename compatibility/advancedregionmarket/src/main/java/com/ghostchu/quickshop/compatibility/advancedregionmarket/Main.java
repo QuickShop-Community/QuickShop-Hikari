@@ -20,6 +20,16 @@ import java.util.Set;
 
 public final class Main extends CompatibilityModule implements Listener {
 
+    @Override
+    public void init() {
+
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onShopNeedDeletion(RemoveRegionEvent event) {
+        handleDeletion(event.getRegion());
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onShopNeedDeletion(RestoreRegionEvent event) {
         handleDeletion(event.getRegion());
@@ -56,15 +66,5 @@ public final class Main extends CompatibilityModule implements Listener {
                 }
             }
         }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onShopNeedDeletion(RemoveRegionEvent event) {
-        handleDeletion(event.getRegion());
-    }
-
-    @Override
-    public void init() {
-
     }
 }
