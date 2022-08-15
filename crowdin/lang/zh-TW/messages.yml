@@ -5,7 +5,7 @@ disabled-in-this-world: <red>該世界已停用 QuickShop
 how-much-to-trade-for: <green>請在聊天室中輸入你想買賣 <yellow>{1} 個 {0} <green>的價格。
 client-language-changed: <green>QuickShop 偵測到你的客戶端語言已切換，我們現在為你切換為 {0}。
 shops-backingup: 正在把商店資料備份到資料庫……
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: 你好翻譯者！假若你正在從 Github 或其他代管平台編輯，你應該前往 https://crowdin.com/project/quickshop-hikari 進行翻譯。
 unlimited-shop-owner-changed: <yellow>這個無限商店的店主已經更換成 {0}。
 bad-command-usage-detailed: '<red>無效指令參數！接受以下參數：<gray>{0}'
 thats-not-a-number: <red>無效的數字
@@ -33,19 +33,19 @@ paste-disabled: '<red>原始碼儲存功能被禁止！你將無法請求技術�
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>名稱：<aqua>{0}'
+    - '<yellow>店主：<aqua>{0}'
+    - '<yellow>類型：<aqua>{0}'
+    - '<yellow>價格：<aqua>{0}'
+    - '<yellow>物品：<aqua>{0}'
+    - '<yellow>座標：<aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>名稱：<aqua>{name}'
+    - '<yellow>擁有者：<aqua>{owner}'
+    - '<yellow>類型：<aqua>{type}'
+    - '<yellow>價格：<aqua>{price}'
+    - '<yellow>物品：<aqua>{item}'
+    - '<yellow>座標：<aqua>{location}'
   header: '<yellow>你有多個名為「<green>{0}<yellow>」的商店，請選擇一個以繼續：'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow> <red> [co] <aqua> {0} <light_purple> {1}'
@@ -140,7 +140,7 @@ metric:
   query-argument: '查詢參數：{0}'
   amount-hover: <yellow>{0}個
   header-shop: '<yellow>{0} 商店的 {1} {2} 交易：'
-  player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
+  player-hover: '<yellow>{0}<newline><gold>UUID：<gray>{1}'
   looking-up: <yellow>正在進行指標搜尋，請稍後...
   tax-hover: <yellow>{0} 稅款
   header-global: '<yellow>伺服器{0} {1} 交易：'
@@ -539,9 +539,9 @@ database:
   scanning-async: "<yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later."
   already-scanning: "<red>An scan task has been started, please wait until it finished."
   trim-warning: "<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue."
-  status: "<yellow>Status: {0}"
-  status-good: "<green>Good"
-  status-bad: "<yellow>Maintenance Required"
+  status: "<yellow>狀態：{0}"
+  status-good: "<green>很好"
+  status-bad: "<yellow>需要維護"
   isolated: "<yellow>Isolated Data:"
   isolated-data-ids: "<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>"
   isolated-shop-ids: "<yellow><aqua>└</aqua> Shop Indexes: <gold>{0}</gold>"
@@ -581,9 +581,9 @@ addon:
       town: "<yellow>將商店設置或取消設置為城鎮商店"
       nation: "<yellow>將商店設置或取消設置為國家商店"
     make-shop-owned-by-town: "<green>You have made the shop owned by town <yellow>{0}</yellow>."
-    make-shop-no-longer-owned-by-town: "<green>You have reset shop ownership, it now transfer back to original shop owner."
+    make-shop-no-longer-owned-by-town: "<green>你已重置商店所有權，它現在轉移回原來的商店主人。"
     make-shop-owned-by-nation: "<green>You have made the shop owned by nation <yellow>{0}</yellow>."
-    make-shop-no-longer-owned-by-nation: "<green>You have reset shop ownership, it now transfer back to original shop owner."
+    make-shop-no-longer-owned-by-nation: "<green>你已重置商店所有權，它現在轉移回原來的商店主人。"
     shop-owning-changing-notice: "<grey>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission"
     target-shop-already-is-town-shop: "<red>The target shop is already owned by a town."
     target-shop-already-is-nation-shop: "<red>The target shop is already owned by a nation."
