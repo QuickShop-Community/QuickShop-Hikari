@@ -21,9 +21,8 @@ import java.util.logging.Level;
 
 public class Log {
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
-    private static final int bufferSize = 2500 * Type.values().length;
+    private static final int bufferSize = 500 * Type.values().length;
     private static final Queue<Record> loggerBuffer = EvictingQueue.create(bufferSize);
-
     private static final boolean disableLocationRecording;
 
     static {
