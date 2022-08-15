@@ -51,7 +51,7 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
                 Log.debug("Re-loading shop from database...");
                 Util.mainThreadRun(() -> {
                     plugin.getShopLoader().loadShops();
-                    plugin.text().of(sender, "imported-database").send();
+                    plugin.text().of(sender, "imported-database", "recovery.zip").send();
                 });
             } catch (SQLException | ClassNotFoundException e) {
                 plugin.text().of(sender, "importing-failed", e.getMessage()).send();
