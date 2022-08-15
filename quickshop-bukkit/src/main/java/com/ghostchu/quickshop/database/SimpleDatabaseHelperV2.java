@@ -454,7 +454,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @Override
-    public CompletableFuture<@NotNull Integer> createShopMap(long shopId, @NotNull Location location) {
+    public CompletableFuture<@NotNull Void> createShopMap(long shopId, @NotNull Location location) {
         Validate.isTrue(shopId > 0, "Shop ID must be greater than 0!");
         return DataTables.SHOP_MAP.createReplace()
                 .setColumnNames("world", "x", "y", "z", "shop")
@@ -463,8 +463,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                         location.getBlockY(),
                         location.getBlockZ(),
                         shopId)
-                .returnGeneratedKey()
-                .executeFuture(res -> res);
+                .executeFuture();
     }
 
     @Override

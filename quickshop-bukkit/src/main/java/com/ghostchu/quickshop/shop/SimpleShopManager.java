@@ -245,15 +245,16 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // first init
         shop.setSignText(plugin.getTextManager().findRelativeLanguages(shop.getOwner()));
         // save to database
-        plugin.getDatabaseHelper().createData(shop)
-                .thenCompose(plugin.getDatabaseHelper()::createShop)
-                .thenCompose(id -> {
-                    shop.setShopId(id);
-                    return plugin.getDatabaseHelper().createShopMap(id, shop.getLocation());
-                }).exceptionally(e -> {
-                    processCreationFail(shop, shop.getOwner(), e);
-                    return 0;
-                });
+        plugin.getDatabaseHelper().createData(shop).thenCompose(plugin.getDatabaseHelper()::createShop).whenComplete((id, err) -> {
+            if (err != null) {
+                processCreationFail(shop, shop.getOwner(), err);
+                return;
+            }
+            Log.debug("DEBUG: Setting shop id");
+            shop.setShopId(id);
+            Log.debug("DEBUG: Creating shop map");
+            plugin.getDatabaseHelper().createShopMap(id, shop.getLocation());
+        });
     }
 
     /**

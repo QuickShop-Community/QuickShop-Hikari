@@ -82,7 +82,7 @@ public interface DatabaseHelper {
      * @return
      * @throws SQLException something going wrong
      */
-    CompletableFuture<@NotNull Integer> createShopMap(long shopId, @NotNull Location location);
+    CompletableFuture<@NotNull Void> createShopMap(long shopId, @NotNull Location location);
 
     /**
      * Remove a shop data mapping record from database
