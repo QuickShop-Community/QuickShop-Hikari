@@ -44,8 +44,6 @@ import java.util.logging.Level;
  * A Util to execute all SQLs.
  */
 public class SimpleDatabaseHelperV2 implements DatabaseHelper {
-
-
     @NotNull
     private final SQLManager manager;
 
@@ -264,9 +262,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             List<Long> shop2ShopMapIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.SHOP_MAP, "shop");
             List<Long> shop2LogPurchaseIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.LOG_PURCHASE, "shop");
             List<Long> shop2LogChangesIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.LOG_CHANGES, "shop");
+            List<Long> shopAllIds = Util.linkLists(shop2LogChangesIds, shop2LogPurchaseIds);
             List<Long> shopIsolatedFinal = new ArrayList<>(shop2ShopMapIds);
-            shopIsolatedFinal.removeIf(shop2LogPurchaseIds::contains);
-            shopIsolatedFinal.removeIf(shop2LogChangesIds::contains);
+            shopIsolatedFinal.retainAll(shopAllIds);
             shopIsolatedFinal.forEach(isolatedShopId -> {
                 try {
                     DataTables.SHOPS.createDelete().addCondition("id", isolatedShopId).build().execute();
@@ -277,10 +275,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             List<Long> data2ShopIds = listAllANotExistsInB(DataTables.DATA, "id", DataTables.SHOPS, "data");
             List<Long> data2LogPurchaseIds = listAllANotExistsInB(DataTables.DATA, "id", DataTables.LOG_PURCHASE, "data");
             List<Long> dataIsolatedFinal = new ArrayList<>(data2ShopIds);
-            dataIsolatedFinal.removeIf(data2LogPurchaseIds::contains);
-            dataIsolatedFinal.forEach(isolatedShopId -> {
+            dataIsolatedFinal.retainAll(data2LogPurchaseIds);
+            dataIsolatedFinal.forEach(isolatedDataId -> {
                 try {
-                    DataTables.SHOPS.createDelete().addCondition("id", isolatedShopId).build().execute();
+                    DataTables.DATA.createDelete().addCondition("id", isolatedDataId).build().execute();
                 } catch (SQLException e) {
                     Log.debug("Failed to delete: " + e.getMessage());
                 }
@@ -354,7 +352,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @NotNull
     public List<Long> listAllANotExistsInB(DataTables aTable, String aId, DataTables bTable, String bId) {
         List<Long> isolatedIds = new ArrayList<>();
-        String SQL = "SELECT * FROM " + aTable.getName() + " WHERE " + aId + " NOT IN (SELECT " + bId + " FROM " + bTable.getName() + ")";
+        String SQL = "SELECT " + aId + " FROM " + aTable.getName() + " WHERE " + aId + " NOT IN (SELECT " + bId + " FROM " + bTable.getName() + ")";
         try (SQLQuery query = manager.createQuery().withPreparedSQL(SQL).execute()) {
             ResultSet rs = query.getResultSet();
             while (rs.next()) {
@@ -780,31 +778,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     public @NotNull SQLManager getManager() {
         return manager;
-    }
-
-    /**
-     * DELETE unused data with related keys from query table.
-     *
-     * @param targetTable  the table to be cleaned
-     * @param targetColumn the column to be cleaned
-     * @param queryTable   Table used for keys' query
-     * @param queryColumn  Column used for keys' query
-     * @return the number of deleted rows
-     */
-    @SuppressWarnings("SQLInjection")
-    public Integer clearUnusedData(@NotNull DataTables targetTable, @NotNull String targetColumn,
-                                   @NotNull DataTables queryTable, @NotNull String queryColumn) {
-        String sql = "DELETE FROM `%(targetTable)` WHERE NOT EXISTS (" +
-                " SELECT `%(queryColumn)` FROM `%(queryTable)`" +
-                " WHERE `%(queryTable)`.`%(queryColumn)` = `%(targetTable)`.`%(targetColumn)` " +
-                ")";
-
-        sql = sql.replace("%(targetTable)", targetTable.getName())
-                .replace("%(queryTable)", queryTable.getName())
-                .replace("%(targetColumn)", targetColumn)
-                .replace("%(queryColumn)", queryColumn);
-
-        return manager.executeSQL(sql);
     }
 
     public void writeToCSV(@NotNull ResultSet set, @NotNull File csvFile) throws SQLException, IOException {

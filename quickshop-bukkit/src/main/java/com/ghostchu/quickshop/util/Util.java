@@ -817,6 +817,27 @@ public class Util {
         return components.length == 5;
     }
 
+//    /**
+//     * Convert strList to String. E.g "Foo, Bar"
+//     *
+//     * @param strList Target list
+//     * @return str
+//     */
+//    @NotNull
+//    public static String list2String(@NotNull Collection<String> strList) {
+//        return String.join(", ", strList);
+//    }
+
+    @SafeVarargs
+    @NotNull
+    public static <T> List<T> linkLists(List<T>... lists) {
+        List<T> fList = new ArrayList<>();
+        for (List<T> objList : lists) {
+            fList.addAll(objList);
+        }
+        return fList;
+    }
+
     /**
      * Convert strList to String. E.g "Foo, Bar"
      *
@@ -824,8 +845,8 @@ public class Util {
      * @return str
      */
     @NotNull
-    public static String list2String(@NotNull Collection<String> strList) {
-        return String.join(", ", strList);
+    public static String list2String(@NotNull Collection<?> strList) {
+        return String.join(", ", strList.stream().map(Object::toString).toList());
     }
 
     /**
