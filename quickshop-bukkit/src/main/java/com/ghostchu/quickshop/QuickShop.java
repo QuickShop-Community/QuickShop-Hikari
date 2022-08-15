@@ -215,8 +215,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private String currency = null;
     @Getter
     private CalendarWatcher calendarWatcher;
-    @Getter
-    private DatabaseMaintenanceWatcher databaseMaintenanceWatcher;
+    //    @Getter
+//    private DatabaseMaintenanceWatcher databaseMaintenanceWatcher;
     @Getter
     private ShopPurger shopPurger;
     private int loggingLocation = 0;
@@ -315,8 +315,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         if (getConfig().getBoolean("purge.at-server-startup")) {
             shopPurger.purge();
         }
-        databaseMaintenanceWatcher = new DatabaseMaintenanceWatcher(this);
-        databaseMaintenanceWatcher.runTaskTimerAsynchronously(this, 0, 20 * 60 * 60 * 24);
+//        databaseMaintenanceWatcher = new DatabaseMaintenanceWatcher(this);
+//        databaseMaintenanceWatcher.runTaskTimerAsynchronously(this, 0, 20 * 60 * 60 * 24);
     }
 
     private void registerListeners() {
