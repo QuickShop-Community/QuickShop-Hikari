@@ -3,11 +3,14 @@ package com.ghostchu.quickshop.listener;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
+import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.*;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,12 +20,20 @@ import org.bukkit.event.EventPriority;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 
 public class InternalListener extends AbstractQSListener {
     private final QuickShop plugin;
     private boolean loggingBalance;
     private boolean loggingAction;
+
+    private final Cache<Shop, SpaceCache> countUpdateCache = CacheBuilder
+            .newBuilder()
+            .weakKeys()
+            .expireAfterAccess(5, TimeUnit.MINUTES)
+            .maximumSize(100)
+            .build();
 
     public InternalListener(QuickShop plugin) {
         super(plugin);
@@ -80,6 +91,11 @@ public class InternalListener extends AbstractQSListener {
         if (event.getShop().getShopId() < 1) {
             return;
         }
+        SpaceCache count = countUpdateCache.getIfPresent(event.getShop());
+        if (count != null && count.getSpace() == event.getSpace() && count.getStock() == event.getStock()) {
+            return;
+        }
+        countUpdateCache.put(event.getShop(), new SpaceCache(event.getSpace(), event.getStock()));
         plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop().getShopId(), event.getSpace(), event.getStock())
                 .whenComplete((lines, err) -> {
                     if (err != null) {
@@ -128,6 +144,24 @@ public class InternalListener extends AbstractQSListener {
             if (player != null) {
                 plugin.text().of(player, "shop-owner-self-trade").send();
             }
+        }
+    }
+
+    static class SpaceCache {
+        private final int stock;
+        private final int space;
+
+        public SpaceCache(int stock, int space) {
+            this.stock = stock;
+            this.space = space;
+        }
+
+        public int getSpace() {
+            return space;
+        }
+
+        public int getStock() {
+            return stock;
         }
     }
 }
