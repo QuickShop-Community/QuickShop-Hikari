@@ -653,8 +653,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @Override
     public @NotNull List<ShopRecord> listShops(boolean deleteIfCorrupt) {
         List<ShopRecord> shopRecords = new ArrayList<>();
-        String SQL = "SELECT * FROM " + DataTables.DATA.getName() + " INNER JOIN " + DataTables.SHOP_MAP.getName()
-                + " ON " + DataTables.DATA.getName() + ".id=" + DataTables.SHOP_MAP.getName() + ".shop";
+        String SQL = "SELECT * FROM " + DataTables.DATA.getName()
+                + " INNER JOIN " + DataTables.SHOPS.getName()
+                + " ON " + DataTables.DATA.getName() + ".id = " + DataTables.SHOPS.getName() + ".data"
+                + " INNER JOIN " + DataTables.SHOP_MAP.getName()
+                + " ON " + DataTables.SHOP_MAP.getName() + ".shop = " + DataTables.SHOPS + ".id";
         try (SQLQuery query = manager.createQuery().withPreparedSQL(SQL).execute()) {
             ResultSet rs = query.getResultSet();
             while (rs.next()) {
