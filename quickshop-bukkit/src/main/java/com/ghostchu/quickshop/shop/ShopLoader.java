@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Timer;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.reflect.TypeToken;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,24 +68,34 @@ public class ShopLoader {
         List<Shop> pendingLoading = new CopyOnWriteArrayList<>();
         boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);
         plugin.getLogger().info("Loading shops from database...");
-        for (ShopRecord record : plugin.getDatabaseHelper().listShops(deleteCorruptShops)) {
+        Timer dbFetchTimer = new Timer(true);
+        List<ShopRecord> records = plugin.getDatabaseHelper().listShops(deleteCorruptShops);
+        plugin.getLogger().info("Used " + dbFetchTimer.stopAndGetTimePassed() + "ms to fetch " + records.size() + " shops from database.");
+        plugin.getLogger().info("Loading shops into memory...");
+        Timer shopTotalTimer = new Timer(true);
+        AtomicInteger successCounter = new AtomicInteger(0);
+        for (ShopRecord record : records) {
+            Timer singleShopLoadingTimer = new Timer(true);
             InfoRecord infoRecord = record.getInfoRecord();
             DataRecord dataRecord = record.getDataRecord();
             // World check
             if (worldName != null) {
                 if (!worldName.equals(infoRecord.getWorld())) {
-                    return;
+                    Log.timing("Single shop loading: worldName skipped", singleShopLoadingTimer);
+                    continue;
                 }
             }
             if (dataRecord.getInventorySymbolLink() != null
                     && !dataRecord.getInventoryWrapper().isEmpty()
                     && plugin.getInventoryWrapperRegistry().get(dataRecord.getInventoryWrapper()) == null) {
                 Log.debug("InventoryWrapperProvider not exists! Shop won't be loaded!");
-                return;
+                Log.timing("Single shop loading: InventoryWrapperProvider skipped", singleShopLoadingTimer);
+                continue;
             }
             String world = infoRecord.getWorld();
             // Check if world loaded.
             if (Bukkit.getWorld(world) == null) {
+                Log.timing("Single shop loading: Bukkit world not exists", singleShopLoadingTimer);
                 continue;
             }
             int x = infoRecord.getX();
@@ -117,6 +129,7 @@ public class ShopLoader {
                     plugin.getLogger().warning(MsgUtil.fillArgs("Deleting shop at world={0} x={1} y={2} z={3} caused by corrupted.", world, String.valueOf(x), String.valueOf(y), String.valueOf(z)));
                     plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
                 }
+                Log.timing("Single shop loading: Shop loading exception", singleShopLoadingTimer);
                 continue;
             }
             Location shopLocation = shop.getLocation();
@@ -126,6 +139,7 @@ public class ShopLoader {
             }
             // Null check
             if (shopNullCheck(shop)) {
+                Log.timing("Single shop loading: Shop null check failed", singleShopLoadingTimer);
                 continue;
             }
             // Load to RAM
@@ -138,19 +152,21 @@ public class ShopLoader {
                     pendingLoading.add(shop);
                 }
             }
+            successCounter.incrementAndGet();
         }
 
+        plugin.getLogger().info("Done. Used " + shopTotalTimer.stopAndGetTimePassed() + "ms to load " + successCounter.get() + " shops into memory.");
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             for (Shop shop : pendingLoading) {
                 try {
                     shop.onLoad();
-                } catch (IllegalStateException exception) {
+                } catch (Exception exception) {
                     exceptionHandler(exception, shop.getLocation());
                 }
             }
+            Log.debug("All pending shops now loaded (schedule).");
         }, 1);
-        this.plugin.getLogger().info("Done!");
     }
 
     private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {

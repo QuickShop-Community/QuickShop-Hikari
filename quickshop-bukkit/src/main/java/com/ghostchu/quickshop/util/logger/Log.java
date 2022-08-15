@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.util.logger;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.Timer;
 import com.ghostchu.quickshop.util.Util;
 import com.google.common.collect.EvictingQueue;
 import lombok.Data;
@@ -49,6 +50,7 @@ public class Log {
         LOCK.writeLock().unlock();
     }
 
+
     private static void debugStdOutputs(Record record) {
         if (Util.isDevMode()) {
             QuickShop.getInstance().getLogger().info("[DEBUG] " + record.toString());
@@ -85,6 +87,24 @@ public class Log {
             record = new Record(level, Type.TRANSACTION, message, null);
         } else {
             record = new Record(level, Type.TRANSACTION, message, caller);
+        }
+        loggerBuffer.offer(record);
+        debugStdOutputs(record);
+        LOCK.writeLock().unlock();
+    }
+
+    public static void timing(@NotNull String operation, @NotNull Timer timer) {
+        timing(Level.INFO, operation, timer, Caller.create());
+    }
+
+    @ApiStatus.Internal
+    public static void timing(@NotNull Level level, @NotNull String operation, @NotNull Timer timer, @Nullable Caller caller) {
+        LOCK.writeLock().lock();
+        Record record;
+        if (disableLocationRecording) {
+            record = new Record(level, Type.TIMING, operation + " (cost " + timer.getPassedTime() + " ms)", null);
+        } else {
+            record = new Record(level, Type.TIMING, operation + " (cost " + timer.getPassedTime() + " ms)", caller);
         }
         loggerBuffer.offer(record);
         debugStdOutputs(record);
@@ -259,6 +279,7 @@ public class Log {
         DEBUG,
         CRON,
         TRANSACTION,
+        TIMING,
         PERMISSION
     }
 
