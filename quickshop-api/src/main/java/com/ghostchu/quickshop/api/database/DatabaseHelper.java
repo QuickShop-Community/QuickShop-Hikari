@@ -197,5 +197,5 @@ public interface DatabaseHelper {
 
     void insertTransactionRecord(@Nullable UUID from, @Nullable UUID to, double amount, @Nullable String currency, double taxAmount, @Nullable UUID taxAccount, @Nullable String error);
 
-    @NotNull CompletableFuture<List<ShopRecord>> listShops(boolean deleteIfCorrupt);
+    @NotNull List<ShopRecord> listShops(boolean deleteIfCorrupt);
 }

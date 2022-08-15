@@ -710,48 +710,72 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @Override
-    public @NotNull CompletableFuture<@NotNull List<ShopRecord>> listShops(boolean deleteIfCorrupt) {
-        return DataTables.SHOP_MAP.createQuery().build().executeFuture((query) -> {
+    public @NotNull List<ShopRecord> listShops(boolean deleteIfCorrupt) {
+        List<ShopRecord> shopRecords = new ArrayList<>();
+        String SQL = "SELECT * FROM " + DataTables.DATA.getName() + " INNER JOIN " + DataTables.SHOP_MAP.getName()
+                + " ON " + DataTables.DATA.getName() + ".id=" + DataTables.SHOP_MAP.getName() + ".shop";
+        try (SQLQuery query = manager.createQuery().withPreparedSQL(SQL).execute()) {
             ResultSet rs = query.getResultSet();
-            List<ShopInfo> shops = new ArrayList<>();
             while (rs.next()) {
                 long shopId = rs.getLong("shop");
                 int x = rs.getInt("x");
                 int y = rs.getInt("y");
                 int z = rs.getInt("z");
                 String world = rs.getString("world");
-                shops.add(new ShopInfo(shopId, world, x, y, z));
+                DataRecord dataRecord = new SimpleDataRecord(rs);
+                InfoRecord infoRecord = new ShopInfo(shopId, world, x, y, z);
+                shopRecords.add(new ShopRecord(dataRecord, infoRecord));
             }
-            return shops; // 此时释放商店查询的连接
-        }).thenCompose((shops) -> { // 针对每个商店 one-by-one 操作
-            CompletableFuture<List<ShopRecord>> future = CompletableFuture.completedFuture(new ArrayList<>());
-            for (ShopInfo shop : shops) {
-                future.thenCombine(locateShopDataId(shop.shopID).thenCompose(dataID -> {
-                    if (dataID == null) {
-                        if (deleteIfCorrupt && plugin.getShopBackupUtil().isBreakingAllowed()) {
-                            plugin.getDatabaseHelper().removeShopMap(shop.world, shop.x, shop.y, shop.z)
-                                    .whenComplete((lines, err) -> {
-                                        if (err != null)
-                                            Log.debug("Failed to remove shop map for " + shop + " because " + err.getMessage());
-                                    });
-                        }
-                        return CompletableFuture.completedFuture(null);
-                    } else return getDataRecord(dataID);
-                }), (list, record) -> {
-                    if (record != null) list.add(new ShopRecord(record, shop));
-                    else if (deleteIfCorrupt && plugin.getShopBackupUtil().isBreakingAllowed()) {
-                        plugin.getDatabaseHelper().removeShopMap(shop.world, shop.x, shop.y, shop.z)
-                                .whenComplete((lines, err) -> {
-                                    if (err != null)
-                                        Log.debug("Failed to remove shop map for " + shop + " because " + err.getMessage());
-                                });
-                    }
-                    return list;
-                });
-            }
-            return future;
-        });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return shopRecords;
     }
+
+
+//    @Override
+//    public @NotNull CompletableFuture<@NotNull List<ShopRecord>> listShops(boolean deleteIfCorrupt) {
+//        return DataTables.SHOP_MAP.createQuery().build().executeFuture((query) -> {
+//            ResultSet rs = query.getResultSet();
+//            List<ShopInfo> shops = new ArrayList<>();
+//            while (rs.next()) {
+//                long shopId = rs.getLong("shop");
+//                int x = rs.getInt("x");
+//                int y = rs.getInt("y");
+//                int z = rs.getInt("z");
+//                String world = rs.getString("world");
+//                shops.add(new ShopInfo(shopId, world, x, y, z));
+//            }
+//            return shops; // Release shop query connection
+//        }).thenCompose((shops) -> { // Process per shops
+//            CompletableFuture<List<ShopRecord>> future = CompletableFuture.completedFuture(new ArrayList<>());
+//            for (ShopInfo shop : shops) {
+//                future.thenCombine(locateShopDataId(shop.shopID).thenCompose(dataID -> {
+//                    if (dataID == null) {
+//                        if (deleteIfCorrupt && plugin.getShopBackupUtil().isBreakingAllowed()) {
+//                            plugin.getDatabaseHelper().removeShopMap(shop.world, shop.x, shop.y, shop.z)
+//                                    .whenComplete((lines, err) -> {
+//                                        if (err != null)
+//                                            Log.debug("Failed to remove shop map for " + shop + " because " + err.getMessage());
+//                                    });
+//                        }
+//                        return CompletableFuture.completedFuture(null);
+//                    } else return getDataRecord(dataID);
+//                }), (list, record) -> {
+//                    if (record != null) list.add(new ShopRecord(record, shop));
+//                    else if (deleteIfCorrupt && plugin.getShopBackupUtil().isBreakingAllowed()) {
+//                        plugin.getDatabaseHelper().removeShopMap(shop.world, shop.x, shop.y, shop.z)
+//                                .whenComplete((lines, err) -> {
+//                                    if (err != null)
+//                                        Log.debug("Failed to remove shop map for " + shop + " because " + err.getMessage());
+//                                });
+//                    }
+//                    return list;
+//                });
+//            }
+//            return future;
+//        });
+//    }
 
 //    @Override
 //    public @NotNull List<DataRecord> selectAllShops(boolean deleteCorruptShops) {

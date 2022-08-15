@@ -66,82 +66,80 @@ public class ShopLoader {
         List<Shop> pendingLoading = new CopyOnWriteArrayList<>();
         boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);
         plugin.getLogger().info("Loading shops from database...");
-        plugin.getDatabaseHelper().listShops(deleteCorruptShops).whenComplete((records, err) -> {
-            // Select loading method.
-            for (ShopRecord record : records) {
-                InfoRecord infoRecord = record.getInfoRecord();
-                DataRecord dataRecord = record.getDataRecord();
-                // World check
-                if (worldName != null) {
-                    if (!worldName.equals(infoRecord.getWorld())) {
-                        return;
-                    }
-                }
-                if (dataRecord.getInventorySymbolLink() != null
-                        && !dataRecord.getInventoryWrapper().isEmpty()
-                        && plugin.getInventoryWrapperRegistry().get(dataRecord.getInventoryWrapper()) == null) {
-                    Log.debug("InventoryWrapperProvider not exists! Shop won't be loaded!");
+        for (ShopRecord record : plugin.getDatabaseHelper().listShops(deleteCorruptShops)) {
+            InfoRecord infoRecord = record.getInfoRecord();
+            DataRecord dataRecord = record.getDataRecord();
+            // World check
+            if (worldName != null) {
+                if (!worldName.equals(infoRecord.getWorld())) {
                     return;
                 }
-                String world = infoRecord.getWorld();
-                // Check if world loaded.
-                if (Bukkit.getWorld(world) == null) {
-                    continue;
+            }
+            if (dataRecord.getInventorySymbolLink() != null
+                    && !dataRecord.getInventoryWrapper().isEmpty()
+                    && plugin.getInventoryWrapperRegistry().get(dataRecord.getInventoryWrapper()) == null) {
+                Log.debug("InventoryWrapperProvider not exists! Shop won't be loaded!");
+                return;
+            }
+            String world = infoRecord.getWorld();
+            // Check if world loaded.
+            if (Bukkit.getWorld(world) == null) {
+                continue;
+            }
+            int x = infoRecord.getX();
+            int y = infoRecord.getY();
+            int z = infoRecord.getZ();
+            Shop shop;
+            DataRawDatabaseInfo rawInfo = new DataRawDatabaseInfo(record.getDataRecord());
+            try {
+                shop = new ContainerShop(plugin,
+                        infoRecord.getShopId(),
+                        new Location(Bukkit.getWorld(world), x, y, z),
+                        rawInfo.getPrice(),
+                        rawInfo.getItem(),
+                        rawInfo.getOwner(),
+                        rawInfo.isUnlimited(),
+                        rawInfo.getType(),
+                        rawInfo.getExtra(),
+                        rawInfo.getCurrency(),
+                        rawInfo.isHologram(),
+                        rawInfo.getTaxAccount(),
+                        rawInfo.getInvWrapper(),
+                        rawInfo.getInvSymbolLink(),
+                        rawInfo.getName(),
+                        rawInfo.getPermissions());
+            } catch (Exception e) {
+                if (e instanceof IllegalStateException) {
+                    plugin.getLogger().log(Level.WARNING, "Failed to load the shop, skipping...", e);
                 }
-                int x = infoRecord.getX();
-                int y = infoRecord.getY();
-                int z = infoRecord.getZ();
-                Shop shop;
-                DataRawDatabaseInfo rawInfo = new DataRawDatabaseInfo(record.getDataRecord());
-                try {
-                    shop = new ContainerShop(plugin,
-                            infoRecord.getShopId(),
-                            new Location(Bukkit.getWorld(world), x, y, z),
-                            rawInfo.getPrice(),
-                            rawInfo.getItem(),
-                            rawInfo.getOwner(),
-                            rawInfo.isUnlimited(),
-                            rawInfo.getType(),
-                            rawInfo.getExtra(),
-                            rawInfo.getCurrency(),
-                            rawInfo.isHologram(),
-                            rawInfo.getTaxAccount(),
-                            rawInfo.getInvWrapper(),
-                            rawInfo.getInvSymbolLink(),
-                            rawInfo.getName(),
-                            rawInfo.getPermissions());
-                } catch (Exception e) {
-                    if (e instanceof IllegalStateException) {
-                        plugin.getLogger().log(Level.WARNING, "Failed to load the shop, skipping...", e);
-                    }
-                    exceptionHandler(e, null);
-                    if (deleteCorruptShops && hasBackupCreated) {
-                        plugin.getLogger().warning(MsgUtil.fillArgs("Deleting shop at world={0} x={1} y={2} z={3} caused by corrupted.", world, String.valueOf(x), String.valueOf(y), String.valueOf(z)));
-                        plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
-                    }
-                    continue;
+                exceptionHandler(e, null);
+                if (deleteCorruptShops && hasBackupCreated) {
+                    plugin.getLogger().warning(MsgUtil.fillArgs("Deleting shop at world={0} x={1} y={2} z={3} caused by corrupted.", world, String.valueOf(x), String.valueOf(y), String.valueOf(z)));
+                    plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
                 }
-                Location shopLocation = shop.getLocation();
-                // Dirty check
-                if (rawInfo.isNeedUpdate()) {
-                    shop.setDirty();
-                }
-                // Null check
-                if (shopNullCheck(shop)) {
-                    continue;
-                }
-                // Load to RAM
-                plugin.getShopManager().loadShop(shopLocation.getWorld().getName(), shop);
-                if (Util.isLoaded(shopLocation)) {
-                    // Load to World
-                    if (!Util.canBeShop(shopLocation.getBlock())) {
-                        plugin.getShopManager().removeShop(shop); // Remove from Mem
-                    } else {
-                        pendingLoading.add(shop);
-                    }
+                continue;
+            }
+            Location shopLocation = shop.getLocation();
+            // Dirty check
+            if (rawInfo.isNeedUpdate()) {
+                shop.setDirty();
+            }
+            // Null check
+            if (shopNullCheck(shop)) {
+                continue;
+            }
+            // Load to RAM
+            plugin.getShopManager().loadShop(shopLocation.getWorld().getName(), shop);
+            if (Util.isLoaded(shopLocation)) {
+                // Load to World
+                if (!Util.canBeShop(shopLocation.getBlock())) {
+                    plugin.getShopManager().removeShop(shop); // Remove from Mem
+                } else {
+                    pendingLoading.add(shop);
                 }
             }
-        });
+        }
+
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             for (Shop shop : pendingLoading) {

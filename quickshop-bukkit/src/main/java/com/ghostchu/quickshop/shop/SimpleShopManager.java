@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
@@ -246,12 +245,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         // first init
         shop.setSignText(plugin.getTextManager().findRelativeLanguages(shop.getOwner()));
         // save to database
-        DatabaseHelper db = plugin.getDatabaseHelper();
-        db.createData(shop)
-                .thenCompose(db::createShop)
+        plugin.getDatabaseHelper().createData(shop)
+                .thenCompose(plugin.getDatabaseHelper()::createShop)
                 .thenCompose(id -> {
                     shop.setShopId(id);
-                    return db.createShopMap(id, shop.getLocation());
+                    return plugin.getDatabaseHelper().createShopMap(id, shop.getLocation());
                 }).exceptionally(e -> {
                     processCreationFail(shop, shop.getOwner(), e);
                     return 0;
