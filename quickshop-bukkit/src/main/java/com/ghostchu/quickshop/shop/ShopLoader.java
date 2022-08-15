@@ -44,7 +44,6 @@ public class ShopLoader {
     private final QuickShop plugin;
     /* This may contains broken shop, must use null check before load it. */
     private int errors;
-    private boolean hasBackupCreated = false;
 
     /**
      * The shop load allow plugin load shops fast and simply.
@@ -125,7 +124,7 @@ public class ShopLoader {
                     plugin.getLogger().log(Level.WARNING, "Failed to load the shop, skipping...", e);
                 }
                 exceptionHandler(e, null);
-                if (deleteCorruptShops && hasBackupCreated) {
+                if (deleteCorruptShops && plugin.getShopBackupUtil().isBreakingAllowed()) {
                     plugin.getLogger().warning(MsgUtil.fillArgs("Deleting shop at world={0} x={1} y={2} z={3} caused by corrupted.", world, String.valueOf(x), String.valueOf(y), String.valueOf(z)));
                     plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
                 }
