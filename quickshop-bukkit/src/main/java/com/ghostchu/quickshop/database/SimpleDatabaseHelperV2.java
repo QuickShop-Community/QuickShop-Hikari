@@ -18,6 +18,7 @@ import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopModerator;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.QuickExecutor;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.reflect.TypeToken;
@@ -110,12 +111,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 e.printStackTrace();
             }
         }
-        if (getDatabaseVersion() < 8) {
+        if (getDatabaseVersion() < 9) {
             try {
                 plugin.getLogger().info("Data upgrading: Performing purge isolated data...");
-                purgeIsolatedData();
+                purgeIsolated();
                 plugin.getLogger().info("Data upgrading: All completed!");
-                setDatabaseVersion(8);
+                setDatabaseVersion(9);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -259,19 +260,34 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         plugin.getLogger().info("Migrate completed, previous versioned data was renamed to <PREFIX>_<TABLE_NAME>_<ACTION_ID>.");
     }
 
-    @NotNull
-    public IsolatedScanResult<Long> purgeIsolatedData() throws SQLException {
-        IsolatedScanResult<Long> shopIds = scanIsolatedShopIds();
-        purgeShopTableIsolatedData(shopIds);
-        IsolatedScanResult<Long> dataIds = scanIsolatedDataIds();
-        purgeDataTableIsolatedData(dataIds);
-        List<Long> total = new LinkedList<>();
-        total.addAll(shopIds.getTotal());
-        total.addAll(dataIds.getTotal());
-        List<Long> isolated = new LinkedList<>();
-        isolated.addAll(shopIds.getIsolated());
-        isolated.addAll(dataIds.getIsolated());
-        return new IsolatedScanResult<>(total, isolated);
+    public CompletableFuture<Integer> purgeIsolated() {
+        return CompletableFuture.supplyAsync(() -> {
+            List<Long> shop2ShopMapIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.SHOP_MAP, "shop");
+            List<Long> shop2LogPurchaseIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.LOG_PURCHASE, "shop");
+            List<Long> shop2LogChangesIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.LOG_CHANGES, "shop");
+            List<Long> shopIsolatedFinal = new ArrayList<>(shop2ShopMapIds);
+            shopIsolatedFinal.removeIf(shop2LogPurchaseIds::contains);
+            shopIsolatedFinal.removeIf(shop2LogChangesIds::contains);
+            shopIsolatedFinal.forEach(isolatedShopId -> {
+                try {
+                    DataTables.SHOPS.createDelete().addCondition("id", isolatedShopId).build().execute();
+                } catch (SQLException e) {
+                    Log.debug("Failed to delete: " + e.getMessage());
+                }
+            });
+            List<Long> data2ShopIds = listAllANotExistsInB(DataTables.DATA, "id", DataTables.SHOPS, "data");
+            List<Long> data2LogPurchaseIds = listAllANotExistsInB(DataTables.DATA, "id", DataTables.LOG_PURCHASE, "data");
+            List<Long> dataIsolatedFinal = new ArrayList<>(data2ShopIds);
+            dataIsolatedFinal.removeIf(data2LogPurchaseIds::contains);
+            dataIsolatedFinal.forEach(isolatedShopId -> {
+                try {
+                    DataTables.SHOPS.createDelete().addCondition("id", isolatedShopId).build().execute();
+                } catch (SQLException e) {
+                    Log.debug("Failed to delete: " + e.getMessage());
+                }
+            });
+            return shopIsolatedFinal.size() + dataIsolatedFinal.size();
+        }, QuickExecutor.getCommonExecutor());
     }
 
     private boolean silentTableMoving(@NotNull String originTableName, @NotNull String newTableName) {
@@ -337,29 +353,19 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @NotNull
-    public IsolatedScanResult<Long> scanIsolatedShopIds() throws SQLException {
-        List<Long> shopIds = new LinkedList<>();
-        List<Long> toPurge = new LinkedList<>();
-        try (SQLQuery query = DataTables.SHOPS.createQuery().selectColumns("id").build().execute()) {
-            ResultSet set = query.getResultSet();
-            while (set.next()) {
-                shopIds.add(set.getLong("id"));
+    public List<Long> listAllANotExistsInB(DataTables aTable, String aId, DataTables bTable, String bId) {
+        List<Long> isolatedIds = new ArrayList<>();
+        String SQL = "SELECT * FROM " + aTable.getName() + " WHERE " + aId + " NOT IN (SELECT " + bId + " FROM " + bTable.getName() + ")";
+        try (SQLQuery query = manager.createQuery().withPreparedSQL(SQL).execute()) {
+            ResultSet rs = query.getResultSet();
+            while (rs.next()) {
+                long id = rs.getLong(aId);
+                isolatedIds.add(id);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        plugin.getLogger().info("Total " + shopIds.size() + " data found.");
-        for (long shopId : shopIds) {
-            if (checkIdUsage(DataTables.SHOP_MAP, "shop", shopId)) {
-                continue;
-            }
-            if (checkIdUsage(DataTables.LOG_PURCHASE, "shop", shopId)) {
-                continue;
-            }
-            if (checkIdUsage(DataTables.LOG_CHANGES, "shop", shopId)) {
-                continue;
-            }
-            toPurge.add(shopId);
-        }
-        return new IsolatedScanResult<>(shopIds, toPurge);
+        return isolatedIds;
     }
 
     public void purgeShopTableIsolatedData(@NotNull IsolatedScanResult<Long> toPurge) throws SQLException {
@@ -371,31 +377,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             Log.debug("Purged shop_id=" + shopId + ", " + (shopRows + cacheRows) + " rows affected.");
         }
         plugin.getLogger().info("Purging completed.");
-    }
-
-    @NotNull
-    public IsolatedScanResult<Long> scanIsolatedDataIds() throws SQLException {
-        List<Long> dataIds = new LinkedList<>();
-        List<Long> toPurge = new LinkedList<>();
-        try (SQLQuery query = DataTables.DATA.createQuery().selectColumns("id").build().execute()) {
-            ResultSet set = query.getResultSet();
-            while (set.next()) {
-                dataIds.add(set.getLong("id"));
-            }
-        }
-        for (long dataId : dataIds) {
-            if (checkIdUsage(DataTables.SHOPS, "data", dataId)) {
-                continue;
-            }
-            if (checkIdUsage(DataTables.LOG_PURCHASE, "data", dataId)) {
-                continue;
-            }
-            if (checkIdUsage(DataTables.LOG_OTHERS, "data", dataId)) {
-                continue;
-            }
-            toPurge.add(dataId);
-        }
-        return new IsolatedScanResult<>(dataIds, toPurge);
     }
 
     public void purgeDataTableIsolatedData(@NotNull IsolatedScanResult<Long> toPurge) throws SQLException {
