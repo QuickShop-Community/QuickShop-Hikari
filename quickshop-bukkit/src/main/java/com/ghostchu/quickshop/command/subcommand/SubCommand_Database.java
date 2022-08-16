@@ -28,14 +28,14 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            handleTrim(sender, ArrayUtils.remove(cmdArg, 0));
+            plugin.text().of(sender, "bad-command-usage-detailed", "trim").send();
             // handleStatus(sender);
             return;
         }
         //noinspection SwitchStatementWithTooFewBranches
         switch (cmdArg[0]) {
             case "trim" -> handleTrim(sender, ArrayUtils.remove(cmdArg, 0));
-            // default -> handleStatus(sender);
+            default -> plugin.text().of(sender, "bad-command-usage-detailed", "trim").send();
         }
     }
 
