@@ -163,7 +163,7 @@ edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict
 inventory-unavailable: '<red>This shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.'
 file-test: Questo è un file di testo di prova. Lo usiamo per verificare se il file messages.json è rotto. Puoi riempirlo con tutti gli easter egg che ti piacciono qui :)
 unknown-player: <red>Il giocatore di destinazione non esiste, per favore controlla il nome utente digitato.
-player-offline: "<red>The target player currently is offline."
+player-offline: "<red>Il giocatore scelto è attualmente offline."
 language:
   qa-issues: '<yellow>Problemi di garanzia della qualità: <aqua>{0}%'
   code: '<yellow>Codice: <gold>{0}'
@@ -217,7 +217,7 @@ nearby-shop-entry: '<green>- Info:{0} <green>Prezzo:<aqua>{1} <green>x:<aqua>{2}
 chest-title: Negozio QuickShop
 console-only: <red>Questo comando può essere eseguito solo da Console.
 failed-to-put-sign: <red>Spazio insufficiente intorno al negozio per inserire le informazioni.
-shop-name-unset: <red>This shop's name now removed
+shop-name-unset: <red>Il nome di questo negozio è stato rimosso
 shop-nolonger-freezed: <green>Hai scongelato il negozio. È tornato alla normalità!
 no-permission-build: <red>Non puoi costruire un negozio qui.
 tableformat:
@@ -230,12 +230,12 @@ translate-not-completed-yet-click: La traduzione della lingua {0} non è stata a
 taxaccount-invalid: <red>Account target non valido, inserisci un nome giocatore valido o uuid (con trattini).
 player-bought-from-your-store: <red>{0} ha acquistato {1} {2} dal tuo negozio, e hai guadagnato {3}.
 reached-maximum-can-create: <red>Hai già creato un massimo di {0}/{1} negozi!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
-translation-version: 'Support Version: Hikari'
+reached-maximum-create-limit: <red>Hai raggiunto il numero massimo di negozi che puoi creare
+translation-version: 'Versione di Supporto: Hikari'
 no-double-chests: <red>Non puoi creare un negozio con doppia cassa.
 price-too-cheap: <red>Il prezzo deve essere superiore di <yellow> ${0}
 shop-not-exist: <red>Non c'è nessun negozio.
-bad-command-usage: <red>Bad command arguments!
+bad-command-usage: <red>Argomento di comando errato!
 clean-warning: <yellow>Questo comando eliminerà <red>tutti <yellow>i negozi se il negozio è danneggiato, è stato creato in mondi non consentiti, sta vendendo/acquistando articoli non consentiti o <red><bold>ESISTE IN UN MONDO SCARICO<yellow>. Assicurati di creare prima un backup completo dei dati del tuo negozio e usa <aqua>/qs cleanghost conferma <yellow>per continuare.
 shop-purchase-cancelled: <red>Acquisto annullato.
 bypassing-lock: <red>Bypassa un blocco QuickShop!
@@ -311,21 +311,21 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  stack: '<green>Per la quantità del carico: <aqua>{0}<yellow>[<light_purple><bold>Change<yellow>]'
   price-hover: <yellow>Clicca per impostare un nuovo prezzo per l'articolo.
   remove: <red><bold>[Rimuovi negozio]
   mode-buying-hover: <yellow>Clicca per cambiare la modalità del negozio in VENDITA.
-  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Vuoto: rimuovi tutti gli oggetti <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>Fare clic per impostare la quantità di articolo per sfuso. Imposta a 1 per comportamento normale.
   alwayscounting-hover: <yellow>Fai clic per attivare/disattivare se il negozio conta sempre il contenitore.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  alwayscounting: '<green>Conta sempre: {0}<yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>Proprietario: <aqua>{0}<yellow>[<light_purple><bold>Change<yellow>]'
+  freeze: '<yellow>Modalità congelato: <aqua>{0}<yellow>[<light_purple><bold>Toggle<yellow>]'
+  price: '<green>Prezzo: <aqua>{0}<yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Clicca per impostare o rimuovere la valuta che questo negozio sta usando
-  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  lock: '<yellow>Negozio chiuso: <aqua>{0}<yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: '<green>Modalità negozio: <aqua>Vendita <yellow>[<light_purple><bold>Cambia<yellow>]'
-  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
+  currency: '<green>Valuta: <aqua>{0}<yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Clicca per cambiare proprietario.
   mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
   item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
