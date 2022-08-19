@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>重新載入完成。<yellow>（一些更改需要一段時間後作用）
   require-restart: <green>重新載入完成。<yellow>（一些更改需要重新啟動伺服器後作用）
   failed: <red>無法重新載入，請檢查伺服器控制台
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} 從你的商店購買了 {1} 個 {2}，你總共賺了 {3} 元 （{4} 元的稅） 。
 not-enough-space: <red>你只剩下 {0} 格空間可以裝東西！
 shop-name-success: <green>成功轉交商店擁有者給<yellow>{0}<green>。
 shop-staff-added: <green>已新增員工 {0} 到你的商店。
@@ -100,7 +100,7 @@ menu:
   item: '<green>商品：<yellow>{0}'
   price-per: <green>價格 ： <yellow>1 個 {0} {1} 元
   item-name-and-price: <green>共 <yellow>{2} <green>元的 <yellow>{0} <green>個 <yellow>{1}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
+  item-name-and-price-tax: '<yellow>{0} 個 {1}<green> 為 </green> {2} <gray>（{3} 元的稅）</gray>'
   successful-purchase: '<green>成功購買：'
   price-per-stack: <green>價格 ： <yellow>{2} 個 {0} {1} 元
   stored-enchants: <dark_purple>附魔
@@ -163,7 +163,7 @@ edition-confilct: QuickShop-Hikari 與 QuickShop-Reremake 同時安裝在伺服�
 inventory-unavailable: '<red>此商店的 InventoryWrapper 外觀不存在或不正確。你有沒有使用任何插件修改了商店的物品欄？資訊：InventoryWrapper={0}，WrapperProvider={1}，SymbolLink={2}。請聯絡伺服器管理員。'
 file-test: 這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)
 unknown-player: <red>找不到相對應的玩家，請檢查你輸入的玩家名稱是否正確。
-player-offline: "<red>The target player currently is offline."
+player-offline: "<red>目標玩家離線。"
 language:
   qa-issues: '<yellow>品質認證問題：<aqua>{0}%'
   code: '<yellow>代碼：<gold>{0}'
@@ -523,10 +523,10 @@ internal-error: "<red>發生了內部錯誤！請聯繫管理員。"
 debug:
   arguments-invalid: "<red>提供參數 <yellow>{0}</yellow> 無效。"
   sign-located: "<green>告示牌有效：<yellow>{0}</yellow>。"
-  operation-missing: "<red>You must specific an operation."
-  operation-invalid: "<red>You must specific an valid operation."
-  invalid-base64-encoded-sql: "<red>The SQL provided must be base64 encoded."
-  warning-sql: "<red><bold>Warning:</bold></red><yellow>You're executing a SQL statement, this may corrupt your database or destroy any data in database even it belongs to other plugins.\n<red>Don't confirm if you don't trust who send you this command."
+  operation-missing: "<red>你必須指定操作。"
+  operation-invalid: "<red>你必須指定有效的操作。"
+  invalid-base64-encoded-sql: "<red>提供的 SQL 必須為 base64 編碼。"
+  warning-sql: "<red><bold>警告：</bold></red><yellow>你正在執行一個 SQL 語句，這可能會損壞你的資料庫或破壞資料庫中的任何資料，即使它屬於其他插件。\n<red>如果你不信任向你發送該指令的人，請不要確認。"
   warning-sql-confirm: "<yellow>To confirm this dangerous operation, please type <aqua>/qs debug database sql confirm {0}</aqua> in 60 seconds."
   warning-sql-confirm-hover: "<yellow>Click to confirm this dangerous operation."
   sql-confirm-not-found: "<yellow>Didn't found the operation that you given, it may invalid or expired."
