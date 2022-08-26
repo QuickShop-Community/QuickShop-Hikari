@@ -163,7 +163,7 @@ edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict
 inventory-unavailable: '<red>This shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.'
 file-test: Questo è un file di testo di prova. Lo usiamo per verificare se il file messages.json è rotto. Puoi riempirlo con tutti gli easter egg che ti piacciono qui :)
 unknown-player: <red>Il giocatore di destinazione non esiste, per favore controlla il nome utente digitato.
-player-offline: "<red>The target player currently is offline."
+player-offline: "<red>Il giocatore scelto è attualmente offline."
 language:
   qa-issues: '<yellow>Problemi di garanzia della qualità: <aqua>{0}%'
   code: '<yellow>Codice: <gold>{0}'
@@ -217,7 +217,7 @@ nearby-shop-entry: '<green>- Info:{0} <green>Prezzo:<aqua>{1} <green>x:<aqua>{2}
 chest-title: Negozio QuickShop
 console-only: <red>Questo comando può essere eseguito solo da Console.
 failed-to-put-sign: <red>Spazio insufficiente intorno al negozio per inserire le informazioni.
-shop-name-unset: <red>This shop's name now removed
+shop-name-unset: <red>Il nome di questo negozio è stato rimosso
 shop-nolonger-freezed: <green>Hai scongelato il negozio. È tornato alla normalità!
 no-permission-build: <red>Non puoi costruire un negozio qui.
 tableformat:
@@ -230,12 +230,12 @@ translate-not-completed-yet-click: La traduzione della lingua {0} non è stata a
 taxaccount-invalid: <red>Account target non valido, inserisci un nome giocatore valido o uuid (con trattini).
 player-bought-from-your-store: <red>{0} ha acquistato {1} {2} dal tuo negozio, e hai guadagnato {3}.
 reached-maximum-can-create: <red>Hai già creato un massimo di {0}/{1} negozi!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
-translation-version: 'Support Version: Hikari'
+reached-maximum-create-limit: <red>Hai raggiunto il numero massimo di negozi che puoi creare
+translation-version: 'Versione di Supporto: Hikari'
 no-double-chests: <red>Non puoi creare un negozio con doppia cassa.
 price-too-cheap: <red>Il prezzo deve essere superiore di <yellow> ${0}
 shop-not-exist: <red>Non c'è nessun negozio.
-bad-command-usage: <red>Bad command arguments!
+bad-command-usage: <red>Argomento di comando errato!
 clean-warning: <yellow>Questo comando eliminerà <red>tutti <yellow>i negozi se il negozio è danneggiato, è stato creato in mondi non consentiti, sta vendendo/acquistando articoli non consentiti o <red><bold>ESISTE IN UN MONDO SCARICO<yellow>. Assicurati di creare prima un backup completo dei dati del tuo negozio e usa <aqua>/qs cleanghost conferma <yellow>per continuare.
 shop-purchase-cancelled: <red>Acquisto annullato.
 bypassing-lock: <red>Bypassa un blocco QuickShop!
@@ -311,42 +311,42 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  stack: '<green>Per la quantità del carico: <aqua>{0}<yellow>[<light_purple><bold>Change<yellow>]'
   price-hover: <yellow>Clicca per impostare un nuovo prezzo per l'articolo.
   remove: <red><bold>[Rimuovi negozio]
   mode-buying-hover: <yellow>Clicca per cambiare la modalità del negozio in VENDITA.
-  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Vuoto: rimuovi tutti gli oggetti <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>Fare clic per impostare la quantità di articolo per sfuso. Imposta a 1 per comportamento normale.
   alwayscounting-hover: <yellow>Fai clic per attivare/disattivare se il negozio conta sempre il contenitore.
-  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
-  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
+  alwayscounting: '<green>Conta sempre: {0}<yellow>[<light_purple><bold>Change<yellow>]'
+  setowner: '<green>Proprietario: <aqua>{0}<yellow>[<light_purple><bold>Change<yellow>]'
+  freeze: '<yellow>Modalità congelato: <aqua>{0}<yellow>[<light_purple><bold>Toggle<yellow>]'
+  price: '<green>Prezzo: <aqua>{0}<yellow>[<light_purple><bold>Change<yellow>]'
   currency-hover: <yellow>Clicca per impostare o rimuovere la valuta che questo negozio sta usando
-  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  lock: '<yellow>Negozio chiuso: <aqua>{0}<yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: '<green>Modalità negozio: <aqua>Vendita <yellow>[<light_purple><bold>Cambia<yellow>]'
-  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
+  currency: '<green>Valuta: <aqua>{0}<yellow>[<light_purple><bold>Set<yellow>]'
   setowner-hover: <yellow>Clicca per cambiare proprietario.
-  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
-  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
+  mode-buying: '<green> Modalità del negozio: <aqua>Acquisto <yellow>[<light_purple><bold>Change<yellow>]'
+  item: '<green>Oggetto del negozio: {0}<yellow>[<light_purple><bold>Change<yellow>]'
+  unlimited: '<green>Illimitato: {0}<yellow>[<light_purple><bold>Change<yellow>]'
   unlimited-hover: <yellow>Clicca per attivare/disattivare se il negozio è illimitato.
   refill-hover: <yellow>Clicca per ricaricare il negozio.
   remove-hover: <yellow>Clicca per rimuovere questo negozio.
   toggledisplay-hover: <yellow>Attiva/disattiva lo stato dell'oggetto visualizzato nel negozio
-  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
+  refill: '<green>Riempi: ricarica gli oggetti <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>Attiva lo stato di blocco del negozio.
   lock-hover: <yellow>Abilita/Disabilita la protezione del blocco del negozio.
   item-hover: <yellow>Click per cambiare l'elemento del negozio
   infomation: '<green>Pannello di Controllo Negozio:'
   mode-selling-hover: <yellow>Clicca per cambiare la modalità del negozio in ACQUISTO.
   empty-hover: <yellow>Clicca per cancellare l'inventario del negozio.
-  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  toggledisplay: '<yellow>MostraOggetto: <aqua>{0}<yellow>[<light_purple><bold>Toggle<yellow>]'
 timeunit:
-  behind: behind
-  week: <red>{0} week
-  weeks: <red>{0} weeks
-  year: <red>{0} year
+  behind: dietro
+  week: <red>{0} settimana
+  weeks: <red>{0} settimane
+  year: <red>{0} anno
   before: before
   scheduled: scheduled
   years: <red>{0} years
@@ -482,58 +482,58 @@ permission:
     access-inventory: "<yellow>Permission to allow users who have this to access the shop inventory."
     ownership-transfer: "<yellow>Permission to allow users who have this to transfer the shop ownership."
     management-permission: "<yellow>Permission to allow users who have this to manage the groups permissions and edit user's group."
-    toggle-display: "<yellow>Permission to allow users who have this to toggle the shop display item."
-    set-shoptype: "<yellow>Permission to allow users who have this to set the shop type (switch buying or selling)."
-    set-price: "<yellow>Permission to allow users who have this to set the shop price."
-    set-item: "<yellow>Permission to allow users who have this to set the shop item."
-    set-stack-amount: "<yellow>Permission to allow users who have this to set the shop stack amount."
-    set-currency: "<yellow>Permission to allow users who have this to set the shop currency."
-    set-name: "<yellow>Permission to allow users who have this to set the shop name."
+    toggle-display: "<yellow>Permesso per consentire agli utenti scelti di attivare gli oggetti in mostra del negozio."
+    set-shoptype: "<yellow>Permesso per consentire agli utenti scelti di scegliere il tipo di negozio (cambiare ad acquisto o vendita)."
+    set-price: "<yellow>Permesso di consentire agli utenti scelti d'impostare il prezzo del negozio."
+    set-item: "<yellow>Permesso per consentire agli utenti scelti d'impostare l'oggetto del negozio."
+    set-stack-amount: "<yellow>Permesso per consentire agli utenti scelti d'impostare la quantità del carico del negozio."
+    set-currency: "<yellow>Permesso per consentire agli utenti scelti d'impostare la valuta del negozio."
+    set-name: "<yellow>Permesso per consentire agli utenti scelti di impostare il nome del negozio."
   group:
-    everyone: "<yellow>Default group for all users excepted shop owner."
-    staff: "<yellow>System group for shop staffs."
-    administrator: "<red>System group for administrators, the users in this group will have permissions almost same with shop owner."
-invalid-group: "<red>Invalid group name."
-invalid-permission: "<red>Invalid permission."
-invalid-operation: "<red>Invalid operation, only {0} are allowed."
-player-no-group: "<yellow>Player {0} not in any group in this shop."
-player-in-group: "<green>Player {0} is in group <aqua>{1}</aqua> in this shop."
-permission-required: "<red>You don't have permission {0} in this shop to do this."
-no-permission-detailed: "<red>You don't have permission <yellow>{0}</yellow> to do this."
-paste-uploading: "<aqua>Please wait... Uploading the paste to pastebin......"
-paste-created: "<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send paste to who you don't trust."
-paste-created-local: "<green>Paste created and saved to your local disk at: {0}<newline><red>Warning: <gray>Never send paste to who you don't trust."
-paste-created-local-failed: "<red>Failed to save paste to your local disk, please check your disk."
-paste-451: "<gray><b>TIPS: </b> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file additional parameter to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>"
-paste-upload-failed: "<red>Failed to upload paste to {0}, trying other pastebin provider..."
-paste-upload-failed-local: "<red>Failed to upload paste, trying generate local paste..."
-command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
-successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
-successfully-unset-player-group: "<green>Successfully remove player group in this shop."
-successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
-lookup-item-created: "<green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer this item in configurations now."
-lookup-item-exists: "<red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name."
-lookup-item-not-found: "<red>An item named <yellow>{0}</yellow> not exists."
-lookup-item-name-illegal: "<red>Item name illegal. Only alphanumeric characters and underscores are allowed."
-lookup-item-name-regex: "<red>The name must match this regex: <aqua>{0}</aqua>."
-lookup-item-test-not-found: "<gold>Test: <yellow>The item in your hand not registered in lookup table."
-lookup-item-test-found: "<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table."
-lookup-item-removed: "<green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table."
-internal-error: "<red>An internal error occurred, please contact the server administrator."
+    everyone: "<yellow>Gruppo predefinito per tutti gli utenti eccetto il proprietario del negozio."
+    staff: "<yellow>Gruppo di sistema per il personale del negozio."
+    administrator: "<red>Gruppo di sistema per gli amministratori, gli utenti in questo gruppo avranno permessi quasi alla pari del proprietario del negozio."
+invalid-group: "<red>Nome del gruppo non valido."
+invalid-permission: "<red>Permesso non valido."
+invalid-operation: "<red>Operazione non valida, solo {0} sono permessi."
+player-no-group: "<yellow>Il Giocatore {0} non è in nessun gruppo in questo negozio."
+player-in-group: "<green>Il Giocatore {0} è nel gruppo <aqua>{1}</aqua> di questo negozio."
+permission-required: "<red>Non hai il permesso {0} per farlo in questo negozio."
+no-permission-detailed: "<red>Non hai il permesso <yellow>{0}</yellow> per farlo."
+paste-uploading: "<aqua>Si prega di attendere... Caricamento del testo al pastebin......"
+paste-created: "<green>Paste creata, clicca per aprirlo nel browser: <yellow>{0}</yellow><newline><red>Attenzione: <gray>Non mandare mai la paste a persone di cui non ti fidi."
+paste-created-local: "<green>Paste creata e salvata nel tuo disco rigido su: {0}<newline><red>Attenzione: <gray>Non mandare mai la paste a persone di cui non ti fidi."
+paste-created-local-failed: "<red>Fallimento durrante il salvataggio della paste nel tuo disco rigido."
+paste-451: "<gray><b>CONSIGLI: </b> La tua regione o paese attuale sembra aver bloccato il servizio di CloudFlare Workers e il QuickShop Paste potrebbe non caricare correttamente.<newline><gray>Se l'operazione successiva fallisce, prova ad aggiungere il parametro aggiuntivo --file per generare una Paste locale: <dark_gray>/qs paste --file</dark_gray>"
+paste-upload-failed: "<red>Impossibile caricare la paste su {0}, stiamo provando un altro fornitore di pastebin..."
+paste-upload-failed-local: "<red>Impossibile caricare la pasta, stiamo cercando di generare una paste locale..."
+command-incorrect: "<red>Uso del commando incorretto, scrivi /qs help per controllare la pagina d'aiuto. Uso: {0}."
+successfully-set-player-group: "<green>Assegnato il gruppo giocatore {0} a <aqua>{1}</aqua> con successo."
+successfully-unset-player-group: "<green>Rimosso il gruppo giocatore dal negozio con successo."
+successfully-set-player-permission: "<green>Permesso <aqua>{1}</aqua> del giocatore {0} impostato con successo nel negozio <aqua>{2}</aqua>."
+lookup-item-created: "<green>Un oggetto chiamato <aqua>{0}</aqua> è stato creato nella tabella di ricerca. Ora puoi fare riferimento a questo oggetto nelle configurazioni."
+lookup-item-exists: "<red>Un oggetto chiamato <yellow>{0}</yellow> esiste già nella tabella di ricerca. Cancellalo o scegli un altro nome."
+lookup-item-not-found: "<red>Un oggetto chiamato <yellow>{0}</yellow> non esiste."
+lookup-item-name-illegal: "<red>Nome dell'oggetto impossibile. Solo caratteri alfanumerici e trattini bassi sono consentiti."
+lookup-item-name-regex: "<red>Il nome deve corrispondere a questa espressione regolare: <aqua>{0}</aqua>."
+lookup-item-test-not-found: "<gold>Test: <yellow>L'oggetto nella tua mano non è registrato nella tabella di ricerca."
+lookup-item-test-found: "<gold>Test: <green>L'oggetto nella tua mano è stato registrato sotto il nome di <aqua>{0}</aqua> nella tabella di ricerca."
+lookup-item-removed: "<green>L'oggetto specifico <aqua>{0}</aqua> è stato rimosso con successo dalla tabella di ricerca."
+internal-error: "<red>Si è verificato un errore interno, si prega di contattare l'amministratore del server."
 debug:
-  arguments-invalid: "<red>Provided arguments <yellow>{0}</yellow> invalid."
-  sign-located: "<green>Sign valid: <yellow>{0}</yellow>."
-  operation-missing: "<red>You must specific an operation."
-  operation-invalid: "<red>You must specific an valid operation."
-  invalid-base64-encoded-sql: "<red>The SQL provided must be base64 encoded."
-  warning-sql: "<red><bold>Warning:</bold></red><yellow>You're executing a SQL statement, this may corrupt your database or destroy any data in database even it belongs to other plugins.\n<red>Don't confirm if you don't trust who send you this command."
-  warning-sql-confirm: "<yellow>To confirm this dangerous operation, please type <aqua>/qs debug database sql confirm {0}</aqua> in 60 seconds."
-  warning-sql-confirm-hover: "<yellow>Click to confirm this dangerous operation."
-  sql-confirm-not-found: "<yellow>Didn't found the operation that you given, it may invalid or expired."
-  sql-executing: "<yellow>Executing SQL statement: <aqua>{0}</aqua>"
-  sql-completed: "<green>Completed, {0} rows affected."
-  sql-exception: "<red>An error occurred while executing the SQL query, check the Console for details!"
-  sql-disabled: "<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it."
+  arguments-invalid: "<red>Argomenti forniti <yellow>{0}</yellow> non validi."
+  sign-located: "<green>Segno valido: <yellow>{0}</yellow>."
+  operation-missing: "<red>È necessario specificare un'operazione."
+  operation-invalid: "<red>È necessario specificare un'operazione valida."
+  invalid-base64-encoded-sql: "<red> L'SQL fornito deve essere codificato con base64."
+  warning-sql: "<red><bold>Attenzione: </bold></red><yellow>Stai eseguendo uno statement SQL, ciò potrebbe corrompere la tua banca dati o distruggere qualsiasi dato dentro di essa anche se appartiene ad altri plugin.\n<red>Non confermare se non ti fidi di chi ti ha mandato questo comando."
+  warning-sql-confirm: "<yellow>Per confermare questa pericolosa operazione, per favore scrivi <aqua>/qs debug database sql confirm {0}</aqua> entro 60 secondi."
+  warning-sql-confirm-hover: "<yellow>Clicca per confermare questa operazione pericolosa."
+  sql-confirm-not-found: "<yellow>L'operazione che hai fornito non è stata trovata, potrebbe essere non valida o scaduta."
+  sql-executing: "<yellow>Esecuzione dello statement SQL: <aqua>{0}</aqua>"
+  sql-completed: "<green>Completato, {0} righe affette."
+  sql-exception: "<red>Si è verificato un errore durante l'esecuzione della query SQL, controlla la Console per ulteriori dettagli!"
+  sql-disabled: "<red>Per ragioni di sicurezza, le query SQL sono disabilitate su questo server. Se hai davvero bisogno di questa funzione, puoi aggiungere il seguente flag a questi argomenti di avvio: <aqua>{0}</aqua> con il valore `true` per attivarlo."
 database:
   scanning: "<green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while..."
   scanning-async: "<yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later."

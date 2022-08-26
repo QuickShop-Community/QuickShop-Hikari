@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>重新載入完成。<yellow>（一些更改需要一段時間後作用）
   require-restart: <green>重新載入完成。<yellow>（一些更改需要重新啟動伺服器後作用）
   failed: <red>無法重新載入，請檢查伺服器控制台
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} 從你的商店購買了 {1} 個 {2}，你總共賺了 {3} 元 （{4} 元的稅） 。
 not-enough-space: <red>你只剩下 {0} 格空間可以裝東西！
 shop-name-success: <green>成功轉交商店擁有者給<yellow>{0}<green>。
 shop-staff-added: <green>已新增員工 {0} 到你的商店。
@@ -100,7 +100,7 @@ menu:
   item: '<green>商品：<yellow>{0}'
   price-per: <green>價格 ： <yellow>1 個 {0} {1} 元
   item-name-and-price: <green>共 <yellow>{2} <green>元的 <yellow>{0} <green>個 <yellow>{1}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
+  item-name-and-price-tax: '<yellow>{0} 個 {1}<green> 為 </green> {2} <gray>（{3} 元的稅）</gray>'
   successful-purchase: '<green>成功購買：'
   price-per-stack: <green>價格 ： <yellow>{2} 個 {0} {1} 元
   stored-enchants: <dark_purple>附魔
@@ -163,7 +163,7 @@ edition-confilct: QuickShop-Hikari 與 QuickShop-Reremake 同時安裝在伺服�
 inventory-unavailable: '<red>此商店的 InventoryWrapper 外觀不存在或不正確。你有沒有使用任何插件修改了商店的物品欄？資訊：InventoryWrapper={0}，WrapperProvider={1}，SymbolLink={2}。請聯絡伺服器管理員。'
 file-test: 這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)
 unknown-player: <red>找不到相對應的玩家，請檢查你輸入的玩家名稱是否正確。
-player-offline: "<red>The target player currently is offline."
+player-offline: "<red>目標玩家離線。"
 language:
   qa-issues: '<yellow>品質認證問題：<aqua>{0}%'
   code: '<yellow>代碼：<gold>{0}'
@@ -523,35 +523,35 @@ internal-error: "<red>發生了內部錯誤！請聯繫管理員。"
 debug:
   arguments-invalid: "<red>提供參數 <yellow>{0}</yellow> 無效。"
   sign-located: "<green>告示牌有效：<yellow>{0}</yellow>。"
-  operation-missing: "<red>You must specific an operation."
-  operation-invalid: "<red>You must specific an valid operation."
-  invalid-base64-encoded-sql: "<red>The SQL provided must be base64 encoded."
-  warning-sql: "<red><bold>Warning:</bold></red><yellow>You're executing a SQL statement, this may corrupt your database or destroy any data in database even it belongs to other plugins.\n<red>Don't confirm if you don't trust who send you this command."
-  warning-sql-confirm: "<yellow>To confirm this dangerous operation, please type <aqua>/qs debug database sql confirm {0}</aqua> in 60 seconds."
-  warning-sql-confirm-hover: "<yellow>Click to confirm this dangerous operation."
-  sql-confirm-not-found: "<yellow>Didn't found the operation that you given, it may invalid or expired."
-  sql-executing: "<yellow>Executing SQL statement: <aqua>{0}</aqua>"
-  sql-completed: "<green>Completed, {0} rows affected."
+  operation-missing: "<red>你必須指定操作。"
+  operation-invalid: "<red>你必須指定有效的操作。"
+  invalid-base64-encoded-sql: "<red>提供的 SQL 必須為 base64 編碼。"
+  warning-sql: "<red><bold>警告：</bold></red><yellow>你正在執行一個 SQL 語句，這可能會損壞你的資料庫或破壞資料庫中的任何資料，即使它屬於其他插件。\n<red>如果你不信任向你發送該指令的人，請不要確認。"
+  warning-sql-confirm: "<yellow>若要確認該危險操作，請在 60 秒內輸入 <aqua>/qs debug database sql confirm {0}</aqua>。"
+  warning-sql-confirm-hover: "<yellow>點擊以確認該危險操作。"
+  sql-confirm-not-found: "<yellow>沒有找到你給予的操作，該操作可能無效或過期。"
+  sql-executing: "<yellow>執行 SQL 語句：<aqua>{0}</aqua>"
+  sql-completed: "<green>已完成，{0} 行受到影響。"
   sql-exception: "<red>執行 SQL 查詢時發生錯誤，請查看控制台了解詳情！"
-  sql-disabled: "<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it."
+  sql-disabled: "<red>出於安全原因，該伺服器中停用了 SQL 查詢，如果你確實需要該功能，可以在啟動參數中新增以下：<aqua>{0}</aqua> 並使用 「true」值來啟用它。"
 database:
-  scanning: "<green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while..."
-  scanning-async: "<yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later."
-  already-scanning: "<red>An scan task has been started, please wait until it finished."
+  scanning: "<green>掃描 QuickShop 資料庫中的隔離資料，在掃描過程中資料庫負載可能會增加，這可能需要一段時間……"
+  scanning-async: "<yellow>在異步任務線程上掃描 QuickShop 資料庫中的隔離資料，掃描過程中資料庫負載可能會增加，這可能需要一段時間，請稍後再試。"
+  already-scanning: "<red>掃描任務已啟動，請等待完成。"
   trim-warning: "<yellow><red><bold>警告：</red>在繼續資料庫修剪之前備份你的數據庫，以避免資料遺失。準備好後執行 <aqua>/qs database trim confirm</aqua> 以繼續。"
   status: "<yellow>狀態：{0}"
   status-good: "<green>很好"
   status-bad: "<yellow>需要維護"
   isolated: "<yellow>隔離資料："
   isolated-data-ids: "<yellow>└</aqua> 資料記錄：<gold>{0}</gold>"
-  isolated-shop-ids: "<yellow><aqua>└</aqua> Shop Indexes: <gold>{0}</gold>"
-  isolated-logs: "<yellow><aqua>└</aqua> Logs: <gold>{0}</gold>"
-  isolated-external-caches: "<yellow><aqua>└</aqua> External Caches: <gold>{0}</gold>"
-  last-purge-time: "<yellow>Last time of trim at {0}"
-  report-time: "<yellow>Last time of scan at {0}"
-  auto-scan-alert: "<yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming."
-  auto-trim: "<green>Auto trim has been enabled on this server, no manually trim required."
-  trim-complete: "<green>Database trim completed, <yellow>{0}</yellow> isolated trimmed."
+  isolated-shop-ids: "<yellow><aqua>└</aqua> 商店索引：<gold>{0}</gold>"
+  isolated-logs: "<yellow><aqua>└</aqua> 日誌：<gold>{0}</gold>"
+  isolated-external-caches: "<yellow><aqua>└</aqua> 外部快取：<gold>{0}</gold>"
+  last-purge-time: "<yellow>上次修剪時間為 {0}"
+  report-time: "<yellow>上次掃描時間為 {0}"
+  auto-scan-alert: "<yellow>該伺服器上的 QuickShop 資料庫需要維護。發現 <gold>{0}</gold> 孤立資料等待修剪。"
+  auto-trim: "<green>該伺服器已啟用自動修剪，所以無需手動修剪。"
+  trim-complete: "<green>資料庫修剪已完成，<yellow>{0}</yellow> 已隔離修剪。"
   auto-trim-started: "<green>已開始自動修整，請稍候……"
   trim-start: "<green>已開始修整資料庫，請稍後……"
   trim-exception: "<red>資料庫修整失敗，在資料庫修整期間發生異常，請檢查伺服器控制台。"
@@ -580,9 +580,9 @@ addon:
     commands:
       town: "<yellow>將商店設置或取消設置為城鎮商店"
       nation: "<yellow>將商店設置或取消設置為國家商店"
-    make-shop-owned-by-town: "<green>You have made the shop owned by town <yellow>{0}</yellow>."
+    make-shop-owned-by-town: "<green>你已將商店設為 <yellow>{0}</yellow> 鎮擁有。"
     make-shop-no-longer-owned-by-town: "<green>你已重置商店所有權，它現在轉移回原來的商店主人。"
-    make-shop-owned-by-nation: "<green>You have made the shop owned by nation <yellow>{0}</yellow>."
+    make-shop-owned-by-nation: "<green>你已將商店設為 <yellow>{0}</yellow> 國擁有。"
     make-shop-no-longer-owned-by-nation: "<green>你已重置商店所有權，它現在轉移回原來的商店主人。"
     shop-owning-changing-notice: "<grey>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission"
     target-shop-already-is-town-shop: "<red>The target shop is already owned by a town."
