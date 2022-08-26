@@ -98,7 +98,7 @@
                                 <finalName>${name}-${version}</finalName>
                                 <!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
                                 <createDependencyReducedPom>false</createDependencyReducedPom>
-                                <minimizeJar>true</minimizeJar>
+                                <minimizeJar>false</minimizeJar>
                                 <createSourcesJar>false</createSourcesJar>
                                 <createTestSourcesJar>false</createTestSourcesJar>
                                 <shadeSourcesContent>true</shadeSourcesContent>
@@ -141,8 +141,13 @@
                                     </relocation>
                                     <relocation>
                                         <pattern>de.themoep.minedown.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.minedown.</shadedPattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.minedown.</shadedPattern>
                                     </relocation>
+                                    <relocation>
+                                        <pattern>org.h2.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.org.h2.</shadedPattern>
+                                    </relocation>
+
                                     <!--                                    <relocation>-->
                                     <!--                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>-->
                                     <!--                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.adventure.text.minimessage.-->
