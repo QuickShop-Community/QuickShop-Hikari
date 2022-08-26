@@ -143,10 +143,7 @@
                                         <pattern>de.themoep.minedown.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.minedown.</shadedPattern>
                                     </relocation>
-                                    <relocation>
-                                        <pattern>org.h2.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.org.h2.</shadedPattern>
-                                    </relocation>
+
 
                                     <!--                                    <relocation>-->
                                     <!--                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>-->
