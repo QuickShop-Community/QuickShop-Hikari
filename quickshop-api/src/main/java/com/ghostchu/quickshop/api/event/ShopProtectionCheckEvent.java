@@ -55,21 +55,21 @@ public class ShopProtectionCheckEvent extends AbstractQSEvent {
     }
 
     /**
-     * Gets the player triggered this event
-     *
-     * @return player
-     */
-    public @NotNull Player getPlayer() {
-        return this.player;
-    }
-
-    /**
      * Gets the location that player want do shop actions on
      *
      * @return location
      */
     public @NotNull Location getLocation() {
         return this.loc;
+    }
+
+    /**
+     * Gets the player triggered this event
+     *
+     * @return player
+     */
+    public @NotNull Player getPlayer() {
+        return this.player;
     }
 
     /**

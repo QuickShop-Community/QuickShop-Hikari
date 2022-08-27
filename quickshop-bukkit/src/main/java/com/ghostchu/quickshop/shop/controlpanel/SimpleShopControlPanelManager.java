@@ -27,6 +27,27 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager {
     }
 
     @Override
+    public void openControlPanel(@NotNull Player player, @NotNull Shop shop) {
+        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(player);
+        chatSheetPrinter.printHeader();
+        chatSheetPrinter.printLine(plugin.text().of(player, "controlpanel.infomation").forLocale());
+        List<Component> total = new ArrayList<>();
+        for (ShopControlPanel entry : registry.keySet()) {
+            try {
+                total.addAll(entry.generate(player, shop));
+            } catch (Exception e) {
+                try {
+                    plugin.getLogger().warning("Failed to generate control panel for " + entry.getClass().getName() + ". Contact the developer of the plugin " + entry.getPlugin().getName());
+                } catch (Exception e2) {
+                    plugin.getLogger().warning("Failed to generate control panel for " + entry.getClass().getName() + "Contact the developer of that plugin");
+                }
+            }
+        }
+        total.forEach(chatSheetPrinter::printLine);
+        chatSheetPrinter.printFooter();
+    }
+
+    @Override
     public void register(@NotNull ShopControlPanel panel) {
         LOCK.lock();
         try {
@@ -49,17 +70,6 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager {
     }
 
     @Override
-    public void unregister(@NotNull ShopControlPanel panel) {
-        LOCK.lock();
-        try {
-            registry.remove(panel);
-        } finally {
-            LOCK.unlock();
-        }
-        // Doesn't need resort
-    }
-
-    @Override
     public void unregister(@NotNull Plugin plugin) {
         LOCK.lock();
         try {
@@ -77,23 +87,13 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager {
     }
 
     @Override
-    public void openControlPanel(@NotNull Player player, @NotNull Shop shop) {
-        ChatSheetPrinter chatSheetPrinter = new ChatSheetPrinter(player);
-        chatSheetPrinter.printHeader();
-        chatSheetPrinter.printLine(plugin.text().of(player, "controlpanel.infomation").forLocale());
-        List<Component> total = new ArrayList<>();
-        for (ShopControlPanel entry : registry.keySet()) {
-            try {
-                total.addAll(entry.generate(player, shop));
-            } catch (Exception e) {
-                try {
-                    plugin.getLogger().warning("Failed to generate control panel for " + entry.getClass().getName() + ". Contact the developer of the plugin " + entry.getPlugin().getName());
-                } catch (Exception e2) {
-                    plugin.getLogger().warning("Failed to generate control panel for " + entry.getClass().getName() + "Contact the developer of that plugin");
-                }
-            }
+    public void unregister(@NotNull ShopControlPanel panel) {
+        LOCK.lock();
+        try {
+            registry.remove(panel);
+        } finally {
+            LOCK.unlock();
         }
-        total.forEach(chatSheetPrinter::printLine);
-        chatSheetPrinter.printFooter();
+        // Doesn't need resort
     }
 }

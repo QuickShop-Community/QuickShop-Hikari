@@ -21,28 +21,6 @@ import java.util.List;
 
 public class SimpleShopControlPanel implements ShopControlPanel {
     /**
-     * The shop control panel's priority.
-     * HIGH = Earlier shown
-     * LOW = Later shown
-     *
-     * @return The priority.
-     */
-    @Override
-    public @NotNull ShopControlPanelPriority getPriority() {
-        return ShopControlPanelPriority.HIGH;
-    }
-
-    /**
-     * The shop control panel impl's plugin instance.
-     *
-     * @return Your plugin instance;
-     */
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return QuickShop.getInstance();
-    }
-
-    /**
      * Generate components for the shop control panel.
      *
      * @param sender The player
@@ -167,5 +145,27 @@ public class SimpleShopControlPanel implements ShopControlPanel {
                     .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand)));
         }
         return components;
+    }
+
+    /**
+     * The shop control panel's priority.
+     * HIGH = Earlier shown
+     * LOW = Later shown
+     *
+     * @return The priority.
+     */
+    @Override
+    public @NotNull ShopControlPanelPriority getPriority() {
+        return ShopControlPanelPriority.HIGH;
+    }
+
+    /**
+     * The shop control panel impl's plugin instance.
+     *
+     * @return Your plugin instance;
+     */
+    @Override
+    public @NotNull Plugin getPlugin() {
+        return QuickShop.getInstance();
     }
 }

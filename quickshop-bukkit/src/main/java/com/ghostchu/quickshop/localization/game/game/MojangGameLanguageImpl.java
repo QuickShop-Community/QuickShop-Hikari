@@ -81,24 +81,6 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         }
     }
 
-    public void load() {
-        LOCK.lock();
-        try {
-            final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode, mirror);
-            loadThread.start();
-            boolean timeout = !DOWNLOAD_CONDITION.await(20, TimeUnit.SECONDS);
-            if (timeout) {
-                Log.debug("No longer waiting file downloading because it now timed out, now downloading in background.");
-                plugin.getLogger().info("No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
-            }
-            this.lang = loadThread.getLang(); // Get the Lang whatever thread running or died.
-        } catch (InterruptedException exception) {
-            plugin.getLogger().log(Level.WARNING, "Failed to wait game language thread loading", exception);
-        } finally {
-            LOCK.unlock();
-        }
-    }
-
     @Override
     public @NotNull String getName() {
         return "Mojang API";
@@ -188,6 +170,24 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         return jsonElement.getAsString();
     }
 
+    public void load() {
+        LOCK.lock();
+        try {
+            final GameLanguageLoadThread loadThread = new GameLanguageLoadThread(plugin, languageCode, mirror);
+            loadThread.start();
+            boolean timeout = !DOWNLOAD_CONDITION.await(20, TimeUnit.SECONDS);
+            if (timeout) {
+                Log.debug("No longer waiting file downloading because it now timed out, now downloading in background.");
+                plugin.getLogger().info("No longer waiting file downloading because it now timed out, now downloading in background, please reset itemi18n.yml, potioni18n.yml and enchi18n.yml after download completed.");
+            }
+            this.lang = loadThread.getLang(); // Get the Lang whatever thread running or died.
+        } catch (InterruptedException exception) {
+            plugin.getLogger().log(Level.WARNING, "Failed to wait game language thread loading", exception);
+        } finally {
+            LOCK.unlock();
+        }
+    }
+
     @Getter
     static class GameLanguageLoadThread extends Thread {
         private final String languageCode;
@@ -201,6 +201,10 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
             this.plugin = plugin;
             this.languageCode = languageCode;
             this.mirror = mirror;
+        }
+
+        public boolean isLatest() {
+            return isLatest;
         }
 
         @Override
@@ -341,10 +345,6 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
                 }
                 plugin.getLogger().log(Level.WARNING, "Something going wrong when loading game translation assets", e);
             }
-        }
-
-        public boolean isLatest() {
-            return isLatest;
         }
     }
 }

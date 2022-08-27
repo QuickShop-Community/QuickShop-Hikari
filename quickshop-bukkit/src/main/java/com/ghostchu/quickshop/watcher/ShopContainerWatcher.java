@@ -15,10 +15,6 @@ import java.util.Queue;
 public class ShopContainerWatcher extends BukkitRunnable {
     private final Queue<Shop> checkQueue = new LinkedList<>();
 
-    public void scheduleCheck(@NotNull Shop shop) {
-        checkQueue.add(shop);
-    }
-
     @Override
     public void run() {
         long beginTime = System.currentTimeMillis();
@@ -33,6 +29,10 @@ public class ShopContainerWatcher extends BukkitRunnable {
             }
             shop = checkQueue.poll();
         }
+    }
+
+    public void scheduleCheck(@NotNull Shop shop) {
+        checkQueue.add(shop);
     }
 
 }

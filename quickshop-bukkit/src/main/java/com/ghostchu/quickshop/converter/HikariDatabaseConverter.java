@@ -270,72 +270,8 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         return new DatabaseConfig(mysql, host, user, pass, port, database, useSSL, dbPrefix);
     }
 
-    /**
-     * Rename tables
-     *
-     * @param actionId ActionID
-     * @param config   DatabaseConfig
-     * @return The shops table name
-     * @throws Exception Any error happens
-     */
-    @NotNull
-    private String renameTables(@NotNull UUID actionId, @NotNull DatabaseConfig config) throws Exception {
-        if (config.isMysql()) {
-            SQLManager manager = getLiveDatabase();
-            silentTableCopy(manager, config.getPrefix() + "shops", config.getPrefix() + "shops_" + actionId.toString().replace("-", ""));
-            silentTableCopy(manager, config.getPrefix() + "messages", config.getPrefix() + "messages_" + actionId.toString().replace("-", ""));
-            silentTableCopy(manager, config.getPrefix() + "logs", config.getPrefix() + "logs_" + actionId.toString().replace("-", ""));
-            silentTableCopy(manager, config.getPrefix() + "external_cache", config.getPrefix() + "external_cache_" + actionId.toString().replace("-", ""));
-            try (Connection connection = manager.getConnection()) {
-                if (!hasTable(config.getPrefix() + "shops_" + actionId.toString().replace("-", ""), connection)) {
-                    throw new IllegalStateException("Failed to rename tables!");
-                }
-            }
-            return config.getPrefix() + "shops_" + actionId.toString().replace("-", "");
-        } else {
-            return config.getPrefix() + "shops";
-        }
-    }
-
-    private boolean silentTableCopy(@NotNull SQLManager manager, @NotNull String originTableName, @NotNull String newTableName) {
-        try (Connection conn = manager.getConnection()) {
-            if (hasTable(originTableName, conn)) {
-                if (getDatabaseConfig().isMysql()) {
-                    manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
-                } else {
-                    manager.executeSQL("CREATE TABLE " + newTableName + " AS SELECT * FROM " + originTableName);
-                }
-            } else {
-                return false;
-            }
-        } catch (SQLException e) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Returns a valid connection for SQLite database.
-     *
-     * @return A valid connection for SQLite database.
-     * @throws IllegalStateException Something not ready.
-     * @throws ConnectException      Connection to SQLite failed.
-     */
-    @NotNull
-    private Connection getSQLiteDatabase() throws IllegalStateException, ConnectException {
-        File sqliteFile = new File(plugin.getDataFolder(), "shops.db");
-        if (!sqliteFile.exists()) {
-            throw new IllegalStateException("SQLite database not found!");
-        }
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:" + sqliteFile);
-            if (!connection.isValid(10)) {
-                throw new ConnectException("SQLite database is not valid!");
-            }
-            return connection;
-        } catch (SQLException exception) {
-            throw new ConnectException("Failed to connect to SQLite database!" + exception.getMessage());
-        }
+    void close() {
+        EasySQL.shutdownManager(this.liveDatabase);
     }
 
     /**
@@ -376,6 +312,52 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         } catch (Exception e) {
             throw new ConnectException("Couldn't connect to live database! " + e.getMessage());
         }
+    }
+
+    /**
+     * Returns a valid connection for SQLite database.
+     *
+     * @return A valid connection for SQLite database.
+     * @throws IllegalStateException Something not ready.
+     * @throws ConnectException      Connection to SQLite failed.
+     */
+    @NotNull
+    private Connection getSQLiteDatabase() throws IllegalStateException, ConnectException {
+        File sqliteFile = new File(plugin.getDataFolder(), "shops.db");
+        if (!sqliteFile.exists()) {
+            throw new IllegalStateException("SQLite database not found!");
+        }
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:" + sqliteFile);
+            if (!connection.isValid(10)) {
+                throw new ConnectException("SQLite database is not valid!");
+            }
+            return connection;
+        } catch (SQLException exception) {
+            throw new ConnectException("Failed to connect to SQLite database!" + exception.getMessage());
+        }
+    }
+
+    /**
+     * Returns true if the given table has the given column
+     *
+     * @param table  The table
+     * @param column The column
+     * @return True if the given table has the given column
+     */
+    public boolean hasColumn(@NotNull String table, @NotNull String column, @NotNull Connection connection) throws SQLException {
+        String query = "SELECT * FROM " + table + " LIMIT 1";
+        boolean match = false;
+        try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+            ResultSetMetaData metaData = rs.getMetaData();
+            for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                if (metaData.getColumnLabel(i).equals(column)) {
+                    match = true;
+                    break;
+                }
+            }
+        }
+        return match; // Uh, wtf.
     }
 
     private void pushShops(@NotNull List<ShopStorageUnit> units, @NotNull String prefix, @NotNull SQLManager manager) {
@@ -438,8 +420,48 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
 
     }
 
-    void close() {
-        EasySQL.shutdownManager(this.liveDatabase);
+    /**
+     * Rename tables
+     *
+     * @param actionId ActionID
+     * @param config   DatabaseConfig
+     * @return The shops table name
+     * @throws Exception Any error happens
+     */
+    @NotNull
+    private String renameTables(@NotNull UUID actionId, @NotNull DatabaseConfig config) throws Exception {
+        if (config.isMysql()) {
+            SQLManager manager = getLiveDatabase();
+            silentTableCopy(manager, config.getPrefix() + "shops", config.getPrefix() + "shops_" + actionId.toString().replace("-", ""));
+            silentTableCopy(manager, config.getPrefix() + "messages", config.getPrefix() + "messages_" + actionId.toString().replace("-", ""));
+            silentTableCopy(manager, config.getPrefix() + "logs", config.getPrefix() + "logs_" + actionId.toString().replace("-", ""));
+            silentTableCopy(manager, config.getPrefix() + "external_cache", config.getPrefix() + "external_cache_" + actionId.toString().replace("-", ""));
+            try (Connection connection = manager.getConnection()) {
+                if (!hasTable(config.getPrefix() + "shops_" + actionId.toString().replace("-", ""), connection)) {
+                    throw new IllegalStateException("Failed to rename tables!");
+                }
+            }
+            return config.getPrefix() + "shops_" + actionId.toString().replace("-", "");
+        } else {
+            return config.getPrefix() + "shops";
+        }
+    }
+
+    private boolean silentTableCopy(@NotNull SQLManager manager, @NotNull String originTableName, @NotNull String newTableName) {
+        try (Connection conn = manager.getConnection()) {
+            if (hasTable(originTableName, conn)) {
+                if (getDatabaseConfig().isMysql()) {
+                    manager.executeSQL("CREATE TABLE " + newTableName + " SELECT * FROM " + originTableName);
+                } else {
+                    manager.executeSQL("CREATE TABLE " + newTableName + " AS SELECT * FROM " + originTableName);
+                }
+            } else {
+                return false;
+            }
+        } catch (SQLException e) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -460,28 +482,6 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
             }
         }
         return match;
-    }
-
-    /**
-     * Returns true if the given table has the given column
-     *
-     * @param table  The table
-     * @param column The column
-     * @return True if the given table has the given column
-     */
-    public boolean hasColumn(@NotNull String table, @NotNull String column, @NotNull Connection connection) throws SQLException {
-        String query = "SELECT * FROM " + table + " LIMIT 1";
-        boolean match = false;
-        try (PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
-            ResultSetMetaData metaData = rs.getMetaData();
-            for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                if (metaData.getColumnLabel(i).equals(column)) {
-                    match = true;
-                    break;
-                }
-            }
-        }
-        return match; // Uh, wtf.
     }
 
     @Data
@@ -542,16 +542,16 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         }
 
         @NotNull
-        public String getInventoryWrapperName() {
-            return QuickShop.getInstance().getDescription().getName();
-        }
-
-        @NotNull
         public String getInventorySymbolLink() {
             String holder = JsonUtil.standard().toJson(new BukkitInventoryWrapperManager.BlockHolder(world, x, y, z));
             String link = JsonUtil.standard().toJson(new BukkitInventoryWrapperManager.CommonHolder(BukkitInventoryWrapperManager.HolderType.BLOCK, holder));
             Log.debug("Generating SymbolLink: " + link + ", InventoryHolder: BukkitInventoryWrapper, Holder:" + holder);
             return link;
+        }
+
+        @NotNull
+        public String getInventoryWrapperName() {
+            return QuickShop.getInstance().getDescription().getName();
         }
     }
 }

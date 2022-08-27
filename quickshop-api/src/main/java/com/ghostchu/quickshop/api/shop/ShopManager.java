@@ -20,68 +20,66 @@ import java.util.*;
 public interface ShopManager {
 
     /**
-     * Checks if player reached the limit of shops
+     * Handle the player buying
      *
-     * @param p The player to check
-     * @return True if they're reached the limit.
+     * @param buyer          The player buying
+     * @param buyerInventory The inventory of the player buying
+     * @param eco            The economy
+     * @param info           The info of the shop
+     * @param shop           The shop
+     * @param amount         The amount of the item/stack
      */
-    boolean isReachedLimit(@NotNull Player p);
+    void actionBuying(
+            @NotNull UUID buyer,
+            @NotNull InventoryWrapper buyerInventory,
+            @NotNull AbstractEconomy eco,
+            @NotNull Info info,
+            @NotNull Shop shop,
+            int amount);
 
     /**
-     * Returns a map of World - Chunk - Shop
+     * Handle the player shop creating
      *
-     * @return a map of World - Chunk - Shop
+     * @param p       The player
+     * @param info    The info of the shop
+     * @param message The message of the shop
      */
-    @NotNull Map<String, Map<ShopChunk, Map<Location, Shop>>> getShops();
+    void actionCreate(@NotNull Player p, Info info, @NotNull String message);
 
     /**
-     * Returns a new shop iterator object, allowing iteration over shops easily, instead of sorting
-     * through a 3D map.
+     * Handle the player shop selling
      *
-     * @return a new shop iterator object.
+     * @param seller          The player selling
+     * @param sellerInventory The inventory of the player selling
+     * @param eco             The economy
+     * @param info            The info of the shop
+     * @param shop            The shop
+     * @param amount          The amount of the item/stack
      */
-    @NotNull Iterator<Shop> getShopIterator();
+    void actionSelling(
+            @NotNull UUID seller,
+            @NotNull InventoryWrapper sellerInventory,
+            @NotNull AbstractEconomy eco,
+            @NotNull Info info,
+            @NotNull Shop shop,
+            int amount);
+
+    /**
+     * Adds a shop to the world. Does NOT require the chunk or world to be loaded Call shop.onLoad
+     * by yourself
+     *
+     * @param world The name of the world
+     * @param shop  The shop to add
+     */
+    void addShop(@NotNull String world, @NotNull Shop shop);
+
+    void bakeShopRuntimeRandomUniqueIdCache(@NotNull Shop shop);
 
     /**
      * Removes all shops from memory and the world. Does not delete them from the database. Call
      * this on plugin disable ONLY.
      */
     void clear();
-
-    /**
-     * Returns a map of Shops
-     *
-     * @param c The chunk to search. Referencing doesn't matter, only coordinates and world are
-     *          used.
-     * @return Shops
-     */
-    @Nullable Map<Location, Shop> getShops(@NotNull Chunk c);
-
-    /**
-     * Gets the shop at the world and specific chunk.
-     *
-     * @param world  The world to get the shop from
-     * @param chunkX The chunk x coordinate
-     * @param chunkZ The chunk z coordinate
-     * @return The shop at the world and specific chunk.
-     */
-    @Nullable Map<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ);
-
-    /**
-     * Returns a map of Chunk - Shop
-     *
-     * @param world The name of the world (case sensitive) to get the list of shops from
-     * @return a map of Chunk - Shop
-     */
-    @Nullable Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull String world);
-
-    /**
-     * Register shop to memory and database.
-     *
-     * @param info The info object
-     * @return True if the shop was register successfully.
-     */
-    void registerShop(@NotNull Shop shop);
 
     /**
      * Create a shop use Shop and Info object.
@@ -113,6 +111,45 @@ public interface ShopManager {
     @NotNull String format(double d, @NotNull Shop shop);
 
     /**
+     * @return Returns the Map. Info contains what their last question etc was.
+     */
+    @NotNull Map<UUID, Info> getActions();
+
+    /**
+     * Returns all shops in the whole database, include unloaded.
+     *
+     * <p>Make sure you have caching this, because this need a while to get all shops
+     *
+     * @return All shop in the database
+     */
+    @NotNull List<Shop> getAllShops();
+
+    /**
+     * Get all loaded shops.
+     *
+     * @return All loaded shops.
+     */
+    @NotNull Set<Shop> getLoadedShops();
+
+    /**
+     * Get a players all shops.
+     *
+     * <p>Make sure you have caching this, because this need a while to get player's all shops
+     *
+     * @param playerUUID The player's uuid.
+     * @return The list have this player's all shops.
+     */
+    @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID);
+
+    /**
+     * Getting the Shop Price Limiter
+     *
+     * @return The shop price limiter
+     */
+    @NotNull
+    PriceLimiter getPriceLimiter();
+
+    /**
      * Gets a shop by shop Id
      *
      * @return The shop object
@@ -138,6 +175,10 @@ public interface ShopManager {
      */
     @Nullable Shop getShop(@NotNull Location loc, boolean skipShopableChecking);
 
+    @Nullable Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId);
+
+    @Nullable Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId, boolean includeInvalid);
+
     /**
      * Gets a shop in a specific location Include the attached shop, e.g DoubleChest shop.
      *
@@ -155,70 +196,47 @@ public interface ShopManager {
      */
     @Nullable Shop getShopIncludeAttached(@Nullable Location loc, boolean useCache);
 
-    void bakeShopRuntimeRandomUniqueIdCache(@NotNull Shop shop);
-
-    @Nullable Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId);
-
-    @Nullable Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId, boolean includeInvalid);
-
-    void handleChat(@NotNull Player p, @NotNull String msg);
+    /**
+     * Returns a new shop iterator object, allowing iteration over shops easily, instead of sorting
+     * through a 3D map.
+     *
+     * @return a new shop iterator object.
+     */
+    @NotNull Iterator<Shop> getShopIterator();
 
     /**
-     * Load shop method for loading shop into mapping, so getShops method will can find it. It also
-     * effects a lots of feature, make sure load it after create it.
+     * Returns a map of World - Chunk - Shop
      *
-     * @param world The world the shop is in
-     * @param shop  The shop to load
+     * @return a map of World - Chunk - Shop
      */
-    void loadShop(@NotNull String world, @NotNull Shop shop);
+    @NotNull Map<String, Map<ShopChunk, Map<Location, Shop>>> getShops();
 
     /**
-     * Adds a shop to the world. Does NOT require the chunk or world to be loaded Call shop.onLoad
-     * by yourself
+     * Returns a map of Shops
      *
-     * @param world The name of the world
-     * @param shop  The shop to add
+     * @param c The chunk to search. Referencing doesn't matter, only coordinates and world are
+     *          used.
+     * @return Shops
      */
-    void addShop(@NotNull String world, @NotNull Shop shop);
+    @Nullable Map<Location, Shop> getShops(@NotNull Chunk c);
 
     /**
-     * Removes a shop from the world. Does NOT remove it from the database. * REQUIRES * the world
-     * to be loaded Call shop.onUnload by your self.
+     * Gets the shop at the world and specific chunk.
      *
-     * @param shop The shop to remove
+     * @param world  The world to get the shop from
+     * @param chunkX The chunk x coordinate
+     * @param chunkZ The chunk z coordinate
+     * @return The shop at the world and specific chunk.
      */
-    void removeShop(@NotNull Shop shop);
+    @Nullable Map<Location, Shop> getShops(@NotNull String world, int chunkX, int chunkZ);
 
     /**
-     * @return Returns the Map. Info contains what their last question etc was.
+     * Returns a map of Chunk - Shop
+     *
+     * @param world The name of the world (case sensitive) to get the list of shops from
+     * @return a map of Chunk - Shop
      */
-    @NotNull Map<UUID, Info> getActions();
-
-    /**
-     * Get all loaded shops.
-     *
-     * @return All loaded shops.
-     */
-    @NotNull Set<Shop> getLoadedShops();
-
-    /**
-     * Get a players all shops.
-     *
-     * <p>Make sure you have caching this, because this need a while to get player's all shops
-     *
-     * @param playerUUID The player's uuid.
-     * @return The list have this player's all shops.
-     */
-    @NotNull List<Shop> getPlayerAllShops(@NotNull UUID playerUUID);
-
-    /**
-     * Returns all shops in the whole database, include unloaded.
-     *
-     * <p>Make sure you have caching this, because this need a while to get all shops
-     *
-     * @return All shop in the database
-     */
-    @NotNull List<Shop> getAllShops();
+    @Nullable Map<ShopChunk, Map<Location, Shop>> getShops(@NotNull String world);
 
     /**
      * Get the all shops in the world.
@@ -227,24 +245,6 @@ public interface ShopManager {
      * @return The list have this world all shops
      */
     @NotNull List<Shop> getShopsInWorld(@NotNull World world);
-
-    /**
-     * Handle the player buying
-     *
-     * @param buyer          The player buying
-     * @param buyerInventory The inventory of the player buying
-     * @param eco            The economy
-     * @param info           The info of the shop
-     * @param shop           The shop
-     * @param amount         The amount of the item/stack
-     */
-    void actionBuying(
-            @NotNull UUID buyer,
-            @NotNull InventoryWrapper buyerInventory,
-            @NotNull AbstractEconomy eco,
-            @NotNull Info info,
-            @NotNull Shop shop,
-            int amount);
 
     @Deprecated
     double getTax(@NotNull Shop shop, @NotNull Player p);
@@ -258,15 +258,24 @@ public interface ShopManager {
      */
     double getTax(@NotNull Shop shop, @NotNull UUID p);
 
+    void handleChat(@NotNull Player p, @NotNull String msg);
+
     /**
-     * Check if shop is not valided for specific player
+     * Checks if player reached the limit of shops
      *
-     * @param uuid The uuid of the player
-     * @param info The info of the shop
-     * @param shop The shop
-     * @return If the shop is not valided for the player
+     * @param p The player to check
+     * @return True if they're reached the limit.
      */
-    boolean shopIsNotValid(@NotNull UUID uuid, @NotNull Info info, @NotNull Shop shop);
+    boolean isReachedLimit(@NotNull Player p);
+
+    /**
+     * Load shop method for loading shop into mapping, so getShops method will can find it. It also
+     * effects a lots of feature, make sure load it after create it.
+     *
+     * @param world The world the shop is in
+     * @param shop  The shop to load
+     */
+    void loadShop(@NotNull String world, @NotNull Shop shop);
 
     /**
      * Change the owner to unlimited shop owner.
@@ -275,39 +284,20 @@ public interface ShopManager {
     void migrateOwnerToUnlimitedShopOwner(Shop shop);
 
     /**
-     * Getting the Shop Price Limiter
+     * Register shop to memory and database.
      *
-     * @return The shop price limiter
+     * @param info The info object
+     * @return True if the shop was register successfully.
      */
-    @NotNull
-    PriceLimiter getPriceLimiter();
+    void registerShop(@NotNull Shop shop);
 
     /**
-     * Handle the player shop creating
+     * Removes a shop from the world. Does NOT remove it from the database. * REQUIRES * the world
+     * to be loaded Call shop.onUnload by your self.
      *
-     * @param p       The player
-     * @param info    The info of the shop
-     * @param message The message of the shop
+     * @param shop The shop to remove
      */
-    void actionCreate(@NotNull Player p, Info info, @NotNull String message);
-
-    /**
-     * Handle the player shop selling
-     *
-     * @param seller          The player selling
-     * @param sellerInventory The inventory of the player selling
-     * @param eco             The economy
-     * @param info            The info of the shop
-     * @param shop            The shop
-     * @param amount          The amount of the item/stack
-     */
-    void actionSelling(
-            @NotNull UUID seller,
-            @NotNull InventoryWrapper sellerInventory,
-            @NotNull AbstractEconomy eco,
-            @NotNull Info info,
-            @NotNull Shop shop,
-            int amount);
+    void removeShop(@NotNull Shop shop);
 
     /**
      * Send a purchaseSuccess message for a player.
@@ -337,5 +327,15 @@ public interface ShopManager {
      */
     @ApiStatus.Experimental
     void sendShopInfo(@NotNull Player p, @NotNull Shop shop);
+
+    /**
+     * Check if shop is not valided for specific player
+     *
+     * @param uuid The uuid of the player
+     * @param info The info of the shop
+     * @param shop The shop
+     * @return If the shop is not valided for the player
+     */
+    boolean shopIsNotValid(@NotNull UUID uuid, @NotNull Info info, @NotNull Shop shop);
 
 }

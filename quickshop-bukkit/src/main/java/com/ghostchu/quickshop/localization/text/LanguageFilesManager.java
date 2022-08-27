@@ -15,13 +15,6 @@ public class LanguageFilesManager {
     private final Map<String, FileConfiguration> locale2ContentMapping = new ConcurrentHashMap<>();
 
     /**
-     * Reset TextMapper
-     */
-    public void reset() {
-        this.locale2ContentMapping.clear();
-    }
-
-    /**
      * Deploy new locale to TextMapper with cloud values and bundle values
      *
      * @param locale       The locale code
@@ -47,6 +40,25 @@ public class LanguageFilesManager {
     }
 
     /**
+     * Getting specific locale data under specific distribution data
+     *
+     * @param locale The specific locale
+     * @return The locale data, null if never deployed
+     */
+    public @Nullable FileConfiguration getDistribution(@NotNull String locale) {
+        return this.locale2ContentMapping.get(locale);
+    }
+
+    /**
+     * Getting specific locale data under specific distribution data
+     *
+     * @return The locale data, null if never deployed
+     */
+    public @NotNull Map<String, FileConfiguration> getDistributions() {
+        return locale2ContentMapping;
+    }
+
+    /**
      * Remove all locales data under specific distribution path
      *
      * @param distributionPath The distribution path
@@ -68,22 +80,10 @@ public class LanguageFilesManager {
     }
 
     /**
-     * Getting specific locale data under specific distribution data
-     *
-     * @param locale The specific locale
-     * @return The locale data, null if never deployed
+     * Reset TextMapper
      */
-    public @Nullable FileConfiguration getDistribution(@NotNull String locale) {
-        return this.locale2ContentMapping.get(locale);
-    }
-
-    /**
-     * Getting specific locale data under specific distribution data
-     *
-     * @return The locale data, null if never deployed
-     */
-    public @NotNull Map<String, FileConfiguration> getDistributions() {
-        return locale2ContentMapping;
+    public void reset() {
+        this.locale2ContentMapping.clear();
     }
 
 

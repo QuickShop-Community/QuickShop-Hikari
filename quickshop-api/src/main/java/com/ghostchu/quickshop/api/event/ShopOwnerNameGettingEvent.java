@@ -20,24 +20,6 @@ public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
     }
 
     /**
-     * Getting the shop that trying getting the shop owner name
-     *
-     * @return The shop
-     */
-    public Shop getShop() {
-        return shop;
-    }
-
-    /**
-     * Getting the shop owner unique id
-     *
-     * @return The shop owner unique id
-     */
-    public UUID getOwner() {
-        return owner;
-    }
-
-    /**
      * Getting the shop owner display name
      *
      * @return The shop owner display name
@@ -53,5 +35,23 @@ public class ShopOwnerNameGettingEvent extends AbstractQSEvent {
      */
     public void setName(Component name) {
         this.name = name;
+    }
+
+    /**
+     * Getting the shop owner unique id
+     *
+     * @return The shop owner unique id
+     */
+    public UUID getOwner() {
+        return owner;
+    }
+
+    /**
+     * Getting the shop that trying getting the shop owner name
+     *
+     * @return The shop
+     */
+    public Shop getShop() {
+        return shop;
     }
 }

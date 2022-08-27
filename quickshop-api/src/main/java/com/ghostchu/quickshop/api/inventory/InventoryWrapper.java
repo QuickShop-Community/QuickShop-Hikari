@@ -17,86 +17,6 @@ import java.util.Map;
 public interface InventoryWrapper extends Iterable<ItemStack> {
 
     /**
-     * Change items in the inventory by index
-     * Set the item-stack type to air or amount to zero will remove it
-     * <p>
-     * It's not thread-safe, please use that in main-thread
-     *
-     * @see ItemChanger
-     */
-    default void changeItem(ItemChanger itemChanger) {
-        InventoryWrapperIterator iterator = iterator();
-        int index = 0;
-        boolean shouldContinue = true;
-        while (shouldContinue && iterator.hasNext()) {
-            ItemStack itemStack = iterator.next();
-            shouldContinue = itemChanger.changeItem(index, itemStack);
-            if (itemStack.getAmount() == 0 || itemStack.getType() == Material.AIR) {
-                iterator.setCurrent(null);
-
-            } else {
-                iterator.setCurrent(itemStack);
-            }
-            index++;
-        }
-    }
-
-    /**
-     * Return the iterator for this inventory
-     * It's not thread-safe, please use that in main-thread
-     *
-     * @return the iterator for this inventory
-     */
-    @NotNull
-    @Override
-    InventoryWrapperIterator iterator();
-
-    /**
-     * Get the location of the block or entity which corresponds to this inventory. May return null if this container
-     * was custom created or is a virtual / subcontainer.
-     *
-     * @return location or null if not applicable.
-     */
-    @Nullable Location getLocation();
-
-    /**
-     * Remove specific items from inventory
-     *
-     * @param itemStacks items to remove
-     * @return The map of containing item index and itemStack itself which is not fit
-     */
-    @NotNull
-    default Map<Integer, ItemStack> removeItem(ItemStack... itemStacks) {
-        if (itemStacks.length == 0) {
-            return Collections.emptyMap();
-        }
-        InventoryWrapperIterator iterator = iterator();
-        Map<Integer, ItemStack> integerItemStackMap = new HashMap<>();
-        RemoveProcess:
-        for (int i = 0; i < itemStacks.length; i++) {
-            ItemStack itemStackToRemove = itemStacks[i];
-            while (iterator.hasNext()) {
-                ItemStack itemStack = iterator.next();
-                if (itemStack != null && itemStack.isSimilar(itemStackToRemove)) {
-                    int couldRemove = itemStack.getAmount();
-                    int actuallyRemove = Math.min(itemStackToRemove.getAmount(), couldRemove);
-                    itemStack.setAmount(itemStack.getAmount() - actuallyRemove);
-                    int needsNow = itemStackToRemove.getAmount() - actuallyRemove;
-                    itemStackToRemove.setAmount(needsNow);
-                    iterator.setCurrent(itemStack);
-                    if (needsNow == 0) {
-                        continue RemoveProcess;
-                    }
-                }
-            }
-            if (itemStackToRemove.getAmount() != 0) {
-                integerItemStackMap.put(i, itemStackToRemove);
-            }
-        }
-        return integerItemStackMap;
-    }
-
-    /**
      * Add specific items from inventory
      *
      * @param itemStacks items to add
@@ -140,18 +60,39 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
     }
 
     /**
-     * Gets the Inventory Type
+     * Change items in the inventory by index
+     * Set the item-stack type to air or amount to zero will remove it
+     * <p>
+     * It's not thread-safe, please use that in main-thread
      *
-     * @return The Inventory Type
+     * @see ItemChanger
      */
-    @NotNull InventoryWrapperType getInventoryType();
+    default void changeItem(ItemChanger itemChanger) {
+        InventoryWrapperIterator iterator = iterator();
+        int index = 0;
+        boolean shouldContinue = true;
+        while (shouldContinue && iterator.hasNext()) {
+            ItemStack itemStack = iterator.next();
+            shouldContinue = itemChanger.changeItem(index, itemStack);
+            if (itemStack.getAmount() == 0 || itemStack.getType() == Material.AIR) {
+                iterator.setCurrent(null);
+
+            } else {
+                iterator.setCurrent(itemStack);
+            }
+            index++;
+        }
+    }
 
     /**
-     * Gets the Inventory Wrapper Manager
+     * Return the iterator for this inventory
+     * It's not thread-safe, please use that in main-thread
      *
-     * @return Wrapper Manager
+     * @return the iterator for this inventory
      */
-    @NotNull InventoryWrapperManager getWrapperManager();
+    @NotNull
+    @Override
+    InventoryWrapperIterator iterator();
 
     /**
      * Clear the inventory
@@ -166,11 +107,26 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
     @Nullable InventoryHolder getHolder();
 
     /**
-     * Set the contents of inventory
+     * Gets the Inventory Type
      *
-     * @param itemStacks the contents you want to set
+     * @return The Inventory Type
      */
-    void setContents(ItemStack[] itemStacks);
+    @NotNull InventoryWrapperType getInventoryType();
+
+    /**
+     * Get the location of the block or entity which corresponds to this inventory. May return null if this container
+     * was custom created or is a virtual / subcontainer.
+     *
+     * @return location or null if not applicable.
+     */
+    @Nullable Location getLocation();
+
+    /**
+     * Gets the Inventory Wrapper Manager
+     *
+     * @return Wrapper Manager
+     */
+    @NotNull InventoryWrapperManager getWrapperManager();
 
     /**
      * Do valid check, check if this Inventory is valid.
@@ -180,6 +136,50 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
     default boolean isValid() {
         return true;
     }
+
+    /**
+     * Remove specific items from inventory
+     *
+     * @param itemStacks items to remove
+     * @return The map of containing item index and itemStack itself which is not fit
+     */
+    @NotNull
+    default Map<Integer, ItemStack> removeItem(ItemStack... itemStacks) {
+        if (itemStacks.length == 0) {
+            return Collections.emptyMap();
+        }
+        InventoryWrapperIterator iterator = iterator();
+        Map<Integer, ItemStack> integerItemStackMap = new HashMap<>();
+        RemoveProcess:
+        for (int i = 0; i < itemStacks.length; i++) {
+            ItemStack itemStackToRemove = itemStacks[i];
+            while (iterator.hasNext()) {
+                ItemStack itemStack = iterator.next();
+                if (itemStack != null && itemStack.isSimilar(itemStackToRemove)) {
+                    int couldRemove = itemStack.getAmount();
+                    int actuallyRemove = Math.min(itemStackToRemove.getAmount(), couldRemove);
+                    itemStack.setAmount(itemStack.getAmount() - actuallyRemove);
+                    int needsNow = itemStackToRemove.getAmount() - actuallyRemove;
+                    itemStackToRemove.setAmount(needsNow);
+                    iterator.setCurrent(itemStack);
+                    if (needsNow == 0) {
+                        continue RemoveProcess;
+                    }
+                }
+            }
+            if (itemStackToRemove.getAmount() != 0) {
+                integerItemStackMap.put(i, itemStackToRemove);
+            }
+        }
+        return integerItemStackMap;
+    }
+
+    /**
+     * Set the contents of inventory
+     *
+     * @param itemStacks the contents you want to set
+     */
+    void setContents(ItemStack[] itemStacks);
 
     /**
      * Change the item from Inventory

@@ -12,6 +12,21 @@ import java.util.UUID;
  * The TextManager that allow create user's locale specified message.
  */
 public interface TextManager {
+    @NotNull Component[] convert(@Nullable Object... args);
+
+    @NotNull ProxiedLocale findRelativeLanguages(@Nullable String langCode);
+
+    @NotNull ProxiedLocale findRelativeLanguages(@Nullable CommandSender sender);
+
+    @NotNull ProxiedLocale findRelativeLanguages(@Nullable UUID sender);
+
+    /**
+     * Return the set of available Languages
+     *
+     * @return the set of available Languages
+     */
+    List<String> getAvailableLanguages();
+
     /**
      * Gets specific locale status
      *
@@ -20,13 +35,6 @@ public interface TextManager {
      * @return The locale enabled status
      */
     boolean localeEnabled(@NotNull String locale, @NotNull List<String> regex);
-
-
-    @NotNull ProxiedLocale findRelativeLanguages(@Nullable String langCode);
-
-    @NotNull ProxiedLocale findRelativeLanguages(@Nullable CommandSender sender);
-
-    @NotNull ProxiedLocale findRelativeLanguages(@Nullable UUID sender);
 
     /**
      * Getting the translation with path with default locale
@@ -60,8 +68,6 @@ public interface TextManager {
     @NotNull
     Text of(@Nullable UUID sender, @NotNull String path, @Nullable Object... args);
 
-    @NotNull Component[] convert(@Nullable Object... args);
-
     /**
      * Getting the translation with path with default locale (if available)
      *
@@ -71,13 +77,6 @@ public interface TextManager {
      */
     @NotNull
     TextList ofList(@NotNull String path, @Nullable Object... args);
-
-    /**
-     * Return the set of available Languages
-     *
-     * @return the set of available Languages
-     */
-    List<String> getAvailableLanguages();
 
     /**
      * Getting the translation with path  with player's locale (if available)

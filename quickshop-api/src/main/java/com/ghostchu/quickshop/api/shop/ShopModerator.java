@@ -54,9 +54,6 @@ public interface ShopModerator {
      */
     void clearStaffs();
 
-    @Override
-    @NotNull String toString();
-
     /**
      * Remove moderators staff from staff list
      *
@@ -64,30 +61,6 @@ public interface ShopModerator {
      * @return Success
      */
     boolean delStaff(@NotNull UUID player);
-
-    /**
-     * Get a player is or not moderators
-     *
-     * @param player Player
-     * @return yes or no, return true when it is staff or owner
-     */
-    boolean isModerator(@NotNull UUID player);
-
-    /**
-     * Get a player is or not moderators owner
-     *
-     * @param player Player
-     * @return yes or no
-     */
-    boolean isOwner(@NotNull UUID player);
-
-    /**
-     * Get a player is or not moderators a staff
-     *
-     * @param player Player
-     * @return yes or no
-     */
-    boolean isStaff(@NotNull UUID player);
 
     /**
      * Get moderators owner (Shop Owner).
@@ -116,5 +89,32 @@ public interface ShopModerator {
      * @param players staffs list
      */
     void setStaffs(@NotNull List<UUID> players);
+
+    /**
+     * Get a player is or not moderators
+     *
+     * @param player Player
+     * @return yes or no, return true when it is staff or owner
+     */
+    boolean isModerator(@NotNull UUID player);
+
+    /**
+     * Get a player is or not moderators owner
+     *
+     * @param player Player
+     * @return yes or no
+     */
+    boolean isOwner(@NotNull UUID player);
+
+    /**
+     * Get a player is or not moderators a staff
+     *
+     * @param player Player
+     * @return yes or no
+     */
+    boolean isStaff(@NotNull UUID player);
+
+    @Override
+    @NotNull String toString();
 
 }

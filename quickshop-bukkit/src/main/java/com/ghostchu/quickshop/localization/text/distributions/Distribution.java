@@ -6,18 +6,18 @@ import java.util.List;
 
 public interface Distribution {
     /**
-     * Gets all languages available on Distribution platform
-     *
-     * @return All available languages on Distribution platform
-     */
-    @NotNull List<String> getAvailableLanguages();
-
-    /**
      * Gets all translation files available on Distribution platform
      *
      * @return All translation files on Distribution platform
      */
     @NotNull List<String> getAvailableFiles();
+
+    /**
+     * Gets all languages available on Distribution platform
+     *
+     * @return All available languages on Distribution platform
+     */
+    @NotNull List<String> getAvailableLanguages();
 
     /**
      * Gets the file from the Distribution platform

@@ -86,39 +86,6 @@ public class SimpleShopModerator implements ShopModerator {
     }
 
     /**
-     * Get a player is or not moderators
-     *
-     * @param player Player
-     * @return yes or no, return true when it is staff or owner
-     */
-    @Override
-    public boolean isModerator(@NotNull UUID player) {
-        return isOwner(player) || isStaff(player);
-    }
-
-    /**
-     * Get a player is or not moderators owner
-     *
-     * @param player Player
-     * @return yes or no
-     */
-    @Override
-    public boolean isOwner(@NotNull UUID player) {
-        return player.equals(owner);
-    }
-
-    /**
-     * Get a player is or not moderators a staff
-     *
-     * @param player Player
-     * @return yes or no
-     */
-    @Override
-    public boolean isStaff(@NotNull UUID player) {
-        return staffs.contains(player);
-    }
-
-    /**
      * Get moderators owner (Shop Owner).
      *
      * @return Owner's UUID
@@ -156,6 +123,39 @@ public class SimpleShopModerator implements ShopModerator {
     @Override
     public void setStaffs(@NotNull List<UUID> players) {
         this.staffs = players;
+    }
+
+    /**
+     * Get a player is or not moderators
+     *
+     * @param player Player
+     * @return yes or no, return true when it is staff or owner
+     */
+    @Override
+    public boolean isModerator(@NotNull UUID player) {
+        return isOwner(player) || isStaff(player);
+    }
+
+    /**
+     * Get a player is or not moderators owner
+     *
+     * @param player Player
+     * @return yes or no
+     */
+    @Override
+    public boolean isOwner(@NotNull UUID player) {
+        return player.equals(owner);
+    }
+
+    /**
+     * Get a player is or not moderators a staff
+     *
+     * @param player Player
+     * @return yes or no
+     */
+    @Override
+    public boolean isStaff(@NotNull UUID player) {
+        return staffs.contains(player);
     }
 
     @Override

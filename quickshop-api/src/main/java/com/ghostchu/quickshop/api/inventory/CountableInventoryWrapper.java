@@ -8,20 +8,20 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface CountableInventoryWrapper extends InventoryWrapper {
     /**
-     * Counting the spaces
-     *
-     * @param predicate {@link ItemPredicate}
-     * @return the space
-     */
-    int countSpace(@NotNull ItemPredicate predicate);
-
-    /**
      * Counting the items
      *
      * @param predicate {@link ItemPredicate}
      * @return the items
      */
     int countItem(@NotNull ItemPredicate predicate);
+
+    /**
+     * Counting the spaces
+     *
+     * @param predicate {@link ItemPredicate}
+     * @return the space
+     */
+    int countSpace(@NotNull ItemPredicate predicate);
 
     /**
      * The item predicate for calculating

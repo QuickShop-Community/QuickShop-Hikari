@@ -34,45 +34,6 @@ public final class Main extends CompatibilityModule implements Listener {
     private QuickshopCreateFlag createFlag;
     private QuickshopTradeFlag tradeFlag;
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-        super.onDisable();
-        PlotSquared.get().getEventDispatcher().unregisterListener(this);
-    }
-
-    @Override
-    public void onEnable() {
-        // Plugin startup logic
-        super.onEnable();
-        this.createFlag = new QuickshopCreateFlag();
-        this.tradeFlag = new QuickshopTradeFlag();
-        GlobalFlagContainer.getInstance().addAll(Arrays.asList(createFlag, tradeFlag));
-        getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
-        PlotSquared.get().getEventDispatcher().registerListener(this);
-    }
-
-    @Override
-    public void init() {
-        this.whiteList = getConfig().getBoolean("whitelist-mode");
-        this.deleteUntrusted = getConfig().getBoolean("delete-when-user-untrusted");
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
-        Location shopLoc = event.getShop().getLocation();
-        com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(shopLoc.getWorld().getName(), shopLoc.getBlockX(), shopLoc.getBlockY(), shopLoc.getBlockZ());
-        Plot plot = pLocation.getPlot();
-        if (plot == null) {
-            return;
-        }
-        if (plot.getOwners().contains(event.getAuthorizer())) {
-            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
-                event.setResult(true);
-            }
-        }
-    }
-
     @EventHandler(ignoreCancelled = true)
     public void canCreateShopHere(ShopPreCreateEvent event) {
         Location location = event.getLocation();
@@ -113,6 +74,30 @@ public final class Main extends CompatibilityModule implements Listener {
         }
     }
 
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic
+        super.onDisable();
+        PlotSquared.get().getEventDispatcher().unregisterListener(this);
+    }
+
+    @Override
+    public void onEnable() {
+        // Plugin startup logic
+        super.onEnable();
+        this.createFlag = new QuickshopCreateFlag();
+        this.tradeFlag = new QuickshopTradeFlag();
+        GlobalFlagContainer.getInstance().addAll(Arrays.asList(createFlag, tradeFlag));
+        getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
+        PlotSquared.get().getEventDispatcher().registerListener(this);
+    }
+
+    @Override
+    public void init() {
+        this.whiteList = getConfig().getBoolean("whitelist-mode");
+        this.deleteUntrusted = getConfig().getBoolean("delete-when-user-untrusted");
+    }
+
     @Subscribe
     public void onPlotDelete(PlotDeleteEvent event) {
         getShops(event.getPlot()).forEach(shop -> {
@@ -143,6 +128,20 @@ public final class Main extends CompatibilityModule implements Listener {
         });
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        Location shopLoc = event.getShop().getLocation();
+        com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(shopLoc.getWorld().getName(), shopLoc.getBlockX(), shopLoc.getBlockY(), shopLoc.getBlockZ());
+        Plot plot = pLocation.getPlot();
+        if (plot == null) {
+            return;
+        }
+        if (plot.getOwners().contains(event.getAuthorizer())) {
+            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                event.setResult(true);
+            }
+        }
+    }
 
     static class QuickshopCreateFlag extends BooleanFlag<QuickshopCreateFlag> {
 

@@ -35,16 +35,6 @@ import xyz.xenondevs.nova.api.protection.ProtectionIntegration;
 public final class Main extends CompatibilityModule implements Listener, ProtectionIntegration {
 
     @Override
-    public void onEnable() {
-        xyz.xenondevs.nova.api.Nova.getNova().registerProtectionIntegration(this);
-        super.onEnable();
-    }
-
-    public void init() {
-
-    }
-
-    @Override
     public boolean canBreak(@NotNull OfflinePlayer offlinePlayer, @Nullable ItemStack itemStack, @NotNull Location location) {
         Shop shop = getApi().getShopManager().getShopIncludeAttached(location);
         if (shop == null)
@@ -94,5 +84,15 @@ public final class Main extends CompatibilityModule implements Listener, Protect
         if (shop == null)
             return true;
         return shop.getOwner().equals(offlinePlayer.getUniqueId());
+    }
+
+    public void init() {
+
+    }
+
+    @Override
+    public void onEnable() {
+        xyz.xenondevs.nova.api.Nova.getNova().registerProtectionIntegration(this);
+        super.onEnable();
     }
 }

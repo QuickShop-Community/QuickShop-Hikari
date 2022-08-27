@@ -192,28 +192,12 @@ public enum DataTables {
         return this.prefix + this.name;
     }
 
-    public @NotNull TableQueryBuilder createQuery() {
-        return this.createQuery(this.manager);
-    }
-
-    public @NotNull TableQueryBuilder createQuery(@NotNull SQLManager sqlManager) {
-        return sqlManager.createQuery().inTable(this.getName());
-    }
-
     public @NotNull DeleteBuilder createDelete() {
         return this.createDelete(this.manager);
     }
 
     public @NotNull DeleteBuilder createDelete(@NotNull SQLManager sqlManager) {
         return sqlManager.createDelete(this.getName());
-    }
-
-    public @NotNull UpdateBuilder createUpdate() {
-        return this.createUpdate(this.manager);
-    }
-
-    public @NotNull UpdateBuilder createUpdate(@NotNull SQLManager sqlManager) {
-        return sqlManager.createUpdate(this.getName());
     }
 
     public @NotNull InsertBuilder<PreparedSQLUpdateAction<Integer>> createInsert() {
@@ -232,6 +216,14 @@ public enum DataTables {
         return sqlManager.createInsertBatch(this.getName());
     }
 
+    public @NotNull TableQueryBuilder createQuery() {
+        return this.createQuery(this.manager);
+    }
+
+    public @NotNull TableQueryBuilder createQuery(@NotNull SQLManager sqlManager) {
+        return sqlManager.createQuery().inTable(this.getName());
+    }
+
     public @NotNull ReplaceBuilder<PreparedSQLUpdateAction<Integer>> createReplace() {
         return this.createReplace(this.manager);
     }
@@ -246,6 +238,14 @@ public enum DataTables {
 
     public @NotNull ReplaceBuilder<PreparedSQLUpdateBatchAction<Integer>> createReplaceBatch(@NotNull SQLManager sqlManager) {
         return sqlManager.createReplaceBatch(this.getName());
+    }
+
+    public @NotNull UpdateBuilder createUpdate() {
+        return this.createUpdate(this.manager);
+    }
+
+    public @NotNull UpdateBuilder createUpdate(@NotNull SQLManager sqlManager) {
+        return sqlManager.createUpdate(this.getName());
     }
 
     public boolean isExists() {

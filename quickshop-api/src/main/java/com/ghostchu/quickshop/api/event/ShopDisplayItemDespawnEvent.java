@@ -39,8 +39,8 @@ public class ShopDisplayItemDespawnEvent extends AbstractQSEvent implements QSCa
     }
 
     @Override
-    public boolean isCancelled() {
-        return this.cancelled;
+    public @Nullable Component getCancelReason() {
+        return this.cancelReason;
     }
 
     @Override
@@ -49,18 +49,13 @@ public class ShopDisplayItemDespawnEvent extends AbstractQSEvent implements QSCa
         this.cancelReason = reason;
     }
 
-    @Override
-    public @Nullable Component getCancelReason() {
-        return this.cancelReason;
-    }
-
     /**
-     * Gets the shop
+     * Gets the current display type
      *
-     * @return the shop
+     * @return Display type that current using
      */
-    public @NotNull Shop getShop() {
-        return this.shop;
+    public @NotNull DisplayType getDisplayType() {
+        return this.displayType;
     }
 
     /**
@@ -73,11 +68,16 @@ public class ShopDisplayItemDespawnEvent extends AbstractQSEvent implements QSCa
     }
 
     /**
-     * Gets the current display type
+     * Gets the shop
      *
-     * @return Display type that current using
+     * @return the shop
      */
-    public @NotNull DisplayType getDisplayType() {
-        return this.displayType;
+    public @NotNull Shop getShop() {
+        return this.shop;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return this.cancelled;
     }
 }

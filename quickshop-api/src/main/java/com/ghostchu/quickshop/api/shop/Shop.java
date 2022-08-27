@@ -22,12 +22,247 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * A shop
  */
 public interface Shop {
     NamespacedKey SHOP_NAMESPACED_KEY = new NamespacedKey(QuickShopAPI.getPluginInstance(), "shopsign");
+
+    /**
+     * Add x ItemStack to the shop inventory
+     *
+     * @param paramItemStack The ItemStack you want add
+     * @param paramInt       How many you want add
+     */
+    void add(@NotNull ItemStack paramItemStack, int paramInt);
+
+    /**
+     * Add new staff to the moderators
+     *
+     * @param player New staff
+     * @return Success
+     * @deprecated Use {@link #setPlayerGroup(UUID, String)} to set player to {@link BuiltInShopPermissionGroup#STAFF} instead
+     */
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
+    boolean addStaff(@NotNull UUID player);
+
+    /**
+     * Execute buy action for player with x items.
+     *
+     * @param buyer          The player buying
+     * @param buyerInventory The buyer inventory ( may not a player inventory )
+     * @param loc2Drop       The location to drops items if player inventory are full
+     * @param paramInt       How many buyed?
+     * @throws Exception Possible exception thrown if anything wrong.
+     */
+    void buy(@NotNull UUID buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
+
+    /**
+     * Check the display location, and teleport, respawn if needs.
+     */
+    void checkDisplay();
+
+    /**
+     * Claim a sign as shop sign (modern method)
+     *
+     * @param sign The shop sign
+     */
+    void claimShopSign(@NotNull Sign sign);
+
+    /**
+     * Empty moderators team.
+     *
+     * @deprecated
+     */
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
+    void clearStaffs();
+
+    /**
+     * Remove a staff from moderators
+     *
+     * @param player Staff
+     * @return Success
+     * @deprecated Use {@link #setPlayerGroup(UUID, String)} to set player to {@link BuiltInShopPermissionGroup#EVERYONE} instead
+     */
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
+    boolean delStaff(@NotNull UUID player);
+
+    /**
+     * Delete shop from ram, and database.
+     */
+    void delete();
+
+    /**
+     * Delete shop from ram or ram and database
+     *
+     * @param memoryOnly true = only delete from ram, false = delete from both ram and database
+     */
+    void delete(boolean memoryOnly);
+
+    /**
+     * Returns the attached shop object if any, otherwise null.
+     *
+     * @return Shop or null
+     */
+    Shop getAttachedShop();
+
+    /**
+     * Gets the currency that shop use
+     *
+     * @return The currency name
+     */
+    @Nullable
+    String getCurrency();
+
+    /**
+     * Sets the currency that shop use
+     *
+     * @param currency The currency name; null to use default currency
+     */
+    void setCurrency(@Nullable String currency);
+
+    /**
+     * Get shop's item durability, if have.
+     *
+     * @return Shop's item durability
+     */
+    short getDurability();
+
+    /**
+     * Getting ConfigurationSection (extra data) instance of your plugin namespace)
+     *
+     * @param plugin The plugin and plugin name will used for namespace
+     * @return ExtraSection, save it through Shop#setExtra. If you don't save it, it may randomly loose or save
+     */
+    @NotNull
+    ConfigurationSection getExtra(@NotNull Plugin plugin);
+
+    /**
+     * Gets the shop Inventory
+     *
+     * @return Inventory
+     */
+    @Nullable InventoryWrapper getInventory();
+
+    /**
+     * Gets the InventoryWrapper provider name (the plugin name who register it), usually is QuickShop
+     *
+     * @return InventoryWrapper
+     */
+    @NotNull
+    String getInventoryWrapperProvider();
+
+    /**
+     * Get shop item's ItemStack
+     *
+     * @return The shop's ItemStack
+     */
+    @NotNull
+    ItemStack getItem();
+
+    /**
+     * Set shop item's ItemStack
+     *
+     * @param item ItemStack to set
+     */
+    void setItem(@NotNull ItemStack item);
+
+    /**
+     * Get shop's location
+     *
+     * @return Shop's location
+     */
+    @NotNull
+    Location getLocation();
+
+    /**
+     * Return this shop's moderators
+     *
+     * @return Shop moderators
+     * @deprecated Replaced by {@link #playerAuthorize(UUID, BuiltInShopPermission)} ()}
+     */
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
+    @NotNull
+    ShopModerator getModerator();
+
+    /**
+     * Set new shop's moderators
+     *
+     * @param shopModerator New moderators team you want set
+     * @deprecated Replaced by {@link #setPlayerGroup(UUID, String)}
+     */
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
+    void setModerator(@NotNull ShopModerator shopModerator);
+
+    /**
+     * Get shop's owner UUID
+     *
+     * @return Shop's owner UUID, can use Bukkit.getOfflinePlayer to convert to the OfflinePlayer.
+     */
+    @NotNull
+    UUID getOwner();
+
+    /**
+     * Set new owner to the shop's owner
+     *
+     * @param paramString New owner UUID
+     */
+    void setOwner(@NotNull UUID paramString);
+
+    /**
+     * Gets all player and their group on this shop
+     *
+     * @return Map of UUID and group
+     */
+    @NotNull
+    Map<UUID, String> getPermissionAudiences();
+
+    /**
+     * Gets specific player group on specific shop
+     *
+     * @param player player
+     * @return namespaced group
+     */
+    @NotNull
+    String getPlayerGroup(@NotNull UUID player);
+
+    /**
+     * Get shop's price
+     *
+     * @return Price
+     */
+    double getPrice();
+
+    /**
+     * Set shop's new price
+     *
+     * @param paramDouble New price
+     */
+    void setPrice(double paramDouble);
+
+    /**
+     * Get shop remaining space.
+     *
+     * @return Remaining space.
+     */
+    int getRemainingSpace();
+
+    /**
+     * Get shop remaining stock.
+     *
+     * @return Remaining stock.
+     */
+    int getRemainingStock();
+
+    /**
+     * WARNING: This UUID will changed after plugin reload, shop reload or server restart
+     * DO NOT USE IT TO STORE DATA!
+     *
+     * @return Random UUID
+     */
+    @NotNull UUID getRuntimeRandomUniqueId();
 
     /**
      * Gets the Shop ID to identify the shop.
@@ -43,6 +278,289 @@ public interface Shop {
      */
     @ApiStatus.Internal
     void setShopId(long newId);
+
+    /**
+     * Gets this shop name that set by player
+     *
+     * @return Shop name, or null if not set
+     */
+    @Nullable
+    String getShopName();
+
+    /**
+     * Sets shop name
+     *
+     * @param shopName shop name, null to remove currently name
+     */
+    void setShopName(@Nullable String shopName);
+
+    int getShopStackingAmount();
+
+    /**
+     * Get shop type
+     *
+     * @return shop type
+     */
+    @NotNull
+    ShopType getShopType();
+
+    /**
+     * Set new shop type for this shop
+     *
+     * @param paramShopType New {@link ShopType}
+     */
+    void setShopType(@NotNull ShopType paramShopType);
+
+    /**
+     * Get sign texts on shop's sign.
+     *
+     * @param locale The locale to be created for
+     * @return String arrays represents sign texts:
+     * Index | Content
+     * Line 0: Header
+     * Line 1: Shop Type
+     * Line 2: Shop Item Name
+     * Line 3: Price
+     */
+    default List<Component> getSignText(@NotNull ProxiedLocale locale) {
+        //backward support
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Get shop signs, may have multi signs
+     *
+     * @return Signs for the shop
+     */
+    @NotNull
+    List<Sign> getSigns();
+
+    /**
+     * Directly get all staffs.
+     *
+     * @return staffs
+     * @deprecated Replaced by {@link #playersCanAuthorize(BuiltInShopPermissionGroup)} with {@link BuiltInShopPermissionGroup#STAFF}
+     */
+    @NotNull
+    @Deprecated(forRemoval = true, since = "2.0.0.0")
+    List<UUID> getStaffs();
+
+    /**
+     * Getting the shop tax account for using, it can be specific uuid or general tax account
+     *
+     * @return Shop Tax Account or fallback to general tax account
+     */
+    @Nullable
+    UUID getTaxAccount();
+
+    /**
+     * Sets shop taxAccount
+     *
+     * @param taxAccount tax account, null to use general tax account
+     */
+    void setTaxAccount(@Nullable UUID taxAccount);
+
+    /**
+     * Getting the shop tax account, it can be specific uuid or general tax account
+     *
+     * @return Shop Tax Account, null if use general tax account
+     */
+
+    @Nullable
+    UUID getTaxAccountActual();
+
+    /**
+     * Check if shop out of space or out of stock
+     *
+     * @return true if out of space or out of stock
+     */
+    boolean inventoryAvailable();
+
+    /**
+     * Check shop is or not attacked the target block
+     *
+     * @param paramBlock Target {@link Block}
+     * @return isAttached
+     */
+    boolean isAttached(@NotNull Block paramBlock);
+
+    /**
+     * Get shop is or not in buying mode
+     *
+     * @return yes or no
+     */
+    boolean isBuying();
+
+    /**
+     * Whether Shop is deleted
+     *
+     * @return status
+     */
+    boolean isDeleted();
+
+    /**
+     * Gets if shop is dirty
+     * (so shop will be save)
+     *
+     * @return Is dirty
+     */
+    boolean isDirty();
+
+    /**
+     * Sets dirty status
+     *
+     * @param isDirty Shop is dirty
+     */
+    void setDirty(boolean isDirty);
+
+    /**
+     * Getting if this shop has been disabled the display
+     *
+     * @return Does display has been disabled
+     */
+    boolean isDisableDisplay();
+
+    /**
+     * Set the display disable state
+     *
+     * @param disabled Has been disabled
+     */
+    void setDisableDisplay(boolean disabled);
+
+    /**
+     * Returns the Shop is a double shop
+     *
+     * @return if the shop is a double shop
+     */
+    boolean isDoubleShop();
+
+    /**
+     * Check if this shop is free shop
+     *
+     * @return Free Shop
+     */
+    boolean isFreeShop();
+
+    /**
+     * Returns the current cached isLeftShop state of the Shop
+     *
+     * @return if the shop is a left shop
+     */
+    boolean isLeftShop();
+
+    /**
+     * Get this container shop is loaded or unloaded.
+     *
+     * @return Loaded
+     */
+    boolean isLoaded();
+
+    /**
+     * Returns the current cached isRealDouble state of the Shop
+     *
+     * @return if the shop is a RealDouble
+     */
+    boolean isRealDouble();
+
+    /**
+     * Get shop is or not in selling mode
+     *
+     * @return yes or no
+     */
+    boolean isSelling();
+
+    /**
+     * Checks if a Sign is a ShopSign
+     *
+     * @param sign Target {@link Sign}
+     * @return Is shop info sign
+     */
+    boolean isShopSign(@NotNull Sign sign);
+
+    /**
+     * Gets shop status is stacking shop
+     *
+     * @return The shop stacking status
+     */
+    boolean isStackingShop();
+
+    /**
+     * Get shop is or not in Unlimited Mode (Admin Shop)
+     *
+     * @return yes or not
+     */
+    boolean isUnlimited();
+
+    /**
+     * Set shop is or not Unlimited Mode (Admin Shop)
+     *
+     * @param paramBoolean status
+     */
+    void setUnlimited(boolean paramBoolean);
+
+    /**
+     * Whether Shop is valid
+     *
+     * @return status
+     */
+    boolean isValid();
+
+    /**
+     * Check the target ItemStack is matches with this shop's item.
+     *
+     * @param paramItemStack Target ItemStack.
+     * @return Matches
+     */
+    boolean matches(@NotNull ItemStack paramItemStack);
+
+    /**
+     * Execute codes when player click the shop will did things
+     */
+    void onClick(@NotNull Player clicker);
+
+    /**
+     * Load shop to the world
+     */
+    void onLoad();
+
+    /**
+     * Unload shop from world
+     */
+    void onUnload();
+
+    /**
+     * open a preview for shop item
+     *
+     * @param player The viewer {@link Player}
+     */
+    void openPreview(@NotNull Player player);
+
+    /**
+     * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
+     *
+     * @param forceUsername Force returns username of shop
+     * @param locale        The locale to parse the message
+     * @return owner name
+     */
+    @NotNull
+    Component ownerName(boolean forceUsername, @NotNull ProxiedLocale locale);
+
+    /**
+     * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
+     *
+     * @param locale The locale to parse the message
+     * @return owner name
+     */
+    @NotNull
+    Component ownerName(@NotNull ProxiedLocale locale);
+
+    /**
+     * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
+     *
+     * @return owner name
+     */
+    @NotNull
+    Component ownerName();
 
     /**
      * Check if player have authorized for specific permission on specific shop
@@ -89,13 +607,67 @@ public interface Shop {
     List<UUID> playersCanAuthorize(@NotNull Plugin plugin, @NotNull String permission);
 
     /**
-     * Gets specific player group on specific shop
+     * Refresh shop sign and display item
+     */
+    void refresh();
+
+    /**
+     * Remove x ItemStack from the shop inventory
      *
-     * @param player player
-     * @return namespaced group
+     * @param paramItemStack Want removed ItemStack
+     * @param paramInt       Want remove how many
+     * @throws Exception Possible exception thrown if anything wrong.
+     */
+    void remove(@NotNull ItemStack paramItemStack, int paramInt);
+
+    /**
+     * Save the plugin extra data to Json format
+     *
+     * @return The json string
      */
     @NotNull
-    String getPlayerGroup(@NotNull UUID player);
+    String saveExtraToYaml();
+
+    /**
+     * Getting ShopInfoStorage that you can use for storage the shop data
+     *
+     * @return ShopInfoStorage
+     */
+    ShopInfoStorage saveToInfoStorage();
+
+    /**
+     * Gets the symbol link that created by InventoryWrapperManager
+     *
+     * @return InventoryWrapper
+     */
+    @NotNull
+    String saveToSymbolLink();
+
+    /**
+     * Execute sell action for player with x items.
+     *
+     * @param seller          Seller
+     * @param sellerInventory Seller's inventory ( may not a player inventory )
+     * @param loc2Drop        The location to be drop if buyer inventory full ( if player enter a number that < 0, it will turn to buying item)
+     * @param paramInt        How many sold?
+     * @throws Exception Possible exception thrown if anything wrong.
+     */
+    void sell(@NotNull UUID seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
+
+    /**
+     * Sets shop is dirty
+     */
+    void setDirty();
+
+    /**
+     * Save the extra data to the shop.
+     *
+     * @param plugin Plugin instace
+     * @param data   The data table
+     */
+    void setExtra(@NotNull Plugin plugin, @NotNull ConfigurationSection data);
+
+    void setInventory(@NotNull InventoryWrapper wrapper, @NotNull InventoryWrapperManager manager);
 
     /**
      * Sets specific player permission on specfic shop
@@ -114,197 +686,9 @@ public interface Shop {
     void setPlayerGroup(@NotNull UUID player, @Nullable BuiltInShopPermissionGroup group);
 
     /**
-     * Gets all player and their group on this shop
-     *
-     * @return Map of UUID and group
-     */
-    @NotNull
-    Map<UUID, String> getPermissionAudiences();
-
-    /**
-     * Gets this shop name that set by player
-     *
-     * @return Shop name, or null if not set
-     */
-    @Nullable
-    String getShopName();
-
-    /**
-     * Sets shop name
-     *
-     * @param shopName shop name, null to remove currently name
-     */
-    void setShopName(@Nullable String shopName);
-
-    /**
-     * Add x ItemStack to the shop inventory
-     *
-     * @param paramItemStack The ItemStack you want add
-     * @param paramInt       How many you want add
-     */
-    void add(@NotNull ItemStack paramItemStack, int paramInt);
-
-    /**
-     * Add new staff to the moderators
-     *
-     * @param player New staff
-     * @return Success
-     * @deprecated Use {@link #setPlayerGroup(UUID, String)} to set player to {@link BuiltInShopPermissionGroup#STAFF} instead
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    boolean addStaff(@NotNull UUID player);
-
-    /**
-     * Execute buy action for player with x items.
-     *
-     * @param buyer          The player buying
-     * @param buyerInventory The buyer inventory ( may not a player inventory )
-     * @param loc2Drop       The location to drops items if player inventory are full
-     * @param paramInt       How many buyed?
-     * @throws Exception Possible exception thrown if anything wrong.
-     */
-    void buy(@NotNull UUID buyer, @NotNull InventoryWrapper buyerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
-
-    /**
-     * Check the display location, and teleport, respawn if needs.
-     */
-    void checkDisplay();
-
-    /**
-     * Empty moderators team.
-     *
-     * @deprecated
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    void clearStaffs();
-
-    /**
-     * Remove a staff from moderators
-     *
-     * @param player Staff
-     * @return Success
-     * @deprecated Use {@link #setPlayerGroup(UUID, String)} to set player to {@link BuiltInShopPermissionGroup#EVERYONE} instead
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    boolean delStaff(@NotNull UUID player);
-
-    /**
-     * Delete shop from ram, and database.
-     */
-    void delete();
-
-    /**
-     * Delete shop from ram or ram and database
-     *
-     * @param memoryOnly true = only delete from ram, false = delete from both ram and database
-     */
-    void delete(boolean memoryOnly);
-
-    /**
-     * Check shop is or not attacked the target block
-     *
-     * @param paramBlock Target {@link Block}
-     * @return isAttached
-     */
-    boolean isAttached(@NotNull Block paramBlock);
-
-    /**
-     * Check the target ItemStack is matches with this shop's item.
-     *
-     * @param paramItemStack Target ItemStack.
-     * @return Matches
-     */
-    boolean matches(@NotNull ItemStack paramItemStack);
-
-    /**
-     * Execute codes when player click the shop will did things
-     */
-    void onClick(@NotNull Player clicker);
-
-    /**
-     * Load shop to the world
-     */
-    void onLoad();
-
-    /**
-     * Unload shop from world
-     */
-    void onUnload();
-
-    /**
-     * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
-     *
-     * @param forceUsername Force returns username of shop
-     * @param locale        The locale to parse the message
-     * @return owner name
-     */
-    @NotNull
-    Component ownerName(boolean forceUsername, @NotNull ProxiedLocale locale);
-
-    /**
-     * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
-     *
-     * @param locale The locale to parse the message
-     * @return owner name
-     */
-    @NotNull
-    Component ownerName(@NotNull ProxiedLocale locale);
-
-    /**
-     * Get shop's owner name, it will return owner name or Admin Shop(i18n) when it is unlimited
-     *
-     * @return owner name
-     */
-    @NotNull
-    Component ownerName();
-
-    /**
-     * Remove x ItemStack from the shop inventory
-     *
-     * @param paramItemStack Want removed ItemStack
-     * @param paramInt       Want remove how many
-     * @throws Exception Possible exception thrown if anything wrong.
-     */
-    void remove(@NotNull ItemStack paramItemStack, int paramInt);
-
-    /**
-     * Execute sell action for player with x items.
-     *
-     * @param seller          Seller
-     * @param sellerInventory Seller's inventory ( may not a player inventory )
-     * @param loc2Drop        The location to be drop if buyer inventory full ( if player enter a number that < 0, it will turn to buying item)
-     * @param paramInt        How many sold?
-     * @throws Exception Possible exception thrown if anything wrong.
-     */
-    void sell(@NotNull UUID seller, @NotNull InventoryWrapper sellerInventory, @NotNull Location loc2Drop, int paramInt) throws Exception;
-
-    /**
      * Generate new sign texts on shop's sign.
      */
     void setSignText();
-
-    /**
-     * Check if shop out of space or out of stock
-     *
-     * @return true if out of space or out of stock
-     */
-    boolean inventoryAvailable();
-
-    /**
-     * Get sign texts on shop's sign.
-     *
-     * @param locale The locale to be created for
-     * @return String arrays represents sign texts:
-     * Index | Content
-     * Line 0: Header
-     * Line 1: Shop Type
-     * Line 2: Shop Item Name
-     * Line 3: Price
-     */
-    default List<Component> getSignText(@NotNull ProxiedLocale locale) {
-        //backward support
-        throw new UnsupportedOperationException();
-    }
 
     /**
      * Set texts on shop's sign
@@ -318,394 +702,12 @@ public interface Shop {
     /**
      * Update shop data to database
      */
-    void update();
-
-    void setInventory(@NotNull InventoryWrapper wrapper, @NotNull InventoryWrapperManager manager);
-
-    /**
-     * Get shop's item durability, if have.
-     *
-     * @return Shop's item durability
-     */
-    short getDurability();
-
-    /**
-     * Get shop item's ItemStack
-     *
-     * @return The shop's ItemStack
-     */
     @NotNull
-    ItemStack getItem();
-
-    /**
-     * Set shop item's ItemStack
-     *
-     * @param item ItemStack to set
-     */
-    void setItem(@NotNull ItemStack item);
-
-    int getShopStackingAmount();
-
-    /**
-     * Refresh shop sign and display item
-     */
-    void refresh();
-
-    /**
-     * Get shop's location
-     *
-     * @return Shop's location
-     */
-    @NotNull
-    Location getLocation();
-
-    /**
-     * Return this shop's moderators
-     *
-     * @return Shop moderators
-     * @deprecated Replaced by {@link #playerAuthorize(UUID, BuiltInShopPermission)} ()}
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    @NotNull
-    ShopModerator getModerator();
-
-    /**
-     * Set new shop's moderators
-     *
-     * @param shopModerator New moderators team you want set
-     * @deprecated Replaced by {@link #setPlayerGroup(UUID, String)}
-     */
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    void setModerator(@NotNull ShopModerator shopModerator);
-
-    /**
-     * Get shop's owner UUID
-     *
-     * @return Shop's owner UUID, can use Bukkit.getOfflinePlayer to convert to the OfflinePlayer.
-     */
-    @NotNull
-    UUID getOwner();
-
-    /**
-     * Set new owner to the shop's owner
-     *
-     * @param paramString New owner UUID
-     */
-    void setOwner(@NotNull UUID paramString);
-
-    /**
-     * Get shop's price
-     *
-     * @return Price
-     */
-    double getPrice();
-
-    /**
-     * Set shop's new price
-     *
-     * @param paramDouble New price
-     */
-    void setPrice(double paramDouble);
-
-    /**
-     * Get shop remaining space.
-     *
-     * @return Remaining space.
-     */
-    int getRemainingSpace();
-
-    /**
-     * Get shop remaining stock.
-     *
-     * @return Remaining stock.
-     */
-    int getRemainingStock();
-
-    /**
-     * Get shop type
-     *
-     * @return shop type
-     */
-    @NotNull
-    ShopType getShopType();
-
-    /**
-     * Set new shop type for this shop
-     *
-     * @param paramShopType New {@link ShopType}
-     */
-    void setShopType(@NotNull ShopType paramShopType);
-
-    /**
-     * Get shop signs, may have multi signs
-     *
-     * @return Signs for the shop
-     */
-    @NotNull
-    List<Sign> getSigns();
-
-    /**
-     * Directly get all staffs.
-     *
-     * @return staffs
-     * @deprecated Replaced by {@link #playersCanAuthorize(BuiltInShopPermissionGroup)} with {@link BuiltInShopPermissionGroup#STAFF}
-     */
-    @NotNull
-    @Deprecated(forRemoval = true, since = "2.0.0.0")
-    List<UUID> getStaffs();
-
-    /**
-     * Get shop is or not in buying mode
-     *
-     * @return yes or no
-     */
-    boolean isBuying();
-
-    /**
-     * Get this container shop is loaded or unloaded.
-     *
-     * @return Loaded
-     */
-    boolean isLoaded();
-
-    /**
-     * Get shop is or not in selling mode
-     *
-     * @return yes or no
-     */
-    boolean isSelling();
-
-    /**
-     * Get shop is or not in Unlimited Mode (Admin Shop)
-     *
-     * @return yes or not
-     */
-    boolean isUnlimited();
-
-    /**
-     * Set shop is or not Unlimited Mode (Admin Shop)
-     *
-     * @param paramBoolean status
-     */
-    void setUnlimited(boolean paramBoolean);
-
-    /**
-     * Whether Shop is valid
-     *
-     * @return status
-     */
-    boolean isValid();
-
-    /**
-     * Whether Shop is deleted
-     *
-     * @return status
-     */
-    boolean isDeleted();
-
-    /**
-     * Gets if shop is dirty
-     * (so shop will be save)
-     *
-     * @return Is dirty
-     */
-    boolean isDirty();
-
-    /**
-     * Sets dirty status
-     *
-     * @param isDirty Shop is dirty
-     */
-    void setDirty(boolean isDirty);
-
-    /**
-     * Sets shop is dirty
-     */
-    void setDirty();
-
-    /**
-     * Save the plugin extra data to Json format
-     *
-     * @return The json string
-     */
-    @NotNull
-    String saveExtraToYaml();
-
-    /**
-     * Getting ConfigurationSection (extra data) instance of your plugin namespace)
-     *
-     * @param plugin The plugin and plugin name will used for namespace
-     * @return ExtraSection, save it through Shop#setExtra. If you don't save it, it may randomly loose or save
-     */
-    @NotNull
-    ConfigurationSection getExtra(@NotNull Plugin plugin);
-
-    /**
-     * Save the extra data to the shop.
-     *
-     * @param plugin Plugin instace
-     * @param data   The data table
-     */
-    void setExtra(@NotNull Plugin plugin, @NotNull ConfigurationSection data);
-
-    /**
-     * Gets shop status is stacking shop
-     *
-     * @return The shop stacking status
-     */
-    boolean isStackingShop();
-
-    /**
-     * WARNING: This UUID will changed after plugin reload, shop reload or server restart
-     * DO NOT USE IT TO STORE DATA!
-     *
-     * @return Random UUID
-     */
-    @NotNull UUID getRuntimeRandomUniqueId();
-
-    /**
-     * Gets the currency that shop use
-     *
-     * @return The currency name
-     */
-    @Nullable
-    String getCurrency();
-
-    /**
-     * Sets the currency that shop use
-     *
-     * @param currency The currency name; null to use default currency
-     */
-    void setCurrency(@Nullable String currency);
-
-    /**
-     * open a preview for shop item
-     *
-     * @param player The viewer {@link Player}
-     */
-    void openPreview(@NotNull Player player);
-
-    /**
-     * Returns the current cached isLeftShop state of the Shop
-     *
-     * @return if the shop is a left shop
-     */
-    boolean isLeftShop();
-
-    /**
-     * Returns the current cached isRealDouble state of the Shop
-     *
-     * @return if the shop is a RealDouble
-     */
-    boolean isRealDouble();
-
-    /**
-     * Returns the Shop is a double shop
-     *
-     * @return if the shop is a double shop
-     */
-    boolean isDoubleShop();
+    CompletableFuture<Void> update();
 
     /**
      * Updates the attachedShop variable to reflect the currently attached shop, if any.
      * Also updates the left shop status.
      */
     void updateAttachedShop();
-
-    /**
-     * Returns the attached shop object if any, otherwise null.
-     *
-     * @return Shop or null
-     */
-    Shop getAttachedShop();
-
-    /**
-     * Getting ShopInfoStorage that you can use for storage the shop data
-     *
-     * @return ShopInfoStorage
-     */
-    ShopInfoStorage saveToInfoStorage();
-
-    /**
-     * Getting if this shop has been disabled the display
-     *
-     * @return Does display has been disabled
-     */
-    boolean isDisableDisplay();
-
-    /**
-     * Set the display disable state
-     *
-     * @param disabled Has been disabled
-     */
-    void setDisableDisplay(boolean disabled);
-
-    /**
-     * Getting the shop tax account for using, it can be specific uuid or general tax account
-     *
-     * @return Shop Tax Account or fallback to general tax account
-     */
-    @Nullable
-    UUID getTaxAccount();
-
-    /**
-     * Sets shop taxAccount
-     *
-     * @param taxAccount tax account, null to use general tax account
-     */
-    void setTaxAccount(@Nullable UUID taxAccount);
-
-    /**
-     * Getting the shop tax account, it can be specific uuid or general tax account
-     *
-     * @return Shop Tax Account, null if use general tax account
-     */
-
-    @Nullable
-    UUID getTaxAccountActual();
-
-    /**
-     * Claim a sign as shop sign (modern method)
-     *
-     * @param sign The shop sign
-     */
-    void claimShopSign(@NotNull Sign sign);
-
-    /**
-     * Gets the shop Inventory
-     *
-     * @return Inventory
-     */
-    @Nullable InventoryWrapper getInventory();
-
-    /**
-     * Checks if a Sign is a ShopSign
-     *
-     * @param sign Target {@link Sign}
-     * @return Is shop info sign
-     */
-    boolean isShopSign(@NotNull Sign sign);
-
-    /**
-     * Check if this shop is free shop
-     *
-     * @return Free Shop
-     */
-    boolean isFreeShop();
-
-    /**
-     * Gets the InventoryWrapper provider name (the plugin name who register it), usually is QuickShop
-     *
-     * @return InventoryWrapper
-     */
-    @NotNull
-    String getInventoryWrapperProvider();
-
-    /**
-     * Gets the symbol link that created by InventoryWrapperManager
-     *
-     * @return InventoryWrapper
-     */
-    @NotNull
-    String saveToSymbolLink();
 }

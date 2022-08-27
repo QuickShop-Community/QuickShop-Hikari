@@ -40,12 +40,6 @@ public class ShopProtectionListener extends AbstractProtectionListener {
         this.hopperOwnerExclude = plugin.getConfig().getBoolean("protect.hopper-owner-exclude", false);
     }
 
-    @Override
-    public ReloadResult reloadModule() {
-        init();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockExplode(BlockExplodeEvent e) {
         for (int i = 0, a = e.blockList().size(); i < a; i++) {
@@ -83,6 +77,19 @@ public class ShopProtectionListener extends AbstractProtectionListener {
     }
 
     /*
+     * Handles shops breaking through entity changes (like Wither etc.)
+     */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityBlockChange(EntityChangeBlockEvent e) {
+        if (!plugin.getConfig().getBoolean("protect.entity", true)) {
+            return;
+        }
+        if (getShopNature(e.getBlock().getLocation(), true) != null) {
+            e.setCancelled(true);
+        }
+    }
+
+    /*
      * Handles shops breaking through explosions
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -100,27 +107,6 @@ public class ShopProtectionListener extends AbstractProtectionListener {
                 plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "BlockBreak(explode)", shop.saveToInfoStorage()));
                 shop.delete();
             }
-        }
-    }
-
-    /*
-     * Handles shops breaking through entity changes (like Wither etc.)
-     */
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onEntityBlockChange(EntityChangeBlockEvent e) {
-        if (!plugin.getConfig().getBoolean("protect.entity", true)) {
-            return;
-        }
-        if (getShopNature(e.getBlock().getLocation(), true) != null) {
-            e.setCancelled(true);
-        }
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPlaceHopper(BlockPlaceEvent e) {
-        if (e.getBlockPlaced().getState() instanceof Hopper hopper) {
-            hopper.getPersistentDataContainer().set(hopperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
-            hopper.update();
         }
     }
 
@@ -150,5 +136,19 @@ public class ShopProtectionListener extends AbstractProtectionListener {
             }
         }
         event.setCancelled(true);
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onPlaceHopper(BlockPlaceEvent e) {
+        if (e.getBlockPlaced().getState() instanceof Hopper hopper) {
+            hopper.getPersistentDataContainer().set(hopperKey, HopperPersistentDataType.INSTANCE, new HopperPersistentData(e.getPlayer().getUniqueId()));
+            hopper.update();
+        }
+    }
+
+    @Override
+    public ReloadResult reloadModule() {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 }

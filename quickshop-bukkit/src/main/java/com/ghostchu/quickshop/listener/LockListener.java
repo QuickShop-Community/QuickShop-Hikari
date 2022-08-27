@@ -34,26 +34,6 @@ public class LockListener extends AbstractProtectionListener {
         super(plugin, cache);
     }
 
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() {
-        register();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
-    }
-
-    @Override
-    public void register() {
-        if (plugin.getConfig().getBoolean("shop.lock")) {
-            super.register();
-        } else {
-            super.unregister();
-        }
-    }
-
     /*
      * Removes chests when they're destroyed.
      */
@@ -93,31 +73,6 @@ public class LockListener extends AbstractProtectionListener {
                 e.setCancelled(true);
                 plugin.text().of(p, "no-permission").send();
             }
-        }
-    }
-
-    /*
-     * Listens for sign placement to prevent placing sign for creating protection
-     */
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-    public void onSignPlace(BlockPlaceEvent event) {
-        Block placedBlock = event.getBlock();
-        if (!(placedBlock.getState() instanceof Sign)) {
-            return;
-        }
-        Block posShopBlock = Util.getAttached(placedBlock);
-        if (posShopBlock == null) {
-            return;
-        }
-        Shop shop = plugin.getShopManager().getShopIncludeAttached(posShopBlock.getLocation());
-        if (shop == null) {
-            return;
-        }
-        Player player = event.getPlayer();
-        if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.DELETE)
-                && !plugin.perm().hasPermission(player, "quickshop.other.open")) {
-            plugin.text().of(player, "that-is-locked").send();
-            event.setCancelled(true);
         }
     }
 
@@ -187,6 +142,51 @@ public class LockListener extends AbstractProtectionListener {
 
         plugin.text().of(p, "that-is-locked").send();
         e.setCancelled(true);
+    }
+
+    /*
+     * Listens for sign placement to prevent placing sign for creating protection
+     */
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void onSignPlace(BlockPlaceEvent event) {
+        Block placedBlock = event.getBlock();
+        if (!(placedBlock.getState() instanceof Sign)) {
+            return;
+        }
+        Block posShopBlock = Util.getAttached(placedBlock);
+        if (posShopBlock == null) {
+            return;
+        }
+        Shop shop = plugin.getShopManager().getShopIncludeAttached(posShopBlock.getLocation());
+        if (shop == null) {
+            return;
+        }
+        Player player = event.getPlayer();
+        if (!shop.playerAuthorize(player.getUniqueId(), BuiltInShopPermission.DELETE)
+                && !plugin.perm().hasPermission(player, "quickshop.other.open")) {
+            plugin.text().of(player, "that-is-locked").send();
+            event.setCancelled(true);
+        }
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() {
+        register();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+    }
+
+    @Override
+    public void register() {
+        if (plugin.getConfig().getBoolean("shop.lock")) {
+            super.register();
+        } else {
+            super.unregister();
+        }
     }
 
 }

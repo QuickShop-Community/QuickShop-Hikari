@@ -47,6 +47,38 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
         return from;
     }
 
+    public interface SimpleTransactionCallback extends InventoryTransaction.TransactionCallback {
+        /**
+         * Calling while Transaction commit
+         *
+         * @param transaction Transaction
+         * @return Does commit event has been cancelled
+         */
+        default boolean onCommit(@NotNull SimpleInventoryTransaction transaction) {
+            return true;
+        }
+
+        /**
+         * Calling while Transaction commit failed
+         * Use InventoryTransaction#getLastError() to getting reason
+         * Use InventoryTransaction#getSteps() to getting the fail step
+         *
+         * @param transaction Transaction
+         */
+        default void onFailed(@NotNull SimpleInventoryTransaction transaction) {
+        }
+
+        /**
+         * Calling while Transaction commit successfully
+         *
+         * @param transaction Transaction
+         */
+        default void onSuccess(@NotNull SimpleInventoryTransaction transaction) {
+        }
+
+
+    }
+
     @Override
     public void setFrom(@Nullable InventoryWrapper from) {
         this.from = from;
@@ -225,37 +257,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
         }
     }
 
-    public interface SimpleTransactionCallback extends InventoryTransaction.TransactionCallback {
-        /**
-         * Calling while Transaction commit
-         *
-         * @param transaction Transaction
-         * @return Does commit event has been cancelled
-         */
-        default boolean onCommit(@NotNull SimpleInventoryTransaction transaction) {
-            return true;
-        }
 
-        /**
-         * Calling while Transaction commit successfully
-         *
-         * @param transaction Transaction
-         */
-        default void onSuccess(@NotNull SimpleInventoryTransaction transaction) {
-        }
-
-        /**
-         * Calling while Transaction commit failed
-         * Use InventoryTransaction#getLastError() to getting reason
-         * Use InventoryTransaction#getSteps() to getting the fail step
-         *
-         * @param transaction Transaction
-         */
-        default void onFailed(@NotNull SimpleInventoryTransaction transaction) {
-        }
-
-
-    }
 
 
 }

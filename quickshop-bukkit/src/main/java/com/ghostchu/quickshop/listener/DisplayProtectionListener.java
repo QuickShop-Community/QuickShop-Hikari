@@ -31,41 +31,6 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
         super(plugin, cache);
     }
 
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        return super.reloadModule();
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    public void portal(EntityPortalEvent event) {
-        if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
-            return;
-        }
-        if (!(event.getEntity() instanceof Item itemEntity)) {
-            return;
-        }
-        if (AbstractDisplayItem.checkIsGuardItemStack(itemEntity.getItemStack())) {
-            event.setCancelled(true);
-            event.getEntity().remove();
-            sendAlert(
-                    "[DisplayGuard] Somebody want dupe the display by Portal at "
-                            + event.getFrom()
-                            + " , QuickShop already cancel it.");
-        }
-    }
-
-    private void sendAlert(@NotNull String msg) {
-        if (!plugin.getConfig().getBoolean("send-display-item-protection-alert")) {
-            return;
-        }
-        MsgUtil.sendGlobalAlert(msg);
-    }
-
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void inventory(InventoryOpenEvent event) {
         Util.inventoryCheck(new BukkitInventoryWrapper(event.getInventory()));
@@ -91,7 +56,6 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
                         + " trying pickup the DisplayItem,  you should teleport to that location and to check detail..");
         Util.inventoryCheck(new BukkitInventoryWrapper(event.getInventory()));
     }
-
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void item(ItemDespawnEvent event) {
@@ -146,6 +110,41 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
                 "[DisplayGuard] Player  "
                         + event.getPlayer().getName()
                         + " trying mainipulate armorstand contains displayItem.");
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void portal(EntityPortalEvent event) {
+        if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
+            return;
+        }
+        if (!(event.getEntity() instanceof Item itemEntity)) {
+            return;
+        }
+        if (AbstractDisplayItem.checkIsGuardItemStack(itemEntity.getItemStack())) {
+            event.setCancelled(true);
+            event.getEntity().remove();
+            sendAlert(
+                    "[DisplayGuard] Somebody want dupe the display by Portal at "
+                            + event.getFrom()
+                            + " , QuickShop already cancel it.");
+        }
+    }
+
+    private void sendAlert(@NotNull String msg) {
+        if (!plugin.getConfig().getBoolean("send-display-item-protection-alert")) {
+            return;
+        }
+        MsgUtil.sendGlobalAlert(msg);
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        return super.reloadModule();
     }
 
 }

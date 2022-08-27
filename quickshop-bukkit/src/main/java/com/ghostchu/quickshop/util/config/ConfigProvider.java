@@ -36,14 +36,6 @@ public class ConfigProvider extends QuickShopInstanceHolder {
         return config;
     }
 
-    public void save() {
-        try {
-            get().save(configFile);
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, "Failed to save configuration " + configFile.getName(), e);
-        }
-    }
-
     public void reload() {
         reload(false);
     }
@@ -82,5 +74,13 @@ public class ConfigProvider extends QuickShopInstanceHolder {
             }
         }
 
+    }
+
+    public void save() {
+        try {
+            get().save(configFile);
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, "Failed to save configuration " + configFile.getName(), e);
+        }
     }
 }

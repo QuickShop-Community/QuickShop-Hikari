@@ -12,6 +12,15 @@ import java.util.List;
  */
 public interface ShopControlPanel {
     /**
+     * Generate components for the shop control panel.
+     *
+     * @param player The player
+     * @param shop   The shop
+     * @return The components, or empty list if nothing to show. Every component will be shown in a new line.
+     */
+    @NotNull List<Component> generate(@NotNull Player player, @NotNull Shop shop);
+
+    /**
      * Usually you don't need touch this :)
      *
      * @return The internal usage priority.
@@ -36,13 +45,4 @@ public interface ShopControlPanel {
      * @return Your plugin instance;
      */
     @NotNull Plugin getPlugin();
-
-    /**
-     * Generate components for the shop control panel.
-     *
-     * @param player The player
-     * @param shop   The shop
-     * @return The components, or empty list if nothing to show. Every component will be shown in a new line.
-     */
-    @NotNull List<Component> generate(@NotNull Player player, @NotNull Shop shop);
 }

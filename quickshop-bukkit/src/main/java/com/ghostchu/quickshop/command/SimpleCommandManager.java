@@ -333,40 +333,6 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     }
 
     /**
-     * This is a interface to allow addons to register the subcommand into quickshop command manager.
-     *
-     * @param container The command container to register
-     * @throws IllegalStateException Will throw the error if register conflict.
-     */
-    @Override
-    public void registerCmd(@NotNull CommandContainer container) {
-        if (cmds.contains(container)) {
-            Log.debug("Dupe subcommand registering: " + container);
-            return;
-        }
-        container.bakeExecutorType();
-        cmds.removeIf(commandContainer -> commandContainer.getPrefix().equalsIgnoreCase(container.getPrefix()));
-        cmds.removeIf(container::equals);
-        cmds.add(container);
-        cmds.sort(Comparator.comparing(CommandContainer::getPrefix));
-    }
-
-    /**
-     * This is a interface to allow addons to unregister the registered/butil-in subcommand from command manager.
-     *
-     * @param container The command container to unregister
-     */
-    @Override
-    public void unregisterCmd(@NotNull CommandContainer container) {
-        cmds.remove(container);
-    }
-
-    @Override
-    public void unregisterCmd(@NotNull String prefix) {
-        cmds.removeIf(commandContainer -> commandContainer.getPrefix().equalsIgnoreCase(prefix));
-    }
-
-    /**
      * Gets a list contains all registered commands
      *
      * @return All registered commands.
@@ -536,6 +502,40 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
             }
             return Collections.emptyList();
         }
+    }
+
+    /**
+     * This is a interface to allow addons to register the subcommand into quickshop command manager.
+     *
+     * @param container The command container to register
+     * @throws IllegalStateException Will throw the error if register conflict.
+     */
+    @Override
+    public void registerCmd(@NotNull CommandContainer container) {
+        if (cmds.contains(container)) {
+            Log.debug("Dupe subcommand registering: " + container);
+            return;
+        }
+        container.bakeExecutorType();
+        cmds.removeIf(commandContainer -> commandContainer.getPrefix().equalsIgnoreCase(container.getPrefix()));
+        cmds.removeIf(container::equals);
+        cmds.add(container);
+        cmds.sort(Comparator.comparing(CommandContainer::getPrefix));
+    }
+
+    @Override
+    public void unregisterCmd(@NotNull String prefix) {
+        cmds.removeIf(commandContainer -> commandContainer.getPrefix().equalsIgnoreCase(prefix));
+    }
+
+    /**
+     * This is a interface to allow addons to unregister the registered/butil-in subcommand from command manager.
+     *
+     * @param container The command container to unregister
+     */
+    @Override
+    public void unregisterCmd(@NotNull CommandContainer container) {
+        cmds.remove(container);
     }
 
     private enum Action {

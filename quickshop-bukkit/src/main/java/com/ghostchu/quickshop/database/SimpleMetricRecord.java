@@ -30,10 +30,39 @@ public class SimpleMetricRecord implements MetricRecord {
         this.player = player;
     }
 
+    @Override
+    public int getAmount() {
+        return amount;
+    }
+
+    @Override
+    public UUID getPlayer() {
+        return player;
+    }
+
+    @Override
+    public double getTax() {
+        return tax;
+    }
 
     @Override
     public long getTimestamp() {
         return timestamp;
+    }
+
+    @Override
+    public double getTotal() {
+        return total;
+    }
+
+    @Override
+    public ShopOperationEnum getType() {
+        return type;
+    }
+
+    @Override
+    public String getWorld() {
+        return world;
     }
 
     @Override
@@ -49,36 +78,6 @@ public class SimpleMetricRecord implements MetricRecord {
     @Override
     public int getZ() {
         return z;
-    }
-
-    @Override
-    public String getWorld() {
-        return world;
-    }
-
-    @Override
-    public ShopOperationEnum getType() {
-        return type;
-    }
-
-    @Override
-    public double getTotal() {
-        return total;
-    }
-
-    @Override
-    public double getTax() {
-        return tax;
-    }
-
-    @Override
-    public int getAmount() {
-        return amount;
-    }
-
-    @Override
-    public UUID getPlayer() {
-        return player;
     }
 
 

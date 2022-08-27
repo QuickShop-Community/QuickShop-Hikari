@@ -26,16 +26,6 @@ public class ShopDisplayItemSafeGuardEvent extends AbstractQSEvent {
     }
 
     /**
-     * Gets the shop that the display item belongs to.
-     *
-     * @return the shop
-     */
-    @NotNull
-    public Shop getShop() {
-        return shop;
-    }
-
-    /**
      * Gets the display item.
      *
      * @return the display item
@@ -43,5 +33,15 @@ public class ShopDisplayItemSafeGuardEvent extends AbstractQSEvent {
     @NotNull
     public Item getEntity() {
         return entity;
+    }
+
+    /**
+     * Gets the shop that the display item belongs to.
+     *
+     * @return the shop
+     */
+    @NotNull
+    public Shop getShop() {
+        return shop;
     }
 }

@@ -26,7 +26,7 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
     public void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         File file = new File(plugin.getDataFolder(), "recovery.zip");
         if (!file.exists()) {
-            plugin.text().of(sender, "importing-not-found").send();
+            plugin.text().of(sender, "importing-not-found", "recovery.zip").send();
             return;
         }
 
@@ -51,7 +51,7 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
                 Log.debug("Re-loading shop from database...");
                 Util.mainThreadRun(() -> {
                     plugin.getShopLoader().loadShops();
-                    plugin.text().of(sender, "imported-database").send();
+                    plugin.text().of(sender, "imported-database", "recovery.zip").send();
                 });
             } catch (SQLException | ClassNotFoundException e) {
                 plugin.text().of(sender, "importing-failed", e.getMessage()).send();

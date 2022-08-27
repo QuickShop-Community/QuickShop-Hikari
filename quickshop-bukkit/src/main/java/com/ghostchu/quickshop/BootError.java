@@ -27,6 +27,10 @@ public class BootError {
         }
     }
 
+    public String[] getErrors() {
+        return Arrays.copyOf(errors, errors.length);
+    }
+
     /**
      * Print the errors. ##################################################### QuickShop is disabled,
      * Please fix errors and restart ..........................
@@ -41,9 +45,5 @@ public class BootError {
             sender.sendMessage(ChatColor.WHITE + "- " + ChatColor.YELLOW + issue);
         }
         sender.sendMessage(ChatColor.RED + "#####################################################");
-    }
-
-    public String[] getErrors() {
-        return Arrays.copyOf(errors, errors.length);
     }
 }

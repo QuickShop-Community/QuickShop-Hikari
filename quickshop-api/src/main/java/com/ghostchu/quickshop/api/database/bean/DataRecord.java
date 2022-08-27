@@ -8,7 +8,19 @@ import java.util.UUID;
 
 public interface DataRecord {
     @NotNull
-    UUID getOwner();
+    Date getCreateTime();
+
+    @Nullable
+    String getCurrency();
+
+    @NotNull
+    String getExtra();
+
+    @Nullable
+    String getInventorySymbolLink();
+
+    @Nullable
+    String getInventoryWrapper();
 
     @NotNull
     String getItem();
@@ -16,32 +28,20 @@ public interface DataRecord {
     @Nullable
     String getName();
 
-    int getType();
-
-    @Nullable
-    String getCurrency();
-
-    double getPrice();
-
-    boolean isUnlimited();
-
-    boolean isHologram();
-
-    @Nullable
-    UUID getTaxAccount();
+    @NotNull
+    UUID getOwner();
 
     @NotNull
     String getPermissions();
 
-    @Nullable
-    String getInventoryWrapper();
+    double getPrice();
 
     @Nullable
-    String getInventorySymbolLink();
+    UUID getTaxAccount();
 
-    @NotNull
-    Date getCreateTime();
+    int getType();
 
-    @NotNull
-    String getExtra();
+    boolean isHologram();
+
+    boolean isUnlimited();
 }

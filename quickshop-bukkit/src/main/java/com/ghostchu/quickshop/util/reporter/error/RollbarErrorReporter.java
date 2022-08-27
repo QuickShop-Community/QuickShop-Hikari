@@ -81,93 +81,6 @@ public class RollbarErrorReporter {
         asyncErrorReportThread.start();
     }
 
-    public void unregister() {
-        enabled = false;
-        plugin.getLogger().setFilter(quickShopExceptionFilter.preFilter);
-        plugin.getServer().getLogger().setFilter(serverExceptionFilter.preFilter);
-        //Logger.getGlobal().setFilter(globalExceptionFilter.preFilter);
-    }
-
-    private Map<String, Object> makeMapping() {
-        Map<String, Object> dataMapping = new LinkedHashMap<>();
-        dataMapping.put("system_os", System.getProperty("os.name"));
-        dataMapping.put("system_arch", System.getProperty("os.arch"));
-        dataMapping.put("system_version", System.getProperty("os.version"));
-        dataMapping.put("system_cores", String.valueOf(Runtime.getRuntime().availableProcessors()));
-        dataMapping.put("server_build", plugin.getServer().getVersion());
-        dataMapping.put("server_java", String.valueOf(System.getProperty("java.version")));
-        dataMapping.put("server_players", plugin.getServer().getOnlinePlayers().size() + "/" + plugin.getServer().getMaxPlayers());
-        dataMapping.put("server_onlinemode", String.valueOf(plugin.getServer().getOnlineMode()));
-        dataMapping.put("server_bukkitversion", plugin.getServer().getVersion());
-        dataMapping.put("user", QuickShop.getInstance().getServerUniqueID().toString());
-        return dataMapping;
-    }
-
-    private void sendError0(@NotNull Throwable throwable, @NotNull String... context) {
-        if (Bukkit.isPrimaryThread()) {
-            plugin.getLogger().warning("Cannot send error on primary thread (I/O blocking). This error has been discard.");
-            return;
-        }
-        try {
-            if (plugin.getBootError() != null) {
-                return; // Don't report any errors if boot failed.
-            }
-            if (tempDisable) {
-                this.tempDisable = false;
-                return;
-            }
-            if (disable) {
-                return;
-            }
-            if (!enabled) {
-                return;
-            }
-
-            if (!canReport(throwable)) {
-                return;
-            }
-            if (ignoredException.contains(throwable.getClass())) {
-                return;
-            }
-            if (throwable.getCause() != null) {
-                if (ignoredException.contains(throwable.getCause().getClass())) {
-                    return;
-                }
-            }
-            this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
-            plugin
-                    .getLogger()
-                    .warning(
-                            "A exception was thrown, QuickShop already caught this exception and reported it. This error will only shown once before next restart.");
-            plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
-            plugin.getLogger().warning("Description: " + throwable.getMessage());
-            plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
-            plugin.getLogger().warning("Exception  : ");
-            ignoreThrows();
-            throwable.printStackTrace();
-            resetIgnores();
-            plugin.getLogger().warning("====QuickShop Error Report E N D===");
-            Log.debug(throwable.getMessage());
-            Arrays.stream(throwable.getStackTrace()).forEach(a -> Log.debug(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
-            if (Util.isDevMode()) {
-                throwable.printStackTrace();
-            }
-        } catch (Exception th) {
-            ignoreThrow();
-            plugin.getLogger().log(Level.WARNING, "Something going wrong when automatic report errors, please submit this error on Issue Tracker", th);
-        }
-    }
-
-    /**
-     * Send a error to Sentry
-     *
-     * @param throwable Throws
-     * @param context   BreadCrumb
-     */
-    public void sendError(@NotNull Throwable throwable, @NotNull String... context) {
-        this.reportQueue.offer(new ErrorBundle(throwable, context));
-    }
-
     /**
      * Dupe report check
      *
@@ -289,11 +202,98 @@ public class RollbarErrorReporter {
     }
 
     /**
+     * Send a error to Sentry
+     *
+     * @param throwable Throws
+     * @param context   BreadCrumb
+     */
+    public void sendError(@NotNull Throwable throwable, @NotNull String... context) {
+        this.reportQueue.offer(new ErrorBundle(throwable, context));
+    }
+
+    /**
      * Reset ignore throw(s).
      */
     public void resetIgnores() {
         tempDisable = false;
         disable = false;
+    }
+
+    private void sendError0(@NotNull Throwable throwable, @NotNull String... context) {
+        if (Bukkit.isPrimaryThread()) {
+            plugin.getLogger().warning("Cannot send error on primary thread (I/O blocking). This error has been discard.");
+            return;
+        }
+        try {
+            if (plugin.getBootError() != null) {
+                return; // Don't report any errors if boot failed.
+            }
+            if (tempDisable) {
+                this.tempDisable = false;
+                return;
+            }
+            if (disable) {
+                return;
+            }
+            if (!enabled) {
+                return;
+            }
+
+            if (!canReport(throwable)) {
+                return;
+            }
+            if (ignoredException.contains(throwable.getClass())) {
+                return;
+            }
+            if (throwable.getCause() != null) {
+                if (ignoredException.contains(throwable.getCause().getClass())) {
+                    return;
+                }
+            }
+            this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
+            plugin
+                    .getLogger()
+                    .warning(
+                            "A exception was thrown, QuickShop already caught this exception and reported it. This error will only shown once before next restart.");
+            plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
+            plugin.getLogger().warning("Description: " + throwable.getMessage());
+            plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
+            plugin.getLogger().warning("Exception  : ");
+            ignoreThrows();
+            throwable.printStackTrace();
+            resetIgnores();
+            plugin.getLogger().warning("====QuickShop Error Report E N D===");
+            Log.debug(throwable.getMessage());
+            Arrays.stream(throwable.getStackTrace()).forEach(a -> Log.debug(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
+            if (Util.isDevMode()) {
+                throwable.printStackTrace();
+            }
+        } catch (Exception th) {
+            ignoreThrow();
+            plugin.getLogger().log(Level.WARNING, "Something going wrong when automatic report errors, please submit this error on Issue Tracker", th);
+        }
+    }
+
+    private Map<String, Object> makeMapping() {
+        Map<String, Object> dataMapping = new LinkedHashMap<>();
+        dataMapping.put("system_os", System.getProperty("os.name"));
+        dataMapping.put("system_arch", System.getProperty("os.arch"));
+        dataMapping.put("system_version", System.getProperty("os.version"));
+        dataMapping.put("system_cores", String.valueOf(Runtime.getRuntime().availableProcessors()));
+        dataMapping.put("server_build", plugin.getServer().getVersion());
+        dataMapping.put("server_java", String.valueOf(System.getProperty("java.version")));
+        dataMapping.put("server_players", plugin.getServer().getOnlinePlayers().size() + "/" + plugin.getServer().getMaxPlayers());
+        dataMapping.put("server_onlinemode", String.valueOf(plugin.getServer().getOnlineMode()));
+        dataMapping.put("server_bukkitversion", plugin.getServer().getVersion());
+        dataMapping.put("user", QuickShop.getInstance().getServerUniqueID().toString());
+        return dataMapping;
+    }
+
+    public void unregister() {
+        enabled = false;
+        plugin.getLogger().setFilter(quickShopExceptionFilter.preFilter);
+        plugin.getServer().getLogger().setFilter(serverExceptionFilter.preFilter);
+        //Logger.getGlobal().setFilter(globalExceptionFilter.preFilter);
     }
 
     @Data

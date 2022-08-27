@@ -91,17 +91,21 @@ public class Util {
     }
 
     /**
-     * Convert boolean to string status
+     * Execute the Runnable in async thread.
+     * If it already on main-thread, will be move to async thread.
      *
-     * @param bool Boolean
-     * @return Enabled or Disabled
+     * @param runnable The runnable
      */
-    @NotNull
-    public static String boolean2Status(boolean bool) {
-        if (bool) {
-            return "Enabled";
+    public static void asyncThreadRun(@NotNull Runnable runnable) {
+        if (!plugin.isEnabled()) {
+            Log.debug(Level.WARNING, "Scheduler not available, executing task on current thread...");
+            runnable.run();
+            return;
+        }
+        if (!Bukkit.isPrimaryThread()) {
+            runnable.run();
         } else {
-            return "Disabled";
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
         }
     }
 
@@ -128,6 +132,21 @@ public class Util {
 //        }
 //        return true;
 //    }
+
+    /**
+     * Convert boolean to string status
+     *
+     * @param bool Boolean
+     * @return Enabled or Disabled
+     */
+    @NotNull
+    public static String boolean2Status(boolean bool) {
+        if (bool) {
+            return "Enabled";
+        } else {
+            return "Disabled";
+        }
+    }
 
     /**
      * Returns true if the given block could be used to make a shop out of.
@@ -288,6 +307,58 @@ public class Util {
     }
 
     /**
+     * Create regex from glob
+     *
+     * @param glob glob
+     * @return regex
+     */
+    // https://stackoverflow.com/questions/45321050/java-string-matching-with-wildcards
+    @NotNull
+    public static String createRegexFromGlob(@NotNull String glob) {
+        StringBuilder out = new StringBuilder("^");
+        for (int i = 0; i < glob.length(); ++i) {
+            final char c = glob.charAt(i);
+            switch (c) {
+                case '*' -> out.append(".*");
+                case '?' -> out.append('.');
+                case '.' -> out.append("\\.");
+                case '\\' -> out.append("\\\\");
+                default -> out.append(c);
+            }
+        }
+        out.append('$');
+        return out.toString();
+    }
+
+    /**
+     * Print debug log when plugin running on dev mode.
+     *
+     * @param logs logs
+     */
+    @Deprecated(forRemoval = true)
+    public static void debugLog(@NotNull String... logs) {
+        Log.Caller caller = Log.Caller.create();
+        for (String log : logs) {
+            Log.debug(Level.INFO, log, caller);
+        }
+    }
+
+    public static boolean deleteDirectory(@NotNull File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            if (children == null) {
+                return false;
+            }
+            for (String child : children) {
+                if (!deleteDirectory(new File(dir, child))) {
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
+    }
+
+    /**
      * Covert YAML string to ItemStack.
      *
      * @param config serialized ItemStack
@@ -348,26 +419,128 @@ public class Util {
     }
 
     /**
-     * Print debug log when plugin running on dev mode.
+     * Ensure this method is calling from specific thread
      *
-     * @param logs logs
+     * @param async on async thread or main server thread.
      */
-    @Deprecated(forRemoval = true)
-    public static void debugLog(@NotNull String... logs) {
-        Log.Caller caller = Log.Caller.create();
-        for (String log : logs) {
-            Log.debug(Level.INFO, log, caller);
+    public static void ensureThread(boolean async) {
+        boolean isMainThread = Bukkit.isPrimaryThread();
+        if (async) {
+            if (isMainThread) {
+                throw new IllegalStateException("#[Illegal Access] This method require runs on async thread.");
+            }
+        } else {
+            if (!isMainThread) {
+                throw new IllegalStateException("#[Illegal Access] This method require runs on server main thread.");
+            }
         }
     }
 
     /**
-     * Get vertical BlockFace list
+     * Check two location is or not equals for the BlockPosition on 2D
      *
-     * @return vertical BlockFace list (unmodifiable)
+     * @param b1 block 1
+     * @param b2 block 2
+     * @return Equals or not.
+     */
+    private static boolean equalsBlockStateLocation(@NotNull Location b1, @NotNull Location b2) {
+        return (b1.getBlockX() == b2.getBlockX())
+                && (b1.getBlockY() == b2.getBlockY())
+                && (b1.getBlockZ() == b2.getBlockZ());
+    }
+
+    /**
+     * Call a event and check it is cancelled.
+     *
+     * @param event The event implement the Cancellable interface.
+     * @return The event is cancelled.
+     */
+    public static boolean fireCancellableEvent(@NotNull Cancellable event) {
+        if (!(event instanceof Event)) {
+            throw new IllegalArgumentException("Cancellable must is event implement");
+        }
+        Bukkit.getPluginManager().callEvent((Event) event);
+        return event.isCancelled();
+    }
+
+    /**
+     * Get location that converted to block position (.0)
+     *
+     * @param loc location
+     * @return blocked location
      */
     @NotNull
-    public static List<BlockFace> getVerticalFacing() {
-        return VERTICAL_FACING;
+    public static Location getBlockLocation(@NotNull Location loc) {
+        loc = loc.clone();
+        loc.setX(loc.getBlockX());
+        loc.setY(loc.getBlockY());
+        loc.setZ(loc.getBlockZ());
+        return loc;
+    }
+
+    /**
+     * Get QuickShop caching folder
+     *
+     * @return The caching folder
+     */
+    public static File getCacheFolder() {
+        QuickShop qs = QuickShop.getInstance();
+        //noinspection ConstantConditions
+        if (qs != null) {
+            File cache = new File(QuickShop.getInstance().getDataFolder(), "cache");
+            if (!cache.exists()) {
+                cache.mkdirs();
+            }
+            return cache;
+        } else {
+            File file = new File("cache");
+            file.mkdirs();
+            return file;
+        }
+    }
+
+    /**
+     * Gets the location of a class inside of a jar file.
+     *
+     * @param clazz The class to get the location of.
+     * @return The jar path which given class at.
+     */
+    @NotNull
+    public static String getClassPathRelative(@NotNull Class<?> clazz) {
+        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+        File file = new File(jarPath);
+        return getRelativePath(new File("."), file);
+    }
+
+//    /**
+//     * Use yaw to calc the BlockFace
+//     *
+//     * @param yaw Yaw (Player.getLocation().getYaw())
+//     * @return BlockFace blockFace
+//     * @deprecated Use Bukkit util not this one.
+//     */
+//    @Deprecated
+//    @NotNull
+//    public static BlockFace getYawFace(float yaw) {
+//        if (yaw > 315 && yaw <= 45) {
+//            return BlockFace.NORTH;
+//        } else if (yaw > 45 && yaw <= 135) {
+//            return BlockFace.EAST;
+//        } else if (yaw > 135 && yaw <= 225) {
+//            return BlockFace.SOUTH;
+//        } else {
+//            return BlockFace.WEST;
+//        }
+//    }
+
+    @NotNull
+    public static String getRelativePath(@NotNull File rootPath, @NotNull File targetPath) {
+        try {
+            return rootPath.toURI().relativize(targetPath.toURI()).getPath();
+        } catch (Exception e) {
+            return targetPath.getAbsolutePath();
+        }
     }
 
     /**
@@ -381,6 +554,55 @@ public class Util {
         String callClassName = Thread.currentThread().getStackTrace()[2].getClassName();
         String customClassName = c.getSimpleName();
         return "[" + callClassName + "-" + customClassName + "] ";
+    }
+
+    /**
+     * Return the Class name.
+     *
+     * @return The class prefix
+     */
+    @NotNull
+    public static String getClassPrefix() {
+        String className = Thread.currentThread().getStackTrace()[2].getClassName();
+        try {
+            Class<?> c = Class.forName(className);
+            className = c.getSimpleName();
+            if (!c.getSimpleName().isEmpty()) {
+                className = c.getSimpleName();
+            }
+        } catch (ClassNotFoundException ignored) {
+        }
+        String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
+        return "[" + className + "-" + methodName + "] ";
+    }
+
+    /**
+     * Convert timestamp to LocalDate instance
+     *
+     * @param timestamp Timestamp
+     * @return LocalDate instance
+     */
+    // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
+    @Nullable
+    public static LocalDate getDateFromTimestamp(long timestamp) {
+        LocalDateTime date = getDateTimeFromTimestamp(timestamp);
+        return date == null ? null : date.toLocalDate();
+    }
+
+    /**
+     * Convert timestamp to LocalDateTime instance
+     *
+     * @param timestamp Timestamp
+     * @return LocalDateTime instance
+     */
+    // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
+    @Nullable
+    public static LocalDateTime getDateTimeFromTimestamp(long timestamp) {
+        if (timestamp == 0) {
+            return null;
+        }
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), TimeZone
+                .getDefault().toZoneId());
     }
 
     @NotNull
@@ -451,6 +673,148 @@ public class Util {
     }
 
     /**
+     * Return the player names based on the configuration
+     *
+     * @return the player names
+     */
+    @NotNull
+    public static List<String> getPlayerList() {
+        List<String> tabList = plugin.getServer().getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
+        if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
+            tabList.addAll(Arrays.stream(plugin.getServer().getOfflinePlayers()).map(OfflinePlayer::getName).filter(Objects::nonNull).toList());
+        }
+        return tabList;
+    }
+
+    /**
+     * Gets a plugin's Jar file
+     *
+     * @param plugin The plugin instance
+     * @return The plugin's Jar file
+     * @throws FileNotFoundException If the plugin's Jar file could not be found
+     */
+    @NotNull
+    public static File getPluginJarFile(@NotNull Plugin plugin) throws FileNotFoundException {
+        String path = getPluginJarPath(plugin);
+        File file = new File(path);
+        if (!file.exists()) {
+            throw new FileNotFoundException("File not found: " + path);
+        }
+        return file;
+    }
+
+    /**
+     * Get class path of the given class.
+     *
+     * @param plugin Plugin plugin instance
+     * @return Class path
+     */
+    @NotNull
+    public static String getPluginJarPath(@NotNull Plugin plugin) {
+        return getClassPath(plugin.getClass());
+    }
+
+    /**
+     * Gets the location of a class inside of a jar file.
+     *
+     * @param clazz The class to get the location of.
+     * @return The jar path which given class at.
+     */
+    @NotNull
+    public static String getClassPath(@NotNull Class<?> clazz) {
+        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+        return jarPath;
+    }
+
+    @NotNull
+    public static String getRelativePath(@NotNull File targetPath) {
+        try {
+            return new File(".").toURI().relativize(targetPath.toURI()).getPath();
+        } catch (Exception e) {
+            return targetPath.getAbsolutePath();
+        }
+    }
+
+    /**
+     * Returns the chest attached to the given chest. The given block must be a chest.
+     *
+     * @param block The chest block
+     * @return the block which is also a chest and connected to b.
+     */
+    public static Block getSecondHalf(@NotNull Block block) {
+        BlockData blockData = block.getBlockData();
+        if (!(blockData instanceof org.bukkit.block.data.type.Chest chest)) {
+            return null;
+        }
+        if (!isDoubleChest(chest)) {
+            return null;
+        }
+        BlockFace towardsLeft = getRightSide(chest.getFacing());
+        BlockFace actuallyBlockFace = chest.getType() == org.bukkit.block.data.type.Chest.Type.LEFT ? towardsLeft : towardsLeft.getOppositeFace();
+        return block.getRelative(actuallyBlockFace);
+    }
+
+    public static boolean isDoubleChest(@Nullable BlockData blockData) {
+        if (!(blockData instanceof org.bukkit.block.data.type.Chest chestBlockData)) {
+            return false;
+        }
+        return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
+    }
+
+    /**
+     * return the right side for given blockFace
+     *
+     * @param blockFace given blockFace
+     * @return the right side for given blockFace, UP and DOWN will return itself
+     */
+    @NotNull
+    public static BlockFace getRightSide(@NotNull BlockFace blockFace) {
+        return switch (blockFace) {
+            case EAST -> BlockFace.SOUTH;
+            case NORTH -> BlockFace.EAST;
+            case SOUTH -> BlockFace.WEST;
+            case WEST -> BlockFace.NORTH;
+            default -> blockFace;
+        };
+    }
+
+//    /**
+//     * Convert strList to String. E.g "Foo, Bar"
+//     *
+//     * @param strList Target list
+//     * @return str
+//     */
+//    @NotNull
+//    public static String list2String(@NotNull Collection<String> strList) {
+//        return String.join(", ", strList);
+//    }
+
+    /**
+     * Gets the CommandSender unique id.
+     *
+     * @param sender the sender
+     * @return the sender unique id if sender is a player, otherwise nil unique id
+     */
+    @NotNull
+    public static UUID getSenderUniqueId(@Nullable CommandSender sender) {
+        if (sender instanceof OfflinePlayer) {
+            return ((OfflinePlayer) sender).getUniqueId();
+        }
+        return getNilUniqueId();
+    }
+
+    /**
+     * Gets the nil unique id
+     *
+     * @return uuid which content is `00000000-0000-0000-0000-000000000000`
+     */
+    @NotNull
+    public static UUID getNilUniqueId() {
+        return new UUID(0, 0);
+    }
+
+    /**
      * Get how many shop in the target world.
      *
      * @param worldName Target world.
@@ -466,6 +830,29 @@ public class Util {
             }
         }
         return cost;
+    }
+
+    /**
+     * Get the sign material using by plugin. With compatibly process.
+     *
+     * @return The material now using.
+     */
+    @NotNull
+    public static Material getSignMaterial() {
+        Material signMaterial = Material.matchMaterial(plugin.getConfig().getString("shop.sign-material", "OAK_WALL_SIGN"));
+        if (signMaterial != null) {
+            return signMaterial;
+        }
+        return Material.OAK_WALL_SIGN;
+    }
+
+    /**
+     * Getting startup flags
+     *
+     * @return Java startup flags without some JVM args
+     */
+    public static List<String> getStartupFlags() {
+        return ManagementFactory.getRuntimeMXBean().getInputArguments();
     }
 
     /**
@@ -486,26 +873,15 @@ public class Util {
         return formatter.format((1 - dura / max) * 100.0);
     }
 
-//    /**
-//     * Use yaw to calc the BlockFace
-//     *
-//     * @param yaw Yaw (Player.getLocation().getYaw())
-//     * @return BlockFace blockFace
-//     * @deprecated Use Bukkit util not this one.
-//     */
-//    @Deprecated
-//    @NotNull
-//    public static BlockFace getYawFace(float yaw) {
-//        if (yaw > 315 && yaw <= 45) {
-//            return BlockFace.NORTH;
-//        } else if (yaw > 45 && yaw <= 135) {
-//            return BlockFace.EAST;
-//        } else if (yaw > 135 && yaw <= 225) {
-//            return BlockFace.SOUTH;
-//        } else {
-//            return BlockFace.WEST;
-//        }
-//    }
+    /**
+     * Get vertical BlockFace list
+     *
+     * @return vertical BlockFace list (unmodifiable)
+     */
+    @NotNull
+    public static List<BlockFace> getVerticalFacing() {
+        return VERTICAL_FACING;
+    }
 
     /**
      * Initialize the Util tools.
@@ -648,6 +1024,78 @@ public class Util {
     }
 
     /**
+     * Check QuickShop is running on dev edition or not.
+     *
+     * @return DevEdition status
+     */
+    public static boolean isDevEdition() {
+        return !"origin/release".equalsIgnoreCase(QuickShop.getInstance().getBuildInfo().getGitInfo().getBranch());
+    }
+
+    /**
+     * Get the plugin is under dev-mode(debug mode)
+     *
+     * @return under dev-mode
+     */
+    public static boolean isDevMode() {
+        if (devMode != null) {
+            return devMode;
+        } else {
+            if (plugin != null) {
+                devMode = plugin.getConfig().getBoolean("dev-mode");
+                return devMode;
+            } else {
+                return false;
+            }
+        }
+        //F  return devMode != null ? devMode : (devMode = plugin.getConfig().getBoolean("dev-mode"));
+    }
+
+    public static boolean isDisplayAllowBlock(@NotNull Material mat) {
+        return mat.isTransparent() || isWallSign(mat);
+    }
+
+    /**
+     * Check a material is or not a WALL_SIGN
+     *
+     * @param material mat
+     * @return is or not a wall_sign
+     */
+    public static boolean isWallSign(@Nullable Material material) {
+        if (material == null) {
+            return false;
+        }
+        return Tag.WALL_SIGNS.isTagged(material);
+    }
+
+    /**
+     * Get a material is a dye
+     *
+     * @param material The material
+     * @return yes or not
+     */
+    public static boolean isDyes(@NotNull Material material) {
+        return material.name().toUpperCase().endsWith("_DYE");
+    }
+
+    /**
+     * Returns true if the given location is loaded or not.
+     *
+     * @param loc The location
+     * @return true if the given location is loaded or not.
+     */
+    public static boolean isLoaded(@NotNull Location loc) {
+        if (!loc.isWorldLoaded()) {
+            return false;
+        }
+        // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
+        // location rounded to the nearest 16.
+        int x = (int) Math.floor((loc.getBlockX()) / 16.0);
+        int z = (int) Math.floor((loc.getBlockZ()) / 16.0);
+        return (loc.getWorld().isChunkLoaded(x, z));
+    }
+
+    /**
      * Get this method available or not
      *
      * @param className class qualifiedName
@@ -669,38 +1117,14 @@ public class Util {
         }
     }
 
-    public static boolean isDisplayAllowBlock(@NotNull Material mat) {
-        return mat.isTransparent() || isWallSign(mat);
-    }
-
     /**
-     * Check a material is or not a WALL_SIGN
+     * Simply method to check if the provided String is either {@code null} or empty.
      *
-     * @param material mat
-     * @return is or not a wall_sign
+     * @param text The text to check for null or empty value.
+     * @return Whether the text is null or empty.
      */
-    public static boolean isWallSign(@Nullable Material material) {
-        if (material == null) {
-            return false;
-        }
-        return Tag.WALL_SIGNS.isTagged(material);
-    }
-
-    /**
-     * Returns true if the given location is loaded or not.
-     *
-     * @param loc The location
-     * @return true if the given location is loaded or not.
-     */
-    public static boolean isLoaded(@NotNull Location loc) {
-        if (!loc.isWorldLoaded()) {
-            return false;
-        }
-        // Calculate the chunks coordinates. These are 1,2,3 for each chunk, NOT
-        // location rounded to the nearest 16.
-        int x = (int) Math.floor((loc.getBlockX()) / 16.0);
-        int z = (int) Math.floor((loc.getBlockZ()) / 16.0);
-        return (loc.getWorld().isChunkLoaded(x, z));
+    public static boolean isNullOrEmpty(String text) {
+        return text == null || text.isEmpty();
     }
 
     /**
@@ -739,62 +1163,6 @@ public class Util {
     }
 
     /**
-     * Returns the chest attached to the given chest. The given block must be a chest.
-     *
-     * @param block The chest block
-     * @return the block which is also a chest and connected to b.
-     */
-    public static Block getSecondHalf(@NotNull Block block) {
-        BlockData blockData = block.getBlockData();
-        if (!(blockData instanceof org.bukkit.block.data.type.Chest chest)) {
-            return null;
-        }
-        if (!isDoubleChest(chest)) {
-            return null;
-        }
-        BlockFace towardsLeft = getRightSide(chest.getFacing());
-        BlockFace actuallyBlockFace = chest.getType() == org.bukkit.block.data.type.Chest.Type.LEFT ? towardsLeft : towardsLeft.getOppositeFace();
-        return block.getRelative(actuallyBlockFace);
-    }
-
-    public static boolean isDoubleChest(@Nullable BlockData blockData) {
-        if (!(blockData instanceof org.bukkit.block.data.type.Chest chestBlockData)) {
-            return false;
-        }
-        return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
-    }
-
-    /**
-     * return the right side for given blockFace
-     *
-     * @param blockFace given blockFace
-     * @return the right side for given blockFace, UP and DOWN will return itself
-     */
-    @NotNull
-    public static BlockFace getRightSide(@NotNull BlockFace blockFace) {
-        return switch (blockFace) {
-            case EAST -> BlockFace.SOUTH;
-            case NORTH -> BlockFace.EAST;
-            case SOUTH -> BlockFace.WEST;
-            case WEST -> BlockFace.NORTH;
-            default -> blockFace;
-        };
-    }
-
-    /**
-     * Check two location is or not equals for the BlockPosition on 2D
-     *
-     * @param b1 block 1
-     * @param b2 block 2
-     * @return Equals or not.
-     */
-    private static boolean equalsBlockStateLocation(@NotNull Location b1, @NotNull Location b2) {
-        return (b1.getBlockX() == b2.getBlockX())
-                && (b1.getBlockY() == b2.getBlockY())
-                && (b1.getBlockZ() == b2.getBlockZ());
-    }
-
-    /**
      * @param mat The material to check
      * @return Returns true if the item is a tool (Has durability) or false if it doesn't.
      */
@@ -817,6 +1185,16 @@ public class Util {
         return components.length == 5;
     }
 
+    @SafeVarargs
+    @NotNull
+    public static <T> List<T> linkLists(List<T>... lists) {
+        List<T> fList = new ArrayList<>();
+        for (List<T> objList : lists) {
+            fList.addAll(objList);
+        }
+        return fList;
+    }
+
     /**
      * Convert strList to String. E.g "Foo, Bar"
      *
@@ -824,8 +1202,19 @@ public class Util {
      * @return str
      */
     @NotNull
-    public static String list2String(@NotNull Collection<String> strList) {
-        return String.join(", ", strList);
+    public static String list2String(@NotNull Collection<?> strList) {
+        return String.join(", ", strList.stream().map(Object::toString).toList());
+    }
+
+    /**
+     * Matches the given lists but disordered.
+     *
+     * @param list1 List1
+     * @param list2 List2
+     * @return Lists matches or not
+     */
+    public static boolean listDisorderMatches(@NotNull Collection<?> list1, @NotNull Collection<?> list2) {
+        return list1.containsAll(list2) && list2.containsAll(list1);
     }
 
     /**
@@ -864,6 +1253,84 @@ public class Util {
         // But pitch angles are normal
         loc.setPitch(pitch * 180f / (float) Math.PI);
         return loc;
+    }
+
+    /**
+     * Execute the Runnable in server main thread.
+     * If it already on main-thread, will be executed directly.
+     * or post to main-thread if came from any other thread.
+     *
+     * @param runnable The runnable
+     */
+    public static void mainThreadRun(@NotNull Runnable runnable) {
+        if (Bukkit.isPrimaryThread()) {
+            runnable.run();
+        } else {
+            Bukkit.getScheduler().runTask(plugin, runnable);
+        }
+    }
+
+    @SneakyThrows
+    public static void makeExportBackup(@Nullable String backupName) {
+        if (StringUtils.isEmpty(backupName)) {
+            backupName = "export-" + QuickShop.getFork() + "-" + QuickShop.getVersion() + ".txt";
+        }
+        File file = new File(plugin.getDataFolder(), backupName);
+        if (file.exists()) {
+            Files.move(file.toPath(), new File(file.getParentFile(), file.getName() + UUID.randomUUID().toString().replace("-", "")).toPath());
+        }
+
+        if (!file.createNewFile()) {
+            plugin.getLogger().warning("Failed to create new backup file!");
+            return;
+        }
+
+        plugin.getLogger().log(Level.WARNING, "Backup hadn't available in this version yet!");
+
+//        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+//            StringBuilder finalReport = new StringBuilder();
+//            plugin.getShopLoader()
+//                    .getOriginShopsInDatabase()
+//                    .forEach((shop -> finalReport.append(shop).append("\n")));
+//            try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
+//                outputStream.write(finalReport.toString());
+//                plugin.getLogger().info("Successfully created file " + backupName);
+//            } catch (IOException exception) {
+//                plugin.getLogger().log(Level.WARNING, "Backup failed", exception);
+//            }
+//
+//        });
+    }
+
+    /**
+     * Merge args array to a String object with space
+     *
+     * @param args Args
+     * @return String object
+     */
+    @NotNull
+    public static String mergeArgs(@NotNull String[] args) {
+        StringJoiner joiner = new StringJoiner(" ", "", "");
+        for (String arg : args) {
+            joiner.add(arg);
+        }
+        return joiner.toString();
+    }
+
+    /**
+     * Parse the given name with package.class prefix (all-lowercases) from property
+     *
+     * @param name name
+     * @return ParseResult
+     */
+    @NotNull
+    public static SysPropertiesParseResult parsePackageProperly(@NotNull String name) {
+        Log.Caller caller = Log.Caller.create();
+        String str = caller.getClassName() + "." + name;
+        String value = System.getProperty(str);
+        SysPropertiesParseResult result = new SysPropertiesParseResult(str, value);
+        Log.debug("Parsing the system properly for " + str + ": " + result);
+        return result;
     }
 
     /**
@@ -949,346 +1416,15 @@ public class Util {
     }
 
     /**
-     * Return the Class name.
+     * Create a list which only contains the given elements at the tail of a list.
      *
-     * @return The class prefix
+     * @param list List
+     * @param last The amount of elements from list tail to be added to the new list
+     * @return The new list
      */
     @NotNull
-    public static String getClassPrefix() {
-        String className = Thread.currentThread().getStackTrace()[2].getClassName();
-        try {
-            Class<?> c = Class.forName(className);
-            className = c.getSimpleName();
-            if (!c.getSimpleName().isEmpty()) {
-                className = c.getSimpleName();
-            }
-        } catch (ClassNotFoundException ignored) {
-        }
-        String methodName = Thread.currentThread().getStackTrace()[2].getMethodName();
-        return "[" + className + "-" + methodName + "] ";
-    }
-
-
-    /**
-     * Get the sign material using by plugin. With compatibly process.
-     *
-     * @return The material now using.
-     */
-    @NotNull
-    public static Material getSignMaterial() {
-        Material signMaterial = Material.matchMaterial(plugin.getConfig().getString("shop.sign-material", "OAK_WALL_SIGN"));
-        if (signMaterial != null) {
-            return signMaterial;
-        }
-        return Material.OAK_WALL_SIGN;
-    }
-
-    @SneakyThrows
-    public static void makeExportBackup(@Nullable String backupName) {
-        if (StringUtils.isEmpty(backupName)) {
-            backupName = "export-" + QuickShop.getFork() + "-" + QuickShop.getVersion() + ".txt";
-        }
-        File file = new File(plugin.getDataFolder(), backupName);
-        if (file.exists()) {
-            Files.move(file.toPath(), new File(file.getParentFile(), file.getName() + UUID.randomUUID().toString().replace("-", "")).toPath());
-        }
-
-        if (!file.createNewFile()) {
-            plugin.getLogger().warning("Failed to create new backup file!");
-            return;
-        }
-
-        plugin.getLogger().log(Level.WARNING, "Backup hadn't available in this version yet!");
-
-//        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-//            StringBuilder finalReport = new StringBuilder();
-//            plugin.getShopLoader()
-//                    .getOriginShopsInDatabase()
-//                    .forEach((shop -> finalReport.append(shop).append("\n")));
-//            try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
-//                outputStream.write(finalReport.toString());
-//                plugin.getLogger().info("Successfully created file " + backupName);
-//            } catch (IOException exception) {
-//                plugin.getLogger().log(Level.WARNING, "Backup failed", exception);
-//            }
-//
-//        });
-    }
-
-    /**
-     * Check QuickShop is running on dev edition or not.
-     *
-     * @return DevEdition status
-     */
-    public static boolean isDevEdition() {
-        return !"origin/release".equalsIgnoreCase(QuickShop.getInstance().getBuildInfo().getGitInfo().getBranch());
-    }
-
-    /**
-     * Getting startup flags
-     *
-     * @return Java startup flags without some JVM args
-     */
-    public static List<String> getStartupFlags() {
-        return ManagementFactory.getRuntimeMXBean().getInputArguments();
-    }
-
-    /**
-     * Get the plugin is under dev-mode(debug mode)
-     *
-     * @return under dev-mode
-     */
-    public static boolean isDevMode() {
-        if (devMode != null) {
-            return devMode;
-        } else {
-            if (plugin != null) {
-                devMode = plugin.getConfig().getBoolean("dev-mode");
-                return devMode;
-            } else {
-                return false;
-            }
-        }
-        //F  return devMode != null ? devMode : (devMode = plugin.getConfig().getBoolean("dev-mode"));
-    }
-
-    /**
-     * Get a material is a dye
-     *
-     * @param material The material
-     * @return yes or not
-     */
-    public static boolean isDyes(@NotNull Material material) {
-        return material.name().toUpperCase().endsWith("_DYE");
-    }
-
-    /**
-     * Call a event and check it is cancelled.
-     *
-     * @param event The event implement the Cancellable interface.
-     * @return The event is cancelled.
-     */
-    public static boolean fireCancellableEvent(@NotNull Cancellable event) {
-        if (!(event instanceof Event)) {
-            throw new IllegalArgumentException("Cancellable must is event implement");
-        }
-        Bukkit.getPluginManager().callEvent((Event) event);
-        return event.isCancelled();
-    }
-
-    /**
-     * Simply method to check if the provided String is either {@code null} or empty.
-     *
-     * @param text The text to check for null or empty value.
-     * @return Whether the text is null or empty.
-     */
-    public static boolean isNullOrEmpty(String text) {
-        return text == null || text.isEmpty();
-    }
-
-    /**
-     * Get QuickShop caching folder
-     *
-     * @return The caching folder
-     */
-    public static File getCacheFolder() {
-        QuickShop qs = QuickShop.getInstance();
-        //noinspection ConstantConditions
-        if (qs != null) {
-            File cache = new File(QuickShop.getInstance().getDataFolder(), "cache");
-            if (!cache.exists()) {
-                cache.mkdirs();
-            }
-            return cache;
-        } else {
-            File file = new File("cache");
-            file.mkdirs();
-            return file;
-        }
-    }
-
-    /**
-     * Return the player names based on the configuration
-     *
-     * @return the player names
-     */
-    @NotNull
-    public static List<String> getPlayerList() {
-        List<String> tabList = plugin.getServer().getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
-        if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
-            tabList.addAll(Arrays.stream(plugin.getServer().getOfflinePlayers()).map(OfflinePlayer::getName).filter(Objects::nonNull).toList());
-        }
-        return tabList;
-    }
-
-    /**
-     * Merge args array to a String object with space
-     *
-     * @param args Args
-     * @return String object
-     */
-    @NotNull
-    public static String mergeArgs(@NotNull String[] args) {
-        StringJoiner joiner = new StringJoiner(" ", "", "");
-        for (String arg : args) {
-            joiner.add(arg);
-        }
-        return joiner.toString();
-    }
-
-    /**
-     * Ensure this method is calling from specific thread
-     *
-     * @param async on async thread or main server thread.
-     */
-    public static void ensureThread(boolean async) {
-        boolean isMainThread = Bukkit.isPrimaryThread();
-        if (async) {
-            if (isMainThread) {
-                throw new IllegalStateException("#[Illegal Access] This method require runs on async thread.");
-            }
-        } else {
-            if (!isMainThread) {
-                throw new IllegalStateException("#[Illegal Access] This method require runs on server main thread.");
-            }
-        }
-    }
-
-    /**
-     * Execute the Runnable in server main thread.
-     * If it already on main-thread, will be executed directly.
-     * or post to main-thread if came from any other thread.
-     *
-     * @param runnable The runnable
-     */
-    public static void mainThreadRun(@NotNull Runnable runnable) {
-        if (Bukkit.isPrimaryThread()) {
-            runnable.run();
-        } else {
-            Bukkit.getScheduler().runTask(plugin, runnable);
-        }
-    }
-
-    /**
-     * Execute the Runnable in async thread.
-     * If it already on main-thread, will be move to async thread.
-     *
-     * @param runnable The runnable
-     */
-    public static void asyncThreadRun(@NotNull Runnable runnable) {
-        if (!plugin.isEnabled()) {
-            Log.debug(Level.WARNING, "Scheduler not available, executing task on current thread...");
-            runnable.run();
-            return;
-        }
-        if (!Bukkit.isPrimaryThread()) {
-            runnable.run();
-        } else {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
-        }
-    }
-
-    /**
-     * Convert timestamp to LocalDate instance
-     *
-     * @param timestamp Timestamp
-     * @return LocalDate instance
-     */
-    // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
-    @Nullable
-    public static LocalDate getDateFromTimestamp(long timestamp) {
-        LocalDateTime date = getDateTimeFromTimestamp(timestamp);
-        return date == null ? null : date.toLocalDate();
-    }
-
-    /**
-     * Convert timestamp to LocalDateTime instance
-     *
-     * @param timestamp Timestamp
-     * @return LocalDateTime instance
-     */
-    // http://www.java2s.com/Tutorials/Java/Data_Type_How_to/Date_Convert/Convert_long_type_timestamp_to_LocalDate_and_LocalDateTime.htm
-    @Nullable
-    public static LocalDateTime getDateTimeFromTimestamp(long timestamp) {
-        if (timestamp == 0) {
-            return null;
-        }
-        return LocalDateTime.ofInstant(Instant.ofEpochMilli(timestamp), TimeZone
-                .getDefault().toZoneId());
-    }
-
-    /**
-     * Gets the CommandSender unique id.
-     *
-     * @param sender the sender
-     * @return the sender unique id if sender is a player, otherwise nil unique id
-     */
-    @NotNull
-    public static UUID getSenderUniqueId(@Nullable CommandSender sender) {
-        if (sender instanceof OfflinePlayer) {
-            return ((OfflinePlayer) sender).getUniqueId();
-        }
-        return getNilUniqueId();
-    }
-
-    /**
-     * Gets the nil unique id
-     *
-     * @return uuid which content is `00000000-0000-0000-0000-000000000000`
-     */
-    @NotNull
-    public static UUID getNilUniqueId() {
-        return new UUID(0, 0);
-    }
-
-    /**
-     * Create regex from glob
-     *
-     * @param glob glob
-     * @return regex
-     */
-    // https://stackoverflow.com/questions/45321050/java-string-matching-with-wildcards
-    @NotNull
-    public static String createRegexFromGlob(@NotNull String glob) {
-        StringBuilder out = new StringBuilder("^");
-        for (int i = 0; i < glob.length(); ++i) {
-            final char c = glob.charAt(i);
-            switch (c) {
-                case '*' -> out.append(".*");
-                case '?' -> out.append('.');
-                case '.' -> out.append("\\.");
-                case '\\' -> out.append("\\\\");
-                default -> out.append(c);
-            }
-        }
-        out.append('$');
-        return out.toString();
-    }
-
-    /**
-     * Get location that converted to block position (.0)
-     *
-     * @param loc location
-     * @return blocked location
-     */
-    @NotNull
-    public static Location getBlockLocation(@NotNull Location loc) {
-        loc = loc.clone();
-        loc.setX(loc.getBlockX());
-        loc.setY(loc.getBlockY());
-        loc.setZ(loc.getBlockZ());
-        return loc;
-    }
-
-    /**
-     * Matches the given lists but disordered.
-     *
-     * @param list1 List1
-     * @param list2 List2
-     * @return Lists matches or not
-     */
-    public static boolean listDisorderMatches(@NotNull Collection<?> list1, @NotNull Collection<?> list2) {
-        return list1.containsAll(list2) && list2.containsAll(list1);
+    public static List<String> tail(@NotNull List<String> list, int last) {
+        return list.subList(Math.max(list.size() - last, 0), list.size());
     }
 
     /**
@@ -1305,122 +1441,6 @@ public class Util {
         }
     }
 
-    /**
-     * Gets the location of a class inside of a jar file.
-     *
-     * @param clazz The class to get the location of.
-     * @return The jar path which given class at.
-     */
-    @NotNull
-    public static String getClassPathRelative(@NotNull Class<?> clazz) {
-        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
-        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
-        File file = new File(jarPath);
-        return getRelativePath(new File("."), file);
-    }
-
-    @NotNull
-    public static String getRelativePath(@NotNull File rootPath, @NotNull File targetPath) {
-        try {
-            return rootPath.toURI().relativize(targetPath.toURI()).getPath();
-        } catch (Exception e) {
-            return targetPath.getAbsolutePath();
-        }
-    }
-
-    @NotNull
-    public static String getRelativePath(@NotNull File targetPath) {
-        try {
-            return new File(".").toURI().relativize(targetPath.toURI()).getPath();
-        } catch (Exception e) {
-            return targetPath.getAbsolutePath();
-        }
-    }
-
-    public static boolean deleteDirectory(@NotNull File dir) {
-        if (dir.isDirectory()) {
-            String[] children = dir.list();
-            if (children == null) {
-                return false;
-            }
-            for (String child : children) {
-                if (!deleteDirectory(new File(dir, child))) {
-                    return false;
-                }
-            }
-        }
-        return dir.delete();
-    }
-
-    /**
-     * Gets a plugin's Jar file
-     *
-     * @param plugin The plugin instance
-     * @return The plugin's Jar file
-     * @throws FileNotFoundException If the plugin's Jar file could not be found
-     */
-    @NotNull
-    public static File getPluginJarFile(@NotNull Plugin plugin) throws FileNotFoundException {
-        String path = getPluginJarPath(plugin);
-        File file = new File(path);
-        if (!file.exists()) {
-            throw new FileNotFoundException("File not found: " + path);
-        }
-        return file;
-    }
-
-    /**
-     * Get class path of the given class.
-     *
-     * @param plugin Plugin plugin instance
-     * @return Class path
-     */
-    @NotNull
-    public static String getPluginJarPath(@NotNull Plugin plugin) {
-        return getClassPath(plugin.getClass());
-    }
-
-    /**
-     * Gets the location of a class inside of a jar file.
-     *
-     * @param clazz The class to get the location of.
-     * @return The jar path which given class at.
-     */
-    @NotNull
-    public static String getClassPath(@NotNull Class<?> clazz) {
-        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
-        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
-        return jarPath;
-    }
-
-    /**
-     * Create a list which only contains the given elements at the tail of a list.
-     *
-     * @param list List
-     * @param last The amount of elements from list tail to be added to the new list
-     * @return The new list
-     */
-    @NotNull
-    public static List<String> tail(@NotNull List<String> list, int last) {
-        return list.subList(Math.max(list.size() - last, 0), list.size());
-    }
-
-    /**
-     * Parse the given name with package.class prefix (all-lowercases) from property
-     *
-     * @param name name
-     * @return ParseResult
-     */
-    @NotNull
-    public static SysPropertiesParseResult parsePackageProperly(@NotNull String name) {
-        Log.Caller caller = Log.Caller.create();
-        String str = caller.getClassName() + "." + name;
-        String value = System.getProperty(str);
-        SysPropertiesParseResult result = new SysPropertiesParseResult(str, value);
-        Log.debug("Parsing the system properly for " + str + ": " + result);
-        return result;
-    }
-
     @Data
     public static class SysPropertiesParseResult {
         private final String key;
@@ -1431,25 +1451,16 @@ public class Util {
             this.value = value;
         }
 
-        @NotNull
-        public String getParseKey() {
-            return key;
-        }
-
-        public boolean isPresent() {
-            return value != null;
-        }
-
         public boolean asBoolean() {
             return Boolean.parseBoolean(value);
         }
 
-        public int asInteger(int def) {
+        public byte asByte(byte def) {
             if (value == null) {
                 return def;
             }
             try {
-                return Integer.parseInt(value);
+                return Byte.parseByte(value);
             } catch (NumberFormatException exception) {
                 return def;
             }
@@ -1466,24 +1477,15 @@ public class Util {
             }
         }
 
-        public byte asByte(byte def) {
+        public int asInteger(int def) {
             if (value == null) {
                 return def;
             }
             try {
-                return Byte.parseByte(value);
+                return Integer.parseInt(value);
             } catch (NumberFormatException exception) {
                 return def;
             }
-        }
-
-
-        @Nullable
-        public String asString(@NotNull String def) {
-            if (value == null) {
-                return def;
-            }
-            return value;
         }
 
         public long asLong(long def) {
@@ -1506,6 +1508,23 @@ public class Util {
             } catch (NumberFormatException exception) {
                 return def;
             }
+        }
+
+        @Nullable
+        public String asString(@NotNull String def) {
+            if (value == null) {
+                return def;
+            }
+            return value;
+        }
+
+        @NotNull
+        public String getParseKey() {
+            return key;
+        }
+
+        public boolean isPresent() {
+            return value != null;
         }
     }
 

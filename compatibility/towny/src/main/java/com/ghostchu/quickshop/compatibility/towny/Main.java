@@ -57,6 +57,18 @@ public final class Main extends CompatibilityModule implements Listener {
         return accountName;
     }
 
+    @EventHandler(ignoreCancelled = true)
+    public void onCreation(ShopCreateEvent event) {
+        if (isWorldIgnored(event.getShop().getLocation().getWorld())) {
+            return;
+        }
+        //noinspection ConstantConditions
+        if (checkFlags(event.getPlayer(), event.getShop().getLocation(), this.createFlags)) {
+            return;
+        }
+        event.setCancelled(true, "Towny Blocked");
+    }
+
     @Override
     public void onDisable() {
         api.getCommandManager().unregisterCmd("town");
@@ -121,44 +133,111 @@ public final class Main extends CompatibilityModule implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void shopTypeChanged(ShopTypeChangeEvent event) {
-        Shop shop = event.getShop();
-        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
-            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+    private boolean checkFlags(@NotNull Player player, @NotNull Location location, @NotNull List<TownyFlags> flags) {
+        if (isWorldIgnored(location.getWorld())) {
+            return true;
+        }
+        if (!whiteList) {
+            return true;
+        }
+        for (TownyFlags flag : flags) {
+            switch (flag) {
+                case OWN:
+                    if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
+                        return false;
+                    }
+                    break;
+                case MODIFY:
+                    if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
+                        return false;
+                    }
+                    break;
+                case SHOPTYPE:
+                    if (!ShopPlotUtil.isShopPlot(location)) {
+                        return false;
+                    }
+                default:
+                    // Ignore
+            }
+        }
+        return true;
+    }
+
+    @EventHandler
+    public void onPlayerLeave(TownRemoveResidentEvent event) {
+        if (isWorldIgnored(event.getTown().getWorld())) {
+            return;
+        }
+        if (!getConfig().getBoolean("delete-shop-on-resident-leave", false)) {
+            return;
+        }
+        Util.mainThreadRun(() -> purgeShops(event.getTown().getTownBlocks(), event.getResident().getUUID(), null, "Town removed a resident"));
+    }
+
+    public void purgeShops(@NotNull Collection<TownBlock> worldCoords, @Nullable UUID owner, @Nullable UUID deleter, @NotNull String reason) {
+        for (TownBlock townBlock : worldCoords) {
+            purgeShops(townBlock.getWorldCoord(), owner, deleter, reason);
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void shopPriceChanged(ShopPriceChangeEvent event) {
-        Shop shop = event.getShop();
-        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
-            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+    public void purgeShops(@NotNull WorldCoord worldCoord, @Nullable UUID owner, @Nullable UUID deleter, @NotNull String reason) {
+        //Getting all shop with world-chunk-shop mapping
+        for (Shop shop : api.getShopManager().getAllShops()) {
+            if (!Objects.equals(shop.getLocation().getWorld(), worldCoord.getBukkitWorld())) {
+                continue;
+            }
+            if (WorldCoord.parseWorldCoord(shop.getLocation()).equals(worldCoord)) {
+                if (owner != null && shop.getOwner().equals(owner)) {
+                    recordDeletion(deleter, shop, reason);
+                    shop.delete();
+                }
+            }
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void shopItemChanged(ShopItemChangeEvent event) {
-        Shop shop = event.getShop();
-        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
-            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+    @EventHandler
+    public void onPlotClear(PlotClearEvent event) {
+        if (isWorldIgnored(event.getTownBlock().getWorldCoord().getBukkitWorld())) {
+            return;
         }
+        if (!getConfig().getBoolean("delete-shop-on-plot-clear", false)) {
+            return;
+        }
+        Util.mainThreadRun(() -> purgeShops(event.getTownBlock().getWorldCoord(), null, null, "Plot cleared"));
+    }
+
+    @EventHandler
+    public void onPlotUnclaim(TownUnclaimEvent event) {
+        if (isWorldIgnored(event.getWorldCoord().getBukkitWorld())) {
+            return;
+        }
+        if (!getConfig().getBoolean("delete-shop-on-plot-unclaimed")) {
+            return;
+        }
+        Util.mainThreadRun(() -> purgeShops(event.getWorldCoord(), null, null, "Town Unclaimed"));
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void shopItemChanged(ShopOwnershipTransferEvent event) {
-        Shop shop = event.getShop();
-        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
-            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+    public void onPreCreation(ShopPreCreateEvent event) {
+        if (isWorldIgnored(event.getLocation().getWorld())) {
+            return;
         }
+        if (checkFlags(event.getPlayer(), event.getLocation(), this.createFlags)) {
+            return;
+        }
+        event.setCancelled(true, "Towny Blocked");
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void shopTaxAccountChanged(ShopTaxAccountChangeEvent event) {
-        Shop shop = event.getShop();
-        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
-            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+    public void onTrading(ShopPurchaseEvent event) {
+        if (isWorldIgnored(event.getShop().getLocation().getWorld())) {
+            return;
         }
+        //noinspection ConstantConditions
+        if (checkFlags(event.getPlayer(), event.getShop().getLocation(), this.tradeFlags)) {
+            return;
+        }
+        event.setCancelled(true, "Towny Blocked");
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -220,6 +299,46 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
+    public void shopItemChanged(ShopItemChangeEvent event) {
+        Shop shop = event.getShop();
+        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
+            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void shopItemChanged(ShopOwnershipTransferEvent event) {
+        Shop shop = event.getShop();
+        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
+            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void shopPriceChanged(ShopPriceChangeEvent event) {
+        Shop shop = event.getShop();
+        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
+            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void shopTaxAccountChanged(ShopTaxAccountChangeEvent event) {
+        Shop shop = event.getShop();
+        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
+            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void shopTypeChanged(ShopTypeChangeEvent event) {
+        Shop shop = event.getShop();
+        if (TownyShopUtil.getShopNation(shop) != null || TownyShopUtil.getShopTown(shop) != null) {
+            event.setCancelled(true, api.getTextManager().of("addon.towny.operation-disabled-due-shop-status").forLocale());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
     public void taxesAccountOverride(ShopTaxAccountGettingEvent event) {
         if (!getConfig().getBoolean("taxes-to-town", true)) {
             return;
@@ -240,124 +359,5 @@ public final class Main extends CompatibilityModule implements Listener {
             event.setTaxAccount(profile.getUniqueId());
             Log.debug("Tax account override: " + profile.getUniqueId() + " = " + profile.getName());
         }
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onPreCreation(ShopPreCreateEvent event) {
-        if (isWorldIgnored(event.getLocation().getWorld())) {
-            return;
-        }
-        if (checkFlags(event.getPlayer(), event.getLocation(), this.createFlags)) {
-            return;
-        }
-        event.setCancelled(true, "Towny Blocked");
-    }
-
-    private boolean checkFlags(@NotNull Player player, @NotNull Location location, @NotNull List<TownyFlags> flags) {
-        if (isWorldIgnored(location.getWorld())) {
-            return true;
-        }
-        if (!whiteList) {
-            return true;
-        }
-        for (TownyFlags flag : flags) {
-            switch (flag) {
-                case OWN:
-                    if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
-                        return false;
-                    }
-                    break;
-                case MODIFY:
-                    if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
-                        return false;
-                    }
-                    break;
-                case SHOPTYPE:
-                    if (!ShopPlotUtil.isShopPlot(location)) {
-                        return false;
-                    }
-                default:
-                    // Ignore
-            }
-        }
-        return true;
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onCreation(ShopCreateEvent event) {
-        if (isWorldIgnored(event.getShop().getLocation().getWorld())) {
-            return;
-        }
-        //noinspection ConstantConditions
-        if (checkFlags(event.getPlayer(), event.getShop().getLocation(), this.createFlags)) {
-            return;
-        }
-        event.setCancelled(true, "Towny Blocked");
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onTrading(ShopPurchaseEvent event) {
-        if (isWorldIgnored(event.getShop().getLocation().getWorld())) {
-            return;
-        }
-        //noinspection ConstantConditions
-        if (checkFlags(event.getPlayer(), event.getShop().getLocation(), this.tradeFlags)) {
-            return;
-        }
-        event.setCancelled(true, "Towny Blocked");
-    }
-
-    @EventHandler
-    public void onPlayerLeave(TownRemoveResidentEvent event) {
-        if (isWorldIgnored(event.getTown().getWorld())) {
-            return;
-        }
-        if (!getConfig().getBoolean("delete-shop-on-resident-leave", false)) {
-            return;
-        }
-        Util.mainThreadRun(() -> purgeShops(event.getTown().getTownBlocks(), event.getResident().getUUID(), null, "Town removed a resident"));
-    }
-
-    public void purgeShops(@NotNull Collection<TownBlock> worldCoords, @Nullable UUID owner, @Nullable UUID deleter, @NotNull String reason) {
-        for (TownBlock townBlock : worldCoords) {
-            purgeShops(townBlock.getWorldCoord(), owner, deleter, reason);
-        }
-    }
-
-    public void purgeShops(@NotNull WorldCoord worldCoord, @Nullable UUID owner, @Nullable UUID deleter, @NotNull String reason) {
-        //Getting all shop with world-chunk-shop mapping
-        for (Shop shop : api.getShopManager().getAllShops()) {
-            if (!Objects.equals(shop.getLocation().getWorld(), worldCoord.getBukkitWorld())) {
-                continue;
-            }
-            if (WorldCoord.parseWorldCoord(shop.getLocation()).equals(worldCoord)) {
-                if (owner != null && shop.getOwner().equals(owner)) {
-                    recordDeletion(deleter, shop, reason);
-                    shop.delete();
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPlotClear(PlotClearEvent event) {
-        if (isWorldIgnored(event.getTownBlock().getWorldCoord().getBukkitWorld())) {
-            return;
-        }
-        if (!getConfig().getBoolean("delete-shop-on-plot-clear", false)) {
-            return;
-        }
-        Util.mainThreadRun(() -> purgeShops(event.getTownBlock().getWorldCoord(), null, null, "Plot cleared"));
-    }
-
-    @EventHandler
-    public void onPlotUnclaim(TownUnclaimEvent event) {
-        if (isWorldIgnored(event.getWorldCoord().getBukkitWorld())) {
-            return;
-        }
-        if (!getConfig().getBoolean("delete-shop-on-plot-unclaimed")) {
-            return;
-        }
-        Util.mainThreadRun(() -> purgeShops(event.getWorldCoord(), null, null, "Town Unclaimed"));
     }
 }

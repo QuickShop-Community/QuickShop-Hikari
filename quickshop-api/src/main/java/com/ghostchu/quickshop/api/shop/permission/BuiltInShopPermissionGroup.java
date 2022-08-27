@@ -28,6 +28,21 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
         this.permissions = ImmutableList.copyOf(permissions);
     }
 
+    @NotNull
+    public String getDescriptionKey() {
+        return descriptionKey;
+    }
+
+    @NotNull
+    public String getNamespacedNode() {
+        return QuickShopAPI.getPluginInstance().getName().toLowerCase(Locale.ROOT) + "." + this.node;
+    }
+
+    @NotNull
+    public String getRawNode() {
+        return node;
+    }
+
     @Override
     public boolean hasPermission(@NotNull String permission) {
         return node.contains(permission);
@@ -52,20 +67,5 @@ public enum BuiltInShopPermissionGroup implements ShopPermissionAudience {
     @NotNull
     public List<BuiltInShopPermission> getPermissions() {
         return permissions;
-    }
-
-    @NotNull
-    public String getDescriptionKey() {
-        return descriptionKey;
-    }
-
-    @NotNull
-    public String getRawNode() {
-        return node;
-    }
-
-    @NotNull
-    public String getNamespacedNode() {
-        return QuickShopAPI.getPluginInstance().getName().toLowerCase(Locale.ROOT) + "." + this.node;
     }
 }

@@ -11,11 +11,11 @@ public enum ShopAction {
     CREATE_BUY,
     CANCELLED;
 
-    public boolean isTrading() {
-        return this == PURCHASE_BUY || this == PURCHASE_SELL;
-    }
-
     public boolean isCreating() {
         return this == CREATE_SELL || this == CREATE_BUY;
+    }
+
+    public boolean isTrading() {
+        return this == PURCHASE_BUY || this == PURCHASE_SELL;
     }
 }

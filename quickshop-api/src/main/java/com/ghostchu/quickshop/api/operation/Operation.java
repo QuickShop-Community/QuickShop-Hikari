@@ -12,14 +12,6 @@ public interface Operation {
     boolean commit();
 
     /**
-     * Rollback the operation
-     *
-     * @return true if successes
-     */
-
-    boolean rollback();
-
-    /**
      * Check if operation is committed
      *
      * @return true if committed
@@ -32,4 +24,12 @@ public interface Operation {
      * @return true if rolled back
      */
     boolean isRollback();
+
+    /**
+     * Rollback the operation
+     *
+     * @return true if successes
+     */
+
+    boolean rollback();
 }

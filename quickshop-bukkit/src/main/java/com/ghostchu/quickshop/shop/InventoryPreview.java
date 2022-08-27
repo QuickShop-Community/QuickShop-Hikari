@@ -70,6 +70,18 @@ public class InventoryPreview implements Listener {
         }
     }
 
+    public void close() {
+        Util.ensureThread(false);
+        if (inventory == null) {
+            return;
+        }
+
+        for (HumanEntity player : new ArrayList<>(inventory.getViewers())) {
+            player.closeInventory();
+        }
+        inventory = null; // Destroy
+    }
+
     /**
      * Open the preview GUI for player.
      */
@@ -92,18 +104,6 @@ public class InventoryPreview implements Listener {
             }
         }
         player.openInventory(inventory);
-    }
-
-    public void close() {
-        Util.ensureThread(false);
-        if (inventory == null) {
-            return;
-        }
-
-        for (HumanEntity player : new ArrayList<>(inventory.getViewers())) {
-            player.closeInventory();
-        }
-        inventory = null; // Destroy
     }
 
 }

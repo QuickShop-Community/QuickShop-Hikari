@@ -87,8 +87,28 @@ public class SimpleDataRecord implements DataRecord {
     }
 
     @Override
-    public @NotNull UUID getOwner() {
-        return owner;
+    public @NotNull Date getCreateTime() {
+        return createTime;
+    }
+
+    @Override
+    public String getCurrency() {
+        return currency;
+    }
+
+    @Override
+    public @NotNull String getExtra() {
+        return extra;
+    }
+
+    @Override
+    public @NotNull String getInventorySymbolLink() {
+        return inventorySymbolLink;
+    }
+
+    @Override
+    public @NotNull String getInventoryWrapper() {
+        return inventoryWrapper;
     }
 
     @Override
@@ -102,33 +122,8 @@ public class SimpleDataRecord implements DataRecord {
     }
 
     @Override
-    public int getType() {
-        return type;
-    }
-
-    @Override
-    public String getCurrency() {
-        return currency;
-    }
-
-    @Override
-    public double getPrice() {
-        return price;
-    }
-
-    @Override
-    public boolean isUnlimited() {
-        return unlimited;
-    }
-
-    @Override
-    public boolean isHologram() {
-        return hologram;
-    }
-
-    @Override
-    public UUID getTaxAccount() {
-        return taxAccount;
+    public @NotNull UUID getOwner() {
+        return owner;
     }
 
     @Override
@@ -137,22 +132,27 @@ public class SimpleDataRecord implements DataRecord {
     }
 
     @Override
-    public @NotNull String getInventoryWrapper() {
-        return inventoryWrapper;
+    public double getPrice() {
+        return price;
     }
 
     @Override
-    public @NotNull String getInventorySymbolLink() {
-        return inventorySymbolLink;
+    public UUID getTaxAccount() {
+        return taxAccount;
     }
 
     @Override
-    public @NotNull Date getCreateTime() {
-        return createTime;
+    public int getType() {
+        return type;
     }
 
     @Override
-    public @NotNull String getExtra() {
-        return extra;
+    public boolean isHologram() {
+        return hologram;
+    }
+
+    @Override
+    public boolean isUnlimited() {
+        return unlimited;
     }
 }

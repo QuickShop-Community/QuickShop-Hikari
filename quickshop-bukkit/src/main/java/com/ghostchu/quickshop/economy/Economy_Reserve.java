@@ -61,6 +61,11 @@ public class Economy_Reserve extends AbstractEconomy {
         }
     }
 
+    @Override
+    public @NotNull String getName() {
+        return "BuiltIn-Reserve";
+    }
+
     /**
      * Transfers the given amount of money from Player1 to Player2
      *
@@ -80,11 +85,6 @@ public class Economy_Reserve extends AbstractEconomy {
             plugin.getLogger().log(Level.WARNING, ERROR_MESSAGE, throwable);
             return false;
         }
-    }
-
-    @Override
-    public @NotNull String getName() {
-        return "BuiltIn-Reserve";
     }
 
     @Override

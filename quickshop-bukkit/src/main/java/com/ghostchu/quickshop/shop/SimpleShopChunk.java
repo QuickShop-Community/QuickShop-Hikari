@@ -23,16 +23,6 @@ public class SimpleShopChunk implements ShopChunk {
     }
 
     @Override
-    public boolean isSame(@NotNull World world, int x, int z) {
-        return isSame(world.getName(), x, z);
-    }
-
-    @Override
-    public boolean isSame(@NotNull String world, int x, int z) {
-        return this.x == x && this.z == z && this.world.equals(world);
-    }
-
-    @Override
     public @NotNull String getWorld() {
         return world;
     }
@@ -45,5 +35,15 @@ public class SimpleShopChunk implements ShopChunk {
     @Override
     public int getZ() {
         return z;
+    }
+
+    @Override
+    public boolean isSame(@NotNull String world, int x, int z) {
+        return this.x == x && this.z == z && this.world.equals(world);
+    }
+
+    @Override
+    public boolean isSame(@NotNull World world, int x, int z) {
+        return isSame(world.getName(), x, z);
     }
 }

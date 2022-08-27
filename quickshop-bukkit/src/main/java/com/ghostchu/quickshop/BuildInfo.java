@@ -82,34 +82,6 @@ public class BuildInfo {
         }
 
         @NotNull
-        public String getBranch() {
-            if (branch == null) {
-                return "undefined";
-            }
-            return branch;
-        }
-
-        public boolean isDirty() {
-            return dirty;
-        }
-
-        @NotNull
-        public String getRemoteOriginUrl() {
-            if (remoteOriginUrl == null) {
-                return "undefined";
-            }
-            return remoteOriginUrl;
-        }
-
-        @NotNull
-        public String getId() {
-            if (id == null) {
-                return "undefined";
-            }
-            return id;
-        }
-
-        @NotNull
         public String getAbbrev() {
             if (abbrev == null) {
                 return "undefined";
@@ -118,51 +90,19 @@ public class BuildInfo {
         }
 
         @NotNull
-        public String getDescribe() {
-            if (describe == null) {
+        public String getBranch() {
+            if (branch == null) {
                 return "undefined";
             }
-            return describe;
+            return branch;
         }
 
         @NotNull
-        public String getDescribeShort() {
-            if (describeShort == null) {
+        public String getBuildNumber() {
+            if (buildNumber == null) {
                 return "undefined";
             }
-            return describeShort;
-        }
-
-        @NotNull
-        public String getCommitUsername() {
-            if (commitUsername == null) {
-                return "undefined";
-            }
-            return commitUsername;
-        }
-
-        @NotNull
-        public String getCommitEmail() {
-            if (commitEmail == null) {
-                return "undefined";
-            }
-            return commitEmail;
-        }
-
-        @NotNull
-        public String getCommitMessage() {
-            if (commitMessage == null) {
-                return "undefined";
-            }
-            return commitMessage;
-        }
-
-        @NotNull
-        public String getCommitDate() {
-            if (commitDate == null) {
-                return "undefined";
-            }
-            return commitDate;
+            return buildNumber;
         }
 
         @NotNull
@@ -182,11 +122,67 @@ public class BuildInfo {
         }
 
         @NotNull
-        public String getBuildNumber() {
-            if (buildNumber == null) {
+        public String getCommitDate() {
+            if (commitDate == null) {
                 return "undefined";
             }
-            return buildNumber;
+            return commitDate;
+        }
+
+        @NotNull
+        public String getCommitEmail() {
+            if (commitEmail == null) {
+                return "undefined";
+            }
+            return commitEmail;
+        }
+
+        @NotNull
+        public String getCommitMessage() {
+            if (commitMessage == null) {
+                return "undefined";
+            }
+            return commitMessage;
+        }
+
+        @NotNull
+        public String getCommitUsername() {
+            if (commitUsername == null) {
+                return "undefined";
+            }
+            return commitUsername;
+        }
+
+        @NotNull
+        public String getDescribe() {
+            if (describe == null) {
+                return "undefined";
+            }
+            return describe;
+        }
+
+        @NotNull
+        public String getDescribeShort() {
+            if (describeShort == null) {
+                return "undefined";
+            }
+            return describeShort;
+        }
+
+        @NotNull
+        public String getId() {
+            if (id == null) {
+                return "undefined";
+            }
+            return id;
+        }
+
+        @NotNull
+        public String getRemoteOriginUrl() {
+            if (remoteOriginUrl == null) {
+                return "undefined";
+            }
+            return remoteOriginUrl;
         }
 
         @NotNull
@@ -195,6 +191,10 @@ public class BuildInfo {
                 return "undefined";
             }
             return tags;
+        }
+
+        public boolean isDirty() {
+            return dirty;
         }
     }
 
@@ -237,10 +237,6 @@ public class BuildInfo {
             this.projectBaseName = properties.getProperty("ci.job.base_name");
         }
 
-        public boolean isCi() {
-            return ci;
-        }
-
         public int getId() {
             return id;
         }
@@ -254,19 +250,11 @@ public class BuildInfo {
         }
 
         @NotNull
-        public String getTag() {
-            if (tag == null) {
+        public String getProjectBaseName() {
+            if (projectBaseName == null) {
                 return "undefined";
             }
-            return tag;
-        }
-
-        @NotNull
-        public String getUrl() {
-            if (url == null) {
-                return "undefined";
-            }
-            return url;
+            return projectBaseName;
         }
 
         @NotNull
@@ -286,11 +274,23 @@ public class BuildInfo {
         }
 
         @NotNull
-        public String getProjectBaseName() {
-            if (projectBaseName == null) {
+        public String getTag() {
+            if (tag == null) {
                 return "undefined";
             }
-            return projectBaseName;
+            return tag;
+        }
+
+        @NotNull
+        public String getUrl() {
+            if (url == null) {
+                return "undefined";
+            }
+            return url;
+        }
+
+        public boolean isCi() {
+            return ci;
         }
     }
 

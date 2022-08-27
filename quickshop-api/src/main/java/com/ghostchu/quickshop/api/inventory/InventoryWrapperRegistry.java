@@ -13,6 +13,21 @@ public class InventoryWrapperRegistry {
     public InventoryWrapperRegistry() {
     }
 
+    @Nullable
+    public String find(InventoryWrapperManager manager) {
+        for (Map.Entry<String, InventoryWrapperManager> entry : registry.entrySet()) {
+            if (entry.getValue() == manager || entry.getValue().equals(manager)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public InventoryWrapperManager get(String pluginName) {
+        return registry.get(pluginName);
+    }
+
     public void register(@NotNull Plugin plugin, @NotNull InventoryWrapperManager manager) {
         if (registry.containsKey(plugin.getName())) {
             plugin.getLogger().warning("Nag Author: Plugin " + plugin.getName() + " already have a registered InventoryWrapperManager: "
@@ -25,21 +40,6 @@ public class InventoryWrapperRegistry {
 
     public void unregister(@NotNull Plugin plugin) {
         registry.remove(plugin.getName());
-    }
-
-    @Nullable
-    public InventoryWrapperManager get(String pluginName) {
-        return registry.get(pluginName);
-    }
-
-    @Nullable
-    public String find(InventoryWrapperManager manager) {
-        for (Map.Entry<String, InventoryWrapperManager> entry : registry.entrySet()) {
-            if (entry.getValue() == manager || entry.getValue().equals(manager)) {
-                return entry.getKey();
-            }
-        }
-        return null;
     }
 
 

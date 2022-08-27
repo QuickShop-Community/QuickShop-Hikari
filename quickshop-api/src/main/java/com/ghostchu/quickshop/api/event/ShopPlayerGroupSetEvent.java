@@ -25,16 +25,6 @@ public class ShopPlayerGroupSetEvent extends AbstractQSEvent {
     }
 
     /**
-     * Get the shop that the player's group was set in.
-     *
-     * @return The shop.
-     */
-    @NotNull
-    public Shop getShop() {
-        return shop;
-    }
-
-    /**
      * Get the new group.
      *
      * @return The new group. ({@link com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup#EVERYONE} if removing)
@@ -52,5 +42,15 @@ public class ShopPlayerGroupSetEvent extends AbstractQSEvent {
     @NotNull
     public String getOldGroup() {
         return oldGroup;
+    }
+
+    /**
+     * Get the shop that the player's group was set in.
+     *
+     * @return The shop.
+     */
+    @NotNull
+    public Shop getShop() {
+        return shop;
     }
 }

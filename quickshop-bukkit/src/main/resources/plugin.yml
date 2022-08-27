@@ -20,10 +20,10 @@ libraries:
   - com.rollbar:rollbar-java:1.8.1
   - commons-codec:commons-codec:1.15
   - org.slf4j:slf4j-nop:1.7.35
-  - cc.carm.lib:easysql-hikaricp:0.4.2
+  - cc.carm.lib:easysql-hikaricp:0.4.6
   - com.h2database:h2:2.1.214
   - com.ghostchu:simplereloadlib:1.1.2
-  - com.konghq:unirest-java:3.13.7
+  - com.konghq:unirest-java:3.13.11
   - com.github.juliomarcopineda:jdbc-stream:0.1.1
   - one.util:streamex:0.8.1
   - commons-lang:commons-lang:2.6

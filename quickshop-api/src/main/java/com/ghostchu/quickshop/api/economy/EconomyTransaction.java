@@ -11,55 +11,12 @@ import java.util.UUID;
 
 public interface EconomyTransaction {
 
-    @Nullable UUID getFrom();
-
-    void setFrom(@Nullable UUID from);
-
-    @Nullable UUID getTo();
-
-    void setTo(@Nullable UUID to);
-
-    double getAmount();
-
-    void setAmount(double amount);
-
-    double getAmountAfterTax();
-
-    void setAmountAfterTax(double amountAfterTax);
-
-    @NotNull EconomyCore getCore();
-
-    void setCore(@NotNull EconomyCore core);
-
-    @NotNull Stack<Operation> getProcessingStack();
-
-    @Nullable String getCurrency();
-
-    void setCurrency(@Nullable String currency);
-
-    @Nullable UUID getTaxer();
-
-    void setTaxer(@Nullable UUID taxer);
-
-    @NotNull World getWorld();
-
-    void setWorld(@NotNull World world);
-
-    @Nullable String getLastError();
-
-    void setLastError(@NotNull String lastError);
-
-    void setAllowLoan(boolean allowLoan);
-
-    void setTryingFixBalanceInsufficient(boolean tryingFixBalanceInsufficient);
-
     /**
-     * Commit the transaction by the Fail-Safe way
-     * Automatic rollback when commit failed
+     * Checks this transaction can be finished
      *
-     * @return The transaction success.
+     * @return The transaction can be finished (had enough money)
      */
-    boolean failSafeCommit();
+    boolean checkBalance();
 
     /**
      * Commit the transaction
@@ -77,11 +34,38 @@ public interface EconomyTransaction {
     boolean commit(@NotNull TransactionCallback callback);
 
     /**
-     * Checks this transaction can be finished
+     * Commit the transaction by the Fail-Safe way
+     * Automatic rollback when commit failed
      *
-     * @return The transaction can be finished (had enough money)
+     * @return The transaction success.
      */
-    boolean checkBalance();
+    boolean failSafeCommit();
+
+    double getAmount();
+
+    void setAmount(double amount);
+
+    double getAmountAfterTax();
+
+    void setAmountAfterTax(double amountAfterTax);
+
+    @NotNull EconomyCore getCore();
+
+    void setCore(@NotNull EconomyCore core);
+
+    @Nullable String getCurrency();
+
+    void setCurrency(@Nullable String currency);
+
+    @Nullable UUID getFrom();
+
+    void setFrom(@Nullable UUID from);
+
+    @Nullable String getLastError();
+
+    void setLastError(@NotNull String lastError);
+
+    @NotNull Stack<Operation> getProcessingStack();
 
     /**
      * Getting the tax in this transaction
@@ -92,6 +76,18 @@ public interface EconomyTransaction {
 
     void setTax(double tax);
 
+    @Nullable UUID getTaxer();
+
+    void setTaxer(@Nullable UUID taxer);
+
+    @Nullable UUID getTo();
+
+    void setTo(@Nullable UUID to);
+
+    @NotNull World getWorld();
+
+    void setWorld(@NotNull World world);
+
     /**
      * Rolling back the transaction
      *
@@ -100,6 +96,10 @@ public interface EconomyTransaction {
      */
     @SuppressWarnings("UnusedReturnValue")
     @NotNull List<Operation> rollback(boolean continueWhenFailed);
+
+    void setAllowLoan(boolean allowLoan);
+
+    void setTryingFixBalanceInsufficient(boolean tryingFixBalanceInsufficient);
 
 
     interface TransactionCallback {
@@ -114,15 +114,6 @@ public interface EconomyTransaction {
         }
 
         /**
-         * Calling while Transaction commit successfully
-         *
-         * @param economyTransaction Transaction
-         */
-        default void onSuccess(@NotNull EconomyTransaction economyTransaction) {
-
-        }
-
-        /**
          * Calling while Transaction commit failed
          * Use EconomyTransaction#getLastError() to getting reason
          * Use EconomyTransaction#getSteps() to getting the fail step
@@ -130,6 +121,15 @@ public interface EconomyTransaction {
          * @param economyTransaction Transaction
          */
         default void onFailed(@NotNull EconomyTransaction economyTransaction) {
+        }
+
+        /**
+         * Calling while Transaction commit successfully
+         *
+         * @param economyTransaction Transaction
+         */
+        default void onSuccess(@NotNull EconomyTransaction economyTransaction) {
+
         }
 
         /**

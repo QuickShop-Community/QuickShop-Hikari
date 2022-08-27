@@ -27,33 +27,6 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
-        Location shopLoc = event.getShop().getLocation();
-        BentoBox.getInstance().getIslandsManager().getIslandAt(shopLoc).ifPresent(island -> {
-            if (event.getAuthorizer().equals(island.getOwner())) {
-                if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
-                    event.setResult(true);
-                }
-            }
-        });
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onIslandResetted(IslandResettedEvent event) {
-        if (!deleteShopOnReset) {
-            return;
-        }
-        getShops(event.getOldIsland()).forEach(shop -> {
-            recordDeletion(event.getPlayerUUID(), shop, "Island " + event.getIsland().getName() + " was resetted");
-            shop.delete();
-        });
-    }
-
-    private List<Shop> getShops(Island island) {
-        return getShops(island.getWorld().getName(), island.getMinX(), island.getMinZ(), island.getMaxX(), island.getMaxZ());
-    }
-
-    @EventHandler(ignoreCancelled = true)
     public void onIslandDeleted(IslandDeletedEvent event) {
         if (!deleteShopOnReset) {
             return;
@@ -90,6 +63,33 @@ public final class Main extends CompatibilityModule implements Listener {
             if (shop.getOwner().equals(event.getPlayerUUID())) {
                 recordDeletion(null, shop, "Player " + event.getPlayerUUID() + " was leaved from the island");
                 shop.delete();
+            }
+        });
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onIslandResetted(IslandResettedEvent event) {
+        if (!deleteShopOnReset) {
+            return;
+        }
+        getShops(event.getOldIsland()).forEach(shop -> {
+            recordDeletion(event.getPlayerUUID(), shop, "Island " + event.getIsland().getName() + " was resetted");
+            shop.delete();
+        });
+    }
+
+    private List<Shop> getShops(Island island) {
+        return getShops(island.getWorld().getName(), island.getMinX(), island.getMinZ(), island.getMaxX(), island.getMaxZ());
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void permissionOverride(ShopAuthorizeCalculateEvent event) {
+        Location shopLoc = event.getShop().getLocation();
+        BentoBox.getInstance().getIslandsManager().getIslandAt(shopLoc).ifPresent(island -> {
+            if (event.getAuthorizer().equals(island.getOwner())) {
+                if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+                    event.setResult(true);
+                }
             }
         });
     }

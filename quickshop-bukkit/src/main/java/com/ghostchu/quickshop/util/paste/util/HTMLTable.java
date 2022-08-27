@@ -44,15 +44,6 @@ public class HTMLTable {
     }
 
     /**
-     * Sets the table title
-     *
-     * @param title The title, null to clear if already set.
-     */
-    public void setTableTitle(@Nullable String... title) {
-        this.title = title;
-    }
-
-    /**
      * Insert new row to the table
      *
      * @param data The data to insert, any more columns which overflowed than maxColumns will be ignored
@@ -116,5 +107,14 @@ public class HTMLTable {
 
     private String renderColAttributes() {
         return String.format("<col style\"width: %s%%;\">\n", 100 / columns).repeat(columns);
+    }
+
+    /**
+     * Sets the table title
+     *
+     * @param title The title, null to clear if already set.
+     */
+    public void setTableTitle(@Nullable String... title) {
+        this.title = title;
     }
 }

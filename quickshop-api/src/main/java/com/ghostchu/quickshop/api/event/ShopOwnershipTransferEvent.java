@@ -30,14 +30,15 @@ public class ShopOwnershipTransferEvent extends AbstractQSEvent implements QSCan
         this.newOwner = newOwner;
     }
 
-    /**
-     * Gets the shop related to this event.
-     *
-     * @return The shop.
-     */
-    @NotNull
-    public Shop getShop() {
-        return shop;
+    @Override
+    public @Nullable Component getCancelReason() {
+        return reason;
+    }
+
+    @Override
+    public void setCancelled(boolean cancel, @Nullable Component reason) {
+        this.cancelled = cancel;
+        this.reason = reason;
     }
 
     /**
@@ -60,15 +61,14 @@ public class ShopOwnershipTransferEvent extends AbstractQSEvent implements QSCan
         return oldOwner;
     }
 
-    @Override
-    public void setCancelled(boolean cancel, @Nullable Component reason) {
-        this.cancelled = cancel;
-        this.reason = reason;
-    }
-
-    @Override
-    public @Nullable Component getCancelReason() {
-        return reason;
+    /**
+     * Gets the shop related to this event.
+     *
+     * @return The shop.
+     */
+    @NotNull
+    public Shop getShop() {
+        return shop;
     }
 
     @Override

@@ -376,15 +376,6 @@ public class Metrics {
     }
 
     /**
-     * Checks if bStats is enabled.
-     *
-     * @return Whether bStats is enabled or not.
-     */
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    /**
      * Adds a custom chart.
      *
      * @param chart The chart to add.
@@ -422,6 +413,15 @@ public class Metrics {
         data.add("customCharts", customCharts);
 
         return data;
+    }
+
+    /**
+     * Checks if bStats is enabled.
+     *
+     * @return Whether bStats is enabled or not.
+     */
+    public boolean isEnabled() {
+        return enabled;
     }
 
     /**

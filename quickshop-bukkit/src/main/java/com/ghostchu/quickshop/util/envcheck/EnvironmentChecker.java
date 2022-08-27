@@ -54,6 +54,125 @@ public final class EnvironmentChecker {
         tests.add(method);
     }
 
+    @EnvCheckEntry(name = "CoreSupport Test", priority = 6)
+    public ResultContainer coreSupportTest() {
+        String nmsVersion = ReflectFactory.getNMSVersion();
+        GameVersion gameVersion = GameVersion.get(nmsVersion);
+        if (!gameVersion.isCoreSupports()) {
+            return new ResultContainer(CheckResult.STOP_WORKING, "Your Minecraft version is no longer supported: " + plugin.getPlatform().getMinecraftVersion() + " (" + nmsVersion + ")");
+        }
+        if (gameVersion == GameVersion.UNKNOWN) {
+            return new ResultContainer(CheckResult.WARNING, "QuickShop may not fully support version " + nmsVersion + "/" + plugin.getPlatform().getMinecraftVersion() + ", Some features may not work.");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
+
+    @EnvCheckEntry(name = "End of life Test", priority = Integer.MAX_VALUE, stage = EnvCheckEntry.Stage.ON_ENABLE)
+    public ResultContainer eolTest() {
+        if (plugin.getGameVersion().isEndOfLife()) {
+            return new ResultContainer(CheckResult.WARNING, "You're running a Minecraft server with end of life version, QuickShop may not work on this version in future, and you won't receive any in-game update notification anymore, upgrade your server version!");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
+
+    @EnvCheckEntry(name = "GameVersion supporting Test", priority = 9)
+    public ResultContainer gamerVersionSupportTest() {
+        String nmsVersion = ReflectFactory.getNMSVersion();
+        GameVersion gameVersion = GameVersion.get(nmsVersion);
+        if (gameVersion == GameVersion.UNKNOWN) {
+            return new ResultContainer(CheckResult.WARNING, "Your Minecraft server version not tested by developers, QuickShop may ran into issues on this version.");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
+
+    public boolean isOutdatedJvm() {
+        String jvmVersion = System.getProperty("java.version"); //Use java version not jvm version.
+        String[] splitVersion = jvmVersion.split("\\.");
+        if (splitVersion.length < 1) {
+            Log.debug("Failed to parse jvm version to check: " + jvmVersion);
+            return false;
+        }
+        try {
+            int majorVersion = Integer.parseInt(splitVersion[0]);
+            return majorVersion < 17; //Target JDK/JRE version
+        } catch (NumberFormatException ignored) {
+            Log.debug("Failed to parse jvm major version to check: " + splitVersion[0]);
+            return false;
+        }
+    }
+
+    @EnvCheckEntry(name = "ModdedServer Based Test", priority = 4)
+    public ResultContainer moddedBasedTest() {
+        boolean trigged = false;
+        if (isForgeBasedServer()) {
+            plugin.getLogger().warning("WARN: QuickShop is not designed and tested for Forge!");
+            plugin.getLogger().warning("WARN: Use at you own risk!.");
+            plugin.getLogger().warning("WARN: No support will be given!");
+            trigged = true;
+        }
+        if (isFabricBasedServer()) {
+            plugin.getLogger().warning("WARN: QuickShop is not designed and tested for Fabric!");
+            plugin.getLogger().warning("WARN: Use at you own risk!.");
+            plugin.getLogger().warning("WARN: No support will be given!");
+            trigged = true;
+        }
+        if (trigged) {
+            return new ResultContainer(CheckResult.WARNING, "No support will be given to modded servers.");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Server is unmodified.");
+    }
+
+    public boolean isForgeBasedServer() {
+        //Forge server detect - Arclight
+        if (Util.isClassAvailable("net.minecraftforge.server.ServerMain")) {
+            return true;
+        }
+        if (Util.isClassAvailable("net.minecraftforge.fml.loading.ModInfo")) {
+            return true;
+        }
+        if (Util.isClassAvailable("cpw.mods.modlauncher.serviceapi.ILaunchPluginService")) {
+            return true;
+        }
+        return Util.isClassAvailable("net.minecraftforge.forgespi.locating.IModLocator");
+    }
+
+    public boolean isFabricBasedServer() {
+        //Nobody really make it right!?
+        return Util.isClassAvailable("net.fabricmc.loader.launch.knot.KnotClient"); //OMG
+    }
+
+    @EnvCheckEntry(name = "Old QuickShop Test", priority = 3)
+    public ResultContainer oldQuickShopTest() {
+        if (Util.isClassAvailable("com.ghostchu.quickshop.Util.NMS")) {
+            return new ResultContainer(CheckResult.STOP_WORKING, "FATAL: Old QuickShop build is installed! You must remove old QuickShop jar from the plugins folder!");
+        }
+        return new ResultContainer(CheckResult.PASSED, "No old QuickShop jar installled on this server");
+    }
+
+    @EnvCheckEntry(name = "Permission Manager Test", priority = 10, stage = EnvCheckEntry.Stage.ON_ENABLE)
+    public ResultContainer permManagerConflictTest() {
+        if (plugin.getServer().getPluginManager().isPluginEnabled("GroupManager")) {
+            return new ResultContainer(CheckResult.WARNING, "WARNING: Unsupported plugin management plugin [GroupManager] installed, the permissions may not working.");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
+
+    @EnvCheckEntry(name = "PacketListenerAPI Conflict Test", priority = 10)
+    public ResultContainer plapiConflictTest() {
+        if (plugin.isDisplayEnabled() && AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") && Bukkit.getPluginManager().isPluginEnabled("PacketListenerAPI")) {
+            return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem may stop working on your server. We are already aware that [PacketListenerAPI] and [ProtocolLib] are conflicting. (QuickShops requirement to send fake items). If your display is not showing, please uninstall [PacketListenerAPI].");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
+
+    @EnvCheckEntry(name = "Reremake Test", priority = 11, stage = EnvCheckEntry.Stage.ON_ENABLE)
+    public ResultContainer rereMakeTest() {
+        if (plugin.getServer().getPluginManager().isPluginEnabled("QuickShop")) {
+            return new ResultContainer(CheckResult.WARNING, "WARNING: Multiple QuickShop installed, uninstall one of them.");
+        }
+        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+    }
+
     public ResultReport run(EnvCheckEntry.Stage stage) {
         sortTests();
 
@@ -130,22 +249,6 @@ public final class EnvironmentChecker {
         });
     }
 
-    public boolean isOutdatedJvm() {
-        String jvmVersion = System.getProperty("java.version"); //Use java version not jvm version.
-        String[] splitVersion = jvmVersion.split("\\.");
-        if (splitVersion.length < 1) {
-            Log.debug("Failed to parse jvm version to check: " + jvmVersion);
-            return false;
-        }
-        try {
-            int majorVersion = Integer.parseInt(splitVersion[0]);
-            return majorVersion < 17; //Target JDK/JRE version
-        } catch (NumberFormatException ignored) {
-            Log.debug("Failed to parse jvm major version to check: " + splitVersion[0]);
-            return false;
-        }
-    }
-
     @EnvCheckEntry(name = "Spigot Based Server Test", priority = 2)
     public ResultContainer spigotBasedServer() {
         ResultContainer success = new ResultContainer(CheckResult.PASSED, "Server");
@@ -154,67 +257,6 @@ public final class EnvironmentChecker {
             return failed;
         }
         return success;
-    }
-
-    @EnvCheckEntry(name = "Old QuickShop Test", priority = 3)
-    public ResultContainer oldQuickShopTest() {
-        if (Util.isClassAvailable("com.ghostchu.quickshop.Util.NMS")) {
-            return new ResultContainer(CheckResult.STOP_WORKING, "FATAL: Old QuickShop build is installed! You must remove old QuickShop jar from the plugins folder!");
-        }
-        return new ResultContainer(CheckResult.PASSED, "No old QuickShop jar installled on this server");
-    }
-
-    @EnvCheckEntry(name = "ModdedServer Based Test", priority = 4)
-    public ResultContainer moddedBasedTest() {
-        boolean trigged = false;
-        if (isForgeBasedServer()) {
-            plugin.getLogger().warning("WARN: QuickShop is not designed and tested for Forge!");
-            plugin.getLogger().warning("WARN: Use at you own risk!.");
-            plugin.getLogger().warning("WARN: No support will be given!");
-            trigged = true;
-        }
-        if (isFabricBasedServer()) {
-            plugin.getLogger().warning("WARN: QuickShop is not designed and tested for Fabric!");
-            plugin.getLogger().warning("WARN: Use at you own risk!.");
-            plugin.getLogger().warning("WARN: No support will be given!");
-            trigged = true;
-        }
-        if (trigged) {
-            return new ResultContainer(CheckResult.WARNING, "No support will be given to modded servers.");
-        }
-        return new ResultContainer(CheckResult.PASSED, "Server is unmodified.");
-    }
-
-    public boolean isForgeBasedServer() {
-        //Forge server detect - Arclight
-        if (Util.isClassAvailable("net.minecraftforge.server.ServerMain")) {
-            return true;
-        }
-        if (Util.isClassAvailable("net.minecraftforge.fml.loading.ModInfo")) {
-            return true;
-        }
-        if (Util.isClassAvailable("cpw.mods.modlauncher.serviceapi.ILaunchPluginService")) {
-            return true;
-        }
-        return Util.isClassAvailable("net.minecraftforge.forgespi.locating.IModLocator");
-    }
-
-    public boolean isFabricBasedServer() {
-        //Nobody really make it right!?
-        return Util.isClassAvailable("net.fabricmc.loader.launch.knot.KnotClient"); //OMG
-    }
-
-    @EnvCheckEntry(name = "CoreSupport Test", priority = 6)
-    public ResultContainer coreSupportTest() {
-        String nmsVersion = ReflectFactory.getNMSVersion();
-        GameVersion gameVersion = GameVersion.get(nmsVersion);
-        if (!gameVersion.isCoreSupports()) {
-            return new ResultContainer(CheckResult.STOP_WORKING, "Your Minecraft version is no longer supported: " + plugin.getPlatform().getMinecraftVersion() + " (" + nmsVersion + ")");
-        }
-        if (gameVersion == GameVersion.UNKNOWN) {
-            return new ResultContainer(CheckResult.WARNING, "QuickShop may not fully support version " + nmsVersion + "/" + plugin.getPlatform().getMinecraftVersion() + ", Some features may not work.");
-        }
-        return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }
 
     @EnvCheckEntry(name = "Virtual DisplayItem Support Test", priority = 7)
@@ -242,48 +284,5 @@ public final class EnvironmentChecker {
         } else {
             return new ResultContainer(CheckResult.PASSED, "Passed checks");
         }
-    }
-
-
-    @EnvCheckEntry(name = "GameVersion supporting Test", priority = 9)
-    public ResultContainer gamerVersionSupportTest() {
-        String nmsVersion = ReflectFactory.getNMSVersion();
-        GameVersion gameVersion = GameVersion.get(nmsVersion);
-        if (gameVersion == GameVersion.UNKNOWN) {
-            return new ResultContainer(CheckResult.WARNING, "Your Minecraft server version not tested by developers, QuickShop may ran into issues on this version.");
-        }
-        return new ResultContainer(CheckResult.PASSED, "Passed checks");
-    }
-
-    @EnvCheckEntry(name = "PacketListenerAPI Conflict Test", priority = 10)
-    public ResultContainer plapiConflictTest() {
-        if (plugin.isDisplayEnabled() && AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") && Bukkit.getPluginManager().isPluginEnabled("PacketListenerAPI")) {
-            return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem may stop working on your server. We are already aware that [PacketListenerAPI] and [ProtocolLib] are conflicting. (QuickShops requirement to send fake items). If your display is not showing, please uninstall [PacketListenerAPI].");
-        }
-        return new ResultContainer(CheckResult.PASSED, "Passed checks");
-    }
-
-    @EnvCheckEntry(name = "Permission Manager Test", priority = 10, stage = EnvCheckEntry.Stage.ON_ENABLE)
-    public ResultContainer permManagerConflictTest() {
-        if (plugin.getServer().getPluginManager().isPluginEnabled("GroupManager")) {
-            return new ResultContainer(CheckResult.WARNING, "WARNING: Unsupported plugin management plugin [GroupManager] installed, the permissions may not working.");
-        }
-        return new ResultContainer(CheckResult.PASSED, "Passed checks");
-    }
-
-    @EnvCheckEntry(name = "Reremake Test", priority = 11, stage = EnvCheckEntry.Stage.ON_ENABLE)
-    public ResultContainer rereMakeTest() {
-        if (plugin.getServer().getPluginManager().isPluginEnabled("QuickShop")) {
-            return new ResultContainer(CheckResult.WARNING, "WARNING: Multiple QuickShop installed, uninstall one of them.");
-        }
-        return new ResultContainer(CheckResult.PASSED, "Passed checks");
-    }
-
-    @EnvCheckEntry(name = "End of life Test", priority = Integer.MAX_VALUE, stage = EnvCheckEntry.Stage.ON_ENABLE)
-    public ResultContainer eolTest() {
-        if (plugin.getGameVersion().isEndOfLife()) {
-            return new ResultContainer(CheckResult.WARNING, "You're running a Minecraft server with end of life version, QuickShop may not work on this version in future, and you won't receive any in-game update notification anymore, upgrade your server version!");
-        }
-        return new ResultContainer(CheckResult.PASSED, "Passed checks");
     }
 }

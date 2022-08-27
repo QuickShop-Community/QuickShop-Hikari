@@ -46,12 +46,6 @@ public class Spigot1181Platform extends AbstractSpigotPlatform implements Platfo
     }
 
     @Override
-    public void registerCommand(@NotNull String prefix, @NotNull PluginCommand command) {
-        ((CraftServer) Bukkit.getServer()).getCommandMap().register(prefix, command);
-        ((CraftServer) Bukkit.getServer()).syncCommands();
-    }
-
-    @Override
     public @NotNull String getMinecraftVersion() {
         return ((CraftServer) Bukkit.getServer()).getServer().getServerVersion();
     }
@@ -88,5 +82,11 @@ public class Spigot1181Platform extends AbstractSpigotPlatform implements Platfo
     @Override
     public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
         return postProcessingTranslationKey(localeManager.queryEnchantments(Map.of(enchantment, 1)).getOrDefault(enchantment, "Unknown"));
+    }
+
+    @Override
+    public void registerCommand(@NotNull String prefix, @NotNull PluginCommand command) {
+        ((CraftServer) Bukkit.getServer()).getCommandMap().register(prefix, command);
+        ((CraftServer) Bukkit.getServer()).syncCommands();
     }
 }

@@ -544,6 +544,23 @@ public class PlayerListener extends AbstractQSListener {
         return amount;
     }
 
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onDyeing(PlayerInteractEvent e) {
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getItem() == null || !Util.isDyes(e.getItem().getType())) {
+            return;
+        }
+        final Block block = e.getClickedBlock();
+        if (block == null || !Util.isWallSign(block.getType())) {
+            return;
+        }
+        final Block attachedBlock = Util.getAttached(block);
+        if (attachedBlock == null || plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null) {
+            return;
+        }
+        e.setCancelled(true);
+        Log.debug("Disallow " + e.getPlayer().getName() + " dye the shop sign.");
+    }
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent e) {
         try {
@@ -565,6 +582,17 @@ public class PlayerListener extends AbstractQSListener {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onJoin(PlayerLocaleChangeEvent e) {
+        Log.debug("Player " + e.getPlayer().getName() + " using new locale " + e.getLocale() + ": " + LegacyComponentSerializer.legacySection().serialize(plugin.text().of(e.getPlayer(), "file-test").forLocale(e.getLocale())));
+        plugin.getDatabaseHelper().setPlayerLocale(e.getPlayer().getUniqueId(), e.getLocale())
+                .whenComplete((result, throwable) -> {
+                    if (throwable != null) {
+                        Log.debug("Failed to set player locale: " + throwable.getMessage());
+                    }
+                });
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent e) {
         // Notify the player any messages they were sent
         plugin.getPlayerFinder().flash(e.getPlayer().getUniqueId(), e.getPlayer().getName());
@@ -573,17 +601,37 @@ public class PlayerListener extends AbstractQSListener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onJoin(PlayerLocaleChangeEvent e) {
-        Log.debug("Player " + e.getPlayer().getName() + " using new locale " + e.getLocale() + ": " + LegacyComponentSerializer.legacySection().serialize(plugin.text().of(e.getPlayer(), "file-test").forLocale(e.getLocale())));
-        plugin.getDatabaseHelper().setPlayerLocale(e.getPlayer().getUniqueId(), e.getLocale());
+    /*
+     * Cancels the menu for broken shop block
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerBreakShopCreationChest(BlockBreakEvent event) {
+        @Nullable Player player = event.getPlayer();
+        if (player == null) {
+            return;
+        }
+        Map<UUID, Info> actionMap = plugin.getShopManager().getActions();
+        final Info info = actionMap.get(player.getUniqueId());
+        if (info != null && info.getLocation().equals(event.getBlock().getLocation())) {
+            actionMap.remove(player.getUniqueId());
+            if (info.getAction().isTrading()) {
+                plugin.text().of(player, "shop-purchase-cancelled").send();
+            } else if (info.getAction().isCreating()) {
+                plugin.text().of(player, "shop-creation-cancelled").send();
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent e) {
         // Remove them from the menu
         plugin.getShopManager().getActions().remove(e.getPlayer().getUniqueId());
-        plugin.getDatabaseHelper().setPlayerLocale(e.getPlayer().getUniqueId(), e.getPlayer().getLocale());
+        plugin.getDatabaseHelper().setPlayerLocale(e.getPlayer().getUniqueId(), e.getPlayer().getLocale())
+                .whenComplete((result, throwable) -> {
+                    if (throwable != null) {
+                        Log.debug("Failed to set player locale: " + throwable.getMessage());
+                    }
+                });
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -612,44 +660,6 @@ public class PlayerListener extends AbstractQSListener {
             Log.debug(p.getName() + " too far with the shop location.");
             plugin.getShopManager().getActions().remove(p.getUniqueId());
         }
-    }
-
-    /*
-     * Cancels the menu for broken shop block
-     */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerBreakShopCreationChest(BlockBreakEvent event) {
-        @Nullable Player player = event.getPlayer();
-        if (player == null) {
-            return;
-        }
-        Map<UUID, Info> actionMap = plugin.getShopManager().getActions();
-        final Info info = actionMap.get(player.getUniqueId());
-        if (info != null && info.getLocation().equals(event.getBlock().getLocation())) {
-            actionMap.remove(player.getUniqueId());
-            if (info.getAction().isTrading()) {
-                plugin.text().of(player, "shop-purchase-cancelled").send();
-            } else if (info.getAction().isCreating()) {
-                plugin.text().of(player, "shop-creation-cancelled").send();
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onDyeing(PlayerInteractEvent e) {
-        if (e.getAction() != Action.RIGHT_CLICK_BLOCK || e.getItem() == null || !Util.isDyes(e.getItem().getType())) {
-            return;
-        }
-        final Block block = e.getClickedBlock();
-        if (block == null || !Util.isWallSign(block.getType())) {
-            return;
-        }
-        final Block attachedBlock = Util.getAttached(block);
-        if (attachedBlock == null || plugin.getShopManager().getShopIncludeAttached(attachedBlock.getLocation()) == null) {
-            return;
-        }
-        e.setCancelled(true);
-        Log.debug("Disallow " + e.getPlayer().getName() + " dye the shop sign.");
     }
 
     /**

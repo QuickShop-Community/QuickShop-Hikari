@@ -144,6 +144,47 @@ public class Economy_TNE extends AbstractEconomy {
         }
     }
 
+    @Override
+    public @Nullable String getLastError() {
+        return "Cannot provide: TNE not supports enhanced error tracing.";
+    }
+
+    @Override
+    public @NotNull Plugin getPlugin() {
+        return this.plugin;
+    }
+
+    /**
+     * Gets the currency does exists
+     *
+     * @param currency Currency name
+     * @return exists
+     */
+    @Override
+    public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
+        return getCurrency(world, currency) != null;
+    }
+
+    /**
+     * Checks that this economy is valid. Returns false if it is not valid.
+     *
+     * @return True if this economy will work, false if it will not.
+     */
+    @Override
+    public boolean isValid() {
+        return this.api != null && TNE.instance() != null;
+    }
+
+    /**
+     * Gets currency supports status
+     *
+     * @return true if supports
+     */
+    @Override
+    public boolean supportCurrency() {
+        return true;
+    }
+
     /**
      * Withdraws a given amount of money from the given username and turns it to thin air.
      *
@@ -175,47 +216,6 @@ public class Economy_TNE extends AbstractEconomy {
             return false;
         }
         return this.api.removeHoldings(trader.getUniqueId().toString(), decimal, getCurrency(world, currency), world.getName());
-    }
-
-    /**
-     * Gets the currency does exists
-     *
-     * @param currency Currency name
-     * @return exists
-     */
-    @Override
-    public boolean hasCurrency(@NotNull World world, @NotNull String currency) {
-        return getCurrency(world, currency) != null;
-    }
-
-    /**
-     * Gets currency supports status
-     *
-     * @return true if supports
-     */
-    @Override
-    public boolean supportCurrency() {
-        return true;
-    }
-
-    @Override
-    public @Nullable String getLastError() {
-        return "Cannot provide: TNE not supports enhanced error tracing.";
-    }
-
-    /**
-     * Checks that this economy is valid. Returns false if it is not valid.
-     *
-     * @return True if this economy will work, false if it will not.
-     */
-    @Override
-    public boolean isValid() {
-        return this.api != null && TNE.instance() != null;
-    }
-
-    @Override
-    public @NotNull Plugin getPlugin() {
-        return this.plugin;
     }
 
     @Override

@@ -10,15 +10,6 @@ import java.util.UUID;
 public interface HikariConverterInterface {
 
     /**
-     * Returns empty for ready, any elements inside will mark as not ready and will be post to users.
-     *
-     * @return The element about not ready.
-     * @throws Exception Any exception throws will mark as unready and will show to users.
-     */
-    @NotNull
-    List<Component> checkReady() throws Exception;
-
-    /**
      * Start for backing up
      *
      * @param actionId Action Identifier for this upgrade operation.
@@ -26,6 +17,15 @@ public interface HikariConverterInterface {
      * @throws Exception Backup fails.
      */
     void backup(@NotNull UUID actionId, @NotNull File folder) throws Exception;
+
+    /**
+     * Returns empty for ready, any elements inside will mark as not ready and will be post to users.
+     *
+     * @return The element about not ready.
+     * @throws Exception Any exception throws will mark as unready and will show to users.
+     */
+    @NotNull
+    List<Component> checkReady() throws Exception;
 
     /**
      * Start the migrating

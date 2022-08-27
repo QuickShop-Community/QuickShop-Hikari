@@ -7,12 +7,12 @@ public class MojangApiMcbbsApiMirror implements MojangApiMirror {
     }
 
     @Override
-    public String getResourcesDownloadRoot() {
-        return "https://download.mcbbs.net/assets";
+    public String getLibrariesRoot() {
+        return "https://download.mcbbs.net/maven";
     }
 
     @Override
-    public String getLibrariesRoot() {
-        return "https://download.mcbbs.net/maven";
+    public String getResourcesDownloadRoot() {
+        return "https://download.mcbbs.net/assets";
     }
 }

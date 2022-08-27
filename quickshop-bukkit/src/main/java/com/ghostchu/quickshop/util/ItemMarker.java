@@ -62,6 +62,47 @@ public class ItemMarker implements Reloadable {
         }
     }
 
+    @Nullable
+    public ItemStack get(@NotNull String itemName) {
+        return stacks.get(itemName);
+    }
+
+    @Nullable
+    public String get(@NotNull ItemStack item) {
+        for (Map.Entry<String, ItemStack> entry : stacks.entrySet()) {
+            if (plugin.getItemMatcher().matches(entry.getValue(), item)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    @NotNull
+    public List<String> getRegisteredItems() {
+        return new ArrayList<>(stacks.keySet());
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return Reloadable.super.reloadModule();
+    }
+
+    @NotNull
+    public OperationResult remove(@NotNull String itemName) {
+        if (!stacks.containsKey(itemName)) {
+            return OperationResult.NOT_EXISTS;
+        }
+        stacks.remove(itemName);
+        configuration.set(itemName, null);
+        if (saveConfig()) {
+            Log.debug("Removed item " + itemName + " !");
+            return OperationResult.SUCCESS;
+        } else {
+            return OperationResult.UNKNOWN;
+        }
+    }
+
     @NotNull
     public OperationResult save(@NotNull String itemName, @NotNull ItemStack itemStack) {
         if (stacks.containsKey(itemName)) {
@@ -88,47 +129,6 @@ public class ItemMarker implements Reloadable {
             plugin.getLogger().log(Level.WARNING, "Failed to save items.yml", e);
             return false;
         }
-    }
-
-    @NotNull
-    public OperationResult remove(@NotNull String itemName) {
-        if (!stacks.containsKey(itemName)) {
-            return OperationResult.NOT_EXISTS;
-        }
-        stacks.remove(itemName);
-        configuration.set(itemName, null);
-        if (saveConfig()) {
-            Log.debug("Removed item " + itemName + " !");
-            return OperationResult.SUCCESS;
-        } else {
-            return OperationResult.UNKNOWN;
-        }
-    }
-
-    @Nullable
-    public ItemStack get(@NotNull String itemName) {
-        return stacks.get(itemName);
-    }
-
-    @Nullable
-    public String get(@NotNull ItemStack item) {
-        for (Map.Entry<String, ItemStack> entry : stacks.entrySet()) {
-            if (plugin.getItemMatcher().matches(entry.getValue(), item)) {
-                return entry.getKey();
-            }
-        }
-        return null;
-    }
-
-    @NotNull
-    public List<String> getRegisteredItems() {
-        return new ArrayList<>(stacks.keySet());
-    }
-
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        init();
-        return Reloadable.super.reloadModule();
     }
 
     public enum OperationResult {

@@ -3,10 +3,14 @@ package com.ghostchu.quickshop.listener;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
+import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.*;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,12 +20,20 @@ import org.bukkit.event.EventPriority;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 
 public class InternalListener extends AbstractQSListener {
     private final QuickShop plugin;
     private boolean loggingBalance;
     private boolean loggingAction;
+
+    private final Cache<Shop, SpaceCache> countUpdateCache = CacheBuilder
+            .newBuilder()
+            .weakKeys()
+            .expireAfterAccess(5, TimeUnit.MINUTES)
+            .maximumSize(100)
+            .build();
 
     public InternalListener(QuickShop plugin) {
         super(plugin);
@@ -33,6 +45,17 @@ public class InternalListener extends AbstractQSListener {
     private void readConfig() {
         this.loggingBalance = plugin.getConfig().getBoolean("logging.log-balance");
         this.loggingAction = plugin.getConfig().getBoolean("logging.log-actions");
+    }
+
+    /**
+     * Callback for reloading
+     *
+     * @return Reloading success
+     */
+    @Override
+    public ReloadResult reloadModule() {
+        readConfig();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -64,10 +87,21 @@ public class InternalListener extends AbstractQSListener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void shopPriceChanges(ShopPriceChangeEvent event) {
-        if (loggingAction) {
-            plugin.logEvent(new ShopPriceChangedLog(event.getShop().saveToInfoStorage(), event.getOldPrice(), event.getOldPrice()));
+    public void shopInventoryCalc(ShopInventoryCalculateEvent event) {
+        if (event.getShop().getShopId() < 1) {
+            return;
         }
+        SpaceCache count = countUpdateCache.getIfPresent(event.getShop());
+        if (count != null && count.getSpace() == event.getSpace() && count.getStock() == event.getStock()) {
+            return;
+        }
+        countUpdateCache.put(event.getShop(), new SpaceCache(event.getSpace(), event.getStock()));
+        plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop().getShopId(), event.getSpace(), event.getStock())
+                .whenComplete((lines, err) -> {
+                    if (err != null) {
+                        Log.debug("Error updating external inventory profile cache for shop " + event.getShop().getShopId() + ": " + err.getMessage());
+                    }
+                });
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -79,6 +113,13 @@ public class InternalListener extends AbstractQSListener {
         if (loggingBalance) {
             plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getPurchaser(), plugin.getEconomy().getBalance(event.getPurchaser(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
             plugin.logEvent(new PlayerEconomyPreCheckLog(true, event.getShop().getOwner(), plugin.getEconomy().getBalance(event.getShop().getOwner(), event.getShop().getLocation().getWorld(), event.getShop().getCurrency())));
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void shopPriceChanges(ShopPriceChangeEvent event) {
+        if (loggingAction) {
+            plugin.logEvent(new ShopPriceChangedLog(event.getShop().saveToInfoStorage(), event.getOldPrice(), event.getOldPrice()));
         }
     }
 
@@ -106,23 +147,21 @@ public class InternalListener extends AbstractQSListener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void shopInventoryCalc(ShopInventoryCalculateEvent event) {
-        if (event.getShop().getShopId() < 1) {
-            return;
+    static class SpaceCache {
+        private final int stock;
+        private final int space;
+
+        public SpaceCache(int stock, int space) {
+            this.stock = stock;
+            this.space = space;
         }
-        plugin.getDatabaseHelper().updateExternalInventoryProfileCache(event.getShop().getShopId(), event.getSpace(), event.getStock());
-    }
 
+        public int getSpace() {
+            return space;
+        }
 
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() {
-        readConfig();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
+        public int getStock() {
+            return stock;
+        }
     }
 }

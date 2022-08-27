@@ -32,6 +32,86 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         plugin.getReloadManager().register(this);
     }
 
+    @Override
+    @NotNull
+    public List<String> getGroups() {
+        return ImmutableList.copyOf(this.permissionMapping.keySet());
+    }
+
+    @Override
+    public boolean hasGroup(@NotNull String group) {
+        return permissionMapping.containsKey(group);
+    }
+
+    @Override
+    public boolean hasPermission(@NotNull String group, @NotNull BuiltInShopPermission permission) {
+        return hasPermission(group, plugin, permission.getRawNode());
+    }
+
+    @Override
+    public boolean hasPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission) {
+        if (!permissionMapping.containsKey(group)) {
+            return false;
+        }
+        String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
+        boolean result = permissionMapping.get(group).contains(fullPermissionPath);
+        Log.permission("Check permission " + fullPermissionPath + " for group " + group + ": " + result);
+        return result;
+    }
+
+    @Override
+    public void registerGroup(@NotNull String group, @NotNull Collection<String> permissions) {
+        if (permissionMapping.containsKey(group)) {
+            throw new IllegalArgumentException("Group " + group + " already exists.");
+        }
+        Log.permission("Register group " + group);
+        permissionMapping.put(group, new CopyOnWriteArraySet<>(permissions));
+    }
+
+    @Override
+    public void registerPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission) {
+        if (!permissionMapping.containsKey(group)) {
+            throw new IllegalArgumentException("Group " + group + " does not exist.");
+        }
+        String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
+        Log.permission("Register permission " + fullPermissionPath + " to group " + group);
+        permissionMapping.get(group).add(fullPermissionPath);
+    }
+
+    @Override
+    public void unregisterGroup(@NotNull String group) {
+        if (!permissionMapping.containsKey(group)) {
+            return;
+        }
+        Log.permission("Unregister group " + group);
+        permissionMapping.remove(group);
+    }
+
+    @Override
+    public void unregisterPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission) {
+        if (!permissionMapping.containsKey(group)) {
+            return;
+        }
+        String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
+        Log.permission("Unregister permission " + fullPermissionPath + " from group " + group);
+        permissionMapping.get(group).remove(fullPermissionPath);
+    }
+
+    private void initDefaultConfiguration(@NotNull File file) {
+        YamlConfiguration yamlConfiguration = new YamlConfiguration();
+        yamlConfiguration.set("version", 1);
+        for (BuiltInShopPermissionGroup group : BuiltInShopPermissionGroup.values()) {
+            yamlConfiguration.set(group.getNamespacedNode(), group.getPermissions().stream().map(BuiltInShopPermission::getNamespacedNode).collect(Collectors.toList()));
+        }
+        try {
+            //noinspection ResultOfMethodCallIgnored
+            file.createNewFile();
+            yamlConfiguration.save(file);
+        } catch (Exception e) {
+            Log.permission(Level.SEVERE, "Failed to create default group configuration file");
+            plugin.getLogger().log(Level.SEVERE, "Failed to create default group configuration", e);
+        }
+    }
 
     private void loadConfiguration() {
         Log.permission("Loading group configuration...");
@@ -59,87 +139,6 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
                 Log.permission("Permission loaded for group " + group + ": " + Util.list2String(perms));
             }
         });
-    }
-
-    private void initDefaultConfiguration(@NotNull File file) {
-        YamlConfiguration yamlConfiguration = new YamlConfiguration();
-        yamlConfiguration.set("version", 1);
-        for (BuiltInShopPermissionGroup group : BuiltInShopPermissionGroup.values()) {
-            yamlConfiguration.set(group.getNamespacedNode(), group.getPermissions().stream().map(BuiltInShopPermission::getNamespacedNode).collect(Collectors.toList()));
-        }
-        try {
-            //noinspection ResultOfMethodCallIgnored
-            file.createNewFile();
-            yamlConfiguration.save(file);
-        } catch (Exception e) {
-            Log.permission(Level.SEVERE, "Failed to create default group configuration file");
-            plugin.getLogger().log(Level.SEVERE, "Failed to create default group configuration", e);
-        }
-    }
-
-    @Override
-    public void registerPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission) {
-        if (!permissionMapping.containsKey(group)) {
-            throw new IllegalArgumentException("Group " + group + " does not exist.");
-        }
-        String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
-        Log.permission("Register permission " + fullPermissionPath + " to group " + group);
-        permissionMapping.get(group).add(fullPermissionPath);
-    }
-
-    @Override
-    public void unregisterPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission) {
-        if (!permissionMapping.containsKey(group)) {
-            return;
-        }
-        String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
-        Log.permission("Unregister permission " + fullPermissionPath + " from group " + group);
-        permissionMapping.get(group).remove(fullPermissionPath);
-    }
-
-    @Override
-    public boolean hasGroup(@NotNull String group) {
-        return permissionMapping.containsKey(group);
-    }
-
-    @Override
-    public void registerGroup(@NotNull String group, @NotNull Collection<String> permissions) {
-        if (permissionMapping.containsKey(group)) {
-            throw new IllegalArgumentException("Group " + group + " already exists.");
-        }
-        Log.permission("Register group " + group);
-        permissionMapping.put(group, new CopyOnWriteArraySet<>(permissions));
-    }
-
-    @Override
-    public void unregisterGroup(@NotNull String group) {
-        if (!permissionMapping.containsKey(group)) {
-            return;
-        }
-        Log.permission("Unregister group " + group);
-        permissionMapping.remove(group);
-    }
-
-    @Override
-    public boolean hasPermission(@NotNull String group, @NotNull Plugin namespace, @NotNull String permission) {
-        if (!permissionMapping.containsKey(group)) {
-            return false;
-        }
-        String fullPermissionPath = namespace.getName().toLowerCase(Locale.ROOT) + "." + permission;
-        boolean result = permissionMapping.get(group).contains(fullPermissionPath);
-        Log.permission("Check permission " + fullPermissionPath + " for group " + group + ": " + result);
-        return result;
-    }
-
-    @Override
-    public boolean hasPermission(@NotNull String group, @NotNull BuiltInShopPermission permission) {
-        return hasPermission(group, plugin, permission.getRawNode());
-    }
-
-    @Override
-    @NotNull
-    public List<String> getGroups() {
-        return ImmutableList.copyOf(this.permissionMapping.keySet());
     }
 
     @Override

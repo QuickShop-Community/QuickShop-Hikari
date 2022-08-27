@@ -27,15 +27,6 @@ public class ShopTaxEvent extends AbstractQSEvent {
     }
 
     /**
-     * Gets the user (buyer or seller)
-     *
-     * @return User
-     */
-    public UUID getUser() {
-        return this.user;
-    }
-
-    /**
      * Gets the shop
      *
      * @return the shop
@@ -60,5 +51,14 @@ public class ShopTaxEvent extends AbstractQSEvent {
      */
     public void setTax(double tax) {
         this.tax = tax;
+    }
+
+    /**
+     * Gets the user (buyer or seller)
+     *
+     * @return User
+     */
+    public UUID getUser() {
+        return this.user;
     }
 }

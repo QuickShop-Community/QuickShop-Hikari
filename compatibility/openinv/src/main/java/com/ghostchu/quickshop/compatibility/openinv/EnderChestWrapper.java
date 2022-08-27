@@ -29,6 +29,10 @@ public class EnderChestWrapper implements InventoryWrapper {
 
     }
 
+    public UUID getUuid() {
+        return uuid;
+    }
+
     /**
      * Return the iterator for this inventory
      * It's not thread-safe, please use that in main-thread
@@ -97,9 +101,5 @@ public class EnderChestWrapper implements InventoryWrapper {
     @Override
     public void setContents(ItemStack[] itemStacks) {
         player.getEnderChest().setContents(itemStacks);
-    }
-
-    public UUID getUuid() {
-        return uuid;
     }
 }

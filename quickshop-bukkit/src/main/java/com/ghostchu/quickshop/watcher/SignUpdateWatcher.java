@@ -11,13 +11,6 @@ import java.util.Queue;
 public class SignUpdateWatcher extends BukkitRunnable {
     private final Queue<Shop> signUpdateQueue = new LinkedList<>();
 
-    public void scheduleSignUpdate(@NotNull Shop shop) {
-        if (signUpdateQueue.contains(shop)) {
-            return; // Ignore
-        }
-        signUpdateQueue.add(shop);
-    }
-
     @Override
     public void run() {
         Shop shop = signUpdateQueue.poll();
@@ -25,6 +18,13 @@ public class SignUpdateWatcher extends BukkitRunnable {
             shop.setSignText(QuickShop.getInstance().text().findRelativeLanguages(shop.getOwner()));
             shop = signUpdateQueue.poll();
         }
+    }
+
+    public void scheduleSignUpdate(@NotNull Shop shop) {
+        if (signUpdateQueue.contains(shop)) {
+            return; // Ignore
+        }
+        signUpdateQueue.add(shop);
     }
 
 }

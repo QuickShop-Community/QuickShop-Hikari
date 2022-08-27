@@ -213,6 +213,22 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
         /**
          * Check if the rule is allowed to apply to the given price.
          *
+         * @param price the price
+         * @return true if the rule is allowed for given price
+         */
+        public boolean isAllowed(double price) {
+            if (this.max != -1 && price > this.max) {
+                return false;
+            }
+            if (this.min != -1) {
+                return price >= this.min;
+            }
+            return true;
+        }
+
+        /**
+         * Check if the rule is allowed to apply to the given price.
+         *
          * @param sender   the sender
          * @param item     the item
          * @param currency the currency
@@ -233,22 +249,6 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
                 }
             }
             return false;
-        }
-
-        /**
-         * Check if the rule is allowed to apply to the given price.
-         *
-         * @param price the price
-         * @return true if the rule is allowed for given price
-         */
-        public boolean isAllowed(double price) {
-            if (this.max != -1 && price > this.max) {
-                return false;
-            }
-            if (this.min != -1) {
-                return price >= this.min;
-            }
-            return true;
         }
     }
 }

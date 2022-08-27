@@ -9,12 +9,12 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface ShopPermissionAudience {
     /**
-     * Check if audience has permission
+     * Gets the name of the audience
      *
-     * @param permission permission to check
-     * @return true if has permission
+     * @return name of the audience, its may an i18n key or plain text.
      */
-    boolean hasPermission(@NotNull String permission);
+    @NotNull
+    String getName();
 
     /**
      * Check if audience has permission
@@ -25,10 +25,10 @@ public interface ShopPermissionAudience {
     boolean hasPermission(@NotNull BuiltInShopPermission permission);
 
     /**
-     * Gets the name of the audience
+     * Check if audience has permission
      *
-     * @return name of the audience, its may an i18n key or plain text.
+     * @param permission permission to check
+     * @return true if has permission
      */
-    @NotNull
-    String getName();
+    boolean hasPermission(@NotNull String permission);
 }

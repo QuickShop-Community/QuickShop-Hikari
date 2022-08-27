@@ -122,6 +122,21 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
             this.shops = shops;
         }
 
+        public void cancel(boolean sendMessage) {
+            if (sendMessage) {
+                Profile fromPlayerProfile = QuickShop.getInstance().getPlayerFinder().find(from);
+                Profile toPlayerProfile = QuickShop.getInstance().getPlayerFinder().find(to);
+                Player fromPlayer = Bukkit.getPlayer(from);
+                Player toPlayer = Bukkit.getPlayer(to);
+                if (fromPlayer != null && toPlayerProfile != null) {
+                    QuickShop.getInstance().text().of(fromPlayer, "transfer-rejected-fromside", toPlayerProfile.getName()).send();
+                }
+                if (toPlayer != null && fromPlayerProfile != null) {
+                    QuickShop.getInstance().text().of(toPlayer, "transfer-rejected-toside", fromPlayerProfile.getName()).send();
+                }
+            }
+        }
+
         public void commit(boolean sendMessage) {
             for (Shop shop : shops) {
                 ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), to);
@@ -138,21 +153,6 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                 }
                 if (fromPlayerProfile != null) {
                     QuickShop.getInstance().text().of(to, "transfer-accepted-toside", fromPlayerProfile.getName()).send();
-                }
-            }
-        }
-
-        public void cancel(boolean sendMessage) {
-            if (sendMessage) {
-                Profile fromPlayerProfile = QuickShop.getInstance().getPlayerFinder().find(from);
-                Profile toPlayerProfile = QuickShop.getInstance().getPlayerFinder().find(to);
-                Player fromPlayer = Bukkit.getPlayer(from);
-                Player toPlayer = Bukkit.getPlayer(to);
-                if (fromPlayer != null && toPlayerProfile != null) {
-                    QuickShop.getInstance().text().of(fromPlayer, "transfer-rejected-fromside", toPlayerProfile.getName()).send();
-                }
-                if (toPlayer != null && fromPlayerProfile != null) {
-                    QuickShop.getInstance().text().of(toPlayer, "transfer-rejected-toside", fromPlayerProfile.getName()).send();
                 }
             }
         }

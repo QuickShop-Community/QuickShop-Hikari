@@ -18,13 +18,13 @@ public class InternalGameLanguageImpl implements GameLanguage {
     }
 
     @Override
-    public @NotNull String getName() {
-        return plugin.getName();
+    public @NotNull String getEnchantment(@NotNull Enchantment enchantment) {
+        return Util.prettifyText(enchantment.getKey().getKey());
     }
 
     @Override
-    public @NotNull Plugin getPlugin() {
-        return plugin;
+    public @NotNull String getEntity(@NotNull EntityType entityType) {
+        return Util.prettifyText(entityType.name());
     }
 
     @Override
@@ -38,17 +38,17 @@ public class InternalGameLanguageImpl implements GameLanguage {
     }
 
     @Override
+    public @NotNull String getName() {
+        return plugin.getName();
+    }
+
+    @Override
+    public @NotNull Plugin getPlugin() {
+        return plugin;
+    }
+
+    @Override
     public @NotNull String getPotion(@NotNull PotionEffectType potionEffectType) {
         return Util.prettifyText(potionEffectType.getName());
-    }
-
-    @Override
-    public @NotNull String getEnchantment(@NotNull Enchantment enchantment) {
-        return Util.prettifyText(enchantment.getKey().getKey());
-    }
-
-    @Override
-    public @NotNull String getEntity(@NotNull EntityType entityType) {
-        return Util.prettifyText(entityType.name());
     }
 }

@@ -24,6 +24,17 @@ public class ShopOngoingFeeEvent extends AbstractQSEvent implements QSCancellabl
         this.cost = cost;
     }
 
+    @Override
+    public @Nullable Component getCancelReason() {
+        return this.cancelReason;
+    }
+
+    @Override
+    public void setCancelled(boolean cancel, @Nullable Component reason) {
+        this.cancelled = cancel;
+        this.cancelReason = reason;
+    }
+
     /**
      * Getting the cost in this event
      *
@@ -43,15 +54,6 @@ public class ShopOngoingFeeEvent extends AbstractQSEvent implements QSCancellabl
     }
 
     /**
-     * Getting related shop in this event
-     *
-     * @return The shop triggered ongoing fee event
-     */
-    public Shop getShop() {
-        return shop;
-    }
-
-    /**
      * Getting related player in this event
      *
      * @return The player triggered ongoing fee event
@@ -60,19 +62,17 @@ public class ShopOngoingFeeEvent extends AbstractQSEvent implements QSCancellabl
         return player;
     }
 
+    /**
+     * Getting related shop in this event
+     *
+     * @return The shop triggered ongoing fee event
+     */
+    public Shop getShop() {
+        return shop;
+    }
+
     @Override
     public boolean isCancelled() {
         return cancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancel, @Nullable Component reason) {
-        this.cancelled = cancel;
-        this.cancelReason = reason;
-    }
-
-    @Override
-    public @Nullable Component getCancelReason() {
-        return this.cancelReason;
     }
 }
