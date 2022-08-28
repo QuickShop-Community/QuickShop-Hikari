@@ -504,7 +504,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 + " INNER JOIN " + DataTables.SHOPS.getName()
                 + " ON " + DataTables.DATA.getName() + ".id = " + DataTables.SHOPS.getName() + ".data"
                 + " INNER JOIN " + DataTables.SHOP_MAP.getName()
-                + " ON " + DataTables.SHOP_MAP.getName() + ".shop = " + DataTables.SHOPS + ".id";
+                + " ON " + DataTables.SHOP_MAP.getName() + ".shop = " + DataTables.SHOPS.getName() + ".id";
         try (SQLQuery query = manager.createQuery().withPreparedSQL(SQL).execute()) {
             ResultSet rs = query.getResultSet();
             while (rs.next()) {
