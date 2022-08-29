@@ -9,7 +9,7 @@ _comment: 你好翻譯者！假若你正在從 Github 或其他代管平台編�
 unlimited-shop-owner-changed: <yellow>這個無限商店的店主已經更換成 {0}。
 bad-command-usage-detailed: '<red>無效指令參數！接受以下參數：<gray>{0}'
 thats-not-a-number: <red>無效的數字
-shop-name-disallowed: <red>此商店的名稱 <yellow>{0}</yellow> 已被禁止。請嘗試使用另一個名稱！
+shop-name-disallowed: <red>商店的名稱 <yellow>{0}</yellow> 已被禁止使用。請嘗試使用另一個名稱！
 console-only-danger: <red>由於這個是一個有風險的指令，請你在控制台中執行。
 not-a-number: <red>輸入內容只能是數字，但你輸入了 {0}。
 not-looking-at-valid-shop-block: <red>無法找到建立商店的方塊，你需要先注視著商店方塊。
@@ -56,20 +56,20 @@ currency-unset: <green>已成功刪除商店貨幣。現在使用預設設置。
 you-cant-create-shop-in-there: <red>你沒有在這個地方建立商店的權限。
 no-pending-action: <red>你沒有待處理的操作
 refill-success: <green>補貨成功
-failed-to-paste: <red>無法將資料上傳至 Pastebin ，請檢查你的連線再重試。 （詳見控制台）
+failed-to-paste: <red>無法將資料上傳至 Pastebin，請檢查你的連線後再重試。（請查看控制台以獲得詳細資訊）
 shop-out-of-stock-name: <dark_purple>你在 {0} 出售 {1} 的商店已售罄一空！
-shop-name-invalid: <red>此商店的名稱 <yellow>{0}</yellow> 無效。請嘗試使用另一個名稱！
+shop-name-invalid: <red>商店的名稱 <yellow>{0}</yellow> 無效。請嘗試使用另一個名稱！
 how-many-buy-stack: <green>在聊天室中輸入你想 <aqua>購買<green> 的數量，每份中有 <yellow>{0}<green> 個物品，你目前可以買 <yellow>{1}<green> 份。輸入 <aqua>{2}<green> 來購買所有物品。
 exceeded-maximum: <red>該值超出了 Java 中的最大值。
 unlimited-shop-owner-keeped: '<yellow>注意：該商店店主還是屬於無限商店店主類型，你需要自己重新設定新的商店店主。'
-no-enough-money-to-keep-shops: <red>你的金錢不夠繳稅，所以你所有的商店已被刪除……
-3rd-plugin-build-check-failed: <red>第三方插件 <bold>{0}<reset><red> 拒絕檢查權限操作，請問你有權限建立商店嗎 ？
+no-enough-money-to-keep-shops: <red>你的金錢不夠繳稅！所以你所有的商店已被刪除……
+3rd-plugin-build-check-failed: <red>第三方插件 <bold>{0}</bold> 拒絕檢查權限操作，請問你有權限建立商店嗎？
 not-a-integer: <red>輸入一定是數字，但你輸入了 {0}。
-translation-country: '語言：&b&l繁體中文 Chinese Traditional（zh_TW）'
+translation-country: '語言：繁體中文 Chinese Traditional（zh_TW）'
 buying-more-than-selling: '<red>警告：你收購的物品比出售的物品多！'
 purchase-failed: '<red>交易失敗：發生錯誤，請聯繫伺服器管理員。'
 denied-put-in-item: <red>你不能將此物品放入你的商店！
-shop-has-changed: <red>你嘗試交易的商店在點擊後已有變動 ！
+shop-has-changed: <red>你嘗試交易的商店在點擊後已有變動！
 flush-finished: <green>成功獲取所有的商店記錄 。
 no-price-given: <red>請提供一個有效的價格。
 shop-already-owned: <red>這已是一個商店了。
@@ -82,7 +82,7 @@ shop-owner-self-trade: <yellow>你正在跟自己開的商店進行交易 ， �
 purchase-out-of-space: <red>該商店空間不足，請聯繫商店商店店主或商店員工清空商店。
 reloading-status:
   success: <green>重新載入且沒有發生任何錯誤。
-  scheduled: <green>重新載入完成。<yellow>（一些更改需要一段時間後作用）
+  scheduled: <green>重新載入完成。<gray>（一些更改需要一段時間後作用）
   require-restart: <green>重新載入完成。<yellow>（一些更改需要重新啟動伺服器後作用）
   failed: <red>無法重新載入，請檢查伺服器控制台
 player-bought-from-your-store-tax: <green>{0} 從你的商店購買了 {1} 個 {2}，你總共賺了 {3} 元 （{4} 元的稅） 。
@@ -105,14 +105,14 @@ menu:
   price-per-stack: <green>價格 ： <yellow>{2} 個 {0} {1} 元
   stored-enchants: <dark_purple>附魔
   item-holochat-error: <red>[錯誤]
-  this-shop-is-selling: <green>此商店正在<aqua>出售<green>物品。
+  this-shop-is-selling: <green>該商店正在<aqua>出售</aqua>物品。
   shop-stack: '<green>每份物品的數量：<yellow>{0}'
   space: '<green>空間：<yellow>{0}'
   effects: <green>藥水效果
   damage-percent-remaining: <green>耐久度 ： <yellow>剩餘 {0}%。
   item-holochat-data-too-large: <red>[錯誤] 物品 NBT 太長無法顯示
   stock: '<green>庫存：<yellow>{0} 個'
-  this-shop-is-buying: <green>此商店是 <light_purple>收購物品<green> 的商店。
+  this-shop-is-buying: <green>該商店是<light_purple>收購物品<green>的商店。
   successfully-sold: '<green>成功出售：'
   total-value-of-chest: '<green>儲物箱中的物品價值：<yellow>{0} 元'
 currency-not-exists: <red>找不到你要設置的貨幣，可能拼寫錯誤或該貨幣在這個世界上無法使用。
@@ -122,13 +122,13 @@ integrations-check-failed-trade: <red>集成模組 {0} 拒絕了與商店交易�
 shop-transaction-failed: <red><red>抱歉，由於系統發生錯誤，你的購買已被取消，款項已返回原本的地方。如果問題持續發生，請聯絡伺服器管理員。
 success-change-owner-to-server: <green>成功將商店擁有者轉交給伺服器。
 shop-name-not-found: <red>商店名稱：<yellow>{0}</yellow> 並不存在。
-shop-name-too-long: <red>該商店的名稱太長了（最大長度 {0}），請再想過一個吧！
+shop-name-too-long: <red>商店的名稱太長了（最大長度 {0}），請再想想別的吧！
 metric:
   header-player: '<yellow>{0} 的 {1} {2} 交易：'
   action-hover: <yellow>{0}
   price-hover: <yellow>總共 {0}, 包括 {1} 稅款.
-  unknown: <gray>(未知)
-  undefined: <gray>(無名)
+  unknown: <gray>（未知）
+  undefined: <gray>（無名）
   no-results: <red>找不到交易紀錄
   action-description:
     DELETE: <yellow>還家刪除了一個商店，商店的任何建立費用已歸回持有人。
@@ -160,7 +160,7 @@ economy-transaction-failed: <red>抱歉，由於系統發生錯誤，你的交�
 nothing-to-flush: <green>沒有關於商店的新訊息。
 no-price-change: <red>這不會導致價格變動！
 edition-confilct: QuickShop-Hikari 與 QuickShop-Reremake 同時安裝在伺服器中可能會相互沖突，你需要卸載其中一個
-inventory-unavailable: '<red>此商店的 InventoryWrapper 外觀不存在或不正確。你有沒有使用任何插件修改了商店的物品欄？資訊：InventoryWrapper={0}，WrapperProvider={1}，SymbolLink={2}。請聯絡伺服器管理員。'
+inventory-unavailable: '<red>該商店的 InventoryWrapper 外觀不存在或不正確。你有沒有使用任何插件修改了商店的物品欄？資訊：InventoryWrapper={0}，WrapperProvider={1}，SymbolLink={2}。請聯絡伺服器管理員。'
 file-test: 這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)
 unknown-player: <red>找不到相對應的玩家，請檢查你輸入的玩家名稱是否正確。
 player-offline: "<red>目標玩家離線。"
@@ -217,8 +217,8 @@ nearby-shop-entry: '<green>-資訊：{0} <green>價格：<aqua>{1} <green>x: <aq
 chest-title: QuickShop 商店
 console-only: <red>該指令只能在控制台執行。
 failed-to-put-sign: <red>你的商店周圍沒有足夠的空間，放置商店的資訊告示牌。
-shop-name-unset: <red>此商店名稱已被刪除
-shop-nolonger-freezed: <green>你解凍了該商店，現在已恢復正常 ！
+shop-name-unset: <red>該商店名稱已被刪除
+shop-nolonger-freezed: <green>你解凍了該商店，現在已恢復正常！
 no-permission-build: <red>你沒有建立商店的權限。
 tableformat:
   left_half_line: <dark_purple>+--------------------
@@ -229,7 +229,7 @@ quickshop-gui-preview: QuickShop 物品預覽介面
 translate-not-completed-yet-click: '{0} 的翻譯完成度為 {1}，你想幫助我們改進翻譯嗎？點擊這裡！'
 taxaccount-invalid: <red>無效的目標帳戶，請輸入有效的玩家名稱或 uuid（須加破折號）。
 player-bought-from-your-store: <red>{0} 從你的商店購買了 {1} {2}，你總共賺了 {3}。
-reached-maximum-can-create: <red>你建立的商店數量 {0}/{1} 已達到上限 ！
+reached-maximum-can-create: <red>&c你建立的商店數量已達到上限（你已建立 {0} 個，最多 {1} 個！）
 reached-maximum-create-limit: <red>你創造的商店數量已達上限
 translation-version: '支援版本：Hikari'
 no-double-chests: <red>你沒有建立大型儲物箱商店的權限。
@@ -238,13 +238,13 @@ shop-not-exist: <red>商店不存在。
 bad-command-usage: <red>無效的指令！
 clean-warning: <yellow>該指令將清理<red>所有<yellow>在不允許建立商店的世界的──出售/購買不允許的物品，以及<red><bold>所有在伺服器沒有載入世界的商店，請確保你的商店資料備份完整後繼續使用 <aqua>/qs cleanghost confirm <yellow>。
 shop-purchase-cancelled: <red>已取消購買。
-bypassing-lock: <red>你繞過了 Quickshop 鎖 ！
+bypassing-lock: <red>你繞過了 Quickshop 商店鎖！
 bungee-cross-server-msg: '<yellow>QuickShop 跨服訊息：<green>{0}'
 saved-to-path: 備份檔案已被儲存到 {0}。
-shop-now-freezed: <green>你已凍結了商店，現在沒有人可以與這間商店交易 ！
+shop-now-freezed: <green>你已凍結了商店，現在沒有人可以與這間商店交易！
 price-is-now: <green>現在你的商店定價是 <yellow>{0} 元。
-shops-arent-locked: <red>請注意，商店無法防盜 ！ 如果你想要防盜功能，請使用 LWC 、 Lockette 等插件鎖住儲物箱。
-that-is-locked: <red>此商店已上鎖。
+shops-arent-locked: <red>請注意，商店無法防盜！如果你想要防盜功能，請使用 LWC、Lockette 等插件鎖住商店。
+that-is-locked: <red>該商店已上鎖。
 shop-has-no-space: <red>這個商店只能再收購 {0} 個 {1} 而已。
 safe-mode-admin: '<red><bold>警告：<red>此伺服器上的 QuickShop 現在在安全模式下運行，沒有任何功能可供使用，請輸入 <yellow>/qs <red> 指令以檢查任何錯誤！'
 shop-stock-too-low: <red>這個商店只剩 {0} 個 {1}！
@@ -257,12 +257,12 @@ taxaccount-set: <green>已經設定 <yellow>{0} <green>為該商店的稅金帳�
 support-disable-reason:
   hot-reload: <yellow>我們不支援重新加載指令，請您重啟再試。
   outdated: <yellow>該版本的 Quickshop 已經過時，在請求技術支援前，請更新至最新版本！
-  bad-hosts: '<yellow>此伺服器的 HOSTS 被修改。Quickshop 需要特定的功能去正確地連接 Mojang API。請你在要求提供技術支援前，請先修改HOSTS，如果你使用 Windows 作業系統，請在檔案的 C:\windows\system32\drivers\etc\hosts 這個位置進行修改，如果你使用 Linux 作業系統，請在檔案的 /etc/hosts 這個位置進行修改。'
-  privacy: <yellow>此伺服器在破解版（離線版）環境底下運行。如果你正在使用代理伺服器下的bukkit伺服器及在代理伺服器設置 online-mode=true，請你將代理伺服器的相關配置正確設定。
-  modified: <yellow>檔案完整度檢查失敗：此版本的 QuickShop 並非官方正式版本，亦已經被其他人修改過。
-  consolespamfix-installed: <yellow>已安裝ConsoleSpamFix, 任何錯誤詳細訊息已被隱藏。如要提供技術支援，請先關閉此功能。
-  authlib-injector-detected: <yellow>此伺服器正在運行 authlib 例如 authlib-injector.
-  unsupported-server-software: <yellow>此伺服器並非運行支援的伺服器軟件，任何模組化的伺服器軟件例如MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard 將不被提供技術支援。
+  bad-hosts: '<yellow>該伺服器的 HOSTS 被修改。Quickshop 需要特定的功能去正確地連接 Mojang API。請你在要求提供技術支援前，請先修改HOSTS，如果你使用 Windows 作業系統，請在 C:\windows\system32\drivers\etc\hosts 位置進行修改檔案。如果你使用 Linux 作業系統，請在 /etc/hosts 位置進行修改檔案。'
+  privacy: <yellow>該伺服器在破解版（離線版）環境底下運行。如果你正在使用代理伺服器下的 bukkit 伺服器及在代理伺服器設置 online-mode=true，請你將代理伺服器的相關配置正確設定。
+  modified: <yellow>檔案完整度檢查失敗：該版本的 QuickShop 並非官方正式版本，亦已經被其他人修改過。
+  consolespamfix-installed: <yellow>已安裝 ConsoleSpamFix，任何錯誤詳細訊息已被隱藏。如果要得到技術支援，請先關閉該功能。
+  authlib-injector-detected: <yellow>該伺服器正在運行第三方 Auth-library，例如 authlib-injector。
+  unsupported-server-software: <yellow>該伺服器並非運行受支援的伺服器軟體，任何模組化的伺服器軟體，例如 MCPC、Cauldron、CatServer、Mohist、Magma、Fukkit、Cardboard 將不會獲得技術支援。
 supertool-is-disabled: <red>超級工具已被關閉，現在不能使用超級工具破壞任何商店。
 unknown-owner: 未知
 restricted-prices: '<red>{0} 元是無效的價格：最高 {1} 元，最低 {2} 元。'
@@ -305,7 +305,7 @@ language-info-panel:
   translate-on-crowdin: '[在 Crowdin 上翻譯]'
 item-not-exist: <red>物品<yellow> {0}<red>不存在，請檢查你的拼寫。
 shop-creation-failed: <red>商店建立失敗，請與伺服器管理員聯繫。
-inventory-space-full: <red>你的物品欄只有<green>{1}x </green>空位，請你先清空一下物品欄後再試！
+inventory-space-full: <red>你的物品欄只有 <green>{1}x</green> 空位，請你先清空一下物品欄後再試！
 no-creative-break: <red>你不能在創造模式中破壞其他玩家的商店，請使用生存模式或使用超級工具 {0} 來破壞。
 booleanformat:
   success: <green>✔
@@ -397,14 +397,14 @@ command:
     removeworld: <yellow>刪除指定世界的商店
     info: <yellow>顯示 QuickShop 統計資料
     owner: <yellow>為商店設置新的店主。
-    amount: <yellow>設定物品數量 （適用於聊天插件的問題）
+    amount: <yellow>設定物品數量（聊天室發生問題時很實用）
     item: <yellow>修改商店物品
     debug: <yellow>開啟開發者模式
     unlimited: <yellow>將商店設為無限庫存。
     sell: <yellow>修改成 <light_purple>出售 <yellow>模式
     fetchmessage: <yellow>顯示未讀商店日誌
     staff: <yellow>管理你的商店員工
-    clean: <yellow>刪除所有 （已載入） 沒有商品的商店
+    clean: <yellow>刪除所有（已載入）沒有商品的商店
     refill: <yellow>將一定數量的商品加到商店
     help: <yellow>顯示 QuickShop 說明
     removeall: <yellow>刪除指定玩家的所有商店
@@ -473,22 +473,22 @@ permission:
   header-group: "<green>{0} 商店群的權限細節"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
   item:
-    purchase: "<yellow>擁有此權限者可以進行購買或販售(商店物品或商店本身)"
-    show-information: "<yellow>擁有此權限者可以查看商店資訊(打開商店資訊面板)"
-    preview-shop: "<yellow>擁有此權限者可以預覽商店(預覽物品)"
-    search: "<yellow>擁有此權限者可以利用搜尋找到此商店(移除此權限將會使此商店自搜尋結果隱藏)"
-    delete: "<yellow>擁有此權限者得以刪除此商店"
-    receive-alert: "<yellow>擁有此權限者將可以收到警報(例如當缺貨時或物品售出)"
-    access-inventory: "<yellow>擁有此權限者可以打開商店的倉庫"
+    purchase: "<yellow>擁有該權限者可以進行購買或出售。（商店物品或商店本身）"
+    show-information: "<yellow>擁有該權限者可以查看商店資訊。（打開商店資訊面板）"
+    preview-shop: "<yellow>擁有該權限者可以預覽商店。（預覽物品）"
+    search: "<yellow>擁有該權限者可以利用搜尋找到此商店。（移除此權限將會使此商店自搜尋結果隱藏）"
+    delete: "<yellow>擁有該權限者得以刪商店。"
+    receive-alert: "<yellow>擁有該權限者將可以收到警報。（例如當缺貨時或物品售出）"
+    access-inventory: "<yellow>擁有該權限者可以打開商店的庫存。"
     ownership-transfer: "<yellow>擁有此權限者得以將商店所有權轉移"
-    management-permission: "<yellow>擁有此權限者得以編輯玩家身分組與設定身分組權限"
-    toggle-display: "<yellow>擁有此權限者可以控制商店懸浮物品顯示與否"
-    set-shoptype: "<yellow>擁有此權限者得以控制商店類型(收購或出售)"
-    set-price: "<yellow>擁有此權限者得以設定商品價格"
-    set-item: "<yellow>擁有此權限者得以設定商店所擺的物品"
-    set-stack-amount: "<yellow>擁有此權限者得以設定商店堆疊數量"
-    set-currency: "<yellow>擁有此權限者得以設定商店交易貨幣"
-    set-name: "<yellow>擁有此權限者得以設定商店名稱"
+    management-permission: "<yellow>擁有該權限者得以編輯玩家身分組與設定身分組權限。"
+    toggle-display: "<yellow>擁有該權限者可以控制商店懸浮物品顯示與否。"
+    set-shoptype: "<yellow>擁有該權限者得以控制商店類型。（收購或出售）"
+    set-price: "<yellow>擁有該權限者得以設定商品價格。"
+    set-item: "<yellow>擁有該權限者得以設定商店所擺的物品。"
+    set-stack-amount: "<yellow>擁有該權限者得以設定商店堆疊數量。"
+    set-currency: "<yellow>擁有該權限者得以設定商店交易貨幣。"
+    set-name: "<yellow>擁有該權限者得以設定商店名稱。"
   group:
     everyone: "<yellow>預設身分組，商店主人不在其中"
     staff: "<yellow>商店管理員的系統身分組"
@@ -498,8 +498,8 @@ invalid-permission: "<red>無效的權限"
 invalid-operation: "<red>無效的操作，只有 {0} 是被允許的"
 player-no-group: "<yellow>玩家 {0} 在這個商店不屬於任何身分組"
 player-in-group: "<green>玩家 {0} 在這個商店屬於 <aqua>{1}</aqua> 身分組"
-permission-required: "<red>你需要權限 {0} 來在這個商店執行此操作"
-no-permission-detailed: "<red>你需要權限<yellow>{0}</yellow> 來在這個商店執行此操作"
+permission-required: "<red>你需要權限 {0} 來在這個商店執行該操作。"
+no-permission-detailed: "<red>你需要權限 <yellow>{0}</yellow> 來在這個商店執行該操作。"
 paste-uploading: "<aqua>請稍等，正在將複製內容上傳到黏貼板"
 paste-created: "<green>已建立剪貼簿，點擊以在瀏覽器中打開：<yellow>{0}</yellow><newline><red>警告：<gray>永遠別將剪貼簿傳送給你不信任的人。"
 paste-created-local: "<green>已建立剪貼簿並且已儲存在你的硬碟路徑：{0}<newline><red>警告：<gray>永遠別將剪貼簿傳送給你不信任的人。"
@@ -509,9 +509,9 @@ paste-upload-failed: "<red>失敗將黏貼板傳送至 {0} 自動嘗試其他的
 paste-upload-failed-local: "<red>上傳黏貼板失敗，嘗試在硬碟上產生黏貼板..."
 command-incorrect: "<red>指令用法錯誤，輸入/qs help 來尋求幫助。用法：{0}。"
 successfully-set-player-group: "<green>成功將玩家 {0} 的身分組設置為 <aqua>{1}</aqua>."
-successfully-unset-player-group: "<green>成功移除此商店中的玩家身分組"
+successfully-unset-player-group: "<green>成功移除該商店中的玩家身分組。"
 successfully-set-player-permission: "<green>成功將玩家 {0} 在 <aqua>{2}</aqua> 商店的身分組設置為 <aqua>{1}</aqua>"
-lookup-item-created: "<green>物品<aqua>{0}</aqua> 已經在索引表上被創造，你可以在設定中引用此物品了"
+lookup-item-created: "<green>物品 <aqua>{0}</aqua> 已經在索引表上被建立，你可以在設定中引用該物品了。"
 lookup-item-exists: "<red>物品 <yellow>{0}</yellow> 已經存在索引表中，刪除它或取另外一個名字"
 lookup-item-not-found: "<red>物品名稱：<yellow>{0}</yellow> 並不存在。"
 lookup-item-name-illegal: "<red>無效的物品名稱，只能用數字、英文字母和底線"
@@ -590,23 +590,23 @@ addon:
     target-shop-not-in-town-region: "<red>目標商店不在城鎮內。"
     target-shop-not-in-nation-region: "<red>目標商店不在國內。"
     item-not-allowed: "<red>該商店的商品不允許城鎮 / 國家商店使用，請再選一個！"
-    operation-disabled-due-shop-status: "<red>This shop operation has been disabled due this already is a town/nation shop."
-    plot-type-disallowed: "<red>You can't create town/nation shop on this type of plot."
+    operation-disabled-due-shop-status: "<red>該商店操作已被停用，因為這已經是一個城鎮 / 國家商店。"
+    plot-type-disallowed: "<red>你不能在這種類型的畫布上建立城鎮 / 國家商店。"
   residence:
-    creation-flag-denied: "<red>You don't have permission to create shops in this residence."
-    trade-flag-denied: "<red>You don't have permission to purchase in this residence."
-    you-cannot-create-shop-in-wildness: "<red>You can't create shop in wildness."
+    creation-flag-denied: "<red>你沒有在該領地建立商店的權限。"
+    trade-flag-denied: "<red>你沒有在該領地購買的權限。"
+    you-cannot-create-shop-in-wildness: "<red>你不能在野外建立商店。"
   griefprevention:
-    creation-denied: "<red>You don't have permission to create shops in this claim."
-    trade-denied: "<red>You don't have permission to purchase shops in this claim."
+    creation-denied: "<red>你沒有在該聲明中建立商店的權限。"
+    trade-denied: "<red>你沒有在該聲明中購買商店的權限。"
   lands:
-    world-not-enabled: "<red>You are not allowed to create or purchase in this world."
-    creation-denied: "<red>You don't have permission to create shops in this Land."
+    world-not-enabled: "<red>你不能在這個世界中建立或購買商店。"
+    creation-denied: "<red>你沒有在該領土建立商店的權限。"
   plotsquared:
-    no-plot-whitelist-creation: "<red>You cannot create shop outside of Plot."
-    no-plot-whitelist-trade: "<red>You cannot purchase shop outside of Plot."
-    creation-denied: "<red>You don't have permission to create shops in this Plot."
-    trade-denied: "<red>You don't have permission to purchase shops in this Plot."
+    no-plot-whitelist-creation: "<red>你無法在畫布外建立商店。"
+    no-plot-whitelist-trade: "<red>你無法在畫布外購買商店。"
+    creation-denied: "<red>你沒有在該畫布中建立商店的權限。"
+    trade-denied: "<red>你沒有在該畫布中購買商店的權限。"
   superiorskyblock:
-    owner-create-only: "<red>Only island owner can create shop there."
-    owner-member-create-only: "<red>Only island owner or member can create shop there."
+    owner-create-only: "<red>只有島嶼擁有者能夠在那裡建立商店。"
+    owner-member-create-only: "<red>只有島嶼擁有者或成員能夠在那裡建立商店。"
