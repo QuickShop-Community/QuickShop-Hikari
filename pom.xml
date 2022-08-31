@@ -490,6 +490,7 @@
     </dependencies>
 
     <modules>
+        <module>quickshop-common</module>
         <module>quickshop-api</module>
         <module>platform/quickshop-platform-interface</module>
         <module>platform/quickshop-platform-spigot-abstract</module>
