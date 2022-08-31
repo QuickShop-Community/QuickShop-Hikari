@@ -581,16 +581,19 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                     economy = new Economy_TNE(this);
                     Log.debug("Economy bridge selected: The New Economy");
                 }
-                default -> Log.debug("Economy bridge selected: undefined");
+                default -> Log.debug("Economy bridge selected: Service");
             }
+            economy = ServiceInjector.getInjectedService(AbstractEconomy.class, economy);
             if (economy == null) {
+                Log.debug("No economy bridge found.");
                 return false;
             }
+            Log.debug("Selected economy bridge: "+economy.getName());
             if (!economy.isValid()) {
                 setupBootError(BuiltInSolution.econError(), false);
                 return false;
             }
-            economy = ServiceInjector.getInjectedService(AbstractEconomy.class, economy);
+
         } catch (Throwable e) {
             if (sentryErrorReporter != null) {
                 sentryErrorReporter.ignoreThrow();
