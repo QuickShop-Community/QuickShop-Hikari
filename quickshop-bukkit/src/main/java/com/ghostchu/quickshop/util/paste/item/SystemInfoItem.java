@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.util.paste.item;
 
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import org.apache.commons.text.StringEscapeUtils;
@@ -27,7 +28,7 @@ public class SystemInfoItem implements SubPasteItem {
         this.cores = String.valueOf(Runtime.getRuntime().availableProcessors());
         this.javaVersion = System.getProperty("java.version") + " (" + System.getProperty("java.vendor.version") + ")";
         this.javaImplName = runtimeMxBean.getVmName();
-        this.inputArgs = Util.list2String(runtimeMxBean.getInputArguments());
+        this.inputArgs = CommonUtil.list2String(runtimeMxBean.getInputArguments());
         this.systemProperties = runtimeMxBean.getSystemProperties().keySet().stream()
                 .map(key -> StringEscapeUtils.escapeHtml4(key + "=" + runtimeMxBean.getSystemProperties().get(key)))
                 .collect(Collectors.joining("<br/>"));

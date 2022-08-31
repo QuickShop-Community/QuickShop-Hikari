@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.util.Util;
 import me.angeschossen.lands.api.events.LandUntrustPlayerEvent;
@@ -87,7 +88,7 @@ public final class Main extends CompatibilityModule {
                         Map<Location, Shop> shops = chunkedShopEntry.getValue();
                         for (Shop shop : shops.values()) {
                             if (target.equals(shop.getOwner())) {
-                                recordDeletion(Util.getNilUniqueId(), shop, "Lands: shop deleted because owner lost permission");
+                                recordDeletion(CommonUtil.getNilUniqueId(), shop, "Lands: shop deleted because owner lost permission");
                                 Util.mainThreadRun(shop::delete);
                             }
                         }

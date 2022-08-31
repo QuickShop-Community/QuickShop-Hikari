@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.localization.game.game;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -19,22 +19,22 @@ public class InternalGameLanguageImpl implements GameLanguage {
 
     @Override
     public @NotNull String getEnchantment(@NotNull Enchantment enchantment) {
-        return Util.prettifyText(enchantment.getKey().getKey());
+        return CommonUtil.prettifyText(enchantment.getKey().getKey());
     }
 
     @Override
     public @NotNull String getEntity(@NotNull EntityType entityType) {
-        return Util.prettifyText(entityType.name());
+        return CommonUtil.prettifyText(entityType.name());
     }
 
     @Override
     public @NotNull String getItem(@NotNull ItemStack itemStack) {
-        return Util.prettifyText(itemStack.getType().name());
+        return CommonUtil.prettifyText(itemStack.getType().name());
     }
 
     @Override
     public @NotNull String getItem(@NotNull Material material) {
-        return Util.prettifyText(material.name());
+        return CommonUtil.prettifyText(material.name());
     }
 
     @Override
@@ -49,6 +49,6 @@ public class InternalGameLanguageImpl implements GameLanguage {
 
     @Override
     public @NotNull String getPotion(@NotNull PotionEffectType potionEffectType) {
-        return Util.prettifyText(potionEffectType.getName());
+        return CommonUtil.prettifyText(potionEffectType.getName());
     }
 }

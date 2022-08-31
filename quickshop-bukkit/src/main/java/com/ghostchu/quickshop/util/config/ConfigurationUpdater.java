@@ -1,8 +1,8 @@
 package com.ghostchu.quickshop.util.config;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.converter.HikariConverter;
-import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -92,7 +92,7 @@ public class ConfigurationUpdater {
 
     private void writeServerUniqueId() {
         String serverUUID = plugin.getConfig().getString("server-uuid");
-        if (serverUUID == null || serverUUID.isEmpty() || !Util.isUUID(serverUUID)) {
+        if (serverUUID == null || serverUUID.isEmpty() || !CommonUtil.isUUID(serverUUID)) {
             plugin.getConfig().set("server-uuid", UUID.randomUUID().toString());
         }
     }

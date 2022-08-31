@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.util.envcheck;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -122,28 +123,28 @@ public final class EnvironmentChecker {
         return new ResultContainer(CheckResult.PASSED, "Server is unmodified.");
     }
 
-    public boolean isForgeBasedServer() {
-        //Forge server detect - Arclight
-        if (Util.isClassAvailable("net.minecraftforge.server.ServerMain")) {
-            return true;
-        }
-        if (Util.isClassAvailable("net.minecraftforge.fml.loading.ModInfo")) {
-            return true;
-        }
-        if (Util.isClassAvailable("cpw.mods.modlauncher.serviceapi.ILaunchPluginService")) {
-            return true;
-        }
-        return Util.isClassAvailable("net.minecraftforge.forgespi.locating.IModLocator");
-    }
-
     public boolean isFabricBasedServer() {
         //Nobody really make it right!?
-        return Util.isClassAvailable("net.fabricmc.loader.launch.knot.KnotClient"); //OMG
+        return CommonUtil.isClassAvailable("net.fabricmc.loader.launch.knot.KnotClient"); //OMG
+    }
+
+    public boolean isForgeBasedServer() {
+        //Forge server detect - Arclight
+        if (CommonUtil.isClassAvailable("net.minecraftforge.server.ServerMain")) {
+            return true;
+        }
+        if (CommonUtil.isClassAvailable("net.minecraftforge.fml.loading.ModInfo")) {
+            return true;
+        }
+        if (CommonUtil.isClassAvailable("cpw.mods.modlauncher.serviceapi.ILaunchPluginService")) {
+            return true;
+        }
+        return CommonUtil.isClassAvailable("net.minecraftforge.forgespi.locating.IModLocator");
     }
 
     @EnvCheckEntry(name = "Old QuickShop Test", priority = 3)
     public ResultContainer oldQuickShopTest() {
-        if (Util.isClassAvailable("com.ghostchu.quickshop.Util.NMS")) {
+        if (CommonUtil.isClassAvailable("com.ghostchu.quickshop.Util.NMS")) {
             return new ResultContainer(CheckResult.STOP_WORKING, "FATAL: Old QuickShop build is installed! You must remove old QuickShop jar from the plugins folder!");
         }
         return new ResultContainer(CheckResult.PASSED, "No old QuickShop jar installled on this server");

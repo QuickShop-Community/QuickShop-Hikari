@@ -7,9 +7,14 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.common.util.CalculateUtil;
+import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.common.util.RomanNumber;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
-import com.ghostchu.quickshop.util.*;
+import com.ghostchu.quickshop.util.ChatSheetPrinter;
+import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.economyformatter.EconomyFormatter;
 import com.ghostchu.quickshop.util.holder.Result;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -97,7 +102,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         Log.debug("Loading caching tax account...");
         String taxAccount = plugin.getConfig().getString("tax-account", "tax");
         if (!taxAccount.isEmpty()) {
-            if (Util.isUUID(taxAccount)) {
+            if (CommonUtil.isUUID(taxAccount)) {
                 this.cacheTaxAccount = UUID.fromString(taxAccount);
             } else {
                 this.cacheTaxAccount = Bukkit.getOfflinePlayer(taxAccount).getUniqueId();
@@ -112,7 +117,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 uAccount = "quickshop";
                 plugin.getLogger().log(Level.WARNING, "unlimited-shop-owner-change-account is empty, default to \"quickshop\"");
             }
-            if (Util.isUUID(uAccount)) {
+            if (CommonUtil.isUUID(uAccount)) {
                 cacheUnlimitedShopAccount = UUID.fromString(uAccount);
             } else {
                 cacheUnlimitedShopAccount = Bukkit.getOfflinePlayer(uAccount).getUniqueId();

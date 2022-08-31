@@ -5,6 +5,8 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.ShopControlPanelOpenEvent;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.common.util.RomanNumber;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.PluginGlobalAlertLog;
 import com.google.common.collect.Iterables;
@@ -250,7 +252,7 @@ public class MsgUtil {
             while (rs.next()) {
                 String owner = rs.getString("receiver");
                 UUID ownerUUID;
-                if (Util.isUUID(owner)) {
+                if (CommonUtil.isUUID(owner)) {
                     ownerUUID = UUID.fromString(owner);
                 } else {
                     ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();

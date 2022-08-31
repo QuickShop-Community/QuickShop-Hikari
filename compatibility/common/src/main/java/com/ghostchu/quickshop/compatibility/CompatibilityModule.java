@@ -3,7 +3,7 @@ package com.ghostchu.quickshop.compatibility;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -95,7 +95,7 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
 
     public void recordDeletion(@Nullable UUID uuid, @NotNull Shop shop, @NotNull String reason) {
         if (uuid == null) {
-            uuid = Util.getNilUniqueId();
+            uuid = CommonUtil.getNilUniqueId();
         }
         this.api.logEvent(new ShopRemoveLog(uuid, reason, shop.saveToInfoStorage()));
     }

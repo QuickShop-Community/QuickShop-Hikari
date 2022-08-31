@@ -13,6 +13,7 @@ import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
@@ -412,7 +413,7 @@ public class ContainerShop implements Shop, Reloadable {
         if (!Util.canBeShop(this.getLocation().getBlock())) {
             Log.debug("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock()
                     + " container was missing, deleting...");
-            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Container invalid", saveToInfoStorage()));
+            plugin.logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), "Container invalid", saveToInfoStorage()));
             this.onUnload();
             this.delete(false);
         }
@@ -680,7 +681,7 @@ public class ContainerShop implements Shop, Reloadable {
         } else {
             this.delete(true);
         }
-        plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
+        plugin.logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), "Inventory Invalid", this.saveToInfoStorage()));
         Log.debug("Inventory doesn't exist anymore: " + this + " shop was deleted.");
         return null;
     }
@@ -995,7 +996,7 @@ public class ContainerShop implements Shop, Reloadable {
                 if (PaperLib.isPaper()) {
                     itemComponents = plugin.getPlatform().getTranslation(getItem().getType());
                 } else {
-                    itemComponents = Component.text(Util.prettifyText(getItem().getType().name()));
+                    itemComponents = Component.text(CommonUtil.prettifyText(getItem().getType().name()));
                 }
             } else {
                 itemComponents = itemName;
@@ -1481,7 +1482,7 @@ public class ContainerShop implements Shop, Reloadable {
                 result.add(uuidStringEntry.getKey());
             }
         }
-        Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + Util.list2String(result.stream().map(UUID::toString).toList()));
+        Log.permission("Check permission " + namespace.getName().toLowerCase(Locale.ROOT) + "." + permission + ": " + CommonUtil.list2String(result.stream().map(UUID::toString).toList()));
         return result;
     }
 

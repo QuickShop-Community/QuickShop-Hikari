@@ -1,8 +1,8 @@
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.ReflectFactory;
-import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
@@ -40,7 +40,7 @@ public class ServerInfoItem implements SubPasteItem {
             this.moddedServerType = "Forge";
         }
         this.players = Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers();
-        this.onlineMode = Util.boolean2Status(Bukkit.getOnlineMode());
+        this.onlineMode = CommonUtil.boolean2Status(Bukkit.getOnlineMode());
         this.bukkitVersion = plugin.getServer().getVersion();
         this.mcVersion = plugin.getPlatform().getMinecraftVersion();
         this.worldContainer = Bukkit.getWorldContainer().getPath();

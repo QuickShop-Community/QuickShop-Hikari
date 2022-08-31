@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -26,7 +26,7 @@ public class PluginsInfoItem implements SubPasteItem {
         table.setTableTitle("Name", "Status", "Version", "API Version", "Addon", "Main-Class");
         for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
             table.insert(plugin.getName(),
-                    Util.boolean2Status(plugin.isEnabled()),
+                    CommonUtil.boolean2Status(plugin.isEnabled()),
                     plugin.getDescription().getVersion(),
                     Objects.requireNonNullElse(plugin.getDescription().getAPIVersion(), "N/A"),
                     isAddon(plugin) ? "Yes" : "",

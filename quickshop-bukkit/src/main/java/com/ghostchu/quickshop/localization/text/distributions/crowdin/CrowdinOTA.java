@@ -1,11 +1,12 @@
 package com.ghostchu.quickshop.localization.text.distributions.crowdin;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.common.util.UrlEncoderDecoder;
 import com.ghostchu.quickshop.localization.text.distributions.Distribution;
 import com.ghostchu.quickshop.localization.text.distributions.crowdin.bean.Manifest;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.UrlEncoderDecoder;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.gson.JsonElement;
@@ -75,7 +76,7 @@ public class CrowdinOTA implements Distribution {
         for (String language : manifest.getLanguages()) {
             languages.add(mapping.getOrDefault(language, language));
         }
-        plugin.getLogger().info("[CrowdinOTA] Available languages: " + Util.list2String(languages));
+        plugin.getLogger().info("[CrowdinOTA] Available languages: " + CommonUtil.list2String(languages));
         this.availableLanguages = languages;
     }
 

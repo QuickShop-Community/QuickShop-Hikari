@@ -12,12 +12,13 @@ import com.ghostchu.quickshop.api.database.bean.ShopRecord;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopModerator;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
+import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopModerator;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.QuickExecutor;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.reflect.TypeToken;
@@ -257,34 +258,32 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         plugin.getLogger().info("Migrate completed, previous versioned data was renamed to <PREFIX>_<TABLE_NAME>_<ACTION_ID>.");
     }
 
-    public CompletableFuture<Integer> purgeIsolated() {
-        return CompletableFuture.supplyAsync(() -> {
-            List<Long> shop2ShopMapIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.SHOP_MAP, "shop");
-            List<Long> shop2LogPurchaseIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.LOG_PURCHASE, "shop");
-            List<Long> shop2LogChangesIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.LOG_CHANGES, "shop");
-            List<Long> shopAllIds = Util.linkLists(shop2LogChangesIds, shop2LogPurchaseIds);
-            List<Long> shopIsolatedFinal = new ArrayList<>(shop2ShopMapIds);
-            shopIsolatedFinal.retainAll(shopAllIds);
-            shopIsolatedFinal.forEach(isolatedShopId -> {
-                try {
-                    DataTables.SHOPS.createDelete().addCondition("id", isolatedShopId).build().execute();
-                } catch (SQLException e) {
-                    Log.debug("Failed to delete: " + e.getMessage());
+    public void importFromCSV(@NotNull File zipFile, @NotNull DataTables table) throws SQLException, ClassNotFoundException {
+        Log.debug("Loading CsvDriver...");
+        Class.forName("org.relique.jdbc.csv.CsvDriver");
+        try (Connection conn = DriverManager.getConnection("jdbc:relique:csv:zip:" + zipFile);
+             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
+                     ResultSet.CONCUR_READ_ONLY);
+             ResultSet results = stmt.executeQuery("SELECT * FROM " + table.getName())) {
+            ResultSetMetaData metaData = results.getMetaData();
+            String[] columns = new String[metaData.getColumnCount()];
+            for (int i = 0; i < columns.length; i++) {
+                columns[i] = metaData.getColumnName(i + 1);
+            }
+            Log.debug("Parsed " + columns.length + " columns: " + CommonUtil.array2String(columns));
+            while (results.next()) {
+                Object[] values = new String[columns.length];
+                for (int i = 0; i < values.length; i++) {
+                    Log.debug("Copying column: " + columns[i]);
+                    values[i] = results.getObject(columns[i]);
                 }
-            });
-            List<Long> data2ShopIds = listAllANotExistsInB(DataTables.DATA, "id", DataTables.SHOPS, "data");
-            List<Long> data2LogPurchaseIds = listAllANotExistsInB(DataTables.DATA, "id", DataTables.LOG_PURCHASE, "data");
-            List<Long> dataIsolatedFinal = new ArrayList<>(data2ShopIds);
-            dataIsolatedFinal.retainAll(data2LogPurchaseIds);
-            dataIsolatedFinal.forEach(isolatedDataId -> {
-                try {
-                    DataTables.DATA.createDelete().addCondition("id", isolatedDataId).build().execute();
-                } catch (SQLException e) {
-                    Log.debug("Failed to delete: " + e.getMessage());
-                }
-            });
-            return shopIsolatedFinal.size() + dataIsolatedFinal.size();
-        }, QuickExecutor.getCommonExecutor());
+                Log.debug("Inserting row: " + CommonUtil.array2String(Arrays.stream(values).map(Object::toString).toArray(String[]::new)));
+                table.createInsert()
+                        .setColumnNames(columns)
+                        .setParams(values)
+                        .execute();
+            }
+        }
     }
 
     private boolean silentTableMoving(@NotNull String originTableName, @NotNull String newTableName) {
@@ -486,10 +485,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @Override
     public void insertTransactionRecord(@Nullable UUID from, @Nullable UUID to, double amount, @Nullable String currency, double taxAmount, @Nullable UUID taxAccount, @Nullable String error) {
         if (from == null) {
-            from = Util.getNilUniqueId();
+            from = CommonUtil.getNilUniqueId();
         }
         if (to == null) {
-            to = Util.getNilUniqueId();
+            to = CommonUtil.getNilUniqueId();
         }
         DataTables.LOG_TRANSACTION.createInsert()
                 .setColumnNames("from", "to", "currency", "amount", "tax_amount", "tax_account", "error")
@@ -780,32 +779,34 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         return match; // Uh, wtf.
     }
 
-    public void importFromCSV(@NotNull File zipFile, @NotNull DataTables table) throws SQLException, ClassNotFoundException {
-        Log.debug("Loading CsvDriver...S");
-        Class.forName("org.relique.jdbc.csv.CsvDriver");
-        try (Connection conn = DriverManager.getConnection("jdbc:relique:csv:zip:" + zipFile);
-             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
-                     ResultSet.CONCUR_READ_ONLY);
-             ResultSet results = stmt.executeQuery("SELECT * FROM " + table.getName())) {
-            ResultSetMetaData metaData = results.getMetaData();
-            String[] columns = new String[metaData.getColumnCount()];
-            for (int i = 0; i < columns.length; i++) {
-                columns[i] = metaData.getColumnName(i + 1);
-            }
-            Log.debug("Parsed " + columns.length + " columns: " + Util.array2String(columns));
-            while (results.next()) {
-                Object[] values = new String[columns.length];
-                for (int i = 0; i < values.length; i++) {
-                    Log.debug("Copying column: " + columns[i]);
-                    values[i] = results.getObject(columns[i]);
+    public CompletableFuture<Integer> purgeIsolated() {
+        return CompletableFuture.supplyAsync(() -> {
+            List<Long> shop2ShopMapIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.SHOP_MAP, "shop");
+            List<Long> shop2LogPurchaseIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.LOG_PURCHASE, "shop");
+            List<Long> shop2LogChangesIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.LOG_CHANGES, "shop");
+            List<Long> shopAllIds = CommonUtil.linkLists(shop2LogChangesIds, shop2LogPurchaseIds);
+            List<Long> shopIsolatedFinal = new ArrayList<>(shop2ShopMapIds);
+            shopIsolatedFinal.retainAll(shopAllIds);
+            shopIsolatedFinal.forEach(isolatedShopId -> {
+                try {
+                    DataTables.SHOPS.createDelete().addCondition("id", isolatedShopId).build().execute();
+                } catch (SQLException e) {
+                    Log.debug("Failed to delete: " + e.getMessage());
                 }
-                Log.debug("Inserting row: " + Util.array2String(Arrays.stream(values).map(Object::toString).toArray(String[]::new)));
-                table.createInsert()
-                        .setColumnNames(columns)
-                        .setParams(values)
-                        .execute();
-            }
-        }
+            });
+            List<Long> data2ShopIds = listAllANotExistsInB(DataTables.DATA, "id", DataTables.SHOPS, "data");
+            List<Long> data2LogPurchaseIds = listAllANotExistsInB(DataTables.DATA, "id", DataTables.LOG_PURCHASE, "data");
+            List<Long> dataIsolatedFinal = new ArrayList<>(data2ShopIds);
+            dataIsolatedFinal.retainAll(data2LogPurchaseIds);
+            dataIsolatedFinal.forEach(isolatedDataId -> {
+                try {
+                    DataTables.DATA.createDelete().addCondition("id", isolatedDataId).build().execute();
+                } catch (SQLException e) {
+                    Log.debug("Failed to delete: " + e.getMessage());
+                }
+            });
+            return shopIsolatedFinal.size() + dataIsolatedFinal.size();
+        }, QuickExecutor.getCommonExecutor());
     }
 
     public void writeToCSV(@NotNull ResultSet set, @NotNull File csvFile) throws SQLException, IOException {

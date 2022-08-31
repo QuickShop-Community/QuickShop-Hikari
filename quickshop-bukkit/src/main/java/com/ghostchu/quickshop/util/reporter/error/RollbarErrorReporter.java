@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.util.reporter.error;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.GameVersion;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.collect.Lists;
@@ -69,7 +70,7 @@ public class RollbarErrorReporter {
                 try {
                     errorBundle = reportQueue.take();
                     Log.debug("Sending error: " + errorBundle.getThrowable().getMessage()
-                            + " with context: " + Util.array2String(errorBundle.getContext()));
+                            + " with context: " + CommonUtil.array2String(errorBundle.getContext()));
                     sendError0(errorBundle.getThrowable(), errorBundle.getContext());
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);

@@ -3,7 +3,7 @@
 //import com.ghostchu.quickshop.QuickShop;
 //import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 //import com.ghostchu.quickshop.database.bean.IsolatedScanResult;
-//import com.ghostchu.quickshop.util.Timer;
+//import com.ghostchu.quickshop.common.util.Timer;
 //import com.ghostchu.quickshop.util.holder.DatabaseStatusHolder;
 //import com.ghostchu.quickshop.util.logger.Log;
 //import lombok.Getter;

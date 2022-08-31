@@ -4,7 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.ShopPermissionManager;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -136,7 +136,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
             if (yamlConfiguration.isList(group)) {
                 List<String> perms = yamlConfiguration.getStringList(group);
                 this.permissionMapping.put(group, new HashSet<>(perms));
-                Log.permission("Permission loaded for group " + group + ": " + Util.list2String(perms));
+                Log.permission("Permission loaded for group " + group + ": " + CommonUtil.list2String(perms));
             }
         });
     }
