@@ -333,15 +333,7 @@ public class MsgUtil {
                 if (p.getName() != null && plugin.getConfig().getBoolean("bungee-cross-server-msg", true)) {
                     plugin.getDatabaseHelper().getPlayerLocale(uuid).whenCompleteAsync((locale, err) -> {
                         if (locale != null) {
-                            Component csmMessage = plugin.text().of("bungee-cross-server-msg", shopTransactionMessage).forLocale(locale);
-                            ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                            out.writeUTF("MessageRaw");
-                            out.writeUTF(p.getName());
-                            out.writeUTF(GsonComponentSerializer.gson().serialize(csmMessage));
-                            Player player = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
-                            if (player != null) {
-                                player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
-                            }
+                           sendBungeeMessage(p.getName(),shopTransactionMessage,locale);
                         }
                     });
                 }
@@ -353,6 +345,18 @@ public class MsgUtil {
             if (player != null) {
                 plugin.getPlatform().sendMessage(player, shopTransactionMessage);
             }
+        }
+    }
+    
+    public static void sendBungeeMessage(@NotNull String playerName, @NotNull Component message, @NotNull String locale){
+        Component csmMessage = plugin.text().of("bungee-cross-server-msg", message).forLocale(locale);
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("MessageRaw");
+        out.writeUTF(playerName);
+        out.writeUTF(GsonComponentSerializer.gson().serialize(csmMessage));
+        Player player = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
+        if (player != null) {
+            player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
         }
     }
 
