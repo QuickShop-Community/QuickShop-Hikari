@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
@@ -85,8 +86,9 @@ public class Spigot1191Platform extends AbstractSpigotPlatform implements Platfo
     }
 
     @Override
-    public void registerCommand(@NotNull String prefix, @NotNull PluginCommand command) {
+    public void registerCommand(@NotNull String prefix, @NotNull Command command) {
         ((CraftServer) Bukkit.getServer()).getCommandMap().register(prefix, command);
+        command.register(((CraftServer) Bukkit.getServer()).getCommandMap());
         ((CraftServer) Bukkit.getServer()).syncCommands();
     }
 }

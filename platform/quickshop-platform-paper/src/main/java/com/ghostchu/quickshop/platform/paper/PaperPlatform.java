@@ -7,6 +7,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.enchantments.Enchantment;
@@ -49,8 +50,9 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public void registerCommand(@NotNull String prefix, @NotNull PluginCommand command) {
+    public void registerCommand(@NotNull String prefix, @NotNull Command command) {
         Bukkit.getCommandMap().register(prefix, command);
+        command.register(Bukkit.getCommandMap());
         Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
     }
 

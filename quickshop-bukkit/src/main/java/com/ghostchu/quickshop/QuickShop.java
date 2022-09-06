@@ -21,6 +21,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
+import com.ghostchu.quickshop.command.QuickShopCommand;
 import com.ghostchu.quickshop.command.SimpleCommandManager;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.QuickExecutor;
@@ -71,6 +72,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -443,12 +445,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
 
     private void loadCommandHandler() {
         /* PreInit for BootError feature */
-        commandManager = new SimpleCommandManager(this);
-        //noinspection ConstantConditions
-        getCommand("qs").setExecutor(commandManager);
-        //noinspection ConstantConditions
-        getCommand("qs").setTabCompleter(commandManager);
-        this.registerCustomCommands();
+        this.registerQuickShopCommands();
+
     }
 
     @Override
@@ -924,23 +922,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         getLogger().info("All shutdown work has been completed.");
     }
 
-    public void registerCustomCommands() {
+    public void registerQuickShopCommands() {
+        commandManager = new SimpleCommandManager(this);
         List<String> customCommands = getConfig().getStringList("custom-commands");
-        PluginCommand quickShopCommand = getCommand("qs");
-        if (quickShopCommand == null) {
-            getLogger().warning("Failed to get QuickShop PluginCommand instance.");
-            return;
-        }
-        Set<String> aliases = new HashSet<>(quickShopCommand.getAliases());
-        aliases.addAll(customCommands);
-        quickShopCommand.setAliases(new ArrayList<>(aliases));
+        Command quickShopCommand = new QuickShopCommand("qs",commandManager,new ArrayList<>( new HashSet<>(customCommands)));
         try {
-            platform.registerCommand("qs", quickShopCommand);
+            platform.registerCommand("quickshop-hikari", quickShopCommand);
         } catch (Exception e) {
             getLogger().log(Level.WARNING, "Failed to register command aliases", e);
-            return;
         }
-        Log.debug("QuickShop command aliases registered with those aliases: " + CommonUtil.list2String(aliases));
+        Log.debug("QuickShop command registered with those aliases: " + CommonUtil.list2String(quickShopCommand.getAliases()));
     }
 
     private void registerListeners() {
