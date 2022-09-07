@@ -100,7 +100,7 @@ menu:
   item: '<green>物品：<yellow>{0}'
   price-per: <green>每个<yellow>{0}<green>价格<yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>共 <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
+  item-name-and-price-tax: '<yellow>{0} 个 {1}<green> 为 </green> {2} <gray>（{3} 元的税）</gray>'
   successful-purchase: '<green>支付成功：'
   price-per-stack: <green>每<yellow>{2}<green>个<yellow>{0}<green>价格<yellow>{1}
   stored-enchants: <dark_purple>附魔
@@ -555,7 +555,7 @@ database:
   auto-trim-started: "<green>自动清理已经开始，请稍候..."
   trim-start: "<green>数据库清理已开始，请稍候..."
   trim-exception: "<red>数据库清理失败，数据库清理过程中出现异常，请检查服务器控制台。"
-  generated-at: "<yellow>Generated at: <gold>{0}</gold>"
+  generated-at: "<yellow>生成于： <gold>{0}</gold>"
   suggestion:
     trim: "<yellow>此数据库需要进行清理，执行命令 <aqua>/qs database trim</aqua> 来清理数据库。"
 always-counting-removal-early-warning: "<red>总是计数功能将移除，您不应该再使用它，并将在将来停止工作。"
@@ -578,7 +578,7 @@ transfer-no-pending-operation: "<red>您没有待处理的商店转移请求。"
 addon:
   towny:
     commands:
-      town: "<yellow>Set or unset a shop to a Town shop"
+      town: "<yellow>将商店设置或取消设置为城镇商店"
       nation: "<yellow>Set or unset a shop to a Nation shop"
     make-shop-owned-by-town: "<green>You have made the shop owned by town <yellow>{0}</yellow>."
     make-shop-no-longer-owned-by-town: "<green>You have reset shop ownership, it now transfer back to original shop owner."
