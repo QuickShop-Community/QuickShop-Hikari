@@ -417,7 +417,7 @@ command:
     toggledisplay: <yellow>Переключает отображение товара в магазине (над сундука)
     permission: <yellow>Управление разрешениями магазина
     lookup: <yellow>Управление справочной таблицей предметов
-    database: <yellow>View and maintain QuickShop database
+    database: <yellow>Просмотр и обслуживание базы данных QuickShop
   bulk-size-not-set: '<red>Используйте: /qs size <amount>'
   no-type-given: '<red>Используйте: /qs find <item>'
   feature-not-enabled: Функция не включена в конфигурации.
