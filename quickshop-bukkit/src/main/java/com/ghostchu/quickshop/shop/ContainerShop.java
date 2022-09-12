@@ -399,26 +399,6 @@ public class ContainerShop implements Shop, Reloadable {
         this.displayItem.removeDupe();
     }
 
-    /**
-     * Check the container still there and we can keep use it.
-     */
-    public void checkContainer() {
-        Util.ensureThread(false);
-        if (!this.isLoaded) {
-            return;
-        }
-        if (!Util.isLoaded(this.getLocation())) {
-            return;
-        }
-        if (!Util.canBeShop(this.getLocation().getBlock())) {
-            Log.debug("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock()
-                    + " container was missing, deleting...");
-            plugin.logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), "Container invalid", saveToInfoStorage()));
-            this.onUnload();
-            this.delete(false);
-        }
-    }
-
     @Override
     public void claimShopSign(@NotNull Sign sign) {
         sign.getPersistentDataContainer().set(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE, saveToShopSignStorage());
@@ -533,38 +513,9 @@ public class ContainerShop implements Shop, Reloadable {
         }
     }
 
-    public @NotNull SimpleDataRecord createDataRecord() {
-        return new SimpleDataRecord(
-                getOwner(),
-                Util.serialize(getItem()),
-                getShopName(),
-                getShopType().toID(),
-                getCurrency(),
-                getPrice(),
-                isUnlimited(),
-                isDisableDisplay(),
-                getTaxAccount(),
-                JsonUtil.getGson().toJson(getPermissionAudiences()),
-                saveExtraToYaml(),
-                getInventoryWrapperProvider(),
-                saveToSymbolLink(),
-                new Date()
-        );
-    }
-
     @Override
     public ContainerShop getAttachedShop() {
         return attachedShop;
-    }
-
-    /**
-     * Returns the display item associated with this shop.
-     *
-     * @return The display item associated with this shop.
-     */
-    @Nullable
-    public AbstractDisplayItem getDisplayItem() {
-        return this.displayItem;
     }
 
     /**
@@ -575,16 +526,6 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public @Nullable String getCurrency() {
         return this.currency;
-    }
-
-    /**
-     * @return The enchantments the shop has on its items.
-     */
-    public @NotNull Map<Enchantment, Integer> getEnchants() {
-        if (this.item.hasItemMeta() && this.item.getItemMeta().hasEnchants()) {
-            return Objects.requireNonNull(this.item.getItemMeta()).getEnchants();
-        }
-        return Collections.emptyMap();
     }
 
     /**
@@ -602,31 +543,11 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     /**
-     * @return The ItemStack type of this shop
-     */
-    public @NotNull Material getMaterial() {
-        return this.item.getType();
-    }
-
-    /**
      * @return The durability of the item
      */
     @Override
     public short getDurability() {
         return (short) ((Damageable) this.item.getItemMeta()).getDamage();
-    }
-
-    /**
-     * Different with isDoubleShop, this method only check the shop is created on the double chest.
-     *
-     * @return true if create on double chest.
-     */
-    public boolean isDoubleChestShop() {
-        Util.ensureThread(false);
-        if (Util.isDoubleChest(this.getLocation().getBlock().getBlockData())) {
-            return getAttachedShop() != null;
-        }
-        return false;
     }
 
     /**
@@ -644,16 +565,6 @@ public class ContainerShop implements Shop, Reloadable {
             section = extra.createSection(plugin.getName());
         }
         return section;
-    }
-
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        if (!plugin.isAllowStack()) {
-            this.item.setAmount(1);
-        } else {
-            this.item.setAmount(this.originalItem.getAmount());
-        }
-        return Reloadable.super.reloadModule();
     }
 
     /**
@@ -1085,7 +996,7 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public void setTaxAccount(@Nullable UUID taxAccount) {
-        if (Objects.equals(taxAccount,this.taxAccount)) {
+        if (Objects.equals(taxAccount, this.taxAccount)) {
             return;
         }
         ShopTaxAccountChangeEvent event = new ShopTaxAccountChangeEvent(this, taxAccount);
@@ -1797,17 +1708,84 @@ public class ContainerShop implements Shop, Reloadable {
         }
     }
 
+    /**
+     * Check the container still there and we can keep use it.
+     */
+    public void checkContainer() {
+        Util.ensureThread(false);
+        if (!this.isLoaded) {
+            return;
+        }
+        if (!Util.isLoaded(this.getLocation())) {
+            return;
+        }
+        if (!Util.canBeShop(this.getLocation().getBlock())) {
+            Log.debug("Shop at " + this.getLocation() + "@" + this.getLocation().getBlock()
+                    + " container was missing, deleting...");
+            plugin.logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), "Container invalid", saveToInfoStorage()));
+            this.onUnload();
+            this.delete(false);
+        }
+    }
 
+    public @NotNull SimpleDataRecord createDataRecord() {
+        return new SimpleDataRecord(
+                getOwner(),
+                Util.serialize(getItem()),
+                getShopName(),
+                getShopType().toID(),
+                getCurrency(),
+                getPrice(),
+                isUnlimited(),
+                isDisableDisplay(),
+                getTaxAccount(),
+                JsonUtil.getGson().toJson(getPermissionAudiences()),
+                saveExtraToYaml(),
+                getInventoryWrapperProvider(),
+                saveToSymbolLink(),
+                new Date()
+        );
+    }
 
+    /**
+     * Returns the display item associated with this shop.
+     *
+     * @return The display item associated with this shop.
+     */
+    @Nullable
+    public AbstractDisplayItem getDisplayItem() {
+        return this.displayItem;
+    }
 
+    /**
+     * @return The enchantments the shop has on its items.
+     */
+    public @NotNull Map<Enchantment, Integer> getEnchants() {
+        if (this.item.hasItemMeta() && this.item.getItemMeta().hasEnchants()) {
+            return Objects.requireNonNull(this.item.getItemMeta()).getEnchants();
+        }
+        return Collections.emptyMap();
+    }
 
+    /**
+     * @return The ItemStack type of this shop
+     */
+    public @NotNull Material getMaterial() {
+        return this.item.getType();
+    }
 
-
-
-
-
-
-
+    /**
+     * Different with isDoubleShop, this method only check the shop is created on the double chest.
+     *
+     * @return true if create on double chest.
+     */
+    public boolean isDoubleChestShop() {
+        Util.ensureThread(false);
+        if (Util.isDoubleChest(this.getLocation().getBlock().getBlockData())) {
+            return getAttachedShop() != null;
+        }
+        return false;
+    }
 
     private @NotNull InventoryWrapper locateInventory(@Nullable String symbolLink) {
         if (symbolLink == null || symbolLink.isEmpty()) {
@@ -1833,6 +1811,15 @@ public class ContainerShop implements Shop, Reloadable {
         }
     }
 
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        if (!plugin.isAllowStack()) {
+            this.item.setAmount(1);
+        } else {
+            this.item.setAmount(this.originalItem.getAmount());
+        }
+        return Reloadable.super.reloadModule();
+    }
 
     private ShopSignStorage saveToShopSignStorage() {
         return new ShopSignStorage(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ());
