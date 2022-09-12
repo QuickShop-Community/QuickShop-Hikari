@@ -1085,7 +1085,7 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public void setTaxAccount(@Nullable UUID taxAccount) {
-        if (this.taxAccount.equals(taxAccount)) {
+        if (Objects.equals(taxAccount,this.taxAccount)) {
             return;
         }
         ShopTaxAccountChangeEvent event = new ShopTaxAccountChangeEvent(this, taxAccount);
