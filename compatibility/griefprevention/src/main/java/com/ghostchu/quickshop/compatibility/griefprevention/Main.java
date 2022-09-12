@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
@@ -93,7 +94,7 @@ public final class Main extends CompatibilityModule implements Listener {
                 for (Shop shop : shops.values()) {
                     if (oldClaim.contains(shop.getLocation(), false, false) &&
                             !newClaim.contains(shop.getLocation(), false, false)) {
-                        getApi().logEvent(new ShopRemoveLog(Util.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [Single] Claim Resized: ", this.getName(), shop), shop.saveToInfoStorage()));
+                        getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [Single] Claim Resized: ", this.getName(), shop), shop.saveToInfoStorage()));
                         shop.delete();
                     }
                 }
@@ -110,15 +111,14 @@ public final class Main extends CompatibilityModule implements Listener {
         handleSubClaimResizedHelper(newClaim, oldClaim);
     }
 
-    private void handleSubClaimResizedHelper(Claim claimVerifyChunks, Claim claimVerifyShop) {
-        for (Chunk chunk : claimVerifyChunks.getChunks()) {
+    // If it is the main claim, then we will delete all the shops that were inside of it.
+    private void handleMainClaimUnclaimedOrExpired(Claim claim, String logMessage) {
+        for (Chunk chunk : claim.getChunks()) {
             Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
             if (shops != null) {
                 for (Shop shop : shops.values()) {
-                    if (!shop.getOwner().equals(claimVerifyChunks.getOwnerID()) &&
-                            claimVerifyChunks.contains(shop.getLocation(), false, false) &&
-                            !claimVerifyShop.contains(shop.getLocation(), false, false)) {
-                        getApi().logEvent(new ShopRemoveLog(Util.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Resized: ", this.getName(), shop), shop.saveToInfoStorage()));
+                    if (claim.contains(shop.getLocation(), false, false)) {
+                        getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [System] Claim/SubClaim Unclaimed/Expired: " + logMessage, this.getName(), shop), shop.saveToInfoStorage()));
                         shop.delete();
                     }
                 }
@@ -185,14 +185,15 @@ public final class Main extends CompatibilityModule implements Listener {
         }
     }
 
-    // If it is the main claim, then we will delete all the shops that were inside of it.
-    private void handleMainClaimUnclaimedOrExpired(Claim claim, String logMessage) {
-        for (Chunk chunk : claim.getChunks()) {
+    private void handleSubClaimResizedHelper(Claim claimVerifyChunks, Claim claimVerifyShop) {
+        for (Chunk chunk : claimVerifyChunks.getChunks()) {
             Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
             if (shops != null) {
                 for (Shop shop : shops.values()) {
-                    if (claim.contains(shop.getLocation(), false, false)) {
-                        getApi().logEvent(new ShopRemoveLog(Util.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [System] Claim/SubClaim Unclaimed/Expired: " + logMessage, this.getName(), shop), shop.saveToInfoStorage()));
+                    if (!shop.getOwner().equals(claimVerifyChunks.getOwnerID()) &&
+                            claimVerifyChunks.contains(shop.getLocation(), false, false) &&
+                            !claimVerifyShop.contains(shop.getLocation(), false, false)) {
+                        getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Resized: ", this.getName(), shop), shop.saveToInfoStorage()));
                         shop.delete();
                     }
                 }
@@ -209,7 +210,7 @@ public final class Main extends CompatibilityModule implements Listener {
                 for (Shop shop : shops.values()) {
                     if (!shop.getOwner().equals(subClaim.getOwnerID()) &&
                             subClaim.contains(shop.getLocation(), false, false)) {
-                        getApi().logEvent(new ShopRemoveLog(Util.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Unclaimed", this.getName(), shop), shop.saveToInfoStorage()));
+                        getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Unclaimed", this.getName(), shop), shop.saveToInfoStorage()));
                         shop.delete();
                     }
                 }

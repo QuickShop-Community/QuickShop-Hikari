@@ -2,8 +2,8 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -56,7 +56,7 @@ public class SubCommand_About implements CommandHandler<CommandSender> {
                         + ChatColor.YELLOW
                         + ">> "
                         + ChatColor.GREEN
-                        + Util.list2String(plugin.getDescription().getAuthors())));
+                        + CommonUtil.list2String(plugin.getDescription().getAuthors())));
         MsgUtil.sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(ChatColor.GOLD + "Powered by Community"));
         MsgUtil.sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(ChatColor.RED + "Made with ❤"));
     }

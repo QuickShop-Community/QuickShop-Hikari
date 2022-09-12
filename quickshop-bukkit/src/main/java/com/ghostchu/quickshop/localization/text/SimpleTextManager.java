@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.localization.text.postprocessor.PostProcessor;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.localization.text.distributions.Distribution;
 import com.ghostchu.quickshop.localization.text.distributions.crowdin.CrowdinOTA;
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.FillerProcessor;
@@ -267,7 +268,7 @@ private FileConfiguration getDistributionConfiguration(@NotNull String distribut
     public boolean localeEnabled(@NotNull String locale, @NotNull List<String> regex) {
         for (String languagesRegex : regex) {
             try {
-                if (Pattern.matches(Util.createRegexFromGlob(languagesRegex), locale)) {
+                if (Pattern.matches(CommonUtil.createRegexFromGlob(languagesRegex), locale)) {
                     return true;
                 }
             } catch (PatternSyntaxException exception) {

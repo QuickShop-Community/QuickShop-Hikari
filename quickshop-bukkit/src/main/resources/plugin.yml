@@ -71,11 +71,6 @@ authors:
 description: Economy Shops plugin
 
 version: ${project.version}
-commands:
-  qs:
-    description: QuickShop command
-    usage: /qs
-    aliases: [ qsshop,qshop,quickshop ]
 
 permissions:
   quickshop.player:

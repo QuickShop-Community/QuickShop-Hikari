@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.util.paste.item;
 
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import net.kyori.adventure.Adventure;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -19,11 +19,11 @@ public class ChatProcessorInfoItem implements SubPasteItem {
     private final String miniMessageSource;
 
     public ChatProcessorInfoItem() {
-        this.adventureSource = Util.getClassPathRelative(Adventure.class);
-        this.adventureBukkitPlatformSource = Util.getClassPathRelative(BukkitAudiences.class);
-        this.adventureTextSerializerGsonSource = Util.getClassPathRelative(GsonComponentSerializer.class);
-        this.adventureTextSerializerLegacySource = Util.getClassPathRelative(LegacyComponentSerializer.class);
-        this.miniMessageSource = Util.getClassPathRelative(MiniMessage.class);
+        this.adventureSource = CommonUtil.getClassPathRelative(Adventure.class);
+        this.adventureBukkitPlatformSource = CommonUtil.getClassPathRelative(BukkitAudiences.class);
+        this.adventureTextSerializerGsonSource = CommonUtil.getClassPathRelative(GsonComponentSerializer.class);
+        this.adventureTextSerializerLegacySource = CommonUtil.getClassPathRelative(LegacyComponentSerializer.class);
+        this.miniMessageSource = CommonUtil.getClassPathRelative(MiniMessage.class);
     }
 
     @Override

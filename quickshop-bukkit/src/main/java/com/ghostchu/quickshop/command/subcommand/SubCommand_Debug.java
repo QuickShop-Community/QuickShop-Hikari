@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.external.com.ti.ems.jacky.ResultSetToJson;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -72,7 +73,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         }
         if (cmdArg.length == 2) {
             if ("confirm".equals(cmdArg[0])) {
-                if (Util.isUUID(cmdArg[1])) {
+                if (CommonUtil.isUUID(cmdArg[1])) {
                     UUID uuid = UUID.fromString(cmdArg[1]);
                     String sql = sqlCachePool.getIfPresent(uuid);
                     if (sql == null) {

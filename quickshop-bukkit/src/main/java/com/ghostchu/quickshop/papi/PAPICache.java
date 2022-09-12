@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.papi;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.simplereloadlib.ReloadResult;
@@ -102,7 +103,7 @@ public class PAPICache implements Reloadable {
                         }
 
                         // Not valid UUID provided
-                        if (!Util.isUUID(args[2])) {
+                        if (!CommonUtil.isUUID(args[2])) {
                             return null;
                         }
 
@@ -118,7 +119,7 @@ public class PAPICache implements Reloadable {
                         }
 
                         // Not valid UUID provided
-                        if (!Util.isUUID(args[2])) {
+                        if (!CommonUtil.isUUID(args[2])) {
                             return null;
                         }
 
@@ -134,7 +135,7 @@ public class PAPICache implements Reloadable {
                         }
 
                         // Not valid UUID provided
-                        if (!Util.isUUID(args[2])) {
+                        if (!CommonUtil.isUUID(args[2])) {
                             return null;
                         }
 

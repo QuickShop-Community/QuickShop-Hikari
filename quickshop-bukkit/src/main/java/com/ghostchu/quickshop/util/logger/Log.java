@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.util.logger;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.Timer;
+import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.util.Util;
 import com.google.common.collect.EvictingQueue;
 import lombok.Data;

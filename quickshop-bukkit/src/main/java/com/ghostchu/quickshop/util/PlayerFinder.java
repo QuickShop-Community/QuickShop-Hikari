@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.util;
 
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
@@ -58,7 +59,7 @@ public class PlayerFinder {
     @Nullable
     public Profile find(@NotNull String name) {
         // Fallback to UUID lookup if name is UUID.
-        if (Util.isUUID(name)) {
+        if (CommonUtil.isUUID(name)) {
             return find(UUID.fromString(name));
         }
 //        if (Bukkit.getServer().getOnlineMode() || forceOnlineMode) {

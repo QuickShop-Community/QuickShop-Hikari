@@ -2,7 +2,7 @@ package com.ghostchu.quickshop.util.matcher.item;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
@@ -233,7 +233,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1.hasEnchants()) {
                     Map<Enchantment, Integer> enchMap1 = meta1.getEnchants();
                     Map<Enchantment, Integer> enchMap2 = meta2.getEnchants();
-                    return Util.listDisorderMatches(enchMap1.entrySet(), enchMap2.entrySet());
+                    return CommonUtil.listDisorderMatches(enchMap1.entrySet(), enchMap2.entrySet());
                 }
                 if (meta1 instanceof EnchantmentStorageMeta != meta2 instanceof EnchantmentStorageMeta) {
                     return false;
@@ -241,7 +241,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1 instanceof EnchantmentStorageMeta) {
                     Map<Enchantment, Integer> stor1 = ((EnchantmentStorageMeta) meta1).getStoredEnchants();
                     Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) meta2).getStoredEnchants();
-                    return Util.listDisorderMatches(stor1.entrySet(), stor2.entrySet());
+                    return CommonUtil.listDisorderMatches(stor1.entrySet(), stor2.entrySet());
                 }
                 return true;
             }));
@@ -366,7 +366,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                         return false;
                     }
                     if (bundleMeta1.hasItems()) {
-                        return Util.listDisorderMatches(bundleMeta1.getItems(), bundleMeta2.getItems());
+                        return CommonUtil.listDisorderMatches(bundleMeta1.getItems(), bundleMeta2.getItems());
                     }
                 }
                 return true;
@@ -471,7 +471,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                         return false;
                     }
                     if (stewMeta1.hasCustomEffects()) {
-                        return Util.listDisorderMatches(stewMeta1.getCustomEffects(), stewMeta2.getCustomEffects());
+                        return CommonUtil.listDisorderMatches(stewMeta1.getCustomEffects(), stewMeta2.getCustomEffects());
                     }
                 }
                 return true;

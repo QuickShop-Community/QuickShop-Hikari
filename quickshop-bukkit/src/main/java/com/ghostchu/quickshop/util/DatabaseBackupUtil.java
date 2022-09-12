@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 
 import java.io.File;
@@ -33,11 +34,11 @@ public class DatabaseBackupUtil {
             File file = new File(dataFolder, fileName);
             if (file.exists()) {
                 try {
-                    Log.debug("AutoBackup: Backing up " + Util.getRelativePath(file));
+                    Log.debug("AutoBackup: Backing up " + CommonUtil.getRelativePath(file));
                     Files.copy(file.toPath(), new File(backupFolder, fileName).toPath());
-                    Log.debug("AutoBackup: Backing up " + Util.getRelativePath(file) + " successfully.");
+                    Log.debug("AutoBackup: Backing up " + CommonUtil.getRelativePath(file) + " successfully.");
                 } catch (Exception e) {
-                    Log.debug(Level.WARNING, "Failed to backup " + Util.getRelativePath(file) + ": " + e.getMessage());
+                    Log.debug(Level.WARNING, "Failed to backup " + CommonUtil.getRelativePath(file) + ": " + e.getMessage());
                 }
             }
         }
@@ -59,10 +60,10 @@ public class DatabaseBackupUtil {
                 skipped++;
                 continue;
             }
-            if (Util.deleteDirectory(file)) {
+            if (CommonUtil.deleteDirectory(file)) {
                 purged++;
             } else {
-                Log.debug("AutoBackup: Failed to purge " + Util.getRelativePath(file));
+                Log.debug("AutoBackup: Failed to purge " + CommonUtil.getRelativePath(file));
             }
 
         }

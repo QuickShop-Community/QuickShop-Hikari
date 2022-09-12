@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.compatibility.towny;
 
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.object.Nation;
@@ -29,7 +29,7 @@ public class TownyShopUtil {
     public static UUID getShopOriginalOwner(@NotNull Shop shop) {
         ConfigurationSection section = shop.getExtra(Main.getPlugin(Main.class));
         if (section.isSet("towny-original-owner")) {
-            return UUID.fromString(section.getString("towny-original-owner", Util.getNilUniqueId().toString()));
+            return UUID.fromString(section.getString("towny-original-owner", CommonUtil.getNilUniqueId().toString()));
         } else {
             return shop.getOwner();
         }

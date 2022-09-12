@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.util;
+package com.ghostchu.quickshop.common.util;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

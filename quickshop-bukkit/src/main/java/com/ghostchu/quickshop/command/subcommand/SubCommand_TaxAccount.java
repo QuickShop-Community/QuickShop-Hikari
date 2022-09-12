@@ -3,7 +3,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import org.bukkit.entity.Player;
 import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +28,7 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
                 plugin.text().of(sender, "taxaccount-unset").send();
                 return;
             }
-            if (Util.isUUID(cmdArg[0])) {
+            if (CommonUtil.isUUID(cmdArg[0])) {
                 shop.setTaxAccount(UUID.fromString(cmdArg[0]));
             } else {
                 Profile profile = plugin.getPlayerFinder().find(cmdArg[0]);

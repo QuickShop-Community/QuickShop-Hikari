@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.serialize.BlockPos;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.*;
@@ -79,7 +80,7 @@ public class InternalListener extends AbstractQSListener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void shopDelete(ShopDeleteEvent event) {
         if (loggingAction) {
-            plugin.logEvent(new ShopRemoveLog(Util.getNilUniqueId(), "Shop removed", event.getShop().saveToInfoStorage()));
+            plugin.logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), "Shop removed", event.getShop().saveToInfoStorage()));
         }
         if (plugin.getShopCache() != null) {
             plugin.getShopCache().invalidate(event.getShop().getLocation());

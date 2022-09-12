@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import org.apache.commons.text.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -349,7 +349,7 @@ public class ConfigCollectorItem implements SubPasteItem {
     @NotNull
     private String readFile(@NotNull File file) {
         if (!file.exists()) {
-            return "Fail: No such file (" + Util.getRelativePath(file) + ")";
+            return "Fail: No such file (" + CommonUtil.getRelativePath(file) + ")";
         }
 
         try {

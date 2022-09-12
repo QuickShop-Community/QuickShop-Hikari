@@ -21,7 +21,11 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
+import com.ghostchu.quickshop.command.QuickShopCommand;
 import com.ghostchu.quickshop.command.SimpleCommandManager;
+import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
+import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.economy.Economy_GemsEconomy;
@@ -44,7 +48,6 @@ import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
-import com.ghostchu.quickshop.util.Timer;
 import com.ghostchu.quickshop.util.*;
 import com.ghostchu.quickshop.util.config.ConfigUpdateScript;
 import com.ghostchu.quickshop.util.config.ConfigurationUpdater;
@@ -69,6 +72,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -441,31 +445,88 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
 
     private void loadCommandHandler() {
         /* PreInit for BootError feature */
-        commandManager = new SimpleCommandManager(this);
-        //noinspection ConstantConditions
-        getCommand("qs").setExecutor(commandManager);
-        //noinspection ConstantConditions
-        getCommand("qs").setTabCompleter(commandManager);
-        this.registerCustomCommands();
+        this.registerQuickShopCommands();
+
     }
 
-    public void registerCustomCommands() {
-        List<String> customCommands = getConfig().getStringList("custom-commands");
-        PluginCommand quickShopCommand = getCommand("qs");
-        if (quickShopCommand == null) {
-            getLogger().warning("Failed to get QuickShop PluginCommand instance.");
-            return;
+    @Override
+    public final void onEnable() {
+        if (!this.onLoadCalled) {
+            getLogger().severe("FATAL: onLoad has not been called for QuickShop. Trying to fix it... Some integrations may not work properly!");
+            try {
+                onLoad();
+            } catch (Throwable ex) {
+                getLogger().log(Level.WARNING, "Failed to fix onLoad", ex);
+            }
         }
-        Set<String> aliases = new HashSet<>(quickShopCommand.getAliases());
-        aliases.addAll(customCommands);
-        quickShopCommand.setAliases(new ArrayList<>(aliases));
-        try {
-            platform.registerCommand("qs", quickShopCommand);
-        } catch (Exception e) {
-            getLogger().log(Level.WARNING, "Failed to register command aliases", e);
-            return;
+        Timer enableTimer = new Timer(true);
+        getLogger().info("QuickShop " + getFork());
+        this.audience = BukkitAudiences.create(this);
+        /* Check the running envs is support or not. */
+        getLogger().info("Starting plugin self-test, please wait...");
+        runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
+        getLogger().info("Reading the configuration...");
+        initConfiguration();
+        getLogger().info("Developers: " + CommonUtil.list2String(this.getDescription().getAuthors()));
+        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood, sandtechnology");
+        getLogger().info("Let's start loading the plugin");
+        getLogger().info("Chat processor selected: Hardcoded BungeeChat Lib");
+        /* Process Metrics and Sentry error reporter. */
+        metrics = new Metrics(this, 14281);
+        loadErrorReporter();
+        loadItemMatcher();
+        this.itemMarker = new ItemMarker(this);
+        this.shopItemBlackList = new ShopItemBlackList(this);
+        Util.initialize();
+        load3rdParty();
+        //Load the database
+        initDatabase();
+        /* Initalize the tools */
+        // Create the shop manager.
+        permissionManager = new PermissionManager(this);
+        shopPermissionManager = new SimpleShopPermissionManager(this);
+        // This should be inited before shop manager
+        this.registerDisplayAutoDespawn();
+        getLogger().info("Registering commands...");
+        loadCommandHandler();
+        this.shopManager = new SimpleShopManager(this);
+        this.permissionChecker = new PermissionChecker(this);
+        // Limit
+        this.registerLimitRanks();
+        // Limit end
+        if (getConfig().getInt("shop.finding.distance") > 100 && getConfig().getBoolean("shop.finding.exclude-out-of-stock")) {
+            getLogger().severe("Shop find distance is too high with chunk loading feature turned on! It may cause lag! Pick a number below 100!");
         }
-        Log.debug("QuickShop command aliases registered with those aliases: " + Util.list2String(aliases));
+        setupShopCaches();
+        signUpdateWatcher = new SignUpdateWatcher();
+        shopContainerWatcher = new ShopContainerWatcher();
+        shopSaveWatcher = new ShopDataSaveWatcher(this);
+        shopSaveWatcher.runTaskTimerAsynchronously(this, 0, 20 * 60 * 5);
+        /* Load all shops. */
+        shopLoader = new ShopLoader(this);
+        shopLoader.loadShops();
+        bakeShopsOwnerCache();
+        getLogger().info("Registering listeners...");
+        this.interactionController = new InteractionController(this);
+        // Register events
+        // Listeners (These don't)
+        registerListeners();
+        this.shopControlPanelManager.register(new SimpleShopControlPanel());
+        this.registerDisplayItem();
+        this.registerShopLock();
+        getLogger().info("Cleaning MsgUtils...");
+        MsgUtil.clean();
+        MsgUtil.loadTransactionMessages();
+        this.registerUpdater();
+        /* Delay the Economy system load, give a chance to let economy system register. */
+        /* And we have a listener to listen the ServiceRegisterEvent :) */
+        Log.debug("Scheduled economy system loading.");
+        getServer().getScheduler().runTaskLater(this, this::loadEcon, 1);
+        registerTasks();
+        Log.debug("DisplayItem selected: " + AbstractDisplayItem.getNowUsing().name());
+        registerCommunicationChannels();
+        new QSConfigurationReloadEvent(this).callEvent();
+        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
     }
 
     /**
@@ -543,7 +604,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                             String taxAccount = getConfig().getString("tax-account", "tax");
                             if (!taxAccount.isEmpty()) {
                                 OfflinePlayer tax;
-                                if (Util.isUUID(taxAccount)) {
+                                if (CommonUtil.isUUID(taxAccount)) {
                                     tax = Bukkit.getOfflinePlayer(UUID.fromString(taxAccount));
                                 } else {
                                     tax = Bukkit.getOfflinePlayer((Objects.requireNonNull(taxAccount)));
@@ -581,16 +642,19 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                     economy = new Economy_TNE(this);
                     Log.debug("Economy bridge selected: The New Economy");
                 }
-                default -> Log.debug("Economy bridge selected: undefined");
+                default -> Log.debug("Economy bridge selected: Service");
             }
+            economy = ServiceInjector.getInjectedService(AbstractEconomy.class, economy);
             if (economy == null) {
+                Log.debug("No economy bridge found.");
                 return false;
             }
+            Log.debug("Selected economy bridge: "+economy.getName());
             if (!economy.isValid()) {
                 setupBootError(BuiltInSolution.econError(), false);
                 return false;
             }
-            economy = ServiceInjector.getInjectedService(AbstractEconomy.class, economy);
+
         } catch (Throwable e) {
             if (sentryErrorReporter != null) {
                 sentryErrorReporter.ignoreThrow();
@@ -858,84 +922,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         getLogger().info("All shutdown work has been completed.");
     }
 
-    @Override
-    public final void onEnable() {
-        if (!this.onLoadCalled) {
-            getLogger().severe("FATAL: onLoad has not been called for QuickShop. Trying to fix it... Some integrations may not work properly!");
-            try {
-                onLoad();
-            } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "Failed to fix onLoad", ex);
-            }
+    public void registerQuickShopCommands() {
+        commandManager = new SimpleCommandManager(this);
+        List<String> customCommands = getConfig().getStringList("custom-commands");
+        Command quickShopCommand = new QuickShopCommand("qs",commandManager,new ArrayList<>( new HashSet<>(customCommands)));
+        try {
+            platform.registerCommand("quickshop-hikari", quickShopCommand);
+        } catch (Exception e) {
+            getLogger().log(Level.WARNING, "Failed to register command aliases", e);
         }
-        Timer enableTimer = new Timer(true);
-        getLogger().info("QuickShop " + getFork());
-        this.audience = BukkitAudiences.create(this);
-        /* Check the running envs is support or not. */
-        getLogger().info("Starting plugin self-test, please wait...");
-        runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
-        getLogger().info("Reading the configuration...");
-        initConfiguration();
-        getLogger().info("Developers: " + Util.list2String(this.getDescription().getAuthors()));
-        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood, sandtechnology");
-        getLogger().info("Let's start loading the plugin");
-        getLogger().info("Chat processor selected: Hardcoded BungeeChat Lib");
-        /* Process Metrics and Sentry error reporter. */
-        metrics = new Metrics(this, 14281);
-        loadErrorReporter();
-        loadItemMatcher();
-        this.itemMarker = new ItemMarker(this);
-        this.shopItemBlackList = new ShopItemBlackList(this);
-        Util.initialize();
-        load3rdParty();
-        //Load the database
-        initDatabase();
-        /* Initalize the tools */
-        // Create the shop manager.
-        permissionManager = new PermissionManager(this);
-        shopPermissionManager = new SimpleShopPermissionManager(this);
-        // This should be inited before shop manager
-        this.registerDisplayAutoDespawn();
-        getLogger().info("Registering commands...");
-        loadCommandHandler();
-        this.shopManager = new SimpleShopManager(this);
-        this.permissionChecker = new PermissionChecker(this);
-        // Limit
-        this.registerLimitRanks();
-        // Limit end
-        if (getConfig().getInt("shop.finding.distance") > 100 && getConfig().getBoolean("shop.finding.exclude-out-of-stock")) {
-            getLogger().severe("Shop find distance is too high with chunk loading feature turned on! It may cause lag! Pick a number below 100!");
-        }
-        setupShopCaches();
-        signUpdateWatcher = new SignUpdateWatcher();
-        shopContainerWatcher = new ShopContainerWatcher();
-        shopSaveWatcher = new ShopDataSaveWatcher(this);
-        shopSaveWatcher.runTaskTimerAsynchronously(this, 0, 20 * 60 * 5);
-        /* Load all shops. */
-        shopLoader = new ShopLoader(this);
-        shopLoader.loadShops();
-        bakeShopsOwnerCache();
-        getLogger().info("Registering listeners...");
-        this.interactionController = new InteractionController(this);
-        // Register events
-        // Listeners (These don't)
-        registerListeners();
-        this.shopControlPanelManager.register(new SimpleShopControlPanel());
-        this.registerDisplayItem();
-        this.registerShopLock();
-        getLogger().info("Cleaning MsgUtils...");
-        MsgUtil.clean();
-        MsgUtil.loadTransactionMessages();
-        this.registerUpdater();
-        /* Delay the Economy system load, give a chance to let economy system register. */
-        /* And we have a listener to listen the ServiceRegisterEvent :) */
-        Log.debug("Scheduled economy system loading.");
-        getServer().getScheduler().runTaskLater(this, this::loadEcon, 1);
-        registerTasks();
-        Log.debug("DisplayItem selected: " + AbstractDisplayItem.getNowUsing().name());
-        registerCommunicationChannels();
-        new QSConfigurationReloadEvent(this).callEvent();
-        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
+        Log.debug("QuickShop command registered with those aliases: " + CommonUtil.list2String(quickShopCommand.getAliases()));
     }
 
     private void registerListeners() {
@@ -1182,8 +1178,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         if (!getConfig().getBoolean("disabled-metrics")) {
             // Use internal Metric class not Maven for solve plugin name issues
             // Version
-            metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> Util.boolean2Status(getConfig().getBoolean("shop.display-items"))));
-            metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> Util.boolean2Status(getConfig().getBoolean("shop.lock"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_display_items", () -> CommonUtil.boolean2Status(getConfig().getBoolean("shop.display-items"))));
+            metrics.addCustomChart(new Metrics.SimplePie("use_locks", () -> CommonUtil.boolean2Status(getConfig().getBoolean("shop.lock"))));
             metrics.addCustomChart(new Metrics.SimplePie("use_display_auto_despawn", () -> String.valueOf(getConfig().getBoolean("shop.display-auto-despawn"))));
             metrics.addCustomChart(new Metrics.SimplePie("display_type", () -> AbstractDisplayItem.getNowUsing().name()));
             metrics.addCustomChart(new Metrics.SimplePie("itemmatcher_type", () -> this.getItemMatcher().getName()));

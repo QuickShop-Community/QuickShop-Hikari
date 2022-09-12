@@ -3,7 +3,7 @@ package com.ghostchu.quickshop.economy;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.economyformatter.BuiltInEconomyFormatter;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
@@ -58,7 +58,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
     }
 
     private boolean setupEconomy() {
-        if (!Util.isClassAvailable("net.milkbowl.vault.economy.Economy")) {
+        if (!CommonUtil.isClassAvailable("net.milkbowl.vault.economy.Economy")) {
             return false; // QUICKSHOP-YS I can't believe it broken almost a year and nobody found it, my sentry exploded.
         }
         RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> economyProvider;

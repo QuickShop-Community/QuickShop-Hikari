@@ -8,6 +8,8 @@ import org.bukkit.entity.Item;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.util.Iterator;
+
 public final class Main extends CompatibilityModule implements Listener {
 
     @Override
@@ -17,10 +19,12 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onRemove(EntityRemoveEvent event) {
-        for (Entity entity : event.getEntityList()) {
+        Iterator<Entity> entityListIt = event.getEntityList().iterator();
+        while (entityListIt.hasNext()) {
+            Entity entity = entityListIt.next();
             if (entity instanceof Item item) {
                 if (AbstractDisplayItem.checkIsGuardItemStack(item.getItemStack())) {
-                    event.removeEntity(entity);
+                    entityListIt.remove();
                 }
             }
         }

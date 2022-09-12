@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.command.subcommand.*;
 import com.ghostchu.quickshop.command.subcommand.silent.*;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -430,7 +431,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                                     + " trying " + action.getName() + " the command: "
                                     + commandLabel
                                     + " "
-                                    + Util.array2String(cmdArg)
+                                    + CommonUtil.array2String(cmdArg)
                                     + ", but no permission "
                                     + requirePermission);
                     return false;
@@ -452,7 +453,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                                 + " trying " + action + " the command: "
                                 + commandLabel
                                 + " "
-                                + Util.array2String(cmdArg)
+                                + CommonUtil.array2String(cmdArg)
                                 + ", but does no have one of those permissions: "
                                 + permissionList);
             }

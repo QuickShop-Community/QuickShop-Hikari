@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.util;
+package com.ghostchu.quickshop.common.util;
 
 import java.math.BigDecimal;
 import java.math.MathContext;

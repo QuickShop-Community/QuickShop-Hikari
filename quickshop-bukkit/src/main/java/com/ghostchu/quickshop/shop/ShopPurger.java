@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -66,7 +67,7 @@ public class ShopPurger {
             }
             boolean markDeletion = player.isBanned() && deleteBanned;
             //noinspection ConstantConditions
-            long noOfDaysBetween = ChronoUnit.DAYS.between(Util.getDateTimeFromTimestamp(lastPlayed), Util.getDateTimeFromTimestamp(System.currentTimeMillis()));
+            long noOfDaysBetween = ChronoUnit.DAYS.between(CommonUtil.getDateTimeFromTimestamp(lastPlayed), CommonUtil.getDateTimeFromTimestamp(System.currentTimeMillis()));
             if (noOfDaysBetween > days) {
                 markDeletion = true;
             }

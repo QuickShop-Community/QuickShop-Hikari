@@ -7,6 +7,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.enchantments.Enchantment;
@@ -82,7 +83,7 @@ public interface Platform {
     @NotNull
     MiniMessage miniMessage();
 
-    void registerCommand(@NotNull String prefix, @NotNull PluginCommand command);
+    void registerCommand(@NotNull String prefix, @NotNull Command command);
 
     void sendMessage(@NotNull CommandSender sender, @NotNull Component component);
 
