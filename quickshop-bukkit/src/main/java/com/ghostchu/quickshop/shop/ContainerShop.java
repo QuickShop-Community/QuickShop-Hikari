@@ -33,10 +33,7 @@ import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.DyeColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -401,8 +398,10 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public void claimShopSign(@NotNull Sign sign) {
-        sign.getPersistentDataContainer().set(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE, saveToShopSignStorage());
-        sign.update();
+        if (!sign.getPersistentDataContainer().has(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE)) {
+            sign.getPersistentDataContainer().set(Shop.SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE, saveToShopSignStorage());
+            sign.update();
+        }
     }
 
     @SuppressWarnings("removal")
@@ -1613,6 +1612,7 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public void setSignText(@NotNull List<Component> lines) {
         Util.ensureThread(false);
+        Log.debug("Globally sign text setting...");
         List<Sign> signs = this.getSigns();
         for (Sign sign : signs) {
             for (int i = 0; i < lines.size(); i++) {
@@ -1630,6 +1630,12 @@ public class ContainerShop implements Shop, Reloadable {
             }
             sign.update(true);
             new ShopSignUpdateEvent(this, sign).callEvent();
+        }
+        if (plugin.getSignHooker() != null) {
+            Log.debug("Start sign broadcast...");
+            Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this), 2);
+            Log.debug("Sign broadcast completed.");
+            return;
         }
     }
 

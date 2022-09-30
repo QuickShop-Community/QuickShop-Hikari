@@ -9,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -175,6 +174,11 @@ public class PaperPlatform implements Platform {
     @Override
     public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
         this.translationMapping = mapping;
+    }
+
+    @Override
+    public void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components) {
+        player.sendSignChange(sign.getLocation(), components);
     }
 
     @Override

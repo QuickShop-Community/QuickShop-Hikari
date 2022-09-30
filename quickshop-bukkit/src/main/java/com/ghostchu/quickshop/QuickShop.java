@@ -48,6 +48,7 @@ import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
+import com.ghostchu.quickshop.shop.signhooker.SignHooker;
 import com.ghostchu.quickshop.util.*;
 import com.ghostchu.quickshop.util.config.ConfigUpdateScript;
 import com.ghostchu.quickshop.util.config.ConfigurationUpdater;
@@ -246,6 +247,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private NexusManager nexusManager;
     @Getter
     private ShopDataSaveWatcher shopSaveWatcher;
+
+    @Getter
+    private SignHooker signHooker;
 
     /**
      * Use for mock bukkit
@@ -549,8 +553,15 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
                 if (protocolLibPlugin != null && protocolLibPlugin.isEnabled()) {
                     getLogger().info("Successfully loaded ProtocolLib support!");
+                    if (getConfig().getBoolean("shop.per-player-shop-sign")) {
+                        signHooker = new SignHooker(this);
+                        getLogger().info("Successfully registered per-player shop sign!");
+                    } else {
+                        signHooker = null;
+                    }
                 } else {
-                    getLogger().warning("Failed to load ProtocolLib support, fallback to real item display");
+                    getLogger().warning("Failed to load ProtocolLib support, fallback to real item display and per-player shop info sign will automatically disable.");
+                    signHooker = null;
                     getConfig().set("shop.display-type", 0);
                     saveConfig();
                 }
@@ -745,7 +756,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         if (PaperLib.isPaper()) {
             this.platform = new PaperPlatform(this.translationMapping);
         } else if (PaperLib.isSpigot()) {
-
             getLogger().warning("Use Paper to get best performance and enhanced features!");
             getLogger().warning("");
             getLogger().warning("QuickShop-Hikari cannot handle translatable components");

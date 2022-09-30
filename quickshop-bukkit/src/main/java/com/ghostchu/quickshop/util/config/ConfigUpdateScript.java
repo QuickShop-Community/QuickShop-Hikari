@@ -114,6 +114,11 @@ public class ConfigUpdateScript {
         getConfig().set("shop.refund-from-tax-account", false);
     }
 
+    @UpdateScript(version = 1008)
+    public void perPlayerShopSign() {
+        getConfig().set("shop.per-player-shop-sign", false);
+    }
+
     @UpdateScript(version = 1001)
     public void shopName() {
         getConfig().set("shop.name-fee", 0);

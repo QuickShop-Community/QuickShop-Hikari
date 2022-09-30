@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1008
+config-version: 1009
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -280,6 +280,11 @@ shop:
 
   #Allow displays to show stack effects when stack creation is turned on.
   display-allow-stacks: false
+
+  #[BETA] Enable beta per-player shop sign feature for i18n.
+  #Hikari will send an extra sign content packet to override original shop info sign text to the text that use player's locale
+  #ProtocolLib Required
+  per-player-shop-sign: false
 
   #/qs find <itemName> command settings.
   #This command lets users shop quickly without wasting time searching.
