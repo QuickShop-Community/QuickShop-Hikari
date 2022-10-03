@@ -22,6 +22,7 @@ import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.WorldCoord;
 import com.palmergames.bukkit.towny.utils.ShopPlotUtil;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -34,10 +35,7 @@ import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public final class Main extends CompatibilityModule implements Listener {
     @Getter
@@ -63,10 +61,8 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
         //noinspection ConstantConditions
-        if (checkFlags(event.getPlayer(), event.getShop().getLocation(), this.createFlags)) {
-            return;
-        }
-        event.setCancelled(true, "Towny Blocked");
+        Optional<Component> component = checkFlags(event.getPlayer(), event.getShop().getLocation(), this.createFlags);
+        component.ifPresent(value -> event.setCancelled(true, value));
     }
 
     @Override
@@ -133,34 +129,34 @@ public final class Main extends CompatibilityModule implements Listener {
         }
     }
 
-    private boolean checkFlags(@NotNull Player player, @NotNull Location location, @NotNull List<TownyFlags> flags) {
+    private Optional<Component> checkFlags(@NotNull Player player, @NotNull Location location, @NotNull List<TownyFlags> flags) {
         if (isWorldIgnored(location.getWorld())) {
-            return true;
+            return Optional.empty();
         }
         if (!whiteList) {
-            return true;
+            return Optional.empty();
         }
         for (TownyFlags flag : flags) {
             switch (flag) {
                 case OWN:
                     if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
-                        return false;
+                        return Optional.of(getApi().getTextManager().of(player, "addon.towny.flags.own").forLocale());
                     }
                     break;
                 case MODIFY:
                     if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
-                        return false;
+                        return Optional.of(getApi().getTextManager().of(player, "addon.towny.flags.modify").forLocale());
                     }
                     break;
                 case SHOPTYPE:
                     if (!ShopPlotUtil.isShopPlot(location)) {
-                        return false;
+                        return Optional.of(getApi().getTextManager().of(player, "addon.towny.flags.shop-type").forLocale());
                     }
                 default:
                     // Ignore
             }
         }
-        return true;
+        return Optional.empty();
     }
 
     @EventHandler
@@ -222,10 +218,8 @@ public final class Main extends CompatibilityModule implements Listener {
         if (isWorldIgnored(event.getLocation().getWorld())) {
             return;
         }
-        if (checkFlags(event.getPlayer(), event.getLocation(), this.createFlags)) {
-            return;
-        }
-        event.setCancelled(true, "Towny Blocked");
+        Optional<Component> component = checkFlags(event.getPlayer(), event.getLocation(), this.createFlags);
+        component.ifPresent(value -> event.setCancelled(true, value));
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -234,10 +228,8 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
         //noinspection ConstantConditions
-        if (checkFlags(event.getPlayer(), event.getShop().getLocation(), this.tradeFlags)) {
-            return;
-        }
-        event.setCancelled(true, "Towny Blocked");
+        Optional<Component> component = checkFlags(event.getPlayer(), event.getShop().getLocation(), this.tradeFlags);
+        component.ifPresent(value -> event.setCancelled(true, value));
     }
 
     @EventHandler(ignoreCancelled = true)

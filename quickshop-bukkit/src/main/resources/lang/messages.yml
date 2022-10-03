@@ -691,6 +691,10 @@ addon:
     item-not-allowed: "<red>This shop's item are not allowed used by town/nation shop, pick another one!"
     operation-disabled-due-shop-status: "<red>This shop operation has been disabled due this already is a town/nation shop."
     plot-type-disallowed: "<red>You can't create town/nation shop on this type of plot."
+    flags:
+      own: "<red>You can only create shops at your owned shop type plot."
+      modify: "<red>You didn't have build permission on this plot."
+      shop-type: "<red>You must create shop on a shop type plot."
   residence:
     creation-flag-denied: "<red>You don't have permission to create shops in this residence."
     trade-flag-denied: "<red>You don't have permission to purchase in this residence."
