@@ -595,7 +595,7 @@ addon:
     flags:
       own: "<red>Du kannst nur Shops in von dir geclaimten Shoptyp Towny Plots erstellen."
       modify: "<red>Du hast keine Bauberechtigung auf diesem Towny Plot."
-      shop-type: "<red>You must create shop on a shop type towny plot."
+      shop-type: "<red>Du musst den Shop auf einem Towny Plot vom Typ Shop erstellen."
   residence:
     creation-flag-denied: "<red>Du hast keine Berechtigung in dieser Residenz einen Shop zu erstellen."
     trade-flag-denied: "<red>Du hast keine Berechtigung in dieser Residenz etwas zu kaufen."
@@ -605,7 +605,7 @@ addon:
     trade-denied: "<red>Du hast keine Berechtigung einen Shop in diesem Claim zu kaufen."
   lands:
     world-not-enabled: "<red>Du kannst keine Shops in dieser Welt kaufen oder erstellen."
-    creation-denied: "<red>You don't have permission to create shops in this Land area."
+    creation-denied: "<red>Du hast keine Berechtigung einen Shop in dieser Landregion zu erstellen."
   plotsquared:
     no-plot-whitelist-creation: "<red>Du kannst keinen Shop ausserhalb des Plots erstellen."
     no-plot-whitelist-trade: "<red>Du kannst keine Shops ausserhalb des Plots kaufen."
@@ -615,5 +615,5 @@ addon:
     owner-create-only: "<red>Nur der Inselbesitzer kann einen Shop hier erstellen."
     owner-member-create-only: "<red>Nur der Inselbesitzer oder ein Mitglied können einen Shop hier erstellen."
   worldguard:
-    creation-flag-test-failed: "<red>You don't have permission create shop in this WorldGuard area."
-    trade-flag-test-failed: "<red>You don't have permission trade shop in this WorldGuard area."
+    creation-flag-test-failed: "<red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu erstellen."
+    trade-flag-test-failed: "<red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu handeln."
