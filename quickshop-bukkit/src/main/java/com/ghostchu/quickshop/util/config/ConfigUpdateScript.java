@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.util.config;
 
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.Util;
 import de.themoep.minedown.adventure.MineDown;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -118,6 +119,12 @@ public class ConfigUpdateScript {
     public void perPlayerShopSign() {
         getConfig().set("shop.per-player-shop-sign", false);
     }
+    @UpdateScript(version = 1009)
+    public void deleteSqlitePlayerMapping() {
+        File f = new File(Util.getCacheFolder(), "player_mapping.db");
+        if(f.exists()) f.delete();
+    }
+
 
     @UpdateScript(version = 1001)
     public void shopName() {
