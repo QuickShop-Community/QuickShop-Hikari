@@ -692,9 +692,9 @@ addon:
     operation-disabled-due-shop-status: "<red>This shop operation has been disabled due this already is a town/nation shop."
     plot-type-disallowed: "<red>You can't create town/nation shop on this type of plot."
     flags:
-      own: "<red>You can only create shops at your owned shop type plot."
-      modify: "<red>You didn't have build permission on this plot."
-      shop-type: "<red>You must create shop on a shop type plot."
+      own: "<red>You can only create shops at your owned shop type towny plot."
+      modify: "<red>You didn't have build permission on this towny plot."
+      shop-type: "<red>You must create shop on a shop type towny plot."
   residence:
     creation-flag-denied: "<red>You don't have permission to create shops in this residence."
     trade-flag-denied: "<red>You don't have permission to purchase in this residence."
@@ -713,3 +713,6 @@ addon:
   superiorskyblock:
     owner-create-only: "<red>Only island owner can create shop there."
     owner-member-create-only: "<red>Only island owner or member can create shop there."
+  worldguard:
+    creation-flag-test-failed: "<red>You don't have permission create shop in this WorldGuard area."
+    trade-flag-test-failed: "<red>You don't have permission trade shop in this WorldGuard area."
