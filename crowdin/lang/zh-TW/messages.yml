@@ -592,6 +592,10 @@ addon:
     item-not-allowed: "<red>該商店的商品不允許城鎮 / 國家商店使用，請再選一個！"
     operation-disabled-due-shop-status: "<red>該商店操作已被停用，因為這已經是一個城鎮 / 國家商店。"
     plot-type-disallowed: "<red>你不能在這種類型的畫布上建立城鎮 / 國家商店。"
+    flags:
+      own: "<red>You can only create shops at your owned shop type towny plot."
+      modify: "<red>You didn't have build permission on this towny plot."
+      shop-type: "<red>You must create shop on a shop type towny plot."
   residence:
     creation-flag-denied: "<red>你沒有在該領地建立商店的權限。"
     trade-flag-denied: "<red>你沒有在該領地購買的權限。"
@@ -601,7 +605,7 @@ addon:
     trade-denied: "<red>你沒有在該聲明中購買商店的權限。"
   lands:
     world-not-enabled: "<red>你不能在這個世界中建立或購買商店。"
-    creation-denied: "<red>你沒有在該領土建立商店的權限。"
+    creation-denied: "<red>You don't have permission to create shops in this Land area."
   plotsquared:
     no-plot-whitelist-creation: "<red>你無法在畫布外建立商店。"
     no-plot-whitelist-trade: "<red>你無法在畫布外購買商店。"
@@ -610,3 +614,6 @@ addon:
   superiorskyblock:
     owner-create-only: "<red>只有島嶼擁有者能夠在那裡建立商店。"
     owner-member-create-only: "<red>只有島嶼擁有者或成員能夠在那裡建立商店。"
+  worldguard:
+    creation-flag-test-failed: "<red>You don't have permission create shop in this WorldGuard area."
+    trade-flag-test-failed: "<red>You don't have permission trade shop in this WorldGuard area."
