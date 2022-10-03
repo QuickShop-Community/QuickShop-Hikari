@@ -5,7 +5,6 @@ import com.bekvon.bukkit.residence.api.ResidenceApi;
 import com.bekvon.bukkit.residence.containers.Flags;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
-import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
 import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
@@ -43,13 +42,13 @@ public final class Main extends CompatibilityModule {
         ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
         if (residence == null) {
             if (whitelist) {
-                event.setCancelled(true, QuickShopAPI.getInstance().getTextManager().of(event.getPlayer(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
             }
             return;
         }
         if (!playerHas(residence.getPermissions(), event.getPlayer(), CREATE_FLAG, false)) {
             if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), event.getPlayer(), CREATE_FLAG, false)) {
-                event.setCancelled(true, QuickShopAPI.getInstance().getTextManager().of(event.getPlayer(), "addon.residence.creation-flag-denied").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.creation-flag-denied").forLocale());
             }
         }
     }
@@ -60,13 +59,13 @@ public final class Main extends CompatibilityModule {
         ClaimedResidence residence = Residence.getInstance().getResidenceManager().getByLoc(shopLoc);
         if (residence == null) {
             if (whitelist) {
-                event.setCancelled(true, QuickShopAPI.getInstance().getTextManager().of(event.getPlayer(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.you-cannot-create-shop-in-wildness").forLocale());
             }
             return;
         }
         if (!playerHas(residence.getPermissions(), event.getPlayer(), CREATE_FLAG, false)) {
             if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), event.getPlayer(), CREATE_FLAG, false)) {
-                event.setCancelled(true, QuickShopAPI.getInstance().getTextManager().of(event.getPlayer(), "addon.residence.creation-flag-denied").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.creation-flag-denied").forLocale());
             }
         }
     }
@@ -95,7 +94,7 @@ public final class Main extends CompatibilityModule {
         }
         if (!playerHas(residence.getPermissions(), event.getPlayer(), TRADE_FLAG, false)) {
             if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), event.getPlayer(), TRADE_FLAG, false)) {
-                event.setCancelled(true, QuickShopAPI.getInstance().getTextManager().of(event.getPlayer(), "addon.residence.trade-flag-denied").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.trade-flag-denied").forLocale());
             }
         }
     }
