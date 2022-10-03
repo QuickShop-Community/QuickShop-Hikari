@@ -111,10 +111,10 @@ public final class Main extends CompatibilityModule {
             if (land.getOwnerUID().equals(event.getPlayer().getUniqueId()) || land.isTrusted(event.getPlayer().getUniqueId())) {
                 return;
             }
-            event.setCancelled(true, "Lands: you don't have permission to create shop here");
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(),"addon.lands.creation-denied").forLocale());
         } else {
             if (whitelist) {
-                event.setCancelled(true, "Lands: you don't have permission to create shop here (whitelist)");
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(),"addon.lands.creation-denied").forLocale());
             }
         }
     }
