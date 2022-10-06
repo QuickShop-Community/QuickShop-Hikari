@@ -5,6 +5,7 @@ import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.hikari.HikariConfig;
 import cc.carm.lib.easysql.hikari.HikariDataSource;
 import cc.carm.lib.easysql.manager.SQLManagerImpl;
+import com.comphenix.protocol.ProtocolLibrary;
 import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.QuickShopProvider;
@@ -569,6 +570,22 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         }
     }
 
+    private void unload3rdParty() {
+        if (this.placeHolderAPI != null && placeHolderAPI.isEnabled() && this.quickShopPAPI != null) {
+            this.quickShopPAPI.unregister();
+            getLogger().info("Unload PlaceHolderAPI module successfully!");
+        }
+        if (this.signHooker != null) {
+            this.signHooker.unload();
+            getLogger().info("Unload SignHooker module successfully!");
+        }
+        Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
+        if(protocolLibPlugin !=null && protocolLibPlugin.isEnabled()){
+            ProtocolLibrary.getProtocolManager().removePacketListeners(this);
+            getLogger().info("Unload packet listeners successfully!");
+        }
+    }
+
     private void loadErrorReporter() {
         try {
             if (!getConfig().getBoolean("auto-report-errors")) {
@@ -898,10 +915,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             getLogger().info("Cleaning up display manager...");
             VirtualDisplayItem.VirtualDisplayItemManager.unload();
         }
-        if (this.getSqlManager() != null) {
-            getLogger().info("Shutting down database connections...");
-            EasySQL.shutdownManager(this.getSqlManager());
-        }
         if (logWatcher != null) {
             getLogger().info("Stopping log watcher...");
             logWatcher.close();
@@ -919,12 +932,16 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         }
         getLogger().info("Cleanup listeners...");
         HandlerList.unregisterAll(this);
+        getLogger().info("Shutting down 3rd-party integrations...");
+        unload3rdParty();
         getLogger().info("Cleanup scheduled tasks...");
         Bukkit.getScheduler().cancelTasks(this);
         getLogger().info("Unregistering plugin services...");
         getServer().getServicesManager().unregisterAll(this);
-        getLogger().info("Shutting down database...");
-        EasySQL.shutdownManager(this.sqlManager);
+        if (this.getSqlManager() != null) {
+            getLogger().info("Shutting down database connections...");
+            EasySQL.shutdownManager(this.getSqlManager());
+        }
         getLogger().info("Shutting down Unirest instances...");
         Unirest.shutDown(true);
         getLogger().info("Finishing remaining misc work...");

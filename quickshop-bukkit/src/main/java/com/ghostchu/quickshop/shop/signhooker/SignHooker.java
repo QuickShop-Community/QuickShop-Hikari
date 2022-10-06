@@ -31,13 +31,17 @@ public class SignHooker {
     private final GameVersion VERSION = QuickShop.getInstance().getGameVersion();
     private final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
 
+    private PacketAdapter chunkAdapter;
+
+    private PacketAdapter signAdapter;
+
     public SignHooker(QuickShop plugin) {
         PLUGIN = plugin;
         registerListener();
     }
 
     public void registerListener() {
-        PacketAdapter chunkAdapter = new PacketAdapter(PLUGIN, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
+        chunkAdapter = new PacketAdapter(PLUGIN, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
             @Override
             public void onPacketSending(@NotNull PacketEvent event) {
                 //is really full chunk data
@@ -66,19 +70,29 @@ public class SignHooker {
             }
         };
 
-        PacketAdapter signAdapter = new PacketAdapter(PLUGIN, ListenerPriority.HIGH, PacketType.Play.Server.TILE_ENTITY_DATA) {
+        signAdapter = new PacketAdapter(PLUGIN, ListenerPriority.HIGH, PacketType.Play.Server.TILE_ENTITY_DATA) {
             @Override
             public void onPacketSending(@NotNull PacketEvent event) {
-                //is really full chunk data
-                //In 1.17, this value was removed, so read safely
                 NbtBase<?> tField = event.getPacket().getNbtModifier().readSafely(0);
+                // Server send standard sign NBT format for line1, line2, line3, line4 to client.
+                // If we hook that packet and modify component text inside, we can dynamically change the text
+                // that send to client and that will can prevent text blink.
+                // TODO Location deserialize.
                 Log.debug(tField.getName() + " => " + tField.getValue().toString());
             }
         };
         PROTOCOL_MANAGER.addPacketListener(chunkAdapter);
         Log.debug("SignHooker chunk adapter registered.");
         PROTOCOL_MANAGER.addPacketListener(signAdapter);
+    }
 
+    public void unload(){
+        if(PROTOCOL_MANAGER == null)
+            return;
+        if(this.chunkAdapter != null){
+            PROTOCOL_MANAGER.removePacketListener(chunkAdapter);
+            PROTOCOL_MANAGER.removePacketListener(signAdapter);
+        }
     }
 
     public void updatePerPlayerShopSign(Player player, Location location, Shop shop) {
