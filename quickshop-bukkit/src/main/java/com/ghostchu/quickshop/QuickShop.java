@@ -970,7 +970,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         new ChunkListener(this).register();
         new CustomInventoryListener(this).register();
         new ShopProtectionListener(this, this.shopCache).register();
-        new EconomySetupListener(this).register();
+       // new EconomySetupListener(this).register();
         new MetricListener(this).register();
         new InternalListener(this).register();
     }
