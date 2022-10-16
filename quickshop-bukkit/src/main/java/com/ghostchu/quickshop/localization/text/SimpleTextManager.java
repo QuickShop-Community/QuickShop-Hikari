@@ -767,5 +767,23 @@ private FileConfiguration getDistributionConfiguration(@NotNull String distribut
         return new TextList(this, sender, languageFilesManager.getDistributions(), path, convert(args));
     }
 
+    /**
+     * Register the language phrase to QuickShop text manager in runtime.
+     * @param locale Target locale
+     * @param path The language key path
+     * @param text The language text
+     */
+    @SneakyThrows
+    @Override
+    public void register(@NotNull String locale, @NotNull String path, @NotNull String text) {
+        FileConfiguration configuration = languageFilesManager.getDistribution(locale);
+        if(configuration == null){
+            configuration = new YamlConfiguration();
+            configuration.loadFromString(languageFilesManager.getDistribution("en_us").saveToString());
+        }
+        configuration.set(path,text);
+        languageFilesManager.deploy(locale,configuration);
+    }
+
 
 }

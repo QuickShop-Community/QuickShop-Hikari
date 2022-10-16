@@ -28,6 +28,15 @@ public interface TextManager {
     List<String> getAvailableLanguages();
 
     /**
+     * Return the set of available Languages
+     *
+     * @return the set of available Languages
+     */
+   default List<String> getAvailableLocales(){
+        return getAvailableLanguages();
+    }
+
+    /**
      * Gets specific locale status
      *
      * @param locale The locale
@@ -99,4 +108,12 @@ public interface TextManager {
      */
     @NotNull
     TextList ofList(@Nullable CommandSender sender, @NotNull String path, @Nullable Object... args);
+
+    /**
+     * Register the language phrase to QuickShop text manager in runtime.
+     * @param locale Target locale
+     * @param path The language key path
+     * @param text The language text
+     */
+    void register(@NotNull String locale, @NotNull String path, @NotNull String text);
 }
