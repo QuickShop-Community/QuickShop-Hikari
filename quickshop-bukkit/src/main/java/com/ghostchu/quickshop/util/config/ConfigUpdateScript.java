@@ -124,6 +124,10 @@ public class ConfigUpdateScript {
         File f = new File(Util.getCacheFolder(), "player_mapping.db");
         if(f.exists()) f.delete();
     }
+    @UpdateScript(version = 1010)
+    public void allowDisableQsSizeCommandMaxStackSizeCheck() {
+        getConfig().set("shop.disable-max-size-check-for-size-command",false);
+    }
 
 
     @UpdateScript(version = 1001)

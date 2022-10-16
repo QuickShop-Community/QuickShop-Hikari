@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1009
+config-version: 1010
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -446,6 +446,9 @@ shop:
 
   #This setting controls if QuickShop should ignore the item's custom display name.
   force-use-item-original-name: false
+
+  #[BETA] Disable the quickshop /qs size command stack size check to allow stack size go up the vanilla limit
+  disable-max-size-check-for-size-command: false
 #List of items that can't be sold in shops.
 #Anyone with the quickshop.bypass.<itemID> permission can bypass it.
 #Add the reference the item lookup table by adding @ before the name.

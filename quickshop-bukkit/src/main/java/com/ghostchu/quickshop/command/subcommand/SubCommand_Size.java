@@ -43,7 +43,11 @@ public class SubCommand_Size implements CommandHandler<Player> {
         if (shop != null) {
             if (shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_STACK_AMOUNT)
                     || plugin.perm().hasPermission(sender, "quickshop.other.amount")) {
-                if (amount <= 0 || amount > Util.getItemMaxStackSize(shop.getItem().getType())) {
+                if (amount <= 0) {
+                    plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
+                    return;
+                }
+                if (amount > Util.getItemMaxStackSize(shop.getItem().getType()) && !plugin.getConfig().getBoolean("shop.disable-max-size-check-for-size-command", false)) {
                     plugin.text().of(sender, "command.invalid-bulk-amount", amount).send();
                     return;
                 }
