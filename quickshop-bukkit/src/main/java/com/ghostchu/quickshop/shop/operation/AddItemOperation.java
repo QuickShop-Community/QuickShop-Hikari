@@ -18,7 +18,6 @@ public class AddItemOperation implements Operation {
     private final int itemMaxStackSize;
     private boolean committed;
     private boolean rollback;
-    private int remains = 0;
     private int rollbackRemains = 0;
 
     /**
@@ -38,53 +37,43 @@ public class AddItemOperation implements Operation {
     @Override
     public boolean commit() {
         committed = true;
-        remains = this.amount;
+        int remains = this.amount;
+        int lastRemains = -1;
+        ItemStack item = this.item.clone();
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
             item.setAmount(stackSize);
             Map<Integer, ItemStack> notSaved = inv.addItem(item);
             if (notSaved.isEmpty()) {
                 remains -= stackSize;
-            } else {
-                rollbackRemains -= stackSize - Util.getItemTotalAmountsInMap(notSaved);
+            }
+            if(remains == lastRemains){
+                rollbackRemains = remains;
                 return false;
             }
+            lastRemains = remains;
         }
         return true;
     }
 
-    /**
-     * Gets the remains items hadn't added into the inventory.
-     *
-     * @return remains items
-     */
-    public int getRemains() {
-        return remains;
-    }
-
-    /**
-     * Gets the remains items hadn't rolled back.
-     *
-     * @return remains items
-     */
-    public int getRollbackRemains() {
-        return rollbackRemains;
-    }
 
     @Override
     public boolean rollback() {
         rollback = true;
-        rollbackRemains = remains;
-        while (rollbackRemains > 0) {
-            int stackSize = Math.min(rollbackRemains, itemMaxStackSize);
+        int remains = rollbackRemains;
+        int lastRemains = -1;
+        ItemStack item = this.item.clone();
+        while (remains > 0) {
+            int stackSize = Math.min(remains, item.getMaxStackSize());
             item.setAmount(stackSize);
-            Map<Integer, ItemStack> notFit = inv.removeItem(item.clone());
+            Map<Integer, ItemStack> notFit = inv.removeItem(item);
             if (notFit.isEmpty()) {
-                rollbackRemains -= stackSize;
-            } else {
-                remains -= stackSize - Util.getItemTotalAmountsInMap(notFit);
-                return false;
+                remains -= stackSize;
             }
+            if(remains == lastRemains){
+                 return true; // Always return true since it is remove!
+            }
+            lastRemains = remains;
         }
         return true;
     }

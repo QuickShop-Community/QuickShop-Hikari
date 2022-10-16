@@ -214,8 +214,9 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
                     } else {
                         break;
                     }
+                }else{
+                    Log.transaction("Rollback successes: " + operation);
                 }
-                Log.transaction("Rollback successes: " + operation);
                 operations.add(operation);
             } catch (Exception exception) {
                 if (continueWhenFailed) {

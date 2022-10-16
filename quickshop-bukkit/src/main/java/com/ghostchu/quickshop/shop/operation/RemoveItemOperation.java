@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.shop.operation;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,7 +19,6 @@ public class RemoveItemOperation implements Operation {
     private final int itemMaxStackSize;
     private boolean committed;
     private boolean rollback;
-    private int remains = 0;
     private int rollbackRemains = 0;
 
     /**
@@ -38,53 +38,46 @@ public class RemoveItemOperation implements Operation {
     @Override
     public boolean commit() {
         committed = true;
-        remains = amount;
+        int remains = amount;
+        ItemStack item = this.item.clone();
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
             item.setAmount(stackSize);
+            // TODO: BUG! If there no enough item to remove, notFit will be always empty and misleading the rollbackRemains and break rollback logic
             Map<Integer, ItemStack> notFit = inv.removeItem(item.clone());
             if (notFit.isEmpty()) {
-                remains -= stackSize;
-            } else {
-                remains -= stackSize - Util.getItemTotalAmountsInMap(notFit);
+                remains -= item.getAmount();
+            }else{
+                // can't add more items! fast fail!
+                rollbackRemains = this.amount - (remains + Util.getItemTotalAmountsInMap(notFit));
                 return false;
             }
         }
         return true;
     }
 
-    /**
-     * Gets the item remains to remove
-     *
-     * @return The item remains to remove
-     */
-    public int getRemains() {
-        return remains;
-    }
-
-    /**
-     * Gets the item remains to rollback
-     *
-     * @return The item remains to rollback
-     */
-    public int getRollbackRemains() {
-        return rollbackRemains;
-    }
 
     @Override
     public boolean rollback() {
         rollback = true;
-        rollbackRemains = this.remains;
-        while (rollbackRemains > 0) {
-            int stackSize = Math.min(rollbackRemains, itemMaxStackSize);
+        Log.transaction("DEBUG rollbackRemains "+rollbackRemains);
+        int remains  = this.rollbackRemains;
+        int lastRemains = -1;
+        ItemStack item = this.item.clone();
+        while (remains > 0) {
+            Log.transaction("DEBUG remains "+remains);
+            int stackSize = Math.min(remains, itemMaxStackSize);
             item.setAmount(stackSize);
             Map<Integer, ItemStack> notSaved = inv.addItem(item);
             if (notSaved.isEmpty()) {
-                rollbackRemains -= stackSize;
-            } else {
-                rollbackRemains -= stackSize - Util.getItemTotalAmountsInMap(notSaved);
+                remains -= item.getAmount();
+                Log.transaction("DEBUG notSaved empty"+remains);
+            }
+            Log.transaction("DEBUG remains now is "+remains);
+            if(remains == lastRemains) {
                 return false;
             }
+            lastRemains = remains;
         }
         return true;
     }
