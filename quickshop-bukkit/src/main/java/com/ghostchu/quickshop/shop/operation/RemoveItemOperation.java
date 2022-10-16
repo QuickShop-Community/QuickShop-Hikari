@@ -46,7 +46,7 @@ public class RemoveItemOperation implements Operation {
             if (notFit.isEmpty()) {
                 remains -= stackSize;
             } else {
-                remains -= stackSize - notFit.entrySet().iterator().next().getValue().getAmount();
+                remains -= stackSize - Util.getItemTotalAmountsInMap(notFit);
                 return false;
             }
         }
@@ -82,7 +82,7 @@ public class RemoveItemOperation implements Operation {
             if (notSaved.isEmpty()) {
                 rollbackRemains -= stackSize;
             } else {
-                rollbackRemains -= stackSize - notSaved.entrySet().iterator().next().getValue().getAmount();
+                rollbackRemains -= stackSize - Util.getItemTotalAmountsInMap(notSaved);
                 return false;
             }
         }

@@ -1172,5 +1172,11 @@ public class Util {
             return value != null;
         }
     }
-
+    public static int getItemTotalAmountsInMap(Map<Integer, ItemStack> map){
+        int total = 0;
+        for (ItemStack value : map.values()) {
+            total += value.getAmount();
+        }
+        return total;
+    }
 }
