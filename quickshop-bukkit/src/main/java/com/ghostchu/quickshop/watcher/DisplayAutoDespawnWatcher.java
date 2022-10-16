@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
-import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -61,7 +60,7 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
                 }
                 if (anyPlayerInRegion) {
                     if (!displayItem.isSpawned()) {
-                        Log.debug("Respawning the shop " + shop + " the display, cause it was despawned and a player close to it");
+                        //Log.debug("Respawning the shop " + shop + " the display, cause it was despawned and a player close to it");
                         displayItem.spawn();
                     }
                 } else if (displayItem.isSpawned()) {
