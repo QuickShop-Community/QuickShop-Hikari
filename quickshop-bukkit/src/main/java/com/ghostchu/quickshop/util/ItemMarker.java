@@ -103,6 +103,16 @@ public class ItemMarker implements Reloadable {
         }
     }
 
+    private boolean saveConfig() {
+        try {
+            configuration.save(file);
+            return true;
+        } catch (IOException e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to save items.yml", e);
+            return false;
+        }
+    }
+
     @NotNull
     public OperationResult save(@NotNull String itemName, @NotNull ItemStack itemStack) {
         if (stacks.containsKey(itemName)) {
@@ -118,16 +128,6 @@ public class ItemMarker implements Reloadable {
             return OperationResult.SUCCESS;
         } else {
             return OperationResult.UNKNOWN;
-        }
-    }
-
-    private boolean saveConfig() {
-        try {
-            configuration.save(file);
-            return true;
-        } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to save items.yml", e);
-            return false;
         }
     }
 

@@ -45,13 +45,20 @@ public class EnderChestWrapper implements InventoryWrapper {
     }
 
     /**
-     * Get the location of the block or entity which corresponds to this inventory. May return null if this container
-     * was custom created or is a virtual / subcontainer.
-     *
-     * @return location or null if not applicable.
+     * Clear the inventory
      */
     @Override
-    public @Nullable Location getLocation() {
+    public void clear() {
+        player.getEnderChest().clear();
+    }
+
+    /**
+     * Gets the block or entity belonging to the open inventory
+     *
+     * @return The holder of the inventory; null if it has no holder.
+     */
+    @Override
+    public @Nullable InventoryHolder getHolder() {
         return null;
     }
 
@@ -63,6 +70,17 @@ public class EnderChestWrapper implements InventoryWrapper {
     @Override
     public @NotNull InventoryWrapperType getInventoryType() {
         return InventoryWrapperType.PLUGIN;
+    }
+
+    /**
+     * Get the location of the block or entity which corresponds to this inventory. May return null if this container
+     * was custom created or is a virtual / subcontainer.
+     *
+     * @return location or null if not applicable.
+     */
+    @Override
+    public @Nullable Location getLocation() {
+        return null;
     }
 
     /**
@@ -84,24 +102,6 @@ public class EnderChestWrapper implements InventoryWrapper {
     public boolean restoreSnapshot(@NotNull ItemStack[] snapshot) {
         player.getEnderChest().setContents(snapshot);
         return true;
-    }
-
-    /**
-     * Clear the inventory
-     */
-    @Override
-    public void clear() {
-        player.getEnderChest().clear();
-    }
-
-    /**
-     * Gets the block or entity belonging to the open inventory
-     *
-     * @return The holder of the inventory; null if it has no holder.
-     */
-    @Override
-    public @Nullable InventoryHolder getHolder() {
-        return null;
     }
 
     /**

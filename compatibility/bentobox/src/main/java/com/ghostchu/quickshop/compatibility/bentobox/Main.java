@@ -54,6 +54,10 @@ public final class Main extends CompatibilityModule implements Listener {
         });
     }
 
+    private List<Shop> getShops(Island island) {
+        return getShops(island.getWorld().getName(), island.getMinX(), island.getMinZ(), island.getMaxX(), island.getMaxZ());
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onIslandLeave(world.bentobox.bentobox.api.events.team.TeamLeaveEvent event) {
         if (!deleteShopOnLeave) {
@@ -76,10 +80,6 @@ public final class Main extends CompatibilityModule implements Listener {
             recordDeletion(event.getPlayerUUID(), shop, "Island " + event.getIsland().getName() + " was resetted");
             shop.delete();
         });
-    }
-
-    private List<Shop> getShops(Island island) {
-        return getShops(island.getWorld().getName(), island.getMinX(), island.getMinZ(), island.getMaxX(), island.getMaxZ());
     }
 
     @EventHandler(ignoreCancelled = true)

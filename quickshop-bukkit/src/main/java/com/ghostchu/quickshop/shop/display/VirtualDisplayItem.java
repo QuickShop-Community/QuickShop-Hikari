@@ -89,6 +89,23 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
     }
 
     @Override
+    public @Nullable Entity getDisplay() {
+        return null;
+    }
+
+    @Override
+    public boolean isSpawned() {
+        if (shop.isLeftShop()) {
+            Shop aShop = shop.getAttachedShop();
+            if (aShop instanceof ContainerShop) {
+                return (Objects.requireNonNull(((ContainerShop) aShop).getDisplayItem())).isSpawned();
+            }
+
+        }
+        return isDisplay;
+    }
+
+    @Override
     public void remove() {
         if (isDisplay) {
             sendPacketToAll(fakeItemDestroyPacket);
@@ -142,23 +159,6 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
 
         sendFakeItemToAll();
         isDisplay = true;
-    }
-
-    @Override
-    public @Nullable Entity getDisplay() {
-        return null;
-    }
-
-    @Override
-    public boolean isSpawned() {
-        if (shop.isLeftShop()) {
-            Shop aShop = shop.getAttachedShop();
-            if (aShop instanceof ContainerShop) {
-                return (Objects.requireNonNull(((ContainerShop) aShop).getDisplayItem())).isSpawned();
-            }
-
-        }
-        return isDisplay;
     }
 
     private void initFakeDropItemPacket() {

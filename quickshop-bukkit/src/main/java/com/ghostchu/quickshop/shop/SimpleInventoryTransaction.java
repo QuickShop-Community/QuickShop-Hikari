@@ -41,12 +41,6 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
         new InventoryTransactionEvent(this).callEvent();
     }
 
-    @Override
-    @Nullable
-    public InventoryWrapper getFrom() {
-        return from;
-    }
-
     public interface SimpleTransactionCallback extends InventoryTransaction.TransactionCallback {
         /**
          * Calling while Transaction commit
@@ -77,7 +71,13 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
         }
 
 
+    }    @Override
+    @Nullable
+    public InventoryWrapper getFrom() {
+        return from;
     }
+
+
 
     @Override
     public void setFrom(@Nullable InventoryWrapper from) {
@@ -214,7 +214,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
                     } else {
                         break;
                     }
-                }else{
+                } else {
                     Log.transaction("Rollback successes: " + operation);
                 }
                 operations.add(operation);
@@ -240,8 +240,6 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
             return false;
         }
     }
-
-
 
 
 }

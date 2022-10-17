@@ -87,6 +87,8 @@ public interface Platform {
 
     void sendMessage(@NotNull CommandSender sender, @NotNull Component component);
 
+    void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components);
+
     void setDisplayName(@NotNull ItemMeta meta, @Nullable Component component);
 
     void setDisplayName(@NotNull ItemStack stack, @Nullable Component component);
@@ -100,6 +102,4 @@ public interface Platform {
     void setLore(@NotNull ItemMeta meta, @NotNull Collection<Component> components);
 
     void updateTranslationMappingSection(@NotNull Map<String, String> mapping);
-
-    void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components);
 }

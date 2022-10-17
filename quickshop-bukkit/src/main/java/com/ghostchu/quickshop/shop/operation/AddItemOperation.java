@@ -49,19 +49,12 @@ public class AddItemOperation implements Operation {
             if (notSaved.isEmpty()) {
                 remains -= stackSize;
             }
-            if(remains == lastRemains){
+            if (remains == lastRemains) {
                 return false;
             }
             lastRemains = remains;
         }
         return true;
-    }
-
-
-    @Override
-    public boolean rollback() {
-        rollback = true;
-        return inv.restoreSnapshot(this.snapshot);
     }
 
     @Override
@@ -72,5 +65,11 @@ public class AddItemOperation implements Operation {
     @Override
     public boolean isRollback() {
         return this.rollback;
+    }
+
+    @Override
+    public boolean rollback() {
+        rollback = true;
+        return inv.restoreSnapshot(this.snapshot);
     }
 }

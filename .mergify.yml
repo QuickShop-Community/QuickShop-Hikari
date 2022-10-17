@@ -2,8 +2,8 @@ pull_request_rules:
   - name: Automatic merge on Crowdin
     conditions:
       - and:
-        - author=Ghost-chu
-        - title=New Crowdin updates
+          - author=Ghost-chu
+          - title=New Crowdin updates
     actions:
       merge:
         method: squash

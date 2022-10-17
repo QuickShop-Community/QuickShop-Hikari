@@ -47,19 +47,12 @@ public class RemoveItemOperation implements Operation {
             Map<Integer, ItemStack> notFit = inv.removeItem(item.clone());
             if (notFit.isEmpty()) {
                 remains -= item.getAmount();
-            }else{
+            } else {
                 // can't add more items! fast fail!
                 return false;
             }
         }
         return true;
-    }
-
-
-    @Override
-    public boolean rollback() {
-        rollback = true;
-        return inv.restoreSnapshot(this.snapshot);
     }
 
     @Override
@@ -70,5 +63,11 @@ public class RemoveItemOperation implements Operation {
     @Override
     public boolean isRollback() {
         return this.rollback;
+    }
+
+    @Override
+    public boolean rollback() {
+        rollback = true;
+        return inv.restoreSnapshot(this.snapshot);
     }
 }

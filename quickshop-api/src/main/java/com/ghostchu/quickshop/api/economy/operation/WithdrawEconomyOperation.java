@@ -38,15 +38,6 @@ public class WithdrawEconomyOperation implements Operation {
     }
 
     @Override
-    public boolean rollback() {
-        boolean result = economyCore.deposit(account, amount, world, currency);
-        if (result) {
-            rollback = true;
-        }
-        return result;
-    }
-
-    @Override
     public boolean isCommitted() {
         return this.committed;
     }
@@ -54,5 +45,14 @@ public class WithdrawEconomyOperation implements Operation {
     @Override
     public boolean isRollback() {
         return this.rollback;
+    }
+
+    @Override
+    public boolean rollback() {
+        boolean result = economyCore.deposit(account, amount, world, currency);
+        if (result) {
+            rollback = true;
+        }
+        return result;
     }
 }

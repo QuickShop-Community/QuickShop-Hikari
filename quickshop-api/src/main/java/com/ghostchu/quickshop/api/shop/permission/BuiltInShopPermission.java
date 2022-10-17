@@ -38,19 +38,9 @@ public enum BuiltInShopPermission implements ShopPermissionAudience {
         return descriptionKey;
     }
 
-    @NotNull
-    public String getNamespacedNode() {
-        return QuickShopAPI.getPluginInstance().getName().toLowerCase(Locale.ROOT) + "." + this.node;
-    }
-
-    @NotNull
-    public String getRawNode() {
-        return node;
-    }
-
     @Override
-    public boolean hasPermission(@NotNull String permission) {
-        return this.node.equals(permission);
+    public @NotNull String getName() {
+        return this.descriptionKey;
     }
 
     @Override
@@ -59,7 +49,17 @@ public enum BuiltInShopPermission implements ShopPermissionAudience {
     }
 
     @Override
-    public @NotNull String getName() {
-        return this.descriptionKey;
+    public boolean hasPermission(@NotNull String permission) {
+        return this.node.equals(permission);
+    }
+
+    @NotNull
+    public String getNamespacedNode() {
+        return QuickShopAPI.getPluginInstance().getName().toLowerCase(Locale.ROOT) + "." + this.node;
+    }
+
+    @NotNull
+    public String getRawNode() {
+        return node;
     }
 }

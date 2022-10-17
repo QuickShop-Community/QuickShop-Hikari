@@ -65,6 +65,43 @@ public final class Main extends CompatibilityModule implements Listener {
         component.ifPresent(value -> event.setCancelled(true, value));
     }
 
+    private boolean isWorldIgnored(World world) {
+        if (getConfig().getBoolean("ignore-disabled-worlds", false)) {
+            return !TownyAPI.getInstance().isTownyWorld(world);
+        }
+        return false;
+    }
+
+    private Optional<Component> checkFlags(@NotNull Player player, @NotNull Location location, @NotNull List<TownyFlags> flags) {
+        if (isWorldIgnored(location.getWorld())) {
+            return Optional.empty();
+        }
+        if (!whiteList) {
+            return Optional.empty();
+        }
+        for (TownyFlags flag : flags) {
+            switch (flag) {
+                case OWN:
+                    if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
+                        return Optional.of(getApi().getTextManager().of(player, "addon.towny.flags.own").forLocale());
+                    }
+                    break;
+                case MODIFY:
+                    if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
+                        return Optional.of(getApi().getTextManager().of(player, "addon.towny.flags.modify").forLocale());
+                    }
+                    break;
+                case SHOPTYPE:
+                    if (!ShopPlotUtil.isShopPlot(location)) {
+                        return Optional.of(getApi().getTextManager().of(player, "addon.towny.flags.shop-type").forLocale());
+                    }
+                default:
+                    // Ignore
+            }
+        }
+        return Optional.empty();
+    }
+
     @Override
     public void onDisable() {
         api.getCommandManager().unregisterCmd("town");
@@ -127,36 +164,6 @@ public final class Main extends CompatibilityModule implements Listener {
             }
             getLogger().info("Finished to scan shops, used " + (System.currentTimeMillis() - startTime) + "ms");
         }
-    }
-
-    private Optional<Component> checkFlags(@NotNull Player player, @NotNull Location location, @NotNull List<TownyFlags> flags) {
-        if (isWorldIgnored(location.getWorld())) {
-            return Optional.empty();
-        }
-        if (!whiteList) {
-            return Optional.empty();
-        }
-        for (TownyFlags flag : flags) {
-            switch (flag) {
-                case OWN:
-                    if (!ShopPlotUtil.doesPlayerOwnShopPlot(player, location)) {
-                        return Optional.of(getApi().getTextManager().of(player, "addon.towny.flags.own").forLocale());
-                    }
-                    break;
-                case MODIFY:
-                    if (!ShopPlotUtil.doesPlayerHaveAbilityToEditShopPlot(player, location)) {
-                        return Optional.of(getApi().getTextManager().of(player, "addon.towny.flags.modify").forLocale());
-                    }
-                    break;
-                case SHOPTYPE:
-                    if (!ShopPlotUtil.isShopPlot(location)) {
-                        return Optional.of(getApi().getTextManager().of(player, "addon.towny.flags.shop-type").forLocale());
-                    }
-                default:
-                    // Ignore
-            }
-        }
-        return Optional.empty();
     }
 
     @EventHandler
@@ -281,13 +288,6 @@ public final class Main extends CompatibilityModule implements Listener {
         } catch (NotRegisteredException ignored) {
 
         }
-    }
-
-    private boolean isWorldIgnored(World world) {
-        if (getConfig().getBoolean("ignore-disabled-worlds", false)) {
-            return !TownyAPI.getInstance().isTownyWorld(world);
-        }
-        return false;
     }
 
     @EventHandler(ignoreCancelled = true)

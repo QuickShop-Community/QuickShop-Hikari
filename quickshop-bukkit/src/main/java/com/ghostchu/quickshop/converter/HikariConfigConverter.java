@@ -27,6 +27,17 @@ public class HikariConfigConverter implements HikariConverterInterface {
         this.plugin = instance.getPlugin();
     }
 
+    /**
+     * Start for backing up
+     *
+     * @param actionId Action Identifier for this upgrade operation.
+     * @param folder   The target folder for backup.
+     * @throws Exception Backup fails.
+     */
+    @Override
+    public void backup(@NotNull UUID actionId, @NotNull File folder) throws Exception {
+        Files.copy(new File(plugin.getDataFolder(), "config.yml").toPath(), new File(folder, "config.yml").toPath());
+    }
 
     /**
      * Returns empty for ready, any elements inside will mark as not ready and will be post to users.
@@ -47,18 +58,6 @@ public class HikariConfigConverter implements HikariConverterInterface {
             entries.add(Component.text("File price-restriction.yml already exists! "));
         }
         return entries;
-    }
-
-    /**
-     * Start for backing up
-     *
-     * @param actionId Action Identifier for this upgrade operation.
-     * @param folder   The target folder for backup.
-     * @throws Exception Backup fails.
-     */
-    @Override
-    public void backup(@NotNull UUID actionId, @NotNull File folder) throws Exception {
-        Files.copy(new File(plugin.getDataFolder(), "config.yml").toPath(), new File(folder, "config.yml").toPath());
     }
 
     /**

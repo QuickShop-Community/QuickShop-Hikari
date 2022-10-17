@@ -35,6 +35,11 @@ public final class JsonUtil {
         return standard();
     }
 
+    @NotNull
+    public static Gson standard() {
+        return STANDARD_GSON;
+    }
+
     public static Gson getGson() {
         return STANDARD_GSON;
     }
@@ -43,6 +48,11 @@ public final class JsonUtil {
     @Deprecated
     public static Gson getPrettyPrinting() {
         return prettyPrinting();
+    }
+
+    @NotNull
+    public static Gson prettyPrinting() {
+        return PRETTY_PRINT_GSON;
     }
 
     @NotNull
@@ -81,18 +91,8 @@ public final class JsonUtil {
         standard().toJson(object, writer);
     }
 
-    @NotNull
-    public static Gson standard() {
-        return STANDARD_GSON;
-    }
-
     public static void writeObjectPretty(@NotNull Appendable writer, @NotNull JsonObject object) {
         prettyPrinting().toJson(object, writer);
-    }
-
-    @NotNull
-    public static Gson prettyPrinting() {
-        return PRETTY_PRINT_GSON;
     }
 
     public @interface Hidden {

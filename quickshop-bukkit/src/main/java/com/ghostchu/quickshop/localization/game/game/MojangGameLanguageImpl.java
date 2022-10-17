@@ -82,13 +82,28 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
     }
 
     @Override
-    public @NotNull String getName() {
-        return "Mojang API";
+    public @NotNull String getEnchantment(@NotNull Enchantment enchantment) {
+        if (lang == null) {
+            return super.getEnchantment(enchantment);
+        }
+        JsonElement jsonElement = lang.get("enchantment.minecraft." + enchantment.getKey().getKey().toLowerCase());
+        if (jsonElement == null) {
+            return super.getEnchantment(enchantment);
+        }
+        return jsonElement.getAsString();
+
     }
 
     @Override
-    public @NotNull Plugin getPlugin() {
-        return plugin;
+    public @NotNull String getEntity(@NotNull EntityType entityType) {
+        if (lang == null) {
+            return super.getEntity(entityType);
+        }
+        JsonElement jsonElement = lang.get("entity.minecraft." + entityType.name().toLowerCase());
+        if (jsonElement == null) {
+            return super.getEntity(entityType);
+        }
+        return jsonElement.getAsString();
     }
 
     @Override
@@ -110,6 +125,16 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
     }
 
     @Override
+    public @NotNull String getName() {
+        return "Mojang API";
+    }
+
+    @Override
+    public @NotNull Plugin getPlugin() {
+        return plugin;
+    }
+
+    @Override
     public @NotNull String getPotion(@NotNull PotionEffectType potionEffectType) {
         if (lang == null) {
             return super.getPotion(potionEffectType);
@@ -122,31 +147,6 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
         }
         if (jsonElement == null) {
             return super.getPotion(potionEffectType);
-        }
-        return jsonElement.getAsString();
-    }
-
-    @Override
-    public @NotNull String getEnchantment(@NotNull Enchantment enchantment) {
-        if (lang == null) {
-            return super.getEnchantment(enchantment);
-        }
-        JsonElement jsonElement = lang.get("enchantment.minecraft." + enchantment.getKey().getKey().toLowerCase());
-        if (jsonElement == null) {
-            return super.getEnchantment(enchantment);
-        }
-        return jsonElement.getAsString();
-
-    }
-
-    @Override
-    public @NotNull String getEntity(@NotNull EntityType entityType) {
-        if (lang == null) {
-            return super.getEntity(entityType);
-        }
-        JsonElement jsonElement = lang.get("entity.minecraft." + entityType.name().toLowerCase());
-        if (jsonElement == null) {
-            return super.getEntity(entityType);
         }
         return jsonElement.getAsString();
     }

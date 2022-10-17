@@ -26,11 +26,6 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
     }
 
     @Override
-    public @NotNull Map<Integer, ItemStack> addItem(ItemStack... itemStacks) {
-        return inventory.addItem(itemStacks);
-    }
-
-    @Override
     public @NotNull InventoryWrapperIterator iterator() {
         return InventoryWrapperIterator.ofBukkitInventory(inventory);
     }
@@ -38,6 +33,21 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
     @Override
     public void clear() {
         inventory.clear();
+    }
+
+    @Override
+    public @NotNull ItemStack[] createSnapshot() {
+        ItemStack[] content = this.inventory.getContents();
+        ItemStack[] snapshot = new ItemStack[content.length];
+        for (int i = 0; i < content.length; i++) {
+            snapshot[i] = content[i].clone();
+        }
+        return snapshot;
+    }
+
+    @Override
+    public @NotNull InventoryWrapperManager getWrapperManager() {
+        return this.manager;
     }
 
     @Override
@@ -56,11 +66,6 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
     }
 
     @Override
-    public @NotNull InventoryWrapperManager getWrapperManager() {
-        return this.manager;
-    }
-
-    @Override
     public boolean isValid() {
         if (this.inventory instanceof BlockInventoryHolder) {
             if (this.inventory.getLocation() != null) {
@@ -72,19 +77,14 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
     }
 
     @Override
-    public @NotNull ItemStack[] createSnapshot() {
-        ItemStack[] content = this.inventory.getContents();
-        ItemStack[] snapshot = new ItemStack[content.length];
-        for (int i = 0; i < content.length; i++) {
-            snapshot[i] = content[i].clone();
-        }
-        return snapshot;
-    }
-
-    @Override
     public boolean restoreSnapshot(@NotNull ItemStack[] snapshot) {
         this.inventory.setContents(snapshot);
         return true;
+    }
+
+    @Override
+    public @NotNull Map<Integer, ItemStack> addItem(ItemStack... itemStacks) {
+        return inventory.addItem(itemStacks);
     }
 
     @Override

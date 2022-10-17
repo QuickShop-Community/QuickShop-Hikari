@@ -70,6 +70,19 @@ public class Timer {
     }
 
     /**
+     * Return how long time running when timer set. THIS NOT WILL DESTORY AND STOP THE TIMER
+     *
+     * @return time
+     */
+    public long getPassedTime() {
+        if (isPaused) {
+            return passedTime;
+        } else {
+            return System.currentTimeMillis() - startTime;
+        }
+    }
+
+    /**
      * Resume the timer. Time Unit: ms
      */
     public void resume() {
@@ -89,19 +102,6 @@ public class Timer {
         long time = getPassedTime();
         startTime = 0;
         return time;
-    }
-
-    /**
-     * Return how long time running when timer set. THIS NOT WILL DESTORY AND STOP THE TIMER
-     *
-     * @return time
-     */
-    public long getPassedTime() {
-        if (isPaused) {
-            return passedTime;
-        } else {
-            return System.currentTimeMillis() - startTime;
-        }
     }
 
 }

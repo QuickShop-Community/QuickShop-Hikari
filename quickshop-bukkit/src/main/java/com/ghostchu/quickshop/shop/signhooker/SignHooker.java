@@ -84,15 +84,6 @@ public class SignHooker {
         //PROTOCOL_MANAGER.addPacketListener(signAdapter);
     }
 
-    public void unload(){
-        if(PROTOCOL_MANAGER == null)
-            return;
-        if(this.chunkAdapter != null){
-            PROTOCOL_MANAGER.removePacketListener(chunkAdapter);
-            //PROTOCOL_MANAGER.removePacketListener(signAdapter);
-        }
-    }
-
     public void updatePerPlayerShopSign(Player player, Location location, Shop shop) {
         Util.ensureThread(false);
         if (!shop.isLoaded()) return;
@@ -106,9 +97,18 @@ public class SignHooker {
         }
     }
 
+    public void unload() {
+        if (PROTOCOL_MANAGER == null)
+            return;
+        if (this.chunkAdapter != null) {
+            PROTOCOL_MANAGER.removePacketListener(chunkAdapter);
+            //PROTOCOL_MANAGER.removePacketListener(signAdapter);
+        }
+    }
+
     public void updatePerPlayerShopSignBroadcast(Location location, Shop shop) {
         World world = shop.getLocation().getWorld();
-        if(world == null) return;
+        if (world == null) return;
         Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), PLUGIN.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), PLUGIN.getServer().getViewDistance() * 16);
         for (Entity nearbyPlayer : nearbyPlayers) {
             if (nearbyPlayer instanceof Player player) {

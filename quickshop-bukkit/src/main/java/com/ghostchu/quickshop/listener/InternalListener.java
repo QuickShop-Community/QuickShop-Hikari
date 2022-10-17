@@ -26,15 +26,14 @@ import java.util.concurrent.TimeUnit;
 
 public class InternalListener extends AbstractQSListener {
     private final QuickShop plugin;
-    private boolean loggingBalance;
-    private boolean loggingAction;
-
     private final Cache<Shop, SpaceCache> countUpdateCache = CacheBuilder
             .newBuilder()
             .weakKeys()
             .expireAfterAccess(5, TimeUnit.MINUTES)
             .maximumSize(100)
             .build();
+    private boolean loggingBalance;
+    private boolean loggingAction;
 
     public InternalListener(QuickShop plugin) {
         super(plugin);

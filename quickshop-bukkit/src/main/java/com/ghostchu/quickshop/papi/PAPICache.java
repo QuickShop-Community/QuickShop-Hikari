@@ -157,6 +157,11 @@ public class PAPICache implements Reloadable {
         }
     }
 
+    @NotNull
+    private String compileUniqueKey(@NotNull UUID player, @NotNull String queryString) {
+        return JsonUtil.standard().toJson(new CompiledUniqueKey(player, queryString));
+    }
+
     private long getShopsInWorld(@NotNull String world, boolean loadedOnly) {
         return plugin.getShopManager().getAllShops().stream()
                 .filter(shop -> shop.getLocation().getWorld() != null)
@@ -188,11 +193,6 @@ public class PAPICache implements Reloadable {
     @Nullable
     public String readCache(@NotNull UUID player, @NotNull String queryString) {
         return performCaches.getIfPresent(compileUniqueKey(player, queryString));
-    }
-
-    @NotNull
-    private String compileUniqueKey(@NotNull UUID player, @NotNull String queryString) {
-        return JsonUtil.standard().toJson(new CompiledUniqueKey(player, queryString));
     }
 
     @Override

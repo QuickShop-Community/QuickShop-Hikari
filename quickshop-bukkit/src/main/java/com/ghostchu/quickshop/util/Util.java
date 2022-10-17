@@ -518,6 +518,14 @@ public class Util {
         }
     }
 
+    public static int getItemTotalAmountsInMap(Map<Integer, ItemStack> map) {
+        int total = 0;
+        for (ItemStack value : map.values()) {
+            total += value.getAmount();
+        }
+        return total;
+    }
+
     /**
      * Return the player names based on the configuration
      *
@@ -599,6 +607,17 @@ public class Util {
         return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
     }
 
+//    /**
+//     * Convert strList to String. E.g "Foo, Bar"
+//     *
+//     * @param strList Target list
+//     * @return str
+//     */
+//    @NotNull
+//    public static String list2String(@NotNull Collection<String> strList) {
+//        return String.join(", ", strList);
+//    }
+
     /**
      * return the right side for given blockFace
      *
@@ -615,17 +634,6 @@ public class Util {
             default -> blockFace;
         };
     }
-
-//    /**
-//     * Convert strList to String. E.g "Foo, Bar"
-//     *
-//     * @param strList Target list
-//     * @return str
-//     */
-//    @NotNull
-//    public static String list2String(@NotNull Collection<String> strList) {
-//        return String.join(", ", strList);
-//    }
 
     /**
      * Gets the CommandSender unique id.
@@ -1171,12 +1179,5 @@ public class Util {
         public boolean isPresent() {
             return value != null;
         }
-    }
-    public static int getItemTotalAmountsInMap(Map<Integer, ItemStack> map){
-        int total = 0;
-        for (ItemStack value : map.values()) {
-            total += value.getAmount();
-        }
-        return total;
     }
 }

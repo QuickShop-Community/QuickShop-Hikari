@@ -50,22 +50,14 @@ public abstract class AbstractDisplayItem implements Reloadable {
         init();
     }
 
-    /**
-     * Get PLUGIN now is using which one DisplayType
-     *
-     * @return Using displayType.
-     */
-    @NotNull
-    public static DisplayType getNowUsing() {
-        DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
-        //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
-        if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
-            PLUGIN.getConfig().set("shop.display-type", 0);
-            PLUGIN.saveConfig();
-            PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because " + displayType.name() + " type is unsupported");
-            return DisplayType.REALITEM;
+    protected void init() {
+        DISPLAY_ALLOW_STACKS = PLUGIN.getConfig().getBoolean("shop.display-allow-stacks");
+        if (DISPLAY_ALLOW_STACKS) {
+            //Prevent stack over the normal size
+            originalItemStack.setAmount(Math.min(originalItemStack.getAmount(), originalItemStack.getMaxStackSize()));
+        } else {
+            this.originalItemStack.setAmount(1);
         }
-        return displayType;
     }
 
     /**
@@ -121,13 +113,21 @@ public abstract class AbstractDisplayItem implements Reloadable {
     }
 
     /**
-     * Gets the original ItemStack (without protection mark, should same with shop trading item.
+     * Get PLUGIN now is using which one DisplayType
      *
-     * @return ItemStack
+     * @return Using displayType.
      */
     @NotNull
-    public ItemStack getOriginalItemStack() {
-        return originalItemStack;
+    public static DisplayType getNowUsing() {
+        DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
+        //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
+        if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
+            PLUGIN.getConfig().set("shop.display-type", 0);
+            PLUGIN.saveConfig();
+            PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because " + displayType.name() + " type is unsupported");
+            return DisplayType.REALITEM;
+        }
+        return displayType;
     }
 
     /**
@@ -286,18 +286,22 @@ public abstract class AbstractDisplayItem implements Reloadable {
     }
 
     /**
+     * Gets the original ItemStack (without protection mark, should same with shop trading item.
+     *
+     * @return ItemStack
+     */
+    @NotNull
+    public ItemStack getOriginalItemStack() {
+        return originalItemStack;
+    }
+
+    /**
      * Gets this display item should be remove
      *
      * @return the status
      */
     public boolean isPendingRemoval() {
         return pendingRemoval;
-    }
-
-    @Override
-    public ReloadResult reloadModule() {
-        init();
-        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 
     /**
@@ -314,14 +318,10 @@ public abstract class AbstractDisplayItem implements Reloadable {
         pendingRemoval = true;
     }
 
-    protected void init() {
-        DISPLAY_ALLOW_STACKS = PLUGIN.getConfig().getBoolean("shop.display-allow-stacks");
-        if (DISPLAY_ALLOW_STACKS) {
-            //Prevent stack over the normal size
-            originalItemStack.setAmount(Math.min(originalItemStack.getAmount(), originalItemStack.getMaxStackSize()));
-        } else {
-            this.originalItemStack.setAmount(1);
-        }
+    @Override
+    public ReloadResult reloadModule() {
+        init();
+        return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 
     /**

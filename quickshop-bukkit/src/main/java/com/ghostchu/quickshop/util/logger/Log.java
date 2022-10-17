@@ -48,6 +48,12 @@ public class Log {
         LOCK.writeLock().unlock();
     }
 
+    private static void debugStdOutputs(Record record) {
+        if (Util.isDevMode()) {
+            QuickShop.getInstance().getLogger().info("[DEBUG] " + record.toString());
+        }
+    }
+
     public static void cron(@NotNull Level level, @NotNull String message) {
         cron(level, message, Caller.create());
     }
@@ -68,12 +74,6 @@ public class Log {
         loggerBuffer.offer(record);
         debugStdOutputs(record);
         LOCK.writeLock().unlock();
-    }
-
-    private static void debugStdOutputs(Record record) {
-        if (Util.isDevMode()) {
-            QuickShop.getInstance().getLogger().info("[DEBUG] " + record.toString());
-        }
     }
 
     public static void debug(@NotNull Level level, @NotNull String message) {

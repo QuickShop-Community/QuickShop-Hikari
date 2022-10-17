@@ -34,6 +34,11 @@ public class ConfigUpdateScript {
         getConfig().set("syntax-parser", 0);
     }
 
+    @UpdateScript(version = 1010)
+    public void allowDisableQsSizeCommandMaxStackSizeCheck() {
+        getConfig().set("shop.disable-max-size-check-for-size-command", false);
+    }
+
     @UpdateScript(version = 1004)
     public void configurableDatabaseProperties() {
         getConfig().set("database.queue", null);
@@ -52,6 +57,12 @@ public class ConfigUpdateScript {
         getConfig().set("database.properties.useUnicode", true);
         getConfig().set("database.properties.characterEncoding", "utf8");
         getConfig().set("database.properties.connection-timeout", 60000);
+    }
+
+    @UpdateScript(version = 1009)
+    public void deleteSqlitePlayerMapping() {
+        File f = new File(Util.getCacheFolder(), "player_mapping.db");
+        if (f.exists()) f.delete();
     }
 
     @UpdateScript(version = 1008)
@@ -110,25 +121,15 @@ public class ConfigUpdateScript {
         return o;
     }
 
-    @UpdateScript(version = 1007)
-    public void refundFromTaxAccountOption() {
-        getConfig().set("shop.refund-from-tax-account", false);
-    }
-
     @UpdateScript(version = 1008)
     public void perPlayerShopSign() {
         getConfig().set("shop.per-player-shop-sign", false);
     }
-    @UpdateScript(version = 1009)
-    public void deleteSqlitePlayerMapping() {
-        File f = new File(Util.getCacheFolder(), "player_mapping.db");
-        if(f.exists()) f.delete();
-    }
-    @UpdateScript(version = 1010)
-    public void allowDisableQsSizeCommandMaxStackSizeCheck() {
-        getConfig().set("shop.disable-max-size-check-for-size-command",false);
-    }
 
+    @UpdateScript(version = 1007)
+    public void refundFromTaxAccountOption() {
+        getConfig().set("shop.refund-from-tax-account", false);
+    }
 
     @UpdateScript(version = 1001)
     public void shopName() {

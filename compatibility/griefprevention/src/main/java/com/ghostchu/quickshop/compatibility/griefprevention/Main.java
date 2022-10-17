@@ -69,6 +69,21 @@ public final class Main extends CompatibilityModule implements Listener {
         handleMainClaimUnclaimedOrExpired(event.getClaim(), "[SHOP DELETE] GP Integration: Single delete (Claim Expired) #");
     }
 
+    // If it is the main claim, then we will delete all the shops that were inside of it.
+    private void handleMainClaimUnclaimedOrExpired(Claim claim, String logMessage) {
+        for (Chunk chunk : claim.getChunks()) {
+            Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
+            if (shops != null) {
+                for (Shop shop : shops.values()) {
+                    if (claim.contains(shop.getLocation(), false, false)) {
+                        getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [System] Claim/SubClaim Unclaimed/Expired: " + logMessage, this.getName(), shop), shop.saveToInfoStorage()));
+                        shop.delete();
+                    }
+                }
+            }
+        }
+    }
+
     // Player can resize the main claim or the subclaim.
     // So we need to call either the handleMainClaimResized or the handleSubClaimResized method.
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -111,14 +126,15 @@ public final class Main extends CompatibilityModule implements Listener {
         handleSubClaimResizedHelper(newClaim, oldClaim);
     }
 
-    // If it is the main claim, then we will delete all the shops that were inside of it.
-    private void handleMainClaimUnclaimedOrExpired(Claim claim, String logMessage) {
-        for (Chunk chunk : claim.getChunks()) {
+    private void handleSubClaimResizedHelper(Claim claimVerifyChunks, Claim claimVerifyShop) {
+        for (Chunk chunk : claimVerifyChunks.getChunks()) {
             Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
             if (shops != null) {
                 for (Shop shop : shops.values()) {
-                    if (claim.contains(shop.getLocation(), false, false)) {
-                        getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [System] Claim/SubClaim Unclaimed/Expired: " + logMessage, this.getName(), shop), shop.saveToInfoStorage()));
+                    if (!shop.getOwner().equals(claimVerifyChunks.getOwnerID()) &&
+                            claimVerifyChunks.contains(shop.getLocation(), false, false) &&
+                            !claimVerifyShop.contains(shop.getLocation(), false, false)) {
+                        getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Resized: ", this.getName(), shop), shop.saveToInfoStorage()));
                         shop.delete();
                     }
                 }
@@ -182,22 +198,6 @@ public final class Main extends CompatibilityModule implements Listener {
             handleMainClaimUnclaimedOrExpired(event.getClaim(), "[SHOP DELETE] GP Integration: Single delete (Claim Unclaimed) #");
         } else {
             handleSubClaimUnclaimed(event.getClaim());
-        }
-    }
-
-    private void handleSubClaimResizedHelper(Claim claimVerifyChunks, Claim claimVerifyShop) {
-        for (Chunk chunk : claimVerifyChunks.getChunks()) {
-            Map<Location, Shop> shops = getApi().getShopManager().getShops(chunk);
-            if (shops != null) {
-                for (Shop shop : shops.values()) {
-                    if (!shop.getOwner().equals(claimVerifyChunks.getOwnerID()) &&
-                            claimVerifyChunks.contains(shop.getLocation(), false, false) &&
-                            !claimVerifyShop.contains(shop.getLocation(), false, false)) {
-                        getApi().logEvent(new ShopRemoveLog(CommonUtil.getNilUniqueId(), String.format("[%s Integration]Shop %s deleted caused by [Single] SubClaim Resized: ", this.getName(), shop), shop.saveToInfoStorage()));
-                        shop.delete();
-                    }
-                }
-            }
         }
     }
 

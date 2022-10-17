@@ -53,6 +53,21 @@ public final class Main extends CompatibilityModule {
         }
     }
 
+    private boolean playerHas(FlagPermissions permissions, Player player, String name, boolean def) {
+        Flags internalFlag = Flags.getFlag(name);
+        if (internalFlag == null) {
+            Map<String, Boolean> permPlayerMap = permissions.getPlayerFlags(player.getName());
+            Map<String, Boolean> permGlobalMap = permissions.getFlags();
+            if (permPlayerMap != null) {
+                return permPlayerMap.getOrDefault(name, permGlobalMap.getOrDefault(name, def));
+            } else {
+                return permGlobalMap.getOrDefault(name, def);
+            }
+        } else {
+            return permissions.playerHas(player, internalFlag, def);
+        }
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onPreCreation(ShopPreCreateEvent event) {
         Location shopLoc = event.getLocation();
@@ -67,21 +82,6 @@ public final class Main extends CompatibilityModule {
             if (!playerHas(Residence.getInstance().getWorldFlags().getPerms(shopLoc.getWorld().getName()), event.getPlayer(), CREATE_FLAG, false)) {
                 event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.residence.creation-flag-denied").forLocale());
             }
-        }
-    }
-
-    private boolean playerHas(FlagPermissions permissions, Player player, String name, boolean def) {
-        Flags internalFlag = Flags.getFlag(name);
-        if (internalFlag == null) {
-            Map<String, Boolean> permPlayerMap = permissions.getPlayerFlags(player.getName());
-            Map<String, Boolean> permGlobalMap = permissions.getFlags();
-            if (permPlayerMap != null) {
-                return permPlayerMap.getOrDefault(name, permGlobalMap.getOrDefault(name, def));
-            } else {
-                return permGlobalMap.getOrDefault(name, def);
-            }
-        } else {
-            return permissions.playerHas(player, internalFlag, def);
         }
     }
 

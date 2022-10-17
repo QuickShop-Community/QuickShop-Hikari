@@ -1462,58 +1462,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
     }
 
-    private void processCreationFail(@NotNull Shop shop, @NotNull UUID owner, @NotNull Throwable e2) {
-        plugin.getLogger()
-                .log(Level.SEVERE, "Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
-        Player player = plugin.getServer().getPlayer(owner);
-        if (player != null) {
-            plugin.text().of(player, "shop-creation-failed").send();
-        }
-        Util.mainThreadRun(() -> {
-            shop.onUnload();
-            removeShop(shop);
-            shop.delete();
-        });
-    }
-
-    @Nullable
-    public Shop findShopIncludeAttached(@NotNull Location loc, boolean fromAttach) {
-        Shop shop = getShop(loc);
-
-        // failed, get attached shop
-        if (shop == null) {
-            Block block = loc.getBlock();
-            if (!Util.isShoppables(block.getType())) {
-                return null;
-            }
-            final Block currentBlock = loc.getBlock();
-            if (!fromAttach) {
-                // sign
-                if (Util.isWallSign(currentBlock.getType())) {
-                    final Block attached = Util.getAttached(currentBlock);
-                    if (attached != null) {
-                        shop = this.findShopIncludeAttached(attached.getLocation(), true);
-                    }
-                } else {
-                    // optimize for performance
-                    BlockState state = PaperLib.getBlockState(currentBlock, false).getState();
-                    if (!(state instanceof Container)) {
-                        return null;
-                    }
-                    @Nullable final Block half = Util.getSecondHalf(currentBlock);
-                    if (half != null) {
-                        shop = getShop(half.getLocation());
-                    }
-                }
-            }
-        }
-        // add cache if using
-        if (plugin.getShopCache() != null) {
-            plugin.getShopCache().setCache(loc, shop);
-        }
-        return shop;
-    }
-
     private int buyingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
         int amount;
         int shopHaveSpaces =
@@ -1567,6 +1515,58 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return 0;
         }
         return amount;
+    }
+
+    @Nullable
+    public Shop findShopIncludeAttached(@NotNull Location loc, boolean fromAttach) {
+        Shop shop = getShop(loc);
+
+        // failed, get attached shop
+        if (shop == null) {
+            Block block = loc.getBlock();
+            if (!Util.isShoppables(block.getType())) {
+                return null;
+            }
+            final Block currentBlock = loc.getBlock();
+            if (!fromAttach) {
+                // sign
+                if (Util.isWallSign(currentBlock.getType())) {
+                    final Block attached = Util.getAttached(currentBlock);
+                    if (attached != null) {
+                        shop = this.findShopIncludeAttached(attached.getLocation(), true);
+                    }
+                } else {
+                    // optimize for performance
+                    BlockState state = PaperLib.getBlockState(currentBlock, false).getState();
+                    if (!(state instanceof Container)) {
+                        return null;
+                    }
+                    @Nullable final Block half = Util.getSecondHalf(currentBlock);
+                    if (half != null) {
+                        shop = getShop(half.getLocation());
+                    }
+                }
+            }
+        }
+        // add cache if using
+        if (plugin.getShopCache() != null) {
+            plugin.getShopCache().setCache(loc, shop);
+        }
+        return shop;
+    }
+
+    private void processCreationFail(@NotNull Shop shop, @NotNull UUID owner, @NotNull Throwable e2) {
+        plugin.getLogger()
+                .log(Level.SEVERE, "Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
+        Player player = plugin.getServer().getPlayer(owner);
+        if (player != null) {
+            plugin.text().of(player, "shop-creation-failed").send();
+        }
+        Util.mainThreadRun(() -> {
+            shop.onUnload();
+            removeShop(shop);
+            shop.delete();
+        });
     }
 
     private void processWaterLoggedSign(@NotNull Block container, @NotNull Block signBlock) {

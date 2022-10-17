@@ -214,71 +214,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
     }
 
     /**
-     * Merge override data into distribution configuration to override texts
-     *
-     * @param distributionConfiguration The configuration that from distribution (will override it)
-     * @param overrideConfiguration     The configuration that from local
-     */
-    private void applyOverrideConfiguration(@NotNull FileConfiguration distributionConfiguration, @NotNull FileConfiguration overrideConfiguration) {
-        for (String key : overrideConfiguration.getKeys(true)) {
-            if ("language-version".equals(key) || "config-version".equals(key) || "_comment".equals(key) || "version".equals(key)) {
-                continue;
-            }
-            Object content = overrideConfiguration.get(key);
-            if (content instanceof ConfigurationSection) {
-                continue;
-            }
-            //Log.debug("Override key " + key + " with content: " + content);
-            distributionConfiguration.set(key, content);
-        }
-    }
-/**
-     * Getting configuration from distribution platform
-     *
-     * @param distributionFile Distribution path
-     * @param distributionCode Locale code on distribution platform
-     * @return The configuration
-     * @throws Exception Any errors when getting it
-     */
-private FileConfiguration getDistributionConfiguration(@NotNull String distributionFile, @NotNull String distributionCode) throws Exception {
-    FileConfiguration configuration = new YamlConfiguration();
-    try {
-        // Load the locale file from local cache if available
-        // Or load the locale file from remote server if it had updates or not exists.
-        if (distribution == null) {
-            throw new IllegalStateException("Distribution hadn't initialized yet!");
-        }
-        configuration.loadFromString(distribution.getFile(distributionFile, distributionCode));
-    } catch (InvalidConfigurationException exception) {
-        // Force loading the locale file form remote server because file not valid.
-        configuration.loadFromString(distribution.getFile(distributionFile, distributionCode, true));
-        plugin.getLogger().log(Level.WARNING, "Cannot load language file from distribution platform, some strings may missing!", exception);
-    }
-    return configuration;
-}
-
-    /**
-     * Gets specific locale status
-     *
-     * @param locale The locale
-     * @param regex  The regexes
-     * @return The locale enabled status
-     */
-    @Override
-    public boolean localeEnabled(@NotNull String locale, @NotNull List<String> regex) {
-        for (String languagesRegex : regex) {
-            try {
-                if (Pattern.matches(CommonUtil.createRegexFromGlob(languagesRegex), locale)) {
-                    return true;
-                }
-            } catch (PatternSyntaxException exception) {
-                Log.debug("Pattern " + languagesRegex + " invalid, skipping...");
-            }
-        }
-        return false;
-    }
-
-    /**
      * Getting user's override configuration for specific distribution path
      *
      * @param locale the locale
@@ -302,6 +237,70 @@ private FileConfiguration getDistributionConfiguration(@NotNull String distribut
     }
 
     /**
+     * Merge override data into distribution configuration to override texts
+     *
+     * @param distributionConfiguration The configuration that from distribution (will override it)
+     * @param overrideConfiguration     The configuration that from local
+     */
+    private void applyOverrideConfiguration(@NotNull FileConfiguration distributionConfiguration, @NotNull FileConfiguration overrideConfiguration) {
+        for (String key : overrideConfiguration.getKeys(true)) {
+            if ("language-version".equals(key) || "config-version".equals(key) || "_comment".equals(key) || "version".equals(key)) {
+                continue;
+            }
+            Object content = overrideConfiguration.get(key);
+            if (content instanceof ConfigurationSection) {
+                continue;
+            }
+            //Log.debug("Override key " + key + " with content: " + content);
+            distributionConfiguration.set(key, content);
+        }
+    }
+
+    /**
+     * Getting configuration from distribution platform
+     *
+     * @param distributionFile Distribution path
+     * @param distributionCode Locale code on distribution platform
+     * @return The configuration
+     * @throws Exception Any errors when getting it
+     */
+    private FileConfiguration getDistributionConfiguration(@NotNull String distributionFile, @NotNull String distributionCode) throws Exception {
+        FileConfiguration configuration = new YamlConfiguration();
+        try {
+            // Load the locale file from local cache if available
+            // Or load the locale file from remote server if it had updates or not exists.
+            if (distribution == null) {
+                throw new IllegalStateException("Distribution hadn't initialized yet!");
+            }
+            configuration.loadFromString(distribution.getFile(distributionFile, distributionCode));
+        } catch (InvalidConfigurationException exception) {
+            // Force loading the locale file form remote server because file not valid.
+            configuration.loadFromString(distribution.getFile(distributionFile, distributionCode, true));
+            plugin.getLogger().log(Level.WARNING, "Cannot load language file from distribution platform, some strings may missing!", exception);
+        }
+        return configuration;
+    }    /**
+     * Gets specific locale status
+     *
+     * @param locale The locale
+     * @param regex  The regexes
+     * @return The locale enabled status
+     */
+    @Override
+    public boolean localeEnabled(@NotNull String locale, @NotNull List<String> regex) {
+        for (String languagesRegex : regex) {
+            try {
+                if (Pattern.matches(CommonUtil.createRegexFromGlob(languagesRegex), locale)) {
+                    return true;
+                }
+            } catch (PatternSyntaxException exception) {
+                Log.debug("Pattern " + languagesRegex + " invalid, skipping...");
+            }
+        }
+        return false;
+    }
+
+    /**
      * Generate the override files storage path
      *
      * @param localeCode The language localeCode
@@ -317,39 +316,6 @@ private FileConfiguration getDistributionConfiguration(@NotNull String distribut
             Files.deleteIfExists(fileFolder.toPath()); //TODO Workaround for v5 beta stage a bug, delete it in future
         }
         return moduleFolder;
-    }
-
-    @Override
-    @NotNull
-    public ProxiedLocale findRelativeLanguages(@Nullable String langCode) {
-        //langCode may null when some plugins providing fake player
-        if (langCode == null || langCode.isEmpty()) {
-            return new ProxiedLocale(langCode, "en_us");
-        }
-        String result = languagesCache.getIfPresent(langCode);
-        if (result == null) {
-            result = "en_us";
-            if (availableLanguages.contains(langCode)) {
-                result = langCode;
-            } else {
-                String[] splits = langCode.split("_", 2);
-                String start = langCode;
-                String end = langCode;
-                if (splits.length == 2) {
-                    start = splits[0] + "_";
-                    end = "_" + splits[1];
-                }
-                for (String availableLanguage : availableLanguages) {
-                    if (availableLanguage.startsWith(start) || availableLanguage.endsWith(end)) {
-                        result = availableLanguage;
-                        break;
-                    }
-                }
-            }
-            Log.debug("Registering relative language " + langCode + " to " + result);
-            languagesCache.put(langCode, result);
-        }
-        return new ProxiedLocale(langCode, result);
     }
 
     public static class TextList implements com.ghostchu.quickshop.api.localization.text.TextList {
@@ -588,7 +554,42 @@ private FileConfiguration getDistributionConfiguration(@NotNull String distribut
             }
             return text;
         }
+    }    @Override
+    @NotNull
+    public ProxiedLocale findRelativeLanguages(@Nullable String langCode) {
+        //langCode may null when some plugins providing fake player
+        if (langCode == null || langCode.isEmpty()) {
+            return new ProxiedLocale(langCode, "en_us");
+        }
+        String result = languagesCache.getIfPresent(langCode);
+        if (result == null) {
+            result = "en_us";
+            if (availableLanguages.contains(langCode)) {
+                result = langCode;
+            } else {
+                String[] splits = langCode.split("_", 2);
+                String start = langCode;
+                String end = langCode;
+                if (splits.length == 2) {
+                    start = splits[0] + "_";
+                    end = "_" + splits[1];
+                }
+                for (String availableLanguage : availableLanguages) {
+                    if (availableLanguage.startsWith(start) || availableLanguage.endsWith(end)) {
+                        result = availableLanguage;
+                        break;
+                    }
+                }
+            }
+            Log.debug("Registering relative language " + langCode + " to " + result);
+            languagesCache.put(langCode, result);
+        }
+        return new ProxiedLocale(langCode, result);
     }
+
+
+
+
 
     @Override
     public @NotNull ProxiedLocale findRelativeLanguages(@Nullable CommandSender sender) {
@@ -769,20 +770,21 @@ private FileConfiguration getDistributionConfiguration(@NotNull String distribut
 
     /**
      * Register the language phrase to QuickShop text manager in runtime.
+     *
      * @param locale Target locale
-     * @param path The language key path
-     * @param text The language text
+     * @param path   The language key path
+     * @param text   The language text
      */
     @SneakyThrows
     @Override
     public void register(@NotNull String locale, @NotNull String path, @NotNull String text) {
         FileConfiguration configuration = languageFilesManager.getDistribution(locale);
-        if(configuration == null){
+        if (configuration == null) {
             configuration = new YamlConfiguration();
             configuration.loadFromString(languageFilesManager.getDistribution("en_us").saveToString());
         }
-        configuration.set(path,text);
-        languageFilesManager.deploy(locale,configuration);
+        configuration.set(path, text);
+        languageFilesManager.deploy(locale, configuration);
     }
 
 
