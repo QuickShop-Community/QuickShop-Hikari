@@ -7,57 +7,14 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Wrapper to handle inventory/fake inventory/custom inventory etc.
  */
 public interface InventoryWrapper extends Iterable<ItemStack> {
-
-    /**
-     * Add specific items from inventory
-     *
-     * @param itemStacks items to add
-     * @return The map of containing item index and itemStack itself which is not fit
-     */
-    @NotNull
-    default Map<Integer, ItemStack> addItem(ItemStack... itemStacks) {
-        if (itemStacks.length == 0) {
-            return Collections.emptyMap();
-        }
-        InventoryWrapperIterator iterator = iterator();
-        Map<Integer, ItemStack> integerItemStackMap = new HashMap<>();
-        AddProcess:
-        for (int i = 0; i < itemStacks.length; i++) {
-            ItemStack itemStackToAdd = itemStacks[i];
-            while (iterator.hasNext()) {
-                ItemStack itemStack = iterator.next();
-                if (itemStack == null) {
-                    iterator.setCurrent(itemStackToAdd);
-                    itemStackToAdd.setAmount(0);
-                    continue AddProcess;
-                } else {
-                    if (itemStack.isSimilar(itemStackToAdd)) {
-                        int couldAdd = itemStack.getMaxStackSize() - Math.min(itemStack.getMaxStackSize(), itemStack.getAmount());
-                        int actuallyAdd = Math.min(itemStackToAdd.getAmount(), couldAdd);
-                        itemStack.setAmount(itemStack.getAmount() + actuallyAdd);
-                        int needsNow = itemStackToAdd.getAmount() - actuallyAdd;
-                        itemStackToAdd.setAmount(needsNow);
-                        iterator.setCurrent(itemStack);
-                        if (needsNow == 0) {
-                            continue AddProcess;
-                        }
-                    }
-                }
-            }
-            if (itemStackToAdd.getAmount() != 0) {
-                integerItemStackMap.put(i, itemStackToAdd);
-            }
-        }
-        return integerItemStackMap;
-    }
 
     /**
      * Change items in the inventory by index
@@ -100,6 +57,32 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
     void clear();
 
     /**
+     * Create an Inventory snapshot (including Empty slots).
+     * QuickShop-Hikari will shoot a snapshot for inventory used for purchase failure rollback.
+     * Note: provide an invalid snapshot will cause rollback break whole Inventory!
+     * WARNING: High recommend to override this method, default method doing by badways and low-performance,
+     * may mess up Inventory item order.
+     *
+     * @return The inventory contents for snapshot use.
+     */
+    @NotNull
+    default ItemStack[] createSnapshot() {
+        Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#createSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");
+        List<ItemStack> contents = new ArrayList<>();
+        for (ItemStack stack : this) {
+            contents.add(stack.clone());
+        }
+        return contents.toArray(new ItemStack[0]);
+    }
+
+    /**
+     * Gets the Inventory Wrapper Manager
+     *
+     * @return Wrapper Manager
+     */
+    @NotNull InventoryWrapperManager getWrapperManager();
+
+    /**
      * Gets the block or entity belonging to the open inventory
      *
      * @return The holder of the inventory; null if it has no holder.
@@ -120,13 +103,6 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
      * @return location or null if not applicable.
      */
     @Nullable Location getLocation();
-
-    /**
-     * Gets the Inventory Wrapper Manager
-     *
-     * @return Wrapper Manager
-     */
-    @NotNull InventoryWrapperManager getWrapperManager();
 
     /**
      * Do valid check, check if this Inventory is valid.
@@ -169,6 +145,68 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
             }
             if (itemStackToRemove.getAmount() != 0) {
                 integerItemStackMap.put(i, itemStackToRemove);
+            }
+        }
+        return integerItemStackMap;
+    }
+
+    /**
+     * Rollback Inventory by a snapshot.
+     * Snapshot can be created by InventoryWrapper#createSnapshot()
+     * WARNING: High recommend to override this method, default method doing by badways and low-performance,
+     * may mess up Inventory item order.
+     *
+     * @param snapshot The inventory content snapshot
+     * @return The result of rollback.
+     */
+    default boolean restoreSnapshot(@NotNull ItemStack[] snapshot) {
+        Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#restoreSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");
+        InventoryWrapperIterator it = iterator();
+        while (it.hasNext()) {
+            it.remove();
+        }
+        Map<Integer, ItemStack> result = addItem(snapshot);
+        return result.isEmpty();
+    }
+
+    /**
+     * Add specific items from inventory
+     *
+     * @param itemStacks items to add
+     * @return The map of containing item index and itemStack itself which is not fit
+     */
+    @NotNull
+    default Map<Integer, ItemStack> addItem(ItemStack... itemStacks) {
+        if (itemStacks.length == 0) {
+            return Collections.emptyMap();
+        }
+        InventoryWrapperIterator iterator = iterator();
+        Map<Integer, ItemStack> integerItemStackMap = new HashMap<>();
+        AddProcess:
+        for (int i = 0; i < itemStacks.length; i++) {
+            ItemStack itemStackToAdd = itemStacks[i];
+            while (iterator.hasNext()) {
+                ItemStack itemStack = iterator.next();
+                if (itemStack == null) {
+                    iterator.setCurrent(itemStackToAdd);
+                    itemStackToAdd.setAmount(0);
+                    continue AddProcess;
+                } else {
+                    if (itemStack.isSimilar(itemStackToAdd)) {
+                        int couldAdd = itemStack.getMaxStackSize() - Math.min(itemStack.getMaxStackSize(), itemStack.getAmount());
+                        int actuallyAdd = Math.min(itemStackToAdd.getAmount(), couldAdd);
+                        itemStack.setAmount(itemStack.getAmount() + actuallyAdd);
+                        int needsNow = itemStackToAdd.getAmount() - actuallyAdd;
+                        itemStackToAdd.setAmount(needsNow);
+                        iterator.setCurrent(itemStack);
+                        if (needsNow == 0) {
+                            continue AddProcess;
+                        }
+                    }
+                }
+            }
+            if (itemStackToAdd.getAmount() != 0) {
+                integerItemStackMap.put(i, itemStackToAdd);
             }
         }
         return integerItemStackMap;

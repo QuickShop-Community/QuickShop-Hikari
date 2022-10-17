@@ -97,7 +97,7 @@ public final class Main extends CompatibilityModule implements Listener {
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
         if (!query.testState(BukkitAdapter.adapt(event.getLocation()), localPlayer, this.createFlag)) {
-            event.setCancelled(true, "WorldGuard CreationFlag Test Failed");
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.worldguard.creation-flag-test-failed").forLocale());
         }
     }
 
@@ -107,7 +107,7 @@ public final class Main extends CompatibilityModule implements Listener {
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
         if (!query.testState(BukkitAdapter.adapt(event.getShop().getLocation()), localPlayer, this.createFlag)) {
-            event.setCancelled(true, "WorldGuard CreationFlag Test Failed");
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.worldguard.creation-flag-test-failed").forLocale());
         }
     }
 
@@ -117,7 +117,7 @@ public final class Main extends CompatibilityModule implements Listener {
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
         if (!query.testState(BukkitAdapter.adapt(event.getShop().getLocation()), localPlayer, this.tradeFlag)) {
-            event.setCancelled(true, "WorldGuard TradeFlag Test Failed");
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.worldguard.trade-flag-test-failed").forLocale());
         }
     }
 }

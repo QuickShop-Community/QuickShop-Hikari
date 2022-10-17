@@ -333,7 +333,7 @@ public class MsgUtil {
                 if (p.getName() != null && plugin.getConfig().getBoolean("bungee-cross-server-msg", true)) {
                     plugin.getDatabaseHelper().getPlayerLocale(uuid).whenCompleteAsync((locale, err) -> {
                         if (locale != null) {
-                           sendBungeeMessage(p.getName(),shopTransactionMessage,locale);
+                            sendBungeeMessage(p.getName(), shopTransactionMessage, locale);
                         }
                     });
                 }
@@ -347,8 +347,8 @@ public class MsgUtil {
             }
         }
     }
-    
-    public static void sendBungeeMessage(@NotNull String playerName, @NotNull Component message, @NotNull String locale){
+
+    public static void sendBungeeMessage(@NotNull String playerName, @NotNull Component message, @NotNull String locale) {
         Component csmMessage = plugin.text().of("bungee-cross-server-msg", message).forLocale(locale);
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("MessageRaw");
@@ -384,6 +384,24 @@ public class MsgUtil {
 
     public static void sendDirectMessage(@NotNull UUID sender, @Nullable Component... messages) {
         sendDirectMessage(Bukkit.getPlayer(sender), messages);
+    }
+
+    public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable Component... messages) {
+        if (messages == null) {
+            return;
+        }
+        if (sender == null) {
+            return;
+        }
+        for (Component msg : messages) {
+            if (msg == null) {
+                return;
+            }
+            if (Util.isEmptyComponent(msg)) {
+                return;
+            }
+            plugin.getPlatform().sendMessage(sender, msg);
+        }
     }
 
     public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable String... messages) {
@@ -429,24 +447,6 @@ public class MsgUtil {
             if (QuickShop.getPermissionManager().hasPermission(player, "quickshop.alerts")) {
                 MsgUtil.sendDirectMessage(player, LegacyComponentSerializer.legacySection().deserialize(message));
             }
-        }
-    }
-
-    public static void sendDirectMessage(@Nullable CommandSender sender, @Nullable Component... messages) {
-        if (messages == null) {
-            return;
-        }
-        if (sender == null) {
-            return;
-        }
-        for (Component msg : messages) {
-            if (msg == null) {
-                return;
-            }
-            if (Util.isEmptyComponent(msg)) {
-                return;
-            }
-            plugin.getPlatform().sendMessage(sender, msg);
         }
     }
 }

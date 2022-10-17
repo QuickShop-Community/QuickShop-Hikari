@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.util.config;
 
 import com.dumptruckman.bukkit.configuration.json.JsonConfiguration;
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.Util;
 import de.themoep.minedown.adventure.MineDown;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
@@ -33,6 +34,11 @@ public class ConfigUpdateScript {
         getConfig().set("syntax-parser", 0);
     }
 
+    @UpdateScript(version = 1010)
+    public void allowDisableQsSizeCommandMaxStackSizeCheck() {
+        getConfig().set("shop.disable-max-size-check-for-size-command", false);
+    }
+
     @UpdateScript(version = 1004)
     public void configurableDatabaseProperties() {
         getConfig().set("database.queue", null);
@@ -51,6 +57,12 @@ public class ConfigUpdateScript {
         getConfig().set("database.properties.useUnicode", true);
         getConfig().set("database.properties.characterEncoding", "utf8");
         getConfig().set("database.properties.connection-timeout", 60000);
+    }
+
+    @UpdateScript(version = 1009)
+    public void deleteSqlitePlayerMapping() {
+        File f = new File(Util.getCacheFolder(), "player_mapping.db");
+        if (f.exists()) f.delete();
     }
 
     @UpdateScript(version = 1008)
@@ -107,6 +119,11 @@ public class ConfigUpdateScript {
             return MiniMessage.miniMessage().serialize(component);
         }
         return o;
+    }
+
+    @UpdateScript(version = 1008)
+    public void perPlayerShopSign() {
+        getConfig().set("shop.per-player-shop-sign", false);
     }
 
     @UpdateScript(version = 1007)

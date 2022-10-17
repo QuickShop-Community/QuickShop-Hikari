@@ -9,10 +9,10 @@ import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
@@ -86,6 +86,8 @@ public interface Platform {
     void registerCommand(@NotNull String prefix, @NotNull Command command);
 
     void sendMessage(@NotNull CommandSender sender, @NotNull Component component);
+
+    void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components);
 
     void setDisplayName(@NotNull ItemMeta meta, @Nullable Component component);
 

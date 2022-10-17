@@ -41,12 +41,6 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
         new InventoryTransactionEvent(this).callEvent();
     }
 
-    @Override
-    @Nullable
-    public InventoryWrapper getFrom() {
-        return from;
-    }
-
     public interface SimpleTransactionCallback extends InventoryTransaction.TransactionCallback {
         /**
          * Calling while Transaction commit
@@ -77,7 +71,13 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
         }
 
 
+    }    @Override
+    @Nullable
+    public InventoryWrapper getFrom() {
+        return from;
     }
+
+
 
     @Override
     public void setFrom(@Nullable InventoryWrapper from) {
@@ -204,14 +204,6 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
         List<Operation> operations = new ArrayList<>();
         while (!processingStack.isEmpty()) {
             Operation operation = processingStack.pop();
-            if (!operation.isCommitted()) {
-                Log.transaction("Operation: " + operation + " is not committed, skip rollback.");
-                continue;
-            }
-            if (operation.isRollback()) {
-                Log.transaction("Operation: " + operation + " is already rolled back, skip rollback.");
-                continue;
-            }
             try {
                 boolean result = operation.rollback();
                 if (!result) {
@@ -222,8 +214,9 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
                     } else {
                         break;
                     }
+                } else {
+                    Log.transaction("Rollback successes: " + operation);
                 }
-                Log.transaction("Rollback successes: " + operation);
                 operations.add(operation);
             } catch (Exception exception) {
                 if (continueWhenFailed) {
@@ -239,25 +232,14 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
     }
 
     private boolean executeOperation(@NotNull Operation operation) {
-        if (operation.isCommitted()) {
-            throw new IllegalStateException("Operation already committed");
-        }
-        if (operation.isRollback()) {
-            throw new IllegalStateException("Operation already rolled back, you must create another new operation.");
-        }
         try {
-            if (operation.commit()) {
-                processingStack.push(operation); // Item is special, economy fail won't do anything but item does.
-                return true;
-            }
-            return false;
+            processingStack.push(operation); // Item is special, economy fail won't do anything but item does.
+            return operation.commit();
         } catch (Exception exception) {
             this.lastError = "Failed to execute operation: " + operation;
             return false;
         }
     }
-
-
 
 
 }

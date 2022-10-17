@@ -25,13 +25,13 @@ public class BukkitGameLanguageImpl extends InternalGameLanguageImpl implements 
     }
 
     @Override
-    public @NotNull String getName() {
-        return "Bukkit";
+    public @NotNull String getEnchantment(@NotNull Enchantment enchantment) {
+        return super.getEnchantment(enchantment);
     }
 
     @Override
-    public @NotNull Plugin getPlugin() {
-        return plugin;
+    public @NotNull String getEntity(@NotNull EntityType entityType) {
+        return super.getEntity(entityType);
     }
 
     @Override
@@ -45,17 +45,17 @@ public class BukkitGameLanguageImpl extends InternalGameLanguageImpl implements 
     }
 
     @Override
+    public @NotNull String getName() {
+        return "Bukkit";
+    }
+
+    @Override
+    public @NotNull Plugin getPlugin() {
+        return plugin;
+    }
+
+    @Override
     public @NotNull String getPotion(@NotNull PotionEffectType potionEffectType) {
         return super.getPotion(potionEffectType);
-    }
-
-    @Override
-    public @NotNull String getEnchantment(@NotNull Enchantment enchantment) {
-        return super.getEnchantment(enchantment);
-    }
-
-    @Override
-    public @NotNull String getEntity(@NotNull EntityType entityType) {
-        return super.getEntity(entityType);
     }
 }

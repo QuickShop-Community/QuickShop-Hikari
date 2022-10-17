@@ -111,6 +111,30 @@ public class RealDisplayItem extends AbstractDisplayItem {
     }
 
     @Override
+    public @Nullable Entity getDisplay() {
+        return this.item;
+    }
+
+    @Override
+    public boolean isSpawned() {
+        if (this.item == null) {
+            return false;
+        }
+        // If it's a left shop, check the attached shop's item instead.
+        if (shop.isLeftShop()) {
+            Shop attachedShop = shop.getAttachedShop();
+            if (attachedShop instanceof ContainerShop shop) {
+                if (shop.getDisplayItem() == null) {
+                    return false;
+                }
+                return shop.getDisplayItem().isSpawned();
+            }
+
+        }
+        return this.item.isValid();
+    }
+
+    @Override
     public void remove() {
         Util.ensureThread(false);
         if (this.item == null) {
@@ -235,30 +259,6 @@ public class RealDisplayItem extends AbstractDisplayItem {
         this.guardedIstack = AbstractDisplayItem.createGuardItemStack(this.originalItemStack, this.shop);
         this.item = this.shop.getLocation().getWorld().dropItem(getDisplayLocation(), this.guardedIstack, this::safeGuard);
         new ShopDisplayItemSafeGuardEvent(shop, this.item).callEvent();
-    }
-
-    @Override
-    public @Nullable Entity getDisplay() {
-        return this.item;
-    }
-
-    @Override
-    public boolean isSpawned() {
-        if (this.item == null) {
-            return false;
-        }
-        // If it's a left shop, check the attached shop's item instead.
-        if (shop.isLeftShop()) {
-            Shop attachedShop = shop.getAttachedShop();
-            if (attachedShop instanceof ContainerShop shop) {
-                if (shop.getDisplayItem() == null) {
-                    return false;
-                }
-                return shop.getDisplayItem().isSpawned();
-            }
-
-        }
-        return this.item.isValid();
     }
 
     /**

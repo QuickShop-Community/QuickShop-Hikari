@@ -18,8 +18,8 @@ public class AddItemOperation implements Operation {
     private final int itemMaxStackSize;
     private boolean committed;
     private boolean rollback;
-    private int remains = 0;
-    private int rollbackRemains = 0;
+    private ItemStack[] snapshot;
+
 
     /**
      * Constructor.
@@ -38,53 +38,21 @@ public class AddItemOperation implements Operation {
     @Override
     public boolean commit() {
         committed = true;
-        remains = this.amount;
+        this.snapshot = inv.createSnapshot();
+        int remains = this.amount;
+        int lastRemains = -1;
+        ItemStack item = this.item.clone();
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
             item.setAmount(stackSize);
             Map<Integer, ItemStack> notSaved = inv.addItem(item);
             if (notSaved.isEmpty()) {
                 remains -= stackSize;
-            } else {
-                rollbackRemains -= stackSize - notSaved.entrySet().iterator().next().getValue().getAmount();
+            }
+            if (remains == lastRemains) {
                 return false;
             }
-        }
-        return true;
-    }
-
-    /**
-     * Gets the remains items hadn't added into the inventory.
-     *
-     * @return remains items
-     */
-    public int getRemains() {
-        return remains;
-    }
-
-    /**
-     * Gets the remains items hadn't rolled back.
-     *
-     * @return remains items
-     */
-    public int getRollbackRemains() {
-        return rollbackRemains;
-    }
-
-    @Override
-    public boolean rollback() {
-        rollback = true;
-        rollbackRemains = remains;
-        while (rollbackRemains > 0) {
-            int stackSize = Math.min(rollbackRemains, itemMaxStackSize);
-            item.setAmount(stackSize);
-            Map<Integer, ItemStack> notFit = inv.removeItem(item.clone());
-            if (notFit.isEmpty()) {
-                rollbackRemains -= stackSize;
-            } else {
-                remains -= stackSize - notFit.entrySet().iterator().next().getValue().getAmount();
-                return false;
-            }
+            lastRemains = remains;
         }
         return true;
     }
@@ -97,5 +65,11 @@ public class AddItemOperation implements Operation {
     @Override
     public boolean isRollback() {
         return this.rollback;
+    }
+
+    @Override
+    public boolean rollback() {
+        rollback = true;
+        return inv.restoreSnapshot(this.snapshot);
     }
 }

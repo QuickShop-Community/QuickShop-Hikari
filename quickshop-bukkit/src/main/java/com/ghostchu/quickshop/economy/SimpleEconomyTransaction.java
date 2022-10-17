@@ -102,11 +102,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         new EconomyTransactionEvent(this).callEvent();
     }
 
-    @Override
-    public @Nullable UUID getFrom() {
-        return from;
-    }
-
     public interface SimpleTransactionCallback extends TransactionCallback {
         /**
          * Calling while Transaction commit
@@ -152,7 +147,12 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
             QuickShop.getInstance().logEvent(new EconomyTransactionLog(false, economyTransaction.getFrom(), economyTransaction.getTo(), economyTransaction.getCurrency(), economyTransaction.getTax(), economyTransaction.getTaxer() == null ? CommonUtil.getNilUniqueId() : economyTransaction.getTaxer(), economyTransaction.getAmount(), economyTransaction.getLastError()));
         }
 
+    }    @Override
+    public @Nullable UUID getFrom() {
+        return from;
     }
+
+
 
     @Override
     public void setFrom(@Nullable UUID from) {
@@ -422,8 +422,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
             return false;
         }
     }
-
-
 
 
 }

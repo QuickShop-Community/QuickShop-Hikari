@@ -8,12 +8,10 @@ import org.bukkit.OfflinePlayer;
 import org.enginehub.squirrelid.Profile;
 import org.enginehub.squirrelid.cache.HashMapCache;
 import org.enginehub.squirrelid.cache.ProfileCache;
-import org.enginehub.squirrelid.cache.SQLiteCache;
 import org.enginehub.squirrelid.resolver.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +31,11 @@ public class PlayerFinder {
 
     public PlayerFinder() {
         ProfileCache cache = new HashMapCache(); // Memory cache
-        try {
-            cache = new SQLiteCache(new File(Util.getCacheFolder(), "player_mapping.db"));
-        } catch (Exception e) {
-            Log.debug("Failed to initialize player mapping cache database, use HashMapCache instead.");
-        }
+//        try {
+//            cache = new SQLiteCache(new File(Util.getCacheFolder(), "player_mapping.db"));
+//        } catch (Exception e) {
+//            Log.debug("Failed to initialize player mapping cache database, use HashMapCache instead.");
+//        }
         List<ProfileService> services = new ArrayList<>();
         if (PaperLib.isPaper() && !Util.parsePackageProperly("forceSpigot").asBoolean()) {
             services.add(PaperPlayerService.getInstance());

@@ -12,10 +12,10 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.StringJoiner;
 
-public class DebugLogsItem implements SubPasteItem {
+public class TransactionLogsItem implements SubPasteItem {
     private SimpleDateFormat format;
 
-    public DebugLogsItem() {
+    public TransactionLogsItem() {
         String timeFormat = LegacyComponentSerializer.legacySection().serialize(QuickShop.getInstance().text().of("timeunit.std-time-format").forLocale(MsgUtil.getDefaultGameLanguageCode()));
         try {
             format = new SimpleDateFormat(timeFormat);
@@ -31,13 +31,13 @@ public class DebugLogsItem implements SubPasteItem {
 
     @Override
     public @NotNull String getTitle() {
-        return "Debug History";
+        return "Transaction History";
     }
 
     @NotNull
     private String buildContent() {
         StringJoiner builder = new StringJoiner("\n");
-        List<String> debugLogs = Log.fetchLogs(Log.Type.PERMISSION).stream().map(record -> "[" + format.format(record.getTimestamp()) + "] " + record).toList();
+        List<String> debugLogs = Log.fetchLogs(Log.Type.TRANSACTION).stream().map(record -> "[" + format.format(record.getTimestamp()) + "] " + record).toList();
         List<String> tail = CommonUtil.tail(debugLogs, 1000);
         tail.forEach(builder::add);
         return "<textarea name=\"debuglogs\" style=\"height: 1000px; width: 100%;\">" +

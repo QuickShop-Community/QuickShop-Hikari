@@ -57,6 +57,13 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
         Util.inventoryCheck(new BukkitInventoryWrapper(event.getInventory()));
     }
 
+    private void sendAlert(@NotNull String msg) {
+        if (!plugin.getConfig().getBoolean("send-display-item-protection-alert")) {
+            return;
+        }
+        MsgUtil.sendGlobalAlert(msg);
+    }
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void item(ItemDespawnEvent event) {
         if (AbstractDisplayItem.getNowUsing() != DisplayType.REALITEM) {
@@ -128,13 +135,6 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
                             + event.getFrom()
                             + " , QuickShop already cancel it.");
         }
-    }
-
-    private void sendAlert(@NotNull String msg) {
-        if (!plugin.getConfig().getBoolean("send-display-item-protection-alert")) {
-            return;
-        }
-        MsgUtil.sendGlobalAlert(msg);
     }
 
     /**

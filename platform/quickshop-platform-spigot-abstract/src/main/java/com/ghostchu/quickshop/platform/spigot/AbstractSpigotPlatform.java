@@ -12,10 +12,10 @@ import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
@@ -114,11 +114,6 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public @NotNull MiniMessage miniMessage() {
-        return MiniMessage.miniMessage();
-    }
-
-    @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
         return postProcessingTranslationKey(localeManager.queryMaterial(material));
     }
@@ -141,6 +136,11 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
+    public @NotNull MiniMessage miniMessage() {
+        return MiniMessage.miniMessage();
+    }
+
+    @Override
     public abstract void registerCommand(@NotNull String prefix, @NotNull Command command);
 
     @Override
@@ -152,8 +152,8 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
-        sign.setLine(line, LegacyComponentSerializer.legacySection().serialize(component));
+    public void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components) {
+        player.sendSignChange(sign.getLocation(), components.stream().map(com -> LegacyComponentSerializer.legacySection().serialize(com)).toArray(String[]::new));
     }
 
     @Override
@@ -189,8 +189,8 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
-        this.translationMapping = mapping;
+    public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
+        sign.setLine(line, LegacyComponentSerializer.legacySection().serialize(component));
     }
 
     @Override
@@ -206,6 +206,11 @@ public abstract class AbstractSpigotPlatform implements Platform {
     @Override
     public void setLore(@NotNull ItemMeta meta, @NotNull Collection<Component> components) {
         meta.setLore(components.stream().map(LegacyComponentSerializer.legacySection()::serialize).collect(Collectors.toList()));
+    }
+
+    @Override
+    public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
+        this.translationMapping = mapping;
     }
 
     private String postProcessingTranslationKey(String key) {

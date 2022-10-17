@@ -105,6 +105,14 @@ public class CalendarWatcher extends BukkitRunnable {
         return type;
     }
 
+    public void save() {
+        try {
+            configuration.save(calendarFile);
+        } catch (IOException ioException) {
+            plugin.getLogger().log(Level.WARNING, "Cannot save calendar cache file at " + calendarFile.getAbsolutePath() + ", scheduled tasks may cannot or execute wrongly!", ioException);
+        }
+    }
+
     public void start() {
         task = this.runTaskTimerAsynchronously(plugin, 20, 20);
     }
@@ -116,14 +124,6 @@ public class CalendarWatcher extends BukkitRunnable {
                 task.cancel();
             }
         } catch (IllegalStateException ignored) {
-        }
-    }
-
-    public void save() {
-        try {
-            configuration.save(calendarFile);
-        } catch (IOException ioException) {
-            plugin.getLogger().log(Level.WARNING, "Cannot save calendar cache file at " + calendarFile.getAbsolutePath() + ", scheduled tasks may cannot or execute wrongly!", ioException);
         }
     }
 }

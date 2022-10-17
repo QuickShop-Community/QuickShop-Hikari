@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop отключен в этом мире
 how-much-to-trade-for: <green>Введите в чат за сколько вы хотите продавать <yellow>{1}x {0}</yellow>.
 client-language-changed: <green>QuickShop обнаружил, что вы изменили язык. Теперь для вас используется {0} язык.
 shops-backingup: Создание резервной копии магазина из базы данных...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Привет, переводчик! Если ты редактируешь это через GitHub или через исходный код, тебе стоит делать это здесь https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: '<yellow>Владелец бездонного магазина был изменен на: {0}.'
 bad-command-usage-detailed: '<red>Неправильные аргументы для команды! Принимаются только эти параметры: <gray>{0}'
 thats-not-a-number: <red>Неверное число
@@ -33,19 +33,19 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Название: <aqua>{0}'
+    - '<yellow>Владелец: <aqua>{0}'
+    - '<yellow>Тип: <aqua>{0}'
+    - '<yellow>Цена: <aqua>{0}'
+    - '<yellow>Предмет: <aqua>{0}'
+    - '<yellow>Локация: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Название: <aqua>{name}'
+    - '<yellow>Владелец: <aqua>{owner}'
+    - '<yellow>Тип: <aqua>{type}'
+    - '<yellow>Цена: <aqua>{price}'
+    - '<yellow>Предмет: <aqua>{item}'
+    - '<yellow>Локация: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -85,7 +85,7 @@ reloading-status:
   scheduled: <green>Перезагрузка завершена. <gray>(Для вступления в силу некоторых изменений потребуется время)
   require-restart: <green>Перезагрузка завершена. <yellow>(Для изменения интерфейса потребуется перезапуск сервера)
   failed: <red>Перезагрузка не удалась, проверьте консоль сервера
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} купил{1} {2}в вашем магазине и вы заработали {3} ({4} налог).
 not-enough-space: <red>В вашем инвентаре осталось место только для {0} предметов!
 shop-name-success: <green>Название магазина успешно изменено на <yellow>{0}<green>.
 shop-staff-added: <green>{0} успешно добавлен в качестве сотрудника вашего магазина.
@@ -100,7 +100,7 @@ menu:
   item: '<green>Товар: <yellow>{0}'
   price-per: <green>Цена за <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>за <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
+  item-name-and-price-tax: '<yellow>{0} {1} <green>за</green> {2} <gray>(<green>{3}</green> в виде налогов)</gray>'
   successful-purchase: '<green>Успешно куплено:'
   price-per-stack: <green>Цена за <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Хранимые чары
@@ -163,7 +163,7 @@ edition-confilct: QuickShop-Hikari и QuickShop-Remake могут конфлик
 inventory-unavailable: '<red>Не существует или неверный InventoryWrapper. Вы используете аддон для повторной привязки инвентаря магазина?<newline> Информация: InventoryWrapper ={0}, WrapperProvider={1}, SymbolLink={2}. Пожалуйста, свяжитесь с администраторами сервера.'
 file-test: Это тестовый файл. Мы используем его для тестирования, если файл messages.json поломан. Вы тут можете заполнить любым пасхальными яйцами, которые вам нравятся :) Как же так, ректор Кудрявцев?
 unknown-player: <red>Такой игрок не существует, пожалуйста, проверьте имя, которое вы ввели.
-player-offline: "<red>The target player currently is offline."
+player-offline: "<red>Этот игрок сейчас офлайн."
 language:
   qa-issues: '<yellow>Вопросы обеспечения качества: <aqua>{0}%'
   code: '<yellow>Код: <gold>{0}'
@@ -417,7 +417,7 @@ command:
     toggledisplay: <yellow>Переключает отображение товара в магазине (над сундука)
     permission: <yellow>Управление разрешениями магазина
     lookup: <yellow>Управление справочной таблицей предметов
-    database: <yellow>View and maintain QuickShop database
+    database: <yellow>Просмотр и обслуживание базы данных QuickShop
   bulk-size-not-set: '<red>Используйте: /qs size <amount>'
   no-type-given: '<red>Используйте: /qs find <item>'
   feature-not-enabled: Функция не включена в конфигурации.
@@ -592,6 +592,10 @@ addon:
     item-not-allowed: "<red>This shop's item are not allowed used by town/nation shop, pick another one!"
     operation-disabled-due-shop-status: "<red>This shop operation has been disabled due this already is a town/nation shop."
     plot-type-disallowed: "<red>You can't create town/nation shop on this type of plot."
+    flags:
+      own: "<red>You can only create shops at your owned shop type towny plot."
+      modify: "<red>You didn't have build permission on this towny plot."
+      shop-type: "<red>You must create shop on a shop type towny plot."
   residence:
     creation-flag-denied: "<red>You don't have permission to create shops in this residence."
     trade-flag-denied: "<red>You don't have permission to purchase in this residence."
@@ -601,7 +605,7 @@ addon:
     trade-denied: "<red>You don't have permission to purchase shops in this claim."
   lands:
     world-not-enabled: "<red>You are not allowed to create or purchase in this world."
-    creation-denied: "<red>You don't have permission to create shops in this Land."
+    creation-denied: "<red>You don't have permission to create shops in this Land area."
   plotsquared:
     no-plot-whitelist-creation: "<red>You cannot create shop outside of Plot."
     no-plot-whitelist-trade: "<red>You cannot purchase shop outside of Plot."
@@ -610,3 +614,6 @@ addon:
   superiorskyblock:
     owner-create-only: "<red>Only island owner can create shop there."
     owner-member-create-only: "<red>Only island owner or member can create shop there."
+  worldguard:
+    creation-flag-test-failed: "<red>You don't have permission create shop in this WorldGuard area."
+    trade-flag-test-failed: "<red>You don't have permission trade shop in this WorldGuard area."

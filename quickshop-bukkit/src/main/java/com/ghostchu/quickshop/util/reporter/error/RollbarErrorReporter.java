@@ -202,14 +202,19 @@ public class RollbarErrorReporter {
         disable = true;
     }
 
-    /**
-     * Send a error to Sentry
-     *
-     * @param throwable Throws
-     * @param context   BreadCrumb
-     */
-    public void sendError(@NotNull Throwable throwable, @NotNull String... context) {
-        this.reportQueue.offer(new ErrorBundle(throwable, context));
+    private Map<String, Object> makeMapping() {
+        Map<String, Object> dataMapping = new LinkedHashMap<>();
+        dataMapping.put("system_os", System.getProperty("os.name"));
+        dataMapping.put("system_arch", System.getProperty("os.arch"));
+        dataMapping.put("system_version", System.getProperty("os.version"));
+        dataMapping.put("system_cores", String.valueOf(Runtime.getRuntime().availableProcessors()));
+        dataMapping.put("server_build", plugin.getServer().getVersion());
+        dataMapping.put("server_java", String.valueOf(System.getProperty("java.version")));
+        dataMapping.put("server_players", plugin.getServer().getOnlinePlayers().size() + "/" + plugin.getServer().getMaxPlayers());
+        dataMapping.put("server_onlinemode", String.valueOf(plugin.getServer().getOnlineMode()));
+        dataMapping.put("server_bukkitversion", plugin.getServer().getVersion());
+        dataMapping.put("user", QuickShop.getInstance().getServerUniqueID().toString());
+        return dataMapping;
     }
 
     /**
@@ -218,6 +223,16 @@ public class RollbarErrorReporter {
     public void resetIgnores() {
         tempDisable = false;
         disable = false;
+    }
+
+    /**
+     * Send a error to Sentry
+     *
+     * @param throwable Throws
+     * @param context   BreadCrumb
+     */
+    public void sendError(@NotNull Throwable throwable, @NotNull String... context) {
+        this.reportQueue.offer(new ErrorBundle(throwable, context));
     }
 
     private void sendError0(@NotNull Throwable throwable, @NotNull String... context) {
@@ -273,21 +288,6 @@ public class RollbarErrorReporter {
             ignoreThrow();
             plugin.getLogger().log(Level.WARNING, "Something going wrong when automatic report errors, please submit this error on Issue Tracker", th);
         }
-    }
-
-    private Map<String, Object> makeMapping() {
-        Map<String, Object> dataMapping = new LinkedHashMap<>();
-        dataMapping.put("system_os", System.getProperty("os.name"));
-        dataMapping.put("system_arch", System.getProperty("os.arch"));
-        dataMapping.put("system_version", System.getProperty("os.version"));
-        dataMapping.put("system_cores", String.valueOf(Runtime.getRuntime().availableProcessors()));
-        dataMapping.put("server_build", plugin.getServer().getVersion());
-        dataMapping.put("server_java", String.valueOf(System.getProperty("java.version")));
-        dataMapping.put("server_players", plugin.getServer().getOnlinePlayers().size() + "/" + plugin.getServer().getMaxPlayers());
-        dataMapping.put("server_onlinemode", String.valueOf(plugin.getServer().getOnlineMode()));
-        dataMapping.put("server_bukkitversion", plugin.getServer().getVersion());
-        dataMapping.put("user", QuickShop.getInstance().getServerUniqueID().toString());
-        return dataMapping;
     }
 
     public void unregister() {

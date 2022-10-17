@@ -46,6 +46,23 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
     }
 
     /**
+     * Start for backing up
+     *
+     * @param actionId Action Identifier for this upgrade operation.
+     * @param folder   The target folder for backup.
+     * @throws Exception Backup fails.
+     */
+    @Override
+    public void backup(@NotNull UUID actionId, @NotNull File folder) throws Exception {
+        DatabaseConfig config = getDatabaseConfig();
+        if (config.isMysql()) {
+            instance.getLogger().warning("ApolloConverter doesn't support for MySQL backup, do it by your self with `mysqldump`!");
+        } else {
+            Files.copy(new File(plugin.getDataFolder(), "shops.db").toPath(), new File(folder, "shops.db").toPath());
+        }
+    }
+
+    /**
      * Returns empty for ready, any elements inside will mark as not ready and will be post to users.
      *
      * @return The element about not ready.
@@ -158,23 +175,6 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         }
 
         return entries;
-    }
-
-    /**
-     * Start for backing up
-     *
-     * @param actionId Action Identifier for this upgrade operation.
-     * @param folder   The target folder for backup.
-     * @throws Exception Backup fails.
-     */
-    @Override
-    public void backup(@NotNull UUID actionId, @NotNull File folder) throws Exception {
-        DatabaseConfig config = getDatabaseConfig();
-        if (config.isMysql()) {
-            instance.getLogger().warning("ApolloConverter doesn't support for MySQL backup, do it by your self with `mysqldump`!");
-        } else {
-            Files.copy(new File(plugin.getDataFolder(), "shops.db").toPath(), new File(folder, "shops.db").toPath());
-        }
     }
 
     /**
@@ -360,28 +360,24 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         return match; // Uh, wtf.
     }
 
-    private void pushShops(@NotNull List<ShopStorageUnit> units, @NotNull String prefix, @NotNull SQLManager manager) {
-        instance.getLogger().info("Preparing to pushing shops into database...");
-        instance.getLogger().info("Statistics: Total " + units.size() + " shops waiting for pushing.");
-        instance.getLogger().info("Initializing target database...");
-        int count = 0;
-        int fails = 0;
-        for (ShopStorageUnit unit : units) {
-            ++count;
-            instance.getLogger().info("Pushing shop " + count + " of " + units.size() + " to target database...");
-            try {
-                manager.createInsert(prefix + "shops")
-                        .setColumnNames("owner", "price", "itemConfig", "x", "y", "z", "world", "unlimited", "type", "extra",
-                                "currency", "disableDisplay", "taxAccount", "inventorySymbolLink", "inventoryWrapperName")
-                        .setParams(unit.getOwner(), unit.getPrice(), unit.getItemConfig(), unit.getX(), unit.getY(), unit.getZ(), unit.getWorld(), unit.getUnlimited(), unit.getType(), unit.getExtra(),
-                                unit.getCurrency(), unit.getDisableDisplay(), unit.getTaxAccount(), unit.getInventorySymbolLink(), unit.getInventoryWrapperName())
-                        .execute();
-            } catch (Exception e) {
-                ++fails;
-                instance.getLogger().log(Level.WARNING, "Failed to push shop " + unit + " into database! " + e.getMessage() + ", skipping...", e);
+    /**
+     * Returns true if the table exists
+     *
+     * @param table The table to check for
+     * @return True if the table is found
+     * @throws SQLException Throw exception when failed execute somethins on SQL
+     */
+    public boolean hasTable(@NotNull String table, @NotNull Connection connection) throws SQLException {
+        boolean match = false;
+        try (ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {
+            while (rs.next()) {
+                if (table.equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
+                    match = true;
+                    break;
+                }
             }
         }
-        instance.getLogger().info("Pushed " + count + " shops into database. " + fails + " shops failed to push.");
+        return match;
     }
 
     @NotNull
@@ -418,6 +414,30 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         instance.getLogger().info("Completed! Pulled " + (count - fails) + " shops from database! Total " + fails + " fails.");
         return units;
 
+    }
+
+    private void pushShops(@NotNull List<ShopStorageUnit> units, @NotNull String prefix, @NotNull SQLManager manager) {
+        instance.getLogger().info("Preparing to pushing shops into database...");
+        instance.getLogger().info("Statistics: Total " + units.size() + " shops waiting for pushing.");
+        instance.getLogger().info("Initializing target database...");
+        int count = 0;
+        int fails = 0;
+        for (ShopStorageUnit unit : units) {
+            ++count;
+            instance.getLogger().info("Pushing shop " + count + " of " + units.size() + " to target database...");
+            try {
+                manager.createInsert(prefix + "shops")
+                        .setColumnNames("owner", "price", "itemConfig", "x", "y", "z", "world", "unlimited", "type", "extra",
+                                "currency", "disableDisplay", "taxAccount", "inventorySymbolLink", "inventoryWrapperName")
+                        .setParams(unit.getOwner(), unit.getPrice(), unit.getItemConfig(), unit.getX(), unit.getY(), unit.getZ(), unit.getWorld(), unit.getUnlimited(), unit.getType(), unit.getExtra(),
+                                unit.getCurrency(), unit.getDisableDisplay(), unit.getTaxAccount(), unit.getInventorySymbolLink(), unit.getInventoryWrapperName())
+                        .execute();
+            } catch (Exception e) {
+                ++fails;
+                instance.getLogger().log(Level.WARNING, "Failed to push shop " + unit + " into database! " + e.getMessage() + ", skipping...", e);
+            }
+        }
+        instance.getLogger().info("Pushed " + count + " shops into database. " + fails + " shops failed to push.");
     }
 
     /**
@@ -462,26 +482,6 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
             return false;
         }
         return true;
-    }
-
-    /**
-     * Returns true if the table exists
-     *
-     * @param table The table to check for
-     * @return True if the table is found
-     * @throws SQLException Throw exception when failed execute somethins on SQL
-     */
-    public boolean hasTable(@NotNull String table, @NotNull Connection connection) throws SQLException {
-        boolean match = false;
-        try (ResultSet rs = connection.getMetaData().getTables(null, null, "%", null)) {
-            while (rs.next()) {
-                if (table.equalsIgnoreCase(rs.getString("TABLE_NAME"))) {
-                    match = true;
-                    break;
-                }
-            }
-        }
-        return match;
     }
 
     @Data

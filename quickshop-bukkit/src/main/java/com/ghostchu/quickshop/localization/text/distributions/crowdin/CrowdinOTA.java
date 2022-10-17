@@ -121,7 +121,19 @@ public class CrowdinOTA implements Distribution {
         return null;
     }
 
-    @Override
+    @Builder
+    @Data
+    public static class CrowdinGetFileRequest {
+        private String fileCrowdinPath;
+        private String crowdinLocale;
+        private boolean forceFlush;
+
+        public CrowdinGetFileRequest(String fileCrowdinPath, String crowdinLocale, boolean forceFlush) {
+            this.fileCrowdinPath = fileCrowdinPath;
+            this.crowdinLocale = crowdinLocale;
+            this.forceFlush = forceFlush;
+        }
+    }    @Override
     public @NotNull List<String> getAvailableLanguages() {
         return this.availableLanguages;
     }
@@ -196,18 +208,6 @@ public class CrowdinOTA implements Distribution {
         return JsonUtil.regular().fromJson(getManifestJson(), Manifest.class);
     }
 
-    @Builder
-    @Data
-    public static class CrowdinGetFileRequest {
-        private String fileCrowdinPath;
-        private String crowdinLocale;
-        private boolean forceFlush;
 
-        public CrowdinGetFileRequest(String fileCrowdinPath, String crowdinLocale, boolean forceFlush) {
-            this.fileCrowdinPath = fileCrowdinPath;
-            this.crowdinLocale = crowdinLocale;
-            this.forceFlush = forceFlush;
-        }
-    }
 
 }

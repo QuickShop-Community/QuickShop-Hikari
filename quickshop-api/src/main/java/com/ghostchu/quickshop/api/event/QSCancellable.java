@@ -20,11 +20,11 @@ public interface QSCancellable extends Cancellable {
         setCancelled(cancel, LegacyComponentSerializer.legacySection().deserialize(reason));
     }
 
+    void setCancelled(boolean cancel, @Nullable Component reason);
+
     @Override
     @Deprecated
     default void setCancelled(boolean cancel) {
         setCancelled(cancel, (Component) null);
     }
-
-    void setCancelled(boolean cancel, @Nullable Component reason);
 }

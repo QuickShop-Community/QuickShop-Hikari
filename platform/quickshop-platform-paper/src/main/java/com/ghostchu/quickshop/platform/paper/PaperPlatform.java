@@ -9,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -33,15 +32,18 @@ public class PaperPlatform implements Platform {
         this.translationMapping = mapping;
     }
 
-
     @Override
-    public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
-        sign.line(line, component);
+    public @NotNull Component getDisplayName(@NotNull ItemStack stack) {
+        return stack.displayName();
     }
 
     @Override
-    public @NotNull Component getLine(@NotNull Sign sign, int line) {
-        return sign.line(line);
+    public @NotNull Component getDisplayName(@NotNull ItemMeta meta) {
+        Component displayName = meta.displayName();
+        if (displayName == null) {
+            return Component.empty();
+        }
+        return displayName;
     }
 
     @Override
@@ -50,15 +52,47 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public void registerCommand(@NotNull String prefix, @NotNull Command command) {
-        Bukkit.getCommandMap().register(prefix, command);
-        command.register(Bukkit.getCommandMap());
-        Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
+    public @NotNull Component getLine(@NotNull Sign sign, int line) {
+        return sign.line(line);
+    }
+
+    @Override
+    public @Nullable List<Component> getLore(@NotNull ItemStack stack) {
+        return stack.lore();
+    }
+
+    @Override
+    public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
+        return meta.lore();
     }
 
     @Override
     public @NotNull String getMinecraftVersion() {
         return Bukkit.getMinecraftVersion();
+    }
+
+    @Override
+    public @NotNull Component getTranslation(@NotNull Material material) {
+        return Component.translatable(getTranslationKey(material));
+    }
+
+    private String postProcessingTranslationKey(String key) {
+        return this.translationMapping.getOrDefault(key, key);
+    }
+
+    @Override
+    public @NotNull Component getTranslation(@NotNull EntityType entity) {
+        return Component.translatable(getTranslationKey(entity));
+    }
+
+    @Override
+    public @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) {
+        return Component.translatable(getTranslationKey(potionEffectType));
+    }
+
+    @Override
+    public @NotNull Component getTranslation(@NotNull Enchantment enchantment) {
+        return Component.translatable(getTranslationKey(enchantment));
     }
 
     @Override
@@ -118,41 +152,20 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull Material material) {
-        return Component.translatable(getTranslationKey(material));
-    }
-
-    private String postProcessingTranslationKey(String key) {
-        return this.translationMapping.getOrDefault(key, key);
+    public @NotNull MiniMessage miniMessage() {
+        return MiniMessage.miniMessage();
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull EntityType entity) {
-        return Component.translatable(getTranslationKey(entity));
+    public void registerCommand(@NotNull String prefix, @NotNull Command command) {
+        Bukkit.getCommandMap().register(prefix, command);
+        command.register(Bukkit.getCommandMap());
+        Bukkit.getOnlinePlayers().forEach(Player::updateCommands);
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) {
-        return Component.translatable(getTranslationKey(potionEffectType));
-    }
-
-    @Override
-    public @NotNull Component getTranslation(@NotNull Enchantment enchantment) {
-        return Component.translatable(getTranslationKey(enchantment));
-    }
-
-    @Override
-    public @NotNull Component getDisplayName(@NotNull ItemStack stack) {
-        return stack.displayName();
-    }
-
-    @Override
-    public @NotNull Component getDisplayName(@NotNull ItemMeta meta) {
-        Component displayName = meta.displayName();
-        if (displayName == null) {
-            return Component.empty();
-        }
-        return displayName;
+    public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
+        sender.sendMessage(component);
     }
 
     @Override
@@ -173,8 +186,8 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
-        this.translationMapping = mapping;
+    public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
+        sign.line(line, component);
     }
 
     @Override
@@ -188,22 +201,12 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public @Nullable List<Component> getLore(@NotNull ItemStack stack) {
-        return stack.lore();
+    public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
+        this.translationMapping = mapping;
     }
 
     @Override
-    public @Nullable List<Component> getLore(@NotNull ItemMeta meta) {
-        return meta.lore();
-    }
-
-    @Override
-    public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {
-        sender.sendMessage(component);
-    }
-
-    @Override
-    public @NotNull MiniMessage miniMessage() {
-        return MiniMessage.miniMessage();
+    public void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components) {
+        player.sendSignChange(sign.getLocation(), components);
     }
 }

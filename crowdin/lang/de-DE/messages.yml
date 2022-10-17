@@ -592,6 +592,10 @@ addon:
     item-not-allowed: "<red>Das Item dieses Shops ist nicht in Stadt/Nation Shops erlaubt. Wähle ein anderes aus!"
     operation-disabled-due-shop-status: "<red>Diese Shop-Operation wurde deaktiviert da es bereits ein Stadt/Nation-Shop ist."
     plot-type-disallowed: "<red>Du kannst keinen Stadt-/Nationen-Shop auf dieser Art von Plot erstellen."
+    flags:
+      own: "<red>Du kannst nur Shops in von dir geclaimten Shoptyp Towny Plots erstellen."
+      modify: "<red>Du hast keine Bauberechtigung auf diesem Towny Plot."
+      shop-type: "<red>Du musst den Shop auf einem Towny Plot vom Typ Shop erstellen."
   residence:
     creation-flag-denied: "<red>Du hast keine Berechtigung in dieser Residenz einen Shop zu erstellen."
     trade-flag-denied: "<red>Du hast keine Berechtigung in dieser Residenz etwas zu kaufen."
@@ -601,7 +605,7 @@ addon:
     trade-denied: "<red>Du hast keine Berechtigung einen Shop in diesem Claim zu kaufen."
   lands:
     world-not-enabled: "<red>Du kannst keine Shops in dieser Welt kaufen oder erstellen."
-    creation-denied: "<red>Du hast keine Berechtigung einen Shop in diesem Land zu erstellen."
+    creation-denied: "<red>Du hast keine Berechtigung einen Shop in dieser Landregion zu erstellen."
   plotsquared:
     no-plot-whitelist-creation: "<red>Du kannst keinen Shop ausserhalb des Plots erstellen."
     no-plot-whitelist-trade: "<red>Du kannst keine Shops ausserhalb des Plots kaufen."
@@ -610,3 +614,6 @@ addon:
   superiorskyblock:
     owner-create-only: "<red>Nur der Inselbesitzer kann einen Shop hier erstellen."
     owner-member-create-only: "<red>Nur der Inselbesitzer oder ein Mitglied können einen Shop hier erstellen."
+  worldguard:
+    creation-flag-test-failed: "<red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu erstellen."
+    trade-flag-test-failed: "<red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu handeln."

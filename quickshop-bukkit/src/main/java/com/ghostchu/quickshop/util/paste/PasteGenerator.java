@@ -248,7 +248,10 @@ public class PasteGenerator {
         add(new CachePerformanceItem());
         add(new ConfigCollectorItem());
         add(new DebugLogsItem());
+        add(new TransactionLogsItem());
         add(new PermissionLogsItem());
+        add(new TimingsLogsItem());
+        add(new CronLogsItem());
     }
 
     public void add(@NotNull PasteItem pasteItem) {

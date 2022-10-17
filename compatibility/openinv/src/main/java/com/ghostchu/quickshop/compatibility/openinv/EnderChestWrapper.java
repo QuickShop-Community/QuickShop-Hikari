@@ -45,37 +45,6 @@ public class EnderChestWrapper implements InventoryWrapper {
     }
 
     /**
-     * Get the location of the block or entity which corresponds to this inventory. May return null if this container
-     * was custom created or is a virtual / subcontainer.
-     *
-     * @return location or null if not applicable.
-     */
-    @Override
-    public @Nullable Location getLocation() {
-        return null;
-    }
-
-    /**
-     * Gets the Inventory Type
-     *
-     * @return The Inventory Type
-     */
-    @Override
-    public @NotNull InventoryWrapperType getInventoryType() {
-        return InventoryWrapperType.PLUGIN;
-    }
-
-    /**
-     * Gets the Inventory Wrapper Manager
-     *
-     * @return Wrapper Manager
-     */
-    @Override
-    public @NotNull InventoryWrapperManager getWrapperManager() {
-        return plugin.getManager();
-    }
-
-    /**
      * Clear the inventory
      */
     @Override
@@ -91,6 +60,48 @@ public class EnderChestWrapper implements InventoryWrapper {
     @Override
     public @Nullable InventoryHolder getHolder() {
         return null;
+    }
+
+    /**
+     * Gets the Inventory Type
+     *
+     * @return The Inventory Type
+     */
+    @Override
+    public @NotNull InventoryWrapperType getInventoryType() {
+        return InventoryWrapperType.PLUGIN;
+    }
+
+    /**
+     * Get the location of the block or entity which corresponds to this inventory. May return null if this container
+     * was custom created or is a virtual / subcontainer.
+     *
+     * @return location or null if not applicable.
+     */
+    @Override
+    public @Nullable Location getLocation() {
+        return null;
+    }
+
+    /**
+     * Gets the Inventory Wrapper Manager
+     *
+     * @return Wrapper Manager
+     */
+    @Override
+    public @NotNull InventoryWrapperManager getWrapperManager() {
+        return plugin.getManager();
+    }
+
+    @Override
+    public @NotNull ItemStack[] createSnapshot() {
+        return player.getEnderChest().getContents();
+    }
+
+    @Override
+    public boolean restoreSnapshot(@NotNull ItemStack[] snapshot) {
+        player.getEnderChest().setContents(snapshot);
+        return true;
     }
 
     /**

@@ -30,11 +30,6 @@ public final class Main extends CompatibilityModule implements Listener {
         handleDeletion(event.getRegion());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onShopNeedDeletion(RestoreRegionEvent event) {
-        handleDeletion(event.getRegion());
-    }
-
     private void handleDeletion(Region region) {
         Vector minPoint = region.getRegion().getMinPoint();
         Vector maxPoint = region.getRegion().getMaxPoint();
@@ -66,5 +61,10 @@ public final class Main extends CompatibilityModule implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onShopNeedDeletion(RestoreRegionEvent event) {
+        handleDeletion(event.getRegion());
     }
 }

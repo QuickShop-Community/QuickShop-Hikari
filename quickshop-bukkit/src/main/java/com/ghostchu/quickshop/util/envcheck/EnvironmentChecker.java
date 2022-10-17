@@ -123,11 +123,6 @@ public final class EnvironmentChecker {
         return new ResultContainer(CheckResult.PASSED, "Server is unmodified.");
     }
 
-    public boolean isFabricBasedServer() {
-        //Nobody really make it right!?
-        return CommonUtil.isClassAvailable("net.fabricmc.loader.launch.knot.KnotClient"); //OMG
-    }
-
     public boolean isForgeBasedServer() {
         //Forge server detect - Arclight
         if (CommonUtil.isClassAvailable("net.minecraftforge.server.ServerMain")) {
@@ -140,6 +135,11 @@ public final class EnvironmentChecker {
             return true;
         }
         return CommonUtil.isClassAvailable("net.minecraftforge.forgespi.locating.IModLocator");
+    }
+
+    public boolean isFabricBasedServer() {
+        //Nobody really make it right!?
+        return CommonUtil.isClassAvailable("net.fabricmc.loader.launch.knot.KnotClient"); //OMG
     }
 
     @EnvCheckEntry(name = "Old QuickShop Test", priority = 3)

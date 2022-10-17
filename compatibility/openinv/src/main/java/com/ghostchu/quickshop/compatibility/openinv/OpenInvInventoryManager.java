@@ -16,6 +16,19 @@ public class OpenInvInventoryManager implements InventoryWrapperManager {
         this.plugin = plugin;
     }
 
+    /**
+     * Locate an Inventory with symbol link
+     * NOTICE: This can be call multiple times, and maybe multiple InventoryWrapper will exist in same time.
+     * You must be sure all wrapper can be process any request in any time.
+     *
+     * @param symbolLink symbol link that created by InventoryWrapperManager#mklink
+     * @return Symbol link
+     * @throws IllegalArgumentException If symbol link invalid
+     */
+    @Override
+    public @NotNull InventoryWrapper locate(@NotNull String symbolLink) throws IllegalArgumentException {
+        return new EnderChestWrapper(UUID.fromString(symbolLink), this.openInv, plugin);
+    }
 
     /**
      * Create a symbol link for storage.
@@ -30,19 +43,5 @@ public class OpenInvInventoryManager implements InventoryWrapperManager {
             return wrap.getUuid().toString();
         }
         throw new IllegalArgumentException("Cannot create symbol link for target Inventory: " + wrapper.getClass().getName());
-    }
-
-    /**
-     * Locate an Inventory with symbol link
-     * NOTICE: This can be call multiple times, and maybe multiple InventoryWrapper will exist in same time.
-     * You must be sure all wrapper can be process any request in any time.
-     *
-     * @param symbolLink symbol link that created by InventoryWrapperManager#mklink
-     * @return Symbol link
-     * @throws IllegalArgumentException If symbol link invalid
-     */
-    @Override
-    public @NotNull InventoryWrapper locate(@NotNull String symbolLink) throws IllegalArgumentException {
-        return new EnderChestWrapper(UUID.fromString(symbolLink), this.openInv, plugin);
     }
 }

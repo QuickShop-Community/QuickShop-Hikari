@@ -66,14 +66,6 @@ public final class Main extends CompatibilityModule {
         deleteShopInLand(event.getLand(), event.getLandPlayer().getUID());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onLandsPermissionChanges(LandUntrustPlayerEvent event) {
-        if (!deleteWhenLosePermission) {
-            return;
-        }
-        deleteShopInLand(event.getLand(), event.getTarget());
-    }
-
     private void deleteShopInLand(Land land, UUID target) {
         //Getting all shop with world-chunk-shop mapping
         for (Map.Entry<String, Map<ShopChunk, Map<Location, Shop>>> entry : getApi().getShopManager().getShops().entrySet()) {
@@ -98,6 +90,14 @@ public final class Main extends CompatibilityModule {
         }
     }
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onLandsPermissionChanges(LandUntrustPlayerEvent event) {
+        if (!deleteWhenLosePermission) {
+            return;
+        }
+        deleteShopInLand(event.getLand(), event.getTarget());
+    }
+
     @EventHandler(ignoreCancelled = true)
     public void onPreCreation(ShopPreCreateEvent event) {
         if (landsIntegration.getLandWorld(event.getLocation().getWorld()) == null) {
@@ -111,10 +111,10 @@ public final class Main extends CompatibilityModule {
             if (land.getOwnerUID().equals(event.getPlayer().getUniqueId()) || land.isTrusted(event.getPlayer().getUniqueId())) {
                 return;
             }
-            event.setCancelled(true, "Lands: you don't have permission to create shop here");
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.creation-denied").forLocale());
         } else {
             if (whitelist) {
-                event.setCancelled(true, "Lands: you don't have permission to create shop here (whitelist)");
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.lands.creation-denied").forLocale());
             }
         }
     }
