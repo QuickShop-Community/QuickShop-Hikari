@@ -87,7 +87,6 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
     @Override
     default void remove() {
         setCurrent(null);
-
     }
 
     /**

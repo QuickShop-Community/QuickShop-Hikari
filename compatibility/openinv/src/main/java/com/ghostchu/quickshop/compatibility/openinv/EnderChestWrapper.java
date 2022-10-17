@@ -75,6 +75,17 @@ public class EnderChestWrapper implements InventoryWrapper {
         return plugin.getManager();
     }
 
+    @Override
+    public @NotNull ItemStack[] createSnapshot() {
+        return player.getEnderChest().getContents();
+    }
+
+    @Override
+    public boolean restoreSnapshot(@NotNull ItemStack[] snapshot) {
+        player.getEnderChest().setContents(snapshot);
+        return true;
+    }
+
     /**
      * Clear the inventory
      */

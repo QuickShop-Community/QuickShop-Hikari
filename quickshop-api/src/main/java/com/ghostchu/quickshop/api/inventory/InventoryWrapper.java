@@ -7,9 +7,9 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Wrapper to handle inventory/fake inventory/custom inventory etc.
@@ -135,6 +135,42 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
      */
     default boolean isValid() {
         return true;
+    }
+
+    /**
+     * Create an Inventory snapshot (including Empty slots).
+     * QuickShop-Hikari will shoot a snapshot for inventory used for purchase failure rollback.
+     * Note: provide an invalid snapshot will cause rollback break whole Inventory!
+     * WARNING: High recommend to override this method, default method doing by badways and low-performance,
+     * may mess up Inventory item order.
+     * @return The inventory contents for snapshot use.
+     */
+    @NotNull
+    default ItemStack[] createSnapshot(){
+        Logger.getLogger("QuickShop-Hikari").log(Level.WARNING,"InventoryWrapper provider "+getWrapperManager().getClass().getName()+" didn't override default InventoryWrapper#createSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");
+        List<ItemStack> contents = new ArrayList<>();
+        for (ItemStack stack : this) {
+            contents.add(stack.clone());
+        }
+        return contents.toArray(new ItemStack[0]);
+    }
+
+    /**
+     * Rollback Inventory by a snapshot.
+     * Snapshot can be created by InventoryWrapper#createSnapshot()
+     *  WARNING: High recommend to override this method, default method doing by badways and low-performance,
+     *  may mess up Inventory item order.
+     * @param snapshot The inventory content snapshot
+     * @return The result of rollback.
+     */
+    default boolean restoreSnapshot(@NotNull ItemStack[] snapshot){
+        Logger.getLogger("QuickShop-Hikari").log(Level.WARNING,"InventoryWrapper provider "+getWrapperManager().getClass().getName()+" didn't override default InventoryWrapper#restoreSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");
+        InventoryWrapperIterator it = iterator();
+        while(it.hasNext()){
+            it.remove();
+        }
+        Map<Integer, ItemStack> result = addItem(snapshot);
+        return result.isEmpty();
     }
 
     /**

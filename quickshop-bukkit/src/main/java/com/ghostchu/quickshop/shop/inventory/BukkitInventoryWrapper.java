@@ -72,6 +72,22 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
     }
 
     @Override
+    public @NotNull ItemStack[] createSnapshot() {
+        ItemStack[] content = this.inventory.getContents();
+        ItemStack[] snapshot = new ItemStack[content.length];
+        for (int i = 0; i < content.length; i++) {
+            snapshot[i] = content[i].clone();
+        }
+        return snapshot;
+    }
+
+    @Override
+    public boolean restoreSnapshot(@NotNull ItemStack[] snapshot) {
+        this.inventory.setContents(snapshot);
+        return true;
+    }
+
+    @Override
     public void setContents(ItemStack[] itemStacks) {
         inventory.setStorageContents(itemStacks);
     }
