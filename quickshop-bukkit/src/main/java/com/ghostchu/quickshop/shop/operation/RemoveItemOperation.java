@@ -19,7 +19,6 @@ public class RemoveItemOperation implements Operation {
     private boolean committed;
     private boolean rollback;
     private int remains = 0;
-    private int rollbackRemains = 0;
     private ItemStack[] snapshot;
 
     /**
@@ -55,23 +54,6 @@ public class RemoveItemOperation implements Operation {
         return true;
     }
 
-    /**
-     * Gets the item remains to remove
-     *
-     * @return The item remains to remove
-     */
-    public int getRemains() {
-        return remains;
-    }
-
-    /**
-     * Gets the item remains to rollback
-     *
-     * @return The item remains to rollback
-     */
-    public int getRollbackRemains() {
-        return rollbackRemains;
-    }
 
     @Override
     public boolean rollback() {
