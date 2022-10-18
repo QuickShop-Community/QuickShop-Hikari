@@ -20,6 +20,7 @@ public class RemoveItemOperation implements Operation {
     private boolean rollback;
     private int remains = 0;
     private int rollbackRemains = 0;
+    private ItemStack[] snapshot;
 
     /**
      * Constructor
@@ -38,6 +39,7 @@ public class RemoveItemOperation implements Operation {
     @Override
     public boolean commit() {
         committed = true;
+        this.snapshot = inv.createSnapshot();
         remains = amount;
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
@@ -74,19 +76,19 @@ public class RemoveItemOperation implements Operation {
     @Override
     public boolean rollback() {
         rollback = true;
-        rollbackRemains = this.remains;
-        while (rollbackRemains > 0) {
-            int stackSize = Math.min(rollbackRemains, itemMaxStackSize);
-            item.setAmount(stackSize);
-            Map<Integer, ItemStack> notSaved = inv.addItem(item);
-            if (notSaved.isEmpty()) {
-                rollbackRemains -= stackSize;
-            } else {
-                rollbackRemains -= stackSize - notSaved.entrySet().iterator().next().getValue().getAmount();
-                return false;
-            }
-        }
-        return true;
+//        rollbackRemains = this.remains;
+//        while (rollbackRemains > 0) {
+//            int stackSize = Math.min(rollbackRemains, itemMaxStackSize);
+//            item.setAmount(stackSize);
+//            Map<Integer, ItemStack> notSaved = inv.addItem(item);
+//            if (notSaved.isEmpty()) {
+//                rollbackRemains -= stackSize;
+//            } else {
+//                rollbackRemains -= stackSize - notSaved.entrySet().iterator().next().getValue().getAmount();
+//                return false;
+//            }
+//        }
+        return inv.restoreSnapshot(snapshot);
     }
 
     @Override
