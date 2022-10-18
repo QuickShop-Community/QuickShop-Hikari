@@ -18,8 +18,8 @@ public class RemoveItemOperation implements Operation {
     private final int itemMaxStackSize;
     private boolean committed;
     private boolean rollback;
-
-    private ItemStack[] snapshot;
+    private int remains = 0;
+    private int rollbackRemains = 0;
 
     /**
      * Constructor
@@ -38,17 +38,51 @@ public class RemoveItemOperation implements Operation {
     @Override
     public boolean commit() {
         committed = true;
-        this.snapshot = inv.createSnapshot();
-        int remains = amount;
-        ItemStack item = this.item.clone();
+        remains = amount;
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
             item.setAmount(stackSize);
             Map<Integer, ItemStack> notFit = inv.removeItem(item.clone());
             if (notFit.isEmpty()) {
-                remains -= item.getAmount();
+                remains -= stackSize;
             } else {
-                // can't add more items! fast fail!
+                remains -= stackSize - notFit.entrySet().iterator().next().getValue().getAmount();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Gets the item remains to remove
+     *
+     * @return The item remains to remove
+     */
+    public int getRemains() {
+        return remains;
+    }
+
+    /**
+     * Gets the item remains to rollback
+     *
+     * @return The item remains to rollback
+     */
+    public int getRollbackRemains() {
+        return rollbackRemains;
+    }
+
+    @Override
+    public boolean rollback() {
+        rollback = true;
+        rollbackRemains = this.remains;
+        while (rollbackRemains > 0) {
+            int stackSize = Math.min(rollbackRemains, itemMaxStackSize);
+            item.setAmount(stackSize);
+            Map<Integer, ItemStack> notSaved = inv.addItem(item);
+            if (notSaved.isEmpty()) {
+                rollbackRemains -= stackSize;
+            } else {
+                rollbackRemains -= stackSize - notSaved.entrySet().iterator().next().getValue().getAmount();
                 return false;
             }
         }
@@ -63,11 +97,5 @@ public class RemoveItemOperation implements Operation {
     @Override
     public boolean isRollback() {
         return this.rollback;
-    }
-
-    @Override
-    public boolean rollback() {
-        rollback = true;
-        return inv.restoreSnapshot(this.snapshot);
     }
 }
