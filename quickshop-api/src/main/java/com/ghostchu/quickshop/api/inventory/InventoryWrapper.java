@@ -70,6 +70,8 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
         Logger.getLogger("QuickShop-Hikari").log(Level.WARNING, "InventoryWrapper provider " + getWrapperManager().getClass().getName() + " didn't override default InventoryWrapper#createSnapshot method, it may cause un-excepted behavior like item missing, mess order and heavy hit performance! Please report this issue to InventoryWrapper provider plugin author!");
         List<ItemStack> contents = new ArrayList<>();
         for (ItemStack stack : this) {
+            if (stack == null)
+                continue;
             contents.add(stack.clone());
         }
         return contents.toArray(new ItemStack[0]);

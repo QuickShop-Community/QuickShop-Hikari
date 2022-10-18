@@ -40,7 +40,12 @@ public class BukkitInventoryWrapper implements InventoryWrapper {
         ItemStack[] content = this.inventory.getContents();
         ItemStack[] snapshot = new ItemStack[content.length];
         for (int i = 0; i < content.length; i++) {
-            snapshot[i] = content[i].clone();
+            if (content[i] != null) {
+                snapshot[i] = content[i].clone();
+            } else {
+                snapshot[i] = null;
+            }
+
         }
         return snapshot;
     }
