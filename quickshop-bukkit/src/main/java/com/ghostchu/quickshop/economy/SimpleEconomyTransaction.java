@@ -10,7 +10,6 @@ import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.JsonUtil;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.EconomyTransactionLog;
 import lombok.Builder;
@@ -360,6 +359,27 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         this.tax = tax;
     }
 
+    private boolean executeOperation(@NotNull Operation operation) {
+        if (operation.isCommitted()) {
+            throw new IllegalStateException("Operation already committed");
+        }
+        if (operation.isRollback()) {
+            throw new IllegalStateException("Operation already rolled back, you must create another new operation.");
+        }
+        try {
+            boolean result = operation.commit();
+            if (!result) {
+                return false;
+            }
+            processingStack.push(operation);
+            return true;
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            this.lastError = "Failed to execute operation: " + core.getLastError() + "; Operation: " + operation;
+            return false;
+        }
+    }
+
     /**
      * Rolling back the transaction
      *
@@ -393,7 +413,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
             } catch (Exception exception) {
                 if (continueWhenFailed) {
                     operations.add(operation);
-                    MsgUtil.debugStackTrace(exception.getStackTrace());
+                    exception.printStackTrace();
                 } else {
                     plugin.getLogger().log(Level.WARNING, "Failed to rollback transaction: " + core.getLastError() + "; Operation: " + operation + "; Transaction: " + this);
                     break;
@@ -401,26 +421,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
             }
         }
         return operations;
-    }
-
-    private boolean executeOperation(@NotNull Operation operation) {
-        if (operation.isCommitted()) {
-            throw new IllegalStateException("Operation already committed");
-        }
-        if (operation.isRollback()) {
-            throw new IllegalStateException("Operation already rolled back, you must create another new operation.");
-        }
-        try {
-            boolean result = operation.commit();
-            if (!result) {
-                return false;
-            }
-            processingStack.push(operation);
-            return true;
-        } catch (Exception exception) {
-            this.lastError = "Failed to execute operation: " + core.getLastError() + "; Operation: " + operation;
-            return false;
-        }
     }
 
 

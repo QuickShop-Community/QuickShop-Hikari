@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.api.shop.InventoryTransaction;
 import com.ghostchu.quickshop.shop.operation.AddItemOperation;
 import com.ghostchu.quickshop.shop.operation.RemoveItemOperation;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Builder;
@@ -191,6 +190,17 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
         return true;
     }
 
+    private boolean executeOperation(@NotNull Operation operation) {
+        try {
+            processingStack.push(operation); // Item is special, economy fail won't do anything but item does.
+            return operation.commit();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            this.lastError = "Failed to execute operation: " + operation;
+            return false;
+        }
+    }
+
     /**
      * Rolling back the transaction
      *
@@ -221,7 +231,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
             } catch (Exception exception) {
                 if (continueWhenFailed) {
                     operations.add(operation);
-                    MsgUtil.debugStackTrace(exception.getStackTrace());
+                    exception.printStackTrace();
                 } else {
                     plugin.getLogger().log(Level.WARNING, "Failed to rollback transaction: Operation: " + operation + "; Transaction: " + this);
                     break;
@@ -229,16 +239,6 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
             }
         }
         return operations;
-    }
-
-    private boolean executeOperation(@NotNull Operation operation) {
-        try {
-            processingStack.push(operation); // Item is special, economy fail won't do anything but item does.
-            return operation.commit();
-        } catch (Exception exception) {
-            this.lastError = "Failed to execute operation: " + operation;
-            return false;
-        }
     }
 
 
