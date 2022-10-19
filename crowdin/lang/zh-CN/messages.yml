@@ -594,7 +594,7 @@ addon:
     plot-type-disallowed: "<red>您不能在这种类型的地皮上创建城镇/国家商店。"
     flags:
       own: "<red>You can only create shops at your owned shop type towny plot."
-      modify: "<red>You didn't have build permission on this towny plot."
+      modify: "<red>您没有在该Towny区域的建造权限"
       shop-type: "<red>You must create shop on a shop type towny plot."
   residence:
     creation-flag-denied: "<red>您没有在该领地创建商店的权限。"
@@ -605,7 +605,7 @@ addon:
     trade-denied: "<red>您没有在该领地与商店交易的权限。"
   lands:
     world-not-enabled: "<red>你不能在这个世界中交易或创建"
-    creation-denied: "<red>You don't have permission to create shops in this Land area."
+    creation-denied: "<red>您没有在该Land区域创建商店的权限"
   plotsquared:
     no-plot-whitelist-creation: "<red>你不能在地皮外创建商店"
     no-plot-whitelist-trade: "<red>你不能在地皮之外与商店交易"
@@ -615,5 +615,5 @@ addon:
     owner-create-only: "<red>只有岛屿所有者才能在这里创建商店"
     owner-member-create-only: "<red>只有岛屿所有者或岛屿成员才能在这里创建商店"
   worldguard:
-    creation-flag-test-failed: "<red>You don't have permission create shop in this WorldGuard area."
-    trade-flag-test-failed: "<red>You don't have permission trade shop in this WorldGuard area."
+    creation-flag-test-failed: "<red>您没有在该WorldGuard区域创建商店的权限"
+    trade-flag-test-failed: "<red>您没有在该WorldGuard区域与商店交易的权限。"
