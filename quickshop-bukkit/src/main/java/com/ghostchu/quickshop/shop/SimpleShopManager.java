@@ -970,7 +970,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
         if (tax >= 1.0) {
-            plugin.getLogger().warning("Disable tax due to is invalid, it should be in 0.0-1.0 (current value is " + tax + ")");
+            plugin.getLogger().warning("Disable tax due to is invalid, it should be in >=0.0 and <1.0 (current value is " + tax + ")");
             tax = 0;
         }
         if (tax < 0) {
