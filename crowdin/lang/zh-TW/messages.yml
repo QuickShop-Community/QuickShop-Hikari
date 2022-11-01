@@ -523,9 +523,9 @@ internal-error: "<red>發生了內部錯誤！請聯繫管理員。"
 debug:
   arguments-invalid: "<red>提供參數 <yellow>{0}</yellow> 無效。"
   sign-located: "<green>告示牌有效：<yellow>{0}</yellow>。"
-  operation-missing: "<red>你必須指定操作。"
-  operation-invalid: "<red>你必須指定有效的操作。"
-  invalid-base64-encoded-sql: "<red>提供的 SQL 必須為 base64 編碼。"
+  operation-missing: "<red>你必須指定一個操作。"
+  operation-invalid: "<red>你必須指定一個有效的操作。"
+  invalid-base64-encoded-sql: "<red>所提供的 SQL 必須為 base64 編碼。"
   warning-sql: "<red><bold>警告：</bold></red><yellow>你正在執行一個 SQL 語句，這可能會損壞你的資料庫或破壞資料庫中的任何資料，即使它屬於其他插件。\n<red>如果你不信任向你發送該指令的人，請不要確認。"
   warning-sql-confirm: "<yellow>若要確認該危險操作，請在 60 秒內輸入 <aqua>/qs debug database sql confirm {0}</aqua>。"
   warning-sql-confirm-hover: "<yellow>點擊以確認該危險操作。"
@@ -593,9 +593,9 @@ addon:
     operation-disabled-due-shop-status: "<red>該商店操作已被停用，因為這已經是一個城鎮 / 國家商店。"
     plot-type-disallowed: "<red>你不能在這種類型的畫布上建立城鎮 / 國家商店。"
     flags:
-      own: "<red>You can only create shops at your owned shop type towny plot."
-      modify: "<red>You didn't have build permission on this towny plot."
-      shop-type: "<red>You must create shop on a shop type towny plot."
+      own: "<red>你只能在擁有的商店類型城鎮土地上建立商店。"
+      modify: "<red>你沒有在這個城鎮土地上建造的權限。"
+      shop-type: "<red>你必須在城鎮土地上建立商店。"
   residence:
     creation-flag-denied: "<red>你沒有在該領地建立商店的權限。"
     trade-flag-denied: "<red>你沒有在該領地購買的權限。"
@@ -605,7 +605,7 @@ addon:
     trade-denied: "<red>你沒有在該聲明中購買商店的權限。"
   lands:
     world-not-enabled: "<red>你不能在這個世界中建立或購買商店。"
-    creation-denied: "<red>You don't have permission to create shops in this Land area."
+    creation-denied: "<red>你沒有在該領土建立商店的權限。"
   plotsquared:
     no-plot-whitelist-creation: "<red>你無法在畫布外建立商店。"
     no-plot-whitelist-trade: "<red>你無法在畫布外購買商店。"
@@ -615,5 +615,5 @@ addon:
     owner-create-only: "<red>只有島嶼擁有者能夠在那裡建立商店。"
     owner-member-create-only: "<red>只有島嶼擁有者或成員能夠在那裡建立商店。"
   worldguard:
-    creation-flag-test-failed: "<red>You don't have permission create shop in this WorldGuard area."
-    trade-flag-test-failed: "<red>You don't have permission trade shop in this WorldGuard area."
+    creation-flag-test-failed: "<red>你沒有在該 WorldGuard 保護區建立商店的權限。"
+    trade-flag-test-failed: "<red>你沒有在該 WorldGuard 保護區與商店交易的權限。"
