@@ -279,6 +279,10 @@ public class RollbarErrorReporter {
             throwable.printStackTrace();
             resetIgnores();
             plugin.getLogger().warning("====QuickShop Error Report E N D===");
+            plugin
+                    .getLogger()
+                    .warning(
+                            "If this error affects any function, you can join our Discord server to report it and track the feedback: https://discord.gg/Bu3dVtmsD3");
             Log.debug(throwable.getMessage());
             Arrays.stream(throwable.getStackTrace()).forEach(a -> Log.debug(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
             if (Util.isDevMode()) {
