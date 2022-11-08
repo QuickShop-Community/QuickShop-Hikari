@@ -574,11 +574,12 @@ public class ContainerShop implements Shop, Reloadable {
         if (inventoryWrapper == null) {
             Util.ensureThread(false);
             Log.debug("SymbolLink Applying: " + symbolLink);
-            inventoryWrapper = locateInventory(symbolLink);
-        }
-        if (inventoryWrapper == null) {
-            Log.debug("Cannot locate the Inventory with symbol link: " + symbolLink + ", provider: " + inventoryWrapperProvider);
-            return null;
+            try {
+                inventoryWrapper = locateInventory(symbolLink);
+            } catch (Exception e) {
+                Log.debug("Cannot locate the Inventory with symbol link: " + symbolLink + ", provider: " + inventoryWrapperProvider);
+                return null;
+            }
         }
         if (inventoryWrapper.isValid()) {
             return inventoryWrapper;
