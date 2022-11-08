@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.ProtocolException;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Filter;
@@ -33,7 +34,9 @@ public class RollbarErrorReporter {
             , ProtocolException.class
             , InvalidPluginException.class
             , UnsupportedClassVersionError.class
-            , LinkageError.class);
+            , LinkageError.class
+            , SQLException.class
+    );
     private final QuickShop plugin;
     private final QuickShopExceptionFilter quickShopExceptionFilter;
     private final GlobalExceptionFilter serverExceptionFilter;
@@ -258,11 +261,11 @@ public class RollbarErrorReporter {
             if (!canReport(throwable)) {
                 return;
             }
-            if (ignoredException.contains(throwable.getClass())) {
+            if (isDisallowedClazz(throwable.getClass())) {
                 return;
             }
             if (throwable.getCause() != null) {
-                if (ignoredException.contains(throwable.getCause().getClass())) {
+                if (isDisallowedClazz(throwable.getCause().getClass())) {
                     return;
                 }
             }
@@ -292,6 +295,14 @@ public class RollbarErrorReporter {
             ignoreThrow();
             plugin.getLogger().log(Level.WARNING, "Something going wrong when automatic report errors, please submit this error on Issue Tracker", th);
         }
+    }
+
+    private boolean isDisallowedClazz(Class<?> clazz) {
+        for (Class<?> ignoredClazz : this.ignoredException) {
+            if (ignoredClazz.isAssignableFrom(clazz) || ignoredClazz.equals(clazz))
+                return true;
+        }
+        return false;
     }
 
     public void unregister() {
