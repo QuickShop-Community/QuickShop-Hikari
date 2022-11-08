@@ -617,3 +617,26 @@ addon:
   worldguard:
     creation-flag-test-failed: "<red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu erstellen."
     trade-flag-test-failed: "<red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu handeln."
+suite:
+  dynmap:
+    title: "{0} - {1} - {2}"
+    description: "Item: {0}\nOwner: {1}\nType: {2} {3}\nPrice: {4}\nLocation: {5} {6}, {7}, {8}\nSpace: {9}\nStock: {10}"
+  limited:
+    command-description: "<yellow>Set a limit that restrict the purchase that player can make in period."
+    reach-the-quota-limit: "<red>You have reach the purchase limit in this shop ({0}/{1})."
+    quota-reset-countdown: "<yellow>The quota in this shop will reset in {0}."
+    quota-reset-player-successfully: "<green>The quota for player {0} in this shop has been reset successfully."
+    quota-reset-everybody-successfully: "<green>The quota for everyone in this shop has been reset successfully."
+    quota-setup: "<green>The purchase restriction now apply to this shop!"
+    quota-remove: "<green>The purchase restriction now removed from this shop!"
+    subtitles:
+      title: "<green>Purchase Success"
+      subtitle: "<aqua>You can purchase <yellow>{0}</yellow> more in this shop"
+  list:
+    command-description: "<yellow>List all shops owned by yourself or another player."
+    table-prefix: "<yellow>You owned total <aqua>{0}</aqua> shops on this server."
+    entry-syntax: "<aqua>- <yellow>{0}"
+    entry-syntax-fallback-name: "<yellow>{0} {1}, {2}, {3}"
+    hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>This shop are {7} items"
+  shopitemonly:
+    message: "<red>You can put non-shop items into shop container, all non-shop items will dropped at your location."
