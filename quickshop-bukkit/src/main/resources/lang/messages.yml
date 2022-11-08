@@ -735,7 +735,7 @@ suite:
     command-description: "<yellow>List all shops owned by yourself or another player."
     table-prefix: "<yellow>You owned total <aqua>{0}</aqua> shops on this server."
     entry-syntax: "<aqua>- <yellow>{0}"
-    entry-syntax-fallback-name: "<yellow>{0} {1}, {2}, {3}, {4}"
-    hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>This shop are {7} items"
+    entry-syntax-fallback-name: "<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}"
+    hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."
   shopitemonly:
-    message: "<red>You can put non-shop items into shop container, all non-shop items will dropped at your location."
+    message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
