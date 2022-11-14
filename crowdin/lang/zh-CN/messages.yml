@@ -622,11 +622,11 @@ suite:
     title: "{0} - {1} - {2}"
     description: "物品: {0}\n所有者: {1}\n类型: {2} {3}\n价格: {4}\n位置: {5} {6}, {7}, {8}\n空间: {9}\n库存: {10}"
   limited:
-    command-description: "<yellow>Set a limit that restrict the purchase that player can make in period."
-    reach-the-quota-limit: "<red>You have reach the purchase limit in this shop ({0}/{1})."
-    quota-reset-countdown: "<yellow>The quota in this shop will reset in {0}."
-    quota-reset-player-successfully: "<green>The quota for player {0} in this shop has been reset successfully."
-    quota-reset-everybody-successfully: "<green>The quota for everyone in this shop has been reset successfully."
+    command-description: "<yellow>限制玩家在时间段内的交易限制"
+    reach-the-quota-limit: "<red>您已达到该商店的交易限制（{0}/{1}）。"
+    quota-reset-countdown: "<yellow>该商店的交易限制将在 {0} 重置"
+    quota-reset-player-successfully: "<green>已成功重置该商店中玩家 {0} 的交易限制"
+    quota-reset-everybody-successfully: "<green>已成功重置该商店中所有人的交易限制"
     quota-setup: "<green>该商店的交易限制已设置成功！"
     quota-remove: "<green>该商店的交易限制已成功重置！"
     subtitles:
