@@ -21,6 +21,7 @@ tabcomplete:
   name: '[name]'
   range: '[範圍]'
   currency: '[貨幣名稱]'
+  percentage: '[percentage%]'
 taxaccount-unset: <green>該商店的稅金帳戶現在按照伺服器全域設定。
 blacklisted-item: <red>由於這是黑名單的物品，所以你不能賣。
 command-type-mismatch: <red>該指令只能由 <aqua>{0} <red>執行。
@@ -164,6 +165,7 @@ inventory-unavailable: '<red>該商店的 InventoryWrapper 外觀不存在或不
 file-test: 這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)
 unknown-player: <red>找不到相對應的玩家，請檢查你輸入的玩家名稱是否正確。
 player-offline: "<red>目標玩家離線。"
+player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 language:
   qa-issues: '<yellow>品質認證問題：<aqua>{0}%'
   code: '<yellow>代碼：<gold>{0}'
@@ -418,6 +420,7 @@ command:
     permission: <yellow>商店權限管理
     lookup: <yellow>管理物品索引表
     database: <yellow>查看和維護 QuickShop 資料庫
+    benefit: <yellow>Settings of divide benefits between shop owner and other players
   bulk-size-not-set: '<red>用法：/qs size <amount>'
   no-type-given: '<red>用法：/qs find <item>'
   feature-not-enabled: 該功能沒有在配置檔案中啟用
@@ -520,6 +523,9 @@ lookup-item-test-not-found: "<gold>測試：<yellow>在你手中的物品並未�
 lookup-item-test-found: "<gold>測試：<green>你手中的物品在索引表中被命名為 <aqua>{0}</aqua>"
 lookup-item-removed: "<green>物品 <aqua>{0}</aqua>已成功自物品索引表中刪除"
 internal-error: "<red>發生了內部錯誤！請聯繫管理員。"
+argument-cannot-be: "<red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>."
+argument-must-between: "<red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>"
+invalid-percentage: "<red>Percentage invalid, you must add '%' after the number of percentage."
 debug:
   arguments-invalid: "<red>提供參數 <yellow>{0}</yellow> 無效。"
   sign-located: "<green>告示牌有效：<yellow>{0}</yellow>。"
@@ -575,6 +581,13 @@ transfer-accepted-toside: "<green>你已接受 <aqua>{0}</aqua> 的轉移請求�
 transfer-rejected-fromside: "<red>玩家 <aqua>{0}</aqua> 已拒絕你的商店轉移請求。"
 transfer-rejected-toside: "<red>你已拒絕 <aqua>{0}</aqua> 的轉移請求。"
 transfer-no-pending-operation: "<red>你還沒有待處理的轉移請求。"
+benefit-overflow: "<red>The sum of all benefits cannot be greater than or equal to 100%."
+benefit-exists: "<red>Target player already in benefits list on this shop. To remove that player, set benefit to zero."
+benefit-removed: "<red>Target player has been removed from shop benefits."
+benefit-added: "<green>Player <aqua>{0}</aqua> has been added into shop benefits!"
+benefit-updated: "<green>Player <aqua>{0}</aqua>'s benefits has been updated!"
+benefit-query: "<green>This shop have <yellow>{0}</yellow> players in benefits list!"
+benefit-query-list: "<yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>"
 addon:
   towny:
     commands:
