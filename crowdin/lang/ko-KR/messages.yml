@@ -21,6 +21,7 @@ tabcomplete:
   name: '[name]'
   range: '[range]'
   currency: '[통화명]'
+  percentage: '[percentage%]'
 taxaccount-unset: <green>서버 전역 설정을 따르는 이 상점의 세금 계정
 blacklisted-item: <red>당신은 이아이템을 판매할수 없습니다. 블랙리스트에 등록되어있는 아이템입니다.
 command-type-mismatch: <red>이 명령어는 <aqua>{0}<red>에서만 사용할 수 있습니다.
@@ -164,6 +165,7 @@ inventory-unavailable: '<red>This shop InventoryWrapper not exists or invalid. D
 file-test: 이것은텍스트파일일까요? 한국어 일까yo? :)
 unknown-player: <red>대상 플레이어가 없습니다. 유저이름을 확인해주세요.
 player-offline: "<red>The target player currently is offline."
+player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 language:
   qa-issues: '<yellow>품질 보증문제: <aqua>{0}%'
   code: '<yellow>코드: <gold>{0}'
@@ -418,6 +420,7 @@ command:
     permission: <yellow>Shop permission management
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain QuickShop database
+    benefit: <yellow>Settings of divide benefits between shop owner and other players
   bulk-size-not-set: '<red>사용법: /qs size <amount>'
   no-type-given: '<red>사용법: /qs find <아이템 이름>'
   feature-not-enabled: 이옵션은 컨피그에서 비활성 상태입니다
@@ -520,6 +523,9 @@ lookup-item-test-not-found: "<gold>Test: <yellow>The item in your hand not regis
 lookup-item-test-found: "<gold>Test: <green>The item in your hand was registered as name <aqua>{0}</aqua> in lookup table."
 lookup-item-removed: "<green>The specified item <aqua>{0}</aqua> has been successfully removed from lookup table."
 internal-error: "<red>An internal error occurred, please contact the server administrator."
+argument-cannot-be: "<red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>."
+argument-must-between: "<red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>"
+invalid-percentage: "<red>Percentage invalid, you must add '%' after the number of percentage."
 debug:
   arguments-invalid: "<red>Provided arguments <yellow>{0}</yellow> invalid."
   sign-located: "<green>Sign valid: <yellow>{0}</yellow>."
@@ -575,6 +581,13 @@ transfer-accepted-toside: "<green>You accepted <aqua>{0}</aqua>'s transfer reque
 transfer-rejected-fromside: "<red>Player <aqua>{0}</aqua> rejected your shop transfer request."
 transfer-rejected-toside: "<red>You rejected <aqua>{0}</aqua>'s shop transfer request."
 transfer-no-pending-operation: "<red>You don't have pending transfer request yet."
+benefit-overflow: "<red>The sum of all benefits cannot be greater than or equal to 100%."
+benefit-exists: "<red>Target player already in benefits list on this shop. To remove that player, set benefit to zero."
+benefit-removed: "<red>Target player has been removed from shop benefits."
+benefit-added: "<green>Player <aqua>{0}</aqua> has been added into shop benefits!"
+benefit-updated: "<green>Player <aqua>{0}</aqua>'s benefits has been updated!"
+benefit-query: "<green>This shop have <yellow>{0}</yellow> players in benefits list!"
+benefit-query-list: "<yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>"
 addon:
   towny:
     commands:
