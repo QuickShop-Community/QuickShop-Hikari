@@ -19,6 +19,7 @@ import com.google.gson.JsonParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +31,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -449,4 +451,27 @@ public class MsgUtil {
             }
         }
     }
+
+    @NotNull
+    public static Component formatPlayerProfile(@Nullable Profile profile, @Nullable CommandSender sender) {
+        String name = null;
+        String uuid = null;
+        if (profile != null) {
+            name = profile.getName();
+            uuid = profile.getUniqueId().toString();
+
+        }
+        if (name == null) name = "Unknown";
+        if (uuid == null) uuid = "N/A";
+
+        if (plugin == null) {
+            return Component.text(name).color(TextColor.color(NamedTextColor.AQUA))
+                    .append(Component.text("(").color(TextColor.color(NamedTextColor.GOLD)))
+                    .append(Component.text(uuid)).color(TextColor.color(NamedTextColor.YELLOW))
+                    .append(Component.text(")").color(TextColor.color(NamedTextColor.GOLD)));
+        } else {
+            return plugin.text().of(sender, "player-profile-format", name, uuid).forLocale();
+        }
+    }
+
 }

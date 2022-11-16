@@ -80,7 +80,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         this.benefit = benefit;
         if (this.benefit == null)
             this.benefit = new SimpleBenefit();
-
         if (Double.doubleToLongBits(taxModifier) != Double.doubleToLongBits(0.0d)) { //Calc total money and apply tax
             this.amountAfterTax = CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), amount);
         } else {
@@ -177,22 +176,28 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         } else {
             // Benefit on
             // Process benefit withdraw
+            Log.transaction("Benefit start");
             if (from != null && !this.executeOperation(new WithdrawEconomyOperation(from, amount, world, currency, core))) {
                 this.lastError = "Failed to withdraw " + amount + " from player " + from + " account. LastError: " + core.getLastError();
                 callback.onFailed(this);
                 return false;
             }
             // Process benefit deposit
+            Log.transaction("Benefit processing per-player...");
             double payout = 0d;
             for (Map.Entry<UUID, Double> entry : benefit.getRegistry().entrySet()) {
                 payout += entry.getValue();
+                Log.transaction("Benefit for " + entry.getKey() + ", value: " + entry.getValue() + ". Payout = " + payout);
+                if (tryingFixBalanceInsufficient)
+                    core.getBalance(entry.getKey(), world, currency);
                 if (!this.executeOperation(new DepositEconomyOperation(entry.getKey(), amountAfterTax * entry.getValue(), world, currency, core))) {
                     this.lastError = "Failed to deposit " + amountAfterTax * entry.getValue() + " to player " + to + " account. LastError: " + core.getLastError();
                     callback.onFailed(this);
                     return false;
                 }
             }
-            double ownerCanGet = 1 - payout;
+            double ownerCanGet = amountAfterTax * (1 - payout);
+            Log.transaction("Benefit for owner remaining: " + ownerCanGet);
             if (ownerCanGet > 0) {
                 if (to != null && !this.executeOperation(new DepositEconomyOperation(to, ownerCanGet, world, currency, core))) {
                     this.lastError = "Failed to deposit " + ownerCanGet + " to player " + to + " account. LastError: " + core.getLastError();
@@ -200,6 +205,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
                     return false;
                 }
             }
+            Log.transaction("Benefit for tax: " + tax);
             if (tax > 0 && taxer != null && !this.executeOperation(new DepositEconomyOperation(taxer, tax, world, currency, core))) {
                 this.lastError = "Failed to deposit tax account: " + tax + ". LastError: " + core.getLastError();
                 callback.onTaxFailed(this);

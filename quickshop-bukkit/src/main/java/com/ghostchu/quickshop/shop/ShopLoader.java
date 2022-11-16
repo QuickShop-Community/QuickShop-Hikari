@@ -4,9 +4,11 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.database.bean.InfoRecord;
 import com.ghostchu.quickshop.api.database.bean.ShopRecord;
+import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.common.util.Timer;
+import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -118,7 +120,8 @@ public class ShopLoader {
                         rawInfo.getInvWrapper(),
                         rawInfo.getInvSymbolLink(),
                         rawInfo.getName(),
-                        rawInfo.getPermissions());
+                        rawInfo.getPermissions(),
+                        rawInfo.getBenefits());
             } catch (Exception e) {
                 if (e instanceof IllegalStateException) {
                     plugin.getLogger().log(Level.WARNING, "Failed to load the shop, skipping...", e);
@@ -239,6 +242,8 @@ public class ShopLoader {
         private ItemStack item;
         private boolean needUpdate = false;
 
+        private Benefit benefits;
+
 
         @SuppressWarnings("UnstableApiUsage")
         DataRawDatabaseInfo(@NotNull DataRecord record) {
@@ -258,6 +263,7 @@ public class ShopLoader {
             this.taxAccount = record.getTaxAccount();
             this.invSymbolLink = record.getInventorySymbolLink();
             this.invWrapper = record.getInventoryWrapper();
+            this.benefits = SimpleBenefit.deserialize(record.getBenefit());
             String permissionJson = record.getPermissions();
             if (!StringUtils.isEmpty(permissionJson) && MsgUtil.isJson(permissionJson)) {
                 Type type = new TypeToken<Map<UUID, String>>() {

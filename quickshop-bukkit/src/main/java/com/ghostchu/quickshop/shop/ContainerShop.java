@@ -16,7 +16,6 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
-import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
@@ -198,7 +197,7 @@ public class ContainerShop implements Shop, Reloadable {
             @NotNull String symbolLink,
             @Nullable String shopName,
             @NotNull Map<UUID, String> playerGroup,
-            @NotNull SimpleBenefit shopBenefit) {
+            @NotNull Benefit shopBenefit) {
         Util.ensureThread(false);
         this.shopId = shopId;
         this.shopName = shopName;

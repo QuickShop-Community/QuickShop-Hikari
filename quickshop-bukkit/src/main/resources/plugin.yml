@@ -95,6 +95,7 @@ permissions:
       quickshop.toggledisplay: true
       quickshop.shopnaming: true
       quickshop.permission: true
+      quickshop.benefit: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
     default: op
@@ -119,6 +120,7 @@ permissions:
       quickshop.other.search: true
       quickshop.other.preview: true
       quickshop.other.use: true
+      quickshop.other.benefit: true
 
   quickshop.create.sell:
     description: Allows a player to sell from a shop.
@@ -290,4 +292,10 @@ permissions:
     default: op
   quickshop.database:
     description: Permission to use /qs database
+    default: op
+  quickshop.benefit:
+    description: Permission to use /qs benefit
+    default: op
+  quickshop.other.benefit:
+    description: Permission to bypass the benefit permission check
     default: op
