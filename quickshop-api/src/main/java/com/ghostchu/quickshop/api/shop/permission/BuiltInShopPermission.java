@@ -22,7 +22,9 @@ public enum BuiltInShopPermission implements ShopPermissionAudience {
     SET_ITEM("set_item", "set-item"),
     SET_STACK_AMOUNT("set_stack_amount", "set-stack-amount"),
     SET_CURRENCY("set_currency", "set-currency"),
-    SET_NAME("set_name", "set-name");
+    SET_NAME("set_name", "set-name"),
+
+    SET_BENEFIT("set_benefit", "set-benefit");
 
     private final String node;
 

@@ -183,9 +183,19 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
                 return false;
             }
             // Process benefit deposit
+            double payout = 0d;
             for (Map.Entry<UUID, Double> entry : benefit.getRegistry().entrySet()) {
+                payout += entry.getValue();
                 if (!this.executeOperation(new DepositEconomyOperation(entry.getKey(), amountAfterTax * entry.getValue(), world, currency, core))) {
                     this.lastError = "Failed to deposit " + amountAfterTax * entry.getValue() + " to player " + to + " account. LastError: " + core.getLastError();
+                    callback.onFailed(this);
+                    return false;
+                }
+            }
+            double ownerCanGet = 1 - payout;
+            if (ownerCanGet > 0) {
+                if (to != null && !this.executeOperation(new DepositEconomyOperation(to, ownerCanGet, world, currency, core))) {
+                    this.lastError = "Failed to deposit " + ownerCanGet + " to player " + to + " account. LastError: " + core.getLastError();
                     callback.onFailed(this);
                     return false;
                 }
