@@ -40,6 +40,7 @@ public enum DataTables {
         table.addColumn("inv_symbol_link", "TEXT NOT NULL"); // INVENTORY DATA (to read the inventory info)
 
         table.addColumn("create_time", "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP"); // SHOP CREATE TIME
+        table.addColumn("benefit", "MEDIUMTEXT"); // BENEFIT (JSON) version 10
         // table.addColumn("remove_time", "DATETIME"); // SHOP REMOVE TIME (NULL if not removed)
 
         table.setIndex(IndexType.INDEX, "idx_qs_data_owner", "owner");

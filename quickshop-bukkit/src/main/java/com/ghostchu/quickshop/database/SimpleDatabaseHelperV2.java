@@ -119,7 +119,27 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 e.printStackTrace();
             }
         }
+        if (getDatabaseVersion() == 9) {
+            try {
+                plugin.getLogger().info("Data upgrading: Performing database structure upgrade (benefit)...");
+                upgradeBenefit();
+                plugin.getLogger().info("Data upgrading: All completed!");
+                setDatabaseVersion(10);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         plugin.getLogger().info("Finished!");
+    }
+
+    private void upgradeBenefit() {
+        try {
+            Integer lines = getManager().alterTable(DataTables.DATA.getName())
+                    .addColumn("benefit", "MEDIUMTEXT")
+                    .execute();
+        } catch (SQLException e) {
+            Log.debug("Failed to add benefit column in " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
+        }
     }
 
     public int getDatabaseVersion() {
