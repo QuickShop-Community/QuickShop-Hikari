@@ -68,13 +68,13 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
      */
 
     @Builder
-    public SimpleEconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, EconomyCore core, boolean allowLoan, @NotNull World world, @Nullable String currency, boolean neverFail, @Nullable Benefit benefit) {
+    public SimpleEconomyTransaction(@Nullable UUID from, @Nullable UUID to, double amount, double taxModifier, @Nullable UUID taxAccount, EconomyCore core, Boolean allowLoan, @NotNull World world, @Nullable String currency, boolean neverFail, @Nullable Benefit benefit) {
         this.from = from;
         this.to = to;
         this.core = core == null ? QuickShop.getInstance().getEconomy() : core;
         this.amount = amount;
         this.taxer = taxAccount;
-        this.allowLoan = allowLoan;
+        this.allowLoan = Objects.requireNonNullElseGet(allowLoan, () -> plugin.getConfig().getBoolean("shop.allow-economy-loan", false));
         this.world = world;
         this.currency = currency;
         this.benefit = benefit;

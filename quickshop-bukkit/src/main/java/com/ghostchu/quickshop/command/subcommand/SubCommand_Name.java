@@ -67,7 +67,6 @@ public class SubCommand_Name implements CommandHandler<Player> {
                         .currency(plugin.getCurrency())
                         .taxAccount(shop.getTaxAccount())
                         .taxModifier(0.0d)
-                        .allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false))
                         .core(plugin.getEconomy())
                         .amount(fee)
                         .build();

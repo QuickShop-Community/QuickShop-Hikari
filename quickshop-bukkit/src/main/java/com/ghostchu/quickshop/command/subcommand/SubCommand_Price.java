@@ -101,7 +101,6 @@ public class SubCommand_Price implements CommandHandler<Player> {
 
         if (fee > 0) {
             SimpleEconomyTransaction transaction = SimpleEconomyTransaction.builder()
-                    .allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false))
                     .core(plugin.getEconomy())
                     .from(sender.getUniqueId())
                     .amount(fee)

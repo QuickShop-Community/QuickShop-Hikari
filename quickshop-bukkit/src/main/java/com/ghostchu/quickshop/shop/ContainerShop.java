@@ -483,7 +483,6 @@ public class ContainerShop implements Shop, Reloadable {
                     transaction =
                             SimpleEconomyTransaction.builder()
                                     .amount(cost)
-                                    .allowLoan(false)
                                     .core(plugin.getEconomy())
                                     .currency(plugin.getCurrency())
                                     .world(this.getLocation().getWorld())
@@ -494,7 +493,6 @@ public class ContainerShop implements Shop, Reloadable {
                     transaction =
                             SimpleEconomyTransaction.builder()
                                     .amount(cost)
-                                    .allowLoan(false)
                                     .core(plugin.getEconomy())
                                     .currency(plugin.getCurrency())
                                     .world(this.getLocation().getWorld())

@@ -382,7 +382,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
         SimpleEconomyTransaction.SimpleEconomyTransactionBuilder builder = SimpleEconomyTransaction.builder()
-                .allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false))
                 .core(eco)
                 .from(seller)
                 .amount(total)

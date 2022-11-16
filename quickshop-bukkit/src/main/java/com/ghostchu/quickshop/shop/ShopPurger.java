@@ -85,7 +85,6 @@ public class ShopPurger {
                         SimpleEconomyTransaction transaction =
                                 SimpleEconomyTransaction.builder()
                                         .amount(plugin.getConfig().getDouble("shop.cost"))
-                                        .allowLoan(false)
                                         .core(plugin.getEconomy())
                                         .currency(shop.getCurrency())
                                         .world(shop.getLocation().getWorld())
