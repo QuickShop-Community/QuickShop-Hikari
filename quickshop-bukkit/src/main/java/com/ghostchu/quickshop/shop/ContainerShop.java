@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
+import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
@@ -15,6 +16,7 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
+import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
@@ -113,6 +115,9 @@ public class ContainerShop implements Shop, Reloadable {
     @Nullable
     private String shopName;
 
+    @NotNull
+    private Benefit benefit;
+
     ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
         this.shopId = s.shopId;
@@ -138,6 +143,7 @@ public class ContainerShop implements Shop, Reloadable {
         this.symbolLink = s.symbolLink;
         this.shopName = s.shopName;
         this.playerGroup = s.playerGroup;
+        this.benefit = s.benefit;
 
         initDisplayItem();
     }
@@ -191,12 +197,14 @@ public class ContainerShop implements Shop, Reloadable {
             @NotNull String inventoryWrapperProvider,
             @NotNull String symbolLink,
             @Nullable String shopName,
-            @NotNull Map<UUID, String> playerGroup) {
+            @NotNull Map<UUID, String> playerGroup,
+            @NotNull SimpleBenefit shopBenefit) {
         Util.ensureThread(false);
         this.shopId = shopId;
         this.shopName = shopName;
         this.location = location;
         this.price = price;
+        this.benefit = shopBenefit;
 
 
         // Upgrade the shop moderator
@@ -1715,6 +1723,16 @@ public class ContainerShop implements Shop, Reloadable {
         }
     }
 
+    @Override
+    public @NotNull Benefit getShopBenefit() {
+        return this.benefit;
+    }
+
+    @Override
+    public void setShopBenefit(@NotNull Benefit benefit) {
+        this.benefit = benefit;
+    }
+
     /**
      * Check the container still there and we can keep use it.
      */
@@ -1750,7 +1768,8 @@ public class ContainerShop implements Shop, Reloadable {
                 saveExtraToYaml(),
                 getInventoryWrapperProvider(),
                 saveToSymbolLink(),
-                new Date()
+                new Date(),
+                getShopBenefit().serialize()
         );
     }
 

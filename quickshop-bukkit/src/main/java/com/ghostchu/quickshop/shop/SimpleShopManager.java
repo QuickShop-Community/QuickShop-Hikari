@@ -10,6 +10,7 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.RomanNumber;
+import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
@@ -301,7 +302,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     plugin.getName(),
                     plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper((holder).getInventory())),
                     null,
-                    Collections.emptyMap());
+                    Collections.emptyMap(),
+                    new SimpleBenefit());
             createShop(shop, info.getSignBlock(), info.isBypassed());
         } else {
             plugin.text().of(p, "invalid-container").send();
@@ -386,6 +388,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 .amount(total)
                 .taxModifier(taxModifier)
                 .taxAccount(taxAccount)
+                .benefit(shop.getShopBenefit())
                 .world(shop.getLocation().getWorld())
                 .currency(shop.getCurrency());
         if (shop.isUnlimited() && plugin.getConfig().getBoolean("tax-free-for-unlimited-shop", false)) {
@@ -412,6 +415,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
             return;
         }
+
         try {
             shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
         } catch (Exception shopError) {

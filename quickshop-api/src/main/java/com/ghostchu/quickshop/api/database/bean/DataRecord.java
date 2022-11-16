@@ -44,4 +44,7 @@ public interface DataRecord {
     boolean isHologram();
 
     boolean isUnlimited();
+
+    @NotNull
+    String getBenefit();
 }
