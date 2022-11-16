@@ -21,6 +21,7 @@ tabcomplete:
   name: '[name]'
   range: '[range]'
   currency: '[currency name]'
+  percentage: '[percentage%]'
 taxaccount-unset: <green>Tento účet obchodu nyní následuje globální nastavení serveru.
 blacklisted-item: <red>Nemůžete prodávat tuto položku, protože je mezi zakázanými
 command-type-mismatch: <red>Tento příkaz může být proveden pouze uživatelem <aqua>{0}</aqua>.
@@ -164,6 +165,7 @@ inventory-unavailable: '<red>This shop InventoryWrapper not exists or invalid. D
 file-test: Toto je zkušební textový soubor. Používáme jej k testování, pokud jde o zprávy json je rozbitý. Můžete jej vyplnit jakýmkoliv východním vejci, které se vám zde líbí :)
 unknown-player: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Cílový hráč neexistuje, zkontrolujte prosím uživatelské jméno, které jste zadali.
 player-offline: "<red>The target player currently is offline."
+player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 language:
   qa-issues: '<white>Otázky zabezpečení kvality: <aqua>{0}%'
   code: '<yellow>Kód: <gold>{0}'
@@ -418,6 +420,7 @@ command:
     permission: <yellow>Správa oprávnění obchodu
     lookup: <yellow>Spravovat tabulku položek pro vyhledávání
     database: <yellow>View and maintain QuickShop database
+    benefit: <yellow>Settings of divide benefits between shop owner and other players
   bulk-size-not-set: '<red>Použití: <gray>/qs size <amount>'
   no-type-given: '<red>Použití: <gray>/qs find <item>'
   feature-not-enabled: Funkce není v konfiguraci povolena.
@@ -520,6 +523,9 @@ lookup-item-test-not-found: "<gold>Test: <yellow>Položka v ruce není zaregistr
 lookup-item-test-found: "<gold>Test: <green>Položka v ruce byla zaregistrována v tabulce vyhledávání pod názvem <aqua>{0}</aqua>."
 lookup-item-removed: "<green>Zadaná položka <aqua>{0}</aqua> byla úspěšně odstraněna z tabulky vyhledávání."
 internal-error: "<red>Došlo k vnitřní chybě, kontaktujte prosím správce serveru."
+argument-cannot-be: "<red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>."
+argument-must-between: "<red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>"
+invalid-percentage: "<red>Percentage invalid, you must add '%' after the number of percentage."
 debug:
   arguments-invalid: "<red>Provided arguments <yellow>{0}</yellow> invalid."
   sign-located: "<green>Sign valid: <yellow>{0}</yellow>."
@@ -575,6 +581,13 @@ transfer-accepted-toside: "<green>You accepted <aqua>{0}</aqua>'s transfer reque
 transfer-rejected-fromside: "<red>Player <aqua>{0}</aqua> rejected your shop transfer request."
 transfer-rejected-toside: "<red>You rejected <aqua>{0}</aqua>'s shop transfer request."
 transfer-no-pending-operation: "<red>You don't have pending transfer request yet."
+benefit-overflow: "<red>The sum of all benefits cannot be greater than or equal to 100%."
+benefit-exists: "<red>Target player already in benefits list on this shop. To remove that player, set benefit to zero."
+benefit-removed: "<red>Target player has been removed from shop benefits."
+benefit-added: "<green>Player <aqua>{0}</aqua> has been added into shop benefits!"
+benefit-updated: "<green>Player <aqua>{0}</aqua>'s benefits has been updated!"
+benefit-query: "<green>This shop have <yellow>{0}</yellow> players in benefits list!"
+benefit-query-list: "<yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>"
 addon:
   towny:
     commands:
