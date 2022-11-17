@@ -25,8 +25,8 @@ public class ItemMarker implements Reloadable {
     private final File file;
     @Getter
     @SuppressWarnings("RegExpSimplifiable")
-    private final String nameRegExp = "[a-zA-Z0-9_]*";
-    private final Pattern namePattern = Pattern.compile(nameRegExp);
+    private static final String NAME_REG_EXP = "[a-zA-Z0-9_]*";
+    private final Pattern namePattern = Pattern.compile(NAME_REG_EXP);
     private YamlConfiguration configuration;
 
     public ItemMarker(@NotNull QuickShop plugin) {

@@ -10,8 +10,8 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.jetbrains.annotations.NotNull;
 
 public class ChatProcessorInfoItem implements SubPasteItem {
-    private final String impl = "Adventure";
-    private final String formatter = "MiniMessage";
+    private static final String IMPL = "Adventure";
+    private static final String FORMATTER = "MiniMessage";
     private final String adventureSource;
     private final String adventureBukkitPlatformSource;
     private final String adventureTextSerializerLegacySource;
@@ -39,8 +39,8 @@ public class ChatProcessorInfoItem implements SubPasteItem {
     @NotNull
     private String buildContent() {
         HTMLTable table = new HTMLTable(2, true);
-        table.insert("Processor", impl);
-        table.insert("Formatter", formatter);
+        table.insert("Processor", IMPL);
+        table.insert("Formatter", FORMATTER);
         table.insert("Adventure", adventureSource);
         table.insert("Bukkit Platform", adventureBukkitPlatformSource);
         table.insert("Text Serializer(Gson)", adventureTextSerializerGsonSource);
