@@ -5,8 +5,8 @@ import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
 import java.util.UUID;
 
 public interface EconomyTransaction {
@@ -65,7 +65,7 @@ public interface EconomyTransaction {
 
     void setLastError(@NotNull String lastError);
 
-    @NotNull Stack<Operation> getProcessingStack();
+    @NotNull Deque<Operation> getProcessingStack();
 
     /**
      * Getting the tax in this transaction
@@ -99,7 +99,6 @@ public interface EconomyTransaction {
 
     void setAllowLoan(boolean allowLoan);
 
-    void setTryingFixBalanceInsufficient(boolean tryingFixBalanceInsufficient);
 
 
     interface TransactionCallback {

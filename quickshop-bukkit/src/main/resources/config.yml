@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1010
+config-version: 1011
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -80,10 +80,6 @@ logging:
   file-size: 10.0
   #Log data storage location (0 to file, 1 to database)
   location: 0
-#Some economy plugins cache player balances, this sometimes causes insufficient balance when trying to use a shop
-#This workaround uses getBalance to refresh it, but its time costing.
-#So ONLY turn this on when you have this problem!
-trying-fix-banlance-insuffient: false
 
 #Force bukkit chat handler (https://github.com/KaiKikuchi/QuickShop/issues/10)
 force-bukkit-chat-handler: false

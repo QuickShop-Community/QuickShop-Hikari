@@ -31,7 +31,7 @@ import java.util.logging.Level;
 public class SimpleEconomyTransaction implements EconomyTransaction {
     @JsonUtil.Hidden
     private final QuickShop plugin = QuickShop.getInstance();
-    private final Stack<Operation> processingStack = new Stack<>();
+    private final Deque<Operation> processingStack = new LinkedList<>();
     @Nullable
     private UUID from;
     @Nullable
@@ -45,7 +45,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
     @Nullable
     private UUID taxer;
     private boolean allowLoan;
-    private boolean tryingFixBalanceInsufficient;
     private World world;
     @Nullable
     private String currency;
@@ -90,16 +89,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
             lastError = "From and To cannot be null in same time.";
             throw new IllegalArgumentException("From and To cannot be null in same time.");
         }
-        this.tryingFixBalanceInsufficient = QuickShop.getInstance().getConfig().getBoolean("trying-fix-banlance-insuffient");
-        if (tryingFixBalanceInsufficient) {
-            //Fetch some stupid plugin caching
-            if (from != null) {
-                this.core.getBalance(from, world, currency);
-            }
-            if (to != null) {
-                this.core.getBalance(to, world, currency);
-            }
-        }
         new EconomyTransactionEvent(this).callEvent();
     }
 
@@ -119,17 +108,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         this.currency = s.currency;
         this.amountAfterTax = s.amountAfterTax;
         this.tax = s.tax;
-        this.tryingFixBalanceInsufficient = s.tryingFixBalanceInsufficient;
         this.benefit = s.benefit;
-        if (tryingFixBalanceInsufficient) {
-            //Fetch some stupid plugin caching
-            if (from != null) {
-                this.core.getBalance(from, world, currency);
-            }
-            if (to != null) {
-                this.core.getBalance(to, world, currency);
-            }
-        }
         new EconomyTransactionEvent(this).callEvent();
     }
 
@@ -156,47 +135,32 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
             callback.onFailed(this);
             return false;
         }
+        if (from != null && !this.executeOperation(new WithdrawEconomyOperation(from, amount, world, currency, core))) {
+            this.lastError = "Failed to withdraw " + amount + " from player " + from + " account. LastError: " + core.getLastError();
+            callback.onFailed(this);
+            return false;
+        }
         if (benefit.isEmpty()) {
-            if (from != null && !this.executeOperation(new WithdrawEconomyOperation(from, amount, world, currency, core))) {
-                this.lastError = "Failed to withdraw " + amount + " from player " + from + " account. LastError: " + core.getLastError();
-                callback.onFailed(this);
-                return false;
-            }
             if (to != null && !this.executeOperation(new DepositEconomyOperation(to, amountAfterTax, world, currency, core))) {
                 this.lastError = "Failed to deposit " + amountAfterTax + " to player " + to + " account. LastError: " + core.getLastError();
                 callback.onFailed(this);
                 return false;
             }
-            if (tax > 0 && taxer != null && !this.executeOperation(new DepositEconomyOperation(taxer, tax, world, currency, core))) {
-                this.lastError = "Failed to deposit tax account: " + tax + ". LastError: " + core.getLastError();
-                callback.onTaxFailed(this);
-                //Tax never should failed.
-            }
             callback.onSuccess(this);
         } else {
-            // Benefit on
-            // Process benefit withdraw
-            Log.transaction("Benefit start");
-            if (from != null && !this.executeOperation(new WithdrawEconomyOperation(from, amount, world, currency, core))) {
-                this.lastError = "Failed to withdraw " + amount + " from player " + from + " account. LastError: " + core.getLastError();
-                callback.onFailed(this);
-                return false;
-            }
             // Process benefit deposit
             Log.transaction("Benefit processing per-player...");
             double payout = 0d;
             for (Map.Entry<UUID, Double> entry : benefit.getRegistry().entrySet()) {
                 payout += entry.getValue();
                 Log.transaction("Benefit for " + entry.getKey() + ", value: " + entry.getValue() + ". Payout = " + payout);
-                if (tryingFixBalanceInsufficient)
-                    core.getBalance(entry.getKey(), world, currency);
                 if (!this.executeOperation(new DepositEconomyOperation(entry.getKey(), amountAfterTax * entry.getValue(), world, currency, core))) {
                     this.lastError = "Failed to deposit " + amountAfterTax * entry.getValue() + " to player " + to + " account. LastError: " + core.getLastError();
                     callback.onFailed(this);
                     return false;
                 }
             }
-            double ownerCanGet = amountAfterTax * (1 - payout);
+            double ownerCanGet = CalculateUtil.multiply(amountAfterTax, (1 - payout));
             Log.transaction("Benefit for owner remaining: " + ownerCanGet);
             if (ownerCanGet > 0) {
                 if (to != null && !this.executeOperation(new DepositEconomyOperation(to, ownerCanGet, world, currency, core))) {
@@ -205,14 +169,12 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
                     return false;
                 }
             }
-            Log.transaction("Benefit for tax: " + tax);
-            if (tax > 0 && taxer != null && !this.executeOperation(new DepositEconomyOperation(taxer, tax, world, currency, core))) {
-                this.lastError = "Failed to deposit tax account: " + tax + ". LastError: " + core.getLastError();
-                callback.onTaxFailed(this);
-                //Tax never should failed.
-            }
-
-
+            callback.onSuccess(this);
+        }
+        if (tax > 0 && taxer != null && !this.executeOperation(new DepositEconomyOperation(taxer, tax, world, currency, core))) {
+            this.lastError = "Failed to deposit tax account: " + tax + ". LastError: " + core.getLastError();
+            callback.onTaxFailed(this);
+            //Tax never should failed.
         }
         return true;
     }
@@ -264,7 +226,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
     }
 
     @Override
-    public @NotNull Stack<Operation> getProcessingStack() {
+    public @NotNull Deque<Operation> getProcessingStack() {
         return processingStack;
     }
 
@@ -315,11 +277,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         this.allowLoan = allowLoan;
     }
 
-    @Override
-    public void setTryingFixBalanceInsufficient(boolean tryingFixBalanceInsufficient) {
-        this.tryingFixBalanceInsufficient = tryingFixBalanceInsufficient;
-    }
-
     /**
      * Commit the transaction by the Fail-Safe way
      * Automatic rollback when commit failed
@@ -347,15 +304,6 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         return this.commit(new SimpleTransactionCallback() {
             @Override
             public void onSuccess(@NotNull SimpleEconomyTransaction economyTransaction) {
-                if (tryingFixBalanceInsufficient) {
-                    //Fetch some stupid plugin caching
-                    if (from != null) {
-                        core.getBalance(from, world, currency);
-                    }
-                    if (to != null) {
-                        core.getBalance(to, world, currency);
-                    }
-                }
             }
         });
     }
