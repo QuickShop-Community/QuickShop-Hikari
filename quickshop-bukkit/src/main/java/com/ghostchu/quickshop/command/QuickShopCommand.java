@@ -26,7 +26,9 @@ public class QuickShopCommand extends BukkitCommand {
     @Override
     public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
         List<String> items = this.manager.onTabComplete(sender, this, alias, args);
-        if (items == null) items = Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+        if (items == null) {
+            items = Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
+        }
         return items;
     }
 }

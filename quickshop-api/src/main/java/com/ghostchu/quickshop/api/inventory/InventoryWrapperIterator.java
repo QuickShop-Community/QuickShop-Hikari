@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * Iterator for InventoryWrapper
@@ -59,6 +60,9 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
 
             @Override
             public ItemStack next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
                 return itemStacks[currentIndex++];
             }
 

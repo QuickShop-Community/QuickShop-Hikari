@@ -64,7 +64,9 @@ public class SignHooker {
                 int z = integerStructureModifier.read(1);
 
                 Map<Location, Shop> shops = PLUGIN.getShopManager().getShops(player.getWorld().getName(), x, z);
-                if (shops == null) return;
+                if (shops == null) {
+                    return;
+                }
                 Bukkit.getScheduler().runTaskLater(PLUGIN, () -> shops.forEach((loc, shop) -> updatePerPlayerShopSign(player, loc, shop)), 2);
             }
         };
@@ -86,8 +88,12 @@ public class SignHooker {
 
     public void updatePerPlayerShopSign(Player player, Location location, Shop shop) {
         Util.ensureThread(false);
-        if (!shop.isLoaded()) return;
-        if (!Util.isLoaded(location)) return;
+        if (!shop.isLoaded()) {
+            return;
+        }
+        if (!Util.isLoaded(location)) {
+            return;
+        }
         Log.debug("Updating per-player packet sign: Player=" + player.getName() + ", Location=" + location + ", Shop=" + shop.getShopId());
         List<Component> lines = shop.getSignText(PLUGIN.getTextManager().findRelativeLanguages(player));
         //Log.debug(lines.stream().map(component -> GsonComponentSerializer.gson().serialize(component)).toList().toString());
@@ -98,8 +104,9 @@ public class SignHooker {
     }
 
     public void unload() {
-        if (PROTOCOL_MANAGER == null)
+        if (PROTOCOL_MANAGER == null) {
             return;
+        }
         if (this.chunkAdapter != null) {
             PROTOCOL_MANAGER.removePacketListener(chunkAdapter);
             //PROTOCOL_MANAGER.removePacketListener(signAdapter);
@@ -108,7 +115,9 @@ public class SignHooker {
 
     public void updatePerPlayerShopSignBroadcast(Location location, Shop shop) {
         World world = shop.getLocation().getWorld();
-        if (world == null) return;
+        if (world == null) {
+            return;
+        }
         Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), PLUGIN.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), PLUGIN.getServer().getViewDistance() * 16);
         for (Entity nearbyPlayer : nearbyPlayers) {
             if (nearbyPlayer instanceof Player player) {

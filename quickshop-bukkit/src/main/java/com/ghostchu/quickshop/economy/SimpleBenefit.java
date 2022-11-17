@@ -24,7 +24,9 @@ public class SimpleBenefit implements Benefit {
 
     @NotNull
     public static SimpleBenefit deserialize(@Nullable String json) {
-        if (StringUtils.isEmpty(json)) return new SimpleBenefit();
+        if (StringUtils.isEmpty(json)) {
+            return new SimpleBenefit();
+        }
         Map<UUID, Double> map = JsonUtil.regular().fromJson(json, new TypeToken<Map<UUID, Double>>() {
         }.getType());
         return new SimpleBenefit(map);
@@ -42,7 +44,9 @@ public class SimpleBenefit implements Benefit {
             sum += value;
         }
         sum += newAdded;
-        if (sum <= 1.0d) return 0.0d;
+        if (sum <= 1.0d) {
+            return 0.0d;
+        }
         return sum - 1d;
     }
 
@@ -52,8 +56,9 @@ public class SimpleBenefit implements Benefit {
         if (overflow != 0) {
             throw new BenefitOverflowException(overflow);
         }
-        if (benefits.containsKey(player))
+        if (benefits.containsKey(player)) {
             throw new BenefitExistsException();
+        }
         benefits.put(player, benefit);
     }
 

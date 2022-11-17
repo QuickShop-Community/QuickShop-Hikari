@@ -25,7 +25,9 @@ public class ShopBackupUtil {
     }
 
     public boolean backup() {
-        if (backupCreated) return true;
+        if (backupCreated) {
+            return true;
+        }
         File file = new File(QuickShop.getInstance().getDataFolder(), "auto-backup-" + System.currentTimeMillis() + ".zip");
         DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
         try {

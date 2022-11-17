@@ -77,8 +77,9 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
         this.world = world;
         this.currency = currency;
         this.benefit = benefit;
-        if (this.benefit == null)
+        if (this.benefit == null) {
             this.benefit = new SimpleBenefit();
+        }
         if (Double.doubleToLongBits(taxModifier) != Double.doubleToLongBits(0.0d)) { //Calc total money and apply tax
             this.amountAfterTax = CalculateUtil.multiply(CalculateUtil.subtract(1, taxModifier), amount);
         } else {

@@ -461,8 +461,12 @@ public class MsgUtil {
             uuid = profile.getUniqueId().toString();
 
         }
-        if (name == null) name = "Unknown";
-        if (uuid == null) uuid = "N/A";
+        if (name == null) {
+            name = "Unknown";
+        }
+        if (uuid == null) {
+            uuid = "N/A";
+        }
 
         if (plugin == null) {
             return Component.text(name).color(TextColor.color(NamedTextColor.AQUA))

@@ -487,8 +487,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     public @NotNull CompletableFuture<@NotNull Integer> insertMetricRecord(@NotNull ShopMetricRecord record) {
         CompletableFuture<Integer> future = new CompletableFuture<>();
         plugin.getDatabaseHelper().locateShopDataId(record.getShopId()).whenCompleteAsync((dataId, err) -> {
-            if (err != null)
+            if (err != null) {
                 future.completeExceptionally(err);
+            }
             DataTables.LOG_PURCHASE
                     .createInsert()
                     .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
@@ -496,7 +497,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                             , dataId, record.getPlayer(), record.getType().name(),
                             record.getAmount(), record.getTotal(), record.getTax())
                     .executeFuture(lines -> lines).whenComplete((line, err2) -> {
-                        if (err2 != null) future.completeExceptionally(err2);
+                        if (err2 != null) {
+                            future.completeExceptionally(err2);
+                        }
                         future.complete(line);
                     });
         });
@@ -552,7 +555,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .build()
                 .executeFuture(query -> {
                     ResultSet result = query.getResultSet();
-                    if (result.next()) return result.getLong("data");
+                    if (result.next()) {
+                        return result.getLong("data");
+                    }
                     return null;
                 });
     }

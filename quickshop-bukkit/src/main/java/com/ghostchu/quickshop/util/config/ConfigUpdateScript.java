@@ -67,7 +67,9 @@ public class ConfigUpdateScript {
     @UpdateScript(version = 1009)
     public void deleteSqlitePlayerMapping() {
         File f = new File(Util.getCacheFolder(), "player_mapping.db");
-        if (f.exists()) f.delete();
+        if (f.exists()) {
+            f.delete();
+        }
     }
 
     @UpdateScript(version = 1008)

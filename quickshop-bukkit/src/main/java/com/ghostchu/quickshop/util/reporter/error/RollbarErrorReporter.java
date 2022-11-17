@@ -299,8 +299,9 @@ public class RollbarErrorReporter {
 
     private boolean isDisallowedClazz(Class<?> clazz) {
         for (Class<?> ignoredClazz : this.ignoredException) {
-            if (ignoredClazz.isAssignableFrom(clazz) || ignoredClazz.equals(clazz))
+            if (ignoredClazz.isAssignableFrom(clazz) || ignoredClazz.equals(clazz)) {
                 return true;
+            }
         }
         return false;
     }
