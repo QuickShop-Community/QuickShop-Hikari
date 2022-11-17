@@ -37,15 +37,19 @@ public class Log {
     @ApiStatus.Internal
     public static void cron(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
-        Record record;
-        if (disableLocationRecording) {
-            record = new Record(level, Type.CRON, message, null);
-        } else {
-            record = new Record(level, Type.CRON, message, caller);
+        try {
+            Record record;
+            if (disableLocationRecording) {
+                record = new Record(level, Type.CRON, message, null);
+            } else {
+                record = new Record(level, Type.CRON, message, caller);
+            }
+            loggerBuffer.offer(record);
+            debugStdOutputs(record);
+        } finally {
+            LOCK.writeLock().unlock();
         }
-        loggerBuffer.offer(record);
-        debugStdOutputs(record);
-        LOCK.writeLock().unlock();
+
     }
 
     private static void debugStdOutputs(Record record) {
@@ -65,15 +69,18 @@ public class Log {
     @ApiStatus.Internal
     public static void debug(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
-        Record record;
-        if (disableLocationRecording) {
-            record = new Record(level, Type.DEBUG, message, null);
-        } else {
-            record = new Record(level, Type.DEBUG, message, caller);
+        try {
+            Record record;
+            if (disableLocationRecording) {
+                record = new Record(level, Type.DEBUG, message, null);
+            } else {
+                record = new Record(level, Type.DEBUG, message, caller);
+            }
+            loggerBuffer.offer(record);
+            debugStdOutputs(record);
+        } finally {
+            LOCK.writeLock().unlock();
         }
-        loggerBuffer.offer(record);
-        debugStdOutputs(record);
-        LOCK.writeLock().unlock();
     }
 
     public static void debug(@NotNull Level level, @NotNull String message) {
@@ -83,39 +90,50 @@ public class Log {
     @NotNull
     public static List<Record> fetchLogs() {
         LOCK.readLock().lock();
-        List<Record> records = new ArrayList<>(loggerBuffer);
-        LOCK.readLock().unlock();
-        return records;
+        try {
+            List<Record> records = new ArrayList<>(loggerBuffer);
+            return records;
+        } finally {
+            LOCK.readLock().unlock();
+        }
     }
 
     @NotNull
     public static List<Record> fetchLogs(@NotNull Type type) {
         LOCK.readLock().lock();
-        List<Record> records = loggerBuffer.stream().filter(record -> record.getType() == type).toList();
-        LOCK.readLock().unlock();
-        return records;
+        try {
+            List<Record> records = loggerBuffer.stream().filter(record -> record.getType() == type).toList();
+            return records;
+        } finally {
+            LOCK.readLock().unlock();
+        }
     }
 
     @NotNull
     public static List<Record> fetchLogsExclude(@NotNull Type... excludes) {
         LOCK.readLock().lock();
-        List<Record> records = new ArrayList<>();
-        for (Record record : loggerBuffer) {
-            if (ArrayUtils.contains(excludes, record.getType())) {
-                continue;
+        try {
+            List<Record> records = new ArrayList<>();
+            for (Record record : loggerBuffer) {
+                if (ArrayUtils.contains(excludes, record.getType())) {
+                    continue;
+                }
+                records.add(record);
             }
-            records.add(record);
+            return records;
+        } finally {
+            LOCK.readLock().unlock();
         }
-        LOCK.readLock().unlock();
-        return records;
     }
 
     @NotNull
     public static List<Record> fetchLogsLevel(@NotNull Type type, @NotNull Level level) {
         LOCK.readLock().lock();
-        List<Record> records = loggerBuffer.stream().filter(record -> record.getType() == type && record.getLevel() == level).toList();
-        LOCK.readLock().unlock();
-        return records;
+        try {
+            return loggerBuffer.stream().filter(record -> record.getType() == type && record.getLevel() == level).toList();
+        } finally {
+            LOCK.readLock().unlock();
+        }
     }
 
     public static void permission(@NotNull String message) {
@@ -125,15 +143,19 @@ public class Log {
     @ApiStatus.Internal
     public static void permission(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
-        Record record;
-        if (disableLocationRecording) {
-            record = new Record(level, Type.PERMISSION, message, null);
-        } else {
-            record = new Record(level, Type.PERMISSION, message, caller);
+        try {
+            Record record;
+            if (disableLocationRecording) {
+                record = new Record(level, Type.PERMISSION, message, null);
+            } else {
+                record = new Record(level, Type.PERMISSION, message, caller);
+            }
+            loggerBuffer.offer(record);
+            debugStdOutputs(record);
+        } finally {
+            LOCK.writeLock().unlock();
         }
-        loggerBuffer.offer(record);
-        debugStdOutputs(record);
-        LOCK.writeLock().unlock();
+
     }
 
     public static void permission(@NotNull Level level, @NotNull String message) {
@@ -147,15 +169,19 @@ public class Log {
     @ApiStatus.Internal
     public static void timing(@NotNull Level level, @NotNull String operation, @NotNull Timer timer, @Nullable Caller caller) {
         LOCK.writeLock().lock();
-        Record record;
-        if (disableLocationRecording) {
-            record = new Record(level, Type.TIMING, operation + " (cost " + timer.getPassedTime() + " ms)", null);
-        } else {
-            record = new Record(level, Type.TIMING, operation + " (cost " + timer.getPassedTime() + " ms)", caller);
+        try {
+            Record record;
+            if (disableLocationRecording) {
+                record = new Record(level, Type.TIMING, operation + " (cost " + timer.getPassedTime() + " ms)", null);
+            } else {
+                record = new Record(level, Type.TIMING, operation + " (cost " + timer.getPassedTime() + " ms)", caller);
+            }
+            loggerBuffer.offer(record);
+            debugStdOutputs(record);
+        } finally {
+            LOCK.writeLock().unlock();
         }
-        loggerBuffer.offer(record);
-        debugStdOutputs(record);
-        LOCK.writeLock().unlock();
+
     }
 
     public static void transaction(@NotNull String message) {
@@ -165,15 +191,18 @@ public class Log {
     @ApiStatus.Internal
     public static void transaction(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
-        Record record;
-        if (disableLocationRecording) {
-            record = new Record(level, Type.TRANSACTION, message, null);
-        } else {
-            record = new Record(level, Type.TRANSACTION, message, caller);
+        try {
+            Record record;
+            if (disableLocationRecording) {
+                record = new Record(level, Type.TRANSACTION, message, null);
+            } else {
+                record = new Record(level, Type.TRANSACTION, message, caller);
+            }
+            loggerBuffer.offer(record);
+            debugStdOutputs(record);
+        } finally {
+            LOCK.writeLock().unlock();
         }
-        loggerBuffer.offer(record);
-        debugStdOutputs(record);
-        LOCK.writeLock().unlock();
     }
 
     public static void transaction(@NotNull Level level, @NotNull String message) {
