@@ -21,6 +21,7 @@ import java.util.*;
 import java.util.logging.Level;
 
 public class ConfigurationUpdater {
+    private static final String CONFIG_VERSION_KEY = "config-version";
     private final QuickShop plugin;
     @Getter
     private final ConfigurationSection configuration;
@@ -44,12 +45,12 @@ public class ConfigurationUpdater {
     public void update(@NotNull Object configUpdateScript) {
         Log.debug("Starting configuration update...");
         writeServerUniqueId();
-        selectedVersion = configuration.getInt("config-version", -1);
+        selectedVersion = configuration.getInt(CONFIG_VERSION_KEY, -1);
         legacyUpdate();
         for (Method method : getUpdateScripts(configUpdateScript)) {
             try {
                 UpdateScript updateScript = method.getAnnotation(UpdateScript.class);
-                int current = getConfiguration().getInt("config-version");
+                int current = getConfiguration().getInt(CONFIG_VERSION_KEY);
                 if (current >= updateScript.version()) {
                     continue;
                 }
@@ -70,7 +71,7 @@ public class ConfigurationUpdater {
                 } catch (Exception e) {
                     plugin.getLogger().log(Level.WARNING, "Failed to execute update script " + method.getName() + " for version " + updateScript.version() + ": " + e.getMessage() + ", plugin may not working properly!", e);
                 }
-                getConfiguration().set("config-version", updateScript.version());
+                getConfiguration().set(CONFIG_VERSION_KEY, updateScript.version());
                 plugin.getLogger().info("[ConfigUpdater] Configuration updated to version " + updateScript.version());
             } catch (Throwable throwable) {
                 plugin.getLogger().log(Level.WARNING, "Failed execute update script " + method.getName() + " for updating to version " + method.getAnnotation(UpdateScript.class).version() + ", some configuration options may missing or outdated", throwable);
