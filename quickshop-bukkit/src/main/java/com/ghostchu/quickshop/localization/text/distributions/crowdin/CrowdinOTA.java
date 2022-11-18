@@ -152,8 +152,8 @@ public class CrowdinOTA implements Distribution {
     @Override
     @NotNull
     public String getFile(String fileCrowdinPath, String crowdinLocale, boolean forceFlush) throws Exception {
-        Manifest manifest = getManifest();
-        if (manifest == null) {
+        Manifest cachedManifest = getManifest();
+        if (cachedManifest == null) {
             throw new IllegalStateException("Manifest didn't get loaded successfully yet!");
         }
         // Validate
@@ -164,8 +164,8 @@ public class CrowdinOTA implements Distribution {
         String postProcessingPath = fileCrowdinPath.replace(LOCALE_PLACEHOLDER, crowdinLocale);
 
         // Validating the manifest
-        long manifestTimestamp = getManifest().getTimestamp();
-        if (otaCacheControl.readManifestTimestamp() == getManifest().getTimestamp() && !forceFlush) {
+        long manifestTimestamp = cachedManifest.getTimestamp();
+        if (otaCacheControl.readManifestTimestamp() == manifestTimestamp && !forceFlush) {
             // Use cache
             try {
                 // Check cache outdated
@@ -194,7 +194,7 @@ public class CrowdinOTA implements Distribution {
         String data = response.getBody();
         // Successfully grab the data from the remote server
         otaCacheControl.writeObjectCache(postProcessingPath, data.getBytes(StandardCharsets.UTF_8), manifestTimestamp);
-        otaCacheControl.writeManifestTimestamp(getManifest().getTimestamp());
+        otaCacheControl.writeManifestTimestamp(manifestTimestamp);
         return data;
     }
 
