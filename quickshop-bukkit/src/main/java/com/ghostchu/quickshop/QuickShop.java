@@ -132,7 +132,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     @Getter
     private SimpleShopPermissionManager shopPermissionManager;
     @Getter
-    private ShopBackupUtil shopBackupUtil = new ShopBackupUtil(this);
+    private final ShopBackupUtil shopBackupUtil = new ShopBackupUtil(this);
     private boolean priceChangeRequiresFee = false;
     @Getter
     private DatabaseDriverType databaseDriverType = null;

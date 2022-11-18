@@ -110,24 +110,16 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             }
         }
         if (getDatabaseVersion() < 9) {
-            try {
-                plugin.getLogger().info("Data upgrading: Performing purge isolated data...");
-                purgeIsolated();
-                plugin.getLogger().info("Data upgrading: All completed!");
-                setDatabaseVersion(9);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            plugin.getLogger().info("Data upgrading: Performing purge isolated data...");
+            purgeIsolated();
+            plugin.getLogger().info("Data upgrading: All completed!");
+            setDatabaseVersion(9);
         }
         if (getDatabaseVersion() == 9) {
-            try {
-                plugin.getLogger().info("Data upgrading: Performing database structure upgrade (benefit)...");
-                upgradeBenefit();
-                plugin.getLogger().info("Data upgrading: All completed!");
-                setDatabaseVersion(10);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            plugin.getLogger().info("Data upgrading: Performing database structure upgrade (benefit)...");
+            upgradeBenefit();
+            plugin.getLogger().info("Data upgrading: All completed!");
+            setDatabaseVersion(10);
         }
         plugin.getLogger().info("Finished!");
     }
@@ -160,7 +152,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
     }
 
-    public @NotNull CompletableFuture<@NotNull Integer> setDatabaseVersion(int version) throws SQLException {
+    public @NotNull CompletableFuture<@NotNull Integer> setDatabaseVersion(int version) {
         return DataTables.METADATA
                 .createReplace()
                 .setColumnNames("key", "value")

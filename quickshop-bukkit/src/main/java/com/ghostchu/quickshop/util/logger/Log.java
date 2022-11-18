@@ -91,8 +91,7 @@ public class Log {
     public static List<Record> fetchLogs() {
         LOCK.readLock().lock();
         try {
-            List<Record> records = new ArrayList<>(loggerBuffer);
-            return records;
+            return new ArrayList<>(loggerBuffer);
         } finally {
             LOCK.readLock().unlock();
         }
@@ -102,8 +101,7 @@ public class Log {
     public static List<Record> fetchLogs(@NotNull Type type) {
         LOCK.readLock().lock();
         try {
-            List<Record> records = loggerBuffer.stream().filter(record -> record.getType() == type).toList();
-            return records;
+            return loggerBuffer.stream().filter(record -> record.getType() == type).toList();
         } finally {
             LOCK.readLock().unlock();
         }

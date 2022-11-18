@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class ShopBackupUtil {
-    private QuickShop plugin;
+    private final QuickShop plugin;
     private boolean backupCreated;
 
     public ShopBackupUtil(QuickShop plugin) {

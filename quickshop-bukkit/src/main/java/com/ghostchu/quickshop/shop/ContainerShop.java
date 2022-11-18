@@ -61,6 +61,8 @@ import java.util.logging.Level;
  */
 @EqualsAndHashCode
 public class ContainerShop implements Shop, Reloadable {
+    // We use deprecated method to create a fake quickshop-reremake namespace to trick bukkit to access legacy data.
+    @SuppressWarnings({"AliDeprecation", "deprecation"})
     private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
     @NotNull
     private final Location location;
@@ -312,7 +314,6 @@ public class ContainerShop implements Shop, Reloadable {
             this.sell(buyer, buyerInventory, loc2Drop, -amount);
             return;
         }
-        // InventoryWrapperIterator buyerIterator = buyerInventory.iterator();
         if (this.isUnlimited()) {
             SimpleInventoryTransaction transaction = SimpleInventoryTransaction
                     .builder()
@@ -473,8 +474,6 @@ public class ContainerShop implements Shop, Reloadable {
             // Delete it from the database
             // Refund if necessary
             if (plugin.getConfig().getBoolean("shop.refund")) {
-//                plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"),
-//                        Objects.requireNonNull(getLocation().getWorld()), getCurrency());
                 double cost = plugin.getConfig().getDouble("shop.cost");
                 SimpleEconomyTransaction transaction;
                 if (plugin.getConfig().getBoolean("shop.refund-from-tax-account", false) && taxAccount != null) {
@@ -1641,7 +1640,6 @@ public class ContainerShop implements Shop, Reloadable {
             Log.debug("Start sign broadcast...");
             Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this), 2);
             Log.debug("Sign broadcast completed.");
-            return;
         }
     }
 

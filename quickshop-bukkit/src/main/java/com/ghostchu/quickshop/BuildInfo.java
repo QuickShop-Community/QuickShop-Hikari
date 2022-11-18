@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -99,74 +100,47 @@ public class BuildInfo {
 
         @NotNull
         public String getBuildNumber() {
-            if (buildNumber == null) {
-                return "undefined";
-            }
-            return buildNumber;
+            return Objects.requireNonNullElse(buildNumber, "undefined");
         }
 
         @NotNull
         public String getBuildTime() {
-            if (buildTime == null) {
-                return "undefined";
-            }
-            return buildTime;
+            return Objects.requireNonNullElse(buildTime, "undefined");
         }
 
         @NotNull
         public String getBuildVersion() {
-            if (buildVersion == null) {
-                return "undefined";
-            }
-            return buildVersion;
+            return Objects.requireNonNullElse(buildVersion, "undefined");
         }
 
         @NotNull
         public String getCommitDate() {
-            if (commitDate == null) {
-                return "undefined";
-            }
-            return commitDate;
+            return Objects.requireNonNullElse(commitDate, "undefined");
         }
 
         @NotNull
         public String getCommitEmail() {
-            if (commitEmail == null) {
-                return "undefined";
-            }
-            return commitEmail;
+            return Objects.requireNonNullElse(commitEmail, "undefined");
         }
 
         @NotNull
         public String getCommitMessage() {
-            if (commitMessage == null) {
-                return "undefined";
-            }
-            return commitMessage;
+            return Objects.requireNonNullElse(commitMessage, "undefined");
         }
 
         @NotNull
         public String getCommitUsername() {
-            if (commitUsername == null) {
-                return "undefined";
-            }
-            return commitUsername;
+            return Objects.requireNonNullElse(commitUsername, "undefined");
         }
 
         @NotNull
         public String getDescribe() {
-            if (describe == null) {
-                return "undefined";
-            }
-            return describe;
+            return Objects.requireNonNullElse(describe, "undefined");
         }
 
         @NotNull
         public String getDescribeShort() {
-            if (describeShort == null) {
-                return "undefined";
-            }
-            return describeShort;
+            return Objects.requireNonNullElse(describeShort, "undefined");
         }
 
         @NotNull
@@ -179,10 +153,7 @@ public class BuildInfo {
 
         @NotNull
         public String getRemoteOriginUrl() {
-            if (remoteOriginUrl == null) {
-                return "undefined";
-            }
-            return remoteOriginUrl;
+            return Objects.requireNonNullElse(remoteOriginUrl, "undefined");
         }
 
         @NotNull
@@ -251,26 +222,17 @@ public class BuildInfo {
 
         @NotNull
         public String getProjectBaseName() {
-            if (projectBaseName == null) {
-                return "undefined";
-            }
-            return projectBaseName;
+            return Objects.requireNonNullElse(projectBaseName, "undefined");
         }
 
         @NotNull
         public String getProjectName() {
-            if (projectName == null) {
-                return "undefined";
-            }
-            return projectName;
+            return Objects.requireNonNullElse(projectName, "undefined");
         }
 
         @NotNull
         public String getProjectUrl() {
-            if (projectUrl == null) {
-                return "undefined";
-            }
-            return projectUrl;
+            return Objects.requireNonNullElse(projectUrl, "undefined");
         }
 
         @NotNull
