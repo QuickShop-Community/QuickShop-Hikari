@@ -10,19 +10,19 @@ public class QuickExecutor {
     private QuickExecutor() {
     }
 
-    private static final ExecutorService databaseExecutor = new ThreadPoolExecutor(2, 16, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
-    private static final ExecutorService shopSaveExecutor = new ThreadPoolExecutor(0, 16, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
-    private static final ExecutorService commonExecutor = new ThreadPoolExecutor(1, 16, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+    private static final ExecutorService DATABASE_EXECUTOR = new ThreadPoolExecutor(2, 16, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+    private static final ExecutorService SHOP_SAVE_EXECUTOR = new ThreadPoolExecutor(0, 16, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+    private static final ExecutorService COMMON_EXECUTOR = new ThreadPoolExecutor(1, 16, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
 
     public static ExecutorService getCommonExecutor() {
-        return commonExecutor;
+        return COMMON_EXECUTOR;
     }
 
     public static ExecutorService getDatabaseExecutor() {
-        return databaseExecutor;
+        return DATABASE_EXECUTOR;
     }
 
     public static ExecutorService getShopSaveExecutor() {
-        return shopSaveExecutor;
+        return SHOP_SAVE_EXECUTOR;
     }
 }

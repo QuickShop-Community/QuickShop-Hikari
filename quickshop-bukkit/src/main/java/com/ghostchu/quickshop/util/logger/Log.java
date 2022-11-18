@@ -21,13 +21,13 @@ import java.util.logging.Level;
 
 public class Log {
     private static final ReentrantReadWriteLock LOCK = new ReentrantReadWriteLock();
-    private static final int bufferSize = 500 * Type.values().length;
-    private static final Queue<Record> loggerBuffer = EvictingQueue.create(bufferSize);
-    private static final boolean disableLocationRecording;
+    private static final int BUFFER_SIZE = 500 * Type.values().length;
+    private static final Queue<Record> LOGGER_BUFFER = EvictingQueue.create(BUFFER_SIZE);
+    private static final boolean DISABLE_LOCATION_RECORDING;
 
     static {
         // Cannot replace with Util since it depend on this class
-        disableLocationRecording = Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.util.logger."));
+        DISABLE_LOCATION_RECORDING = Boolean.parseBoolean(System.getProperty("com.ghostchu.quickshop.util.logger."));
     }
 
     public static void cron(@NotNull String message) {
@@ -39,12 +39,12 @@ public class Log {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
-            if (disableLocationRecording) {
+            if (DISABLE_LOCATION_RECORDING) {
                 recordEntry = new Record(level, Type.CRON, message, null);
             } else {
                 recordEntry = new Record(level, Type.CRON, message, caller);
             }
-            loggerBuffer.offer(recordEntry);
+            LOGGER_BUFFER.offer(recordEntry);
             debugStdOutputs(recordEntry);
         } finally {
             LOCK.writeLock().unlock();
@@ -71,12 +71,12 @@ public class Log {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
-            if (disableLocationRecording) {
+            if (DISABLE_LOCATION_RECORDING) {
                 recordEntry = new Record(level, Type.DEBUG, message, null);
             } else {
                 recordEntry = new Record(level, Type.DEBUG, message, caller);
             }
-            loggerBuffer.offer(recordEntry);
+            LOGGER_BUFFER.offer(recordEntry);
             debugStdOutputs(recordEntry);
         } finally {
             LOCK.writeLock().unlock();
@@ -91,7 +91,7 @@ public class Log {
     public static List<Record> fetchLogs() {
         LOCK.readLock().lock();
         try {
-            return new ArrayList<>(loggerBuffer);
+            return new ArrayList<>(LOGGER_BUFFER);
         } finally {
             LOCK.readLock().unlock();
         }
@@ -101,7 +101,7 @@ public class Log {
     public static List<Record> fetchLogs(@NotNull Type type) {
         LOCK.readLock().lock();
         try {
-            return loggerBuffer.stream().filter(recordEntry -> recordEntry.getType() == type).toList();
+            return LOGGER_BUFFER.stream().filter(recordEntry -> recordEntry.getType() == type).toList();
         } finally {
             LOCK.readLock().unlock();
         }
@@ -112,7 +112,7 @@ public class Log {
         LOCK.readLock().lock();
         try {
             List<Record> records = new ArrayList<>();
-            for (Record recordEntry : loggerBuffer) {
+            for (Record recordEntry : LOGGER_BUFFER) {
                 if (ArrayUtils.contains(excludes, recordEntry.getType())) {
                     continue;
                 }
@@ -128,7 +128,7 @@ public class Log {
     public static List<Record> fetchLogsLevel(@NotNull Type type, @NotNull Level level) {
         LOCK.readLock().lock();
         try {
-            return loggerBuffer.stream().filter(recordEntry -> recordEntry.getType() == type && recordEntry.getLevel() == level).toList();
+            return LOGGER_BUFFER.stream().filter(recordEntry -> recordEntry.getType() == type && recordEntry.getLevel() == level).toList();
         } finally {
             LOCK.readLock().unlock();
         }
@@ -143,12 +143,12 @@ public class Log {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
-            if (disableLocationRecording) {
+            if (DISABLE_LOCATION_RECORDING) {
                 recordEntry = new Record(level, Type.PERMISSION, message, null);
             } else {
                 recordEntry = new Record(level, Type.PERMISSION, message, caller);
             }
-            loggerBuffer.offer(recordEntry);
+            LOGGER_BUFFER.offer(recordEntry);
             debugStdOutputs(recordEntry);
         } finally {
             LOCK.writeLock().unlock();
@@ -169,12 +169,12 @@ public class Log {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
-            if (disableLocationRecording) {
+            if (DISABLE_LOCATION_RECORDING) {
                 recordEntry = new Record(level, Type.TIMING, operation + " (cost " + timer.getPassedTime() + " ms)", null);
             } else {
                 recordEntry = new Record(level, Type.TIMING, operation + " (cost " + timer.getPassedTime() + " ms)", caller);
             }
-            loggerBuffer.offer(recordEntry);
+            LOGGER_BUFFER.offer(recordEntry);
             debugStdOutputs(recordEntry);
         } finally {
             LOCK.writeLock().unlock();
@@ -191,12 +191,12 @@ public class Log {
         LOCK.writeLock().lock();
         try {
             Record recordEntry;
-            if (disableLocationRecording) {
+            if (DISABLE_LOCATION_RECORDING) {
                 recordEntry = new Record(level, Type.TRANSACTION, message, null);
             } else {
                 recordEntry = new Record(level, Type.TRANSACTION, message, caller);
             }
-            loggerBuffer.offer(recordEntry);
+            LOGGER_BUFFER.offer(recordEntry);
             debugStdOutputs(recordEntry);
         } finally {
             LOCK.writeLock().unlock();
@@ -265,7 +265,7 @@ public class Log {
     @Data
     public static class Caller {
         @NotNull
-        private static final StackWalker stackWalker = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE), 3);
+        private static final StackWalker STACK_WALKER = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE), 3);
         @NotNull
         private final String threadName;
         @NotNull
@@ -288,7 +288,7 @@ public class Log {
 
         @NotNull
         public static Caller create(int steps) {
-            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(steps + 1L).toList());
+            List<StackWalker.StackFrame> caller = STACK_WALKER.walk(frames -> frames.limit(steps + 1L).toList());
             StackWalker.StackFrame frame = caller.get(steps);
             String threadName = Thread.currentThread().getName();
             String className = frame.getClassName();

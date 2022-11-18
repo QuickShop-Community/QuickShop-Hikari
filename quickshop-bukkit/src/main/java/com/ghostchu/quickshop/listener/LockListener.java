@@ -25,7 +25,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class LockListener extends AbstractProtectionListener {
-    private static final Object emptyObject = new Object();
+    private static final Object EMPTY_OBJECT = new Object();
     private final com.google.common.cache.Cache<UUID, Object> lockCoolDown = CacheBuilder.newBuilder()
             .expireAfterAccess(1, TimeUnit.SECONDS)
             .build();
@@ -105,7 +105,7 @@ public class LockListener extends AbstractProtectionListener {
             if (plugin.perm().hasPermission(p, "quickshop.other.open")) {
                 if (lockCoolDown.getIfPresent(p.getUniqueId()) == null) {
                     plugin.text().of(p, "bypassing-lock").send();
-                    lockCoolDown.put(p.getUniqueId(), emptyObject);
+                    lockCoolDown.put(p.getUniqueId(), EMPTY_OBJECT);
                 }
                 return;
             }
@@ -135,7 +135,7 @@ public class LockListener extends AbstractProtectionListener {
         if (plugin.perm().hasPermission(p, "quickshop.other.open")) {
             if (lockCoolDown.getIfPresent(p.getUniqueId()) == null) {
                 plugin.text().of(p, "bypassing-lock").send();
-                lockCoolDown.put(p.getUniqueId(), emptyObject);
+                lockCoolDown.put(p.getUniqueId(), EMPTY_OBJECT);
             }
             return;
         }

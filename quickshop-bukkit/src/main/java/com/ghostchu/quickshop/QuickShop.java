@@ -101,7 +101,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
      * If running environment test
      */
     @Getter
-    private static final boolean testing = false;
+    private static final boolean TESTING = false;
     /**
      * The active instance of QuickShop
      * You shouldn't use this if you really need it.

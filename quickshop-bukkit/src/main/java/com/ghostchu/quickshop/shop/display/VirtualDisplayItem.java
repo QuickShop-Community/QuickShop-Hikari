@@ -374,7 +374,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
             //https://wiki.vg/index.php?title=Entity_metadata#Entity
             if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
                 String itemName;
-                if (QuickShop.isTesting()) {
+                if (QuickShop.isTESTING()) {
                     //Env Testing
                     itemName = itemStack.getType().name();
                 } else {
