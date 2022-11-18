@@ -582,7 +582,7 @@ transfer-rejected-fromside: "<red>Spieler <aqua>{0}</aqua> hat deine Transfer-An
 transfer-rejected-toside: "<red>Du hast <aqua>{0}</aqua>'s Transfer-Anfrage abgelehnt."
 transfer-no-pending-operation: "<red>Du hat keine ausstehenden Transfer-Anfragen."
 benefit-overflow: "<red>Die Summe aller Vorteile kann nicht grösser oder gleich 100% sein."
-benefit-exists: "<red>Spieler hat bereits Vorteile in diesem Shop. Zum entfernen, setze seine Vorteile zu null."
+benefit-exists: "<red>Target player already in benefits list on this shop."
 benefit-removed: "<red>Spieler wurde von Shop-Vorteilen entfernt."
 benefit-added: "<green>Spieler <aqua>{0}</aqua> wurde zu Shop-Vorteilen hinzugefügt!"
 benefit-updated: "<green>Spieler <aqua>{0}</aqua>'s Vorteile wurden aktualisiert!"
