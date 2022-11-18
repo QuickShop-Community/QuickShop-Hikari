@@ -14,6 +14,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.xml.sax.SAXException;
 
 import java.io.StringReader;
 import java.util.Optional;
@@ -100,8 +101,9 @@ public class NexusManager {
         }
 
         @NotNull
-        public static NexusMetadata parse(@NotNull String xml) throws DocumentException, IllegalStateException {
+        public static NexusMetadata parse(@NotNull String xml) throws DocumentException, IllegalStateException, SAXException {
             SAXReader reader = new SAXReader();
+            reader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             Document document = reader.read(new StringReader(xml));
             Element metadataElement = document.getRootElement();
             if (metadataElement == null) {
