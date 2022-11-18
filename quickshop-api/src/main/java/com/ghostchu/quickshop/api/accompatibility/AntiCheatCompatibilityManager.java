@@ -23,7 +23,7 @@ public interface AntiCheatCompatibilityManager {
      * @param module Compatibility module
      */
     @Deprecated(forRemoval = true)
-    void register(@NotNull AntiCheatCompatibilityModule module);
+    void register(@SuppressWarnings("removal") @NotNull AntiCheatCompatibilityModule module);
 
     /**
      * Switch the compatibility mode on or off, set false to disable all we known incompatiable plugin
@@ -49,7 +49,7 @@ public interface AntiCheatCompatibilityManager {
      * @param module Compatibility module
      */
     @Deprecated(forRemoval = true)
-    void unregister(@NotNull AntiCheatCompatibilityModule module);
+    void unregister(@SuppressWarnings("removal") @NotNull AntiCheatCompatibilityModule module);
 
     /**
      * Unregister all registered compatibility modules
