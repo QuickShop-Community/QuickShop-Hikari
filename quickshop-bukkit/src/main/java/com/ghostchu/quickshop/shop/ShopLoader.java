@@ -75,10 +75,10 @@ public class ShopLoader {
         plugin.getLogger().info("Loading shops into memory...");
         Timer shopTotalTimer = new Timer(true);
         AtomicInteger successCounter = new AtomicInteger(0);
-        for (ShopRecord record : records) {
+        for (ShopRecord shopRecord : records) {
             Timer singleShopLoadingTimer = new Timer(true);
-            InfoRecord infoRecord = record.getInfoRecord();
-            DataRecord dataRecord = record.getDataRecord();
+            InfoRecord infoRecord = shopRecord.getInfoRecord();
+            DataRecord dataRecord = shopRecord.getDataRecord();
             // World check
             if (worldName != null) {
                 if (!worldName.equals(infoRecord.getWorld())) {
@@ -103,7 +103,7 @@ public class ShopLoader {
             int y = infoRecord.getY();
             int z = infoRecord.getZ();
             Shop shop;
-            DataRawDatabaseInfo rawInfo = new DataRawDatabaseInfo(record.getDataRecord());
+            DataRawDatabaseInfo rawInfo = new DataRawDatabaseInfo(shopRecord.getDataRecord());
             try {
                 shop = new ContainerShop(plugin,
                         infoRecord.getShopId(),
@@ -246,33 +246,33 @@ public class ShopLoader {
 
 
         @SuppressWarnings("UnstableApiUsage")
-        DataRawDatabaseInfo(@NotNull DataRecord record) {
-            this.owner = record.getOwner();
-            this.price = record.getPrice();
-            this.type = ShopType.fromID(record.getType());
-            this.unlimited = record.isUnlimited();
-            String extraStr = record.getExtra();
-            this.name = record.getName();
+        DataRawDatabaseInfo(@NotNull DataRecord dataRecord) {
+            this.owner = dataRecord.getOwner();
+            this.price = dataRecord.getPrice();
+            this.type = ShopType.fromID(dataRecord.getType());
+            this.unlimited = dataRecord.isUnlimited();
+            String extraStr = dataRecord.getExtra();
+            this.name = dataRecord.getName();
             //handle old shops
             if (extraStr == null) {
                 extraStr = "";
                 needUpdate = true;
             }
-            this.currency = record.getCurrency();
-            this.hologram = record.isHologram();
-            this.taxAccount = record.getTaxAccount();
-            this.invSymbolLink = record.getInventorySymbolLink();
-            this.invWrapper = record.getInventoryWrapper();
-            this.benefits = SimpleBenefit.deserialize(record.getBenefit());
-            String permissionJson = record.getPermissions();
+            this.currency = dataRecord.getCurrency();
+            this.hologram = dataRecord.isHologram();
+            this.taxAccount = dataRecord.getTaxAccount();
+            this.invSymbolLink = dataRecord.getInventorySymbolLink();
+            this.invWrapper = dataRecord.getInventoryWrapper();
+            this.benefits = SimpleBenefit.deserialize(dataRecord.getBenefit());
+            String permissionJson = dataRecord.getPermissions();
             if (!StringUtils.isEmpty(permissionJson) && MsgUtil.isJson(permissionJson)) {
-                Type type = new TypeToken<Map<UUID, String>>() {
+                Type typeToken = new TypeToken<Map<UUID, String>>() {
                 }.getType();
-                this.permissions = new HashMap<>(JsonUtil.getGson().fromJson(permissionJson, type));
+                this.permissions = new HashMap<>(JsonUtil.getGson().fromJson(permissionJson, typeToken));
             } else {
                 this.permissions = new HashMap<>();
             }
-            this.item = deserializeItem(record.getItem());
+            this.item = deserializeItem(dataRecord.getItem());
             this.extra = deserializeExtra(extraStr);
         }
 

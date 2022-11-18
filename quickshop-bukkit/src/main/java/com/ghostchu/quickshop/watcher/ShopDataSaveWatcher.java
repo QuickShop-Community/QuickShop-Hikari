@@ -10,7 +10,6 @@ import java.util.concurrent.CompletableFuture;
 
 public class ShopDataSaveWatcher extends BukkitRunnable {
     private final QuickShop plugin;
-    //private final AtomicBoolean saving = new AtomicBoolean(false);
     private CompletableFuture<Void> saveTask;
 
     public ShopDataSaveWatcher(QuickShop plugin) {
@@ -35,25 +34,4 @@ public class ShopDataSaveWatcher extends BukkitRunnable {
                     }
                 }, QuickExecutor.getShopSaveExecutor());
     }
-//    @Override
-//    public void run() {
-//        if (saving.get()) {
-//            Log.debug("Another save task still running!");
-//            return;
-//        }
-//        Log.debug("Starting save shops...");
-//        saving.set(true);
-//        try {
-//            for (Shop shop : plugin.getShopManager().getAllShops()) {
-//                try {
-//                    shop.update().get();
-//                } catch (InterruptedException | ExecutionException e) {
-//                    plugin.getLogger().log(Level.WARNING, "Failed to save the shop.", e);
-//                }
-//            }
-//        } finally {
-//            saving.set(false);
-//        }
-//        Log.debug("Shops saved!");
-//    }
 }

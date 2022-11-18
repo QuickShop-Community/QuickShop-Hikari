@@ -76,7 +76,7 @@ public class ShopPurger {
             }
             pendingRemovalShops.add(shop);
         }
-        if (pendingRemovalShops.size() > 0) {
+        if (!pendingRemovalShops.isEmpty()) {
             plugin.getLogger().info("[Shop Purger] Found " + pendingRemovalShops.size() + " need to removed, will remove in the next tick.");
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 for (Shop shop : pendingRemovalShops) {

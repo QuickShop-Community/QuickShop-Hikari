@@ -37,7 +37,7 @@ public class PermissionLogsItem implements SubPasteItem {
     @NotNull
     private String buildContent() {
         StringJoiner builder = new StringJoiner("\n");
-        List<String> debugLogs = Log.fetchLogs(Log.Type.PERMISSION).stream().map(record -> "[" + format.format(record.getTimestamp()) + "] " + record).toList();
+        List<String> debugLogs = Log.fetchLogs(Log.Type.PERMISSION).stream().map(recordEntry -> "[" + format.format(recordEntry.getTimestamp()) + "] " + recordEntry).toList();
         List<String> tail = CommonUtil.tail(debugLogs, 300);
         tail.forEach(builder::add);
         return "<textarea readonly=\"true\" name=\"permissionquery\" style=\"height: 1000px; width: 100%;\">" +

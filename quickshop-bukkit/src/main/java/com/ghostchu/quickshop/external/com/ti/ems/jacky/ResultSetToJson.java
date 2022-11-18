@@ -12,6 +12,9 @@ import java.sql.SQLException;
  * @author jackypan1989 (<a href="https://jackypan1989.wordpress.com/2012/07/18/java-%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98-convert-resultset-to-json/">...</a>)
  */
 public class ResultSetToJson {
+    private ResultSetToJson() {
+    }
+
     @NotNull
     public static JsonArray resultSetToJsonArray(@NotNull ResultSet rs) {
         JsonArray ja = new JsonArray();

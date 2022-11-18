@@ -25,6 +25,6 @@ public class ShopProtectionFlag {
     }
 
     public static String getMark() {
-        return MARK;
+        return getDefaultMark();
     }
 }

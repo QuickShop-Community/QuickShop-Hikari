@@ -84,8 +84,12 @@ public class PlayerFinder {
     private Profile findOnline(@NotNull UUID uuid) {
         try {
             return this.resolver.findByUuid(uuid);
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             Log.debug("Failed to find player profile: " + e.getMessage());
+            return null;
+        } catch (InterruptedException e) {
+            Log.debug("Failed to find player profile: " + e.getMessage());
+            Thread.currentThread().interrupt();
             return null;
         }
     }
@@ -94,8 +98,12 @@ public class PlayerFinder {
     private Profile findOnline(@NotNull String name) {
         try {
             return this.resolver.findByName(name);
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             Log.debug("Failed to find player profile: " + e.getMessage());
+            return null;
+        } catch (InterruptedException e) {
+            Log.debug("Failed to find player profile: " + e.getMessage());
+            Thread.currentThread().interrupt();
             return null;
         }
     }

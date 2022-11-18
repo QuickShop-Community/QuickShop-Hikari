@@ -105,8 +105,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 doV2Migrate();
                 setDatabaseVersion(4);
             } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
-                     IllegalAccessException | ExecutionException | InterruptedException e) {
+                     IllegalAccessException | ExecutionException e) {
                 e.printStackTrace();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
         }
         if (getDatabaseVersion() < 9) {
@@ -476,18 +478,18 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @Override
-    public @NotNull CompletableFuture<@NotNull Integer> insertMetricRecord(@NotNull ShopMetricRecord recordEntry) {
+    public @NotNull CompletableFuture<@NotNull Integer> insertMetricRecord(@NotNull ShopMetricRecord metricRecord) {
         CompletableFuture<Integer> future = new CompletableFuture<>();
-        plugin.getDatabaseHelper().locateShopDataId(recordEntry.getShopId()).whenCompleteAsync((dataId, err) -> {
+        plugin.getDatabaseHelper().locateShopDataId(metricRecord.getShopId()).whenCompleteAsync((dataId, err) -> {
             if (err != null) {
                 future.completeExceptionally(err);
             }
             DataTables.LOG_PURCHASE
                     .createInsert()
                     .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
-                    .setParams(new Date(recordEntry.getTime()), recordEntry.getShopId()
-                            , dataId, recordEntry.getPlayer(), recordEntry.getType().name(),
-                            recordEntry.getAmount(), recordEntry.getTotal(), recordEntry.getTax())
+                    .setParams(new Date(metricRecord.getTime()), metricRecord.getShopId()
+                            , dataId, metricRecord.getPlayer(), metricRecord.getType().name(),
+                            metricRecord.getAmount(), metricRecord.getTotal(), metricRecord.getTax())
                     .executeFuture(lines -> lines).whenComplete((line, err2) -> {
                         if (err2 != null) {
                             future.completeExceptionally(err2);
@@ -691,80 +693,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
 
     }
-
-
-//    @Override
-//    public @NotNull CompletableFuture<@NotNull List<ShopRecord>> listShops(boolean deleteIfCorrupt) {
-//        return DataTables.SHOP_MAP.createQuery().build().executeFuture((query) -> {
-//            ResultSet rs = query.getResultSet();
-//            List<ShopInfo> shops = new ArrayList<>();
-//            while (rs.next()) {
-//                long shopId = rs.getLong("shop");
-//                int x = rs.getInt("x");
-//                int y = rs.getInt("y");
-//                int z = rs.getInt("z");
-//                String world = rs.getString("world");
-//                shops.add(new ShopInfo(shopId, world, x, y, z));
-//            }
-//            return shops; // Release shop query connection
-//        }).thenCompose((shops) -> { // Process per shops
-//            CompletableFuture<List<ShopRecord>> future = CompletableFuture.completedFuture(new ArrayList<>());
-//            for (ShopInfo shop : shops) {
-//                future.thenCombine(locateShopDataId(shop.shopID).thenCompose(dataID -> {
-//                    if (dataID == null) {
-//                        if (deleteIfCorrupt && plugin.getShopBackupUtil().isBreakingAllowed()) {
-//                            plugin.getDatabaseHelper().removeShopMap(shop.world, shop.x, shop.y, shop.z)
-//                                    .whenComplete((lines, err) -> {
-//                                        if (err != null)
-//                                            Log.debug("Failed to remove shop map for " + shop + " because " + err.getMessage());
-//                                    });
-//                        }
-//                        return CompletableFuture.completedFuture(null);
-//                    } else return getDataRecord(dataID);
-//                }), (list, record) -> {
-//                    if (record != null) list.add(new ShopRecord(record, shop));
-//                    else if (deleteIfCorrupt && plugin.getShopBackupUtil().isBreakingAllowed()) {
-//                        plugin.getDatabaseHelper().removeShopMap(shop.world, shop.x, shop.y, shop.z)
-//                                .whenComplete((lines, err) -> {
-//                                    if (err != null)
-//                                        Log.debug("Failed to remove shop map for " + shop + " because " + err.getMessage());
-//                                });
-//                    }
-//                    return list;
-//                });
-//            }
-//            return future;
-//        });
-//    }
-
-//    @Override
-//    public @NotNull List<DataRecord> selectAllShops(boolean deleteCorruptShops) {
-//        return DataTables.SHOP_MAP.createQuery().build().executeFuture((query) -> {
-//            List<DataRecord> shops = new CopyOnWriteArrayList<>();
-//            CompletableFuture<List<DataRecord>> future = new CompletableFuture<>();
-//            future.complete(new ArrayList<>());
-//
-//            ResultSet rs = query.getResultSet();
-//            while (rs.next()) {
-//                long shopId = rs.getLong("shop");
-//                int x = rs.getInt("x");
-//                int y = rs.getInt("y");
-//                int z = rs.getInt("z");
-//                String world = rs.getString("world");
-//                f
-//                DataRecord record = locateShopDataId(shopId).thenCompose(dataId -> {
-//                    if (dataId == null) {
-//                        if (deleteCorruptShops) {
-//                            plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
-//                        }
-//                        return null;
-//                    }
-//                    return getDataRecord(dataId).get();
-//                });
-//            }
-//            return shops;
-//        });
-//    }
 
     public @NotNull SQLManager getManager() {
         return manager;

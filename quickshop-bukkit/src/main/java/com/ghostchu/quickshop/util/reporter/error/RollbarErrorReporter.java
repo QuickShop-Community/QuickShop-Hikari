@@ -26,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 public class RollbarErrorReporter {
-    //private volatile static String bootPaste = null;
+    private static final String QUICKSHOP_ROOT_PACKAGE_NAME = "com.ghostchu.quickshop";
     private final Rollbar rollbar;
     private final List<String> reported = new ArrayList<>(5);
     private final List<Class<?>> ignoredException = Lists.newArrayList(IOException.class
@@ -43,7 +43,6 @@ public class RollbarErrorReporter {
     private final LinkedBlockingQueue<ErrorBundle> reportQueue = new LinkedBlockingQueue<>();
     private boolean disable;
     private boolean tempDisable;
-    //private final GlobalExceptionFilter globalExceptionFilter;
     @Getter
     private volatile boolean enabled;
 
@@ -76,7 +75,7 @@ public class RollbarErrorReporter {
                             + " with context: " + CommonUtil.array2String(errorBundle.getContext()));
                     sendError0(errorBundle.getThrowable(), errorBundle.getContext());
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    Thread.currentThread().interrupt();
                 }
             }
         });
@@ -174,13 +173,13 @@ public class RollbarErrorReporter {
             return PossiblyLevel.IMPOSSIBLE;
         }
 
-        if (stackTraceElements[0].getClassName().contains("com.ghostchu.quickshop") && stackTraceElements[1].getClassName().contains("com.ghostchu.quickshop")) {
+        if (stackTraceElements[0].getClassName().contains(QUICKSHOP_ROOT_PACKAGE_NAME) && stackTraceElements[1].getClassName().contains(QUICKSHOP_ROOT_PACKAGE_NAME)) {
             return PossiblyLevel.CONFIRM;
         }
 
         long errorCount = Arrays.stream(stackTraceElements)
                 .limit(3)
-                .filter(stackTraceElement -> stackTraceElement.getClassName().contains("com.ghostchu.quickshop"))
+                .filter(stackTraceElement -> stackTraceElement.getClassName().contains(QUICKSHOP_ROOT_PACKAGE_NAME))
                 .count();
 
         if (errorCount > 0) {
@@ -310,7 +309,6 @@ public class RollbarErrorReporter {
         enabled = false;
         plugin.getLogger().setFilter(quickShopExceptionFilter.preFilter);
         plugin.getServer().getLogger().setFilter(serverExceptionFilter.preFilter);
-        //Logger.getGlobal().setFilter(globalExceptionFilter.preFilter);
     }
 
     @Data
@@ -323,19 +321,6 @@ public class RollbarErrorReporter {
             this.context = context;
         }
     }
-
-//    private String getPluginInfo() {
-//        StringBuilder buffer = new StringBuilder();
-//        for (Plugin bPlugin : plugin.getServer().getPluginManager().getPlugins()) {
-//            buffer
-//                    .append("\t")
-//                    .append(bPlugin.getName())
-//                    .append("@")
-//                    .append(bPlugin.isEnabled() ? "Enabled" : "Disabled")
-//                    .append("\n");
-//        }
-//        return buffer.toString();
-//    }
 
     class GlobalExceptionFilter implements Filter {
 

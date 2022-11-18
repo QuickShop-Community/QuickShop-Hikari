@@ -12,6 +12,10 @@ import org.jetbrains.annotations.Nullable;
  * @author Ghost_chu
  */
 public class ServiceInjector {
+
+    private ServiceInjector() {
+    }
+
     public static @Nullable <T> T getInjectedService(@NotNull Class<T> clazz, T def) {
         @Nullable RegisteredServiceProvider<? extends T> registeredServiceProvider =
                 Bukkit.getServicesManager().getRegistration(clazz);

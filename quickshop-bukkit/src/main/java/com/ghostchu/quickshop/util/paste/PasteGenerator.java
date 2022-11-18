@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PasteGenerator {
-    private final static String DOCUMENT_HEADER = """
+    private static final String DOCUMENT_HEADER = """
             <!DOCTYPE html>
             <html lang="en">
                 <head>

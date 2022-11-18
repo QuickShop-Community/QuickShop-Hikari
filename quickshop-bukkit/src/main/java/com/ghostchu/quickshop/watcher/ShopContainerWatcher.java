@@ -20,8 +20,8 @@ public class ShopContainerWatcher extends BukkitRunnable {
         long beginTime = System.currentTimeMillis();
         Shop shop = checkQueue.poll();
         while (shop != null && !shop.isDeleted()) {
-            if (shop instanceof ContainerShop) {
-                ((ContainerShop) shop).checkContainer();
+            if (shop instanceof ContainerShop containerShop) {
+                containerShop.checkContainer();
             }
             if (System.currentTimeMillis() - beginTime
                     > 45) { // Don't let quickshop eat more than 45 ms per tick.
