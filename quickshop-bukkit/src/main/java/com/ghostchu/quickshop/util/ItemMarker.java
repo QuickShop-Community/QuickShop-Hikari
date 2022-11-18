@@ -23,8 +23,8 @@ public class ItemMarker implements Reloadable {
     private final Map<String, ItemStack> stacks = new HashMap<>();
     private final File file;
 
-    @SuppressWarnings("RegExpSimplifiable")
-    private static final String NAME_REG_EXP = "[a-zA-Z0-9_]*";
+    //private static final String NAME_REG_EXP = "[a-zA-Z0-9_]*";
+    private static final String NAME_REG_EXP = "\\w";
     private final Pattern namePattern = Pattern.compile(NAME_REG_EXP);
     private YamlConfiguration configuration;
 

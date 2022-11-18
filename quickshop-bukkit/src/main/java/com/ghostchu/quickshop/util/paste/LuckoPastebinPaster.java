@@ -54,7 +54,7 @@ public class LuckoPastebinPaster implements PasteInterface {
 
     @Data
     static class JsonPadding {
-        private final String _paster = "QuickShop";
+        private static final String _paster = "QuickShop";
         private String data;
 
         public JsonPadding(String data) {

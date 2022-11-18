@@ -265,7 +265,7 @@ public class Log {
     @Data
     public static class Caller {
         @NotNull
-        private final static StackWalker stackWalker = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE), 3);
+        private static final StackWalker stackWalker = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE), 3);
         @NotNull
         private final String threadName;
         @NotNull

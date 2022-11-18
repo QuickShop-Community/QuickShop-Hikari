@@ -10,9 +10,6 @@ import java.util.Map;
 public class InventoryWrapperRegistry {
     private final Map<String, InventoryWrapperManager> registry = new MapMaker().makeMap();
 
-    public InventoryWrapperRegistry() {
-    }
-
     @Nullable
     public String find(InventoryWrapperManager manager) {
         for (Map.Entry<String, InventoryWrapperManager> entry : registry.entrySet()) {

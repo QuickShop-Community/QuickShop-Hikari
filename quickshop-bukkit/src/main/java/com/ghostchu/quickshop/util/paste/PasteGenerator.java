@@ -28,7 +28,7 @@ public class PasteGenerator {
                 <body style = "max-width: 70em !important;">
                 <main>
             """;
-    private final static String DOCUMENT_FOOTER = """
+    private static final String DOCUMENT_FOOTER = """
                 </main>
                 </body>
                 <footer>
@@ -42,7 +42,7 @@ public class PasteGenerator {
                 </footer>
             </html>
             """;
-    private final static String INLINE_STYLE = """
+    private static final String INLINE_STYLE = """
             /* Sakura.css v1.3.0
              * ================
              * Minimal css theme.

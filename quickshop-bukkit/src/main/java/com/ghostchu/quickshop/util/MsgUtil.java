@@ -47,7 +47,6 @@ import java.util.logging.Level;
 public class MsgUtil {
     private static final Map<UUID, List<String>> OUTGOING_MESSAGES = Maps.newConcurrentMap();
     private static final QuickShop plugin = QuickShop.getInstance();
-    //public static GameLanguage gameLanguage;
     private static DecimalFormat decimalFormat;
     private volatile static Entry<String, String> cachedGameLanguageCode = null;
 
@@ -209,7 +208,6 @@ public class MsgUtil {
             boolean isLanguageEmpty = StringUtils.isEmpty(language);
             boolean isCountryEmpty = StringUtils.isEmpty(country);
             if (isLanguageEmpty && isCountryEmpty) {
-                //plugin.getLogger().warning("Unable to get language code, fallback to en_us, please change game-language option in config.yml.");
                 languageCode = "en_us";
             } else {
                 if (isCountryEmpty || isLanguageEmpty) {
@@ -217,7 +215,6 @@ public class MsgUtil {
                     if ("en_en".equals(languageCode)) {
                         languageCode = "en_us";
                     }
-                    // plugin.getLogger().warning("Unable to get language code, guessing " + languageCode + " instead, If it's incorrect, please change game-language option in config.yml.");
                 } else {
                     languageCode = language + '_' + country;
                 }

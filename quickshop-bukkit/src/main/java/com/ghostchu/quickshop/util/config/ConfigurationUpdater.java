@@ -78,8 +78,6 @@ public class ConfigurationUpdater {
         }
         plugin.getLogger().info("[ConfigUpdater] Saving configuration changes...");
         plugin.saveConfig();
-        //brokenConfigurationFix();
-        //plugin.saveConfig();
         plugin.reloadConfig();
         //Delete old example configuration files
         try {

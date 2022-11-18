@@ -34,7 +34,7 @@ import org.jetbrains.annotations.Nullable;
  * @author KaiNoMood, Ghost_chu, sandtechnology
  */
 public class BlockListener extends AbstractProtectionListener {
-    private boolean update_sign_when_inventory_moving;
+    private boolean updateSignWhenInventoryMoving;
 
     public BlockListener(@NotNull final QuickShop plugin, @Nullable final Cache cache) {
         super(plugin, cache);
@@ -42,7 +42,7 @@ public class BlockListener extends AbstractProtectionListener {
     }
 
     private void init() {
-        this.update_sign_when_inventory_moving = super.getPlugin().getConfig().getBoolean("shop.update-sign-when-inventory-moving", true);
+        this.updateSignWhenInventoryMoving = super.getPlugin().getConfig().getBoolean("shop.update-sign-when-inventory-moving", true);
     }
 
     /*
@@ -139,7 +139,7 @@ public class BlockListener extends AbstractProtectionListener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onInventoryMove(InventoryMoveItemEvent event) {
-        if (!this.update_sign_when_inventory_moving) {
+        if (!this.updateSignWhenInventoryMoving) {
             return;
         }
         Location destination = event.getDestination().getLocation();

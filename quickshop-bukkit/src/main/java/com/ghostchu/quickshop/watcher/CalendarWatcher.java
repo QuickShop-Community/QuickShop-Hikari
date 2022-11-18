@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.watcher;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.event.CalendarEvent;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -123,7 +124,8 @@ public class CalendarWatcher extends BukkitRunnable {
             if (task != null && !task.isCancelled()) {
                 task.cancel();
             }
-        } catch (IllegalStateException ignored) {
+        } catch (IllegalStateException ex) {
+            Log.debug("Task already cancelled " + ex.getMessage());
         }
     }
 }

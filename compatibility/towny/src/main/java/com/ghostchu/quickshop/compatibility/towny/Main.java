@@ -31,6 +31,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,7 +50,7 @@ public final class Main extends CompatibilityModule implements Listener {
     @NotNull
     public static String processTownyAccount(String accountName) {
         String providerName = QuickShop.getInstance().getEconomy().getProviderName();
-        if (Main.getPlugin(Main.class).getConfig().getBoolean("workaround-for-account-name") || "Essentials".equals(providerName)) {
+        if (JavaPlugin.getPlugin(Main.class).getConfig().getBoolean("workaround-for-account-name") || "Essentials".equals(providerName)) {
             return EssStringUtil.safeString(accountName);
         }
         return accountName;

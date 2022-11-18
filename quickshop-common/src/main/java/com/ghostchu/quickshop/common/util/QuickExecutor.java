@@ -6,6 +6,10 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 public class QuickExecutor {
+
+    private QuickExecutor() {
+    }
+
     private static final ExecutorService databaseExecutor = new ThreadPoolExecutor(2, 16, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
     private static final ExecutorService shopSaveExecutor = new ThreadPoolExecutor(0, 16, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
     private static final ExecutorService commonExecutor = new ThreadPoolExecutor(1, 16, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());

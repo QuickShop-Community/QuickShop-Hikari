@@ -28,8 +28,9 @@ import java.util.List;
 import java.util.Map;
 
 public class CrowdinOTA implements Distribution {
+    private static final String LOCALE_PLACEHOLDER = "%locale%";
     //DO NOT final it! Unit-test needs to change it to prevent network flow
-    protected static String CROWDIN_OTA_HOST = "https://distributions.crowdin.net/91b97508fdf19626f2977b7xrm4/";
+    protected String CROWDIN_OTA_HOST = "https://distributions.crowdin.net/91b97508fdf19626f2977b7xrm4/";
     private final QuickShop plugin;
     private final OTACacheControl otaCacheControl = new OTACacheControl();
     private Manifest manifest;
@@ -157,10 +158,10 @@ public class CrowdinOTA implements Distribution {
         }
         // Validate
         if (!getAvailableFiles().contains(fileCrowdinPath)) {
-            throw new IllegalArgumentException("The file " + fileCrowdinPath.replace("%locale%", crowdinLocale) + " not exists on Crowdin");
+            throw new IllegalArgumentException("The file " + fileCrowdinPath.replace(LOCALE_PLACEHOLDER, crowdinLocale) + " not exists on Crowdin");
         }
         // Post path (replaced with locale code)
-        String postProcessingPath = fileCrowdinPath.replace("%locale%", crowdinLocale);
+        String postProcessingPath = fileCrowdinPath.replace(LOCALE_PLACEHOLDER, crowdinLocale);
 
         // Validating the manifest
         long manifestTimestamp = getManifest().getTimestamp();
@@ -183,7 +184,7 @@ public class CrowdinOTA implements Distribution {
             Log.debug("Manifest timestamp check failed " + postProcessingPath + " excepted:" + otaCacheControl.readManifestTimestamp() + " actual: " + getManifest().getTimestamp() + " forceUpdate: " + forceFlush);
         }
         // Out of the cache
-        String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace("%locale%", crowdinLocale);
+        String url = CROWDIN_OTA_HOST + "content" + fileCrowdinPath.replace(LOCALE_PLACEHOLDER, crowdinLocale);
         url = UrlEncoderDecoder.encodeToLegalPath(url);
         plugin.getLogger().info("Updating translation " + crowdinLocale + " from: " + url);
         HttpResponse<String> response = Unirest.get(url).asString();

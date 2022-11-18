@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop;
 
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
@@ -34,6 +35,7 @@ public class BuildInfo {
     }
 
     public static class GitInfo {
+        private static final String DEFAULT_VALUE = "undefined";
         @Nullable
         private final String branch;
         private final boolean dirty;
@@ -85,7 +87,7 @@ public class BuildInfo {
         @NotNull
         public String getAbbrev() {
             if (abbrev == null) {
-                return "undefined";
+                return DEFAULT_VALUE;
             }
             return abbrev;
         }
@@ -93,73 +95,73 @@ public class BuildInfo {
         @NotNull
         public String getBranch() {
             if (branch == null) {
-                return "undefined";
+                return DEFAULT_VALUE;
             }
             return branch;
         }
 
         @NotNull
         public String getBuildNumber() {
-            return Objects.requireNonNullElse(buildNumber, "undefined");
+            return Objects.requireNonNullElse(buildNumber, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getBuildTime() {
-            return Objects.requireNonNullElse(buildTime, "undefined");
+            return Objects.requireNonNullElse(buildTime, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getBuildVersion() {
-            return Objects.requireNonNullElse(buildVersion, "undefined");
+            return Objects.requireNonNullElse(buildVersion, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getCommitDate() {
-            return Objects.requireNonNullElse(commitDate, "undefined");
+            return Objects.requireNonNullElse(commitDate, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getCommitEmail() {
-            return Objects.requireNonNullElse(commitEmail, "undefined");
+            return Objects.requireNonNullElse(commitEmail, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getCommitMessage() {
-            return Objects.requireNonNullElse(commitMessage, "undefined");
+            return Objects.requireNonNullElse(commitMessage, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getCommitUsername() {
-            return Objects.requireNonNullElse(commitUsername, "undefined");
+            return Objects.requireNonNullElse(commitUsername, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getDescribe() {
-            return Objects.requireNonNullElse(describe, "undefined");
+            return Objects.requireNonNullElse(describe, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getDescribeShort() {
-            return Objects.requireNonNullElse(describeShort, "undefined");
+            return Objects.requireNonNullElse(describeShort, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getId() {
             if (id == null) {
-                return "undefined";
+                return DEFAULT_VALUE;
             }
             return id;
         }
 
         @NotNull
         public String getRemoteOriginUrl() {
-            return Objects.requireNonNullElse(remoteOriginUrl, "undefined");
+            return Objects.requireNonNullElse(remoteOriginUrl, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getTags() {
             if (tags == null) {
-                return "undefined";
+                return DEFAULT_VALUE;
             }
             return tags;
         }
@@ -170,6 +172,7 @@ public class BuildInfo {
     }
 
     public static class JenkinsInfo {
+        private static final String DEFAULT_VALUE = "undefined";
         private final boolean ci;
         private final int id;
         @Nullable
@@ -193,7 +196,8 @@ public class BuildInfo {
                 int fid = -1;
                 try {
                     fid = Integer.parseInt(properties.getProperty("ci.build.id"));
-                } catch (NumberFormatException ignored) {
+                } catch (NumberFormatException ex) {
+                    Log.debug("Failed to parse fid: " + ex.getMessage());
                 } finally {
                     this.id = fid;
                 }
@@ -215,30 +219,30 @@ public class BuildInfo {
         @NotNull
         public String getIdName() {
             if (idName == null) {
-                return "undefined";
+                return DEFAULT_VALUE;
             }
             return idName;
         }
 
         @NotNull
         public String getProjectBaseName() {
-            return Objects.requireNonNullElse(projectBaseName, "undefined");
+            return Objects.requireNonNullElse(projectBaseName, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getProjectName() {
-            return Objects.requireNonNullElse(projectName, "undefined");
+            return Objects.requireNonNullElse(projectName, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getProjectUrl() {
-            return Objects.requireNonNullElse(projectUrl, "undefined");
+            return Objects.requireNonNullElse(projectUrl, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getTag() {
             if (tag == null) {
-                return "undefined";
+                return DEFAULT_VALUE;
             }
             return tag;
         }
@@ -246,7 +250,7 @@ public class BuildInfo {
         @NotNull
         public String getUrl() {
             if (url == null) {
-                return "undefined";
+                return DEFAULT_VALUE;
             }
             return url;
         }

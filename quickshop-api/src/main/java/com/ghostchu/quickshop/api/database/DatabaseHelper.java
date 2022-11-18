@@ -124,14 +124,6 @@ public interface DatabaseHelper {
      */
     @NotNull CompletableFuture<@NotNull Integer> removeShop(long shopId);
 
-//    /**
-//     * Select all shops that saved in the database
-//     *
-//     * @return Query result set
-//     * @throws SQLException Any errors related to SQL Errors
-//     */
-//    @NotNull
-//    List<DataRecord> selectAllShops() throws SQLException;
 
     /**
      * Remove a shop data mapping record from database

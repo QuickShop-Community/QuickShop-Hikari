@@ -15,12 +15,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
 import java.util.logging.Level;
 
 public class SimpleInventoryTransaction implements InventoryTransaction {
-    private final Stack<Operation> processingStack = new Stack<>();
+    private final Deque<Operation> processingStack = new LinkedList<>();
     private final QuickShop plugin = QuickShop.getInstance();
     private InventoryWrapper from;
     private InventoryWrapper to;
@@ -128,7 +129,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
 
     @Override
     @NotNull
-    public Stack<Operation> getProcessingStack() {
+    public Deque<Operation> getProcessingStack() {
         return processingStack;
     }
 

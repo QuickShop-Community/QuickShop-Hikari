@@ -31,6 +31,9 @@ public interface InventoryWrapperIterator extends Iterator<ItemStack> {
 
             @Override
             public ItemStack next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
                 return inventory.getStorageContents()[currentIndex++];
             }
 

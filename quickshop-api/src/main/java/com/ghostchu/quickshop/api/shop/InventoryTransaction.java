@@ -6,8 +6,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
 
 public interface InventoryTransaction {
     /**
@@ -53,7 +53,7 @@ public interface InventoryTransaction {
     void setLastError(@Nullable String lastError);
 
     @NotNull
-    Stack<Operation> getProcessingStack();
+    Deque<Operation> getProcessingStack();
 
     @Nullable
     InventoryWrapper getTo();

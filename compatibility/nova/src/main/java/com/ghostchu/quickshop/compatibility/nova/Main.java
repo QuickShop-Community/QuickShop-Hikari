@@ -87,7 +87,7 @@ public final class Main extends CompatibilityModule implements Listener, Protect
     }
 
     public void init() {
-
+        // There no init stuffs need to do
     }
 
     @Override
