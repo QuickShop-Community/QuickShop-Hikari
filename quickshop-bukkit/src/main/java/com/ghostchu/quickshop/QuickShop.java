@@ -221,8 +221,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private String currency = null;
     @Getter
     private CalendarWatcher calendarWatcher;
-    //    @Getter
-//    private DatabaseMaintenanceWatcher databaseMaintenanceWatcher;
     @Getter
     private ShopPurger shopPurger;
     private int loggingLocation = 0;
@@ -243,12 +241,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private PlayerFinder playerFinder;
     @Getter
     private ShopItemBlackList shopItemBlackList;
-
     @Getter
     private NexusManager nexusManager;
     @Getter
     private ShopDataSaveWatcher shopSaveWatcher;
-
     @Getter
     private SignHooker signHooker;
 
