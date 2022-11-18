@@ -582,7 +582,7 @@ transfer-rejected-fromside: "<red>玩家 <aqua>{0}</aqua> 拒绝了您的商店�
 transfer-rejected-toside: "<red>您拒绝了 <aqua>{0}</aqua> 的商店转移请求。"
 transfer-no-pending-operation: "<red>您没有待处理的商店转移请求。"
 benefit-overflow: "<red>所有利益的总和不能大于或等于100%"
-benefit-exists: "<red>该玩家已经在商店的利益列表中。要删除该玩家，请将该玩家的利益设置为0"
+benefit-exists: "<red>Target player already in benefits list on this shop."
 benefit-removed: "<red>该玩家已被从商店的利益分配中移除"
 benefit-added: "<green>玩家<aqua>{0}</aqua>已被添加到商店的利益分配中"
 benefit-updated: "<green>玩家 <aqua>{0}</aqua>的利益分配已更新！"
