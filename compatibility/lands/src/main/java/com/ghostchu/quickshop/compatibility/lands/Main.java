@@ -15,6 +15,7 @@ import me.angeschossen.lands.api.events.LandUntrustPlayerEvent;
 import me.angeschossen.lands.api.events.PlayerLeaveLandEvent;
 import me.angeschossen.lands.api.integration.LandsIntegration;
 import me.angeschossen.lands.api.land.Land;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -45,7 +46,9 @@ public final class Main extends CompatibilityModule {
                 return;
             }
         }
-        Land land = landsIntegration.getLand(event.getShop().getLocation());
+        Location loc = event.getShop().getLocation();
+        Chunk locChunk = loc.getChunk();
+        Land land = landsIntegration.getLand(loc.getWorld(), locChunk.getX(), locChunk.getZ());
         if (land != null) {
             if (land.getOwnerUID().equals(event.getPlayer().getUniqueId()) || land.isTrusted(event.getPlayer().getUniqueId())) {
                 return;
@@ -106,7 +109,9 @@ public final class Main extends CompatibilityModule {
                 return;
             }
         }
-        Land land = landsIntegration.getLand(event.getLocation());
+        Location loc = event.getLocation();
+        Chunk locChunk = loc.getChunk();
+        Land land = landsIntegration.getLand(loc.getWorld(), locChunk.getX(), locChunk.getZ());
         if (land != null) {
             if (land.getOwnerUID().equals(event.getPlayer().getUniqueId()) || land.isTrusted(event.getPlayer().getUniqueId())) {
                 return;
@@ -132,7 +137,8 @@ public final class Main extends CompatibilityModule {
     @EventHandler(ignoreCancelled = true)
     public void permissionOverride(ShopAuthorizeCalculateEvent event) {
         Location shopLoc = event.getShop().getLocation();
-        Land land = landsIntegration.getLand(shopLoc);
+        Chunk locChunk = shopLoc.getChunk();
+        Land land = landsIntegration.getLand(shopLoc.getWorld(), locChunk.getX(), locChunk.getZ());
         if (land == null) {
             return;
         }
