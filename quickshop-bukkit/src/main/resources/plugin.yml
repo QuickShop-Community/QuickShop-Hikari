@@ -35,39 +35,41 @@ authors:
   - Netherfoam
   - Timtower
   - KaiNoMood (KaiKikuchi)
+  - sandtechnology
   - jho5245
   - cakoyo
+  - Andre601
   - Ectabro
+  - Chris6ix
   - portlek
   - log4b0at
-  - Andre601
   - deadman96385
-  - Vlvxingze
+  - tiararinne
   - DoctaEnkoda
+  - CarmJos
+  - YuanYuanOwO
   - Mgazul
-  - TiaraRinne
-  - sandtechnology
-  - Starmism
-  - Chris6ix
-  - Rean Schwarzer
   - mart-r
-  - raphtaliapt
   - Tim269
+  - raphtaliapt
   - creatorfromhell
   - LoneDev6
-  - judgetread
+  - Steven-OS
   - confuxeon
   - ibmibmibm
-  - yannicklamprecht
+  - judgetread
+  - mfnalex
+  - Warriorrrr
   - PyvesB
-  - PaulBGD
+  - yannicklamprecht
   - ORelio
-  - JoschuaSchneider
-  - Starmium
+  - RMSCA
+  - Starmism
+  - yiwenwang2090
+  - PaulBGD
+  - Nlkomaru
   - harry0198
   - Draesia
-  - Nlkomaru
-  - Warriorrrr
 description: Economy Shops plugin
 
 version: ${project.version}
