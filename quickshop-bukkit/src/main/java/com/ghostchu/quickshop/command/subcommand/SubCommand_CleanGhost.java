@@ -80,7 +80,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                 try {
                     Thread.sleep(20); // Have a rest, don't blow up the main server thread.
                 } catch (InterruptedException e) {
-                    Thread.interrupted();
+                    Thread.currentThread().interrupt();
                 }
             }
             MsgUtil.sendDirectMessage(sender, Component.text("All shops have been checked!").color(NamedTextColor.GREEN));

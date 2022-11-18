@@ -23,11 +23,10 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        int buying, selling, chunks, worlds;
-        buying = 0;
-        selling = 0;
-        chunks = 0;
-        worlds = 0;
+        int buying = 0;
+        int selling = 0;
+        int chunks = 0;
+        int worlds = 0;
         int nostock = 0;
 
         for (Map<ShopChunk, Map<Location, Shop>> inWorld :

@@ -15,7 +15,7 @@ import java.util.UUID;
 public abstract class SubCommand_SilentBase implements CommandHandler<Player> {
     protected final QuickShop plugin;
 
-    public SubCommand_SilentBase(QuickShop plugin) {
+    protected SubCommand_SilentBase(QuickShop plugin) {
         this.plugin = plugin;
     }
 

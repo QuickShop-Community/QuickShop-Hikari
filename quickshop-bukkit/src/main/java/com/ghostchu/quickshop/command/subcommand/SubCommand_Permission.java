@@ -6,7 +6,6 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.Util;
-import com.google.common.collect.ImmutableList;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.enginehub.squirrelid.Profile;
@@ -89,14 +88,6 @@ public class SubCommand_Permission implements CommandHandler<Player> {
                 }
             }
             case "group" -> {
-//                if (target == null) {
-//                    plugin.text().of(sender, "bad-command-usage-detailed", "list").send();
-//                    return;
-//                }
-//                if (!plugin.getShopPermissionManager().hasGroup(target)) {
-//                    plugin.text().of(sender,"invalid-group", target).send();
-//                    return;
-//                }
                 if (operation == null) {
                     plugin.text().of(sender, "bad-command-usage-detailed", "list").send();
                     return;
@@ -139,13 +130,13 @@ public class SubCommand_Permission implements CommandHandler<Player> {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length == 1) {
-            return ImmutableList.of("user", "group");
+            return List.of("user", "group");
         }
         if (cmdArg.length == 2) {
             if ("user".equalsIgnoreCase(cmdArg[0])) {
-                return ImmutableList.of("set", "unset");
+                return List.of("set", "unset");
             } else if ("group".equalsIgnoreCase(cmdArg[0])) {
-                return ImmutableList.of("list");
+                return List.of("list");
             }
         }
         if (cmdArg.length == 3) {

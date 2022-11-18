@@ -4,8 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -22,72 +20,15 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
-    private final Cache<UUID, String> sqlCachePool = CacheBuilder.newBuilder().expireAfterWrite(60, TimeUnit.SECONDS).build();
+
     private final QuickShop plugin;
 
     public SubCommand_Debug(QuickShop plugin) {
         this.plugin = plugin;
     }
-
-//    private void handleDatabaseSQL(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
-//        Util.SysPropertiesParseResult parseResult = Util.parsePackageProperly("enable-sql");
-//        if (!parseResult.asBoolean()) {
-//            plugin.text().of(sender, "debug.sql-disabled", parseResult.getParseKey()).send();
-//            return;
-//        }
-//        if (cmdArg.length < 1) {
-//            plugin.text().of(sender, "debug.invalid-base64-encoded-sql").send();
-//            return;
-//        }
-//        if (cmdArg.length == 1) {
-//            try {
-//                byte[] b = Base64.getDecoder().decode(cmdArg[0]);
-//                String sql = new String(b, StandardCharsets.UTF_8);
-//                UUID uuid = UUID.randomUUID();
-//                sqlCachePool.put(uuid, sql);
-//                plugin.getLogger().warning("An SQL query operation scheduled: uuid=" + uuid + ", sender=" + sender.getName() + ", sql=" + sql);
-//                plugin.text().of(sender, "debug.warning-sql", uuid, sender.getName()).send();
-//                Component component = plugin.text().of(sender, "debug.warning-sql-confirm", uuid, sender.getName()).forLocale()
-//                        .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, "/qs debug database sql confirm " + uuid))
-//                        .hoverEvent(HoverEvent.hoverEvent(HoverEvent.Action.SHOW_TEXT, plugin.text().of(sender, "debug.warning-sql-confirm-hover").forLocale()));
-//                MsgUtil.sendDirectMessage(sender, component);
-//            } catch (Exception e) {
-//                plugin.text().of(sender, "debug.invalid-base64-encoded-sql").send();
-//            }
-//        }
-//        if (cmdArg.length == 2) {
-//            if ("confirm".equals(cmdArg[0])) {
-//                if (CommonUtil.isUUID(cmdArg[1])) {
-//                    UUID uuid = UUID.fromString(cmdArg[1]);
-//                    String sql = sqlCachePool.getIfPresent(uuid);
-//                    if (sql == null) {
-//                        plugin.text().of(sender, "debug.sql-confirm-not-found", cmdArg[1]).send();
-//                        return;
-//                    }
-//                    sqlCachePool.invalidate(uuid);
-//                    plugin.getLogger().warning("An SQL query executed by " + sender.getName() + " with UUID " + uuid + " and content " + sql);
-//                    plugin.text().of(sender, "debug.sql-executing", sql, sender.getName()).send();
-//                    try (Connection connection = plugin.getSqlManager().getConnection();
-//                         Statement statement = connection.createStatement()) {
-//                        statement.execute(sql);
-//                        ResultSet set = statement.getResultSet();
-//                        MsgUtil.sendDirectMessage(sender, Component.text(ResultSetToJson.resultSetToJsonString(set)));
-//                        plugin.text().of(sender, "debug.sql-completed", statement.getLargeUpdateCount());
-//                    } catch (SQLException e) {
-//                        plugin.text().of(sender, "debug.sql-exception", e.getMessage()).send();
-//                        plugin.getLogger().log(Level.WARNING, "Failed to execute custom SQL: " + sql, e);
-//                    }
-//                } else {
-//                    plugin.text().of("debug.invalid-base64-encoded-sql").send();
-//                }
-//            }
-//        }
-//    }
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
@@ -153,10 +94,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             plugin.text().of("debug.operation-missing");
             return;
         }
-        switch (cmdArg[0]) {
-            //case "sql" -> handleDatabaseSQL(sender, ArrayUtils.remove(cmdArg, 0));
-            default -> plugin.text().of(sender, "debug.operation-invalid", cmdArg[0]).send();
-        }
+        plugin.text().of(sender, "debug.operation-invalid", cmdArg[0]).send();
     }
 
     public void printHandlerList(@NotNull CommandSender sender, String event) {

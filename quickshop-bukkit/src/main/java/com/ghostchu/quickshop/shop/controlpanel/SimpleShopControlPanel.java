@@ -55,15 +55,6 @@ public class SimpleShopControlPanel implements ShopControlPanel {
                     .hoverEvent(HoverEvent.showText(hoverText))
                     .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand)));
         }
-//        // Always Counting
-//        if (plugin.perm().hasPermission(sender, "quickshop.alwayscounting")) {
-//            Component text = plugin.text().of(sender, "controlpanel.alwayscounting", MsgUtil.bool2String(shop.isAlwaysCountingContainer())).forLocale();
-//            Component hoverText = plugin.text().of(sender, "controlpanel.alwayscounting-hover").forLocale();
-//            String clickCommand = MsgUtil.fillArgs("/qs silentalwayscounting {0}", shop.getRuntimeRandomUniqueId().toString());
-//            components.add(text
-//                    .hoverEvent(HoverEvent.showText(hoverText))
-//                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand)));
-//        }
         // Buying/Selling Mode
         if (plugin.perm().hasPermission(sender, "quickshop.create.buy")
                 && plugin.perm().hasPermission(sender, "quickshop.create.sell")

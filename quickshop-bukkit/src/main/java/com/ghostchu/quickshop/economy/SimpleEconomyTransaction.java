@@ -363,7 +363,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
      */
     @Override
     public boolean checkBalance() {
-        return from == null || !(core.getBalance(from, world, currency) < amount) || allowLoan;
+        return from == null || (core.getBalance(from, world, currency) >= amount) || allowLoan;
     }
 
     /**

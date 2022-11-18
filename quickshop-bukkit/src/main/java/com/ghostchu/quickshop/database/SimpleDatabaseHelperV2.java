@@ -399,13 +399,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @Override
     public @NotNull CompletableFuture<@NotNull Long> createData(@NotNull Shop shop) {
         SimpleDataRecord simpleDataRecord = ((ContainerShop) shop).createDataRecord();
-        return queryDataId(simpleDataRecord).thenCompose((id) -> {
+        return queryDataId(simpleDataRecord).thenCompose(id -> {
             if (id == null) {
                 Map<String, Object> map = simpleDataRecord.generateParams();
                 return DataTables.DATA.createInsert()
                         .setColumnNames(new ArrayList<>(map.keySet()))
                         .setParams(map.values())
-                        .returnGeneratedKey(Long.class).executeFuture((i) -> i);
+                        .returnGeneratedKey(Long.class).executeFuture(i -> i);
             } else {
                 return CompletableFuture.completedFuture(id);
             }
@@ -512,7 +512,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         DataTables.LOG_TRANSACTION.createInsert()
                 .setColumnNames("from", "to", "currency", "amount", "tax_amount", "tax_account", "error")
                 .setParams(from.toString(), to.toString(), currency, amount, taxAmount, taxAccount == null ? null : taxAccount.toString(), error)
-                .executeAsync((handler) -> Log.debug("Operation completed, insertTransactionRecord, " + handler + " lines affected"));
+                .executeAsync(handler -> Log.debug("Operation completed, insertTransactionRecord, " + handler + " lines affected"));
     }
 
     @Override

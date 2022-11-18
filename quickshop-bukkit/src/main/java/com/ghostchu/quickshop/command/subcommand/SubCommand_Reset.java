@@ -37,7 +37,6 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
                 item.delete();
                 ench.delete();
                 potion.delete();
-                //MsgUtil.loadGameLanguage(Objects.requireNonNull(plugin.getConfig().getString("game-language", "default")));
                 plugin.text().of(sender, "complete").send();
             }
             case "config" -> {

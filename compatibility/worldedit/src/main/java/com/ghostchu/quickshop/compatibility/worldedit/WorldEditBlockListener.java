@@ -38,11 +38,11 @@ public class WorldEditBlockListener extends AbstractDelegateExtent {
         if (!(this.world instanceof BukkitWorld)) {
             return super.setBlock(position, block);
         }
-        org.bukkit.World world = ((BukkitWorld) this.world).getWorld();
+        org.bukkit.World bukkitWorld = ((BukkitWorld) this.world).getWorld();
         BlockState oldBlock = extent.getBlock(position);
         BlockState newBlock = block.toImmutableState();
 
-        Location location = new Location(world, position.getBlockX(), position.getBlockY(), position.getBlockZ());
+        Location location = new Location(bukkitWorld, position.getBlockX(), position.getBlockY(), position.getBlockZ());
 
         if (extent.setBlock(position, block)) {
             // Block Changed

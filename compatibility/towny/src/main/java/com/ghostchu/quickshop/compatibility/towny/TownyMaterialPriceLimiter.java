@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.compatibility.towny;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +18,7 @@ public class TownyMaterialPriceLimiter {
         for (String key : section.getKeys(false)) {
             Material mat = Material.matchMaterial(key);
             if (mat == null) {
-                Main.getPlugin(Main.class).getLogger().warning("Invalid material in config: " + key);
+                JavaPlugin.getPlugin(Main.class).getLogger().warning("Invalid material in config: " + key);
             }
             double price = section.getDouble(key);
             prices.put(mat, price);

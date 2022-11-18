@@ -58,16 +58,6 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
                 plugin.getLogger().log(Level.WARNING, "Failed to import the database from backup file.", e);
             }
         });
-
-//        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-//            try {
-//                //Util.backupDatabase();
-//                plugin.getShopLoader().recoverFromFile(Util.readToString(file));
-//            } catch (Exception e) {
-//                plugin.getLogger().log(Level.WARNING, "Failed to recover the data because of the following error:", e);
-//            }
-//        });
-
     }
 
 }

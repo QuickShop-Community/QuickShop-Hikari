@@ -3,16 +3,22 @@ package com.ghostchu.quickshop.shop;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.database.DatabaseIOUtil;
+import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
 
 
 public class ShopPurger {
@@ -39,9 +45,16 @@ public class ShopPurger {
         Util.ensureThread(true);
         executing = true;
         if (plugin.getConfig().getBoolean("purge.backup")) {
-            String backupFileName = "shop-purge-backup-" + UUID.randomUUID() + ".txt";
-            Util.makeExportBackup(backupFileName);
-            plugin.getLogger().info("[Shop Purger] We have backup shop data as " + backupFileName + ", if you ran into any trouble, please rename it to recovery.txt then use /qs recovery in console to rollback!");
+            DatabaseIOUtil ioUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
+            try {
+                File file = new File("purge-backup-" + UUID.randomUUID() + ".zip");
+                ioUtil.exportTables(file);
+                plugin.getLogger().info("[Shop Purger] We have backup shop data as " + file.getName() + ", if you ran into any trouble, please rename it to recovery.txt then use /qs recovery in console to rollback!");
+            } catch (SQLException | IOException e) {
+                plugin.getLogger().log(Level.WARNING, "Failed to backup database, purge cancelled.", e);
+                return;
+            }
+
         }
         plugin.getLogger().info("[Shop Purger] Scanning and removing shops....");
         List<Shop> pendingRemovalShops = new ArrayList<>();

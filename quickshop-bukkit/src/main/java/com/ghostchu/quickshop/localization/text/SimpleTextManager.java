@@ -44,6 +44,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public class SimpleTextManager implements TextManager, Reloadable {
+    private static final String DEFAULT_LOCALE = "en_us";
     private static String CROWDIN_LANGUAGE_FILE_PATH = "/hikari/crowdin/lang/%locale%/messages.yml";
     public final Set<PostProcessor> postProcessors = new LinkedHashSet<>();
     private final QuickShop plugin;
@@ -230,7 +231,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         FileConfiguration result = YamlConfiguration.loadConfiguration(localOverrideFile);
         //Add a comment for user guide if file is empty
         if (result.getKeys(false).isEmpty()) {
-            //  result.options().setHeader(List.of("Please visit https://github.com/PotatoCraft-Studio/QuickShop-Reremake/wiki/Use-translation-override-system for override language file tutorial."));
+            // We can add header notification here
             result.save(localOverrideFile);
         }
         return result;
@@ -251,7 +252,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
             if (content instanceof ConfigurationSection) {
                 continue;
             }
-            //Log.debug("Override key " + key + " with content: " + content);
             distributionConfiguration.set(key, content);
         }
     }
@@ -316,6 +316,66 @@ public class SimpleTextManager implements TextManager, Reloadable {
             Files.deleteIfExists(fileFolder.toPath()); //TODO Workaround for v5 beta stage a bug, delete it in future
         }
         return moduleFolder;
+    }
+
+    @Override
+    @NotNull
+    public ProxiedLocale findRelativeLanguages(@Nullable String langCode) {
+        //langCode may null when some plugins providing fake player
+        if (langCode == null || langCode.isEmpty()) {
+            return new ProxiedLocale(langCode, DEFAULT_LOCALE);
+        }
+        String result = languagesCache.getIfPresent(langCode);
+        if (result == null) {
+            result = DEFAULT_LOCALE;
+            if (availableLanguages.contains(langCode)) {
+                result = langCode;
+            } else {
+                String[] splits = langCode.split("_", 2);
+                String start = langCode;
+                String end = langCode;
+                if (splits.length == 2) {
+                    start = splits[0] + "_";
+                    end = "_" + splits[1];
+                }
+                for (String availableLanguage : availableLanguages) {
+                    if (availableLanguage.startsWith(start) || availableLanguage.endsWith(end)) {
+                        result = availableLanguage;
+                        break;
+                    }
+                }
+            }
+            Log.debug("Registering relative language " + langCode + " to " + result);
+            languagesCache.put(langCode, result);
+        }
+        return new ProxiedLocale(langCode, result);
+    }
+
+    @Override
+    public @NotNull ProxiedLocale findRelativeLanguages(@Nullable CommandSender sender) {
+        if (sender instanceof Player player) {
+            return findRelativeLanguages(player.getLocale());
+        }
+        return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
+    }
+
+    /**
+     * Register the language phrase to QuickShop text manager in runtime.
+     *
+     * @param locale Target locale
+     * @param path   The language key path
+     * @param text   The language text
+     */
+    @SneakyThrows
+    @Override
+    public void register(@NotNull String locale, @NotNull String path, @NotNull String text) {
+        FileConfiguration configuration = languageFilesManager.getDistribution(locale);
+        if (configuration == null) {
+            configuration = new YamlConfiguration();
+            configuration.loadFromString(languageFilesManager.getDistribution(DEFAULT_LOCALE).saveToString());
+        }
+        configuration.set(path, text);
+        languageFilesManager.deploy(locale, configuration);
     }
 
     public static class TextList implements com.ghostchu.quickshop.api.localization.text.TextList {
@@ -383,8 +443,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
         @Override
         @NotNull
         public List<Component> forLocale() {
-            if (sender instanceof Player) {
-                return forLocale(((Player) sender).getLocale());
+            if (sender instanceof Player player) {
+                return forLocale(player.getLocale());
             } else {
                 return forLocale(MsgUtil.getDefaultGameLanguageCode());
             }
@@ -398,8 +458,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
         @Override
         public boolean isPresent() {
             String locale;
-            if (sender instanceof Player) {
-                locale = ((Player) sender).getLocale();
+            if (sender instanceof Player player) {
+                locale = player.getLocale();
             } else {
                 locale = MsgUtil.getDefaultGameLanguageCode();
             }
@@ -436,167 +496,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
             }
             return texts;
         }
-    }
-
-    public static class Text implements com.ghostchu.quickshop.api.localization.text.Text {
-        private final SimpleTextManager manager;
-        private final String path;
-        private final Map<String, FileConfiguration> mapping;
-        private final CommandSender sender;
-        private final Component[] args;
-
-        private Text(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
-            this.manager = manager;
-            this.sender = sender;
-            this.mapping = mapping;
-            this.path = path;
-            this.args = args;
-        }
-
-        private Text(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
-            this.manager = manager;
-            if (sender != null) {
-                this.sender = Bukkit.getPlayer(sender);
-            } else {
-                this.sender = null;
-            }
-            this.mapping = mapping;
-            this.path = path;
-            this.args = args;
-        }
-
-        /**
-         * Getting the text that use specify locale
-         *
-         * @param locale The minecraft locale code (like en_us)
-         * @return The text
-         */
-        @Override
-        @NotNull
-        public Component forLocale(@NotNull String locale) {
-            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
-            if (index == null) {
-                Log.debug("Index for " + locale + " is null");
-                Log.debug("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
-                if (MsgUtil.getDefaultGameLanguageCode().equals(locale)) {
-                    Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
-                    return LegacyComponentSerializer.legacySection().deserialize(path);
-                } else {
-                    return forLocale(MsgUtil.getDefaultGameLanguageCode());
-                }
-            } else {
-                String str = index.getString(path);
-                if (str == null) {
-                    Log.debug("The value about index " + index + " is null");
-                    Log.debug("Missing Language Key: " + path + ", report to QuickShop!");
-                    return LegacyComponentSerializer.legacySection().deserialize(path);
-                }
-                Component component = manager.plugin.getPlatform().miniMessage().deserialize(str);
-                return postProcess(component);
-            }
-        }
-
-        /**
-         * Getting the text for player locale
-         *
-         * @return Getting the text for player locale
-         */
-        @Override
-        @NotNull
-        public Component forLocale() {
-            if (sender instanceof Player) {
-                return forLocale(((Player) sender).getLocale());
-            } else {
-                return forLocale(MsgUtil.getDefaultGameLanguageCode());
-            }
-        }
-
-        /**
-         * Getting this text is exists in the translation file
-         *
-         * @return true if this text is exists in the translation file
-         */
-        @Override
-        public boolean isPresent() {
-            String locale;
-            if (sender instanceof Player) {
-                locale = ((Player) sender).getLocale();
-            } else {
-                locale = MsgUtil.getDefaultGameLanguageCode();
-            }
-            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
-            return index != null;
-        }
-
-        /**
-         * Send text to the player
-         */
-        @Override
-        public void send() {
-            if (sender == null) {
-                throw new IllegalStateException("Sender is null");
-            }
-            Component lang = forLocale();
-            MsgUtil.sendDirectMessage(sender, lang);
-            // plugin.getQuickChat().send(sender, lang);
-        }
-
-        /**
-         * Post processes the text
-         *
-         * @param text The text
-         * @return The text that processed
-         */
-        @NotNull
-        private Component postProcess(@NotNull Component text) {
-            for (PostProcessor postProcessor : this.manager.postProcessors) {
-                text = postProcessor.process(text, sender, args);
-            }
-            return text;
-        }
-    }    @Override
-    @NotNull
-    public ProxiedLocale findRelativeLanguages(@Nullable String langCode) {
-        //langCode may null when some plugins providing fake player
-        if (langCode == null || langCode.isEmpty()) {
-            return new ProxiedLocale(langCode, "en_us");
-        }
-        String result = languagesCache.getIfPresent(langCode);
-        if (result == null) {
-            result = "en_us";
-            if (availableLanguages.contains(langCode)) {
-                result = langCode;
-            } else {
-                String[] splits = langCode.split("_", 2);
-                String start = langCode;
-                String end = langCode;
-                if (splits.length == 2) {
-                    start = splits[0] + "_";
-                    end = "_" + splits[1];
-                }
-                for (String availableLanguage : availableLanguages) {
-                    if (availableLanguage.startsWith(start) || availableLanguage.endsWith(end)) {
-                        result = availableLanguage;
-                        break;
-                    }
-                }
-            }
-            Log.debug("Registering relative language " + langCode + " to " + result);
-            languagesCache.put(langCode, result);
-        }
-        return new ProxiedLocale(langCode, result);
-    }
-
-
-
-
-
-    @Override
-    public @NotNull ProxiedLocale findRelativeLanguages(@Nullable CommandSender sender) {
-        if (sender instanceof Player) {
-            return findRelativeLanguages(((Player) sender).getLocale());
-        }
-        return findRelativeLanguages(MsgUtil.getDefaultGameLanguageCode());
     }
 
     @Override
@@ -768,23 +667,121 @@ public class SimpleTextManager implements TextManager, Reloadable {
         return new TextList(this, sender, languageFilesManager.getDistributions(), path, convert(args));
     }
 
-    /**
-     * Register the language phrase to QuickShop text manager in runtime.
-     *
-     * @param locale Target locale
-     * @param path   The language key path
-     * @param text   The language text
-     */
-    @SneakyThrows
-    @Override
-    public void register(@NotNull String locale, @NotNull String path, @NotNull String text) {
-        FileConfiguration configuration = languageFilesManager.getDistribution(locale);
-        if (configuration == null) {
-            configuration = new YamlConfiguration();
-            configuration.loadFromString(languageFilesManager.getDistribution("en_us").saveToString());
+    public static class Text implements com.ghostchu.quickshop.api.localization.text.Text {
+        private final SimpleTextManager manager;
+        private final String path;
+        private final Map<String, FileConfiguration> mapping;
+        private final CommandSender sender;
+        private final Component[] args;
+
+        private Text(SimpleTextManager manager, CommandSender sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
+            this.manager = manager;
+            this.sender = sender;
+            this.mapping = mapping;
+            this.path = path;
+            this.args = args;
         }
-        configuration.set(path, text);
-        languageFilesManager.deploy(locale, configuration);
+
+        private Text(SimpleTextManager manager, UUID sender, Map<String, FileConfiguration> mapping, String path, Component... args) {
+            this.manager = manager;
+            if (sender != null) {
+                this.sender = Bukkit.getPlayer(sender);
+            } else {
+                this.sender = null;
+            }
+            this.mapping = mapping;
+            this.path = path;
+            this.args = args;
+        }
+
+        /**
+         * Getting the text that use specify locale
+         *
+         * @param locale The minecraft locale code (like en_us)
+         * @return The text
+         */
+        @Override
+        @NotNull
+        public Component forLocale(@NotNull String locale) {
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
+            if (index == null) {
+                Log.debug("Index for " + locale + " is null");
+                Log.debug("Fallback " + locale + " to default game-language locale caused by QuickShop doesn't support this locale");
+                if (MsgUtil.getDefaultGameLanguageCode().equals(locale)) {
+                    Log.debug("Fallback Missing Language Key: " + path + ", report to QuickShop!");
+                    return LegacyComponentSerializer.legacySection().deserialize(path);
+                } else {
+                    return forLocale(MsgUtil.getDefaultGameLanguageCode());
+                }
+            } else {
+                String str = index.getString(path);
+                if (str == null) {
+                    Log.debug("The value about index " + index + " is null");
+                    Log.debug("Missing Language Key: " + path + ", report to QuickShop!");
+                    return LegacyComponentSerializer.legacySection().deserialize(path);
+                }
+                Component component = manager.plugin.getPlatform().miniMessage().deserialize(str);
+                return postProcess(component);
+            }
+        }
+
+        /**
+         * Getting the text for player locale
+         *
+         * @return Getting the text for player locale
+         */
+        @Override
+        @NotNull
+        public Component forLocale() {
+            if (sender instanceof Player player) {
+                return forLocale(player.getLocale());
+            } else {
+                return forLocale(MsgUtil.getDefaultGameLanguageCode());
+            }
+        }
+
+        /**
+         * Getting this text is exists in the translation file
+         *
+         * @return true if this text is exists in the translation file
+         */
+        @Override
+        public boolean isPresent() {
+            String locale;
+            if (sender instanceof Player player) {
+                locale = player.getLocale();
+            } else {
+                locale = MsgUtil.getDefaultGameLanguageCode();
+            }
+            FileConfiguration index = mapping.get(manager.findRelativeLanguages(locale).getLocale());
+            return index != null;
+        }
+
+        /**
+         * Send text to the player
+         */
+        @Override
+        public void send() {
+            if (sender == null) {
+                throw new IllegalStateException("Sender is null");
+            }
+            Component lang = forLocale();
+            MsgUtil.sendDirectMessage(sender, lang);
+        }
+
+        /**
+         * Post processes the text
+         *
+         * @param text The text
+         * @return The text that processed
+         */
+        @NotNull
+        private Component postProcess(@NotNull Component text) {
+            for (PostProcessor postProcessor : this.manager.postProcessors) {
+                text = postProcessor.process(text, sender, args);
+            }
+            return text;
+        }
     }
 
 
