@@ -1726,6 +1726,7 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public void setShopBenefit(@NotNull Benefit benefit) {
         this.benefit = benefit;
+        setDirty();
     }
 
     /**

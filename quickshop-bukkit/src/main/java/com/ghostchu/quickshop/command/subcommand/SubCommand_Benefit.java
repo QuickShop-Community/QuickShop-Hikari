@@ -96,7 +96,9 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
                 plugin.text().of(sender, "argument-must-between", "percentage", ">0%", "<100%").send();
                 return;
             }
-            shop.getShopBenefit().addBenefit(profile.getUniqueId(), percent / 100d);
+            Benefit benefit = shop.getShopBenefit();
+            benefit.addBenefit(profile.getUniqueId(), percent / 100d);
+            shop.setShopBenefit(benefit);
             plugin.text().of(sender, "benefit-added", MsgUtil.formatPlayerProfile(profile, sender)).send();
         } catch (NumberFormatException e) {
             plugin.text().of(sender, "not-a-number", percentageStr).send();
@@ -118,7 +120,9 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             return;
         }
 
-        shop.getShopBenefit().removeBenefit(profile.getUniqueId());
+        Benefit benefit = shop.getShopBenefit();
+        benefit.removeBenefit(profile.getUniqueId());
+        shop.setShopBenefit(benefit);
         plugin.text().of(sender, "benefit-removed", MsgUtil.formatPlayerProfile(profile, sender)).send();
 
     }
