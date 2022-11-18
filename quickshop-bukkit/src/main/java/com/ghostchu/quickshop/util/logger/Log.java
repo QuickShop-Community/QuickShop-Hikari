@@ -38,23 +38,23 @@ public class Log {
     public static void cron(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         try {
-            Record record;
+            Record recordEntry;
             if (disableLocationRecording) {
-                record = new Record(level, Type.CRON, message, null);
+                recordEntry = new Record(level, Type.CRON, message, null);
             } else {
-                record = new Record(level, Type.CRON, message, caller);
+                recordEntry = new Record(level, Type.CRON, message, caller);
             }
-            loggerBuffer.offer(record);
-            debugStdOutputs(record);
+            loggerBuffer.offer(recordEntry);
+            debugStdOutputs(recordEntry);
         } finally {
             LOCK.writeLock().unlock();
         }
 
     }
 
-    private static void debugStdOutputs(Record record) {
+    private static void debugStdOutputs(Record recordEntry) {
         if (Util.isDevMode()) {
-            QuickShop.getInstance().getLogger().info("[DEBUG] " + record.toString());
+            QuickShop.getInstance().getLogger().info("[DEBUG] " + recordEntry.toString());
         }
     }
 
@@ -70,14 +70,14 @@ public class Log {
     public static void debug(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         try {
-            Record record;
+            Record recordEntry;
             if (disableLocationRecording) {
-                record = new Record(level, Type.DEBUG, message, null);
+                recordEntry = new Record(level, Type.DEBUG, message, null);
             } else {
-                record = new Record(level, Type.DEBUG, message, caller);
+                recordEntry = new Record(level, Type.DEBUG, message, caller);
             }
-            loggerBuffer.offer(record);
-            debugStdOutputs(record);
+            loggerBuffer.offer(recordEntry);
+            debugStdOutputs(recordEntry);
         } finally {
             LOCK.writeLock().unlock();
         }
@@ -101,7 +101,7 @@ public class Log {
     public static List<Record> fetchLogs(@NotNull Type type) {
         LOCK.readLock().lock();
         try {
-            return loggerBuffer.stream().filter(record -> record.getType() == type).toList();
+            return loggerBuffer.stream().filter(recordEntry -> recordEntry.getType() == type).toList();
         } finally {
             LOCK.readLock().unlock();
         }
@@ -112,11 +112,11 @@ public class Log {
         LOCK.readLock().lock();
         try {
             List<Record> records = new ArrayList<>();
-            for (Record record : loggerBuffer) {
-                if (ArrayUtils.contains(excludes, record.getType())) {
+            for (Record recordEntry : loggerBuffer) {
+                if (ArrayUtils.contains(excludes, recordEntry.getType())) {
                     continue;
                 }
-                records.add(record);
+                records.add(recordEntry);
             }
             return records;
         } finally {
@@ -128,7 +128,7 @@ public class Log {
     public static List<Record> fetchLogsLevel(@NotNull Type type, @NotNull Level level) {
         LOCK.readLock().lock();
         try {
-            return loggerBuffer.stream().filter(record -> record.getType() == type && record.getLevel() == level).toList();
+            return loggerBuffer.stream().filter(recordEntry -> recordEntry.getType() == type && recordEntry.getLevel() == level).toList();
         } finally {
             LOCK.readLock().unlock();
         }
@@ -142,14 +142,14 @@ public class Log {
     public static void permission(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         try {
-            Record record;
+            Record recordEntry;
             if (disableLocationRecording) {
-                record = new Record(level, Type.PERMISSION, message, null);
+                recordEntry = new Record(level, Type.PERMISSION, message, null);
             } else {
-                record = new Record(level, Type.PERMISSION, message, caller);
+                recordEntry = new Record(level, Type.PERMISSION, message, caller);
             }
-            loggerBuffer.offer(record);
-            debugStdOutputs(record);
+            loggerBuffer.offer(recordEntry);
+            debugStdOutputs(recordEntry);
         } finally {
             LOCK.writeLock().unlock();
         }
@@ -168,14 +168,14 @@ public class Log {
     public static void timing(@NotNull Level level, @NotNull String operation, @NotNull Timer timer, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         try {
-            Record record;
+            Record recordEntry;
             if (disableLocationRecording) {
-                record = new Record(level, Type.TIMING, operation + " (cost " + timer.getPassedTime() + " ms)", null);
+                recordEntry = new Record(level, Type.TIMING, operation + " (cost " + timer.getPassedTime() + " ms)", null);
             } else {
-                record = new Record(level, Type.TIMING, operation + " (cost " + timer.getPassedTime() + " ms)", caller);
+                recordEntry = new Record(level, Type.TIMING, operation + " (cost " + timer.getPassedTime() + " ms)", caller);
             }
-            loggerBuffer.offer(record);
-            debugStdOutputs(record);
+            loggerBuffer.offer(recordEntry);
+            debugStdOutputs(recordEntry);
         } finally {
             LOCK.writeLock().unlock();
         }
@@ -190,14 +190,14 @@ public class Log {
     public static void transaction(@NotNull Level level, @NotNull String message, @Nullable Caller caller) {
         LOCK.writeLock().lock();
         try {
-            Record record;
+            Record recordEntry;
             if (disableLocationRecording) {
-                record = new Record(level, Type.TRANSACTION, message, null);
+                recordEntry = new Record(level, Type.TRANSACTION, message, null);
             } else {
-                record = new Record(level, Type.TRANSACTION, message, caller);
+                recordEntry = new Record(level, Type.TRANSACTION, message, caller);
             }
-            loggerBuffer.offer(record);
-            debugStdOutputs(record);
+            loggerBuffer.offer(recordEntry);
+            debugStdOutputs(recordEntry);
         } finally {
             LOCK.writeLock().unlock();
         }
@@ -288,7 +288,7 @@ public class Log {
 
         @NotNull
         public static Caller create(int steps) {
-            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(steps + 1).toList());
+            List<StackWalker.StackFrame> caller = stackWalker.walk(frames -> frames.limit(steps + 1L).toList());
             StackWalker.StackFrame frame = caller.get(steps);
             String threadName = Thread.currentThread().getName();
             String className = frame.getClassName();

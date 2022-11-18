@@ -83,7 +83,7 @@ public interface DatabaseHelper {
      */
     @NotNull CompletableFuture<@NotNull Integer> insertHistoryRecord(@NotNull Object rec);
 
-    @NotNull CompletableFuture<@NotNull Integer> insertMetricRecord(@NotNull ShopMetricRecord record);
+    @NotNull CompletableFuture<@NotNull Integer> insertMetricRecord(@NotNull ShopMetricRecord recordEntry);
 
     void insertTransactionRecord(@Nullable UUID from, @Nullable UUID to, double amount, @Nullable String currency, double taxAmount, @Nullable UUID taxAccount, @Nullable String error);
 

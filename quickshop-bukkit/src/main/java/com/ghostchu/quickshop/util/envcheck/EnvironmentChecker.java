@@ -202,6 +202,10 @@ public final class EnvironmentChecker {
                 } else {
                     result = CheckResult.SKIPPED;
                 }
+                if (executeResult == null) {
+                    Log.debug("Failed to retrieve executeResult from " + declaredMethod.getName());
+                    continue;
+                }
                 switch (result) {
                     case SKIPPED:
                         plugin.getLogger().info("[SKIP] " + envCheckEntry.name());

@@ -183,6 +183,7 @@ public class MojangGameLanguageImpl extends BukkitGameLanguageImpl implements Ga
             this.lang = loadThread.getLang(); // Get the Lang whatever thread running or died.
         } catch (InterruptedException exception) {
             plugin.getLogger().log(Level.WARNING, "Failed to wait game language thread loading", exception);
+            Thread.currentThread().interrupt();
         } finally {
             LOCK.unlock();
         }

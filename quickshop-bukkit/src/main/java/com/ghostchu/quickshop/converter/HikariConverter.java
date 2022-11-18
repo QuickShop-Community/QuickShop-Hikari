@@ -63,11 +63,9 @@ public class HikariConverter {
         logger.info("This converting process unique id is: " + uuid + ".");
         logger.info("All checks passed! We're creating simple backup for you... (it's really simple and you still need keep your backups before migrating.)");
         File backupFolder = new File(plugin.getDataFolder(), "backup-" + uuid);
-        if (!backupFolder.exists()) {
-            if (!backupFolder.mkdirs()) {
-                logger.severe("Failed to create backup storage folder, please check your data folder permission!");
-                halt();
-            }
+        if (!backupFolder.exists() && !backupFolder.mkdirs()) {
+            logger.severe("Failed to create backup storage folder, please check your data folder permission!");
+            halt();
         }
         for (HikariConverterInterface converter : this.converters) {
             try {
@@ -103,6 +101,7 @@ public class HikariConverter {
         try {
             Thread.sleep(3000); // Give user a chance to kill server before we really start converting
         } catch (InterruptedException ignore) {
+            Thread.currentThread().interrupt();
         }
 
         for (HikariConverterInterface converter : this.converters) {
@@ -127,7 +126,7 @@ public class HikariConverter {
         try {
             Thread.sleep(Integer.MAX_VALUE);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         } finally {
             Runtime.getRuntime().halt(0);
         }
@@ -144,7 +143,7 @@ public class HikariConverter {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
         }
     }

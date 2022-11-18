@@ -46,7 +46,7 @@ public final class Main extends CompatibilityModule implements Listener {
         if (!deleteShopOnLeave) {
             return;
         }
-        getShops(event.getIsland()).forEach((shop) -> {
+        getShops(event.getIsland()).forEach(shop -> {
             if (shop.getOwner().equals(event.getPlayerUUID())) {
                 recordDeletion(event.getOwner(), shop, "Player " + event.getPlayerUUID() + " was kicked from the island");
                 shop.delete();
@@ -63,7 +63,7 @@ public final class Main extends CompatibilityModule implements Listener {
         if (!deleteShopOnLeave) {
             return;
         }
-        getShops(event.getIsland()).forEach((shop) -> {
+        getShops(event.getIsland()).forEach(shop -> {
             if (shop.getOwner().equals(event.getPlayerUUID())) {
                 recordDeletion(null, shop, "Player " + event.getPlayerUUID() + " was leaved from the island");
                 shop.delete();

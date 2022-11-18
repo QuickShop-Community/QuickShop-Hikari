@@ -48,7 +48,7 @@ public class MsgUtil {
     private static final Map<UUID, List<String>> OUTGOING_MESSAGES = Maps.newConcurrentMap();
     private static final QuickShop plugin = QuickShop.getInstance();
     private static DecimalFormat decimalFormat;
-    private volatile static Entry<String, String> cachedGameLanguageCode = null;
+    private static volatile Entry<String, String> cachedGameLanguageCode = null;
 
     @NotNull
     public static Component addLeftLine(@NotNull CommandSender sender, @NotNull Component component) {
