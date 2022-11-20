@@ -121,10 +121,10 @@ public class Economy_GemsEconomy extends AbstractEconomy {
         if (!isValid()) {
             return "Error";
         }
-        return formatInternal(balance, world, currency);
+        return formatInternal(balance, currency);
     }
 
-    private String formatInternal(double balance, @NotNull World world, @Nullable String currency) {
+    private String formatInternal(double balance, @Nullable String currency) {
         if (!isValid()) {
             return "Error";
         }

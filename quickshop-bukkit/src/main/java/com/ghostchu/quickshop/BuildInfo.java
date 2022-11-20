@@ -1,11 +1,13 @@
 package com.ghostchu.quickshop;
 
+import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Properties;
 
 /**
@@ -33,6 +35,7 @@ public class BuildInfo {
     }
 
     public static class GitInfo {
+        private static final String DEFAULT_VALUE = "undefined";
         @Nullable
         private final String branch;
         private final boolean dirty;
@@ -84,7 +87,7 @@ public class BuildInfo {
         @NotNull
         public String getAbbrev() {
             if (abbrev == null) {
-                return "undefined";
+                return DEFAULT_VALUE;
             }
             return abbrev;
         }
@@ -92,103 +95,73 @@ public class BuildInfo {
         @NotNull
         public String getBranch() {
             if (branch == null) {
-                return "undefined";
+                return DEFAULT_VALUE;
             }
             return branch;
         }
 
         @NotNull
         public String getBuildNumber() {
-            if (buildNumber == null) {
-                return "undefined";
-            }
-            return buildNumber;
+            return Objects.requireNonNullElse(buildNumber, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getBuildTime() {
-            if (buildTime == null) {
-                return "undefined";
-            }
-            return buildTime;
+            return Objects.requireNonNullElse(buildTime, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getBuildVersion() {
-            if (buildVersion == null) {
-                return "undefined";
-            }
-            return buildVersion;
+            return Objects.requireNonNullElse(buildVersion, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getCommitDate() {
-            if (commitDate == null) {
-                return "undefined";
-            }
-            return commitDate;
+            return Objects.requireNonNullElse(commitDate, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getCommitEmail() {
-            if (commitEmail == null) {
-                return "undefined";
-            }
-            return commitEmail;
+            return Objects.requireNonNullElse(commitEmail, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getCommitMessage() {
-            if (commitMessage == null) {
-                return "undefined";
-            }
-            return commitMessage;
+            return Objects.requireNonNullElse(commitMessage, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getCommitUsername() {
-            if (commitUsername == null) {
-                return "undefined";
-            }
-            return commitUsername;
+            return Objects.requireNonNullElse(commitUsername, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getDescribe() {
-            if (describe == null) {
-                return "undefined";
-            }
-            return describe;
+            return Objects.requireNonNullElse(describe, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getDescribeShort() {
-            if (describeShort == null) {
-                return "undefined";
-            }
-            return describeShort;
+            return Objects.requireNonNullElse(describeShort, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getId() {
             if (id == null) {
-                return "undefined";
+                return DEFAULT_VALUE;
             }
             return id;
         }
 
         @NotNull
         public String getRemoteOriginUrl() {
-            if (remoteOriginUrl == null) {
-                return "undefined";
-            }
-            return remoteOriginUrl;
+            return Objects.requireNonNullElse(remoteOriginUrl, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getTags() {
             if (tags == null) {
-                return "undefined";
+                return DEFAULT_VALUE;
             }
             return tags;
         }
@@ -199,6 +172,7 @@ public class BuildInfo {
     }
 
     public static class JenkinsInfo {
+        private static final String DEFAULT_VALUE = "undefined";
         private final boolean ci;
         private final int id;
         @Nullable
@@ -222,7 +196,8 @@ public class BuildInfo {
                 int fid = -1;
                 try {
                     fid = Integer.parseInt(properties.getProperty("ci.build.id"));
-                } catch (NumberFormatException ignored) {
+                } catch (NumberFormatException ex) {
+                    Log.debug("Failed to parse fid: " + ex.getMessage());
                 } finally {
                     this.id = fid;
                 }
@@ -244,39 +219,30 @@ public class BuildInfo {
         @NotNull
         public String getIdName() {
             if (idName == null) {
-                return "undefined";
+                return DEFAULT_VALUE;
             }
             return idName;
         }
 
         @NotNull
         public String getProjectBaseName() {
-            if (projectBaseName == null) {
-                return "undefined";
-            }
-            return projectBaseName;
+            return Objects.requireNonNullElse(projectBaseName, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getProjectName() {
-            if (projectName == null) {
-                return "undefined";
-            }
-            return projectName;
+            return Objects.requireNonNullElse(projectName, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getProjectUrl() {
-            if (projectUrl == null) {
-                return "undefined";
-            }
-            return projectUrl;
+            return Objects.requireNonNullElse(projectUrl, DEFAULT_VALUE);
         }
 
         @NotNull
         public String getTag() {
             if (tag == null) {
-                return "undefined";
+                return DEFAULT_VALUE;
             }
             return tag;
         }
@@ -284,7 +250,7 @@ public class BuildInfo {
         @NotNull
         public String getUrl() {
             if (url == null) {
-                return "undefined";
+                return DEFAULT_VALUE;
             }
             return url;
         }

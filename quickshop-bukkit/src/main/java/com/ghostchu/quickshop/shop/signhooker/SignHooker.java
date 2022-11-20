@@ -8,7 +8,6 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -27,12 +26,8 @@ import java.util.Map;
 
 public class SignHooker {
     private final QuickShop PLUGIN;
-    private final GameVersion VERSION = QuickShop.getInstance().getGameVersion();
     private final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
-
     private PacketAdapter chunkAdapter;
-
-    //private PacketAdapter signAdapter;
 
     public SignHooker(QuickShop plugin) {
         PLUGIN = plugin;
@@ -64,51 +59,46 @@ public class SignHooker {
                 int z = integerStructureModifier.read(1);
 
                 Map<Location, Shop> shops = PLUGIN.getShopManager().getShops(player.getWorld().getName(), x, z);
-                if (shops == null) return;
+                if (shops == null) {
+                    return;
+                }
                 Bukkit.getScheduler().runTaskLater(PLUGIN, () -> shops.forEach((loc, shop) -> updatePerPlayerShopSign(player, loc, shop)), 2);
             }
         };
 
-//        signAdapter = new PacketAdapter(PLUGIN, ListenerPriority.HIGH, PacketType.Play.Server.TILE_ENTITY_DATA) {
-//            @Override
-//            public void onPacketSending(@NotNull PacketEvent event) {
-//                NbtBase<?> tField = event.getPacket().getNbtModifier().readSafely(0);
-//                // Server send standard sign NBT format for line1, line2, line3, line4 to client.
-//                // If we hook that packet and modify component text inside, we can dynamically change the text
-//                // that send to client and that will can prevent text blink.
-//                // TODO Location deserialize.
-//            }
-//        };
         PROTOCOL_MANAGER.addPacketListener(chunkAdapter);
         Log.debug("SignHooker chunk adapter registered.");
-        //PROTOCOL_MANAGER.addPacketListener(signAdapter);
     }
 
     public void updatePerPlayerShopSign(Player player, Location location, Shop shop) {
         Util.ensureThread(false);
-        if (!shop.isLoaded()) return;
-        if (!Util.isLoaded(location)) return;
+        if (!shop.isLoaded()) {
+            return;
+        }
+        if (!Util.isLoaded(location)) {
+            return;
+        }
         Log.debug("Updating per-player packet sign: Player=" + player.getName() + ", Location=" + location + ", Shop=" + shop.getShopId());
         List<Component> lines = shop.getSignText(PLUGIN.getTextManager().findRelativeLanguages(player));
-        //Log.debug(lines.stream().map(component -> GsonComponentSerializer.gson().serialize(component)).toList().toString());
         for (Sign sign : shop.getSigns()) {
-            //Log.debug("Target block sign is " + sign.getLocation());
             PLUGIN.getPlatform().sendSignTextChange(player, sign, PLUGIN.getConfig().getBoolean("shop.sign-glowing"), lines);
         }
     }
 
     public void unload() {
-        if (PROTOCOL_MANAGER == null)
+        if (PROTOCOL_MANAGER == null) {
             return;
+        }
         if (this.chunkAdapter != null) {
             PROTOCOL_MANAGER.removePacketListener(chunkAdapter);
-            //PROTOCOL_MANAGER.removePacketListener(signAdapter);
         }
     }
 
     public void updatePerPlayerShopSignBroadcast(Location location, Shop shop) {
         World world = shop.getLocation().getWorld();
-        if (world == null) return;
+        if (world == null) {
+            return;
+        }
         Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), PLUGIN.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), PLUGIN.getServer().getViewDistance() * 16);
         for (Entity nearbyPlayer : nearbyPlayers) {
             if (nearbyPlayer instanceof Player player) {

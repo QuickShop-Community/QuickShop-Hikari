@@ -7,7 +7,6 @@ import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.simplereloadlib.ReloadResult;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -136,15 +135,4 @@ public class DisplayProtectionListener extends AbstractProtectionListener {
                             + " , QuickShop already cancel it.");
         }
     }
-
-    /**
-     * Callback for reloading
-     *
-     * @return Reloading success
-     */
-    @Override
-    public ReloadResult reloadModule() throws Exception {
-        return super.reloadModule();
-    }
-
 }

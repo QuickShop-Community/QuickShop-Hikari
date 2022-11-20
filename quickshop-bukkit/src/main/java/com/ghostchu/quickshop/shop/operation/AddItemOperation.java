@@ -41,11 +41,11 @@ public class AddItemOperation implements Operation {
         this.snapshot = inv.createSnapshot();
         int remains = this.amount;
         int lastRemains = -1;
-        ItemStack item = this.item.clone();
+        ItemStack target = this.item.clone();
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
-            item.setAmount(stackSize);
-            Map<Integer, ItemStack> notSaved = inv.addItem(item);
+            target.setAmount(stackSize);
+            Map<Integer, ItemStack> notSaved = inv.addItem(target);
             if (notSaved.isEmpty()) {
                 remains -= stackSize;
             }

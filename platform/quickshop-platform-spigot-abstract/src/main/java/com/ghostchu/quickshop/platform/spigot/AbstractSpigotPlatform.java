@@ -4,13 +4,11 @@ import com.ghostchu.quickshop.platform.Platform;
 import me.pikamug.localelib.LocaleManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -64,9 +62,6 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public abstract @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack);
-
-    @Override
     public @NotNull Component getLine(@NotNull Sign sign, int line) {
         return LegacyComponentSerializer.legacySection().deserialize(sign.getLine(line));
     }
@@ -89,9 +84,6 @@ public abstract class AbstractSpigotPlatform implements Platform {
         }
         return meta.getLore().stream().map(LegacyComponentSerializer.legacySection()::deserialize).collect(Collectors.toList());
     }
-
-    @Override
-    public abstract @NotNull String getMinecraftVersion();
 
     @Override
     public @NotNull Component getTranslation(@NotNull Material material) {
@@ -140,8 +132,6 @@ public abstract class AbstractSpigotPlatform implements Platform {
         return MiniMessage.miniMessage();
     }
 
-    @Override
-    public abstract void registerCommand(@NotNull String prefix, @NotNull Command command);
 
     @Override
     public void sendMessage(@NotNull CommandSender sender, @NotNull Component component) {

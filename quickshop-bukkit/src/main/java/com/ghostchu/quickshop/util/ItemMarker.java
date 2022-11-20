@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
-import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -23,10 +22,10 @@ public class ItemMarker implements Reloadable {
     private final QuickShop plugin;
     private final Map<String, ItemStack> stacks = new HashMap<>();
     private final File file;
-    @Getter
-    @SuppressWarnings("RegExpSimplifiable")
-    private final String nameRegExp = "[a-zA-Z0-9_]*";
-    private final Pattern namePattern = Pattern.compile(nameRegExp);
+
+    //private static final String NAME_REG_EXP = "[a-zA-Z0-9_]*";
+    private static final String NAME_REG_EXP = "\\w";
+    private final Pattern namePattern = Pattern.compile(NAME_REG_EXP);
     private YamlConfiguration configuration;
 
     public ItemMarker(@NotNull QuickShop plugin) {
@@ -129,6 +128,11 @@ public class ItemMarker implements Reloadable {
         } else {
             return OperationResult.UNKNOWN;
         }
+    }
+
+    @NotNull
+    public static String getNameRegExp() {
+        return NAME_REG_EXP;
     }
 
     public enum OperationResult {

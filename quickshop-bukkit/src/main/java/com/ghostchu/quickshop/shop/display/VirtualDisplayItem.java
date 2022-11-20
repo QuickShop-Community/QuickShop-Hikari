@@ -226,6 +226,8 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
     }
 
     public static class VirtualDisplayItemManager {
+        private VirtualDisplayItemManager() {
+        }
         private static final AtomicBoolean LOADED = new AtomicBoolean(false);
         private static final Map<SimpleShopChunk, List<VirtualDisplayItem>> CHUNKS_MAPPING = new ConcurrentHashMap<>();
 
@@ -258,7 +260,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                         //chunk z
                         int z = integerStructureModifier.read(1);
 
-                        CHUNKS_MAPPING.computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLocation, targetList) -> {
+                        CHUNKS_MAPPING.computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList) -> {
                             for (VirtualDisplayItem target : targetList) {
                                 if (!target.shop.isLoaded() || !target.isDisplay || target.shop.isLeftShop()) {
                                     continue;
@@ -303,6 +305,9 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
     }
 
     public static class PacketFactory {
+        private PacketFactory() {
+        }
+
         public static Throwable testFakeItem() {
             try {
                 createFakeItemSpawnPacket(0, new Location(PLUGIN.getServer().getWorlds().get(0), 0, 0, 0));
@@ -310,7 +315,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                 createFakeItemVelocityPacket(0);
                 createFakeItemDestroyPacket(0);
                 return null;
-            } catch (Throwable throwable) {
+            } catch (Exception throwable) {
                 return throwable;
             }
         }
@@ -369,7 +374,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
             //https://wiki.vg/index.php?title=Entity_metadata#Entity
             if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
                 String itemName;
-                if (QuickShop.isTesting()) {
+                if (QuickShop.isTESTING()) {
                     //Env Testing
                     itemName = itemStack.getType().name();
                 } else {
@@ -420,7 +425,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                     try {
                         fakeItemDestroyPacket.getIntLists().write(0, Collections.singletonList(entityID));
                     } catch (NoSuchMethodError e) {
-                        throw new RuntimeException("Unable to initialize packet, ProtocolLib update needed", e);
+                        throw new IllegalStateException("Unable to initialize packet, ProtocolLib update needed", e);
                     }
                 }
             }

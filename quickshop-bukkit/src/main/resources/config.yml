@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1010
+config-version: 1011
 
 #Set the default language code the plugin should use, it will apply to:
 #Item Name
@@ -17,7 +17,7 @@ game-language: default
 #Any client connect to server that using disabled language, will fallback to game-language option there
 #Set to - '*' to enable all available languages
 #The language files will automatically update thorough Crowdin OTA system, you can translate it there:
-#https://crowdin.com/project/quickshop-reremake
+#https://crowdin.com/project/quickshop-hikari
 #If you want custom the language file, use language override system:
 #https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-translation-override-system
 enabled-languages:
@@ -80,10 +80,6 @@ logging:
   file-size: 10.0
   #Log data storage location (0 to file, 1 to database)
   location: 0
-#Some economy plugins cache player balances, this sometimes causes insufficient balance when trying to use a shop
-#This workaround uses getBalance to refresh it, but its time costing.
-#So ONLY turn this on when you have this problem!
-trying-fix-banlance-insuffient: false
 
 #Force bukkit chat handler (https://github.com/KaiKikuchi/QuickShop/issues/10)
 force-bukkit-chat-handler: false

@@ -37,7 +37,7 @@ public class UpdateWatcher implements Listener {
                     }
                 }
             }
-        }, 1, 20 * 60 * 60);
+        }, 1, 20L * 60L * 60L);
     }
 
     private Component pickRandomMessage(CommandSender sender) {

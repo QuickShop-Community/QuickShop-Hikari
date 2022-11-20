@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class ShopBackupUtil {
-    private QuickShop plugin;
+    private final QuickShop plugin;
     private boolean backupCreated;
 
     public ShopBackupUtil(QuickShop plugin) {
@@ -25,7 +25,9 @@ public class ShopBackupUtil {
     }
 
     public boolean backup() {
-        if (backupCreated) return true;
+        if (backupCreated) {
+            return true;
+        }
         File file = new File(QuickShop.getInstance().getDataFolder(), "auto-backup-" + System.currentTimeMillis() + ".zip");
         DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
         try {

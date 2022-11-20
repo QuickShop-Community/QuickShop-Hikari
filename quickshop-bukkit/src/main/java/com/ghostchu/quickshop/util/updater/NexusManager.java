@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.util.logger.Log;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
+import kong.unirest.UnirestParsingException;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.dom4j.Document;
@@ -13,12 +14,14 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.xml.sax.SAXException;
 
 import java.io.StringReader;
+import java.util.Optional;
 import java.util.logging.Level;
 
 public class NexusManager {
-    private final static String NEXUS_ROOT_METADATA_URL = "https://repo.codemc.io/repository/maven-releases/com/ghostchu/quickshop-hikari/maven-metadata.xml";
+    private static final String NEXUS_ROOT_METADATA_URL = "https://repo.codemc.io/repository/maven-releases/com/ghostchu/quickshop-hikari/maven-metadata.xml";
     private final QuickShop plugin;
     private NexusMetadata cachedMetadata;
 
@@ -67,21 +70,20 @@ public class NexusManager {
         try {
             HttpResponse<String> resp = Unirest.get(NEXUS_ROOT_METADATA_URL).asString();
             if (!resp.isSuccess()) {
-                if (resp.getParsingError().isPresent()) {
-                    Log.debug("Failed to fetch metadata from Nexus: " + resp.getParsingError().get().getMessage());
+                Optional<UnirestParsingException> exceptionOptional = resp.getParsingError();
+                if (exceptionOptional.isPresent()) {
+                    Log.debug("Failed to fetch metadata from Nexus: " + exceptionOptional.get().getMessage());
                 } else {
                     Log.debug("Failed to fetch metadata from CodeMC.io nexus:" + resp.getStatus() + "-" + resp.getStatusText());
                 }
                 return null;
             }
-            try {
-                return NexusMetadata.parse(resp.getBody());
-            } catch (Exception e) {
-                Log.debug("Failed to parse metadata from Nexus: " + e.getMessage());
-                return null;
-            }
+            return NexusMetadata.parse(resp.getBody());
         } catch (UnirestException e) {
             Log.debug("Failed to fetch version metadata from CodeMC.io Nexus: " + e.getMessage());
+            return null;
+        } catch (Exception e) {
+            Log.debug("Failed to parse metadata from Nexus: " + e.getMessage());
             return null;
         }
     }
@@ -99,8 +101,9 @@ public class NexusManager {
         }
 
         @NotNull
-        public static NexusMetadata parse(@NotNull String xml) throws DocumentException, IllegalStateException {
+        public static NexusMetadata parse(@NotNull String xml) throws DocumentException, IllegalStateException, SAXException {
             SAXReader reader = new SAXReader();
+            reader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             Document document = reader.read(new StringReader(xml));
             Element metadataElement = document.getRootElement();
             if (metadataElement == null) {

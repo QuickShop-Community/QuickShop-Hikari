@@ -72,7 +72,7 @@ public enum GameVersion {
      */
     private final boolean signTextDyeSupport;
 
-    private GameVersion(boolean coreSupports, boolean endOfLife, boolean virtualDisplaySupports, boolean newNmsName, boolean signGlowingSupport, boolean signTextDyeSupport) {
+    GameVersion(boolean coreSupports, boolean endOfLife, boolean virtualDisplaySupports, boolean newNmsName, boolean signGlowingSupport, boolean signTextDyeSupport) {
         this.coreSupports = coreSupports;
         this.endOfLife = endOfLife;
         this.virtualDisplaySupports = virtualDisplaySupports;

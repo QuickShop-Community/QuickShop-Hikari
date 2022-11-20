@@ -27,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public final class Main extends CompatibilityModule implements Listener {
-    final GriefPrevention griefPrevention = GriefPrevention.instance;
+    static final GriefPrevention GRIEF_PREVENTION = GriefPrevention.instance;
     private final List<Flag> tradeLimits = new ArrayList<>(3);
     private boolean whiteList;
     private boolean deleteOnClaimTrustChanged;
@@ -228,10 +228,10 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     private boolean checkPermission(@NotNull Player player, @NotNull Location location, List<Flag> limits) {
-        if (!griefPrevention.claimsEnabledForWorld(location.getWorld())) {
+        if (!GRIEF_PREVENTION.claimsEnabledForWorld(location.getWorld())) {
             return true;
         }
-        Claim claim = griefPrevention.dataStore.getClaimAt(location, false, false, griefPrevention.dataStore.getPlayerData(player.getUniqueId()).lastClaim);
+        Claim claim = GRIEF_PREVENTION.dataStore.getClaimAt(location, false, false, GRIEF_PREVENTION.dataStore.getPlayerData(player.getUniqueId()).lastClaim);
         if (claim == null) {
             return !whiteList;
         }
@@ -288,10 +288,10 @@ public final class Main extends CompatibilityModule implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void permissionOverride(ShopAuthorizeCalculateEvent event) {
         Location shopLoc = event.getShop().getLocation();
-        if (!griefPrevention.claimsEnabledForWorld(shopLoc.getWorld())) {
+        if (!GRIEF_PREVENTION.claimsEnabledForWorld(shopLoc.getWorld())) {
             return;
         }
-        Claim claim = griefPrevention.dataStore.getClaimAt(shopLoc, false, false, griefPrevention.dataStore.getPlayerData(event.getAuthorizer()).lastClaim);
+        Claim claim = GRIEF_PREVENTION.dataStore.getClaimAt(shopLoc, false, false, GRIEF_PREVENTION.dataStore.getPlayerData(event.getAuthorizer()).lastClaim);
         if (claim == null) {
             return;
         }

@@ -75,16 +75,16 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         // Initialze drivers
         Driver.load();
         Class.forName("org.sqlite.JDBC");
-        try (Connection liveDatabase = getLiveDatabase().getConnection()) {
+        try (Connection liveDatabaseConnection = getLiveDatabase().getConnection()) {
             if (!config.isMysql()) {
                 try (Connection sqliteDatabase = getSQLiteDatabase()) {
-                    if (hasTable(config.getPrefix() + "shops", liveDatabase)) {
+                    if (hasTable(config.getPrefix() + "shops", liveDatabaseConnection)) {
                         throw new IllegalStateException("The target database has exists shops data!");
                     }
-                    if (hasTable(config.getPrefix() + "messages", liveDatabase)) {
+                    if (hasTable(config.getPrefix() + "messages", liveDatabaseConnection)) {
                         throw new IllegalStateException("The target database has exists messages data!");
                     }
-                    if (hasTable(config.getPrefix() + "external_cache", liveDatabase)) {
+                    if (hasTable(config.getPrefix() + "external_cache", liveDatabaseConnection)) {
                         throw new IllegalStateException("The target database has external_data data!");
                     }
                     if (!hasTable(config.getPrefix() + "shops", sqliteDatabase)) {
@@ -135,40 +135,40 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
                 }
             } else {
                 // mysql
-                if (!hasColumn(config.getPrefix() + "shops", "owner", liveDatabase)) {
+                if (!hasColumn(config.getPrefix() + "shops", "owner", liveDatabaseConnection)) {
                     entries.add(Component.text("The sources database has not exists owner column!"));
                 }
-                if (!hasColumn(config.getPrefix() + "shops", "price", liveDatabase)) {
+                if (!hasColumn(config.getPrefix() + "shops", "price", liveDatabaseConnection)) {
                     throw new IllegalStateException("The sources database has not exists price column!");
                 }
-                if (!hasColumn(config.getPrefix() + "shops", "itemConfig", liveDatabase)) {
+                if (!hasColumn(config.getPrefix() + "shops", "itemConfig", liveDatabaseConnection)) {
                     entries.add(Component.text("The sources database has not exists itemConfig column!"));
                 }
-                if (!hasColumn(config.getPrefix() + "shops", "x", liveDatabase)) {
+                if (!hasColumn(config.getPrefix() + "shops", "x", liveDatabaseConnection)) {
                     entries.add(Component.text("The sources database has not exists x column!"));
                 }
-                if (!hasColumn(config.getPrefix() + "shops", "y", liveDatabase)) {
+                if (!hasColumn(config.getPrefix() + "shops", "y", liveDatabaseConnection)) {
                     entries.add(Component.text("The sources database has not exists y column!"));
                 }
-                if (!hasColumn(config.getPrefix() + "shops", "z", liveDatabase)) {
+                if (!hasColumn(config.getPrefix() + "shops", "z", liveDatabaseConnection)) {
                     entries.add(Component.text("The sources database has not exists z column!"));
                 }
-                if (!hasColumn(config.getPrefix() + "shops", "world", liveDatabase)) {
+                if (!hasColumn(config.getPrefix() + "shops", "world", liveDatabaseConnection)) {
                     entries.add(Component.text("The sources database has not exists world column!"));
                 }
-                if (!hasColumn(config.getPrefix() + "shops", "unlimited", liveDatabase)) {
+                if (!hasColumn(config.getPrefix() + "shops", "unlimited", liveDatabaseConnection)) {
                     entries.add(Component.text("The sources database has not exists unlimited column!"));
                 }
-                if (!hasColumn(config.getPrefix() + "shops", "type", liveDatabase)) {
+                if (!hasColumn(config.getPrefix() + "shops", "type", liveDatabaseConnection)) {
                     entries.add(Component.text("The sources database has not exists type column!"));
                 }
-                if (!hasColumn(config.getPrefix() + "shops", "extra", liveDatabase)) {
+                if (!hasColumn(config.getPrefix() + "shops", "extra", liveDatabaseConnection)) {
                     entries.add(Component.text("The sources database has not exists extra column!"));
                 }
-                if (!hasColumn(config.getPrefix() + "shops", "disableDisplay", liveDatabase)) {
+                if (!hasColumn(config.getPrefix() + "shops", "disableDisplay", liveDatabaseConnection)) {
                     entries.add(Component.text("The sources database has not exists disableDisplay column!"));
                 }
-                if (!hasColumn(config.getPrefix() + "shops", "taxAccount", liveDatabase)) {
+                if (!hasColumn(config.getPrefix() + "shops", "taxAccount", liveDatabaseConnection)) {
                     entries.add(Component.text("The sources database has not exists taxAccount column!"));
                 }
             }
@@ -195,8 +195,8 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
         instance.getLogger().info("Offline Messages and External Caches won't be migrated because they are have totally different syntax and cache need regenerate after migrated.");
         instance.getLogger().info("Downloading old data from database connection...");
         List<ShopStorageUnit> units;
-        SQLManager liveDatabase = getLiveDatabase();
-        try (Connection liveDatabaseConnection = liveDatabase.getConnection()) {
+        SQLManager liveDatabaseManager = getLiveDatabase();
+        try (Connection liveDatabaseConnection = liveDatabaseManager.getConnection()) {
             if (config.isMysql()) {
                 units = pullShops(shopsTmpTable, liveDatabaseConnection);
             } else {
@@ -207,9 +207,9 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
             instance.getLogger().info("Checking and creating for database tables... ");
             // Database Helper will resolve all we need while starting up.
             //noinspection deprecation
-            new SimpleDatabaseHelperV1(plugin, liveDatabase, config.getPrefix());
+            new SimpleDatabaseHelperV1(plugin, liveDatabaseManager, config.getPrefix());
             instance.getLogger().info("Migrating old data to new database...");
-            pushShops(units, config.getPrefix(), liveDatabase);
+            pushShops(units, config.getPrefix(), liveDatabaseManager);
         }
         instance.getLogger().info("Database migration completed!");
     }

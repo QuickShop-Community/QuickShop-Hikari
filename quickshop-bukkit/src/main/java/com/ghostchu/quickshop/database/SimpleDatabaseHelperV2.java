@@ -105,21 +105,35 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 doV2Migrate();
                 setDatabaseVersion(4);
             } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
-                     IllegalAccessException | ExecutionException | InterruptedException e) {
+                     IllegalAccessException | ExecutionException e) {
                 e.printStackTrace();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
         }
         if (getDatabaseVersion() < 9) {
-            try {
-                plugin.getLogger().info("Data upgrading: Performing purge isolated data...");
-                purgeIsolated();
-                plugin.getLogger().info("Data upgrading: All completed!");
-                setDatabaseVersion(9);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            plugin.getLogger().info("Data upgrading: Performing purge isolated data...");
+            purgeIsolated();
+            plugin.getLogger().info("Data upgrading: All completed!");
+            setDatabaseVersion(9);
+        }
+        if (getDatabaseVersion() == 9) {
+            plugin.getLogger().info("Data upgrading: Performing database structure upgrade (benefit)...");
+            upgradeBenefit();
+            plugin.getLogger().info("Data upgrading: All completed!");
+            setDatabaseVersion(10);
         }
         plugin.getLogger().info("Finished!");
+    }
+
+    private void upgradeBenefit() {
+        try {
+            Integer lines = getManager().alterTable(DataTables.DATA.getName())
+                    .addColumn("benefit", "MEDIUMTEXT")
+                    .execute();
+        } catch (SQLException e) {
+            Log.debug("Failed to add benefit column in " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
+        }
     }
 
     public int getDatabaseVersion() {
@@ -140,7 +154,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
     }
 
-    public @NotNull CompletableFuture<@NotNull Integer> setDatabaseVersion(int version) throws SQLException {
+    public @NotNull CompletableFuture<@NotNull Integer> setDatabaseVersion(int version) {
         return DataTables.METADATA
                 .createReplace()
                 .setColumnNames("key", "value")
@@ -385,13 +399,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     @Override
     public @NotNull CompletableFuture<@NotNull Long> createData(@NotNull Shop shop) {
         SimpleDataRecord simpleDataRecord = ((ContainerShop) shop).createDataRecord();
-        return queryDataId(simpleDataRecord).thenCompose((id) -> {
+        return queryDataId(simpleDataRecord).thenCompose(id -> {
             if (id == null) {
                 Map<String, Object> map = simpleDataRecord.generateParams();
                 return DataTables.DATA.createInsert()
                         .setColumnNames(new ArrayList<>(map.keySet()))
                         .setParams(map.values())
-                        .returnGeneratedKey(Long.class).executeFuture((i) -> i);
+                        .returnGeneratedKey(Long.class).executeFuture(i -> i);
             } else {
                 return CompletableFuture.completedFuture(id);
             }
@@ -464,19 +478,22 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @Override
-    public @NotNull CompletableFuture<@NotNull Integer> insertMetricRecord(@NotNull ShopMetricRecord record) {
+    public @NotNull CompletableFuture<@NotNull Integer> insertMetricRecord(@NotNull ShopMetricRecord metricRecord) {
         CompletableFuture<Integer> future = new CompletableFuture<>();
-        plugin.getDatabaseHelper().locateShopDataId(record.getShopId()).whenCompleteAsync((dataId, err) -> {
-            if (err != null)
+        plugin.getDatabaseHelper().locateShopDataId(metricRecord.getShopId()).whenCompleteAsync((dataId, err) -> {
+            if (err != null) {
                 future.completeExceptionally(err);
+            }
             DataTables.LOG_PURCHASE
                     .createInsert()
                     .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
-                    .setParams(new Date(record.getTime()), record.getShopId()
-                            , dataId, record.getPlayer(), record.getType().name(),
-                            record.getAmount(), record.getTotal(), record.getTax())
+                    .setParams(new Date(metricRecord.getTime()), metricRecord.getShopId()
+                            , dataId, metricRecord.getPlayer(), metricRecord.getType().name(),
+                            metricRecord.getAmount(), metricRecord.getTotal(), metricRecord.getTax())
                     .executeFuture(lines -> lines).whenComplete((line, err2) -> {
-                        if (err2 != null) future.completeExceptionally(err2);
+                        if (err2 != null) {
+                            future.completeExceptionally(err2);
+                        }
                         future.complete(line);
                     });
         });
@@ -495,7 +512,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         DataTables.LOG_TRANSACTION.createInsert()
                 .setColumnNames("from", "to", "currency", "amount", "tax_amount", "tax_account", "error")
                 .setParams(from.toString(), to.toString(), currency, amount, taxAmount, taxAccount == null ? null : taxAccount.toString(), error)
-                .executeAsync((handler) -> Log.debug("Operation completed, insertTransactionRecord, " + handler + " lines affected"));
+                .executeAsync(handler -> Log.debug("Operation completed, insertTransactionRecord, " + handler + " lines affected"));
     }
 
     @Override
@@ -532,7 +549,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .build()
                 .executeFuture(query -> {
                     ResultSet result = query.getResultSet();
-                    if (result.next()) return result.getLong("data");
+                    if (result.next()) {
+                        return result.getLong("data");
+                    }
                     return null;
                 });
     }
@@ -674,80 +693,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
 
     }
-
-
-//    @Override
-//    public @NotNull CompletableFuture<@NotNull List<ShopRecord>> listShops(boolean deleteIfCorrupt) {
-//        return DataTables.SHOP_MAP.createQuery().build().executeFuture((query) -> {
-//            ResultSet rs = query.getResultSet();
-//            List<ShopInfo> shops = new ArrayList<>();
-//            while (rs.next()) {
-//                long shopId = rs.getLong("shop");
-//                int x = rs.getInt("x");
-//                int y = rs.getInt("y");
-//                int z = rs.getInt("z");
-//                String world = rs.getString("world");
-//                shops.add(new ShopInfo(shopId, world, x, y, z));
-//            }
-//            return shops; // Release shop query connection
-//        }).thenCompose((shops) -> { // Process per shops
-//            CompletableFuture<List<ShopRecord>> future = CompletableFuture.completedFuture(new ArrayList<>());
-//            for (ShopInfo shop : shops) {
-//                future.thenCombine(locateShopDataId(shop.shopID).thenCompose(dataID -> {
-//                    if (dataID == null) {
-//                        if (deleteIfCorrupt && plugin.getShopBackupUtil().isBreakingAllowed()) {
-//                            plugin.getDatabaseHelper().removeShopMap(shop.world, shop.x, shop.y, shop.z)
-//                                    .whenComplete((lines, err) -> {
-//                                        if (err != null)
-//                                            Log.debug("Failed to remove shop map for " + shop + " because " + err.getMessage());
-//                                    });
-//                        }
-//                        return CompletableFuture.completedFuture(null);
-//                    } else return getDataRecord(dataID);
-//                }), (list, record) -> {
-//                    if (record != null) list.add(new ShopRecord(record, shop));
-//                    else if (deleteIfCorrupt && plugin.getShopBackupUtil().isBreakingAllowed()) {
-//                        plugin.getDatabaseHelper().removeShopMap(shop.world, shop.x, shop.y, shop.z)
-//                                .whenComplete((lines, err) -> {
-//                                    if (err != null)
-//                                        Log.debug("Failed to remove shop map for " + shop + " because " + err.getMessage());
-//                                });
-//                    }
-//                    return list;
-//                });
-//            }
-//            return future;
-//        });
-//    }
-
-//    @Override
-//    public @NotNull List<DataRecord> selectAllShops(boolean deleteCorruptShops) {
-//        return DataTables.SHOP_MAP.createQuery().build().executeFuture((query) -> {
-//            List<DataRecord> shops = new CopyOnWriteArrayList<>();
-//            CompletableFuture<List<DataRecord>> future = new CompletableFuture<>();
-//            future.complete(new ArrayList<>());
-//
-//            ResultSet rs = query.getResultSet();
-//            while (rs.next()) {
-//                long shopId = rs.getLong("shop");
-//                int x = rs.getInt("x");
-//                int y = rs.getInt("y");
-//                int z = rs.getInt("z");
-//                String world = rs.getString("world");
-//                f
-//                DataRecord record = locateShopDataId(shopId).thenCompose(dataId -> {
-//                    if (dataId == null) {
-//                        if (deleteCorruptShops) {
-//                            plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
-//                        }
-//                        return null;
-//                    }
-//                    return getDataRecord(dataId).get();
-//                });
-//            }
-//            return shops;
-//        });
-//    }
 
     public @NotNull SQLManager getManager() {
         return manager;

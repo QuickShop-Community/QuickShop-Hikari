@@ -9,6 +9,10 @@ import org.jetbrains.annotations.NotNull;
  * @author Ghost_chu
  */
 public class ReflectFactory {
+
+    private ReflectFactory() {
+    }
+
     private static String nmsVersion;
 
     @NotNull

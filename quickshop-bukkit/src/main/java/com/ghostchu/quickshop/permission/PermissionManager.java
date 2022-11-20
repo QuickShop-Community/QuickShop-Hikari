@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.permission;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.permission.PermissionProvider;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Getter;
@@ -39,12 +38,7 @@ public class PermissionManager {
         try {
             boolean result = provider.hasPermission(sender, permission);
             if (Util.isDevMode()) {
-                try {
-                    Log.permission(sender.getName() + " : " + permission + " -> " + result);
-                } catch (Exception th) {
-                    Log.debug("Exception threw when getting debug messages.");
-                    MsgUtil.debugStackTrace(th.getStackTrace());
-                }
+                Log.permission(sender.getName() + " : " + permission + " -> " + result);
             }
             return result;
         } catch (Exception th) {

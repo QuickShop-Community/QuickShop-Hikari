@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class CommonUtil {
+    private CommonUtil() {
+    }
+
     /**
      * Convert strArray to String. E.g "Foo, Bar"
      *

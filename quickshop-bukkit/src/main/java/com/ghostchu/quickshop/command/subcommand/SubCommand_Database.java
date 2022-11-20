@@ -29,7 +29,6 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             plugin.text().of(sender, "bad-command-usage-detailed", "trim").send();
-            // handleStatus(sender);
             return;
         }
         //noinspection SwitchStatementWithTooFewBranches

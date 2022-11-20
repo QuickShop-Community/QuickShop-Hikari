@@ -12,7 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class OTACacheControl {
     private final File metadataFile = new File(Util.getCacheFolder(), "i18n.metadata");
     private final YamlConfiguration metadata;
-    private final ReentrantLock LOCK = new ReentrantLock();
+    private final ReentrantLock lock = new ReentrantLock();
 
     public OTACacheControl() {
         this.metadata = YamlConfiguration.loadConfiguration(this.metadataFile);
@@ -25,11 +25,11 @@ public class OTACacheControl {
     public long readCachedObjectTimestamp(String path) {
         String cacheKey = hash(path);
         long l;
-        LOCK.lock();
+        lock.lock();
         try {
             l = this.metadata.getLong("objects." + cacheKey + ".time", -1);
         } finally {
-            LOCK.unlock();
+            lock.unlock();
         }
         return l;
     }
@@ -40,11 +40,11 @@ public class OTACacheControl {
 
     public long readManifestTimestamp() {
         long l;
-        LOCK.lock();
+        lock.lock();
         try {
             l = this.metadata.getLong("manifest.timestamp", -1);
         } finally {
-            LOCK.unlock();
+            lock.unlock();
         }
         return l;
     }
@@ -55,36 +55,36 @@ public class OTACacheControl {
     }
 
     public void writeManifestTimestamp(long timestamp) {
-        LOCK.lock();
+        lock.lock();
         try {
             this.metadata.set("manifest.timestamp", timestamp);
         } finally {
-            LOCK.unlock();
+            lock.unlock();
         }
 
         save();
     }
 
     private void save() {
-        LOCK.lock();
+        lock.lock();
         try {
             this.metadata.save(this.metadataFile);
         } catch (Exception exception) {
             exception.printStackTrace();
         } finally {
-            LOCK.unlock();
+            lock.unlock();
         }
     }
 
     public void writeObjectCache(String path, byte[] data, long manifestTimestamp) throws IOException {
         String cacheKey = hash(path);
         Files.write(new File(Util.getCacheFolder(), cacheKey).toPath(), data);
-        LOCK.lock();
+        lock.lock();
         try {
             this.metadata.set("objects." + cacheKey + ".time", manifestTimestamp);
             this.metadata.set("objects." + cacheKey + ".path", path);
         } finally {
-            LOCK.unlock();
+            lock.unlock();
             save();
         }
 

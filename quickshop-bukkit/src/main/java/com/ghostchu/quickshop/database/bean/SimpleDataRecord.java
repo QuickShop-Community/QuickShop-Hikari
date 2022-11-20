@@ -25,7 +25,9 @@ public class SimpleDataRecord implements DataRecord {
     private final String inventorySymbolLink;
     private final Date createTime;
 
-    public SimpleDataRecord(UUID owner, String item, String name, int type, String currency, double price, boolean unlimited, boolean hologram, UUID taxAccount, String permissions, String extra, String inventoryWrapper, String inventorySymbolLink, Date createTime) {
+    private final String benefit;
+
+    public SimpleDataRecord(UUID owner, String item, String name, int type, String currency, double price, boolean unlimited, boolean hologram, UUID taxAccount, String permissions, String extra, String inventoryWrapper, String inventorySymbolLink, Date createTime, String benefit) {
         this.owner = owner;
         this.item = item;
         this.name = name;
@@ -40,6 +42,7 @@ public class SimpleDataRecord implements DataRecord {
         this.inventoryWrapper = inventoryWrapper;
         this.inventorySymbolLink = inventorySymbolLink;
         this.createTime = createTime;
+        this.benefit = benefit;
     }
 
     public SimpleDataRecord(ResultSet set) throws SQLException {
@@ -57,6 +60,7 @@ public class SimpleDataRecord implements DataRecord {
         this.inventorySymbolLink = set.getString("inv_symbol_link");
         this.inventoryWrapper = set.getString("inv_wrapper");
         this.createTime = set.getTimestamp("create_time");
+        this.benefit = set.getString("benefit");
     }
 
     @NotNull
@@ -83,6 +87,7 @@ public class SimpleDataRecord implements DataRecord {
         map.put("inv_wrapper", inventoryWrapper);
         map.put("inv_symbol_link", inventorySymbolLink);
         map.put("create_time", createTime);
+        map.put("benefit", benefit);
         return map;
     }
 
@@ -154,5 +159,10 @@ public class SimpleDataRecord implements DataRecord {
     @Override
     public boolean isUnlimited() {
         return unlimited;
+    }
+
+    @Override
+    public @NotNull String getBenefit() {
+        return benefit;
     }
 }

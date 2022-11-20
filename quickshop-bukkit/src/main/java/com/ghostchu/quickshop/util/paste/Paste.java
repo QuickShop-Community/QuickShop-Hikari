@@ -5,6 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Paste {
+    private Paste() {
+    }
 
     @Nullable
     public static String paste(@NotNull String content) {

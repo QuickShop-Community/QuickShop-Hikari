@@ -4,9 +4,11 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.bean.DataRecord;
 import com.ghostchu.quickshop.api.database.bean.InfoRecord;
 import com.ghostchu.quickshop.api.database.bean.ShopRecord;
+import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.common.util.Timer;
+import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -73,10 +75,10 @@ public class ShopLoader {
         plugin.getLogger().info("Loading shops into memory...");
         Timer shopTotalTimer = new Timer(true);
         AtomicInteger successCounter = new AtomicInteger(0);
-        for (ShopRecord record : records) {
+        for (ShopRecord shopRecord : records) {
             Timer singleShopLoadingTimer = new Timer(true);
-            InfoRecord infoRecord = record.getInfoRecord();
-            DataRecord dataRecord = record.getDataRecord();
+            InfoRecord infoRecord = shopRecord.getInfoRecord();
+            DataRecord dataRecord = shopRecord.getDataRecord();
             // World check
             if (worldName != null) {
                 if (!worldName.equals(infoRecord.getWorld())) {
@@ -101,7 +103,7 @@ public class ShopLoader {
             int y = infoRecord.getY();
             int z = infoRecord.getZ();
             Shop shop;
-            DataRawDatabaseInfo rawInfo = new DataRawDatabaseInfo(record.getDataRecord());
+            DataRawDatabaseInfo rawInfo = new DataRawDatabaseInfo(shopRecord.getDataRecord());
             try {
                 shop = new ContainerShop(plugin,
                         infoRecord.getShopId(),
@@ -118,7 +120,8 @@ public class ShopLoader {
                         rawInfo.getInvWrapper(),
                         rawInfo.getInvSymbolLink(),
                         rawInfo.getName(),
-                        rawInfo.getPermissions());
+                        rawInfo.getPermissions(),
+                        rawInfo.getBenefits());
             } catch (Exception e) {
                 if (e instanceof IllegalStateException) {
                     plugin.getLogger().log(Level.WARNING, "Failed to load the shop, skipping...", e);
@@ -239,34 +242,37 @@ public class ShopLoader {
         private ItemStack item;
         private boolean needUpdate = false;
 
+        private Benefit benefits;
+
 
         @SuppressWarnings("UnstableApiUsage")
-        DataRawDatabaseInfo(@NotNull DataRecord record) {
-            this.owner = record.getOwner();
-            this.price = record.getPrice();
-            this.type = ShopType.fromID(record.getType());
-            this.unlimited = record.isUnlimited();
-            String extraStr = record.getExtra();
-            this.name = record.getName();
+        DataRawDatabaseInfo(@NotNull DataRecord dataRecord) {
+            this.owner = dataRecord.getOwner();
+            this.price = dataRecord.getPrice();
+            this.type = ShopType.fromID(dataRecord.getType());
+            this.unlimited = dataRecord.isUnlimited();
+            String extraStr = dataRecord.getExtra();
+            this.name = dataRecord.getName();
             //handle old shops
             if (extraStr == null) {
                 extraStr = "";
                 needUpdate = true;
             }
-            this.currency = record.getCurrency();
-            this.hologram = record.isHologram();
-            this.taxAccount = record.getTaxAccount();
-            this.invSymbolLink = record.getInventorySymbolLink();
-            this.invWrapper = record.getInventoryWrapper();
-            String permissionJson = record.getPermissions();
+            this.currency = dataRecord.getCurrency();
+            this.hologram = dataRecord.isHologram();
+            this.taxAccount = dataRecord.getTaxAccount();
+            this.invSymbolLink = dataRecord.getInventorySymbolLink();
+            this.invWrapper = dataRecord.getInventoryWrapper();
+            this.benefits = SimpleBenefit.deserialize(dataRecord.getBenefit());
+            String permissionJson = dataRecord.getPermissions();
             if (!StringUtils.isEmpty(permissionJson) && MsgUtil.isJson(permissionJson)) {
-                Type type = new TypeToken<Map<UUID, String>>() {
+                Type typeToken = new TypeToken<Map<UUID, String>>() {
                 }.getType();
-                this.permissions = new HashMap<>(JsonUtil.getGson().fromJson(permissionJson, type));
+                this.permissions = new HashMap<>(JsonUtil.getGson().fromJson(permissionJson, typeToken));
             } else {
                 this.permissions = new HashMap<>();
             }
-            this.item = deserializeItem(record.getItem());
+            this.item = deserializeItem(dataRecord.getItem());
             this.extra = deserializeExtra(extraStr);
         }
 

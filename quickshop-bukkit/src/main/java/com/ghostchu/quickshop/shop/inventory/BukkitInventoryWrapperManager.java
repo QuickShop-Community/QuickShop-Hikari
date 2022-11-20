@@ -87,7 +87,7 @@ public class BukkitInventoryWrapperManager implements InventoryWrapperManager {
         BLOCK("block"), UNKNOWN("unknown");
         private final String typeString;
 
-        private HolderType(String typeString) {
+        HolderType(String typeString) {
             this.typeString = typeString;
         }
 

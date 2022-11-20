@@ -101,7 +101,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
      * If running environment test
      */
     @Getter
-    private static final boolean testing = false;
+    private static final boolean TESTING = false;
     /**
      * The active instance of QuickShop
      * You shouldn't use this if you really need it.
@@ -132,7 +132,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     @Getter
     private SimpleShopPermissionManager shopPermissionManager;
     @Getter
-    private ShopBackupUtil shopBackupUtil = new ShopBackupUtil(this);
+    private final ShopBackupUtil shopBackupUtil = new ShopBackupUtil(this);
     private boolean priceChangeRequiresFee = false;
     @Getter
     private DatabaseDriverType databaseDriverType = null;
@@ -221,8 +221,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private String currency = null;
     @Getter
     private CalendarWatcher calendarWatcher;
-    //    @Getter
-//    private DatabaseMaintenanceWatcher databaseMaintenanceWatcher;
     @Getter
     private ShopPurger shopPurger;
     private int loggingLocation = 0;
@@ -243,12 +241,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private PlayerFinder playerFinder;
     @Getter
     private ShopItemBlackList shopItemBlackList;
-
     @Getter
     private NexusManager nexusManager;
     @Getter
     private ShopDataSaveWatcher shopSaveWatcher;
-
     @Getter
     private SignHooker signHooker;
 
@@ -600,7 +596,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 return false;
             }
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             if (sentryErrorReporter != null) {
                 sentryErrorReporter.ignoreThrow();
             }
@@ -622,8 +618,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 sentryErrorReporter = new RollbarErrorReporter(this);
                 Log.debug("Error Reporter has been initialized.");
             }
-        } catch (Throwable th) {
-            getLogger().warning("Cannot load the Sentry Error Reporter: " + th.getMessage());
+        } catch (Exception th) {
+            getLogger().warning("Cannot load the Rollbar Error Reporter: " + th.getMessage());
             getLogger().warning("Because the error reporter doesn't work, report this error to the developer. Thank you!");
         }
     }
@@ -698,7 +694,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         new ChunkListener(this).register();
         new CustomInventoryListener(this).register();
         new ShopProtectionListener(this, this.shopCache).register();
-        // new EconomySetupListener(this).register();
         new MetricListener(this).register();
         new InternalListener(this).register();
     }
@@ -735,8 +730,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         if (getConfig().getBoolean("purge.at-server-startup")) {
             shopPurger.purge();
         }
-//        databaseMaintenanceWatcher = new DatabaseMaintenanceWatcher(this);
-//        databaseMaintenanceWatcher.runTaskTimerAsynchronously(this, 0, 20 * 60 * 60 * 24);
     }
 
     /**
@@ -891,7 +884,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             getLogger().severe("FATAL: onLoad has not been called for QuickShop. Trying to fix it... Some integrations may not work properly!");
             try {
                 onLoad();
-            } catch (Throwable ex) {
+            } catch (Exception ex) {
                 getLogger().log(Level.WARNING, "Failed to fix onLoad", ex);
             }
         }
@@ -937,7 +930,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         signUpdateWatcher = new SignUpdateWatcher();
         shopContainerWatcher = new ShopContainerWatcher();
         shopSaveWatcher = new ShopDataSaveWatcher(this);
-        shopSaveWatcher.runTaskTimerAsynchronously(this, 0, 20 * 60 * 5);
+        shopSaveWatcher.runTaskTimerAsynchronously(this, 0, 20L * 60L * 5L);
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();

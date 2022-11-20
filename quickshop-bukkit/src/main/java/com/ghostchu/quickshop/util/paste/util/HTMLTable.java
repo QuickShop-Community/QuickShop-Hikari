@@ -81,8 +81,8 @@ public class HTMLTable {
         if (title == null || title.length == 0) {
             return "";
         }
-        for (String title : title) {
-            tdBuilder.append("<th>").append(title).append("</th>");
+        for (String headTitle : title) {
+            tdBuilder.append("<th>").append(headTitle).append("</th>");
         }
         return """
                 <thead>
@@ -97,8 +97,8 @@ public class HTMLTable {
         StringBuilder tdBuilder = new StringBuilder();
         for (String[] line : data) {
             tdBuilder.append("<tr>");
-            for (String record : line) {
-                tdBuilder.append("<td>").append(record).append("</td>");
+            for (String recordEntry : line) {
+                tdBuilder.append("<td>").append(recordEntry).append("</td>");
             }
             tdBuilder.append("</tr>");
         }

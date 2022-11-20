@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>3.3.0.1</version>
+    <version>3.4.0.0</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -87,7 +87,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-shade-plugin</artifactId>
-                    <version>3.4.0</version>
+                    <version>3.4.1</version>
                     <executions>
                         <execution>
                             <phase>package</phase>
@@ -269,7 +269,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>
-                <version>2.12.0</version>
+                <version>2.13.0</version>
                 <configuration>
                     <generateBackupPoms>true</generateBackupPoms>
                 </configuration>
@@ -371,7 +371,7 @@
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-compress</artifactId>
-                <version>1.21</version>
+                <version>1.22</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
@@ -388,7 +388,7 @@
             </dependency>
             <dependency>
                 <groupId>com.rollbar</groupId>
-                <version>1.8.1</version>
+                <version>1.9.0</version>
                 <artifactId>rollbar-java</artifactId>
                 <scope>provided</scope>
                 <exclusions>
@@ -420,7 +420,7 @@
             <dependency>
                 <groupId>com.konghq</groupId>
                 <artifactId>unirest-java</artifactId>
-                <version>3.13.11</version>
+                <version>3.13.12</version>
                 <scope>provided</scope>
                 <exclusions>
                     <exclusion>

@@ -70,7 +70,7 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @Override
     public void init() {
-
+        // There no init stuffs need to do
     }
 
     @EventHandler(ignoreCancelled = true)

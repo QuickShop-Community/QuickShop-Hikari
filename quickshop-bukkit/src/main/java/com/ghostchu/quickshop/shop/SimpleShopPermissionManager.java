@@ -20,7 +20,6 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 public class SimpleShopPermissionManager implements ShopPermissionManager, Reloadable {
     private final Map<String, Set<String>> permissionMapping = new MapMaker().makeMap();
@@ -101,7 +100,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
         YamlConfiguration yamlConfiguration = new YamlConfiguration();
         yamlConfiguration.set("version", 1);
         for (BuiltInShopPermissionGroup group : BuiltInShopPermissionGroup.values()) {
-            yamlConfiguration.set(group.getNamespacedNode(), group.getPermissions().stream().map(BuiltInShopPermission::getNamespacedNode).collect(Collectors.toList()));
+            yamlConfiguration.set(group.getNamespacedNode(), group.getPermissions().stream().map(BuiltInShopPermission::getNamespacedNode).toList());
         }
         try {
             //noinspection ResultOfMethodCallIgnored

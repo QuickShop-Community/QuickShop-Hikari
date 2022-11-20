@@ -61,7 +61,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     private boolean pasteToLocalFile(@NotNull CommandSender sender) {
         File file = new File(plugin.getDataFolder(), "paste");
         file.mkdirs();
-        file = new File(file, "paste-" + UUID.randomUUID().toString().replaceAll("-", "") + ".html");
+        file = new File(file, "paste-" + UUID.randomUUID().toString().replace("-", "") + ".html");
         final String string = new PasteGenerator(sender).render();
         try {
             boolean createResult = file.createNewFile();

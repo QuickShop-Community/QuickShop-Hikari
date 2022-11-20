@@ -211,13 +211,6 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .permission("quickshop.create.sell")
                         .executor(new SubCommand_Create(plugin))
                         .build());
-//        registerCmd(
-//                CommandContainer.builder()
-//                        .prefix("update")
-//                        .hidden(true)
-//                        .permission("quickshop.alerts")
-//                        .executor(new SubCommand_Update(plugin))
-//                        .build());
         registerCmd(
                 CommandContainer.builder()
                         .prefix("find")
@@ -259,13 +252,6 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .permission("quickshop.export")
                         .executor(new SubCommand_Export(plugin))
                         .build());
-//        registerCmd(
-//                CommandContainer.builder()
-//                        .prefix("convert")
-//                        .hidden(true)
-//                        .permission("quickshop.convert")
-//                        .executor(new SubCommand_Convert(plugin))
-//                        .build());
         registerCmd(CommandContainer.builder()
                 .prefix("size")
                 .permission("quickshop.create.stacks")
@@ -330,6 +316,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .prefix("database")
                 .permission("quickshop.database")
                 .executor(new SubCommand_Database(plugin))
+                .build());
+        registerCmd(CommandContainer.builder()
+                .prefix("benefit")
+                .permission("quickshop.benefit")
+                .executor(new SubCommand_Benefit(plugin))
                 .build());
     }
 

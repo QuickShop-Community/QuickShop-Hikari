@@ -17,13 +17,13 @@ libraries:
   - org.apache.commons:commons-compress:1.21
   - org.apache.commons:commons-lang3:3.12.0
   - org.apache.commons:commons-text:1.9
-  - com.rollbar:rollbar-java:1.8.1
+  - com.rollbar:rollbar-java:1.9.0
   - commons-codec:commons-codec:1.15
   - org.slf4j:slf4j-nop:1.7.35
   - cc.carm.lib:easysql-hikaricp:0.4.6
   - com.h2database:h2:2.1.214
   - com.ghostchu:simplereloadlib:1.1.2
-  - com.konghq:unirest-java:3.13.11
+  - com.konghq:unirest-java:3.13.12
   - com.github.juliomarcopineda:jdbc-stream:0.1.1
   - one.util:streamex:0.8.1
   - commons-lang:commons-lang:2.6
@@ -35,40 +35,42 @@ authors:
   - Netherfoam
   - Timtower
   - KaiNoMood (KaiKikuchi)
+  - sandtechnology
   - jho5245
   - cakoyo
+  - Andre601
   - Ectabro
+  - Chris6ix
   - portlek
   - log4b0at
-  - Andre601
   - deadman96385
-  - Vlvxingze
+  - tiararinne
   - DoctaEnkoda
+  - CarmJos
+  - YuanYuanOwO
   - Mgazul
-  - TiaraRinne
-  - sandtechnology
-  - Starmism
-  - Chris6ix
-  - Rean Schwarzer
   - mart-r
-  - raphtaliapt
   - Tim269
+  - raphtaliapt
   - creatorfromhell
   - LoneDev6
-  - judgetread
+  - Steven-OS
   - confuxeon
   - ibmibmibm
-  - yannicklamprecht
+  - judgetread
+  - mfnalex
+  - Warriorrrr
   - PyvesB
-  - PaulBGD
+  - yannicklamprecht
   - ORelio
-  - JoschuaSchneider
-  - Starmium
+  - RMSCA
+  - Starmism
+  - yiwenwang2090
+  - PaulBGD
+  - Nlkomaru
   - harry0198
   - Draesia
-  - Nlkomaru
-  - Warriorrrr
-description: Economy Shops plugin
+description: QuickShop is a shop plugin that allows players to easily sell/buy any items from a chest without any commands. In fact, none of the commands that QuickShop provides are ever needed by a player.
 
 version: ${project.version}
 
@@ -95,6 +97,7 @@ permissions:
       quickshop.toggledisplay: true
       quickshop.shopnaming: true
       quickshop.permission: true
+      quickshop.benefit: true
   quickshop.moderator:
     description: The permission that provide all moderator need have permissions
     default: op
@@ -119,6 +122,7 @@ permissions:
       quickshop.other.search: true
       quickshop.other.preview: true
       quickshop.other.use: true
+      quickshop.other.benefit: true
 
   quickshop.create.sell:
     description: Allows a player to sell from a shop.
@@ -290,4 +294,10 @@ permissions:
     default: op
   quickshop.database:
     description: Permission to use /qs database
+    default: op
+  quickshop.benefit:
+    description: Permission to use /qs benefit
+    default: op
+  quickshop.other.benefit:
+    description: Permission to bypass the benefit permission check
     default: op

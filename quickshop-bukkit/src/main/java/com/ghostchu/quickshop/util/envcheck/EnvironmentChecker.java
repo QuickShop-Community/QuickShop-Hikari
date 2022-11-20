@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.logging.Level;
 
 public final class EnvironmentChecker {
+    private static final String CHECK_PASSED_RETURNS = "Check passed";
     private final QuickShop plugin;
     private final List<Method> tests = new ArrayList<>();
 
@@ -65,7 +66,7 @@ public final class EnvironmentChecker {
         if (gameVersion == GameVersion.UNKNOWN) {
             return new ResultContainer(CheckResult.WARNING, "QuickShop may not fully support version " + nmsVersion + "/" + plugin.getPlatform().getMinecraftVersion() + ", Some features may not work.");
         }
-        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+        return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
     }
 
     @EnvCheckEntry(name = "End of life Test", priority = Integer.MAX_VALUE, stage = EnvCheckEntry.Stage.ON_ENABLE)
@@ -73,7 +74,7 @@ public final class EnvironmentChecker {
         if (plugin.getGameVersion().isEndOfLife()) {
             return new ResultContainer(CheckResult.WARNING, "You're running a Minecraft server with end of life version, QuickShop may not work on this version in future, and you won't receive any in-game update notification anymore, upgrade your server version!");
         }
-        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+        return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
     }
 
     @EnvCheckEntry(name = "GameVersion supporting Test", priority = 9)
@@ -83,7 +84,7 @@ public final class EnvironmentChecker {
         if (gameVersion == GameVersion.UNKNOWN) {
             return new ResultContainer(CheckResult.WARNING, "Your Minecraft server version not tested by developers, QuickShop may ran into issues on this version.");
         }
-        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+        return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
     }
 
     public boolean isOutdatedJvm() {
@@ -155,7 +156,7 @@ public final class EnvironmentChecker {
         if (plugin.getServer().getPluginManager().isPluginEnabled("GroupManager")) {
             return new ResultContainer(CheckResult.WARNING, "WARNING: Unsupported plugin management plugin [GroupManager] installed, the permissions may not working.");
         }
-        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+        return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
     }
 
     @EnvCheckEntry(name = "PacketListenerAPI Conflict Test", priority = 10)
@@ -163,7 +164,7 @@ public final class EnvironmentChecker {
         if (plugin.isDisplayEnabled() && AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") && Bukkit.getPluginManager().isPluginEnabled("PacketListenerAPI")) {
             return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem may stop working on your server. We are already aware that [PacketListenerAPI] and [ProtocolLib] are conflicting. (QuickShops requirement to send fake items). If your display is not showing, please uninstall [PacketListenerAPI].");
         }
-        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+        return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
     }
 
     @EnvCheckEntry(name = "Reremake Test", priority = 11, stage = EnvCheckEntry.Stage.ON_ENABLE)
@@ -171,7 +172,7 @@ public final class EnvironmentChecker {
         if (plugin.getServer().getPluginManager().isPluginEnabled("QuickShop")) {
             return new ResultContainer(CheckResult.WARNING, "WARNING: Multiple QuickShop installed, uninstall one of them.");
         }
-        return new ResultContainer(CheckResult.PASSED, "Passed checks");
+        return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
     }
 
     public ResultReport run(EnvCheckEntry.Stage stage) {
@@ -200,6 +201,10 @@ public final class EnvironmentChecker {
                     }
                 } else {
                     result = CheckResult.SKIPPED;
+                }
+                if (executeResult == null) {
+                    Log.debug("Failed to retrieve executeResult from " + declaredMethod.getName());
+                    continue;
                 }
                 switch (result) {
                     case SKIPPED:

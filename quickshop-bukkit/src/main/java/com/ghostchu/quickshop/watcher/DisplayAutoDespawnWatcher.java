@@ -60,7 +60,6 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
                 }
                 if (anyPlayerInRegion) {
                     if (!displayItem.isSpawned()) {
-                        //Log.debug("Respawning the shop " + shop + " the display, cause it was despawned and a player close to it");
                         displayItem.spawn();
                     }
                 } else if (displayItem.isSpawned()) {

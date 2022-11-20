@@ -83,7 +83,7 @@ public interface DatabaseHelper {
      */
     @NotNull CompletableFuture<@NotNull Integer> insertHistoryRecord(@NotNull Object rec);
 
-    @NotNull CompletableFuture<@NotNull Integer> insertMetricRecord(@NotNull ShopMetricRecord record);
+    @NotNull CompletableFuture<@NotNull Integer> insertMetricRecord(@NotNull ShopMetricRecord recordEntry);
 
     void insertTransactionRecord(@Nullable UUID from, @Nullable UUID to, double amount, @Nullable String currency, double taxAmount, @Nullable UUID taxAccount, @Nullable String error);
 
@@ -124,14 +124,6 @@ public interface DatabaseHelper {
      */
     @NotNull CompletableFuture<@NotNull Integer> removeShop(long shopId);
 
-//    /**
-//     * Select all shops that saved in the database
-//     *
-//     * @return Query result set
-//     * @throws SQLException Any errors related to SQL Errors
-//     */
-//    @NotNull
-//    List<DataRecord> selectAllShops() throws SQLException;
 
     /**
      * Remove a shop data mapping record from database

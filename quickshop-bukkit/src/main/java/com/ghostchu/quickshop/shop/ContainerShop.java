@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.ServiceInjector;
+import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
@@ -60,6 +61,8 @@ import java.util.logging.Level;
  */
 @EqualsAndHashCode
 public class ContainerShop implements Shop, Reloadable {
+    // We use deprecated method to create a fake quickshop-reremake namespace to trick bukkit to access legacy data.
+    @SuppressWarnings({"AliDeprecation", "deprecation"})
     private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
     @NotNull
     private final Location location;
@@ -113,6 +116,9 @@ public class ContainerShop implements Shop, Reloadable {
     @Nullable
     private String shopName;
 
+    @NotNull
+    private Benefit benefit;
+
     ContainerShop(@NotNull ContainerShop s) {
         Util.ensureThread(false);
         this.shopId = s.shopId;
@@ -138,6 +144,7 @@ public class ContainerShop implements Shop, Reloadable {
         this.symbolLink = s.symbolLink;
         this.shopName = s.shopName;
         this.playerGroup = s.playerGroup;
+        this.benefit = s.benefit;
 
         initDisplayItem();
     }
@@ -191,12 +198,14 @@ public class ContainerShop implements Shop, Reloadable {
             @NotNull String inventoryWrapperProvider,
             @NotNull String symbolLink,
             @Nullable String shopName,
-            @NotNull Map<UUID, String> playerGroup) {
+            @NotNull Map<UUID, String> playerGroup,
+            @NotNull Benefit shopBenefit) {
         Util.ensureThread(false);
         this.shopId = shopId;
         this.shopName = shopName;
         this.location = location;
         this.price = price;
+        this.benefit = shopBenefit;
 
 
         // Upgrade the shop moderator
@@ -305,7 +314,6 @@ public class ContainerShop implements Shop, Reloadable {
             this.sell(buyer, buyerInventory, loc2Drop, -amount);
             return;
         }
-        // InventoryWrapperIterator buyerIterator = buyerInventory.iterator();
         if (this.isUnlimited()) {
             SimpleInventoryTransaction transaction = SimpleInventoryTransaction
                     .builder()
@@ -466,8 +474,6 @@ public class ContainerShop implements Shop, Reloadable {
             // Delete it from the database
             // Refund if necessary
             if (plugin.getConfig().getBoolean("shop.refund")) {
-//                plugin.getEconomy().deposit(this.getOwner(), plugin.getConfig().getDouble("shop.cost"),
-//                        Objects.requireNonNull(getLocation().getWorld()), getCurrency());
                 double cost = plugin.getConfig().getDouble("shop.cost");
                 SimpleEconomyTransaction transaction;
                 if (plugin.getConfig().getBoolean("shop.refund-from-tax-account", false) && taxAccount != null) {
@@ -475,7 +481,6 @@ public class ContainerShop implements Shop, Reloadable {
                     transaction =
                             SimpleEconomyTransaction.builder()
                                     .amount(cost)
-                                    .allowLoan(false)
                                     .core(plugin.getEconomy())
                                     .currency(plugin.getCurrency())
                                     .world(this.getLocation().getWorld())
@@ -486,7 +491,6 @@ public class ContainerShop implements Shop, Reloadable {
                     transaction =
                             SimpleEconomyTransaction.builder()
                                     .amount(cost)
-                                    .allowLoan(false)
                                     .core(plugin.getEconomy())
                                     .currency(plugin.getCurrency())
                                     .world(this.getLocation().getWorld())
@@ -574,11 +578,12 @@ public class ContainerShop implements Shop, Reloadable {
         if (inventoryWrapper == null) {
             Util.ensureThread(false);
             Log.debug("SymbolLink Applying: " + symbolLink);
-            inventoryWrapper = locateInventory(symbolLink);
-        }
-        if (inventoryWrapper == null) {
-            Log.debug("Cannot locate the Inventory with symbol link: " + symbolLink + ", provider: " + inventoryWrapperProvider);
-            return null;
+            try {
+                inventoryWrapper = locateInventory(symbolLink);
+            } catch (Exception e) {
+                Log.debug("Cannot locate the Inventory with symbol link: " + symbolLink + ", provider: " + inventoryWrapperProvider);
+                return null;
+            }
         }
         if (inventoryWrapper.isValid()) {
             return inventoryWrapper;
@@ -1635,7 +1640,6 @@ public class ContainerShop implements Shop, Reloadable {
             Log.debug("Start sign broadcast...");
             Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this), 2);
             Log.debug("Sign broadcast completed.");
-            return;
         }
     }
 
@@ -1714,6 +1718,17 @@ public class ContainerShop implements Shop, Reloadable {
         }
     }
 
+    @Override
+    public @NotNull Benefit getShopBenefit() {
+        return this.benefit;
+    }
+
+    @Override
+    public void setShopBenefit(@NotNull Benefit benefit) {
+        this.benefit = benefit;
+        setDirty();
+    }
+
     /**
      * Check the container still there and we can keep use it.
      */
@@ -1749,7 +1764,8 @@ public class ContainerShop implements Shop, Reloadable {
                 saveExtraToYaml(),
                 getInventoryWrapperProvider(),
                 saveToSymbolLink(),
-                new Date()
+                new Date(),
+                getShopBenefit().serialize()
         );
     }
 

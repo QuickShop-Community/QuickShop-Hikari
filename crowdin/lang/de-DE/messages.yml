@@ -21,6 +21,7 @@ tabcomplete:
   name: '[Name]'
   range: '[Reichweite]'
   currency: '[Währungsname]'
+  percentage: '[Prozentsatz%]'
 taxaccount-unset: <green>Das Steuerkonto dieses Shops wurde auf die globalen Servereinstellungen geändert.
 blacklisted-item: <red>Du kannst dieses Item nicht verkaufen, da es auf der schwarzen Liste steht
 command-type-mismatch: <red>Dieser Befehl kann nur von <aqua>{0}<red> ausgeführt werden.
@@ -164,6 +165,7 @@ inventory-unavailable: '<red>Dieser Shop Inventar-Wrapper existiert nicht oder i
 file-test: Dies ist eine Text Testdatei. Wir verwenden sie um zu testen ob die messages.json kaputt ist. Du kannst sie mit jedem Easter Egg füllen wie du willst :)
 unknown-player: <red>Dieser Spieler existiert nicht. Bitte überprüfe, ob der Name korrekt geschrieben wurde.
 player-offline: "<red>Der Spieler ist derzeit offline."
+player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 language:
   qa-issues: '<yellow>Qualitätssicherungs-Probleme: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -418,6 +420,7 @@ command:
     permission: <yellow>Shop-Berechtigungsverwaltung
     lookup: <yellow>Tabelle der nachschlagbaren Gegenstände verwalten
     database: <yellow>QuickShop-Datenbank anzeigen und verwalten
+    benefit: <yellow>Einstellungen zum aufteilen von Vorteilen zwischen Schobeigentümer und anderen Spielern
   bulk-size-not-set: '<red>Verwendung: /qs size <Anzahl>'
   no-type-given: '<red>Verwendung: /qs find <item>'
   feature-not-enabled: Dieses Feature ist nicht in der Config Datei aktiviert.
@@ -520,6 +523,9 @@ lookup-item-test-not-found: "<gold>Test: <yellow>Das Item in deiner Hand ist nic
 lookup-item-test-found: "<gold>Test: <green>Das Item in deiner Hand wurde als <aqua>{0}</aqua> in der Suchtabelle registriert."
 lookup-item-removed: "<green>Das angegebene Item <aqua>{0}</aqua> wurde erfolgreich von der Suchtabelle entfernt."
 internal-error: "<red>Ein interner Fehler ist aufgetreten. Bitte kontaktiere den Serveradministrator."
+argument-cannot-be: "<red>Das Argument <aqua>{0}</aqua> kann nicht <yellow>{1}</yellow> sein."
+argument-must-between: "<red>Der Wert von <aqua>{0}</aqua> muss zwischen <yellow>{1}</yellow> und <yellow>{2}</yellow> sein"
+invalid-percentage: "<red>Prozentsatz ungültig, du musst '%' nach der Nummer hinzufügen."
 debug:
   arguments-invalid: "<red>Angegebene Argumente <yellow>{0}</yellow> sind ungültig."
   sign-located: "<green>Schild gültig: <yellow>{0}</yellow>."
@@ -575,6 +581,13 @@ transfer-accepted-toside: "<green>Du hast <aqua>{0}</aqua>'s Transfer-Anfrage ak
 transfer-rejected-fromside: "<red>Spieler <aqua>{0}</aqua> hat deine Transfer-Anfrage abgelehnt."
 transfer-rejected-toside: "<red>Du hast <aqua>{0}</aqua>'s Transfer-Anfrage abgelehnt."
 transfer-no-pending-operation: "<red>Du hat keine ausstehenden Transfer-Anfragen."
+benefit-overflow: "<red>Die Summe aller Vorteile kann nicht grösser oder gleich 100% sein."
+benefit-exists: "<red>Spieler ist bereits in der Vorteilsliste dieses Shops."
+benefit-removed: "<red>Spieler wurde von Shop-Vorteilen entfernt."
+benefit-added: "<green>Spieler <aqua>{0}</aqua> wurde zu Shop-Vorteilen hinzugefügt!"
+benefit-updated: "<green>Spieler <aqua>{0}</aqua>'s Vorteile wurden aktualisiert!"
+benefit-query: "<green>Dieser Shop hat <yellow>{0}</yellow> Spieler in der Vorteilsliste!"
+benefit-query-list: "<yellow> - </yellow><white>Spieler <gold>{0}</gold>. Vorteil: <gold>{1}%</gold>/white>"
 addon:
   towny:
     commands:
@@ -617,3 +630,26 @@ addon:
   worldguard:
     creation-flag-test-failed: "<red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu erstellen."
     trade-flag-test-failed: "<red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu handeln."
+suite:
+  dynmap:
+    title: "{0} - {1} - {2}"
+    description: "Item: {0}\nBesitzer: {1}\nTyp: {2} {3}\nPreis: {4}\nOrt: {5} {6}, {7}, {8}\nRaum: {9}\nLagerbestand: {10}"
+  limited:
+    command-description: "<yellow>Setze ein Limit welches bestimmt, wie viele käufe der Spieler pro Zeitraum machen kann."
+    reach-the-quota-limit: "<red>Du hast das Kauflimit in diesem Shop erreicht ({0}/{1})."
+    quota-reset-countdown: "<yellow>Das Kontingent in diesem Shop wird in {0} zurückgesetzt."
+    quota-reset-player-successfully: "<green>Das Kontingent für den Spieler {0} in diesem Shop wurde erfolgreich zurückgesetzt."
+    quota-reset-everybody-successfully: "<green>Das Kontingent für alle in diesem Shop wurde erfolgreich zurückgesetzt."
+    quota-setup: "<green>Die Kaufeinschränkung gilt nun für diesen Shop!"
+    quota-remove: "<green>Die Kaufeinschränkung wurde von diesem Shop entfernt!"
+    subtitles:
+      title: "<green>Kauf erfolgreich"
+      subtitle: "<aqua>Du kannst <yellow>{0}</yellow> weitere in diesem Shop kaufen"
+  list:
+    command-description: "<yellow>Liste alle Shops die dir oder einem anderen Spieler gehören."
+    table-prefix: "<yellow>Dir gehören <aqua>{0}</aqua> Shops auf diesem Server."
+    entry-syntax: "<aqua>- <yellow>{0}"
+    entry-syntax-fallback-name: "<yellow>Item: {0} X: {1}, Y: {2}, Z: {3}, Welt: {4}"
+    hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} Items pro Stack."
+  shopitemonly:
+    message: "<red>Du kannst keine Nicht-Shop items in den Shop-Container legen. Alle Nicht-Shop items werden an deiner Position fallen gelassen."

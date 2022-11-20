@@ -6,7 +6,7 @@ how-much-to-trade-for: <green>请在聊天中输入交易<yellow>{1}个{0}<green
 client-language-changed: <green>QuickShop检测到您的客户端语言已更改，我们正在为您使用 {0} 语言。
 shops-backingup: 从数据库创建商店备份...
 _comment: 嗨 翻译者！如果您正在Github上或直接编辑源文件的方式进行翻译，请您前往：https://crowdin.com/project/quickshop-hikari
-unlimited-shop-owner-changed: <yellow>这个无限商店的店主已更改为 {0}。
+unlimited-shop-owner-changed: <yellow>这个系统商店的店主已更改为 {0}。
 bad-command-usage-detailed: '<red>错误的命令参数! 尝试以下参数: <gray>{0}'
 thats-not-a-number: <red>输入的内容不是数字
 shop-name-disallowed: <red>商店名称<yellow>{0} <red>不被允许。请换一个名称后再试！
@@ -18,9 +18,10 @@ tabcomplete:
   amount: '[数量]'
   item: '[物品]'
   price: '[价格]'
-  name: '[name]'
+  name: '[名称]'
   range: '[范围]'
   currency: '[货币名称]'
+  percentage: '[百分比%]'
 taxaccount-unset: <green>该商店的税务帐户现在变为服务器的全局设置。
 blacklisted-item: <red>这件物品已经被拉黑，你不能出售它
 command-type-mismatch: <red>此命令只能由 <aqua>{0} 执行。
@@ -61,7 +62,7 @@ shop-out-of-stock-name: <dark_purple>你名为 {0} 的商店的 {1} 脱销了!
 shop-name-invalid: <red>商店名称<yellow>{0} <red>无效。请换一个名称后再试！
 how-many-buy-stack: <green>聊天栏中输入你想<aqua>买<green>的份数. 每份中有 <yellow>{0}<green> 个该物品, 你可以买 <yellow>{1}<green> 份. 输入 <aqua>{2}<green> 以买下所有该物品.
 exceeded-maximum: <red>该值超过了Java 中的最大值。
-unlimited-shop-owner-keeped: '<yellow>注意: 商店持有人依然是无限商店店主, 你需要重新设置新的商店店主'
+unlimited-shop-owner-keeped: '<yellow>注意: 商店持有人依然是系统商店店主, 你需要重新设置新的商店店主'
 no-enough-money-to-keep-shops: <red>你没有足够的金钱去维持你商店的运营！所有商店已被移除...
 3rd-plugin-build-check-failed: <red>第三方插件 <bold>{0}<reset><red> 拒绝了权限检查操作，您在那里有建造权限吗？
 not-a-integer: <red>您只能输入一个数字，您的输入是 {0}。
@@ -164,6 +165,7 @@ inventory-unavailable: '<red>此商店InventoryWrapper不存在或无效。 你�
 file-test: 这是个测试文件，我们可以用它来测试 messages.json 文件是否损坏。你可以在这里填入任何喜欢的彩蛋 :)
 unknown-player: <red>目标玩家不存在，请检查你输入的玩家名字。
 player-offline: "<red>目标玩家目前处于离线状态。"
+player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 language:
   qa-issues: '<yellow>质量问题：<aqua>{0}%'
   code: '<yellow>代码： <gold>{0}'
@@ -418,6 +420,7 @@ command:
     permission: <yellow>商店权限管理
     lookup: <yellow>管理物品引用查找表
     database: <yellow>查看和维护 QuickShop 数据库
+    benefit: <yellow>设置商店所有者和其他玩家之间的利益分配
   bulk-size-not-set: '<red>用法: /qs size <数量>'
   no-type-given: '<red>用法: /qs find <物品名称>'
   feature-not-enabled: 该功能未在配置文件中启用。
@@ -520,6 +523,9 @@ lookup-item-test-not-found: "<gold>测试: <yellow>你手中的物品未注册�
 lookup-item-test-found: "<gold>测试: <green>你手中的物品在物品引用查找表中注册的名字为 <aqua>{0}</aqua>。"
 lookup-item-removed: "<green>指定的物品 <aqua>{0}</aqua> 现已从物品引用查找表中删除。"
 internal-error: "<red>发生了一个内部错误，请联系服务器管理员。"
+argument-cannot-be: "<red>参数 <aqua>{0}</aqua> 不能为 <yellow>{1}</yellow>."
+argument-must-between: "<red>参数 <aqua>{0}</aqua> 值必须在 <yellow>{1}</yellow> 和 <yellow>{2}</yellow> 之间"
+invalid-percentage: "<red>百分比无效，您必须在百分比的数字后添加'%'"
 debug:
   arguments-invalid: "<red>提供的参数 <yellow>{0}</yellow> 无效。"
   sign-located: "<green>有效信息牌： <yellow>{0}</yellow>。"
@@ -575,6 +581,13 @@ transfer-accepted-toside: "<green>您接受了 <aqua>{0}</aqua> 的商店转移�
 transfer-rejected-fromside: "<red>玩家 <aqua>{0}</aqua> 拒绝了您的商店转移请求。"
 transfer-rejected-toside: "<red>您拒绝了 <aqua>{0}</aqua> 的商店转移请求。"
 transfer-no-pending-operation: "<red>您没有待处理的商店转移请求。"
+benefit-overflow: "<red>所有利益的总和不能大于或等于100%"
+benefit-exists: "<red>Target player already in benefits list on this shop."
+benefit-removed: "<red>该玩家已被从商店的利益分配中移除"
+benefit-added: "<green>玩家<aqua>{0}</aqua>已被添加到商店的利益分配中"
+benefit-updated: "<green>玩家 <aqua>{0}</aqua>的利益分配已更新！"
+benefit-query: "<green>该商店在利益分配列表中有 <yellow>{0}</yellow> 名玩家！"
+benefit-query-list: "<yellow> - </yellow><white>玩家 <gold>{0}</gold>，利益分配 <gold>{1}%</gold></white>"
 addon:
   towny:
     commands:
@@ -594,7 +607,7 @@ addon:
     plot-type-disallowed: "<red>您不能在这种类型的地皮上创建城镇/国家商店。"
     flags:
       own: "<red>You can only create shops at your owned shop type towny plot."
-      modify: "<red>You didn't have build permission on this towny plot."
+      modify: "<red>您没有在该Towny区域的建造权限"
       shop-type: "<red>You must create shop on a shop type towny plot."
   residence:
     creation-flag-denied: "<red>您没有在该领地创建商店的权限。"
@@ -605,7 +618,7 @@ addon:
     trade-denied: "<red>您没有在该领地与商店交易的权限。"
   lands:
     world-not-enabled: "<red>你不能在这个世界中交易或创建"
-    creation-denied: "<red>You don't have permission to create shops in this Land area."
+    creation-denied: "<red>您没有在该Land区域创建商店的权限"
   plotsquared:
     no-plot-whitelist-creation: "<red>你不能在地皮外创建商店"
     no-plot-whitelist-trade: "<red>你不能在地皮之外与商店交易"
@@ -615,5 +628,28 @@ addon:
     owner-create-only: "<red>只有岛屿所有者才能在这里创建商店"
     owner-member-create-only: "<red>只有岛屿所有者或岛屿成员才能在这里创建商店"
   worldguard:
-    creation-flag-test-failed: "<red>You don't have permission create shop in this WorldGuard area."
-    trade-flag-test-failed: "<red>You don't have permission trade shop in this WorldGuard area."
+    creation-flag-test-failed: "<red>您没有在该WorldGuard区域创建商店的权限"
+    trade-flag-test-failed: "<red>您没有在该WorldGuard区域与商店交易的权限。"
+suite:
+  dynmap:
+    title: "{0} - {1} - {2}"
+    description: "物品: {0}\n所有者: {1}\n类型: {2} {3}\n价格: {4}\n位置: {5} {6}, {7}, {8}\n空间: {9}\n库存: {10}"
+  limited:
+    command-description: "<yellow>限制玩家在时间段内的交易限制"
+    reach-the-quota-limit: "<red>您已达到该商店的交易限制（{0}/{1}）。"
+    quota-reset-countdown: "<yellow>该商店的交易限制将在 {0} 重置"
+    quota-reset-player-successfully: "<green>已成功重置该商店中玩家 {0} 的交易限制"
+    quota-reset-everybody-successfully: "<green>已成功重置该商店中所有人的交易限制"
+    quota-setup: "<green>该商店的交易限制已设置成功！"
+    quota-remove: "<green>该商店的交易限制已成功重置！"
+    subtitles:
+      title: "<green>交易成功"
+      subtitle: "<aqua>您还可以在这个商店交易 <yellow>{0}</yellow> 个物品"
+  list:
+    command-description: "<yellow>列出自己或其他玩家拥有的所有商店"
+    table-prefix: "<yellow>您在该服务器中拥有 <aqua>{0}</aqua> 个商店"
+    entry-syntax: "<aqua>- <yellow>{0}"
+    entry-syntax-fallback-name: "<yellow>物品:{0} X:{1}, Y:{2}, Z:{3}, 世界: {4}"
+    hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."
+  shopitemonly:
+    message: "<red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上"

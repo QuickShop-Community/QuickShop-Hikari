@@ -55,7 +55,7 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
                 switch (result) {
                     case SUCCESS -> plugin.text().of(sender, "lookup-item-created", cmdArg[1]).send();
                     case REGEXP_FAILURE ->
-                            plugin.text().of(sender, "lookup-item-name-regex", plugin.getItemMarker().getNameRegExp(), cmdArg[1]).send();
+                            plugin.text().of(sender, "lookup-item-name-regex", ItemMarker.getNameRegExp(), cmdArg[1]).send();
                     case NAME_CONFLICT -> plugin.text().of(sender, "lookup-item-exists", cmdArg[1]).send();
                     default -> plugin.text().of(sender, "internal-error", cmdArg[1]).send();
                 }

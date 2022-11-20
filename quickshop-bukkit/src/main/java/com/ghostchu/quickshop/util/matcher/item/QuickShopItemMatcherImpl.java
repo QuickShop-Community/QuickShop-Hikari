@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.configuration.ConfigurationSection;
@@ -117,10 +118,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         if (requireStack.isSimilar(givenStack)) {
             return true;
         }
-        /* If they are the same type, they should also have item meta
-        if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
-            return false;
-        }*/
+
         if (requireStack.hasItemMeta() && givenStack.hasItemMeta()) {
             return itemMetaMatcher.matches(requireStack, givenStack);
         }
@@ -238,8 +236,8 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1 instanceof EnchantmentStorageMeta != meta2 instanceof EnchantmentStorageMeta) {
                     return false;
                 }
-                if (meta1 instanceof EnchantmentStorageMeta) {
-                    Map<Enchantment, Integer> stor1 = ((EnchantmentStorageMeta) meta1).getStoredEnchants();
+                if (meta1 instanceof EnchantmentStorageMeta storageMeta1) {
+                    Map<Enchantment, Integer> stor1 = storageMeta1.getStoredEnchants();
                     Map<Enchantment, Integer> stor2 = ((EnchantmentStorageMeta) meta2).getStoredEnchants();
                     return CommonUtil.listDisorderMatches(stor1.entrySet(), stor2.entrySet());
                 }
@@ -348,8 +346,8 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if (meta1 instanceof SkullMeta skullMeta1) {
                     //getOwningPlayer will let server query playerProfile in server thread
                     //Causing huge lag, so using String instead
-                    String player1 = skullMeta1.getOwner(); //FIXME: Update this when drop 1.15 supports
-                    String player2 = ((SkullMeta) meta2).getOwner(); //FIXME: Update this when drop 1.15 supports
+                    OfflinePlayer player1 = skullMeta1.getOwningPlayer();
+                    OfflinePlayer player2 = skullMeta1.getOwningPlayer();
                     return Objects.equals(player1, player2);
                 }
                 return true;
@@ -416,8 +414,8 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if ((meta1 instanceof LeatherArmorMeta) != (meta2 instanceof LeatherArmorMeta)) {
                     return false;
                 }
-                if (meta1 instanceof LeatherArmorMeta) {
-                    return ((LeatherArmorMeta) meta1).getColor().equals(((LeatherArmorMeta) meta2).getColor());
+                if (meta1 instanceof LeatherArmorMeta leatherArmorMeta1) {
+                    return leatherArmorMeta1.getColor().equals(((LeatherArmorMeta) meta2).getColor());
                 }
                 return true;
             }));
@@ -442,12 +440,12 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
                 if ((meta1 instanceof BlockStateMeta) != (meta2 instanceof BlockStateMeta)) {
                     return false;
                 }
-                if (meta1 instanceof BlockStateMeta) {
-                    if ((((BlockStateMeta) meta1).getBlockState() instanceof ShulkerBox) != ((BlockStateMeta) meta2).getBlockState() instanceof ShulkerBox) {
+                if (meta1 instanceof BlockStateMeta blockStateMeta1) {
+                    if ((blockStateMeta1.getBlockState() instanceof ShulkerBox) != ((BlockStateMeta) meta2).getBlockState() instanceof ShulkerBox) {
                         return false;
                     }
-                    if (((BlockStateMeta) meta1).getBlockState() instanceof ShulkerBox) {
-                        return itemMatcher.matches(((ShulkerBox) ((BlockStateMeta) meta1).getBlockState()).getInventory().getContents(), ((ShulkerBox) ((BlockStateMeta) meta2).getBlockState()).getInventory().getContents());
+                    if (((BlockStateMeta) meta1).getBlockState() instanceof ShulkerBox shulkerBox1) {
+                        return itemMatcher.matches(shulkerBox1.getInventory().getContents(), ((ShulkerBox) ((BlockStateMeta) meta2).getBlockState()).getInventory().getContents());
                     }
                 }
                 return true;
@@ -485,10 +483,6 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         }
 
         boolean matches(ItemStack requireStack, ItemStack givenStack) {
-            /* If they are the same type, they should also have item meta
-            if (requireStack.hasItemMeta() != givenStack.hasItemMeta()) {
-                return false;
-            }*/
             if (!requireStack.hasItemMeta()) {
                 return true; // Passed check. no meta need to check.
             }

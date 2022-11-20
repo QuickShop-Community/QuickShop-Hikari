@@ -29,8 +29,8 @@ public abstract class AbstractQSEvent extends Event {
      */
     public boolean callCancellableEvent() {
         Bukkit.getPluginManager().callEvent(this);
-        if (this instanceof Cancellable) {
-            return ((Cancellable) this).isCancelled();
+        if (this instanceof Cancellable cancellable) {
+            return cancellable.isCancelled();
         }
         return false;
     }

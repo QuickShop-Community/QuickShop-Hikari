@@ -18,8 +18,6 @@ public class RemoveItemOperation implements Operation {
     private final int itemMaxStackSize;
     private boolean committed;
     private boolean rollback;
-    private int remains = 0;
-    private int rollbackRemains = 0;
     private ItemStack[] snapshot;
 
     /**
@@ -40,7 +38,7 @@ public class RemoveItemOperation implements Operation {
     public boolean commit() {
         committed = true;
         this.snapshot = inv.createSnapshot();
-        remains = amount;
+        int remains = amount;
         while (remains > 0) {
             int stackSize = Math.min(remains, itemMaxStackSize);
             item.setAmount(stackSize);
@@ -55,39 +53,10 @@ public class RemoveItemOperation implements Operation {
         return true;
     }
 
-    /**
-     * Gets the item remains to remove
-     *
-     * @return The item remains to remove
-     */
-    public int getRemains() {
-        return remains;
-    }
-
-    /**
-     * Gets the item remains to rollback
-     *
-     * @return The item remains to rollback
-     */
-    public int getRollbackRemains() {
-        return rollbackRemains;
-    }
 
     @Override
     public boolean rollback() {
         rollback = true;
-//        rollbackRemains = this.remains;
-//        while (rollbackRemains > 0) {
-//            int stackSize = Math.min(rollbackRemains, itemMaxStackSize);
-//            item.setAmount(stackSize);
-//            Map<Integer, ItemStack> notSaved = inv.addItem(item);
-//            if (notSaved.isEmpty()) {
-//                rollbackRemains -= stackSize;
-//            } else {
-//                rollbackRemains -= stackSize - notSaved.entrySet().iterator().next().getValue().getAmount();
-//                return false;
-//            }
-//        }
         return inv.restoreSnapshot(snapshot);
     }
 

@@ -101,8 +101,9 @@ public final class Main extends CompatibilityModule {
 
     @EventHandler(ignoreCancelled = true)
     public void permissionOverride(ShopAuthorizeCalculateEvent event) {
-        if (!getConfig().getBoolean("allow-permission-override"))
+        if (!getConfig().getBoolean("allow-permission-override")) {
             return;
+        }
         Location shopLoc = event.getShop().getLocation();
         ClaimedResidence residence = ResidenceApi.getResidenceManager().getByLoc(shopLoc);
         if (residence == null) {

@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.net.ProtocolException;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Filter;
@@ -25,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 
 public class RollbarErrorReporter {
-    //private volatile static String bootPaste = null;
+    private static final String QUICKSHOP_ROOT_PACKAGE_NAME = "com.ghostchu.quickshop";
     private final Rollbar rollbar;
     private final List<String> reported = new ArrayList<>(5);
     private final List<Class<?>> ignoredException = Lists.newArrayList(IOException.class
@@ -33,14 +34,15 @@ public class RollbarErrorReporter {
             , ProtocolException.class
             , InvalidPluginException.class
             , UnsupportedClassVersionError.class
-            , LinkageError.class);
+            , LinkageError.class
+            , SQLException.class
+    );
     private final QuickShop plugin;
     private final QuickShopExceptionFilter quickShopExceptionFilter;
     private final GlobalExceptionFilter serverExceptionFilter;
     private final LinkedBlockingQueue<ErrorBundle> reportQueue = new LinkedBlockingQueue<>();
     private boolean disable;
     private boolean tempDisable;
-    //private final GlobalExceptionFilter globalExceptionFilter;
     @Getter
     private volatile boolean enabled;
 
@@ -73,7 +75,7 @@ public class RollbarErrorReporter {
                             + " with context: " + CommonUtil.array2String(errorBundle.getContext()));
                     sendError0(errorBundle.getThrowable(), errorBundle.getContext());
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    Thread.currentThread().interrupt();
                 }
             }
         });
@@ -171,13 +173,13 @@ public class RollbarErrorReporter {
             return PossiblyLevel.IMPOSSIBLE;
         }
 
-        if (stackTraceElements[0].getClassName().contains("com.ghostchu.quickshop") && stackTraceElements[1].getClassName().contains("com.ghostchu.quickshop")) {
+        if (stackTraceElements[0].getClassName().contains(QUICKSHOP_ROOT_PACKAGE_NAME) && stackTraceElements[1].getClassName().contains(QUICKSHOP_ROOT_PACKAGE_NAME)) {
             return PossiblyLevel.CONFIRM;
         }
 
         long errorCount = Arrays.stream(stackTraceElements)
                 .limit(3)
-                .filter(stackTraceElement -> stackTraceElement.getClassName().contains("com.ghostchu.quickshop"))
+                .filter(stackTraceElement -> stackTraceElement.getClassName().contains(QUICKSHOP_ROOT_PACKAGE_NAME))
                 .count();
 
         if (errorCount > 0) {
@@ -258,11 +260,11 @@ public class RollbarErrorReporter {
             if (!canReport(throwable)) {
                 return;
             }
-            if (ignoredException.contains(throwable.getClass())) {
+            if (isDisallowedClazz(throwable.getClass())) {
                 return;
             }
             if (throwable.getCause() != null) {
-                if (ignoredException.contains(throwable.getCause().getClass())) {
+                if (isDisallowedClazz(throwable.getCause().getClass())) {
                     return;
                 }
             }
@@ -279,6 +281,10 @@ public class RollbarErrorReporter {
             throwable.printStackTrace();
             resetIgnores();
             plugin.getLogger().warning("====QuickShop Error Report E N D===");
+            plugin
+                    .getLogger()
+                    .warning(
+                            "If this error affects any function, you can join our Discord server to report it and track the feedback: https://discord.gg/Bu3dVtmsD3");
             Log.debug(throwable.getMessage());
             Arrays.stream(throwable.getStackTrace()).forEach(a -> Log.debug(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
             if (Util.isDevMode()) {
@@ -290,11 +296,23 @@ public class RollbarErrorReporter {
         }
     }
 
+    private boolean isDisallowedClazz(Class<?> clazz) {
+        for (Class<?> ignoredClazz : this.ignoredException) {
+            if (ignoredClazz.isAssignableFrom(clazz) || ignoredClazz.equals(clazz)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void unregister() {
         enabled = false;
         plugin.getLogger().setFilter(quickShopExceptionFilter.preFilter);
         plugin.getServer().getLogger().setFilter(serverExceptionFilter.preFilter);
-        //Logger.getGlobal().setFilter(globalExceptionFilter.preFilter);
+        try {
+            rollbar.close(false);
+        } catch (Exception ignored) {
+        }
     }
 
     @Data
@@ -307,19 +325,6 @@ public class RollbarErrorReporter {
             this.context = context;
         }
     }
-
-//    private String getPluginInfo() {
-//        StringBuilder buffer = new StringBuilder();
-//        for (Plugin bPlugin : plugin.getServer().getPluginManager().getPlugins()) {
-//            buffer
-//                    .append("\t")
-//                    .append(bPlugin.getName())
-//                    .append("@")
-//                    .append(bPlugin.isEnabled() ? "Enabled" : "Disabled")
-//                    .append("\n");
-//        }
-//        return buffer.toString();
-//    }
 
     class GlobalExceptionFilter implements Filter {
 

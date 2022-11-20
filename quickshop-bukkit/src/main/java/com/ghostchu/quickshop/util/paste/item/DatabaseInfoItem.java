@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DatabaseInfoItem implements SubPasteItem {
+    private static String VERBOSE_PREFIX = "[verbose] ";
+
     @Override
     public @NotNull String genBody() {
         return buildContent();
@@ -59,13 +61,13 @@ public class DatabaseInfoItem implements SubPasteItem {
                     try {
                         Object value = method.invoke(meta);
                         if (value != null) {
-                            table.insert("[verbose] " + method.getName(), value.toString());
+                            table.insert(VERBOSE_PREFIX + method.getName(), value.toString());
                         } else {
-                            table.insert("[verbose] " + method.getName(), "null");
+                            table.insert(VERBOSE_PREFIX + method.getName(), "null");
                         }
                     } catch (Exception exception) {
                         //ignore
-                        table.insert("[verbose] " + method.getName(), exception.getMessage());
+                        table.insert(VERBOSE_PREFIX + method.getName(), exception.getMessage());
                     }
                 }
             }

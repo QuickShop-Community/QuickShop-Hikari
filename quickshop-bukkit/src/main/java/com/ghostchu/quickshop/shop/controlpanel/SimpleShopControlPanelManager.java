@@ -65,7 +65,7 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager {
         List<Map.Entry<ShopControlPanel, Integer>> list = new ArrayList<>(registry.entrySet());
         list.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()));
         registry.clear();
-        list.forEach((k) -> registry.put(k.getKey(), k.getValue())); // Re-sort
+        list.forEach(k -> registry.put(k.getKey(), k.getValue())); // Re-sort
         LOCK.unlock();
     }
 

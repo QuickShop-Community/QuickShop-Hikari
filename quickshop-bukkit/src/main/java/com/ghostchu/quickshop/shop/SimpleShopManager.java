@@ -10,6 +10,7 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.RomanNumber;
+import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
@@ -301,7 +302,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     plugin.getName(),
                     plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper((holder).getInventory())),
                     null,
-                    Collections.emptyMap());
+                    Collections.emptyMap(),
+                    new SimpleBenefit());
             createShop(shop, info.getSignBlock(), info.isBypassed());
         } else {
             plugin.text().of(p, "invalid-container").send();
@@ -380,12 +382,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
         SimpleEconomyTransaction.SimpleEconomyTransactionBuilder builder = SimpleEconomyTransaction.builder()
-                .allowLoan(plugin.getConfig().getBoolean("shop.allow-economy-loan", false))
                 .core(eco)
                 .from(seller)
                 .amount(total)
                 .taxModifier(taxModifier)
                 .taxAccount(taxAccount)
+                .benefit(shop.getShopBenefit())
                 .world(shop.getLocation().getWorld())
                 .currency(shop.getCurrency());
         if (shop.isUnlimited() && plugin.getConfig().getBoolean("tax-free-for-unlimited-shop", false)) {
@@ -412,6 +414,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
             return;
         }
+
         try {
             shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
         } catch (Exception shopError) {
@@ -478,8 +481,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             } else {
                 saveTask.get(30, TimeUnit.SECONDS);
             }
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+        } catch (ExecutionException | TimeoutException e) {
             plugin.getLogger().log(Level.INFO, "Shops saving interrupted, some unsaved data may lost.", e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
         this.actions.clear();
         this.shops.clear();
@@ -586,100 +591,94 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 plugin.text().of(p, "price-too-cheap",
                         Component.text((decFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax())
                                 : Double.toString(priceCheckResult.getMin()))).send();
-                return;
             }
             case REACHED_PRICE_MAX_LIMIT -> {
                 plugin.text().of(p, "price-too-high",
                         Component.text((decFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax())
                                 : Double.toString(priceCheckResult.getMin()))).send();
-                return;
             }
             case PRICE_RESTRICTED -> {
                 plugin.text().of(p, "restricted-prices",
                         MsgUtil.getTranslateText(shop.getItem()),
                         Component.text(priceCheckResult.getMin()),
                         Component.text(priceCheckResult.getMax())).send();
-                return;
             }
             case NOT_VALID -> {
                 plugin.text().of(p, "not-a-number", shop.getPrice()).send();
-                return;
             }
             case NOT_A_WHOLE_NUMBER -> {
                 plugin.text().of(p, "not-a-integer", shop.getPrice()).send();
-                return;
+            }
+            case PASS -> {
+                // Calling ShopCreateEvent
+                ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, p.getUniqueId());
+                if (Util.fireCancellableEvent(shopCreateEvent)) {
+                    plugin.text().of(p, "plugin-cancelled", shopCreateEvent.getCancelReason()).send();
+                    return;
+                }
+                // Handle create cost
+                // This must be called after the event has been called.
+                // Else, if the event is cancelled, they won't get their
+                // money back.
+                double createCost = plugin.getConfig().getDouble("shop.cost");
+                if (plugin.perm().hasPermission(p, "quickshop.bypasscreatefee")) {
+                    createCost = 0;
+                }
+                if (createCost > 0) {
+                    SimpleEconomyTransaction economyTransaction =
+                            SimpleEconomyTransaction.builder()
+                                    .taxAccount(cacheTaxAccount)
+                                    .taxModifier(0.0)
+                                    .core(plugin.getEconomy())
+                                    .from(p.getUniqueId())
+                                    .to(null)
+                                    .amount(createCost)
+                                    .currency(plugin.getCurrency())
+                                    .world(shop.getLocation().getWorld())
+                                    .build();
+                    if (!economyTransaction.checkBalance()) {
+                        plugin.text().of(p, "you-cant-afford-a-new-shop",
+                                format(createCost, shop.getLocation().getWorld(),
+                                        shop.getCurrency())).send();
+                        return;
+                    }
+                    if (!economyTransaction.failSafeCommit()) {
+                        plugin.text().of(p, "economy-transaction-failed", economyTransaction.getLastError()).send();
+                        plugin.getLogger().severe("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
+                        plugin.getLogger().severe("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
+                        return;
+                    }
+                }
+
+                // The shop about successfully created
+                if (!plugin.getConfig().getBoolean("shop.lock")) {
+                    plugin.text().of(p, "shops-arent-locked").send();
+                }
+
+                // Figures out which way we should put the sign on and
+                // sets its text.
+                if (shop.isDoubleShop()) {
+                    Shop nextTo = shop.getAttachedShop();
+                    if (Objects.requireNonNull(nextTo).getPrice() > shop.getPrice() && (shop.isBuying() == nextTo.isSelling()) && shop.matches(nextTo.getItem())) { // different type compare
+                        plugin.text().of(p, "buying-more-than-selling").send();
+                    }
+                }
+
+                // If this is one of two double chests, update its partner too
+                if (shop.isRealDouble()) {
+                    shop.getAttachedShop().refresh();
+                }
+                // One last refresh to ensure the item shows up
+                shop.refresh();
+                // Shop info sign check
+                if (signBlock != null && autoSign) {
+                    if (signBlock.getType().isAir() || signBlock.getType() == Material.WATER) {
+                        this.processWaterLoggedSign(shop.getLocation().getBlock(), signBlock);
+                    }
+                }
+                registerShop(shop);
             }
         }
-
-        // Calling ShopCreateEvent
-        ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, p.getUniqueId());
-        if (Util.fireCancellableEvent(shopCreateEvent)) {
-            plugin.text().of(p, "plugin-cancelled", shopCreateEvent.getCancelReason()).send();
-            return;
-        }
-        // Handle create cost
-        // This must be called after the event has been called.
-        // Else, if the event is cancelled, they won't get their
-        // money back.
-        double createCost = plugin.getConfig().getDouble("shop.cost");
-        if (plugin.perm().hasPermission(p, "quickshop.bypasscreatefee")) {
-            createCost = 0;
-        }
-        if (createCost > 0) {
-            SimpleEconomyTransaction economyTransaction =
-                    SimpleEconomyTransaction.builder()
-                            .taxAccount(cacheTaxAccount)
-                            .taxModifier(0.0)
-                            .core(plugin.getEconomy())
-                            .from(p.getUniqueId())
-                            .to(null)
-                            .amount(createCost)
-                            .currency(plugin.getCurrency())
-                            .world(shop.getLocation().getWorld())
-                            .build();
-            if (!economyTransaction.checkBalance()) {
-                plugin.text().of(p, "you-cant-afford-a-new-shop",
-                        format(createCost, shop.getLocation().getWorld(),
-                                shop.getCurrency())).send();
-                return;
-            }
-            if (!economyTransaction.failSafeCommit()) {
-                plugin.text().of(p, "economy-transaction-failed", economyTransaction.getLastError()).send();
-                plugin.getLogger().severe("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
-                plugin.getLogger().severe("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
-                return;
-            }
-        }
-
-        // The shop about successfully created
-        if (!plugin.getConfig().getBoolean("shop.lock")) {
-            plugin.text().of(p, "shops-arent-locked").send();
-        }
-
-        // Figures out which way we should put the sign on and
-        // sets its text.
-        if (shop.isDoubleShop()) {
-            Shop nextTo = shop.getAttachedShop();
-            if (Objects.requireNonNull(nextTo).getPrice() > shop.getPrice() && (shop.isBuying() == nextTo.isSelling()) && shop.matches(nextTo.getItem())) { // different type compare
-                plugin.text().of(p, "buying-more-than-selling").send();
-            }
-        }
-
-        // If this is one of two double chests, update its partner too
-        if (shop.isRealDouble()) {
-            shop.getAttachedShop().refresh();
-        }
-        // One last refresh to ensure the item shows up
-        shop.refresh();
-
-
-        // Shop info sign check
-        if (signBlock != null && autoSign) {
-            if (signBlock.getType().isAir() || signBlock.getType() == Material.WATER) {
-                this.processWaterLoggedSign(shop.getLocation().getBlock(), signBlock);
-            }
-        }
-        registerShop(shop);
     }
 
     /**
@@ -721,13 +720,13 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      */
     @Override
     public @NotNull List<Shop> getAllShops() {
-        final List<Shop> shops = new ArrayList<>();
+        final List<Shop> shopsCollected = new ArrayList<>();
         for (final Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
             for (final Map<Location, Shop> shopData : shopMapData.values()) {
-                shops.addAll(shopData.values());
+                shopsCollected.addAll(shopData.values());
             }
         }
-        return shops;
+        return shopsCollected;
     }
 
     /**
@@ -970,7 +969,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
         if (tax >= 1.0) {
-            plugin.getLogger().warning("Disable tax due to is invalid, it should be in 0.0-1.0 (current value is " + tax + ")");
+            plugin.getLogger().warning("Disable tax due to is invalid, it should be in >=0.0 and <1.0 (current value is " + tax + ")");
             tax = 0;
         }
         if (tax < 0) {
@@ -1000,9 +999,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         String finalMessage = message;
 
         Util.mainThreadRun(() -> {
-            Map<UUID, Info> actions = getActions();
             // They wanted to do something.
-            Info info = actions.remove(p.getUniqueId());
+            Info info = getActions().remove(p.getUniqueId());
             if (info == null) {
                 return; // multithreaded means this can happen
             }

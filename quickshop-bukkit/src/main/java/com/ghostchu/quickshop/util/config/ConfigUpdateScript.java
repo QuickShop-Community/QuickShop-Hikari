@@ -39,6 +39,11 @@ public class ConfigUpdateScript {
         getConfig().set("shop.disable-max-size-check-for-size-command", false);
     }
 
+    @UpdateScript(version = 1011)
+    public void removeTryingFixBanlanceInsuffientFeature() {
+        getConfig().set("trying-fix-banlance-insuffient", null);
+    }
+
     @UpdateScript(version = 1004)
     public void configurableDatabaseProperties() {
         getConfig().set("database.queue", null);
@@ -62,7 +67,9 @@ public class ConfigUpdateScript {
     @UpdateScript(version = 1009)
     public void deleteSqlitePlayerMapping() {
         File f = new File(Util.getCacheFolder(), "player_mapping.db");
-        if (f.exists()) f.delete();
+        if (f.exists()) {
+            f.delete();
+        }
     }
 
     @UpdateScript(version = 1008)

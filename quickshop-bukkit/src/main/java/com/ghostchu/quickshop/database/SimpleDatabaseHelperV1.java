@@ -156,10 +156,7 @@ public class SimpleDatabaseHelperV1 {
                 .addColumn("inventoryWrapperName", "VARCHAR(255) NULL")
                 .addColumn("name", "TEXT NULL")
                 .setIndex(IndexType.PRIMARY_KEY, null, "x", "y", "z", "world")
-                .build().execute((i) -> {
-                    return i;
-                    // Do nothing
-                }, ((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed while trying create the shop table! SQL: " + sqlAction.getSQLContent(), exception)));
+                .build().execute(i -> i, ((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed while trying create the shop table! SQL: " + sqlAction.getSQLContent(), exception)));
     }
 
     /**

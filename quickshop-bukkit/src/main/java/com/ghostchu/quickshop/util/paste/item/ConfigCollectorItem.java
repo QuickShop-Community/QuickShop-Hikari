@@ -51,9 +51,9 @@ public class ConfigCollectorItem implements SubPasteItem {
     @NotNull
     private String buildContent() {
         StringBuilder htmlBuilder = new StringBuilder();
-        for (File file : file) {
-            String fileContent = readBuildFile(file);
-            if (readBuildFile(file) != null) // Hide the file in paste if file doesn't exist
+        for (File buildFile : file) {
+            String fileContent = readBuildFile(buildFile);
+            if (readBuildFile(buildFile) != null) // Hide the file in paste if file doesn't exist
             {
                 htmlBuilder.append(fileContent);
             }

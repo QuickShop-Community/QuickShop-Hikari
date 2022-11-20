@@ -63,6 +63,10 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class Util {
+
+    private Util() {
+    }
+
     private static final EnumMap<Material, Integer> CUSTOM_STACKSIZE = new EnumMap<>(Material.class);
     private static final EnumSet<Material> SHOPABLES = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> VERTICAL_FACING = List.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
@@ -93,30 +97,6 @@ public class Util {
             Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
         }
     }
-
-//    /**
-//     * Backup shops.db
-//     *
-//     * @return The result for backup
-//     */
-//    // TODO: MySQL support
-//    public static boolean backupDatabase() {
-//        File dataFolder = plugin.getDataFolder();
-//        File sqlfile = new File(dataFolder, "shops.db");
-//        if (!sqlfile.exists()) {
-//            plugin.getLogger().warning("Failed to backup! (File not found)");
-//            return false;
-//        }
-//        String uuid = UUID.randomUUID().toString().replaceAll("_", "");
-//        File bksqlfile = new File(dataFolder, "/shops_backup_" + uuid + ".db");
-//        try {
-//            Files.copy(sqlfile.toPath(), bksqlfile.toPath());
-//        } catch (Exception e1) {
-//            plugin.getLogger().log(Level.WARNING, "Failed to backup the database", e1);
-//            return false;
-//        }
-//        return true;
-//    }
 
     /**
      * Returns true if the given block could be used to make a shop out of.
@@ -430,26 +410,25 @@ public class Util {
         }
     }
 
-    //    /**
-//     * Use yaw to calc the BlockFace
-//     *
-//     * @param yaw Yaw (Player.getLocation().getYaw())
-//     * @return BlockFace blockFace
-//     * @deprecated Use Bukkit util not this one.
-//     */
-//    @Deprecated
-//    @NotNull
-//    public static BlockFace getYawFace(float yaw) {
-//        if (yaw > 315 && yaw <= 45) {
-//            return BlockFace.NORTH;
-//        } else if (yaw > 45 && yaw <= 135) {
-//            return BlockFace.EAST;
-//        } else if (yaw > 135 && yaw <= 225) {
-//            return BlockFace.SOUTH;
-//        } else {
-//            return BlockFace.WEST;
-//        }
-//    }
+    /**
+     * Use yaw to calc the BlockFace
+     *
+     * @param yaw Yaw (Player.getLocation().getYaw())
+     * @return BlockFace blockFace
+     * @deprecated Use Bukkit util not this one.
+     */
+    @NotNull
+    public static BlockFace getYawFace(float yaw) {
+        if (yaw > 315 && yaw <= 45) {
+            return BlockFace.NORTH;
+        } else if (yaw > 45 && yaw <= 135) {
+            return BlockFace.EAST;
+        } else if (yaw > 135 && yaw <= 225) {
+            return BlockFace.SOUTH;
+        } else {
+            return BlockFace.WEST;
+        }
+    }
 
     @NotNull
     public static Component getItemStackName(@NotNull ItemStack itemStack) {
@@ -607,17 +586,6 @@ public class Util {
         return chestBlockData.getType() != org.bukkit.block.data.type.Chest.Type.SINGLE;
     }
 
-//    /**
-//     * Convert strList to String. E.g "Foo, Bar"
-//     *
-//     * @param strList Target list
-//     * @return str
-//     */
-//    @NotNull
-//    public static String list2String(@NotNull Collection<String> strList) {
-//        return String.join(", ", strList);
-//    }
-
     /**
      * return the right side for given blockFace
      *
@@ -643,8 +611,8 @@ public class Util {
      */
     @NotNull
     public static UUID getSenderUniqueId(@Nullable CommandSender sender) {
-        if (sender instanceof OfflinePlayer) {
-            return ((OfflinePlayer) sender).getUniqueId();
+        if (sender instanceof OfflinePlayer offlinePlayer) {
+            return offlinePlayer.getUniqueId();
         }
         return CommonUtil.getNilUniqueId();
     }
@@ -729,7 +697,6 @@ public class Util {
             e.printStackTrace();
         }
         SHOPABLES.clear();
-        // RESTRICTED_PRICES.clear();
         CUSTOM_STACKSIZE.clear();
         devMode = plugin.getConfig().getBoolean("dev-mode");
 
@@ -844,7 +811,6 @@ public class Util {
                 return false;
             }
         }
-        //F  return devMode != null ? devMode : (devMode = plugin.getConfig().getBoolean("dev-mode"));
     }
 
     public static boolean isDisplayAllowBlock(@NotNull Material mat) {
@@ -1035,20 +1001,6 @@ public class Util {
         }
 
         plugin.getLogger().log(Level.WARNING, "Backup hadn't available in this version yet!");
-
-//        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-//            StringBuilder finalReport = new StringBuilder();
-//            plugin.getShopLoader()
-//                    .getOriginShopsInDatabase()
-//                    .forEach((shop -> finalReport.append(shop).append("\n")));
-//            try (BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false))) {
-//                outputStream.write(finalReport.toString());
-//                plugin.getLogger().info("Successfully created file " + backupName);
-//            } catch (IOException exception) {
-//                plugin.getLogger().log(Level.WARNING, "Backup failed", exception);
-//            }
-//
-//        });
     }
 
     /**

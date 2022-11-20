@@ -32,8 +32,6 @@ import java.util.logging.Level;
 public abstract class AbstractDisplayItem implements Reloadable {
 
     protected static final QuickShop PLUGIN = QuickShop.getInstance();
-
-    private static boolean DISPLAY_ALLOW_STACKS;
     @Setter
     @Getter
     private static volatile boolean isNotSupportVirtualItem = false;
@@ -50,14 +48,22 @@ public abstract class AbstractDisplayItem implements Reloadable {
         init();
     }
 
-    protected void init() {
-        DISPLAY_ALLOW_STACKS = PLUGIN.getConfig().getBoolean("shop.display-allow-stacks");
-        if (DISPLAY_ALLOW_STACKS) {
-            //Prevent stack over the normal size
-            originalItemStack.setAmount(Math.min(originalItemStack.getAmount(), originalItemStack.getMaxStackSize()));
-        } else {
-            this.originalItemStack.setAmount(1);
+    /**
+     * Get PLUGIN now is using which one DisplayType
+     *
+     * @return Using displayType.
+     */
+    @NotNull
+    public static DisplayType getNowUsing() {
+        DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
+        //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
+        if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
+            PLUGIN.getConfig().set("shop.display-type", 0);
+            PLUGIN.saveConfig();
+            PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because {0} type is unsupported.", displayType.name());
+            return DisplayType.REALITEM;
         }
+        return displayType;
     }
 
     /**
@@ -112,22 +118,13 @@ public abstract class AbstractDisplayItem implements Reloadable {
         return false;
     }
 
-    /**
-     * Get PLUGIN now is using which one DisplayType
-     *
-     * @return Using displayType.
-     */
-    @NotNull
-    public static DisplayType getNowUsing() {
-        DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
-        //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
-        if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
-            PLUGIN.getConfig().set("shop.display-type", 0);
-            PLUGIN.saveConfig();
-            PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because " + displayType.name() + " type is unsupported");
-            return DisplayType.REALITEM;
+    protected void init() {
+        if (PLUGIN.getConfig().getBoolean("shop.display-allow-stacks")) {
+            //Prevent stack over the normal size
+            originalItemStack.setAmount(Math.min(originalItemStack.getAmount(), originalItemStack.getMaxStackSize()));
+        } else {
+            this.originalItemStack.setAmount(1);
         }
-        return displayType;
     }
 
     /**
