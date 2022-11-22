@@ -31,7 +31,7 @@ jobs:
       uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
     - uses: Kir-Antipov/mc-publish@v3.2
       with:
-        modrinth-id: 4A0H2dvk
+        modrinth-id: ijC5dDkD
         modrinth-featured: true
         modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
   
@@ -52,3 +52,6 @@ jobs:
           1.19.2
         java: |
           17
+        dependencies: |
+          hXiIvTyT | recommends | *
+          nfGCP9fk | recommends | *
