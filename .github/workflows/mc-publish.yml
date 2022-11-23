@@ -39,20 +39,19 @@ jobs:
           hXiIvTyT | recommends | *
           nfGCP9fk | recommends | *
 
-  
         github-discussion: Announcements
         github-token: ${{ secrets.GITHUB_TOKEN }}
         github-draft: false
         
-        curseforge-id: 709851
-        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-        curseforge-name: QuickShop-Hikari
-        curseforge-dependencies: |
-          vault | depends | *
-          protocollib | recommends | *
-          essentialsx | recommends | *
-          worldedit | recommends | *
-          nbt-api | recommends | *
+        #curseforge-id: 709851
+        #curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        #curseforge-name: QuickShop-Hikari
+        #curseforge-dependencies: |
+        #  vault | depends | *
+        #  protocollib | recommends | *
+        #  essentialsx | recommends | *
+        #  worldedit | recommends | *
+        #  nbt-api | recommends | *
         
         files-primary: "quickshop-bukkit/target/QuickShop-Hikari-*.jar"
         files-secondary: "**/target/Compat-*.jar"
