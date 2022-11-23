@@ -134,6 +134,8 @@ the latest versions of Minecraft.
 - Advanced Transaction System. Undo any Inventory/Economy operation with a shop when it failed to prevent duplications
   and exploits.
 - Per-shop permission management.
+- Shop benefits between shop owner and other players!
+- And much much more!
 
 ## Downloads
 
