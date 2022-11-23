@@ -40,6 +40,9 @@ jobs:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         github-draft: false
         
+        curseforge-id: 709851
+        curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        
         files-primary: "quickshop-bukkit/target/QuickShop-Hikari-*.jar"
         files-secondary: "**/target/Compat-*.jar"
         loaders: |
