@@ -45,7 +45,7 @@ public class SubCommand_SuperCreate implements CommandHandler<Player> {
             // Send creation menu.
             final SimpleInfo info = new SimpleInfo(b.getLocation(), ShopAction.CREATE_SELL, sender.getInventory().getItemInMainHand(), b.getRelative(sender.getFacing().getOppositeFace()), true);
 
-            plugin.getShopManager().getActions().put(sender.getUniqueId(), info);
+            plugin.getShopManager().getInteractiveManager().put(sender.getUniqueId(), info);
             plugin.text().of(sender, "how-much-to-trade-for", MsgUtil.getTranslateText(info.getItem()), plugin.isAllowStack() && plugin.perm().hasPermission(sender, "quickshop.create.stacks") ? item.getAmount() : 1).send();
             return;
         }

@@ -247,6 +247,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private ShopDataSaveWatcher shopSaveWatcher;
     @Getter
     private SignHooker signHooker;
+    @Getter
+    private BungeeListener bungeeListener;
 
     /**
      * Use for mock bukkit
@@ -696,6 +698,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         new ShopProtectionListener(this, this.shopCache).register();
         new MetricListener(this).register();
         new InternalListener(this).register();
+        if (checkIfBungee()) {
+            this.bungeeListener = new BungeeListener(this);
+            this.bungeeListener.register();
+        }
     }
 
     public void registerQuickShopCommands() {
@@ -830,6 +836,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         if (getShopManager() != null) {
             getLogger().info("Unloading all loaded shops...");
             getShopManager().getLoadedShops().forEach(Shop::onUnload);
+        }
+        if (this.bungeeListener != null) {
+            getLogger().info("Disabling the BungeeChat messenger listener.");
+            Bukkit.getOnlinePlayers().forEach(player -> this.bungeeListener.notifyForCancel(player));
+            this.bungeeListener.unregister();
         }
         if (getShopSaveWatcher() != null) {
             getLogger().info("Stopping shop auto save...");
@@ -1212,6 +1223,17 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         } else {
             getLogger().info("You disabled metrics, Skipping...");
         }
+    }
+
+    private boolean checkIfBungee() {
+        if (Util.parsePackageProperly("forceBungeeCord").asBoolean()) {
+            return true;
+        }
+        ConfigurationSection section = getServer().spigot().getConfig().getConfigurationSection("settings");
+        if (section == null) {
+            return false;
+        }
+        return section.getBoolean("settings.bungeecord");
     }
 
     public @NotNull TextManager text() {

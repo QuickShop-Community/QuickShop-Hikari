@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
+import com.ghostchu.quickshop.api.shop.ShopManager;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.shop.InteractionController;
 import com.ghostchu.quickshop.shop.SimpleInfo;
@@ -300,7 +301,7 @@ public class PlayerListener extends AbstractQSListener {
             Log.debug("ShopPreCreateEvent cancelled");
             return false;
         }
-        plugin.getShopManager().getActions().put(player.getUniqueId(), info);
+        plugin.getShopManager().getInteractiveManager().put(player.getUniqueId(), info);
         plugin.text().of(player, "how-much-to-trade-for", MsgUtil.getTranslateText(stack),
                 plugin.isAllowStack() &&
                         plugin.perm().hasPermission(player, "quickshop.create.stacks")
@@ -329,7 +330,7 @@ public class PlayerListener extends AbstractQSListener {
         final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
         final double ownerBalance = eco.getBalance(shop.getOwner(), shop.getLocation().getWorld(), shop.getCurrency());
         int items = getPlayerCanSell(shop, ownerBalance, price, new BukkitInventoryWrapper(playerInventory));
-        Map<UUID, Info> actions = plugin.getShopManager().getActions();
+        ShopManager.InteractiveManager actions = plugin.getShopManager().getInteractiveManager();
         if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
                 || plugin.perm().hasPermission(p, "quickshop.other.use")) {
             Info info = new SimpleInfo(shop.getLocation(), ShopAction.PURCHASE_SELL, null, null, shop, false);
@@ -374,7 +375,7 @@ public class PlayerListener extends AbstractQSListener {
         final double price = shop.getPrice();
         final Inventory playerInventory = p.getInventory();
         final String tradeAllWord = plugin.getConfig().getString("shop.word-for-trade-all-items", "all");
-        Map<UUID, Info> actions = plugin.getShopManager().getActions();
+        ShopManager.InteractiveManager actions = plugin.getShopManager().getInteractiveManager();
         final double traderBalance = eco.getBalance(p.getUniqueId(), shop.getLocation().getWorld(), shop.getCurrency());
         int itemAmount = getPlayerCanBuy(shop, traderBalance, price, new BukkitInventoryWrapper(playerInventory));
         if (shop.playerAuthorize(p.getUniqueId(), BuiltInShopPermission.PURCHASE)
@@ -610,7 +611,7 @@ public class PlayerListener extends AbstractQSListener {
         if (player == null) {
             return;
         }
-        Map<UUID, Info> actionMap = plugin.getShopManager().getActions();
+        ShopManager.InteractiveManager actionMap = plugin.getShopManager().getInteractiveManager();
         final Info info = actionMap.get(player.getUniqueId());
         if (info != null && info.getLocation().equals(event.getBlock().getLocation())) {
             actionMap.remove(player.getUniqueId());
@@ -625,7 +626,7 @@ public class PlayerListener extends AbstractQSListener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent e) {
         // Remove them from the menu
-        plugin.getShopManager().getActions().remove(e.getPlayer().getUniqueId());
+        plugin.getShopManager().getInteractiveManager().remove(e.getPlayer().getUniqueId());
         plugin.getDatabaseHelper().setPlayerLocale(e.getPlayer().getUniqueId(), e.getPlayer().getLocale())
                 .whenComplete((result, throwable) -> {
                     if (throwable != null) {
@@ -644,7 +645,7 @@ public class PlayerListener extends AbstractQSListener {
      */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onMove(PlayerMoveEvent e) {
-        final Info info = plugin.getShopManager().getActions().get(e.getPlayer().getUniqueId());
+        final Info info = plugin.getShopManager().getInteractiveManager().get(e.getPlayer().getUniqueId());
         if (info == null) {
             return;
         }
@@ -658,7 +659,7 @@ public class PlayerListener extends AbstractQSListener {
                 plugin.text().of(p, "shop-creation-cancelled").send();
             }
             Log.debug(p.getName() + " too far with the shop location.");
-            plugin.getShopManager().getActions().remove(p.getUniqueId());
+            plugin.getShopManager().getInteractiveManager().remove(p.getUniqueId());
         }
     }
 
