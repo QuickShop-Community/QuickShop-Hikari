@@ -35,6 +35,10 @@ jobs:
         modrinth-id: ijC5dDkD
         modrinth-featured: true
         modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+        modrinth-dependencies: |
+          hXiIvTyT | recommends | *
+          nfGCP9fk | recommends | *
+
   
         github-discussion: Announcements
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -42,6 +46,13 @@ jobs:
         
         curseforge-id: 709851
         curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+        curseforge-name: QuickShop-Hikari
+        curseforge-dependencies: |
+          vault | depends | *
+          protocollib | recommends | *
+          essentialsx | recommends | *
+          worldedit | recommends | *
+          nbt-api | recommends | *
         
         files-primary: "quickshop-bukkit/target/QuickShop-Hikari-*.jar"
         files-secondary: "**/target/Compat-*.jar"
@@ -56,6 +67,3 @@ jobs:
           1.19.2
         java: |
           17
-        dependencies: |
-          hXiIvTyT | recommends | *
-          nfGCP9fk | recommends | *
