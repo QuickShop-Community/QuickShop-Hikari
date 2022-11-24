@@ -33,7 +33,6 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
     @Override
     public void unregister() {
         super.unregister();
-        plugin.getServer().getMessenger().unregisterIncomingPluginChannel(plugin, CHAT_FORWARD_CHANNEL, this);
         plugin.getServer().getMessenger().unregisterIncomingPluginChannel(plugin, CHAT_FORWARD_CHANNEL);
         plugin.getLogger().info("BungeeCord messenger listener unregistered!");
     }
