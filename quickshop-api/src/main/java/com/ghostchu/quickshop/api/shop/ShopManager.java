@@ -112,7 +112,9 @@ public interface ShopManager {
 
     /**
      * @return Returns the Map. Info contains what their last question etc was.
+     * @deprecated Use getInteractiveManager() instead.
      */
+    @Deprecated(forRemoval = true)
     @NotNull Map<UUID, Info> getActions();
 
     /**
@@ -338,4 +340,33 @@ public interface ShopManager {
      */
     boolean shopIsNotValid(@NotNull UUID uuid, @NotNull Info info, @NotNull Shop shop);
 
+    /**
+     * Gets the InteractiveManager (which former as known getActions())
+     *
+     * @return InteractiveManager instance
+     */
+    @NotNull
+    ShopManager.InteractiveManager getInteractiveManager();
+
+    /**
+     * An getActions() alternative.
+     */
+    public static interface InteractiveManager {
+        public int size();
+
+        public boolean isEmpty();
+
+        public Info put(UUID uuid, Info info);
+
+        @Nullable
+        public Info remove(UUID uuid);
+
+        public void reset();
+
+        public Info get(UUID uuid);
+
+        public boolean containsKey(UUID uuid);
+
+        public boolean containsValue(Info info);
+    }
 }

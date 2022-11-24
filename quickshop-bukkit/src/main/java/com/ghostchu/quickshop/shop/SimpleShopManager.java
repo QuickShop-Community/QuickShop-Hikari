@@ -70,7 +70,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     private final Set<Shop> loadedShops = Sets.newConcurrentHashSet();
 
-    private final Map<UUID, Info> actions = Maps.newConcurrentMap();
+    private final InteractiveManager interactiveManager;
 
     private final QuickShop plugin;
     private final Cache<UUID, Shop> shopRuntimeUUIDCaching =
@@ -90,10 +90,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     private boolean useOldCanBuildAlgorithm;
     private boolean autoSign;
 
-
     public SimpleShopManager(@NotNull QuickShop plugin) {
         Util.ensureThread(false);
         this.plugin = plugin;
+        this.interactiveManager = new InteractiveManager(plugin);
         this.formatter = new EconomyFormatter(plugin, plugin.getEconomy());
         plugin.getReloadManager().register(this);
         init();
@@ -486,7 +486,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
-        this.actions.clear();
+        this.interactiveManager.reset();
         this.shops.clear();
     }
 
@@ -705,10 +705,12 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     /**
      * @return Returns the Map. Info contains what their last question etc was.
+     * @deprecated Use getInteractiveManager instead. This way won't trigger the BungeeCord notification.
      */
     @Override
+    @Deprecated(forRemoval = true)
     public @NotNull Map<UUID, Info> getActions() {
-        return this.actions;
+        return this.interactiveManager.actions;
     }
 
     /**
@@ -987,7 +989,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     @Override
     public void handleChat(@NotNull Player p, @NotNull String msg) {
-        if (!plugin.getShopManager().getActions().containsKey(p.getUniqueId())) {
+        if (!plugin.getShopManager().getInteractiveManager().containsKey(p.getUniqueId())) {
             return;
         }
         String message = net.md_5.bungee.api.ChatColor.stripColor(msg);
@@ -1000,7 +1002,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
         Util.mainThreadRun(() -> {
             // They wanted to do something.
-            Info info = getActions().remove(p.getUniqueId());
+            Info info = getInteractiveManager().remove(p.getUniqueId());
             if (info == null) {
                 return; // multithreaded means this can happen
             }
@@ -1271,6 +1273,11 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     public boolean shopIsNotValid(@NotNull UUID uuid, @NotNull Info info, @NotNull Shop shop) {
         Player player = plugin.getServer().getPlayer(uuid);
         return shopIsNotValid(player, info, shop);
+    }
+
+    @Override
+    public @NotNull ShopManager.InteractiveManager getInteractiveManager() {
+        return this.interactiveManager;
     }
 
     private void notifySold(@NotNull UUID buyer, @NotNull Shop shop, int amount, int space) {
@@ -1689,6 +1696,82 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 return this.next(); // Skip to the next one (Empty iterator?)
             }
             return shops.next();
+        }
+    }
+
+    public static class InteractiveManager implements ShopManager.InteractiveManager {
+        private final Map<UUID, Info> actions = Maps.newConcurrentMap();
+        private final QuickShop plugin;
+
+        public InteractiveManager(QuickShop plugin) {
+            this.plugin = plugin;
+        }
+
+        @Override
+        public int size() {
+            return this.actions.size();
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return this.actions.isEmpty();
+        }
+
+        @Nullable
+        public Info put(UUID uuid, Info info) {
+            sendRequest(uuid);
+            return this.actions.put(uuid, info);
+        }
+
+        @Nullable
+        public Info remove(UUID uuid) {
+            sendCancel(uuid);
+            return this.actions.remove(uuid);
+        }
+
+        public void reset() {
+            this.actions.keySet().forEach(uuid -> {
+                Player player = Bukkit.getPlayer(uuid);
+                if (player != null) {
+                    plugin.getBungeeListener().notifyForCancel(player);
+                }
+            });
+            this.actions.clear();
+        }
+
+        @Override
+        public Info get(UUID uuid) {
+            return this.actions.get(uuid);
+        }
+
+        @Override
+        public boolean containsKey(UUID uuid) {
+            return this.actions.containsKey(uuid);
+        }
+
+        @Override
+        public boolean containsValue(Info info) {
+            return this.actions.containsValue(info);
+        }
+
+        private void sendRequest(UUID uuid) {
+            if (plugin.getBungeeListener() != null) {
+                Player p = Bukkit.getPlayer(uuid);
+                if (p != null) {
+                    Log.debug("Request chat forward for player " + p.getName());
+                    plugin.getBungeeListener().notifyForForward(p);
+                }
+            }
+        }
+
+        private void sendCancel(UUID uuid) {
+            if (plugin.getBungeeListener() != null) {
+                Player p = Bukkit.getPlayer(uuid);
+                if (p != null) {
+                    Log.debug("Cancel chat forward for player " + p.getName());
+                    plugin.getBungeeListener().notifyForCancel(p);
+                }
+            }
         }
     }
 }

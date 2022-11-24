@@ -24,7 +24,7 @@ public class ChatListener extends AbstractQSListener {
             return;
         }
 
-        if (!plugin.getShopManager().getActions().containsKey(e.getPlayer().getUniqueId())) {
+        if (!plugin.getShopManager().getInteractiveManager().containsKey(e.getPlayer().getUniqueId())) {
             return;
         }
         // Fix stupid chat plugin will add a weird space before or after the number we want.

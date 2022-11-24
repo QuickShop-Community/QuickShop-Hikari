@@ -24,7 +24,7 @@ public class SubCommand_Amount implements CommandHandler<Player> {
             return;
         }
 
-        if (!plugin.getShopManager().getActions().containsKey(sender.getUniqueId())) {
+        if (!plugin.getShopManager().getInteractiveManager().containsKey(sender.getUniqueId())) {
             plugin.text().of(sender, "no-pending-action").send();
             return;
         }

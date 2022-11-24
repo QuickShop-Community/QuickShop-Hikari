@@ -26,13 +26,13 @@ public class UpdateWatcher implements Listener {
         cronTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
             if (!plugin.getNexusManager().isLatest()) {
                 plugin.getLogger().info("A new version of QuickShop has been released! [" + plugin.getNexusManager().getLatestVersion() + "]");
-                plugin.getLogger().info("Update here: https://www.spigotmc.org/resources/100125/");
+                plugin.getLogger().info("Update here: https://modrinth.com/plugin/quickshop-hikari");
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (plugin.perm().hasPermission(player, "quickshop.alerts")) {
                         MsgUtil.sendDirectMessage(player, ChatColor.GREEN + "---------------------------------------------------");
                         MsgUtil.sendDirectMessage(player, ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(pickRandomMessage(player)));
                         MsgUtil.sendDirectMessage(player, ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
-                        MsgUtil.sendDirectMessage(player, ChatColor.AQUA + " https://www.spigotmc.org/resources/100125/");
+                        MsgUtil.sendDirectMessage(player, ChatColor.AQUA + " https://modrinth.com/plugin/quickshop-hikari");
                         MsgUtil.sendDirectMessage(player, ChatColor.GREEN + "---------------------------------------------------");
                     }
                 }
@@ -63,7 +63,7 @@ public class UpdateWatcher implements Listener {
             }
             MsgUtil.sendDirectMessage(e.getPlayer(), ChatColor.GREEN + "---------------------------------------------------");
             MsgUtil.sendDirectMessage(e.getPlayer(), ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(pickRandomMessage(e.getPlayer())));
-            MsgUtil.sendDirectMessage(e.getPlayer(), ChatColor.AQUA + " https://www.spigotmc.org/resources/100125/");
+            MsgUtil.sendDirectMessage(e.getPlayer(), ChatColor.AQUA + " https://modrinth.com/plugin/quickshop-hikari");
             MsgUtil.sendDirectMessage(e.getPlayer(), ChatColor.GREEN + "---------------------------------------------------");
         });
     }

@@ -77,7 +77,7 @@ public class BlockListener extends AbstractProtectionListener {
             }
 
             // Cancel their current menu... Doesnt cancel other's menu's.
-            final Info action = super.getPlugin().getShopManager().getActions().get(p.getUniqueId());
+            final Info action = super.getPlugin().getShopManager().getInteractiveManager().get(p.getUniqueId());
 
             if (action != null) {
                 action.setAction(ShopAction.CANCELLED);
