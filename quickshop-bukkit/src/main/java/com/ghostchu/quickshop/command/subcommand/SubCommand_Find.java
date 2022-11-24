@@ -44,6 +44,12 @@ public class SubCommand_Find implements CommandHandler<Player> {
 
 
         final String lookFor = sb.toString().toLowerCase();
+
+        final StringBuilder originLookForSb = new StringBuilder(cmdArg[0]);
+        for (int i = 1; i < cmdArg.length; i++) {
+            originLookForSb.append(" ").append(cmdArg[i]);
+        }
+        final String originLookFor = originLookForSb.toString();
         final double maxDistance = plugin.getConfig().getInt("shop.finding.distance");
         final boolean usingOldLogic = plugin.getConfig().getBoolean("shop.finding.oldLogic");
         final int shopLimit = usingOldLogic ? 1 : plugin.getConfig().getInt("shop.finding.limit");
@@ -80,7 +86,9 @@ public class SubCommand_Find implements CommandHandler<Player> {
                 //Collect valid shop that trading items we want
                 if (!ChatColor.stripColor(LegacyComponentSerializer.legacySection().serialize(Util.getItemStackName(shop.getItem()))).toLowerCase().contains(lookFor)) {
                     if (!shop.getItem().getType().name().toLowerCase().contains(lookFor)) {
-                        continue;
+                        if (plugin.getItemMarker().get(originLookFor) == null) {
+                            continue;
+                        }
                     }
                 }
                 if (excludeOutOfStock) {
