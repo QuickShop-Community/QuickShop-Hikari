@@ -27,11 +27,13 @@ public class SubCommand_Export implements CommandHandler<ConsoleCommandSender> {
         Util.asyncThreadRun(() -> {
             try {
                 databaseIOUtil.exportTables(file);
+                plugin.text().of(sender, "exported-database", file.toString()).send();
             } catch (SQLException | IOException e) {
+                e.printStackTrace();
                 plugin.text().of(sender, "exporting-failed", e.getMessage()).send();
             }
         });
-        plugin.text().of(sender, "exported-database", file.toString()).send();
+
     }
 
 
