@@ -4,7 +4,8 @@
   "version": "${project.version}",
   "description": "Compatibility module for Velocity",
   "authors": [
-    "Ghost_chu"
+    "Ghost_chu",
+    "4drian3d"
   ],
   "main": "com.ghostchu.quickshop.compatibility.${project.artifactId}.Main"
 }

@@ -82,15 +82,15 @@ public final class Main {
     @Subscribe(order = PostOrder.FIRST)
     public void onChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
-        // Workaround against kicking of players with valid signed key and client 1.19.1 or higher by velocity
-        if (player.getIdentifiedKey() != null
-                && player.getProtocolVersion().equals(ProtocolVersion.MINECRAFT_1_19_1)) {
-            return;
-        }
         UUID uuid = player.getUniqueId();
         if (pendingForward.contains(uuid)) {
             forwardMessage(player, event.getMessage());
-            event.setResult(PlayerChatEvent.ChatResult.denied());
+            // Workaround against kicking of players with valid signed key and client 1.19.1 or higher by velocity
+            ProtocolVersion protocol = player.getProtocolVersion();
+            if (player.getIdentifiedKey() == null || !protocol.equals(ProtocolVersion.MINECRAFT_1_19_1)) {
+                event.setResult(PlayerChatEvent.ChatResult.denied());
+            }
+
         }
     }
 
