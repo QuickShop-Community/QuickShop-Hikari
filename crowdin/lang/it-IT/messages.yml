@@ -469,9 +469,9 @@ client-language-unsupported: <yellow>QuickShop non supporta la lingua del tuo cl
 language-version: '63'
 not-managed-shop: <red>Non sei il proprietario o moderatore di questo negozio
 shop-cannot-trade-when-freezing: <red>Non puoi interagire con questo negozio perché è congelato.
-invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
+invalid-container: <red>Container non valido, puoi creare uno shop soltanto su un blocco che hai nell'inventario.
 permission:
-  header: "<green>Shop Permission Details"
+  header: "Dettagli dei Permessi del Negozio"
   header-player: "<green>Shop Permission Details for {0}"
   header-group: "<green>Shop Permission Details for group {0}"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
