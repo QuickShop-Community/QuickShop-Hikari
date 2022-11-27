@@ -24,7 +24,7 @@ public class DatabaseIOUtil {
     }
 
     public void exportTables(@NotNull File zipFile) throws SQLException, IOException {
-        zipFile.mkdirs();
+        zipFile.getParentFile().mkdirs();
         zipFile.createNewFile();
         try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
             for (DataTables table : DataTables.values()) {

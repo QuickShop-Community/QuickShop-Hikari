@@ -134,7 +134,7 @@ chat-type: 0
 
 #MySQL database settings.
 database:
-  #false = use local SQLite database.
+  #false = use local H2 database.
   #true = use local/remote MySQL database.
   mysql: false
   # The database address. (Only required if mysql is true)
@@ -252,11 +252,12 @@ shop:
   pay-unlimited-shop-owners: false
 
   #Should we place display items on the chests?
-  #This may cause duped items, especially for modded servers!
+  #This may cause duped items, especially for modded servers if you're using Real DisplayItem!
   display-items: true
 
   #QuickShop will check if the display item is in a valid position every specified amount of ticks.
   #Set to 0 to disable it.
+  #It doesn't work under Virtual DisplayItem.
   display-items-check-ticks: 6000
 
   #The display type you want use.
@@ -272,9 +273,11 @@ shop:
   display-despawn-range: 20
 
   #The interval (in ticks) at which QS checks the shops range to despawn/spawn displays.
+  #It doesn't work under Virtual DisplayItem.
   display-check-time: 40
 
   #Allow displays to show stack effects when stack creation is turned on.
+  #It doesn't work under Virtual DisplayItem.
   display-allow-stacks: false
 
   #[BETA] Enable beta per-player shop sign feature for i18n.

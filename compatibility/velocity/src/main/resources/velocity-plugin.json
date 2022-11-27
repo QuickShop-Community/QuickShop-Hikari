@@ -1,0 +1,11 @@
+{
+  "id": "qscompat-${project.artifactId}",
+  "name": "qscompat-${project.artifactId}",
+  "version": "${project.version}",
+  "description": "Compatibility module for Velocity",
+  "authors": [
+    "Ghost_chu",
+    "4drian3d"
+  ],
+  "main": "com.ghostchu.quickshop.compatibility.${project.artifactId}.Main"
+}

@@ -11,12 +11,12 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
-    <artifactId>advancedregionmarket</artifactId>
+    <artifactId>velocity</artifactId>
     <packaging>jar</packaging>
 
-    <name>Compat-AdvancedRegionMarket</name>
+    <name>Compat-Velocity</name>
 
-    <description>Compatibility module for AdvancedRegionMarket</description>
+    <description>Compatibility module for Velocity</description>
     <properties>
         <java.version>16</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,12 +29,26 @@
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>net/kyori/**</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
             </plugin>
         </plugins>
         <resources>
@@ -45,28 +59,26 @@
         </resources>
     </build>
 
+    <repositories>
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-bukkit</artifactId>
-            <version>${parent.version}</version>
+            <groupId>com.velocitypowered</groupId>
+            <artifactId>velocity-api</artifactId>
+            <version>3.1.2-SNAPSHOT</version>
+            <type>jar</type>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.ghostchu.quickshop.compatibility</groupId>
-            <artifactId>common</artifactId>
-            <version>${parent.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.alex9849</groupId>
-            <artifactId>advanced-region-market</artifactId>
-            <version>3.4.3</version>
+            <groupId>com.velocitypowered</groupId>
+            <artifactId>velocity-api</artifactId>
+            <version>3.1.2-SNAPSHOT</version>
+            <type>javadoc</type>
             <scope>provided</scope>
         </dependency>
     </dependencies>
