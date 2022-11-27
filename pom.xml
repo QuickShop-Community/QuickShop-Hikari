@@ -501,6 +501,7 @@
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>
         <module>compatibility/bungeecord</module>
+        <module>compatibility/velocity</module>
         <module>compatibility/clearlag</module>
         <module>compatibility/nocheatplus</module>
         <module>compatibility/worldguard</module>
