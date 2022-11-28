@@ -670,12 +670,28 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         });
     }
 
-    @Override
-    public void purgeHistoryRecords() {
-        DataTables.LOG_TRANSACTION.createDelete().build().executeAsync();
-        DataTables.LOG_PURCHASE.createDelete().build().executeAsync();
-        DataTables.LOG_CHANGES.createDelete().build().executeAsync();
-        DataTables.LOG_OTHERS.createDelete().build().executeAsync();
+    public CompletableFuture<Integer> purgeLogsRecords(@Nullable Date endDate) {
+        return CompletableFuture.supplyAsync(() -> {
+            int linesAffected = 0;
+            try {
+                linesAffected += DataTables.LOG_TRANSACTION.createDelete()
+                        .addTimeCondition("time", null, endDate)
+                        .build().execute();
+                linesAffected += DataTables.LOG_CHANGES.createDelete()
+                        .addTimeCondition("time", null, endDate)
+                        .build().execute();
+                linesAffected += DataTables.LOG_PURCHASE.createDelete()
+                        .addTimeCondition("time", null, endDate)
+                        .build().execute();
+                linesAffected += DataTables.LOG_OTHERS.createDelete()
+                        .addTimeCondition("time", null, endDate)
+                        .build().execute();
+                return linesAffected;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return -1;
+            }
+        });
     }
 
     @NotNull

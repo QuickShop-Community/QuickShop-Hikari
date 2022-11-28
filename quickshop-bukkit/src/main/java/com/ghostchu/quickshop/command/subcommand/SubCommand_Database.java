@@ -8,8 +8,10 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 
 public class SubCommand_Database implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
@@ -34,7 +36,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
         //noinspection SwitchStatementWithTooFewBranches
         switch (cmdArg[0]) {
             case "trim" -> handleTrim(sender, ArrayUtils.remove(cmdArg, 0));
-            case "purgehistory" -> purgeHistory(sender, ArrayUtils.remove(cmdArg, 0));
+            case "purgelogs" -> purgeLogs(sender, ArrayUtils.remove(cmdArg, 0));
             default -> plugin.text().of(sender, "bad-command-usage-detailed", "trim").send();
         }
     }
@@ -80,13 +82,40 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
         databaseHelper.purgeIsolated().whenComplete((data, err) -> plugin.text().of(sender, "database.trim-complete", data).send());
     }
 
-    private void purgeHistory(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1 || !"confirm".equalsIgnoreCase(cmdArg[0])) {
+    private void purgeLogs(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
+        // TODO: Only purge before x days
+        if (cmdArg.length < 1) {
+            plugin.text().of(sender, "command-incorrect", "/qs database purgelogs <before-days>").send();
+            return;
+        }
+        if (cmdArg.length < 2 || !cmdArg[1].equalsIgnoreCase("confirm")) {
             plugin.text().of(sender, "database.purge-warning").send();
             return;
         }
-        plugin.text().of(sender, "database.purge-working").send();
-        SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2) plugin.getDatabaseHelper();
-        databaseHelper.purgeHistoryRecords();
+        try {
+            int days = Integer.parseInt(cmdArg[0]);
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, days);
+            plugin.text().of(sender, "database.purge-task-created").send();
+            SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2) plugin.getDatabaseHelper();
+            databaseHelper.purgeLogsRecords(calendar.getTime()).whenComplete((r, e) -> {
+                if (e != null) {
+                    plugin.getLogger().log(Level.WARNING, "Failed to execute database purge.", e);
+                    plugin.text().of(sender, "database.purge-done-with-error", r).send();
+                } else {
+                    if (r == -1) {
+                        plugin.getLogger().log(Level.WARNING, "Failed to execute database purge, check the exception above.");
+                        plugin.text().of(sender, "database.purge-done-with-error", r).send();
+                    } else {
+                        plugin.text().of(sender, "database.purge-done-with-line", r).send();
+                    }
+                }
+            });
+            // Then we need also purge the isolated data after purge the logs.
+            plugin.text().of(sender, "database.trim-start").send();
+            databaseHelper.purgeIsolated().whenComplete((data, err) -> plugin.text().of(sender, "database.trim-complete", data).send());
+        } catch (NumberFormatException e) {
+            plugin.text().of(sender, "not-a-number", cmdArg[0]).send();
+        }
     }
 }
