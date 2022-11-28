@@ -34,6 +34,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
         //noinspection SwitchStatementWithTooFewBranches
         switch (cmdArg[0]) {
             case "trim" -> handleTrim(sender, ArrayUtils.remove(cmdArg, 0));
+            case "purgehistory" -> purgeHistory(sender, ArrayUtils.remove(cmdArg, 0));
             default -> plugin.text().of(sender, "bad-command-usage-detailed", "trim").send();
         }
     }
@@ -77,5 +78,15 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
         plugin.text().of(sender, "database.trim-start").send();
         SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2) plugin.getDatabaseHelper();
         databaseHelper.purgeIsolated().whenComplete((data, err) -> plugin.text().of(sender, "database.trim-complete", data).send());
+    }
+
+    private void purgeHistory(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
+        if (cmdArg.length < 1 || !"confirm".equalsIgnoreCase(cmdArg[0])) {
+            plugin.text().of(sender, "database.purge-warning").send();
+            return;
+        }
+        plugin.text().of(sender, "database.purge-working").send();
+        SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2) plugin.getDatabaseHelper();
+        databaseHelper.purgeHistoryRecords();
     }
 }

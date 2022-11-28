@@ -661,6 +661,8 @@ database:
   trim-start: "<green>Database trim started, please wait..."
   trim-exception: "<red>Database trim failed, an exception raised during database trimming, check the server console."
   generated-at: "<yellow>Generated at: <gold>{0}</gold>"
+  purge-warning: "<yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs confirm`"
+  purge-done: "<green>Task created! Database are silent purging history records in background."
   suggestion:
     trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."
@@ -687,6 +689,7 @@ benefit-added: "<green>Player <aqua>{0}</aqua> has been added into shop benefits
 benefit-updated: "<green>Player <aqua>{0}</aqua>'s benefits has been updated!"
 benefit-query: "<green>This shop have <yellow>{0}</yellow> players in benefits list!"
 benefit-query-list: "<yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>"
+
 addon:
   towny:
     commands:

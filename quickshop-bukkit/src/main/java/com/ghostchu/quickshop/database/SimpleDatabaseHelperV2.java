@@ -670,6 +670,14 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         });
     }
 
+    @Override
+    public void purgeHistoryRecords() {
+        DataTables.LOG_TRANSACTION.createDelete().build().executeAsync();
+        DataTables.LOG_PURCHASE.createDelete().build().executeAsync();
+        DataTables.LOG_CHANGES.createDelete().build().executeAsync();
+        DataTables.LOG_OTHERS.createDelete().build().executeAsync();
+    }
+
     @NotNull
     public CompletableFuture<@Nullable Long> queryDataId(@NotNull SimpleDataRecord simpleDataRecord) {
         // Check if dataRecord exists in database with same values

@@ -190,4 +190,5 @@ public interface DatabaseHelper {
      * @return
      */
     CompletableFuture<Void> updateShop(@NotNull Shop shop);
+
 }
