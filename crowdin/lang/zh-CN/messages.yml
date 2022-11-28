@@ -562,6 +562,11 @@ database:
   trim-start: "<green>数据库清理已开始，请稍候..."
   trim-exception: "<red>数据库清理失败，数据库清理过程中出现异常，请检查服务器控制台。"
   generated-at: "<yellow>生成于： <gold>{0}</gold>"
+  purge-date: "<red>You must given a date."
+  purge-warning: "<yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`"
+  purge-task-created: "<green>Task created! Database are silent purging history records in background."
+  purge-done-with-line: "<green>Purge task completed, total <gold>{0}</gold> lines purged from database."
+  purge-done-with-error: "<red>Purge task failed, check the server console for details."
   suggestion:
     trim: "<yellow>此数据库需要进行清理，执行命令 <aqua>/qs database trim</aqua> 来清理数据库。"
 always-counting-removal-early-warning: "<red>总是计数功能将移除，您不应该再使用它，并将在将来停止工作。"
