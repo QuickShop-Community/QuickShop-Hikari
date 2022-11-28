@@ -562,7 +562,7 @@ database:
   trim-start: "<green>Database trim started, please wait..."
   trim-exception: "<red>Database trim failed, an exception raised during database trimming, check the server console."
   generated-at: "<yellow>Generated at: <gold>{0}</gold>"
-  purge-date: "<red>You must given a date."
+  purge-date: "<red>Ви повинні вказати дату."
   purge-warning: "<yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`"
   purge-task-created: "<green>Task created! Database are silent purging history records in background."
   purge-done-with-line: "<green>Purge task completed, total <gold>{0}</gold> lines purged from database."
