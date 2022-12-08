@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>3.4.0.2</version>
+    <version>3.4.0.3-alpha</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -332,20 +332,12 @@
             <url>https://repo.aikar.co/content/groups/aikar/</url>
         </repository>
         <repository>
-            <id>onarandombox</id>
-            <url>https://repo.onarandombox.com/content/groups/public</url>
-        </repository>
-        <repository>
-            <id>glaremasters repo</id>
-            <url>https://repo.glaremasters.me/repository/towny/</url>
-        </repository>
-        <repository>
-            <id>bg-repo</id>
-            <url>https://repo.bg-software.com/repository/api/</url>
-        </repository>
-        <repository>
             <id>nms-repo</id>
             <url>https://repo.codemc.io/repository/nms/</url>
+        </repository>
+        <repository>
+            <id>onarandombox</id>
+            <url>https://repo.onarandombox.com/content/groups/public</url>
         </repository>
         <repository>
             <id>minebench-repo</id>
@@ -497,6 +489,7 @@
         <module>platform/quickshop-platform-spigot-v1_18_R1</module>
         <module>platform/quickshop-platform-spigot-v1_18_R2</module>
         <module>platform/quickshop-platform-spigot-v1_19_R1</module>
+        <module>platform/quickshop-platform-spigot-v1_19_R2</module>
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>
