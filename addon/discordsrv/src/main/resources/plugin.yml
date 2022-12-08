@@ -1,0 +1,8 @@
+name: addon-${project.artifactId}
+version: '${project.version}'
+main: com.ghostchu.quickshop.addon.${project.artifactId}.Main
+api-version: 1.16
+depend:
+  - DiscordSRV
+  - QuickShop-Hikari
+authors: [ Ghost_chu ]
