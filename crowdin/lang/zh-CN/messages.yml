@@ -635,6 +635,37 @@ addon:
   worldguard:
     creation-flag-test-failed: "<red>您没有在该WorldGuard区域创建商店的权限"
     trade-flag-test-failed: "<red>您没有在该WorldGuard区域与商店交易的权限。"
+  discordsrv:
+    __to_translators: "To translators: Addon.DiscordSRV use a special variable in strings, %%LANG_KEY%% instead of QuickShop's style {LANG_INDEX}, do not translate anything inside double '%' section. (you don't need translate this string, it's a comment)"
+    sell-to-your-shop:
+      title: "Someone sold stuff your shop!"
+      description:
+        pos: "The player %%purchase.name%% sold %%purchase.amount%%x%%shop.item.name%% to your shop at %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.x%%."
+        name: "The player %%purchase.name%% sold %%purchase.amount%%x%%shop.item.name%% to your shop %%shop.name%%."
+    bought-from-your-shop:
+      title: "Someone bought stuff to your shop!"
+      description:
+        pos: "The player %%purchase.name%% bought %%purchase.amount%%x%%shop.item.name%% from your shop at %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.x%%."
+        name: "The player %%purchase.name%% bought %%purchase.amount%%x%%shop.item.name%% from your shop %%shop.name%%."
+    out-of-space:
+      title: "Your shop out of space!"
+      description:
+        pos: "Your shop at %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.x%% has run out of space."
+        name: "Your shop at %%shop.name%% has run out of space."
+    out-of-stock:
+      title: "Your shop out of stock!"
+      description:
+        pos: "Your shop at %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.x%% has run out of stock."
+        name: "Your shop at %%shop.name%% has run out of stock."
+    field:
+      player: "Player"
+      item: "Item"
+      amount: "Amount"
+      balance: "Balance"
+      balance-after-tax: "Balance (after tax)"
+      account: "Your account balance"
+      taxes: "Taxes"
+      cost: "Cost"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
