@@ -562,6 +562,11 @@ database:
   trim-start: "<green>Database trimming started, please wait..."
   trim-exception: "<red>Database trimming failed. An Exception was raised during the operation. Check the server console."
   generated-at: "<yellow>Generated at: <gold>{0}</gold>"
+  purge-date: "<red>You must given a date."
+  purge-warning: "<yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`"
+  purge-task-created: "<green>Task created! Database are silent purging history records in background."
+  purge-done-with-line: "<green>Purge task completed, total <gold>{0}</gold> lines purged from database."
+  purge-done-with-error: "<red>Purge task failed, check the server console for details."
   suggestion:
     trim: "<yellow>This database requires a trimming of isolated data. Execute <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>The 'Always counting' Feature is scheduled for removal. You shouldn't use it anymore as it will stop working in the future."

@@ -562,6 +562,11 @@ database:
   trim-start: "<green>已開始修整資料庫，請稍後……"
   trim-exception: "<red>資料庫修整失敗，在資料庫修整期間發生異常，請檢查伺服器控制台。"
   generated-at: "<yellow>生成於：<gold>{0}</gold>"
+  purge-date: "<red>You must given a date."
+  purge-warning: "<yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`"
+  purge-task-created: "<green>Task created! Database are silent purging history records in background."
+  purge-done-with-line: "<green>Purge task completed, total <gold>{0}</gold> lines purged from database."
+  purge-done-with-error: "<red>Purge task failed, check the server console for details."
   suggestion:
     trim: "<yellow>該資料庫需要修整孤立資料，執行指令<aqua>/qs database trim</aqua> 以修整資料庫。"
 always-counting-removal-early-warning: "<red>已計劃刪除始終計數功能，你不應再使用它，並且它將來會停止運作。"

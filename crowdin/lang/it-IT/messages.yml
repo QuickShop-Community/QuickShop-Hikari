@@ -21,7 +21,7 @@ tabcomplete:
   name: '[name]'
   range: '[raggio]'
   currency: '[nome della valuta]'
-  percentage: '[percentage%]'
+  percentage: 'percentuale'
 taxaccount-unset: <green>La tassa di questo negozio ora segue l'impostazione globale del server.
 blacklisted-item: <red>Non puoi vendere questo oggetto perché è nella blacklist
 command-type-mismatch: <red>Questo comando può essere eseguito solo da <aqua>{0}.
@@ -349,8 +349,8 @@ timeunit:
   week: <red>{0} settimana
   weeks: <red>{0} settimane
   year: <red>{0} anno
-  before: before
-  scheduled: scheduled
+  before: prima
+  scheduled: pianificato
   years: <red>{0} years
   scheduled-in: scheduled in {0}
   second: <red>{0} second
@@ -359,19 +359,19 @@ timeunit:
   seconds: <red>{0} seconds
   hour: <red>{0} hour
   scheduled-at: scheduled at {0}
-  after: after
+  after: dopo
   day: <red>{0} day
-  recent: recent
-  between: between
+  recent: recente
+  between: compreso tra
   hours: <red>{0} hours
   months: <red>{0} months
-  longtimeago: long time ago
+  longtimeago: molto tempo fa
   between-format: between {0} and {1}
   minutes: <red>{0} minutes
-  justnow: just now
+  justnow: in questo momento
   minute: <red>{0} minute
   std-format: MM/dd/yyyy HH:mm:ss
-  future-plain-text: future
+  future-plain-text: futuro
   month: <red>{0} month
   future: in {0}
   days: <red>{0} days
@@ -469,9 +469,9 @@ client-language-unsupported: <yellow>QuickShop non supporta la lingua del tuo cl
 language-version: '63'
 not-managed-shop: <red>Non sei il proprietario o moderatore di questo negozio
 shop-cannot-trade-when-freezing: <red>Non puoi interagire con questo negozio perché è congelato.
-invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
+invalid-container: <red>Container non valido, puoi creare uno shop soltanto su un blocco che hai nell'inventario.
 permission:
-  header: "<green>Shop Permission Details"
+  header: "Dettagli dei Permessi del Negozio"
   header-player: "<green>Shop Permission Details for {0}"
   header-group: "<green>Shop Permission Details for group {0}"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
@@ -562,6 +562,11 @@ database:
   trim-start: "<green>Database trim started, please wait..."
   trim-exception: "<red>Database trim failed, an exception raised during database trimming, check the server console."
   generated-at: "<yellow>Generated at: <gold>{0}</gold>"
+  purge-date: "<red>You must given a date."
+  purge-warning: "<yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`"
+  purge-task-created: "<green>Task created! Database are silent purging history records in background."
+  purge-done-with-line: "<green>Purge task completed, total <gold>{0}</gold> lines purged from database."
+  purge-done-with-error: "<red>Purge task failed, check the server console for details."
   suggestion:
     trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."

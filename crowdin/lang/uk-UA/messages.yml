@@ -1,10 +1,10 @@
 break-shop-use-supertool: <yellow>You can break the shop by using the SuperTool.
 fee-charged-for-price-change: <green>You paid <red>{0}<green> to change the price.
-not-allowed-to-create: <red>You may not create a shop here.
+not-allowed-to-create: <red>Ви не можете створити магазин тут.
 disabled-in-this-world: <red>QuickShop is disabled in this world
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
-shops-backingup: Creating Shop-backup from database...
+shops-backingup: Створення резервної копії магазину з бази даних...
 _comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
@@ -42,11 +42,11 @@ quick-fill:
     - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Name: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
+    - '<yellow>Власник: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Ціна: <aqua>{price}'
+    - '<yellow>Предмет: <aqua>{item}'
+    - '<yellow>Розташування: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -73,8 +73,8 @@ denied-put-in-item: <red>You cannot put this item into your shop!
 shop-has-changed: <red>The shop you tried to use has changed since you clicked it!
 flush-finished: <green>Successfully flushed the messages.
 no-price-given: <red>Please give a valid price.
-shop-already-owned: <red>This is already a shop.
-backup-success: <green>Backup successfull.
+shop-already-owned: <red>Це вже магазин.
+backup-success: <green>Резервне копіювання виконано успішно.
 not-looking-at-shop: <red>Could not find a QuickShop. You need to look at one.
 you-cant-afford-a-new-shop: <red>It costs {0} to create a new shop.
 success-created-shop: <red>Shop created.
@@ -97,12 +97,12 @@ menu:
   preview: <aqua>[Item Preview]
   enchants: <dark_purple>Enchantments
   sell-tax-self: <green>You didn't pay taxes because you own this shop.
-  shop-information: '<green>Shop Information:'
-  item: '<green>Item: <yellow>{0}'
-  price-per: <green>Price per <yellow>{0} <green>- <yellow>{1}
+  shop-information: '<green>Відомості про магазин:'
+  item: '<green>Предмет: <yellow>{0}'
+  price-per: <green>Ціна за <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>for <yellow>{2}
   item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
-  successful-purchase: '<green>Successfully purchased:'
+  successful-purchase: '<green>Успішно придбано:'
   price-per-stack: <green>Price per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Stored Enchantments
   item-holochat-error: <red>[Error]
@@ -146,15 +146,15 @@ metric:
   tax-hover: <yellow>{0} taxes
   header-global: '<yellow>The server {0} {1} transactions:'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
+  transaction-count: <yellow>{0} всього
   shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}'
-  time-hover: '<yellow>Time: {0}'
+  time-hover: '<yellow>Час: {0}'
   amount-stack-hover: <yellow>{0}x stack
 permission-denied-3rd-party: '<red>Permission denied: 3rd Party Plugin [{0}].'
 you-dont-have-that-many-items: <red>You only have {0} {1}.
-complete: <green>Complete!
+complete: <green>Завершено!
 translate-not-completed-yet-url: 'The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}'
-success-removed-shop: <green>Shop removed.
+success-removed-shop: <green>Магазин видалений.
 currency-set: <green>Shop currency successfully set to {0}.
 shop-purged-start: <green>Shop purge started, check the console for details.
 economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
@@ -562,6 +562,11 @@ database:
   trim-start: "<green>Database trim started, please wait..."
   trim-exception: "<red>Database trim failed, an exception raised during database trimming, check the server console."
   generated-at: "<yellow>Generated at: <gold>{0}</gold>"
+  purge-date: "<red>Ви повинні вказати дату."
+  purge-warning: "<yellow>Ця операція очистить історію, яка зберігається у вашій базі даних, включаючи створення/зміни/видалення магазинів, покупки, транзакції та системні журнали. Видалення цих даних може звільнити місце на диску, але всі показники історії будуть втрачені, а інші плагіни, які залежать від показників, перестануть працювати. Щоб продовжити виконання цієї операції, виконайте команду `/qs database purgelogs <before-days> confirm`"
+  purge-task-created: "<green>Завдання створено! База даних безшумно очищає записи історії у фоновому режимі."
+  purge-done-with-line: "<green>Завдання очищення виконано, всього <gold>{0}</gold> рядків очищено з бази даних."
+  purge-done-with-error: "<red>Завдання очищення завершилось з помилкою, перевірте консоль сервера для деталей."
   suggestion:
     trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."

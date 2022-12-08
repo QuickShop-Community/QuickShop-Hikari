@@ -562,6 +562,11 @@ database:
   trim-start: "<green>Datenbank bereinigung gestartet. Bitte warten..."
   trim-exception: "<red>Datenbank bereinigung fehlgeschlagen. Ein Fehler ist während der Datenbankbereinigung aufgetreten. Überprüfe die Server Konsole."
   generated-at: "<yellow>Generiert am: <gold>{0}</gold>"
+  purge-date: "<red>Du musst ein Datum angeben."
+  purge-warning: "<yellow>Diese Aktion wird den Verlauf welcher in deiner Datenbank gespeichert ist löschen, inklusive Shop erstellungen/änderungen/löschungen, käufe, transaktionen und System logs. Das löschen dieser Daten kann zwar Speicherplatz freigeben, aber semtliche Verlaufs-Metriken gehen verloren, und andere Plugins die diese benötigen werden nicht mehr funktionieren. Um diese Aktion weiter auszuführen, führe `/qs database purgelogs <vor-tage> confirm` aus"
+  purge-task-created: "<green>Aufgabe erstellt! Datenbank wird die Verlaufs-Einträge leise im Hintergrund entfernen."
+  purge-done-with-line: "<green>Lösch-Auftrag beendet. Total <gold>{0}</gold> Linien von Datenbank gelöscht."
+  purge-done-with-error: "<red>Lösch-Auftrag fehlgeschlagen. Überprüfe die Server-Konsole für Details."
   suggestion:
     trim: "<yellow>Diese Datenbank benötigt eine bereinigung von isolierten Daten. Führe <aqua>/qs database trim</aqua> aus um die Datenbank zu reinigen."
 always-counting-removal-early-warning: "<red>Die 'Immer zählen' Funktion ist zur entfernung geplant. Du solltest es nicht mehr verwenden, da es in naher Zukunft nicht mehr funktioniert."

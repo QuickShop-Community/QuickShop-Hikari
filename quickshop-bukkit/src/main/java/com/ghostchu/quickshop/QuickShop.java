@@ -42,7 +42,8 @@ import com.ghostchu.quickshop.platform.paper.PaperPlatform;
 import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
 import com.ghostchu.quickshop.platform.spigot.v1_18_1.Spigot1181Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_18_2.Spigot1182Platform;
-import com.ghostchu.quickshop.platform.v1_19_1.Spigot1191Platform;
+import com.ghostchu.quickshop.platform.spigot.v1_19_1.Spigot1191Platform;
+import com.ghostchu.quickshop.platform.spigot.v1_19_2.Spigot1193Platform;
 import com.ghostchu.quickshop.shop.*;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanel;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
@@ -650,6 +651,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 case "v1_18_R1" -> new Spigot1181Platform(this, this.translationMapping);
                 case "v1_18_R2" -> new Spigot1182Platform(this, this.translationMapping);
                 case "v1_19_R1" -> new Spigot1191Platform(this, this.translationMapping);
+                case "v1_19_R2" -> new Spigot1193Platform(this, this.translationMapping);
                 default -> {
                     getLogger().warning("This server running " + AbstractSpigotPlatform.getNMSVersion() + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
                     Bukkit.getPluginManager().disablePlugin(this);

@@ -670,6 +670,30 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         });
     }
 
+    public CompletableFuture<Integer> purgeLogsRecords(@Nullable Date endDate) {
+        return CompletableFuture.supplyAsync(() -> {
+            int linesAffected = 0;
+            try {
+                linesAffected += DataTables.LOG_TRANSACTION.createDelete()
+                        .addTimeCondition("time", null, endDate)
+                        .build().execute();
+                linesAffected += DataTables.LOG_CHANGES.createDelete()
+                        .addTimeCondition("time", null, endDate)
+                        .build().execute();
+                linesAffected += DataTables.LOG_PURCHASE.createDelete()
+                        .addTimeCondition("time", null, endDate)
+                        .build().execute();
+                linesAffected += DataTables.LOG_OTHERS.createDelete()
+                        .addTimeCondition("time", null, endDate)
+                        .build().execute();
+                return linesAffected;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return -1;
+            }
+        });
+    }
+
     @NotNull
     public CompletableFuture<@Nullable Long> queryDataId(@NotNull SimpleDataRecord simpleDataRecord) {
         // Check if dataRecord exists in database with same values

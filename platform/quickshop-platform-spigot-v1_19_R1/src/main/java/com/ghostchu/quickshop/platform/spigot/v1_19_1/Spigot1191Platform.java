@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.platform.v1_19_1;
+package com.ghostchu.quickshop.platform.spigot.v1_19_1;
 
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.Util;
