@@ -636,36 +636,36 @@ addon:
     creation-flag-test-failed: "<red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu erstellen."
     trade-flag-test-failed: "<red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu handeln."
   discordsrv:
-    __to_translators: "To translators: Addon.DiscordSRV use a special variable in strings, %%LANG_KEY%% instead of QuickShop's style {LANG_INDEX}, do not translate anything inside double '%' section. (you don't need translate this string, it's a comment)"
+    __to_translators: "An alle Übersetzer: Addon.DiscordSRV verwendet %%LANG_KEY%% Variablen in Zeichenketten anstelle von QuickShop's {LANG_INDEX} Format. Übersetze nichts innerhalb dieser Doppel '%' Symbole. (Ich hab es trotzdem übersetzt Ghost-chu :P)"
     sell-to-your-shop:
-      title: "Someone sold stuff your shop!"
+      title: "Jemand hat Zeug an deinen Shop verkauft!"
       description:
-        pos: "The player %%purchase.name%% sold %%purchase.amount%%x%%shop.item.name%% to your shop at %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.x%%."
-        name: "The player %%purchase.name%% sold %%purchase.amount%%x%%shop.item.name%% to your shop %%shop.name%%."
+        pos: "Der Spieler %%purchase.name%% hat %%purchase.amount%%x%%shop.item.name%% an deinen Shop in %%shop.location.world%% ( %%shop.location.x%%, %%shop.location.y%%, %%shop.location.z%%) verkauft."
+        name: "Der Spieler %%purchase.name%% hat %%purchase.amount%%x%%shop.item.name%% an deinen Shop %%shop.name%% verkauft."
     bought-from-your-shop:
-      title: "Someone bought stuff to your shop!"
+      title: "Jemand hat Zeug von deinem Shop gekauft!"
       description:
-        pos: "The player %%purchase.name%% bought %%purchase.amount%%x%%shop.item.name%% from your shop at %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.x%%."
-        name: "The player %%purchase.name%% bought %%purchase.amount%%x%%shop.item.name%% from your shop %%shop.name%%."
+        pos: "Der Spieler %%purchase.name%% hat %%purchase.amount%%x%%shop.item.name%% von deinem Shop in %%shop.location.world%% (%%shop.location.x%%, %%shop.location.y%%, %%shop.location.z%%) gekauft."
+        name: "Der Spieler %%purchase.name%% hat %%purchase.amount%%x%%shop.item.name%% von deinem Shop %%shop.name%% gekauft."
     out-of-space:
-      title: "Your shop out of space!"
+      title: "Dein Shop hat keinen Platz mehr!"
       description:
-        pos: "Your shop at %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.x%% has run out of space."
-        name: "Your shop at %%shop.name%% has run out of space."
+        pos: "Dein Shop bei %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.z%% hat keinen Platz mehr."
+        name: "Dein Shop %%shop.name%% hat keinen Platz mehr."
     out-of-stock:
-      title: "Your shop out of stock!"
+      title: "Dein Shop ist ausverkauft!"
       description:
-        pos: "Your shop at %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.x%% has run out of stock."
-        name: "Your shop at %%shop.name%% has run out of stock."
+        pos: "Dein Shop bei %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.z%% ist ausverkauft."
+        name: "Dein Shop %%shop.name%% ist ausverkauft."
     field:
-      player: "Player"
+      player: "Spieler"
       item: "Item"
-      amount: "Amount"
-      balance: "Balance"
-      balance-after-tax: "Balance (after tax)"
-      account: "Your account balance"
-      taxes: "Taxes"
-      cost: "Cost"
+      amount: "Anzahl"
+      balance: "Guthaben"
+      balance-after-tax: "Guthaben (Nach Steuern)"
+      account: "Dein Kontostand"
+      taxes: "Steuern"
+      cost: "Kosten"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
