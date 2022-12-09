@@ -635,6 +635,37 @@ addon:
   worldguard:
     creation-flag-test-failed: "<red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu erstellen."
     trade-flag-test-failed: "<red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu handeln."
+  discordsrv:
+    __to_translators: "An alle Übersetzer: Addon.DiscordSRV verwendet %%LANG_KEY%% Variablen in Zeichenketten anstelle von QuickShop's {LANG_INDEX} Format. Übersetze nichts innerhalb dieser Doppel '%' Symbole. (Ich hab es trotzdem übersetzt Ghost-chu :P)"
+    sell-to-your-shop:
+      title: "Jemand hat Zeug an deinen Shop verkauft!"
+      description:
+        pos: "Der Spieler %%purchase.name%% hat %%purchase.amount%%x%%shop.item.name%% an deinen Shop in %%shop.location.world%% ( %%shop.location.x%%, %%shop.location.y%%, %%shop.location.z%%) verkauft."
+        name: "Der Spieler %%purchase.name%% hat %%purchase.amount%%x%%shop.item.name%% an deinen Shop %%shop.name%% verkauft."
+    bought-from-your-shop:
+      title: "Jemand hat Zeug von deinem Shop gekauft!"
+      description:
+        pos: "Der Spieler %%purchase.name%% hat %%purchase.amount%%x%%shop.item.name%% von deinem Shop in %%shop.location.world%% (%%shop.location.x%%, %%shop.location.y%%, %%shop.location.z%%) gekauft."
+        name: "Der Spieler %%purchase.name%% hat %%purchase.amount%%x%%shop.item.name%% von deinem Shop %%shop.name%% gekauft."
+    out-of-space:
+      title: "Dein Shop hat keinen Platz mehr!"
+      description:
+        pos: "Dein Shop bei %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.z%% hat keinen Platz mehr."
+        name: "Dein Shop %%shop.name%% hat keinen Platz mehr."
+    out-of-stock:
+      title: "Dein Shop ist ausverkauft!"
+      description:
+        pos: "Dein Shop bei %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.z%% ist ausverkauft."
+        name: "Dein Shop %%shop.name%% ist ausverkauft."
+    field:
+      player: "Spieler"
+      item: "Item"
+      amount: "Anzahl"
+      balance: "Guthaben"
+      balance-after-tax: "Guthaben (Nach Steuern)"
+      account: "Dein Kontostand"
+      taxes: "Steuern"
+      cost: "Kosten"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
