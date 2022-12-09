@@ -740,12 +740,12 @@ addon:
     sell-to-your-shop:
       title: "Someone sold stuff your shop!"
       description:
-        pos: "The player %%purchase.name%% sold %%purchase.amount%%x%%shop.item.name%% to your shop at %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.x%%."
+        pos: "The player %%purchase.name%% sold %%purchase.amount%%x%%shop.item.name%% to your shop at %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.z%%."
         name: "The player %%purchase.name%% sold %%purchase.amount%%x%%shop.item.name%% to your shop %%shop.name%%."
     bought-from-your-shop:
       title: "Someone bought stuff to your shop!"
       description:
-        pos: "The player %%purchase.name%% bought %%purchase.amount%%x%%shop.item.name%% from your shop at %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.x%%."
+        pos: "The player %%purchase.name%% bought %%purchase.amount%%x%%shop.item.name%% from your shop at %%shop.location.world%%, %%shop.location.x%%, %%shop.location.y%%, %%shop.location.z%%."
         name: "The player %%purchase.name%% bought %%purchase.amount%%x%%shop.item.name%% from your shop %%shop.name%%."
     out-of-space:
       title: "Your shop out of space!"
