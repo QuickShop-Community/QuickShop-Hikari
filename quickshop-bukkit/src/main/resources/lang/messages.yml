@@ -803,7 +803,7 @@ addon:
       {
       "embed":
         {
-            "title": ":outbox_tray: Somebody bought items to from shop",
+            "title": ":outbox_tray: Somebody bought items from shop",
             "description": "The player %%purchase.name%% bought x%%purchase.amount%% %%shop.item.name%% from your shop.",
             "color": 52084,
             "author": {
@@ -858,7 +858,7 @@ addon:
       {
       "embed":
         {
-            "title": ":dollar: Somebody purchased a shop",
+            "title": ":dollar: Somebody purchased in a shop",
             "description": "The player %%purchase.name%% purchase x%%purchase.amount%% %%shop.item.name%% from the shop.",
             "color": 6061450,
             "author": {
