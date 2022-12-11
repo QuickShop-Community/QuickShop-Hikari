@@ -143,31 +143,41 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     private void notifyShopOutOfStock(ShopSuccessPurchaseEvent event) {
         if (!isFeatureEnabled("notify-shop-out-of-stock"))
             return;
-        if (event.getShop().isSelling() && event.getShop().getRemainingStock() == 0) {
-            // Send to owner
-            jdaWrapper.sendMessage(event.getShop().getOwner(), factory.shopOutOfStock(event));
-            // Send to permission users
-            for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
-                if (event.getShop().playerAuthorize(uuid, this, "discordalert")) {
-                    jdaWrapper.sendMessage(uuid, factory.shopOutOfStock(event));
-                }
+        Util.mainThreadRun(() -> {
+            if (event.getShop().isSelling() && event.getShop().getRemainingStock() == 0) {
+                Util.asyncThreadRun(() -> {
+                    // Send to owner
+                    jdaWrapper.sendMessage(event.getShop().getOwner(), factory.shopOutOfStock(event));
+                    // Send to permission users
+                    for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
+                        if (event.getShop().playerAuthorize(uuid, this, "discordalert")) {
+                            jdaWrapper.sendMessage(uuid, factory.shopOutOfStock(event));
+                        }
+                    }
+                });
             }
-        }
+        });
+
     }
 
     private void notifyShopOutOfSpace(ShopSuccessPurchaseEvent event) {
         if (!isFeatureEnabled("notify-shop-out-of-space"))
             return;
-        if (event.getShop().isBuying() && event.getShop().getRemainingSpace() == 0) {
-            // Send to owner
-            jdaWrapper.sendMessage(event.getShop().getOwner(), factory.shopOutOfSpace(event));
-            // Send to permission users
-            for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
-                if (event.getShop().playerAuthorize(uuid, this, "discordalert")) {
-                    jdaWrapper.sendMessage(uuid, factory.shopOutOfSpace(event));
-                }
+        Util.mainThreadRun(() -> {
+            if (event.getShop().isBuying() && event.getShop().getRemainingSpace() == 0) {
+                Util.asyncThreadRun(() -> {
+                    // Send to owner
+                    jdaWrapper.sendMessage(event.getShop().getOwner(), factory.shopOutOfSpace(event));
+                    // Send to permission users
+                    for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
+                        if (event.getShop().playerAuthorize(uuid, this, "discordalert")) {
+                            jdaWrapper.sendMessage(uuid, factory.shopOutOfSpace(event));
+                        }
+                    }
+                });
             }
-        }
+        });
+
     }
 
     private void notifyShopPurchase(ShopSuccessPurchaseEvent event) {
