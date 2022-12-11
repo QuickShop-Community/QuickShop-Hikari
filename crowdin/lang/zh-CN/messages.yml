@@ -699,470 +699,469 @@ addon:
              ]
            }
         }
-    bought-from-your-shop: |
-      {
-      "embed":
+      bought-from-your-shop: |
         {
-            "title": ":outbox_tray: 有人从商店购买物品",
-            "description": "该玩家 %%purchase.name%% 在你的商店购买了 %%purchase.amount%% 个 %%shop.item.name%%.",
-            "color": 52084,
-            "author": {
-                "name": "QuickShop-Hikari",
-                "icon_url": ""
-            },
-            "thumbnail": {
-                "url": ""
-            },
-            "image": {
-                "url": ""
-            },
-            "footer": {
-                "text": "QuickShop-Hikari Discord通知消息",
-                "icon_url": ""
-            },
-            "fields": [
-                {
-                    "name": "商店",
-                    "value": "%%shop.display-name%%",
-                    "inline": false
-                },
-                {
-                    "name": "玩家",
-                    "value": "%%purchase.name%%",
-                    "inline": true
-                },
-                {
-                    "name": "物品",
-                    "value": "%%shop.item.name%%",
-                    "inline": true
-                },
-                {
-                    "name": "数量",
-                    "value": "%%purchase.amount%%(个%%shop.stacking-amount%%)",
-                    "inline": true
-                },
-                {
-                    "name": "收入",
-                    "value": "%%purchase.balance-formatted%%",
-                    "inline": true
-                },
-                {
-                    "name": "税",
-                    "value": "%%purchase.taxes-formatted%%",
-                    "inline": true
-                }
-            ]
+           "embed":
+             {
+               "title": ":outbox_tray: Somebody bought items from shop",
+               "description": "The player %%purchase.name%% bought x%%purchase.amount%% %%shop.item.name%% from your shop.",
+               "color": 52084,
+               "author": {
+                   "name": "QuickShop-Hikari",
+                   "icon_url": ""
+               },
+               "thumbnail": {
+                   "url": ""
+               },
+               "image": {
+                   "url": ""
+               },
+               "footer": {
+                   "text": "QuickShop-Hikari Discord Notification",
+                   "icon_url": ""
+               },
+               "fields": [
+                   {
+                       "name": "Shop",
+                       "value": "%%shop.display-name%%",
+                       "inline": false
+                   },
+                   {
+                       "name": "Purchaser",
+                       "value": "%%purchase.name%%",
+                       "inline": true
+                   },
+                   {
+                       "name": "Item",
+                       "value": "%%shop.item.name%%",
+                       "inline": true
+                   },
+                   {
+                       "name": "Amount",
+                       "value": "%%purchase.amount%%(x%%shop.stacking-amount%%)",
+                       "inline": true
+                   },
+                   {
+                       "name": "Your earn",
+                       "value": "%%purchase.balance-formatted%%",
+                       "inline": true
+                   },
+                   {
+                       "name": "Taxes",
+                       "value": "%%purchase.taxes-formatted%%",
+                       "inline": true
+                   }
+               ]
+           }
+         }
+      mod-shop-purchase: |
+        {
+        "embed":
+          {
+              "title": ":dollar: Somebody purchased in a shop",
+              "description": "The player %%purchase.name%% purchase x%%purchase.amount%% %%shop.item.name%% from the shop.",
+              "color": 6061450,
+              "author": {
+                  "name": "QuickShop-Hikari",
+                  "icon_url": ""
+              },
+              "thumbnail": {
+                  "url": ""
+              },
+              "image": {
+                  "url": ""
+              },
+              "footer": {
+                  "text": "QuickShop-Hikari Discord Notification",
+                  "icon_url": ""
+              },
+              "fields": [
+                  {
+                      "name": "Shop",
+                      "value": "%%shop.display-name%%",
+                      "inline": false
+                  },
+                  {
+                      "name": "Purchaser",
+                      "value": "%%purchase.name%%",
+                      "inline": true
+                  },
+                  {
+                      "name": "Item",
+                      "value": "%%shop.item.name%%",
+                      "inline": true
+                  },
+                  {
+                      "name": "Amount",
+                      "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
+                      "inline": true
+                  },
+                  {
+                      "name": "Balance",
+                      "value": "%%purchase.balance-formatted%%",
+                      "inline": true
+                  },
+                  {
+                      "name": "Taxes",
+                      "value": "%%purchase.taxes-formatted%%",
+                      "inline": true
+                  }
+              ]
+          }
         }
-      }
-    mod-shop-purchase: |
-      {
-      "embed":
+      out-of-space: |
         {
-            "title": ":dollar: 有人在商店里购买了",
-            "description": "该玩家 %%purchase.name%% 在商店里购买了 %%purchase.amount%%个 %%shop.item.name%%物品.",
+        "embed":
+          {
+              "title": ":mailbox_with_mail: Your shop has run out of space",
+              "description": "Your shop inventory is full of items!\nYou need empty your shop container to free the space then you can continue to accept new items.",
+              "color": 16065893,
+              "author": {
+                  "name": "QuickShop-Hikari",
+                  "icon_url": ""
+              },
+              "thumbnail": {
+                  "url": ""
+              },
+              "image": {
+                  "url": ""
+              },
+              "footer": {
+                  "text": "QuickShop-Hikari Discord Notification",
+                  "icon_url": ""
+              },
+              "fields": [
+                  {
+                      "name": "Shop",
+                      "value": "%%shop.display-name%%",
+                      "inline": false
+                  }
+              ]
+          }
+        }
+      out-of-stock: |
+        {
+            "embed":
+                {
+                    "title": ":mailbox_with_no_mail: Your shop has run out of stock",
+                    "description": "Your shop inventory is empty now!\nYou need to refill the shop container with items to continue selling items!",
+                    "color": 16065893,
+                    "author": {
+                        "name": "QuickShop-Hikari",
+                        "icon_url": ""
+                    },
+                    "thumbnail": {
+                        "url": ""
+                    },
+                    "image": {
+                        "url": ""
+                    },
+                    "footer": {
+                        "text": "QuickShop-Hikari Discord Notification",
+                        "icon_url": ""
+                    },
+                    "fields": [
+                        {
+                            "name": "Shop",
+                            "value": "%%shop.display-name%%",
+                            "inline": false
+                        }
+                    ]
+                }
+        }
+      mod-shop-created: |
+        {
+          "embed": {
+            "title": ":classical_building: A new shop has been created",
+            "description": "Player created a new shop on your server!",
             "color": 6061450,
             "author": {
-                "name": "QuickShop-Hikari",
-                "icon_url": ""
+              "name": "QuickShop-Hikari",
+              "icon_url": ""
             },
             "thumbnail": {
-                "url": ""
+              "url": ""
             },
             "image": {
-                "url": ""
+              "url": ""
             },
             "footer": {
-                "text": "QuickShop-Hikari Discord消息通知",
-                "icon_url": ""
+              "text": "QuickShop-Hikari Discord Notification",
+              "icon_url": ""
             },
             "fields": [
-                {
-                    "name": "商店",
-                    "value": "%%shop.display-name%%",
-                    "inline": false
-                },
-                {
-                    "name": "玩家",
-                    "value": "%%purchase.name%%",
-                    "inline": true
-                },
-                {
-                    "name": "物品",
-                    "value": "%%shop.item.name%%",
-                    "inline": true
-                },
-                {
-                    "name": "数量",
-                    "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
-                    "inline": true
-                },
-                {
-                    "name": "余额",
-                    "value": "%%purchase.balance-formatted%%",
-                    "inline": true
-                },
-                {
-                    "name": "税",
-                    "value": "%%purchase.taxes-formatted%%",
-                    "inline": true
-                }
-            ]
-        }
-      }
-    out-of-space: |
-      {
-      "embed":
-        {
-            "title": ":mailbox_with_mail: 您的商店空间已不足",
-            "description": "您的商店库存已满!\n您需要清理您的商店以释放空间，然后可以接受新物品.",
-            "color": 16065893,
-            "author": {
-                "name": "QuickShop-Hikari",
-                "icon_url": ""
-            },
-            "thumbnail": {
-                "url": ""
-            },
-            "image": {
-                "url": ""
-            },
-            "footer": {
-                "text": "QuickShop-Hikari Discord消息通知",
-                "icon_url": ""
-            },
-            "fields": [
-                {
-                    "name": "商店",
-                    "value": "%%shop.display-name%%",
-                    "inline": false
-                }
-            ]
-        }
-      }
-    out-of-stock: |
-      {
-          "embed":
               {
-                  "title": ":mailbox_with_no_mail: 您的商店已缺货",
-                  "description": "您的商店库存已空!\n您需要在商店中重新补货以继续出售物品!",
-                  "color": 16065893,
-                  "author": {
-                      "name": "QuickShop-Hikari",
-                      "icon_url": ""
-                  },
-                  "thumbnail": {
-                      "url": ""
-                  },
-                  "image": {
-                      "url": ""
-                  },
-                  "footer": {
-                      "text": "QuickShop-Hikari Discord消息通知",
-                      "icon_url": ""
-                  },
-                  "fields": [
-                      {
-                          "name": "商店",
-                          "value": "%%shop.display-name%%",
-                          "inline": false
-                      }
-                  ]
+                "name": "Shop",
+                "value": "%%shop.display-name%%",
+                "inline": false
+              },
+              {
+                "name": "Owner",
+                "value": "%%shop.owner.name%%",
+                "inline": true
+              },
+              {
+                "name": "Item",
+                "value": "%%shop.item.name%%",
+                "inline": true
+              },
+              {
+                "name": "Amount",
+                "value": "%%shop.stacking-amount%%",
+                "inline": true
+              },
+              {
+                "name": "Type",
+                "value": "%%shop.type%%",
+                "inline": true
               }
-      }
-    mod-shop-created: |
-      {
-        "embed": {
-          "title": ":classical_building: 新商店已被创建",
-          "description": "玩家在您的服务器中新建了一个商店!",
-          "color": 6061450,
-          "author": {
-            "name": "QuickShop-Hikari",
-            "icon_url": ""
-          },
-          "thumbnail": {
-            "url": ""
-          },
-          "image": {
-            "url": ""
-          },
-          "footer": {
-            "text": "QuickShop-Hikari Discord消息通知",
-            "icon_url": ""
-          },
-          "fields": [
-            {
-              "name": "商店",
-              "value": "%%shop.display-name%%",
-              "inline": false
-            },
-            {
-              "name": "商店所有者",
-              "value": "%%shop.owner.name%%",
-              "inline": true
-            },
-            {
-              "name": "物品",
-              "value": "%%shop.item.name%%",
-              "inline": true
-            },
-            {
-              "name": "数量",
-              "value": "%%shop.stacking-amount%%",
-              "inline": true
-            },
-            {
-              "name": "商店类型",
-              "value": "%%shop.type%%",
-              "inline": true
-            }
-          ]
+            ]
+          }
         }
-      }
-    mod-remove-shop: |
-      {
-        "embed": {
-          "title": ":classical_building: 商店在服务器中已被删除",
-          "description": "玩家在服务器中删除了一个商店.",
-          "color": 6061450,
-          "author": {
-            "name": "QuickShop-Hikari",
-            "icon_url": ""
-          },
-          "thumbnail": {
-            "url": ""
-          },
-          "image": {
-            "url": ""
-          },
-          "footer": {
-            "text": "QuickShop-Hikari Discord消息通知",
-            "icon_url": ""
-          },
-          "fields": [
-            {
-              "name": "商店",
-              "value": "%%shop.display-name%%",
-              "inline": false
-           },
-                  {
-                      "name": "理由",
-                      "value": "%%delete.reason%%",
-                      "inline": false
-                  }
-              ],
-          }
-      }
-
-    shop-transfer-to-you: |
-      {
-          "embed": {
-              "title": ":placard: 一个商店被转让给你",
-              "description": "一个商店从其他玩家那里转让给你.",
-              "color": 16172079,
-              "author": {
-                  "name": "QuickShop-Hikari",
-                  "icon_url": ""
-              },
-              "thumbnail": {
-                  "url": ""
-              },
-              "image": {
-                  "url": ""
-              },
-              "footer": {
-                  "text": "QuickShop-Hikari Discord消息通知",
-                  "icon_url": ""
-              },
-              "fields": [
-                  {
-                      "name": "商店",
-                      "value": "%%shop.display-name%%",
-                      "inline": false
-                  },
-                  {
-                      "name": "转让来自",
-                      "value": "%%transfer.from%%",
-                      "inline": false
-                  }
-              ]
-          }
-      }
-    mod-shop-transfer: |
-      {
-          "embed": {
-              "title": ":placard: 商店已被转让",
-              "description": "商店从一个玩家转让到了其他玩家.",
-              "color": 6061450,
-              "author": {
-                  "name": "QuickShop-Hikari",
-                  "icon_url": ""
-              },
-              "thumbnail": {
-                  "url": ""
-              },
-              "image": {
-                  "url": ""
-              },
-              "footer": {
-                  "text": "QuickShop-Hikari Discord消息通知",
-                  "icon_url": ""
-              },
-              "fields": [
-                  {
-                      "name": "商店",
-                      "value": "%%shop.display-name%%",
-                      "inline": false
-                  },
-                  {
-                      "name": "转让来自",
-                      "value": "%%transfer.from%%",
-                      "inline": true
-                  },
-                  {
-                      "name": "转让给",
-                      "value": "%%transfer.to%%",
-                      "inline": true
-                  }
-              ]
-          }
-      }
-    shop-price-changed: |
-      {
-          "embed": {
-              "title": ":money_with_wings: 您的商店价格已被修改",
-              "description": "您或者是您的商店助手修改了商店价格.",
-              "color": 16172079,
-              "author": {
-                  "name": "QuickShop-Hikari",
-                  "icon_url": ""
-              },
-              "thumbnail": {
-                  "url": ""
-              },
-              "image": {
-                  "url": ""
-              },
-              "footer": {
-                  "text": "QuickShop-Hikari Discord消息通知",
-                  "icon_url": ""
-              },
-              "fields": [
-                  {
-                      "name": "商店",
-                      "value": "%%shop.display-name%%",
-                      "inline": false
-                  },
-                  {
-                      "name": "原价格",
-                      "value": "%%change-price.from%%",
-                      "inline": true
-                  },
-                  {
-                      "name": "现价格",
-                      "value": "%%change-price.to%%",
-                      "inline": true
-                  }
-              ]
-          }
-      }
-    mod-shop-price-changed: |
-      {
-          "embed": {
-              "title": ":money_with_wings:商店价格已被修改",
-              "description": "商店修改了价格设定.",
-              "color": 6061450,
-              "author": {
-                  "name": "QuickShop-Hikari",
-                  "icon_url": ""
-              },
-              "thumbnail": {
-                  "url": ""
-              },
-              "image": {
-                  "url": ""
-              },
-              "footer": {
-                  "text": "QuickShop-Hikari Discord消息通知",
-                  "icon_url": ""
-              },
-              "fields": [
-                  {
-                      "name": "商店",
-                      "value": "%%shop.display-name%%",
-                      "inline": true
-                  },
-                  {
-                      "name": "商店所有者",
-                      "value": "%%shop.owner.name%%",
-                      "inline": true
-                  },
-                  {
-                      "name": "",
-                      "value": "",
-                      "inline": true
-                  },
-                  {
-                      "name": "原价格",
-                      "value": "%%change-price.from%%",
-                      "inline": true
-                  },
-                  {
-                      "name": "现价格",
-                      "value": "%%change-price.to%%",
-                      "inline": true
-                  }
-              ]
-          }
-      }
-    shop-permission-changed: |
-      {
-          "embed": {
-              "title": ":closed_lock_with_key: 商店权限设置已被更改",
-              "description": "您的一个商店的权限设置已被更改.",
-              "color": 15879747,
-              "author": {
-                  "name": "QuickShop-Hikari",
-                  "icon_url": ""
-              },
-              "thumbnail": {
-                  "url": ""
-              },
-              "image": {
-                  "url": ""
-              },
-              "footer": {
-                  "text": "QuickShop-Hikari Discord消息通知",
-                  "icon_url": ""
-              },
-              "fields": [
-                  {
-                      "name": "商店",
-                      "value": "%%shop.display-name%%",
-                      "inline": false
-                  },
-                  {
-                      "name": "玩家",
-                      "value": "%%change-permission.player%%",
-                      "inline": true
-                  },
-                  {
-                      "name": "分配给组",
-                      "value": "%%change-permission.to-group%%",
-                      "inline": true
-                  },
-                  {
-                      "name": "",
-                      "value": "",
-                      "inline": true
-                  },
-                  {
-                      "name": "授予权限(继承于组)",
-                      "value": "```\n%%change-permission.perms-list%%\n```",
-                      "inline": false
-                  }
-              ]
-          }
-      }
+      mod-remove-shop: |
+        {
+            "embed": {
+                "title": ":recycle: A shop was removed from this server",
+                "description": "A shop was removed from this server.",
+                "color": 6061450,
+                "author": {
+                    "name": "QuickShop-Hikari",
+                    "icon_url": ""
+                },
+                "thumbnail": {
+                    "url": ""
+                },
+                "image": {
+                    "url": ""
+                },
+                "footer": {
+                    "text": "QuickShop-Hikari Discord Notification",
+                    "icon_url": ""
+                },
+                "fields": [
+                    {
+                        "name": "Shop",
+                        "value": "%%shop.display-name%%",
+                        "inline": false
+                    },
+                    {
+                        "name": "Reason",
+                        "value": "%%delete.reason%%",
+                        "inline": false
+                    }
+                ],
+            }
+        }
+      shop-transfer-to-you: |
+        {
+            "embed": {
+                "title": ":placard: A shop was transfer to you",
+                "description": "A shop transfer to you from another player.",
+                "color": 16172079,
+                "author": {
+                    "name": "QuickShop-Hikari",
+                    "icon_url": ""
+                },
+                "thumbnail": {
+                    "url": ""
+                },
+                "image": {
+                    "url": ""
+                },
+                "footer": {
+                    "text": "QuickShop-Hikari Discord Notification",
+                    "icon_url": ""
+                },
+                "fields": [
+                    {
+                        "name": "Shop",
+                        "value": "%%shop.display-name%%",
+                        "inline": false
+                    },
+                    {
+                        "name": "From",
+                        "value": "%%transfer.from%%",
+                        "inline": false
+                    }
+                ]
+            }
+        }
+      mod-shop-transfer: |
+        {
+            "embed": {
+                "title": ":placard: A shop was transferred",
+                "description": "A shop transfer to a player from another player.",
+                "color": 6061450,
+                "author": {
+                    "name": "QuickShop-Hikari",
+                    "icon_url": ""
+                },
+                "thumbnail": {
+                    "url": ""
+                },
+                "image": {
+                    "url": ""
+                },
+                "footer": {
+                    "text": "QuickShop-Hikari Discord Notification",
+                    "icon_url": ""
+                },
+                "fields": [
+                    {
+                        "name": "Shop",
+                        "value": "%%shop.display-name%%",
+                        "inline": false
+                    },
+                    {
+                        "name": "From",
+                        "value": "%%transfer.from%%",
+                        "inline": true
+                    },
+                    {
+                        "name": "To",
+                        "value": "%%transfer.to%%",
+                        "inline": true
+                    }
+                ]
+            }
+        }
+      shop-price-changed: |
+        {
+            "embed": {
+                "title": ":money_with_wings: Your shop price was changed",
+                "description": "You or your shop staff changed your shop price.",
+                "color": 16172079,
+                "author": {
+                    "name": "QuickShop-Hikari",
+                    "icon_url": ""
+                },
+                "thumbnail": {
+                    "url": ""
+                },
+                "image": {
+                    "url": ""
+                },
+                "footer": {
+                    "text": "QuickShop-Hikari Discord Notification",
+                    "icon_url": ""
+                },
+                "fields": [
+                    {
+                        "name": "Shop",
+                        "value": "%%shop.display-name%%",
+                        "inline": false
+                    },
+                    {
+                        "name": "From",
+                        "value": "%%change-price.from%%",
+                        "inline": true
+                    },
+                    {
+                        "name": "To",
+                        "value": "%%change-price.to%%",
+                        "inline": true
+                    }
+                ]
+            }
+        }
+      mod-shop-price-changed: |
+        {
+            "embed": {
+                "title": ":money_with_wings: A shop price has been changed",
+                "description": "A shop changed its price settings.",
+                "color": 6061450,
+                "author": {
+                    "name": "QuickShop-Hikari",
+                    "icon_url": ""
+                },
+                "thumbnail": {
+                    "url": ""
+                },
+                "image": {
+                    "url": ""
+                },
+                "footer": {
+                    "text": "QuickShop-Hikari Discord Notification",
+                    "icon_url": ""
+                },
+                "fields": [
+                    {
+                        "name": "Shop",
+                        "value": "%%shop.display-name%%",
+                        "inline": true
+                    },
+                    {
+                        "name": "Owner",
+                        "value": "%%shop.owner.name%%",
+                        "inline": true
+                    },
+                    {
+                        "name": "",
+                        "value": "",
+                        "inline": true
+                    },
+                    {
+                        "name": "From",
+                        "value": "%%change-price.from%%",
+                        "inline": true
+                    },
+                    {
+                        "name": "To",
+                        "value": "%%change-price.to%%",
+                        "inline": true
+                    }
+                ]
+            }
+        }
+      shop-permission-changed: |
+        {
+            "embed": {
+                "title": ":closed_lock_with_key: Your shop permission settings has been changed",
+                "description": "One of your shop's permission setting has been changed.",
+                "color": 15879747,
+                "author": {
+                    "name": "QuickShop-Hikari",
+                    "icon_url": ""
+                },
+                "thumbnail": {
+                    "url": ""
+                },
+                "image": {
+                    "url": ""
+                },
+                "footer": {
+                    "text": "QuickShop-Hikari Discord Notification",
+                    "icon_url": ""
+                },
+                "fields": [
+                    {
+                        "name": "Shop",
+                        "value": "%%shop.display-name%%",
+                        "inline": false
+                    },
+                    {
+                        "name": "Player",
+                        "value": "%%change-permission.player%%",
+                        "inline": true
+                    },
+                    {
+                        "name": "Assign to group",
+                        "value": "%%change-permission.to-group%%",
+                        "inline": true
+                    },
+                    {
+                        "name": "",
+                        "value": "",
+                        "inline": true
+                    },
+                    {
+                        "name": "Permission granted (Inherit from group)",
+                        "value": "```\n%%change-permission.perms-list%%\n```",
+                        "inline": false
+                    }
+                ]
+            }
+        }
     field:
       player: "玩家"
       item: "物品"
