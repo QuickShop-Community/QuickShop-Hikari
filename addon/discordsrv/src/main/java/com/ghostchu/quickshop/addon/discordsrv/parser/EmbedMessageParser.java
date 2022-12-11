@@ -8,7 +8,9 @@ import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.Instant;
 import java.util.List;
@@ -39,8 +41,8 @@ public class EmbedMessageParser {
         if (dto.getFooter() != null)
             builder.setFooter(dto.getFooter().getText(), dto.getFooter().getIconUrl());
         if (dto.getThumbnail() != null)
-            builder.setThumbnail(dto.getThumbnail().getUrl());
-        if (dto.getImage() != null)
+            builder.setThumbnail(emptyDefault(dto.getThumbnail().getUrl()));
+        if (dto.getImage() != null && StringUtils.isNotBlank(dto.getImage().getUrl()))
             builder.setImage(dto.getImage().getUrl());
         if (dto.getAuthor() != null)
             builder.setAuthor(dto.getAuthor().getName(), dto.getAuthor().getUrl(), dto.getAuthor().getIconUrl());
@@ -53,6 +55,13 @@ public class EmbedMessageParser {
             }
         }
         return builder.build();
+    }
+
+    @Nullable
+    private String emptyDefault(@Nullable String v) {
+        if (v == null || !v.startsWith("http"))
+            return null;
+        return v;
     }
 
     @NoArgsConstructor
