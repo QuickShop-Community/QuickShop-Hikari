@@ -74,6 +74,12 @@
             <artifactId>discordsrv</artifactId>
             <version>1.26.0</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>JDA</artifactId>
+                    <groupId>net.dv8tion</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 </project>
