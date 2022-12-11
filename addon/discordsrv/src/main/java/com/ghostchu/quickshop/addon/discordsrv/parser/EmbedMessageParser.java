@@ -21,7 +21,7 @@ public class EmbedMessageParser {
     public MessageEmbed parse(@NotNull String json) {
         // test json
         if (!MsgUtil.isJson(json))
-            throw new IllegalArgumentException("json argument not a valid json!");
+            throw new IllegalArgumentException("Invalid json: " + json);
         // map check
         Map<String, Object> map = gson.fromJson(json, new TypeToken<Map<String, Object>>() {
         }.getType());

@@ -35,14 +35,11 @@ public class DiscordSRVWrapper implements JDAWrapper {
 
     @Override
     public void sendMessage(@NotNull UUID player, @NotNull MessageEmbed message) {
-        System.out.println("SRV SendMessage!!");
         String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player);
         if (discordId == null) {
-            System.out.println("Discord ID == null!");
+            return;
         }
-        System.out.println("SENDING!!");
         DiscordUtil.getUserById(discordId).openPrivateChannel().queue((channel) -> {
-            System.out.println("queue send!!");
             channel.sendMessageEmbeds(message).queue();
         });
     }
