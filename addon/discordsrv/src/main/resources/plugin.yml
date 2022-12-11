@@ -4,7 +4,6 @@ main: com.ghostchu.quickshop.addon.${project.artifactId}.Main
 api-version: 1.16
 depend:
   - QuickShop-Hikari
-soft-depend:
   - DiscordSRV
 authors: [ Ghost_chu ]
 #libraries:

@@ -33,6 +33,7 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         plugin = QuickShop.getInstance();
         manager = new MessageManager(this);
         manager.register(new MessageRepository(plugin));
@@ -54,9 +55,6 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
         if (event.getShop().isUnlimited() && plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
             return;
         }
-
-        plugin.getLogger().info("DEBUG!!!!");
-
         Util.asyncThreadRun(() -> {
             notifyShopPurchase(event);
             notifyModShopPurchase(event);
@@ -75,9 +73,7 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onShopDelete(ShopDeleteEvent event) {
-        Util.asyncThreadRun(() -> {
-            notifyModShopRemoved(event);
-        });
+        Util.asyncThreadRun(() -> notifyModShopRemoved(event));
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
@@ -91,9 +87,7 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onShopPermissionChanged(ShopPlayerGroupSetEvent event) {
-        Util.asyncThreadRun(() -> {
-            notifyShopPermissionChanged(event);
-        });
+        Util.asyncThreadRun(() -> notifyShopPermissionChanged(event));
     }
 
     private void notifyShopPermissionChanged(ShopPlayerGroupSetEvent event) {
@@ -182,11 +176,8 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
             return;
         }
         // Send to owner
-        getLogger().info("Send message!! getting embed message!");
-        @NotNull MessageEmbed embed = factory.shopPurchasedSelf(event);
-        getLogger().info("JDA Send message!! getting embed message!");
+        MessageEmbed embed = factory.shopPurchasedSelf(event);
         jdaWrapper.sendMessage(event.getShop().getOwner(), embed);
-        getLogger().info("JDA Send message done!! getting embed message!");
         // Send to permission users
         for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
             if (event.getShop().playerAuthorize(uuid, this, "discordalert")) {
@@ -204,13 +195,24 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
 
 
     public boolean isFeatureEnabled(@NotNull String featureName) {
-        return true;
-        //return getConfig().getBoolean("features." + featureName, true);
+        return getConfig().getBoolean("features." + featureName, true);
     }
 
 
     @Override
     public Set<PluginSlashCommand> getSlashCommands() {
         return Collections.emptySet();
+    }
+
+    public MessageManager getManager() {
+        return manager;
+    }
+
+    public MessageFactory getFactory() {
+        return factory;
+    }
+
+    public JDAWrapper getJdaWrapper() {
+        return jdaWrapper;
     }
 }
