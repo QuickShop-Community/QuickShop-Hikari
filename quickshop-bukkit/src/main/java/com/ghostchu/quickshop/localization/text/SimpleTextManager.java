@@ -110,7 +110,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
             if (fileInstance != null) {
                 for (String crowdinCode : fileInstance.getAvailableLocales()) {
                     String content = fileInstance.getLocaleContentByCrowdinCode(crowdinCode);
-                    String mcCode = crowdinOTA.mapLanguageCode(crowdinCode, LOCALE_MAPPING_SYNTAX).toLowerCase(Locale.ROOT).replace("-", "");
+                    String mcCode = crowdinOTA.mapLanguageCode(crowdinCode, LOCALE_MAPPING_SYNTAX).toLowerCase(Locale.ROOT).replace("-", "_");
                     if (content == null) {
                         plugin.getLogger().log(Level.WARNING, "Failed to load translation for " + mcCode + ", the content is null.");
                         continue;
