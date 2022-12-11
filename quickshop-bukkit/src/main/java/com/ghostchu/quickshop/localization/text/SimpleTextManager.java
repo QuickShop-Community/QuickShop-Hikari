@@ -64,7 +64,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         plugin.getReloadManager().register(this);
         try {
             plugin.getLogger().info("Please wait us fetch the translation updates from Crowdin OTA service...");
-            this.crowdinOTA = new CrowdinOTA(Util.parsePackageProperly("crowdinHost").asString("https://distributions.crowdin.net/847569d13d22ee803f1cfa7xrm4"), new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
+            this.crowdinOTA = new CrowdinOTA(Util.parsePackageProperly("crowdinHost").asString("https://distributions.crowdin.net/91b97508fdf19626f2977b7xrm4"), new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
         } catch (OTAException e) {
             plugin.getLogger().log(Level.WARNING, "Cannot initialize the CrowdinOTA instance!", e);
         }
