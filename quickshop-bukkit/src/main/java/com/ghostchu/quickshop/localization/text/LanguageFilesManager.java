@@ -30,7 +30,10 @@ public class LanguageFilesManager {
     }
 
     private void merge(@NotNull FileConfiguration alreadyRegistered, @NotNull FileConfiguration newConfiguration) {
-        newConfiguration.getKeys(true).forEach(key -> alreadyRegistered.set(key, newConfiguration.get(key)));
+        for (String key : newConfiguration.getKeys(true)) {
+            if (newConfiguration.isConfigurationSection("key")) continue;
+            alreadyRegistered.set(key, newConfiguration.get(key));
+        }
     }
 
     /**
