@@ -131,9 +131,10 @@ public class MessageFactory {
         List<String> newPermissions = new ArrayList<>(plugin.getShopPermissionManager().getGroupPermissions(event.getNewGroup()));
         newPermissions.removeAll(oldPermissions);
         StringJoiner builder = new StringJoiner("\n");
-        newPermissions.forEach(builder::add);
         if (newPermissions.isEmpty()) {
-            newPermissions.add("N/A");
+            builder.add("N/A");
+        } else {
+            newPermissions.forEach(builder::add);
         }
         placeHolders.put("change-permission.perms-list", builder.toString());
         return messageManager.getEmbedMessage("shop-permission-changed", shop.getOwner(), placeHolders);
