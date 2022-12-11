@@ -613,7 +613,7 @@ addon:
     flags:
       own: "<red>You can only create shops at your owned shop type towny plot."
       modify: "<red>您没有在该Towny区域的建造权限"
-      shop-type: "<red>You must create shop on a shop type towny plot."
+      shop-type: "<red>您只能在Towny区域中创建商店"
   residence:
     creation-flag-denied: "<red>您没有在该领地创建商店的权限。"
     trade-flag-denied: "<red>您没有在该领地与商店交易的权限。"
@@ -738,7 +738,7 @@ addon:
                 },
                 {
                     "name": "数量",
-                    "value": "%%purchase.amount%%(x%%shop.stacking-amount%%)",
+                    "value": "%%purchase.amount%%(个%%shop.stacking-amount%%)",
                     "inline": true
                 },
                 {
@@ -754,7 +754,6 @@ addon:
             ]
         }
       }
-
     mod-shop-purchase: |
       {
       "embed":
