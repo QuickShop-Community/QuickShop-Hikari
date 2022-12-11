@@ -1125,7 +1125,7 @@ public class Util {
             }
         }
 
-        @Nullable
+        @NotNull
         public String asString(@NotNull String def) {
             if (value == null) {
                 return def;
