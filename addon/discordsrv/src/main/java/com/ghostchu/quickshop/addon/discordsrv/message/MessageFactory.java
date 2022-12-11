@@ -124,7 +124,7 @@ public class MessageFactory {
     public MessageEmbed shopPermissionChanged(@NotNull ShopPlayerGroupSetEvent event) {
         Shop shop = event.getShop();
         Map<String, String> placeHolders = applyPlaceHolders(shop, new HashMap<>());
-        placeHolders.put("change-permission.player", String.valueOf(event.getPlayer()));
+        placeHolders.put("change-permission.player", getPlayerName(event.getPlayer()));
         placeHolders.put("change-permission.from-group", event.getOldGroup());
         placeHolders.put("change-permission.to-group", event.getNewGroup());
         List<String> oldPermissions = plugin.getShopPermissionManager().getGroupPermissions(event.getOldGroup());
@@ -132,6 +132,9 @@ public class MessageFactory {
         newPermissions.removeAll(oldPermissions);
         StringJoiner builder = new StringJoiner("\n");
         newPermissions.forEach(builder::add);
+        if (newPermissions.isEmpty()) {
+            newPermissions.add("N/A");
+        }
         placeHolders.put("change-permission.perms-list", builder.toString());
         return messageManager.getEmbedMessage("shop-permission-changed", shop.getOwner(), placeHolders);
     }
