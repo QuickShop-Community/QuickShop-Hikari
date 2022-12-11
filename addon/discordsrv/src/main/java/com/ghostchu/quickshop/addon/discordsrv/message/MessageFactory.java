@@ -128,7 +128,7 @@ public class MessageFactory {
         placeHolders.put("change-permission.from-group", event.getOldGroup());
         placeHolders.put("change-permission.to-group", event.getNewGroup());
         List<String> oldPermissions = plugin.getShopPermissionManager().getGroupPermissions(event.getOldGroup());
-        List<String> newPermissions = plugin.getShopPermissionManager().getGroupPermissions(event.getNewGroup());
+        List<String> newPermissions = new ArrayList<>(plugin.getShopPermissionManager().getGroupPermissions(event.getNewGroup()));
         newPermissions.removeAll(oldPermissions);
         StringJoiner builder = new StringJoiner("\n");
         newPermissions.forEach(builder::add);
