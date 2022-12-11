@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 public class EmbedMessageParser {
+    private final static String ZERO_WIDTH_SPACE = "\u200E";
     private static final Gson gson = new Gson();
 
     @NotNull
@@ -50,7 +51,13 @@ public class EmbedMessageParser {
         if (dto.getFields() != null) {
             for (PackageDTO.EmbedDTO.FieldsDTO field : dto.getFields()) {
                 if (field.inline != null && field.getName() != null && field.getValue() != null) {
-                    builder.addField(field.getName(), field.getValue(), field.getInline());
+                    String fieldName = field.getName();
+                    String fieldValue = field.getValue();
+                    if (StringUtils.isEmpty(fieldName))
+                        fieldName = ZERO_WIDTH_SPACE;
+                    if (StringUtils.isEmpty(fieldValue))
+                        fieldValue = ZERO_WIDTH_SPACE;
+                    builder.addField(fieldName, fieldValue, field.inline);
                 }
             }
         }
