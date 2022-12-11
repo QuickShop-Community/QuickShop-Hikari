@@ -12,7 +12,6 @@ import com.ghostchu.quickshop.util.Util;
 import github.scarsz.discordsrv.api.commands.PluginSlashCommand;
 import github.scarsz.discordsrv.api.commands.SlashCommandProvider;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
-import github.scarsz.discordsrv.util.DiscordUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -36,7 +35,7 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     public void onEnable() {
         plugin = QuickShop.getInstance();
         manager = new MessageManager(this);
-        manager.register(new MessageRepository(plugin, DiscordUtil.getJda()));
+        manager.register(new MessageRepository(plugin));
         factory = new MessageFactory(plugin, manager);
         this.jdaWrapper = new DiscordSRVWrapper();
         Bukkit.getPluginManager().registerEvents(this, this);

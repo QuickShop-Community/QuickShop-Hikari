@@ -6,7 +6,6 @@ import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
-import github.scarsz.discordsrv.dependencies.jda.api.JDA;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
@@ -24,13 +23,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class MessageRepository {
+    private static final String ADDON_TRANSLATION_KEY_PREFIX = "addon.discord.discord-messages.";
     private final QuickShop plugin;
-    private final String ADDON_TRANSLATION_KEY_PREFIX = "addon.discord.discord-messages.";
-    private final JDA jda;
     private final EmbedMessageParser parser = new EmbedMessageParser();
 
-    public MessageRepository(QuickShop plugin, JDA jda) {
-        this.jda = jda;
+    public MessageRepository(QuickShop plugin) {
         this.plugin = plugin;
     }
 
