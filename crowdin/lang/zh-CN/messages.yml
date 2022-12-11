@@ -638,7 +638,7 @@ addon:
   discord:
     __to_translators: "To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop's style {LANG_INDEX}, do not translate anything inside double '%' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don't need translate this string, it's a comment)"
     __to_users: "Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings."
-    __to_message_designer: "Design your Discord message with GUI: https://glitchii.github.io/embedbuilder/, then copy the JSON code and paste it into the translation and here we go!"
+    __to_message_designer: "使用GUI设计您的Discord消息：https://glitchiii.github.io/embedbuilder，然后复制JSON代码并粘贴到语言文件中，然后在这里开始！"
     discord-enabled: "<aqua>成功 <green>启用</green> 您的商店 Discord 通知消息，现在您可以从 Discord 接收商店消息。"
     discord-disabled: "<aqua>成功 <red>禁用</red> 您的商店 Discord 通知消息，现在您将不再收到来自 Discord 的商店消息。"
     discord-not-integrated: "<red>您尚未链接您的 Discord 账户！请先链接您的 Discord 账户！"
@@ -703,8 +703,8 @@ addon:
       {
       "embed":
         {
-            "title": ":outbox_tray: Somebody bought items from shop",
-            "description": "The player %%purchase.name%% bought x%%purchase.amount%% %%shop.item.name%% from your shop.",
+            "title": ":outbox_tray: 有人从商店购买物品",
+            "description": "该玩家 %%purchase.name%% 在你的商店购买了 %%purchase.amount%% 个 %%shop.item.name%%.",
             "color": 52084,
             "author": {
                 "name": "QuickShop-Hikari",
@@ -717,49 +717,50 @@ addon:
                 "url": ""
             },
             "footer": {
-                "text": "QuickShop-Hikari Discord Notification",
+                "text": "QuickShop-Hikari Discord通知消息",
                 "icon_url": ""
             },
             "fields": [
                 {
-                    "name": "Shop",
+                    "name": "商店",
                     "value": "%%shop.display-name%%",
                     "inline": false
                 },
                 {
-                    "name": "Purchaser",
+                    "name": "玩家",
                     "value": "%%purchase.name%%",
                     "inline": true
                 },
                 {
-                    "name": "Item",
+                    "name": "物品",
                     "value": "%%shop.item.name%%",
                     "inline": true
                 },
                 {
-                    "name": "Amount",
+                    "name": "数量",
                     "value": "%%purchase.amount%%(x%%shop.stacking-amount%%)",
                     "inline": true
                 },
                 {
-                    "name": "Your earn",
+                    "name": "收入",
                     "value": "%%purchase.balance-formatted%%",
                     "inline": true
                 },
                 {
-                    "name": "Taxes",
+                    "name": "税",
                     "value": "%%purchase.taxes-formatted%%",
                     "inline": true
                 }
             ]
         }
       }
+
     mod-shop-purchase: |
       {
       "embed":
         {
-            "title": ":dollar: Somebody purchased in a shop",
-            "description": "The player %%purchase.name%% purchase x%%purchase.amount%% %%shop.item.name%% from the shop.",
+            "title": ":dollar: 有人在商店里购买了",
+            "description": "该玩家 %%purchase.name%% 在商店里购买了 %%purchase.amount%%个 %%shop.item.name%%物品.",
             "color": 6061450,
             "author": {
                 "name": "QuickShop-Hikari",
@@ -772,37 +773,37 @@ addon:
                 "url": ""
             },
             "footer": {
-                "text": "QuickShop-Hikari Discord Notification",
+                "text": "QuickShop-Hikari Discord消息通知",
                 "icon_url": ""
             },
             "fields": [
                 {
-                    "name": "Shop",
+                    "name": "商店",
                     "value": "%%shop.display-name%%",
                     "inline": false
                 },
                 {
-                    "name": "Purchaser",
+                    "name": "玩家",
                     "value": "%%purchase.name%%",
                     "inline": true
                 },
                 {
-                    "name": "Item",
+                    "name": "物品",
                     "value": "%%shop.item.name%%",
                     "inline": true
                 },
                 {
-                    "name": "Amount",
+                    "name": "数量",
                     "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                     "inline": true
                 },
                 {
-                    "name": "Balance",
+                    "name": "余额",
                     "value": "%%purchase.balance-formatted%%",
                     "inline": true
                 },
                 {
-                    "name": "Taxes",
+                    "name": "税",
                     "value": "%%purchase.taxes-formatted%%",
                     "inline": true
                 }
