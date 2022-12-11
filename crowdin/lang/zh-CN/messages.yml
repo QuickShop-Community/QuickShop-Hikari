@@ -639,17 +639,17 @@ addon:
     __to_translators: "To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop's style {LANG_INDEX}, do not translate anything inside double '%' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don't need translate this string, it's a comment)"
     __to_users: "Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings."
     __to_message_designer: "Design your Discord message with GUI: https://glitchii.github.io/embedbuilder/, then copy the JSON code and paste it into the translation and here we go!"
-    discord-enabled: "<aqua>Successfully <green>enabled</green> your QuickShop discord messages, now you can receive the shop messages from Discord."
-    discord-disabled: "<aqua>Successfully <red>disabled</red> your QuickShop discord messages, now you won't receive the shop messages from Discord anymore."
-    discord-not-integrated: "<red>You hadn't link your Discord yet! Please link your Discord account first!"
-    link-help: "<yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account."
+    discord-enabled: "<aqua>成功 <green>启用</green> 您的商店 Discord 通知消息，现在您可以从 Discord 接收商店消息。"
+    discord-disabled: "<aqua>成功 <red>禁用</red> 您的商店 Discord 通知消息，现在您将不再收到来自 Discord 的商店消息。"
+    discord-not-integrated: "<red>您尚未链接您的 Discord 账户！请先链接您的 Discord 账户！"
+    link-help: "<yellow>此服务器使用 <gold>{0}</gold> 处理 Discord 驱动，请使用 <green>{0}</green> 链接您的 Discord 账户。"
     discord-messages:
       sold-to-your-shop: |
         {
          "embed":
            {
-             "title": ":inbox_tray: Somebody sold items to your shop",
-             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
+             "title": ":inbox_tray: 有人向你的商店出售物品",
+             "description": "该玩家 %%purchase.name%% 出售 %%purchase.amount%%个 %%shop.item.name%% 到你的商店.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -662,37 +662,37 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord Notification",
+               "text": "QuickShop-Hikari Discord通知消息",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "Shop",
+                 "name": "商店",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "Purchaser",
+                 "name": "玩家",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "Item",
+                 "name": "物品",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
-                 "name": "Amount",
-                 "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
+                 "name": "数量",
+                 "value": "%%purchase.amount%% (个%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Your paid",
+                 "name": "您已支付",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Taxes",
+                 "name": "税",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }
@@ -703,7 +703,7 @@ addon:
       {
       "embed":
         {
-            "title": ":outbox_tray: Somebody bought items to from shop",
+            "title": ":outbox_tray: Somebody bought items from shop",
             "description": "The player %%purchase.name%% bought x%%purchase.amount%% %%shop.item.name%% from your shop.",
             "color": 52084,
             "author": {
@@ -758,7 +758,7 @@ addon:
       {
       "embed":
         {
-            "title": ":dollar: Somebody purchased a shop",
+            "title": ":dollar: Somebody purchased in a shop",
             "description": "The player %%purchase.name%% purchase x%%purchase.amount%% %%shop.item.name%% from the shop.",
             "color": 6061450,
             "author": {
@@ -813,8 +813,8 @@ addon:
       {
       "embed":
         {
-            "title": ":mailbox_with_mail: Your shop has run out of space",
-            "description": "Your shop inventory is full of items!\nYou need empty your shop container to free the space then you can continue to accept new items.",
+            "title": ":mailbox_with_mail: 您的商店空间已不足",
+            "description": "您的商店库存已满!\n您需要清理您的商店以释放空间，然后可以接受新物品.",
             "color": 16065893,
             "author": {
                 "name": "QuickShop-Hikari",
@@ -827,12 +827,12 @@ addon:
                 "url": ""
             },
             "footer": {
-                "text": "QuickShop-Hikari Discord Notification",
+                "text": "QuickShop-Hikari Discord消息通知",
                 "icon_url": ""
             },
             "fields": [
                 {
-                    "name": "Shop",
+                    "name": "商店",
                     "value": "%%shop.display-name%%",
                     "inline": false
                 }
@@ -843,8 +843,8 @@ addon:
       {
           "embed":
               {
-                  "title": ":mailbox_with_no_mail: Your shop has run out of stock",
-                  "description": "Your shop inventory is empty now!\nYou need to refill the shop container with items to continue selling items!",
+                  "title": ":mailbox_with_no_mail: 您的商店已缺货",
+                  "description": "您的商店库存已空!\n您需要在商店中重新补货以继续出售物品!",
                   "color": 16065893,
                   "author": {
                       "name": "QuickShop-Hikari",
@@ -857,12 +857,12 @@ addon:
                       "url": ""
                   },
                   "footer": {
-                      "text": "QuickShop-Hikari Discord Notification",
+                      "text": "QuickShop-Hikari Discord消息通知",
                       "icon_url": ""
                   },
                   "fields": [
                       {
-                          "name": "Shop",
+                          "name": "商店",
                           "value": "%%shop.display-name%%",
                           "inline": false
                       }
@@ -872,8 +872,8 @@ addon:
     mod-shop-created: |
       {
         "embed": {
-          "title": ":classical_building: A new shop has been created",
-          "description": "Player created a new shop on your server!",
+          "title": ":classical_building: 新商店已被创建",
+          "description": "玩家在您的服务器中新建了一个商店!",
           "color": 6061450,
           "author": {
             "name": "QuickShop-Hikari",
@@ -886,32 +886,32 @@ addon:
             "url": ""
           },
           "footer": {
-            "text": "QuickShop-Hikari Discord Notification",
+            "text": "QuickShop-Hikari Discord消息通知",
             "icon_url": ""
           },
           "fields": [
             {
-              "name": "Shop",
+              "name": "商店",
               "value": "%%shop.display-name%%",
               "inline": false
             },
             {
-              "name": "Owner",
+              "name": "商店所有者",
               "value": "%%shop.owner.name%%",
               "inline": true
             },
             {
-              "name": "Item",
+              "name": "物品",
               "value": "%%shop.item.name%%",
               "inline": true
             },
             {
-              "name": "Amount",
+              "name": "数量",
               "value": "%%shop.stacking-amount%%",
               "inline": true
             },
             {
-              "name": "Type",
+              "name": "商店类型",
               "value": "%%shop.type%%",
               "inline": true
             }
@@ -920,43 +920,44 @@ addon:
       }
     mod-remove-shop: |
       {
-          "embed": {
-              "title": ":recycle: A shop was removed from this server",
-              "description": "A shop was removed from this server.",
-              "color": 6061450,
-              "author": {
-                  "name": "QuickShop-Hikari",
-                  "icon_url": ""
-              },
-              "thumbnail": {
-                  "url": ""
-              },
-              "image": {
-                  "url": ""
-              },
-              "footer": {
-                  "text": "QuickShop-Hikari Discord Notification",
-                  "icon_url": ""
-              },
-              "fields": [
+        "embed": {
+          "title": ":classical_building: 商店在服务器中已被删除",
+          "description": "玩家在服务器中删除了一个商店.",
+          "color": 6061450,
+          "author": {
+            "name": "QuickShop-Hikari",
+            "icon_url": ""
+          },
+          "thumbnail": {
+            "url": ""
+          },
+          "image": {
+            "url": ""
+          },
+          "footer": {
+            "text": "QuickShop-Hikari Discord消息通知",
+            "icon_url": ""
+          },
+          "fields": [
+            {
+              "name": "商店",
+              "value": "%%shop.display-name%%",
+              "inline": false
+           },
                   {
-                      "name": "Shop",
-                      "value": "%%shop.display-name%%",
-                      "inline": false
-                  },
-                  {
-                      "name": "Reason",
+                      "name": "理由",
                       "value": "%%delete.reason%%",
                       "inline": false
                   }
               ],
           }
       }
+
     shop-transfer-to-you: |
       {
           "embed": {
-              "title": ":placard: A shop was transfer to you",
-              "description": "A shop transfer to you from another player.",
+              "title": ":placard: 一个商店被转让给你",
+              "description": "一个商店从其他玩家那里转让给你.",
               "color": 16172079,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -969,17 +970,17 @@ addon:
                   "url": ""
               },
               "footer": {
-                  "text": "QuickShop-Hikari Discord Notification",
+                  "text": "QuickShop-Hikari Discord消息通知",
                   "icon_url": ""
               },
               "fields": [
                   {
-                      "name": "Shop",
+                      "name": "商店",
                       "value": "%%shop.display-name%%",
                       "inline": false
                   },
                   {
-                      "name": "From",
+                      "name": "转让来自",
                       "value": "%%transfer.from%%",
                       "inline": false
                   }
@@ -989,8 +990,8 @@ addon:
     mod-shop-transfer: |
       {
           "embed": {
-              "title": ":placard: A shop was transferred",
-              "description": "A shop transfer to a player from another player.",
+              "title": ":placard: 商店已被转让",
+              "description": "商店从一个玩家转让到了其他玩家.",
               "color": 6061450,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -1003,22 +1004,22 @@ addon:
                   "url": ""
               },
               "footer": {
-                  "text": "QuickShop-Hikari Discord Notification",
+                  "text": "QuickShop-Hikari Discord消息通知",
                   "icon_url": ""
               },
               "fields": [
                   {
-                      "name": "Shop",
+                      "name": "商店",
                       "value": "%%shop.display-name%%",
                       "inline": false
                   },
                   {
-                      "name": "From",
+                      "name": "转让来自",
                       "value": "%%transfer.from%%",
                       "inline": true
                   },
                   {
-                      "name": "To",
+                      "name": "转让给",
                       "value": "%%transfer.to%%",
                       "inline": true
                   }
@@ -1028,8 +1029,8 @@ addon:
     shop-price-changed: |
       {
           "embed": {
-              "title": ":money_with_wings: Your shop price was changed",
-              "description": "You or your shop staff changed your shop price.",
+              "title": ":money_with_wings: 您的商店价格已被修改",
+              "description": "您或者是您的商店助手修改了商店价格.",
               "color": 16172079,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -1042,22 +1043,22 @@ addon:
                   "url": ""
               },
               "footer": {
-                  "text": "QuickShop-Hikari Discord Notification",
+                  "text": "QuickShop-Hikari Discord消息通知",
                   "icon_url": ""
               },
               "fields": [
                   {
-                      "name": "Shop",
+                      "name": "商店",
                       "value": "%%shop.display-name%%",
                       "inline": false
                   },
                   {
-                      "name": "From",
+                      "name": "原价格",
                       "value": "%%change-price.from%%",
                       "inline": true
                   },
                   {
-                      "name": "To",
+                      "name": "现价格",
                       "value": "%%change-price.to%%",
                       "inline": true
                   }
@@ -1067,8 +1068,8 @@ addon:
     mod-shop-price-changed: |
       {
           "embed": {
-              "title": ":money_with_wings: A shop price has been changed",
-              "description": "A shop changed its price settings.",
+              "title": ":money_with_wings:商店价格已被修改",
+              "description": "商店修改了价格设定.",
               "color": 6061450,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -1081,17 +1082,17 @@ addon:
                   "url": ""
               },
               "footer": {
-                  "text": "QuickShop-Hikari Discord Notification",
+                  "text": "QuickShop-Hikari Discord消息通知",
                   "icon_url": ""
               },
               "fields": [
                   {
-                      "name": "Shop",
+                      "name": "商店",
                       "value": "%%shop.display-name%%",
                       "inline": true
                   },
                   {
-                      "name": "Owner",
+                      "name": "商店所有者",
                       "value": "%%shop.owner.name%%",
                       "inline": true
                   },
@@ -1101,12 +1102,12 @@ addon:
                       "inline": true
                   },
                   {
-                      "name": "From",
+                      "name": "原价格",
                       "value": "%%change-price.from%%",
                       "inline": true
                   },
                   {
-                      "name": "To",
+                      "name": "现价格",
                       "value": "%%change-price.to%%",
                       "inline": true
                   }
@@ -1116,8 +1117,8 @@ addon:
     shop-permission-changed: |
       {
           "embed": {
-              "title": ":closed_lock_with_key: Your shop permission settings has been changed",
-              "description": "One of your shop's permission setting has been changed.",
+              "title": ":closed_lock_with_key: 商店权限设置已被更改",
+              "description": "您的一个商店的权限设置已被更改.",
               "color": 15879747,
               "author": {
                   "name": "QuickShop-Hikari",
@@ -1130,22 +1131,22 @@ addon:
                   "url": ""
               },
               "footer": {
-                  "text": "QuickShop-Hikari Discord Notification",
+                  "text": "QuickShop-Hikari Discord消息通知",
                   "icon_url": ""
               },
               "fields": [
                   {
-                      "name": "Shop",
+                      "name": "商店",
                       "value": "%%shop.display-name%%",
                       "inline": false
                   },
                   {
-                      "name": "Player",
+                      "name": "玩家",
                       "value": "%%change-permission.player%%",
                       "inline": true
                   },
                   {
-                      "name": "Assign to group",
+                      "name": "分配给组",
                       "value": "%%change-permission.to-group%%",
                       "inline": true
                   },
@@ -1155,7 +1156,7 @@ addon:
                       "inline": true
                   },
                   {
-                      "name": "Permission granted (Inherit from group)",
+                      "name": "授予权限(继承于组)",
                       "value": "```\n%%change-permission.perms-list%%\n```",
                       "inline": false
                   }
@@ -1163,14 +1164,14 @@ addon:
           }
       }
     field:
-      player: "Player"
-      item: "Item"
-      amount: "Amount"
-      balance: "Balance"
-      balance-after-tax: "Balance (after tax)"
-      account: "Your account balance"
-      taxes: "Taxes"
-      cost: "Cost"
+      player: "玩家"
+      item: "物品"
+      amount: "数量"
+      balance: "余额"
+      balance-after-tax: "余额 (税后)"
+      account: "账户余额"
+      taxes: "税"
+      cost: "价格"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
