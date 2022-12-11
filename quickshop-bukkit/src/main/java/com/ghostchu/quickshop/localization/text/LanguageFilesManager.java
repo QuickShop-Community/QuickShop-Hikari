@@ -29,6 +29,11 @@ public class LanguageFilesManager {
         }
     }
 
+
+    public void destroy(@NotNull String locale) {
+        this.locale2ContentMapping.remove(locale);
+    }
+
     private void merge(@NotNull FileConfiguration alreadyRegistered, @NotNull FileConfiguration newConfiguration) {
         for (String key : newConfiguration.getKeys(true)) {
             if (newConfiguration.isConfigurationSection("key")) continue;

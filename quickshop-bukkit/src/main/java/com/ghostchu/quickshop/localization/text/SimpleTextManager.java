@@ -140,6 +140,17 @@ public class SimpleTextManager implements TextManager, Reloadable {
 
             }
         });
+        // Remove disabled locales
+        List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
+        enabledLanguagesRegex.replaceAll(s -> s.toLowerCase(Locale.ROOT).replace("-", "_"));
+        Iterator<String> it = pending.iterator();
+        while (it.hasNext()) {
+            String locale = it.next();
+            if (!localeEnabled(locale, enabledLanguagesRegex)) {
+                this.languageFilesManager.destroy(locale);
+                it.remove();
+            }
+        }
         // Remember all available languages
         availableLanguages.addAll(pending);
 
