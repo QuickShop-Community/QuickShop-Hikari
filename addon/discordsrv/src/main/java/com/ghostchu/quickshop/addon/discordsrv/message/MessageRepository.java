@@ -51,25 +51,12 @@ public class MessageRepository {
         return generateFromTemplate("out-of-stock", langUser, placeHolders);
     }
 
-    @AutoRegisterMessage(key = "mod-shop-created")
-    public MessageEmbed modShopCreated(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
-        return generateFromTemplate("mod-shop-created", langUser, placeHolders);
-    }
-
-    @AutoRegisterMessage(key = "mod-shop-removed")
-    public MessageEmbed modShopRemoved(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
-        return generateFromTemplate("mod-shop-removed", langUser, placeHolders);
-    }
 
     @AutoRegisterMessage(key = "shop-transfer-to-you")
     public MessageEmbed shopTransferToYou(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
         return generateFromTemplate("shop-transfer-to-you", langUser, placeHolders);
     }
 
-    @AutoRegisterMessage(key = "mod-shop-transfer")
-    public MessageEmbed modShopTransfer(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
-        return generateFromTemplate("mod-shop-transfer", langUser, placeHolders);
-    }
 
     @AutoRegisterMessage(key = "shop-price-changed")
     public MessageEmbed shopPriceChanged(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
@@ -80,6 +67,32 @@ public class MessageRepository {
     public MessageEmbed shopPermissionChanged(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
         return generateFromTemplate("shop-permission-changed", langUser, placeHolders);
     }
+
+    @AutoRegisterMessage(key = "mod-shop-created")
+    public MessageEmbed modShopCreated(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("mod-shop-created", langUser, placeHolders);
+    }
+
+    @AutoRegisterMessage(key = "mod-shop-transfer")
+    public MessageEmbed modShopTransfer(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("mod-shop-transfer", langUser, placeHolders);
+    }
+
+    @AutoRegisterMessage(key = "mod-remove-shop")
+    public MessageEmbed modShopRemoved(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("mod-remove-shop", langUser, placeHolders);
+    }
+
+    @AutoRegisterMessage(key = "mod-shop-price-changed")
+    public MessageEmbed modShopPriceChanged(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("mod-shop-price-changed", langUser, placeHolders);
+    }
+
+    @AutoRegisterMessage(key = "mod-shop-purchase")
+    public MessageEmbed modShopPurchase(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("mod-shop-purchase", langUser, placeHolders);
+    }
+
 
     @NotNull
     private MessageEmbed generateFromTemplate(@NotNull String key, @NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {

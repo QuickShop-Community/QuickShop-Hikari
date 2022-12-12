@@ -1055,7 +1055,7 @@ addon:
                         "value": "%%delete.reason%%",
                         "inline": false
                     }
-                ],
+                ]
             }
         }
       shop-transfer-to-you: |

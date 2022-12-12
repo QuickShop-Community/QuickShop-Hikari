@@ -12,4 +12,4 @@ features:
   mod-notify-shop-purchase: true
   mod-notify-shop-price-changed: true
   mod-notify-shop-removed: true
-  mod-notify-shop-transfer: true
+  mod-notify-shop-transfer: false
