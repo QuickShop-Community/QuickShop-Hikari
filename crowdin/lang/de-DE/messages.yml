@@ -586,6 +586,7 @@ transfer-accepted-toside: "<green>Du hast <aqua>{0}</aqua>'s Transfer-Anfrage ak
 transfer-rejected-fromside: "<red>Spieler <aqua>{0}</aqua> hat deine Transfer-Anfrage abgelehnt."
 transfer-rejected-toside: "<red>Du hast <aqua>{0}</aqua>'s Transfer-Anfrage abgelehnt."
 transfer-no-pending-operation: "<red>Du hat keine ausstehenden Transfer-Anfragen."
+transfer-no-self: "<red>You can't transfer your shops to yourself."
 benefit-overflow: "<red>Die Summe aller Vorteile kann nicht grösser oder gleich 100% sein."
 benefit-exists: "<red>Spieler ist bereits in der Vorteilsliste dieses Shops."
 benefit-removed: "<red>Spieler wurde von Shop-Vorteilen entfernt."
