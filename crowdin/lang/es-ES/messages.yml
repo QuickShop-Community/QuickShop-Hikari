@@ -642,7 +642,12 @@ addon:
     discord-enabled: "<aqua>Successfully <green>enabled</green> your QuickShop discord messages, now you can receive the shop messages from Discord."
     discord-disabled: "<aqua>Successfully <red>disabled</red> your QuickShop discord messages, now you won't receive the shop messages from Discord anymore."
     discord-not-integrated: "<red>You hadn't link your Discord yet! Please link your Discord account first!"
+    feature-enabled-for-user: "<aqua>You have <green>enabled</green> <gold>{0}</gold> notification."
+    feature-disabled-for-user: "<aqua>You have <red>disabled</red> <gold>{0}</gold> notification."
     link-help: "<yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account."
+    commands:
+      discord:
+        description: "<yellow>Managing your QuickShop Discord settings"
     discord-messages:
       sold-to-your-shop: |
         {
@@ -949,7 +954,7 @@ addon:
                         "value": "%%delete.reason%%",
                         "inline": false
                     }
-                ],
+                ]
             }
         }
       shop-transfer-to-you: |
