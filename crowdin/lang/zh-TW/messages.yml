@@ -586,6 +586,7 @@ transfer-accepted-toside: "<green>你已接受 <aqua>{0}</aqua> 的轉移請求�
 transfer-rejected-fromside: "<red>玩家 <aqua>{0}</aqua> 已拒絕你的商店轉移請求。"
 transfer-rejected-toside: "<red>你已拒絕 <aqua>{0}</aqua> 的轉移請求。"
 transfer-no-pending-operation: "<red>你還沒有待處理的轉移請求。"
+transfer-no-self: "<red>You can't transfer your shops to yourself."
 benefit-overflow: "<red>The sum of all benefits cannot be greater than or equal to 100%."
 benefit-exists: "<red>Target player already in benefits list on this shop."
 benefit-removed: "<red>Target player has been removed from shop benefits."
