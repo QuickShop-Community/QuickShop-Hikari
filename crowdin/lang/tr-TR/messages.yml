@@ -39,7 +39,7 @@ quick-fill:
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Fiyat: <aqua>{0}'
     - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Konum: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Name: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
@@ -106,7 +106,7 @@ menu:
   price-per-stack: <yellow>{2} <green>tane <yellow>{0} <green>başına fiyat <yellow>{1}
   stored-enchants: <dark_purple>Depolanmış Büyüler
   item-holochat-error: <red>[Hata]
-  this-shop-is-selling: <green>Bu market öğe %bSATIYOR<green>.
+  this-shop-is-selling: <green>Bu market eşyaları<aqua>SATIYOR</aqua>.
   shop-stack: '<green>Yığının miktarı: <yellow>{0}'
   space: '<green>Yer: <yellow>{0}'
   effects: <green>Efektler
@@ -1180,7 +1180,7 @@ addon:
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
-    description: "Item: {0}\nOwner: {1}\nType: {2} {3}\nPrice: {4}\nLocation: {5} {6}, {7}, {8}\nSpace: {9}\nStock: {10}"
+    description: "Ürün: {0}\nSahibi: {1}\nTürü: {2} {3}\nFiyat: {4}\nYer: {5} {6}, {7}, {8}\nAlan: {9}\nStok: {10}"
   limited:
     command-description: "<yellow>Set a limit that restrict the purchase that player can make in period."
     reach-the-quota-limit: "<red>You have reach the purchase limit in this shop ({0}/{1})."
