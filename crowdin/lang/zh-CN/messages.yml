@@ -642,7 +642,12 @@ addon:
     discord-enabled: "<aqua>成功 <green>启用</green> 您的商店 Discord 通知消息，现在您可以从 Discord 接收商店消息。"
     discord-disabled: "<aqua>成功 <red>禁用</red> 您的商店 Discord 通知消息，现在您将不再收到来自 Discord 的商店消息。"
     discord-not-integrated: "<red>您尚未链接您的 Discord 账户！请先链接您的 Discord 账户！"
+    feature-enabled-for-user: "<aqua>You have <green>enabled</green> <gold>{0}</gold> notification."
+    feature-disabled-for-user: "<aqua>You have <red>disabled</red> <gold>{0}</gold> notification."
     link-help: "<yellow>此服务器使用 <gold>{0}</gold> 处理 Discord 驱动，请使用 <green>{0}</green> 链接您的 Discord 账户。"
+    commands:
+      discord:
+        description: "<yellow>Managing your QuickShop Discord settings"
     discord-messages:
       sold-to-your-shop: |
         {
@@ -949,7 +954,7 @@ addon:
                         "value": "%%delete.reason%%",
                         "inline": false
                     }
-                ],
+                ]
             }
         }
       shop-transfer-to-you: |
