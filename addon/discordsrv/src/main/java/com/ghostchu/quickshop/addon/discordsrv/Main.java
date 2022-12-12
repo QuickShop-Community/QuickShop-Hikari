@@ -46,6 +46,17 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     }
 
     @Override
+    public void saveDefaultConfig() {
+        super.saveDefaultConfig();
+        // perform configuration upgrade
+        if (getConfig().getInt("config-version") != 2) {
+            getConfig().set("moderator-channel", "000000000000000000");
+            getConfig().set("config-version", 2);
+            saveConfig();
+        }
+    }
+
+    @Override
     public void onDisable() {
         HandlerList.unregisterAll((Plugin) this);
     }
@@ -117,14 +128,14 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     private void notifyModShopPriceChanged(ShopPriceChangeEvent event) {
         if (!isFeatureEnabled("mod-notify-shop-price-changed"))
             return;
-
+        sendModeratorChannelMessage(factory.priceChanged(event));
     }
 
 
     private void notifyModShopRemoved(ShopDeleteEvent event) {
         if (!isFeatureEnabled("mod-notify-shop-removed"))
             return;
-
+        sendModeratorChannelMessage(factory.modShopRemoved(event));
     }
 
     private void notifyShopTransfer(ShopOwnershipTransferEvent event) {
@@ -136,7 +147,7 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     private void notifyModShopTransfer(ShopOwnershipTransferEvent event) {
         if (!isFeatureEnabled("mod-notify-shop-transfer"))
             return;
-        jdaWrapper.sendMessage(event.getShop().getOwner(), factory.modShopTransfer(event));
+        sendModeratorChannelMessage(factory.modShopTransfer(event));
     }
 
 
@@ -200,7 +211,7 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     private void notifyModShopPurchase(ShopSuccessPurchaseEvent event) {
         if (!isFeatureEnabled("mod-notify-shop-purchase"))
             return;
-        //
+        sendModeratorChannelMessage(factory.shopPurchasedMod(event));
     }
 
 
@@ -208,6 +219,17 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
         return getConfig().getBoolean("features." + featureName, true);
     }
 
+    private void sendModeratorChannelMessage(@NotNull MessageEmbed embed) {
+        String channelId = getConfig().getString("moderator-channel", "000000000000000000");
+        if (channelId.equals("000000000000000000")) return;
+        jdaWrapper.sendChannelMessage(channelId, embed);
+    }
+
+    private void sendModeratorChannelMessage(@NotNull String msg) {
+        String channelId = getConfig().getString("moderator-channel", "000000000000000000");
+        if (channelId.equals("000000000000000000")) return;
+        jdaWrapper.sendChannelMessage(channelId, msg);
+    }
 
     @Override
     public Set<PluginSlashCommand> getSlashCommands() {

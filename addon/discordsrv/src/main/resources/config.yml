@@ -1,4 +1,6 @@
-config-version: 1
+config-version: 2
+
+moderator-channel: "000000000000000000"
 
 features:
   notify-shop-permission-changed: true
