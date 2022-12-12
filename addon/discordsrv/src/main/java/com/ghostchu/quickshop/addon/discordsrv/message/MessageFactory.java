@@ -6,13 +6,11 @@ import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
-import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
@@ -77,7 +75,7 @@ public class MessageFactory {
     }
 
     @NotNull
-    public MessageEmbed shopPurchasedMod(@NotNull ShopSuccessPurchaseEvent event) {
+    public MessageEmbed modShopPurchase(@NotNull ShopSuccessPurchaseEvent event) {
         Shop shop = event.getShop();
         Map<String, String> placeHolders = applyPlaceHolders(shop, new HashMap<>());
         applyPlaceHoldersForPurchaseEvent(placeHolders, event.getPurchaser(), event);
@@ -138,23 +136,6 @@ public class MessageFactory {
         }
         placeHolders.put("change-permission.perms-list", builder.toString());
         return messageManager.getEmbedMessage("shop-permission-changed", shop.getOwner(), placeHolders);
-    }
-
-    @NotNull
-    private EmbedBuilder createPurchaseTemplateEmbedMessage(@NotNull Shop shop, @NotNull UUID langUser, @NotNull String playerName, @NotNull World world, int amount, double balance, double taxes) {
-        EmbedBuilder builder = new EmbedBuilder();
-        Map<String, String> placeHolders = new HashMap<>();
-        applyPlaceHolders(shop, placeHolders, langUser);
-        builder.addField(lang(langUser, "addon.discord.field.player", placeHolders), playerName, false);
-        builder.addField(lang(langUser, "addon.discord.field.item", placeHolders), wrap(Util.getItemStackName(shop.getItem())), true);
-        builder.addField(lang(langUser, "addon.discord.field.amount", placeHolders), String.valueOf(amount), true);
-        builder.addField(lang(langUser, "addon.discord.field.balance", placeHolders), plugin.getEconomy().format(balance, world, shop.getCurrency()), true);
-        if (plugin.getConfig().getBoolean("show-tax")) {
-            builder.addField(lang(langUser, "addon.discord.field.taxes", placeHolders), plugin.getEconomy().format(taxes, world, shop.getCurrency()), true);
-        } else {
-            builder.addBlankField(true);
-        }
-        return builder;
     }
 
     @NotNull

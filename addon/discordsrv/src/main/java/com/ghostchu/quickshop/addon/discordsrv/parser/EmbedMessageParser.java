@@ -50,7 +50,7 @@ public class EmbedMessageParser {
         builder.setTimestamp(Instant.now());
         if (dto.getFields() != null) {
             for (PackageDTO.EmbedDTO.FieldsDTO field : dto.getFields()) {
-                if (field.inline != null && field.getName() != null && field.getValue() != null) {
+                if (field != null && field.getName() != null && field.getValue() != null) {
                     String fieldName = field.getName();
                     String fieldValue = field.getValue();
                     if (StringUtils.isEmpty(fieldName))

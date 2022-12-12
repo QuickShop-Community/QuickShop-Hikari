@@ -74,6 +74,7 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
         });
     }
 
+
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onShopTransfer(ShopOwnershipTransferEvent event) {
         Util.asyncThreadRun(() -> {
@@ -93,6 +94,11 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
             notifyShopPriceChanged(event);
             notifyModShopPriceChanged(event);
         });
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onShopCreated(ShopCreateEvent event) {
+        Util.asyncThreadRun(() -> notifyModShopCreated(event));
     }
 
 
@@ -128,7 +134,7 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     private void notifyModShopPriceChanged(ShopPriceChangeEvent event) {
         if (!isFeatureEnabled("mod-notify-shop-price-changed"))
             return;
-        sendModeratorChannelMessage(factory.priceChanged(event));
+        sendModeratorChannelMessage(factory.modPriceChanged(event));
     }
 
 
@@ -148,6 +154,12 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
         if (!isFeatureEnabled("mod-notify-shop-transfer"))
             return;
         sendModeratorChannelMessage(factory.modShopTransfer(event));
+    }
+
+    private void notifyModShopCreated(ShopCreateEvent event) {
+        if (!isFeatureEnabled("mod-notify-shop-created"))
+            return;
+        sendModeratorChannelMessage(factory.modShopCreated(event));
     }
 
 
@@ -211,7 +223,7 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     private void notifyModShopPurchase(ShopSuccessPurchaseEvent event) {
         if (!isFeatureEnabled("mod-notify-shop-purchase"))
             return;
-        sendModeratorChannelMessage(factory.shopPurchasedMod(event));
+        sendModeratorChannelMessage(factory.modShopPurchase(event));
     }
 
 
