@@ -586,7 +586,7 @@ transfer-accepted-toside: "<green>您接受了 <aqua>{0}</aqua> 的商店转移�
 transfer-rejected-fromside: "<red>玩家 <aqua>{0}</aqua> 拒绝了您的商店转移请求。"
 transfer-rejected-toside: "<red>您拒绝了 <aqua>{0}</aqua> 的商店转移请求。"
 transfer-no-pending-operation: "<red>您没有待处理的商店转移请求。"
-transfer-no-self: "<red>You can't transfer your shops to yourself."
+transfer-no-self: "<red>您不能将商店转移给自己"
 benefit-overflow: "<red>所有利益的总和不能大于或等于100%"
 benefit-exists: "<red>目标玩家已经在该商店的利益分配列表中"
 benefit-removed: "<red>该玩家已被从商店的利益分配中移除"
