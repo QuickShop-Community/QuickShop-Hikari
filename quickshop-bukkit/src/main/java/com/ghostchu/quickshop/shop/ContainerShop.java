@@ -1262,11 +1262,11 @@ public class ContainerShop implements Shop, Reloadable {
             inventoryWrapper = locateInventory(symbolLink);
         } catch (Exception e) {
             plugin.getLogger().warning("Failed to load shop: " + symbolLink + ": " + e.getClass().getName() + ": " + e.getMessage());
-            if (plugin.getConfig().getBoolean("debug.delete-corrupt-shop")) {
+            if (plugin.getConfig().getBoolean("debug.delete-corrupt-shops")) {
                 plugin.getLogger().warning("Deleting corrupt shop...");
                 this.delete(false);
             } else {
-                plugin.getLogger().warning("Unloading shops from memory, set `debug.delete-corrupt-shop` to true to delete corrupted shops.");
+                plugin.getLogger().warning("Unloading shops from memory, set `debug.delete-corrupt-shops` to true to delete corrupted shops.");
                 this.delete(true);
             }
             return;
