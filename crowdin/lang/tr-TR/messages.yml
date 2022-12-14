@@ -29,7 +29,7 @@ server-crash-warning: '<red>Eğer QuickShop Jar dosyasını sunucu çalışırke
 you-cant-afford-to-change-price: <red>Marketinizin fiyatını değiştirmek ${0} tutarındadır.
 safe-mode: <red>QuickShop şimdi güvenli modda, bu mağaza kapsayıcısını açamazsınız, hataları düzeltmek için lütfen sunucu yöneticisi ile iletişime geçin.
 forbidden-vanilla-behavior: <red>Eylem, vanilla'ya uygun olmadığı için yasaklandı
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>Marketin {0} dolu!
 paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
@@ -37,9 +37,9 @@ quick-fill:
     - '<yellow>Name: <aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Fiyat: <aqua>{0}'
     - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Konum: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Name: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
@@ -106,7 +106,7 @@ menu:
   price-per-stack: <yellow>{2} <green>tane <yellow>{0} <green>başına fiyat <yellow>{1}
   stored-enchants: <dark_purple>Depolanmış Büyüler
   item-holochat-error: <red>[Hata]
-  this-shop-is-selling: <green>Bu market öğe %bSATIYOR<green>.
+  this-shop-is-selling: <green>Bu market eşyaları<aqua>SATIYOR</aqua>.
   shop-stack: '<green>Yığının miktarı: <yellow>{0}'
   space: '<green>Yer: <yellow>{0}'
   effects: <green>Efektler
@@ -280,7 +280,7 @@ signs:
   out-of-stock: Stok tükendi
   stack-buying: '{0} Alıyor'
   freeze: Takas kapatıldı
-  price: 'her biri {0}'
+  price: 'Her biri {0}'
   buying: 'Alıyor: {0}'
   header: '{1}{0}'
   header-available: '<green>{0}'
@@ -317,7 +317,7 @@ controlpanel:
   price-hover: <yellow>Öğeye yeni bir fiyat belirlemek için tıkla.
   remove: <red><bold>[Marketi Kaldır]
   mode-buying-hover: <yellow>Marketi SATMA moduna değiştirmek için tıkla.
-  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>Boşalt: Tüm eşyaları boşalt <yellow>[<light_purple><bold>BOŞALT<yellow>]'
   stack-hover: <yellow>Yığın başına öğe miktarını ayarlamak için tıklayın. Normal davranış için 1 yapın.
   alwayscounting-hover: Dükkan her zaman konteyner sayıyorsa geçiş yapmak için <yellow>tıklayın.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
@@ -336,7 +336,7 @@ controlpanel:
   refill-hover: <yellow>Marketi doldurmak için tıkla.
   remove-hover: <yellow>Bu marketi kaldırmak için tıkla.
   toggledisplay-hover: <yellow>Mağazanın hologramının durumunu değiştir
-  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
+  refill: '<green>Doldur: Eşyaları doldur <yellow>[<light_purple><bold>DOLDUR<yellow>]'
   freeze-hover: <yellow>Marketin dondurulma durumunu değiştir.
   lock-hover: <yellow>Marketin kilit korumasını aktif/deaktif et.
   item-hover: <yellow>Market öğesini değiştirmek için tıkla
@@ -586,6 +586,7 @@ transfer-accepted-toside: "<green>You accepted <aqua>{0}</aqua>'s transfer reque
 transfer-rejected-fromside: "<red>Player <aqua>{0}</aqua> rejected your shop transfer request."
 transfer-rejected-toside: "<red>You rejected <aqua>{0}</aqua>'s shop transfer request."
 transfer-no-pending-operation: "<red>You don't have pending transfer request yet."
+transfer-no-self: "<red>You can't transfer your shops to yourself."
 benefit-overflow: "<red>The sum of all benefits cannot be greater than or equal to 100%."
 benefit-exists: "<red>Target player already in benefits list on this shop."
 benefit-removed: "<red>Target player has been removed from shop benefits."
@@ -1179,7 +1180,7 @@ addon:
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
-    description: "Item: {0}\nOwner: {1}\nType: {2} {3}\nPrice: {4}\nLocation: {5} {6}, {7}, {8}\nSpace: {9}\nStock: {10}"
+    description: "Ürün: {0}\nSahibi: {1}\nTürü: {2} {3}\nFiyat: {4}\nYer: {5} {6}, {7}, {8}\nAlan: {9}\nStok: {10}"
   limited:
     command-description: "<yellow>Set a limit that restrict the purchase that player can make in period."
     reach-the-quota-limit: "<red>You have reach the purchase limit in this shop ({0}/{1})."

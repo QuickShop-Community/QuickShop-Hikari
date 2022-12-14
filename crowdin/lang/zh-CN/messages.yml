@@ -586,6 +586,7 @@ transfer-accepted-toside: "<green>您接受了 <aqua>{0}</aqua> 的商店转移�
 transfer-rejected-fromside: "<red>玩家 <aqua>{0}</aqua> 拒绝了您的商店转移请求。"
 transfer-rejected-toside: "<red>您拒绝了 <aqua>{0}</aqua> 的商店转移请求。"
 transfer-no-pending-operation: "<red>您没有待处理的商店转移请求。"
+transfer-no-self: "<red>您不能将商店转移给自己"
 benefit-overflow: "<red>所有利益的总和不能大于或等于100%"
 benefit-exists: "<red>目标玩家已经在该商店的利益分配列表中"
 benefit-removed: "<red>该玩家已被从商店的利益分配中移除"
@@ -637,7 +638,7 @@ addon:
     trade-flag-test-failed: "<red>您没有在该WorldGuard区域与商店交易的权限。"
   discord:
     __to_translators: "To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop's style {LANG_INDEX}, do not translate anything inside double '%' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don't need translate this string, it's a comment)"
-    __to_users: "Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings."
+    __to_users: "和QuickShop的文字系统一样，Discord插件也会自动检测用户语言并使用该语言发送Discord消息， 它遵循QuickShop-Hikari的语言系统设置"
     __to_message_designer: "使用GUI设计您的Discord消息：https://glitchiii.github.io/embedbuilder，然后复制JSON代码并粘贴到语言文件中，然后在这里开始！"
     discord-enabled: "<aqua>成功 <green>启用</green> 您的商店 Discord 通知消息，现在您可以从 Discord 接收商店消息。"
     discord-disabled: "<aqua>成功 <red>禁用</red> 您的商店 Discord 通知消息，现在您将不再收到来自 Discord 的商店消息。"
@@ -647,7 +648,7 @@ addon:
     link-help: "<yellow>此服务器使用 <gold>{0}</gold> 处理 Discord 驱动，请使用 <green>{0}</green> 链接您的 Discord 账户。"
     commands:
       discord:
-        description: "<yellow>Managing your QuickShop Discord settings"
+        description: "<yellow>管理QuickShop的Discord设置"
     discord-messages:
       sold-to-your-shop: |
         {
