@@ -20,6 +20,15 @@ public interface ShopPermissionManager {
     @NotNull List<String> getGroups();
 
     /**
+     * Gets the permission list of a group.
+     *
+     * @param group The group.
+     * @return The permission list.
+     */
+    @NotNull
+    List<String> getGroupPermissions(@NotNull String group);
+
+    /**
      * Check if specified group exists.
      *
      * @param group Group name.

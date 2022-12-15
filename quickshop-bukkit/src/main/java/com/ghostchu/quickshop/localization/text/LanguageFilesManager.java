@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.localization.text;
 
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,26 +16,29 @@ public class LanguageFilesManager {
     /**
      * Deploy new locale to TextMapper with cloud values and bundle values
      *
-     * @param locale       The locale code
-     * @param distribution The values from Distribution platform
+     * @param locale          The locale code
+     * @param newDistribution The values from Distribution platform
      */
-    public void deploy(@NotNull String locale, @NotNull FileConfiguration distribution) {
+    public void deploy(@NotNull String locale, @NotNull FileConfiguration newDistribution) {
         Log.debug("Registered and deployed locale: " + locale);
-        FileConfiguration alreadyRegistered = this.locale2ContentMapping.get(locale);
-        if (alreadyRegistered != null) {
-            Log.debug("Applying and merging two different translations. (prefer cloud)");
-            this.locale2ContentMapping.put(locale, merge(alreadyRegistered, distribution));
+        if (!this.locale2ContentMapping.containsKey(locale)) {
+            this.locale2ContentMapping.put(locale, newDistribution);
         } else {
-            this.locale2ContentMapping.put(locale, distribution);
+            FileConfiguration exists = this.locale2ContentMapping.get(locale);
+            merge(exists, newDistribution);
         }
     }
 
-    @NotNull
-    private FileConfiguration merge(@NotNull FileConfiguration alreadyRegistered, @NotNull FileConfiguration distribution) {
-        FileConfiguration fileConfiguration = new YamlConfiguration();
-        alreadyRegistered.getKeys(true).forEach(key -> fileConfiguration.set(key, alreadyRegistered.get(key)));
-        distribution.getKeys(true).forEach(key -> fileConfiguration.set(key, distribution.get(key)));
-        return fileConfiguration;
+
+    public void destroy(@NotNull String locale) {
+        this.locale2ContentMapping.remove(locale);
+    }
+
+    private void merge(@NotNull FileConfiguration alreadyRegistered, @NotNull FileConfiguration newConfiguration) {
+        for (String key : newConfiguration.getKeys(true)) {
+            if (newConfiguration.isConfigurationSection("key")) continue;
+            alreadyRegistered.set(key, newConfiguration.get(key));
+        }
     }
 
     /**

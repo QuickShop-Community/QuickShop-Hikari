@@ -10,7 +10,9 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.reflect.StructureModifier;
 import com.comphenix.protocol.utility.MinecraftVersion;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import com.comphenix.protocol.wrappers.WrappedDataValue;
 import com.comphenix.protocol.wrappers.WrappedDataWatcher;
+import com.comphenix.protocol.wrappers.WrappedWatchableObject;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.event.ShopDisplayItemSpawnEvent;
@@ -31,7 +33,6 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -195,11 +196,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
     }
 
     private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
-        try {
-            PROTOCOL_MANAGER.sendServerPacket(player, packet);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException("An error occurred when sending a packet", e);
-        }
+        PROTOCOL_MANAGER.sendServerPacket(player, packet);
     }
 
     public void sendFakeItemToAll() {
@@ -226,10 +223,11 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
     }
 
     public static class VirtualDisplayItemManager {
-        private VirtualDisplayItemManager() {
-        }
         private static final AtomicBoolean LOADED = new AtomicBoolean(false);
         private static final Map<SimpleShopChunk, List<VirtualDisplayItem>> CHUNKS_MAPPING = new ConcurrentHashMap<>();
+
+        private VirtualDisplayItemManager() {
+        }
 
         public static void load() {
             if (LOADED.get()) {
@@ -367,7 +365,6 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
             PacketContainer fakeItemMetaPacket = PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.ENTITY_METADATA);
             //Entity ID
             fakeItemMetaPacket.getIntegers().write(0, entityID);
-
             //List<DataWatcher$Item> Type are more complex
             //Create a DataWatcher
             WrappedDataWatcher wpw = new WrappedDataWatcher();
@@ -383,10 +380,20 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                 wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromJson(itemName).getHandle()));
                 wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
             }
-            //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
-            wpw.setObject(8, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
-            //Add it
-            fakeItemMetaPacket.getWatchableCollectionModifier().write(0, wpw.getWatchableObjects());
+            if (VERSION.ordinal() < GameVersion.v1_19_R2.ordinal()) {
+                //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
+                wpw.setObject(8, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
+                //Add it
+                fakeItemMetaPacket.getWatchableCollectionModifier().write(0, wpw.getWatchableObjects());
+            }
+
+            List<WrappedWatchableObject> wrappedWatchableObjects = wpw.getWatchableObjects();
+            List<WrappedDataValue> wrappedDataValues = new java.util.ArrayList<>(wrappedWatchableObjects.size());
+            for (WrappedWatchableObject watchableObject : wrappedWatchableObjects) {
+                wrappedDataValues.set(watchableObject.getIndex(), new WrappedDataValue(watchableObject.getHandle()));
+            }
+            fakeItemMetaPacket.getDataValueCollectionModifier().write(0, wrappedDataValues);
+
             return fakeItemMetaPacket;
         }
 
@@ -408,27 +415,28 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
         private static PacketContainer createFakeItemDestroyPacket(int entityID) {
             //Also make a DestroyPacket to remove it
             PacketContainer fakeItemDestroyPacket = PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.ENTITY_DESTROY);
-            if (GameVersion.v1_17_R1.ordinal() > VERSION.ordinal()) {
-                //On 1.17-, we need to write an integer array
-                //Entity to remove
+
+            // < 1.17
+            if (VERSION.ordinal() < GameVersion.v1_17_R1.ordinal()) {
                 fakeItemDestroyPacket.getIntegerArrays().write(0, new int[]{entityID});
+                return fakeItemDestroyPacket;
+            }
+            // if (VERSION.ordinal() <= GameVersion.v1_19_R1.ordinal()) {
+            MinecraftVersion minecraftVersion = PROTOCOL_MANAGER.getMinecraftVersion();
+            if (minecraftVersion.getMajor() == 1 && minecraftVersion.getMinor() == 17 && minecraftVersion.getBuild() == 0) {
+                //On 1.17, just need to write a int
+                //Entity to remove
+                fakeItemDestroyPacket.getIntegers().write(0, entityID);
             } else {
-                //1.17+
-                MinecraftVersion minecraftVersion = PROTOCOL_MANAGER.getMinecraftVersion();
-                if (minecraftVersion.getMajor() == 1 && minecraftVersion.getMinor() == 17 && minecraftVersion.getBuild() == 0) {
-                    //On 1.17, just need to write a int
-                    //Entity to remove
-                    fakeItemDestroyPacket.getIntegers().write(0, entityID);
-                } else {
-                    //On 1.17.1 (may be 1.17.1+? it's enough, Mojang, stop the changes), we need add the int list
-                    //Entity to remove
-                    try {
-                        fakeItemDestroyPacket.getIntLists().write(0, Collections.singletonList(entityID));
+                //On 1.17.1 (may be 1.17.1+? it's enough, Mojang, stop the changes), we need add the int list
+                //Entity to remove
+                try {
+                    fakeItemDestroyPacket.getIntLists().write(0, Collections.singletonList(entityID));
                     } catch (NoSuchMethodError e) {
                         throw new IllegalStateException("Unable to initialize packet, ProtocolLib update needed", e);
                     }
                 }
-            }
+            // }
             return fakeItemDestroyPacket;
         }
     }

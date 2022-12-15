@@ -70,6 +70,10 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                         return;
                     }
                     UUID targetPlayerUUID = profile.getUniqueId();
+                    if (sender.getUniqueId().equals(targetPlayerUUID)) {
+                        plugin.text().of(sender, "transfer-no-self", profile.getName()).send();
+                        return;
+                    }
                     List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(sender.getUniqueId());
                     PendingTransferTask task = new PendingTransferTask(sender.getUniqueId(), targetPlayerUUID, shopList);
                     taskCache.put(targetPlayerUUID, task);

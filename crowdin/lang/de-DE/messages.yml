@@ -586,6 +586,7 @@ transfer-accepted-toside: "<green>Du hast <aqua>{0}</aqua>'s Transfer-Anfrage ak
 transfer-rejected-fromside: "<red>Spieler <aqua>{0}</aqua> hat deine Transfer-Anfrage abgelehnt."
 transfer-rejected-toside: "<red>Du hast <aqua>{0}</aqua>'s Transfer-Anfrage abgelehnt."
 transfer-no-pending-operation: "<red>Du hat keine ausstehenden Transfer-Anfragen."
+transfer-no-self: "<red>You can't transfer your shops to yourself."
 benefit-overflow: "<red>Die Summe aller Vorteile kann nicht grösser oder gleich 100% sein."
 benefit-exists: "<red>Spieler ist bereits in der Vorteilsliste dieses Shops."
 benefit-removed: "<red>Spieler wurde von Shop-Vorteilen entfernt."
@@ -635,6 +636,547 @@ addon:
   worldguard:
     creation-flag-test-failed: "<red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu erstellen."
     trade-flag-test-failed: "<red>Du hast keine Berechtigung einen Shop in dieser WorldGuard Region zu handeln."
+  discord:
+    __to_translators: "To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop's style {LANG_INDEX}, do not translate anything inside double '%' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don't need translate this string, it's a comment)"
+    __to_users: "Genau wie das QuickShop Textsystem kann das Discord Addon die Benutzersprache automatisch erkennen und verwendet die Sprache des Benutzers um Discord Nachrichten zu senden, basierend auf QuickShop-Hikari's Sprachsystem Einstellungen."
+    __to_message_designer: "Erstelle deine Discord Nachricht mit GUI: https://glitchii.github.io/embedbuilder/, dann kopiere den JSON-Code und füge ihn in die Übersetzung ein und wir sind fertig!"
+    discord-enabled: "<aqua>QuickShop Discord Nachrichten wurden erfolgreich <green>aktiviert</green>. Du wirst nun Shop Nachrichten über Discord erhalten."
+    discord-disabled: "<aqua>QuickShop Discord Nachrichten wurden erfolgreich <red>deaktiviert</red>. Du wirst keine weiteren Shop Nachrichten per Discord erhalten."
+    discord-not-integrated: "<red>Du hast deinen Discord Account noch nicht verlinkt! Bitte verlinke es zuerst!"
+    feature-enabled-for-user: "<aqua>You have <green>enabled</green> <gold>{0}</gold> notification."
+    feature-disabled-for-user: "<aqua>You have <red>disabled</red> <gold>{0}</gold> notification."
+    link-help: "<yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account."
+    commands:
+      discord:
+        description: "<yellow>Managing your QuickShop Discord settings"
+    discord-messages:
+      sold-to-your-shop: |
+        {
+         "embed":
+           {
+             "title": ":inbox_tray: Jemand hat Items an deinen Shop verkauft",
+             "description": "Der Spieler %%purchase.name%% hat %%purchase.amount%% x %%shop.item.name%% an deinen Shop verkauft.",
+             "color": 52084,
+             "author": {
+               "name": "QuickShop-Hikari",
+               "icon_url": ""
+             },
+             "thumbnail": {
+               "url": ""
+             },
+             "image": {
+               "url": ""
+             },
+             "footer": {
+               "text": "QuickShop-Hikari Discord Benachrichtigung",
+               "icon_url": ""
+             },
+             "fields": [
+               {
+                 "name": "Shop",
+                 "value": "%%shop.display-name%%",
+                 "inline": false
+               },
+               {
+                 "name": "Käufer",
+                 "value": "%%purchase.name%%",
+                 "inline": true
+               },
+               {
+                 "name": "Item",
+                 "value": "%%shop.item.name%%",
+                 "inline": true
+               },
+               {
+                 "name": "Menge",
+                 "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
+                 "inline": true
+               },
+               {
+                 "name": "Du zahlst",
+                 "value": "%%purchase.balance-formatted%%",
+                 "inline": true
+               },
+               {
+                 "name": "Steuern",
+                 "value": "%%purchase.taxes-formatted%%",
+                 "inline": true
+               }
+             ]
+           }
+        }
+      bought-from-your-shop: |
+        {
+           "embed":
+             {
+               "title": ":outbox_tray: Jemand hat Items von deinem Shop gekauft",
+               "description": "Der Spieler %%purchase.name%% hat %%purchase.amount%% x %%shop.item.name%% von deinem Shop gekauft.",
+               "color": 52084,
+               "author": {
+                   "name": "QuickShop-Hikari",
+                   "icon_url": ""
+               },
+               "thumbnail": {
+                   "url": ""
+               },
+               "image": {
+                   "url": ""
+               },
+               "footer": {
+                   "text": "QuickShop-Hikari Discord Benachrichtigung",
+                   "icon_url": ""
+               },
+               "fields": [
+                   {
+                       "name": "Shop",
+                       "value": "%%shop.display-name%%",
+                       "inline": false
+                   },
+                   {
+                       "name": "Käufer",
+                       "value": "%%purchase.name%%",
+                       "inline": true
+                   },
+                   {
+                       "name": "Item",
+                       "value": "%%shop.item.name%%",
+                       "inline": true
+                   },
+                   {
+                       "name": "Menge",
+                       "value": "%%purchase.amount%%(x%%shop.stacking-amount%%)",
+                       "inline": true
+                   },
+                   {
+                       "name": "Du verdienst",
+                       "value": "%%purchase.balance-formatted%%",
+                       "inline": true
+                   },
+                   {
+                       "name": "Steuern",
+                       "value": "%%purchase.taxes-formatted%%",
+                       "inline": true
+                   }
+               ]
+           }
+         }
+      mod-shop-purchase: |
+        {
+        "embed":
+          {
+              "title": ":dollar: Jemand hat in einem Shop eingekauft",
+              "description": "Der Spieler %%purchase.name%% hat %%purchase.amount%% x %%shop.item.name%% von einem Shop gekauft.",
+              "color": 6061450,
+              "author": {
+                  "name": "QuickShop-Hikari",
+                  "icon_url": ""
+              },
+              "thumbnail": {
+                  "url": ""
+              },
+              "image": {
+                  "url": ""
+              },
+              "footer": {
+                  "text": "QuickShop-Hikari Discord Benachrichtigung",
+                  "icon_url": ""
+              },
+              "fields": [
+                  {
+                      "name": "Shop",
+                      "value": "%%shop.display-name%%",
+                      "inline": false
+                  },
+                  {
+                      "name": "Käufer",
+                      "value": "%%purchase.name%%",
+                      "inline": true
+                  },
+                  {
+                      "name": "Item",
+                      "value": "%%shop.item.name%%",
+                      "inline": true
+                  },
+                  {
+                      "name": "Menge",
+                      "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
+                      "inline": true
+                  },
+                  {
+                      "name": "Guthaben",
+                      "value": "%%purchase.balance-formatted%%",
+                      "inline": true
+                  },
+                  {
+                      "name": "Steuern",
+                      "value": "%%purchase.taxes-formatted%%",
+                      "inline": true
+                  }
+              ]
+          }
+        }
+      out-of-space: |
+        {
+        "embed":
+          {
+              "title": ":mailbox_with_mail: Dein Shop hat keinen Platz mehr",
+              "description": "Dein Shopinventar ist voller Items!\nDu musst deinen Shop leeren um weitere Items akzeptieren zu können.",
+              "color": 16065893,
+              "author": {
+                  "name": "QuickShop-Hikari",
+                  "icon_url": ""
+              },
+              "thumbnail": {
+                  "url": ""
+              },
+              "image": {
+                  "url": ""
+              },
+              "footer": {
+                  "text": "QuickShop-Hikari Discord Benachrichtigung",
+                  "icon_url": ""
+              },
+              "fields": [
+                  {
+                      "name": "Shop",
+                      "value": "%%shop.display-name%%",
+                      "inline": false
+                  }
+              ]
+          }
+        }
+      out-of-stock: |
+        {
+            "embed":
+                {
+                    "title": ":mailbox_with_no_mail: Dein Shop ist ausverkauft",
+                    "description": "Dein Shopinventar ist jetzt leer!\nDu musst ihn wieder auffüllen um weiterhin Items verkaufen zu können.",
+                    "color": 16065893,
+                    "author": {
+                        "name": "QuickShop-Hikari",
+                        "icon_url": ""
+                    },
+                    "thumbnail": {
+                        "url": ""
+                    },
+                    "image": {
+                        "url": ""
+                    },
+                    "footer": {
+                        "text": "QuickShop-Hikari Discord Benachrichtigung",
+                        "icon_url": ""
+                    },
+                    "fields": [
+                        {
+                            "name": "Shop",
+                            "value": "%%shop.display-name%%",
+                            "inline": false
+                        }
+                    ]
+                }
+        }
+      mod-shop-created: |
+        {
+          "embed": {
+            "title": ":classical_building: Ein neuer Shop wurde erstellt",
+            "description": "Ein Spieler hat einen neuen Shop auf deinem Server erstellt!",
+            "color": 6061450,
+            "author": {
+              "name": "QuickShop-Hikari",
+              "icon_url": ""
+            },
+            "thumbnail": {
+              "url": ""
+            },
+            "image": {
+              "url": ""
+            },
+            "footer": {
+              "text": "QuickShop-Hikari Discord Benachrichtigung",
+              "icon_url": ""
+            },
+            "fields": [
+              {
+                "name": "Shop",
+                "value": "%%shop.display-name%%",
+                "inline": false
+              },
+              {
+                "name": "Besitzer",
+                "value": "%%shop.owner.name%%",
+                "inline": true
+              },
+              {
+                "name": "Item",
+                "value": "%%shop.item.name%%",
+                "inline": true
+              },
+              {
+                "name": "Menge",
+                "value": "%%shop.stacking-amount%%",
+                "inline": true
+              },
+              {
+                "name": "Art",
+                "value": "%%shop.type%%",
+                "inline": true
+              }
+            ]
+          }
+        }
+      mod-remove-shop: |
+        {
+            "embed": {
+                "title": ":recycle: A shop was removed from this server",
+                "description": "A shop was removed from this server.",
+                "color": 6061450,
+                "author": {
+                    "name": "QuickShop-Hikari",
+                    "icon_url": ""
+                },
+                "thumbnail": {
+                    "url": ""
+                },
+                "image": {
+                    "url": ""
+                },
+                "footer": {
+                    "text": "QuickShop-Hikari Discord Notification",
+                    "icon_url": ""
+                },
+                "fields": [
+                    {
+                        "name": "Shop",
+                        "value": "%%shop.display-name%%",
+                        "inline": false
+                    },
+                    {
+                        "name": "Reason",
+                        "value": "%%delete.reason%%",
+                        "inline": false
+                    }
+                ]
+            }
+        }
+      shop-transfer-to-you: |
+        {
+            "embed": {
+                "title": ":placard: Ein Shop wurde auf dich übertragen",
+                "description": "Ein Shop wurde von einem anderen Spieler auf dich übertragen.",
+                "color": 16172079,
+                "author": {
+                    "name": "QuickShop-Hikari",
+                    "icon_url": ""
+                },
+                "thumbnail": {
+                    "url": ""
+                },
+                "image": {
+                    "url": ""
+                },
+                "footer": {
+                    "text": "QuickShop-Hikari Discord Benachrichtigung",
+                    "icon_url": ""
+                },
+                "fields": [
+                    {
+                        "name": "Shop",
+                        "value": "%%shop.display-name%%",
+                        "inline": false
+                    },
+                    {
+                        "name": "Von",
+                        "value": "%%transfer.from%%",
+                        "inline": false
+                    }
+                ]
+            }
+        }
+      mod-shop-transfer: |
+        {
+            "embed": {
+                "title": ":placard: Ein Shop wurde übertragen",
+                "description": "Ein Shop wurde von einem Spieler zu einem anderen übertragen.",
+                "color": 6061450,
+                "author": {
+                    "name": "QuickShop-Hikari",
+                    "icon_url": ""
+                },
+                "thumbnail": {
+                    "url": ""
+                },
+                "image": {
+                    "url": ""
+                },
+                "footer": {
+                    "text": "QuickShop-Hikari Discord Benachrichtigung",
+                    "icon_url": ""
+                },
+                "fields": [
+                    {
+                        "name": "Shop",
+                        "value": "%%shop.display-name%%",
+                        "inline": false
+                    },
+                    {
+                        "name": "Von",
+                        "value": "%%transfer.from%%",
+                        "inline": true
+                    },
+                    {
+                        "name": "An",
+                        "value": "%%transfer.to%%",
+                        "inline": true
+                    }
+                ]
+            }
+        }
+      shop-price-changed: |
+        {
+            "embed": {
+                "title": ":money_with_wings: Dein Shoppreis wurde geändert",
+                "description": "Du oder ein Shopmitarbeiter hat den Shoppreis geändert.",
+                "color": 16172079,
+                "author": {
+                    "name": "QuickShop-Hikari",
+                    "icon_url": ""
+                },
+                "thumbnail": {
+                    "url": ""
+                },
+                "image": {
+                    "url": ""
+                },
+                "footer": {
+                    "text": "QuickShop-Hikari Discord Benachrichtigung",
+                    "icon_url": ""
+                },
+                "fields": [
+                    {
+                        "name": "Shop",
+                        "value": "%%shop.display-name%%",
+                        "inline": false
+                    },
+                    {
+                        "name": "Von",
+                        "value": "%%change-price.from%%",
+                        "inline": true
+                    },
+                    {
+                        "name": "Zu",
+                        "value": "%%change-price.to%%",
+                        "inline": true
+                    }
+                ]
+            }
+        }
+      mod-shop-price-changed: |
+        {
+            "embed": {
+                "title": ":money_with_wings: Ein Shoppreis wurde geändert",
+                "description": "Ein Shop hat seine Preiseinstellungen geändert.",
+                "color": 6061450,
+                "author": {
+                    "name": "QuickShop-Hikari",
+                    "icon_url": ""
+                },
+                "thumbnail": {
+                    "url": ""
+                },
+                "image": {
+                    "url": ""
+                },
+                "footer": {
+                    "text": "QuickShop-Hikari Discord Benachrichtigung",
+                    "icon_url": ""
+                },
+                "fields": [
+                    {
+                        "name": "Shop",
+                        "value": "%%shop.display-name%%",
+                        "inline": true
+                    },
+                    {
+                        "name": "Besitzer",
+                        "value": "%%shop.owner.name%%",
+                        "inline": true
+                    },
+                    {
+                        "name": "",
+                        "value": "",
+                        "inline": true
+                    },
+                    {
+                        "name": "Von",
+                        "value": "%%change-price.from%%",
+                        "inline": true
+                    },
+                    {
+                        "name": "Zu",
+                        "value": "%%change-price.to%%",
+                        "inline": true
+                    }
+                ]
+            }
+        }
+      shop-permission-changed: |
+        {
+            "embed": {
+                "title": ":closed_lock_with_key: Die Berechtigungseinstellungen deines Shops wurden geändert",
+                "description": "Die Berechtigungseinstellungen eines deiner Shops wurden geändert.",
+                "color": 15879747,
+                "author": {
+                    "name": "QuickShop-Hikari",
+                    "icon_url": ""
+                },
+                "thumbnail": {
+                    "url": ""
+                },
+                "image": {
+                    "url": ""
+                },
+                "footer": {
+                    "text": "QuickShop-Hikari Discord Benachrichtigung",
+                    "icon_url": ""
+                },
+                "fields": [
+                    {
+                        "name": "Shop",
+                        "value": "%%shop.display-name%%",
+                        "inline": false
+                    },
+                    {
+                        "name": "Spieler",
+                        "value": "%%change-permission.player%%",
+                        "inline": true
+                    },
+                    {
+                        "name": "Zu Gruppe hinzugefügt",
+                        "value": "%%change-permission.to-group%%",
+                        "inline": true
+                    },
+                    {
+                        "name": "",
+                        "value": "",
+                        "inline": true
+                    },
+                    {
+                        "name": "Erlaubte Berechtigungen (Übernommen von Gruppe)",
+                        "value": "```\n%%change-permission.perms-list%%\n```",
+                        "inline": false
+                    }
+                ]
+            }
+        }
+    field:
+      player: "Spieler"
+      item: "Item"
+      amount: "Menge"
+      balance: "Guthaben"
+      balance-after-tax: "Guthaben (Nach Steuern)"
+      account: "Dein Kontostand"
+      taxes: "Steuern"
+      cost: "Kosten"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"

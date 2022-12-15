@@ -149,25 +149,6 @@ public class ContainerShop implements Shop, Reloadable {
         initDisplayItem();
     }
 
-    private void initDisplayItem() {
-        Util.ensureThread(false);
-        try {
-            if (plugin.isDisplayEnabled() && !isDisableDisplay()) {
-                DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
-                if (provider != null) {
-                    displayItem = provider.provide(this);
-                } else {
-                    this.displayItem = switch (AbstractDisplayItem.getNowUsing()) {
-                        case REALITEM -> new RealDisplayItem(this);
-                        default -> new VirtualDisplayItem(this);
-                    };
-                }
-            }
-        } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to init display item for shop " + this + ", display item init failed!", e);
-        }
-    }
-
     /**
      * Adds a new shop. You need call ShopManager#loadShop if you create from outside of
      * ShopLoader.
@@ -247,6 +228,25 @@ public class ContainerShop implements Shop, Reloadable {
         initDisplayItem();
         updateShopData();
         // ContainerShop constructor is not allowed to write any persistent data to disk
+    }
+
+    private void initDisplayItem() {
+        Util.ensureThread(false);
+        try {
+            if (plugin.isDisplayEnabled() && !isDisableDisplay()) {
+                DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
+                if (provider != null) {
+                    displayItem = provider.provide(this);
+                } else {
+                    this.displayItem = switch (AbstractDisplayItem.getNowUsing()) {
+                        case REALITEM -> new RealDisplayItem(this);
+                        default -> new VirtualDisplayItem(this);
+                    };
+                }
+            }
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to init display item for shop " + this + ", display item init failed!", e);
+        }
     }
 
     private void updateShopData() {
@@ -1262,11 +1262,11 @@ public class ContainerShop implements Shop, Reloadable {
             inventoryWrapper = locateInventory(symbolLink);
         } catch (Exception e) {
             plugin.getLogger().warning("Failed to load shop: " + symbolLink + ": " + e.getClass().getName() + ": " + e.getMessage());
-            if (plugin.getConfig().getBoolean("debug.delete-corrupt-shop")) {
+            if (plugin.getConfig().getBoolean("debug.delete-corrupt-shops")) {
                 plugin.getLogger().warning("Deleting corrupt shop...");
                 this.delete(false);
             } else {
-                plugin.getLogger().warning("Unloading shops from memory, set `debug.delete-corrupt-shop` to true to delete corrupted shops.");
+                plugin.getLogger().warning("Unloading shops from memory, set `debug.delete-corrupt-shops` to true to delete corrupted shops.");
                 this.delete(true);
             }
             return;
@@ -1574,7 +1574,7 @@ public class ContainerShop implements Shop, Reloadable {
         if (group == null) {
             group = BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode();
         }
-        new ShopPlayerGroupSetEvent(this, getPlayerGroup(player), group).callEvent();
+        new ShopPlayerGroupSetEvent(this, player, getPlayerGroup(player), group).callEvent();
         if (group.equals(BuiltInShopPermissionGroup.EVERYONE.getNamespacedNode())) {
             this.playerGroup.remove(player);
         } else {
@@ -1588,7 +1588,7 @@ public class ContainerShop implements Shop, Reloadable {
         if (group == null) {
             group = BuiltInShopPermissionGroup.EVERYONE;
         }
-        new ShopPlayerGroupSetEvent(this, getPlayerGroup(player), group.getNamespacedNode()).callEvent();
+        new ShopPlayerGroupSetEvent(this, player, getPlayerGroup(player), group.getNamespacedNode()).callEvent();
         if (group == BuiltInShopPermissionGroup.EVERYONE) {
             this.playerGroup.remove(player);
         } else {

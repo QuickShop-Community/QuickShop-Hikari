@@ -1,0 +1,15 @@
+config-version: 2
+
+moderator-channel: "000000000000000000"
+
+features:
+  notify-shop-permission-changed: true
+  notify-shop-price-changed: true
+  notify-shop-transfer: true
+  notify-shop-out-of-stock: true
+  notify-shop-out-of-space: true
+  notify-shop-purchase: true
+  mod-notify-shop-purchase: true
+  mod-notify-shop-price-changed: true
+  mod-notify-shop-removed: true
+  mod-notify-shop-transfer: false

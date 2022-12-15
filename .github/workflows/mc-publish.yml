@@ -38,6 +38,7 @@ jobs:
         modrinth-dependencies: |
           hXiIvTyT | recommends | *
           nfGCP9fk | recommends | *
+          UmLGoGij | recommends | *
 
         github-discussion: Announcements
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -64,5 +65,6 @@ jobs:
           1.19
           1.19.1
           1.19.2
+          1.19.3
         java: |
           17

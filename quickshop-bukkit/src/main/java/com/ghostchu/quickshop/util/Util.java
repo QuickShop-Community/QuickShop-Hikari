@@ -56,7 +56,9 @@ import java.lang.management.ManagementFactory;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -434,6 +436,14 @@ public class Util {
     public static Component getItemStackName(@NotNull ItemStack itemStack) {
         Component result = getItemCustomName(itemStack);
         return isEmptyComponent(result) ? plugin.getPlatform().getTranslation(itemStack.getType()) : result;
+    }
+
+    @NotNull
+    public static String getTZTimestamp(@NotNull Date date) {
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
+        df.setTimeZone(tz);
+        return df.format(date);
     }
 
     @Nullable
@@ -1115,7 +1125,7 @@ public class Util {
             }
         }
 
-        @Nullable
+        @NotNull
         public String asString(@NotNull String def) {
             if (value == null) {
                 return def;
