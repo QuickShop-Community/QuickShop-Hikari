@@ -237,7 +237,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
             String stringClassLoader = PROTOCOL_MANAGER.getClass().getClassLoader().toString();
             if(stringClassLoader.contains("pluginEnabled=true")&&!stringClassLoader.contains("plugin=ProtocolLib")){
                 QuickShop.getInstance().getLogger().warning("Warning! ProtocolLib seems provided by another plugin, This seems to be a wrong packaging problem, " +
-                        "QuickShop can't ensure the ProtocolLib is working correctly!");
+                        "QuickShop can't ensure the ProtocolLib is working correctly! Info: " + stringClassLoader);
             }
             Log.debug("Loading VirtualDisplayItem chunks mapping manager...");
             if (packetAdapter == null) {
