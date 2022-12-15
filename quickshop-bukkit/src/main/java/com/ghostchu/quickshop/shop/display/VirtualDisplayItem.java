@@ -370,34 +370,51 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
             PacketContainer fakeItemMetaPacket = PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.ENTITY_METADATA);
             //Entity ID
             fakeItemMetaPacket.getIntegers().write(0, entityID);
+
             //List<DataWatcher$Item> Type are more complex
             //Create a DataWatcher
             WrappedDataWatcher wpw = new WrappedDataWatcher();
             //https://wiki.vg/index.php?title=Entity_metadata#Entity
             if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
-                String itemName;
-                if (QuickShop.isTESTING()) {
-                    //Env Testing
-                    itemName = itemStack.getType().name();
-                } else {
-                    itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
-                }
-                wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromJson(itemName).getHandle()));
+                String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
+                wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromText(itemName).getHandle()));
                 wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
             }
-            if (VERSION.ordinal() <= GameVersion.v1_19_R2.ordinal()) {
-                //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
+
+            //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
+            //Is 1.17-?
+            if (VERSION.ordinal() < GameVersion.v1_17_R1.ordinal()) {
+//                if (version == GameVersion.v1_13_R1 || version == GameVersion.v1_13_R2) {
+//                    //For 1.13 is 6
+//                    wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
+//                } else {
+                //1.14-1.16 is 7
+                wpw.setObject(7, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
+                // }
+            } else {
+                //1.17+ is 8
                 wpw.setObject(8, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
-                //Add it
+            }
+            //Add it
+            //For 1.19.2+, we need to use DataValue instead of WatchableObject
+            if (VERSION.ordinal() > GameVersion.v1_19_R1.ordinal()) {
+                //Check for new version protocolLib
+                try {
+                    Class.forName("com.comphenix.protocol.wrappers.WrappedDataValue");
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException("Unable to initialize packet, ProtocolLib update needed", e);
+                }
+                //Convert List<WrappedWatchableObject> to List<WrappedDataValue>
+                List<WrappedWatchableObject> wrappedWatchableObjects = wpw.getWatchableObjects();
+                List<WrappedDataValue> wrappedDataValues = new java.util.LinkedList<>();
+                for (WrappedWatchableObject wrappedWatchableObject : wrappedWatchableObjects) {
+                    WrappedDataWatcher.WrappedDataWatcherObject watchableObject = wrappedWatchableObject.getWatcherObject();
+                    wrappedDataValues.add(new WrappedDataValue(watchableObject.getIndex(), watchableObject.getSerializer(), wrappedWatchableObject.getRawValue()));
+                }
+                fakeItemMetaPacket.getDataValueCollectionModifier().write(0, wrappedDataValues);
+            } else {
                 fakeItemMetaPacket.getWatchableCollectionModifier().write(0, wpw.getWatchableObjects());
-                return fakeItemMetaPacket;
             }
-            List<WrappedWatchableObject> wrappedWatchableObjects = wpw.getWatchableObjects();
-            List<WrappedDataValue> wrappedDataValues = new java.util.ArrayList<>(wrappedWatchableObjects.size());
-            for (WrappedWatchableObject watchableObject : wrappedWatchableObjects) {
-                wrappedDataValues.set(watchableObject.getIndex(), new WrappedDataValue(watchableObject.getHandle()));
-            }
-            fakeItemMetaPacket.getDataValueCollectionModifier().write(0, wrappedDataValues);
             return fakeItemMetaPacket;
         }
 
