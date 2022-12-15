@@ -380,7 +380,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                 wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromJson(itemName).getHandle()));
                 wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
             }
-            if (VERSION.ordinal() < GameVersion.v1_19_R2.ordinal()) {
+            if (VERSION.ordinal() <= GameVersion.v1_19_R2.ordinal()) {
                 //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
                 wpw.setObject(8, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
                 //Add it
