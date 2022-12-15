@@ -62,6 +62,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
     public VirtualDisplayItem(@NotNull Shop shop) throws RuntimeException {
         super(shop);
         VirtualDisplayItemManager.load();
+
     }
 
     @Override
@@ -233,6 +234,11 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
             if (LOADED.get()) {
                 return;
             }
+            String stringClassLoader = PROTOCOL_MANAGER.getClass().getClassLoader().toString();
+            if(stringClassLoader.contains("pluginEnabled=true")&&!stringClassLoader.contains("plugin=ProtocolLib")){
+                QuickShop.getInstance().getLogger().warning("Warning! ProtocolLib seems provided by another plugin, This seems to be a wrong packaging problem, " +
+                        "QuickShop can't ensure the ProtocolLib is working correctly! Info: " + stringClassLoader);
+            }
             Log.debug("Loading VirtualDisplayItem chunks mapping manager...");
             if (packetAdapter == null) {
                 packetAdapter = new PacketAdapter(PLUGIN, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
@@ -321,7 +327,6 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
         private static PacketContainer createFakeItemSpawnPacket(int entityID, Location displayLocation) {
             //First, create a new packet to spawn item
             PacketContainer fakeItemPacket = PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.SPAWN_ENTITY);
-
             //and add data based on packet class in NMS  (global scope variable)
             //Reference: https://wiki.vg/Protocol#Spawn_Object
             fakeItemPacket.getIntegers()
@@ -385,15 +390,14 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                 wpw.setObject(8, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
                 //Add it
                 fakeItemMetaPacket.getWatchableCollectionModifier().write(0, wpw.getWatchableObjects());
+                return fakeItemMetaPacket;
             }
-
             List<WrappedWatchableObject> wrappedWatchableObjects = wpw.getWatchableObjects();
             List<WrappedDataValue> wrappedDataValues = new java.util.ArrayList<>(wrappedWatchableObjects.size());
             for (WrappedWatchableObject watchableObject : wrappedWatchableObjects) {
                 wrappedDataValues.set(watchableObject.getIndex(), new WrappedDataValue(watchableObject.getHandle()));
             }
             fakeItemMetaPacket.getDataValueCollectionModifier().write(0, wrappedDataValues);
-
             return fakeItemMetaPacket;
         }
 
@@ -432,10 +436,10 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                 //Entity to remove
                 try {
                     fakeItemDestroyPacket.getIntLists().write(0, Collections.singletonList(entityID));
-                    } catch (NoSuchMethodError e) {
-                        throw new IllegalStateException("Unable to initialize packet, ProtocolLib update needed", e);
-                    }
+                } catch (NoSuchMethodError e) {
+                    throw new IllegalStateException("Unable to initialize packet, ProtocolLib update needed", e);
                 }
+            }
             // }
             return fakeItemDestroyPacket;
         }
