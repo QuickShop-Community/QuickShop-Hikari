@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.util.envcheck;
 
+import com.comphenix.protocol.ProtocolLibrary;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
@@ -290,5 +291,21 @@ public final class EnvironmentChecker {
         } else {
             return new ResultContainer(CheckResult.PASSED, "Passed checks");
         }
+    }
+
+    @EnvCheckEntry(name = "ProtocolLib Incorrect Locate Test", priority = 7)
+    public ResultContainer protocolLibBadLocateTest() {
+        try {
+            Class.forName("com.comphenix.protocol.ProtocolLibrary");
+        } catch (ClassNotFoundException e) {
+            return new ResultContainer(CheckResult.SKIPPED, "ProtocolLib not detected.");
+        }
+        String stringClassLoader = ProtocolLibrary.getProtocolManager().getClass().getClassLoader().toString();
+        if (stringClassLoader.contains("pluginEnabled=true") && !stringClassLoader.contains("plugin=ProtocolLib")) {
+            QuickShop.getInstance().getLogger().warning("Warning! ProtocolLib seems provided by another plugin, This seems to be a wrong packaging problem, " +
+                    "QuickShop can't ensure the ProtocolLib is working correctly! Info: " + stringClassLoader);
+            return new ResultContainer(CheckResult.WARNING, "Incorrect locate: " + stringClassLoader);
+        }
+        return new ResultContainer(CheckResult.PASSED, stringClassLoader);
     }
 }
