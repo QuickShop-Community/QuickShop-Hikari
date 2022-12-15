@@ -230,12 +230,4 @@ public class MessageFactory {
         map.put("shop.type", shop.getShopType().name());
         return map;
     }
-
-    private Component locale(@Nullable UUID langUser, @NotNull String key) {
-        return plugin.text().of(key).forLocale(getPlayerLocale(langUser).getLocale());
-    }
-
-    private String lang(@Nullable UUID langUser, @NotNull String key, @NotNull Map<String, String> placeHolders) {
-        return wrap(locale(langUser, key), placeHolders);
-    }
 }
