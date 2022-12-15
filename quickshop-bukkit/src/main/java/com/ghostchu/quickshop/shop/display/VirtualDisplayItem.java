@@ -421,7 +421,6 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
                 fakeItemDestroyPacket.getIntegerArrays().write(0, new int[]{entityID});
                 return fakeItemDestroyPacket;
             }
-            // < 1.19.3
             // if (VERSION.ordinal() <= GameVersion.v1_19_R1.ordinal()) {
             MinecraftVersion minecraftVersion = PROTOCOL_MANAGER.getMinecraftVersion();
             if (minecraftVersion.getMajor() == 1 && minecraftVersion.getMinor() == 17 && minecraftVersion.getBuild() == 0) {
