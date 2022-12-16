@@ -42,7 +42,10 @@ public class HikariDataExtension implements DataExtension {
 
     @Override
     public CallEvents[] callExtensionMethodsOn() {
-        return new CallEvents[]{CallEvents.SERVER_PERIODICAL};
+        return new CallEvents[]{
+                CallEvents.PLAYER_JOIN,
+                CallEvents.PLAYER_LEAVE,
+                CallEvents.SERVER_PERIODICAL};
     }
 
     // ======================= GLOBAL PROVIDERS =======================
