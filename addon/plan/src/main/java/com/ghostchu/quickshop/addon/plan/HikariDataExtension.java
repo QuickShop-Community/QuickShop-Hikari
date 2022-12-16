@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-@PluginInfo(name = "QuickShop", iconName = "credit-card", iconFamily = Family.REGULAR, color = Color.LIGHT_BLUE)
+@PluginInfo(name = "QuickShop-Hikari", iconName = "credit-card", iconFamily = Family.REGULAR, color = Color.LIGHT_BLUE)
 @TabInfo(tab = "Summary", iconName = "info-circle", iconFamily = Family.SOLID, elementOrder = {})
 @TabInfo(tab = "Purchases", iconName = "inbox", elementOrder = {})
 @TabInfo(tab = "Shops", iconName = "list", iconFamily = Family.SOLID, elementOrder = {})
