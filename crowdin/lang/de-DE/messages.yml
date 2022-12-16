@@ -586,7 +586,7 @@ transfer-accepted-toside: "<green>Du hast <aqua>{0}</aqua>'s Transfer-Anfrage ak
 transfer-rejected-fromside: "<red>Spieler <aqua>{0}</aqua> hat deine Transfer-Anfrage abgelehnt."
 transfer-rejected-toside: "<red>Du hast <aqua>{0}</aqua>'s Transfer-Anfrage abgelehnt."
 transfer-no-pending-operation: "<red>Du hat keine ausstehenden Transfer-Anfragen."
-transfer-no-self: "<red>You can't transfer your shops to yourself."
+transfer-no-self: "<red>Du kannst deine Shops nicht an dich selbst überweisen."
 benefit-overflow: "<red>Die Summe aller Vorteile kann nicht grösser oder gleich 100% sein."
 benefit-exists: "<red>Spieler ist bereits in der Vorteilsliste dieses Shops."
 benefit-removed: "<red>Spieler wurde von Shop-Vorteilen entfernt."
@@ -643,12 +643,12 @@ addon:
     discord-enabled: "<aqua>QuickShop Discord Nachrichten wurden erfolgreich <green>aktiviert</green>. Du wirst nun Shop Nachrichten über Discord erhalten."
     discord-disabled: "<aqua>QuickShop Discord Nachrichten wurden erfolgreich <red>deaktiviert</red>. Du wirst keine weiteren Shop Nachrichten per Discord erhalten."
     discord-not-integrated: "<red>Du hast deinen Discord Account noch nicht verlinkt! Bitte verlinke es zuerst!"
-    feature-enabled-for-user: "<aqua>You have <green>enabled</green> <gold>{0}</gold> notification."
-    feature-disabled-for-user: "<aqua>You have <red>disabled</red> <gold>{0}</gold> notification."
-    link-help: "<yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account."
+    feature-enabled-for-user: "<aqua>Sie haben <green>aktiviert</green> <gold>{0}</gold> Benachrichtigung."
+    feature-disabled-for-user: "<aqua>Sie haben <red>deaktiviert</red> <gold>{0}</gold> Benachrichtigung."
+    link-help: "<yellow>Dieser Server benutzt <gold>{0}</gold> für Discord Treiber, bitte benutze <green>{0}</green> um deinen Discord Account zu verknüpfen."
     commands:
       discord:
-        description: "<yellow>Managing your QuickShop Discord settings"
+        description: "<yellow>Verwalte deine QuickShop Discord Einstellungen"
     discord-messages:
       sold-to-your-shop: |
         {
@@ -927,8 +927,8 @@ addon:
       mod-remove-shop: |
         {
             "embed": {
-                "title": ":recycle: A shop was removed from this server",
-                "description": "A shop was removed from this server.",
+                "title": ":recycle: Ein Shop wurde von diesem Server entfernt",
+                "description": Ein Shop wurde von diesem Server entfernt.",
                 "color": 6061450,
                 "author": {
                     "name": "QuickShop-Hikari",
@@ -941,7 +941,7 @@ addon:
                     "url": ""
                 },
                 "footer": {
-                    "text": "QuickShop-Hikari Discord Notification",
+                    "text": "QuickShop-Hikari Discord Benachrichtigung",
                     "icon_url": ""
                 },
                 "fields": [
@@ -951,11 +951,11 @@ addon:
                         "inline": false
                     },
                     {
-                        "name": "Reason",
+                        "name": "Grund",
                         "value": "%%delete.reason%%",
                         "inline": false
                     }
-                ]
+                ],
             }
         }
       shop-transfer-to-you: |
