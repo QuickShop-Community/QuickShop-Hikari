@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.util.Util;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -103,6 +104,10 @@ public class MessageRepository {
     @NotNull
     private MessageEmbed applyPlaceHolders(@NotNull MessageEmbed embed, @NotNull Map<String, String> placeholders) {
         EmbedBuilder builder = new EmbedBuilder(embed);
+        for (String key : placeholders.keySet()) {
+            String value = placeholders.get(key);
+            if (StringUtils.isEmpty(value)) continue;
+        }
         builder.setTitle(applyPlaceHolders(embed.getTitle(), placeholders));
         builder.setDescription(applyPlaceHolders(embed.getDescription(), placeholders));
         if (embed.getAuthor() != null) {
