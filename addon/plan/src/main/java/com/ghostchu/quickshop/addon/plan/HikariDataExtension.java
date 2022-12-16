@@ -136,7 +136,7 @@ public class HikariDataExtension implements DataExtension {
                 .columnThree("Item(amount)", Icon.called("box").build())
                 .columnFour("Balance", Icon.called("money-bill-wave").build());
 
-        List<ShopMetricRecord> records = this.metricQuery.queryServerPurchaseRecords(DateUtil.daysAgo(365), 1000, true).stream().filter(record -> switch (record.getType()) {
+        List<ShopMetricRecord> records = this.metricQuery.queryServerPurchaseRecords(DateUtil.daysAgo(365), 50, true).stream().filter(record -> switch (record.getType()) {
             //noinspection deprecation
             case PURCHASE, PURCHASE_BUYING_SHOP, PURCHASE_SELLING_SHOP -> true;
             default -> false;
