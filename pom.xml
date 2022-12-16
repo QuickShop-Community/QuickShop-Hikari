@@ -509,6 +509,7 @@
         <module>compatibility/lands</module>
         <module>compatibility/residence</module>
         <module>addon/discordsrv</module>
+        <module>addon/plan</module>
     </modules>
 
 </project>
