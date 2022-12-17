@@ -526,6 +526,12 @@ internal-error: "<red>An internal error occurred, please contact the server admi
 argument-cannot-be: "<red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>."
 argument-must-between: "<red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>"
 invalid-percentage: "<red>Percentage invalid, you must add '%' after the number of percentage."
+not-a-valid-time: |
+  <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
+  <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
+  <aqua>-<aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>(Zulu Time)</grey>
+  <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch Time in seconds)</grey>
+invalid-past-time: "<red>You can't specify a time in the past."
 debug:
   arguments-invalid: "<red>Provided arguments <yellow>{0}</yellow> are invalid."
   sign-located: "<green>Valid Sign: <yellow>{0}</yellow>."
@@ -1177,6 +1183,66 @@ addon:
       account: "Your account balance"
       taxes: "Taxes"
       cost: "Cost"
+  discount:
+    commands:
+      discount:
+        description: "<yellow>Apply a discount code or manage your discount codes."
+    discount-code-already-exists: "<red>Sorry, the name of your discount code already in use."
+    invalid-discount-code-regex: "<red>The discount code must matches the regex: <yellow>{0}</yellow>"
+    invalid-discount-code: "<red>This discount code are invalid."
+    discount-code-added: "<green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}</aqua>"
+    discount-code-removed: "<green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}</aqua>"
+    invalid-code-type: "<red>The code type <yellow>{0}</yellow> are invalid."
+    invalid-usage-restriction: "<red>The usage restriction <yellow>{0}</yellow> are invalid."
+    invalid-threshold-restriction: "<red>The threshold restriction <yellow>{0}</yellow> are invalid."
+    invalid-effect-scope: "<red>The scope <yellow>{0}</yellow> are invalid."
+    invalid-expire-time: "<red>You can't specify a time in the past."
+    invalid-discount-rate: "<red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage."
+    discount-code-expired: "<red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!"
+    discount-code-installed: "<green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/qs discount uninstall {0}</aqua>."
+    discount-code-uninstalled: "<green>You have uninstalled your discount code."
+    discount-code-query-nothing: "<red>You hadn't install a discount code yet!"
+    discount-code-query: "<green>You are using discount code: <yellow>{0}</yellow>."
+    discount-code-applicable: "<color:#bcef26>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>applicable</bold> in this shop!"
+    discount-code-applicable-with-threshold: "<color:#bcef26>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>applicable</bold> in this shop, but only your purchase cost over <yellow>{1}</yellow> in single transaction."
+    discount-code-not-applicable: "<red>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>not applicable<bold> in this shop!"
+    discount-code-reach-the-limit: "<red>You have reach the usage limit of discount code <yellow><bold>{0}</bold></yellow>, discount are not applied."
+    discount-code-no-permission: "<red>You didn't have permission to use any discount code in this shop!"
+    discount-code-has-been-expired: "<red>Your discount has been expired!"
+    discount-code-config-shop-added: "<green>Successfully to add this shop into your discount code allow list."
+    discount-code-config-shop-add-failure: "<red>This shop already in your discount code allow list."
+    discount-code-config-shop-removed: "<green>Successfully to remove this shop from your discount code allow list."
+    discount-code-config-shop-remove-failure: "<red>This shop not exists in your discount code allow list."
+    discount-code-config-expire: "<green>Successfully changed your code expire time."
+    discount-code-config-applied: "<green>Config the discount code successfully!"
+    discount-code-created: |
+      <green>Your discount code <yellow>{0}</yellow> has been successfully created!
+      <gold>Scope: <aqua>{1}</aqua></gold>.
+      <gold>Share with others: <color:#bcef26>{2}</color:#bcef26></gold>.
+      <yellow>For <gray>Specific Shops</gray> score only: To add shops to your discount code allow list, please looking an quickshop and execute <aqua>{2}</aqua> command.
+      <yellow>You can use <aqua>/qs discount config {0}</aqua> to edit your discount code anytime.
+    discount-code-under-threshold: "<red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>."
+    percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
+    fixed-off: "<bold><color:#bcef26>-{0}</color:#bcef26></bold>"
+    discount-code-list: "<gold>Listing your discount codes:<gold>"
+    discount-code-applied-in-purchase: "<color:#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!"
+    scope:
+      this-shop: "{0}"
+      your-shops-owned: "all your shops (owned)"
+      your-shops-managed: "all your shops (managed)"
+      server: "whole server"
+    code-type:
+      SERVER_ALL_SHOPS: "All shops on this server"
+      PLAYER_ALL_SHOPS: "All shops that created by code owner"
+      SPECIFIC_SHOPS: "Specific shops"
+    discount-code-details: |
+      <gold>Code: <yellow>{0}</yellow>
+      <gold>Creator: <yellow>{1}</yellow>
+      <gold>Applied to: <yellow>{2}</yellow>
+      <gold>Remaining usage: <yellow>{3}</yellow>
+      <gold>Expired on: <yellow>{4}</yellow>
+      <gold>Threshold: <yellow>{5}</yellow>
+      <gold>Discount: <yellow>{6}</yellow>
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
