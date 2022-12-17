@@ -258,7 +258,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
                     quickshop.text().of(sender, "addon.discount.invalid-threshold-restriction").send();
             case INVALID_EXPIRE_TIME -> quickshop.text().of(sender, "addon.discount.invalid-expire-time").send();
             case CODE_EXISTS -> quickshop.text().of(sender, "addon.discount.discount-code-already-exists").send();
-            case SUCCESS -> quickshop.text().of(sender, "addon.discount.discount-code-created",
+            case SUCCESS -> quickshop.text().of(sender, "addon.discount.discount-code-created-successfully",
                     code,
                     CommonUtil.prettifyText(codeType.name()),
                     "/qs discount install " + code,
