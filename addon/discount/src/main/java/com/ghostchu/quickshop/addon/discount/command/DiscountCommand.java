@@ -11,6 +11,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.enginehub.squirrelid.Profile;
@@ -63,7 +64,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
         printer.printHeader();
         printer.printLine(quickshop.text().of(sender, "addon.discount.discount-code-list").forLocale());
         main.getCodeManager().getCodes().stream().filter(code -> code.getOwner().equals(((Player) sender).getUniqueId()))
-                .forEach(code -> printer.printLine(Component.text(code.getCode())));
+                .forEach(code -> printer.printLine(Component.text(code.getCode()).color(NamedTextColor.AQUA)));
         printer.printFooter();
     }
 
