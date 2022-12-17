@@ -289,8 +289,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
                     localeFile.getParentFile().mkdirs();
                     localeFile.createNewFile();
                 } else {
-                    if (localeFile.isDirectory())
+                    if (localeFile.isDirectory()) {
                         localeFile.delete();
+                    }
                 }
             }
         }
