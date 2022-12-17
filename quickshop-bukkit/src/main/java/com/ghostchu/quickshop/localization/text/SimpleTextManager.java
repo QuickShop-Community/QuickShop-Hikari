@@ -80,7 +80,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
     @NotNull
     private FileConfiguration loadBuiltInFallback() {
         YamlConfiguration configuration = new YamlConfiguration();
-        try (InputStream inputStream = QuickShop.getInstance().getResource("messages.yml")) {
+        try (InputStream inputStream = QuickShop.getInstance().getResource("/lang/messages.yml")) {
             if (inputStream == null) return configuration;
             byte[] bytes = inputStream.readAllBytes();
             String content = new String(bytes, StandardCharsets.UTF_8);
@@ -139,6 +139,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
 
             }
         });
+        // and don't forget fix missing
+        languageFilesManager.fillMissing(loadBuiltInFallback());
+
         // Remove disabled locales
         List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
         enabledLanguagesRegex.replaceAll(s -> s.toLowerCase(Locale.ROOT).replace("-", "_"));
@@ -262,6 +265,13 @@ public class SimpleTextManager implements TextManager, Reloadable {
         File moduleFolder = new File(plugin.getDataFolder(), "overrides");
         if (!moduleFolder.exists())
             moduleFolder.mkdirs();
+        // create the pool overrides placeholder directories
+        pool.forEach(single -> {
+            File f = new File(moduleFolder, single);
+            if (!f.exists())
+                f.mkdirs();
+        });
+        //
         File[] files = moduleFolder.listFiles();
         if (files == null) return pool;
         List<String> newPool = new ArrayList<>(pool);
@@ -683,6 +693,12 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 if (str == null) {
                     Log.debug("The value about index " + index + " is null");
                     Log.debug("Missing Language Key: " + path + ", report to QuickShop!");
+                    StringJoiner joiner = new StringJoiner(".");
+                    String[] pathExploded = path.split("\\.");
+                    for (String singlePath : pathExploded) {
+                        joiner.add(singlePath);
+                        Log.debug("Path debug: " + joiner + " is " + index.get(singlePath, "null"));
+                    }
                     return LegacyComponentSerializer.legacySection().deserialize(path);
                 }
                 Component component = manager.plugin.getPlatform().miniMessage().deserialize(str);
