@@ -63,8 +63,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
         ChatSheetPrinter printer = new ChatSheetPrinter(sender);
         printer.printHeader();
         printer.printLine(quickshop.text().of(sender, "addon.discount.discount-code-list").forLocale());
-        main.getCodeManager().getCodes().stream().filter(code -> code.getOwner().equals(((Player) sender).getUniqueId()))
-                .forEach(code -> printer.printLine(Component.text(code.getCode()).color(NamedTextColor.AQUA)));
+        main.getCodeManager().getCodes().stream().filter(code -> code.getOwner().equals(((Player) sender).getUniqueId())).forEach(code -> printer.printLine(Component.text(code.getCode()).color(NamedTextColor.AQUA)));
         printer.printFooter();
     }
 
@@ -181,8 +180,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
         }
         String name = "Unknown";
         Profile profile = quickshop.getPlayerFinder().find(code.getOwner());
-        if (profile != null && !profile.getName().isEmpty())
-            name = profile.getName();
+        if (profile != null && !profile.getName().isEmpty()) name = profile.getName();
         Component appliedTo = quickshop.text().of(sender, "addon.discount.code-type." + code.getCodeType().name()).forLocale();
         String remainsUsage;
         int remains = code.getRemainsUsage(((Player) sender).getUniqueId());
@@ -191,9 +189,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         String expiredOn = sdf.format(new Date(code.getExpiredTime()));
-        quickshop.text().of(sender, "addon.discount.discount-code-details"
-                , code.getCode(), name, appliedTo, remainsUsage, expiredOn, code.getThreshold(),
-                code.getRate().format(sender, quickshop.text())).send();
+        quickshop.text().of(sender, "addon.discount.discount-code-details", code.getCode(), name, appliedTo, remainsUsage, expiredOn, code.getThreshold(), code.getRate().format(sender, quickshop.text())).send();
     }
 
 
@@ -262,11 +258,11 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
                     quickshop.text().of(sender, "addon.discount.invalid-threshold-restriction").send();
             case INVALID_EXPIRE_TIME -> quickshop.text().of(sender, "addon.discount.invalid-expire-time").send();
             case CODE_EXISTS -> quickshop.text().of(sender, "addon.discount.discount-code-already-exists").send();
-            case SUCCESS -> quickshop.text().of(sender, "addon.discount.discount-code-created"
-                    , code
-                    , CommonUtil.prettifyText(codeType.name())
-                    , "/qs discount install " + code,
-                    "/qs discount addshop").send();
+            case SUCCESS -> quickshop.text().of(sender, "addon.discount.discount-code-created",
+                    code,
+                    CommonUtil.prettifyText(codeType.name()),
+                    "/qs discount install " + code,
+                    "/qs discount config " + code + " addshop").send();
         }
     }
 
@@ -310,8 +306,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
             return;
         }
         if (sender instanceof Player p) {
-            if (!code.getOwner().equals(p.getUniqueId()) &&
-                    !quickshop.perm().hasPermission(sender, "quickshopaddon.discount.remove.bypass")) {
+            if (!code.getOwner().equals(p.getUniqueId()) && !quickshop.perm().hasPermission(sender, "quickshopaddon.discount.remove.bypass")) {
                 quickshop.text().of(sender, "no-permission").send();
                 return;
             }
@@ -354,12 +349,8 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
         }
         if (cmdArg.length == 4) {
             return switch (cmdArg[0]) {
-                case "create" -> List.of(
-                        "1. Command Hint:",
-                        "2. Argument: <rate>",
-                        "3. Description: The actual percentage or money you will earn",
-                        "4. Input `30%` = price * 0.3",
-                        "5. Input `50` = price-50");
+                case "create" ->
+                        List.of("1. Command Hint:", "2. Argument: <rate>", "3. Description: The actual percentage or money you will earn", "4. Input `30%` = price * 0.3", "5. Input `50` = price-50");
                 default -> Collections.emptyList();
             };
         }
@@ -371,24 +362,15 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
         }
         if (cmdArg.length == 6) {
             return switch (cmdArg[0]) {
-                case "create" -> List.of(
-                        "1. Command Hint:",
-                        "2. Argument: [threshold]",
-                        "3. Description: min price to apply discount",
-                        "4. -1 for unlimited usage");
+                case "create" ->
+                        List.of("1. Command Hint:", "2. Argument: [threshold]", "3. Description: min price to apply discount", "4. -1 for unlimited usage");
                 default -> Collections.emptyList();
             };
         }
         if (cmdArg.length == 7) {
             return switch (cmdArg[0]) {
-                case "create" -> List.of(
-                        "1. Command Hint:",
-                        "2. Argument: [expired]",
-                        "3. Description: The discount code expired time.",
-                        "4. -1 for unlimited duration.",
-                        "5. Accept both Zulu time and UNIX timestamp in seconds.",
-                        "6. Zulu Example: 2022-12-17T10:31:37Z",
-                        "7. UNIX Example: 1671273097");
+                case "create" ->
+                        List.of("1. Command Hint:", "2. Argument: [expired]", "3. Description: The discount code expired time.", "4. -1 for unlimited duration.", "5. Accept both Zulu time and UNIX timestamp in seconds.", "6. Zulu Example: 2022-12-17T10:31:37Z", "7. UNIX Example: 1671273097");
                 default -> Collections.emptyList();
             };
         }
