@@ -244,7 +244,11 @@ public class SimpleTextManager implements TextManager, Reloadable {
     @SneakyThrows
     @NotNull
     private File getOverrideLocaleFile(@NotNull String locale) {
-        return new File(new File(plugin.getDataFolder(), "overrides"), locale + ".yml");
+        File file = new File(new File(plugin.getDataFolder(), "overrides"), locale + ".yml");
+        if(file.isDirectory()){ // Fix bad directory name.
+            file.delete();
+        }
+        return file;
     }
 
     /**
@@ -269,7 +273,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 // create the paired file
                 File localeFile = new File(file, file.getName() + ".yml");
                 if (!localeFile.exists()) {
-                    localeFile.mkdirs();
+                    localeFile.getParentFile().mkdirs();
                     localeFile.createNewFile();
                 }
             }
