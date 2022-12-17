@@ -1215,11 +1215,11 @@ addon:
     discount-code-config-shop-remove-failure: "<red>This shop not exists in your discount code allow list."
     discount-code-config-expire: "<green>Successfully changed your code expire time."
     discount-code-config-applied: "<green>Config the discount code successfully!"
-    discount-code-created: |
+    discount-code-created-successfully: |
       <green>Your discount code <yellow>{0}</yellow> has been successfully created!
       <gold>Scope: <aqua>{1}</aqua></gold>.
       <gold>Share with others: <color:#bcef26>{2}</color:#bcef26></gold>.
-      <yellow>For <gray>Specific Shops</gray> score only: To add shops to your discount code allow list, please looking an quickshop and execute <aqua>{2}</aqua> command.
+      <yellow>For <gray>Specific Shops</gray> score only: To add shops to your discount code allow list, please looking an quickshop and execute <aqua>{3}</aqua> command.
       <yellow>You can use <aqua>/qs discount config {0}</aqua> to edit your discount code anytime.
     discount-code-under-threshold: "<red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>."
     percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
