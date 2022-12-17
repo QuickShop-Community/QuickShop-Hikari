@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.enginehub.squirrelid.Profile;
@@ -85,7 +86,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             plugin.text().of(sender, "invalid-percentage", cmdArg[0]).send();
             return;
         }
-        String percentageStr = cmdArg[2].replace("%", "");
+        String percentageStr = StringUtils.substringBeforeLast(cmdArg[2], "%");
         try {
             double percent = Double.parseDouble(percentageStr);
             if (Double.isInfinite(percent) || Double.isNaN(percent)) {

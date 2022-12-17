@@ -1,11 +1,15 @@
 package com.ghostchu.quickshop.common.util;
 
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,6 +32,24 @@ public class CommonUtil {
             joiner.add(str);
         }
         return joiner.toString();
+    }
+
+    @Nullable
+    public static Date zuluTime2Date(@NotNull String zuluString) {
+        String pattern = DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.getPattern();
+        try {
+            return DateUtils.parseDate(zuluString, pattern);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    @Nullable
+    public static Date parseTime(@NotNull String time) {
+        if (NumberUtils.isCreatable(time)) {
+            return new Date(Long.parseLong(time) * 1000L);
+        }
+        return zuluTime2Date(time);
     }
 
     /**

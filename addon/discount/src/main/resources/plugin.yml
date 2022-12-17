@@ -1,0 +1,23 @@
+name: qsaddon-${project.artifactId}
+version: '${project.version}'
+main: com.ghostchu.quickshop.addon.${project.artifactId}.Main
+api-version: 1.16
+depend:
+  - QuickShop-Hikari
+authors: [ Ghost_chu ]
+permissions:
+  quickshopaddon.discount.use:
+    default: true
+    description: Bypass the permission check to on any discount code operation
+  quickshopaddon.discount.bypass:
+    default: op
+    description: Bypass the permission check to on any discount code operation
+  quickshopaddon.discount.create.server_all_shops:
+    default: op
+    description: Allow create discount code for all shops on this server
+  quickshopaddon.discount.create.player_all_shops:
+    default: true
+    description: Allow create discount code for player themself shops
+  quickshopaddon.discount.create.specific_shops:
+    default: true
+    description: Allow create discount code for specific shops

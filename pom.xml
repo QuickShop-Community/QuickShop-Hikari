@@ -510,6 +510,7 @@
         <module>compatibility/residence</module>
         <module>addon/discordsrv</module>
         <module>addon/plan</module>
+        <module>addon/discount</module>
     </modules>
 
 </project>
