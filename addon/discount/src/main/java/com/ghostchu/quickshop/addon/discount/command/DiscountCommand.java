@@ -346,7 +346,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
         if (cmdArg.length == 3) {
             return switch (cmdArg[0]) {
                 case "create" -> Arrays.stream(CodeType.values()).map(Enum::name).toList();
-                case "config" -> List.of("scope");
+                case "config" -> List.of("scope", "addshop", "removeshop");
                 default -> Collections.emptyList();
             };
         }
