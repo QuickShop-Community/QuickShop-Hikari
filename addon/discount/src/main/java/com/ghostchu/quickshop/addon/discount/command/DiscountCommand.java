@@ -265,7 +265,8 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
             case SUCCESS -> quickshop.text().of(sender, "addon.discount.discount-code-created"
                     , code
                     , CommonUtil.prettifyText(codeType.name())
-                    , "/qs discount install " + code).send();
+                    , "/qs discount install " + code,
+                    "/qs discount addshop").send();
         }
     }
 
