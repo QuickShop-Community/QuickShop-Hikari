@@ -80,8 +80,12 @@ public class SimpleTextManager implements TextManager, Reloadable {
     @NotNull
     private FileConfiguration loadBuiltInFallback() {
         YamlConfiguration configuration = new YamlConfiguration();
-        try (InputStream inputStream = QuickShop.getInstance().getResource("/lang/messages.yml")) {
-            if (inputStream == null) return configuration;
+        try (InputStream inputStream = QuickShop.getInstance().getClass().getResourceAsStream("/lang/messages.yml")) {
+            if (inputStream == null) {
+                plugin.getLogger().log(Level.WARNING, "Failed to load built-in fallback translation, fallback file not exists in jar.");
+                return configuration;
+            }
+            ;
             byte[] bytes = inputStream.readAllBytes();
             String content = new String(bytes, StandardCharsets.UTF_8);
             configuration.loadFromString(content);
