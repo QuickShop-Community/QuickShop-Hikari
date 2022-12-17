@@ -36,7 +36,7 @@ public class LanguageFilesManager {
 
     private void merge(@NotNull FileConfiguration alreadyRegistered, @NotNull FileConfiguration newConfiguration) {
         for (String key : newConfiguration.getKeys(true)) {
-            if (newConfiguration.isConfigurationSection("key")) continue;
+            if (newConfiguration.isConfigurationSection(key)) continue;
             alreadyRegistered.set(key, newConfiguration.get(key));
         }
     }
