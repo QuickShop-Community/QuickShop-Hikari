@@ -74,7 +74,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
     @Override
     public ReloadResult reloadModule() {
         Util.asyncThreadRun(this::load);
-
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
     }
 
@@ -275,6 +274,9 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 if (!localeFile.exists()) {
                     localeFile.getParentFile().mkdirs();
                     localeFile.createNewFile();
+                } else {
+                    if (localeFile.isDirectory())
+                        localeFile.delete();
                 }
             }
         }
