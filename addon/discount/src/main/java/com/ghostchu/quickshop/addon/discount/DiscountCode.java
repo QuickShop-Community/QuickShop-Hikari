@@ -292,7 +292,7 @@ public class DiscountCode {
 
         @Override
         public double apply(double price) {
-            return CalculateUtil.multiply(price, percent);
+            return Math.min(0.0d, CalculateUtil.multiply(price, percent));
         }
 
         @Override
