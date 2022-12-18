@@ -273,10 +273,10 @@ nearby-shop-this-way: <green>商店距离你 {0} 格远
 owner-bypass-check: <yellow>已绕过所有检查并完成交易（因为你是商店所有者）！
 april-rick-and-roll-easter-egg: |
   <green>---------------------------------------------------</green>
-  <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
-  <yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>
-  <aqua>Claim it by watch the video tutorial below!</aqua>
-  <hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
+  <rainbow><bold>限时活动 -- QuickShop-Hikari</bold></rainbow>
+  <yellow>获取你的 <gold>高级</gold> 粒子效果并在所有安装 QuickShop 的服务器上使用!</yellow>
+  <aqua>点击下面的链接观看领取教程视频!</aqua>
+  <hover:show_text:'<gold>点击以在浏览器中打开.</gold><click:open_url:'https://www.bilibili.com/video/BV1GJ411x7h7'>https://www.bilibili.com/video/BV1GJ411x7h7</click></hover>
   <green>---------------------------------------------------</green>
 signs:
   item-right: ''
