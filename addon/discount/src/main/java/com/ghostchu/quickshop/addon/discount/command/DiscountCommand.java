@@ -12,6 +12,7 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.enginehub.squirrelid.Profile;
@@ -142,29 +143,6 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
                     return;
                 }
             }
-//            case "expire" -> {
-//                if (passThroughArgs.length < 3) {
-//                    quickshop.text().of(sender, "command-incorrect", "/qs discount config <code> expire <time>").send();
-//                    return;
-//                }
-//                if(!code.getOwner().equals(((Player) sender).getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(sender,"quickshopaddon.discount.bypass") && ){
-//                    quickshop.text().of(sender, "no-permission").send();
-//                    return;
-//                }
-//                String expireTimeStr = passThroughArgs[2];
-//                if (expireTimeStr.equals("-1")) {
-//                    code.setExpiredTime(-1);
-//                    quickshop.text().of(sender, "addon.discount.discount-code-config-expire-time-set", "Never").send();
-//                    return;
-//                }
-//                Date date = CommonUtil.zuluTime2Date(passThroughArgs[5]);
-//                if (date == null) {
-//                    quickshop.text().of(sender, "invalid-time-format", passThroughArgs[5]).send();
-//                    return;
-//                }
-//                code.setExpiredTime(date.getTime());
-//                quickshop.text().of(sender,"discount-code-config-applied").send();
-//            }
         }
     }
 
@@ -323,20 +301,19 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-//        case "install" -> install(sender, passThroughArgs);
-//        case "uninstall" -> uninstall(sender, passThroughArgs);
-//        case "create" -> create(sender, passThroughArgs);
-//        case "remove" -> remove(sender, passThroughArgs);
-//        case "query" -> query(sender, passThroughArgs);
-//        case "config" -> config(sender, passThroughArgs);
-//        case "list" -> list(sender, passThroughArgs);
         if (cmdArg.length == 1) {
             return Arrays.asList("install", "uninstall", "create", "remove", "info", "config", "list");
         }
         if (cmdArg.length == 2) {
             return switch (cmdArg[0]) {
                 case "list", "info" -> Collections.emptyList();
-                case "install", "uninstall", "remove", "create", "config" -> List.of("<code>");
+                case "install", "uninstall", "remove", "create", "config" -> List.of(PlainTextComponentSerializer
+                        .plainText()
+                        .serialize(quickshop
+                                .text()
+                                .of(sender,
+                                        "addon.discount.tab-complete.discount.general.code"
+                                ).forLocale()));
                 default -> Collections.emptyList();
             };
         }
@@ -349,31 +326,38 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
         }
         if (cmdArg.length == 4) {
             return switch (cmdArg[0]) {
-                case "create" ->
-                        List.of("1. Command Hint:", "2. Argument: <rate>", "3. Description: The actual percentage or money you will earn", "4. Input `30%` = price * 0.3", "5. Input `50` = price-50");
+                case "create" -> tabCompleteHint(sender, "addon.discount.tab-complete.discount.create.rate");
                 default -> Collections.emptyList();
             };
         }
         if (cmdArg.length == 5) {
             return switch (cmdArg[0]) {
-                case "create" -> List.of("[max-usage], -1 for unlimited");
+                case "create" -> tabCompleteHint(sender, "addon.discount.tab-complete.discount.create.max-usage");
                 default -> Collections.emptyList();
             };
         }
         if (cmdArg.length == 6) {
             return switch (cmdArg[0]) {
-                case "create" ->
-                        List.of("1. Command Hint:", "2. Argument: [threshold]", "3. Description: min price to apply discount", "4. -1 for unlimited usage");
+                case "create" -> tabCompleteHint(sender, "addon.discount.tab-complete.discount.create.threshold");
                 default -> Collections.emptyList();
             };
         }
         if (cmdArg.length == 7) {
             return switch (cmdArg[0]) {
-                case "create" ->
-                        List.of("1. Command Hint:", "2. Argument: [expired]", "3. Description: The discount code expired time.", "4. -1 for unlimited duration.", "5. Accept both Zulu time and UNIX timestamp in seconds.", "6. Zulu Example: 2022-12-17T10:31:37Z", "7. UNIX Example: 1671273097");
+                case "create" -> tabCompleteHint(sender, "addon.discount.tab-complete.discount.create.expired");
                 default -> Collections.emptyList();
             };
         }
         return Collections.emptyList();
+    }
+
+    private List<String> tabCompleteHint(@NotNull CommandSender sender, @NotNull String key) {
+        String str = PlainTextComponentSerializer.plainText().serialize(quickshop.text().of(sender, key).forLocale());
+        List<String> list = new ArrayList<>();
+        String[] explode = str.split("\n");
+        for (int i = 0; i < explode.length; i++) {
+            list.add(i + ". " + explode[i]);
+        }
+        return list;
     }
 }
