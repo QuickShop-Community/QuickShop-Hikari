@@ -20,10 +20,7 @@ import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -611,7 +608,7 @@ public class PlayerListener extends AbstractQSListener {
             Date date = new Date();
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             if ((localDate.getMonthValue() == 4 && localDate.getDayOfMonth() == 1) || Util.parsePackageProperly("april-rickandroll").asBoolean()) {
-                plugin.text().of(e.getPlayer(), "april-rick-and-roll-easter-egg").send();
+                Bukkit.getScheduler().runTaskLater(plugin, (() -> plugin.text().of(e.getPlayer(), "april-rick-and-roll-easter-egg").send()), 80L);
             }
         }
     }
