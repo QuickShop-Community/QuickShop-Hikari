@@ -1224,25 +1224,25 @@ addon:
     discount-code-under-threshold: "<red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>."
     percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
     fixed-off: "<bold><color:#bcef26>-{0}</color:#bcef26></bold>"
-    discount-code-list: "<gold>Listing your discount codes:<gold>"
-    discount-code-applied-in-purchase: "<color:#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!"
+    discount-code-list: "<gold>列出您的优惠码：<gold>"
+    discount-code-applied-in-purchase: "<color:#bcef26>您的优惠码 <yellow>{0}</yellow> 已经应用到此交易，并且您节省了 <gold>{1}</gold>！"
     scope:
       this-shop: "{0}"
-      your-shops-owned: "all your shops (owned)"
-      your-shops-managed: "all your shops (managed)"
-      server: "whole server"
+      your-shops-owned: "您的所有商店（所有）"
+      your-shops-managed: "您的所有商店（已管理）"
+      server: "本服务器"
     code-type:
-      SERVER_ALL_SHOPS: "All shops on this server"
-      PLAYER_ALL_SHOPS: "All shops that created by code owner"
-      SPECIFIC_SHOPS: "Specific shops"
+      SERVER_ALL_SHOPS: "此服务器上的所有商店"
+      PLAYER_ALL_SHOPS: "由优惠码所有者创建的所有商店"
+      SPECIFIC_SHOPS: "特定商店"
     discount-code-details: |
-      <gold>Code: <yellow>{0}</yellow>
-      <gold>Creator: <yellow>{1}</yellow>
-      <gold>Applied to: <yellow>{2}</yellow>
-      <gold>Remaining usage: <yellow>{3}</yellow>
-      <gold>Expired on: <yellow>{4}</yellow>
-      <gold>Threshold: <yellow>{5}</yellow>
-      <gold>Discount: <yellow>{6}</yellow>
+      <gold>优惠码： <yellow>{0}</yellow>
+      <gold>创建者： <yellow>{1}</yellow>
+      <gold>应用于： <yellow>{2}</yellow>
+      <gold>剩余使用量： <yellow>{3}</yellow>
+      <gold>过期时间： <yellow>{4}</yellow>
+      <gold>阈值： <yellow>{5}</yellow>
+      <gold>折扣： <yellow>{6}</yellow>
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
