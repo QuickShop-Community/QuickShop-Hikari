@@ -192,6 +192,7 @@ updatenotify:
     papermc: '[PaperMC]'
     bukkitdev: '[BukkitDev]'
     polymart: '[Polymart]'
+    modrinth: '[Modrinth]'
     basic: '[Basic]'
   list:
     - '{0} yayınlandı. Sen hala {1} kullanıyorsun!'
@@ -270,6 +271,13 @@ unknown-owner: Bilinmiyor
 restricted-prices: '<red>{0} için sınırlandırılmış fiyat: Min {1}, Maks {2}'
 nearby-shop-this-way: <green>Market sizden {0} blok uzakta.
 owner-bypass-check: <yellow>Bütün kontroller atlandı. Ticaret başarılı! (Market sahibisin!)
+april-rick-and-roll-easter-egg: |
+  <green>---------------------------------------------------</green>
+  <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
+  <yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>
+  <aqua>Claim it by watch the video tutorial below!</aqua>
+  <hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
+  <green>---------------------------------------------------</green>
 signs:
   item-right: ''
   out-of-space: Yeterli alan yok
