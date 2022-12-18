@@ -147,10 +147,16 @@ public class MessageFactory {
         placeHolders.put("purchase.world", shop.getLocation().getWorld().getName());
         placeHolders.put("purchase.amount", String.valueOf(event.getAmount()));
         placeHolders.put("purchase.balance", String.valueOf(event.getBalanceWithoutTax()));
-        placeHolders.put("purchase.balance-formatted", plugin.getEconomy().format(event.getBalanceWithoutTax(), shop.getLocation().getWorld(), shop.getCurrency()));
+        placeHolders.put("purchase.balance-formatted", purgeColors(plugin.getEconomy().format(event.getBalanceWithoutTax(), shop.getLocation().getWorld(), shop.getCurrency())));
         placeHolders.put("purchase.taxes", String.valueOf(event.getTax()));
-        placeHolders.put("purchase.taxes-formatted", plugin.getEconomy().format(event.getTax(), shop.getLocation().getWorld(), shop.getCurrency()));
+        placeHolders.put("purchase.taxes-formatted", purgeColors(plugin.getEconomy().format(event.getTax(), shop.getLocation().getWorld(), shop.getCurrency())));
         return placeHolders;
+    }
+
+    @NotNull
+    private String purgeColors(@NotNull String text) {
+        String purged = org.bukkit.ChatColor.stripColor(text);
+        return ChatColor.stripColor(purged);
     }
 
     private String wrap(@NotNull Component component) {

@@ -83,6 +83,7 @@ public class MetricListener extends AbstractQSListener implements Listener {
                                 .tax(event.getTax())
                                 .total(event.getBalanceWithoutTax())
                                 .type(wrapShopOperation(event.getShop()))
+                                .amount(event.getAmount())
                                 .build()
                 )
                 .whenComplete((id, e) -> {

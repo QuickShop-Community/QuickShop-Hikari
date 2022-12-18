@@ -16,4 +16,5 @@ public class CommonUtil {
         }
         return component.equals(Component.text(""));
     }
+
 }

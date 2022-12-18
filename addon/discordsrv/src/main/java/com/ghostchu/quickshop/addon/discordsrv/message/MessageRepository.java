@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.util.Util;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +27,7 @@ public class MessageRepository {
     private static final String ADDON_TRANSLATION_KEY_PREFIX = "addon.discord.discord-messages.";
     private final QuickShop plugin;
     private final EmbedMessageParser parser = new EmbedMessageParser();
+    private final static String ZERO_WIDTH_SPACE = "\u200E";
 
     public MessageRepository(QuickShop plugin) {
         this.plugin = plugin;
@@ -103,6 +105,11 @@ public class MessageRepository {
     @NotNull
     private MessageEmbed applyPlaceHolders(@NotNull MessageEmbed embed, @NotNull Map<String, String> placeholders) {
         EmbedBuilder builder = new EmbedBuilder(embed);
+        for (Map.Entry<String, String> entry : placeholders.entrySet()) {
+            if (StringUtils.isEmpty(entry.getValue())) {
+                entry.setValue(ZERO_WIDTH_SPACE);
+            }
+        }
         builder.setTitle(applyPlaceHolders(embed.getTitle(), placeholders));
         builder.setDescription(applyPlaceHolders(embed.getDescription(), placeholders));
         if (embed.getAuthor() != null) {

@@ -51,7 +51,7 @@ jobs:
         #  nbt-api | recommends | *
         
         files-primary: "quickshop-bukkit/target/QuickShop-Hikari-*.jar"
-        files-secondary: "**/target/Compat-*.jar"
+        files-secondary: "**/target/+(Compat*|Addon*).jar"
         loaders: |
          spigot
          paper

@@ -707,6 +707,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      * @return Returns the Map. Info contains what their last question etc was.
      * @deprecated Use getInteractiveManager instead. This way won't trigger the BungeeCord notification.
      */
+    @SuppressWarnings("removal")
     @Override
     @Deprecated(forRemoval = true)
     public @NotNull Map<UUID, Info> getActions() {
@@ -1267,6 +1268,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
         chatSheetPrinter.printFooter();
+        new ShopInfoPanelEvent(shop, p.getUniqueId()).callEvent();
     }
 
     @Override

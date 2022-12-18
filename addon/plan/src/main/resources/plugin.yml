@@ -1,0 +1,10 @@
+name: qsaddon-${project.artifactId}
+version: '${project.version}'
+main: com.ghostchu.quickshop.addon.${project.artifactId}.Main
+api-version: 1.16
+depend:
+  - QuickShop-Hikari
+  - Plan
+authors: [ Ghost_chu ]
+#libraries:
+#  - net.dv8tion:JDA:4.4.0_352.fix-2
