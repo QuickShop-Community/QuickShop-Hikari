@@ -192,6 +192,7 @@ updatenotify:
     papermc: '[PaperMC]'
     bukkitdev: '[BukkitDev]'
     polymart: '[Polymart]'
+    modrinth: '[Modrinth]'
     basic: '[기본]'
   list:
     - '{0} 이/가 출시되었습니다, 하지만 당신은 현재 {1} 을/를 사용중입니다.'
@@ -270,6 +271,13 @@ unknown-owner: 알 수 없음
 restricted-prices: '<red>{0} 에 대한 가격이 제한되었습니다. 최소 {1} 원, 최대 {2} 원'
 nearby-shop-this-way: <green>그 상점은 당신을 기준으로 {0}블록 떨어진 곳에 있습니다.
 owner-bypass-check: <yellow>모든 조사를 통과하여, 거래를 완료했습니다! (당신은 상점 주인입니다.)
+april-rick-and-roll-easter-egg: |
+  <green>---------------------------------------------------</green>
+  <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
+  <yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>
+  <aqua>Claim it by watch the video tutorial below!</aqua>
+  <hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
+  <green>---------------------------------------------------</green>
 signs:
   item-right: ''
   out-of-space: 공간 부족
