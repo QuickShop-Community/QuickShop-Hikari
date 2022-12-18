@@ -1187,6 +1187,35 @@ addon:
     commands:
       discount:
         description: "<yellow>应用折扣代码或管理您的优惠代码"
+    tab-complete:
+      discount:
+        general:
+          code: "<code>"
+        create:
+          rate: |
+            Command Hint:
+            Argument: <rate>
+            Description: The actual percentage or money you will earn
+            Input `30%` = price * 0.3
+            Input `50` = price - 50
+          max-usage: |
+            Command Hint:
+            Argument: [max-usage]
+            Description: The times that code can be used
+            `-1` for unlimited.
+          threshold: |
+            Command Hint:
+            Argument: [threshold]
+            Description: The minimum price that code can be applied
+            `-1` for unlimited
+          expired: |
+            Command Hint
+            Argument: [expired]
+            Description: The code expired time.
+            `-1` for unlimited duration.
+            Accept both Zulu time and UNIX timestamp in seconds.
+            Zulu Example: 2022-12-17T10:31:37Z
+            UNIX Example: 1671273097
     discount-code-already-exists: "<red>抱歉，您的优惠码名称已被使用"
     invalid-discount-code-regex: "<red>优惠码必须匹配正则表达式： <yellow>{0}</yellow>"
     invalid-discount-code: "<red>优惠码无效。"
