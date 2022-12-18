@@ -40,7 +40,10 @@ import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.AbstractMap;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -599,6 +602,17 @@ public class PlayerListener extends AbstractQSListener {
         plugin.getPlayerFinder().flash(e.getPlayer().getUniqueId(), e.getPlayer().getName());
         if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
             MsgUtil.flush(e.getPlayer());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onJoinEasterEgg(PlayerJoinEvent e) {
+        if (QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.alert")) {
+            Date date = new Date();
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            if ((localDate.getMonthValue() == 4 && localDate.getDayOfMonth() == 1) || Util.parsePackageProperly("april-rickandroll").asBoolean()) {
+                plugin.text().of(e.getPlayer(), "april-rick-and-roll-easter-egg").send();
+            }
         }
     }
 
