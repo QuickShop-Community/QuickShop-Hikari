@@ -27,6 +27,7 @@ public class MessageRepository {
     private static final String ADDON_TRANSLATION_KEY_PREFIX = "addon.discord.discord-messages.";
     private final QuickShop plugin;
     private final EmbedMessageParser parser = new EmbedMessageParser();
+    private final static String ZERO_WIDTH_SPACE = "\u200E";
 
     public MessageRepository(QuickShop plugin) {
         this.plugin = plugin;
@@ -104,9 +105,10 @@ public class MessageRepository {
     @NotNull
     private MessageEmbed applyPlaceHolders(@NotNull MessageEmbed embed, @NotNull Map<String, String> placeholders) {
         EmbedBuilder builder = new EmbedBuilder(embed);
-        for (String key : placeholders.keySet()) {
-            String value = placeholders.get(key);
-            if (StringUtils.isEmpty(value)) continue;
+        for (Map.Entry<String, String> entry : placeholders.entrySet()) {
+            if (StringUtils.isEmpty(entry.getValue())) {
+                entry.setValue(ZERO_WIDTH_SPACE);
+            }
         }
         builder.setTitle(applyPlaceHolders(embed.getTitle(), placeholders));
         builder.setDescription(applyPlaceHolders(embed.getDescription(), placeholders));
