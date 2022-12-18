@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.localization.text;
 
 import com.ghostchu.crowdin.CrowdinOTA;
 import com.ghostchu.crowdin.OTAFileInstance;
-import com.ghostchu.crowdin.exception.OTAException;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
@@ -65,7 +64,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         try {
             plugin.getLogger().info("Please wait us fetch the translation updates from Crowdin OTA service...");
             this.crowdinOTA = new CrowdinOTA(Util.parsePackageProperly("crowdinHost").asString("https://distributions.crowdin.net/91b97508fdf19626f2977b7xrm4"), new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
-        } catch (OTAException e) {
+        } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING, "Cannot initialize the CrowdinOTA instance!", e);
         }
         load();
@@ -108,25 +107,29 @@ public class SimpleTextManager implements TextManager, Reloadable {
         // second, load the bundled language files
         loadBundled().forEach(languageFilesManager::deploy);
         // then, load the translations from Crowdin
-        if (crowdinOTA != null) {
-            OTAFileInstance fileInstance = crowdinOTA.getOtaInstance().getFileInstance(CROWDIN_LANGUAGE_FILE_PATH);
-            if (fileInstance != null) {
-                for (String crowdinCode : fileInstance.getAvailableLocales()) {
-                    String content = fileInstance.getLocaleContentByCrowdinCode(crowdinCode);
-                    String mcCode = crowdinOTA.mapLanguageCode(crowdinCode, LOCALE_MAPPING_SYNTAX).toLowerCase(Locale.ROOT).replace("-", "_");
-                    if (content == null) {
-                        plugin.getLogger().log(Level.WARNING, "Failed to load translation for " + mcCode + ", the content is null.");
-                        continue;
-                    }
-                    YamlConfiguration configuration = new YamlConfiguration();
-                    try {
-                        configuration.loadFromString(content);
-                        languageFilesManager.deploy(mcCode, configuration);
-                    } catch (InvalidConfigurationException e) {
-                        plugin.getLogger().log(Level.WARNING, "Failed to load translation for " + mcCode + ".", e);
+        try {
+            if (crowdinOTA != null) {
+                OTAFileInstance fileInstance = crowdinOTA.getOtaInstance().getFileInstance(CROWDIN_LANGUAGE_FILE_PATH);
+                if (fileInstance != null) {
+                    for (String crowdinCode : fileInstance.getAvailableLocales()) {
+                        String content = fileInstance.getLocaleContentByCrowdinCode(crowdinCode);
+                        String mcCode = crowdinOTA.mapLanguageCode(crowdinCode, LOCALE_MAPPING_SYNTAX).toLowerCase(Locale.ROOT).replace("-", "_");
+                        if (content == null) {
+                            plugin.getLogger().log(Level.WARNING, "Failed to load translation for " + mcCode + ", the content is null.");
+                            continue;
+                        }
+                        YamlConfiguration configuration = new YamlConfiguration();
+                        try {
+                            configuration.loadFromString(content);
+                            languageFilesManager.deploy(mcCode, configuration);
+                        } catch (InvalidConfigurationException e) {
+                            plugin.getLogger().log(Level.WARNING, "Failed to load translation for " + mcCode + ".", e);
+                        }
                     }
                 }
             }
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.WARNING, "Unable to load Crowdin OTA translations", e);
         }
         // finally, load override translations
         Collection<String> pending = getOverrideLocales(languageFilesManager.getDistributions().keySet());
