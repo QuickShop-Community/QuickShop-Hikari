@@ -86,7 +86,7 @@ reloading-status:
   scheduled: <green>Przeładowanie zakończone. <gray>(Niektóre zmiany wymagały chwili, aby zadziałać)
   require-restart: <green>Przeładowanie zakończone. <yellow>(Wszystkie zmiany wymagają restartu serwera)
   failed: <red>Przeładowywanie nie powiodło się, sprawdź konsolę serwera
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} Kupił {1} {2} z Twojego sklepu i zarobiłeś {3} ({4} w podatkach).
 not-enough-space: <red>Masz tylko miejsce na {0} więcej!
 shop-name-success: <green>Pomyślnie ustawiono nazwę sklepu na <yellow>{0}<green>.
 shop-staff-added: <green>Pomyślnie dodano {0} jako członka personelu twojego sklepu.
@@ -164,7 +164,7 @@ edition-confilct: QuicShop-Hikari with QuickShop-Reremake installed may conflict
 inventory-unavailable: '<red>This shop InventoryWrapper not exists or invalid. Did you using addon to re-binding the shop Inventory? Information: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Please contact the server administrators.'
 file-test: To jest testowy plik tekstowy. Używamy go do testowania jeśli messages.json jest zepsuty. Możesz wypełnić go dowolnymi easter egg'ami, które lubisz :)
 unknown-player: <red>Docelowy gracz nie istnieje, sprawdź wpisaną nazwę użytkownika.
-player-offline: "<red>The target player currently is offline."
+player-offline: "<red>Wybrany gracz jest obecnie offline."
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 language:
   qa-issues: '<yellow>Problemy z zapewnieniem jakości: <aqua>{0}'
@@ -192,6 +192,7 @@ updatenotify:
     papermc: '[PaperMC]'
     bukkitdev: '[BukkitDev]'
     polymart: '[Polymart]'
+    modrinth: '[Modrinth]'
     basic: '[Podstawowe]'
   list:
     - '{0} został wydany. Nadal używasz {1}!'
@@ -270,6 +271,13 @@ unknown-owner: Nieznany
 restricted-prices: '<red>Ograniczona cena dla {0}: min. {1}, maks. {2}'
 nearby-shop-this-way: <green>Sklep jest {0} bloków od ciebie.
 owner-bypass-check: <yellow>Pominięto wszystkie sprawdzania. Handel zakończony sukcesem! (Jesteś teraz właścicielem sklepu!)
+april-rick-and-roll-easter-egg: |
+  <green>---------------------------------------------------</green>
+  <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
+  <yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>
+  <aqua>Claim it by watch the video tutorial below!</aqua>
+  <hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
+  <green>---------------------------------------------------</green>
 signs:
   item-right: ''
   out-of-space: Za mało miejsca

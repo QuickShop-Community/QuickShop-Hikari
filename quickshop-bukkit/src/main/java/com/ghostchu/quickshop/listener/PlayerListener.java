@@ -20,10 +20,7 @@ import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -40,7 +37,10 @@ import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.AbstractMap;
+import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -599,6 +599,17 @@ public class PlayerListener extends AbstractQSListener {
         plugin.getPlayerFinder().flash(e.getPlayer().getUniqueId(), e.getPlayer().getName());
         if (plugin.getConfig().getBoolean("shop.auto-fetch-shop-messages")) {
             MsgUtil.flush(e.getPlayer());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onJoinEasterEgg(PlayerJoinEvent e) {
+        if (QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.alert")) {
+            Date date = new Date();
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            if ((localDate.getMonthValue() == 4 && localDate.getDayOfMonth() == 1) || Util.parsePackageProperly("april-rickandroll").asBoolean()) {
+                Bukkit.getScheduler().runTaskLater(plugin, (() -> plugin.text().of(e.getPlayer(), "april-rick-and-roll-easter-egg").send()), 80L);
+            }
         }
     }
 

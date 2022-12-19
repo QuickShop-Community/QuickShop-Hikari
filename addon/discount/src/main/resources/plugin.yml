@@ -8,7 +8,7 @@ authors: [ Ghost_chu ]
 permissions:
   quickshopaddon.discount.use:
     default: true
-    description: Bypass the permission check to on any discount code operation
+    description: Use discount basic feature
   quickshopaddon.discount.bypass:
     default: op
     description: Bypass the permission check to on any discount code operation

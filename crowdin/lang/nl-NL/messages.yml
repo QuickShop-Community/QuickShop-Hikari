@@ -192,6 +192,7 @@ updatenotify:
     papermc: '[PaperMC]'
     bukkitdev: '[BukkitDev]'
     polymart: '[Polymart]'
+    modrinth: '[Modrinth]'
     basic: '[Basic]'
   list:
     - '{0} is vrijgegeven. Je gebruikt nog steeds {1}!'
@@ -270,6 +271,13 @@ unknown-owner: onbekend
 restricted-prices: '<red>Beperkte prijs voor {0}: Min {1}, max {2}'
 nearby-shop-this-way: <green>Shop is {0} blokken ver van je.
 owner-bypass-check: <yellow>Bypassed alle controles. Handel succesvol! (Je bent nu de eigenaar van de winkel!)
+april-rick-and-roll-easter-egg: |
+  <green>---------------------------------------------------</green>
+  <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
+  <yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>
+  <aqua>Claim it by watch the video tutorial below!</aqua>
+  <hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
+  <green>---------------------------------------------------</green>
 signs:
   item-right: ''
   out-of-space: Te weinig ruimte

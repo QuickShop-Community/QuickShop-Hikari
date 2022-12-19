@@ -192,6 +192,7 @@ updatenotify:
     papermc: '[PaperMC]'
     bukkitdev: '[BukkitDev]'
     polymart: '[Polymart]'
+    modrinth: '[Modrinth]'
     basic: '[Basic]'
   list:
     - '{0} уже вышел. Но вы ещё пользуетесь старой версией {1}!'
@@ -270,6 +271,13 @@ unknown-owner: Неизвестно
 restricted-prices: '<red>Цена ограничена {0}: от {1} до {2}'
 nearby-shop-this-way: <green>Магазин находится в {0} блоках от вас.
 owner-bypass-check: <yellow>Вы прошли все проверки, вы можете торговать! (Теперь вы владелец магазина!)
+april-rick-and-roll-easter-egg: |
+  <green>---------------------------------------------------</green>
+  <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
+  <yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>
+  <aqua>Claim it by watch the video tutorial below!</aqua>
+  <hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
+  <green>---------------------------------------------------</green>
 signs:
   item-right: ''
   out-of-space: Нет места

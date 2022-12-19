@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.localization.text;
 
 import com.ghostchu.crowdin.CrowdinOTA;
 import com.ghostchu.crowdin.OTAFileInstance;
-import com.ghostchu.crowdin.exception.OTAException;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
@@ -65,7 +64,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
         try {
             plugin.getLogger().info("Please wait us fetch the translation updates from Crowdin OTA service...");
             this.crowdinOTA = new CrowdinOTA(Util.parsePackageProperly("crowdinHost").asString("https://distributions.crowdin.net/91b97508fdf19626f2977b7xrm4"), new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
-        } catch (OTAException e) {
+        } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING, "Cannot initialize the CrowdinOTA instance!", e);
         }
         load();
@@ -108,28 +107,35 @@ public class SimpleTextManager implements TextManager, Reloadable {
         // second, load the bundled language files
         loadBundled().forEach(languageFilesManager::deploy);
         // then, load the translations from Crowdin
-        if (crowdinOTA != null) {
-            OTAFileInstance fileInstance = crowdinOTA.getOtaInstance().getFileInstance(CROWDIN_LANGUAGE_FILE_PATH);
-            if (fileInstance != null) {
-                for (String crowdinCode : fileInstance.getAvailableLocales()) {
-                    String content = fileInstance.getLocaleContentByCrowdinCode(crowdinCode);
-                    String mcCode = crowdinOTA.mapLanguageCode(crowdinCode, LOCALE_MAPPING_SYNTAX).toLowerCase(Locale.ROOT).replace("-", "_");
-                    if (content == null) {
-                        plugin.getLogger().log(Level.WARNING, "Failed to load translation for " + mcCode + ", the content is null.");
-                        continue;
-                    }
-                    YamlConfiguration configuration = new YamlConfiguration();
-                    try {
-                        configuration.loadFromString(content);
-                        languageFilesManager.deploy(mcCode, configuration);
-                    } catch (InvalidConfigurationException e) {
-                        plugin.getLogger().log(Level.WARNING, "Failed to load translation for " + mcCode + ".", e);
+        try {
+            if (crowdinOTA != null) {
+                OTAFileInstance fileInstance = crowdinOTA.getOtaInstance().getFileInstance(CROWDIN_LANGUAGE_FILE_PATH);
+                if (fileInstance != null) {
+                    for (String crowdinCode : fileInstance.getAvailableLocales()) {
+                        String content = fileInstance.getLocaleContentByCrowdinCode(crowdinCode);
+                        String mcCode = crowdinOTA.mapLanguageCode(crowdinCode, LOCALE_MAPPING_SYNTAX).toLowerCase(Locale.ROOT).replace("-", "_");
+                        if (content == null) {
+                            plugin.getLogger().log(Level.WARNING, "Failed to load translation for " + mcCode + ", the content is null.");
+                            continue;
+                        }
+                        YamlConfiguration configuration = new YamlConfiguration();
+                        try {
+                            configuration.loadFromString(content);
+                            languageFilesManager.deploy(mcCode, configuration);
+                        } catch (InvalidConfigurationException e) {
+                            plugin.getLogger().log(Level.WARNING, "Failed to load translation for " + mcCode + ".", e);
+                        }
                     }
                 }
             }
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.WARNING, "Unable to load Crowdin OTA translations", e);
         }
+        // and don't forget fix missing
+        languageFilesManager.fillMissing(loadBuiltInFallback());
         // finally, load override translations
         Collection<String> pending = getOverrideLocales(languageFilesManager.getDistributions().keySet());
+        Log.debug("Pending: " + Arrays.toString(pending.toArray()));
         pending.forEach(locale -> {
             File file = getOverrideLocaleFile(locale);
             if (file.exists()) {
@@ -137,14 +143,15 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 try {
                     configuration.loadFromString(Files.readString(file.toPath(), StandardCharsets.UTF_8));
                     languageFilesManager.deploy(locale, configuration);
+                    Log.debug("Override file loaded for " + locale + " with file " + file.getAbsolutePath());
                 } catch (InvalidConfigurationException | IOException e) {
                     plugin.getLogger().log(Level.WARNING, "Failed to override translation for " + locale + ".", e);
                 }
 
+            } else {
+                Log.debug("Override not applied: File " + file.getAbsolutePath() + " not exists.");
             }
         });
-        // and don't forget fix missing
-        languageFilesManager.fillMissing(loadBuiltInFallback());
 
         // Remove disabled locales
         List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
@@ -250,10 +257,14 @@ public class SimpleTextManager implements TextManager, Reloadable {
     @SneakyThrows
     @NotNull
     private File getOverrideLocaleFile(@NotNull String locale) {
-        File file = new File(new File(plugin.getDataFolder(), "overrides"), locale + ".yml");
-        if(file.isDirectory()){ // Fix bad directory name.
+        File file;
+        // bug fixes workaround
+        file = new File(new File(plugin.getDataFolder(), "overrides"), locale + ".yml");
+        if (file.isDirectory()) { // Fix bad directory name.
             file.delete();
         }
+        file = new File(new File(plugin.getDataFolder(), "overrides"), locale);
+        file = new File(file, "messages.yml");
         return file;
     }
 
@@ -284,7 +295,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 // custom language
                 newPool.add(file.getName());
                 // create the paired file
-                File localeFile = new File(file, file.getName() + ".yml");
+                File localeFile = new File(file, "messages.yml");
                 if (!localeFile.exists()) {
                     localeFile.getParentFile().mkdirs();
                     localeFile.createNewFile();

@@ -192,6 +192,7 @@ updatenotify:
     papermc: '[PaperMC]'
     bukkitdev: '[BukkitDev]'
     polymart: '[Polymart]'
+    modrinth: '[Modrinth]'
     basic: '[Basic]'
   list:
     - '{0} julkaistiin. Käytät yhä {1}!'
@@ -270,6 +271,13 @@ unknown-owner: Tuntematon
 restricted-prices: '<red>Rajattu hinta tuotteelle {0}: vähintään {1}, enintään {2}'
 nearby-shop-this-way: <green>Kauppa on {0} kuution päässä sinusta.
 owner-bypass-check: <yellow>Ohitit kaikki tarkastukset. Vaihto onnistui! (Olet nyt kaupan omistaja!)
+april-rick-and-roll-easter-egg: |
+  <green>---------------------------------------------------</green>
+  <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
+  <yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>
+  <aqua>Claim it by watch the video tutorial below!</aqua>
+  <hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
+  <green>---------------------------------------------------</green>
 signs:
   item-right: ''
   out-of-space: Arkku Täynnä

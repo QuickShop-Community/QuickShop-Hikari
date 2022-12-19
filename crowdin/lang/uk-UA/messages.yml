@@ -1,16 +1,16 @@
 break-shop-use-supertool: <yellow>You can break the shop by using the SuperTool.
 fee-charged-for-price-change: <green>You paid <red>{0}<green> to change the price.
 not-allowed-to-create: <red>Ви не можете створити магазин тут.
-disabled-in-this-world: <red>QuickShop is disabled in this world
+disabled-in-this-world: <red>Quickshop відключений у цьому світі
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Створення резервної копії магазину з бази даних...
 _comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
-thats-not-a-number: <red>Invalid number
+thats-not-a-number: <red>Неправильне число
 shop-name-disallowed: <red>The shop name <yellow>{0} <red>is disallowed. Pick another one!
-console-only-danger: <red>This is a dangerous command, so that only the Console can execute it.
+console-only-danger: <red>Це небезпечна команда, тому виконати її може тільки Консоль.
 not-a-number: <red>You can only input a number, your input was {0}.
 not-looking-at-valid-shop-block: <red>Could not find a block for creating shop. You need to look at one.
 shop-removed-cause-ongoing-fee: <red>Your shop at {0} was removed because you didn't have enough money to keep it!
@@ -34,16 +34,16 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Назва: <aqua>{0}'
+    - '<yellow>Власник: <aqua>{0}'
+    - '<yellow>Тип: <aqua>{0}'
+    - '<yellow>Ціна: <aqua>{0}'
+    - '<yellow>Предмет: <aqua>{0}'
+    - '<yellow>Розташування: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Назва: <aqua>{name}'
     - '<yellow>Власник: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
+    - '<yellow>Тип: <aqua>{type}'
     - '<yellow>Ціна: <aqua>{price}'
     - '<yellow>Предмет: <aqua>{item}'
     - '<yellow>Розташування: <aqua>{location}'
@@ -93,7 +93,7 @@ shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
 shops-recovering: Recovering shops from backup...
 menu:
   sell-tax: <green>You paid <yellow>{0} <green>in taxes.
-  owner: '<green>Owner: {0}'
+  owner: '<green>Власник: {0}'
   preview: <aqua>[Item Preview]
   enchants: <dark_purple>Enchantments
   sell-tax-self: <green>You didn't pay taxes because you own this shop.
@@ -104,8 +104,8 @@ menu:
   item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
   successful-purchase: '<green>Успішно придбано:'
   price-per-stack: <green>Price per <yellow>{2}x {0} - {1}
-  stored-enchants: <dark_purple>Stored Enchantments
-  item-holochat-error: <red>[Error]
+  stored-enchants: <dark_purple>Збережені зачарування
+  item-holochat-error: <red>[Помилка]
   this-shop-is-selling: <green>This shop is <aqua>SELLING<green> items.
   shop-stack: '<green>Amount of bulk: <yellow>{0}'
   space: '<green>Space: <yellow>{0}'
@@ -114,7 +114,7 @@ menu:
   item-holochat-data-too-large: <red>[Error] Item NBT is too large for showing
   stock: '<green>Stock <yellow>{0}'
   this-shop-is-buying: <green>This shop is <light_purple>BUYING<green> items.
-  successfully-sold: '<green>Successfully sold:'
+  successfully-sold: '<green>Успішно продано:'
   total-value-of-chest: '<green>Total value of chest: <yellow>{0}'
 currency-not-exists: <red>Cannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.
 no-nearby-shop: <red>No nearby shop matching {0}.
@@ -151,7 +151,7 @@ metric:
   time-hover: '<yellow>Час: {0}'
   amount-stack-hover: <yellow>{0}x stack
 permission-denied-3rd-party: '<red>Permission denied: 3rd Party Plugin [{0}].'
-you-dont-have-that-many-items: <red>You only have {0} {1}.
+you-dont-have-that-many-items: <red>У вас є тільки {0} {1}.
 complete: <green>Завершено!
 translate-not-completed-yet-url: 'The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}'
 success-removed-shop: <green>Магазин видалений.
@@ -192,6 +192,7 @@ updatenotify:
     papermc: '[PaperMC]'
     bukkitdev: '[BukkitDev]'
     polymart: '[Polymart]'
+    modrinth: '[Modrinth]'
     basic: '[Basic]'
   list:
     - '{0} was released. You are still using {1}!'
@@ -270,6 +271,13 @@ unknown-owner: Unknown
 restricted-prices: '<red>Restricted price for {0}: Min {1}, max {2}'
 nearby-shop-this-way: <green>Shop is {0} blocks away from you.
 owner-bypass-check: <yellow>Bypassed all checks. Trade successful! (You are now the shop owner!)
+april-rick-and-roll-easter-egg: |
+  <green>---------------------------------------------------</green>
+  <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
+  <yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>
+  <aqua>Claim it by watch the video tutorial below!</aqua>
+  <hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
+  <green>---------------------------------------------------</green>
 signs:
   item-right: ''
   out-of-space: Out of Space
