@@ -50,7 +50,7 @@ public final class Main extends JavaPlugin implements Listener {
                 CommandContainer
                         .builder()
                         .prefix("discount")
-                        .description((locale) -> plugin.text().of("addon.discount.command.discount.description").forLocale(locale))
+                        .description((locale) -> plugin.text().of("addon.discount.commands.discount.description").forLocale(locale))
                         .permission("quickshopaddon.discount.use")
                         .executor(new DiscountCommand(this, plugin))
                         .build());

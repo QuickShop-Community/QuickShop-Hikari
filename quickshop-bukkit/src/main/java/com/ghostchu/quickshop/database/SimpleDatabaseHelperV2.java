@@ -19,7 +19,6 @@ import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopModerator;
 import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
-import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.reflect.TypeToken;
 import lombok.Data;
@@ -58,7 +57,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         this.plugin = plugin;
         this.manager = manager;
         this.prefix = prefix;
-        manager.setDebugMode(Util.isDevMode());
+        //manager.setDebugMode(Util.isDevMode());
         checkTables();
         checkColumns();
     }

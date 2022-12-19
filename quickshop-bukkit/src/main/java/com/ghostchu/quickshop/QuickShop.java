@@ -1175,7 +1175,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 this.sqlManager = new SQLManagerImpl(new HikariDataSource(config), "QuickShop-Hikari-SQLManager");
                 this.sqlManager.executeSQL("SET MODE=MYSQL"); // Switch to MySQL mode
             }
-            this.sqlManager.setDebugMode(Util.isDevMode());
+            //this.sqlManager.setDebugMode(Util.isDevMode());
             this.sqlManager.setExecutorPool(QuickExecutor.getDatabaseExecutor());
             // Make the database up to date
             this.databaseHelper = new SimpleDatabaseHelperV2(this, this.sqlManager, this.getDbPrefix());

@@ -131,8 +131,11 @@ public class SimpleTextManager implements TextManager, Reloadable {
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING, "Unable to load Crowdin OTA translations", e);
         }
+        // and don't forget fix missing
+        languageFilesManager.fillMissing(loadBuiltInFallback());
         // finally, load override translations
         Collection<String> pending = getOverrideLocales(languageFilesManager.getDistributions().keySet());
+        Log.debug("Pending: " + Arrays.toString(pending.toArray()));
         pending.forEach(locale -> {
             File file = getOverrideLocaleFile(locale);
             if (file.exists()) {
@@ -140,14 +143,15 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 try {
                     configuration.loadFromString(Files.readString(file.toPath(), StandardCharsets.UTF_8));
                     languageFilesManager.deploy(locale, configuration);
+                    Log.debug("Override file loaded for " + locale + " with file " + file.getAbsolutePath());
                 } catch (InvalidConfigurationException | IOException e) {
                     plugin.getLogger().log(Level.WARNING, "Failed to override translation for " + locale + ".", e);
                 }
 
+            } else {
+                Log.debug("Override not applied: File " + file.getAbsolutePath() + " not exists.");
             }
         });
-        // and don't forget fix missing
-        languageFilesManager.fillMissing(loadBuiltInFallback());
 
         // Remove disabled locales
         List<String> enabledLanguagesRegex = plugin.getConfig().getStringList("enabled-languages");
@@ -253,10 +257,14 @@ public class SimpleTextManager implements TextManager, Reloadable {
     @SneakyThrows
     @NotNull
     private File getOverrideLocaleFile(@NotNull String locale) {
-        File file = new File(new File(plugin.getDataFolder(), "overrides"), locale + ".yml");
-        if(file.isDirectory()){ // Fix bad directory name.
+        File file;
+        // bug fixes workaround
+        file = new File(new File(plugin.getDataFolder(), "overrides"), locale + ".yml");
+        if (file.isDirectory()) { // Fix bad directory name.
             file.delete();
         }
+        file = new File(new File(plugin.getDataFolder(), "overrides"), locale);
+        file = new File(file, "messages.yml");
         return file;
     }
 
@@ -287,7 +295,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 // custom language
                 newPool.add(file.getName());
                 // create the paired file
-                File localeFile = new File(file, file.getName() + ".yml");
+                File localeFile = new File(file, "messages.yml");
                 if (!localeFile.exists()) {
                     localeFile.getParentFile().mkdirs();
                     localeFile.createNewFile();

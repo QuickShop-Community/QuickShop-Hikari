@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.localization.text;
 
-import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,7 +19,6 @@ public class LanguageFilesManager {
      * @param newDistribution The values from Distribution platform
      */
     public void deploy(@NotNull String locale, @NotNull FileConfiguration newDistribution) {
-        Log.debug("Registered and deployed locale: " + locale);
         if (!this.locale2ContentMapping.containsKey(locale)) {
             this.locale2ContentMapping.put(locale, newDistribution);
         } else {
