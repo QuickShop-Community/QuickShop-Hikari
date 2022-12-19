@@ -1251,7 +1251,7 @@ addon:
     discount-code-config-shop-removed: "<green>Shop erfolgreich aus der Rabattcode Erlaubt-Liste entfernt."
     discount-code-config-shop-remove-failure: "<red>Dieser Shop ist nicht in deiner Rabattcode Erlaubt-Liste."
     discount-code-config-expire: "<green>Rabattcode Ablaufdatum erfolgreich geändert."
-    discount-code-config-applied: "<green>Config the discount code successfully!"
+    discount-code-config-applied: "<green>Rabattcode erfolgreich konfiguriert!"
     discount-code-created-successfully: |
       <green>Dein Rabattcode <yellow>{0}</yellow> wurde erfolgreich erstellt!
       <gold>Geltungsbereich: <aqua>{1}</aqua></gold>.
@@ -1271,15 +1271,15 @@ addon:
     code-type:
       SERVER_ALL_SHOPS: "Alle Shops in diesem Server"
       PLAYER_ALL_SHOPS: "Alle Shops welche vom Codebesitzer erstellt wurden"
-      SPECIFIC_SHOPS: "Specific shops"
+      SPECIFIC_SHOPS: "Bestimmte Shops"
     discount-code-details: |
       <gold>Code: <yellow>{0}</yellow>
-      <gold>Creator: <yellow>{1}</yellow>
-      <gold>Applied to: <yellow>{2}</yellow>
-      <gold>Remaining usage: <yellow>{3}</yellow>
-      <gold>Expired on: <yellow>{4}</yellow>
-      <gold>Threshold: <yellow>{5}</yellow>
-      <gold>Discount: <yellow>{6}</yellow>
+      <gold>Ersteller: <yellow>{1}</yellow>
+      <gold>Angewendet auf: <yellow>{2}</yellow>
+      <gold>Verbleibende Nutzungen: <yellow>{3}</yellow>
+      <gold>Läuft ab: <yellow>{4}</yellow>
+      <gold>Schwellenwert: <yellow>{5}</yellow>
+      <gold>Rabatt: <yellow>{6}</yellow>
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
