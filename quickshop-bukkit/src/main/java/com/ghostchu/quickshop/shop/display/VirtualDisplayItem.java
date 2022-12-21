@@ -377,7 +377,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
             //https://wiki.vg/index.php?title=Entity_metadata#Entity
             if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
                 String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
-                wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromText(itemName).getHandle()));
+                wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromJson(itemName).getHandle()));
                 wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
             }
 
