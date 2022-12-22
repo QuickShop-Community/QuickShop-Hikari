@@ -60,7 +60,7 @@ refill-success: <green>Reabastecido con éxito
 failed-to-paste: <red>Fallo al subir datos a Pastebin. Comprueba tu conexión a internet e intenta de nuevo. (Revisa la consola para más detalles)
 shop-out-of-stock-name: <dark_purple>¡Tu tienda {0} se ha quedado sin {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
-how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY</aqua>. There are <green>{0}</green> items in each bulk and you can buy <green>{1}</green> bulks. Enter <aqua>{2}</aqua> in chat to buy all.
+how-many-buy-stack: <yellow>Ingrese en el chat, cuantos bultos desea <aqua>COMPRAR</aqua>. Hay elementos <green>{0}</green> en cada lote y puede comprar <green>{1}</green> lote. Ingresa <aqua>{2}</aqua> en el chat para comprar todo.
 exceeded-maximum: <red>El valor excedió el valor máximo en Java.
 unlimited-shop-owner-keeped: '<yellow>Atención: El dueño de la tienda todavía es un dueño ilimitado de la tienda, necesitas reconfigurar tu nuevo dueño de la tienda.'
 no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All your shops have been removed...
@@ -123,33 +123,33 @@ integrations-check-failed-trade: La integración {0} impide la creación de la t
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Establecido exitosamente el dueño de la tienda al Servidor.
 shop-name-not-found: <red>The shop named <yellow>{0}</yellow> does not exist.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>El nombre de la tienda es demasiado largo (logitud máxima {0}), por favor elige otro!
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>{0}''s {1} {2} transacciones:'
   action-hover: <yellow>{0}
-  price-hover: <yellow>Total {0}, including {1} taxes.
-  unknown: <gray>(unknown)
-  undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  price-hover: <yellow>Total {0}, incluyendo {1} impuestos.
+  unknown: <gray>(desconocido)
+  undefined: <gray>(sin nombre)
+  no-results: <red>No se encontraron transacciones.
   action-description:
     DELETE: <yellow>Player deleted a shop. Refunded the shop creation fee to the owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because of the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
-    PURCHASE: <yellow>Purchased item with a shop
-  query-argument: 'Query Argument: {0}'
+    PURCHASE_BUYING_SHOP: <yellow>El jugador vendió algunos objetos a una tienda.
+    CREATE: <yellow>El jugador creó una tienda.
+    PURCHASE_SELLING_SHOP: <yellow>El jugador compró algunos objetos en una tienda
+    PURCHASE: <yellow>Objeto comprado en una tienda
+  query-argument: 'Argumento de consulta: {0}'
   amount-hover: <yellow>{0}x
-  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
+  header-shop: '<yellow>La tienda {0}, transacciones:{1} {2} '
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
-  looking-up: <yellow>Performing metric lookup, Please wait...
-  tax-hover: <yellow>{0} taxes
-  header-global: '<yellow>The server {0} {1} transactions:'
+  looking-up: <yellow>Realizando búsquedas métricas, Por favor espere...
+  tax-hover: <yellow>{0} impuestos
+  header-global: '<yellow>El servidor {0} {1} transacciones:'
   na: <gray>N/A
   transaction-count: <yellow>{0} total
-  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}'
-  time-hover: '<yellow>Time: {0}'
-  amount-stack-hover: <yellow>{0}x stack
+  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, Mundo: {4}<newline><gold>Dueño: <gray>{5}<newline><gold>Tipo de tienda: <gray>{6}<newline><gold>Objeto: <gray>{7}<newline><gold>Precio: <gray>{8}'
+  time-hover: '<yellow>Tiempo: {0}'
+  amount-stack-hover: <yellow>pila de{0}
 permission-denied-3rd-party: '<red>Permiso denegado: Plugin de terceros [{0}].'
 you-dont-have-that-many-items: <red>Solo tienes {0} {1}.
 complete: <green>¡Terminado!
@@ -174,7 +174,7 @@ language:
   name: '<yellow>Nombre: <gold>{0}'
   help-us: <green>[Ayúdanos a mejorar la calidad de la traducción]
 warn-to-paste: '<yellow>Collecting data and uploading to Pastebin. This may take a while...<newline><red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>Ingrese en el chat, cuántos lotes desea <light_purple>VENDER</yellow>. Hay artículos <yellow>{0}<green> por volumen y puede vender <yellow>{1}<green> por volumen. Introduce <aqua>{2}<green> en el chat para vender todo.
 updatenotify:
   buttontitle: '[Actualizar Ahora]'
   onekeybuttontitle: '[Actualización Automática]'
@@ -186,7 +186,7 @@ updatenotify:
     qualityverifyed: '[Calidad]'
     master: '[Master]'
     unstable: '[Inestable]'
-    paper: '[+Paper Optimized]'
+    paper: '[+Optimizado para Paper]'
     stable: '[Estable]'
     spigotmc: '[SpigotMC]'
     papermc: '[PaperMC]'
@@ -233,16 +233,16 @@ translate-not-completed-yet-click: La traducción del lenguaje {0} aún no fue c
 taxaccount-invalid: <red>Target account invalid. Please enter a valid player name or UUID (With dashes).
 player-bought-from-your-store: <red>{0} ha comprado {1} {2} por un valor de {3} en tu tienda.
 reached-maximum-can-create: <red>¡Ya has creado un máximo de {0}/{1} tiendas!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
-translation-version: 'Support Version: Hikari'
+reached-maximum-create-limit: <red>Has alcanzado el número de tiendas máximas
+translation-version: 'Versión de soporte: Hikari'
 no-double-chests: <red>No puedes crear tiendas de cofres dobles.
 price-too-cheap: <red>El precio debe ser mayor a <yellow>${0}
 shop-not-exist: <red>No hay ninguna tienda.
-bad-command-usage: <red>Bad command arguments!
+bad-command-usage: <red>¡Argumentos incorrectos!
 clean-warning: <yellow>Este comando purgará <red>todas las <yellow>tiendas si la tienda está dañada, fue creada en mundos no permitidos, está vendiendo/comprando objetos no permitidos o <red><bold>EXISTIENDO EN UN MUNDO NO CARGADO. Asegúrese de crear una copia de seguridad completa de los datos de su tienda primero y utilice <aqua>/qs cleanghost confirm <yellow>para continuar.
 shop-purchase-cancelled: <red>Compra cancelada.
 bypassing-lock: <red>¡Omitiendo el bloqueo de una QuickShop!
-bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
+bungee-cross-server-msg: '<yellow>Tienda Rápida CSM: <green>{0}'
 saved-to-path: Copia de seguridad guardad en {0}.
 shop-now-freezed: <green>Has congelado la tienda. ¡Nadie puede comerciar con ella ahora!
 price-is-now: <green>El nuevo precio de la tienda es <yellow>{0}
@@ -306,7 +306,7 @@ price-too-high: <red>¡El precio establecido es demasiado alto! No puedes crear 
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <green>{0} ha vendido {1} {2} en tu tienda.
 shop-out-of-stock: <dark_purple>Tu tienda en {0}, {1}, {2} se ha quedado sin {3}!
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>Ingrese en el chat, cuantos desea <aqua>COMPRAR</aqua>. Puede comprar <yellow>{0}<green>. Introduce <aqua>{1}<green> para comprarlos todos.
 language-info-panel:
   help: 'Ayúdanos: '
   code: 'Código: '
@@ -386,7 +386,7 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
+    buy: <yellow>Cambia la tienda a modo <light_purple>COMPRA</light_purple>
     about: <yellow>Muestra información de QuickShop
     language: <yellow>Cambiar el idioma actual
     purge: <yellow>Start the shop purge task in the background
@@ -411,7 +411,7 @@ command:
     item: <yellow>Cambia el artículo de una tienda
     debug: <yellow>Habilita el modo desarrollador
     unlimited: <yellow>Da un stock ilimitado a una tienda.
-    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
+    sell: <yellow>Cambia la tienda a modo <aqua>VENTA</aqua>
     fetchmessage: <yellow>Mostrar mensajes de tienda sin leer
     staff: <yellow>Gestionar personal de tu tienda
     clean: <yellow>Suprime todas las tiendas (cargadas) fuera de existencias
@@ -425,8 +425,8 @@ command:
     taxaccount: <yellow>Set the tax account that the shop using
     name: <yellow>Changes the name of a specific shop
     toggledisplay: <yellow>Toggle the shop's display-item status
-    permission: <yellow>Shop permission management
-    lookup: <yellow>Manage lookup-able items table
+    permission: <yellow>Gestión de permisos de la tienda
+    lookup: <yellow>Administrar tabla de elementos consultables
     database: <yellow>View and maintain the QuickShop Database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
   bulk-size-not-set: '<red>Usa: /qs size <cantidad>'
@@ -479,49 +479,49 @@ not-managed-shop: <red>No eres el dueño o el moderador de esta tienda
 shop-cannot-trade-when-freezing: <red>No puedes comerciar con esta tienda porque se encuentra congelada.
 invalid-container: <red>Invalid container, You can only create the shop with blocks that have an inventory.
 permission:
-  header: "<green>Shop Permission Details"
-  header-player: "<green>Shop Permission Details for {0}"
-  header-group: "<green>Shop Permission Details for group {0}"
+  header: "<green>Permisos de la tienda"
+  header-player: "<green>Detalles de permisos de la tienda {0}"
+  header-group: "<green>Detalles de permisos de la tienda para el grupo {0}"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
   item:
     purchase: "<yellow>Permission to allow users who have this to purchase from the shop. (including buying and selling)"
-    show-information: "<yellow>Permission to allow users who have this to see the shop information. (open shop info panel)"
-    preview-shop: "<yellow>Permission to allow users who have this to preview the shop. (preview item)"
+    show-information: "<yellow>Permiso para permitir a los usuarios que tienen esto ver la información de la tienda. (Abrir panel de información de la tienda)"
+    preview-shop: "<yellow>Permiso para permitir a los usuarios que tienen esto previsualizar la tienda. (vista previa del artículo)"
     search: "<yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from the search results)"
-    delete: "<yellow>Permission to allow users who have this to delete the shop."
+    delete: "<yellow>Permiso para permitir a los usuarios que tienen esto borrar la tienda."
     receive-alert: "<yellow>Permission to allow users who have this to receive alert messages (e.g out-of-stock or new trade)."
-    access-inventory: "<yellow>Permission to allow users who have this to access the shop inventory."
-    ownership-transfer: "<yellow>Permission to allow users who have this to transfer the shop ownership."
+    access-inventory: "<yellow>Permiso para permitir a los usuarios que tienen esto acceder al inventario de la tienda."
+    ownership-transfer: "<yellow>Permiso para permitir a los usuarios que tienen esto transferir la propiedad de la tienda."
     management-permission: "<yellow>Permission to allow users who have this to manage the group's permissions and edit the user's group."
-    toggle-display: "<yellow>Permission to allow users who have this to toggle the shop display item."
+    toggle-display: "<yellow>Permiso para permitir a los usuarios que tienen esto alternar el objeto de exhibición de la tienda."
     set-shoptype: "<yellow>Permission to allow users who have this to set the shop type (switch to buying or selling)."
-    set-price: "<yellow>Permission to allow users who have this to set the shop price."
-    set-item: "<yellow>Permission to allow users who have this to set the shop item."
-    set-stack-amount: "<yellow>Permission to allow users who have this to set the shop stack amount."
-    set-currency: "<yellow>Permission to allow users who have this to set the shop currency."
-    set-name: "<yellow>Permission to allow users who have this to set the shop name."
+    set-price: "<yellow>Permiso para permitir a los usuarios que tienen esto establecer el precio de la tienda."
+    set-item: "<yellow>Permiso para permitir a los usuarios que tienen esto establecer el artículo de la tienda."
+    set-stack-amount: "<yellow>Permiso para permitir a los usuarios que tienen esto establecer la cantidad de la pila de la tienda."
+    set-currency: "<yellow>Permiso para permitir a los usuarios que tienen esto establecer la moneda de la tienda."
+    set-name: "<yellow>Permiso para permitir a los usuarios que tienen esto establecer el nombre de la tienda."
   group:
     everyone: "<yellow>Default group for all users except shop owner."
     staff: "<yellow>System group for shop staff."
     administrator: "<red>System group for administrators, the users in this group will have permissions almost the same as the shop owner."
-invalid-group: "<red>Invalid group name."
-invalid-permission: "<red>Invalid permission."
-invalid-operation: "<red>Invalid operation, only {0} are allowed."
-player-no-group: "<yellow>Player {0} not in any group in this shop."
-player-in-group: "<green>Player {0} is in group <aqua>{1}</aqua> in this shop."
-permission-required: "<red>You don't have permission {0} in this shop to do this."
-no-permission-detailed: "<red>You don't have permission <yellow>{0}</yellow> to do this."
-paste-uploading: "<aqua>Please wait... Uploading the paste to pastebin......"
+invalid-group: "<red>Nombre de grupo inválido."
+invalid-permission: "<red>Permisos no válidos."
+invalid-operation: "<red>Operación no válida, solo se permiten {0}."
+player-no-group: "<yellow>El jugador {0} no está en ningún grupo en esta tienda."
+player-in-group: "<green>El jugador {0} está en grupo <aqua>{1}</aqua> en esta tienda."
+permission-required: "<red>No tienes el permiso {0} en esta tienda para hacer eso."
+no-permission-detailed: "<red>No tienes permiso <yellow>{0}</yellow> para hacer esto."
+paste-uploading: "<aqua>Por favor, espere... Subiendo la copia a Pastebin......"
 paste-created: "<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send pastea to people you don't trust."
 paste-created-local: "<green>Paste created and saved to your local disk at {0}<newline><red>Warning: <gray>Never send pastes to people you don't trust."
-paste-created-local-failed: "<red>Failed to save paste to your local disk, please check your disk."
+paste-created-local-failed: "<red>Error al guardar la copia en su disco local, por favor compruebe su disco."
 paste-451: "<gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>"
 paste-upload-failed: "<red>Failed to upload paste to {0}, trying different pastebin provider..."
 paste-upload-failed-local: "<red>Failed to upload paste, now trying to generate local paste..."
-command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
-successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
+command-incorrect: "<red>Uso incorrecto del comando, escribe /qs help para consultar ayuda. Uso: {0}."
+successfully-set-player-group: "<green>Se ha establecido correctamente el grupo de jugadores {0} a <aqua>{1}</aqua>."
 successfully-unset-player-group: "<green>Successfully removed the player group from this shop."
-successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
+successfully-set-player-permission: "<green>Se ha establecido correctamente el permiso <aqua>{1}</aqua> al jugador{0} en la tienda <aqua>{2}</aqua>."
 lookup-item-created: "<green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer to this item in configurations now."
 lookup-item-exists: "<red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name."
 lookup-item-not-found: "<red>An item named <yellow>{0}</yellow> does not exist."
@@ -591,7 +591,7 @@ importing-not-found: "<red>File <yellow>{0}</yellow> not found. Make sure the Fi
 importing-early-warning: "<red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.<newline><red>Are you sure to continue the import-procedure?</red> Type <aqua>/qs recovery confirm</aqua> to continue."
 importing-database: "<green>Importing database from backup, please wait..."
 importing-failed: "<red>Failed to import database, please check the server console."
-imported-database: "<green>Database imported from <yellow>{0}</yellow>."
+imported-database: "<green>Base de datos importada de <yellow>{0}</yellow>."
 transfer-sent: "<green>Shop Transfer-request sent to <yellow>{0}</yellow>."
 transfer-request: "<yellow>Player <aqua>{0}</aqua> would like to transfer their Shops to you. Do you want to accept the request?"
 transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept or <red>/qs transfer deny</red> to deny.<newline>The request will expire after <red>{0}</red> seconds."
