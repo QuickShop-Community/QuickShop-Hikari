@@ -608,6 +608,7 @@ benefit-added: "<green>Player <aqua>{0}</aqua> has been added into shop benefits
 benefit-updated: "<green>Player <aqua>{0}</aqua>'s benefits has been updated!"
 benefit-query: "<green>This shop have <yellow>{0}</yellow> players in benefits list!"
 benefit-query-list: "<yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>"
+context-test-string: "This is a test string for testing context persist on Crowdin, it won't show in game. Changed string to see if context discarded by Crowdin"
 addon:
   towny:
     commands:
