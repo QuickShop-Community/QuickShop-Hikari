@@ -34,14 +34,14 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>Nome: <aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Price: <aqua>{0}'
     - '<yellow>Item: <aqua>{0}'
     - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Nome: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
     - '<yellow>Price: <aqua>{price}'
@@ -174,7 +174,7 @@ language:
   name: '<yellow>Nome: <gold>{0}'
   help-us: <green>[Ajude-nos a melhorar a qualidade da tradução]
 warn-to-paste: '<yellow>Collecting data and uploading to Pastebin. This may take a while...<newline><red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>Digite no chat, quantos packs você deseja <aqua>VENDER</yellow>. Tem <yellow>{0}<green> itens em cada pack. Você pode vender <yellow>{1}<green> packs. Digite <aqua>{2}<green> para vender todos.
 updatenotify:
   buttontitle: '[Atualizar agora]'
   onekeybuttontitle: '[Atualização em um clique]'
@@ -306,7 +306,7 @@ price-too-high: <red>O preço da loja é muito alto! Você não pode criar uma q
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <green>{0} vendeu {1} {2} à sua loja.
 shop-out-of-stock: <dark_purple>Sua loja em {0}, {1}, {2} ficou sem {3}!
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>Digite no chat, quantos você deseja <aqua>COMPRAR</aqua>. Você pode comprar <yellow>{0}<green>. Digite <aqua>{1}<green> para comprar todos.
 language-info-panel:
   help: 'Nos Ajude: '
   code: 'Código: '
@@ -411,7 +411,7 @@ command:
     item: <yellow>Trocar item da loja de uma loja
     debug: <yellow>Ativa o modo desenvolvedor
     unlimited: <yellow>Dá um estoque ilimitado para a loja.
-    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
+    sell: <yellow>Converte uma loja para o modo de </aqua><bold>VENDA<reset>
     fetchmessage: <yellow>Mostrar mensagens da loja não lidas
     staff: <yellow>Gerenciar a sua equipe na loja
     clean: <yellow>Remove todas as lojas (carregadas) sem estoque
@@ -550,7 +550,7 @@ debug:
   warning-sql-confirm: "<yellow>To confirm this dangerous action, type <aqua>/qs debug database sql confirm {0}</aqua> in the next 60 seconds."
   warning-sql-confirm-hover: "<yellow>Click to confirm this dangerous action."
   sql-confirm-not-found: "<yellow>Cannot find the action that you provided. It may be invalid or has expired."
-  sql-executing: "<yellow>Executing SQL statement: <aqua>{0}</aqua>"
+  sql-executing: "<yellow>Executando declaração SQL: <aqua>{0}</aqua>"
   sql-completed: "<green>Action complete! {0} rows affected."
   sql-exception: "<red>An error occurred while executing the SQL query. Check the Console for details!"
   sql-disabled: "<red>For security reasons, SQL queries are disabled in this server. If you really need this feature, you can add the following flag to your startup arguments: <aqua>{0}</aqua> with the value `true` to enable it."
@@ -568,7 +568,7 @@ database:
   isolated-logs: "<aqua>└<yellow> Logs: <gold>{0}</gold>"
   isolated-external-caches: "<aqua>└<yellow> External Caches: <gold>{0}</gold>"
   last-purge-time: "<yellow>Última vez que aparar as {0}"
-  report-time: "<yellow>Last time of scan at {0}"
+  report-time: "<yellow>Última verificação em {0}"
   auto-scan-alert: "<yellow>The QuickShop Database on this server requires maintenance. Found <gold>{0}</gold> isolated data waiting for trimming."
   auto-trim: "<green>Auto-trimming has been enabled on this server. No manual trimming required."
   trim-complete: "<green>Database trimming complete. <yellow>{0}</yellow> isolated data trimmed."
@@ -584,14 +584,14 @@ database:
   suggestion:
     trim: "<yellow>This database requires a trimming of isolated data. Execute <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>The 'Always counting' Feature is scheduled for removal. You shouldn't use it anymore as it will stop working in the future."
-exporting-database: "<green>Exporting database, please wait..."
-exporting-failed: "<red>Failed to export database, please check the server console."
-exported-database: "<green>Database exported to <yellow>{0}</yellow>."
+exporting-database: "<green>Exportando banco de dados, aguarde..."
+exporting-failed: "<red>Falha ao importar banco de dados, por favor, verifique o console do servidor."
+exported-database: "<green>Banco de dados exportado para <yellow>{0}</yellow>."
 importing-not-found: "<red>File <yellow>{0}</yellow> not found. Make sure the File path is valid."
 importing-early-warning: "<red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.<newline><red>Are you sure to continue the import-procedure?</red> Type <aqua>/qs recovery confirm</aqua> to continue."
-importing-database: "<green>Importing database from backup, please wait..."
-importing-failed: "<red>Failed to import database, please check the server console."
-imported-database: "<green>Database imported from <yellow>{0}</yellow>."
+importing-database: "<green>Importando banco de dados do backup, aguarde..."
+importing-failed: "<red>Falha ao importar banco de dados, por favor, verifique o console do servidor."
+imported-database: "<green>Banco de dados importado de <yellow>{0}</yellow>."
 transfer-sent: "<green>Shop Transfer-request sent to <yellow>{0}</yellow>."
 transfer-request: "<yellow>Player <aqua>{0}</aqua> would like to transfer their Shops to you. Do you want to accept the request?"
 transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept or <red>/qs transfer deny</red> to deny.<newline>The request will expire after <red>{0}</red> seconds."
