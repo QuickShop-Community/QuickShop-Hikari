@@ -214,13 +214,13 @@ updatenotify:
     - Doktor, QuickShop hat ein neues Update {0}! Du solltest aktualisieren~
     - Ko~ko~da~yo~ QuickShop hat ein neues Update {0} ~
     - Paimont möchte dir sagen, dass QuickShop ein neues Update {0} hat!
-  remote-disable-warning: '<red>This version of QuickShop is marked as disabled by the remote server, which means this version may have serious problems. Get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server''s performance.'
+  remote-disable-warning: '<red>Diese Version von QuickShop wurde vom Remote-Server als Deaktiviert markiert, was bedeuted, dass diese Version ernsthafte Probleme haben könnte. Erhalte vollständige Details auf unsere SpigotMC Seiter: {0}. Diese Warnung wird so lange auftauchen, bis du zu einer stabilen Version gewecheslt hast, wird aber die Performance deines Servers nicht beeinflussen.'
 purchase-out-of-stock: <red>Dieser Shop hat keine Items mehr. Kontaktiere den Shopeigentümer oder Shop-Mitarbeiter um den Bestand wieder aufzufüllen.
 nearby-shop-entry: '<green>- Info:{0} <green>Preis:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>Distanz: <aqua>{5} <green>Block/Blöcke'
 chest-title: QuickShop Laden
-console-only: <red>This command can only be executed in the Console.
+console-only: <red>Dieser Befehl kann nur in der Konsole ausgeführt werden.
 failed-to-put-sign: <red>Nicht genug Platz um den Shop herum um das Infoschild zu setzen.
-shop-name-unset: <red>Removed name of this shop
+shop-name-unset: <red>Name des Shops entfernt
 shop-nolonger-freezed: <green>Du hast den Shop entfroren. Er ist jetzt wieder normal!
 no-permission-build: <red>Du kannst keinen Shop hier erstellen.
 tableformat:
