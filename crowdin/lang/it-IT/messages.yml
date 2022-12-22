@@ -174,7 +174,7 @@ language:
   name: '<yellow>Nome: <gold>{0}'
   help-us: <green>[Aiutaci a migliorare la qualità della traduzione]
 warn-to-paste: '<yellow>Collecting data and uploading to Pastebin. This may take a while...<newline><red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>Inserisci nella chat, quante quantità desideri <light_purple>VENDERE. Ci sono <yellow>{0}</yellow> articoli per sfuso e puoi vendere <yellow>{1}<green> all'ingrosso. Inserisci <aqua>{2}<green> nella chat per vendere tutto.
 updatenotify:
   buttontitle: '[Aggiorna ora]'
   onekeybuttontitle: '[OneKey Update]'
@@ -306,7 +306,7 @@ price-too-high: <red>Il prezzo del negozio è troppo alto! Non puoi crearne uno 
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <green>{0} ha venduto {1} {2} al tuo negozio.
 shop-out-of-stock: <dark_purple>Il tuo negozio in {0}, {1}, {2} è esaurito {3}!
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>Inserisci in chat, quanti desideri <aqua>ACQUISTARE</aqua>. Puoi comprare <yellow>{0}<green>. Inserisci <aqua>{1}<green> per comprarli tutti.
 language-info-panel:
   help: 'Aiutaci: '
   code: 'Codice: '
@@ -386,7 +386,7 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
+    buy: <yellow>Cambia un negozio in modalità di <light_purple>ACQUISTO</light_purple>
     about: <yellow>Mostra informazioni di QuickShop
     language: <yellow>Cambia la lingua attualmente in uso
     purge: <yellow>Start the shop purge task in the background
@@ -411,7 +411,7 @@ command:
     item: <yellow>Cambia l'oggetto del negozio di un negozio
     debug: <yellow>Abilita modalità sviluppatore
     unlimited: <yellow>Dà a un negozio scorte illimitate.
-    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
+    sell: <yellow>Cambia un negozio in modalità di <aqua>VENDITA</aqua>
     fetchmessage: <yellow>Mostra messaggi negozio non letti
     staff: <yellow>Gestisci il personale del negozio
     clean: <yellow>Rimuove tutti i negozi (caricati) senza scorte
