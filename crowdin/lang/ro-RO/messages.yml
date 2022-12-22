@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop este dezactivat in aceasta lume
 how-much-to-trade-for: <green>Intra in chat, cat de mult doresti sa tranzacționezi &{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Creating Shop-backup from database...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-hikari
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Following parameters are accepted: <gray>{0}'
 thats-not-a-number: <red>Număr Invalid
@@ -60,7 +60,7 @@ refill-success: <green>Reîncărcare reușită
 failed-to-paste: <red>Nu s-a reușit încărcarea informațiilor în Pastebin. Verificați conexiunea la internet și încercați din nou. (Vezi consola pentru detalii)
 shop-out-of-stock-name: <dark_purple>Magazinul tău. {0} a rămas fără {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
-how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY</aqua>. There are <green>{0}</green> items in each bulk and you can buy <green>{1}</green> bulks. Enter <aqua>{2}</aqua> in chat to buy all.
+how-many-buy-stack: <yellow>Introdu in chat, cat de multe pachete stack-uri sa <aqua>CUMPERI</aqua>. Sunt <green>{0}</green> obiecte în fiecare stack și puteți cumpăra <green>{1}</green> stack-uri. Introdu <aqua>{2}</aqua> în chat pentru a cumpăra toate.
 exceeded-maximum: <red>Valoarea a depășit valoarea maximă pe care Java o permite.
 unlimited-shop-owner-keeped: '<yellow>Attention: The shop owner still is unlimited shop owner, you need re-set new shop owner by yourself.'
 no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All your shops have been removed...
@@ -174,7 +174,7 @@ language:
   name: '<yellow>Name: <gold>{0}'
   help-us: <green>[Help us improve the translation quality]
 warn-to-paste: '<yellow>Collecting data and uploading to Pastebin. This may take a while...<newline><red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</yellow>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to sell all.
 updatenotify:
   buttontitle: '[Update Now]'
   onekeybuttontitle: '[OneKey Update]'
@@ -306,7 +306,7 @@ price-too-high: <red>The shop price is too high! You cannot create one with a pr
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <green>{0} a vândut {1} {2} magazinului tău.
 shop-out-of-stock: <dark_purple>Magazinul tau la {0}, {1}, {2} a expirat din {3}!
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}<green>. Enter <aqua>{1}<green> to buy them all.
 language-info-panel:
   help: 'Help us: '
   code: 'Code: '
@@ -386,7 +386,7 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
+    buy: <yellow>Schimba un magazin in modul <light_purple>BUY</light_purple>
     about: <yellow>Shows QuickShop info
     language: <yellow>Change the currently used language
     purge: <yellow>Start the shop purge task in the background
@@ -411,7 +411,7 @@ command:
     item: <yellow>Change shop item of a shop
     debug: <yellow>Enables Developer mode
     unlimited: <white>Ofera magazinului un stoc nelimitat.
-    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
+    sell: <yellow>Schimba un magazin in modul <light_purple>BUY</aqua>
     fetchmessage: <yellow>Show unread shop messages
     staff: <yellow>Manage your shop staff
     clean: <yellow>Removes all (loaded) shops without any stock
@@ -457,7 +457,7 @@ command:
   cleaned: <green>A eliminat &{0} magazine.
   trade-item-now: <green>Acum tranzacționarea <yellow>{0}x {1}
   no-world-given: <red>Please specify a world name
-  format-disabled: <red>/{0} {1} <gray>- {2}
+  format-disabled: <red>{0} {1} <gray>- {2}
   invalid-bulk-amount: <red>The given value {0} is larger than the max stack size or below one
 currency-not-support: <red>The economy plugin doesn't support the multi-economy feature.
 trading-in-creative-mode-is-disabled: <red>Nu poti face comert cu acest magazin in timp ce te afli in modul creativ.
