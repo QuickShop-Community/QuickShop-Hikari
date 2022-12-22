@@ -1,4 +1,4 @@
-break-shop-use-supertool: <yellow>您可以使用超级工具来破坏商店。
+break-shop-use-supertool: <yellow>You can break the shop by using the super tool.
 fee-charged-for-price-change: <green>您已支付 <red>{0}<green> 来更改了价格。
 not-allowed-to-create: <red>您不能在这里创建商店
 disabled-in-this-world: <red>QuickShop 在这个世界中被禁用
@@ -7,10 +7,10 @@ client-language-changed: <green>QuickShop检测到您的客户端语言已更改
 shops-backingup: 从数据库创建商店备份...
 _comment: 嗨 翻译者！如果您正在Github上或直接编辑源文件的方式进行翻译，请您前往：https://crowdin.com/project/quickshop-hikari
 unlimited-shop-owner-changed: <yellow>这个系统商店的店主已更改为 {0}。
-bad-command-usage-detailed: '<red>错误的命令参数! 尝试以下参数: <gray>{0}'
+bad-command-usage-detailed: '<red>Bad command arguments! Following parameters are accepted: <gray>{0}'
 thats-not-a-number: <red>输入的内容不是数字
-shop-name-disallowed: <red>商店名称<yellow>{0} <red>不被允许。请换一个名称后再试！
-console-only-danger: <red>这是一个危险的命令，只有控制台才能执行它。
+shop-name-disallowed: <red>The shop name <yellow>{0}</yellow> is not allowed. Pick another one!
+console-only-danger: <red>This is a dangerous command, so only the Console can execute it.
 not-a-number: <red>您只能输入一个数字，但您的输入是 {0}。
 not-looking-at-valid-shop-block: <red>无法找到创建商店的方块，您需要注视着一个商店方块
 shop-removed-cause-ongoing-fee: <red>你在 {0} 的商店已经被移除了，因为你没有足够的资金去维持它！
@@ -22,12 +22,12 @@ tabcomplete:
   range: '[范围]'
   currency: '[货币名称]'
   percentage: '[百分比%]'
-taxaccount-unset: <green>该商店的税务帐户现在变为服务器的全局设置。
-blacklisted-item: <red>这件物品已经被拉黑，你不能出售它
+taxaccount-unset: <green>This shop's tax account is now following the global server setting.
+blacklisted-item: <red>This item cannot be sold as it is on the blacklist
 command-type-mismatch: <red>此命令只能由 <aqua>{0} 执行。
 server-crash-warning: '<red>如果服务器运行时替换/删除QuickShop插件 Jar 文件，执行 /qs reload后服务器可能会崩溃。'
 you-cant-afford-to-change-price: <red>你需要 {0} 才能修改商店的价格。
-safe-mode: <red>QuickShop 现在处于安全模式，您不能打开这个商店容器，请与服务器管理员联系以修复错误。
+safe-mode: <red>QuickShop is in safe mode. You cannot open this shop container, please contact the Server Administrator to fix this issue.
 forbidden-vanilla-behavior: <red>该操作有悖于原版行为，因此已被禁止
 shop-out-of-space-name: <dark_purple>您名为 {0} 的商店已满！
 paste-disabled: '<red>Paste功能已被禁用！你不能请求技术支持。 <newline>原因： {0}'
@@ -47,56 +47,56 @@ quick-fill:
     - '<yellow>价格:<aqua>{price}'
     - '<yellow>物品:<aqua>{item}'
     - '<yellow>位置:<aqua>{location}'
-  header: '<yellow>您有多个名称为“<green>{0}<yellow>”的商店，选择其中一个继续：'
+  header: '<yellow>You have multiple shops with the name "<green>{0}</green>", choose one to continue:'
   entry-normal: ' <yellow>- <red>{0} <aqua>{1} <light_purple>'
   entry-cooperation: ' <yellow>- <red>[所有者] <aqua>{0} <light_purple>{1}'
-3rd-plugin-build-check-failed-admin: '<gray>(管理员信息) <light_purple>{0} <dark_gray>拒绝了权限检查。如果不例外，请尝试添加 <light_purple>{1} <gray>进监听器黑名单。<gray>配置指南：https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
+3rd-plugin-build-check-failed-admin: '<gray>(AdminOnly) <light_purple>{0}<dark_gray> denied the permission checks. If this not expected, try adding <light_purple>{1} <gray>to the listener blacklist. <gray>Configuration Guide: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>附近的平均价格： <yellow>{0}'
 digits-reach-the-limit: <red>您的价格中的小数点后位数超过上限。
 currency-unset: <green>商店货币已被成功删除。现在会使用默认货币。
-you-cant-create-shop-in-there: <red>你没有在这个位置创建商店的权限。
+you-cant-create-shop-in-there: <red>You don't have permission to create a shop at this location.
 no-pending-action: <red>你没有任何进行中的操作
 refill-success: <green>补货成功
 failed-to-paste: <red>无法将数据上传到Pastebin，请检查你的网络连接并重试。（查看后台获取详情）
 shop-out-of-stock-name: <dark_purple>你名为 {0} 的商店的 {1} 脱销了!
 shop-name-invalid: <red>商店名称<yellow>{0} <red>无效。请换一个名称后再试！
-how-many-buy-stack: <green>聊天栏中输入你想<aqua>买<green>的份数. 每份中有 <yellow>{0}<green> 个该物品, 你可以买 <yellow>{1}<green> 份. 输入 <aqua>{2}<green> 以买下所有该物品.
+how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY</aqua>. There are <green>{0}</green> items in each bulk and you can buy <green>{1}</green> bulks. Enter <aqua>{2}</aqua> in chat to buy all.
 exceeded-maximum: <red>该值超过了Java 中的最大值。
 unlimited-shop-owner-keeped: '<yellow>注意: 商店持有人依然是系统商店店主, 你需要重新设置新的商店店主'
-no-enough-money-to-keep-shops: <red>你没有足够的金钱去维持你商店的运营！所有商店已被移除...
+no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All your shops have been removed...
 3rd-plugin-build-check-failed: <red>第三方插件 <bold>{0}<reset><red> 拒绝了权限检查操作，您在那里有建造权限吗？
 not-a-integer: <red>您只能输入一个数字，您的输入是 {0}。
 translation-country: '本地化语言：简体中文 (zh_CN)'
 buying-more-than-selling: '<red>警告: 你收购的物品价格比出售的要高！'
-purchase-failed: '<red>支付失败：内部错误，请联系服务器管理员'
+purchase-failed: '<red>Purchase failed: Internal Error. Please report this to the Server Administrator.'
 denied-put-in-item: <red>您不能将此物品放入您的商店！
 shop-has-changed: <red>在你点击此商店之后此商店被修改了，为了避免恶意修改，您的操作已被取消！
 flush-finished: <green>成功获取所有商店记录
 no-price-given: <red>请输入一个有效的价格。
 shop-already-owned: <red>这已经是一个商店了。
-backup-success: <green>备份成功
-not-looking-at-shop: <red>无法找到商店，您需要注视着你想要操作的商店。
-you-cant-afford-a-new-shop: <red>你需要 {0} 才能创建一个商店。
-success-created-shop: <red>商店已创建
-shop-creation-cancelled: <red>商店创建已取消。
-shop-owner-self-trade: <yellow>你正在和自己的商店进行交易，所以你的金钱可能并不会变化。
-purchase-out-of-space: <red>这个商店空间已不足，请联系商店所有者或助手清空商店
+backup-success: <green>Backup successful.
+not-looking-at-shop: <red>Couldn't find a shop! <yellow>Make sure you look at one.
+you-cant-afford-a-new-shop: <red>You cannot afford this, it costs <green>{0}<red> to create a new shop.
+success-created-shop: <green>Shop successfully created.
+shop-creation-cancelled: <red>The shop creation was cancelled.
+shop-owner-self-trade: <yellow>You're trading with your own shop. <gray>You may not gain any money.
+purchase-out-of-space: <red>This shop has run out of space! Contact the shop owner or staff to get it emptied.
 reloading-status:
-  success: <green>重载完成，没有任何错误。
-  scheduled: <green>重载成功。<gray>(一些更改需要一段时间才能生效)
-  require-restart: <green>重载完成。<yellow>(一些更改需要重启服务器后生效)
-  failed: <red>重载失败，请检查服务器控制台
+  success: <green>Plugin successfully reloaded without any errors.
+  scheduled: <green>Reload complete! <gray>(<yellow>Some changes take a while to become active<gray>)
+  require-restart: <green>Reload complete. <gray>(<yellow>Some changes require a server restart to take effect<gray>)
+  failed: <red>Reload failed, check the server console for errors
 player-bought-from-your-store-tax: <green>{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3} (扣税{4})
-not-enough-space: <red>背包空间不足，剩余 {0}
-shop-name-success: <green>成功地将商店名称设置为 <yellow>{0}<green>
-shop-staff-added: <green>成功将 {0} 添加到你的商店助手列表中。
+not-enough-space: <red>You only have room for <yellow>{0}<red> more!
+shop-name-success: <green>Shop name successfully renamed to <yellow>{0}<green>.
+shop-staff-added: <green>Successfully added <yellow>{0}<green> as a staff member to your shop.
 shops-recovering: 正在从备份中恢复商店...
 menu:
   sell-tax: <green>你支付了<yellow>{0}<green>的税。
   owner: '<green>所有者：{0}'
-  preview: <aqua>[物品预览]
+  preview: <gray>[<aqua>Item Preview<gray>]
   enchants: <dark_purple>附魔
-  sell-tax-self: <green>你无需支付税，因为你是这家商店的所有者。
+  sell-tax-self: <green>You didn't have to pay taxes because you own this shop.
   shop-information: '<green>商店信息：'
   item: '<green>物品：<yellow>{0}'
   price-per: <green>每个<yellow>{0}<green>价格<yellow>{1}
@@ -122,7 +122,7 @@ translation-author: '翻译人员： Ghost_chu, Andre_601, 李馨雨, YuanYuanOw
 integrations-check-failed-trade: <red>集成模块 {0} 拒绝了商店交易操作。
 shop-transaction-failed: <red>抱歉，在处理您的购买时发生内部错误。购买已取消，任何交易操作都已被回滚。如果出现这种情况，请联系服务器管理员。
 success-change-owner-to-server: <green>成功设置商店所有者为 服务器
-shop-name-not-found: <red>名称为 <yellow>{0} <red> 的商店不存在。
+shop-name-not-found: <red>The shop named <yellow>{0}</yellow> does not exist.
 shop-name-too-long: <red>此商店名称过长 (最大长度 {0})，请缩短名称后再试！
 metric:
   header-player: '<yellow>{0}的 {1} {2} 交易：'
@@ -132,8 +132,8 @@ metric:
   undefined: <gray>(无名)
   no-results: <red>未找到交易。
   action-description:
-    DELETE: <yellow>玩家删除了一个商店，如果可能的话，商店创建费将会退还给所有者
-    ONGOING_FEE: <yellow>玩家支付了持续商店的费用，因为支付期限已过。
+    DELETE: <yellow>Player deleted a shop. Refunded the shop creation fee to the owner if possible.
+    ONGOING_FEE: <yellow>Player paid the ongoing fee because of the payment period.
     PURCHASE_BUYING_SHOP: <yellow>玩家将一些物品卖给收购商店
     CREATE: <yellow>玩家创建了一个商店
     PURCHASE_SELLING_SHOP: <yellow>玩家从一个出售商店购买了一些物品
@@ -164,7 +164,7 @@ edition-confilct: QuickShop-Hikari 与 QuickShop-Reremake 同时安装在服务�
 inventory-unavailable: '<red>此商店InventoryWrapper不存在或无效。 你是否使用附属插件重新绑定商店库存？信息：InventoryWrapper={0}，WrapperProvider={1}，SymbolLink={2}。请联系服务器管理员。'
 file-test: 这是个测试文件，我们可以用它来测试 messages.json 文件是否损坏。你可以在这里填入任何喜欢的彩蛋 :)
 unknown-player: <red>目标玩家不存在，请检查你输入的玩家名字。
-player-offline: "<red>目标玩家目前处于离线状态。"
+player-offline: "<red>The targeted player is currently offline."
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 language:
   qa-issues: '<yellow>质量问题：<aqua>{0}%'
@@ -173,8 +173,8 @@ language:
   translate-progress: '<yellow>翻译进度: <aqua>{0}%'
   name: '<yellow>名称： <gold>{0}'
   help-us: <green>[帮助我们提高翻译质量]
-warn-to-paste: '<yellow>收集并上传数据到Pastebin，这会花费点时间。<red><bold>警告<red>，数据将会在一周内对外可见，可能会导致你泄露服务器的配置和其他敏感信息，确保只向<bold>你信任的人/开发者<red>发送链接。'
-how-many-sell-stack: <green>在聊天栏中输入你想 <light_purple>卖<green> 的份数. 每份中有 <yellow>{0}<green> 个该物品, 你目前可卖出 <yellow>{1}<green> 份这样的物品，输入 <aqua>{2}<green> 以卖出所有此项物品。
+warn-to-paste: '<yellow>Collecting data and uploading to Pastebin. This may take a while...<newline><red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
+how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
 updatenotify:
   buttontitle: '[立即更新]'
   onekeybuttontitle: '[一键升级]'
@@ -214,13 +214,13 @@ updatenotify:
     - 博士，QuickShop有一个新的更新 {0}！你应该考虑一下更新了~
     - Ko~ko~da~yo~QuickShop有一个新的更新 {0}~
     - 派蒙想要告诉你QuickShop有新的更新 {0}！
-  remote-disable-warning: '<red>这个版本的 QuickShop 被远程服务器标记为禁用，意味着这个版本可能存在严重的问题，可以在我们的 SpigotMC 插件页面获取详细信息。{0}. 此警告将继续出现，直到您切换到一个稳定的版本，但它不会影响您的服务器的性能。'
+  remote-disable-warning: '<red>This version of QuickShop is marked as disabled by the remote server, which means this version may have serious problems. Get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server''s performance.'
 purchase-out-of-stock: <red>这个商店已缺货，请联系商店所有者或助手补充库存
 nearby-shop-entry: '<green>- 详情:{0} <green>价格:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>距离: <aqua>{5} <green>个方块'
 chest-title: QuickShop商店
-console-only: <red>该命令只能由控制台执行
+console-only: <red>This command can only be executed in the Console.
 failed-to-put-sign: <red>没有足够的空间放置商店的信息牌子。
-shop-name-unset: <red>商店名称已删除
+shop-name-unset: <red>Removed name of this shop
 shop-nolonger-freezed: <green>你解冻了此商店。现在一切恢复正常了！
 no-permission-build: <red>你不能在这里建立商店。
 tableformat:
@@ -230,7 +230,7 @@ tableformat:
   left_begin: '<dark_purple>| '
 quickshop-gui-preview: QuickShop 物品预览界面
 translate-not-completed-yet-click: '{0} 的翻译完成度为 {1}，您想帮助我们改进翻译吗？来这里吧： '
-taxaccount-invalid: <red>目标帐户无效，请输入有效的玩家名称或uuid(带有破折号)。
+taxaccount-invalid: <red>Target account invalid. Please enter a valid player name or UUID (With dashes).
 player-bought-from-your-store: <red>{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3}
 reached-maximum-can-create: <red>你创建的商店数量达到上限：{0}/{1}
 reached-maximum-create-limit: <red>您已达到可以创建商店的最大数量
@@ -249,24 +249,24 @@ price-is-now: <green>商店的新价格是 <yellow>{0}
 shops-arent-locked: <red>注意，商店无法防盗，如果您想要防盗功能，请使用Lockette，LWC，等插件锁住商店。
 that-is-locked: <red>这个商店已上锁。
 shop-has-no-space: <red>这个商店只能装下 {0} 个 {1} 了。
-safe-mode-admin: '<red><bold>警告: <red>此服务器上的QuickShop正在安全模式下运行，任何功能都无法工作，请输入<yellow>/qs <red> 命令来检查错误。'
+safe-mode-admin: '<red><bold>WARNING:</bold> The QuickShop version on this server is currently running in safe mode. Features won''t work. Please use the <yellow>/qs</yellow> command to check for any errors.'
 shop-stock-too-low: <red>这个商店只有 {0} 个 {1} 了。
 world-not-exists: <red>世界 <yellow>{0}<red> 不存在
 how-many-sell: <green>聊天栏中输入想 <light_purple>出售 <green>的物品数量. 您现在可以卖出 <yellow>{0} <green>件物品。输入 <aqua>{1}<green> 来出售全部物品。
 shop-freezed-at-location: <yellow>你在 {1} 的商店 {0} 被冻结了！
 translation-contributors: '开发贡献者：Timtower, Netherfoam, KaiNoMood JackTheChicken 和 Andre_601'
-empty-success: <green>清空商店成功
+empty-success: <green>Successfully emptied shop
 taxaccount-set: <green>该商店的税务帐户已设置为 <yellow>{0}
 support-disable-reason:
   hot-reload: <yellow>热重载不受支持，请重启服务器并再次检查。
-  outdated: <yellow>该版本的QuickShop已过时，在请求帮助之前更新到最新版本！
-  bad-hosts: '<yellow>该服务器 HOSTS 已被修改，QuickShop 的一些功能需要连接到 Mojang API。 在请求支持之前修复HOSTS, Windows 路径 C:\windows\system32\drivers\et\hosts, Linux 路径/etc/hosts。'
-  privacy: <yellow>该服务器在破解（离线）模式下运行。如果你在代理下运行bukkit服务器，并且在代理上的online-mode=true，请正确配置代理相关设置。
+  outdated: <yellow>This version of QuickShop is outdated. Update before requesting support!
+  bad-hosts: '<yellow>The server''s HOSTS have been modified and certain QuickShop-functions require a connection to the Mojang API to work. Please fix the HOSTS settings before asking for support.<newline>Windows: C:\windows\system32\drivers\etc\hosts<newline>Linux: /etc/hosts'
+  privacy: <yellow>This server is running in Cracked (Offline) mode. If you're running the server under a proxy and online mode is set to true in the proxy, configure the proxy-related settings correctly.
   modified: <yellow>文件完整性检查失败，此QuickShop构建已被其他人修改。
   consolespamfix-installed: <yellow>检测到 ConsoleSpamFix 已安装，它将隐藏异常详情，在请求帮助前暂时禁用它。
   authlib-injector-detected: <yellow>该服务器在第三方authlib提供商（如authlib-injector）下运行。
   unsupported-server-software: <yellow>不受支持的服务端核心，任何修改过的混合服务端核心都不支持，包括MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard等。
-supertool-is-disabled: <red>超级工具已被禁用，现已不能使用超级工具破坏任何商店。
+supertool-is-disabled: <red>Super tool is disabled. Cannot break any shops.
 unknown-owner: 未知所有者
 restricted-prices: '<red>物品 {0} 的价格限制为 {1}（包含）到{2}（包含）'
 nearby-shop-this-way: <green>商店距离你 {0} 格远
@@ -287,7 +287,7 @@ signs:
   status-unavailable: <red>
   out-of-stock: 缺货
   stack-buying: 收购 {0}
-  freeze: 交易已被禁用
+  freeze: Trading is disbled
   price: '单价：{0}'
   buying: 收购 {0}
   header: '{1}{0}'
@@ -297,7 +297,7 @@ signs:
   status-available: <green>
   item-left: ''
 negative-amount: <red>你输入的数字是负数。
-display-turn-on: <green>成功开启商店悬浮物显示
+display-turn-on: <green>Successfully enabled shop-display.
 shop-staff-deleted: <green>成功移除 {0} 的商店助手权限
 nearby-shop-header: '<green>匹配附近<aqua>{0}<green>的商店：'
 backup-failed: 无法备份数据库，请查看控制台以获取详细信息。
@@ -306,7 +306,7 @@ price-too-high: <red>商品的价格太高了！你不能创建价格高于 {0} 
 plugin-cancelled: '<red>操作被取消，原因： {0}'
 player-sold-to-your-store: <green>{0} 在你的商店出售了 {1} 个 {2} 。
 shop-out-of-stock: <dark_purple>你位于 {0}, {1}, {2}, 的商店的 {3} 脱销了。
-how-many-buy: <green>在聊天中输入您想要<aqua>购买<green>的数量。您可以购买<yellow>{0}<green>个，输入<aqua>{1}<green>以购买全部。
+how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
 language-info-panel:
   help: '帮助我们： '
   code: '语言代码：'
@@ -314,44 +314,44 @@ language-info-panel:
   progress: '进度：'
   translate-on-crowdin: '[在 Crowdin 上翻译]'
 item-not-exist: <red>物品 <yellow>{0}</yellow> 不存在，请检查您的拼写。
-shop-creation-failed: <red>商店创建失败，请与服务器管理员联系。
-inventory-space-full: <red>你的背包只能放入<green>{1}x <red>个物品。请尝试清理你的背包空间！
-no-creative-break: <red>你不能在创造模式破坏其他玩家的商店, 请使用生存模式或用超级工具 {0} 来破坏。
+shop-creation-failed: <red>Shop creation failed, please contact the server administrator.
+inventory-space-full: <red>Your remaining inventory space can only have <green>{1}</green> more items added to it. Try emptying your inventory!
+no-creative-break: <red>You cannot break the shops of other players while in creative mode. Switch to survival mode or try to use the super tool {0} instead.
 booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>每次交易物品数量: <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change</bold></light_purple>]'
   price-hover: <yellow>点击来给商店设置一个新的价格
   remove: <red><bold>[删除商店]
   mode-buying-hover: <yellow>点击可将商店切换为 出售 模式。
-  empty: '<green>清空: 删除商店所有商品 <yellow>[<light_purple><bold>确认<yellow>]'
-  stack-hover: <yellow>点击设置每次交易的物品数量。设置为1以恢复为普通单物品商店。
+  empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK</bold></light_purple>]'
+  stack-hover: <yellow>Click to set the amount of items per bulk. Set to 1 for normal behaviour.
   alwayscounting-hover: <yellow>点击以切换是否总是计算容器物品。
-  alwayscounting: '<green>总是计算容器物品: {0} <yellow>[<light_purple><bold>更改<yellow>]'
-  setowner: '<green>所有者: <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
-  freeze: '<yellow>冻结模式： <aqua>{0} <yellow>[<light_purple><bold>切换<yellow>]'
-  price: '<green>价格: <aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change</bold></light_purple>]'
+  setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change</bold></light_purple>]'
+  freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
+  price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change</bold></light_purple>]'
   currency-hover: <yellow>点击以设置或移除商店使用的交易货币
-  lock: '<yellow>商店锁: <aqua>{0} <yellow>[<light_purple><bold>切换<yellow>]'
-  mode-selling: '<green>商店模式: <aqua>出售 <yellow>[<light_purple><bold>更改<yellow>]'
-  currency: '<green>货币: <aqua>{0} <yellow>[<light_purple><bold>设置<yellow>]'
+  lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
+  mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<light_purple><bold>Change</bold></light_purple>]'
+  currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set</bold></light_purple>]'
   setowner-hover: <yellow>点击来修改店主
-  mode-buying: '<green>商店模式: <aqua>收购 <yellow>[<light_purple><bold>更改<yellow>]'
-  item: '<green>商店物品: {0} <yellow>[<light_purple><bold>修改<yellow>]'
-  unlimited: '<green>无限模式: {0} <yellow>[<light_purple><bold>切换<yellow>]'
+  mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change</bold></light_purple>]'
+  item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change</bold></light_purple>]'
+  unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change</bold></light_purple>]'
   unlimited-hover: <yellow>点击以切换无限模式
   refill-hover: <yellow>点击以重新填充商品
   remove-hover: <yellow>点击来删除商店
-  toggledisplay-hover: <yellow>切换商店是否显示悬浮物
-  refill: '<green>填充: 重新填充商品 <yellow>[<light_purple><bold>确认<yellow>]'
+  toggledisplay-hover: <yellow>Toggle the shop's display-item status
+  refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK</bold></light_purple>]'
   freeze-hover: <yellow>切换商店冻结状态。
   lock-hover: <yellow>启用/禁用商店锁
-  item-hover: <yellow>点击以更改商店物品
+  item-hover: <yellow>Click to change the shop Item
   infomation: '<green>商店控制面板'
   mode-selling-hover: <yellow>点击可将商店切换为 收购 模式。
   empty-hover: <yellow>点击清除商店库存
-  toggledisplay: '<yellow>悬浮物显示: <aqua>{0} <yellow>[<light_purple><bold>切换<yellow>]'
+  toggledisplay: '<yellow>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
 timeunit:
   behind: 后面
   week: <red>{0} 周
@@ -384,18 +384,18 @@ timeunit:
   future: 在 {0}
   days: <red>{0} 天
 command:
-  reloading: '<green>配置文件重载成功. <yellow>一些更改可能需要重启才能生效.'
+  reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
-    buy: <yellow>切换到 <light_purple>收购 <yellow>模式
+    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
     about: <yellow>显示QuickShop信息
     language: <yellow>切换正在使用的语言
-    purge: <yellow>在后台启动商店清理任务
+    purge: <yellow>Start the shop purge task in the background
     paste: <yellow>上传调试信息到Pastebin
     title: <green>QuickShop 帮助
     remove: <yellow>删除您正看向的商店
     ban: <yellow>封禁商店中的玩家
     empty: <yellow>清空商店库存
-    alwayscounting: <yellow>设置商店是否总会计算容器物品（即使是无限商店）
+    alwayscounting: <yellow>Set if the shop should always count the content of its container even while unlimited
     setowner: <yellow>为商店设置新的所有者。
     reload: <yellow>重载QuickShop 的配置文件
     freeze: <yellow>禁用或启用商店交易
@@ -407,27 +407,27 @@ command:
     removeworld: <yellow>删除指定世界中的所有商店
     info: <yellow>查看QuickShop统计信息
     owner: <yellow>为商店设置新的所有者。
-    amount: <yellow>设置物品数量(在有聊天问题时有用)
+    amount: <yellow>To set the amount of items (Useful when having chat issues)
     item: <yellow>改变商店物品
     debug: <yellow>切换开发者模式
     unlimited: <yellow>将商店设置为无限库存
-    sell: <yellow>切换到 <aqua>出售 <yellow>模式
+    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
     fetchmessage: <yellow>获取未读的商店交易日志
     staff: <yellow>管理商店助手
     clean: <yellow>移除所有已加载的脱销的商店
     refill: <yellow>添加一定数量的物品到商店
-    help: <yellow>显示QuickShop帮助
+    help: <yellow>Shows the QuickShop help
     removeall: <yellow>删除指定玩家的<aqua>所有<reset><yellow>商店
     unban: <yellow>解禁商店中的玩家
-    transfer: <yellow>将某人的所有商店转移给其他人
-    size: <yellow>修改每次交易的物品数量
+    transfer: <yellow>Transfer ALL shops of a player to someone else
+    size: <yellow>Change per-bulk amount of a shop
     supercreate: <yellow>越过所有区域保护检查创建商店
-    taxaccount: <yellow>设置商店使用的税务账户
-    name: <yellow>将商店命名为特定名称
-    toggledisplay: <yellow>切换商店是否显示悬浮物
+    taxaccount: <yellow>Set the tax account that the shop using
+    name: <yellow>Changes the name of a specific shop
+    toggledisplay: <yellow>Toggle the shop's display-item status
     permission: <yellow>商店权限管理
     lookup: <yellow>管理物品引用查找表
-    database: <yellow>查看和维护 QuickShop 数据库
+    database: <yellow>View and maintain the QuickShop Database
     benefit: <yellow>设置商店所有者和其他玩家之间的利益分配
   bulk-size-not-set: '<red>用法: /qs size <数量>'
   no-type-given: '<red>用法: /qs find <物品名称>'
@@ -439,15 +439,15 @@ command:
   bulk-size-now: <green>现在开始交易 <yellow>{0} 个 {1}
   toggle-always-counting:
     counting: <green>商店现在总会计算容器物品（即使是无限商店）
-    not-counting: <green>商店现在会视情况计算容器物品（无限商店无视容器物品）
+    not-counting: <green>Shop is no longer counting the container's content
   cleaning: <green>正在移除脱销的商店...
   now-nolonger-debuging: <green>成功切换到了生产模式，插件重载中...
   toggle-unlimited:
     limited: <green>商店已更改为普通模式
     unlimited: <green>商店已更改为无限模式
   transfer-success-other: <green>已将玩家<yellow> {1} 的<green> {0} 个商店转移到玩家<yellow> {2}
-  no-trade-item: <green>请在主手手持想要切换到的新物品
-  wrong-args: <red>无效参数。使用 <bold>/qs help <red>来查看命令帮助。
+  no-trade-item: <green>Please hold a trade item to change in the main hand
+  wrong-args: <red>Invalid argument. Use <bold>/qs help</bold> to see a list of commands.
   some-shops-removed: <yellow>{0} <green>个商店已被移除
   new-owner: '<green>新的商店所有者: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
@@ -458,11 +458,11 @@ command:
   trade-item-now: <green>现在开始交易 <yellow>{0} 个 {1}
   no-world-given: <red>请指定一个世界名称
   format-disabled: <red>/{0} {1} <gray>- {2}
-  invalid-bulk-amount: <red>给定的值 {0} 大于最大堆叠大小或小于1
+  invalid-bulk-amount: <red>The given value {0} is larger than the max stack size or below one
 currency-not-support: <red>此经济插件不支持多货币功能。
 trading-in-creative-mode-is-disabled: <red>你不能在创造模式下进行交易操作。
 the-owner-cant-afford-to-buy-from-you: <red>这件商品标价 {0}，但是店主只剩 {1} 了。
-you-cant-afford-shop-naming: <red>无法支付商店命名的费用，命名费用为 {0}。
+you-cant-afford-shop-naming: <red>You cannot afford a shop naming, it costs {0} to name the shop.
 inventory-error: '<red>处理InventoryWrapper失败。 你是否使用附属插件重新绑定商店库存？信息：异常={0}，InventoryWrapper={1}，WrapperType={2}，WrapperProvider={3}，SymbolLink={4}。 请联系服务器管理员'
 integrations-check-failed-create: <red>集成模块 {0} 拒绝了创建商店操作。
 shop-out-of-space: <dark_purple>你位于 {0}, {1}, {2}, 的商店库存已经满了。
@@ -472,38 +472,38 @@ no-permission: <red>你没有权限这样去操作。
 chest-was-removed: <red>当前箱子已被移除。
 you-cant-afford-to-buy: <red>余额不足！购买该商店物品需要 {0}，但是你只有 {1}。
 shops-removed-in-world: <yellow>已删除世界 <aqua>{1}<yellow> 中的 <aqua>{0}<yellow> 个商店。
-display-turn-off: <green>成功关闭商店悬浮物显示
+display-turn-off: <green>Successfully turned off shop display.
 client-language-unsupported: <yellow>QuickShop不支持您的客户端语言，我们现在退回到 {0} 语言。
 language-version: '63'
 not-managed-shop: <red>你不是该商店的所有者或助手
 shop-cannot-trade-when-freezing: <red>您不能与这家商店交易，因为它已被冻结。
-invalid-container: <red>无效的容器方块。您只能在有库存的方块上创建商店。
+invalid-container: <red>Invalid container, You can only create the shop with blocks that have an inventory.
 permission:
   header: "<green>商店权限信息"
   header-player: "<green> {0} 的商店权限信息"
   header-group: "<green>商店权限信息 {0}"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
   item:
-    purchase: "<yellow>允许拥有此权限的用户与商店进行交易(包括购买和收购)"
+    purchase: "<yellow>Permission to allow users who have this to purchase from the shop. (including buying and selling)"
     show-information: "<yellow>允许拥有此权限的用户查看商店信息。(查看商店控制面板)"
     preview-shop: "<yellow>允许拥有此权限的用户预览商店所交易的物品(物品预览)"
-    search: "<yellow>允许拥有此权限的用户搜索目标商店(移除权限将商店从搜索结果中隐藏)"
+    search: "<yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from the search results)"
     delete: "<yellow>允许拥有此权限的用户删除商店。"
-    receive-alert: "<yellow>允许拥有此权限的用户接收商店消息 (商店缺货或新交易信息)。"
+    receive-alert: "<yellow>Permission to allow users who have this to receive alert messages (e.g out-of-stock or new trade)."
     access-inventory: "<yellow>允许拥有此权限的用户查看商店库存"
     ownership-transfer: "<yellow>允许拥有此权限的用户转移商店所有者。"
-    management-permission: "<yellow>允许拥有此权限的用户管理组权限并编辑用户组"
+    management-permission: "<yellow>Permission to allow users who have this to manage the group's permissions and edit the user's group."
     toggle-display: "<yellow>允许拥有此权限的用户切换商店悬浮物显示。"
-    set-shoptype: "<yellow>允许拥有此权限的用户设置商店交易模式(切换购买或收购)。"
+    set-shoptype: "<yellow>Permission to allow users who have this to set the shop type (switch to buying or selling)."
     set-price: "<yellow>允许拥有此权限的用户设置商店价格"
     set-item: "<yellow>允许拥有此权限的用户设置商店交易物品"
     set-stack-amount: "<yellow>允许拥有此权限的用户设置商店堆叠金额"
     set-currency: "<yellow>允许拥有此权限的用户设置商店货币。"
     set-name: "<yellow>允许拥有此权限的用户设置商店名称。"
   group:
-    everyone: "<yellow>除商店店主外，所有用户的默认权限组。"
-    staff: "<yellow>商店助手的系统权限组"
-    administrator: "<red>管理员权限组，该组中的用户与商店店主拥有几乎相同的权限。"
+    everyone: "<yellow>Default group for all users except shop owner."
+    staff: "<yellow>System group for shop staff."
+    administrator: "<red>System group for administrators, the users in this group will have permissions almost the same as the shop owner."
 invalid-group: "<red>无效的组名称"
 invalid-permission: "<red>无效权限"
 invalid-operation: "<red>无效的操作，只允许 {0}"
@@ -512,24 +512,24 @@ player-in-group: "<green>玩家 {0} 属于组 <aqua>{1}</aqua> 在这个商店"
 permission-required: "<red>您在这个商店里没有权限 {0} 去做这个。"
 no-permission-detailed: "<red>您没有权限 <yellow>{0}</yellow> 去做这个。"
 paste-uploading: "<aqua>请稍候... 正在上传Paste到pastebin..."
-paste-created: "<green>Paste已创建，点击在浏览器中打开： <yellow>{0}</yellow><newline><red>警告： <gray>永远不要将Paste发送给不信任的人。"
-paste-created-local: "<green>Paste创建并保存到您的本地磁盘： {0}<newline><red>警告： <gray>永远不要将Paste发送给不信任的人。"
+paste-created: "<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send pastea to people you don't trust."
+paste-created-local: "<green>Paste created and saved to your local disk at {0}<newline><red>Warning: <gray>Never send pastes to people you don't trust."
 paste-created-local-failed: "<red>保存Paste到本地磁盘失败，请检查您的磁盘。"
-paste-451: "<gray><b>TIPS: </b> 您所在的国家或地区似乎已经阻止了CloudFlare Workers 服务, QuickShop Paste可能无法正确加载。<newline><gray>如果后续操作失败， 尝试添加 --file 附加参数以生成本地Paste： <dark_gray>/qs paste --file</dark_gray>"
-paste-upload-failed: "<red>上传Paste到 {0} 失败，正在尝试其它的Pastebin..."
-paste-upload-failed-local: "<red>上传Paste失败，尝试生成本地Paste..."
+paste-451: "<gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>"
+paste-upload-failed: "<red>Failed to upload paste to {0}, trying different pastebin provider..."
+paste-upload-failed-local: "<red>Failed to upload paste, now trying to generate local paste..."
 command-incorrect: "<red>指令用法错误，输入/qs help检查帮助。用法： {0}。"
 successfully-set-player-group: "<green>成功地将玩家 {0} 组设置为 <aqua>{1}</aqua>。"
-successfully-unset-player-group: "<green>成功地移除此商店中的玩家权限组。"
+successfully-unset-player-group: "<green>Successfully removed the player group from this shop."
 successfully-set-player-permission: "<green>成功设置玩家 {0} 权限 <aqua>{1}</aqua> 在商店 <aqua>{2}</aqua>"
-lookup-item-created: "<green>一个名为 <aqua>{0}</aqua> 的物品成功注册到物品引用查找表中。 现在你可以在配置文件中引用此物品了。"
+lookup-item-created: "<green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer to this item in configurations now."
 lookup-item-exists: "<red>一个名为 <yellow>{0}</yellow> 的物品已存在于物品引用查找表中，请先将其删除或者起一个新名字。"
-lookup-item-not-found: "<red>物品 <yellow>{0}</yellow> 不存在于物品引用查找表中。"
-lookup-item-name-illegal: "<red>非法物品名，只有数字、字母和下划线可以使用。"
+lookup-item-not-found: "<red>An item named <yellow>{0}</yellow> does not exist."
+lookup-item-name-illegal: "<red>Not supported Item name. Only alphanumeric characters and underscores are allowed."
 lookup-item-name-regex: "<red>物品名不符合正则表达式: <aqua>{0}</aqua>."
-lookup-item-test-not-found: "<gold>测试: <yellow>你手中的物品未注册到物品引用查找表中。"
-lookup-item-test-found: "<gold>测试: <green>你手中的物品在物品引用查找表中注册的名字为 <aqua>{0}</aqua>。"
-lookup-item-removed: "<green>指定的物品 <aqua>{0}</aqua> 现已从物品引用查找表中删除。"
+lookup-item-test-not-found: "<gold>Test: <yellow>The item in your hand is not registered in the lookup table."
+lookup-item-test-found: "<gold>Test: <green>The item in your hand was registered as <aqua>{0}</aqua> in the lookup table."
+lookup-item-removed: "<green>The specified item <aqua>{0}</aqua> has been successfully removed from the lookup table."
 internal-error: "<red>发生了一个内部错误，请联系服务器管理员。"
 argument-cannot-be: "<red>参数 <aqua>{0}</aqua> 不能为 <yellow>{1}</yellow>."
 argument-must-between: "<red>参数 <aqua>{0}</aqua> 值必须在 <yellow>{1}</yellow> 和 <yellow>{2}</yellow> 之间"
@@ -541,40 +541,40 @@ not-a-valid-time: |
   <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch时间以秒计)</grey>
 invalid-past-time: "<red>不能指定过去的时间。"
 debug:
-  arguments-invalid: "<red>提供的参数 <yellow>{0}</yellow> 无效。"
-  sign-located: "<green>有效信息牌： <yellow>{0}</yellow>。"
-  operation-missing: "<red>您必须指定一个操作。"
-  operation-invalid: "<red>您必须指定一个有效的操作。"
-  invalid-base64-encoded-sql: "<red>提供的 SQL 必须为 base64 编码。"
-  warning-sql: "<red><bold>警告：</bold></red><yellow>您正在执行 SQL 语句 这可能会损坏您的数据库或摧毁数据库中的任何数据，即使它属于其他插件。\n<red>如果您不信任此操作或者无法预料执行此操作后的后果，请不要继续。"
-  warning-sql-confirm: "<yellow>要确认这个危险的操作，请在 60 秒内输入 <aqua>/qs debug database sql confirm {0}</aqua>。"
-  warning-sql-confirm-hover: "<yellow>点击以确认此危险操作。"
-  sql-confirm-not-found: "<yellow>指定的操作无效或已过期"
+  arguments-invalid: "<red>Provided arguments <yellow>{0}</yellow> are invalid."
+  sign-located: "<green>Valid Sign: <yellow>{0}</yellow>."
+  operation-missing: "<red>You must specify an operation."
+  operation-invalid: "<red>You must specify a valid operation."
+  invalid-base64-encoded-sql: "<red>The provided SQL operation must be Base64-encoded."
+  warning-sql: "<red><bold>Warning:</bold></red> <yellow>You're executing an SQL statement. This may corrupt your database or destroy any data in the database, even when it belongs to another plugin.\n<red>Don't confirm this if you don't trust who send you this."
+  warning-sql-confirm: "<yellow>To confirm this dangerous action, type <aqua>/qs debug database sql confirm {0}</aqua> in the next 60 seconds."
+  warning-sql-confirm-hover: "<yellow>Click to confirm this dangerous action."
+  sql-confirm-not-found: "<yellow>Cannot find the action that you provided. It may be invalid or has expired."
   sql-executing: "<yellow>正在执行 SQL 语句: <aqua>{0}</aqua>"
-  sql-completed: "<green>已完成，共{0} 行受到影响。"
-  sql-exception: "<red>执行 SQL 查询时发生错误，请检查控制台获取详细信息！"
-  sql-disabled: "<red>出于安全原因，SQL 查询在这个服务器上被禁用。如果你真的需要这个功能， 您可以添加以下参数到启动参数： <aqua>{0}</aqua> 并设置为 `true` 来启用它。"
+  sql-completed: "<green>Action complete! {0} rows affected."
+  sql-exception: "<red>An error occurred while executing the SQL query. Check the Console for details!"
+  sql-disabled: "<red>For security reasons, SQL queries are disabled in this server. If you really need this feature, you can add the following flag to your startup arguments: <aqua>{0}</aqua> with the value `true` to enable it."
 database:
-  scanning: "<green>正在 QuickShop 数据库中扫描孤立的数据，扫描过程中数据库负载可能会增加，这可能需要一段时间..."
-  scanning-async: "<yellow>正在异步任务线程上扫描 QuickShop 数据库中孤立的数据，扫描过程中数据库负载可能会增加，这可能需要一段时间，请稍后再试。"
-  already-scanning: "<red>已有一个扫描任务正在进行中，请等待扫描完成。"
-  trim-warning: "<yellow><red><bold>警告： </red>在继续数据库清理之前备份您的数据库以避免数据丢失。 一旦准备就绪，请执行 <aqua>/qs database trim confirm</aqua> 继续。"
+  scanning: "<green>Scanning the isolated data in the QuickShop Database. The database load may increase the scanning progress. This may take a while..."
+  scanning-async: "<yellow>Scanning the isolated data in the QuickShop Database on an async Task-Thread. The database load may increase the scanning progress. This may take a while. If it fails, try again later."
+  already-scanning: "<red>A scan task has been started. Please wait until it finishes."
+  trim-warning: "<red><bold>Warning:</bold> <yellow>Backup your database before continuing the Database trim to avoid data loss. Once you're ready, execute <aqua>/qs database trim confirm</aqua> to continue."
   status: "<yellow>状态: {0}"
   status-good: "<green>良好"
-  status-bad: "<yellow>需要维护"
+  status-bad: "<yellow>Maintenance required"
   isolated: "<yellow>孤立的数据："
-  isolated-data-ids: "<yellow><aqua>└</aqua> 数据记录项: <gold>{0}</gold>"
-  isolated-shop-ids: "<yellow><aqua>└</aqua> 商店索引项: <gold>{0}</gold>"
-  isolated-logs: "<yellow><aqua>└</aqua> 日志项: <gold>{0}</gold>"
-  isolated-external-caches: "<yellow><aqua>└</aqua> 缓存项: <gold>{0}</gold>"
+  isolated-data-ids: "<aqua>└<yellow> Data Records: <gold>{0}</gold>"
+  isolated-shop-ids: "<aqua>└<yellow> Shop Indexes: <gold>{0}</gold>"
+  isolated-logs: "<aqua>└<yellow> Logs: <gold>{0}</gold>"
+  isolated-external-caches: "<aqua>└<yellow> External Caches: <gold>{0}</gold>"
   last-purge-time: "<yellow>最后清理时间 {0}"
   report-time: "<yellow>上次扫描时间 {0}"
-  auto-scan-alert: "<yellow>此服务器上的 QuickShop 数据库需要维护。找到 <gold>{0}</gold> 个孤立的数据等待清理。"
-  auto-trim: "<green>自动清理已在此服务器上启用，不需要手动清理。"
-  trim-complete: "<green>数据库清理已完成， <yellow>{0}</yellow> 个孤立的数据已被清理。"
-  auto-trim-started: "<green>自动清理已经开始，请稍候..."
-  trim-start: "<green>数据库清理已开始，请稍候..."
-  trim-exception: "<red>数据库清理失败，数据库清理过程中出现异常，请检查服务器控制台。"
+  auto-scan-alert: "<yellow>The QuickShop Database on this server requires maintenance. Found <gold>{0}</gold> isolated data waiting for trimming."
+  auto-trim: "<green>Auto-trimming has been enabled on this server. No manual trimming required."
+  trim-complete: "<green>Database trimming complete. <yellow>{0}</yellow> isolated data trimmed."
+  auto-trim-started: "<green>Auto-trimming started, please wait..."
+  trim-start: "<green>Database trimming started, please wait..."
+  trim-exception: "<red>Database trimming failed. An Exception was raised during the operation. Check the server console."
   generated-at: "<yellow>生成于： <gold>{0}</gold>"
   purge-date: "<red>您必须给出一个日期"
   purge-warning: "<yellow>此操作将清除存储在数据库中的历史记录，包括商店创建/更改/删除、购买、交易和系统日志。 删除这些数据可以释放磁盘空间，但所有历史数据都会丢失，依赖计量的其它插件将停止工作。 要继续执行此操作，请执行指令以 `/qs database purgelogs <before-days> 确认`"
@@ -582,24 +582,24 @@ database:
   purge-done-with-line: "<green>清除任务已完成，总共 <gold>{0}</gold> 行已从数据库中清除。"
   purge-done-with-error: "<red>清除任务失败，请检查服务器控制台获取详细信息。"
   suggestion:
-    trim: "<yellow>此数据库需要进行清理，执行命令 <aqua>/qs database trim</aqua> 来清理数据库。"
-always-counting-removal-early-warning: "<red>总是计数功能将移除，您不应该再使用它，并将在将来停止工作。"
+    trim: "<yellow>This database requires a trimming of isolated data. Execute <aqua>/qs database trim</aqua> to trim the database."
+always-counting-removal-early-warning: "<red>The 'Always counting' Feature is scheduled for removal. You shouldn't use it anymore as it will stop working in the future."
 exporting-database: "<green>正在导出数据，请稍候..."
 exporting-failed: "<red>导出数据失败，请检查服务器控制台。"
 exported-database: "<green>数据已导出到 <yellow>{0}</yellow>。"
-importing-not-found: "<red>找不到 <yellow>{0}</yellow> 文件，请检查文件路径。"
-importing-early-warning: "<yellow><red><bold>警告: </bold></red>备份即将被导入到当前数据库。任何已存在的数据都将被永久清除并使用新的数据覆盖。<newline><red>您确定要继续导入吗？</red><yellow>输入 <aqua>/qs recovery confirm</aqua> 继续。"
+importing-not-found: "<red>File <yellow>{0}</yellow> not found. Make sure the File path is valid."
+importing-early-warning: "<red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.<newline><red>Are you sure to continue the import-procedure?</red> Type <aqua>/qs recovery confirm</aqua> to continue."
 importing-database: "<green>正在从备份导入数据，请稍候..."
 importing-failed: "<red>导入数据失败，请检查服务器控制台。"
 imported-database: "<green>数据从 <yellow>{0}</yellow> 导入。"
-transfer-sent: "<green>商店转移请求已发送到 <yellow>{0}</yellow>。"
-transfer-request: "<yellow>玩家 <aqua>{0}</aqua> 请求将他们的商店转移给您。您想接受这次来自 <aqua>{0}</aqua> 的商店吗？"
-transfer-ask: "<gold>输入 <red>/qs transfer accept</red> 来接受。</gold><newline><gold>输入 <red>/qs transfer deny</red> 来拒绝.</gold><newline><gold>请求将在 <red>{0}</red> 秒后过期。"
-transfer-accepted-fromside: "<green>玩家 <aqua>{0}</aqua> 接受了您的商店转移请求。"
-transfer-accepted-toside: "<green>您接受了 <aqua>{0}</aqua> 的商店转移请求。"
-transfer-rejected-fromside: "<red>玩家 <aqua>{0}</aqua> 拒绝了您的商店转移请求。"
-transfer-rejected-toside: "<red>您拒绝了 <aqua>{0}</aqua> 的商店转移请求。"
-transfer-no-pending-operation: "<red>您没有待处理的商店转移请求。"
+transfer-sent: "<green>Shop Transfer-request sent to <yellow>{0}</yellow>."
+transfer-request: "<yellow>Player <aqua>{0}</aqua> would like to transfer their Shops to you. Do you want to accept the request?"
+transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept or <red>/qs transfer deny</red> to deny.<newline>The request will expire after <red>{0}</red> seconds."
+transfer-accepted-fromside: "<green>Player <aqua>{0}</aqua> accepted your Shop Transfer-request."
+transfer-accepted-toside: "<green>You accepted <aqua>{0}</aqua>'s Transfer-Request."
+transfer-rejected-fromside: "<red>Player <aqua>{0}</aqua> rejected your Shop Transfer-request."
+transfer-rejected-toside: "<red>You rejected <aqua>{0}</aqua>'s Shop Transfer-request."
+transfer-no-pending-operation: "<red>You don't have any pending Transfer-requests."
 transfer-no-self: "<red>您不能将商店转移给自己"
 benefit-overflow: "<red>所有利益的总和不能大于或等于100%"
 benefit-exists: "<red>目标玩家已经在该商店的利益分配列表中"
@@ -1242,7 +1242,7 @@ addon:
     discount-code-query: "<green>您正在使用优惠码： <yellow>{0}</yellow>。"
     discount-code-applicable: "<color:#bcef26>您的优惠码 <yellow><bold>{0}</bold></yellow> 在这家商店中适用 <bold></bold>！"
     discount-code-applicable-with-threshold: "<color:#bcef26>您的优惠码 <yellow><bold>{0}</bold></yellow> <bold>适用于此商店的</bold> ，但仅在单笔交易中您的购买成本超过 <yellow>{1}</yellow> 。"
-    discount-code-not-applicable: "<red>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>not applicable<bold> in this shop!"
+    discount-code-not-applicable: "<red>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>not applicable</bold> in this shop!"
     discount-code-reach-the-limit: "<red>您已达到优惠码的使用限制 <yellow><bold>{0}</bold></yellow>，则不应用折扣。"
     discount-code-no-permission: "<red>您没有权限在此商店使用任何优惠码！"
     discount-code-has-been-expired: "<red>您的折扣已过期！"
@@ -1261,7 +1261,7 @@ addon:
     discount-code-under-threshold: "<red>由于总价值低于优惠码阈值，所以优惠未适用于您的交易 <yellow>{0}</yellow>."
     percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
     fixed-off: "<bold><color:#bcef26>-{0}</color:#bcef26></bold>"
-    discount-code-list: "<gold>Listing your discount codes:<gold>"
+    discount-code-list: "<gold>Listing your discount codes:</gold>"
     discount-code-applied-in-purchase: "<color:#bcef26>您的优惠码 <yellow>{0}</yellow> 已经应用到此交易，并且您节省了 <gold>{1}</gold>！"
     scope:
       this-shop: "{0}"
