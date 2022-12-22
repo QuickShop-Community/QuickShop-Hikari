@@ -707,13 +707,6 @@ benefit-added: "<green>Player <aqua>{0}</aqua> has been added into shop benefits
 benefit-updated: "<green>Player <aqua>{0}</aqua>'s benefits has been updated!"
 benefit-query: "<green>This shop have <yellow>{0}</yellow> players in benefits list!"
 benefit-query-list: "<yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>"
-general-about: |
-  <gold>QuickShop-{0} About</gold>
-  <aqua>version <yellow>{1}</yellow> <hover:show_text:'<gold>Origin: {2}<aqua></aqua></gold>'><click:open_url:'{3}'><gray>git-{4}</gray></click></hover></aqua>
-  <aqua>release <yellow><hover:show_text:'<gold>Build Time: {5}</gold>'>{6}</hover></yellow> <gray>(published by {7})</gray></aqua>
-  <aqua>thanks for <gold>{8}</gold> supporters to make this update come true</aqua>
-  <gray>(the recent 50 supporters as of the build)</gray>
-  <green>{9}</green>
 
 addon:
   towny:
