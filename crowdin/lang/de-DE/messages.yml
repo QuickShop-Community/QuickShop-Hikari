@@ -1242,7 +1242,7 @@ addon:
     discount-code-query: "<green>Du verwendest den Rabattcode <yellow>{0}</yellow>."
     discount-code-applicable: "<color:#bcef26>Dein Rabattcode <yellow><bold>{0}</bold></yellow> ist in diesem Shop <bold>verwendbar</bold>!"
     discount-code-applicable-with-threshold: "<color:#bcef26>Dein Rabattcode <yellow><bold>{0}</bold></yellow> ist auf diesen Shop <bold>anwendbar</bold> aber nur auf einen Kauf von über <yellow>{1}</yellow> in einem einzigen Kauf."
-    discount-code-not-applicable: "<red>Dein Rabattcode <yellow><bold>{0}</bold></yellow> ist auf diesen Shop <bold>nicht anwendbar</bold>!"
+    discount-code-not-applicable: "<red>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>not applicable<bold> in this shop!"
     discount-code-reach-the-limit: "<red>Du hast das Nutzungslimit für den Rabattcode <yellow><bold>{0}</bold></yellow> erreicht. Rabatte werden nicht mehr angewendet."
     discount-code-no-permission: "<red>Du hast keine Berechtigung, einen Rabattcode in diesem Shop anzuwenden!"
     discount-code-has-been-expired: "<red>Dein Rabatt ist abgelaufen!"
@@ -1261,7 +1261,7 @@ addon:
     discount-code-under-threshold: "<red>Der Rabattcode konnte nicht auf deinen Kauf angewendet werden, da der totale Wert unter dem Rabattcode-Schwellenwert von <yellow>{0}</yellow> lag."
     percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
     fixed-off: "<bold><color:#bcef26>-{0}</color:#bcef26></bold>"
-    discount-code-list: "<gold>Auflistung deiner Rabattcodes:</gold>"
+    discount-code-list: "<gold>Listing your discount codes:<gold>"
     discount-code-applied-in-purchase: "<color:#bcef26>Dein Rabattcode <yellow>{0}</yellow> wurde auf diesen Einkauf angewendet und du hast <gold>{1}</gold> gespart!"
     scope:
       this-shop: "{0}"
