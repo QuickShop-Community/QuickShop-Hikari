@@ -1242,7 +1242,7 @@ addon:
     discount-code-query: "<green>您正在使用优惠码： <yellow>{0}</yellow>。"
     discount-code-applicable: "<color:#bcef26>您的优惠码 <yellow><bold>{0}</bold></yellow> 在这家商店中适用 <bold></bold>！"
     discount-code-applicable-with-threshold: "<color:#bcef26>您的优惠码 <yellow><bold>{0}</bold></yellow> <bold>适用于此商店的</bold> ，但仅在单笔交易中您的购买成本超过 <yellow>{1}</yellow> 。"
-    discount-code-not-applicable: "<red>您的优惠码 <yellow><bold>{0}</bold></yellow> <bold>不适用于<bold> 这家商店！"
+    discount-code-not-applicable: "<red>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>not applicable<bold> in this shop!"
     discount-code-reach-the-limit: "<red>您已达到优惠码的使用限制 <yellow><bold>{0}</bold></yellow>，则不应用折扣。"
     discount-code-no-permission: "<red>您没有权限在此商店使用任何优惠码！"
     discount-code-has-been-expired: "<red>您的折扣已过期！"
@@ -1261,7 +1261,7 @@ addon:
     discount-code-under-threshold: "<red>由于总价值低于优惠码阈值，所以优惠未适用于您的交易 <yellow>{0}</yellow>."
     percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
     fixed-off: "<bold><color:#bcef26>-{0}</color:#bcef26></bold>"
-    discount-code-list: "<gold>列出您的优惠码：<gold>"
+    discount-code-list: "<gold>Listing your discount codes:<gold>"
     discount-code-applied-in-purchase: "<color:#bcef26>您的优惠码 <yellow>{0}</yellow> 已经应用到此交易，并且您节省了 <gold>{1}</gold>！"
     scope:
       this-shop: "{0}"
