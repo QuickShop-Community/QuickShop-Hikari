@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop er deaktivert i denne verdenen
 how-much-to-trade-for: <green>Skriv i chat hvor mye du ønsker å selge <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop oppdaget at språkinnstillingen for klienten din er endret, vi bruker nå lokaliteten {0} for deg.
 shops-backingup: Oppretter sikkerhetskopi av butikker fra databasen...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hei oversetter! Hvis du redigerer dette fra Github eller fra kildekoder, bør du gå til https://crowdin.com/project/quickshop-hikari
 unlimited-shop-owner-changed: <yellow>Eieren til denne ubegrensede butikken har blitt endret til {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Following parameters are accepted: <gray>{0}'
 thats-not-a-number: <red>Ugyldig nummer
@@ -34,18 +34,18 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>Navn: <aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>Gjenstand: <aqua>{0}'
     - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Navn: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
     - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Gjenstand: <aqua>{item}'
     - '<yellow>Location: <aqua>{location}'
   header: '<yellow>You have multiple shops with the name "<green>{0}</green>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
@@ -60,7 +60,7 @@ refill-success: <green>Påfyllingen ble vellykket
 failed-to-paste: <red>Kunne ikke laste opp data til Pastebin. Sjekk internettforbindelsen din og prøv igjen. (Se konsoll for detaljer)
 shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
-how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY</aqua>. There are <green>{0}</green> items in each bulk and you can buy <green>{1}</green> bulks. Enter <aqua>{2}</aqua> in chat to buy all.
+how-many-buy-stack: <yellow>Skriv i chat hvor mange pakker du ønsker å <aqua>KJØPE</aqua>. Det er <green>{0}</green> varer i hver pakke og du kan kjøpe totalt <green>{1}</green> pakker. Skriv <aqua>{2}</aqua> om du vil kjøpe alle.
 exceeded-maximum: <red>Verdien overskrider maksimumsverdien i Java.
 unlimited-shop-owner-keeped: '<yellow>OBS: Butikkeieren er fortsatt ubegrenset butikkeier, du trenger å sette ny butikkeier manuelt.'
 no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All your shops have been removed...
@@ -174,7 +174,7 @@ language:
   name: '<yellow>Navn: <gold>{0}'
   help-us: <green>[Hjelp oss å forbedre kvaliteten på oversettelser]
 warn-to-paste: '<yellow>Collecting data and uploading to Pastebin. This may take a while...<newline><red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <yellow>Skriv i chat hvor mange pakker du ønsker å <aqua>SELGE<green>. Det er <yellow>{0}</yellow> varer i hver pakke og du kan selge <yellow>{1}<green> pakker. Skriv <aqua>{2}<green> om du vil selge alle.
 updatenotify:
   buttontitle: '[Oppdater Nå]'
   onekeybuttontitle: '[OneKey Update]'
@@ -234,7 +234,7 @@ taxaccount-invalid: <red>Target account invalid. Please enter a valid player nam
 player-bought-from-your-store: <red>{0} kjøpte {1} {2} fra butikken din, og du tjente {3}.
 reached-maximum-can-create: <red>Du har allerede opprettet maksimum {0}/{1} butikker!
 reached-maximum-create-limit: <red>Du har nådd maksimalt antall butikker du kan opprette
-translation-version: 'Support Version: Hikari'
+translation-version: 'Støttet versjon: Hikari'
 no-double-chests: <red>Du kan ikke opprette en butikk med dobbelkiste.
 price-too-cheap: <red>Prisen må være høyere enn <yellow>${0}
 shop-not-exist: <red>Det finnes ingen butikk.
@@ -306,7 +306,7 @@ price-too-high: <red>Butikkprisen er for høy! Du kan ikke sette en pris høyere
 plugin-cancelled: '<red>Operasjon avbrutt, Årsak: {0}'
 player-sold-to-your-store: <green>{0} solgte {1} {2} til din butikk.
 shop-out-of-stock: <dark_purple>Butikken din på lokasjon {0}, {1}, {2} har gått tom for {3}!
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>Skriv i chat hvor mange du ønsker å <aqua>KJØPE</aqua>. Du kan kjøpe maks <yellow>{0}<green>. Skriv <aqua>{1}<green> om du vil kjøpe alle.
 language-info-panel:
   help: 'Hjelp oss: '
   code: 'Kode: '
@@ -386,7 +386,7 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
+    buy: <yellow>Endre en butikk til <light_purple>KJØP</light_purple> modus
     about: <yellow>Vis QuickShop info
     language: <yellow>Bytt språk
     purge: <yellow>Start the shop purge task in the background
@@ -411,7 +411,7 @@ command:
     item: <yellow>Endre gjenstand i en butikk
     debug: <yellow>Aktiverer utviklermodus
     unlimited: <yellow>Gir en butikk ubegrenset lagerbeholdning.
-    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
+    sell: <yellow>Endre en butikk til <light_purple>SELG</aqua> modus
     fetchmessage: <yellow>Vis uleste butikkmeldinger
     staff: <yellow>Administrere butikkens ansatte
     clean: <yellow>Fjerner alle aktive butikker uten innhold

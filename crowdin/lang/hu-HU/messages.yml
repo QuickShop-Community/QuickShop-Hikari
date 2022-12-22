@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop is disabled in this world
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Mentés betöltése a databázisból...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-hikari
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Following parameters are accepted: <gray>{0}'
 thats-not-a-number: <red>Ismeretlen szám.
@@ -34,18 +34,18 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
+    - '<green>Név: <aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>Tárgy: <aqua>{0}'
     - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
+    - '<green>Név: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
     - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Tárgy: <aqua>{item}'
     - '<yellow>Location: <aqua>{location}'
   header: '<yellow>You have multiple shops with the name "<green>{0}</green>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
@@ -174,7 +174,7 @@ language:
   name: '<green>Név: <gold>{0}'
   help-us: <green>[Segíts nekünk javítani a fordítási minőséget]
 warn-to-paste: '<yellow>Collecting data and uploading to Pastebin. This may take a while...<newline><red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</yellow>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to sell all.
 updatenotify:
   buttontitle: '[Frissítse most]'
   onekeybuttontitle: '[OneKey frissítés]'
@@ -306,7 +306,7 @@ price-too-high: <red> A bolt ára túl magas! Nem tudsz olyan boltot létrehozni
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <white>{0} <green>eladott <white>{1} {2} <green>a boltodba.
 shop-out-of-stock: '<dark_purple><bold>!!! <light_purple>A boldot itt: <white>{0}<light_purple>, <white>{1}<light_purple>, <white>{2}<light_purple>, kifogyott ebből: <white>{3}'
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>Írd be a chatbe, hogy mennyit szeretnél vásárolni. Maximum <yellow>{0}</aqua> db-ot tudsz venni. Ha az összeset megvennéd, írd be, hogy <aqua>{1}<green>.
 language-info-panel:
   help: 'Segítség: '
   code: 'Kód: '
@@ -386,7 +386,7 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
+    buy: <yellow>Átállítja a boltot <light_purple>VÉTEL</light_purple> módba
     about: <yellow>Megmutata a Gyorsbolt információit
     language: <yellow>Switch the language that quickshop using
     purge: <yellow>Start the shop purge task in the background
@@ -411,7 +411,7 @@ command:
     item: <yellow>Change shop item of a shop
     debug: <yellow>Átváltás fejlesztő módba
     unlimited: <yellow>A bolt korlátlanná tétele
-    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
+    sell: <yellow>Átállítja a boltot <aqua>ELADÁS</aqua> módba
     fetchmessage: <yellow>Lekéri az összes olvasatlan üzeneteidet
     staff: <yellow>Kezeli a boltod dolgait
     clean: <yellow>Eltávolítja az összes (betöltött) boltot 0 áruval

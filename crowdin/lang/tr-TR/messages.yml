@@ -5,7 +5,7 @@ disabled-in-this-world: <red>Bu komut bu dünyada devre dışı
 how-much-to-trade-for: <yellow>{1} <green>tane <yellow>{0} <green>için ne kadar ticaret yapmak istediğini sohbete yaz.
 client-language-changed: <green>QuickShop, istemci dil ayarınızın değiştirildiğini algıladı, şimdi sizin için {0} yerel ayarını kullanıyoruz.
 shops-backingup: Veri tabanından market yedeği oluşturuluyor...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Merhaba çevirmen! Eğer bunu Github'tan ya da kaynak kodundan çeviriyorsan, https://crowdin.com/project/quickshop-hikari adresine gitmelisin
 unlimited-shop-owner-changed: <yellow>Bu sınırsız marketin sahibi {0} olarak değiştirildi.
 bad-command-usage-detailed: '<red>Bad command arguments! Following parameters are accepted: <gray>{0}'
 thats-not-a-number: <red>Geçersiz sayı
@@ -32,21 +32,21 @@ forbidden-vanilla-behavior: <red>Eylem, vanilla'ya uygun olmadığı için yasak
 shop-out-of-space-name: <dark_purple>Marketin {0} dolu!
 paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
-  entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
+  entry-own: ' <yellow>- <red>[kendi] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>İsim: <aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Fiyat: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>Öğe: <aqua>{0}'
     - '<yellow>Konum: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>İsim: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Fiyat: <aqua>{price}'
+    - '<yellow>Öğe: <aqua>{item}'
+    - '<yellow>Konum: <aqua>{location}'
   header: '<yellow>You have multiple shops with the name "<green>{0}</green>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -58,7 +58,7 @@ you-cant-create-shop-in-there: <red>You don't have permission to create a shop a
 no-pending-action: <red>Bekleyen aksiyonunuz yok
 refill-success: <green>Yeniden doldurma başarılı
 failed-to-paste: <red>Veriler Pastebin'e yüklenemedi. İnternetinizi kontrol edip tekrar deneyiniz. (Ayrıntılar için konsola bakın)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+shop-out-of-stock-name: <dark_purple>{0}, {1}, {2} koordinatlarındaki marketinde {3} tükendi!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY</aqua>. There are <green>{0}</green> items in each bulk and you can buy <green>{1}</green> bulks. Enter <aqua>{2}</aqua> in chat to buy all.
 exceeded-maximum: <red>Değer, Java'nın maksimum değerini aştı.
@@ -125,31 +125,31 @@ success-change-owner-to-server: <green>Market sahibi başarıyla Sunucu yapıld�
 shop-name-not-found: <red>The shop named <yellow>{0}</yellow> does not exist.
 shop-name-too-long: <red>Bu isim çok uzun (maks. {0} uzunluğunda olmalı), başka bir tane seçin!
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>{0}''ın {1} {2} işlemleri:'
   action-hover: <yellow>{0}
-  price-hover: <yellow>Total {0}, including {1} taxes.
-  unknown: <gray>(unknown)
-  undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  price-hover: <yellow>Toplam {0}, {1} vergiler dahil.
+  unknown: <gray>(bilinmiyor)
+  undefined: <gray>(isimsiz)
+  no-results: <red>İşlem bulunamadı.
   action-description:
     DELETE: <yellow>Player deleted a shop. Refunded the shop creation fee to the owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because of the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
-    PURCHASE: <yellow>Purchased item with a shop
-  query-argument: 'Query Argument: {0}'
+    PURCHASE_BUYING_SHOP: <yellow>Player bazı eşyaları bir satın alma dükkanına sattı.
+    CREATE: <yellow>Player bir mağaza oluşturdu.
+    PURCHASE_SELLING_SHOP: <yellow>Oyuncu bir satış mağazasından bazı eşyalar satın aldı
+    PURCHASE: <yellow>Bir mağazadan satın alınan ürün
+  query-argument: 'Sorgu bağımsız değişkeni: {0}'
   amount-hover: <yellow>{0}x
-  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
+  header-shop: '<yellow>Mağaza {0}''ın {1} {2} işlemleri:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
-  looking-up: <yellow>Performing metric lookup, Please wait...
-  tax-hover: <yellow>{0} taxes
-  header-global: '<yellow>The server {0} {1} transactions:'
+  looking-up: <yellow>Metrik araması gerçekleştiriliyor, Lütfen bekleyin...
+  tax-hover: <yellow>{0} vergiler
+  header-global: '<yellow>Sunucu işlemleri {0} {1} :'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
-  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}'
-  time-hover: '<yellow>Time: {0}'
-  amount-stack-hover: <yellow>{0}x stack
+  transaction-count: <yellow>{0} toplam
+  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, Dünya: {4}<newline><gold>Sahibi: <gray>{5}<newline><gold>Mağaza Türü: <gray>{6}<newline><gold>Ürün: <gray>{7}<newline><gold>Fiyat: <gray>{8}'
+  time-hover: '<yellow>Saat: {0}'
+  amount-stack-hover: <yellow>{0}x yığını
 permission-denied-3rd-party: '<red>İzin reddedildi: 3. Parti Eklenti [{0}].'
 you-dont-have-that-many-items: <red>Sende sadece {0} tane {1} var.
 complete: <green>Tamamlandı!
@@ -174,7 +174,7 @@ language:
   name: '<yellow>İsim: <gold>{0}'
   help-us: <green>[Tercüme kalitesini arttırmamıza yardımcı olun]
 warn-to-paste: '<yellow>Collecting data and uploading to Pastebin. This may take a while...<newline><red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>Sohbete Kaç tane toplu satış yapmak istediğinizi yazın. Toplu olarak <yellow>{0}'ın öğesi vardır ve <yellow>{1}'ın toplu olarak satabilirsiniz. Tümünü satmak için sohbete <aqua>{2}</yellow> yazın.
 updatenotify:
   buttontitle: '[Şimdi Güncelle]'
   onekeybuttontitle: '[OneKey Update]'
@@ -186,7 +186,7 @@ updatenotify:
     qualityverifyed: '[Kalite]'
     master: '[Usta]'
     unstable: '[Kararsız]'
-    paper: '[+Paper Optimized]'
+    paper: '[+Paper için Optimize Edilmiş]'
     stable: '[Kararlı]'
     spigotmc: '[SpigotMC]'
     papermc: '[PaperMC]'
@@ -233,12 +233,12 @@ translate-not-completed-yet-click: '{0} dilinin çevirisi {1} tamamlanmadı. Çe
 taxaccount-invalid: <red>Target account invalid. Please enter a valid player name or UUID (With dashes).
 player-bought-from-your-store: <red>{0} marketinden {1} tane {2} aldı ve {3} kazandın.
 reached-maximum-can-create: <red>Zaten maksimum {0}/{1} market oluşturdun!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
-translation-version: 'Support Version: Hikari'
+reached-maximum-create-limit: <red>Oluşturabileceğiniz maksimum mağaza sayısına ulaştınız
+translation-version: 'Destek Sürümü: Hikari'
 no-double-chests: <red>Çifte sandık ile market oluşturamazsınız.
 price-too-cheap: <red>Fiyat <yellow>${0}<red>'dan büyük olmalıdır.
 shop-not-exist: <red>Orada market yok.
-bad-command-usage: <red>Bad command arguments!
+bad-command-usage: <red>Kötü komut argümanları!
 clean-warning: <yellow>Bu komut, mağaza bozulursa, izin verilmeyen dünyalarda oluşturulduysa, izin verilmeyen öğeleri satıyorsa/satın alıyorsa veya YÜKLENMEMİŞ BİR DÜNYADA <red>& lVAR OLARAK <red><bold>Varsa <yellow>shops'u temizler. Önce mağaza verilerinizin tam bir yedeğini oluşturduğunuzdan emin olun ve devam etmek için <aqua>/qs cleanghost onayını <yellow>to kullanın.
 shop-purchase-cancelled: <red>Market alımı iptal edildi.
 bypassing-lock: <red>Bir QuickShop kilidi atlanıyor!
@@ -306,7 +306,7 @@ price-too-high: <red>Market fiyatı çok yüksek! {0} fiyatından yüksek bir ta
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <green>{0} marketine {1} tane {2} sattı.
 shop-out-of-stock: <dark_purple>{0}, {1}, {2} koordinatlarındaki marketinde {3} tükendi!
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>Sohbete kaç tane <aqua>Satın almak</aqua> istediğinizi yazın. <yellow>{0}<green> tane alabilirsiniz. Hepsini satın almak için <aqua>{1}<green> yazın.
 language-info-panel:
   help: 'Bize yardım edin: '
   code: 'Kod: '
@@ -353,40 +353,40 @@ controlpanel:
   empty-hover: '%eMarketin envanterini temizlemek için tıkla.'
   toggledisplay: '<yellow>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
 timeunit:
-  behind: behind
-  week: <red>{0} week
-  weeks: <red>{0} weeks
-  year: <red>{0} year
-  before: before
-  scheduled: scheduled
-  years: <red>{0} years
-  scheduled-in: scheduled in {0}
-  second: <red>{0} second
-  std-past-format: '{5}{4}{3}{2}{1}{0}ago'
+  behind: arkasında
+  week: <red>{0} hafta
+  weeks: <red>{0} haftalar
+  year: <red>{0} yıl
+  before: önce
+  scheduled: Planlanan
+  years: <red>{0} yıl
+  scheduled-in: '{0}''da planlandı'
+  second: <red>{0} saniye
+  std-past-format: '{5}{4}{3}{2}{1}{0}önce'
   std-time-format: "HH:mm:ss"
-  seconds: <red>{0} seconds
-  hour: <red>{0} hour
-  scheduled-at: scheduled at {0}
-  after: after
-  day: <red>{0} day
-  recent: recent
-  between: between
-  hours: <red>{0} hours
-  months: <red>{0} months
-  longtimeago: long time ago
-  between-format: between {0} and {1}
-  minutes: <red>{0} minutes
-  justnow: just now
-  minute: <red>{0} minute
-  std-format: MM/dd/yyyy HH:mm:ss
-  future-plain-text: future
-  month: <red>{0} month
-  future: in {0}
-  days: <red>{0} days
+  seconds: <red>{0} saniye
+  hour: <red>{0} saat
+  scheduled-at: '{0}''da planlandı'
+  after: sonra
+  day: <red>{0} gün
+  recent: son
+  between: arasında
+  hours: <red>{0} saat
+  months: <red>{0} ay
+  longtimeago: uzun zaman önce
+  between-format: '{0} ile {1}arasında'
+  minutes: <red>{0} dakika
+  justnow: az önce
+  minute: <red>{0} dakika
+  std-format: 'AA / gg / yyyy HH: aa: ss'
+  future-plain-text: gelecek
+  month: <red>{0} ay
+  future: '{0} içinde'
+  days: <red>{0} günler
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
+    buy: <yellow>Bir marketi <light_purple>ALMA</light_purple> moduna geçirir
     about: <yellow>QuickShop bilgilerini gösterir
     language: <yellow>Geçerli dili değiştir
     purge: <yellow>Start the shop purge task in the background
@@ -411,7 +411,7 @@ command:
     item: <yellow>Bir marketin market öğesini değiştir
     debug: <yellow>Geliştirici modunu aktive eder
     unlimited: <yellow>Bir markete sınırsız stok sağlar.
-    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
+    sell: <yellow>Bir marketi <light_purple>SATMA</aqua> moduna geçirir
     fetchmessage: <yellow>Okunmamış market mesajlarını göster
     staff: <yellow>Market personellerini yönet
     clean: <yellow>Stoksuz bütün (yüklü) marketleri kaldırır
@@ -425,8 +425,8 @@ command:
     taxaccount: <yellow>Set the tax account that the shop using
     name: <yellow>Changes the name of a specific shop
     toggledisplay: <yellow>Toggle the shop's display-item status
-    permission: <yellow>Shop permission management
-    lookup: <yellow>Manage lookup-able items table
+    permission: <yellow>Mağaza izin yönetimi
+    lookup: <yellow>Aranabilir öğeler tablosunu yönetme
     database: <yellow>View and maintain the QuickShop Database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
   bulk-size-not-set: '<red>Kullanım: /qs size <miktar>'
@@ -479,58 +479,58 @@ not-managed-shop: <red>Bu marketin sahibi veya moderatörü değilsin
 shop-cannot-trade-when-freezing: <red>Bu markette ticaret yapamazsın çünkü donmuş.
 invalid-container: <red>Invalid container, You can only create the shop with blocks that have an inventory.
 permission:
-  header: "<green>Shop Permission Details"
-  header-player: "<green>Shop Permission Details for {0}"
-  header-group: "<green>Shop Permission Details for group {0}"
+  header: "<green>Mağaza İzin Detayları"
+  header-player: "<green>Şunun için Mağaza İzni Ayrıntıları: {0}"
+  header-group: "<green>Grup için Mağaza İzni Ayrıntıları: {0}"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
   item:
     purchase: "<yellow>Permission to allow users who have this to purchase from the shop. (including buying and selling)"
-    show-information: "<yellow>Permission to allow users who have this to see the shop information. (open shop info panel)"
-    preview-shop: "<yellow>Permission to allow users who have this to preview the shop. (preview item)"
+    show-information: "<yellow>Buna sahip kullanıcıların mağaza bilgilerini görmesine izin vermek için İzin'i. (mağaza bilgi panelini açın)"
+    preview-shop: "<yellow>Buna sahip kullanıcıların mağazayı önizlemesine izin vermek için İzin'i. (önizleme öğesi)"
     search: "<yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from the search results)"
-    delete: "<yellow>Permission to allow users who have this to delete the shop."
+    delete: "<yellow>Buna sahip kullanıcıların mağazayı önizlemesine izin vermek için İzin'i. (önizleme öğesi)."
     receive-alert: "<yellow>Permission to allow users who have this to receive alert messages (e.g out-of-stock or new trade)."
-    access-inventory: "<yellow>Permission to allow users who have this to access the shop inventory."
-    ownership-transfer: "<yellow>Permission to allow users who have this to transfer the shop ownership."
+    access-inventory: "<yellow>Buna sahip kullanıcıların mağaza envanterine erişmesine izin vermek için İzin'i."
+    ownership-transfer: "<yellow>Buna sahip kullanıcıların mağaza sahipliğini aktarmasına izin verme izni."
     management-permission: "<yellow>Permission to allow users who have this to manage the group's permissions and edit the user's group."
-    toggle-display: "<yellow>Permission to allow users who have this to toggle the shop display item."
+    toggle-display: "<yellow>Buna sahip kullanıcıların mağaza vitrini öğesini değiştirmesine izin vermek için İzin'i tıklayın."
     set-shoptype: "<yellow>Permission to allow users who have this to set the shop type (switch to buying or selling)."
-    set-price: "<yellow>Permission to allow users who have this to set the shop price."
-    set-item: "<yellow>Permission to allow users who have this to set the shop item."
-    set-stack-amount: "<yellow>Permission to allow users who have this to set the shop stack amount."
-    set-currency: "<yellow>Permission to allow users who have this to set the shop currency."
-    set-name: "<yellow>Permission to allow users who have this to set the shop name."
+    set-price: "<yellow>Buna sahip kullanıcıların mağaza fiyatını ayarlamasına izin vermek için İzin'i tıklayın."
+    set-item: "<yellow>Buna sahip kullanıcıların mağaza öğesini ayarlamasına izin vermek için İzin'i."
+    set-stack-amount: "<yellow>Buna sahip kullanıcıların mağaza yığını tutarını ayarlamasına izin vermek için izin."
+    set-currency: "<yellow>Buna sahip kullanıcıların mağaza para birimini ayarlamasına izin vermek için İzin'i."
+    set-name: "<yellow>Buna sahip kullanıcıların mağaza adını ayarlamasına izin vermek için İzin'i."
   group:
     everyone: "<yellow>Default group for all users except shop owner."
     staff: "<yellow>System group for shop staff."
     administrator: "<red>System group for administrators, the users in this group will have permissions almost the same as the shop owner."
-invalid-group: "<red>Invalid group name."
-invalid-permission: "<red>Invalid permission."
-invalid-operation: "<red>Invalid operation, only {0} are allowed."
-player-no-group: "<yellow>Player {0} not in any group in this shop."
-player-in-group: "<green>Player {0} is in group <aqua>{1}</aqua> in this shop."
-permission-required: "<red>You don't have permission {0} in this shop to do this."
-no-permission-detailed: "<red>You don't have permission <yellow>{0}</yellow> to do this."
-paste-uploading: "<aqua>Please wait... Uploading the paste to pastebin......"
+invalid-group: "<red>Geçersiz grup adı."
+invalid-permission: "<red>Geçersiz izin."
+invalid-operation: "<red>Geçersiz işlem, yalnızca {0} izin verilir."
+player-no-group: "<yellow>Oyuncu {0} bu dükkandaki herhangi bir grupta yer almıyor."
+player-in-group: "<green>Player {0} grupta <aqua>{1}</aqua> bu dükkanda."
+permission-required: "<red>Bunu yapmak için bu dükkanda {0} izniniz yok."
+no-permission-detailed: "<red>Bunu yapmak için izniniz <yellow>{0}</yellow> yok."
+paste-uploading: "<aqua>Lütfen bekleyiniz... Yapıştırmayı pastebin'e yükleniyor......"
 paste-created: "<green>Paste created, click to open in browser: <yellow>{0}</yellow><newline><red>Warning: <gray>Never send pastea to people you don't trust."
 paste-created-local: "<green>Paste created and saved to your local disk at {0}<newline><red>Warning: <gray>Never send pastes to people you don't trust."
-paste-created-local-failed: "<red>Failed to save paste to your local disk, please check your disk."
+paste-created-local-failed: "<red>Yerel diskinize yapıştırma kaydedilemedi, lütfen diskinizi kontrol edin."
 paste-451: "<gray><bold>TIPS:</bold> Your current country or region seems to have blocked the CloudFlare Workers service and QuickShop Paste may not be loaded properly.<newline><gray>If the subsequent operation fails, try adding the --file argument to generate a local Paste: <dark_gray>/qs paste --file</dark_gray>"
 paste-upload-failed: "<red>Failed to upload paste to {0}, trying different pastebin provider..."
 paste-upload-failed-local: "<red>Failed to upload paste, now trying to generate local paste..."
-command-incorrect: "<red>Command usage incorrect, type /qs help to check help. Usage: {0}."
-successfully-set-player-group: "<green>Successfully set player {0} group to <aqua>{1}</aqua>."
+command-incorrect: "<red>Komut kullanımı yanlış, yardımı denetlemek için /qs help yazın. Kullanım: {0}."
+successfully-set-player-group: "<green>Oyuncu {0} grubu başarıyla <aqua>{1}</aqua>olarak ayarlayın."
 successfully-unset-player-group: "<green>Successfully removed the player group from this shop."
-successfully-set-player-permission: "<green>Successfully set player {0} permission <aqua>{1}</aqua> in shop <aqua>{2}</aqua>."
+successfully-set-player-permission: "<green>Mağaza {0} oyuncu <aqua>{1}</aqua> izin <aqua>{2}</aqua>başarıyla ayarlayın."
 lookup-item-created: "<green>An item named <aqua>{0}</aqua> has been created in the lookup table. You can refer to this item in configurations now."
-lookup-item-exists: "<red>An item named <yellow>{0}</yellow> already exists in the lookup table, delete it or pick another name."
+lookup-item-exists: "<red>Adlı bir öğe <yellow>{0}</yellow> adlı bir öğe zaten var, silin veya başka bir ad seçin."
 lookup-item-not-found: "<red>An item named <yellow>{0}</yellow> does not exist."
 lookup-item-name-illegal: "<red>Not supported Item name. Only alphanumeric characters and underscores are allowed."
-lookup-item-name-regex: "<red>The name must match this regex: <aqua>{0}</aqua>."
+lookup-item-name-regex: "<red>Ad şu regex'le eşleşmelidir: <aqua>{0}</aqua>."
 lookup-item-test-not-found: "<gold>Test: <yellow>The item in your hand is not registered in the lookup table."
 lookup-item-test-found: "<gold>Test: <green>The item in your hand was registered as <aqua>{0}</aqua> in the lookup table."
 lookup-item-removed: "<green>The specified item <aqua>{0}</aqua> has been successfully removed from the lookup table."
-internal-error: "<red>An internal error occurred, please contact the server administrator."
+internal-error: "<red>Bir iç hata oluştu, lütfen sunucu yöneticisine başvurun."
 argument-cannot-be: "<red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>."
 argument-must-between: "<red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>"
 invalid-percentage: "<red>Percentage invalid, you must add '%' after the number of percentage."
@@ -550,7 +550,7 @@ debug:
   warning-sql-confirm: "<yellow>To confirm this dangerous action, type <aqua>/qs debug database sql confirm {0}</aqua> in the next 60 seconds."
   warning-sql-confirm-hover: "<yellow>Click to confirm this dangerous action."
   sql-confirm-not-found: "<yellow>Cannot find the action that you provided. It may be invalid or has expired."
-  sql-executing: "<yellow>Executing SQL statement: <aqua>{0}</aqua>"
+  sql-executing: "<yellow>SQL deyimini yürütme: <aqua>{0}</aqua>"
   sql-completed: "<green>Action complete! {0} rows affected."
   sql-exception: "<red>An error occurred while executing the SQL query. Check the Console for details!"
   sql-disabled: "<red>For security reasons, SQL queries are disabled in this server. If you really need this feature, you can add the following flag to your startup arguments: <aqua>{0}</aqua> with the value `true` to enable it."
@@ -559,16 +559,16 @@ database:
   scanning-async: "<yellow>Scanning the isolated data in the QuickShop Database on an async Task-Thread. The database load may increase the scanning progress. This may take a while. If it fails, try again later."
   already-scanning: "<red>A scan task has been started. Please wait until it finishes."
   trim-warning: "<red><bold>Warning:</bold> <yellow>Backup your database before continuing the Database trim to avoid data loss. Once you're ready, execute <aqua>/qs database trim confirm</aqua> to continue."
-  status: "<yellow>Status: {0}"
-  status-good: "<green>Good"
+  status: "<yellow>Durumu: {0}"
+  status-good: "<green>İyi"
   status-bad: "<yellow>Maintenance required"
-  isolated: "<yellow>Isolated Data:"
+  isolated: "<yellow>Yalıtılmış Veriler:"
   isolated-data-ids: "<aqua>└<yellow> Data Records: <gold>{0}</gold>"
   isolated-shop-ids: "<aqua>└<yellow> Shop Indexes: <gold>{0}</gold>"
   isolated-logs: "<aqua>└<yellow> Logs: <gold>{0}</gold>"
   isolated-external-caches: "<aqua>└<yellow> External Caches: <gold>{0}</gold>"
-  last-purge-time: "<yellow>Last time of trim at {0}"
-  report-time: "<yellow>Last time of scan at {0}"
+  last-purge-time: "<yellow> {0}'daki son tarama zamanı"
+  report-time: "<yellow> {0}'daki son tarama zamanı"
   auto-scan-alert: "<yellow>The QuickShop Database on this server requires maintenance. Found <gold>{0}</gold> isolated data waiting for trimming."
   auto-trim: "<green>Auto-trimming has been enabled on this server. No manual trimming required."
   trim-complete: "<green>Database trimming complete. <yellow>{0}</yellow> isolated data trimmed."
@@ -584,14 +584,14 @@ database:
   suggestion:
     trim: "<yellow>This database requires a trimming of isolated data. Execute <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>The 'Always counting' Feature is scheduled for removal. You shouldn't use it anymore as it will stop working in the future."
-exporting-database: "<green>Exporting database, please wait..."
-exporting-failed: "<red>Failed to export database, please check the server console."
-exported-database: "<green>Database exported to <yellow>{0}</yellow>."
+exporting-database: "<green>Veritabanı dışa aktarılıyor, lütfen bekleyin..."
+exporting-failed: "<red>Dışa aktarılamadı, lütfen sunucu konsolunu kontrol edin."
+exported-database: "<green>Veritabanı <yellow>{0}</yellow>'a verildi."
 importing-not-found: "<red>File <yellow>{0}</yellow> not found. Make sure the File path is valid."
 importing-early-warning: "<red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.<newline><red>Are you sure to continue the import-procedure?</red> Type <aqua>/qs recovery confirm</aqua> to continue."
-importing-database: "<green>Importing database from backup, please wait..."
-importing-failed: "<red>Failed to import database, please check the server console."
-imported-database: "<green>Database imported from <yellow>{0}</yellow>."
+importing-database: "<green>Veritabanı dışa aktarılıyor, lütfen bekleyin..."
+importing-failed: "<red>Dışa aktarılamadı, lütfen sunucu konsolunu kontrol edin."
+imported-database: "<green>Veritabanı <yellow>{0}</yellow>'a verildi."
 transfer-sent: "<green>Shop Transfer-request sent to <yellow>{0}</yellow>."
 transfer-request: "<yellow>Player <aqua>{0}</aqua> would like to transfer their Shops to you. Do you want to accept the request?"
 transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept or <red>/qs transfer deny</red> to deny.<newline>The request will expire after <red>{0}</red> seconds."

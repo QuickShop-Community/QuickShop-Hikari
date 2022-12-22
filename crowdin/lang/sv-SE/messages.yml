@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop is disabled in this world
 how-much-to-trade-for: <green>Ange i chatten, hur mycket du vill sälja <yellow>{1}x {0}<green> för.
 client-language-changed: <green>QuickShop upptäckte att ditt klientspråk har ändrats, vi använder nu {0} språk för dig.
 shops-backingup: Skapar butik-backup från databasen...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hej översättare! Om du redigerar detta från Github eller från kodkällor, besök https://crowdin.com/project/quickshop-hikari
 unlimited-shop-owner-changed: <yellow>Denna obegränsade butikens ägare har ändrats till {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Following parameters are accepted: <gray>{0}'
 thats-not-a-number: <red>Ogiltig siffra
@@ -34,18 +34,18 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>Namn: <aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>Föremål: <aqua>{0}'
     - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Namn: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
     - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Föremål: <aqua>{item}'
     - '<yellow>Location: <aqua>{location}'
   header: '<yellow>You have multiple shops with the name "<green>{0}</green>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
@@ -60,7 +60,7 @@ refill-success: <green>Påfyllningen lyckades
 failed-to-paste: <red>Misslyckades att ladda upp data till Pastebin. Kontrollera din internetanslutning och försök igen. (Se konsolen för detaljer)
 shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
-how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY</aqua>. There are <green>{0}</green> items in each bulk and you can buy <green>{1}</green> bulks. Enter <aqua>{2}</aqua> in chat to buy all.
+how-many-buy-stack: <yellow>Ange i chatten, hur många paket du vill <aqua>KÖPA</aqua>. Det finns <green>{0}</green> föremål i varje paket och du kan köpa <green>{1}</green> paket. Ange <aqua>{2}</aqua> i chatten för att köpa alla.
 exceeded-maximum: <red>Värdet överskred det maximala värdet i Java.
 unlimited-shop-owner-keeped: '<yellow>Observera: Butiksägaren är fortfarande ägare av obegränsad butik, du behöver själv byta ny butiksägare igen.'
 no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All your shops have been removed...
@@ -174,7 +174,7 @@ language:
   name: '<yellow>Namn: <gold>{0}'
   help-us: <green>[Hjälp oss att förbättra översättningens kvalitet]
 warn-to-paste: '<yellow>Collecting data and uploading to Pastebin. This may take a while...<newline><red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>Ange i chatten, hur många föremål du vill <light_purple>SÄLJA</yellow> per paket. Det finns <yellow>{0}<green> föremål per paket och du har <yellow>{1}<green> paket tillgängliga. Ange <aqua>{2}<green> i chatten för att sälja alla.
 updatenotify:
   buttontitle: '[Uppdatera nu]'
   onekeybuttontitle: '[OneKey-uppdatering]'
@@ -306,7 +306,7 @@ price-too-high: <red>Butikspriset är för högt! Du kan inte skapa ett med ett 
 plugin-cancelled: '<red>Operationen avbruten, Orsak: {0}'
 player-sold-to-your-store: <green>{0} sålde {1} {2} till din butik.
 shop-out-of-stock: <dark_purple>Din butik vid {0}, {1}, {2} har fått slut på {3}!
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>Ange i chatten, hur många du vill <aqua>KÖPA</aqua>. Du kan köpa <yellow>{0}<green>. Ange <aqua>{1}<green> för att köpa alla.
 language-info-panel:
   help: 'Hjälp oss: '
   code: 'Kod: '
@@ -386,7 +386,7 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
+    buy: <yellow>Ändrar en butik till <light_purple>KÖP</light_purple>-läge
     about: <yellow>Visar QuickShop-info
     language: <yellow>Ändra det språk som används för nuvarande
     purge: <yellow>Start the shop purge task in the background
@@ -411,7 +411,7 @@ command:
     item: <yellow>Ändra föremålet i en butik
     debug: <yellow>Aktiverar utvecklarläge
     unlimited: <yellow>Ger en butik obegränsat lager.
-    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
+    sell: <yellow>Ändrar en butik till <aqua>SÄLJ</aqua>-läge
     fetchmessage: <yellow>Visa olästa butiksmeddelanden
     staff: <yellow>Hantera din butikspersonal
     clean: <yellow>Tar bort alla (laddade) butiker med tomt lagersaldo

@@ -174,7 +174,7 @@ language:
   name: '<yellow>名称： <gold>{0}'
   help-us: <green>[帮助我们提高翻译质量]
 warn-to-paste: '<yellow>Collecting data and uploading to Pastebin. This may take a while...<newline><red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>在聊天栏中输入你想 <light_purple>卖</yellow> 的份数. 每份中有 <yellow>{0}<green> 个该物品, 你目前可卖出 <yellow>{1}<green> 份这样的物品，输入 <aqua>{2}<green> 以卖出所有此项物品。
 updatenotify:
   buttontitle: '[立即更新]'
   onekeybuttontitle: '[一键升级]'
@@ -306,7 +306,7 @@ price-too-high: <red>商品的价格太高了！你不能创建价格高于 {0} 
 plugin-cancelled: '<red>操作被取消，原因： {0}'
 player-sold-to-your-store: <green>{0} 在你的商店出售了 {1} 个 {2} 。
 shop-out-of-stock: <dark_purple>你位于 {0}, {1}, {2}, 的商店的 {3} 脱销了。
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>在聊天中输入您想要<aqua>购买</aqua>的数量。您可以购买<yellow>{0}<green>个，输入<aqua>{1}<green>以购买全部。
 language-info-panel:
   help: '帮助我们： '
   code: '语言代码：'
@@ -386,7 +386,7 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
+    buy: <yellow>切换到 <light_purple>收购 </light_purple>模式
     about: <yellow>显示QuickShop信息
     language: <yellow>切换正在使用的语言
     purge: <yellow>Start the shop purge task in the background
@@ -411,7 +411,7 @@ command:
     item: <yellow>改变商店物品
     debug: <yellow>切换开发者模式
     unlimited: <yellow>将商店设置为无限库存
-    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
+    sell: <yellow>切换到 <aqua>出售 </aqua>模式
     fetchmessage: <yellow>获取未读的商店交易日志
     staff: <yellow>管理商店助手
     clean: <yellow>移除所有已加载的脱销的商店
@@ -1242,7 +1242,7 @@ addon:
     discount-code-query: "<green>您正在使用优惠码： <yellow>{0}</yellow>。"
     discount-code-applicable: "<color:#bcef26>您的优惠码 <yellow><bold>{0}</bold></yellow> 在这家商店中适用 <bold></bold>！"
     discount-code-applicable-with-threshold: "<color:#bcef26>您的优惠码 <yellow><bold>{0}</bold></yellow> <bold>适用于此商店的</bold> ，但仅在单笔交易中您的购买成本超过 <yellow>{1}</yellow> 。"
-    discount-code-not-applicable: "<red>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>not applicable</bold> in this shop!"
+    discount-code-not-applicable: "<red>您的优惠码 <yellow><bold>{0}</bold></yellow> <bold>不适用于</bold> 这家商店！"
     discount-code-reach-the-limit: "<red>您已达到优惠码的使用限制 <yellow><bold>{0}</bold></yellow>，则不应用折扣。"
     discount-code-no-permission: "<red>您没有权限在此商店使用任何优惠码！"
     discount-code-has-been-expired: "<red>您的折扣已过期！"
@@ -1261,7 +1261,7 @@ addon:
     discount-code-under-threshold: "<red>由于总价值低于优惠码阈值，所以优惠未适用于您的交易 <yellow>{0}</yellow>."
     percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
     fixed-off: "<bold><color:#bcef26>-{0}</color:#bcef26></bold>"
-    discount-code-list: "<gold>Listing your discount codes:</gold>"
+    discount-code-list: "<gold>列出您的优惠码：</gold>"
     discount-code-applied-in-purchase: "<color:#bcef26>您的优惠码 <yellow>{0}</yellow> 已经应用到此交易，并且您节省了 <gold>{1}</gold>！"
     scope:
       this-shop: "{0}"

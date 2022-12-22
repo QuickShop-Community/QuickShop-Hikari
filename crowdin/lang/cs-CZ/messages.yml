@@ -5,7 +5,7 @@ disabled-in-this-world: <red>Obchod je v tomto světě zakázán
 how-much-to-trade-for: <green>Zadejte v chatu, kolik chcete obchodovat <yellow>{1}krát {0}</yellow>.
 client-language-changed: <green>Plugin zjistil, že nastavení jazyka vašeho klienta bylo změněno, nyní pro Vás používáme {0} jazyků.
 shops-backingup: Vytváření zálohy obchodu z databáze...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Ahoj překladatel! Pokud to upravujete na GitHubu nebo pomocí zdrojového kódu, měli byste místo toho jít na https://crowdin.com/project/quickshop-hikari.
 unlimited-shop-owner-changed: <yellow>Majitel tohoto neomezeného obchodu byl změněn na {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Following parameters are accepted: <gray>{0}'
 thats-not-a-number: <red>Neplatné číslo
@@ -34,18 +34,18 @@ paste-disabled: '<red>Vložení funkce bylo zakázáno! Nemůžete požádat o t
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>Název: <aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>Položka: <aqua>{0}'
     - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Název: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
     - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Položka: <aqua>{item}'
     - '<yellow>Location: <aqua>{location}'
   header: '<yellow>You have multiple shops with the name "<green>{0}</green>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
@@ -60,7 +60,7 @@ refill-success: <green>Doplnění úspěšně proběhlo
 failed-to-paste: <red>Nepodařilo se nahrát data do schránky. Zkontrolujte připojení k internetu a zkuste to znovu. (Podrobnosti naleznete v konzoli)
 shop-out-of-stock-name: <dark_purple>v obchodě {0} došel {1}!
 shop-name-invalid: <red>Název obchodu <yellow>{0}</yellow> je neplatný. Vyberte jiný!
-how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY</aqua>. There are <green>{0}</green> items in each bulk and you can buy <green>{1}</green> bulks. Enter <aqua>{2}</aqua> in chat to buy all.
+how-many-buy-stack: <yellow>Zadejte v chatu, kolik kusů si přejete <aqua>KOUPIT</aqua>. V každé hromadné zásilce jsou <green>{0}</green> položky a můžete si koupit <green>{1}</green> kusů. Chcete-li koupit všechny, zadejte <aqua>{2}</aqua> do chatu.
 exceeded-maximum: <red>Hodnota překročila maximální hodnotu v Javě.
 unlimited-shop-owner-keeped: '<yellow>Upozornění: Vlastník obchodu je stále neomezený vlastník obchodu, musíte si nastavit nového vlastníka obchodu sami.'
 no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All your shops have been removed...
@@ -550,7 +550,7 @@ debug:
   warning-sql-confirm: "<yellow>To confirm this dangerous action, type <aqua>/qs debug database sql confirm {0}</aqua> in the next 60 seconds."
   warning-sql-confirm-hover: "<yellow>Click to confirm this dangerous action."
   sql-confirm-not-found: "<yellow>Cannot find the action that you provided. It may be invalid or has expired."
-  sql-executing: "<yellow>Executing SQL statement: <aqua>{0}</aqua>"
+  sql-executing: "<yellow>Spuštění příkazu SQL: <aqua>{0}</aqua>"
   sql-completed: "<green>Action complete! {0} rows affected."
   sql-exception: "<red>An error occurred while executing the SQL query. Check the Console for details!"
   sql-disabled: "<red>For security reasons, SQL queries are disabled in this server. If you really need this feature, you can add the following flag to your startup arguments: <aqua>{0}</aqua> with the value `true` to enable it."
@@ -559,16 +559,16 @@ database:
   scanning-async: "<yellow>Scanning the isolated data in the QuickShop Database on an async Task-Thread. The database load may increase the scanning progress. This may take a while. If it fails, try again later."
   already-scanning: "<red>A scan task has been started. Please wait until it finishes."
   trim-warning: "<red><bold>Warning:</bold> <yellow>Backup your database before continuing the Database trim to avoid data loss. Once you're ready, execute <aqua>/qs database trim confirm</aqua> to continue."
-  status: "<yellow>Status: {0}"
-  status-good: "<green>Good"
+  status: "<yellow>Stav: {0}"
+  status-good: "<green>Dobré"
   status-bad: "<yellow>Maintenance required"
-  isolated: "<yellow>Isolated Data:"
+  isolated: "<yellow>Izolovaná data:"
   isolated-data-ids: "<aqua>└<yellow> Data Records: <gold>{0}</gold>"
   isolated-shop-ids: "<aqua>└<yellow> Shop Indexes: <gold>{0}</gold>"
   isolated-logs: "<aqua>└<yellow> Logs: <gold>{0}</gold>"
   isolated-external-caches: "<aqua>└<yellow> External Caches: <gold>{0}</gold>"
-  last-purge-time: "<yellow>Last time of trim at {0}"
-  report-time: "<yellow>Last time of scan at {0}"
+  last-purge-time: "<yellow>Poslední čas oříznutí v {0}"
+  report-time: "<yellow>Poslední čas skenování při {0}"
   auto-scan-alert: "<yellow>The QuickShop Database on this server requires maintenance. Found <gold>{0}</gold> isolated data waiting for trimming."
   auto-trim: "<green>Auto-trimming has been enabled on this server. No manual trimming required."
   trim-complete: "<green>Database trimming complete. <yellow>{0}</yellow> isolated data trimmed."
@@ -584,14 +584,14 @@ database:
   suggestion:
     trim: "<yellow>This database requires a trimming of isolated data. Execute <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>The 'Always counting' Feature is scheduled for removal. You shouldn't use it anymore as it will stop working in the future."
-exporting-database: "<green>Exporting database, please wait..."
-exporting-failed: "<red>Failed to export database, please check the server console."
-exported-database: "<green>Database exported to <yellow>{0}</yellow>."
+exporting-database: "<green>Export databáze, počkejte prosím..."
+exporting-failed: "<red>Nepodařilo se exportovat databázi, zkontrolujte konzolu serveru."
+exported-database: "<green>Databáze exportovaná do <yellow>{0}</yellow>."
 importing-not-found: "<red>File <yellow>{0}</yellow> not found. Make sure the File path is valid."
 importing-early-warning: "<red><bold>Warning:</bold> <yellow>The backup will be imported into the current database. Any existing data will be purged and is lost forever unless you have a backup.<newline><red>Are you sure to continue the import-procedure?</red> Type <aqua>/qs recovery confirm</aqua> to continue."
-importing-database: "<green>Importing database from backup, please wait..."
-importing-failed: "<red>Failed to import database, please check the server console."
-imported-database: "<green>Database imported from <yellow>{0}</yellow>."
+importing-database: "<green>Import databáze ze zálohy, počkejte prosím..."
+importing-failed: "<red>Nepodařilo se importovat databázi, zkontrolujte konzolu serveru."
+imported-database: "<green>Databáze importovaná z <yellow>{0}</yellow>."
 transfer-sent: "<green>Shop Transfer-request sent to <yellow>{0}</yellow>."
 transfer-request: "<yellow>Player <aqua>{0}</aqua> would like to transfer their Shops to you. Do you want to accept the request?"
 transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept or <red>/qs transfer deny</red> to deny.<newline>The request will expire after <red>{0}</red> seconds."

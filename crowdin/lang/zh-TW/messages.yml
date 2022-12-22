@@ -174,7 +174,7 @@ language:
   name: '<yellow>名稱：<gold>{0}'
   help-us: <green>[幫助我們提升翻譯品質]
 warn-to-paste: '<yellow>Collecting data and uploading to Pastebin. This may take a while...<newline><red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>在聊天室中輸入你想 <aqua>售出</yellow> 的數量，每份中有 <yellow>{0}<green> 個物品，你目前可以售出 <yellow>{1}<green> 份。輸入 <aqua>{2}<green> 來售出所有物品。
 updatenotify:
   buttontitle: '[現在更新]'
   onekeybuttontitle: '[一鍵更新]'
@@ -306,7 +306,7 @@ price-too-high: <red>商店價格太高了！請設定在 {0} 元以內。
 plugin-cancelled: '<red>操作被取消。原因：{0}'
 player-sold-to-your-store: <green>{0} 在你的商店賣出了 {1} 個 {2}。
 shop-out-of-stock: '&5你在 XYZ：{0} / {1} / {2} 出售 {3} 的商店已售罄一空！'
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>在聊天室中輸入你想要 <aqua>購買 </aqua>的數量，你可以購買 <yellow>{0} <green>個。輸入 <aqua>{1}<green>購買全部。
 language-info-panel:
   help: '協助我們：'
   code: '代碼：'
@@ -386,7 +386,7 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
+    buy: <yellow>修改成 <light_purple>收購 </light_purple>模式
     about: <yellow>顯示關於 QuickShop 的資訊
     language: <yellow>修改正在使用的語言
     purge: <yellow>Start the shop purge task in the background
@@ -411,7 +411,7 @@ command:
     item: <yellow>修改商店物品
     debug: <yellow>開啟開發者模式
     unlimited: <yellow>將商店設為無限庫存。
-    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
+    sell: <yellow>修改成 <light_purple>出售 </aqua>模式
     fetchmessage: <yellow>顯示未讀商店日誌
     staff: <yellow>管理你的商店員工
     clean: <yellow>刪除所有（已載入）沒有商品的商店

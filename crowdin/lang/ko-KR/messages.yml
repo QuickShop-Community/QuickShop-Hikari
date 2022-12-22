@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop is disabled in this world
 how-much-to-trade-for: <green>채팅에 {0}의 {1}개당 가격을 얼마로 할건지 입력해주세요.
 client-language-changed: <green>퀵샵이 당신의 클라이언트의 언어설정이 변경된것을 확인했습니다, 지금부터 저희는 당신을 위해 {0} 를 적용합니다.
 shops-backingup: 상점백업을 데이터베이스에 만들고 있습니다
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: 안녕하세요 번역가님! 만약 당신이 깃헙이나 소스코드에서 번역 중이라면 다음 사이트를 가보시기 바래요! https://crowdin.com/project/quickshop-hikari
 unlimited-shop-owner-changed: <yellow>무제한 상점의 주인이 {0}으로 변경되었습니다.
 bad-command-usage-detailed: '<red>Bad command arguments! Following parameters are accepted: <gray>{0}'
 thats-not-a-number: <red>잘못된 숫자입니다.
@@ -34,18 +34,18 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>이름: <aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>아이템 : <aqua>{0}'
     - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>이름: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
     - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>아이템 : <aqua>{item}'
     - '<yellow>Location: <aqua>{location}'
   header: '<yellow>You have multiple shops with the name "<green>{0}</green>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
@@ -60,7 +60,7 @@ refill-success: <green>리필 완료
 failed-to-paste: <red>Pastebin에 데이터 업로드에 실패했습니다. 인터넷을 확인한 후 다시 시도하십시오. (자세한 내용은 콘솔을 참조하세요.)
 shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
-how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY</aqua>. There are <green>{0}</green> items in each bulk and you can buy <green>{1}</green> bulks. Enter <aqua>{2}</aqua> in chat to buy all.
+how-many-buy-stack: <yellow>채팅에 입력하세요, 묶음을 얼마나 <aqua>구매</aqua>할것인지 <green>{0}</green> 개의 아이템의 하나의 묶음마다 들어있으며 당신은 <green>{1}</green>개의 묶음을 구매할수 있습니다 <aqua>{2}</aqua>을 입력하여 모두 구매할수 있습니다
 exceeded-maximum: <red>자바에서 허용하는 최대 값을 초과했습니다.
 unlimited-shop-owner-keeped: '<yellow>주의: 상점 주인은 여전히 무제한 상점의 주인입니다, 상점을 소유하려면 상점을 초기화해야합니다.'
 no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All your shops have been removed...
@@ -174,7 +174,7 @@ language:
   name: '<yellow>이름: <gold>{0}'
   help-us: <green>[번역 품질을 향상시킬 수 있도록 도와주세요.]
 warn-to-paste: '<yellow>Collecting data and uploading to Pastebin. This may take a while...<newline><red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <light_purple>판매<green>하고 싶은 묶음을 채팅에 입력 하세요. <yellow>{0}</yellow>개의 아이템이 한 묶음 입니다. <yellow>{1}<green> 묶음을 소유 중 입니다. <aqua>{2}<green>로 모두 판매할 수 있습니다
 updatenotify:
   buttontitle: '[지금 업데이트]'
   onekeybuttontitle: '[즉시 업데이트]'
@@ -306,7 +306,7 @@ price-too-high: <red>상점의 가격이 너무 높습니다! 당신은 {0} 원 
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <green>{0} 님이 {2}  {1} 개을 (를) 유저님의 상점에 판매했습니다.
 shop-out-of-stock: <dark_purple>{0}, {1}, {2} 에 있는 당신의 가게의 물품 {3} 이 (가) 부족합니다.
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>채팅으로 원하는 <aqua>구매</aqua> 개수를 입력해주세요. 당신은 <yellow>{0}<green>개를 구매할 수 있습니다. <aqua>{1}<green>을 입력해 전부 구매 가능합니다.
 language-info-panel:
   help: '저희를 도와주세요: '
   code: '코드: '
@@ -386,7 +386,7 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
+    buy: <yellow>상점을 <light_purple>구매 모드</light_purple>로 전환합니다
     about: <yellow>QuickShop 의 정보를 보여줍니다.
     language: <yellow>현재 사용되는 언어를 변경합니다.
     purge: <yellow>Start the shop purge task in the background
@@ -411,7 +411,7 @@ command:
     item: <yellow>상점의 상점 항목을 변경합니다.
     debug: <yellow>개발자 모드 활성화
     unlimited: <green>상점의 개수제한을 무제한으로 설정합니다.
-    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
+    sell: <yellow>상점을 <aqua>판매 모드</aqua>로 전환합니다
     fetchmessage: <yellow>읽지 않은 상점 메시지를 보여줍니다.
     staff: <yellow>당신의 상점 관리자를 관리합니다.
     clean: <yellow>재고 없이 모든 (적재된) 상점을 제거합니다.
