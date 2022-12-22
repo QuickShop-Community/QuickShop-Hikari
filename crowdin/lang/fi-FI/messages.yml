@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop is disabled in this world
 how-much-to-trade-for: <green>Kirjoita chattiin, mihin hintaan haluat vaihtaa <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Luodaan Kauppa-varmuuskopio tietokannasta...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hei kääntäjä! Jos muokkaat tätä Githubista tai koodilähteistä, sinun pitäisi mennä https://crowdin.com/project/quickshop-hikari
 unlimited-shop-owner-changed: <yellow>Tämä rajoittamaton kaupan omistaja on muutettu {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Following parameters are accepted: <gray>{0}'
 thats-not-a-number: <red>Epäkelpo numero
@@ -34,18 +34,18 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>Nimi: <aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>Tuote: <aqua>{0}'
     - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Nimi: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
     - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Tuote: <aqua>{item}'
     - '<yellow>Location: <aqua>{location}'
   header: '<yellow>You have multiple shops with the name "<green>{0}</green>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
@@ -174,7 +174,7 @@ language:
   name: '<yellow>Nimi: <gold>{0}'
   help-us: <green>[Auta meitä parantamaan käännösten laatua]
 warn-to-paste: '<yellow>Collecting data and uploading to Pastebin. This may take a while...<newline><red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</yellow>. There are <yellow>{0}<green> items per bulk and you can sell <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to sell all.
 updatenotify:
   buttontitle: '[Päivitä nyt]'
   onekeybuttontitle: '[Klikkaa Päivittääksesi]'
@@ -306,7 +306,7 @@ price-too-high: <red>Kaupan hinta on liian korkea! Et voi luoda kauppaan, jonka 
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <green>{0} myi {1} {2} kauppaasi.
 shop-out-of-stock: <dark_purple>Kaupastasi koordinaateissa {0}, {1}, {2} on loppunut {3}!
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}<green>. Enter <aqua>{1}<green> to buy them all.
 language-info-panel:
   help: 'Auta meitä: '
   code: 'Koodi: '
@@ -386,7 +386,7 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
+    buy: <yellow>Vaihtaa kaupan <light_purple>ostamaan</light_purple> tuotteita
     about: <yellow>Näytä QuickShop tietoja
     language: <yellow>Vaihda tällä hetkellä käytettyä kieltä
     purge: <yellow>Start the shop purge task in the background
@@ -411,7 +411,7 @@ command:
     item: <yellow>Vaihda kauppatavara
     debug: <yellow>Käyttöön ottaa kehittäjä tilan
     unlimited: <yellow>Antaa kaupalle loputtoman varaston.
-    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
+    sell: <yellow>Vaihtaa kaupan <green>myymään</aqua> tuotteita
     fetchmessage: <yellow>Näyttää lukemattomat kauppa viestit
     staff: <yellow>Hallitse kauppasi henkilökuntaa
     clean: <yellow>Poistaa kaikki (ladatut) kaupat, jotka ovat tyhjiä
