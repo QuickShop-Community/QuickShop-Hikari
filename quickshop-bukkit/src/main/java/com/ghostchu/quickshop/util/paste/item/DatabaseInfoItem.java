@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DatabaseInfoItem implements SubPasteItem {
-    private static String VERBOSE_PREFIX = "[verbose] ";
+    private static final String VERBOSE_PREFIX = "[verbose] ";
 
     @Override
     public @NotNull String genBody() {
