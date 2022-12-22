@@ -60,7 +60,7 @@ refill-success: <green>補充成功
 failed-to-paste: <red>Pastebinへのデータのアップロードに失敗しました。インターネット接続を確認して、もう一度お試しください。(詳細についてはコンソールをご覧ください)
 shop-out-of-stock-name: <dark_purple>あなたのショップ {0} の {1} の在庫がなくなりました！!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
-how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY</aqua>. There are <green>{0}</green> items in each bulk and you can buy <green>{1}</green> bulks. Enter <aqua>{2}</aqua> in chat to buy all.
+how-many-buy-stack: <yellow>チャットで<aqua>購入</aqua>したい商品の数を入力して下さい。1つの商品に <green>{0} 個</green> のアイテムが含まれており、あなたは<green>{1} つ</green> の商品を購入することができます。すべて購入するにはチャットで <aqua>{2}</aqua> と入力して下さい。
 exceeded-maximum: この値はJavaの最大値を越えました
 unlimited-shop-owner-keeped: '<yellow>注意: 店主はまだ無制限の店主です。自分で新しいショップオーナーを再設定する必要があります。'
 no-enough-money-to-keep-shops: <red>You didn't have enough money to keep your shops! All your shops have been removed...
@@ -130,7 +130,7 @@ metric:
   price-hover: <yellow>合計 {0}, {1} 税を含む。
   unknown: <gray>(unknown)
   undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  no-results: <red>取引が見つかりませんでした
   action-description:
     DELETE: <yellow>Player deleted a shop. Refunded the shop creation fee to the owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because of the payment period.
@@ -174,7 +174,7 @@ language:
   name: '<yellow>名前: <gold>{0}'
   help-us: <green>[翻訳の品質向上にご協力ください]
 warn-to-paste: '<yellow>Collecting data and uploading to Pastebin. This may take a while...<newline><red><bold>Warning:</bold> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
-how-many-sell-stack: <green>Enter in chat, how many bulk you wish to <light_purple>SELL</light_purple>. There are <yellow>{0}</yellow> items per bulk and you can sell <yellow>{1}</yellow> bulks. Enter <aqua>{2}</aqua> in chat to sell all.
+how-many-sell-stack: <yellow>チャットで<aqua>売却<green>したい商品の数を入力して下さい。1つの商品に <yellow>{0} 個</yellow> のアイテムが含まれており、あなたは<yellow>{1} つ<green> の商品を売却することができます。すべて売却するにはチャットで <aqua>{2}<green> と入力して下さい。
 updatenotify:
   buttontitle: '[更新する]'
   onekeybuttontitle: '[ワンキーアップデート]'
@@ -306,7 +306,7 @@ price-too-high: <red>ショップの価格が高すぎます！ {0} より高い
 plugin-cancelled: '<red>Operation cancelled, Reason: {0}'
 player-sold-to-your-store: <green>{0} があなたのショップに {2} を {1} 個 売却しました。
 shop-out-of-stock: <dark_purple>{0}、{1}、{2} のショップで {3} の在庫がなくなりました！
-how-many-buy: <green>Enter in chat, how many you wish to <aqua>BUY</aqua>. You can buy <yellow>{0}</yellow>. Enter <aqua>{1}</aqua> to buy them all.
+how-many-buy: <green>チャットで<aqua>購入</aqua>したい個数を入力してください。<yellow>{0}個 <green> 購入できます。<aqua>{1} <green>で全て購入
 language-info-panel:
   help: 'ヘルプ: '
   code: 'コード: '
@@ -386,7 +386,7 @@ timeunit:
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect.'
   description:
-    buy: <yellow>Changes a shop to <light_purple>BUY</light_purple> mode
+    buy: <yellow>ショップを<light_purple>買取</light_purple>モードに変更します
     about: <yellow>QuickShopの情報を表示します
     language: <yellow>現在使用されている言語を変更します
     purge: <yellow>Start the shop purge task in the background
@@ -411,7 +411,7 @@ command:
     item: <yellow>ショップの取引アイテムを変更します
     debug: 開発者モードの有効化
     unlimited: <yellow>ショップに無制限の在庫を与えます
-    sell: <yellow>Changes a shop to <aqua>SELL</aqua> mode
+    sell: <yellow>ショップを<aqua>販売</aqua>モードに変更します
     fetchmessage: <yellow>未読ショップメッセージを取得
     staff: <yellow>ショップスタッフを管理します
     clean: <yellow>在庫のないすべての(読み込まれた) ショップを削除します
