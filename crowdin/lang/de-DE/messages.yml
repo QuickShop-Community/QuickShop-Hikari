@@ -230,7 +230,7 @@ tableformat:
   left_begin: '<dark_purple>| '
 quickshop-gui-preview: QuickShop GUI Itemvorschau
 translate-not-completed-yet-click: Die Übersetzung von der Sprache {0} wurde noch nicht von {1} fertiggestellt. Möchtest du uns helfen, die Übersetzung zu verbessern? Klicke hier!
-taxaccount-invalid: <red>Target account invalid. Please enter a valid player name or UUID (With dashes).
+taxaccount-invalid: <red>Zielkonto ist ungültig. Bitte verwende einen gültigen Spielernamen oder UUID (Mit Bindestrichen).
 player-bought-from-your-store: <red>{0} hat {1} {2} von deinem Shop gekauft und du hast {3} ( Steuern) verdient.
 reached-maximum-can-create: <red>Du hast bereits das Maximum von {0}/{1} Shops erstellt!
 reached-maximum-create-limit: <red>Du hast die maximale Anzahl an Shops erreicht, welche du erstellen kannst
@@ -249,13 +249,13 @@ price-is-now: <green>Der neue Preis des Shops ist <yellow>{0}
 shops-arent-locked: <red>Nicht vergessen, Shops sind NICHT vor Diebstahl geschützt! Wenn du Diebe stoppen willst, verwende LWC, Lockette, o.ä!
 that-is-locked: <red>Dieser Shop ist geschützt.
 shop-has-no-space: <red>Der Shop hat nur noch Platz für {0} weitere {1}.
-safe-mode-admin: '<red><bold>WARNING:</bold> The QuickShop version on this server is currently running in safe mode. Features won''t work. Please use the <yellow>/qs</yellow> command to check for any errors.'
+safe-mode-admin: '<red><bold>WARNUNG:</bold> Die QuickShop Version auf diesem Server läuft aktuell im Sicherheitsmodus. Jeglicher Funktionen sind deaktiviert. Bitte verwende den <yellow>/qs</yellow> Befehl um nach eventuellen Fehlern zu suchen.'
 shop-stock-too-low: <red>Der Shop hat nur noch {0}{1} übrig!
 world-not-exists: <red>Die Welt <yellow>{0}<red> existiert nicht
 how-many-sell: <green>Schreib im Chat, wie viele du gerne <light_purple>VERKAUFEN<green> willst. Du kannst <yellow>{0}<green> verkaufen. Schreibe <aqua>{1}<green> um alle zu verkaufen.
 shop-freezed-at-location: <yellow>Dein Shop {0} bei {1} wurde eingefroren!
 translation-contributors: 'Mitwirkende: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken und Andre_601'
-empty-success: <green>Successfully emptied shop
+empty-success: <green>Shop erfolgreich geleert
 taxaccount-set: <green>Das Steuerkonto dieses Shops wurde auf <yellow>{0} gesetzt
 support-disable-reason:
   hot-reload: <yellow>Nicht unterstützter Hot reload vom Server. Starte den Server neu und versuch es erneut.
@@ -608,6 +608,7 @@ benefit-added: "<green>Spieler <aqua>{0}</aqua> wurde zu Shop-Vorteilen hinzugef
 benefit-updated: "<green>Spieler <aqua>{0}</aqua>'s Vorteile wurden aktualisiert!"
 benefit-query: "<green>Dieser Shop hat <yellow>{0}</yellow> Spieler in der Vorteilsliste!"
 benefit-query-list: "<yellow> - </yellow><white>Spieler <gold>{0}</gold>. Vorteil: <gold>{1}%</gold>/white>"
+context-test-string: "This is a test string for testing context persist on Crowdin, it won't show in game."
 addon:
   towny:
     commands:
