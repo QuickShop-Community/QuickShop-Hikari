@@ -608,7 +608,6 @@ benefit-added: "<green>玩家<aqua>{0}</aqua>已被添加到商店的利益分�
 benefit-updated: "<green>玩家 <aqua>{0}</aqua>的利益分配已更新！"
 benefit-query: "<green>该商店在利益分配列表中有 <yellow>{0}</yellow> 名玩家！"
 benefit-query-list: "<yellow> - </yellow><white>玩家 <gold>{0}</gold>，利益分配 <gold>{1}%</gold></white>"
-context-test-string: "This is a test string for testing context persist on Crowdin, it won't show in game. Changed string to see if context discarded by Crowdin"
 addon:
   towny:
     commands:
