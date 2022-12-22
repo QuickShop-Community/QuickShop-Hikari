@@ -22,6 +22,9 @@ import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.ReloadStatus;
+import com.ghostchu.simplereloadlib.Reloadable;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -39,7 +42,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class VirtualDisplayItem extends AbstractDisplayItem {
+public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadable {
     private static final AtomicInteger COUNTER = new AtomicInteger(Integer.MAX_VALUE);
     private static final GameVersion VERSION = QuickShop.getInstance().getGameVersion();
     private static final ProtocolManager PROTOCOL_MANAGER = ProtocolLibrary.getProtocolManager();
@@ -169,6 +172,12 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
         fakeItemVelocityPacket = PacketFactory.createFakeItemVelocityPacket(entityID);
         fakeItemDestroyPacket = PacketFactory.createFakeItemDestroyPacket(entityID);
         initialized = true;
+    }
+
+    @Override
+    public ReloadResult reloadModule() {
+        init();
+        return new ReloadResult(ReloadStatus.SUCCESS, "OK", null);
     }
 
     //Due to the delay task in ChunkListener
@@ -377,7 +386,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem {
             //https://wiki.vg/index.php?title=Entity_metadata#Entity
             if (PLUGIN.getConfig().getBoolean("shop.display-item-use-name")) {
                 String itemName = GsonComponentSerializer.gson().serialize(Util.getItemStackName(itemStack));
-                wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromText(itemName).getHandle()));
+                wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromJson(itemName).getHandle()));
                 wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
             }
 

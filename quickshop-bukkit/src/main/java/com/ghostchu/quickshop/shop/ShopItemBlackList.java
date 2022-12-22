@@ -23,6 +23,7 @@ public class ShopItemBlackList implements Reloadable {
     }
 
     private void init() {
+        BLACKLIST.clear();
         List<String> configBlacklist = plugin.getConfig().getStringList("blacklist");
         for (String s : configBlacklist) {
             if (s.startsWith("@")) {
