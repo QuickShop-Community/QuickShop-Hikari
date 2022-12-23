@@ -68,14 +68,16 @@ public class PlayerListener extends AbstractQSListener {
             cooldownMap.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
         }
         // ----Adventure dupe click workaround end----
-        Block focused = event.getPlayer().getTargetBlock(null, 5);
-        PlayerInteractEvent interactEvent
-                = new PlayerInteractEvent(event.getPlayer(),
-                focused.getType() == Material.AIR ? Action.LEFT_CLICK_AIR : Action.LEFT_CLICK_BLOCK,
-                event.getPlayer().getInventory().getItemInMainHand(),
-                focused,
-                event.getPlayer().getFacing().getOppositeFace());
-        onClick(interactEvent);
+        Block focused = event.getPlayer().getTargetBlockExact(5);
+        if (focused != null) {
+            PlayerInteractEvent interactEvent
+                    = new PlayerInteractEvent(event.getPlayer(),
+                    focused.getType() == Material.AIR ? Action.LEFT_CLICK_AIR : Action.LEFT_CLICK_BLOCK,
+                    event.getPlayer().getInventory().getItemInMainHand(),
+                    focused,
+                    event.getPlayer().getFacing().getOppositeFace());
+            onClick(interactEvent);
+        }
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
