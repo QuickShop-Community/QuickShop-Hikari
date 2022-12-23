@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop jest wyłączony w tym świecie
 how-much-to-trade-for: <green>Wpisz na czacie cenę za <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop wykrył, że ustawienia języka klienta zostały zmienione, teraz używamy dla Ciebie wersji językowej {0}.
 shops-backingup: Tworzenie kopii zapasowej sklepu z bazy danych...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Witaj tłumaczu! Jeśli edytujesz to z Github'a lub ze źródeł kodowych, powinieneś przejść do https://crowdin.com/project/quickshop-hikari
 unlimited-shop-owner-changed: <yellow>Ten właściciel sklepu nielimitowanego został zmieniony na {0}.
 bad-command-usage-detailed: '<red>Błędne argumenty poleceń! Akceptuje następujące parametry: <gray>{0}'
 thats-not-a-number: <red>Nieprawidłowa liczba
@@ -34,18 +34,18 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>Nazwa: <aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>Przedmiot: <aqua>{0}'
     - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Nazwa: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
     - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Przedmiot: <aqua>{item}'
     - '<yellow>Location: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
@@ -425,8 +425,8 @@ command:
     taxaccount: <yellow>Ustaw konto podatkowe, które sklep ma używać
     name: <yellow>Nadaje sklepowi konkretną nazwę
     toggledisplay: <yellow>Przełącz stan wyświetlania przedmiotu w sklepie
-    permission: <yellow>Shop permission management
-    lookup: <yellow>Manage lookup-able items table
+    permission: <yellow>Zarządzanie uprawnieniami sklepu
+    lookup: <yellow>Zarządzaj tabelą elementów do wyszukiwania
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
   bulk-size-not-set: '<red>Użycie: /qs size <amount>'
@@ -479,32 +479,32 @@ not-managed-shop: <red>Nie jesteś właścicielem ani moderatorem tego sklepu
 shop-cannot-trade-when-freezing: <red>Nie możesz handlować z tym sklepem, ponieważ jest zamrożony.
 invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
 permission:
-  header: "<green>Shop Permission Details"
-  header-player: "<green>Shop Permission Details for {0}"
-  header-group: "<green>Shop Permission Details for group {0}"
+  header: "<green>Zezwolenie sklepu"
+  header-player: "<green>Zezwolenie sklepu dla {0}"
+  header-group: "<green>Informacje o uprawnieniach sklepu dla grupy {0}"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
   item:
     purchase: "<yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)"
-    show-information: "<yellow>Permission to allow users who have this to see the shop information. (open shop info panel)"
-    preview-shop: "<yellow>Permission to allow users who have this to preview the shop. (preview item)"
+    show-information: "<yellow>Zezwolenie na przeglądanie informacji o sklepie przez użytkowników (otwarty panel informacyjny sklepu)"
+    preview-shop: "<yellow>Pozwolenie na umożliwienie użytkownikom, którzy mają to do podglądu sklepu. (podgląd elementu)"
     search: "<yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)"
-    delete: "<yellow>Permission to allow users who have this to delete the shop."
+    delete: "<yellow>Pozwolenie na usunięcie sklepu."
     receive-alert: "<yellow>Permission to allow users who have this to receive alert message (e.g out-of-stock or new trade)."
-    access-inventory: "<yellow>Permission to allow users who have this to access the shop inventory."
-    ownership-transfer: "<yellow>Permission to allow users who have this to transfer the shop ownership."
+    access-inventory: "<yellow>Pozwolenie na dostęp do ekwipunku sklepu."
+    ownership-transfer: "<yellow>Pozwolenie na przeniesienie własności sklepu przez użytkowników, którzy to posiadają."
     management-permission: "<yellow>Permission to allow users who have this to manage the groups permissions and edit user's group."
-    toggle-display: "<yellow>Permission to allow users who have this to toggle the shop display item."
+    toggle-display: "<yellow>Pozwolenie na umożliwienie użytkownikom, którzy mają to do przełączenia elementu wyświetlanego w sklepie."
     set-shoptype: "<yellow>Permission to allow users who have this to set the shop type (switch buying or selling)."
-    set-price: "<yellow>Permission to allow users who have this to set the shop price."
-    set-item: "<yellow>Permission to allow users who have this to set the shop item."
-    set-stack-amount: "<yellow>Permission to allow users who have this to set the shop stack amount."
-    set-currency: "<yellow>Permission to allow users who have this to set the shop currency."
-    set-name: "<yellow>Permission to allow users who have this to set the shop name."
+    set-price: "<yellow>Pozwolenie na umożliwienie użytkownikom, którzy to mają ustawiania ceny sklepu."
+    set-item: "<yellow>Pozwolenie na to, aby użytkownicy, którzy mają to do ustawiania elementu sklepu."
+    set-stack-amount: "<yellow>Pozwolenie na umożliwienie użytkownikom, którzy mają to do ustawienia ilości stosu sklepu."
+    set-currency: "<yellow>Pozwolenie na umożliwienie użytkownikom, którzy mają to ustawienie waluty sklepu."
+    set-name: "<yellow>Pozwolenie na umożliwienie użytkownikom, którzy mają to do ustawienia nazwy sklepu."
   group:
     everyone: "<yellow>Default group for all users excepted shop owner."
     staff: "<yellow>System group for shop staffs."
     administrator: "<red>System group for administrators, the users in this group will have permissions almost same with shop owner."
-invalid-group: "<red>Invalid group name."
+invalid-group: "<red>Niepoprawna nazwa grupy."
 invalid-permission: "<red>Invalid permission."
 invalid-operation: "<red>Invalid operation, only {0} are allowed."
 player-no-group: "<yellow>Player {0} not in any group in this shop."
@@ -567,8 +567,8 @@ database:
   isolated-shop-ids: "<yellow><aqua>└</aqua> Shop Indexes: <gold>{0}</gold>"
   isolated-logs: "<yellow><aqua>└</aqua> Logs: <gold>{0}</gold>"
   isolated-external-caches: "<yellow><aqua>└</aqua> External Caches: <gold>{0}</gold>"
-  last-purge-time: "<yellow>Last time of trim at {0}"
-  report-time: "<yellow>Last time of scan at {0}"
+  last-purge-time: "<yellow>Ostatni czas przycinania o {0}"
+  report-time: "<yellow>Ostatni raz skanowania w {0}"
   auto-scan-alert: "<yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming."
   auto-trim: "<green>Auto trim has been enabled on this server, no manually trim required."
   trim-complete: "<green>Database trim completed, <yellow>{0}</yellow> isolated trimmed."
@@ -584,14 +584,14 @@ database:
   suggestion:
     trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."
-exporting-database: "<green>Exporting database, please wait..."
-exporting-failed: "<red>Failed to export database, please check the server console."
-exported-database: "<green>Database exported to <yellow>{0}</yellow>."
+exporting-database: "<green>Eksportowanie bazy danych, proszę czekać..."
+exporting-failed: "<red>Nie udało się wyeksportować bazy danych, sprawdź konsolę serwera."
+exported-database: "<green>Baza danych wyeksportowana do <yellow>{0}</yellow>."
 importing-not-found: "<red>The <yellow>{0}</yellow> file not found, please check the file path."
 importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/qs recovery confirm</aqua> to continue."
-importing-database: "<green>Importing database from backup, please wait..."
-importing-failed: "<red>Failed to import database, please check the server console."
-imported-database: "<green>Database imported from <yellow>{0}</yellow>."
+importing-database: "<green>Eksportowanie bazy danych, proszę czekać..."
+importing-failed: "<red>Nie udało się wyeksportować bazy danych, sprawdź konsolę serwera."
+imported-database: "<green>Baza danych wyeksportowana do <yellow>{0}</yellow>."
 transfer-sent: "<green>Shops transfer request sent to <yellow>{0}</yellow>."
 transfer-request: "<yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?"
 transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds."

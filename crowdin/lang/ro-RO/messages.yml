@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop este dezactivat in aceasta lume
 how-much-to-trade-for: <green>Intra in chat, cat de mult doresti sa tranzacționezi &{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Creating Shop-backup from database...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hi translator! If you editing this from Github or from code sources, you should go https://crowdin.com/project/quickshop-hikari
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Argumente de comandă nepotrivite! Acceptă următorii parametri: <gray>{0}'
 thats-not-a-number: <red>Număr Invalid
@@ -457,7 +457,7 @@ command:
   cleaned: <green>A eliminat &{0} magazine.
   trade-item-now: <green>Acum tranzacționarea <yellow>{0}x {1}
   no-world-given: <red>Please specify a world name
-  format-disabled: <red>/{0} {1} <gray>- {2}
+  format-disabled: <red>{0} {1} <gray>- {2}
   invalid-bulk-amount: <red>Valoarea data {0} este mai mare decat dimensiunea maxima a stivei sau mai mica decat una
 currency-not-support: <red>The economy plugin doesn't support the multi-economy feature.
 trading-in-creative-mode-is-disabled: <red>Nu poti face comert cu acest magazin in timp ce te afli in modul creativ.

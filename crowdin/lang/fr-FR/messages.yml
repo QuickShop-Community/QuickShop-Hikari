@@ -127,7 +127,7 @@ shop-name-too-long: <red>Ce nom de boutique est trop long (longueur max. {0}), v
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
   action-hover: <yellow>{0}
-  price-hover: <yellow>Total {0}, including {1} taxes.
+  price-hover: Total {0}, incluant {1} de taxes.
   unknown: <gray>(inconnu)
   undefined: <gray>(sans nom)
   no-results: <red>Aucune transaction.
@@ -135,12 +135,12 @@ metric:
     DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
     PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
+    CREATE: <yellow>Le joueur a créé une boutique.
+    PURCHASE_SELLING_SHOP: <yellow>Le joueur a acheté des objets dans une boutique de vente
     PURCHASE: <yellow>Purchased item with a shop
-  query-argument: 'Query Argument: {0}'
+  query-argument: 'Argument de requête : {0}'
   amount-hover: <yellow>{0}x
-  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
+  header-shop: '<yellow>Les transactions de la boutique {0} sont {1} {2}:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
   looking-up: <yellow>Performing metric lookup, Please wait...
   tax-hover: <yellow>{0} taxes
@@ -457,7 +457,7 @@ command:
   cleaned: <green>Les boutiques de <yellow>{0}<green> ont été supprimés.
   trade-item-now: '<green>Négociation en cours : <yellow>{0}x {1}'
   no-world-given: <red>Veuillez entrer un nom de monde
-  format-disabled: <red>/{0} {1} <gray>- {2}
+  format-disabled: <red>{0} {1} <gray>- {2}
   invalid-bulk-amount: <red>La valeur donnée {0} est plus grande que la taille maximale de la pile ou inférieure à 1
 currency-not-support: <red>Le plugin d'économie ne supporte pas la fonction de multi-économie.
 trading-in-creative-mode-is-disabled: <red>Vous ne pouvez pas utiliser une boutique en mode créatif.

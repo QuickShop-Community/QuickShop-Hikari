@@ -125,7 +125,7 @@ success-change-owner-to-server: <green>Đã đặt thành công chủ cửa hàn
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
 shop-name-too-long: <red>Tên cửa hàng quá dài (chiều dài tối đa {0}), vui lòng chọn tên khác!
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>{0} giao dịch {1} {2}:'
   action-hover: <yellow>{0}
   price-hover: <yellow>Tổng {0}, bao gồm {1} thuế.
   unknown: <gray>(không xác định)
@@ -138,12 +138,12 @@ metric:
     CREATE: <yellow>Người chơi đã tạo một cửa hàng.
     PURCHASE_SELLING_SHOP: <yellow>Người chơi đã mua một số vật phẩm từ một cửa hàng
     PURCHASE: <yellow>Mua vật phẩm từ cửa hàng
-  query-argument: 'Query Argument: {0}'
-  amount-hover: <yellow>{0}x
-  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
+  query-argument: 'Đối số Truy vấn: {0}'
+  amount-hover: <yellow>{0}
+  header-shop: '<yellow>{0} giao dịch {1} {2}:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
-  looking-up: <yellow>Performing metric lookup, Please wait...
-  tax-hover: <yellow>{0} taxes
+  looking-up: <yellow>Thực hiện tra cứu số liệu, Vui lòng đợi...
+  tax-hover: thuế <yellow>{0}
   header-global: '<yellow>The server {0} {1} transactions:'
   na: <gray>N/A
   transaction-count: <yellow>{0} total
@@ -357,32 +357,32 @@ timeunit:
   week: <red>{0} week
   weeks: <red>{0} weeks
   year: <red>{0} year
-  before: before
-  scheduled: scheduled
-  years: <red>{0} years
-  scheduled-in: scheduled in {0}
-  second: <red>{0} second
-  std-past-format: '{5}{4}{3}{2}{1}{0}ago'
+  before: trước
+  scheduled: đã lên kế hoạch
+  years: <red>{0} năm
+  scheduled-in: Đặt trước {0}
+  second: <red>{0} giây
+  std-past-format: '{5}{4}{3}{2}{1}{0}trước'
   std-time-format: "HH:mm:ss"
-  seconds: <red>{0} seconds
-  hour: <red>{0} hour
-  scheduled-at: scheduled at {0}
-  after: after
-  day: <red>{0} day
-  recent: recent
-  between: between
-  hours: <red>{0} hours
-  months: <red>{0} months
-  longtimeago: long time ago
-  between-format: between {0} and {1}
-  minutes: <red>{0} minutes
-  justnow: just now
-  minute: <red>{0} minute
-  std-format: MM/dd/yyyy HH:mm:ss
-  future-plain-text: future
-  month: <red>{0} month
-  future: in {0}
-  days: <red>{0} days
+  seconds: <red>{0} giây
+  hour: <red>{0} giờ
+  scheduled-at: lên hẹn lúc {0}
+  after: sau
+  day: <red>{0} ngày
+  recent: Gần đây
+  between: giữa
+  hours: <red>{0} giờ
+  months: <red>{0} tháng
+  longtimeago: trước đây khá lâu
+  between-format: từ {0} đến {1}
+  minutes: <red>{0} phút
+  justnow: mới đây
+  minute: <red>{0} phút
+  std-format: dd/MM/yyyy HH:mm:ss
+  future-plain-text: tương lai
+  month: <red>{0} tháng
+  future: trong {0}
+  days: <red>{0} ngày
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
@@ -400,7 +400,7 @@ command:
     reload: <yellow>Tải lại config.yml của QuickShop
     freeze: <yellow>Tắt hoặc Bật giao dịch tại cửa hàng
     price: <yellow>Thay đổi giá mua/bán của một cửa hàng
-    find: <yellow>Locates the nearest shop of a specific type.
+    find: <yellow>Xác định loại cửa hàng cụ thể gần nhất.
     create: <yellow>Tạo cửa hàng mới từ rương được nhắm mục tiêu
     lock: <yellow>Chuyển trạng thái KHÓA của cửa hàng
     currency: <yellow>Đặt hoặc xóa cài đặt tiền tệ của cửa hàng
@@ -425,8 +425,8 @@ command:
     taxaccount: <yellow>Đặt tài khoản thuế mà cửa hàng sử dụng
     name: <yellow>Đặt tên cửa hàng thành tên cụ thể
     toggledisplay: <yellow>Chuyển đổi trạng thái vật phẩm hiển thị trong cửa hàng
-    permission: <yellow>Shop permission management
-    lookup: <yellow>Manage lookup-able items table
+    permission: <yellow>quản lý quyền của Shop
+    lookup: <yellow>Quản lý bảng mục có thể tra cứu
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
   bulk-size-not-set: '<red>Sử dụng lệnh: /qs find <số lượng>'
@@ -459,7 +459,7 @@ command:
   no-world-given: <red>Xin vui lòng chỉ rõ một tên hợp lệ.
   format-disabled: <red>/{0} {1} <gray>- {2}
   invalid-bulk-amount: <red>Giá trị đưa vào {0} đang lớn hơn số lượng max của 1 stack hoặc có thể đang nhỏ hơn
-currency-not-support: <red>The economy plugin doesn't support the multi-economy feature.
+currency-not-support: <red>Plugin kinh tế không hỗ trợ tính năng multi-economy.
 trading-in-creative-mode-is-disabled: <red>You cannot trade with this shop while being in creative mode.
 the-owner-cant-afford-to-buy-from-you: <red>Tiêu tốn {0}, trong khi chủ sở hữu chỉ còn {1}
 you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to naming.
@@ -479,14 +479,14 @@ not-managed-shop: <red>Bạn không phải người sở hữu/điều hành c�
 shop-cannot-trade-when-freezing: <red>Bạn không thể giao dịch với cửa hàng này vì nó bị đóng băng.
 invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
 permission:
-  header: "<green>Shop Permission Details"
-  header-player: "<green>Shop Permission Details for {0}"
-  header-group: "<green>Shop Permission Details for group {0}"
+  header: "Chi tiết về quyền <green>cửa hàng"
+  header-player: "<green>Chi tiết quyền cửa hàng cho {0}"
+  header-group: "<green>Chi tiết quyền cửa hàng cho nhóm {0}"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
   item:
     purchase: "<yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)"
-    show-information: "<yellow>Permission to allow users who have this to see the shop information. (open shop info panel)"
-    preview-shop: "<yellow>Permission to allow users who have this to preview the shop. (preview item)"
+    show-information: "<yellow>Quyền cho phép người dùng xem thông tin cửa hàng. (Mở bảng thông tin cửa hàng)"
+    preview-shop: "<yellow>Quyền cho phép người dùng xem trước cửa hàng. (Xem trước vật phẩm)"
     search: "<yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)"
     delete: "<yellow>Permission to allow users who have this to delete the shop."
     receive-alert: "<yellow>Permission to allow users who have this to receive alert message (e.g out-of-stock or new trade)."
@@ -550,7 +550,7 @@ debug:
   warning-sql-confirm: "<yellow>To confirm this dangerous operation, please type <aqua>/qs debug database sql confirm {0}</aqua> in 60 seconds."
   warning-sql-confirm-hover: "<yellow>Click to confirm this dangerous operation."
   sql-confirm-not-found: "<yellow>Didn't found the operation that you given, it may invalid or expired."
-  sql-executing: "<yellow>Executing SQL statement: <aqua>{0}</aqua>"
+  sql-executing: "<yellow>Thực thi câu lệnh SQL: <aqua>{0}</aqua>"
   sql-completed: "<green>Completed, {0} rows affected."
   sql-exception: "<red>An error occurred while executing the SQL query, check the Console for details!"
   sql-disabled: "<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it."
@@ -559,16 +559,16 @@ database:
   scanning-async: "<yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later."
   already-scanning: "<red>An scan task has been started, please wait until it finished."
   trim-warning: "<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue."
-  status: "<yellow>Status: {0}"
-  status-good: "<green>Good"
+  status: "<yellow>Trạng thái: {0}"
+  status-good: "<green>Tốt"
   status-bad: "<yellow>Maintenance Required"
-  isolated: "<yellow>Isolated Data:"
+  isolated: "<yellow>Dữ liệu bị cô lập:"
   isolated-data-ids: "<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>"
   isolated-shop-ids: "<yellow><aqua>└</aqua> Shop Indexes: <gold>{0}</gold>"
   isolated-logs: "<yellow><aqua>└</aqua> Logs: <gold>{0}</gold>"
   isolated-external-caches: "<yellow><aqua>└</aqua> External Caches: <gold>{0}</gold>"
-  last-purge-time: "<yellow>Last time of trim at {0}"
-  report-time: "<yellow>Last time of scan at {0}"
+  last-purge-time: "<yellow>Lần cắt cuối cùng tại {0}"
+  report-time: "<yellow>Lần quét cuối cùng tại {0}"
   auto-scan-alert: "<yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming."
   auto-trim: "<green>Auto trim has been enabled on this server, no manually trim required."
   trim-complete: "<green>Database trim completed, <yellow>{0}</yellow> isolated trimmed."
@@ -584,14 +584,14 @@ database:
   suggestion:
     trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."
-exporting-database: "<green>Exporting database, please wait..."
-exporting-failed: "<red>Failed to export database, please check the server console."
-exported-database: "<green>Database exported to <yellow>{0}</yellow>."
+exporting-database: "<green>Đang xuất cơ sở dữ liệu, vui lòng đợi..."
+exporting-failed: "<red>Không thể xuất cơ sở dữ liệu, vui lòng kiểm tra bảng điều khiển máy chủ."
+exported-database: "<green>Cơ sở dữ liệu đã được xuất tới <yellow>{0}</yellow>."
 importing-not-found: "<red>The <yellow>{0}</yellow> file not found, please check the file path."
 importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/qs recovery confirm</aqua> to continue."
-importing-database: "<green>Importing database from backup, please wait..."
-importing-failed: "<red>Failed to import database, please check the server console."
-imported-database: "<green>Database imported from <yellow>{0}</yellow>."
+importing-database: "<green>Đang nhập cơ sở dữ liệu từ bản sao lưu, vui lòng đợi..."
+importing-failed: "<red>Không thể nhập cơ sở dữ liệu, vui lòng kiểm tra bảng điều khiển máy chủ."
+imported-database: "<green>Cơ sở dữ liệu đã được nhập từ <yellow>{0}</yellow>."
 transfer-sent: "<green>Shops transfer request sent to <yellow>{0}</yellow>."
 transfer-request: "<yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?"
 transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds."

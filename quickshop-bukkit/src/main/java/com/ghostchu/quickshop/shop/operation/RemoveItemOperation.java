@@ -32,6 +32,7 @@ public class RemoveItemOperation implements Operation {
         this.amount = amount;
         this.inv = inv;
         this.itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
+
     }
 
     @Override
