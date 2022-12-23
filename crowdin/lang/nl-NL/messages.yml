@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop is disabled in this world
 how-much-to-trade-for: <green>Enter in de chat, voor hoeveel u wilt handelen <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Shop-back-up aanmaken vanuit database...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hallo vertaler! Als u dit bewerkt van Github of van code-bronnen, moet u https://crowdin.com/project/quickshop-hikari
 unlimited-shop-owner-changed: <yellow>Deze ongelimiteerde winkel is verander van eigenaar. Naar {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Ongeldig nummer
@@ -34,14 +34,14 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>Naam: <aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Price: <aqua>{0}'
     - '<yellow>Item: <aqua>{0}'
     - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Naam: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
     - '<yellow>Price: <aqua>{price}'
@@ -213,7 +213,7 @@ updatenotify:
     - Wat vind je? {0} is vrijgegeven! Update!
     - Doctor, QuickShop heeft een nieuwe update {0}! U moet bijwerken~
     - Ko~ko~da~yo~ QuickShop heeft een nieuwe update {0}~
-    - Paimon want told you the QuickShop have new update {0}!
+    - Paimon wil u vertellen dat de QuickShop een nieuwe update heeft {0}!
   remote-disable-warning: '<red>This version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server''s performance.'
 purchase-out-of-stock: <red>This shop run out of the stock, Contact shop owner or staffs to refill the stock.
 nearby-shop-entry: '<green>- Info:{0} <green>Price:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>distance: <aqua>{5} <green>block(s)'

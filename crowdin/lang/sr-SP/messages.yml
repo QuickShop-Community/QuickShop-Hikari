@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop is disabled in this world
 how-much-to-trade-for: <green>Enter in chat, how much you wish to trade <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Creating Shop-backup from database...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-reremake instead.
 unlimited-shop-owner-changed: <yellow>This unlimited shop owner has been changed to {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Invalid number
@@ -54,7 +54,7 @@ quick-fill:
 average-price-nearby: '<green>Nearby average price: <yellow>{0}'
 digits-reach-the-limit: <red>You have reached the limits of decimals in the price.
 currency-unset: <green>Shop currency removed successfully. Using default settings now.
-you-cant-create-shop-in-there: <red>You don't have permission to create a shop at this location.
+you-cant-create-shop-in-there: <red>You don't have permissions to create a shop at this location.
 no-pending-action: <red>You do not have any pending actions
 refill-success: <green>Refill successful
 failed-to-paste: <red>Failed to upload the data to Pastebin. Check your internet connection and try again. (See console for details)
@@ -86,7 +86,7 @@ reloading-status:
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} purchased{1} {2} from your shop and you earned {3} ({4} in taxes).
 not-enough-space: <red>You only have room for {0} more!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.

@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop er deaktivert i denne verdenen
 how-much-to-trade-for: <green>Skriv i chat hvor mye du ønsker å selge <yellow>{1}x {0}<green> for.
 client-language-changed: <green>QuickShop oppdaget at språkinnstillingen for klienten din er endret, vi bruker nå lokaliteten {0} for deg.
 shops-backingup: Oppretter sikkerhetskopi av butikker fra databasen...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Hei oversetter! Hvis du redigerer dette fra Github eller fra kildekoder, bør du gå til https://crowdin.com/project/quickshop-hikari
 unlimited-shop-owner-changed: <yellow>Eieren til denne ubegrensede butikken har blitt endret til {0}.
 bad-command-usage-detailed: '<red>Bad command arguments! Accepts the following parameters: <gray>{0}'
 thats-not-a-number: <red>Ugyldig nummer
@@ -34,18 +34,18 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>Navn: <aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>Gjenstand: <aqua>{0}'
     - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Navn: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
     - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Gjenstand: <aqua>{item}'
     - '<yellow>Location: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
@@ -234,7 +234,7 @@ taxaccount-invalid: <red>Target konto er ikke ugyldig, vennligst skriv inn et gy
 player-bought-from-your-store: <red>{0} kjøpte {1} {2} fra butikken din, og du tjente {3}.
 reached-maximum-can-create: <red>Du har allerede opprettet maksimum {0}/{1} butikker!
 reached-maximum-create-limit: <red>Du har nådd maksimalt antall butikker du kan opprette
-translation-version: 'Support Version: Hikari'
+translation-version: 'Støttet versjon: Hikari'
 no-double-chests: <red>Du kan ikke opprette en butikk med dobbelkiste.
 price-too-cheap: <red>Prisen må være høyere enn <yellow>${0}
 shop-not-exist: <red>Det finnes ingen butikk.

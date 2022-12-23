@@ -5,7 +5,7 @@ disabled-in-this-world: <red>Obchod je v tomto světě zakázán
 how-much-to-trade-for: <green>Zadejte v chatu, kolik chcete obchodovat <yellow>{1}krát {0}</yellow>.
 client-language-changed: <green>Plugin zjistil, že nastavení jazyka vašeho klienta bylo změněno, nyní pro Vás používáme {0} jazyků.
 shops-backingup: Vytváření zálohy obchodu z databáze...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Ahoj překladatel! Pokud to upravujete na GitHubu nebo pomocí zdrojového kódu, měli byste místo toho jít na https://crowdin.com/project/quickshop-hikari.
 unlimited-shop-owner-changed: <yellow>Majitel tohoto neomezeného obchodu byl změněn na {0}.
 bad-command-usage-detailed: '<red>Špatné parametry příkazů! Povoleny jsou následující parametry: <gray>{0}'
 thats-not-a-number: <red>Neplatné číslo
@@ -34,18 +34,18 @@ paste-disabled: '<red>Vložení funkce bylo zakázáno! Nemůžete požádat o t
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>Název: <aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Price: <aqua>{0}'
-    - '<yellow>Item: <aqua>{0}'
+    - '<yellow>Položka: <aqua>{0}'
     - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Název: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
     - '<yellow>Price: <aqua>{price}'
-    - '<yellow>Item: <aqua>{item}'
+    - '<yellow>Položka: <aqua>{item}'
     - '<yellow>Location: <aqua>{location}'
   header: '<yellow>Máte více obchodů s názvem "<green>{0}</green>", vyberte jeden pro pokračování:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
@@ -550,7 +550,7 @@ debug:
   warning-sql-confirm: "<yellow>To confirm this dangerous operation, please type <aqua>/qs debug database sql confirm {0}</aqua> in 60 seconds."
   warning-sql-confirm-hover: "<yellow>Click to confirm this dangerous operation."
   sql-confirm-not-found: "<yellow>Didn't found the operation that you given, it may invalid or expired."
-  sql-executing: "<yellow>Executing SQL statement: <aqua>{0}</aqua>"
+  sql-executing: "<yellow>Spuštění příkazu SQL: <aqua>{0}</aqua>"
   sql-completed: "<green>Completed, {0} rows affected."
   sql-exception: "<red>An error occurred while executing the SQL query, check the Console for details!"
   sql-disabled: "<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it."
@@ -559,16 +559,16 @@ database:
   scanning-async: "<yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later."
   already-scanning: "<red>An scan task has been started, please wait until it finished."
   trim-warning: "<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue."
-  status: "<yellow>Status: {0}"
-  status-good: "<green>Good"
+  status: "<yellow>Stav: {0}"
+  status-good: "<green>Dobré"
   status-bad: "<yellow>Maintenance Required"
-  isolated: "<yellow>Isolated Data:"
+  isolated: "<yellow>Izolovaná data:"
   isolated-data-ids: "<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>"
   isolated-shop-ids: "<yellow><aqua>└</aqua> Shop Indexes: <gold>{0}</gold>"
   isolated-logs: "<yellow><aqua>└</aqua> Logs: <gold>{0}</gold>"
   isolated-external-caches: "<yellow><aqua>└</aqua> External Caches: <gold>{0}</gold>"
-  last-purge-time: "<yellow>Last time of trim at {0}"
-  report-time: "<yellow>Last time of scan at {0}"
+  last-purge-time: "<yellow>Poslední čas oříznutí v {0}"
+  report-time: "<yellow>Poslední čas skenování při {0}"
   auto-scan-alert: "<yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming."
   auto-trim: "<green>Auto trim has been enabled on this server, no manually trim required."
   trim-complete: "<green>Database trim completed, <yellow>{0}</yellow> isolated trimmed."
@@ -584,14 +584,14 @@ database:
   suggestion:
     trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."
-exporting-database: "<green>Exporting database, please wait..."
-exporting-failed: "<red>Failed to export database, please check the server console."
-exported-database: "<green>Database exported to <yellow>{0}</yellow>."
+exporting-database: "<green>Export databáze, počkejte prosím..."
+exporting-failed: "<red>Nepodařilo se exportovat databázi, zkontrolujte konzolu serveru."
+exported-database: "<green>Databáze exportovaná do <yellow>{0}</yellow>."
 importing-not-found: "<red>The <yellow>{0}</yellow> file not found, please check the file path."
 importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/qs recovery confirm</aqua> to continue."
-importing-database: "<green>Importing database from backup, please wait..."
-importing-failed: "<red>Failed to import database, please check the server console."
-imported-database: "<green>Database imported from <yellow>{0}</yellow>."
+importing-database: "<green>Import databáze ze zálohy, počkejte prosím..."
+importing-failed: "<red>Nepodařilo se importovat databázi, zkontrolujte konzolu serveru."
+imported-database: "<green>Databáze importovaná z <yellow>{0}</yellow>."
 transfer-sent: "<green>Shops transfer request sent to <yellow>{0}</yellow>."
 transfer-request: "<yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?"
 transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds."

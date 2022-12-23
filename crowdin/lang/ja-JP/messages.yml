@@ -130,7 +130,7 @@ metric:
   price-hover: <yellow>合計 {0}, {1} 税を含む。
   unknown: <gray>(unknown)
   undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  no-results: <red>取引が見つかりませんでした
   action-description:
     DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.

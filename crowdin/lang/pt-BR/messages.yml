@@ -34,14 +34,14 @@ paste-disabled: '<red>Paste functionality has been disabled! You cannot request 
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
-    - '<yellow>Name: <aqua>{0}'
+    - '<yellow>Nome: <aqua>{0}'
     - '<yellow>Owner: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
     - '<yellow>Price: <aqua>{0}'
     - '<yellow>Item: <aqua>{0}'
     - '<yellow>Location: <aqua>{0}'
   hover-arg-filled:
-    - '<yellow>Name: <aqua>{name}'
+    - '<yellow>Nome: <aqua>{name}'
     - '<yellow>Owner: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
     - '<yellow>Price: <aqua>{price}'
@@ -550,7 +550,7 @@ debug:
   warning-sql-confirm: "<yellow>To confirm this dangerous operation, please type <aqua>/qs debug database sql confirm {0}</aqua> in 60 seconds."
   warning-sql-confirm-hover: "<yellow>Click to confirm this dangerous operation."
   sql-confirm-not-found: "<yellow>Didn't found the operation that you given, it may invalid or expired."
-  sql-executing: "<yellow>Executing SQL statement: <aqua>{0}</aqua>"
+  sql-executing: "<yellow>Executando declaração SQL: <aqua>{0}</aqua>"
   sql-completed: "<green>Completed, {0} rows affected."
   sql-exception: "<red>An error occurred while executing the SQL query, check the Console for details!"
   sql-disabled: "<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it."
@@ -568,7 +568,7 @@ database:
   isolated-logs: "<yellow><aqua>「</aqua> Logs: <gold>{0}</gold>"
   isolated-external-caches: "<yellow><aqua>「</aqua> Caixas Externas: <gold>{0}</gold>"
   last-purge-time: "<yellow>Última vez que aparar as {0}"
-  report-time: "<yellow>Last time of scan at {0}"
+  report-time: "<yellow>Última verificação em {0}"
   auto-scan-alert: "<yellow>O banco de dados da Loja Rápida neste servidor requer uma manutenção. Encontrado <gold>{0}</gold> dados isolados aguardando desmontagem."
   auto-trim: "<green>O corte automático foi ativado neste servidor, não é necessário recortar manualmente."
   trim-complete: "<green>Banco de dados aparado concluído, <yellow>{0}</yellow> isolado recortado."
@@ -584,14 +584,14 @@ database:
   suggestion:
     trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."
-exporting-database: "<green>Exporting database, please wait..."
-exporting-failed: "<red>Failed to export database, please check the server console."
-exported-database: "<green>Database exported to <yellow>{0}</yellow>."
+exporting-database: "<green>Exportando banco de dados, aguarde..."
+exporting-failed: "<red>Falha ao importar banco de dados, por favor, verifique o console do servidor."
+exported-database: "<green>Banco de dados exportado para <yellow>{0}</yellow>."
 importing-not-found: "<red>The <yellow>{0}</yellow> file not found, please check the file path."
 importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/qs recovery confirm</aqua> to continue."
-importing-database: "<green>Importing database from backup, please wait..."
-importing-failed: "<red>Failed to import database, please check the server console."
-imported-database: "<green>Database imported from <yellow>{0}</yellow>."
+importing-database: "<green>Importando banco de dados do backup, aguarde..."
+importing-failed: "<red>Falha ao importar banco de dados, por favor, verifique o console do servidor."
+imported-database: "<green>Banco de dados importado de <yellow>{0}</yellow>."
 transfer-sent: "<green>Shops transfer request sent to <yellow>{0}</yellow>."
 transfer-request: "<yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?"
 transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds."
