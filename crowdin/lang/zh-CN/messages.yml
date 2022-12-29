@@ -1303,3 +1303,6 @@ suite:
     hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."
   shopitemonly:
     message: "<red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上"
+compatibility:
+  elitemobs:
+    soulbound-disallowed: "You can't trade item which have EliteMobs Soulbound enchantment."
