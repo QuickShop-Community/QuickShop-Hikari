@@ -1305,4 +1305,4 @@ suite:
     message: "<red>Du kannst keine Nicht-Shop items in den Shop-Container legen. Alle Nicht-Shop items werden an deiner Position fallen gelassen."
 compatibility:
   elitemobs:
-    soulbound-disallowed: "You can't trade item which have EliteMobs Soulbound enchantment."
+    soulbound-disallowed: "Du kannst Items mit Seelenverzauberung von EliteMobs nicht handeln."
