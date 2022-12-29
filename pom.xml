@@ -508,6 +508,7 @@
         <module>compatibility/plotsquared</module>
         <module>compatibility/lands</module>
         <module>compatibility/residence</module>
+        <module>compatibility/elitemobs</module>
         <module>addon/discordsrv</module>
         <module>addon/plan</module>
         <module>addon/discount</module>
