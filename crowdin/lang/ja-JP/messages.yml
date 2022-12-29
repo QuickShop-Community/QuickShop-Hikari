@@ -692,7 +692,7 @@ addon:
                  "inline": false
                },
                {
-                 "name": "%%shop.display-name%%",
+                 "name": "売却者",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
@@ -723,7 +723,7 @@ addon:
         {
            "embed":
              {
-               "title": ":outbox_tray: 誰かがあなたのショップで商品を売却しました",
+               "title": ":outbox_tray: 誰かがあなたのショップで商品を購入しました",
                "description": "プレイヤー %%purchase.name%% があなたのショップで %%shop.item.name%% x%%purchase.amount%%  を購入しました。",
                "color": 52084,
                "author": {
