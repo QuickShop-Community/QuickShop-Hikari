@@ -1303,3 +1303,6 @@ suite:
     hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."
   shopitemonly:
     message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+compatibility:
+  elitemobs:
+    soulbound-disallowed: "You can't trade item which have EliteMobs Soulbound enchantment."
