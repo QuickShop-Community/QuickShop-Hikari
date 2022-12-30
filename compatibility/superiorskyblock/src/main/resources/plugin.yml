@@ -1,7 +1,7 @@
 name: qscompat-${project.artifactId}
 version: '${project.version}'
 main: com.ghostchu.quickshop.compatibility.${project.artifactId}.Main
-api-version: 1.16
+api-version: 1.18
 depend:
   - SuperiorSkyblock2
   - QuickShop-Hikari

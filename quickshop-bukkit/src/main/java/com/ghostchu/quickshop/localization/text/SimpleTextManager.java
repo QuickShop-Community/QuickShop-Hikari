@@ -61,11 +61,15 @@ public class SimpleTextManager implements TextManager, Reloadable {
     public SimpleTextManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
-        try {
-            plugin.getLogger().info("Please wait us fetch the translation updates from Crowdin OTA service...");
-            this.crowdinOTA = new CrowdinOTA(Util.parsePackageProperly("crowdinHost").asString("https://distributions.crowdin.net/91b97508fdf19626f2977b7xrm4"), new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
-        } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Cannot initialize the CrowdinOTA instance!", e);
+        if (Util.parsePackageProperly("enableCrowdinOTA").asBoolean()) {
+            try {
+                plugin.getLogger().info("Please wait us fetch the translation updates from Crowdin OTA service...");
+                this.crowdinOTA = new CrowdinOTA(Util.parsePackageProperly("crowdinHost").asString("https://distributions.crowdin.net/91b97508fdf19626f2977b7xrm4"), new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
+            } catch (Exception e) {
+                plugin.getLogger().log(Level.WARNING, "Cannot initialize the CrowdinOTA instance!", e);
+            }
+        } else {
+            plugin.getLogger().info("[CrowdinOTA] We have disabled CrowdinOTA due unaffordable bills.");
         }
         load();
     }
@@ -127,6 +131,8 @@ public class SimpleTextManager implements TextManager, Reloadable {
                         }
                     }
                 }
+            } else {
+                plugin.getLogger().info("CrowdinOTA not initialized, skipping for over-the-air translation updates.");
             }
         } catch (Exception e) {
             plugin.getLogger().log(Level.WARNING, "Unable to load Crowdin OTA translations", e);

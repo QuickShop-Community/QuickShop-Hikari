@@ -1,0 +1,9 @@
+name: qscompat-${project.artifactId}
+version: '${project.version}'
+main: com.ghostchu.quickshop.compatibility.${project.artifactId}.Main
+api-version: 1.18
+depend:
+  - EliteMobs
+  - QuickShop-Hikari
+authors: [ Ghost_chu ]
+description: Compatibility module for EliteMobs

@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>3.6.0.2</version>
+    <version>3.6.0.3</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -508,6 +508,7 @@
         <module>compatibility/plotsquared</module>
         <module>compatibility/lands</module>
         <module>compatibility/residence</module>
+        <module>compatibility/elitemobs</module>
         <module>addon/discordsrv</module>
         <module>addon/plan</module>
         <module>addon/discount</module>
