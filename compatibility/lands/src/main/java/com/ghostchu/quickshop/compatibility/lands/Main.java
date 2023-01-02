@@ -98,7 +98,7 @@ public final class Main extends CompatibilityModule {
         if (!deleteWhenLosePermission) {
             return;
         }
-        deleteShopInLand(event.getLand(), event.getTarget());
+        deleteShopInLand(event.getLand(), event.getTargetUID());
     }
 
     @EventHandler(ignoreCancelled = true)
