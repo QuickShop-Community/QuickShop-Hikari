@@ -34,4 +34,3 @@ jobs:
         CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
         CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
         CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
-        CLOUDFLARE_KEY: ${{ secrets.CLOUDFLARE_KEY }}
