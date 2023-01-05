@@ -70,7 +70,6 @@ public class PerfMonitor implements AutoCloseable {
     @Override
     public void close() {
         Duration passedDuration = getTimePassed();
-        boolean overLimit = exceptedDuration != null && getTimePassed().compareTo(exceptedDuration) > 0;
         String passed = passedDuration.toMillis() + "ms";
         StringBuilder messageBuilder = new StringBuilder();
         messageBuilder.append("The task [").append(name).append("] ");
@@ -79,7 +78,7 @@ public class PerfMonitor implements AutoCloseable {
         }
         messageBuilder.append("has finished in ").append(passed).append(".");
         Level level = Level.INFO;
-        if (overLimit) {
+        if (isReachedLimit()) {
             messageBuilder.append(" OVER LIMIT! The excepted time cost should less than ").append(exceptedDuration.toMillis()).append("ms.");
             level = Level.WARNING;
         }
