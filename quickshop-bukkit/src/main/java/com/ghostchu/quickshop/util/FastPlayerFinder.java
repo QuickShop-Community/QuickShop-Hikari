@@ -51,7 +51,7 @@ public class FastPlayerFinder {
         }
     }
 
-    @Nullable
+    @NotNull
     public synchronized UUID name2Uuid(@NotNull String name) {
         try (PerfMonitor perf = new PerfMonitor("UniqueID Lookup - " + name)) {
             for (Map.Entry<UUID, String> uuidStringEntry : nameCache.asMap().entrySet()) {
@@ -113,7 +113,11 @@ public class FastPlayerFinder {
                 return null;
             }
             try {
-                return db.getPlayerName(uuid).get(30, TimeUnit.SECONDS);
+                String name = db.getPlayerName(uuid).get(30, TimeUnit.SECONDS);
+                if (name == null) { // Fallback to Bukkit so parallel won't direct return the null
+                    return Bukkit.getOfflinePlayer(uuid).getName();
+                }
+                return name;
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 return null;
