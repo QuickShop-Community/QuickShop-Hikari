@@ -13,30 +13,33 @@ public class PerfMonitor implements AutoCloseable {
     private final Instant startTime;
     @Nullable
     private final Duration exceptedDuration;
+    private final Log.Caller caller;
     @Nullable
     private String context;
 
     public PerfMonitor() {
-        Log.Caller caller = Log.Caller.create();
+        this.caller = Log.Caller.create();
         this.name = caller.getClassName() + "#" + caller.getMethodName();
         this.startTime = Instant.now();
         this.exceptedDuration = null;
     }
 
     public PerfMonitor(@NotNull Duration exceptedDuration) {
-        Log.Caller caller = Log.Caller.create();
+        this.caller = Log.Caller.create();
         this.name = caller.getClassName() + "#" + caller.getMethodName();
         this.startTime = Instant.now();
         this.exceptedDuration = exceptedDuration;
     }
 
     public PerfMonitor(@NotNull String name) {
+        this.caller = Log.Caller.create();
         this.name = name;
         this.startTime = Instant.now();
         this.exceptedDuration = null;
     }
 
     public PerfMonitor(@NotNull String name, @NotNull Duration exceptedDuration) {
+        this.caller = Log.Caller.create();
         this.name = name;
         this.startTime = Instant.now();
         this.exceptedDuration = exceptedDuration;
@@ -55,18 +58,6 @@ public class PerfMonitor implements AutoCloseable {
     @NotNull
     public String getName() {
         return name;
-    }
-
-    public boolean isReachedLimit() {
-        if (exceptedDuration == null) {
-            return false;
-        }
-        return getTimePassed().compareTo(exceptedDuration) > 0;
-    }
-
-    @NotNull
-    public Duration getTimePassed() {
-        return Duration.between(startTime, Instant.now());
     }
 
     public void setContext(@Nullable String context) {
@@ -88,6 +79,18 @@ public class PerfMonitor implements AutoCloseable {
             messageBuilder.append(" OVER LIMIT! The excepted time cost should less than ").append(exceptedDuration.toMillis()).append("ms.");
             level = Level.WARNING;
         }
-        Log.performance(level, messageBuilder.toString());
+        Log.performance(level, messageBuilder.toString(), caller);
+    }
+
+    @NotNull
+    public Duration getTimePassed() {
+        return Duration.between(startTime, Instant.now());
+    }
+
+    public boolean isReachedLimit() {
+        if (exceptedDuration == null) {
+            return false;
+        }
+        return getTimePassed().compareTo(exceptedDuration) > 0;
     }
 }

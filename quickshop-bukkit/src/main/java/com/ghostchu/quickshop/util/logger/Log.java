@@ -87,10 +87,10 @@ public class Log {
         debug(level, message, Caller.create());
     }
 
-    public static void performance(@NotNull Level level, @NotNull String message) {
+    public static void performance(@NotNull Level level, @NotNull String message, @NotNull Caller caller) {
         LOCK.writeLock().lock();
         try {
-            Record recordEntry = new Record(level, Type.PERFORMANCE, message, null);
+            Record recordEntry = new Record(level, Type.PERFORMANCE, message, caller);
             LOGGER_BUFFER.offer(recordEntry);
             debugStdOutputs(recordEntry);
         } finally {
