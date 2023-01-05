@@ -6,11 +6,11 @@ import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import org.bukkit.entity.Player;
-import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import static com.ghostchu.quickshop.util.Util.getPlayerList;
 
@@ -41,17 +41,17 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
             return;
         }
 
-        Profile newShopOwner = plugin.getPlayerFinder().find(cmdArg[0]);
+        UUID newShopOwner = plugin.getPlayerFinder().name2Uuid(cmdArg[0]);
         if (newShopOwner == null) {
             plugin.text().of(sender, "unknown-player").send();
             return;
         }
-        ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), newShopOwner.getUniqueId());
+        ShopOwnershipTransferEvent event = new ShopOwnershipTransferEvent(shop, shop.getOwner(), newShopOwner);
         if (event.callCancellableEvent()) {
             return;
         }
-        shop.setOwner(newShopOwner.getUniqueId());
-        plugin.text().of(sender, "command.new-owner", newShopOwner.getName()).send();
+        shop.setOwner(newShopOwner);
+        plugin.text().of(sender, "command.new-owner", cmdArg[0]).send();
     }
 
     @NotNull

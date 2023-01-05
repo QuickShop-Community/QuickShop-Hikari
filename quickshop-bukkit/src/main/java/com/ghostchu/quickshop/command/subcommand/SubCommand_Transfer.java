@@ -10,7 +10,6 @@ import com.google.common.cache.CacheBuilder;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -59,25 +58,25 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                     task.cancel(true);
                 }
                 default -> {
-                    Profile profile = plugin.getPlayerFinder().find(cmdArg[0]);
-                    if (profile == null) {
+                    String name = cmdArg[0];
+                    UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[0]);
+                    if (uuid == null) {
                         plugin.text().of(sender, "unknown-player").send();
                         return;
                     }
-                    Player receiver = Bukkit.getPlayer(profile.getUniqueId());
+                    Player receiver = Bukkit.getPlayer(uuid);
                     if (receiver == null) {
-                        plugin.text().of(sender, "player-offline", profile.getName()).send();
+                        plugin.text().of(sender, "player-offline", name).send();
                         return;
                     }
-                    UUID targetPlayerUUID = profile.getUniqueId();
-                    if (sender.getUniqueId().equals(targetPlayerUUID)) {
-                        plugin.text().of(sender, "transfer-no-self", profile.getName()).send();
+                    if (sender.getUniqueId().equals(uuid)) {
+                        plugin.text().of(sender, "transfer-no-self", name).send();
                         return;
                     }
                     List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(sender.getUniqueId());
-                    PendingTransferTask task = new PendingTransferTask(sender.getUniqueId(), targetPlayerUUID, shopList);
-                    taskCache.put(targetPlayerUUID, task);
-                    plugin.text().of(sender, "transfer-sent", profile.getName()).send();
+                    PendingTransferTask task = new PendingTransferTask(sender.getUniqueId(), uuid, shopList);
+                    taskCache.put(uuid, task);
+                    plugin.text().of(sender, "transfer-sent", name).send();
                     plugin.text().of(receiver, "transfer-request", sender.getName()).send();
                     plugin.text().of(receiver, "transfer-ask", 60).send();
                     return;
@@ -89,8 +88,8 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                 plugin.text().of(sender, "no-permission").send();
                 return;
             }
-            Profile fromPlayer = plugin.getPlayerFinder().find(cmdArg[0]);
-            Profile targetPlayer = plugin.getPlayerFinder().find(cmdArg[1]);
+            UUID fromPlayer = plugin.getPlayerFinder().name2Uuid(cmdArg[0]);
+            UUID targetPlayer = plugin.getPlayerFinder().name2Uuid(cmdArg[1]);
             if (fromPlayer == null) {
                 plugin.text().of(sender, "unknown-player", "fromPlayer").send();
                 return;
@@ -99,10 +98,10 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                 plugin.text().of(sender, "unknown-player", "targetPlayer").send();
                 return;
             }
-            List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(fromPlayer.getUniqueId());
-            PendingTransferTask task = new PendingTransferTask(fromPlayer.getUniqueId(), targetPlayer.getUniqueId(), shopList);
+            List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(fromPlayer);
+            PendingTransferTask task = new PendingTransferTask(fromPlayer, targetPlayer, shopList);
             task.commit(false);
-            plugin.text().of(sender, "command.transfer-success-other", shopList.size(), fromPlayer.getName(), targetPlayer.getName()).send();
+            plugin.text().of(sender, "command.transfer-success-other", shopList.size(), cmdArg[0], cmdArg[1]).send();
         }
     }
 
@@ -128,15 +127,15 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
 
         public void cancel(boolean sendMessage) {
             if (sendMessage) {
-                Profile fromPlayerProfile = QuickShop.getInstance().getPlayerFinder().find(from);
-                Profile toPlayerProfile = QuickShop.getInstance().getPlayerFinder().find(to);
+                String fromPlayerProfile = QuickShop.getInstance().getPlayerFinder().uuid2Name(from);
+                String toPlayerProfile = QuickShop.getInstance().getPlayerFinder().uuid2Name(to);
                 Player fromPlayer = Bukkit.getPlayer(from);
                 Player toPlayer = Bukkit.getPlayer(to);
                 if (fromPlayer != null && toPlayerProfile != null) {
-                    QuickShop.getInstance().text().of(fromPlayer, "transfer-rejected-fromside", toPlayerProfile.getName()).send();
+                    QuickShop.getInstance().text().of(fromPlayer, "transfer-rejected-fromside", toPlayerProfile).send();
                 }
                 if (toPlayer != null && fromPlayerProfile != null) {
-                    QuickShop.getInstance().text().of(toPlayer, "transfer-rejected-toside", fromPlayerProfile.getName()).send();
+                    QuickShop.getInstance().text().of(toPlayer, "transfer-rejected-toside", fromPlayerProfile).send();
                 }
             }
         }
@@ -150,13 +149,13 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                 shop.setOwner(to);
             }
             if (sendMessage) {
-                Profile fromPlayerProfile = QuickShop.getInstance().getPlayerFinder().find(from);
-                Profile toPlayerProfile = QuickShop.getInstance().getPlayerFinder().find(to);
+                String fromPlayerProfile = QuickShop.getInstance().getPlayerFinder().uuid2Name(from);
+                String toPlayerProfile = QuickShop.getInstance().getPlayerFinder().uuid2Name(to);
                 if (toPlayerProfile != null) {
-                    QuickShop.getInstance().text().of(from, "transfer-accepted-fromside", toPlayerProfile.getName()).send();
+                    QuickShop.getInstance().text().of(from, "transfer-accepted-fromside", toPlayerProfile).send();
                 }
                 if (fromPlayerProfile != null) {
-                    QuickShop.getInstance().text().of(to, "transfer-accepted-toside", fromPlayerProfile.getName()).send();
+                    QuickShop.getInstance().text().of(to, "transfer-accepted-toside", fromPlayerProfile).send();
                 }
             }
         }

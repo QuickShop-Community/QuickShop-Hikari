@@ -11,7 +11,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.inventory.ItemStack;
-import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
@@ -90,10 +89,10 @@ public class DataUtil {
         if (CommonUtil.getNilUniqueId().equals(uuid)) {
             return "[Server]";
         }
-        Profile profile = main.getQuickShop().getPlayerFinder().find(uuid);
-        if (profile == null || profile.getName() == null || profile.getName().equals("")) {
+        String name = main.getQuickShop().getPlayerFinder().uuid2Name(uuid);
+        if (name == null || name.equals("")) {
             return uuid.toString();
         }
-        return HtmlEscapers.htmlEscaper().escape(profile.getName());
+        return HtmlEscapers.htmlEscaper().escape(name);
     }
 }

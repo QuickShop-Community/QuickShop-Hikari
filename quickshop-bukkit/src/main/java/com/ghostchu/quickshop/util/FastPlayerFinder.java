@@ -33,7 +33,7 @@ public class FastPlayerFinder {
     }
 
     @Nullable
-    public String uuid2Name(@NotNull UUID uuid) {
+    public synchronized String uuid2Name(@NotNull UUID uuid) {
         try (PerfMonitor ignored = new PerfMonitor("Username Lookup - " + uuid)) {
             String cachedName = nameCache.getIfPresent(uuid);
             if (cachedName != null) return cachedName;
@@ -49,7 +49,7 @@ public class FastPlayerFinder {
     }
 
     @Nullable
-    public UUID name2Uuid(@NotNull String name) {
+    public synchronized UUID name2Uuid(@NotNull String name) {
         try (PerfMonitor ignored = new PerfMonitor("UniqueID Lookup - " + name)) {
             for (Map.Entry<UUID, String> uuidStringEntry : nameCache.asMap().entrySet()) {
                 if (uuidStringEntry.getValue().equals(name))

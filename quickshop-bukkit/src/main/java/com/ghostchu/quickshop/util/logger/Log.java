@@ -87,6 +87,17 @@ public class Log {
         debug(level, message, Caller.create());
     }
 
+    public static void performance(@NotNull Level level, @NotNull String message) {
+        LOCK.writeLock().lock();
+        try {
+            Record recordEntry = new Record(level, Type.PERFORMANCE, message, null);
+            LOGGER_BUFFER.offer(recordEntry);
+            debugStdOutputs(recordEntry);
+        } finally {
+            LOCK.writeLock().unlock();
+        }
+    }
+
     @NotNull
     public static List<Record> fetchLogs() {
         LOCK.readLock().lock();
@@ -304,6 +315,7 @@ public class Log {
         CRON,
         TRANSACTION,
         TIMING,
+        PERFORMANCE,
         PERMISSION
     }
 

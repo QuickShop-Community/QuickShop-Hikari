@@ -15,7 +15,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -157,8 +156,9 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
             return;
         }
         String name = "Unknown";
-        Profile profile = quickshop.getPlayerFinder().find(code.getOwner());
-        if (profile != null && !profile.getName().isEmpty()) name = profile.getName();
+        String lookupName = quickshop.getPlayerFinder().uuid2Name(code.getOwner());
+        if (lookupName != null)
+            name = lookupName;
         Component appliedTo = quickshop.text().of(sender, "addon.discount.code-type." + code.getCodeType().name()).forLocale();
         String remainsUsage;
         int remains = code.getRemainsUsage(((Player) sender).getUniqueId());

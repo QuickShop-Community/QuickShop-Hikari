@@ -58,6 +58,7 @@ import com.ghostchu.quickshop.util.envcheck.*;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
+import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
 import com.ghostchu.quickshop.util.updater.NexusManager;
 import com.ghostchu.quickshop.watcher.*;
@@ -86,7 +87,6 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
-import org.enginehub.squirrelid.Profile;
 import org.h2.Driver;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -239,7 +239,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private ItemMarker itemMarker;
     private Map<String, String> translationMapping;
     @Getter
-    private PlayerFinder playerFinder;
+    private FastPlayerFinder playerFinder;
     @Getter
     private ShopItemBlackList shopItemBlackList;
     @Getter
@@ -304,12 +304,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             getLogger().info("Baking shops owner and moderators caches (This may take a while if you upgrade from old versions)...");
             Set<UUID> waitingForBake = new HashSet<>();
             this.shopManager.getAllShops().forEach(shop -> {
-                if (!this.playerFinder.contains(shop.getOwner())) {
+                if (!this.playerFinder.isCached(shop.getOwner())) {
                     waitingForBake.add(shop.getOwner());
                 }
-                shop.getPermissionAudiences().keySet().forEach(staff -> {
-                    if (!this.playerFinder.contains(staff)) {
-                        waitingForBake.add(staff);
+                shop.getPermissionAudiences().keySet().forEach(audience -> {
+                    if (!this.playerFinder.isCached(audience)) {
+                        waitingForBake.add(audience);
                     }
                 });
             });
@@ -319,12 +319,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             }
             getLogger().info("Resolving " + waitingForBake.size() + " player UUID and Name mappings...");
             waitingForBake.forEach(uuid -> {
-                Profile profile = playerFinder.find(uuid);
-                if (profile == null) {
+                String name = playerFinder.uuid2Name(uuid);
+                if (name == null) {
                     getLogger().info("Invalid Player lookup, skip.");
                     return;
                 }
-                getLogger().info("Resolved: " + profile.getUniqueId() + "( " + profile.getName() + " ), " + (waitingForBake.size() - 1) + " jobs remains.");
+                getLogger().info("Resolved: " + uuid + "( " + name + " ), " + (waitingForBake.size() - 1) + " jobs remains.");
             });
         }
     }
@@ -809,7 +809,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         getLogger().info("Loading up platform modules...");
         loadPlatform();
         getLogger().info("Loading player name and unique id mapping...");
-        this.playerFinder = new PlayerFinder();
+        this.playerFinder = new FastPlayerFinder(this);
         setupUnirest();
         loadChatProcessor();
         loadTextManager();
@@ -906,7 +906,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         this.audience = BukkitAudiences.create(this);
         /* Check the running envs is support or not. */
         getLogger().info("Starting plugin self-test, please wait...");
-        runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
+        try (PerfMonitor ignored = new PerfMonitor("Self Test")) {
+            runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
+        }
         getLogger().info("Reading the configuration...");
         initConfiguration();
         getLogger().info("Developers: " + CommonUtil.list2String(this.getDescription().getAuthors()));
@@ -922,7 +924,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         Util.initialize();
         load3rdParty();
         //Load the database
-        initDatabase();
+        try (PerfMonitor ignored = new PerfMonitor("Initialize database")) {
+            initDatabase();
+        }
         /* Initalize the tools */
         // Create the shop manager.
         permissionManager = new PermissionManager(this);

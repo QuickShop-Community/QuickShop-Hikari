@@ -12,7 +12,6 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -176,11 +175,9 @@ public class MessageFactory {
         if (bukkitPlayer != null) {
             name = bukkitPlayer.getName();
         } else {
-            Profile profile = plugin.getPlayerFinder().find(uuid);
-            if (profile != null) {
-                if (profile.getName() != null) {
-                    name = profile.getName();
-                }
+            String playerName = plugin.getPlayerFinder().uuid2Name(uuid);
+            if (playerName != null) {
+                name = playerName;
             }
         }
         return name;

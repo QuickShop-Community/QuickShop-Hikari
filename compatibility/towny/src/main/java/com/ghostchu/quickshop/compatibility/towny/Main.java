@@ -32,7 +32,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -344,13 +343,13 @@ public final class Main extends CompatibilityModule implements Listener {
         // Modify tax account to town account if they aren't town shop or nation shop but inside town or nation
         Town town = TownyAPI.getInstance().getTown(shop.getLocation());
         if (town != null) {
-            Profile profile = QuickShop.getInstance().getPlayerFinder().find(town.getAccount().getName());
-            if (profile == null) {
+            UUID uuid = QuickShop.getInstance().getPlayerFinder().name2Uuid(town.getAccount().getName());
+            if (uuid == null) {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(town.getAccount().getName());
-                profile = new Profile(player.getUniqueId(), town.getAccount().getName());
+                uuid = player.getUniqueId();
             }
-            event.setTaxAccount(profile.getUniqueId());
-            Log.debug("Tax account override: " + profile.getUniqueId() + " = " + profile.getName());
+            event.setTaxAccount(uuid);
+            Log.debug("Tax account override: " + uuid + " = " + town.getAccount().getName());
         }
     }
 }

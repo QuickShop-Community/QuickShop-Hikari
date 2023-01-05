@@ -60,7 +60,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
         plugin.text().of(sender, "benefit-query", shop.getShopBenefit().getRegistry().size()).send();
         for (Map.Entry<UUID, Double> entry : shop.getShopBenefit().getRegistry().entrySet()) {
             String v = MsgUtil.decimalFormat(entry.getValue() * 100);
-            plugin.text().of(sender, "benefit-query-list", plugin.getPlayerFinder().find(entry.getKey()), entry.getKey(), v + "%").send();
+            plugin.text().of(sender, "benefit-query-list", plugin.getPlayerFinder().uuid2Name(entry.getKey()), entry.getKey(), v + "%").send();
         }
     }
 
@@ -69,13 +69,13 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             plugin.text().of(sender, "command-incorrect", "/qs benefit <add/remove> <player> <percentage>").send();
             return;
         }
-        Profile profile = plugin.getPlayerFinder().find(cmdArg[1]);
-        if (profile == null || profile.getUniqueId() == null) {
+        UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[1]);
+        if (uuid == null) {
             plugin.text().of(sender, "unknown-player", cmdArg[1]).send();
             return;
         }
         if (!Util.parsePackageProperly("allowOffline").asBoolean()) {
-            Player p = Bukkit.getPlayer(profile.getUniqueId());
+            Player p = Bukkit.getPlayer(uuid);
             if (p == null || !p.isOnline()) {
                 plugin.text().of(sender, "player-offline", cmdArg[1]).send();
                 return;
@@ -98,9 +98,9 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
                 return;
             }
             Benefit benefit = shop.getShopBenefit();
-            benefit.addBenefit(profile.getUniqueId(), percent / 100d);
+            benefit.addBenefit(uuid, percent / 100d);
             shop.setShopBenefit(benefit);
-            plugin.text().of(sender, "benefit-added", MsgUtil.formatPlayerProfile(profile, sender)).send();
+            plugin.text().of(sender, "benefit-added", MsgUtil.formatPlayerProfile(new Profile(uuid, cmdArg[1]), sender)).send();
         } catch (NumberFormatException e) {
             plugin.text().of(sender, "not-a-number", percentageStr).send();
         } catch (Benefit.BenefitOverflowException e) {
@@ -115,16 +115,16 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             plugin.text().of(sender, "command-incorrect", "/qs benefit <add/remove/query> <player> <percentage>").send();
             return;
         }
-        Profile profile = plugin.getPlayerFinder().find(cmdArg[1]);
-        if (profile == null || profile.getUniqueId() == null) {
+        UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[1]);
+        if (uuid == null) {
             plugin.text().of(sender, "unknown-player", cmdArg[1]).send();
             return;
         }
 
         Benefit benefit = shop.getShopBenefit();
-        benefit.removeBenefit(profile.getUniqueId());
+        benefit.removeBenefit(uuid);
         shop.setShopBenefit(benefit);
-        plugin.text().of(sender, "benefit-removed", MsgUtil.formatPlayerProfile(profile, sender)).send();
+        plugin.text().of(sender, "benefit-removed", MsgUtil.formatPlayerProfile(new Profile(uuid, cmdArg[1]), sender)).send();
 
     }
 

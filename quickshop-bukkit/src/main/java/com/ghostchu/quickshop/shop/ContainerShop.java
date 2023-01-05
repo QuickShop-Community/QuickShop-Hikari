@@ -26,6 +26,7 @@ import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
+import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.collect.ImmutableList;
@@ -48,10 +49,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
@@ -149,6 +151,25 @@ public class ContainerShop implements Shop, Reloadable {
         initDisplayItem();
     }
 
+    private void initDisplayItem() {
+        Util.ensureThread(false);
+        try {
+            if (plugin.isDisplayEnabled() && !isDisableDisplay()) {
+                DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
+                if (provider != null) {
+                    displayItem = provider.provide(this);
+                } else {
+                    this.displayItem = switch (AbstractDisplayItem.getNowUsing()) {
+                        case REALITEM -> new RealDisplayItem(this);
+                        default -> new VirtualDisplayItem(this);
+                    };
+                }
+            }
+        } catch (Exception e) {
+            plugin.getLogger().log(Level.WARNING, "Failed to init display item for shop " + this + ", display item init failed!", e);
+        }
+    }
+
     /**
      * Adds a new shop. You need call ShopManager#loadShop if you create from outside of
      * ShopLoader.
@@ -228,25 +249,6 @@ public class ContainerShop implements Shop, Reloadable {
         initDisplayItem();
         updateShopData();
         // ContainerShop constructor is not allowed to write any persistent data to disk
-    }
-
-    private void initDisplayItem() {
-        Util.ensureThread(false);
-        try {
-            if (plugin.isDisplayEnabled() && !isDisableDisplay()) {
-                DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
-                if (provider != null) {
-                    displayItem = provider.provide(this);
-                } else {
-                    this.displayItem = switch (AbstractDisplayItem.getNowUsing()) {
-                        case REALITEM -> new RealDisplayItem(this);
-                        default -> new VirtualDisplayItem(this);
-                    };
-                }
-            }
-        } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to init display item for shop " + this + ", display item init failed!", e);
-        }
     }
 
     private void updateShopData() {
@@ -366,17 +368,19 @@ public class ContainerShop implements Shop, Reloadable {
             return;
         }
 
-        //FIXME: This may affect the performance
-        updateAttachedShop();
+        if (plugin.getConfig().getBoolean("shop.display-center")) {
+            //FIXME: This may affect the performance
+            updateAttachedShop();
 
-        if (isLeftShop) {
-            if (displayItem != null) {
-                displayItem.remove();
+            if (isLeftShop) {
+                if (displayItem != null) {
+                    displayItem.remove();
+                }
+                if (attachedShop != null) {
+                    attachedShop.refresh();
+                }
+                return;
             }
-            if (attachedShop != null) {
-                attachedShop.refresh();
-            }
-            return;
         }
 
         if (this.displayItem == null) {
@@ -1258,7 +1262,7 @@ public class ContainerShop implements Shop, Reloadable {
         if (shopsInChunk == null || !shopsInChunk.containsValue(this)) {
             throw new IllegalStateException("Shop must register into ShopManager before loading.");
         }
-        try {
+        try (PerfMonitor ignored = new PerfMonitor("Shop Inventory Locate", Duration.of(1, ChronoUnit.SECONDS))) {
             inventoryWrapper = locateInventory(symbolLink);
         } catch (Exception e) {
             plugin.getLogger().warning("Failed to load shop: " + symbolLink + ": " + e.getClass().getName() + ": " + e.getMessage());
@@ -1278,7 +1282,9 @@ public class ContainerShop implements Shop, Reloadable {
         //Shop manager done this already
         plugin.getShopManager().getLoadedShops().add(this);
         plugin.getShopContainerWatcher().scheduleCheck(this);
-        checkDisplay();
+        try (PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
+            checkDisplay();
+        }
     }
 
     /**
@@ -1313,12 +1319,12 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public @NotNull Component ownerName(boolean forceUsername, @NotNull ProxiedLocale locale) {
-        Profile player = plugin.getPlayerFinder().find(this.getOwner());
+        String playerName = plugin.getPlayerFinder().uuid2Name(this.getOwner());
         Component name;
-        if (player == null) {
+        if (playerName == null) {
             name = plugin.text().of("unknown-owner").forLocale(locale.getLocale());
         } else {
-            name = Component.text(player.getName());
+            name = Component.text(playerName);
         }
         if (!forceUsername && isUnlimited()) {
             name = plugin.text().of("admin-shop").forLocale(locale.getLocale());

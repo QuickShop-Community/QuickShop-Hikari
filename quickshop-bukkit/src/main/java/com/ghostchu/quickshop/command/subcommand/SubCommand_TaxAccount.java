@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import org.bukkit.entity.Player;
-import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -31,12 +30,12 @@ public class SubCommand_TaxAccount implements CommandHandler<Player> {
             if (CommonUtil.isUUID(cmdArg[0])) {
                 shop.setTaxAccount(UUID.fromString(cmdArg[0]));
             } else {
-                Profile profile = plugin.getPlayerFinder().find(cmdArg[0]);
-                if (profile == null) {
+                UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[0]);
+                if (uuid == null) {
                     plugin.text().of(sender, "unknown-player").send();
                     return;
                 }
-                shop.setTaxAccount(profile.getUniqueId());
+                shop.setTaxAccount(uuid);
             }
             plugin.text().of(sender, "taxaccount-set", cmdArg[0]).send();
         } else {
