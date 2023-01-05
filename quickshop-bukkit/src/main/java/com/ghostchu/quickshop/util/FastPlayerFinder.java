@@ -40,10 +40,10 @@ public class FastPlayerFinder {
                 return cachedName;
             }
             perf.setContext("cache miss");
-            String name = QuickExecutor.getCommonExecutor().invokeAny(
-                    List.of(new BukkitFindTask(uuid), new DatabaseFindTask(plugin.getDatabaseHelper(), uuid)),
-                    3, TimeUnit.SECONDS);
-            this.nameCache.put(uuid, name);
+            String name = QuickExecutor.getCommonExecutor().invokeAny(List.of(new BukkitFindTask(uuid), new DatabaseFindTask(plugin.getDatabaseHelper(), uuid)), 3, TimeUnit.SECONDS);
+            if (name != null) {
+                this.nameCache.put(uuid, name);
+            }
             return name;
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             e.printStackTrace();
