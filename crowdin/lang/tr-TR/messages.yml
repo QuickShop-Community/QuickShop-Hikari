@@ -35,15 +35,15 @@ quick-fill:
   entry-own: ' <yellow>- <red>[kendi] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>İsim: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
+    - '<yellow>Sahibi: <aqua>{0}'
+    - '<yellow>Türü: <aqua>{0}'
     - '<yellow>Fiyat: <aqua>{0}'
     - '<yellow>Öğe: <aqua>{0}'
     - '<yellow>Konum: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>İsim: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
+    - '<yellow>Sahibi: <aqua>{owner}'
+    - '<yellow>Türü: <aqua>{type}'
     - '<yellow>Fiyat: <aqua>{price}'
     - '<yellow>Öğe: <aqua>{item}'
     - '<yellow>Konum: <aqua>{location}'
@@ -632,7 +632,7 @@ addon:
   residence:
     creation-flag-denied: "<red>You don't have permission to create shops in this residence."
     trade-flag-denied: "<red>You don't have permission to purchase in this residence."
-    you-cannot-create-shop-in-wildness: "<red>You can't create shop in wildness."
+    you-cannot-create-shop-in-wildness: "<red>Issız bölgelerde mağaza yaratamazsınız."
   griefprevention:
     creation-denied: "<red>You don't have permission to create shops in this claim."
     trade-denied: "<red>You don't have permission to purchase shops in this claim."
@@ -1233,7 +1233,7 @@ addon:
     invalid-usage-restriction: "<red>The usage restriction <yellow>{0}</yellow> are invalid."
     invalid-threshold-restriction: "<red>The threshold restriction <yellow>{0}</yellow> are invalid."
     invalid-effect-scope: "<red>The scope <yellow>{0}</yellow> are invalid."
-    invalid-expire-time: "<red>You can't specify a time in the past."
+    invalid-expire-time: "<red>Geçmişteki bir saati belirtemezsiniz."
     invalid-discount-rate: "<red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage."
     discount-code-expired: "<red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!"
     discount-code-installed: "<green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/qs discount uninstall {0}</aqua>."
@@ -1288,21 +1288,21 @@ suite:
     command-description: "<yellow>Set a limit that restrict the purchase that player can make in period."
     reach-the-quota-limit: "<red>You have reach the purchase limit in this shop ({0}/{1})."
     quota-reset-countdown: "<yellow>The quota in this shop will reset in {0}."
-    quota-reset-player-successfully: "<green>The quota for player {0} in this shop has been reset successfully."
-    quota-reset-everybody-successfully: "<green>The quota for everyone in this shop has been reset successfully."
-    quota-setup: "<green>The purchase restriction now apply to this shop!"
-    quota-remove: "<green>The purchase restriction now removed from this shop!"
+    quota-reset-player-successfully: "<green>Bu dükkandaki {0} adlı oyuncunun kotası başarıyla sıfırlandı."
+    quota-reset-everybody-successfully: "<green>Bu mağazadaki herkesin kotası başarıyla sıfırlandı."
+    quota-setup: "<green>Satın alma kısıtlaması bu dükkan için artık geçerli!"
+    quota-remove: "<green>Satın alma kısıtlaması bu dükkandan artık kaldırıldı!"
     subtitles:
-      title: "<green>Purchase Success"
+      title: "<green>Satın Alma Başarılı"
       subtitle: "<aqua>You can purchase <yellow>{0}</yellow> more in this shop"
   list:
-    command-description: "<yellow>List all shops owned by yourself or another player."
-    table-prefix: "<yellow>You owned total <aqua>{0}</aqua> shops on this server."
+    command-description: "<yellow>Kendinize veya başka bir oyuncuya ait tüm dükkanları listeleyin."
+    table-prefix: "<yellow>Bu sunucuda toplam <aqua>{0}</aqua> mağazanız var."
     entry-syntax: "<aqua>- <yellow>{0}"
-    entry-syntax-fallback-name: "<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}"
+    entry-syntax-fallback-name: "<yellow>Eşya:{0} X:{1}, Y:{2}, Z:{3}, Dünya: {4}"
     hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."
   shopitemonly:
-    message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+    message: "<red>Mağaza dışı ürünleri mağazaya koyamazsınız, mağaza dışı tüm ürünler bulunduğunuz yere düşer."
 compatibility:
   elitemobs:
-    soulbound-disallowed: "You can't trade item which have EliteMobs Soulbound enchantment."
+    soulbound-disallowed: "EliteMobs Soulbound büyüsüne sahip eşyaların ticaretini yapamazsınız."
