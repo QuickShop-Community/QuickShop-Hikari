@@ -67,6 +67,10 @@ public class PerfMonitor implements AutoCloseable {
         return Duration.between(startTime, Instant.now());
     }
 
+    public void setContext(@Nullable String context) {
+        this.context = context;
+    }
+
     @Override
     public void close() {
         Duration passedDuration = getTimePassed();

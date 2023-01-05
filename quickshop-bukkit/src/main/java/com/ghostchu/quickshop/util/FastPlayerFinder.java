@@ -34,19 +34,18 @@ public class FastPlayerFinder {
 
     @Nullable
     public synchronized String uuid2Name(@NotNull UUID uuid) {
-        try (PerfMonitor ignored = new PerfMonitor("Username Lookup - " + uuid)) {
+        try (PerfMonitor perf = new PerfMonitor("Username Lookup - " + uuid)) {
             String cachedName = nameCache.getIfPresent(uuid);
             if (cachedName != null) return cachedName;
-            try (PerfMonitor outCache = new PerfMonitor("Username Lookup (cache miss) - " + uuid)) {
-                String name = QuickExecutor.getCommonExecutor().invokeAny(
-                        List.of(new BukkitFindTask(uuid), new DatabaseFindTask(plugin.getDatabaseHelper(), uuid)),
-                        3, TimeUnit.SECONDS);
-                this.nameCache.put(uuid, name);
-                return name;
-            } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                e.printStackTrace();
-                return null;
-            }
+            perf.setContext("cache missed");
+            String name = QuickExecutor.getCommonExecutor().invokeAny(
+                    List.of(new BukkitFindTask(uuid), new DatabaseFindTask(plugin.getDatabaseHelper(), uuid)),
+                    3, TimeUnit.SECONDS);
+            this.nameCache.put(uuid, name);
+            return name;
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
