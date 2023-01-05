@@ -274,7 +274,7 @@ public class Log {
     }
 
     @Data
-    public static class Caller {
+    public final static class Caller {
         @NotNull
         private static final StackWalker STACK_WALKER = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE), 3);
         @NotNull
