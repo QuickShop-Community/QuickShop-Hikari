@@ -51,7 +51,7 @@ public class FastPlayerFinder {
         }
     }
 
-    @Nullable
+    @NotNull
     public synchronized UUID name2Uuid(@NotNull String name) {
         try (PerfMonitor perf = new PerfMonitor("UniqueID Lookup - " + name)) {
             for (Map.Entry<UUID, String> uuidStringEntry : nameCache.asMap().entrySet()) {
