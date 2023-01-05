@@ -25,11 +25,6 @@ public final class Main extends Plugin implements Listener {
     private final Set<UUID> pendingForward = Collections.synchronizedSet(new HashSet<>());
 
     @Override
-    public void onLoad() {
-        super.onLoad();
-    }
-
-    @Override
     public void onEnable() {
         getProxy().getPluginManager().registerListener(this, this);
         getProxy().registerChannel(QUICKSHOP_BUNGEE_CHANNEL);

@@ -79,7 +79,6 @@ public class ShopPurger {
                 continue;
             }
             boolean markDeletion = player.isBanned() && deleteBanned;
-            //noinspection ConstantConditions
             long noOfDaysBetween = ChronoUnit.DAYS.between(CommonUtil.getDateTimeFromTimestamp(lastPlayed), CommonUtil.getDateTimeFromTimestamp(System.currentTimeMillis()));
             if (noOfDaysBetween > days) {
                 markDeletion = true;

@@ -40,7 +40,9 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
     @Override
     public @NotNull List<String> getGroupPermissions(@NotNull String group) {
         Set<String> set = this.permissionMapping.get(group);
-        if (set == null) return Collections.emptyList();
+        if (set == null) {
+            return Collections.emptyList();
+        }
         return ImmutableList.copyOf(set);
     }
 

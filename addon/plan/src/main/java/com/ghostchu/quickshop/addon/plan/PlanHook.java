@@ -37,7 +37,9 @@ public class PlanHook {
         CapabilityService.getInstance().registerEnableListener(
                 isPlanEnabled -> {
                     // Register DataExtension again
-                    if (isPlanEnabled) registerDataExtension();
+                    if (isPlanEnabled) {
+                        registerDataExtension();
+                    }
                 }
         );
     }

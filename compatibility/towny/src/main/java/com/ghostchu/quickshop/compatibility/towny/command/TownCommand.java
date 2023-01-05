@@ -91,7 +91,6 @@ public class TownCommand implements CommandHandler<Player> {
         TownyShopUtil.setShopOriginalOwner(shop, shop.getOwner());
         TownyShopUtil.setShopTown(shop, town);
         shop.setPlayerGroup(shop.getOwner(), BuiltInShopPermissionGroup.ADMINISTRATOR);
-        //noinspection ConstantConditions
         shop.setOwner(uuid);
         plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-owned-by-town", town.getName()).send();
         plugin.getApi().getTextManager().of(sender, "addon.towny.shop-owning-changing-notice").send();

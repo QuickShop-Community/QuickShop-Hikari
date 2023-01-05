@@ -47,7 +47,7 @@ import java.util.regex.PatternSyntaxException;
 public class SimpleTextManager implements TextManager, Reloadable {
     private static final String DEFAULT_LOCALE = "en_us";
     private static final String LOCALE_MAPPING_SYNTAX = "locale";
-    private static String CROWDIN_LANGUAGE_FILE_PATH = "/hikari/crowdin/lang/%locale%/messages.yml";
+    private static final String CROWDIN_LANGUAGE_FILE_PATH = "/hikari/crowdin/lang/%locale%/messages.yml";
     public final Set<PostProcessor> postProcessors = new LinkedHashSet<>();
     private final QuickShop plugin;
     // <File <Locale, Section>>
@@ -88,7 +88,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
                 plugin.getLogger().log(Level.WARNING, "Failed to load built-in fallback translation, fallback file not exists in jar.");
                 return configuration;
             }
-            ;
             byte[] bytes = inputStream.readAllBytes();
             String content = new String(bytes, StandardCharsets.UTF_8);
             configuration.loadFromString(content);
@@ -260,7 +259,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
         return false;
     }
 
-    @SneakyThrows
     @NotNull
     private File getOverrideLocaleFile(@NotNull String locale) {
         File file;
@@ -280,21 +278,25 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @param pool The language codes you already own.
      * @return The pool copy with new added language codes.
      */
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     @NotNull
     private Collection<String> getOverrideLocales(@NotNull Collection<String> pool) {
         File moduleFolder = new File(plugin.getDataFolder(), "overrides");
-        if (!moduleFolder.exists())
+        if (!moduleFolder.exists()) {
             moduleFolder.mkdirs();
+        }
         // create the pool overrides placeholder directories
         pool.forEach(single -> {
             File f = new File(moduleFolder, single);
-            if (!f.exists())
+            if (!f.exists()) {
                 f.mkdirs();
+            }
         });
         //
         File[] files = moduleFolder.listFiles();
-        if (files == null) return pool;
+        if (files == null) {
+            return pool;
+        }
         List<String> newPool = new ArrayList<>(pool);
         for (File file : files) {
             if (file.isDirectory()) {
@@ -363,7 +365,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
      * @param path   The language key path
      * @param text   The language text
      */
-    @SneakyThrows
+    @SneakyThrows(InvalidConfigurationException.class)
     @Override
     public void register(@NotNull String locale, @NotNull String path, @NotNull String text) {
         FileConfiguration configuration = languageFilesManager.getDistribution(locale);

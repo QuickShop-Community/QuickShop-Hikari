@@ -244,7 +244,6 @@ public class ShopLoader {
         private Benefit benefits;
 
 
-        @SuppressWarnings("UnstableApiUsage")
         DataRawDatabaseInfo(@NotNull DataRecord dataRecord) {
             this.owner = dataRecord.getOwner();
             this.price = dataRecord.getPrice();

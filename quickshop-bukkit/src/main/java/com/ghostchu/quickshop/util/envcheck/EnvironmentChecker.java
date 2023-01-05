@@ -208,33 +208,33 @@ public final class EnvironmentChecker {
                     continue;
                 }
                 switch (result) {
-                    case SKIPPED:
+                    case SKIPPED -> {
                         plugin.getLogger().info("[SKIP] " + envCheckEntry.name());
                         Log.debug("Runtime check [" + envCheckEntry.name() + "] has been skipped (Startup Flag).");
-                        break;
-                    case PASSED:
+                    }
+                    case PASSED -> {
                         if (Util.isDevEdition() || Util.isDevMode()) {
                             plugin.getLogger().info("[OK] " + envCheckEntry.name());
                             Log.debug("[Pass] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         }
-                        break;
-                    case WARNING:
+                    }
+                    case WARNING -> {
                         plugin.getLogger().warning("[WARN] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         Log.debug("[Warning] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                        break;
-                    case STOP_WORKING:
+                    }
+                    case STOP_WORKING -> {
                         plugin.getLogger().warning("[STOP] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         Log.debug("[Stop-Freeze] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
-                        //It's okay, QuickShop should continue executing checks to collect more data.
-                        //And show user all errors at once.
-                        break;
-                    case DISABLE_PLUGIN:
+                    }
+                    //It's okay, QuickShop should continue executing checks to collect more data.
+                    //And show user all errors at once.
+                    case DISABLE_PLUGIN -> {
                         plugin.getLogger().warning("[FATAL] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         Log.debug("[Fatal-Disable] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         skipAllTest = true; //We need to disable the plugin NOW! Some HUGE exception is happening here, hurry up!
-                        break;
-                    default:
-                        plugin.getLogger().warning("[UNDEFINED] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                    }
+                    default ->
+                            plugin.getLogger().warning("[UNDEFINED] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                 }
                 results.put(envCheckEntry, Objects.requireNonNullElseGet(executeResult, () -> new ResultContainer(CheckResult.SKIPPED, "Startup flag mark this check should be skipped.")));
                 if (result.ordinal() > gResult.ordinal()) { //set bad result if its worse than the latest one.

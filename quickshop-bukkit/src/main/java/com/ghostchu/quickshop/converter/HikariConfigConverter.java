@@ -1011,7 +1011,6 @@ public class HikariConfigConverter implements HikariConverterInterface {
         File configFile = new File(plugin.getDataFolder(), "price-restriction.yml");
         if (!configFile.exists()) {
             try {
-                //noinspection ConstantConditions
                 Files.copy(plugin.getResource("price-restriction.yml"), configFile.toPath());
             } catch (IOException e) {
                 plugin.getLogger().log(Level.WARNING, "Failed to copy price-restriction.yml.yml to plugin folder!", e);

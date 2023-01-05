@@ -52,6 +52,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -421,6 +422,7 @@ public class Util {
      */
     @NotNull
     public static BlockFace getYawFace(float yaw) {
+        //noinspection ConstantValue
         if (yaw > 315 && yaw <= 45) {
             return BlockFace.NORTH;
         } else if (yaw > 45 && yaw <= 135) {
@@ -995,7 +997,7 @@ public class Util {
         }
     }
 
-    @SneakyThrows
+    @SneakyThrows(IOException.class)
     public static void makeExportBackup(@Nullable String backupName) {
         if (StringUtils.isEmpty(backupName)) {
             backupName = "export-" + QuickShop.getFork() + "-" + QuickShop.getVersion() + ".txt";

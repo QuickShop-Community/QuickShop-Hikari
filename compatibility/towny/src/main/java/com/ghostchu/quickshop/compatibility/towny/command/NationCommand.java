@@ -87,7 +87,6 @@ public class NationCommand implements CommandHandler<Player> {
         }
         TownyShopUtil.setShopOriginalOwner(shop, shop.getOwner());
         shop.setPlayerGroup(shop.getOwner(), BuiltInShopPermissionGroup.ADMINISTRATOR);
-        //noinspection ConstantConditions
         shop.setOwner(uuid);
         TownyShopUtil.setShopNation(shop, nation);
         plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-owned-by-nation", nation.getName()).send();

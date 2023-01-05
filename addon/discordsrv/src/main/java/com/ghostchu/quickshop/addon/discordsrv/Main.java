@@ -108,8 +108,9 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     }
 
     private void notifyShopPermissionChanged(ShopPlayerGroupSetEvent event) {
-        if (!isFeatureEnabled("notify-shop-permission-changed"))
+        if (!isFeatureEnabled("notify-shop-permission-changed")) {
             return;
+        }
         jdaWrapper.sendMessage(event.getShop().getOwner(), factory.shopPermissionChanged(event));
         // Send to permission users
         for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
@@ -120,8 +121,9 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     }
 
     private void notifyShopPriceChanged(ShopPriceChangeEvent event) {
-        if (!isFeatureEnabled("notify-shop-price-changed"))
+        if (!isFeatureEnabled("notify-shop-price-changed")) {
             return;
+        }
         jdaWrapper.sendMessage(event.getShop().getOwner(), factory.priceChanged(event));
         // Send to permission users
         for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
@@ -132,40 +134,52 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     }
 
     private void notifyModShopPriceChanged(ShopPriceChangeEvent event) {
-        if (!isFeatureEnabled("mod-notify-shop-price-changed"))
+        if (!isFeatureEnabled("mod-notify-shop-price-changed")) {
             return;
+        }
         sendModeratorChannelMessage(factory.modPriceChanged(event));
     }
 
+    private void sendModeratorChannelMessage(@NotNull MessageEmbed embed) {
+        String channelId = getConfig().getString("moderator-channel", "000000000000000000");
+        if ("000000000000000000".equals(channelId)) {
+            return;
+        }
+        jdaWrapper.sendChannelMessage(channelId, embed);
+    }
 
     private void notifyModShopRemoved(ShopDeleteEvent event) {
-        if (!isFeatureEnabled("mod-notify-shop-removed"))
+        if (!isFeatureEnabled("mod-notify-shop-removed")) {
             return;
+        }
         sendModeratorChannelMessage(factory.modShopRemoved(event));
     }
 
     private void notifyShopTransfer(ShopOwnershipTransferEvent event) {
-        if (!isFeatureEnabled("notify-shop-transfer"))
+        if (!isFeatureEnabled("notify-shop-transfer")) {
             return;
+        }
         jdaWrapper.sendMessage(event.getShop().getOwner(), factory.shopTransferToYou(event));
     }
 
     private void notifyModShopTransfer(ShopOwnershipTransferEvent event) {
-        if (!isFeatureEnabled("mod-notify-shop-transfer"))
+        if (!isFeatureEnabled("mod-notify-shop-transfer")) {
             return;
+        }
         sendModeratorChannelMessage(factory.modShopTransfer(event));
     }
 
     private void notifyModShopCreated(ShopCreateEvent event) {
-        if (!isFeatureEnabled("mod-notify-shop-created"))
+        if (!isFeatureEnabled("mod-notify-shop-created")) {
             return;
+        }
         sendModeratorChannelMessage(factory.modShopCreated(event));
     }
 
-
     private void notifyShopOutOfStock(ShopSuccessPurchaseEvent event) {
-        if (!isFeatureEnabled("notify-shop-out-of-stock"))
+        if (!isFeatureEnabled("notify-shop-out-of-stock")) {
             return;
+        }
         Util.mainThreadRun(() -> {
             if (event.getShop().isSelling() && event.getShop().getRemainingStock() == 0) {
                 Util.asyncThreadRun(() -> {
@@ -175,26 +189,6 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
                     for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
                         if (event.getShop().playerAuthorize(uuid, this, "discordalert")) {
                             jdaWrapper.sendMessage(uuid, factory.shopOutOfStock(event));
-                        }
-                    }
-                });
-            }
-        });
-
-    }
-
-    private void notifyShopOutOfSpace(ShopSuccessPurchaseEvent event) {
-        if (!isFeatureEnabled("notify-shop-out-of-space"))
-            return;
-        Util.mainThreadRun(() -> {
-            if (event.getShop().isBuying() && event.getShop().getRemainingSpace() == 0) {
-                Util.asyncThreadRun(() -> {
-                    // Send to owner
-                    jdaWrapper.sendMessage(event.getShop().getOwner(), factory.shopOutOfSpace(event));
-                    // Send to permission users
-                    for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
-                        if (event.getShop().playerAuthorize(uuid, this, "discordalert")) {
-                            jdaWrapper.sendMessage(uuid, factory.shopOutOfSpace(event));
                         }
                     }
                 });
@@ -219,11 +213,25 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
         }
     }
 
-
-    private void notifyModShopPurchase(ShopSuccessPurchaseEvent event) {
-        if (!isFeatureEnabled("mod-notify-shop-purchase"))
+    private void notifyShopOutOfSpace(ShopSuccessPurchaseEvent event) {
+        if (!isFeatureEnabled("notify-shop-out-of-space")) {
             return;
-        sendModeratorChannelMessage(factory.modShopPurchase(event));
+        }
+        Util.mainThreadRun(() -> {
+            if (event.getShop().isBuying() && event.getShop().getRemainingSpace() == 0) {
+                Util.asyncThreadRun(() -> {
+                    // Send to owner
+                    jdaWrapper.sendMessage(event.getShop().getOwner(), factory.shopOutOfSpace(event));
+                    // Send to permission users
+                    for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
+                        if (event.getShop().playerAuthorize(uuid, this, "discordalert")) {
+                            jdaWrapper.sendMessage(uuid, factory.shopOutOfSpace(event));
+                        }
+                    }
+                });
+            }
+        });
+
     }
 
 
@@ -231,15 +239,18 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
         return getConfig().getBoolean("features." + featureName, true);
     }
 
-    private void sendModeratorChannelMessage(@NotNull MessageEmbed embed) {
-        String channelId = getConfig().getString("moderator-channel", "000000000000000000");
-        if (channelId.equals("000000000000000000")) return;
-        jdaWrapper.sendChannelMessage(channelId, embed);
+    private void notifyModShopPurchase(ShopSuccessPurchaseEvent event) {
+        if (!isFeatureEnabled("mod-notify-shop-purchase")) {
+            return;
+        }
+        sendModeratorChannelMessage(factory.modShopPurchase(event));
     }
 
     private void sendModeratorChannelMessage(@NotNull String msg) {
         String channelId = getConfig().getString("moderator-channel", "000000000000000000");
-        if (channelId.equals("000000000000000000")) return;
+        if ("000000000000000000".equals(channelId)) {
+            return;
+        }
         jdaWrapper.sendChannelMessage(channelId, msg);
     }
 

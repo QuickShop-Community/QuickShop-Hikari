@@ -40,7 +40,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                 continue;
             }
             switch (cmdArg.length) {
-                case 1:
+                case 1 -> {
                     switch (cmdArg[0]) {
                         case "clear" -> {
                             shop.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(staff -> shop.setPlayerGroup(staff, BuiltInShopPermissionGroup.EVERYONE));
@@ -65,7 +65,8 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                             return;
                         }
                     }
-                case 2:
+                }
+                case 2 -> {
                     String name = cmdArg[1];
                     UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[1]);
                     if (uuid == null) {
@@ -88,9 +89,11 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                             return;
                         }
                     }
-                default:
+                }
+                default -> {
                     plugin.text().of(sender, "command.wrong-args").send();
                     return;
+                }
             }
         }
         //no match shop

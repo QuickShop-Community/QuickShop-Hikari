@@ -60,7 +60,6 @@ public final class Main extends CompatibilityModule implements Listener {
         if (isWorldIgnored(event.getShop().getLocation().getWorld())) {
             return;
         }
-        //noinspection ConstantConditions
         Optional<Component> component = checkFlags(event.getPlayer(), event.getShop().getLocation(), this.createFlags);
         component.ifPresent(value -> event.setCancelled(true, value));
     }
@@ -234,7 +233,6 @@ public final class Main extends CompatibilityModule implements Listener {
         if (isWorldIgnored(event.getShop().getLocation().getWorld())) {
             return;
         }
-        //noinspection ConstantConditions
         Optional<Component> component = checkFlags(event.getPlayer(), event.getShop().getLocation(), this.tradeFlags);
         component.ifPresent(value -> event.setCancelled(true, value));
     }

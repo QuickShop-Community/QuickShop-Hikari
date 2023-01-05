@@ -49,14 +49,14 @@ public class HikariDataExtension implements DataExtension {
 
     // ======================= GLOBAL PROVIDERS =======================
 
-    @StringProvider(text = "Total shops", description = "How many shops exists on this server", iconName = "hashtable", iconColor = Color.GREEN, priority = 100, showInPlayerTable = false)
+    @StringProvider(text = "Total shops", description = "How many shops exists on this server", iconName = "hashtable", iconColor = Color.GREEN, priority = 100)
     @Tab("Summary")
     public String shopCreated() {
         return String.valueOf(main.getQuickShop().getShopManager().getAllShops().size());
     }
 
     @Tab("Summary")
-    @StringProvider(text = "Total purchases", description = "Number of purchases on this server", iconName = "hashtable", iconColor = Color.GREEN, priority = 100, showInPlayerTable = false)
+    @StringProvider(text = "Total purchases", description = "Number of purchases on this server", iconName = "hashtable", iconColor = Color.GREEN, priority = 100)
     public String totalTransactions() {
         return String.valueOf(metricQuery.queryServerPurchaseCount());
     }

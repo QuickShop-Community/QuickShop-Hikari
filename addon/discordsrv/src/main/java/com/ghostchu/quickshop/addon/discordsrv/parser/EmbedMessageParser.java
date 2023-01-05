@@ -1,9 +1,9 @@
 package com.ghostchu.quickshop.addon.discordsrv.parser;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.ghostchu.quickshop.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;
 import github.scarsz.discordsrv.dependencies.jda.api.entities.MessageEmbed;
 import lombok.Data;
@@ -18,45 +18,55 @@ import java.util.Map;
 
 public class EmbedMessageParser {
     private final static String ZERO_WIDTH_SPACE = "\u200E";
-    private static final Gson gson = new Gson();
 
     @NotNull
     public MessageEmbed parse(@NotNull String json) {
         // test json
-        if (!MsgUtil.isJson(json))
+        if (!MsgUtil.isJson(json)) {
             throw new IllegalArgumentException("Invalid json: " + json);
+        }
         // map check
-        Map<String, Object> map = gson.fromJson(json, new TypeToken<Map<String, Object>>() {
+        Map<String, Object> map = JsonUtil.getGson().fromJson(json, new TypeToken<Map<String, Object>>() {
         }.getType());
-        if (!map.containsKey("embed") && map.containsKey("embeds"))
+        if (!map.containsKey("embed") && map.containsKey("embeds")) {
             throw new IllegalArgumentException("json argument are multiple embeds! only single embed message is supported!");
-        PackageDTO packageDto = gson.fromJson(json, PackageDTO.class);
+        }
+        PackageDTO packageDto = JsonUtil.getGson().fromJson(json, PackageDTO.class);
         PackageDTO.EmbedDTO dto = packageDto.getEmbed();
         EmbedBuilder builder = new EmbedBuilder();
-        if (dto.getTitle() != null)
+        if (dto.getTitle() != null) {
             builder.setTitle(dto.getTitle());
-        if (dto.getDescription() != null)
+        }
+        if (dto.getDescription() != null) {
             builder.setDescription(dto.getDescription());
-        if (dto.getColor() != null)
+        }
+        if (dto.getColor() != null) {
             builder.setColor(dto.getColor());
-        if (dto.getFooter() != null)
+        }
+        if (dto.getFooter() != null) {
             builder.setFooter(dto.getFooter().getText(), dto.getFooter().getIconUrl());
-        if (dto.getThumbnail() != null)
+        }
+        if (dto.getThumbnail() != null) {
             builder.setThumbnail(emptyDefault(dto.getThumbnail().getUrl()));
-        if (dto.getImage() != null && StringUtils.isNotBlank(dto.getImage().getUrl()))
+        }
+        if (dto.getImage() != null && StringUtils.isNotBlank(dto.getImage().getUrl())) {
             builder.setImage(dto.getImage().getUrl());
-        if (dto.getAuthor() != null)
+        }
+        if (dto.getAuthor() != null) {
             builder.setAuthor(dto.getAuthor().getName(), dto.getAuthor().getUrl(), dto.getAuthor().getIconUrl());
+        }
         builder.setTimestamp(Instant.now());
         if (dto.getFields() != null) {
             for (PackageDTO.EmbedDTO.FieldsDTO field : dto.getFields()) {
                 if (field != null && field.getName() != null && field.getValue() != null) {
                     String fieldName = field.getName();
                     String fieldValue = field.getValue();
-                    if (StringUtils.isEmpty(fieldName))
+                    if (StringUtils.isEmpty(fieldName)) {
                         fieldName = ZERO_WIDTH_SPACE;
-                    if (StringUtils.isEmpty(fieldValue))
+                    }
+                    if (StringUtils.isEmpty(fieldValue)) {
                         fieldValue = ZERO_WIDTH_SPACE;
+                    }
                     builder.addField(fieldName, fieldValue, field.inline);
                 }
             }
@@ -66,8 +76,9 @@ public class EmbedMessageParser {
 
     @Nullable
     private String emptyDefault(@Nullable String v) {
-        if (v == null || !v.startsWith("http"))
+        if (v == null || !v.startsWith("http")) {
             return null;
+        }
         return v;
     }
 

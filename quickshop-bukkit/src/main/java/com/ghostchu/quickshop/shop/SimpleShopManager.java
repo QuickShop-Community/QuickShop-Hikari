@@ -587,28 +587,18 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         boolean decFormat = plugin.getConfig().getBoolean("use-decimal-format");
         PriceLimiterCheckResult priceCheckResult = this.priceLimiter.check(p, shop.getItem(), plugin.getCurrency(), shop.getPrice());
         switch (priceCheckResult.getStatus()) {
-            case REACHED_PRICE_MIN_LIMIT -> {
-                plugin.text().of(p, "price-too-cheap",
-                        Component.text((decFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax())
-                                : Double.toString(priceCheckResult.getMin()))).send();
-            }
-            case REACHED_PRICE_MAX_LIMIT -> {
-                plugin.text().of(p, "price-too-high",
-                        Component.text((decFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax())
-                                : Double.toString(priceCheckResult.getMin()))).send();
-            }
-            case PRICE_RESTRICTED -> {
-                plugin.text().of(p, "restricted-prices",
-                        MsgUtil.getTranslateText(shop.getItem()),
-                        Component.text(priceCheckResult.getMin()),
-                        Component.text(priceCheckResult.getMax())).send();
-            }
-            case NOT_VALID -> {
-                plugin.text().of(p, "not-a-number", shop.getPrice()).send();
-            }
-            case NOT_A_WHOLE_NUMBER -> {
-                plugin.text().of(p, "not-a-integer", shop.getPrice()).send();
-            }
+            case REACHED_PRICE_MIN_LIMIT -> plugin.text().of(p, "price-too-cheap",
+                    Component.text((decFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax())
+                            : Double.toString(priceCheckResult.getMin()))).send();
+            case REACHED_PRICE_MAX_LIMIT -> plugin.text().of(p, "price-too-high",
+                    Component.text((decFormat) ? MsgUtil.decimalFormat(priceCheckResult.getMax())
+                            : Double.toString(priceCheckResult.getMin()))).send();
+            case PRICE_RESTRICTED -> plugin.text().of(p, "restricted-prices",
+                    MsgUtil.getTranslateText(shop.getItem()),
+                    Component.text(priceCheckResult.getMin()),
+                    Component.text(priceCheckResult.getMax())).send();
+            case NOT_VALID -> plugin.text().of(p, "not-a-number", shop.getPrice()).send();
+            case NOT_A_WHOLE_NUMBER -> plugin.text().of(p, "not-a-integer", shop.getPrice()).send();
             case PASS -> {
                 // Calling ShopCreateEvent
                 ShopCreateEvent shopCreateEvent = new ShopCreateEvent(shop, p.getUniqueId());
@@ -1720,17 +1710,20 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
 
         @Nullable
+        @Override
         public Info put(UUID uuid, Info info) {
             sendRequest(uuid);
             return this.actions.put(uuid, info);
         }
 
         @Nullable
+        @Override
         public Info remove(UUID uuid) {
             sendCancel(uuid);
             return this.actions.remove(uuid);
         }
 
+        @Override
         public void reset() {
             this.actions.keySet().forEach(uuid -> {
                 Player player = Bukkit.getPlayer(uuid);

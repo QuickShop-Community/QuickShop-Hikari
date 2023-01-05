@@ -106,7 +106,9 @@ public class MessageManager {
     }
 
     private void scanClass(@Nullable Object obj) {
-        if (obj == null) return;
+        if (obj == null) {
+            return;
+        }
         for (Method declaredMethod : obj.getClass().getDeclaredMethods()) {
             AutoRegisterMessage annotation = declaredMethod.getAnnotation(AutoRegisterMessage.class);
             if (annotation == null) {

@@ -721,7 +721,6 @@ public interface Shop {
     /**
      * Sets the benefit in this shop
      */
-    @NotNull
     void setShopBenefit(@NotNull Benefit benefit);
 
 }

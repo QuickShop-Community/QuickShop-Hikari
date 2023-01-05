@@ -33,7 +33,6 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
             plugin.text().of(sender, "bad-command-usage-detailed", "trim").send();
             return;
         }
-        //noinspection SwitchStatementWithTooFewBranches
         switch (cmdArg[0]) {
             case "trim" -> handleTrim(sender, ArrayUtils.remove(cmdArg, 0));
             case "purgelogs" -> purgeLogs(sender, ArrayUtils.remove(cmdArg, 0));
@@ -88,7 +87,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
             plugin.text().of(sender, "command-incorrect", "/qs database purgelogs <before-days>").send();
             return;
         }
-        if (cmdArg.length < 2 || !cmdArg[1].equalsIgnoreCase("confirm")) {
+        if (cmdArg.length < 2 || !"confirm".equalsIgnoreCase(cmdArg[1])) {
             plugin.text().of(sender, "database.purge-warning").send();
             return;
         }

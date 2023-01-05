@@ -54,6 +54,7 @@ public class LuckoPastebinPaster implements PasteInterface {
 
     @Data
     static class JsonPadding {
+        @SuppressWarnings({"AlibabaConstantFieldShouldBeUpperCase", "AlibabaAvoidStartWithDollarAndUnderLineNaming"})
         private static final String _paster = "QuickShop";
         private String data;
 

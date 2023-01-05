@@ -41,7 +41,9 @@ public class DataUtil {
         } catch (InvalidConfigurationException e) {
             return "[Failed to deserialize]";
         }
-        if (stack == null) return "[Failed to deserialize]";
+        if (stack == null) {
+            return "[Failed to deserialize]";
+        }
         String name = CommonUtil.prettifyText(stack.getType().name());
         if (stack.getItemMeta() != null && stack.getItemMeta().hasDisplayName()) {
             name = stack.getItemMeta().getDisplayName();
@@ -62,7 +64,9 @@ public class DataUtil {
     public String getShopName(@NotNull ShopMetricRecord record, @NotNull DataRecord dataRecord) {
         StringBuilder nameBuilder = new StringBuilder();
         Shop shop = main.getQuickShop().getShopManager().getShop(record.getShopId());
-        if (shop == null) nameBuilder.append("[Deleted] ");
+        if (shop == null) {
+            nameBuilder.append("[Deleted] ");
+        }
         String shopName = dataRecord.getName();
         if (shopName != null) {
             nameBuilder.append(ChatColor.stripColor(shopName));
@@ -90,7 +94,7 @@ public class DataUtil {
             return "[Server]";
         }
         String name = main.getQuickShop().getPlayerFinder().uuid2Name(uuid);
-        if (name == null || name.equals("")) {
+        if (name == null || "".equals(name)) {
             return uuid.toString();
         }
         return HtmlEscapers.htmlEscaper().escape(name);

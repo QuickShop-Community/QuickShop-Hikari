@@ -10,7 +10,6 @@ import com.google.gson.JsonParser;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import lombok.Data;
-import lombok.SneakyThrows;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -185,7 +184,6 @@ public class MojangAPI {
          *
          * @return The meta data
          */
-        @SneakyThrows
         public Optional<String> get() {
             HttpResponse<String> response = Unirest.get(metaEndpoint).asString();
             if (!response.isSuccess()) {

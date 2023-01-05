@@ -18,8 +18,8 @@ public class DiscountCodeManager {
     public static final String NAME_REG_EXP = "[a-zA-Z0-9_]*";
     private final Set<DiscountCode> codes = Collections.synchronizedSet(new HashSet<>());
     private final Pattern namePattern = Pattern.compile(NAME_REG_EXP);
-    private Main main;
-    private File file;
+    private final Main main;
+    private final File file;
     private YamlConfiguration config;
 
     public DiscountCodeManager(Main main) throws IOException {
@@ -59,8 +59,9 @@ public class DiscountCodeManager {
     @Nullable
     public DiscountCode getCode(@NotNull String code) {
         for (DiscountCode discountCode : this.codes) {
-            if (discountCode.getCode().equalsIgnoreCase(code))
+            if (discountCode.getCode().equalsIgnoreCase(code)) {
                 return discountCode;
+            }
         }
         return null;
     }

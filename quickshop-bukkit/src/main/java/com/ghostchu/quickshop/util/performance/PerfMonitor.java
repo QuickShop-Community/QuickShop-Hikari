@@ -58,7 +58,9 @@ public class PerfMonitor implements AutoCloseable {
     }
 
     public boolean isReachedLimit() {
-        if (exceptedDuration == null) return false;
+        if (exceptedDuration == null) {
+            return false;
+        }
         return getTimePassed().compareTo(exceptedDuration) > 0;
     }
 

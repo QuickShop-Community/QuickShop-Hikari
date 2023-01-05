@@ -36,7 +36,9 @@ public class FastPlayerFinder {
     public synchronized String uuid2Name(@NotNull UUID uuid) {
         try (PerfMonitor perf = new PerfMonitor("Username Lookup - " + uuid)) {
             String cachedName = nameCache.getIfPresent(uuid);
-            if (cachedName != null) return cachedName;
+            if (cachedName != null) {
+                return cachedName;
+            }
             perf.setContext("cache miss");
             String name = QuickExecutor.getCommonExecutor().invokeAny(
                     List.of(new BukkitFindTask(uuid), new DatabaseFindTask(plugin.getDatabaseHelper(), uuid)),
@@ -53,14 +55,16 @@ public class FastPlayerFinder {
     public synchronized UUID name2Uuid(@NotNull String name) {
         try (PerfMonitor perf = new PerfMonitor("UniqueID Lookup - " + name)) {
             for (Map.Entry<UUID, String> uuidStringEntry : nameCache.asMap().entrySet()) {
-                if (uuidStringEntry.getValue().equals(name))
+                if (uuidStringEntry.getValue().equals(name)) {
                     return uuidStringEntry.getKey();
+                }
             }
             perf.setContext("cache miss");
             @SuppressWarnings("deprecation") OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
             String playerName = offlinePlayer.getName();
-            if (playerName == null)
+            if (playerName == null) {
                 playerName = name;
+            }
             this.nameCache.put(offlinePlayer.getUniqueId(), playerName);
             return offlinePlayer.getUniqueId();
         }
@@ -88,7 +92,7 @@ public class FastPlayerFinder {
 
         @Override
         @Nullable
-        public String call() throws Exception {
+        public String call() {
             OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
             return player.getName();
         }
@@ -105,7 +109,9 @@ public class FastPlayerFinder {
 
         @Override
         public @Nullable String call() {
-            if (this.db == null) return null;
+            if (this.db == null) {
+                return null;
+            }
             try {
                 return db.getPlayerName(uuid).get(30, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
