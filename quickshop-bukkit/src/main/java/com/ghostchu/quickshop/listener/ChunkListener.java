@@ -39,7 +39,7 @@ public class ChunkListener extends AbstractQSListener {
         cleanDisplayItems(e.getChunk());
         String chunkName = e.getChunk().getWorld().getName() + ", X=" + e.getChunk().getX() + ", Z=" + e.getChunk().getZ();
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-            try (PerfMonitor ignored = new PerfMonitor("Load shops in chunk " + chunkName, Duration.of(2, ChronoUnit.SECONDS))) {
+            try (PerfMonitor ignored = new PerfMonitor("Load shops in chunk [" + chunkName + "]", Duration.of(2, ChronoUnit.SECONDS))) {
                 for (Shop shop : inChunk.values()) {
                     shop.onLoad();
                 }

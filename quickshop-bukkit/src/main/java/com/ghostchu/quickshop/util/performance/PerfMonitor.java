@@ -13,6 +13,8 @@ public class PerfMonitor implements AutoCloseable {
     private final Instant startTime;
     @Nullable
     private final Duration exceptedDuration;
+    @Nullable
+    private String context;
 
     public PerfMonitor() {
         Log.Caller caller = Log.Caller.create();
@@ -68,15 +70,19 @@ public class PerfMonitor implements AutoCloseable {
     @Override
     public void close() {
         Duration passedDuration = getTimePassed();
+        boolean overLimit = exceptedDuration != null && getTimePassed().compareTo(exceptedDuration) > 0;
         String passed = passedDuration.toMillis() + "ms";
-        if (exceptedDuration != null) {
-            if (getTimePassed().compareTo(exceptedDuration) > 0) {
-                Log.performance(Level.WARNING, "Task " + name + " finished in " + passed + ", the excepted duration is " + exceptedDuration + ", performance reached the limit");
-            } else {
-                Log.performance(Level.INFO, "Task " + name + " finished in " + passed + ".");
-            }
-        } else {
-            Log.performance(Level.INFO, "Task " + name + " finished in " + passed + ".");
+        StringBuilder messageBuilder = new StringBuilder();
+        messageBuilder.append("The task [").append(name).append("] ");
+        if (context != null) {
+            messageBuilder.append("(").append(context).append(") ");
         }
+        messageBuilder.append("has finished in ").append(passed).append(".");
+        Level level = Level.INFO;
+        if (overLimit) {
+            messageBuilder.append(" OVER LIMIT! The excepted time cost should less than ").append(exceptedDuration.toMillis()).append("ms.");
+            level = Level.WARNING;
+        }
+        Log.performance(level, messageBuilder.toString());
     }
 }

@@ -38,9 +38,11 @@ public class FastPlayerFinder {
             String cachedName = nameCache.getIfPresent(uuid);
             if (cachedName != null) return cachedName;
             try (PerfMonitor outCache = new PerfMonitor("Username Lookup (cache miss) - " + uuid)) {
-                return QuickExecutor.getCommonExecutor().invokeAny(
+                String name = QuickExecutor.getCommonExecutor().invokeAny(
                         List.of(new BukkitFindTask(uuid), new DatabaseFindTask(plugin.getDatabaseHelper(), uuid)),
                         3, TimeUnit.SECONDS);
+                this.nameCache.put(uuid, name);
+                return name;
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 e.printStackTrace();
                 return null;
@@ -72,6 +74,11 @@ public class FastPlayerFinder {
 
     public boolean isCached(@NotNull UUID uuid) {
         return this.nameCache.getIfPresent(uuid) != null;
+    }
+
+    @NotNull
+    public Cache<UUID, String> getNameCache() {
+        return nameCache;
     }
 
     static class BukkitFindTask implements Callable<String> {
