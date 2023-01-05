@@ -84,7 +84,8 @@ public enum DataTables {
 
     PLAYERS("players", (table) -> {
         table.addColumn("uuid", "VARCHAR(36) NOT NULL PRIMARY KEY");
-        table.addColumn("locale", "TEXT NOT NULL");
+        table.addColumn("locale", "VARCHAR(255) NOT NULL");
+        table.addColumn("cachedName", "VARCHAR(255) NOT NULL");
     }),
 
     EXTERNAL_CACHE("external_cache", (table) -> {

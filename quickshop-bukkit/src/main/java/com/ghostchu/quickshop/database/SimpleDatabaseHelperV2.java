@@ -122,7 +122,26 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             plugin.getLogger().info("Data upgrading: All completed!");
             setDatabaseVersion(10);
         }
+        if (getDatabaseVersion() == 10) {
+            plugin.getLogger().info("Data upgrading: Performing database structure upgrade (players)...");
+            upgradePlayers();
+            plugin.getLogger().info("Data upgrading: All completed!");
+            setDatabaseVersion(10);
+        }
         plugin.getLogger().info("Finished!");
+    }
+
+    private void upgradePlayers() {
+        try {
+            Integer lines = getManager().alterTable(DataTables.PLAYERS.getName())
+                    .modifyColumn("locale", "VARCHAR(255)")
+                    .execute();
+            lines = getManager().alterTable(DataTables.PLAYERS.getName())
+                    .addColumn("cachedName", "VARCHAR(255)")
+                    .execute();
+        } catch (SQLException e) {
+            Log.debug("Failed to add cachedName or modify locale column in " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
+        }
     }
 
     private void upgradeBenefit() {
@@ -469,6 +488,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @Override
+    public CompletableFuture<@Nullable String> getPlayerName(@NotNull UUID uuid) {
+        return null;
+    }
+
+    @Override
     public @NotNull CompletableFuture<@NotNull Integer> insertHistoryRecord(@NotNull Object rec) {
         return DataTables.LOG_OTHERS.createInsert()
                 .setColumnNames("type", "data")
@@ -625,11 +649,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     @NotNull
-    public CompletableFuture<@NotNull Integer> setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
-        Log.debug("Update: " + uuid + " last locale to " + locale);
+    public CompletableFuture<@NotNull Integer> updatePlayerProfile(@NotNull UUID uuid, @NotNull String locale, @NotNull String username) {
         return DataTables.PLAYERS.createReplace()
-                .setColumnNames("uuid", "locale")
-                .setParams(uuid.toString(), locale)
+                .setColumnNames("uuid", "locale", "cachedName")
+                .setParams(uuid.toString(), locale, username)
                 .executeFuture(lines -> lines);
     }
 

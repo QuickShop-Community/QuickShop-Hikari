@@ -76,6 +76,13 @@ public interface DatabaseHelper {
     CompletableFuture<@Nullable String> getPlayerLocale(@NotNull UUID uuid);
 
     /**
+     * Async gets the player last use username from database
+     *
+     * @param uuid The player UUID
+     */
+    CompletableFuture<@Nullable String> getPlayerName(@NotNull UUID uuid);
+
+    /**
      * Insert a history record into logs table
      *
      * @param rec Record object that can be serialized by Gson.
@@ -164,14 +171,7 @@ public interface DatabaseHelper {
     @NotNull
     SQLQuery selectTable(@NotNull String table) throws SQLException;
 
-    /**
-     * Sets the player locale code to database
-     *
-     * @param uuid   The player UUID
-     * @param locale The locale code
-     * @return
-     */
-    CompletableFuture<Integer> setPlayerLocale(@NotNull UUID uuid, @NotNull String locale);
+    CompletableFuture<Integer> updatePlayerProfile(@NotNull UUID uuid, @NotNull String locale, @NotNull String username);
 
     /**
      * Update inventory data to external cache table
