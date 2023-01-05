@@ -368,7 +368,7 @@ public class ContainerShop implements Shop, Reloadable {
             return;
         }
 
-        if (plugin.getConfig().getBoolean("shop.display-center")) {
+        if (plugin.getConfig().getBoolean("shop.display-center", false)) {
             //FIXME: This may affect the performance
             updateAttachedShop();
 
@@ -1279,9 +1279,9 @@ public class ContainerShop implements Shop, Reloadable {
             return;
         }
         this.isLoaded = true;
-        //Shop manager done this already
         plugin.getShopManager().getLoadedShops().add(this);
-        plugin.getShopContainerWatcher().scheduleCheck(this);
+        //disable schedule check due to performance issue
+        //plugin.getShopContainerWatcher().scheduleCheck(this);
         try (PerfMonitor ignored = new PerfMonitor("Shop Display Check", Duration.of(1, ChronoUnit.SECONDS))) {
             checkDisplay();
         }
