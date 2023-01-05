@@ -39,7 +39,14 @@ public class CachePerformanceItem implements SubPasteItem {
         return "<h5>Shop Cache</h5>" +
                 buildShopCacheContent() +
                 "<h5>PlaceHolderAPI Cache</h5>" +
-                buildPAPICacheContent();
+                buildPAPICacheContent() +
+                "<h5>Player Lookup Cache</h5>" +
+                buildPlayerLookupCache();
+    }
+
+    private String buildPlayerLookupCache() {
+        CacheStats stats = plugin.getPlayerFinder().getNameCache().stats();
+        return renderTable(stats);
     }
 
     @Override

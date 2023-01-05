@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.util;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
+import com.ghostchu.quickshop.util.performance.PerfMonitor;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class ShopBackupUtil {
         }
         File file = new File(QuickShop.getInstance().getDataFolder(), "auto-backup-" + System.currentTimeMillis() + ".zip");
         DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
-        try {
+        try (PerfMonitor ignored = new PerfMonitor("Database Backup -> Export Tables")) {
             databaseIOUtil.exportTables(file);
             backupCreated = true;
             return true;

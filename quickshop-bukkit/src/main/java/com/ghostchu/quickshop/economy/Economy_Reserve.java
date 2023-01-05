@@ -49,7 +49,6 @@ public class Economy_Reserve extends AbstractEconomy {
         setup();
     }
 
-    @SuppressWarnings("ConstantConditions")
     private void setup() {
         try {
             Reserve re = ((Reserve) plugin.getServer().getPluginManager().getPlugin("Reserve"));

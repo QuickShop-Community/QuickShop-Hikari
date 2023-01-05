@@ -15,7 +15,6 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -140,7 +139,6 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
                     main.getCodeManager().saveDatabase();
                 } catch (IllegalArgumentException e) {
                     quickshop.text().of(sender, "addon.discount.invalid-code-type", newScope).send();
-                    return;
                 }
             }
         }
@@ -157,13 +155,18 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
             return;
         }
         String name = "Unknown";
-        Profile profile = quickshop.getPlayerFinder().find(code.getOwner());
-        if (profile != null && !profile.getName().isEmpty()) name = profile.getName();
+        String lookupName = quickshop.getPlayerFinder().uuid2Name(code.getOwner());
+        if (lookupName != null) {
+            name = lookupName;
+        }
         Component appliedTo = quickshop.text().of(sender, "addon.discount.code-type." + code.getCodeType().name()).forLocale();
         String remainsUsage;
         int remains = code.getRemainsUsage(((Player) sender).getUniqueId());
-        if (remains == -1) remainsUsage = "Inf.";
-        else remainsUsage = String.valueOf(remains);
+        if (remains == -1) {
+            remainsUsage = "Inf.";
+        } else {
+            remainsUsage = String.valueOf(remains);
+        }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         String expiredOn = sdf.format(new Date(code.getExpiredTime()));
@@ -217,7 +220,7 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
                 return;
             }
         }
-        if (passThroughArgs.length >= 6 && !passThroughArgs[5].equalsIgnoreCase("-1")) {
+        if (passThroughArgs.length >= 6 && !"-1".equalsIgnoreCase(passThroughArgs[5])) {
             Date date = CommonUtil.parseTime(passThroughArgs[5]);
             if (date == null) {
                 quickshop.text().of(sender, "not-a-valid-time", passThroughArgs[5]).send();
@@ -306,7 +309,6 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
         }
         if (cmdArg.length == 2) {
             return switch (cmdArg[0]) {
-                case "list", "info" -> Collections.emptyList();
                 case "install", "uninstall", "remove", "create", "config" -> List.of(PlainTextComponentSerializer
                         .plainText()
                         .serialize(quickshop

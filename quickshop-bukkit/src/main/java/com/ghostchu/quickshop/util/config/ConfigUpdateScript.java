@@ -44,6 +44,11 @@ public class ConfigUpdateScript {
         getConfig().set("trying-fix-banlance-insuffient", null);
     }
 
+    @UpdateScript(version = 1012)
+    public void displayCenterControl() {
+        getConfig().set("shop.display-center", false);
+    }
+
     @UpdateScript(version = 1004)
     public void configurableDatabaseProperties() {
         getConfig().set("database.queue", null);

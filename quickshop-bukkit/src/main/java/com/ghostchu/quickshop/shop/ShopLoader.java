@@ -23,7 +23,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
-import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -216,8 +215,8 @@ public class ShopLoader {
             Log.debug("Shop owner is null");
             return true;
         }
-        Profile shopOwnerProfile = plugin.getPlayerFinder().find(shop.getOwner());
-        if (shopOwnerProfile == null || shopOwnerProfile.getName() == null) {
+        String username = plugin.getPlayerFinder().uuid2Name(shop.getOwner());
+        if (username == null) {
             Log.debug("Shop owner not exist on this server, did you have reset the playerdata?");
         }
         return false;
@@ -245,7 +244,6 @@ public class ShopLoader {
         private Benefit benefits;
 
 
-        @SuppressWarnings("UnstableApiUsage")
         DataRawDatabaseInfo(@NotNull DataRecord dataRecord) {
             this.owner = dataRecord.getOwner();
             this.price = dataRecord.getPrice();

@@ -87,6 +87,17 @@ public class Log {
         debug(level, message, Caller.create());
     }
 
+    public static void performance(@NotNull Level level, @NotNull String message, @NotNull Caller caller) {
+        LOCK.writeLock().lock();
+        try {
+            Record recordEntry = new Record(level, Type.PERFORMANCE, message, caller);
+            LOGGER_BUFFER.offer(recordEntry);
+            debugStdOutputs(recordEntry);
+        } finally {
+            LOCK.writeLock().unlock();
+        }
+    }
+
     @NotNull
     public static List<Record> fetchLogs() {
         LOCK.readLock().lock();
@@ -263,7 +274,7 @@ public class Log {
     }
 
     @Data
-    public static class Caller {
+    public final static class Caller {
         @NotNull
         private static final StackWalker STACK_WALKER = StackWalker.getInstance(Set.of(StackWalker.Option.RETAIN_CLASS_REFERENCE), 3);
         @NotNull
@@ -304,6 +315,7 @@ public class Log {
         CRON,
         TRANSACTION,
         TIMING,
+        PERFORMANCE,
         PERMISSION
     }
 

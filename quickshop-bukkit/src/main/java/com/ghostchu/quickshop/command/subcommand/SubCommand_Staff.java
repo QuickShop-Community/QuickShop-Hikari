@@ -13,7 +13,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
-import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -41,7 +40,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                 continue;
             }
             switch (cmdArg.length) {
-                case 1:
+                case 1 -> {
                     switch (cmdArg[0]) {
                         case "clear" -> {
                             shop.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(staff -> shop.setPlayerGroup(staff, BuiltInShopPermissionGroup.EVERYONE));
@@ -66,21 +65,23 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                             return;
                         }
                     }
-                case 2:
-                    Profile profile = plugin.getPlayerFinder().find(cmdArg[1]);
-                    if (profile == null) {
+                }
+                case 2 -> {
+                    String name = cmdArg[1];
+                    UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[1]);
+                    if (uuid == null) {
                         plugin.text().of(sender, "unknown-player").send();
                         return;
                     }
                     switch (cmdArg[0]) {
                         case "add" -> {
-                            shop.setPlayerGroup(profile.getUniqueId(), BuiltInShopPermissionGroup.STAFF);
-                            plugin.text().of(sender, "shop-staff-added", profile.getName()).send();
+                            shop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.STAFF);
+                            plugin.text().of(sender, "shop-staff-added", name).send();
                             return;
                         }
                         case "del" -> {
-                            shop.setPlayerGroup(profile.getUniqueId(), BuiltInShopPermissionGroup.EVERYONE);
-                            plugin.text().of(sender, "shop-staff-deleted", profile.getName()).send();
+                            shop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.EVERYONE);
+                            plugin.text().of(sender, "shop-staff-deleted", name).send();
                             return;
                         }
                         default -> {
@@ -88,9 +89,11 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                             return;
                         }
                     }
-                default:
+                }
+                default -> {
                     plugin.text().of(sender, "command.wrong-args").send();
                     return;
+                }
             }
         }
         //no match shop

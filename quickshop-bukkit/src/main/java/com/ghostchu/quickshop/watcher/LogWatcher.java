@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.watcher;
 
 import com.ghostchu.quickshop.QuickShop;
-import lombok.SneakyThrows;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipParameters;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -77,7 +76,6 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
     }
 
     @Override
-    @SneakyThrows
     public void close() {
         if (printWriter != null) {
             printWriter.flush();

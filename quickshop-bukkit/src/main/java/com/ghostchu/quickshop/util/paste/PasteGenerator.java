@@ -252,6 +252,7 @@ public class PasteGenerator {
         add(new PermissionLogsItem());
         add(new TimingsLogsItem());
         add(new CronLogsItem());
+        add(new PerformanceLogsItem());
     }
 
     public void add(@NotNull PasteItem pasteItem) {

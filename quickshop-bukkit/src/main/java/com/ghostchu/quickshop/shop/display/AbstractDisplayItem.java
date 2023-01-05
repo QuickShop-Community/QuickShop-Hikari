@@ -91,7 +91,6 @@ public abstract class AbstractDisplayItem implements Reloadable {
             return false;
         }
         String defaultMark = ShopProtectionFlag.getDefaultMark();
-        //noinspection ConstantConditions
         for (String lore : iMeta.getLore()) {
             try {
                 if (!MsgUtil.isJson(lore)) {
@@ -154,7 +153,6 @@ public abstract class AbstractDisplayItem implements Reloadable {
         if (shop.isRealDouble()) {
             attachedShopLocation = shop.getAttachedShop().getLocation().toString();
         }
-        //noinspection ConstantConditions
         for (String lore : iMeta.getLore()) {
             try {
                 if (!MsgUtil.isJson(lore)) {

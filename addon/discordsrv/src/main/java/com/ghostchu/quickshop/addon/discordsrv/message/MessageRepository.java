@@ -143,7 +143,9 @@ public class MessageRepository {
 
     @Nullable
     private MessageEmbed.AuthorInfo applyPlaceHolders(@Nullable MessageEmbed.AuthorInfo info, @NotNull Map<String, String> placeholders) {
-        if (info == null) return null;
+        if (info == null) {
+            return null;
+        }
         String iconUrl = info.getIconUrl();
         String name = info.getName();
         String url = info.getUrl();
@@ -158,10 +160,14 @@ public class MessageRepository {
 
     @Nullable
     private String applyPlaceHolders(@Nullable String string, @NotNull Map<String, String> placeholders) {
-        if (string == null) return null;
+        if (string == null) {
+            return null;
+        }
         for (Map.Entry<String, String> entry : placeholders.entrySet()) {
             String value = entry.getValue();
-            if (value == null) value = "";
+            if (value == null) {
+                value = "";
+            }
             string = string.replace("%%" + entry.getKey() + "%%", value);
         }
         return string;

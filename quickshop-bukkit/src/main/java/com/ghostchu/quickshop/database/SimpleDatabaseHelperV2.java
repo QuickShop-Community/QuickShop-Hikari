@@ -122,17 +122,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             plugin.getLogger().info("Data upgrading: All completed!");
             setDatabaseVersion(10);
         }
-        plugin.getLogger().info("Finished!");
-    }
-
-    private void upgradeBenefit() {
-        try {
-            Integer lines = getManager().alterTable(DataTables.DATA.getName())
-                    .addColumn("benefit", "MEDIUMTEXT")
-                    .execute();
-        } catch (SQLException e) {
-            Log.debug("Failed to add benefit column in " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
+        if (getDatabaseVersion() == 10) {
+            plugin.getLogger().info("Data upgrading: Performing database structure upgrade (players)...");
+            upgradePlayers();
+            plugin.getLogger().info("Data upgrading: All completed!");
+            setDatabaseVersion(10);
         }
+        plugin.getLogger().info("Finished!");
     }
 
     public int getDatabaseVersion() {
@@ -301,6 +297,20 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }, QuickExecutor.getCommonExecutor());
     }
 
+    private void upgradeBenefit() {
+        try {
+            Integer lines = getManager().alterTable(DataTables.DATA.getName())
+                    .addColumn("benefit", "MEDIUMTEXT")
+                    .execute();
+        } catch (SQLException e) {
+            Log.debug("Failed to add benefit column in " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
+        }
+    }
+
+    public @NotNull SQLManager getManager() {
+        return manager;
+    }
+
     private boolean silentTableMoving(@NotNull String originTableName, @NotNull String newTableName) {
         try {
             if (hasTable(originTableName)) {
@@ -377,6 +387,19 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             e.printStackTrace();
         }
         return isolatedIds;
+    }
+
+    private void upgradePlayers() {
+        try {
+            Integer lines = getManager().alterTable(DataTables.PLAYERS.getName())
+                    .modifyColumn("locale", "VARCHAR(255)")
+                    .execute();
+            lines = getManager().alterTable(DataTables.PLAYERS.getName())
+                    .addColumn("cachedName", "VARCHAR(255)")
+                    .execute();
+        } catch (SQLException e) {
+            Log.debug("Failed to add cachedName or modify locale column in " + DataTables.DATA.getName() + "! Err:" + e.getMessage());
+        }
     }
 
     @Override
@@ -462,6 +485,23 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                             ResultSet set = sqlQuery.getResultSet();
                             if (set.next()) {
                                 return set.getString("locale");
+                            }
+                            return null;
+                        }
+                );
+    }
+
+    @Override
+    public CompletableFuture<@Nullable String> getPlayerName(@NotNull UUID uuid) {
+        return DataTables.PLAYERS.createQuery()
+                .addCondition("uuid", uuid.toString())
+                .selectColumns("cachedName")
+                .setLimit(1)
+                .build()
+                .executeFuture(sqlQuery -> {
+                            ResultSet set = sqlQuery.getResultSet();
+                            if (set.next()) {
+                                return set.getString("cachedName");
                             }
                             return null;
                         }
@@ -625,11 +665,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     @Override
     @NotNull
-    public CompletableFuture<@NotNull Integer> setPlayerLocale(@NotNull UUID uuid, @NotNull String locale) {
-        Log.debug("Update: " + uuid + " last locale to " + locale);
+    public CompletableFuture<@NotNull Integer> updatePlayerProfile(@NotNull UUID uuid, @NotNull String locale, @NotNull String username) {
         return DataTables.PLAYERS.createReplace()
-                .setColumnNames("uuid", "locale")
-                .setParams(uuid.toString(), locale)
+                .setColumnNames("uuid", "locale", "cachedName")
+                .setParams(uuid.toString(), locale, username)
                 .executeFuture(lines -> lines);
     }
 
@@ -669,30 +708,6 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         });
     }
 
-    public CompletableFuture<Integer> purgeLogsRecords(@Nullable Date endDate) {
-        return CompletableFuture.supplyAsync(() -> {
-            int linesAffected = 0;
-            try {
-                linesAffected += DataTables.LOG_TRANSACTION.createDelete()
-                        .addTimeCondition("time", null, endDate)
-                        .build().execute();
-                linesAffected += DataTables.LOG_CHANGES.createDelete()
-                        .addTimeCondition("time", null, endDate)
-                        .build().execute();
-                linesAffected += DataTables.LOG_PURCHASE.createDelete()
-                        .addTimeCondition("time", null, endDate)
-                        .build().execute();
-                linesAffected += DataTables.LOG_OTHERS.createDelete()
-                        .addTimeCondition("time", null, endDate)
-                        .build().execute();
-                return linesAffected;
-            } catch (SQLException e) {
-                e.printStackTrace();
-                return -1;
-            }
-        });
-    }
-
     @NotNull
     public CompletableFuture<@Nullable Long> queryDataId(@NotNull SimpleDataRecord simpleDataRecord) {
         // Check if dataRecord exists in database with same values
@@ -717,8 +732,28 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
 
     }
 
-    public @NotNull SQLManager getManager() {
-        return manager;
+    public CompletableFuture<Integer> purgeLogsRecords(@Nullable Date endDate) {
+        return CompletableFuture.supplyAsync(() -> {
+            int linesAffected = 0;
+            try {
+                linesAffected += DataTables.LOG_TRANSACTION.createDelete()
+                        .addTimeCondition("time", null, endDate)
+                        .build().execute();
+                linesAffected += DataTables.LOG_CHANGES.createDelete()
+                        .addTimeCondition("time", null, endDate)
+                        .build().execute();
+                linesAffected += DataTables.LOG_PURCHASE.createDelete()
+                        .addTimeCondition("time", null, endDate)
+                        .build().execute();
+                linesAffected += DataTables.LOG_OTHERS.createDelete()
+                        .addTimeCondition("time", null, endDate)
+                        .build().execute();
+                return linesAffected;
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return -1;
+            }
+        });
     }
 
     /**

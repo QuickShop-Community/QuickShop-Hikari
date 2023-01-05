@@ -8,7 +8,6 @@ import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -62,8 +61,8 @@ public class SubCommand_Permission implements CommandHandler<Player> {
                     plugin.text().of(sender, "bad-command-usage-detailed", "set,list,unset").send();
                     return;
                 }
-                Profile profile = plugin.getPlayerFinder().find(target);
-                if (profile == null) {
+                UUID uuid = plugin.getPlayerFinder().name2Uuid(target);
+                if (uuid == null) {
                     plugin.text().of(sender, "unknown-player", target).send();
                     return;
                 }
@@ -78,12 +77,12 @@ public class SubCommand_Permission implements CommandHandler<Player> {
                             plugin.text().of(sender, "invalid-group", target).send();
                             return;
                         }
-                        shop.setPlayerGroup(profile.getUniqueId(), group);
-                        plugin.text().of(sender, "successfully-set-player-group", profile.getName(), group).send();
+                        shop.setPlayerGroup(uuid, group);
+                        plugin.text().of(sender, "successfully-set-player-group", target, group).send();
                     }
                     case "unset" -> {
-                        shop.setPlayerGroup(profile.getUniqueId(), BuiltInShopPermissionGroup.EVERYONE);
-                        plugin.text().of(sender, "successfully-unset-player-group", profile.getName()).send();
+                        shop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.EVERYONE);
+                        plugin.text().of(sender, "successfully-unset-player-group", target).send();
                     }
                 }
             }
@@ -99,12 +98,9 @@ public class SubCommand_Permission implements CommandHandler<Player> {
                         sheet.printLine(plugin.text().of(sender, "permission.header").forLocale());
                         Util.asyncThreadRun(() -> {
                             for (Map.Entry<UUID, String> map : shop.getPermissionAudiences().entrySet()) {
-                                String name;
-                                Profile s = plugin.getPlayerFinder().find(map.getKey());
-                                if (s == null) {
+                                String name = plugin.getPlayerFinder().uuid2Name(map.getKey());
+                                if (name == null) {
                                     name = "unknown";
-                                } else {
-                                    name = s.getName();
                                 }
                                 sheet.printLine(plugin.text().of(sender, "permission.table", name, map.getValue()).forLocale());
                             }

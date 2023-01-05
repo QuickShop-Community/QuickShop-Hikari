@@ -33,7 +33,9 @@ public class MainListener implements Listener {
             Log.debug("Player doesn't have installed the discount code");
             return;
         }
-        if (!shop.isSelling()) return;
+        if (!shop.isSelling()) {
+            return;
+        }
         String code = codeInstalled.getCode();
         switch (codeInstalled.applicableShop(purchaser, shop)) {
             case APPLICABLE -> quickshop.text().of(purchaser, "addon.discount.discount-code-applicable", code).send();
@@ -58,7 +60,9 @@ public class MainListener implements Listener {
             Log.debug("Player doesn't have installed the discount code");
             return;
         }
-        if (!shop.isSelling()) return;
+        if (!shop.isSelling()) {
+            return;
+        }
         String code = codeInstalled.getCode();
         switch (codeInstalled.applicableShop(purchaser, shop)) {
             case APPLICABLE -> {

@@ -42,8 +42,12 @@ public final class Main extends CompatibilityModule implements Listener {
     }
 
     private boolean isSoulBoundItem(ItemStack stack) {
-        if (stack == null) return false;
-        if (stack.getItemMeta() == null) return false;
+        if (stack == null) {
+            return false;
+        }
+        if (stack.getItemMeta() == null) {
+            return false;
+        }
         return EliteItemManager.getSoulboundPlayer(stack.getItemMeta()) != null;
     }
 

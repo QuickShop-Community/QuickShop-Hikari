@@ -220,7 +220,6 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreation(ShopCreateEvent event) {
-        //noinspection ConstantConditions
         if (checkPermission(event.getPlayer(), event.getShop().getLocation(), Collections.singletonList(createLimit))) {
             return;
         }
@@ -278,7 +277,6 @@ public final class Main extends CompatibilityModule implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTrading(ShopPurchaseEvent event) {
-        //noinspection ConstantConditions
         if (checkPermission(event.getPlayer(), event.getShop().getLocation(), tradeLimits)) {
             return;
         }

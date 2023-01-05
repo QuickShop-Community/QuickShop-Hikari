@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.api.event;
 
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.shop.Shop;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +12,7 @@ import java.util.UUID;
 /**
  * Calling when success purchase in shop
  */
-public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements QSCancellable {
+public class ShopSuccessPurchaseEvent extends AbstractQSEvent {
 
     @NotNull
     private final Shop shop;
@@ -34,9 +33,6 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements QSCance
 
     private final double
             total; // Don't use getter, we have important notice need told dev in javadoc.
-
-    private boolean cancelled;
-    private @Nullable Component cancelReason;
 
     /**
      * Builds a new shop purchase event
@@ -89,16 +85,6 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements QSCance
         return this.total;
     }
 
-    @Override
-    public @Nullable Component getCancelReason() {
-        return this.cancelReason;
-    }
-
-    @Override
-    public void setCancelled(boolean cancel, @Nullable Component reason) {
-        this.cancelled = cancel;
-        this.cancelReason = reason;
-    }
 
     /**
      * Gets the purchaser
@@ -143,10 +129,5 @@ public class ShopSuccessPurchaseEvent extends AbstractQSEvent implements QSCance
      */
     public double getTax() {
         return this.tax;
-    }
-
-    @Override
-    public boolean isCancelled() {
-        return this.cancelled;
     }
 }

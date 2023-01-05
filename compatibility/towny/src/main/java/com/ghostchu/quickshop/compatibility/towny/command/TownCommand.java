@@ -13,8 +13,9 @@ import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownBlock;
 import com.palmergames.bukkit.towny.object.TownBlockType;
 import org.bukkit.entity.Player;
-import org.enginehub.squirrelid.Profile;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
 
 public class TownCommand implements CommandHandler<Player> {
     private final Main plugin;
@@ -73,7 +74,7 @@ public class TownCommand implements CommandHandler<Player> {
             }
         }
         String vaultAccountName = Main.processTownyAccount(town.getAccount().getName());
-        Profile profile = QuickShop.getInstance().getPlayerFinder().find(vaultAccountName);
+        UUID uuid = QuickShop.getInstance().getPlayerFinder().name2Uuid(vaultAccountName);
         // Check if item and type are allowed
         if (plugin.getConfig().getBoolean("bank-mode.enable")) {
             Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType(), shop.isSelling());
@@ -90,8 +91,7 @@ public class TownCommand implements CommandHandler<Player> {
         TownyShopUtil.setShopOriginalOwner(shop, shop.getOwner());
         TownyShopUtil.setShopTown(shop, town);
         shop.setPlayerGroup(shop.getOwner(), BuiltInShopPermissionGroup.ADMINISTRATOR);
-        //noinspection ConstantConditions
-        shop.setOwner(profile.getUniqueId());
+        shop.setOwner(uuid);
         plugin.getApi().getTextManager().of(sender, "addon.towny.make-shop-owned-by-town", town.getName()).send();
         plugin.getApi().getTextManager().of(sender, "addon.towny.shop-owning-changing-notice").send();
     }

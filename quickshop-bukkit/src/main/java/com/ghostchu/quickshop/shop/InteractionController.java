@@ -29,7 +29,6 @@ public class InteractionController implements Reloadable {
         File configFile = new File(plugin.getDataFolder(), "interaction.yml");
         if (!configFile.exists()) {
             try {
-                //noinspection ConstantConditions
                 Files.copy(plugin.getResource("interaction.yml"), configFile.toPath());
             } catch (IOException e) {
                 plugin.getLogger().log(Level.WARNING, "Failed to copy interaction.yml to plugin folder!", e);

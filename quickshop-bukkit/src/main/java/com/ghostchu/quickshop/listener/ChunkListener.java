@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.Chunk;
@@ -16,6 +17,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 
 public class ChunkListener extends AbstractQSListener {
@@ -34,9 +37,12 @@ public class ChunkListener extends AbstractQSListener {
             return;
         }
         cleanDisplayItems(e.getChunk());
+        String chunkName = e.getChunk().getWorld().getName() + ", X=" + e.getChunk().getX() + ", Z=" + e.getChunk().getZ();
         plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-            for (Shop shop : inChunk.values()) {
-                shop.onLoad();
+            try (PerfMonitor ignored = new PerfMonitor("Load shops in chunk [" + chunkName + "]", Duration.of(2, ChronoUnit.SECONDS))) {
+                for (Shop shop : inChunk.values()) {
+                    shop.onLoad();
+                }
             }
         }, 1);
     }
@@ -62,8 +68,10 @@ public class ChunkListener extends AbstractQSListener {
             return;
         }
         for (Shop shop : inChunk.values()) {
-            if (shop.isLoaded()) {
-                shop.onUnload();
+            try (PerfMonitor ignored = new PerfMonitor("Unload shops in chunk " + e.getChunk(), Duration.of(2, ChronoUnit.SECONDS))) {
+                if (shop.isLoaded()) {
+                    shop.onUnload();
+                }
             }
         }
     }

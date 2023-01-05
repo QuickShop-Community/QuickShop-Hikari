@@ -9,6 +9,7 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.collect.ImmutableList;
 import lombok.Data;
 import org.bukkit.Sound;
@@ -21,6 +22,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.Unmodifiable;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -386,9 +389,10 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                     plugin.text().of(sender, "no-permission").send();
                     return true;
                 }
-
                 Log.debug("Execute container: " + container.getPrefix() + " - " + cmdArg[0]);
-                container.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);
+                try (PerfMonitor ignored = new PerfMonitor("Execute command " + container.getPrefix() + " " + CommonUtil.array2String(passThroughArgs), Duration.of(2, ChronoUnit.SECONDS))) {
+                    container.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);
+                }
                 return true;
             }
             rootContainer.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);

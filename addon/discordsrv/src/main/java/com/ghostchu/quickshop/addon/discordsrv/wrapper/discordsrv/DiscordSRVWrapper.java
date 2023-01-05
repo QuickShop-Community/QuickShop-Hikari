@@ -27,7 +27,9 @@ public class DiscordSRVWrapper implements JDAWrapper {
     @Override
     public void sendMessage(@NotNull UUID player, @NotNull String message) {
         String discordId = DiscordSRV.getPlugin().getAccountLinkManager().getDiscordId(player);
-        if (discordId == null) return;
+        if (discordId == null) {
+            return;
+        }
         DiscordUtil.getUserById(discordId).openPrivateChannel()
                 .queue((channel) -> channel.sendMessage(message).queue());
     }
@@ -39,16 +41,18 @@ public class DiscordSRVWrapper implements JDAWrapper {
         if (discordId == null) {
             return;
         }
-        DiscordUtil.getUserById(discordId).openPrivateChannel().queue((channel) -> {
-            channel.sendMessageEmbeds(message).queue();
-        });
+        DiscordUtil.getUserById(discordId).openPrivateChannel().queue((channel) -> channel.sendMessageEmbeds(message).queue());
     }
 
     @Override
     public void sendChannelMessage(@NotNull String channelId, @NotNull String message) {
         GuildChannel channel = DiscordSRV.getPlugin().getJda().getGuildChannelById(channelId);
-        if (channel == null) return;
-        if (!(channel instanceof TextChannel textChannel)) return;
+        if (channel == null) {
+            return;
+        }
+        if (!(channel instanceof TextChannel textChannel)) {
+            return;
+        }
         textChannel.sendMessage(message).queue();
 
     }
@@ -56,8 +60,12 @@ public class DiscordSRVWrapper implements JDAWrapper {
     @Override
     public void sendChannelMessage(@NotNull String channelId, @NotNull MessageEmbed message) {
         GuildChannel channel = DiscordSRV.getPlugin().getJda().getGuildChannelById(channelId);
-        if (channel == null) return;
-        if (!(channel instanceof TextChannel textChannel)) return;
+        if (channel == null) {
+            return;
+        }
+        if (!(channel instanceof TextChannel textChannel)) {
+            return;
+        }
         textChannel.sendMessageEmbeds(message).queue();
     }
 }

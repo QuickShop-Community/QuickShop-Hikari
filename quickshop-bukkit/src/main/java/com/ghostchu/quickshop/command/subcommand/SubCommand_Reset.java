@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
-import lombok.SneakyThrows;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +19,6 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
 
 
     @Override
-    @SneakyThrows
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             plugin.text().of(sender, "command.no-type-given").send();

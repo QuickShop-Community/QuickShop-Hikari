@@ -58,11 +58,15 @@ public class DiscountCode {
             if (str.endsWith("%")) {
                 double v = Double.parseDouble(StringUtils.substringBeforeLast(str, "%"));
                 v = v / 100d;
-                if (v <= 0d || v >= 1d) return null;
+                if (v <= 0d || v >= 1d) {
+                    return null;
+                }
                 discountRate = new PercentageDiscountRate(v);
             } else {
                 double v = Double.parseDouble(str);
-                if (v <= 0d) return null;
+                if (v <= 0d) {
+                    return null;
+                }
                 discountRate = new FixedDiscountRate(v);
             }
             return discountRate;
@@ -74,7 +78,9 @@ public class DiscountCode {
     @Nullable
     public static DiscountCode fromString(@NotNull String string) {
         DiscountCodeData data = JsonUtil.getGson().fromJson(string, DiscountCodeData.class);
-        if (data == null) return null;
+        if (data == null) {
+            return null;
+        }
         DiscountRate rate;
         if (data.getRateType() == RateType.PERCENTAGE) {
             rate = JsonUtil.getGson().fromJson(data.getRate(), PercentageDiscountRate.class);
@@ -128,8 +134,9 @@ public class DiscountCode {
     }
 
     public boolean addShopToScope(@NotNull Shop shop) {
-        if (codeType != CodeType.SPECIFIC_SHOPS)
+        if (codeType != CodeType.SPECIFIC_SHOPS) {
             throw new IllegalStateException("Cannot add shop to code scope, because this code is not a specific shop code.");
+        }
         return this.shopScope.add(shop.getShopId());
     }
 
@@ -147,10 +154,12 @@ public class DiscountCode {
     }
 
     public double apply(@NotNull UUID player, double total) {
-        if (isExpired())
+        if (isExpired()) {
             return total;
-        if (total < threshold)
+        }
+        if (total < threshold) {
             return total;
+        }
         if (getRemainsUsage(player) - 1 < 0) {
             return total;
         }
@@ -164,8 +173,9 @@ public class DiscountCode {
     }
 
     public boolean isExpired() {
-        if (expiredTime == -1)
+        if (expiredTime == -1) {
             return false;
+        }
         return System.currentTimeMillis() > expiredTime;
     }
 
@@ -183,10 +193,12 @@ public class DiscountCode {
     }
 
     public int getRemainsUsage(UUID user) {
-        if (maxUsage == -1)
+        if (maxUsage == -1) {
             return Integer.MAX_VALUE;
-        if (!usages.containsKey(user))
+        }
+        if (!usages.containsKey(user)) {
             return maxUsage;
+        }
         return Math.max(maxUsage - usages.get(user), 0);
     }
 
@@ -196,8 +208,9 @@ public class DiscountCode {
         if (!shop.playerAuthorize(uuid, Main.instance, "discount_code_use")) {
             return ApplicableType.NO_PERMISSION;
         }
-        if (isExpired())
+        if (isExpired()) {
             return ApplicableType.EXPIRED;
+        }
         int usage = 0;
         if (usages.containsKey(uuid)) {
             usage = usages.get(uuid);
@@ -222,7 +235,9 @@ public class DiscountCode {
             }
             case SERVER_ALL_SHOPS -> ApplicableType.APPLICABLE;
         };
-        if (type != ApplicableType.APPLICABLE) return type;
+        if (type != ApplicableType.APPLICABLE) {
+            return type;
+        }
         if (this.threshold != -1) {
             return ApplicableType.APPLICABLE_WITH_THRESHOLD;
         }
@@ -299,5 +314,32 @@ public class DiscountCode {
         public @NotNull Component format(@NotNull CommandSender sender, @NotNull TextManager textManager) {
             return textManager.of(sender, "addon.discount.percentage-off", CalculateUtil.multiply(percent, 100)).forLocale();
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(code, owner, shopScope, codeType, rate, maxUsage, threshold, expiredTime);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DiscountCode that)) return false;
+        return maxUsage == that.maxUsage && Double.compare(that.threshold, threshold) == 0 && expiredTime == that.expiredTime && code.equals(that.code) && owner.equals(that.owner) && shopScope.equals(that.shopScope) && codeType == that.codeType && rate.equals(that.rate);
+    }
+
+    @Override
+    public String toString() {
+        return "DiscountCode{" +
+                "code='" + code + '\'' +
+                ", owner=" + owner +
+                ", usages=" + usages +
+                ", shopScope=" + shopScope +
+                ", codeType=" + codeType +
+                ", rate=" + rate +
+                ", maxUsage=" + maxUsage +
+                ", threshold=" + threshold +
+                ", expiredTime=" + expiredTime +
+                '}';
     }
 }

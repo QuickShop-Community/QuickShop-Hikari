@@ -2,11 +2,15 @@ package com.ghostchu.quickshop.listener;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 /**
  * @author Netherfoam
@@ -27,8 +31,10 @@ public class ChatListener extends AbstractQSListener {
         if (!plugin.getShopManager().getInteractiveManager().containsKey(e.getPlayer().getUniqueId())) {
             return;
         }
-        // Fix stupid chat plugin will add a weird space before or after the number we want.
-        plugin.getShopManager().handleChat(e.getPlayer(), e.getMessage().trim());
+        try (PerfMonitor ignored = new PerfMonitor("HandleChat", Duration.of(3, ChronoUnit.SECONDS))) {
+            // Fix stupid chat plugin will add a weird space before or after the number we want.
+            plugin.getShopManager().handleChat(e.getPlayer(), e.getMessage().trim());
+        }
         e.setCancelled(true);
     }
 
