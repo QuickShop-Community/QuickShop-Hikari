@@ -64,12 +64,12 @@ public class SimpleTextManager implements TextManager, Reloadable {
         if (Util.parsePackageProperly("enableCrowdinOTA").asBoolean()) {
             try {
                 plugin.getLogger().info("Please wait us fetch the translation updates from Crowdin OTA service...");
-                this.crowdinOTA = new CrowdinOTA(Util.parsePackageProperly("crowdinHost").asString("https://distributions.crowdin.net/91b97508fdf19626f2977b7xrm4"), new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
+                this.crowdinOTA = new CrowdinOTA(Util.parsePackageProperly("crowdinHost").asString("https://crowdinota.hikari.r2.quickshop-powered.top"), new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
             } catch (Exception e) {
                 plugin.getLogger().log(Level.WARNING, "Cannot initialize the CrowdinOTA instance!", e);
             }
         } else {
-            plugin.getLogger().info("[CrowdinOTA] We have disabled CrowdinOTA due unaffordable bills.");
+            plugin.getLogger().info("[CrowdinOTA] Crowdin Over-The-Air distribution has been disabled.");
         }
         load();
     }
