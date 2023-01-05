@@ -37,7 +37,7 @@ public class FastPlayerFinder {
         try (PerfMonitor perf = new PerfMonitor("Username Lookup - " + uuid)) {
             String cachedName = nameCache.getIfPresent(uuid);
             if (cachedName != null) return cachedName;
-            perf.setContext("cache missed");
+            perf.setContext("cache miss");
             String name = QuickExecutor.getCommonExecutor().invokeAny(
                     List.of(new BukkitFindTask(uuid), new DatabaseFindTask(plugin.getDatabaseHelper(), uuid)),
                     3, TimeUnit.SECONDS);
@@ -51,19 +51,18 @@ public class FastPlayerFinder {
 
     @Nullable
     public synchronized UUID name2Uuid(@NotNull String name) {
-        try (PerfMonitor ignored = new PerfMonitor("UniqueID Lookup - " + name)) {
+        try (PerfMonitor perf = new PerfMonitor("UniqueID Lookup - " + name)) {
             for (Map.Entry<UUID, String> uuidStringEntry : nameCache.asMap().entrySet()) {
                 if (uuidStringEntry.getValue().equals(name))
                     return uuidStringEntry.getKey();
             }
-            try (PerfMonitor outCache = new PerfMonitor("UniqueID Lookup (cache miss) - " + name)) {
-                @SuppressWarnings("deprecation") OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
-                String playerName = offlinePlayer.getName();
-                if (playerName == null)
-                    playerName = name;
-                this.nameCache.put(offlinePlayer.getUniqueId(), playerName);
-                return offlinePlayer.getUniqueId();
-            }
+            perf.setContext("cache miss");
+            @SuppressWarnings("deprecation") OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
+            String playerName = offlinePlayer.getName();
+            if (playerName == null)
+                playerName = name;
+            this.nameCache.put(offlinePlayer.getUniqueId(), playerName);
+            return offlinePlayer.getUniqueId();
         }
     }
 
