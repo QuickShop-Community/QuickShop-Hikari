@@ -35,15 +35,15 @@ quick-fill:
   entry-own: ' <yellow>- <red>[kendi] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>İsim: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
+    - '<yellow>Sahibi: <aqua>{0}'
+    - '<yellow>Türü: <aqua>{0}'
     - '<yellow>Fiyat: <aqua>{0}'
     - '<yellow>Öğe: <aqua>{0}'
     - '<yellow>Konum: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>İsim: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
+    - '<yellow>Sahibi: <aqua>{owner}'
+    - '<yellow>Türü: <aqua>{type}'
     - '<yellow>Fiyat: <aqua>{price}'
     - '<yellow>Öğe: <aqua>{item}'
     - '<yellow>Konum: <aqua>{location}'
@@ -632,7 +632,7 @@ addon:
   residence:
     creation-flag-denied: "<red>You don't have permission to create shops in this residence."
     trade-flag-denied: "<red>You don't have permission to purchase in this residence."
-    you-cannot-create-shop-in-wildness: "<red>You can't create shop in wildness."
+    you-cannot-create-shop-in-wildness: "<red>Issız bölgelerde mağaza yaratamazsınız."
   griefprevention:
     creation-denied: "<red>You don't have permission to create shops in this claim."
     trade-denied: "<red>You don't have permission to purchase shops in this claim."
@@ -642,14 +642,14 @@ addon:
   plotsquared:
     no-plot-whitelist-creation: "<red>You cannot create shop outside of Plot."
     no-plot-whitelist-trade: "<red>You cannot purchase shop outside of Plot."
-    creation-denied: "<red>You don't have permission to create shops in this Plot."
+    creation-denied: "<red>Bu arsada market oluşturma izniniz yok."
     trade-denied: "<red>You don't have permission to purchase shops in this Plot."
   superiorskyblock:
-    owner-create-only: "<red>Only island owner can create shop there."
-    owner-member-create-only: "<red>Only island owner or member can create shop there."
+    owner-create-only: "<red>Sadece ada sahibi orada dükkan açabilir."
+    owner-member-create-only: "<red>Sadece ada sahibi veya üyesi orada dükkan oluşturabilir."
   worldguard:
-    creation-flag-test-failed: "<red>You don't have permission create shop in this WorldGuard area."
-    trade-flag-test-failed: "<red>You don't have permission trade shop in this WorldGuard area."
+    creation-flag-test-failed: "<red>Bu WorldGuard bölgesinde market oluşturma izniniz yok."
+    trade-flag-test-failed: "<red>Bu WorldGuard bölgesinde takas izniniz yok."
   discord:
     __to_translators: "To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop's style {LANG_INDEX}, do not translate anything inside double '%' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don't need translate this string, it's a comment)"
     __to_users: "Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings."
@@ -1183,29 +1183,29 @@ addon:
             }
         }
     field:
-      player: "Player"
-      item: "Item"
-      amount: "Amount"
-      balance: "Balance"
-      balance-after-tax: "Balance (after tax)"
-      account: "Your account balance"
-      taxes: "Taxes"
-      cost: "Cost"
+      player: "Oyuncu"
+      item: "Eşya"
+      amount: "Adet"
+      balance: "Bakiye"
+      balance-after-tax: "Bakiye (vergi sonrası)"
+      account: "Hesap bakiyeniz"
+      taxes: "Vergiler"
+      cost: "Ücret"
   discount:
     commands:
       discount:
-        description: "<yellow>Apply a discount code or manage your discount codes."
+        description: "<yellow>İndirim kodu uygulayın veya indirim kodlarınızı yönetin."
     tab-complete:
       discount:
         general:
           code: "<code>"
         create:
           rate: |
-            Command Hint:
-            Argument: <rate>
-            Description: The actual percentage or money you will earn
-            Input `30%` = price * 0.3
-            Input `50` = price - 50
+            Komut İpucu:
+            Argüman: <rate>
+            Açıklama: Kazanacağınız gerçek yüzde veya para
+            Giriş '%30' = fiyat * 0,3
+            Giriş '50' = fiyat - 50
           max-usage: |
             Command Hint:
             Argument: [max-usage]
@@ -1233,25 +1233,25 @@ addon:
     invalid-usage-restriction: "<red>The usage restriction <yellow>{0}</yellow> are invalid."
     invalid-threshold-restriction: "<red>The threshold restriction <yellow>{0}</yellow> are invalid."
     invalid-effect-scope: "<red>The scope <yellow>{0}</yellow> are invalid."
-    invalid-expire-time: "<red>You can't specify a time in the past."
+    invalid-expire-time: "<red>Geçmişteki bir saati belirtemezsiniz."
     invalid-discount-rate: "<red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage."
-    discount-code-expired: "<red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!"
+    discount-code-expired: "<red>Eyvah! <yellow>{0}</yellow> indirim kodunuzun süresi doldu!"
     discount-code-installed: "<green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/qs discount uninstall {0}</aqua>."
-    discount-code-uninstalled: "<green>You have uninstalled your discount code."
-    discount-code-query-nothing: "<red>You hadn't install a discount code yet!"
-    discount-code-query: "<green>You are using discount code: <yellow>{0}</yellow>."
+    discount-code-uninstalled: "<green>İndirim kodunuzu kaldırdınız."
+    discount-code-query-nothing: "<red>Henüz bir indirim kodu yüklemediniz!"
+    discount-code-query: "<green>İndirim kodu kullanıyorsunuz: <yellow>{0}</yellow>."
     discount-code-applicable: "<color:#bcef26>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>applicable</bold> in this shop!"
     discount-code-applicable-with-threshold: "<color:#bcef26>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>applicable</bold> in this shop, but only your purchase cost over <yellow>{1}</yellow> in single transaction."
     discount-code-not-applicable: "<red>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>not applicable</bold> in this shop!"
     discount-code-reach-the-limit: "<red>You have reach the usage limit of discount code <yellow><bold>{0}</bold></yellow>, discount are not applied."
-    discount-code-no-permission: "<red>You didn't have permission to use any discount code in this shop!"
-    discount-code-has-been-expired: "<red>Your discount has been expired!"
+    discount-code-no-permission: "<red>Bu mağazada herhangi bir indirim kodu kullanma izniniz yok!"
+    discount-code-has-been-expired: "<red>İndiriminizin süresi doldu!"
     discount-code-config-shop-added: "<green>Successfully to add this shop into your discount code allow list."
-    discount-code-config-shop-add-failure: "<red>This shop already in your discount code allow list."
+    discount-code-config-shop-add-failure: "<red>Bu mağaza zaten indirim kodu izin verilenler listenizde yer alıyor."
     discount-code-config-shop-removed: "<green>Successfully to remove this shop from your discount code allow list."
     discount-code-config-shop-remove-failure: "<red>This shop not exists in your discount code allow list."
-    discount-code-config-expire: "<green>Successfully changed your code expire time."
-    discount-code-config-applied: "<green>Config the discount code successfully!"
+    discount-code-config-expire: "<green>Kodunuzun geçerlilik süresi başarıyla değiştirildi."
+    discount-code-config-applied: "<green>İndirim kodunu başarıyla yapılandırdınız!"
     discount-code-created-successfully: |
       <green>Your discount code <yellow>{0}</yellow> has been successfully created!
       <gold>Scope: <aqua>{1}</aqua></gold>.
@@ -1261,17 +1261,17 @@ addon:
     discount-code-under-threshold: "<red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>."
     percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
     fixed-off: "<bold><color:#bcef26>-{0}</color:#bcef26></bold>"
-    discount-code-list: "<gold>Listing your discount codes:</gold>"
+    discount-code-list: "<gold>İndirim kodlarınızı listeleniyor:</gold>"
     discount-code-applied-in-purchase: "<color:#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!"
     scope:
       this-shop: "{0}"
-      your-shops-owned: "all your shops (owned)"
-      your-shops-managed: "all your shops (managed)"
-      server: "whole server"
+      your-shops-owned: "tüm dükkanlarınız (sahibi olduklarınız)"
+      your-shops-managed: "tüm mağazalarınız (yönetilen)"
+      server: "tüm sunucu"
     code-type:
-      SERVER_ALL_SHOPS: "All shops on this server"
-      PLAYER_ALL_SHOPS: "All shops that created by code owner"
-      SPECIFIC_SHOPS: "Specific shops"
+      SERVER_ALL_SHOPS: "Bu sunucudaki tüm mağazalar"
+      PLAYER_ALL_SHOPS: "İndirim kodu sahibi tarafından oluşturulan tüm mağazalar"
+      SPECIFIC_SHOPS: "Belirli mağazalar"
     discount-code-details: |
       <gold>Code: <yellow>{0}</yellow>
       <gold>Creator: <yellow>{1}</yellow>
@@ -1285,24 +1285,24 @@ suite:
     title: "{0} - {1} - {2}"
     description: "Ürün: {0}\nSahibi: {1}\nTürü: {2} {3}\nFiyat: {4}\nYer: {5} {6}, {7}, {8}\nAlan: {9}\nStok: {10}"
   limited:
-    command-description: "<yellow>Set a limit that restrict the purchase that player can make in period."
-    reach-the-quota-limit: "<red>You have reach the purchase limit in this shop ({0}/{1})."
-    quota-reset-countdown: "<yellow>The quota in this shop will reset in {0}."
-    quota-reset-player-successfully: "<green>The quota for player {0} in this shop has been reset successfully."
-    quota-reset-everybody-successfully: "<green>The quota for everyone in this shop has been reset successfully."
-    quota-setup: "<green>The purchase restriction now apply to this shop!"
-    quota-remove: "<green>The purchase restriction now removed from this shop!"
+    command-description: "<yellow>Oyuncunun periyod içinde yapabileceği satın alma işlemini kısıtlayan bir sınır belirleyiniz."
+    reach-the-quota-limit: "<red>Bu mağazada satın alma limitine ulaştınız ({0}/{1})."
+    quota-reset-countdown: "<yellow>Bu dükkandaki kota {0} zamanında sıfırlanacak."
+    quota-reset-player-successfully: "<green>Bu dükkandaki {0} adlı oyuncunun kotası başarıyla sıfırlandı."
+    quota-reset-everybody-successfully: "<green>Bu mağazadaki herkesin kotası başarıyla sıfırlandı."
+    quota-setup: "<green>Satın alma kısıtlaması bu dükkan için artık geçerli!"
+    quota-remove: "<green>Satın alma kısıtlaması bu dükkandan artık kaldırıldı!"
     subtitles:
-      title: "<green>Purchase Success"
+      title: "<green>Satın Alma Başarılı"
       subtitle: "<aqua>You can purchase <yellow>{0}</yellow> more in this shop"
   list:
-    command-description: "<yellow>List all shops owned by yourself or another player."
-    table-prefix: "<yellow>You owned total <aqua>{0}</aqua> shops on this server."
+    command-description: "<yellow>Kendinize veya başka bir oyuncuya ait tüm dükkanları listeleyin."
+    table-prefix: "<yellow>Bu sunucuda toplam <aqua>{0}</aqua> mağazanız var."
     entry-syntax: "<aqua>- <yellow>{0}"
-    entry-syntax-fallback-name: "<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}"
+    entry-syntax-fallback-name: "<yellow>Eşya:{0} X:{1}, Y:{2}, Z:{3}, Dünya: {4}"
     hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."
   shopitemonly:
-    message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+    message: "<red>Mağaza dışı ürünleri mağazaya koyamazsınız, mağaza dışı tüm ürünler bulunduğunuz yere düşer."
 compatibility:
   elitemobs:
-    soulbound-disallowed: "You can't trade item which have EliteMobs Soulbound enchantment."
+    soulbound-disallowed: "EliteMobs Soulbound büyüsüne sahip eşyaların ticaretini yapamazsınız."
