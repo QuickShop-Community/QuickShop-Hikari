@@ -1824,9 +1824,8 @@ public class ContainerShop implements Shop, Reloadable {
             throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " invalid or failed to load!");
         }
         try {
-            InventoryWrapper inventoryWrapper = manager.locate(symbolLink);
-            this.symbolLink = manager.mklink(inventoryWrapper);
-            return inventoryWrapper;
+            // this.symbolLink = manager.mklink(inventoryWrapper);
+            return manager.locate(symbolLink);
         } catch (Exception e) {
             throw new IllegalStateException("Failed load shop data, the InventoryWrapper provider " + getInventoryWrapperProvider() + " returns error: " + e.getMessage(), e);
         }
