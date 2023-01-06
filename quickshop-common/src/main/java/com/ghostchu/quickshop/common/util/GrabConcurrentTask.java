@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.common.util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,30 +27,30 @@ public class GrabConcurrentTask<T> {
 
     @Nullable
     public T invokeAll(long timeout, @NotNull TimeUnit unit, @Nullable Function<@Nullable T, @NotNull Boolean> condition) throws InterruptedException {
-        int counter = suppliers.size();
+        // Submit all tasks into executor
         for (Supplier<T> supplier : suppliers) {
             QuickExecutor.getCommonExecutor().submit(new GrabConcurrentExecutor<>(deque, supplier));
         }
-        while (true) {
-            Optional<T> element = deque.poll(timeout, unit);
-            counter--;
-            //if poll behavior timed out, we will get a null element
+        if (condition == null) {
+            condition = t -> true;
+        }
+        Instant instant = Instant.now();
+        Instant timeoutInstant = instant.plus(timeout, unit.toChronoUnit());
+        long timeoutEpochSecond = timeoutInstant.getEpochSecond();
+        T value;
+        do {
+            // loop timed out
+            long loopAllowedWaitingTime = timeoutEpochSecond - Instant.now().getEpochSecond();
+            if (loopAllowedWaitingTime <= 0) return null;
+            Optional<T> element = deque.poll(loopAllowedWaitingTime, TimeUnit.SECONDS);
             //noinspection OptionalAssignedToNull
             if (element == null) {
+                // poll timed out
                 return null;
             }
-            T value = element.orElse(null);
-            if (condition != null) {
-                if (condition.apply(value)) {
-                    return value;
-                }
-            } else {
-                return value;
-            }
-            if (counter < 1) {
-                return null;
-            }
-        }
+            value = element.orElse(null);
+        } while (!condition.apply(value));
+        return null;
     }
 
     static class GrabConcurrentExecutor<T> implements Runnable {
@@ -63,11 +64,13 @@ public class GrabConcurrentTask<T> {
 
         @Override
         public void run() {
+            Optional<T> value = Optional.empty();
             try {
-                targetDeque.put(Optional.ofNullable(supplier.get()));
+                value = Optional.ofNullable(supplier.get());
             } catch (Throwable e) {
                 e.printStackTrace();
-                targetDeque.offer(Optional.empty());
+            } finally {
+                targetDeque.add(value);
             }
         }
     }
