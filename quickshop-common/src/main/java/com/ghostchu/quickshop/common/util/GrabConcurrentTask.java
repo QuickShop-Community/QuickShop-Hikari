@@ -50,7 +50,7 @@ public class GrabConcurrentTask<T> {
             }
             value = element.orElse(null);
         } while (!condition.apply(value));
-        return null;
+        return value;
     }
 
     static class GrabConcurrentExecutor<T> implements Runnable {
