@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +22,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 
 public class FastPlayerFinder {
-    private final Cache<UUID, String> nameCache = CacheBuilder.newBuilder()
+    private final Cache<UUID, Optional<String>> nameCache = CacheBuilder.newBuilder()
             .expireAfterAccess(3, TimeUnit.DAYS)
             .maximumSize(1500)
             .recordStats()
@@ -35,16 +36,14 @@ public class FastPlayerFinder {
     @Nullable
     public synchronized String uuid2Name(@NotNull UUID uuid) {
         try (PerfMonitor perf = new PerfMonitor("Username Lookup - " + uuid)) {
-            String cachedName = nameCache.getIfPresent(uuid);
-            if (cachedName != null) {
-                return cachedName;
+            Optional<String> cachedName = nameCache.getIfPresent(uuid);
+            if (cachedName != null && cachedName.isPresent()) {
+                return cachedName.get();
             }
             perf.setContext("cache miss");
             GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindTask(uuid), new DatabaseFindTask(plugin.getDatabaseHelper(), uuid));
             String name = grabConcurrentTask.invokeAll(3, TimeUnit.SECONDS, Objects::nonNull);
-            if (name != null) {
-                this.nameCache.put(uuid, name);
-            }
+            this.nameCache.put(uuid, Optional.ofNullable(name));
             return name;
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -55,9 +54,11 @@ public class FastPlayerFinder {
     @NotNull
     public synchronized UUID name2Uuid(@NotNull String name) {
         try (PerfMonitor perf = new PerfMonitor("UniqueID Lookup - " + name)) {
-            for (Map.Entry<UUID, String> uuidStringEntry : nameCache.asMap().entrySet()) {
-                if (uuidStringEntry.getValue().equals(name)) {
-                    return uuidStringEntry.getKey();
+            for (Map.Entry<UUID, Optional<String>> uuidStringEntry : nameCache.asMap().entrySet()) {
+                if (uuidStringEntry.getValue().isPresent()) {
+                    if (uuidStringEntry.getValue().get().equals(name)) {
+                        return uuidStringEntry.getKey();
+                    }
                 }
             }
             perf.setContext("cache miss");
@@ -66,21 +67,22 @@ public class FastPlayerFinder {
             if (playerName == null) {
                 playerName = name;
             }
-            this.nameCache.put(offlinePlayer.getUniqueId(), playerName);
+            this.nameCache.put(offlinePlayer.getUniqueId(), Optional.of(playerName));
             return offlinePlayer.getUniqueId();
         }
     }
 
     public void cache(@NotNull UUID uuid, @NotNull String name) {
-        this.nameCache.put(uuid, name);
+        this.nameCache.put(uuid, Optional.of(name));
     }
 
     public boolean isCached(@NotNull UUID uuid) {
-        return this.nameCache.getIfPresent(uuid) != null;
+        Optional<String> value = this.nameCache.getIfPresent(uuid);
+        return value != null && value.isPresent();
     }
 
     @NotNull
-    public Cache<UUID, String> getNameCache() {
+    public Cache<UUID, Optional<String>> getNameCache() {
         return nameCache;
     }
 
