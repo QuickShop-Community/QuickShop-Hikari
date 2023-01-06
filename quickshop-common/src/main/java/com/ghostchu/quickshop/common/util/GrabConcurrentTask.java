@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 public class GrabConcurrentTask<T> {
@@ -26,7 +26,7 @@ public class GrabConcurrentTask<T> {
     }
 
     @Nullable
-    public T invokeAll(long timeout, @NotNull TimeUnit unit, @Nullable Function<@Nullable T, @NotNull Boolean> condition) throws InterruptedException {
+    public T invokeAll(long timeout, @NotNull TimeUnit unit, @Nullable Predicate<T> condition) throws InterruptedException {
         // Submit all tasks into executor
         for (Supplier<T> supplier : suppliers) {
             QuickExecutor.getCommonExecutor().submit(new GrabConcurrentExecutor<>(deque, supplier));
@@ -49,7 +49,7 @@ public class GrabConcurrentTask<T> {
                 return null;
             }
             value = element.orElse(null);
-        } while (!condition.apply(value));
+        } while (!condition.test(value));
         return value;
     }
 
