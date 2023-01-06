@@ -261,7 +261,7 @@ public class MsgUtil {
                     }
                 }
                 String message = rs.getString("content");
-                List<String> msgs = OUTGOING_MESSAGES.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
+                List<String> msgs = OUTGOING_MESSAGES.computeIfAbsent(ownerUUID, k -> new ArrayList<>());
                 msgs.add(message);
             }
         } catch (SQLException e) {
@@ -323,7 +323,7 @@ public class MsgUtil {
         Log.debug(serialized);
         OfflinePlayer p = Bukkit.getOfflinePlayer(uuid);
         if (!p.isOnline()) {
-            List<String> msgs = OUTGOING_MESSAGES.getOrDefault(uuid, new LinkedList<>());
+            List<String> msgs = OUTGOING_MESSAGES.getOrDefault(uuid, new ArrayList<>());
             msgs.add(serialized);
             OUTGOING_MESSAGES.put(uuid, msgs);
             PLUGIN.getDatabaseHelper().saveOfflineTransactionMessage(uuid, serialized, System.currentTimeMillis())
