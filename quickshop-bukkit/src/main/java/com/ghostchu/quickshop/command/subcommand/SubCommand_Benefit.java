@@ -58,10 +58,13 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
 
     private void queryBenefit(Player sender, Shop shop, String[] cmdArg) {
         plugin.text().of(sender, "benefit-query", shop.getShopBenefit().getRegistry().size()).send();
-        for (Map.Entry<UUID, Double> entry : shop.getShopBenefit().getRegistry().entrySet()) {
-            String v = MsgUtil.decimalFormat(entry.getValue() * 100);
-            plugin.text().of(sender, "benefit-query-list", plugin.getPlayerFinder().uuid2Name(entry.getKey()), entry.getKey(), v + "%").send();
-        }
+        Util.asyncThreadRun(() -> {
+            for (Map.Entry<UUID, Double> entry : shop.getShopBenefit().getRegistry().entrySet()) {
+                String v = MsgUtil.decimalFormat(entry.getValue() * 100);
+                plugin.text().of(sender, "benefit-query-list", plugin.getPlayerFinder().uuid2Name(entry.getKey()), entry.getKey(), v + "%").send();
+            }
+        });
+
     }
 
     private void addBenefit(Player sender, Shop shop, String[] cmdArg) {

@@ -49,6 +49,11 @@ public class ConfigUpdateScript {
         getConfig().set("shop.display-center", false);
     }
 
+    @UpdateScript(version = 1013)
+    public void asyncOwnerNameFetch() {
+        getConfig().set("shop.async-owner-name-fetch", false);
+    }
+
     @UpdateScript(version = 1004)
     public void configurableDatabaseProperties() {
         getConfig().set("database.queue", null);

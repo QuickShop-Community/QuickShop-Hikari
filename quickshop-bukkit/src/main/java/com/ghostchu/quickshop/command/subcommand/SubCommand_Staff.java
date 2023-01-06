@@ -54,10 +54,12 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                                         .append(Component.text("Empty").color(NamedTextColor.GRAY)));
                                 return;
                             }
-                            for (UUID uuid : staffs) {
-                                MsgUtil.sendDirectMessage(sender, plugin.text().of(sender, "tableformat.left_begin").forLocale()
-                                        .append(Component.text(Optional.ofNullable(plugin.getPlayerFinder().uuid2Name(uuid)).orElse("Unknown")).color(NamedTextColor.GRAY)));
-                            }
+                            Util.asyncThreadRun(() -> {
+                                for (UUID uuid : staffs) {
+                                    MsgUtil.sendDirectMessage(sender, plugin.text().of(sender, "tableformat.left_begin").forLocale()
+                                            .append(Component.text(Optional.ofNullable(plugin.getPlayerFinder().uuid2Name(uuid)).orElse("Unknown")).color(NamedTextColor.GRAY)));
+                                }
+                            });
 
                             return;
                         }
@@ -69,23 +71,27 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                 }
                 case 2 -> {
                     String name = cmdArg[1];
-                    UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[1]);
-                    switch (cmdArg[0]) {
-                        case "add" -> {
-                            shop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.STAFF);
-                            plugin.text().of(sender, "shop-staff-added", name).send();
-                            return;
-                        }
-                        case "del" -> {
-                            shop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.EVERYONE);
-                            plugin.text().of(sender, "shop-staff-deleted", name).send();
-                            return;
-                        }
-                        default -> {
-                            plugin.text().of(sender, "command.wrong-args").send();
-                            return;
-                        }
-                    }
+                    Util.asyncThreadRun(() -> {
+                        UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[1]);
+                        Util.mainThreadRun(() -> {
+                            switch (cmdArg[0]) {
+                                case "add" -> {
+                                    shop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.STAFF);
+                                    plugin.text().of(sender, "shop-staff-added", name).send();
+                                    return;
+                                }
+                                case "del" -> {
+                                    shop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.EVERYONE);
+                                    plugin.text().of(sender, "shop-staff-deleted", name).send();
+                                    return;
+                                }
+                                default -> {
+                                    plugin.text().of(sender, "command.wrong-args").send();
+                                    return;
+                                }
+                            }
+                        });
+                    });
                 }
                 default -> {
                     plugin.text().of(sender, "command.wrong-args").send();
