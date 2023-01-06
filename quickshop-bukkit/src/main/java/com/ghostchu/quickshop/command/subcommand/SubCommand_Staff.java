@@ -9,7 +9,6 @@ import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
@@ -17,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class SubCommand_Staff implements CommandHandler<Player> {
@@ -56,8 +56,9 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                             }
                             for (UUID uuid : staffs) {
                                 MsgUtil.sendDirectMessage(sender, plugin.text().of(sender, "tableformat.left_begin").forLocale()
-                                        .append(Component.text(Bukkit.getOfflinePlayer(uuid).getName()).color(NamedTextColor.GRAY)));
+                                        .append(Component.text(Optional.ofNullable(plugin.getPlayerFinder().uuid2Name(uuid)).orElse("Unknown")).color(NamedTextColor.GRAY)));
                             }
+
                             return;
                         }
                         default -> {
@@ -69,10 +70,6 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                 case 2 -> {
                     String name = cmdArg[1];
                     UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[1]);
-                    if (uuid == null) {
-                        plugin.text().of(sender, "unknown-player").send();
-                        return;
-                    }
                     switch (cmdArg[0]) {
                         case "add" -> {
                             shop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.STAFF);

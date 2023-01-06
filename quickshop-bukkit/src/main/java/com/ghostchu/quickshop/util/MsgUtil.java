@@ -254,7 +254,11 @@ public class MsgUtil {
                 if (CommonUtil.isUUID(owner)) {
                     ownerUUID = UUID.fromString(owner);
                 } else {
-                    ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
+                    if (QuickShop.getInstance().getPlayerFinder() != null) {
+                        ownerUUID = QuickShop.getInstance().getPlayerFinder().name2Uuid(owner);
+                    } else {
+                        ownerUUID = Bukkit.getOfflinePlayer(owner).getUniqueId();
+                    }
                 }
                 String message = rs.getString("content");
                 List<String> msgs = OUTGOING_MESSAGES.computeIfAbsent(ownerUUID, k -> new LinkedList<>());
