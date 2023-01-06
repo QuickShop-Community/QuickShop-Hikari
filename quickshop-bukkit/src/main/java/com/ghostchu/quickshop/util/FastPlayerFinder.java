@@ -2,7 +2,7 @@ package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
-import com.ghostchu.quickshop.common.util.QuickExecutor;
+import com.ghostchu.quickshop.common.util.GrabConcurrentTask;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.cache.Cache;
@@ -12,13 +12,13 @@ import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
 public class FastPlayerFinder {
     private final Cache<UUID, String> nameCache = CacheBuilder.newBuilder()
@@ -40,12 +40,13 @@ public class FastPlayerFinder {
                 return cachedName;
             }
             perf.setContext("cache miss");
-            String name = QuickExecutor.getCommonExecutor().invokeAny(List.of(new BukkitFindTask(uuid), new DatabaseFindTask(plugin.getDatabaseHelper(), uuid)), 3, TimeUnit.SECONDS);
+            GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindTask(uuid), new DatabaseFindTask(plugin.getDatabaseHelper(), uuid));
+            String name = grabConcurrentTask.invokeAll(3, TimeUnit.SECONDS, Objects::nonNull);
             if (name != null) {
                 this.nameCache.put(uuid, name);
             }
             return name;
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+        } catch (InterruptedException e) {
             e.printStackTrace();
             return null;
         }
@@ -83,7 +84,7 @@ public class FastPlayerFinder {
         return nameCache;
     }
 
-    static class BukkitFindTask implements Callable<String> {
+    static class BukkitFindTask implements Supplier<String> {
         public final UUID uuid;
 
         BukkitFindTask(@NotNull UUID uuid) {
@@ -91,14 +92,13 @@ public class FastPlayerFinder {
         }
 
         @Override
-        @Nullable
-        public String call() {
+        public String get() {
             OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
             return player.getName();
         }
     }
 
-    static class DatabaseFindTask implements Callable<String> {
+    static class DatabaseFindTask implements Supplier<String> {
         private final DatabaseHelper db;
         private final UUID uuid;
 
@@ -108,16 +108,12 @@ public class FastPlayerFinder {
         }
 
         @Override
-        public @Nullable String call() {
+        public String get() {
             if (this.db == null) {
                 return null;
             }
             try {
-                String name = db.getPlayerName(uuid).get(30, TimeUnit.SECONDS);
-                if (name == null) { // Fallback to Bukkit so parallel won't direct return the null
-                    return Bukkit.getOfflinePlayer(uuid).getName();
-                }
-                return name;
+                return db.getPlayerName(uuid).get(30, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 return null;
@@ -129,5 +125,6 @@ public class FastPlayerFinder {
                 return null;
             }
         }
+
     }
 }
