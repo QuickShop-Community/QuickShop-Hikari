@@ -70,7 +70,7 @@ public class GrabConcurrentTask<T> {
             } catch (Throwable e) {
                 e.printStackTrace();
             } finally {
-                targetDeque.add(value);
+                targetDeque.offer(value);
             }
         }
     }
