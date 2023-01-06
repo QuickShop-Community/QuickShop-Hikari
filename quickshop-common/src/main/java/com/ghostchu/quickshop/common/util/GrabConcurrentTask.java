@@ -65,7 +65,7 @@ public class GrabConcurrentTask<T> {
         public void run() {
             try {
                 targetDeque.put(Optional.ofNullable(supplier.get()));
-            } catch (InterruptedException e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
                 targetDeque.offer(Optional.empty());
             }
