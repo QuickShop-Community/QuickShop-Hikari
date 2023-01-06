@@ -204,8 +204,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private OngoingFeeWatcher ongoingFeeWatcher;
     @Getter
     private SignUpdateWatcher signUpdateWatcher;
-    @Getter
-    private ShopContainerWatcher shopContainerWatcher;
+    //    @Getter
+//    private ShopContainerWatcher shopContainerWatcher;
     @Getter
     private Cache shopCache;
     @Getter
@@ -718,26 +718,88 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         Log.debug("QuickShop command registered with those aliases: " + CommonUtil.list2String(quickShopCommand.getAliases()));
     }
 
-    private void registerTasks() {
-        calendarWatcher = new CalendarWatcher(this);
-        // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
-        signUpdateWatcher.runTaskTimer(this, 0, 10);
-        shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
-        if (logWatcher != null) {
-            logWatcher.runTaskTimerAsynchronously(this, 10, 10);
-            getLogger().info("Log actions is enabled. Actions will be logged in the qs.log file!");
+    @Override
+    public final void onEnable() {
+        if (!this.onLoadCalled) {
+            getLogger().severe("FATAL: onLoad has not been called for QuickShop. Trying to fix it... Some integrations may not work properly!");
+            try {
+                onLoad();
+            } catch (Exception ex) {
+                getLogger().log(Level.WARNING, "Failed to fix onLoad", ex);
+            }
         }
-        this.registerOngoingFee();
-        getServer().getScheduler().runTask(this, () -> {
-            getLogger().info("Registering bStats metrics...");
-            submitMetrics();
-        });
-        calendarWatcher = new CalendarWatcher(this);
-        calendarWatcher.start();
-        this.shopPurger = new ShopPurger(this);
-        if (getConfig().getBoolean("purge.at-server-startup")) {
-            shopPurger.purge();
+        Timer enableTimer = new Timer(true);
+        getLogger().info("QuickShop " + getFork());
+        this.audience = BukkitAudiences.create(this);
+        /* Check the running envs is support or not. */
+        getLogger().info("Starting plugin self-test, please wait...");
+        try (PerfMonitor ignored = new PerfMonitor("Self Test")) {
+            runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
         }
+        getLogger().info("Reading the configuration...");
+        initConfiguration();
+        getLogger().info("Developers: " + CommonUtil.list2String(this.getDescription().getAuthors()));
+        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood, sandtechnology");
+        getLogger().info("Let's start loading the plugin");
+        getLogger().info("Chat processor selected: Hardcoded BungeeChat Lib");
+        /* Process Metrics and Sentry error reporter. */
+        metrics = new Metrics(this, 14281);
+        loadErrorReporter();
+        loadItemMatcher();
+        this.itemMarker = new ItemMarker(this);
+        this.shopItemBlackList = new ShopItemBlackList(this);
+        Util.initialize();
+        load3rdParty();
+        //Load the database
+        try (PerfMonitor ignored = new PerfMonitor("Initialize database")) {
+            initDatabase();
+        }
+        /* Initalize the tools */
+        // Create the shop manager.
+        permissionManager = new PermissionManager(this);
+        shopPermissionManager = new SimpleShopPermissionManager(this);
+        // This should be inited before shop manager
+        this.registerDisplayAutoDespawn();
+        getLogger().info("Registering commands...");
+        loadCommandHandler();
+        this.shopManager = new SimpleShopManager(this);
+        this.permissionChecker = new PermissionChecker(this);
+        // Limit
+        this.registerLimitRanks();
+        // Limit end
+        if (getConfig().getInt("shop.finding.distance") > 100 && getConfig().getBoolean("shop.finding.exclude-out-of-stock")) {
+            getLogger().severe("Shop find distance is too high with chunk loading feature turned on! It may cause lag! Pick a number below 100!");
+        }
+        setupShopCaches();
+        signUpdateWatcher = new SignUpdateWatcher();
+        //shopContainerWatcher = new ShopContainerWatcher();
+        shopSaveWatcher = new ShopDataSaveWatcher(this);
+        shopSaveWatcher.runTaskTimerAsynchronously(this, 0, 20L * 60L * 5L);
+        /* Load all shops. */
+        shopLoader = new ShopLoader(this);
+        shopLoader.loadShops();
+        bakeShopsOwnerCache();
+        getLogger().info("Registering listeners...");
+        this.interactionController = new InteractionController(this);
+        // Register events
+        // Listeners (These don't)
+        registerListeners();
+        this.shopControlPanelManager.register(new SimpleShopControlPanel());
+        this.registerDisplayItem();
+        this.registerShopLock();
+        getLogger().info("Cleaning MsgUtils...");
+        MsgUtil.clean();
+        MsgUtil.loadTransactionMessages();
+        this.registerUpdater();
+        /* Delay the Economy system load, give a chance to let economy system register. */
+        /* And we have a listener to listen the ServiceRegisterEvent :) */
+        Log.debug("Scheduled economy system loading.");
+        getServer().getScheduler().runTaskLater(this, this::loadEcon, 1);
+        registerTasks();
+        Log.debug("DisplayItem selected: " + AbstractDisplayItem.getNowUsing().name());
+        registerCommunicationChannels();
+        new QSConfigurationReloadEvent(this).callEvent();
+        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
     }
 
     /**
@@ -891,88 +953,26 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         getLogger().info("All shutdown work has been completed.");
     }
 
-    @Override
-    public final void onEnable() {
-        if (!this.onLoadCalled) {
-            getLogger().severe("FATAL: onLoad has not been called for QuickShop. Trying to fix it... Some integrations may not work properly!");
-            try {
-                onLoad();
-            } catch (Exception ex) {
-                getLogger().log(Level.WARNING, "Failed to fix onLoad", ex);
-            }
+    private void registerTasks() {
+        calendarWatcher = new CalendarWatcher(this);
+        // shopVaildWatcher.runTaskTimer(this, 0, 20 * 60); // Nobody use it
+        signUpdateWatcher.runTaskTimer(this, 0, 10);
+        //shopContainerWatcher.runTaskTimer(this, 0, 5); // Nobody use it
+        if (logWatcher != null) {
+            logWatcher.runTaskTimerAsynchronously(this, 10, 10);
+            getLogger().info("Log actions is enabled. Actions will be logged in the qs.log file!");
         }
-        Timer enableTimer = new Timer(true);
-        getLogger().info("QuickShop " + getFork());
-        this.audience = BukkitAudiences.create(this);
-        /* Check the running envs is support or not. */
-        getLogger().info("Starting plugin self-test, please wait...");
-        try (PerfMonitor ignored = new PerfMonitor("Self Test")) {
-            runtimeCheck(EnvCheckEntry.Stage.ON_ENABLE);
+        this.registerOngoingFee();
+        getServer().getScheduler().runTask(this, () -> {
+            getLogger().info("Registering bStats metrics...");
+            submitMetrics();
+        });
+        calendarWatcher = new CalendarWatcher(this);
+        calendarWatcher.start();
+        this.shopPurger = new ShopPurger(this);
+        if (getConfig().getBoolean("purge.at-server-startup")) {
+            shopPurger.purge();
         }
-        getLogger().info("Reading the configuration...");
-        initConfiguration();
-        getLogger().info("Developers: " + CommonUtil.list2String(this.getDescription().getAuthors()));
-        getLogger().info("Original author: Netherfoam, Timtower, KaiNoMood, sandtechnology");
-        getLogger().info("Let's start loading the plugin");
-        getLogger().info("Chat processor selected: Hardcoded BungeeChat Lib");
-        /* Process Metrics and Sentry error reporter. */
-        metrics = new Metrics(this, 14281);
-        loadErrorReporter();
-        loadItemMatcher();
-        this.itemMarker = new ItemMarker(this);
-        this.shopItemBlackList = new ShopItemBlackList(this);
-        Util.initialize();
-        load3rdParty();
-        //Load the database
-        try (PerfMonitor ignored = new PerfMonitor("Initialize database")) {
-            initDatabase();
-        }
-        /* Initalize the tools */
-        // Create the shop manager.
-        permissionManager = new PermissionManager(this);
-        shopPermissionManager = new SimpleShopPermissionManager(this);
-        // This should be inited before shop manager
-        this.registerDisplayAutoDespawn();
-        getLogger().info("Registering commands...");
-        loadCommandHandler();
-        this.shopManager = new SimpleShopManager(this);
-        this.permissionChecker = new PermissionChecker(this);
-        // Limit
-        this.registerLimitRanks();
-        // Limit end
-        if (getConfig().getInt("shop.finding.distance") > 100 && getConfig().getBoolean("shop.finding.exclude-out-of-stock")) {
-            getLogger().severe("Shop find distance is too high with chunk loading feature turned on! It may cause lag! Pick a number below 100!");
-        }
-        setupShopCaches();
-        signUpdateWatcher = new SignUpdateWatcher();
-        shopContainerWatcher = new ShopContainerWatcher();
-        shopSaveWatcher = new ShopDataSaveWatcher(this);
-        shopSaveWatcher.runTaskTimerAsynchronously(this, 0, 20L * 60L * 5L);
-        /* Load all shops. */
-        shopLoader = new ShopLoader(this);
-        shopLoader.loadShops();
-        bakeShopsOwnerCache();
-        getLogger().info("Registering listeners...");
-        this.interactionController = new InteractionController(this);
-        // Register events
-        // Listeners (These don't)
-        registerListeners();
-        this.shopControlPanelManager.register(new SimpleShopControlPanel());
-        this.registerDisplayItem();
-        this.registerShopLock();
-        getLogger().info("Cleaning MsgUtils...");
-        MsgUtil.clean();
-        MsgUtil.loadTransactionMessages();
-        this.registerUpdater();
-        /* Delay the Economy system load, give a chance to let economy system register. */
-        /* And we have a listener to listen the ServiceRegisterEvent :) */
-        Log.debug("Scheduled economy system loading.");
-        getServer().getScheduler().runTaskLater(this, this::loadEcon, 1);
-        registerTasks();
-        Log.debug("DisplayItem selected: " + AbstractDisplayItem.getNowUsing().name());
-        registerCommunicationChannels();
-        new QSConfigurationReloadEvent(this).callEvent();
-        getLogger().info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
     }
 
     private void unload3rdParty() {

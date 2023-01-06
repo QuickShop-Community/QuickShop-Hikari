@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>3.6.1.2</version>
+    <version>3.6.1.3</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -342,6 +342,10 @@
         <repository>
             <id>minebench-repo</id>
             <url>https://repo.minebench.de/</url>
+        </repository>
+        <repository>
+            <id>essentials</id>
+            <url>https://repo.essentialsx.net/releases/</url>
         </repository>
     </repositories>
 

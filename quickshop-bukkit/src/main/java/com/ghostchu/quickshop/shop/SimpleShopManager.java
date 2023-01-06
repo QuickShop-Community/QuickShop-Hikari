@@ -121,7 +121,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             if (CommonUtil.isUUID(uAccount)) {
                 cacheUnlimitedShopAccount = UUID.fromString(uAccount);
             } else {
-                cacheUnlimitedShopAccount = Bukkit.getOfflinePlayer(uAccount).getUniqueId();
+                cacheUnlimitedShopAccount = plugin.getPlayerFinder().name2Uuid(uAccount);
             }
         }
         this.priceLimiter = new SimplePriceLimiter(plugin);

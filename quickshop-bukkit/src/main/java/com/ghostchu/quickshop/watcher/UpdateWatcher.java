@@ -31,7 +31,7 @@ public class UpdateWatcher implements Listener {
                     if (plugin.perm().hasPermission(player, "quickshop.alerts")) {
                         MsgUtil.sendDirectMessage(player, ChatColor.GREEN + "---------------------------------------------------");
                         MsgUtil.sendDirectMessage(player, ChatColor.GREEN + LegacyComponentSerializer.legacySection().serialize(pickRandomMessage(player)));
-                        MsgUtil.sendDirectMessage(player, ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
+//                        MsgUtil.sendDirectMessage(player, ChatColor.GREEN + "Type command " + ChatColor.YELLOW + "/qs update" + ChatColor.GREEN + " or click the link below to update QuickShop :)");
                         MsgUtil.sendDirectMessage(player, ChatColor.AQUA + " https://modrinth.com/plugin/quickshop-hikari");
                         MsgUtil.sendDirectMessage(player, ChatColor.GREEN + "---------------------------------------------------");
                     }
