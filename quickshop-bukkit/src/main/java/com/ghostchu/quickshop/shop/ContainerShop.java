@@ -15,6 +15,7 @@ import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.database.bean.SimpleDataRecord;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
@@ -56,6 +57,8 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 /**
@@ -1319,7 +1322,26 @@ public class ContainerShop implements Shop, Reloadable {
 
     @Override
     public @NotNull Component ownerName(boolean forceUsername, @NotNull ProxiedLocale locale) {
-        String playerName = plugin.getPlayerFinder().uuid2Name(this.getOwner());
+        String playerName;
+        if (plugin.getConfig().getBoolean("shops.async-owner-name-fetch", false)) {
+            LinkedBlockingDeque<String> deque = new LinkedBlockingDeque<>();
+            QuickExecutor.getCommonExecutor().submit(() -> {
+                try {
+                    deque.put(plugin.getPlayerFinder().uuid2Name(this.getOwner()));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            try {
+                playerName = deque.poll(20, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException e) {
+                playerName = "N/A";
+            }
+            if (playerName == null)
+                playerName = "N/A";
+        } else {
+            playerName = plugin.getPlayerFinder().uuid2Name(this.getOwner());
+        }
         Component name;
         if (playerName == null) {
             name = plugin.text().of("unknown-owner").forLocale(locale.getLocale());
