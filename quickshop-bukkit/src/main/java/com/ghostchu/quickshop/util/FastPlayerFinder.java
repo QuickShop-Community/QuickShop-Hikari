@@ -7,15 +7,16 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.reflect.TypeToken;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -24,13 +25,35 @@ import java.util.function.Supplier;
 public class FastPlayerFinder {
     private final Cache<UUID, Optional<String>> nameCache = CacheBuilder.newBuilder()
             .expireAfterAccess(3, TimeUnit.DAYS)
-            .maximumSize(1500)
+            .maximumSize(2500)
             .recordStats()
             .build();
     private final QuickShop plugin;
 
     public FastPlayerFinder(QuickShop plugin) {
         this.plugin = plugin;
+        loadFromUserCache();
+    }
+
+    private void loadFromUserCache() {
+        File file = new File("usercache.json");
+        if (!file.exists()) {
+            Log.debug("Not found usercache.json at " + file.getAbsolutePath());
+            return;
+        }
+        Log.debug("Loading usercache.json at " + file.getAbsolutePath());
+        try (FileReader reader = new FileReader(file)) {
+            List<UserCacheBean> userCacheBeans = JsonUtil.getGson().fromJson(reader, new TypeToken<List<UserCacheBean>>() {
+            }.getType());
+            userCacheBeans.forEach(bean -> {
+                if (bean.getUuid() != null && bean.getName() != null) {
+                    nameCache.put(bean.getUuid(), Optional.of(bean.getName()));
+                }
+            });
+            Log.debug("Loaded " + userCacheBeans.size() + " entries from usercache.json");
+        } catch (IOException e) {
+            Log.debug("Giving up usercache.json loading: " + e.getMessage());
+        }
     }
 
 
@@ -87,6 +110,7 @@ public class FastPlayerFinder {
         return nameCache;
     }
 
+
     static class BukkitFindTask implements Supplier<String> {
         public final UUID uuid;
 
@@ -128,6 +152,18 @@ public class FastPlayerFinder {
                 return null;
             }
         }
+    }
 
+    static class UserCacheBean {
+        private String name;
+        private UUID uuid;
+
+        public UUID getUuid() {
+            return uuid;
+        }
+
+        public String getName() {
+            return name;
+        }
     }
 }
