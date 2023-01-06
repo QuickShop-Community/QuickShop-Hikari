@@ -57,8 +57,9 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 
 /**
@@ -1324,21 +1325,13 @@ public class ContainerShop implements Shop, Reloadable {
     public @NotNull Component ownerName(boolean forceUsername, @NotNull ProxiedLocale locale) {
         String playerName;
         if (plugin.getConfig().getBoolean("shops.async-owner-name-fetch", false)) {
-            LinkedBlockingDeque<String> deque = new LinkedBlockingDeque<>();
-            QuickExecutor.getCommonExecutor().submit(() -> {
-                try {
-                    deque.put(plugin.getPlayerFinder().uuid2Name(this.getOwner()));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            });
+            CompletableFuture<String> future = CompletableFuture
+                    .supplyAsync(() -> plugin.getPlayerFinder().uuid2Name(owner), QuickExecutor.getCommonExecutor());
             try {
-                playerName = deque.poll(20, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException e) {
+                playerName = future.get(20, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
                 playerName = "N/A";
             }
-            if (playerName == null)
-                playerName = "N/A";
         } else {
             playerName = plugin.getPlayerFinder().uuid2Name(this.getOwner());
         }
