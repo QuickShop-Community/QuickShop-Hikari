@@ -1,7 +1,10 @@
 package com.ghostchu.quickshop.util;
 
+import com.earth2me.essentials.Essentials;
+import com.earth2me.essentials.User;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.GrabConcurrentTask;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
@@ -10,12 +13,12 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.reflect.TypeToken;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -51,11 +54,10 @@ public class FastPlayerFinder {
                 }
             });
             Log.debug("Loaded " + userCacheBeans.size() + " entries from usercache.json");
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.debug("Giving up usercache.json loading: " + e.getMessage());
         }
     }
-
 
     @Nullable
     public String uuid2Name(@NotNull UUID uuid) {
@@ -65,7 +67,7 @@ public class FastPlayerFinder {
                 return cachedName.get();
             }
             perf.setContext("cache miss");
-            GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindTask(uuid), new DatabaseFindTask(plugin.getDatabaseHelper(), uuid));
+            GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindNameTask(uuid), new DatabaseFindTask(plugin.getDatabaseHelper(), uuid), new EssentialsXFindNameTask(uuid));
             String name = grabConcurrentTask.invokeAll(3, TimeUnit.SECONDS, Objects::nonNull);
             this.nameCache.put(uuid, Optional.ofNullable(name));
             return name;
@@ -85,14 +87,17 @@ public class FastPlayerFinder {
                     }
                 }
             }
-            perf.setContext("cache miss");
-            @SuppressWarnings("deprecation") OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
-            String playerName = offlinePlayer.getName();
-            if (playerName == null) {
-                playerName = name;
+            GrabConcurrentTask<UUID> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindUUIDTask(name), new EssentialsXFindUUIDTask(name));
+            // This cannot fail.
+            UUID uuid = grabConcurrentTask.invokeAll(1, TimeUnit.DAYS, Objects::nonNull);
+            if (uuid == null) {
+                return CommonUtil.getNilUniqueId();
             }
-            this.nameCache.put(offlinePlayer.getUniqueId(), Optional.of(playerName));
-            return offlinePlayer.getUniqueId();
+            this.nameCache.put(uuid, Optional.of(name));
+            return uuid;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return CommonUtil.getNilUniqueId();
         }
     }
 
@@ -110,11 +115,24 @@ public class FastPlayerFinder {
         return nameCache;
     }
 
+    static class BukkitFindUUIDTask implements Supplier<UUID> {
+        public final String name;
 
-    static class BukkitFindTask implements Supplier<String> {
+        BukkitFindUUIDTask(@NotNull String name) {
+            this.name = name;
+        }
+
+        @Override
+        public UUID get() {
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
+            return offlinePlayer.getUniqueId();
+        }
+    }
+
+    static class BukkitFindNameTask implements Supplier<String> {
         public final UUID uuid;
 
-        BukkitFindTask(@NotNull UUID uuid) {
+        BukkitFindNameTask(@NotNull UUID uuid) {
             this.uuid = uuid;
         }
 
@@ -124,6 +142,52 @@ public class FastPlayerFinder {
             return player.getName();
         }
     }
+
+
+    static class EssentialsXFindUUIDTask implements Supplier<UUID> {
+        public final String name;
+
+        EssentialsXFindUUIDTask(@NotNull String name) {
+            this.name = name;
+        }
+
+        @Override
+        public UUID get() {
+            try {
+                Plugin essPlugin = Bukkit.getPluginManager().getPlugin("Essentials");
+                if (essPlugin == null || !essPlugin.isEnabled()) return null;
+                Essentials ess = (Essentials) essPlugin;
+                User user = ess.getUser(name);
+                if (user == null) return null;
+                return user.getUUID();
+            } catch (Throwable th) {
+                return null;
+            }
+        }
+    }
+
+    static class EssentialsXFindNameTask implements Supplier<String> {
+        public final UUID uuid;
+
+        EssentialsXFindNameTask(@NotNull UUID uuid) {
+            this.uuid = uuid;
+        }
+
+        @Override
+        public String get() {
+            try {
+                Plugin essPlugin = Bukkit.getPluginManager().getPlugin("Essentials");
+                if (essPlugin == null || !essPlugin.isEnabled()) return null;
+                Essentials ess = (Essentials) essPlugin;
+                User user = ess.getUser(uuid);
+                if (user == null) return null;
+                return user.getName();
+            } catch (Throwable th) {
+                return null;
+            }
+        }
+    }
+
 
     static class DatabaseFindTask implements Supplier<String> {
         private final DatabaseHelper db;
