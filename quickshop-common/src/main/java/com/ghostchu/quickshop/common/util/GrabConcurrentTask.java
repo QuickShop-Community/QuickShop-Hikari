@@ -5,13 +5,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class GrabConcurrentTask<T> {
-    private final LinkedBlockingDeque<T> deque = new LinkedBlockingDeque<>();
+    private final LinkedBlockingDeque<Optional<T>> deque = new LinkedBlockingDeque<>();
     private final List<Supplier<T>> suppliers;
 
     @SafeVarargs
@@ -24,31 +25,38 @@ public class GrabConcurrentTask<T> {
     }
 
     @Nullable
-    public T invokeAll(long timeout, @NotNull TimeUnit unit, @Nullable Function<T, Boolean> condition) throws InterruptedException {
+    public T invokeAll(long timeout, @NotNull TimeUnit unit, @Nullable Function<@Nullable T, @NotNull Boolean> condition) throws InterruptedException {
         int counter = suppliers.size();
         for (Supplier<T> supplier : suppliers) {
             QuickExecutor.getCommonExecutor().submit(new GrabConcurrentExecutor<>(deque, supplier));
         }
         while (true) {
-            T element = deque.poll(timeout, unit);
+            Optional<T> element = deque.poll(timeout, unit);
             counter--;
+            //if poll behavior timed out, we will get a null element
+            //noinspection OptionalAssignedToNull
+            if (element == null) {
+                return null;
+            }
+            T value = element.orElse(null);
             if (condition != null) {
-                if (condition.apply(element)) {
-                    return element;
+                if (condition.apply(value)) {
+                    return value;
                 }
             } else {
-                return element;
+                return value;
             }
-            if (counter < 1)
+            if (counter < 1) {
                 return null;
+            }
         }
     }
 
     static class GrabConcurrentExecutor<T> implements Runnable {
-        public final LinkedBlockingDeque<T> targetDeque;
+        public final LinkedBlockingDeque<Optional<T>> targetDeque;
         private final Supplier<T> supplier;
 
-        public GrabConcurrentExecutor(@NotNull LinkedBlockingDeque<T> targetDeque, @NotNull Supplier<T> supplier) {
+        public GrabConcurrentExecutor(@NotNull LinkedBlockingDeque<Optional<T>> targetDeque, @NotNull Supplier<T> supplier) {
             this.targetDeque = targetDeque;
             this.supplier = supplier;
         }
@@ -56,9 +64,10 @@ public class GrabConcurrentTask<T> {
         @Override
         public void run() {
             try {
-                targetDeque.put(supplier.get());
+                targetDeque.put(Optional.ofNullable(supplier.get()));
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                targetDeque.offer(Optional.empty());
             }
         }
     }
