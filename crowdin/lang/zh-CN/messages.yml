@@ -1201,29 +1201,29 @@ addon:
           code: "<code>"
         create:
           rate: |
-            Command Hint:
-            Argument: <rate>
-            Description: The actual percentage or money you will earn
-            Input `30%` = price * 0.3
-            Input `50` = price - 50
+            命令提示：
+            参数： <rate>
+            描述：您将会得到的实际百分比或金钱
+            输入 `30%` = 价格 * 0.3
+            输入 `50` = 价格 - 50
           max-usage: |
-            Command Hint:
-            Argument: [max-usage]
-            Description: The times that code can be used
-            `-1` for unlimited.
+            命令提示：
+            参数： [max-usage]
+            描述：可以对无限代码使用
+            `-1` 为无限时间
           threshold: |
-            Command Hint:
-            Argument: [threshold]
-            Description: The minimum price that code can be applied
-            `-1` for unlimited
+            命令提示：
+            参数： [threshold]
+            说明：代码可以应用的最低价格
+            “-1”表示无限制
           expired: |
-            Command Hint
-            Argument: [expired]
-            Description: The code expired time.
-            `-1` for unlimited duration.
-            Accept both Zulu time and UNIX timestamp in seconds.
-            Zulu Example: 2022-12-17T10:31:37Z
-            UNIX Example: 1671273097
+            命令提示
+            参数： [expired]
+            说明：代码过期时间。无限期
+            “-1”。
+            接受祖鲁时间和 UNIX 时间戳（以秒为单位）。
+            祖鲁语示例：2022-12-17T10：31：37Z
+            UNIX 示例：1671273097
     discount-code-already-exists: "<red>抱歉，您的优惠码名称已被使用"
     invalid-discount-code-regex: "<red>优惠码必须匹配正则表达式： <yellow>{0}</yellow>"
     invalid-discount-code: "<red>优惠码无效。"
@@ -1305,4 +1305,4 @@ suite:
     message: "<red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上"
 compatibility:
   elitemobs:
-    soulbound-disallowed: "You can't trade item which have EliteMobs Soulbound enchantment."
+    soulbound-disallowed: "你不能交易拥有 EliteMobs 灵魂绑定附魔的物品"
