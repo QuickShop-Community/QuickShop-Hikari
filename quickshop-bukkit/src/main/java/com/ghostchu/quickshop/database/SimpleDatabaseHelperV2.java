@@ -126,7 +126,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             plugin.getLogger().info("Data upgrading: Performing database structure upgrade (players)...");
             upgradePlayers();
             plugin.getLogger().info("Data upgrading: All completed!");
-            setDatabaseVersion(10);
+            setDatabaseVersion(11);
         }
         plugin.getLogger().info("Finished!");
     }
@@ -140,7 +140,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 .build().execute()) {
             ResultSet result = query.getResultSet();
             if (!result.next()) {
-                return 0;
+                return 11; // Keep this match the checkColumns latest version
             }
             return Integer.parseInt(result.getString("value"));
         } catch (SQLException e) {
