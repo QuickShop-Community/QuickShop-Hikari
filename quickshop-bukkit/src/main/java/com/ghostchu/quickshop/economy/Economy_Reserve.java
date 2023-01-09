@@ -19,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.logging.Level;
 
 /**
  * @author creatorfromhell
@@ -107,7 +106,7 @@ public class Economy_Reserve extends AbstractEconomy {
             if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
             }
-            plugin.getLogger().log(Level.WARNING, ERROR_MESSAGE, throwable);
+            plugin.logger().warn(ERROR_MESSAGE, throwable);
             return false;
         }
     }
@@ -132,7 +131,7 @@ public class Economy_Reserve extends AbstractEconomy {
             if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
             }
-            plugin.getLogger().log(Level.WARNING, ERROR_MESSAGE, throwable);
+            plugin.logger().warn(ERROR_MESSAGE, throwable);
             return formatInternal(balance);
         }
     }
@@ -159,7 +158,7 @@ public class Economy_Reserve extends AbstractEconomy {
             if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
             }
-            plugin.getLogger().log(Level.WARNING, ERROR_MESSAGE, throwable);
+            plugin.logger().warn(ERROR_MESSAGE, throwable);
             return 0.0;
         }
     }
@@ -185,7 +184,7 @@ public class Economy_Reserve extends AbstractEconomy {
             if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
             }
-            plugin.getLogger().log(Level.WARNING, ERROR_MESSAGE, throwable);
+            plugin.logger().warn(ERROR_MESSAGE, throwable);
             return false;
         }
     }
