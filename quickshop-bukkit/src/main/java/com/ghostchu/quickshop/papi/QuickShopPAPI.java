@@ -25,7 +25,7 @@ public class QuickShopPAPI extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return QuickShop.getVersion();
+        return QuickShop.getInstance().getVersion();
     }
 
     // Prevent the expansion being unregistered on /papi reload
