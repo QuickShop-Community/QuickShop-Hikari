@@ -9,6 +9,7 @@ import lombok.Setter;
 import lombok.ToString;
 import net.tnemc.core.Reserve;
 import net.tnemc.core.economy.EconomyAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
@@ -81,7 +82,7 @@ public class Economy_Reserve extends AbstractEconomy {
             if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
             }
-            plugin.getLogger().log(Level.WARNING, ERROR_MESSAGE, throwable);
+            plugin.logger().warn(ERROR_MESSAGE, throwable);
             return false;
         }
     }
@@ -237,7 +238,7 @@ public class Economy_Reserve extends AbstractEconomy {
 
     @Override
     public @NotNull Plugin getPlugin() {
-        return plugin;
+        return plugin.getJavaPlugin();
     }
 
 }

@@ -373,7 +373,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
                         operations.add(operation);
                         exception.printStackTrace();
                     } else {
-                        plugin.getLogger().log(Level.WARNING, "Failed to rollback transaction: " + core.getLastError() + "; Operation: " + operation + "; Transaction: " + this);
+                        plugin.logger().warn("Failed to rollback transaction: {}; Operation: {}; Transaction: {}", core.getLastError(), operation, this);
                         break;
                     }
                 }

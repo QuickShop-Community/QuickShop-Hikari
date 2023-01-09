@@ -78,18 +78,18 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
 
         if (this.vault.getName() == null || this.vault.getName().isEmpty()) {
             plugin
-                    .getLogger()
-                    .warning(
+                    .logger()
+                    .warn(
                             "Current economy plugin not correct process all request, this usually cause by irregular code, you should report this issue to your economy plugin author or use other economy plugin.");
             plugin
-                    .getLogger()
-                    .warning(
+                    .logger()
+                    .warn(
                             "This is technical information, please send this to economy plugin author: "
                                     + "VaultEconomyProvider.getName() return a null or empty.");
         } else {
-            plugin.getLogger().info("Using economy system: " + this.vault.getName());
+            plugin.logger().info("Using economy system: " + this.vault.getName());
         }
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+        Bukkit.getPluginManager().registerEvents(this, plugin.getJavaPlugin());
         Log.debug("Economy service listener was registered.");
         return true;
     }
@@ -121,10 +121,10 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
                 plugin.getSentryErrorReporter().ignoreThrow();
             }
             if (trader.getName() == null) {
-                plugin.getLogger().warning("Deposit failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ". Provider (" + getProviderName() + ")");
+                plugin.logger().warn("Deposit failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ". Provider (" + getProviderName() + ")");
                 return false;
             }
-            plugin.getLogger().log(Level.WARNING, String.format(ERROR_MESSAGE, getProviderName()), t);
+            plugin.logger().warn(String.format(ERROR_MESSAGE, getProviderName()), t);
             return false;
         }
     }
@@ -173,7 +173,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
             if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
             }
-            plugin.getLogger().log(Level.WARNING, String.format(ERROR_MESSAGE, getProviderName()), t);
+            plugin.logger().warn(String.format(ERROR_MESSAGE, getProviderName()), t);
             return 0.0;
         }
     }
@@ -185,7 +185,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
 
     @Override
     public @NotNull Plugin getPlugin() {
-        return plugin;
+        return plugin.getJavaPlugin();
     }
 
     /**
@@ -243,10 +243,10 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
                 plugin.getSentryErrorReporter().ignoreThrow();
             }
             if (trader.getName() == null) {
-                plugin.getLogger().warning("Withdraw failed and player name is NULL, Player uuid: " + trader.getUniqueId() + ", Provider: " + getProviderName());
+                plugin.logger().warn("Withdraw failed and player name is NULL, Player uuid: {}", trader.getUniqueId() + ", Provider: " + getProviderName());
                 return false;
             }
-            plugin.getLogger().log(Level.WARNING, String.format(ERROR_MESSAGE, getProviderName()), t);
+            plugin.logger().warn(String.format(ERROR_MESSAGE, getProviderName()), t);
             return false;
         }
     }

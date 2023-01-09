@@ -151,7 +151,7 @@ public class Economy_TNE extends AbstractEconomy {
 
     @Override
     public @NotNull Plugin getPlugin() {
-        return this.plugin;
+        return this.plugin.getJavaPlugin();
     }
 
     /**

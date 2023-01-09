@@ -233,7 +233,7 @@ public class Economy_GemsEconomy extends AbstractEconomy {
 
     @Override
     public @NotNull Plugin getPlugin() {
-        return this.plugin;
+        return this.plugin.getJavaPlugin();
     }
 
 

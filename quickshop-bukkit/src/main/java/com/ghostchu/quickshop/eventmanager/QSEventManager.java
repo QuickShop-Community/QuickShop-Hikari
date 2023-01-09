@@ -28,7 +28,7 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
 
     public QSEventManager(QuickShop plugin) {
         this.plugin = plugin;
-        Bukkit.getPluginManager().registerEvents(this, plugin);
+        Bukkit.getPluginManager().registerEvents(this, plugin.getJavaPlugin());
         this.rescan();
     }
 
@@ -100,7 +100,7 @@ public class QSEventManager implements QuickEventManager, Listener, Reloadable {
                 Plugin regPlugin = registration.getPlugin();
                 if (regPlugin.isNaggable()) {
                     regPlugin.setNaggable(false);
-                    regBukkit
+                    regPlugin
                             .getLogger()
                             .log(
                                     Level.SEVERE,

@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.eventmanager;
 
-import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.eventmanager.QuickEventManager;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,6 +13,6 @@ import org.jetbrains.annotations.NotNull;
 public class BukkitEventManager implements QuickEventManager {
     @Override
     public void callEvent(@NotNull Event event) {
-        QuickShop.getInstance().getServer().getPluginManager().callEvent(event);
+        Bukkit.getPluginManager().callEvent(event);
     }
 }
