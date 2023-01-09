@@ -53,7 +53,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
      */
     @Override
     public @NotNull String getName() {
-        return plugin.getName();
+        return plugin.getJavaPlugin().getName();
     }
 
     /**
@@ -63,7 +63,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
      */
     @Override
     public @NotNull Plugin getPlugin() {
-        return plugin;
+        return plugin.getJavaPlugin();
     }
 
     /**
