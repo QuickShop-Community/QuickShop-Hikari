@@ -5,9 +5,9 @@ import lombok.ToString;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 import java.util.Arrays;
-import java.util.logging.Logger;
 
 /**
  * BootError class contains print errors on /qs command when plugin failed launched.
@@ -23,7 +23,7 @@ public class BootError {
     public BootError(@NotNull Logger logger, @NotNull String... errors) {
         this.errors = errors;
         for (String err : errors) {
-            logger.severe(err);
+            logger.error(err);
         }
     }
 
@@ -46,4 +46,5 @@ public class BootError {
         }
         sender.sendMessage(ChatColor.RED + "#####################################################");
     }
+
 }

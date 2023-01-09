@@ -395,7 +395,7 @@ public class Metrics {
     public JsonObject getPluginData() {
         JsonObject data = new JsonObject();
 
-        String pluginName = "QuickShop-" + QuickShop.getFork();
+        String pluginName = "QuickShop-" + QuickShop.getInstance().getFork();
         String pluginVersion = plugin.getDescription().getVersion();
 
         data.addProperty("pluginName", pluginName); // Append the name of the plugin
@@ -456,8 +456,7 @@ public class Metrics {
                 chart.add("data", data);
             } catch (Exception t) {
                 if (logFailedRequests) {
-                    QuickShop.getInstance().getLogger()
-                            .log(Level.WARNING, "Failed to get data for custom chart with id " + chartId, t);
+                    QuickShop.getInstance().logger().warn("Failed to get data for custom chart with id {}.", chartId, t);
                 }
                 return null;
             }

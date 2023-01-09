@@ -51,6 +51,13 @@ public class QuickShopBukkit extends JavaPlugin {
         this.quickShop.onEnable();
     }
 
+    @Override
+    public void reloadConfig() {
+        logger.info("Forwarding reloadConfig() to QuickShop instance...");
+        super.reloadConfig();
+        this.quickShop.reloadConfig();
+    }
+
     /**
      * Return the QuickShop fork name.
      *
