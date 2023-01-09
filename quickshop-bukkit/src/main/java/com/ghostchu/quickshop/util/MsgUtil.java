@@ -73,7 +73,7 @@ public class MsgUtil {
      * Deletes any messages that are older than a week in the database, to save on space.
      */
     public static void clean() {
-        PLUGIN.getLogger()
+        PLUGIN.logger()
                 .info("Cleaning purchase messages from the database that are over a week old...");
         // 604800,000 msec = 1 week.
         PLUGIN.getDatabaseHelper().cleanMessage(System.currentTimeMillis() - 604800000)
@@ -106,7 +106,7 @@ public class MsgUtil {
                 String format = PLUGIN.getConfig().getString("decimal-format");
                 decimalFormat = format == null ? new DecimalFormat() : new DecimalFormat(format);
             } catch (Exception e) {
-                QuickShop.getInstance().getLogger().log(Level.WARNING, "Error when processing decimal format, using system default: " + e.getMessage());
+                QuickShop.getInstance().logger().warn("Error when processing decimal format, using system default!", e);
                 decimalFormat = new DecimalFormat();
             }
         }
@@ -265,7 +265,7 @@ public class MsgUtil {
                 msgs.add(message);
             }
         } catch (SQLException e) {
-            PLUGIN.getLogger().log(Level.WARNING, "Could not load transaction messages from database. Skipping.", e);
+            PLUGIN.logger().warn("Could not load transaction messages from database. Skipping.", e);
         }
     }
 
@@ -359,7 +359,7 @@ public class MsgUtil {
         out.writeUTF(GsonComponentSerializer.gson().serialize(csmMessage));
         Player player = Iterables.getFirst(Bukkit.getOnlinePlayers(), null);
         if (player != null) {
-            player.sendPluginMessage(PLUGIN, "BungeeCord", out.toByteArray());
+            player.sendPluginMessage(PLUGIN.getJavaPlugin(), "BungeeCord", out.toByteArray());
         }
     }
 
@@ -436,7 +436,7 @@ public class MsgUtil {
             return;
         }
         sendMessageToOps(content);
-        PLUGIN.getLogger().warning(content);
+        PLUGIN.logger().warn(content);
         PLUGIN.logEvent(new PluginGlobalAlertLog(content));
     }
 
