@@ -18,7 +18,6 @@ import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
-import java.util.logging.Level;
 
 public class ConfigurationUpdater {
     private static final String CONFIG_VERSION_KEY = "config-version";
@@ -33,12 +32,12 @@ public class ConfigurationUpdater {
     }
 
     private void brokenConfigurationFix() {
-        try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(plugin.getResource("config.yml"))), StandardCharsets.UTF_8)) {
+        try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(plugin.getJavaPlugin().getResource("config.yml"))), StandardCharsets.UTF_8)) {
             if (new ConfigurationFixer(plugin, new File(plugin.getDataFolder(), "config.yml"), plugin.getConfig(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
                 plugin.reloadConfig();
             }
         } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to fix config.yml, plugin may not working properly.", e);
+            plugin.logger().warn("Failed to fix config.yml, plugin may not working properly.", e);
         }
     }
 
@@ -54,12 +53,12 @@ public class ConfigurationUpdater {
                 if (current >= updateScript.version()) {
                     continue;
                 }
-                plugin.getLogger().info("[ConfigUpdater] Updating configuration from " + current + " to " + updateScript.version());
+                plugin.logger().info("[ConfigUpdater] Updating configuration from " + current + " to " + updateScript.version());
                 String scriptName = updateScript.description();
                 if (StringUtils.isEmpty(scriptName)) {
                     scriptName = method.getName();
                 }
-                plugin.getLogger().info("[ConfigUpdater] Executing update script " + scriptName);
+                plugin.logger().info("[ConfigUpdater] Executing update script " + scriptName);
                 try {
                     if (method.getParameterCount() == 0) {
                         method.invoke(configUpdateScript);
@@ -69,16 +68,16 @@ public class ConfigurationUpdater {
                         }
                     }
                 } catch (Exception e) {
-                    plugin.getLogger().log(Level.WARNING, "Failed to execute update script " + method.getName() + " for version " + updateScript.version() + ": " + e.getMessage() + ", plugin may not working properly!", e);
+                    plugin.logger().warn("Failed to execute update script {} for version {}: {}, plugin may not working properly!", method.getName(), updateScript.version(), e.getMessage(), e);
                 }
                 getConfiguration().set(CONFIG_VERSION_KEY, updateScript.version());
-                plugin.getLogger().info("[ConfigUpdater] Configuration updated to version " + updateScript.version());
+                plugin.logger().info("[ConfigUpdater] Configuration updated to version " + updateScript.version());
             } catch (Throwable throwable) {
-                plugin.getLogger().log(Level.WARNING, "Failed execute update script " + method.getName() + " for updating to version " + method.getAnnotation(UpdateScript.class).version() + ", some configuration options may missing or outdated", throwable);
+                plugin.logger().warn("Failed execute update script {} for updating to version {}, some configuration options may missing or outdated", method.getName(), method.getAnnotation(UpdateScript.class).version(), throwable);
             }
         }
-        plugin.getLogger().info("[ConfigUpdater] Saving configuration changes...");
-        plugin.saveConfig();
+        plugin.logger().info("[ConfigUpdater] Saving configuration changes...");
+        plugin.getJavaPlugin().saveConfig();
         plugin.reloadConfig();
         //Delete old example configuration files
         try {
@@ -99,8 +98,8 @@ public class ConfigurationUpdater {
     private void legacyUpdate() {
         if (selectedVersion < 1000) {
             new HikariConverter(plugin).upgrade();
-            plugin.getLogger().info("Save changes & Reloading configurations...");
-            plugin.saveConfig();
+            plugin.logger().info("Save changes & Reloading configurations...");
+            plugin.getJavaPlugin().saveConfig();
             plugin.reloadConfig();
             if (plugin.getReloadManager() != null) {
                 plugin.getReloadManager().reload();

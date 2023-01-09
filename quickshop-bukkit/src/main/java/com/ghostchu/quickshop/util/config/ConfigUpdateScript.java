@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.UUID;
-import java.util.logging.Level;
 
 @SuppressWarnings("unused")
 public class ConfigUpdateScript {
@@ -124,7 +123,7 @@ public class ConfigUpdateScript {
                 jsonFile.deleteOnExit();
                 yamlConfiguration.save(yamlFile);
             } catch (Exception e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to upgrade override translation file " + jsonFile.getName(), e);
+                plugin.logger().warn("Failed to upgrade override translation file {}.", jsonFile.getName(), e);
             }
         }
         getConfig().set("syntax-parser", null);

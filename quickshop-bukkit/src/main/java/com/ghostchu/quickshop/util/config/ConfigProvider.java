@@ -25,7 +25,7 @@ public class ConfigProvider extends QuickShopInstanceHolder {
     private FileConfiguration config = null;
 
     public ConfigProvider(QuickShop plugin, File configFile) {
-        super(plugin);
+        super(plugin.getJavaPlugin());
         this.configFile = configFile;
     }
 
