@@ -1,9 +1,9 @@
 package com.ghostchu.quickshop.permission;
 
-import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.permission.PermissionProvider;
 import com.ghostchu.quickshop.api.permission.ProviderIsEmptyException;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
@@ -16,8 +16,7 @@ public class VaultPermissionProvider implements PermissionProvider {
 
     @Deprecated
     public VaultPermissionProvider() {
-        RegisteredServiceProvider<Permission> rsp =
-                QuickShop.getInstance().getServer().getServicesManager().getRegistration(Permission.class);
+        RegisteredServiceProvider<Permission> rsp = Bukkit.getServicesManager().getRegistration(Permission.class);
         if (rsp == null) {
             throw new ProviderIsEmptyException(getName());
         }

@@ -8,8 +8,6 @@ import lombok.Getter;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.logging.Level;
-
 @Getter
 public class PermissionManager {
     private final QuickShop plugin;
@@ -24,7 +22,7 @@ public class PermissionManager {
     public PermissionManager(QuickShop plugin) {
         this.plugin = plugin;
         provider = new BukkitPermsProvider();
-        plugin.getLogger().info("Selected permission provider: " + provider.getName());
+        plugin.logger().info("Selected permission provider: {}", provider.getName());
     }
 
     /**
@@ -42,7 +40,7 @@ public class PermissionManager {
             }
             return result;
         } catch (Exception th) {
-            plugin.getLogger().log(Level.WARNING, "Failed to processing permission response, This might or not a bug, we not sure, but you can report to both permission provider plugin author or QuickShop devs about this error", th);
+            plugin.logger().warn("Failed to processing permission response, This might or not a bug, we not sure, but you can report to both permission provider plugin author or QuickShop devs about this error", th);
             return false;
         }
     }
