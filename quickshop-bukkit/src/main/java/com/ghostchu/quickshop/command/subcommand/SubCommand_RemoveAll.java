@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;

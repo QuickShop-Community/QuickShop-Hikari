@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
@@ -52,7 +51,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         if (debug) {
             plugin.reloadConfig();
             plugin.getConfig().set("dev-mode", false);
-            plugin.saveConfig();
+            plugin.getJavaPlugin().saveConfig();
             plugin.getReloadManager().reload();
             plugin.text().of(sender, "command.now-nolonger-debuging").send();
             return;
@@ -60,7 +59,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
         plugin.reloadConfig();
         plugin.getConfig().set("dev-mode", true);
-        plugin.saveConfig();
+        plugin.getJavaPlugin().saveConfig();
         plugin.getReloadManager().reload();
         plugin.text().of(sender, "command.now-debuging").send();
     }
@@ -115,7 +114,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             }
         } catch (Exception th) {
             MsgUtil.sendDirectMessage(sender, Component.text("ERR " + th.getMessage()).color(NamedTextColor.RED));
-            plugin.getLogger().log(Level.WARNING, "An error has occurred while getting the HandlerList", th);
+            plugin.logger().warn("An error has occurred while getting the HandlerList", th);
         }
     }
 

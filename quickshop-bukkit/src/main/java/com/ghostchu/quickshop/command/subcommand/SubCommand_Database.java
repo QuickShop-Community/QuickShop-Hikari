@@ -11,7 +11,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
 
 public class SubCommand_Database implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
@@ -99,11 +98,11 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
             SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2) plugin.getDatabaseHelper();
             databaseHelper.purgeLogsRecords(calendar.getTime()).whenComplete((r, e) -> {
                 if (e != null) {
-                    plugin.getLogger().log(Level.WARNING, "Failed to execute database purge.", e);
+                    plugin.logger().warn("Failed to execute database purge.", e);
                     plugin.text().of(sender, "database.purge-done-with-error", r).send();
                 } else {
                     if (r == -1) {
-                        plugin.getLogger().log(Level.WARNING, "Failed to execute database purge, check the exception above.");
+                        plugin.logger().warn("Failed to execute database purge, check the exception above.");
                         plugin.text().of(sender, "database.purge-done-with-error", r).send();
                     } else {
                         plugin.text().of(sender, "database.purge-done-with-line", r).send();

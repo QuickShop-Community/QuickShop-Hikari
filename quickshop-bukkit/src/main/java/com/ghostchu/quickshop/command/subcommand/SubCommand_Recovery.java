@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.sql.SQLException;
-import java.util.logging.Level;
 
 public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender> {
 
@@ -55,7 +54,7 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
                 });
             } catch (SQLException | ClassNotFoundException e) {
                 plugin.text().of(sender, "importing-failed", e.getMessage()).send();
-                plugin.getLogger().log(Level.WARNING, "Failed to import the database from backup file.", e);
+                plugin.logger().warn("Failed to import the database from backup file.", e);
             }
         });
     }

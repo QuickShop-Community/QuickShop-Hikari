@@ -18,13 +18,13 @@ public class SubCommand_About implements CommandHandler<CommandSender> {
 
     @Override
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        MsgUtil.sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(ChatColor.AQUA + "QuickShop " + ChatColor.YELLOW + QuickShop.getFork()));
+        MsgUtil.sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(ChatColor.AQUA + "QuickShop " + ChatColor.YELLOW + QuickShop.getInstance().getFork()));
         MsgUtil.sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(ChatColor.AQUA
                 + "Version "
                 + ChatColor.YELLOW
                 + ">> "
                 + ChatColor.GREEN
-                + QuickShop.getVersion()));
+                + QuickShop.getInstance().getVersion()));
         if (plugin.getBuildInfo().getGitInfo().getBranch().toUpperCase().contains("ORIGIN/LTS")) {
             MsgUtil.sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(
                     ChatColor.AQUA
@@ -56,7 +56,7 @@ public class SubCommand_About implements CommandHandler<CommandSender> {
                         + ChatColor.YELLOW
                         + ">> "
                         + ChatColor.GREEN
-                        + CommonUtil.list2String(plugin.getDescription().getAuthors())));
+                        + CommonUtil.list2String(plugin.getJavaPlugin().getDescription().getAuthors())));
         MsgUtil.sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(ChatColor.GOLD + "Powered by Community"));
         MsgUtil.sendDirectMessage(sender, LegacyComponentSerializer.legacySection().deserialize(ChatColor.RED + "Made with ❤"));
     }

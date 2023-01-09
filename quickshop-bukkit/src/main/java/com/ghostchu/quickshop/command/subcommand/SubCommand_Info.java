@@ -60,7 +60,7 @@ public class SubCommand_Info implements CommandHandler<CommandSender> {
         MsgUtil.sendDirectMessage(sender, Component.text(""
                 + nostock
                 + " out-of-stock loaded shops (excluding doubles) which will be removed by /qs clean.").color(NamedTextColor.GREEN));
-        MsgUtil.sendDirectMessage(sender, Component.text("QuickShop " + QuickShop.getVersion()).color(NamedTextColor.GREEN));
+        MsgUtil.sendDirectMessage(sender, Component.text("QuickShop " + QuickShop.getInstance().getVersion()).color(NamedTextColor.GREEN));
     }
 
 

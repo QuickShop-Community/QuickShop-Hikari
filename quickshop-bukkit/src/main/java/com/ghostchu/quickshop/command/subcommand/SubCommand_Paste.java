@@ -9,6 +9,7 @@ import com.ghostchu.quickshop.util.paste.Paste;
 import com.ghostchu.quickshop.util.paste.PasteGenerator;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,7 +21,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.logging.Level;
 
 public class SubCommand_Paste implements CommandHandler<CommandSender> {
 
@@ -76,7 +76,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
             if (plugin.getSentryErrorReporter() != null) {
                 plugin.getSentryErrorReporter().ignoreThrow();
             }
-            plugin.getLogger().log(Level.WARNING, "Failed to save paste locally! The content will be send to the console", e);
+            plugin.logger().warn("Failed to save paste locally! The content will be send to the console", e);
             plugin.text().of("paste-created-local-failed").send();
             return false;
         }

@@ -83,7 +83,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
 
         if (transaction != null && !transaction.failSafeCommit()) {
             plugin.text().of(sender, "economy-transaction-failed", transaction.getLastError()).send();
-            plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
+            plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.getLastError());
             return;
         }
 
