@@ -10,6 +10,7 @@ import com.ghostchu.quickshop.api.shop.ShopManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -74,7 +75,10 @@ public interface QuickShopAPI {
      * Getting the mapping of permission to shop amounts
      *
      * @return Permissions <-> Shop Amounts mapping
+     * @deprecated Replaced by RankLimiter
      */
+    @ApiStatus.Obsolete
+    @Deprecated(forRemoval = true)
     Map<String, Integer> getLimits();
 
     /**
@@ -117,8 +121,13 @@ public interface QuickShopAPI {
      * false if limit system is disabled
      *
      * @return Limit enabled
+     * @deprecated Replaced by RankLimiter
      */
+    @ApiStatus.Obsolete
+    @Deprecated(forRemoval = true)
     boolean isLimit();
+
+    RankLimiter getRankLimiter();
 
     /**
      * Check if fee required for changing shop price
@@ -141,5 +150,6 @@ public interface QuickShopAPI {
      * @param key            the key to map to or a fixed string
      */
     void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key);
+
 
 }

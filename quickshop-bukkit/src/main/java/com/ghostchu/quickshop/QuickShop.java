@@ -9,6 +9,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.QuickShopProvider;
+import com.ghostchu.quickshop.api.RankLimiter;
 import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
@@ -79,8 +80,6 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -113,7 +112,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
      * The manager to check permissions.
      */
     private static PermissionManager permissionManager;
-    private final Map<String, Integer> limits = new HashMap<>(15);
     @Getter
     private final ReloadManager reloadManager = new ReloadManager();
     private final InventoryWrapperRegistry inventoryWrapperRegistry = new InventoryWrapperRegistry();
@@ -160,10 +158,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
      */
     @Getter
     private AbstractEconomy economy;
-    /**
-     * Whether or not to limit players shop amounts
-     */
-    private boolean limit = false;
     @Nullable
     @Getter
     private LogWatcher logWatcher;
@@ -250,6 +244,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private SignHooker signHooker;
     @Getter
     private BungeeListener bungeeListener;
+    private RankLimiter rankLimiter;
 
     /**
      * Use for mock bukkit
@@ -363,9 +358,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         return this.itemMatcher;
     }
 
+    @SuppressWarnings("removal")
     @Override
+    @ApiStatus.Obsolete
+    @Deprecated(forRemoval = true)
     public Map<String, Integer> getLimits() {
-        return this.limits;
+        return this.rankLimiter.getLimits();
     }
 
     @Override
@@ -383,9 +381,17 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         return this.display;
     }
 
+    @SuppressWarnings("removal")
     @Override
+    @Deprecated(forRemoval = true)
+    @ApiStatus.Obsolete
     public boolean isLimit() {
-        return this.limit;
+        return this.rankLimiter.isLimit();
+    }
+
+    @Override
+    public RankLimiter getRankLimiter() {
+        return rankLimiter;
     }
 
     @Override
@@ -420,21 +426,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         }
     }
 
-    /**
-     * Get the Player's Shop limit.
-     *
-     * @param p The player you want get limit.
-     * @return int Player's shop limit
-     */
-    public int getShopLimit(@NotNull Player p) {
-        int max = getConfig().getInt("limits.default");
-        for (Entry<String, Integer> entry : limits.entrySet()) {
-            if (entry.getValue() > max && getPermissionManager().hasPermission(p, entry.getKey())) {
-                max = entry.getValue();
-            }
-        }
-        return max;
-    }
+
 
     /**
      * Get the permissionManager as static
@@ -765,7 +757,8 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         this.shopManager = new SimpleShopManager(this);
         this.permissionChecker = new PermissionChecker(this);
         // Limit
-        this.registerLimitRanks();
+        //this.registerLimitRanks();
+        this.rankLimiter = new SimpleRankLimiter(this);
         // Limit end
         if (getConfig().getInt("shop.finding.distance") > 100 && getConfig().getBoolean("shop.finding.exclude-out-of-stock")) {
             getLogger().severe("Shop find distance is too high with chunk loading feature turned on! It may cause lag! Pick a number below 100!");
@@ -998,7 +991,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         registerUpdater();
         registerShopLock();
         registerDisplayItem();
-        registerLimitRanks();
         return Reloadable.super.reloadModule();
     }
 
@@ -1073,21 +1065,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
             new DisplayProtectionListener(this, this.shopCache).register();
         } else {
             Util.unregisterListenerClazz(this, DisplayProtectionListener.class);
-        }
-    }
-
-    private void registerLimitRanks() {
-        YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
-        ConfigurationSection limitCfg = yamlConfiguration.getConfigurationSection("limits");
-        if (limitCfg != null) {
-            this.limit = limitCfg.getBoolean("use", false);
-            limitCfg = limitCfg.getConfigurationSection("ranks");
-            for (String key : Objects.requireNonNull(limitCfg).getKeys(true)) {
-                limits.put(key, limitCfg.getInt(key));
-            }
-        } else {
-            this.limit = false;
-            limits.clear();
         }
     }
 

@@ -1020,7 +1020,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     @Override
     public boolean isReachedLimit(@NotNull Player p) {
         Util.ensureThread(false);
-        if (plugin.isLimit()) {
+        if (plugin.getRankLimiter().isLimit()) {
             int owned = 0;
             if (useOldCanBuildAlgorithm) {
                 owned = getPlayerAllShops(p.getUniqueId()).size();
@@ -1031,7 +1031,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     }
                 }
             }
-            int max = plugin.getShopLimit(p);
+            int max = plugin.getRankLimiter().getShopLimit(p);
             Log.debug("CanBuildShop check for " + p.getName() + " owned: " + owned + "; max: " + max);
             return owned + 1 > max;
         }
