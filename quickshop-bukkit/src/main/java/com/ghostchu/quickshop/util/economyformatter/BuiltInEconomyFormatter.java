@@ -34,7 +34,7 @@ public class BuiltInEconomyFormatter implements Reloadable {
         symbols.forEach(entry -> {
             String[] splits = entry.split(";", 2);
             if (splits.length < 2) {
-                plugin.getLogger().warning("Invalid entry in alternate-currency-symbol-list: " + entry);
+                plugin.logger().warn("Invalid entry in alternate-currency-symbol-list: {}", entry);
             }
             CURRENCY_SYMBOL_MAPPING.put(splits[0], splits[1]);
         });
