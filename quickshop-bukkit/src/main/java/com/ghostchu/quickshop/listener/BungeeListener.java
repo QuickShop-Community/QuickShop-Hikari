@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -25,16 +26,16 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
     @Override
     public void register() {
         super.register();
-        Bukkit.getMessenger().registerIncomingPluginChannel(plugin, CHAT_FORWARD_CHANNEL, this);
-        Bukkit.getMessenger().registerOutgoingPluginChannel(plugin, CHAT_FORWARD_CHANNEL);
-        plugin.getLogger().info("BungeeCord messenger listener registered!");
+        Bukkit.getMessenger().registerIncomingPluginChannel(plugin.getJavaPlugin(), CHAT_FORWARD_CHANNEL, this);
+        Bukkit.getMessenger().registerOutgoingPluginChannel(plugin.getJavaPlugin(), CHAT_FORWARD_CHANNEL);
+        plugin.logger().info("BungeeCord messenger listener registered!");
     }
 
     @Override
     public void unregister() {
         super.unregister();
-        Bukkit.getMessenger().unregisterIncomingPluginChannel(plugin, CHAT_FORWARD_CHANNEL);
-        plugin.getLogger().info("BungeeCord messenger listener unregistered!");
+        Bukkit.getMessenger().unregisterIncomingPluginChannel(plugin.getJavaPlugin(), CHAT_FORWARD_CHANNEL);
+        plugin.logger().info("BungeeCord messenger listener unregistered!");
     }
 
     @EventHandler
@@ -47,7 +48,7 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
         out.writeUTF(CHAT_FORWARD_SUB_CHANNEL_COMMAND);
         out.writeUTF(CHAT_COMMAND_REQUEST);
         out.writeUTF(player.getUniqueId().toString());
-        player.sendPluginMessage(plugin, CHAT_FORWARD_SUB_CHANNEL_COMMAND, out.toByteArray());
+        player.sendPluginMessage(plugin.getJavaPlugin(), CHAT_FORWARD_SUB_CHANNEL_COMMAND, out.toByteArray());
     }
 
     public void notifyForCancel(Player player) {
@@ -55,7 +56,7 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
         out.writeUTF(CHAT_FORWARD_SUB_CHANNEL_COMMAND);
         out.writeUTF(CHAT_COMMAND_CANCEL);
         out.writeUTF(player.getUniqueId().toString());
-        player.sendPluginMessage(plugin, CHAT_FORWARD_SUB_CHANNEL_COMMAND, out.toByteArray());
+        player.sendPluginMessage(plugin.getJavaPlugin(), CHAT_FORWARD_SUB_CHANNEL_COMMAND, out.toByteArray());
     }
 
 

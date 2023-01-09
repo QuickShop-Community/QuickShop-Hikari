@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class ShopProtectionListener extends AbstractProtectionListener {
 
-    private final NamespacedKey hopperKey = new NamespacedKey(QuickShop.getInstance(), "hopper-persistent-data");
+    private final NamespacedKey hopperKey = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "hopper-persistent-data");
     private boolean hopperProtect;
     private boolean hopperOwnerExclude;
 
