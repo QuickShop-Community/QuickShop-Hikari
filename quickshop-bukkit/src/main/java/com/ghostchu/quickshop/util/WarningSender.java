@@ -37,7 +37,7 @@ public class WarningSender {
      */
     public boolean sendWarn(String text) {
         if (System.currentTimeMillis() - lastSend > cooldown) {
-            plugin.getLogger().warning(text);
+            plugin.logger().warn(text);
             this.lastSend = System.currentTimeMillis();
             return true;
         }

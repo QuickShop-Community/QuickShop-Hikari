@@ -55,9 +55,9 @@ public class PermissionChecker implements Reloadable {
             this.eventManager = new BukkitEventManager();
         } else {
             this.eventManager = new QSEventManager(plugin);
-            plugin.getLogger().info("Loaded " + listenerBlacklist.size() + " rules for listener blacklist.");
+            plugin.logger().info("Loaded {} rules for listener blacklist.", listenerBlacklist.size());
         }
-        plugin.getLogger().info("EventManager selected: " + this.eventManager.getClass().getSimpleName());
+        plugin.logger().info("EventManager selected: {}", this.eventManager.getClass().getSimpleName());
     }
 
     /**
@@ -143,7 +143,7 @@ public class PermissionChecker implements Reloadable {
                         HandlerList.unregisterAll(this);
                     }
                 }
-            }, plugin);
+            }, plugin.getJavaPlugin());
             this.eventManager.callEvent(beMainHand);
             return isCanBuild;
         }

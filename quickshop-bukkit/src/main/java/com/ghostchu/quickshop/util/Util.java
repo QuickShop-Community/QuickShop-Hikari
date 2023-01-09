@@ -66,9 +66,6 @@ import java.util.stream.Collectors;
 
 public class Util {
 
-    private Util() {
-    }
-
     private static final EnumMap<Material, Integer> CUSTOM_STACKSIZE = new EnumMap<>(Material.class);
     private static final EnumSet<Material> SHOPABLES = EnumSet.noneOf(Material.class);
     private static final List<BlockFace> VERTICAL_FACING = List.of(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST);
@@ -81,6 +78,9 @@ public class Util {
     @Nullable
     private static DyeColor dyeColor = null;
 
+    private Util() {
+    }
+
     /**
      * Execute the Runnable in async thread.
      * If it already on main-thread, will be move to async thread.
@@ -88,7 +88,7 @@ public class Util {
      * @param runnable The runnable
      */
     public static void asyncThreadRun(@NotNull Runnable runnable) {
-        if (!plugin.isEnabled()) {
+        if (!plugin.getJavaPlugin().isEnabled()) {
             Log.debug(Level.WARNING, "Scheduler not available, executing task on current thread...");
             runnable.run();
             return;
@@ -96,7 +96,7 @@ public class Util {
         if (!Bukkit.isPrimaryThread()) {
             runnable.run();
         } else {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
+            Bukkit.getScheduler().runTaskAsynchronously(plugin.getJavaPlugin(), runnable);
         }
     }
 
@@ -312,15 +312,11 @@ public class Util {
                     config = yaml.dump(root);
                     Log.debug("Updated, we will try load as hacked ItemStack: " + config);
                 } else {
-                    plugin
-                            .getLogger()
-                            .warning(
-                                    "Cannot load ItemStack "
-                                            + config
-                                            + " because it saved from higher Minecraft server version, the action will fail and you will receive a exception, PLEASE DON'T REPORT TO QUICKSHOP!");
-                    plugin
-                            .getLogger()
-                            .warning(
+                    plugin.logger()
+                            .warn(
+                                    "Cannot load ItemStack {} because it saved from higher Minecraft server version, the action will fail and you will receive a exception, PLEASE DON'T REPORT TO QUICKSHOP!", config);
+                    plugin.logger()
+                            .warn(
                                     "You can try force load this ItemStack by our hacked ItemStack read util (shop.force-load-downgrade-items), but beware, the data may corrupt if you load on this lower Minecraft server version, Please backup your world and database before enable!");
                 }
             }
@@ -439,14 +435,6 @@ public class Util {
         return isEmptyComponent(result) ? plugin.getPlatform().getTranslation(itemStack.getType()) : result;
     }
 
-    @NotNull
-    public static String getTZTimestamp(@NotNull Date date) {
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
-        df.setTimeZone(tz);
-        return df.format(date);
-    }
-
     @Nullable
     public static Component getItemCustomName(@NotNull ItemStack itemStack) {
         if (useEnchantmentForEnchantedBook() && itemStack.getType() == Material.ENCHANTED_BOOK) {
@@ -508,6 +496,14 @@ public class Util {
         }
     }
 
+    @NotNull
+    public static String getTZTimestamp(@NotNull Date date) {
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
+        df.setTimeZone(tz);
+        return df.format(date);
+    }
+
     public static int getItemTotalAmountsInMap(Map<Integer, ItemStack> map) {
         int total = 0;
         for (ItemStack value : map.values()) {
@@ -523,9 +519,9 @@ public class Util {
      */
     @NotNull
     public static List<String> getPlayerList() {
-        List<String> tabList = plugin.getServer().getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
+        List<String> tabList = Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
         if (plugin.getConfig().getBoolean("include-offlineplayer-list")) {
-            tabList.addAll(Arrays.stream(plugin.getServer().getOfflinePlayers()).map(OfflinePlayer::getName).filter(Objects::nonNull).toList());
+            tabList.addAll(Arrays.stream(Bukkit.getOfflinePlayers()).map(OfflinePlayer::getName).filter(Objects::nonNull).toList());
         }
         return tabList;
     }
@@ -717,7 +713,7 @@ public class Util {
                 mat = Material.matchMaterial(s);
             }
             if (mat == null) {
-                plugin.getLogger().warning("Invalid shop-block: " + s);
+                plugin.logger().warn("Invalid shop-block: {}", s);
             } else {
                 SHOPABLES.add(mat);
             }
@@ -734,7 +730,7 @@ public class Util {
             }
             Material mat = Material.matchMaterial(data[0]);
             if (mat == null || mat == Material.AIR) {
-                plugin.getLogger().warning(material + " not a valid material type in custom-item-stacksize section.");
+                plugin.logger().warn("{} not a valid material in custom-item-stacksize section.", material);
                 continue;
             }
             CUSTOM_STACKSIZE.put(mat, Integer.parseInt(data[1]));
@@ -992,14 +988,14 @@ public class Util {
         if (Bukkit.isPrimaryThread()) {
             runnable.run();
         } else {
-            Bukkit.getScheduler().runTask(plugin, runnable);
+            Bukkit.getScheduler().runTask(plugin.getJavaPlugin(), runnable);
         }
     }
 
     @SneakyThrows(IOException.class)
     public static void makeExportBackup(@Nullable String backupName) {
         if (StringUtils.isEmpty(backupName)) {
-            backupName = "export-" + QuickShop.getFork() + "-" + QuickShop.getVersion() + ".txt";
+            backupName = "export-" + QuickShop.getInstance().getFork() + "-" + QuickShop.getInstance().getVersion() + ".txt";
         }
         File file = new File(plugin.getDataFolder(), backupName);
         if (file.exists()) {
@@ -1007,11 +1003,11 @@ public class Util {
         }
 
         if (!file.createNewFile()) {
-            plugin.getLogger().warning("Failed to create new backup file!");
+            plugin.logger().warn("Failed to create new backup file!");
             return;
         }
 
-        plugin.getLogger().log(Level.WARNING, "Backup hadn't available in this version yet!");
+        plugin.logger().warn("Backup hadn't available in this version yet!");
     }
 
     /**
