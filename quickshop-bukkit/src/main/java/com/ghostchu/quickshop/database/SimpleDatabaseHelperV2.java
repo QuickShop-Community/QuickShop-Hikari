@@ -70,7 +70,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
      * Verifies that all required columns exist.
      */
     public void checkColumns() throws SQLException {
-        plugin.getLogger().info("Checking and updating database columns, it may take a while...");
+        plugin.logger().info("Checking and updating database columns, it may take a while...");
         if (getDatabaseVersion() < 1) {
             // QuickShop v4/v5 upgrade
             // Call updater
@@ -83,9 +83,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                         .addColumn("name", "TEXT NULL")
                         .execute();
             } catch (SQLException e) {
-                plugin.getLogger().log(Level.INFO, "Failed to add name column to shops table! SQL: " + e.getMessage());
+                plugin.logger().warn("Failed to add name column to shops table! SQL: {}", e.getMessage());
             }
-            plugin.getLogger().info("[DatabaseHelper] Migrated to 1.1.0.0 data structure, version 2");
+            plugin.logger().info("[DatabaseHelper] Migrated to 1.1.0.0 data structure, version 2");
             setDatabaseVersion(2);
         }
         if (getDatabaseVersion() == 2) {
@@ -95,7 +95,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                         .addColumn("permission", "TEXT NULL")
                         .execute();
             } catch (SQLException e) {
-                plugin.getLogger().log(Level.INFO, "Failed to add name column to shops table! SQL: " + e.getMessage());
+                plugin.logger().warn("Failed to add name column to shops table! SQL: {}", e.getMessage());
             }
             setDatabaseVersion(3);
         }
@@ -111,24 +111,24 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             }
         }
         if (getDatabaseVersion() < 9) {
-            plugin.getLogger().info("Data upgrading: Performing purge isolated data...");
+            plugin.logger().info("Data upgrading: Performing purge isolated data...");
             purgeIsolated();
-            plugin.getLogger().info("Data upgrading: All completed!");
+            plugin.logger().info("Data upgrading: All completed!");
             setDatabaseVersion(9);
         }
         if (getDatabaseVersion() == 9) {
-            plugin.getLogger().info("Data upgrading: Performing database structure upgrade (benefit)...");
+            plugin.logger().info("Data upgrading: Performing database structure upgrade (benefit)...");
             upgradeBenefit();
-            plugin.getLogger().info("Data upgrading: All completed!");
+            plugin.logger().info("Data upgrading: All completed!");
             setDatabaseVersion(10);
         }
         if (getDatabaseVersion() == 10) {
-            plugin.getLogger().info("Data upgrading: Performing database structure upgrade (players)...");
+            plugin.logger().info("Data upgrading: Performing database structure upgrade (players)...");
             upgradePlayers();
-            plugin.getLogger().info("Data upgrading: All completed!");
-            setDatabaseVersion(10);
+            plugin.logger().info("Data upgrading: All completed!");
+            setDatabaseVersion(11);
         }
-        plugin.getLogger().info("Finished!");
+        plugin.logger().info("Finished!");
     }
 
     public int getDatabaseVersion() {
@@ -158,11 +158,11 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     private void doV2Migrate() throws SQLException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, ExecutionException, InterruptedException {
-        plugin.getLogger().info("Please wait... QuickShop-Hikari preparing for database migration...");
+        plugin.logger().info("Please wait... QuickShop-Hikari preparing for database migration...");
         String actionId = UUID.randomUUID().toString().replace("-", "");
-        plugin.getLogger().info("Action ID: " + actionId);
+        plugin.logger().info("Action ID: {}", actionId);
 
-        plugin.getLogger().info("Cloning the tables for data copy...");
+        plugin.logger().info("Cloning the tables for data copy...");
         if (!silentTableMoving(getPrefix() + "shops", getPrefix() + "shops_" + actionId)) {
             throw new IllegalStateException("Cannot rename critical tables");
         }
@@ -172,17 +172,17 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         silentTableMoving(getPrefix() + "external_cache", getPrefix() + "external_cache_" + actionId);
         silentTableMoving(getPrefix() + "player", getPrefix() + "player_" + actionId);
         silentTableMoving(getPrefix() + "metrics", getPrefix() + "metrics_" + actionId);
-        plugin.getLogger().info("Cleaning resources...");
+        plugin.logger().info("Cleaning resources...");
         // Backup current ver tables to prevent last converting failure or data loss
         for (DataTables value : DataTables.values()) {
             silentTableMoving(value.getName(), value.getName() + "_" + actionId);
         }
-        plugin.getLogger().info("Ensuring shops ready for migrate...");
+        plugin.logger().info("Ensuring shops ready for migrate...");
         if (!hasTable(getPrefix() + "shops_" + actionId)) {
             throw new IllegalStateException("Failed to rename tables!");
         }
 
-        plugin.getLogger().info("Downloading the data that need to converting to memory...");
+        plugin.logger().info("Downloading the data that need to converting to memory...");
         List<OldShopData> oldShopData = new LinkedList<>();
         List<OldMessageData> oldMessageData = new LinkedList<>();
         List<OldShopMetricData> oldMetricData = new LinkedList<>();
@@ -191,16 +191,16 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         downloadData("Messages", "messages", actionId, OldMessageData.class, oldMessageData);
         downloadData("Players Properties", "player", actionId, OldPlayerData.class, oldPlayerData);
         downloadData("Shop Metrics", "metric", actionId, OldShopMetricData.class, oldMetricData);
-        plugin.getLogger().info("Converting data and write into database...");
+        plugin.logger().info("Converting data and write into database...");
         // Convert data
         int pos = 0;
         int total = oldShopData.size();
-        plugin.getLogger().info("Rebuilding database structure...");
+        plugin.logger().info("Rebuilding database structure...");
         // Create new tables
         Log.debug("Table prefix: " + getPrefix());
         Log.debug("Global prefix: " + plugin.getDbPrefix());
         DataTables.initializeTables(manager, getPrefix());
-        plugin.getLogger().info("Validating tables exists...");
+        plugin.logger().info("Validating tables exists...");
         for (DataTables value : DataTables.values()) {
             if (!value.isExists()) {
                 throw new IllegalStateException("Table " + value.getName() + " doesn't exists even rebuild structure!");
@@ -226,7 +226,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                     .setColumnNames("world", "x", "y", "z", "shop")
                     .setParams(data.world, data.x, data.y, data.z, shopId)
                     .execute();
-            plugin.getLogger().info("Converting shops...  (" + (++pos) + "/" + total + ")");
+            plugin.logger().info("Converting shops...  ({}/{})", ++pos, total);
         }
         pos = 0;
         total = oldMessageData.size();
@@ -235,7 +235,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                     .setColumnNames("receiver", "time", "content")
                     .setParams(data.owner, data.time, data.message)
                     .execute();
-            plugin.getLogger().info("Converting messages...  (" + (++pos) + "/" + total + ")");
+            plugin.logger().info("Converting messages...  ({}/{})", ++pos, total);
         }
         pos = 0;
         total = oldPlayerData.size();
@@ -244,7 +244,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                     .setColumnNames("uuid", "locale")
                     .setParams(data.uuid, data.locale)
                     .execute();
-            plugin.getLogger().info("Converting players properties...  (" + (++pos) + "/" + total + ")");
+            plugin.logger().info("Converting players properties...  ({}/{})", ++pos, total);
         }
         pos = 0;
         total = oldMetricData.size();
@@ -261,10 +261,10 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                     .setColumnNames("time", "shop", "data", "buyer", "type", "amount", "money", "tax")
                     .setParams(data.time, shopId, dataId, data.player, data.type, data.amount, data.total, data.tax)
                     .execute();
-            plugin.getLogger().info("Converting purchase metric...  (" + (++pos) + "/" + total + ")");
+            plugin.logger().info("Converting purchase metric...  ({}/{})", ++pos, total);
         }
         checkTables();
-        plugin.getLogger().info("Migrate completed, previous versioned data was renamed to <PREFIX>_<TABLE_NAME>_<ACTION_ID>.");
+        plugin.logger().info("Migrate completed, previous versioned data was renamed to <PREFIX>_<TABLE_NAME>_<ACTION_ID>.");
     }
 
     public CompletableFuture<Integer> purgeIsolated() {
@@ -355,7 +355,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     private <T> void downloadData(@NotNull String name, @NotNull String tableLegacyName, @NotNull String actionId, @NotNull Class<T> clazz, @NotNull List<T> target) throws NoSuchMethodException, SQLException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        plugin.getLogger().info("Performing query for data downloading (" + name + ")...");
+        plugin.logger().info("Performing query for data downloading ({})...", name);
         if (hasTable(getPrefix() + tableLegacyName + "_" + actionId)) {
             try (SQLQuery query = manager.createQuery().inTable(getPrefix() + tableLegacyName + "_" + actionId)
                     .build().execute()) {
@@ -364,12 +364,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 while (set.next()) {
                     target.add(clazz.getConstructor(ResultSet.class).newInstance(set));
                     count++;
-                    plugin.getLogger().info("Downloaded " + count + " data to memory (" + name + ")...");
+                    plugin.logger().info("Downloaded {} data to memory ({})...", count, name);
                 }
-                plugin.getLogger().info("Downloaded " + count + " total, completed. (" + name + ")");
+                plugin.logger().info("Downloaded {} total, completed. ({})", count, name);
             }
         } else {
-            plugin.getLogger().info("Skipping for table " + tableLegacyName);
+            plugin.logger().info("Skipping for table {}", tableLegacyName);
         }
     }
 

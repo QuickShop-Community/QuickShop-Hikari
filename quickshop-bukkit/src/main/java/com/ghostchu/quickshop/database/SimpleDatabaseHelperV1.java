@@ -10,7 +10,6 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
 
 /**
  * A Util to execute all SQLs.
@@ -63,7 +62,7 @@ public class SimpleDatabaseHelperV1 {
      * Verifies that all required columns exist.
      */
     public void checkColumns() throws SQLException {
-        plugin.getLogger().info("Checking and updating database columns, it may take a while...");
+        plugin.logger().info("Checking and updating database columns, it may take a while...");
         if (getDatabaseVersion() < 1) {
             // QuickShop v4/v5 upgrade
             // Call updater
@@ -76,9 +75,9 @@ public class SimpleDatabaseHelperV1 {
                         .addColumn("name", "TEXT NULL")
                         .execute();
             } catch (SQLException e) {
-                plugin.getLogger().log(Level.INFO, "Failed to add name column to shops table! SQL: " + e.getMessage());
+                plugin.logger().info("Failed to add name column to shops table! SQL: " + e.getMessage());
             }
-            plugin.getLogger().info("[DatabaseHelper] Migrated to 1.1.0.0 data structure, version 2");
+            plugin.logger().info("[DatabaseHelper] Migrated to 1.1.0.0 data structure, version 2");
             setDatabaseVersion(2);
         }
         if (getDatabaseVersion() == 2) {
@@ -88,12 +87,12 @@ public class SimpleDatabaseHelperV1 {
                         .addColumn("permission", "TEXT NULL")
                         .execute();
             } catch (SQLException e) {
-                plugin.getLogger().log(Level.INFO, "Failed to add name column to shops table! SQL: " + e.getMessage());
+                plugin.logger().info("Failed to add name column to shops table! SQL: " + e.getMessage());
             }
             setDatabaseVersion(3);
             setDatabaseVersion(3);
         }
-        plugin.getLogger().info("Finished!");
+        plugin.logger().info("Finished!");
     }
 
     /**
@@ -125,11 +124,11 @@ public class SimpleDatabaseHelperV1 {
                 .addColumn("value", "LONGTEXT NOT NULL")
                 .setIndex(IndexType.PRIMARY_KEY, null, "key")
                 .build()
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create metadata table! SQL:" + sqlAction.getSQLContent(), exception)));
+                .execute(((exception, sqlAction) -> plugin.logger().warn("Failed to create metadata table! SQL:" + sqlAction.getSQLContent(), exception)));
         try {
-            setDatabaseVersion(2);
+            setDatabaseVersion(11);
         } catch (SQLException e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to update database version!", e);
+            plugin.logger().warn("Failed to update database version!", e);
         }
     }
 
@@ -156,7 +155,7 @@ public class SimpleDatabaseHelperV1 {
                 .addColumn("inventoryWrapperName", "VARCHAR(255) NULL")
                 .addColumn("name", "TEXT NULL")
                 .setIndex(IndexType.PRIMARY_KEY, null, "x", "y", "z", "world")
-                .build().execute(i -> i, ((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed while trying create the shop table! SQL: " + sqlAction.getSQLContent(), exception)));
+                .build().execute(i -> i, ((exception, sqlAction) -> plugin.logger().warn("Failed while trying create the shop table! SQL: " + sqlAction.getSQLContent(), exception)));
     }
 
     /**
@@ -170,7 +169,7 @@ public class SimpleDatabaseHelperV1 {
                 .build()
                 .execute(((exception, sqlAction) -> {
                     if (exception != null) {
-                        plugin.getLogger().log(Level.WARNING, "Failed to create messages table! SQL:" + sqlAction.getSQLContent(), exception);
+                        plugin.logger().warn("Failed to create messages table! SQL:" + sqlAction.getSQLContent(), exception);
                     }
                 }));
     }
@@ -181,7 +180,7 @@ public class SimpleDatabaseHelperV1 {
                 .addColumn("classname", "TEXT NULL")
                 .addColumn("data", "LONGTEXT NULL")
                 .build()
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create logs table! SQL:" + sqlAction.getSQLContent(), exception)));
+                .execute(((exception, sqlAction) -> plugin.logger().warn("Failed to create logs table! SQL:" + sqlAction.getSQLContent(), exception)));
     }
 
     public void createExternalCacheTable() {
@@ -194,7 +193,7 @@ public class SimpleDatabaseHelperV1 {
                 .addColumn("stock", "INT NULL")
                 .setIndex(IndexType.PRIMARY_KEY, null, "x", "y", "z", "world")
                 .build()
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create extrenal_cache table! SQL:" + sqlAction.getSQLContent(), exception)));
+                .execute(((exception, sqlAction) -> plugin.logger().warn("Failed to create extrenal_cache table! SQL:" + sqlAction.getSQLContent(), exception)));
     }
 
     public void createPlayerTable() {
@@ -203,7 +202,7 @@ public class SimpleDatabaseHelperV1 {
                 .addColumn("locale", "TEXT NOT NULL")
                 .setIndex(IndexType.PRIMARY_KEY, null, "uuid")
                 .build()
-                .execute(((exception, sqlAction) -> plugin.getLogger().log(Level.WARNING, "Failed to create players table! SQL:" + sqlAction.getSQLContent(), exception)));
+                .execute(((exception, sqlAction) -> plugin.logger().warn("Failed to create players table! SQL:" + sqlAction.getSQLContent(), exception)));
     }
 
     /**
@@ -227,7 +226,7 @@ public class SimpleDatabaseHelperV1 {
                 .build()
                 .execute(((exception, sqlAction) -> {
                     if (exception != null) {
-                        plugin.getLogger().log(Level.WARNING, "Failed to create messages table! SQL:" + sqlAction.getSQLContent(), exception);
+                        plugin.logger().warn("Failed to create messages table! SQL:" + sqlAction.getSQLContent(), exception);
                     }
                 }));
     }
