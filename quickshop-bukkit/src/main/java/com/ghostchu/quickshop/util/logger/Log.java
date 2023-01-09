@@ -54,7 +54,7 @@ public class Log {
 
     private static void debugStdOutputs(Record recordEntry) {
         if (Util.isDevMode()) {
-            QuickShop.getInstance().getLogger().info("[DEBUG] " + recordEntry.toString());
+            QuickShop.getInstance().logger().info("[DEBUG] " + recordEntry.toString());
         }
     }
 
