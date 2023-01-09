@@ -57,7 +57,7 @@ public class ItemMarker implements Reloadable {
             yamlConfiguration.save(file);
         } catch (Exception e) {
             Log.permission(Level.SEVERE, "Failed to create default items configuration file");
-            plugin.getLogger().log(Level.SEVERE, "Failed to create default items configuration", e);
+            plugin.logger().error("Failed to create default items configuration", e);
         }
     }
 
@@ -107,7 +107,7 @@ public class ItemMarker implements Reloadable {
             configuration.save(file);
             return true;
         } catch (IOException e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to save items.yml", e);
+            plugin.logger().warn("Failed to save items.yml", e);
             return false;
         }
     }
