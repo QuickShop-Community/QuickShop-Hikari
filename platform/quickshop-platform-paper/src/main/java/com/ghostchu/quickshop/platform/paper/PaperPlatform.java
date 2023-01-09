@@ -15,21 +15,20 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PaperPlatform implements Platform {
 
     private Map<String, String> translationMapping;
 
-    public PaperPlatform(Map<String, String> mapping) {
-        this.translationMapping = mapping;
+    public PaperPlatform() {
+        this.translationMapping = new HashMap<>();
     }
 
     @Override
@@ -203,6 +202,11 @@ public class PaperPlatform implements Platform {
     @Override
     public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
         this.translationMapping = mapping;
+    }
+
+    @Override
+    public @NotNull Logger getSlf4jLogger(@NotNull Plugin parent) {
+        return parent.getSLF4JLogger();
     }
 
     @Override
