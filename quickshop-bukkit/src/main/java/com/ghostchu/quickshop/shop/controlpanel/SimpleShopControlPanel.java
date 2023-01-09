@@ -157,6 +157,6 @@ public class SimpleShopControlPanel implements ShopControlPanel {
      */
     @Override
     public @NotNull Plugin getPlugin() {
-        return QuickShop.getInstance();
+        return QuickShop.getInstance().getJavaPlugin();
     }
 }

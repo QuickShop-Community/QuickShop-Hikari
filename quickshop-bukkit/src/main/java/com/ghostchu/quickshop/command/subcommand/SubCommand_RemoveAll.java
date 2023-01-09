@@ -31,7 +31,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
             //copy it first
             List<Shop> tempList = new ArrayList<>(plugin.getShopManager().getAllShops());
             OfflinePlayer shopOwner = null;
-            for (OfflinePlayer player : plugin.getServer().getOfflinePlayers()) {
+            for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
                 if (player.getName() != null && player.getName().equalsIgnoreCase(cmdArg[0])) {
                     shopOwner = player;
                     break;

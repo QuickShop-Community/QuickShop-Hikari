@@ -51,7 +51,7 @@ public class Economy_Reserve extends AbstractEconomy {
 
     private void setup() {
         try {
-            Reserve re = ((Reserve) plugin.getServer().getPluginManager().getPlugin("Reserve"));
+            Reserve re = ((Reserve) Bukkit.getPluginManager().getPlugin("Reserve"));
             if (re.economyProvided()) {
                 reserve = re.economy();
             }

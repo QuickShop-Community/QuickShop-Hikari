@@ -36,7 +36,7 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
         MsgUtil.sendDirectMessage(sender, Component.text("Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...").color(NamedTextColor.GREEN));
 
 
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             MsgUtil.sendDirectMessage(sender, Component.text("Starting async thread, please wait...").color(NamedTextColor.GREEN));
             //   Util.backupDatabase(); // Already warn the user, don't care about backup result.
             for (Shop shop : plugin.getShopManager().getAllShops()) {

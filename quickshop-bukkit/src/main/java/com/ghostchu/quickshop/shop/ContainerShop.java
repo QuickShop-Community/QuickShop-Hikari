@@ -60,7 +60,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
 
 /**
  * ChestShop core
@@ -170,7 +169,7 @@ public class ContainerShop implements Shop, Reloadable {
                 }
             }
         } catch (Exception e) {
-            plugin.getLogger().log(Level.WARNING, "Failed to init display item for shop " + this + ", display item init failed!", e);
+            plugin.logger().warn("Failed to init display item for shop {}, display item init failed!", this, e);
         }
     }
 
@@ -256,7 +255,7 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     private void updateShopData() {
-        ConfigurationSection section = getExtra(plugin);
+        ConfigurationSection section = getExtra(plugin.getJavaPlugin());
         if (section.getString("currency") != null) {
             this.currency = section.getString("currency");
             section.set("currency", null);
@@ -337,7 +336,7 @@ public class ContainerShop implements Shop, Reloadable {
         } else {
             InventoryWrapper chestInv = this.getInventory();
             if (chestInv == null) {
-                plugin.getLogger().warning("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
+                plugin.logger().warn("Failed to process buy, reason: {} x{} to shop {}: Inventory null.", item, amount, this);
                 Log.debug("Failed to process buy, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
                 return;
             }
@@ -506,7 +505,7 @@ public class ContainerShop implements Shop, Reloadable {
                                     .build();
                 }
                 if (!transaction.failSafeCommit()) {
-                    plugin.getLogger().warning("Shop deletion refund failed. Reason: " + transaction.getLastError());
+                    plugin.logger().warn("Shop deletion refund failed. Reason: {}", transaction.getLastError());
                 }
             }
             plugin.getShopManager().removeShop(this);
@@ -515,7 +514,7 @@ public class ContainerShop implements Shop, Reloadable {
                 plugin.getDatabaseHelper().removeShopMap(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
             } catch (Exception e) {
                 e.printStackTrace();
-                plugin.getLogger().warning("Failed to remove the shop mapping from database.");
+                plugin.logger().warn("Failed to remove the shop mapping from database.");
             }
         }
         // Use that copy we saved earlier (which is now deleted) to refresh it's now alone neighbor
@@ -1269,12 +1268,12 @@ public class ContainerShop implements Shop, Reloadable {
         try (PerfMonitor ignored = new PerfMonitor("Shop Inventory Locate", Duration.of(1, ChronoUnit.SECONDS))) {
             inventoryWrapper = locateInventory(symbolLink);
         } catch (Exception e) {
-            plugin.getLogger().warning("Failed to load shop: " + symbolLink + ": " + e.getClass().getName() + ": " + e.getMessage());
+            plugin.logger().warn("Failed to load shop: {}: {}: {}", symbolLink, e.getClass().getName(), e.getMessage());
             if (plugin.getConfig().getBoolean("debug.delete-corrupt-shops")) {
-                plugin.getLogger().warning("Deleting corrupt shop...");
+                plugin.logger().warn("Deleting corrupt shop...");
                 this.delete(false);
             } else {
-                plugin.getLogger().warning("Unloading shops from memory, set `debug.delete-corrupt-shops` to true to delete corrupted shops.");
+                plugin.logger().warn("Unloading shops from memory, set `debug.delete-corrupt-shops` to true to delete corrupted shops.");
                 this.delete(true);
             }
             return;
@@ -1392,12 +1391,12 @@ public class ContainerShop implements Shop, Reloadable {
      */
     @Override
     public boolean playerAuthorize(@NotNull UUID player, @NotNull BuiltInShopPermission permission) {
-        return playerAuthorize(player, plugin, permission.getRawNode());
+        return playerAuthorize(player, plugin.getJavaPlugin(), permission.getRawNode());
     }
 
     @Override
     public List<UUID> playersCanAuthorize(@NotNull BuiltInShopPermission permission) {
-        return playersCanAuthorize(plugin, permission.getRawNode());
+        return playersCanAuthorize(plugin.getJavaPlugin(), permission.getRawNode());
     }
 
     @Override
@@ -1472,7 +1471,7 @@ public class ContainerShop implements Shop, Reloadable {
         int itemMaxStackSize = Util.getItemMaxStackSize(item.getType());
         InventoryWrapper inv = this.getInventory();
         if (inv == null) {
-            plugin.getLogger().warning("Failed to process item remove, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
+            plugin.logger().warn("Failed to process item remove, reason: {} x{} to shop {}: Inventory null.", item, amount, this);
             return;
         }
         int remains = amount;
@@ -1536,7 +1535,7 @@ public class ContainerShop implements Shop, Reloadable {
         } else {
             InventoryWrapper chestInv = this.getInventory();
             if (chestInv == null) {
-                plugin.getLogger().warning("Failed to process sell, reason: " + item + " x" + amount + " to shop " + this + ": Inventory null.");
+                plugin.logger().warn("Failed to process sell, reason: {} to shop {}: Inventory null.", item, amount);
                 return;
             }
             SimpleInventoryTransaction transactionTake = SimpleInventoryTransaction
@@ -1659,7 +1658,7 @@ public class ContainerShop implements Shop, Reloadable {
         }
         if (plugin.getSignHooker() != null) {
             Log.debug("Start sign broadcast...");
-            Bukkit.getScheduler().runTaskLater(plugin, () -> plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this), 2);
+            Bukkit.getScheduler().runTaskLater(plugin.getJavaPlugin(), () -> plugin.getSignHooker().updatePerPlayerShopSignBroadcast(getLocation(), this), 2);
             Log.debug("Sign broadcast completed.");
         }
     }
@@ -1704,7 +1703,7 @@ public class ContainerShop implements Shop, Reloadable {
                     if (throwable == null) {
                         this.dirty = false;
                     } else {
-                        plugin.getLogger().log(Level.WARNING,
+                        plugin.logger().warn(
                                 "Could not update a shop in the database! Changes will revert after a reboot!", throwable);
                     }
                 });

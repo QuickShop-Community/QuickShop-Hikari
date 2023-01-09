@@ -15,14 +15,13 @@ import com.google.common.collect.Lists;
 import com.google.gson.JsonSyntaxException;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.logging.Level;
 
 /**
  * @author Netherfoam
@@ -59,8 +58,8 @@ public abstract class AbstractDisplayItem implements Reloadable {
         //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
         if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
             PLUGIN.getConfig().set("shop.display-type", 0);
-            PLUGIN.saveConfig();
-            PLUGIN.getLogger().log(Level.WARNING, "Falling back to RealDisplayItem because {0} type is unsupported.", displayType.name());
+            PLUGIN.getJavaPlugin().saveConfig();
+            PLUGIN.logger().warn("Falling back to RealDisplayItem because {} type is unsupported.", displayType.name());
             return DisplayType.REALITEM;
         }
         return displayType;
@@ -188,7 +187,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
         itemStack = itemStack.clone();
         ItemMeta iMeta = itemStack.getItemMeta();
         if (iMeta == null) {
-            iMeta = PLUGIN.getServer().getItemFactory().getItemMeta(itemStack.getType());
+            iMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
         }
         if (iMeta == null) {
             Log.debug("ItemStack " + itemStack + " cannot getting or creating ItemMeta, failed to create guarded ItemStack.");

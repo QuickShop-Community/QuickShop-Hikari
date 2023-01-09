@@ -51,7 +51,7 @@ public class RollbarErrorReporter {
         this.plugin = plugin;
         Config config = ConfigBuilder.withAccessToken("aeace9eab9e042dfb43d97d39728e19c")
                 .environment(Util.isDevEdition() ? "development" : "production")
-                .platform(plugin.getServer().getVersion())
+                .platform(Bukkit.getVersion())
                 .codeVersion(QuickShop.getVersion())
                 .handleUncaughtErrors(false)
                 .build();
@@ -61,7 +61,7 @@ public class RollbarErrorReporter {
         plugin.getLogger().setFilter(quickShopExceptionFilter); // Redirect log request passthrough our error catcher.
 
         serverExceptionFilter = new GlobalExceptionFilter(plugin.getLogger().getFilter());
-        plugin.getServer().getLogger().setFilter(serverExceptionFilter);
+        Bukkit.getLogger().setFilter(serverExceptionFilter);
 
         Log.debug("Rollbar error reporter success loaded.");
         enabled = true;
@@ -210,11 +210,11 @@ public class RollbarErrorReporter {
         dataMapping.put("system_arch", System.getProperty("os.arch"));
         dataMapping.put("system_version", System.getProperty("os.version"));
         dataMapping.put("system_cores", String.valueOf(Runtime.getRuntime().availableProcessors()));
-        dataMapping.put("server_build", plugin.getServer().getVersion());
+        dataMapping.put("server_build", Bukkit.getVersion());
         dataMapping.put("server_java", String.valueOf(System.getProperty("java.version")));
-        dataMapping.put("server_players", plugin.getServer().getOnlinePlayers().size() + "/" + plugin.getServer().getMaxPlayers());
-        dataMapping.put("server_onlinemode", String.valueOf(plugin.getServer().getOnlineMode()));
-        dataMapping.put("server_bukkitversion", plugin.getServer().getVersion());
+        dataMapping.put("server_players", Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers());
+        dataMapping.put("server_onlinemode", String.valueOf(Bukkit.getOnlineMode()));
+        dataMapping.put("server_bukkitversion", Bukkit.getVersion());
         dataMapping.put("user", QuickShop.getInstance().getServerUniqueID().toString());
         return dataMapping;
     }
@@ -308,7 +308,7 @@ public class RollbarErrorReporter {
     public void unregister() {
         enabled = false;
         plugin.getLogger().setFilter(quickShopExceptionFilter.preFilter);
-        plugin.getServer().getLogger().setFilter(serverExceptionFilter.preFilter);
+        Bukkit.getLogger().setFilter(serverExceptionFilter.preFilter);
         try {
             rollbar.close(false);
         } catch (Exception ignored) {

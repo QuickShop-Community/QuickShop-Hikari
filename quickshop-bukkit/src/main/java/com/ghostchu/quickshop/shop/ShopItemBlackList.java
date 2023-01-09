@@ -41,7 +41,7 @@ public class ShopItemBlackList implements Reloadable {
                     mat = Material.matchMaterial(s);
                 }
                 if (mat == null) {
-                    plugin.getLogger().warning(s + " is not a valid material.  Check your spelling or ID");
+                    plugin.logger().warn(s + " is not a valid material.  Check your spelling or ID");
                     continue;
                 }
                 Material finalMat = mat;

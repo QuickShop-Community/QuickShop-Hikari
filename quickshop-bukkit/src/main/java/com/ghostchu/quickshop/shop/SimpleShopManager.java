@@ -60,7 +60,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.logging.Level;
 
 /**
  * Manage a lot of shops.
@@ -117,7 +116,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             String uAccount = plugin.getConfig().getString("unlimited-shop-owner-change-account", "");
             if (uAccount.isEmpty()) {
                 uAccount = "quickshop";
-                plugin.getLogger().log(Level.WARNING, "unlimited-shop-owner-change-account is empty, default to \"quickshop\"");
+                plugin.logger().warn("unlimited-shop-owner-change-account is empty, default to \"quickshop\"");
             }
             if (CommonUtil.isUUID(uAccount)) {
                 cacheUnlimitedShopAccount = UUID.fromString(uAccount);
@@ -232,15 +231,15 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         if (!transaction.failSafeCommit()) {
             plugin.text().of(buyer, "economy-transaction-failed", transaction.getLastError()).send();
-            plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
-            plugin.getLogger().severe("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
+            plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.getLastError());
+            plugin.logger().error("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
             return;
         }
 
         try {
             shop.buy(buyer, buyerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
         } catch (Exception shopError) {
-            plugin.getLogger().log(Level.WARNING, "Failed to processing purchase, rolling back...", shopError);
+            plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
             transaction.rollback(true);
             plugin.text().of(buyer, "shop-transaction-failed", shopError.getMessage()).send();
             return;
@@ -300,7 +299,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     null,
                     false,
                     null,
-                    plugin.getName(),
+                    plugin.getJavaPlugin().getName(),
                     plugin.getInventoryWrapperManager().mklink(new BukkitInventoryWrapper((holder).getInventory())),
                     null,
                     Collections.emptyMap(),
@@ -412,14 +411,14 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         if (!transaction.failSafeCommit()) {
             plugin.text().of(seller, "economy-transaction-failed", transaction.getLastError()).send();
-            plugin.getLogger().severe("EconomyTransaction Failed, last error:" + transaction.getLastError());
+            plugin.logger().error("EconomyTransaction Failed, last error: {}", transaction.getLastError());
             return;
         }
 
         try {
             shop.sell(seller, sellerInventory, player != null ? player.getLocation() : shop.getLocation(), amount);
         } catch (Exception shopError) {
-            plugin.getLogger().log(Level.WARNING, "Failed to processing purchase, rolling back...", shopError);
+            plugin.logger().warn("Failed to processing purchase, rolling back...", shopError);
             transaction.rollback(true);
             plugin.text().of(seller, "shop-transaction-failed", shopError.getMessage()).send();
             return;
@@ -469,9 +468,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     @Override
     public void clear() {
         Util.ensureThread(false);
-        plugin.getLogger().info("Unloading loaded shops...");
+        plugin.logger().info("Unloading loaded shops...");
         getLoadedShops().forEach(Shop::onUnload);
-        plugin.getLogger().info("Saving shops, please allow up to 30 seconds for flush changes into database...");
+        plugin.logger().info("Saving shops, please allow up to 30 seconds for flush changes into database...");
         CompletableFuture<?> saveTask = CompletableFuture.allOf(
                 plugin.getShopManager().getAllShops().stream().filter(Shop::isDirty)
                         .map(Shop::update)
@@ -483,7 +482,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 saveTask.get(30, TimeUnit.SECONDS);
             }
         } catch (ExecutionException | TimeoutException e) {
-            plugin.getLogger().log(Level.INFO, "Shops saving interrupted, some unsaved data may lost.", e);
+            plugin.logger().warn("Shops saving interrupted, some unsaved data may lost.", e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -502,7 +501,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     @Override
     public void createShop(@NotNull Shop shop, @Nullable Block signBlock, boolean bypassProtectionCheck) throws IllegalStateException {
         Util.ensureThread(false);
-        Player p = plugin.getServer().getPlayer(shop.getOwner());
+        Player p = Bukkit.getPlayer(shop.getOwner());
         // Player offline check
         if (p == null || !p.isOnline()) {
             throw new IllegalStateException("The owner creating the shop is offline or not exist");
@@ -635,8 +634,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     }
                     if (!economyTransaction.failSafeCommit()) {
                         plugin.text().of(p, "economy-transaction-failed", economyTransaction.getLastError()).send();
-                        plugin.getLogger().severe("EconomyTransaction Failed, last error:" + economyTransaction.getLastError());
-                        plugin.getLogger().severe("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
+                        plugin.logger().error("EconomyTransaction Failed, last error:{} ", economyTransaction.getLastError());
+                        plugin.logger().error("Tips: If you see any economy plugin name appears above, please don't ask QuickShop support. Contact with developer of economy plugin. QuickShop didn't process the transaction, we only receive the transaction result from your economy plugin.");
                         return;
                     }
                 }
@@ -951,7 +950,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     public double getTax(@NotNull Shop shop, @NotNull UUID p) {
         Util.ensureThread(false);
         double tax = plugin.getConfig().getDouble("tax");
-        Player player = plugin.getServer().getPlayer(p);
+        Player player = Bukkit.getPlayer(p);
         if (player != null) {
             if (plugin.perm().hasPermission(player, "quickshop.tax")) {
                 tax = 0;
@@ -963,7 +962,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
         if (tax >= 1.0) {
-            plugin.getLogger().warning("Disable tax due to is invalid, it should be in >=0.0 and <1.0 (current value is " + tax + ")");
+            plugin.logger().warn("Disable tax due to is invalid, it should be in >=0.0 and <1.0 (current value is {})", tax);
             tax = 0;
         }
         if (tax < 0) {
@@ -1264,7 +1263,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
 
     @Override
     public boolean shopIsNotValid(@NotNull UUID uuid, @NotNull Info info, @NotNull Shop shop) {
-        Player player = plugin.getServer().getPlayer(uuid);
+        Player player = Bukkit.getPlayer(uuid);
         return shopIsNotValid(player, info, shop);
     }
 
@@ -1273,8 +1272,53 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         return this.interactiveManager;
     }
 
+    private void processWaterLoggedSign(@NotNull Block container, @NotNull Block signBlock) {
+        boolean signIsWatered = signBlock.getType() == Material.WATER;
+        signBlock.setType(Util.getSignMaterial());
+        BlockState signBlockState = signBlock.getState();
+        BlockData signBlockData = signBlockState.getBlockData();
+        if (signIsWatered && (signBlockData instanceof Waterlogged waterable)) {
+            waterable.setWaterlogged(true); // Looks like sign directly put in water
+        }
+        if (signBlockData instanceof WallSign wallSignBlockData) {
+            BlockFace bf = container.getFace(signBlock);
+            if (bf != null) {
+                wallSignBlockData.setFacing(bf);
+                signBlockState.setBlockData(wallSignBlockData);
+            }
+        } else {
+            plugin.logger().warn(
+                    "Sign material {} not a WallSign, make sure you using correct sign material.", signBlockState.getType().name());
+        }
+        signBlockState.update(true);
+    }
+
+    private boolean shopIsNotValid(@Nullable Player p, @NotNull Info info, @NotNull Shop shop) {
+        if (plugin.getEconomy() == null) {
+            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
+            return true;
+        }
+        if (!Util.canBeShop(info.getLocation().getBlock())) {
+            plugin.text().of(p, "chest-was-removed").send();
+            return true;
+        }
+        if (info.hasChanged(shop)) {
+            plugin.text().of(p, "shop-has-changed").send();
+            return true;
+        }
+        return false;
+    }
+
+    @Deprecated
+    public void actionSelling(
+            @NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info, @NotNull Shop shop,
+            int amount) {
+        Util.ensureThread(false);
+        actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
+    }
+
     private void notifySold(@NotNull UUID buyer, @NotNull Shop shop, int amount, int space) {
-        Player player = plugin.getServer().getPlayer(buyer);
+        Player player = Bukkit.getPlayer(buyer);
         plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner()).whenCompleteAsync((locale, err) -> {
             String langCode = MsgUtil.getDefaultGameLanguageCode();
             if (locale != null) {
@@ -1315,32 +1359,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         });
     }
 
-    private boolean shopIsNotValid(@Nullable Player p, @NotNull Info info, @NotNull Shop shop) {
-        if (plugin.getEconomy() == null) {
-            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
-            return true;
-        }
-        if (!Util.canBeShop(info.getLocation().getBlock())) {
-            plugin.text().of(p, "chest-was-removed").send();
-            return true;
-        }
-        if (info.hasChanged(shop)) {
-            plugin.text().of(p, "shop-has-changed").send();
-            return true;
-        }
-        return false;
-    }
-
-    @Deprecated
-    public void actionSelling(
-            @NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info, @NotNull Shop shop,
-            int amount) {
-        Util.ensureThread(false);
-        actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
-    }
-
     private void notifyBought(@NotNull UUID seller, @NotNull Shop shop, int amount, int stock, double tax, double total) {
-        Player player = plugin.getServer().getPlayer(seller);
+        Player player = Bukkit.getPlayer(seller);
         plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner()).whenCompleteAsync((locale, err) -> {
             String langCode = MsgUtil.getDefaultGameLanguageCode();
             if (locale != null) {
@@ -1395,69 +1415,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         });
 
-    }
-
-    private void actionTrade(@NotNull Player p, Info info, @NotNull String message) {
-        Util.ensureThread(false);
-        if (plugin.getEconomy() == null) {
-            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
-            return;
-        }
-        AbstractEconomy eco = plugin.getEconomy();
-
-        // Get the shop they interacted with
-        Shop shop = plugin.getShopManager().getShop(info.getLocation());
-        // It's not valid anymore
-        if (shop == null || !Util.canBeShop(info.getLocation().getBlock())) {
-            plugin.text().of(p, "chest-was-removed").send();
-            return;
-        }
-        if (p.getGameMode() == GameMode.CREATIVE && plugin.getConfig().getBoolean("shop.disable-creative-mode-trading")) {
-            plugin.text().of(p, "trading-in-creative-mode-is-disabled").send();
-            return;
-        }
-        int amount;
-        if (info.hasChanged(shop)) {
-            plugin.text().of(p, "shop-has-changed").send();
-            return;
-        }
-        if (shop.isBuying()) {
-            if (StringUtils.isNumeric(message)) {
-                amount = Integer.parseInt(message);
-            } else {
-                if (message.equalsIgnoreCase(
-                        plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
-                    amount = buyingShopAllCalc(eco, shop, p);
-                } else {
-                    // instead of output cancelled message (when typed neither integer or 'all'), just let
-                    // player know that there should be positive number or 'all'
-                    plugin.text().of(p, "not-a-integer", message).send();
-                    Log.debug(
-                            "Receive the chat " + message + " and it format failed: " + message);
-                    return;
-                }
-            }
-            actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
-        } else if (shop.isSelling()) {
-            if (StringUtils.isNumeric(message)) {
-                amount = Integer.parseInt(message);
-            } else {
-                if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
-                    amount = sellingShopAllCalc(eco, shop, p);
-                } else {
-                    // instead of output cancelled message, just let player know that there should be positive
-                    // number or 'all'
-                    plugin.text().of(p, "not-a-integer", message).send();
-                    Log.debug(
-                            "Receive the chat " + message + " and it format failed: " + message);
-                    return;
-                }
-            }
-            actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
-        } else {
-            plugin.text().of(p, "shop-purchase-cancelled").send();
-            plugin.getLogger().warning("Shop data broken? Loc:" + shop.getLocation());
-        }
     }
 
     private int buyingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
@@ -1553,10 +1510,72 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         return shop;
     }
 
+    private void actionTrade(@NotNull Player p, Info info, @NotNull String message) {
+        Util.ensureThread(false);
+        if (plugin.getEconomy() == null) {
+            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
+            return;
+        }
+        AbstractEconomy eco = plugin.getEconomy();
+
+        // Get the shop they interacted with
+        Shop shop = plugin.getShopManager().getShop(info.getLocation());
+        // It's not valid anymore
+        if (shop == null || !Util.canBeShop(info.getLocation().getBlock())) {
+            plugin.text().of(p, "chest-was-removed").send();
+            return;
+        }
+        if (p.getGameMode() == GameMode.CREATIVE && plugin.getConfig().getBoolean("shop.disable-creative-mode-trading")) {
+            plugin.text().of(p, "trading-in-creative-mode-is-disabled").send();
+            return;
+        }
+        int amount;
+        if (info.hasChanged(shop)) {
+            plugin.text().of(p, "shop-has-changed").send();
+            return;
+        }
+        if (shop.isBuying()) {
+            if (StringUtils.isNumeric(message)) {
+                amount = Integer.parseInt(message);
+            } else {
+                if (message.equalsIgnoreCase(
+                        plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
+                    amount = buyingShopAllCalc(eco, shop, p);
+                } else {
+                    // instead of output cancelled message (when typed neither integer or 'all'), just let
+                    // player know that there should be positive number or 'all'
+                    plugin.text().of(p, "not-a-integer", message).send();
+                    Log.debug(
+                            "Receive the chat " + message + " and it format failed: " + message);
+                    return;
+                }
+            }
+            actionBuying(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
+        } else if (shop.isSelling()) {
+            if (StringUtils.isNumeric(message)) {
+                amount = Integer.parseInt(message);
+            } else {
+                if (message.equalsIgnoreCase(plugin.getConfig().getString("shop.word-for-trade-all-items", "all"))) {
+                    amount = sellingShopAllCalc(eco, shop, p);
+                } else {
+                    // instead of output cancelled message, just let player know that there should be positive
+                    // number or 'all'
+                    plugin.text().of(p, "not-a-integer", message).send();
+                    Log.debug(
+                            "Receive the chat " + message + " and it format failed: " + message);
+                    return;
+                }
+            }
+            actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
+        } else {
+            plugin.text().of(p, "shop-purchase-cancelled").send();
+            plugin.logger().warn("Shop data broken? Loc: {}", shop.getLocation());
+        }
+    }
+
     private void processCreationFail(@NotNull Shop shop, @NotNull UUID owner, @NotNull Throwable e2) {
-        plugin.getLogger()
-                .log(Level.SEVERE, "Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
-        Player player = plugin.getServer().getPlayer(owner);
+        plugin.logger().error("Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
+        Player player = Bukkit.getPlayer(owner);
         if (player != null) {
             plugin.text().of(player, "shop-creation-failed").send();
         }
@@ -1565,29 +1584,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             removeShop(shop);
             shop.delete();
         });
-    }
-
-    private void processWaterLoggedSign(@NotNull Block container, @NotNull Block signBlock) {
-        boolean signIsWatered = signBlock.getType() == Material.WATER;
-        signBlock.setType(Util.getSignMaterial());
-        BlockState signBlockState = signBlock.getState();
-        BlockData signBlockData = signBlockState.getBlockData();
-        if (signIsWatered && (signBlockData instanceof Waterlogged waterable)) {
-            waterable.setWaterlogged(true); // Looks like sign directly put in water
-        }
-        if (signBlockData instanceof WallSign wallSignBlockData) {
-            BlockFace bf = container.getFace(signBlock);
-            if (bf != null) {
-                wallSignBlockData.setFacing(bf);
-                signBlockState.setBlockData(wallSignBlockData);
-            }
-        } else {
-            plugin.getLogger().warning(
-                    "Sign material "
-                            + signBlockState.getType().name()
-                            + " not a WallSign, make sure you using correct sign material.");
-        }
-        signBlockState.update(true);
     }
 
     @Override
@@ -1636,60 +1632,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return 0;
         }
         return amount;
-    }
-
-    public class ShopIterator implements Iterator<Shop> {
-
-        private final Iterator<Map<ShopChunk, Map<Location, Shop>>> worlds;
-
-        private Iterator<Map<Location, Shop>> chunks;
-
-        private Iterator<Shop> shops;
-
-        public ShopIterator() {
-            worlds = getShops().values().iterator();
-        }
-
-        /**
-         * Returns true if there is still more shops to iterate over.
-         */
-        @Override
-        public boolean hasNext() {
-            if (shops == null || !shops.hasNext()) {
-                if (chunks == null || !chunks.hasNext()) {
-                    if (!worlds.hasNext()) {
-                        return false;
-                    } else {
-                        chunks = worlds.next().values().iterator();
-                        return hasNext();
-                    }
-                } else {
-                    shops = chunks.next().values().iterator();
-                    return hasNext();
-                }
-            }
-            return true;
-        }
-
-        /**
-         * Fetches the next shop. Throws NoSuchElementException if there are no more shops.
-         */
-        @Override
-        public @NotNull Shop next() {
-            if (shops == null || !shops.hasNext()) {
-                if (chunks == null || !chunks.hasNext()) {
-                    if (!worlds.hasNext()) {
-                        throw new NoSuchElementException("No more shops to iterate over!");
-                    }
-                    chunks = worlds.next().values().iterator();
-                }
-                shops = chunks.next().values().iterator();
-            }
-            if (!shops.hasNext()) {
-                return this.next(); // Skip to the next one (Empty iterator?)
-            }
-            return shops.next();
-        }
     }
 
     public static class InteractiveManager implements ShopManager.InteractiveManager {
@@ -1750,6 +1692,16 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return this.actions.containsValue(info);
         }
 
+        private void sendCancel(UUID uuid) {
+            if (plugin.getBungeeListener() != null) {
+                Player p = Bukkit.getPlayer(uuid);
+                if (p != null) {
+                    Log.debug("Cancel chat forward for player " + p.getName());
+                    plugin.getBungeeListener().notifyForCancel(p);
+                }
+            }
+        }
+
         private void sendRequest(UUID uuid) {
             if (plugin.getBungeeListener() != null) {
                 Player p = Bukkit.getPlayer(uuid);
@@ -1759,15 +1711,59 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 }
             }
         }
+    }
 
-        private void sendCancel(UUID uuid) {
-            if (plugin.getBungeeListener() != null) {
-                Player p = Bukkit.getPlayer(uuid);
-                if (p != null) {
-                    Log.debug("Cancel chat forward for player " + p.getName());
-                    plugin.getBungeeListener().notifyForCancel(p);
+    public class ShopIterator implements Iterator<Shop> {
+
+        private final Iterator<Map<ShopChunk, Map<Location, Shop>>> worlds;
+
+        private Iterator<Map<Location, Shop>> chunks;
+
+        private Iterator<Shop> shops;
+
+        public ShopIterator() {
+            worlds = getShops().values().iterator();
+        }
+
+        /**
+         * Returns true if there is still more shops to iterate over.
+         */
+        @Override
+        public boolean hasNext() {
+            if (shops == null || !shops.hasNext()) {
+                if (chunks == null || !chunks.hasNext()) {
+                    if (!worlds.hasNext()) {
+                        return false;
+                    } else {
+                        chunks = worlds.next().values().iterator();
+                        return hasNext();
+                    }
+                } else {
+                    shops = chunks.next().values().iterator();
+                    return hasNext();
                 }
             }
+            return true;
+        }
+
+        /**
+         * Fetches the next shop. Throws NoSuchElementException if there are no more shops.
+         */
+        @Override
+        public @NotNull Shop next() {
+            if (shops == null || !shops.hasNext()) {
+                if (chunks == null || !chunks.hasNext()) {
+                    if (!worlds.hasNext()) {
+                        throw new NoSuchElementException("No more shops to iterate over!");
+                    }
+                    chunks = worlds.next().values().iterator();
+                }
+                shops = chunks.next().values().iterator();
+            }
+            if (!shops.hasNext()) {
+                return this.next(); // Skip to the next one (Empty iterator?)
+            }
+            return shops.next();
         }
     }
 }

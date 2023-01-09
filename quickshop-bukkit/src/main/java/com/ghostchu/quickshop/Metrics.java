@@ -142,7 +142,7 @@ public class Metrics {
         if (enabled) {
             boolean found = false;
             // Search for all other bStats Metrics classes to see if we are the first one
-            for (Class<?> service : plugin.getServer().getServicesManager().getKnownServices()) {
+            for (Class<?> service : Bukkit.getServicesManager().getKnownServices()) {
                 try {
                     service.getField("B_STATS_VERSION"); // Our identifier :)
                     found = true; // We aren't the first
@@ -151,7 +151,7 @@ public class Metrics {
                 }
             }
             // Register our service
-            plugin.getServer().getServicesManager().register(Metrics.class, this, plugin, ServicePriority.Normal);
+            Bukkit.getServicesManager().register(Metrics.class, this, plugin, ServicePriority.Normal);
             if (!found) {
                 // We are the first!
                 startSubmitting();
@@ -196,12 +196,12 @@ public class Metrics {
 
         JsonArray pluginData = new JsonArray();
         // Search for all other bStats Metrics classes to get their plugin data
-        for (Class<?> service : plugin.getServer().getServicesManager().getKnownServices()) {
+        for (Class<?> service : Bukkit.getServicesManager().getKnownServices()) {
             try {
                 service.getField("B_STATS_VERSION"); // Our identifier :)
 
                 for (RegisteredServiceProvider<?> provider :
-                        plugin.getServer().getServicesManager().getRegistrations(service)) {
+                        Bukkit.getServicesManager().getRegistrations(service)) {
                     try {
                         Object plugin =
                                 provider.getService().getMethod("getPluginData").invoke(provider.getProvider());
@@ -270,14 +270,14 @@ public class Metrics {
             Method onlinePlayersMethod = Class.forName("org.bukkit.Server").getMethod("getOnlinePlayers");
             playerAmount =
                     onlinePlayersMethod.getReturnType().equals(Collection.class)
-                            ? ((Collection<?>) onlinePlayersMethod.invoke(plugin.getServer())).size()
-                            : ((Player[]) onlinePlayersMethod.invoke(plugin.getServer())).length;
+                            ? ((Collection<?>) onlinePlayersMethod.invoke(Bukkit)).size()
+                            : ((Player[]) onlinePlayersMethod.invoke(Bukkit)).length;
         } catch (Exception e) {
-            playerAmount = plugin.getServer().getOnlinePlayers().size(); // Just use the new method if the Reflection failed
+            playerAmount = Bukkit.getOnlinePlayers().size(); // Just use the new method if the Reflection failed
         }
-        int onlineMode = plugin.getServer().getOnlineMode() ? 1 : 0;
-        String bukkitVersion = plugin.getServer().getVersion();
-        String bukkitName = plugin.getServer().getName();
+        int onlineMode = Bukkit.getOnlineMode() ? 1 : 0;
+        String bukkitVersion = Bukkit.getVersion();
+        String bukkitName = Bukkit.getName();
 
         // OS/Java specific data
         String javaVersion = System.getProperty("java.version");
@@ -316,7 +316,7 @@ public class Metrics {
         if (data == null) {
             throw new IllegalArgumentException("Data cannot be null!");
         }
-        if (plugin.getServer().isPrimaryThread()) {
+        if (Bukkit.isPrimaryThread()) {
             throw new IllegalAccessException("This method must not be called from the main thread!");
         }
         if (logSentData) {

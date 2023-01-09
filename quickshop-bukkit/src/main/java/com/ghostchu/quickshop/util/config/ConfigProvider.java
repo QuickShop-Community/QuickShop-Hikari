@@ -52,7 +52,7 @@ public class ConfigProvider extends QuickShopInstanceHolder {
         if (config == null) {
             config = new YamlConfiguration();
         }
-        try (InputStream defaultConfigStream = plugin.getResource(configFile.getName())) {
+        try (InputStream defaultConfigStream = plugin.getJavaPlugin().getResource(configFile.getName())) {
             config.load(configFile);
             if (defaultConfigStream != null) {
                 try (InputStreamReader reader = new InputStreamReader(defaultConfigStream, StandardCharsets.UTF_8)) {

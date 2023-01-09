@@ -25,6 +25,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
@@ -34,8 +35,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A class allow plugin load shops fast and simply.
@@ -67,11 +66,11 @@ public class ShopLoader {
     public void loadShops(@Nullable String worldName) {
         List<Shop> pendingLoading = new CopyOnWriteArrayList<>();
         boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);
-        plugin.getLogger().info("Loading shops from database...");
+        plugin.logger().info("Loading shops from database...");
         Timer dbFetchTimer = new Timer(true);
         List<ShopRecord> records = plugin.getDatabaseHelper().listShops(deleteCorruptShops);
-        plugin.getLogger().info("Used " + dbFetchTimer.stopAndGetTimePassed() + "ms to fetch " + records.size() + " shops from database.");
-        plugin.getLogger().info("Loading shops into memory...");
+        plugin.logger().info("Used {}ms to fetch {} shops from database.", dbFetchTimer.stopAndGetTimePassed(), records.size());
+        plugin.logger().info("Loading shops into memory...");
         Timer shopTotalTimer = new Timer(true);
         AtomicInteger successCounter = new AtomicInteger(0);
         for (ShopRecord shopRecord : records) {
@@ -123,11 +122,11 @@ public class ShopLoader {
                         rawInfo.getBenefits());
             } catch (Exception e) {
                 if (e instanceof IllegalStateException) {
-                    plugin.getLogger().log(Level.WARNING, "Failed to load the shop, skipping...", e);
+                    plugin.logger().warn("Failed to load the shop, skipping...", e);
                 }
                 exceptionHandler(e, null);
                 if (deleteCorruptShops && plugin.getShopBackupUtil().isBreakingAllowed()) {
-                    plugin.getLogger().warning(MsgUtil.fillArgs("Deleting shop at world={0} x={1} y={2} z={3} caused by corrupted.", world, String.valueOf(x), String.valueOf(y), String.valueOf(z)));
+                    plugin.logger().warn("Deleting shop at world={} x={} y={} z={} caused by corrupted.", world, x, y, z);
                     plugin.getDatabaseHelper().removeShopMap(world, x, y, z);
                 }
                 Log.timing("Single shop loading: Shop loading exception", singleShopLoadingTimer);
@@ -156,9 +155,9 @@ public class ShopLoader {
             successCounter.incrementAndGet();
         }
 
-        plugin.getLogger().info("Done. Used " + shopTotalTimer.stopAndGetTimePassed() + "ms to load " + successCounter.get() + " shops into memory.");
+        plugin.logger().info("Done. Used {}ms to load {} shops into memory.", shopTotalTimer.stopAndGetTimePassed(), successCounter.get());
 
-        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+        Bukkit.getScheduler().runTaskLater(plugin.getJavaPlugin(), () -> {
             for (Shop shop : pendingLoading) {
                 try {
                     shop.onLoad();
@@ -172,23 +171,23 @@ public class ShopLoader {
 
     private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
         errors++;
-        Logger logger = plugin.getLogger();
-        logger.warning("##########FAILED TO LOAD SHOP##########");
-        logger.warning("  >> Error Info:");
+        @NotNull Logger logger = plugin.logger();
+        logger.warn("##########FAILED TO LOAD SHOP##########");
+        logger.warn("  >> Error Info:");
         String err = ex.getMessage();
         if (err == null) {
             err = "null";
         }
-        logger.warning(err);
-        logger.warning("  >> Error Trace");
+        logger.warn(err);
+        logger.warn("  >> Error Trace");
         ex.printStackTrace();
-        logger.warning("  >> Target Location Info");
-        logger.warning("Location: " + ((shopLocation == null) ? "NULL" : shopLocation.toString()));
-        logger.warning(
-                "Block: " + ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
-        logger.warning("#######################################");
+        logger.warn("  >> Target Location Info");
+        logger.warn("Location: {}", ((shopLocation == null) ? "NULL" : shopLocation.toString()));
+        logger.warn(
+                "Block: {}", ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
+        logger.warn("#######################################");
         if (errors > 10) {
-            logger.severe(
+            logger.error(
                     "QuickShop detected too many errors when loading shops, you should backup your shop database and ask the developer for help");
         }
     }
@@ -278,7 +277,7 @@ public class ShopLoader {
             try {
                 return Util.deserialize(itemConfig);
             } catch (InvalidConfigurationException e) {
-                QuickShop.getInstance().getLogger().log(Level.WARNING, "Failed load shop data, because target config can't deserialize the ItemStack", e);
+                QuickShop.getInstance().logger().warn("Failed load shop data, because target config can't deserialize the ItemStack", e);
                 Log.debug("Failed to load data to the ItemStack: " + itemConfig);
                 return null;
             }

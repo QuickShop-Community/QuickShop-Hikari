@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 public class SimpleDisplayProvider implements DisplayProvider {
     @Override
     public @NotNull Plugin getProvider() {
-        return QuickShop.getInstance();
+        return QuickShop.getInstance().getJavaPlugin();
     }
 
     @Override

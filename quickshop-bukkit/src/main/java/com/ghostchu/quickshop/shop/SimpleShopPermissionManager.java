@@ -53,7 +53,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
 
     @Override
     public boolean hasPermission(@NotNull String group, @NotNull BuiltInShopPermission permission) {
-        return hasPermission(group, plugin, permission.getRawNode());
+        return hasPermission(group, plugin.getJavaPlugin(), permission.getRawNode());
     }
 
     @Override
@@ -117,7 +117,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
             yamlConfiguration.save(file);
         } catch (Exception e) {
             Log.permission(Level.SEVERE, "Failed to create default group configuration file");
-            plugin.getLogger().log(Level.SEVERE, "Failed to create default group configuration", e);
+            plugin.logger().error("Failed to create default group configuration", e);
         }
     }
 
@@ -129,10 +129,11 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
             initDefaultConfiguration(file);
         }
         YamlConfiguration yamlConfiguration = YamlConfiguration.loadConfiguration(file);
-        if (!yamlConfiguration.isSet(plugin.getName().toLowerCase(Locale.ROOT) + ".everyone")
-                || !yamlConfiguration.isSet(plugin.getName().toLowerCase(Locale.ROOT) + ".staff")
-                || !yamlConfiguration.isSet(plugin.getName().toLowerCase(Locale.ROOT) + ".blocked")) {
-            plugin.getLogger().warning("Corrupted group configuration file, creating new one...");
+        String namespace = plugin.getJavaPlugin().getName().toLowerCase(Locale.ROOT);
+        if (!yamlConfiguration.isSet(namespace + ".everyone")
+                || !yamlConfiguration.isSet(namespace + ".staff")
+                || !yamlConfiguration.isSet(namespace + ".blocked")) {
+            plugin.logger().warn("Corrupted group configuration file, creating new one...");
             try {
                 Files.move(file.toPath(), file.toPath().resolveSibling(file.getName() + ".corrupted." + UUID.randomUUID().toString().replace("-", "")));
                 loadConfiguration();

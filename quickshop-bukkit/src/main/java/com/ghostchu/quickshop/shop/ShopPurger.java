@@ -18,7 +18,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Level;
 
 
 public class ShopPurger {
@@ -31,11 +30,11 @@ public class ShopPurger {
 
     public void purge() {
         if (!plugin.getConfig().getBoolean("purge.enabled")) {
-            plugin.getLogger().info("[Shop Purger] Purge not enabled!");
+            plugin.logger().info("[Shop Purger] Purge not enabled!");
             return;
         }
         if (executing) {
-            plugin.getLogger().info("[Shop Purger] Another purge task still running!");
+            plugin.logger().info("[Shop Purger] Another purge task still running!");
         } else {
             Util.asyncThreadRun(this::run);
         }
@@ -49,14 +48,14 @@ public class ShopPurger {
             try {
                 File file = new File("purge-backup-" + UUID.randomUUID() + ".zip");
                 ioUtil.exportTables(file);
-                plugin.getLogger().info("[Shop Purger] We have backup shop data as " + file.getName() + ", if you ran into any trouble, please rename it to recovery.txt then use /qs recovery in console to rollback!");
+                plugin.logger().info("[Shop Purger] We have backup shop data as {}, if you ran into any trouble, please rename it to recovery.txt then use /qs recovery in console to rollback!", file.getName());
             } catch (SQLException | IOException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to backup database, purge cancelled.", e);
+                plugin.logger().warn("Failed to backup database, purge cancelled.", e);
                 return;
             }
 
         }
-        plugin.getLogger().info("[Shop Purger] Scanning and removing shops....");
+        plugin.logger().info("[Shop Purger] Scanning and removing shops....");
         List<Shop> pendingRemovalShops = new ArrayList<>();
         int days = plugin.getConfig().getInt("purge.days", 360);
         boolean deleteBanned = plugin.getConfig().getBoolean("purge.banned");
@@ -89,8 +88,8 @@ public class ShopPurger {
             pendingRemovalShops.add(shop);
         }
         if (!pendingRemovalShops.isEmpty()) {
-            plugin.getLogger().info("[Shop Purger] Found " + pendingRemovalShops.size() + " need to removed, will remove in the next tick.");
-            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+            plugin.logger().info("[Shop Purger] Found {} need to removed, will remove in the next tick.", pendingRemovalShops.size());
+            Bukkit.getScheduler().runTaskLater(plugin.getJavaPlugin(), () -> {
                 for (Shop shop : pendingRemovalShops) {
                     shop.delete(false);
                     if (returnCreationFee) {
@@ -104,13 +103,13 @@ public class ShopPurger {
                                         .build();
                         transaction.failSafeCommit();
                     }
-                    plugin.getLogger().info("[Shop Purger] Shop " + shop + " has been purged.");
+                    plugin.logger().info("[Shop Purger] Shop {} has been purged.", shop);
                 }
-                plugin.getLogger().info("[Shop Purger] Task completed, " + pendingRemovalShops.size() + " shops was purged");
+                plugin.logger().info("[Shop Purger] Task completed, {} shops was purged", pendingRemovalShops.size());
                 executing = false;
             }, 1L);
         } else {
-            plugin.getLogger().info("[Shop Purger] Task completed, No shops need to purge.");
+            plugin.logger().info("[Shop Purger] Task completed, No shops need to purge.");
             executing = false;
         }
     }

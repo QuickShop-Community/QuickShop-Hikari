@@ -35,7 +35,7 @@ public class SignHooker {
     }
 
     public void registerListener() {
-        chunkAdapter = new PacketAdapter(PLUGIN, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
+        chunkAdapter = new PacketAdapter(PLUGIN.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
             @Override
             public void onPacketSending(@NotNull PacketEvent event) {
                 //is really full chunk data
@@ -62,7 +62,7 @@ public class SignHooker {
                 if (shops == null) {
                     return;
                 }
-                Bukkit.getScheduler().runTaskLater(PLUGIN, () -> shops.forEach((loc, shop) -> updatePerPlayerShopSign(player, loc, shop)), 2);
+                Bukkit.getScheduler().runTaskLater(PLUGIN.getJavaPlugin(), () -> shops.forEach((loc, shop) -> updatePerPlayerShopSign(player, loc, shop)), 2);
             }
         };
 
@@ -99,7 +99,7 @@ public class SignHooker {
         if (world == null) {
             return;
         }
-        Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), PLUGIN.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), PLUGIN.getServer().getViewDistance() * 16);
+        Collection<Entity> nearbyPlayers = world.getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
         for (Entity nearbyPlayer : nearbyPlayers) {
             if (nearbyPlayer instanceof Player player) {
                 updatePerPlayerShopSign(player, location, shop);

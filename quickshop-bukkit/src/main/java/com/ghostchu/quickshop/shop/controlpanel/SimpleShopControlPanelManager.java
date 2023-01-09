@@ -37,9 +37,9 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager {
                 total.addAll(entry.generate(player, shop));
             } catch (Exception e) {
                 try {
-                    plugin.getLogger().warning("Failed to generate control panel for " + entry.getClass().getName() + ". Contact the developer of the plugin " + entry.getPlugin().getName());
+                    plugin.logger().warn("Failed to generate control panel for {}. Contact the developer of the plugin {}.", entry.getPlugin().getName(), entry.getClass().getName());
                 } catch (Exception e2) {
-                    plugin.getLogger().warning("Failed to generate control panel for " + entry.getClass().getName() + "Contact the developer of that plugin");
+                    plugin.logger().warn("Failed to generate control panel for {}. Contact the developer of that plugin", entry.getClass().getName());
                 }
             }
         }

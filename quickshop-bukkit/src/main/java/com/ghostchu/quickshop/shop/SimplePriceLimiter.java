@@ -28,7 +28,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.logging.Level;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -50,9 +49,9 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
         File configFile = new File(plugin.getDataFolder(), "price-restriction.yml");
         if (!configFile.exists()) {
             try {
-                Files.copy(plugin.getResource("price-restriction.yml"), configFile.toPath());
+                Files.copy(plugin.getJavaPlugin().getResource("price-restriction.yml"), configFile.toPath());
             } catch (IOException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to copy price-restriction.yml.yml to plugin folder!", e);
+                plugin.logger().warn("Failed to copy price-restriction.yml.yml to plugin folder!", e);
             }
         }
 
@@ -61,7 +60,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
             try {
                 configuration.save(configFile);
             } catch (IOException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to save migrated  price-restriction.yml.yml to plugin folder!", e);
+                plugin.logger().warn("Failed to save migrated  price-restriction.yml.yml to plugin folder!", e);
             }
         }
         this.undefinedMax = configuration.getDouble("undefined.max", Double.MAX_VALUE);
@@ -72,18 +71,18 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
         }
         ConfigurationSection rules = configuration.getConfigurationSection("rules");
         if (rules == null) {
-            plugin.getLogger().warning("Failed to read price-restriction.yml, syntax invalid!");
+            plugin.logger().warn("Failed to read price-restriction.yml, syntax invalid!");
             return;
         }
         for (String ruleName : rules.getKeys(false)) {
             RuleSet rule = readRule(ruleName, rules.getConfigurationSection(ruleName));
             if (rule == null) {
-                plugin.getLogger().warning("Failed to read rule " + ruleName + ", syntax invalid! Skipping...");
+                plugin.logger().warn("Failed to read rule {}, syntax invalid! Skipping...", ruleName);
                 continue;
             }
             this.rules.put(ruleName, rule);
         }
-        plugin.getLogger().info("Loaded " + this.rules.size() + " price restriction rules!");
+        plugin.logger().info("Loaded {} price restriction rules!", this.rules.size());
     }
 
     private boolean performMigrate(@NotNull FileConfiguration configuration) {
@@ -125,7 +124,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
             } else {
                 Material mat = Material.matchMaterial(item);
                 if (mat == null) {
-                    plugin.getLogger().warning("Failed to read rule " + ruleName + "'s a ItemRule option, invalid item " + item + "! Skipping...");
+                    plugin.logger().warn("Failed to read rule {}'s a ItemRule option, invalid item {}! Skipping...", ruleName, item);
                     continue;
                 }
                 items.add(itemStack -> itemStack.getType() == mat);
@@ -137,7 +136,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
                 Pattern pattern = Pattern.compile(currencyStr1);
                 currency.add(pattern);
             } catch (PatternSyntaxException e) {
-                plugin.getLogger().warning("Failed to read rule " + ruleName + "'s a Currency option, invalid pattern " + currencyStr1 + "! Skipping...");
+                plugin.logger().warn("Failed to read rule {}'s a Currency option, invalid pattern {}! Skipping...", ruleName, currencyStr1);
             }
         }
         return new RuleSet(items, bypassPermission, currency, min, max);

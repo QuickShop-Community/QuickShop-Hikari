@@ -290,7 +290,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         logger.info("QuickShop {} - Early boot step - Booting up", javaPlugin.getFork());
         getReloadManager().register(this);
         //BEWARE THESE ONLY RUN ONCE
-        this.buildInfo = new BuildInfo(javaPlugin.getResource("BUILDINFO"));
+        this.buildInfo = new BuildInfo(javaplugin.getJavaPlugin().getResource("BUILDINFO"));
         logger.info("Self testing...");
         if (!runtimeCheck(EnvCheckEntry.Stage.ON_LOAD)) {
             return;

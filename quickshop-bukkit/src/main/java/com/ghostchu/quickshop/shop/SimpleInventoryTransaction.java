@@ -196,7 +196,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
                         operations.add(operation);
                         exception.printStackTrace();
                     } else {
-                        plugin.getLogger().log(Level.WARNING, "Failed to rollback transaction: Operation: " + operation + "; Transaction: " + this);
+                        plugin.logger().warn("Failed to rollback transaction: Operation: {}; Transaction: {}", operation, this);
                         break;
                     }
                 }

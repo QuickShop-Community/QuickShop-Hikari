@@ -34,7 +34,7 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         // do actions
         Util.asyncThreadRun(() -> {
-            if (plugin.getServer().getPluginManager().getPlugin("ConsoleSpamFix") != null) {
+            if (Bukkit.getPluginManager().getPlugin("ConsoleSpamFix") != null) {
                 if (cmdArg.length < 1) {
                     sender.sendMessage("Warning: ConsoleSpamFix is installed! Please disable it before reporting any errors!");
                     return;

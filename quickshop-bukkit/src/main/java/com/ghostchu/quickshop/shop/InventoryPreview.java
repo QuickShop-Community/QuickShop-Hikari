@@ -10,6 +10,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.HumanEntity;
@@ -32,7 +33,7 @@ import java.util.UUID;
 @ToString
 public class InventoryPreview implements Listener {
 
-    private static final NamespacedKey NAMESPACED_KEY = new NamespacedKey(QuickShop.getInstance(), "preview-item");
+    private static final NamespacedKey NAMESPACED_KEY = new NamespacedKey(QuickShop.getInstance().getJavaPlugin(), "preview-item");
     private final ItemStack itemStack;
     private final QuickShop plugin = QuickShop.getInstance();
     private String previewStr;
@@ -52,7 +53,7 @@ public class InventoryPreview implements Listener {
         if (itemStack.hasItemMeta()) {
             itemMeta = this.itemStack.getItemMeta();
         } else {
-            itemMeta = plugin.getServer().getItemFactory().getItemMeta(itemStack.getType());
+            itemMeta = Bukkit.getItemFactory().getItemMeta(itemStack.getType());
         }
         previewStr = LegacyComponentSerializer.legacySection().serialize(plugin.text().of("quickshop-gui-preview").forLocale(locale));
         if (StringUtils.isEmpty(previewStr)) {
@@ -98,7 +99,7 @@ public class InventoryPreview implements Listener {
         }
         if (inventory == null) {
             final int size = 9;
-            inventory = plugin.getServer().createInventory(new QuickShopPreviewGUIHolder(), size, LegacyComponentSerializer.legacySection().serialize(plugin.text().of(player, "menu.preview").forLocale()));
+            inventory = Bukkit.createInventory(new QuickShopPreviewGUIHolder(), size, LegacyComponentSerializer.legacySection().serialize(plugin.text().of(player, "menu.preview").forLocale()));
             for (int i = 0; i < size; i++) {
                 inventory.setItem(i, itemStack);
             }

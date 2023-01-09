@@ -26,6 +26,7 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -190,7 +191,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
         VirtualDisplayItemManager.put(chunkLocation, this);
         if (Util.isLoaded(shop.getLocation())) {
             //Let nearby player can saw fake item
-            Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), PLUGIN.getServer().getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), PLUGIN.getServer().getViewDistance() * 16);
+            Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
             for (Entity entity : entityCollection) {
                 if (entity instanceof Player) {
                     packetSenders.add(entity.getUniqueId());
@@ -218,7 +219,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     private void sendPacketToAll(@NotNull PacketContainer packet) {
         Iterator<UUID> iterator = packetSenders.iterator();
         while (iterator.hasNext()) {
-            Player nextPlayer = PLUGIN.getServer().getPlayer(iterator.next());
+            Player nextPlayer = Bukkit.getPlayer(iterator.next());
             if (nextPlayer == null) {
                 iterator.remove();
             } else {
@@ -244,13 +245,13 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
                 return;
             }
             String stringClassLoader = PROTOCOL_MANAGER.getClass().getClassLoader().toString();
-            if(stringClassLoader.contains("pluginEnabled=true")&&!stringClassLoader.contains("plugin=ProtocolLib")){
-                QuickShop.getInstance().getLogger().warning("Warning! ProtocolLib seems provided by another plugin, This seems to be a wrong packaging problem, " +
-                        "QuickShop can't ensure the ProtocolLib is working correctly! Info: " + stringClassLoader);
+            if(stringClassLoader.contains("pluginEnabled=true")&&!stringClassLoader.contains("plugin=ProtocolLib")) {
+                PLUGIN.logger().warn("Warning! ProtocolLib seems provided by another plugin, This seems to be a wrong packaging problem, " +
+                        "QuickShop can't ensure the ProtocolLib is working correctly! Info: {}", stringClassLoader);
             }
             Log.debug("Loading VirtualDisplayItem chunks mapping manager...");
             if (packetAdapter == null) {
-                packetAdapter = new PacketAdapter(PLUGIN, ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
+                packetAdapter = new PacketAdapter(PLUGIN.getJavaPlugin(), ListenerPriority.HIGH, PacketType.Play.Server.MAP_CHUNK) {
                     @Override
                     public void onPacketSending(@NotNull PacketEvent event) {
                         //is really full chunk data
@@ -323,7 +324,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
 
         public static Throwable testFakeItem() {
             try {
-                createFakeItemSpawnPacket(0, new Location(PLUGIN.getServer().getWorlds().get(0), 0, 0, 0));
+                createFakeItemSpawnPacket(0, new Location(Bukkit.getWorlds().get(0), 0, 0, 0));
                 createFakeItemMetaPacket(0, new ItemStack(Material.values()[0]));
                 createFakeItemVelocityPacket(0);
                 createFakeItemDestroyPacket(0);

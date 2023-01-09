@@ -63,7 +63,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
         }
         RegisteredServiceProvider<net.milkbowl.vault.economy.Economy> economyProvider;
         try {
-            economyProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+            economyProvider = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         } catch (Exception e) {
             return false;
         }
@@ -89,7 +89,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
         } else {
             plugin.getLogger().info("Using economy system: " + this.vault.getName());
         }
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
         Log.debug("Economy service listener was registered.");
         return true;
     }
@@ -99,7 +99,7 @@ public class Economy_Vault extends AbstractEconomy implements Listener {
         if (!isValid()) {
             return false;
         }
-        return deposit(plugin.getServer().getOfflinePlayer(name), amount, world, currency);
+        return deposit(Bukkit.getOfflinePlayer(name), amount, world, currency);
 
     }
 

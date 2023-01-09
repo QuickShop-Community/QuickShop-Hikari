@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.logging.Level;
 
 public class InteractionController implements Reloadable {
 
@@ -29,9 +28,9 @@ public class InteractionController implements Reloadable {
         File configFile = new File(plugin.getDataFolder(), "interaction.yml");
         if (!configFile.exists()) {
             try {
-                Files.copy(plugin.getResource("interaction.yml"), configFile.toPath());
+                Files.copy(plugin.getJavaPlugin().getResource("interaction.yml"), configFile.toPath());
             } catch (IOException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to copy interaction.yml to plugin folder!", e);
+                plugin.logger().warn("Failed to copy interaction.yml to plugin folder!", e);
             }
         }
         FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
@@ -40,10 +39,10 @@ public class InteractionController implements Reloadable {
             try {
                 behaviorMap.put(value, InteractionBehavior.valueOf(config.getString(value.name())));
                 if (value.isRightLick() && value.isShopBlock() && InteractionBehavior.valueOf(config.getString(value.name())) != InteractionBehavior.NONE) {
-                    plugin.getLogger().log(Level.WARNING, "Define a action for right shopblock clicking may prevent player from opening the shop container!");
+                    plugin.logger().warn("Define a action for right shopblock clicking may prevent player from opening the shop container!");
                 }
             } catch (IllegalArgumentException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to load interaction behavior for " + value.name() + "! Using NONE behavior!");
+                plugin.logger().warn("Failed to load interaction behavior for {}! Using NONE behavior!", value.name());
                 behaviorMap.put(value, InteractionBehavior.NONE);
             }
         }

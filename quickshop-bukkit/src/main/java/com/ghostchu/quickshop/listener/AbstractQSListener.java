@@ -14,7 +14,7 @@ public abstract class AbstractQSListener implements Listener, Reloadable {
     }
 
     public void register() {
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
     public void unregister() {
