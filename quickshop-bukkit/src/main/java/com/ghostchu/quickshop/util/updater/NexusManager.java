@@ -35,7 +35,7 @@ public class NexusManager {
     @NotNull
     public String getLatestVersion() {
         if (!plugin.getConfig().getBoolean("updater", false) || cachedMetadata == null) {
-            return plugin.getDescription().getVersion();
+            return plugin.getVersion();
         }
         return cachedMetadata.getReleaseVersion();
     }
@@ -54,7 +54,7 @@ public class NexusManager {
             cachedResult = true;
             return true;
         }
-        this.cachedResult = plugin.getDescription().getVersion().equals(cachedMetadata.getReleaseVersion());
+        this.cachedResult = plugin.getVersion().equals(cachedMetadata.getReleaseVersion());
         return this.cachedResult;
     }
 
