@@ -52,15 +52,15 @@ public class RollbarErrorReporter {
         Config config = ConfigBuilder.withAccessToken("aeace9eab9e042dfb43d97d39728e19c")
                 .environment(Util.isDevEdition() ? "development" : "production")
                 .platform(Bukkit.getVersion())
-                .codeVersion(QuickShop.getVersion())
+                .codeVersion(QuickShop.getInstance().getVersion())
                 .handleUncaughtErrors(false)
                 .build();
         this.rollbar = Rollbar.init(config);
 
-        quickShopExceptionFilter = new QuickShopExceptionFilter(plugin.getLogger().getFilter());
-        plugin.getLogger().setFilter(quickShopExceptionFilter); // Redirect log request passthrough our error catcher.
+        quickShopExceptionFilter = new QuickShopExceptionFilter(plugin.getJavaPlugin().getLogger().getFilter());
+        plugin.getJavaPlugin().getLogger().setFilter(quickShopExceptionFilter); // Redirect log request passthrough our error catcher.
 
-        serverExceptionFilter = new GlobalExceptionFilter(plugin.getLogger().getFilter());
+        serverExceptionFilter = new GlobalExceptionFilter(plugin.getJavaPlugin().getLogger().getFilter());
         Bukkit.getLogger().setFilter(serverExceptionFilter);
 
         Log.debug("Rollbar error reporter success loaded.");
@@ -84,62 +84,62 @@ public class RollbarErrorReporter {
         asyncErrorReportThread.start();
     }
 
-    /**
-     * Dupe report check
-     *
-     * @param throwable Throws
-     * @return dupecated
-     */
-    public boolean canReport(@NotNull Throwable throwable) {
-        if (!enabled) {
-            return false;
-        }
-        if (plugin.getUpdateWatcher() == null) {
-            return false;
+    private void sendError0(@NotNull Throwable throwable, @NotNull String... context) {
+        if (Bukkit.isPrimaryThread()) {
+            plugin.logger().warn("Cannot send error on primary thread (I/O blocking). This error has been discard.");
+            return;
         }
         try {
-            if (!plugin.getNexusManager().isLatest()) { // We only receive latest reports.
-                return false;
+            if (plugin.getBootError() != null) {
+                return; // Don't report any errors if boot failed.
             }
-        } catch (Exception exception) {
-            Log.debug("Cannot to check reportable: " + exception.getMessage());
-            return false;
-        }
-        if (!GameVersion.get(plugin.getPlatform().getMinecraftVersion()).isCoreSupports()) { // Ignore errors if user install quickshop on unsupported
-            // version.
-            return false;
-        }
+            if (tempDisable) {
+                this.tempDisable = false;
+                return;
+            }
+            if (disable) {
+                return;
+            }
+            if (!enabled) {
+                return;
+            }
 
-        PossiblyLevel possiblyLevel = checkWasCauseByQS(throwable);
-        if (possiblyLevel != PossiblyLevel.CONFIRM) {
-            return false;
-        }
-        if (throwable.getMessage().startsWith("#")) {
-            return false;
-        }
-        StackTraceElement stackTraceElement;
-        if (throwable.getStackTrace().length < 3) {
-            stackTraceElement = throwable.getStackTrace()[1];
-        } else {
-            stackTraceElement = throwable.getStackTrace()[2];
-        }
-        if (stackTraceElement.getClassName().contains("com.ghostchu.quickshop.util.reporter.error")) {
+            if (!canReport(throwable)) {
+                return;
+            }
+            if (isDisallowedClazz(throwable.getClass())) {
+                return;
+            }
+            if (throwable.getCause() != null) {
+                if (isDisallowedClazz(throwable.getCause().getClass())) {
+                    return;
+                }
+            }
+            this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
+            plugin
+                    .logger()
+                    .warn(
+                            "A exception was thrown, QuickShop already caught this exception and reported it. This error will only shown once before next restart.");
+            plugin.logger().warn("====QuickShop Error Report BEGIN===");
+            plugin.logger().warn("Description: {}", throwable.getMessage());
+            plugin.logger().warn("Server   ID: {}", plugin.getServerUniqueID());
+            plugin.logger().warn("Exception  : ");
             ignoreThrows();
-            plugin.getLogger().log(Level.WARNING, "Uncaught exception in ErrorRollbar", throwable);
+            throwable.printStackTrace();
             resetIgnores();
-            return false;
-        }
-        String text =
-                stackTraceElement.getClassName()
-                        + "#"
-                        + stackTraceElement.getMethodName()
-                        + "#"
-                        + stackTraceElement.getLineNumber();
-        if (!reported.contains(text)) {
-            reported.add(text);
-            return true;
-        } else {
-            return false;
+            plugin.logger().warn("====QuickShop Error Report E N D===");
+            plugin
+                    .logger()
+                    .warn(
+                            "If this error affects any function, you can join our Discord server to report it and track the feedback: https://discord.gg/Bu3dVtmsD3");
+            Log.debug(throwable.getMessage());
+            Arrays.stream(throwable.getStackTrace()).forEach(a -> Log.debug(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
+            if (Util.isDevMode()) {
+                throwable.printStackTrace();
+            }
+        } catch (Exception th) {
+            ignoreThrow();
+            plugin.logger().warn("Something going wrong when automatic report errors, please submit this error on Issue Tracker", th);
         }
     }
 
@@ -237,62 +237,62 @@ public class RollbarErrorReporter {
         this.reportQueue.offer(new ErrorBundle(throwable, context));
     }
 
-    private void sendError0(@NotNull Throwable throwable, @NotNull String... context) {
-        if (Bukkit.isPrimaryThread()) {
-            plugin.getLogger().warning("Cannot send error on primary thread (I/O blocking). This error has been discard.");
-            return;
+    /**
+     * Dupe report check
+     *
+     * @param throwable Throws
+     * @return dupecated
+     */
+    public boolean canReport(@NotNull Throwable throwable) {
+        if (!enabled) {
+            return false;
+        }
+        if (plugin.getUpdateWatcher() == null) {
+            return false;
         }
         try {
-            if (plugin.getBootError() != null) {
-                return; // Don't report any errors if boot failed.
+            if (!plugin.getNexusManager().isLatest()) { // We only receive latest reports.
+                return false;
             }
-            if (tempDisable) {
-                this.tempDisable = false;
-                return;
-            }
-            if (disable) {
-                return;
-            }
-            if (!enabled) {
-                return;
-            }
+        } catch (Exception exception) {
+            Log.debug("Cannot to check reportable: " + exception.getMessage());
+            return false;
+        }
+        if (!GameVersion.get(plugin.getPlatform().getMinecraftVersion()).isCoreSupports()) { // Ignore errors if user install quickshop on unsupported
+            // version.
+            return false;
+        }
 
-            if (!canReport(throwable)) {
-                return;
-            }
-            if (isDisallowedClazz(throwable.getClass())) {
-                return;
-            }
-            if (throwable.getCause() != null) {
-                if (isDisallowedClazz(throwable.getCause().getClass())) {
-                    return;
-                }
-            }
-            this.rollbar.error(throwable, this.makeMapping(), throwable.getMessage());
-            plugin
-                    .getLogger()
-                    .warning(
-                            "A exception was thrown, QuickShop already caught this exception and reported it. This error will only shown once before next restart.");
-            plugin.getLogger().warning("====QuickShop Error Report BEGIN===");
-            plugin.getLogger().warning("Description: " + throwable.getMessage());
-            plugin.getLogger().warning("Server   ID: " + plugin.getServerUniqueID());
-            plugin.getLogger().warning("Exception  : ");
+        PossiblyLevel possiblyLevel = checkWasCauseByQS(throwable);
+        if (possiblyLevel != PossiblyLevel.CONFIRM) {
+            return false;
+        }
+        if (throwable.getMessage().startsWith("#")) {
+            return false;
+        }
+        StackTraceElement stackTraceElement;
+        if (throwable.getStackTrace().length < 3) {
+            stackTraceElement = throwable.getStackTrace()[1];
+        } else {
+            stackTraceElement = throwable.getStackTrace()[2];
+        }
+        if (stackTraceElement.getClassName().contains("com.ghostchu.quickshop.util.reporter.error")) {
             ignoreThrows();
-            throwable.printStackTrace();
+            plugin.logger().warn("Uncaught exception in ErrorRollbar", throwable);
             resetIgnores();
-            plugin.getLogger().warning("====QuickShop Error Report E N D===");
-            plugin
-                    .getLogger()
-                    .warning(
-                            "If this error affects any function, you can join our Discord server to report it and track the feedback: https://discord.gg/Bu3dVtmsD3");
-            Log.debug(throwable.getMessage());
-            Arrays.stream(throwable.getStackTrace()).forEach(a -> Log.debug(a.getClassName() + "." + a.getMethodName() + ":" + a.getLineNumber()));
-            if (Util.isDevMode()) {
-                throwable.printStackTrace();
-            }
-        } catch (Exception th) {
-            ignoreThrow();
-            plugin.getLogger().log(Level.WARNING, "Something going wrong when automatic report errors, please submit this error on Issue Tracker", th);
+            return false;
+        }
+        String text =
+                stackTraceElement.getClassName()
+                        + "#"
+                        + stackTraceElement.getMethodName()
+                        + "#"
+                        + stackTraceElement.getLineNumber();
+        if (!reported.contains(text)) {
+            reported.add(text);
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -307,7 +307,7 @@ public class RollbarErrorReporter {
 
     public void unregister() {
         enabled = false;
-        plugin.getLogger().setFilter(quickShopExceptionFilter.preFilter);
+        plugin.getJavaPlugin().getLogger().setFilter(quickShopExceptionFilter.preFilter);
         Bukkit.getLogger().setFilter(serverExceptionFilter.preFilter);
         try {
             rollbar.close(false);
@@ -364,7 +364,7 @@ public class RollbarErrorReporter {
                     return true;
                 }
                 if (possiblyLevel == PossiblyLevel.MAYBE) {
-                    plugin.getLogger().warning("This seems not a QuickShop error. If you have any question, you should ask QuickShop developer.");
+                    plugin.logger().warn("This seems not a QuickShop error. If you have any question, you should ask QuickShop developer.");
                     return true;
                 }
                 return false;
@@ -414,7 +414,7 @@ public class RollbarErrorReporter {
                     return true;
                 }
                 if (possiblyLevel == PossiblyLevel.MAYBE) {
-                    plugin.getLogger().warning("This seems not a QuickShop error. If you have any question, you may can ask QuickShop developer but don't except any solution.");
+                    plugin.logger().warn("This seems not a QuickShop error. If you have any question, you may can ask QuickShop developer but don't except any solution.");
                     return true;
                 }
                 return false;
