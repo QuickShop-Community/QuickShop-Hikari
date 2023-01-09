@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.common.util.CommonUtil;
-import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import org.apache.commons.text.StringEscapeUtils;
 import org.jetbrains.annotations.NotNull;
@@ -60,7 +60,7 @@ public class SystemInfoItem implements SubPasteItem {
                   {properties}
                 </details>
                 """;
-        if (Util.parsePackageProperly("includeProperties").asBoolean()) {
+        if (PackageUtil.parsePackageProperly("includeProperties").asBoolean()) {
             table.insert("System Properties", propertiesContent.replace("{properties}", systemProperties));
         }
         return table.render();

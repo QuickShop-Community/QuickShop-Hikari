@@ -13,6 +13,7 @@ import com.ghostchu.quickshop.shop.InteractionController;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
@@ -609,7 +610,7 @@ public class PlayerListener extends AbstractQSListener {
         if (QuickShop.getPermissionManager().hasPermission(e.getPlayer(), "quickshop.alert")) {
             Date date = new Date();
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            if ((localDate.getMonthValue() == 4 && localDate.getDayOfMonth() == 1) || Util.parsePackageProperly("april-rickandroll").asBoolean()) {
+            if ((localDate.getMonthValue() == 4 && localDate.getDayOfMonth() == 1) || PackageUtil.parsePackageProperly("april-rickandroll").asBoolean()) {
                 Bukkit.getScheduler().runTaskLater(plugin, (() -> plugin.text().of(e.getPlayer(), "april-rick-and-roll-easter-egg").send()), 80L);
             }
         }

@@ -49,6 +49,11 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>AuraDevelopmentTeam</id>
+            <url>https://maven.aura-dev.team/repository/auradev-releases/</url>
+            <!--<url>https://maven.aura-dev.team/repository/auradev-snapshots/</url>-->
+        </repository>
     </repositories>
 
     <dependencies>
@@ -97,6 +102,11 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-minimessage</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -195,7 +196,7 @@ public final class EnvironmentChecker {
                     Log.debug("Skip test: " + envCheckEntry.name() + ": Except stage: " + Arrays.toString(envCheckEntry.stage()) + " Current stage: " + stage);
                     continue;
                 }
-                if (!Util.parsePackageProperly("skip." + envCheckEntry.name().toUpperCase(Locale.ROOT).replace(" ", "_")).asBoolean()) {
+                if (!PackageUtil.parsePackageProperly("skip." + envCheckEntry.name().toUpperCase(Locale.ROOT).replace(" ", "_")).asBoolean()) {
                     executeResult = (ResultContainer) declaredMethod.invoke(this);
                     if (executeResult.getResult().ordinal() > result.ordinal()) { //set bad result if its worse than the latest one.
                         result = executeResult.getResult();

@@ -39,12 +39,6 @@ import com.ghostchu.quickshop.metric.MetricListener;
 import com.ghostchu.quickshop.papi.QuickShopPAPI;
 import com.ghostchu.quickshop.permission.PermissionManager;
 import com.ghostchu.quickshop.platform.Platform;
-import com.ghostchu.quickshop.platform.paper.PaperPlatform;
-import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
-import com.ghostchu.quickshop.platform.spigot.v1_18_1.Spigot1181Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_18_2.Spigot1182Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_19_1.Spigot1191Platform;
-import com.ghostchu.quickshop.platform.spigot.v1_19_2.Spigot1193Platform;
 import com.ghostchu.quickshop.shop.*;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanel;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
@@ -66,14 +60,10 @@ import com.ghostchu.quickshop.watcher.*;
 import com.ghostchu.simplereloadlib.ReloadManager;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
-import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
 import lombok.Getter;
 import lombok.Setter;
-import net.kyori.adventure.Adventure;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -82,14 +72,13 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.JavaPluginLoader;
 import org.h2.Driver;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.util.*;
@@ -120,8 +109,9 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     @Getter
     private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
     private final Map<String, String> addonRegisteredMapping = new HashMap<>();
+    private final QuickShopBukkit javaPlugin;
+    private final Logger slf4jLogger;
     /* Public QuickShop API End */
-    boolean onLoadCalled = false;
     private GameVersion gameVersion;
     private SimpleDatabaseHelperV2 databaseHelper;
     private SimpleCommandManager commandManager;
@@ -198,8 +188,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private OngoingFeeWatcher ongoingFeeWatcher;
     @Getter
     private SignUpdateWatcher signUpdateWatcher;
-    //    @Getter
-//    private ShopContainerWatcher shopContainerWatcher;
     @Getter
     private Cache shopCache;
     @Getter
@@ -227,7 +215,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     @Nullable
     private QuickShopPAPI quickShopPAPI;
     @Getter
-    private Platform platform;
+    private final Platform platform;
     private BukkitAudiences audience;
     @Getter
     private ItemMarker itemMarker;
@@ -246,27 +234,10 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     private BungeeListener bungeeListener;
     private RankLimiter rankLimiter;
 
-    /**
-     * Use for mock bukkit
-     */
-    public QuickShop() {
-        super();
-    }
-
-    /**
-     * Use for mock bukkit
-     */
-    protected QuickShop(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
-        super(loader, description, dataFolder, file);
-    }
-
-    /**
-     * Return the QuickShop fork name.
-     *
-     * @return The fork name.
-     */
-    public static String getFork() {
-        return "Hikari";
+    public QuickShop(QuickShopBukkit javaPlugin, Logger slf4jLogger, Platform platform) {
+        this.javaPlugin = javaPlugin;
+        this.slf4jLogger = slf4jLogger;
+        this.platform = platform;
     }
 
     /**
@@ -277,7 +248,12 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
      */
     @NotNull
     public static String getVersion() {
-        return QuickShop.getInstance().getDescription().getVersion();
+        return getInstance().getJavaPlugin().getVersion();
+    }
+
+    @NotNull
+    public QuickShopBukkit getJavaPlugin() {
+        return javaPlugin;
     }
 
     /**
@@ -288,14 +264,18 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
      * @apiNote This method is internal only.
      * @hidden This method is hidden in documentation.
      */
-    @ApiStatus.Internal
     @NotNull
     public static QuickShop getInstance() {
         return instance;
     }
 
+    @NotNull
+    public Logger getSlf4jLogger() {
+        return slf4jLogger;
+    }
+
     private void bakeShopsOwnerCache() {
-        if (Util.parsePackageProperly("bakeuuids").asBoolean()) {
+        if (PackageUtil.parsePackageProperly("bakeuuids").asBoolean()) {
             getLogger().info("Baking shops owner and moderators caches (This may take a while if you upgrade from old versions)...");
             Set<UUID> waitingForBake = new HashSet<>();
             this.shopManager.getAllShops().forEach(shop -> {
@@ -322,6 +302,63 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
                 getLogger().info("Resolved: " + uuid + "( " + name + " ), " + (waitingForBake.size() - 1) + " jobs remains.");
             });
         }
+    }
+
+    /**
+     * Early than onEnable, make sure instance was loaded in first time.
+     */
+    @Override
+    public final void onLoad() {
+        instance = this;
+        logger().info("Registering Bukkit Service: {}", QuickShopProvider.class.getName());
+        Bukkit.getServicesManager().register(QuickShopProvider.class, new QuickShopProvider() {
+            @Override
+            public @NotNull QuickShopAPI getApiInstance() {
+                return instance;
+            }
+
+            @Override
+            public @NotNull Plugin getInstance() {
+                return instance;
+            }
+        }, this, ServicePriority.High);
+        // Reset the BootError status to normal.
+        this.bootError = null;
+        Util.setPlugin(this);
+        getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up");
+        getReloadManager().register(this);
+        //BEWARE THESE ONLY RUN ONCE
+        this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
+        getLogger().info("Self testing...");
+        if (!runtimeCheck(EnvCheckEntry.Stage.ON_LOAD)) {
+            return;
+        }
+        getLogger().info("Reading the configuration...");
+        initConfiguration();
+        getLogger().info("Loading player name and unique id mapping...");
+        this.playerFinder = new FastPlayerFinder(this);
+        loadChatProcessor();
+        loadTextManager();
+        getLogger().info("Register InventoryWrapper...");
+        this.inventoryWrapperRegistry.register(this, this.inventoryWrapperManager);
+        getLogger().info("Initializing NexusManager...");
+        this.nexusManager = new NexusManager(this);
+        getLogger().info("QuickShop " + getFork() + " - Early boot step - Complete");
+    }
+
+    @NotNull
+    public Logger logger() {
+        return slf4jLogger;
+    }
+
+    /**
+     * Return the QuickShop fork name.
+     *
+     * @return The fork name.
+     */
+    @NotNull
+    public static String getFork() {
+        return getInstance().getJavaPlugin().getFork();
     }
 
     @NotNull
@@ -503,12 +540,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     }
 
     private void loadChatProcessor() {
-        getLogger().info("Loading the Adventure Chat Processor...");
-        getLogger().info("Adventure API loaded from: " + Util.getClassPath(Adventure.class));
-        getLogger().info("Adventure Bukkit Platform loaded from: " + Util.getClassPath(BukkitAudiences.class));
-        getLogger().info("Adventure Text Serializer (Legacy) loaded from: " + Util.getClassPath(LegacyComponentSerializer.class));
-        getLogger().info("Adventure Text Serializer (Gson) loaded from: " + Util.getClassPath(GsonComponentSerializer.class));
-        getLogger().info("Adventure MiniMessage Lib loaded from: " + Util.getClassPath(LegacyComponentSerializer.class));
+
     }
 
     private void loadCommandHandler() {
@@ -629,30 +661,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     }
 
     private void loadPlatform() {
-        if (PaperLib.isPaper()) {
-            this.platform = new PaperPlatform(this.translationMapping);
-        } else if (PaperLib.isSpigot()) {
-            getLogger().warning("Use Paper to get best performance and enhanced features!");
-            getLogger().warning("");
-            getLogger().warning("QuickShop-Hikari cannot handle translatable components");
-            getLogger().warning("on Spigot platform! Make sure you're using Paper or Paper's fork");
-            getLogger().warning("to unlock full functions!");
-            getLogger().warning("Due the limitation of Spigot, QuickShop-Hikari running under compatibility mode.");
 
-            this.platform = switch (AbstractSpigotPlatform.getNMSVersion()) {
-                case "v1_18_R1" -> new Spigot1181Platform(this, this.translationMapping);
-                case "v1_18_R2" -> new Spigot1182Platform(this, this.translationMapping);
-                case "v1_19_R1" -> new Spigot1191Platform(this, this.translationMapping);
-                case "v1_19_R2" -> new Spigot1193Platform(this, this.translationMapping);
-                default -> {
-                    getLogger().warning("This server running " + AbstractSpigotPlatform.getNMSVersion() + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
-                    Bukkit.getPluginManager().disablePlugin(this);
-                    throw new IllegalStateException("This server running " + AbstractSpigotPlatform.getNMSVersion() + " not supported by Hikari. (Try update? or Use Paper's fork to get cross-platform compatibility.)");
-                }
-            };
-        } else {
-            throw new UnsupportedOperationException("Unsupported platform");
-        }
     }
 
     private void loadTextManager() {
@@ -712,14 +721,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
 
     @Override
     public final void onEnable() {
-        if (!this.onLoadCalled) {
-            getLogger().severe("FATAL: onLoad has not been called for QuickShop. Trying to fix it... Some integrations may not work properly!");
-            try {
-                onLoad();
-            } catch (Exception ex) {
-                getLogger().log(Level.WARNING, "Failed to fix onLoad", ex);
-            }
-        }
         Timer enableTimer = new Timer(true);
         getLogger().info("QuickShop " + getFork());
         this.audience = BukkitAudiences.create(this);
@@ -830,49 +831,11 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         Util.mainThreadRun(() -> new QSConfigurationReloadEvent(this).callEvent());
     }
 
-    /**
-     * Early than onEnable, make sure instance was loaded in first time.
-     */
+    @NotNull
     @Override
-    public final void onLoad() {
-        instance = this;
-        Bukkit.getServicesManager().register(QuickShopProvider.class, new QuickShopProvider() {
-            @Override
-            public @NotNull QuickShopAPI getApiInstance() {
-                return instance;
-            }
-
-            @Override
-            public @NotNull Plugin getInstance() {
-                return instance;
-            }
-        }, this, ServicePriority.High);
-        // Reset the BootError status to normal.
-        this.bootError = null;
-        Util.setPlugin(this);
-        this.onLoadCalled = true;
-        getLogger().info("QuickShop " + getFork() + " - Early boot step - Booting up");
-        getReloadManager().register(this);
-        //BEWARE THESE ONLY RUN ONCE
-        this.buildInfo = new BuildInfo(getResource("BUILDINFO"));
-        getLogger().info("Self testing...");
-        if (!runtimeCheck(EnvCheckEntry.Stage.ON_LOAD)) {
-            return;
-        }
-        getLogger().info("Reading the configuration...");
-        initConfiguration();
-        getLogger().info("Loading up platform modules...");
-        loadPlatform();
-        getLogger().info("Loading player name and unique id mapping...");
-        this.playerFinder = new FastPlayerFinder(this);
-        setupUnirest();
-        loadChatProcessor();
-        loadTextManager();
-        getLogger().info("Register InventoryWrapper...");
-        this.inventoryWrapperRegistry.register(this, this.inventoryWrapperManager);
-        getLogger().info("Initializing NexusManager...");
-        this.nexusManager = new NexusManager(this);
-        getLogger().info("QuickShop " + getFork() + " - Early boot step - Complete");
+    @Deprecated
+    public java.util.logging.Logger getLogger() {
+        return super.getLogger();
     }
 
     @Override
@@ -1178,20 +1141,6 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
         }
     }
 
-    private void setupUnirest() {
-        getLogger().info("Initialing Unirest http request library...");
-        Unirest.config()
-                .concurrency(10, 5)
-                .setDefaultHeader("User-Agent", "QuickShop/" + getFork() + "-" + getDescription().getVersion() + " Java/" + System.getProperty("java.version"));
-        Unirest.config().verifySsl(Util.parsePackageProperly("verifySSL").asBoolean());
-        if (Util.parsePackageProperly("proxyHost").isPresent()) {
-            Unirest.config().proxy(Util.parsePackageProperly("proxyHost").asString("127.0.0.1"), Util.parsePackageProperly("proxyPort").asInteger(1080));
-        }
-        if (Util.parsePackageProperly("proxyUsername").isPresent()) {
-            Unirest.config().proxy(Util.parsePackageProperly("proxyHost").asString("127.0.0.1"), Util.parsePackageProperly("proxyPort").asInteger(1080), Util.parsePackageProperly("proxyUsername").asString(""), Util.parsePackageProperly("proxyPassword").asString(""));
-        }
-    }
-
     private void submitMetrics() {
         if (!getConfig().getBoolean("disabled-metrics")) {
             // Use internal Metric class not Maven for solve plugin name issues
@@ -1209,7 +1158,7 @@ public class QuickShop extends JavaPlugin implements QuickShopAPI, Reloadable {
     }
 
     private boolean checkIfBungee() {
-        if (Util.parsePackageProperly("forceBungeeCord").asBoolean()) {
+        if (PackageUtil.parsePackageProperly("forceBungeeCord").asBoolean()) {
             return true;
         }
         ConfigurationSection section = getServer().spigot().getConfig().getConfigurationSection("settings");

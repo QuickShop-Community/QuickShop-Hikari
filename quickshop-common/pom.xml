@@ -23,6 +23,11 @@
             <version>3.12.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
 </project>

@@ -15,6 +15,7 @@ import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapper;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.economyformatter.EconomyFormatter;
 import com.ghostchu.quickshop.util.holder.Result;
@@ -476,7 +477,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                         .map(Shop::update)
                         .toArray(CompletableFuture[]::new));
         try {
-            if (Util.parsePackageProperly("unlimitedWait").asBoolean()) {
+            if (PackageUtil.parsePackageProperly("unlimitedWait").asBoolean()) {
                 saveTask.get();
             } else {
                 saveTask.get(30, TimeUnit.SECONDS);

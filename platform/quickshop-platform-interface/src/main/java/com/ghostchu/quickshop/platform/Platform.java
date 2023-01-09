@@ -15,9 +15,11 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 import java.util.Collection;
 import java.util.List;
@@ -102,4 +104,7 @@ public interface Platform {
     void setLore(@NotNull ItemMeta meta, @NotNull Collection<Component> components);
 
     void updateTranslationMappingSection(@NotNull Map<String, String> mapping);
+
+    @NotNull
+    Logger getSlf4jLogger(@NotNull Plugin parent);
 }

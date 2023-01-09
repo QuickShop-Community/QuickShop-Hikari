@@ -27,8 +27,8 @@ import java.util.Optional;
 
 public class Spigot1182Platform extends AbstractSpigotPlatform implements Platform {
 
-    public Spigot1182Platform(@NotNull Plugin plugin, @NotNull Map<String, String> mapping) {
-        super(plugin, mapping);
+    public Spigot1182Platform(@NotNull Plugin plugin) {
+        super(plugin);
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.FillerProcessor;
 import com.ghostchu.quickshop.localization.text.postprocessing.impl.PlaceHolderApiProcessor;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.simplereloadlib.ReloadResult;
@@ -61,10 +62,10 @@ public class SimpleTextManager implements TextManager, Reloadable {
     public SimpleTextManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
-        if (Util.parsePackageProperly("enableCrowdinOTA").asBoolean()) {
+        if (PackageUtil.parsePackageProperly("enableCrowdinOTA").asBoolean()) {
             try {
                 plugin.getLogger().info("Please wait us fetch the translation updates from Crowdin OTA service...");
-                this.crowdinOTA = new CrowdinOTA(Util.parsePackageProperly("crowdinHost").asString("https://crowdinota.hikari.r2.quickshop-powered.top"), new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
+                this.crowdinOTA = new CrowdinOTA(PackageUtil.parsePackageProperly("crowdinHost").asString("https://crowdinota.hikari.r2.quickshop-powered.top"), new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
             } catch (Exception e) {
                 plugin.getLogger().log(Level.WARNING, "Cannot initialize the CrowdinOTA instance!", e);
             }

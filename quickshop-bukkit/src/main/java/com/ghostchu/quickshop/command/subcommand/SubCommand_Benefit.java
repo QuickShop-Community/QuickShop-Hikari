@@ -6,6 +6,7 @@ import com.ghostchu.quickshop.api.economy.Benefit;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -77,7 +78,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             plugin.text().of(sender, "unknown-player", cmdArg[1]).send();
             return;
         }
-        if (!Util.parsePackageProperly("allowOffline").asBoolean()) {
+        if (!PackageUtil.parsePackageProperly("allowOffline").asBoolean()) {
             Player p = Bukkit.getPlayer(uuid);
             if (p == null || !p.isOnline()) {
                 plugin.text().of(sender, "player-offline", cmdArg[1]).send();

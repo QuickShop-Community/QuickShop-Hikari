@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.platform.spigot;
 
+import com.ghostchu.quickshop.common.util.QuickSLF4JLogger;
 import com.ghostchu.quickshop.platform.Platform;
 import me.pikamug.localelib.LocaleManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -34,9 +35,10 @@ public abstract class AbstractSpigotPlatform implements Platform {
     protected Map<String, String> translationMapping;
     private BukkitAudiences audience;
 
-    public AbstractSpigotPlatform(@NotNull Plugin instance, @NotNull Map<String, String> mapping) {
+    public AbstractSpigotPlatform(@NotNull Plugin instance) {
         this.plugin = instance;
-        this.translationMapping = mapping;
+        //TODO use method to replace
+        //this.translationMapping = mapping;
     }
 
     @NotNull
@@ -205,5 +207,11 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     private String postProcessingTranslationKey(String key) {
         return this.translationMapping.getOrDefault(key, key);
+    }
+
+    @Override
+    @NotNull
+    public org.slf4j.Logger getSlf4jLogger(@NotNull Plugin parent) {
+        return QuickSLF4JLogger.initializeLoggerService(parent.getLogger());
     }
 }
