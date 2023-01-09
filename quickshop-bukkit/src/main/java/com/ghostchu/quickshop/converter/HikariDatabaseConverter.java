@@ -551,7 +551,7 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
 
         @NotNull
         public String getInventoryWrapperName() {
-            return QuickShop.getInstance().getDescription().getName();
+            return QuickShop.getInstance().getJavaPlugin().getDescription().getName();
         }
     }
 }

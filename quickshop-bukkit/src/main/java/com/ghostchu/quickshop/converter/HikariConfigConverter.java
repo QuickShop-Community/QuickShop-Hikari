@@ -994,8 +994,8 @@ public class HikariConfigConverter implements HikariConverterInterface {
         if (plugin.getConfig().isSet("shop.shop")) {
             plugin.getConfig().set("shop.shop", null);
         }
-        plugin.saveConfig();
-        plugin.getLogger().info("[ApolloConverter] Legacy upgrade script executed.");
+        plugin.getJavaPlugin().saveConfig();
+        plugin.logger().info("[ApolloConverter] Legacy upgrade script executed.");
     }
 
     private void legacyPriceLimiter() {
@@ -1013,7 +1013,7 @@ public class HikariConfigConverter implements HikariConverterInterface {
             try {
                 Files.copy(plugin.getJavaPlugin().getResource("price-restriction.yml"), configFile.toPath());
             } catch (IOException e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to copy price-restriction.yml.yml to plugin folder!", e);
+                plugin.logger().warn("Failed to copy price-restriction.yml.yml to plugin folder!", e);
             }
         }
         YamlConfiguration config = new YamlConfiguration();
