@@ -23,10 +23,10 @@ public class UpdateWatcher implements Listener {
     private BukkitTask cronTask = null;
 
     public void init() {
-        cronTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+        cronTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin.getJavaPlugin(), () -> {
             if (!plugin.getNexusManager().isLatest()) {
-                plugin.getLogger().info("A new version of QuickShop has been released! [" + plugin.getNexusManager().getLatestVersion() + "]");
-                plugin.getLogger().info("Update here: https://modrinth.com/plugin/quickshop-hikari");
+                plugin.logger().info("A new version of QuickShop has been released! [{}]", plugin.getNexusManager().getLatestVersion());
+                plugin.logger().info("Update here: https://modrinth.com/plugin/quickshop-hikari");
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (plugin.perm().hasPermission(player, "quickshop.alerts")) {
                         MsgUtil.sendDirectMessage(player, ChatColor.GREEN + "---------------------------------------------------");
@@ -52,7 +52,7 @@ public class UpdateWatcher implements Listener {
         } else {
             notify = Component.text("New update {0} now available! Please update!");
         }
-        return MsgUtil.fillArgs(notify, Component.text(plugin.getNexusManager().getLatestVersion()), Component.text(plugin.getDescription().getVersion()));
+        return MsgUtil.fillArgs(notify, Component.text(plugin.getNexusManager().getLatestVersion()), Component.text(plugin.getVersion()));
     }
 
     @EventHandler

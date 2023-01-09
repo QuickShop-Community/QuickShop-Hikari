@@ -16,7 +16,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.logging.Level;
 
 public class LogWatcher extends BukkitRunnable implements AutoCloseable {
     private static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS").withZone(ZoneId.systemDefault());
@@ -69,9 +68,9 @@ public class LogWatcher extends BukkitRunnable implements AutoCloseable {
             }
             printWriter = new PrintWriter(logFileWriter);
         } catch (FileNotFoundException e) {
-            plugin.getLogger().log(Level.SEVERE, "Log file was not found!", e);
+            plugin.logger().error("Log file was not found!", e);
         } catch (IOException e) {
-            plugin.getLogger().log(Level.SEVERE, "Could not create the log file!", e);
+            plugin.logger().error("Could not create the log file!", e);
         }
     }
 

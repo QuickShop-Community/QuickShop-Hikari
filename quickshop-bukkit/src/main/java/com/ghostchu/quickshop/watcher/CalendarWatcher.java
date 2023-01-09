@@ -12,7 +12,6 @@ import org.bukkit.scheduler.BukkitTask;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.logging.Level;
 
 /**
  * CalendarWatcher check-call calendar events related stuffs
@@ -33,7 +32,7 @@ public class CalendarWatcher extends BukkitRunnable {
             try {
                 calendarFile.createNewFile();
             } catch (IOException ioException) {
-                plugin.getLogger().log(Level.WARNING, "Cannot create calendar cache file at " + calendarFile.getAbsolutePath() + ", scheduled tasks may cannot or execute wrongly!", ioException);
+                plugin.logger().warn("Cannot create calendar cache file at {}, scheduled tasks may cannot or execute wrongly!", calendarFile.getAbsolutePath(), ioException);
             }
         }
         configuration = YamlConfiguration.loadConfiguration(calendarFile);
@@ -110,12 +109,12 @@ public class CalendarWatcher extends BukkitRunnable {
         try {
             configuration.save(calendarFile);
         } catch (IOException ioException) {
-            plugin.getLogger().log(Level.WARNING, "Cannot save calendar cache file at " + calendarFile.getAbsolutePath() + ", scheduled tasks may cannot or execute wrongly!", ioException);
+            plugin.logger().warn("Cannot save calendar cache file at {}, scheduled tasks may cannot or execute wrongly!", calendarFile.getAbsolutePath(), ioException);
         }
     }
 
     public void start() {
-        task = this.runTaskTimerAsynchronously(plugin, 20, 20);
+        task = this.runTaskTimerAsynchronously(plugin.getJavaPlugin(), 20, 20);
     }
 
     public void stop() {
