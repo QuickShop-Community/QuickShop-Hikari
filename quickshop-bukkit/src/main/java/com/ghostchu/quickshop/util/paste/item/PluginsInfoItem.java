@@ -36,6 +36,7 @@ public class PluginsInfoItem implements SubPasteItem {
     }
 
     private boolean isAddon(Plugin plugin) {
-        return plugin.getDescription().getDepend().contains(QuickShop.getInstance().getName()) || plugin.getDescription().getSoftDepend().contains(QuickShop.getInstance().getName());
+        String plugName = QuickShop.getInstance().getJavaPlugin().getName();
+        return plugin.getDescription().getDepend().contains(plugName) || plugin.getDescription().getSoftDepend().contains(plugName);
     }
 }

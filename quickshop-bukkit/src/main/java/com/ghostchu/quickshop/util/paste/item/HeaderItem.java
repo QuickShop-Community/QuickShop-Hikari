@@ -33,7 +33,7 @@ public class HeaderItem implements PasteItem {
     @Override
     public @NotNull String toHTML() {
         return TEMPLATE
-                .replace("{title}", "QuickShop-" + QuickShop.getFork() + " // Paste")
+                .replace("{title}", "QuickShop-" + QuickShop.getInstance().getFork() + " // Paste")
                 .replace("{content}", buildContent());
     }
 
