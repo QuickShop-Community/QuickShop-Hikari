@@ -70,6 +70,7 @@ public class ContainerShop implements Shop, Reloadable {
     // We use deprecated method to create a fake quickshop-reremake namespace to trick bukkit to access legacy data.
     @SuppressWarnings({"AliDeprecation", "deprecation"})
     private static final NamespacedKey LEGACY_SHOP_NAMESPACED_KEY = new NamespacedKey("quickshop", "shopsign");
+    private static final String LEGACY_SHOP_SIGN_RECOGNIZE_PATTERN = "§d§o ";
     @NotNull
     private final Location location;
     private final YamlConfiguration extra;
@@ -1175,6 +1176,12 @@ public class ContainerShop implements Shop, Reloadable {
         if (shopSignStorage == null) {
             // Try to read Reremake sign namespaced key
             shopSignStorage = sign.getPersistentDataContainer().get(LEGACY_SHOP_NAMESPACED_KEY, ShopSignPersistentDataType.INSTANCE);
+        }
+        if (shopSignStorage == null) {
+            // Try more hard to read Reremake sign namespaced key
+            if (sign.getLine(1).startsWith(LEGACY_SHOP_SIGN_RECOGNIZE_PATTERN)) {
+                return true;
+            }
         }
         if (shopSignStorage != null) {
             return shopSignStorage.equals(getLocation().getWorld().getName(), getLocation().getBlockX(), getLocation().getBlockY(), getLocation().getBlockZ());
