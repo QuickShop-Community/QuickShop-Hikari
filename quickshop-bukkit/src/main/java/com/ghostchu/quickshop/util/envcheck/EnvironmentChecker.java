@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.logging.Level;
 
 public final class EnvironmentChecker {
     private static final String CHECK_PASSED_RETURNS = "Check passed";
@@ -52,7 +51,7 @@ public final class EnvironmentChecker {
             return;
         }
         if (method.getReturnType() != ResultContainer.class) {
-            plugin.getLogger().warning("Failed loading EncCheckEntry [" + method.getName() + "]: Illegal test returns");
+            plugin.logger().warn("Failed loading EncCheckEntry [{}]: Illegal test returns", method.getName());
             return;
         }
         tests.add(method);
@@ -109,15 +108,15 @@ public final class EnvironmentChecker {
     public ResultContainer moddedBasedTest() {
         boolean trigged = false;
         if (isForgeBasedServer()) {
-            plugin.getLogger().warning("WARN: QuickShop is not designed and tested for Forge!");
-            plugin.getLogger().warning("WARN: Use at you own risk!.");
-            plugin.getLogger().warning("WARN: No support will be given!");
+            plugin.logger().warn("WARN: QuickShop is not designed and tested for Forge!");
+            plugin.logger().warn("WARN: Use at you own risk!.");
+            plugin.logger().warn("WARN: No support will be given!");
             trigged = true;
         }
         if (isFabricBasedServer()) {
-            plugin.getLogger().warning("WARN: QuickShop is not designed and tested for Fabric!");
-            plugin.getLogger().warning("WARN: Use at you own risk!.");
-            plugin.getLogger().warning("WARN: No support will be given!");
+            plugin.logger().warn("WARN: QuickShop is not designed and tested for Fabric!");
+            plugin.logger().warn("WARN: Use at you own risk!.");
+            plugin.logger().warn("WARN: No support will be given!");
             trigged = true;
         }
         if (trigged) {
@@ -155,7 +154,7 @@ public final class EnvironmentChecker {
 
     @EnvCheckEntry(name = "Permission Manager Test", priority = 10, stage = EnvCheckEntry.Stage.ON_ENABLE)
     public ResultContainer permManagerConflictTest() {
-        if (plugin.getServer().getPluginManager().isPluginEnabled("GroupManager")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("GroupManager")) {
             return new ResultContainer(CheckResult.WARNING, "WARNING: Unsupported plugin management plugin [GroupManager] installed, the permissions may not working.");
         }
         return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
@@ -171,7 +170,7 @@ public final class EnvironmentChecker {
 
     @EnvCheckEntry(name = "Reremake Test", priority = 11, stage = EnvCheckEntry.Stage.ON_ENABLE)
     public ResultContainer rereMakeTest() {
-        if (plugin.getServer().getPluginManager().isPluginEnabled("QuickShop")) {
+        if (Bukkit.getPluginManager().isPluginEnabled("QuickShop")) {
             return new ResultContainer(CheckResult.WARNING, "WARNING: Multiple QuickShop installed, uninstall one of them.");
         }
         return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
@@ -210,40 +209,40 @@ public final class EnvironmentChecker {
                 }
                 switch (result) {
                     case SKIPPED -> {
-                        plugin.getLogger().info("[SKIP] " + envCheckEntry.name());
+                        plugin.logger().info("[SKIP] {}", envCheckEntry.name());
                         Log.debug("Runtime check [" + envCheckEntry.name() + "] has been skipped (Startup Flag).");
                     }
                     case PASSED -> {
                         if (Util.isDevEdition() || Util.isDevMode()) {
-                            plugin.getLogger().info("[OK] " + envCheckEntry.name());
+                            plugin.logger().info("[OK] {}", envCheckEntry.name());
                             Log.debug("[Pass] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         }
                     }
                     case WARNING -> {
-                        plugin.getLogger().warning("[WARN] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        plugin.logger().warn("[WARN] {}: {}", envCheckEntry.name(), executeResult.getResultMessage());
                         Log.debug("[Warning] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                     }
                     case STOP_WORKING -> {
-                        plugin.getLogger().warning("[STOP] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        plugin.logger().warn("[STOP] {}: {}", envCheckEntry.name(), executeResult.getResultMessage());
                         Log.debug("[Stop-Freeze] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                     }
                     //It's okay, QuickShop should continue executing checks to collect more data.
                     //And show user all errors at once.
                     case DISABLE_PLUGIN -> {
-                        plugin.getLogger().warning("[FATAL] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                        plugin.logger().warn("[FATAL] {}: {}", envCheckEntry.name(), executeResult.getResultMessage());
                         Log.debug("[Fatal-Disable] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
                         skipAllTest = true; //We need to disable the plugin NOW! Some HUGE exception is happening here, hurry up!
                     }
                     default ->
-                            plugin.getLogger().warning("[UNDEFINED] " + envCheckEntry.name() + ": " + executeResult.getResultMessage());
+                            plugin.logger().warn("[UNDEFINED] {}: {}", envCheckEntry.name(), executeResult.getResultMessage());
                 }
                 results.put(envCheckEntry, Objects.requireNonNullElseGet(executeResult, () -> new ResultContainer(CheckResult.SKIPPED, "Startup flag mark this check should be skipped.")));
                 if (result.ordinal() > gResult.ordinal()) { //set bad result if its worse than the latest one.
                     gResult = result;
                 }
             } catch (Exception e) {
-                plugin.getLogger().log(Level.WARNING, "Failed to execute EnvCheckEntry [" + declaredMethod.getName() + "]: Exception thrown out without getting caught. Something went wrong!", e);
-                plugin.getLogger().warning("[FAIL] " + declaredMethod.getName());
+                plugin.logger().warn("Failed to execute EnvCheckEntry [{}]: Exception thrown out without getting caught. Something went wrong!", declaredMethod.getName(), e);
+                plugin.logger().warn("[FAIL] {}", declaredMethod.getName());
             }
         }
         return new ResultReport(gResult, results);
@@ -275,7 +274,7 @@ public final class EnvironmentChecker {
         if (!gameVersion.isVirtualDisplaySupports()) {
             throwable = new IllegalStateException("Version not supports Virtual DisplayItem.");
         } else {
-            if (plugin.getServer().getPluginManager().getPlugin("ProtocolLib") != null) {
+            if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
                 throwable = VirtualDisplayItem.PacketFactory.testFakeItem();
             } else {
                 AbstractDisplayItem.setNotSupportVirtualItem(true);
@@ -287,7 +286,7 @@ public final class EnvironmentChecker {
             MsgUtil.debugStackTrace(throwable.getStackTrace());
             AbstractDisplayItem.setNotSupportVirtualItem(true);
             //do not throw
-            plugin.getLogger().log(Level.SEVERE, "Virtual DisplayItem Support Test: Failed to initialize VirtualDisplayItem", throwable);
+            plugin.logger().error("Virtual DisplayItem Support Test: Failed to initialize VirtualDisplayItem", throwable);
             return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem seems to not work on this Minecraft server, Make sure QuickShop, ProtocolLib and server builds are up to date.");
         } else {
             return new ResultContainer(CheckResult.PASSED, "Passed checks");
@@ -303,8 +302,8 @@ public final class EnvironmentChecker {
         }
         String stringClassLoader = ProtocolLibrary.getProtocolManager().getClass().getClassLoader().toString();
         if (stringClassLoader.contains("pluginEnabled=true") && !stringClassLoader.contains("plugin=ProtocolLib")) {
-            QuickShop.getInstance().getLogger().warning("Warning! ProtocolLib seems provided by another plugin, This seems to be a wrong packaging problem, " +
-                    "QuickShop can't ensure the ProtocolLib is working correctly! Info: " + stringClassLoader);
+            plugin.logger().warn("Warning! ProtocolLib seems provided by another plugin, This seems to be a wrong packaging problem, " +
+                    "QuickShop can't ensure the ProtocolLib is working correctly! Info: {}", stringClassLoader);
             return new ResultContainer(CheckResult.WARNING, "Incorrect locate: " + stringClassLoader);
         }
         return new ResultContainer(CheckResult.PASSED, stringClassLoader);
