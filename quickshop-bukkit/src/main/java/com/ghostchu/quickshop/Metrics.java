@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -270,8 +271,8 @@ public class Metrics {
             Method onlinePlayersMethod = Class.forName("org.bukkit.Server").getMethod("getOnlinePlayers");
             playerAmount =
                     onlinePlayersMethod.getReturnType().equals(Collection.class)
-                            ? ((Collection<?>) onlinePlayersMethod.invoke(Bukkit)).size()
-                            : ((Player[]) onlinePlayersMethod.invoke(Bukkit)).length;
+                            ? ((Collection<?>) onlinePlayersMethod.invoke(plugin)).size()
+                            : ((Player[]) onlinePlayersMethod.invoke(plugin)).length;
         } catch (Exception e) {
             playerAmount = Bukkit.getOnlinePlayers().size(); // Just use the new method if the Reflection failed
         }
