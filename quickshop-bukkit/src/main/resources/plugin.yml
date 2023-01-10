@@ -1,5 +1,5 @@
 name: QuickShop-Hikari
-main: com.ghostchu.quickshop.QuickShop
+main: com.ghostchu.quickshop.QuickShopBukkit
 softdepend:
   - Vault
   - Reserve
