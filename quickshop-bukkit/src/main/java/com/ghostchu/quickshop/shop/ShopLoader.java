@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -64,7 +63,6 @@ public class ShopLoader {
      * @param worldName The world name, null if load all shops
      */
     public void loadShops(@Nullable String worldName) {
-        List<Shop> pendingLoading = new CopyOnWriteArrayList<>();
         boolean deleteCorruptShops = plugin.getConfig().getBoolean("debug.delete-corrupt-shops", false);
         plugin.logger().info("Loading shops from database...");
         Timer dbFetchTimer = new Timer(true);
@@ -73,6 +71,7 @@ public class ShopLoader {
         plugin.logger().info("Loading shops into memory...");
         Timer shopTotalTimer = new Timer(true);
         AtomicInteger successCounter = new AtomicInteger(0);
+        AtomicInteger chunkNotLoaded = new AtomicInteger(0);
         for (ShopRecord shopRecord : records) {
             Timer singleShopLoadingTimer = new Timer(true);
             InfoRecord infoRecord = shopRecord.getInfoRecord();
@@ -148,25 +147,25 @@ public class ShopLoader {
                 // Load to World
                 if (!Util.canBeShop(shopLocation.getBlock())) {
                     plugin.getShopManager().removeShop(shop); // Remove from Mem
-                } else {
-                    pendingLoading.add(shop);
                 }
+            } else {
+                chunkNotLoaded.incrementAndGet();
             }
             successCounter.incrementAndGet();
         }
 
-        plugin.logger().info("Done. Used {}ms to load {} shops into memory.", shopTotalTimer.stopAndGetTimePassed(), successCounter.get());
+        plugin.logger().info("Done. Used {}ms to load {} shops into memory. ({} shops will be loaded after chunks loaded)", shopTotalTimer.stopAndGetTimePassed(), successCounter.get(), chunkNotLoaded.incrementAndGet());
 
-        Bukkit.getScheduler().runTaskLater(plugin.getJavaPlugin(), () -> {
-            for (Shop shop : pendingLoading) {
-                try {
-                    shop.onLoad();
-                } catch (Exception exception) {
-                    exceptionHandler(exception, shop.getLocation());
-                }
-            }
-            Log.debug("All pending shops now loaded (schedule).");
-        }, 1);
+//        Bukkit.getScheduler().runTaskLater(plugin.getJavaPlugin(), () -> {
+//            for (Shop shop : pendingLoading) {
+//                try {
+//                    shop.onLoad();
+//                } catch (Exception exception) {
+//                    exceptionHandler(exception, shop.getLocation());
+//                }
+//            }
+//            Log.debug("All pending shops now loaded (schedule).");
+//        }, 1);
     }
 
     private void exceptionHandler(@NotNull Exception ex, @Nullable Location shopLocation) {
@@ -183,8 +182,17 @@ public class ShopLoader {
         ex.printStackTrace();
         logger.warn("  >> Target Location Info");
         logger.warn("Location: {}", ((shopLocation == null) ? "NULL" : shopLocation.toString()));
-        logger.warn(
-                "Block: {}", ((shopLocation == null) ? "NULL" : shopLocation.getBlock().getType().name()));
+        String blockType = "N/A";
+        if (shopLocation != null) {
+            if (Util.isLoaded(shopLocation)) {
+                blockType = shopLocation.getBlock().getType().name();
+            } else {
+                blockType = "Not loaded yet";
+            }
+        } else {
+            logger.warn("Block: {}", "Location is null");
+        }
+        logger.warn("Block: {}", blockType);
         logger.warn("#######################################");
         if (errors > 10) {
             logger.error(
