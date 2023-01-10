@@ -14,10 +14,8 @@ import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -52,9 +50,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.lang.management.ManagementFactory;
-import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.Map.Entry;
@@ -493,7 +489,7 @@ public class Util {
         }
     }
 
-    public static int getItemTotalAmountsInMap(Map<Integer, ItemStack> map) {
+    public static int getItemTotalAmountsInMap(@NotNull Map<Integer, ItemStack> map) {
         int total = 0;
         for (ItemStack value : map.values()) {
             total += value.getAmount();
@@ -598,24 +594,6 @@ public class Util {
             return offlinePlayer.getUniqueId();
         }
         return CommonUtil.getNilUniqueId();
-    }
-
-    /**
-     * Get how many shop in the target world.
-     *
-     * @param worldName Target world.
-     * @return The shops.
-     */
-    public static int getShopsInWorld(@NotNull String worldName) {
-        int cost = 0;
-        Iterator<Shop> iterator = plugin.getShopManager().getShopIterator();
-        while (iterator.hasNext()) {
-            Shop shop = iterator.next();
-            if (Objects.requireNonNull(shop.getLocation().getWorld()).getName().equals(worldName)) {
-                cost++;
-            }
-        }
-        return cost;
     }
 
     /**
@@ -863,16 +841,6 @@ public class Util {
     }
 
     /**
-     * Simply method to check if the provided String is either {@code null} or empty.
-     *
-     * @param text The text to check for null or empty value.
-     * @return Whether the text is null or empty.
-     */
-    public static boolean isNullOrEmpty(String text) {
-        return text == null || text.isEmpty();
-    }
-
-    /**
      * Checks whether someone else's shop is within reach of a hopper being placed by a player.
      *
      * @param b The block being placed.
@@ -966,24 +934,6 @@ public class Util {
         } else {
             Bukkit.getScheduler().runTask(plugin.getJavaPlugin(), runnable);
         }
-    }
-
-    @SneakyThrows(IOException.class)
-    public static void makeExportBackup(@Nullable String backupName) {
-        if (StringUtils.isEmpty(backupName)) {
-            backupName = "export-" + QuickShop.getInstance().getFork() + "-" + QuickShop.getInstance().getVersion() + ".txt";
-        }
-        File file = new File(plugin.getDataFolder(), backupName);
-        if (file.exists()) {
-            Files.move(file.toPath(), new File(file.getParentFile(), file.getName() + UUID.randomUUID().toString().replace("-", "")).toPath());
-        }
-
-        if (!file.createNewFile()) {
-            plugin.logger().warn("Failed to create new backup file!");
-            return;
-        }
-
-        plugin.logger().warn("Backup hadn't available in this version yet!");
     }
 
     /**
