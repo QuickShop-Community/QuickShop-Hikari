@@ -537,10 +537,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
     }
 
-    private void loadPlatform() {
-
-    }
-
     /**
      * Get the permissionManager as static
      *
