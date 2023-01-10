@@ -104,7 +104,6 @@ public class BlockListener extends AbstractProtectionListener {
                     }
                     plugin.text().of(p, "break-shop-use-supertool").send();
                     plugin.logEvent(new ShopRemoveLog(e.getPlayer().getUniqueId(), "BlockBreak(player)", shop.saveToInfoStorage()));
-                    shop.onUnload();
                     shop.delete();
                     return;
                 }
