@@ -123,14 +123,14 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
                     quickshop.text().of(sender, "command-incorrect", "/qs discount config <code> scope <scope>").send();
                     return;
                 }
-                if (!code.getOwner().equals(((Player) sender).getUniqueId()) && !QuickShop.getPermissionManager().hasPermission(sender, "quickshopaddon.discount.bypass")) {
+                if (!code.getOwner().equals(((Player) sender).getUniqueId()) && !quickshop.perm().hasPermission(sender, "quickshopaddon.discount.bypass")) {
                     quickshop.text().of(sender, "no-permission").send();
                     return;
                 }
                 String newScope = passThroughArgs[2].toUpperCase(Locale.ROOT).replace("-", "_");
                 try {
                     CodeType type = CodeType.valueOf(newScope);
-                    if (!QuickShop.getPermissionManager().hasPermission(sender, "quickshopaddon.discount.create." + type.name().toLowerCase())) {
+                    if (!quickshop.perm().hasPermission(sender, "quickshopaddon.discount.create." + type.name().toLowerCase())) {
                         quickshop.text().of(sender, "no-permission").send();
                         return;
                     }

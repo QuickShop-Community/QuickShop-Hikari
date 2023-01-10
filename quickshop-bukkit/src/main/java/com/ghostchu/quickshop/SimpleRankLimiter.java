@@ -54,7 +54,7 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter {
     @Override
     public int getShopLimit(@NotNull Player p) {
         for (Map.Entry<String, Integer> entry : limits.entrySet()) {
-            if (entry.getValue() > max && QuickShop.getPermissionManager().hasPermission(p, entry.getKey())) {
+            if (entry.getValue() > max && plugin.perm().hasPermission(p, entry.getKey())) {
                 max = entry.getValue();
             }
         }
