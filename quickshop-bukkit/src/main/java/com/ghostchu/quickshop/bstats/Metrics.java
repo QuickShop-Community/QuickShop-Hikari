@@ -1,5 +1,6 @@
-package com.ghostchu.quickshop;
+package com.ghostchu.quickshop.bstats;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.Util;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

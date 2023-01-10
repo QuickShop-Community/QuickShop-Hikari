@@ -1,4 +1,6 @@
-package com.ghostchu.quickshop;
+package com.ghostchu.quickshop.bstats;
+
+import com.ghostchu.quickshop.QuickShop;
 
 public class MetricsManager {
     private Metrics metrics;
