@@ -61,7 +61,7 @@ public class SimpleTextManager implements TextManager, Reloadable {
     public SimpleTextManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
-        if (PackageUtil.parsePackageProperly("enableCrowdinOTA").asBoolean()) {
+        if (PackageUtil.parsePackageProperly("enableCrowdinOTA").asBoolean(true)) {
             try {
                 plugin.logger().info("Please wait us fetch the translation updates from Crowdin OTA service...");
                 this.crowdinOTA = new CrowdinOTA(PackageUtil.parsePackageProperly("crowdinHost").asString("https://crowdinota.hikari.r2.quickshop-powered.top"), new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());

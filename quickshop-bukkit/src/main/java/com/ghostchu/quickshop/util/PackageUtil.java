@@ -35,6 +35,11 @@ public class PackageUtil {
             return Boolean.parseBoolean(value);
         }
 
+        public boolean asBoolean(boolean def) {
+            if (value == null) return def;
+            return Boolean.parseBoolean(value);
+        }
+
         public byte asByte(byte def) {
             if (value == null) {
                 return def;
