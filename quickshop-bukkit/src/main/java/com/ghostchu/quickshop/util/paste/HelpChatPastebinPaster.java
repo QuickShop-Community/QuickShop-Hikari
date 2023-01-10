@@ -19,7 +19,7 @@
 //
 //package com.ghostchu.quickshop.util.paste;
 //
-//import com.ghostchu.quickshop.util.JsonUtil;
+//import com.ghostchu.quickshop.common.util.JsonUtil;
 //import kong.unirest.HttpResponse;
 //import kong.unirest.Unirest;
 //import lombok.AllArgsConstructor;

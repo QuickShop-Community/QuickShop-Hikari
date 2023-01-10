@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.shop.datatype;
 
-import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.util.Util;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

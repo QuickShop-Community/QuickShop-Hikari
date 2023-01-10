@@ -3,7 +3,7 @@ package com.ghostchu.quickshop.papi;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
-import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.cache.Cache;

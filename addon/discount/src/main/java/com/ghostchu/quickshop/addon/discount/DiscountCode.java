@@ -6,7 +6,7 @@ import com.ghostchu.quickshop.addon.discount.type.RateType;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
-import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.common.util.JsonUtil;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;

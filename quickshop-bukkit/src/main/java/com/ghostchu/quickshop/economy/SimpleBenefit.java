@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.economy;
 
 import com.ghostchu.quickshop.api.economy.Benefit;
-import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.google.gson.reflect.TypeToken;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;

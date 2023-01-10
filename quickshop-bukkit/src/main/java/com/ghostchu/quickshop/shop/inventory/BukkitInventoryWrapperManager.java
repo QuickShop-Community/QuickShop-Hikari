@@ -2,7 +2,7 @@ package com.ghostchu.quickshop.shop.inventory;
 
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
-import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import io.papermc.lib.PaperLib;
 import lombok.Builder;

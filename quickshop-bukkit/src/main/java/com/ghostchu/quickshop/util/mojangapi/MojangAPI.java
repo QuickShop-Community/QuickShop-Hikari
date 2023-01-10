@@ -1,6 +1,6 @@
 package com.ghostchu.quickshop.util.mojangapi;
 
-import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;

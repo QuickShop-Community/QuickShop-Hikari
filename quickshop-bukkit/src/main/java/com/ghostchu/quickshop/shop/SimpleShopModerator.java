@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.api.shop.ShopModerator;
-import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lombok.EqualsAndHashCode;

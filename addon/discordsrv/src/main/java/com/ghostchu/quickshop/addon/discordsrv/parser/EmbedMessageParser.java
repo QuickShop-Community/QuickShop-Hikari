@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.addon.discordsrv.parser;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.google.common.reflect.TypeToken;
 import github.scarsz.discordsrv.dependencies.jda.api.EmbedBuilder;

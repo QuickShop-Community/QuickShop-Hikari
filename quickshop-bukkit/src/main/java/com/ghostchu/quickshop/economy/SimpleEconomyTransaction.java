@@ -10,7 +10,7 @@ import com.ghostchu.quickshop.api.event.EconomyTransactionEvent;
 import com.ghostchu.quickshop.api.operation.Operation;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.CommonUtil;
-import com.ghostchu.quickshop.util.JsonUtil;
+import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.EconomyTransactionLog;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
