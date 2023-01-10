@@ -9,7 +9,9 @@ import org.jetbrains.annotations.Nullable;
 import java.io.*;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -390,5 +392,26 @@ public class CommonUtil {
     @NotNull
     public static List<String> tail(@NotNull List<String> list, int last) {
         return list.subList(Math.max(list.size() - last, 0), list.size());
+    }
+
+    @NotNull
+    public static String getTZTimestamp(@NotNull Date date) {
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
+        df.setTimeZone(tz);
+        return df.format(date);
+    }
+
+    /**
+     * Gets the location of a class inside of a jar file.
+     *
+     * @param clazz The class to get the location of.
+     * @return The jar path which given class at.
+     */
+    @NotNull
+    public static String getClassPath(@NotNull Class<?> clazz) {
+        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
+        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
+        return jarPath;
     }
 }

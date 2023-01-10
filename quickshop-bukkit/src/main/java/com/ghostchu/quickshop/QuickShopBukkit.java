@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop;
 
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.platform.Platform;
 import com.ghostchu.quickshop.platform.paper.PaperPlatform;
 import com.ghostchu.quickshop.platform.spigot.AbstractSpigotPlatform;
@@ -8,7 +9,6 @@ import com.ghostchu.quickshop.platform.spigot.v1_18_2.Spigot1182Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_19_1.Spigot1191Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_19_2.Spigot1193Platform;
 import com.ghostchu.quickshop.util.PackageUtil;
-import com.ghostchu.quickshop.util.Util;
 import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
 import net.kyori.adventure.Adventure;
@@ -153,11 +153,11 @@ public class QuickShopBukkit extends JavaPlugin {
     static class AdventureLibLoader {
         public AdventureLibLoader(QuickShopBukkit plugin) {
             plugin.getLogger().info("Loading the Adventure Chat Processor...");
-            plugin.getLogger().info("Adventure API loaded from: " + Util.getClassPath(Adventure.class));
-            plugin.getLogger().info("Adventure Bukkit Platform loaded from: " + Util.getClassPath(BukkitAudiences.class));
-            plugin.getLogger().info("Adventure Text Serializer (Legacy) loaded from: " + Util.getClassPath(LegacyComponentSerializer.class));
-            plugin.getLogger().info("Adventure Text Serializer (Gson) loaded from: " + Util.getClassPath(GsonComponentSerializer.class));
-            plugin.getLogger().info("Adventure MiniMessage Lib loaded from: " + Util.getClassPath(LegacyComponentSerializer.class));
+            plugin.getLogger().info("Adventure API loaded from: " + CommonUtil.getClassPath(Adventure.class));
+            plugin.getLogger().info("Adventure Bukkit Platform loaded from: " + CommonUtil.getClassPath(BukkitAudiences.class));
+            plugin.getLogger().info("Adventure Text Serializer (Legacy) loaded from: " + CommonUtil.getClassPath(LegacyComponentSerializer.class));
+            plugin.getLogger().info("Adventure Text Serializer (Gson) loaded from: " + CommonUtil.getClassPath(GsonComponentSerializer.class));
+            plugin.getLogger().info("Adventure MiniMessage Lib loaded from: " + CommonUtil.getClassPath(LegacyComponentSerializer.class));
         }
     }
 }

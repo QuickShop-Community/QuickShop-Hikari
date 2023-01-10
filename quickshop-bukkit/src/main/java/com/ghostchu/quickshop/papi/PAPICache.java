@@ -4,13 +4,13 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.JsonUtil;
-import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -56,7 +56,7 @@ public class PAPICache implements Reloadable {
         String[] args = Arrays.copyOf(original, 3);
 
         // Invalid placeholder (%qs_%). Shouldn't happen at all, but you never know...
-        if (Util.isNullOrEmpty(args[0])) {
+        if (StringUtils.isEmpty(args[0])) {
             return null;
         }
 
@@ -64,7 +64,7 @@ public class PAPICache implements Reloadable {
             // %qs_shops-total[_world]%
             case "shops-total" -> {
                 // %qs_shops-total%
-                if (Util.isNullOrEmpty(args[1])) {
+                if (StringUtils.isEmpty(args[1])) {
                     return String.valueOf(plugin.getShopManager().getAllShops().size());
                 }
 
@@ -75,7 +75,7 @@ public class PAPICache implements Reloadable {
             // %qs_shops-loaded[_world]%
             case "shops-loaded" -> {
                 //%qs_shops-loaded%
-                if (Util.isNullOrEmpty(args[1])) {
+                if (StringUtils.isEmpty(args[1])) {
                     return String.valueOf(plugin.getShopManager().getLoadedShops().size());
                 }
 
@@ -90,7 +90,7 @@ public class PAPICache implements Reloadable {
 
             case "player" -> {
                 // Invalid placeholder (%qs_player_%)
-                if (Util.isNullOrEmpty(args[1])) {
+                if (StringUtils.isEmpty(args[1])) {
                     return null;
                 }
 
@@ -98,7 +98,7 @@ public class PAPICache implements Reloadable {
                     // %qs_player_shops-total[_uuid]%
                     case "shops-total" -> {
                         // %qs_player_shops-total%
-                        if (Util.isNullOrEmpty(args[2])) {
+                        if (StringUtils.isEmpty(args[2])) {
                             return String.valueOf(plugin.getShopManager().getPlayerAllShops(player));
                         }
 
@@ -114,7 +114,7 @@ public class PAPICache implements Reloadable {
                     // %qs_player_shops-loaded[_uuid]%
                     case "shops-loaded" -> {
                         // %qs_shops-loaded%
-                        if (Util.isNullOrEmpty(args[2])) {
+                        if (StringUtils.isEmpty(args[2])) {
                             return String.valueOf(getLoadedPlayerShops(player));
                         }
 
@@ -130,7 +130,7 @@ public class PAPICache implements Reloadable {
                     // %qs_player_shops-inventory-unavailable[_uuid]%
                     case "shops-inventory-unavailable" -> {
                         // %qs_player_shops-inventory-unavailable%
-                        if (Util.isNullOrEmpty(args[2])) {
+                        if (StringUtils.isEmpty(args[2])) {
                             return String.valueOf(getPlayerShopsInventoryUnavailable(player));
                         }
 

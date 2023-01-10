@@ -53,12 +53,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Map.Entry;
 import java.util.logging.Level;
@@ -496,14 +492,6 @@ public class Util {
         }
     }
 
-    @NotNull
-    public static String getTZTimestamp(@NotNull Date date) {
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'"); // Quoted "Z" to indicate UTC, no timezone offset
-        df.setTimeZone(tz);
-        return df.format(date);
-    }
-
     public static int getItemTotalAmountsInMap(Map<Integer, ItemStack> map) {
         int total = 0;
         for (ItemStack value : map.values()) {
@@ -551,20 +539,7 @@ public class Util {
      */
     @NotNull
     public static String getPluginJarPath(@NotNull Plugin plugin) {
-        return getClassPath(plugin.getClass());
-    }
-
-    /**
-     * Gets the location of a class inside of a jar file.
-     *
-     * @param clazz The class to get the location of.
-     * @return The jar path which given class at.
-     */
-    @NotNull
-    public static String getClassPath(@NotNull Class<?> clazz) {
-        String jarPath = clazz.getProtectionDomain().getCodeSource().getLocation().getFile();
-        jarPath = URLDecoder.decode(jarPath, StandardCharsets.UTF_8);
-        return jarPath;
+        return CommonUtil.getClassPath(plugin.getClass());
     }
 
     /**

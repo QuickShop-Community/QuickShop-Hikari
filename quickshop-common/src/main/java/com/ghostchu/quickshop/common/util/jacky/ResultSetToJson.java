@@ -1,4 +1,4 @@
-package com.ghostchu.quickshop.external.com.ti.ems.jacky;
+package com.ghostchu.quickshop.common.util.jacky;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
