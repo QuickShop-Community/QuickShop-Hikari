@@ -1068,7 +1068,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
          */
 
         public boolean load() {
-            try {
+            try (PerfMonitor ignored = new PerfMonitor("Loading Economy Bridge")) {
                 return setupEconomy();
             } catch (Exception e) {
                 if (parent.sentryErrorReporter != null) {
