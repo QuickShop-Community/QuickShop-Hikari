@@ -16,6 +16,7 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -24,6 +25,12 @@ public class QuickShopBukkit extends JavaPlugin {
     private Platform platform;
     private Logger logger;
     private QuickShop quickShop;
+
+    @Override
+    public void reloadConfig() {
+        super.reloadConfig();
+        this.quickShop.reloadConfig();
+    }
 
     @Override
     public void onLoad() {
@@ -43,19 +50,19 @@ public class QuickShopBukkit extends JavaPlugin {
     public void onDisable() {
         logger.info("Forwarding onDisable() to QuickShop instance...");
         this.quickShop.onDisable();
+        logger.info("Finishing up onDisable() in Bootloader...");
+        HandlerList.unregisterAll(this);
+        Bukkit.getScheduler().cancelTasks(this);
+        Bukkit.getServicesManager().unregisterAll(this);
+        Unirest.shutDown(true);
+        Bukkit.getMessenger().unregisterIncomingPluginChannel(this);
     }
 
     @Override
     public void onEnable() {
         logger.info("Forwarding onEnable() to QuickShop instance...");
         this.quickShop.onEnable();
-    }
-
-    @Override
-    public void reloadConfig() {
-        logger.info("Forwarding reloadConfig() to QuickShop instance...");
-        super.reloadConfig();
-        this.quickShop.reloadConfig();
+        logger.info("Finishing up onEnable() in Bootloader...");
     }
 
     /**
@@ -109,6 +116,7 @@ public class QuickShopBukkit extends JavaPlugin {
         this.quickShop = new QuickShop(this, logger, platform);
         logger.info("Forwarding onLoad() to QuickShop instance...");
         this.quickShop.onLoad();
+        logger.info("Finishing up onLoad() in Bootloader...");
     }
 
     @NotNull

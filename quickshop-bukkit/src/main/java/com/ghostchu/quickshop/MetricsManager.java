@@ -13,7 +13,7 @@ public class MetricsManager {
     private void load() {
         this.isMetricsEnabled = plugin.getConfig().getBoolean("disabled-metrics");
         if (isMetricsEnabled) {
-            metrics = new Metrics(plugin.getJavaPlugin(), 14281);
+            this.metrics = new Metrics(plugin.getJavaPlugin(), 14281);
         } else {
             plugin.logger().info("You have disabled metrics, Skipping...");
         }

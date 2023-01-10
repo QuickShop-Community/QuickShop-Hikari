@@ -61,7 +61,6 @@ import com.ghostchu.quickshop.watcher.*;
 import com.ghostchu.simplereloadlib.ReloadManager;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
-import kong.unirest.Unirest;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -753,7 +752,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         new ShopProtectionListener(this, this.shopCache).register();
         new MetricListener(this).register();
         new InternalListener(this).register();
-        if (checkIfBungee()) {
+        if (Util.checkIfBungee()) {
             this.bungeeListener = new BungeeListener(this);
             this.bungeeListener.register();
         }
@@ -898,17 +897,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         Log.debug("QuickShop command registered with those aliases: " + CommonUtil.list2String(quickShopCommand.getAliases()));
     }
 
-    private boolean checkIfBungee() {
-        if (PackageUtil.parsePackageProperly("forceBungeeCord").asBoolean()) {
-            return true;
-        }
-        ConfigurationSection section = Bukkit.spigot().getConfig().getConfigurationSection("settings");
-        if (section == null) {
-            return false;
-        }
-        return section.getBoolean("settings.bungeecord");
-    }
-
     private void registerOngoingFee() {
         if (getConfig().getBoolean("shop.ongoing-fee.enable")) {
             ongoingFeeWatcher = new OngoingFeeWatcher(this);
@@ -973,23 +961,12 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             logger.info("Shutting down update watcher...");
             this.updateWatcher.uninit();
         }
-        logger.info("Cleanup listeners...");
-        HandlerList.unregisterAll(javaPlugin);
         logger.info("Shutting down 3rd-party integrations...");
         unload3rdParty();
-        logger.info("Cleanup scheduled tasks...");
-        Bukkit.getScheduler().cancelTasks(javaPlugin);
-        logger.info("Unregistering plugin services...");
-        Bukkit.getServicesManager().unregisterAll(javaPlugin);
         if (this.getSqlManager() != null) {
             logger.info("Shutting down database connections...");
             EasySQL.shutdownManager(this.getSqlManager());
         }
-        logger.info("Shutting down Unirest instances...");
-        Unirest.shutDown(true);
-        logger.info("Finishing remaining misc work...");
-        Bukkit.getMessenger().unregisterIncomingPluginChannel(javaPlugin, "BungeeCord");
-        logger.info("All shutdown work has been completed.");
     }
 
     private void unload3rdParty() {
