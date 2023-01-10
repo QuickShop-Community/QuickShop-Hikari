@@ -15,6 +15,7 @@ import java.sql.SQLException;
  * A Util to execute all SQLs.
  */
 @Deprecated
+@SuppressWarnings("all")
 public class SimpleDatabaseHelperV1 {
 
     @NotNull
