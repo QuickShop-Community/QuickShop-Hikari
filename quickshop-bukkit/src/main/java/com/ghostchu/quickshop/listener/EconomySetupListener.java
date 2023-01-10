@@ -14,7 +14,7 @@ public class EconomySetupListener extends AbstractQSListener {
     @EventHandler
     public void onPluginEnable(PluginEnableEvent event) {
         if (plugin.getEconomy() == null) {
-            plugin.loadEcon();
+            plugin.getEconomyLoader().load();
         }
     }
 

@@ -109,6 +109,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @Getter
     private final ShopControlPanelManager shopControlPanelManager = new SimpleShopControlPanelManager(this);
     private final Map<String, String> addonRegisteredMapping = new HashMap<>();
+    @Getter
     private final QuickShopBukkit javaPlugin;
     private final Logger logger;
     @Getter
@@ -233,6 +234,8 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @Getter
     private BungeeListener bungeeListener;
     private RankLimiter rankLimiter;
+    @Getter
+    private EconomyLoader economyLoader;
 
     public QuickShop(QuickShopBukkit javaPlugin, Logger logger, Platform platform) {
         this.javaPlugin = javaPlugin;
@@ -263,10 +266,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         return permissionManager;
     }
 
-    @NotNull
-    public QuickShopBukkit getJavaPlugin() {
-        return javaPlugin;
-    }
 
     /**
      * Early than onEnable, make sure instance was loaded in first time.
@@ -435,12 +434,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         return logger;
     }
 
-    @NotNull
-    @Deprecated(forRemoval = true)
-    public BukkitAudiences getAudience() {
-        return this.audience;
-    }
-
     @Override
     public CommandManager getCommandManager() {
         return this.commandManager;
@@ -581,9 +574,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         // This should be inited before shop manager
         this.registerDisplayAutoDespawn();
         logger.info("Registering commands...");
+        this.permissionChecker = new PermissionChecker(this);
         loadCommandHandler();
         this.shopManager = new SimpleShopManager(this);
-        this.permissionChecker = new PermissionChecker(this);
         // Limit
         //this.registerLimitRanks();
         this.rankLimiter = new SimpleRankLimiter(this);
@@ -615,7 +608,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         /* Delay the Economy system load, give a chance to let economy system register. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
         Log.debug("Scheduled economy system loading.");
-        Bukkit.getScheduler().runTaskLater(javaPlugin, this::loadEcon, 1);
+        Bukkit.getScheduler().runTaskLater(javaPlugin, () -> economyLoader.load(), 1);
         registerTasks();
         Log.debug("DisplayItem selected: " + AbstractDisplayItem.getNowUsing().name());
         registerCommunicationChannels();
@@ -813,93 +806,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
     }
 
-    /**
-     * Tries to load the economy and its core. If this fails, it will try to use vault. If that fails,
-     * it will return false.
-     *
-     * @return true if successful, false if the core is invalid or is not found, and vault cannot be
-     * used.
-     */
-
-    public boolean loadEcon() {
-        try {
-            switch (EconomyType.fromID(getConfig().getInt("economy-type"))) {
-                case UNKNOWN -> {
-                    setupBootError(new BootError(logger, "Can't load the Economy provider, invalid value in config.yml."), true);
-                    return false;
-                }
-                case VAULT -> {
-                    economy = new Economy_Vault(this);
-                    Log.debug("Economy bridge selected: Vault");
-                    if (getConfig().getDouble("tax", 0.0d) > 0) {
-                        try {
-                            String taxAccount = getConfig().getString("tax-account", "tax");
-                            if (!taxAccount.isEmpty()) {
-                                OfflinePlayer tax;
-                                if (CommonUtil.isUUID(taxAccount)) {
-                                    tax = Bukkit.getOfflinePlayer(UUID.fromString(taxAccount));
-                                } else {
-                                    tax = Bukkit.getOfflinePlayer((Objects.requireNonNull(taxAccount)));
-                                }
-                                Economy_Vault vault = (Economy_Vault) economy;
-                                if (vault.isValid()) {
-                                    if (!Objects.requireNonNull(vault.getVault()).hasAccount(tax)) {
-                                        try {
-                                            Log.debug("Tax account doesn't exists: " + tax);
-                                            logger.warn("QuickShop detected that no tax account exists and will try to create one. If you see any errors, please change the tax-account name in the config.yml to that of the Server owner.");
-                                            if (vault.getVault().createPlayerAccount(tax)) {
-                                                logger.info("Tax account created.");
-                                            } else {
-                                                logger.warn("Cannot create tax-account, please change the tax-account name in the config.yml to that of the server owner");
-                                            }
-                                        } catch (Exception ignored) {
-                                        }
-                                        if (!vault.getVault().hasAccount(tax)) {
-                                            logger.warn("Player for the Tax-account has never played on this server before and we couldn't create an account. This may cause server lag or economy errors, therefore changing the name is recommended. You may ignore this warning if it doesn't cause any issues.");
-                                        }
-                                    }
-
-                                }
-                            }
-                        } catch (Exception fail) {
-                            Log.debug("Tax account auto-repair failed: " + fail.getMessage());
-                        }
-                    }
-                }
-                case GEMS_ECONOMY -> {
-                    economy = new Economy_GemsEconomy(this);
-                    Log.debug("Economy bridge selected: GemsEconomy");
-                }
-                case TNE -> {
-                    economy = new Economy_TNE(this);
-                    Log.debug("Economy bridge selected: The New Economy");
-                }
-                default -> Log.debug("Economy bridge selected: Service");
-            }
-            economy = ServiceInjector.getInjectedService(AbstractEconomy.class, economy);
-            if (economy == null) {
-                Log.debug("No economy bridge found.");
-                return false;
-            }
-            Log.debug("Selected economy bridge: " + economy.getName());
-            if (!economy.isValid()) {
-                setupBootError(BuiltInSolution.econError(), false);
-                return false;
-            }
-
-        } catch (Exception e) {
-            if (sentryErrorReporter != null) {
-                sentryErrorReporter.ignoreThrow();
-            }
-            logger.error("Something went wrong while trying to load the economy system!");
-            logger.error("QuickShop was unable to hook into an economy system (Couldn't find Vault or Reserve)!");
-            logger.error("QuickShop can NOT enable properly!");
-            setupBootError(BuiltInSolution.econError(), false);
-            logger.error("Plugin Listeners have been disabled. Please fix this economy issue.", e);
-            return false;
-        }
-        return true;
-    }
 
     private void registerTasks() {
         calendarWatcher = new CalendarWatcher(this);
@@ -980,6 +886,18 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         }
     }
 
+    public void registerQuickShopCommands() {
+        commandManager = new SimpleCommandManager(this);
+        List<String> customCommands = getConfig().getStringList("custom-commands");
+        Command quickShopCommand = new QuickShopCommand("qs", commandManager, new ArrayList<>(new HashSet<>(customCommands)));
+        try {
+            platform.registerCommand("quickshop-hikari", quickShopCommand);
+        } catch (Exception e) {
+            logger.warn("Failed to register command aliases", e);
+        }
+        Log.debug("QuickShop command registered with those aliases: " + CommonUtil.list2String(quickShopCommand.getAliases()));
+    }
+
     private boolean checkIfBungee() {
         if (PackageUtil.parsePackageProperly("forceBungeeCord").asBoolean()) {
             return true;
@@ -1002,18 +920,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 ongoingFeeWatcher = null;
             }
         }
-    }
-
-    public void registerQuickShopCommands() {
-        commandManager = new SimpleCommandManager(this);
-        List<String> customCommands = getConfig().getStringList("custom-commands");
-        Command quickShopCommand = new QuickShopCommand("qs", commandManager, new ArrayList<>(new HashSet<>(customCommands)));
-        try {
-            platform.registerCommand("quickshop-hikari", quickShopCommand);
-        } catch (Exception e) {
-            logger.warn("Failed to register command aliases", e);
-        }
-        Log.debug("QuickShop command registered with those aliases: " + CommonUtil.list2String(quickShopCommand.getAliases()));
     }
 
     public final void onDisable() {
@@ -1146,4 +1052,101 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         H2
     }
 
+    public static class EconomyLoader {
+        private final QuickShop parent;
+
+        public EconomyLoader(QuickShop parent) {
+            this.parent = parent;
+        }
+
+        /**
+         * Tries to load the economy and its core. If this fails, it will try to use vault. If that fails,
+         * it will return false.
+         *
+         * @return true if successful, false if the core is invalid or is not found, and vault cannot be
+         * used.
+         */
+
+        public boolean load() {
+            try {
+                return setupEconomy();
+            } catch (Exception e) {
+                if (parent.sentryErrorReporter != null) {
+                    parent.sentryErrorReporter.ignoreThrow();
+                }
+                parent.logger().error("Something went wrong while trying to load the economy system!");
+                parent.logger().error("QuickShop was unable to hook into an economy system (Couldn't find Vault or Reserve)!");
+                parent.logger().error("QuickShop can NOT enable properly!");
+                parent.setupBootError(BuiltInSolution.econError(), false);
+                parent.logger().error("Plugin Listeners have been disabled. Please fix this economy issue.", e);
+                return false;
+            }
+        }
+
+        private boolean setupEconomy() throws Exception {
+            AbstractEconomy abstractEconomy = switch (EconomyType.fromID(parent.getConfig().getInt("economy-type"))) {
+                case VAULT -> loadVault();
+                case GEMS_ECONOMY -> loadGemsEconomy();
+                case TNE -> loadTNE();
+                default -> null;
+            };
+            abstractEconomy = ServiceInjector.getInjectedService(AbstractEconomy.class, abstractEconomy);
+            if (abstractEconomy == null) {
+                Log.debug("No economy bridge found.");
+                return false;
+            }
+            if (!abstractEconomy.isValid()) {
+                parent.setupBootError(BuiltInSolution.econError(), false);
+                return false;
+            }
+            parent.logger().info("Selected economy bridge: {}", abstractEconomy.getName());
+            return true;
+        }
+
+        // Vault may create exception, we need catch it.
+        @SuppressWarnings("RedundantThrows")
+        @Nullable
+        private AbstractEconomy loadVault() throws Exception {
+            Economy_Vault vault = new Economy_Vault(parent);
+            boolean taxEnabled = parent.getConfig().getDouble("tax", 0.0d) > 0;
+            String taxAccount = parent.getConfig().getString("tax-account", "tax");
+            if (!vault.isValid()) {
+                return null;
+            }
+            if (!taxEnabled) {
+                return vault;
+            }
+            if (StringUtils.isEmpty(taxAccount)) {
+                return vault;
+            }
+            OfflinePlayer tax;
+            if (CommonUtil.isUUID(taxAccount)) {
+                tax = Bukkit.getOfflinePlayer(UUID.fromString(taxAccount));
+            } else {
+                tax = Bukkit.getOfflinePlayer(taxAccount);
+            }
+            if (!Objects.requireNonNull(vault.getVault()).hasAccount(tax)) {
+                Log.debug("Tax account doesn't exists: " + tax);
+                parent.logger().warn("QuickShop detected that no tax account exists and will try to create one. If you see any errors, please change the tax-account name in the config.yml to that of the Server owner.");
+                if (vault.getVault().createPlayerAccount(tax)) {
+                    parent.logger().info("Tax account created.");
+                } else {
+                    parent.logger().warn("Cannot create tax-account, please change the tax-account name in the config.yml to that of the server owner");
+                }
+                if (!vault.getVault().hasAccount(tax)) {
+                    parent.logger().warn("Player for the Tax-account has never played on this server before and we couldn't create an account. This may cause server lag or economy errors, therefore changing the name is recommended. You may ignore this warning if it doesn't cause any issues.");
+                }
+            }
+            return vault;
+        }
+
+        private @NotNull AbstractEconomy loadGemsEconomy() {
+            return new Economy_GemsEconomy(parent);
+        }
+
+        @NotNull
+        private AbstractEconomy loadTNE() {
+            return new Economy_TNE(parent);
+        }
+    }
 }
