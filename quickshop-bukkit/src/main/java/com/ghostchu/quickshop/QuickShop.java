@@ -591,7 +591,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         /* Load all shops. */
         shopLoader = new ShopLoader(this);
         shopLoader.loadShops();
-        Util.asyncThreadRun(this::bakeShopsOwnerCache);
+        QuickExecutor.getCommonExecutor().submit(this::bakeShopsOwnerCache);
         logger.info("Registering listeners...");
         this.interactionController = new InteractionController(this);
         // Register events
