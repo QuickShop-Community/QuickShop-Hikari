@@ -143,7 +143,7 @@ public class ItemMarker implements Reloadable, SubPasteItem {
         HTMLTable table = new HTMLTable(2);
         table.setTableTitle("Name", "Item");
         for (Map.Entry<String, ItemStack> entry : stacks.entrySet()) {
-            table.insert(entry.getKey(), PlainTextComponentSerializer.plainText().serialize(Util.getItemStackName(entry.getValue())) + " [" + entry.getValue().getType().name() + "]");
+            table.insert(entry.getKey(), PlainTextComponentSerializer.plainText().serialize(Util.getItemStackName(entry.getValue())) + " [" + entry.getValue().getType().getKey() + "]");
         }
         return table.render();
     }

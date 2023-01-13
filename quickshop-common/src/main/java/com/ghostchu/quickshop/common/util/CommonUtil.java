@@ -288,6 +288,17 @@ public class CommonUtil {
     }
 
     /**
+     * Convert strList to String. E.g "Foo, Bar"
+     *
+     * @param strList Target list
+     * @return str
+     */
+    @NotNull
+    public static String list2StringBreaks(@NotNull Collection<?> strList) {
+        return String.join("\n", strList.stream().map(Object::toString).toList());
+    }
+
+    /**
      * Matches the given lists but disordered.
      *
      * @param list1 List1

@@ -43,6 +43,7 @@ import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.yaml.snakeyaml.DumperOptions;
@@ -73,6 +74,28 @@ public class Util {
 
     private Util() {
     }
+
+    @Deprecated
+    @ApiStatus.Internal
+    public static EnumMap<Material, Integer> getCustomStacksize() {
+        return CUSTOM_STACKSIZE;
+    }
+
+    @Deprecated
+    @ApiStatus.Internal
+    public static int getBypassedCustomStacksize() {
+        return BYPASSED_CUSTOM_STACKSIZE;
+    }
+
+    /**
+     * Use Util#isShopable instead
+     */
+    @ApiStatus.Internal
+    @Deprecated
+    public static EnumSet<Material> getShopables() {
+        return SHOPABLES;
+    }
+
 
     /**
      * Execute the Runnable in async thread.
