@@ -5,11 +5,11 @@
     <parent>
         <artifactId>quickshop-hikari</artifactId>
         <groupId>com.ghostchu</groupId>
-        <version>4.0.0.0-SNAPSHOT</version>
+        <version>4.0.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>quickshop-hikari-api</artifactId>
+    <artifactId>quickshop-api</artifactId>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
