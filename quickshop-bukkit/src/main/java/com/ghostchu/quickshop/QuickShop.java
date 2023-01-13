@@ -234,7 +234,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     private BungeeListener bungeeListener;
     private RankLimiter rankLimiter;
     @Getter
-    private EconomyLoader economyLoader;
+    private EconomyLoader economyLoader = new EconomyLoader(this);
 
     public QuickShop(QuickShopBukkit javaPlugin, Logger logger, Platform platform) {
         this.javaPlugin = javaPlugin;
