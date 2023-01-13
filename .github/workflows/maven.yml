@@ -5,9 +5,9 @@ name: Maven
 
 on:
   push:
-    branches: [ hikari ]
+    branches: [ hikari, cleanup ]
   pull_request:
-    branches: [ hikari ]
+    branches: [ hikari, cleanup ]
 
 jobs:
   build:
