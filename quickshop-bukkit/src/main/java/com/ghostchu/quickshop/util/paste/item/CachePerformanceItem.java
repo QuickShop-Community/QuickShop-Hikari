@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.FastPlayerFinder;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.google.common.cache.CacheStats;
 import org.jetbrains.annotations.NotNull;
@@ -45,7 +46,7 @@ public class CachePerformanceItem implements SubPasteItem {
     }
 
     private String buildPlayerLookupCache() {
-        CacheStats stats = plugin.getPlayerFinder().getNameCache().stats();
+        CacheStats stats = ((FastPlayerFinder) plugin.getPlayerFinder()).getNameCache().stats();
         return renderTable(stats);
     }
 

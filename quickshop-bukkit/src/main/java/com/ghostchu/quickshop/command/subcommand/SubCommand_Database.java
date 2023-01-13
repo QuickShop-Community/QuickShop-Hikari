@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.database.DataTables;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
+import com.ghostchu.quickshop.util.FastPlayerFinder;
 import com.ghostchu.quickshop.util.Util;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.command.CommandSender;
@@ -127,7 +128,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
                     .createDelete()
                     .build()
                     .executeAsync((lines) -> {
-                        plugin.getPlayerFinder().getNameCache().invalidateAll();
+                        ((FastPlayerFinder) plugin.getPlayerFinder()).getNameCache().invalidateAll();
                         plugin.text().of(sender, "database.purge-players-completed", lines).send();
                     }, (error, sqlAction) -> {
                         plugin.logger().error("Failed to purge players caches!", error);
