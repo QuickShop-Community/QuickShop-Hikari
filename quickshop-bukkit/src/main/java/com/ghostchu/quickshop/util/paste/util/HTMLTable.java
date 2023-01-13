@@ -48,10 +48,16 @@ public class HTMLTable {
      *
      * @param data The data to insert, any more columns which overflowed than maxColumns will be ignored
      */
-    public void insert(@NotNull String... data) {
+    public void insert(@NotNull Object... data) {
         String[] f = new String[columns];
         Arrays.fill(f, "");
-        System.arraycopy(data, 0, f, 0, Math.min(data.length, columns));
+        for (int i = 0; i < data.length; i++) {
+            Object obj = data[i];
+            if (obj == null) {
+                obj = "null";
+            }
+            f[i] = obj.toString();
+        }
         if (firstColumnBold) {
             if (!StringUtils.isEmpty(f[0])) {
                 f[0] = "<b>" + f[0] + "</b>";

@@ -30,6 +30,8 @@ public class PasteGenerator {
             """;
     private static final String DOCUMENT_FOOTER = """
                 </main>
+                <br />
+                <br />
                 </body>
                 <footer>
                    <p>
@@ -172,11 +174,15 @@ public class PasteGenerator {
             table {
               text-align: justify;
               width: 100%;
-              border-collapse: collapse; }
+              border-collapse: collapse;
+              word-wrap:break-word;
+              word-break:break-all;}
                         
             td, th {
               padding: 0.5em;
-              border-bottom: 1px solid #f1f1f1; }
+              border-bottom: 1px solid #f1f1f1;
+              word-wrap:break-word;
+              word-break:break-all;}
                         
             /* Buttons, forms and input */
             input, textarea {
@@ -253,6 +259,10 @@ public class PasteGenerator {
         add(new TimingsLogsItem());
         add(new CronLogsItem());
         add(new PerformanceLogsItem());
+        PasteManager pasteManager = QuickShop.getInstance().getPasteManager();
+        if (pasteManager != null) {
+            pasteManager.getAllRegistered().forEach(this::add);
+        }
     }
 
     public void add(@NotNull PasteItem pasteItem) {
@@ -264,7 +274,13 @@ public class PasteGenerator {
         StringBuilder builder = new StringBuilder();
         builder.append(bakeHeader()).append("\n");
         for (PasteItem pasteItem : pasteItems) {
-            builder.append(pasteItem.toHTML()).append("\n");
+            try {
+                builder.append(pasteItem.toHTML()).append("\n");
+            } catch (Exception e) {
+                e.printStackTrace();
+                builder.append("<h3># ").append(pasteItem.getClass().getName()).append("</h3>")
+                        .append("<br/>").append("Failed to render this paste item: <br/>").append(e.getMessage());
+            }
         }
         builder.append(bakeFooter());
         return builder.toString();

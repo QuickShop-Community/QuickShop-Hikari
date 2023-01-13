@@ -9,6 +9,8 @@ import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
+import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.google.common.collect.ImmutableList;
 import lombok.Data;
@@ -31,7 +33,7 @@ import java.util.List;
 
 @Data
 @SuppressWarnings("unchecked")
-public class SimpleCommandManager implements CommandManager, TabCompleter, CommandExecutor {
+public class SimpleCommandManager implements CommandManager, TabCompleter, CommandExecutor, SubPasteItem {
     private static final String[] EMPTY_ARGS = new String[0];
     private final List<CommandContainer> cmds = Collections.synchronizedList(new ArrayList<>()); //Because we open to allow register, so this should be thread-safe
     private final QuickShop plugin;
@@ -532,6 +534,21 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     @Override
     public void unregisterCmd(@NotNull CommandContainer container) {
         cmds.remove(container);
+    }
+
+    @Override
+    public @NotNull String genBody() {
+        HTMLTable table = new HTMLTable(2);
+        table.setTableTitle("Prefix", "Permissions", "Selective Permissions", "Executor Type");
+        for (CommandContainer cmd : this.cmds) {
+            table.insert(cmd.getPrefix(), CommonUtil.list2String(cmd.getPermissions()), CommonUtil.list2String(cmd.getSelectivePermissions()), cmd.getExecutorType());
+        }
+        return table.render();
+    }
+
+    @Override
+    public @NotNull String getTitle() {
+        return "Command Manager";
     }
 
     private enum Action {

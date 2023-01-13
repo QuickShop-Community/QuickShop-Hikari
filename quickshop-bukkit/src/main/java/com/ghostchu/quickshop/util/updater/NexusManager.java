@@ -2,6 +2,8 @@ package com.ghostchu.quickshop.util.updater;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
+import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
@@ -17,10 +19,11 @@ import org.jetbrains.annotations.Nullable;
 import org.xml.sax.SAXException;
 
 import java.io.StringReader;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.logging.Level;
 
-public class NexusManager {
+public class NexusManager implements SubPasteItem {
     private static final String NEXUS_ROOT_METADATA_URL = "https://repo.codemc.io/repository/maven-releases/com/ghostchu/quickshop-hikari/maven-metadata.xml";
     private final QuickShop plugin;
     private NexusMetadata cachedMetadata;
@@ -30,6 +33,7 @@ public class NexusManager {
 
     public NexusManager(QuickShop plugin) {
         this.plugin = plugin;
+        plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
     }
 
     @NotNull
@@ -86,6 +90,19 @@ public class NexusManager {
             Log.debug("Failed to parse metadata from Nexus: " + e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public @NotNull String genBody() {
+        HTMLTable table = new HTMLTable(3);
+        table.setTableTitle("Last Update", "Latest Version", "Release Version");
+        table.insert(Instant.ofEpochMilli(cachedMetadata.getLastUpdate()).toString(), cachedMetadata.getLatestVersion(), cachedMetadata.getReleaseVersion());
+        return table.render();
+    }
+
+    @Override
+    public @NotNull String getTitle() {
+        return "NexusManager (updater)";
     }
 
     @Data

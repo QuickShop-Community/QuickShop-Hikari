@@ -13,6 +13,9 @@ import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.paste.GuavaCacheRender;
+import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
+import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -44,7 +47,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-public class SimpleTextManager implements TextManager, Reloadable {
+public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem {
     private static final String DEFAULT_LOCALE = "en_us";
     private static final String LOCALE_MAPPING_SYNTAX = "locale";
     private static final String CROWDIN_LANGUAGE_FILE_PATH = "/hikari/crowdin/lang/%locale%/messages.yml";
@@ -54,17 +57,20 @@ public class SimpleTextManager implements TextManager, Reloadable {
     private final LanguageFilesManager languageFilesManager = new LanguageFilesManager();
     private final Set<String> availableLanguages = new LinkedHashSet<>();
     private final Cache<String, String> languagesCache =
-            CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).build();
+            CacheBuilder.newBuilder().expireAfterAccess(30, TimeUnit.MINUTES).recordStats().build();
+    private final String crowdinHost;
     @Nullable
     private CrowdinOTA crowdinOTA;
 
     public SimpleTextManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
+        plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
+        this.crowdinHost = PackageUtil.parsePackageProperly("crowdinHost").asString("https://crowdinota.hikari.r2.quickshop-powered.top");
         if (PackageUtil.parsePackageProperly("enableCrowdinOTA").asBoolean(true)) {
             try {
                 plugin.logger().info("Please wait us fetch the translation updates from Crowdin OTA service...");
-                this.crowdinOTA = new CrowdinOTA(PackageUtil.parsePackageProperly("crowdinHost").asString("https://crowdinota.hikari.r2.quickshop-powered.top"), new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
+                this.crowdinOTA = new CrowdinOTA(crowdinHost, new File(Util.getCacheFolder(), "crowdin-ota"), Unirest.primaryInstance());
             } catch (Exception e) {
                 plugin.logger().warn("Cannot initialize the CrowdinOTA instance!", e);
             }
@@ -294,7 +300,31 @@ public class SimpleTextManager implements TextManager, Reloadable {
     public ReloadResult reloadModule() {
         Util.asyncThreadRun(this::load);
         return ReloadResult.builder().status(ReloadStatus.SUCCESS).build();
-    }    /**
+    }
+
+    @Override
+    public @NotNull String genBody() {
+        StringJoiner joiner = new StringJoiner("<br/>");
+        joiner.add("<h5>Metadata</h5>");
+        HTMLTable meta = new HTMLTable(2, true);
+        meta.insert("Fallback Language", DEFAULT_LOCALE);
+        meta.insert("Locale Mapping Prefix", LOCALE_MAPPING_SYNTAX);
+        meta.insert("Crowdin Language File Path", CROWDIN_LANGUAGE_FILE_PATH);
+        meta.insert("Crowdin Distribution URL", crowdinHost);
+        meta.insert("Available Languages", String.valueOf(availableLanguages.size()));
+        meta.insert("Post Processors", String.valueOf(postProcessors.size()));
+        joiner.add(meta.render());
+        joiner.add("<h5>Caching</h5>");
+        joiner.add(GuavaCacheRender.renderTable(languagesCache.stats()));
+        return joiner.toString();
+    }
+
+    @Override
+    public @NotNull String getTitle() {
+        return "Text Manager";
+    }
+
+    /**
      * Gets specific locale status
      *
      * @param locale The locale
@@ -557,7 +587,6 @@ public class SimpleTextManager implements TextManager, Reloadable {
             return texts;
         }
     }
-
 
 
     @Override

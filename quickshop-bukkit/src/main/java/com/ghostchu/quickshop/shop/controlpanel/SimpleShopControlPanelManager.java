@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopControlPanel;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
+import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -17,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class SimpleShopControlPanelManager implements ShopControlPanelManager {
+public class SimpleShopControlPanelManager implements ShopControlPanelManager, SubPasteItem {
     private final QuickShop plugin;
     private final Lock LOCK = new ReentrantLock();
     private final Map<ShopControlPanel, Integer> registry = new LinkedHashMap<>();
@@ -95,5 +96,15 @@ public class SimpleShopControlPanelManager implements ShopControlPanelManager {
             LOCK.unlock();
         }
         // Doesn't need resort
+    }
+
+    @Override
+    public @NotNull String genBody() {
+        return "<p>Registered Control Panels: " + registry.size() + "</p>";
+    }
+
+    @Override
+    public @NotNull String getTitle() {
+        return "Shop ControlPanel Manager";
     }
 }

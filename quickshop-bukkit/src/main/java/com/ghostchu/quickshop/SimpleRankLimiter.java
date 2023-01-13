@@ -1,6 +1,8 @@
 package com.ghostchu.quickshop;
 
 import com.ghostchu.quickshop.api.RankLimiter;
+import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
+import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class SimpleRankLimiter implements Reloadable, RankLimiter {
+public class SimpleRankLimiter implements Reloadable, RankLimiter, SubPasteItem {
     private final QuickShop plugin;
     private final Map<String, Integer> limits = new HashMap<>();
     /**
@@ -26,6 +28,7 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter {
     public SimpleRankLimiter(QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
+        plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
         load();
     }
 
@@ -80,5 +83,20 @@ public class SimpleRankLimiter implements Reloadable, RankLimiter {
     public ReloadResult reloadModule() throws Exception {
         load();
         return Reloadable.super.reloadModule();
+    }
+
+    @Override
+    public @NotNull String genBody() {
+        HTMLTable table = new HTMLTable(2);
+        table.setTableTitle("Permission", "Amount");
+        for (Map.Entry<String, Integer> entry : limits.entrySet()) {
+            table.insert(entry.getKey(), String.valueOf(entry.getValue()));
+        }
+        return table.render();
+    }
+
+    @Override
+    public @NotNull String getTitle() {
+        return "Rank Limiter";
     }
 }

@@ -2,7 +2,7 @@ package com.ghostchu.quickshop.util.paste.item;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.FastPlayerFinder;
-import com.ghostchu.quickshop.util.paste.util.HTMLTable;
+import com.ghostchu.quickshop.util.paste.GuavaCacheRender;
 import com.google.common.cache.CacheStats;
 import org.jetbrains.annotations.NotNull;
 
@@ -57,18 +57,7 @@ public class CachePerformanceItem implements SubPasteItem {
 
     @NotNull
     private String renderTable(@NotNull CacheStats stats) {
-        HTMLTable table = new HTMLTable(2, true);
-        table.insert("Average Load Penalty", round(stats.averageLoadPenalty()));
-        table.insert("Hit Rate", round(stats.hitRate()));
-        table.insert("Miss Rate", round(stats.missRate()));
-        table.insert("Hit Count", String.valueOf(stats.hitCount()));
-        table.insert("Miss Count", String.valueOf(stats.missCount()));
-        table.insert("Load Count", String.valueOf(stats.loadCount()));
-        table.insert("Load Success Count", String.valueOf(stats.loadSuccessCount()));
-        table.insert("Eviction Count", String.valueOf(stats.evictionCount()));
-        table.insert("Request Count", String.valueOf(stats.requestCount()));
-        table.insert("Total Loading Time", String.valueOf(stats.totalLoadTime()));
-        return table.render();
+        return GuavaCacheRender.renderTable(stats);
     }
 
     @NotNull

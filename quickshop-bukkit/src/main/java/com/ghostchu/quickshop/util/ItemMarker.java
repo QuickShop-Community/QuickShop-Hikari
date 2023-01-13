@@ -2,8 +2,11 @@ package com.ghostchu.quickshop.util;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
+import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -18,12 +21,11 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
 
-public class ItemMarker implements Reloadable {
+public class ItemMarker implements Reloadable, SubPasteItem {
+    private static final String NAME_REG_EXP = "[a-zA-Z0-9_]*";
     private final QuickShop plugin;
     private final Map<String, ItemStack> stacks = new HashMap<>();
     private final File file;
-
-    private static final String NAME_REG_EXP = "[a-zA-Z0-9_]*";
     //private static final String NAME_REG_EXP = "\\w";
     private final Pattern namePattern = Pattern.compile(NAME_REG_EXP);
     private YamlConfiguration configuration;
@@ -33,6 +35,7 @@ public class ItemMarker implements Reloadable {
         file = new File(plugin.getDataFolder(), "items-lookup.yml");
         init();
         plugin.getReloadManager().register(this);
+        plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
     }
 
     public void init() {
@@ -59,6 +62,11 @@ public class ItemMarker implements Reloadable {
             Log.permission(Level.SEVERE, "Failed to create default items configuration file");
             plugin.logger().error("Failed to create default items configuration", e);
         }
+    }
+
+    @NotNull
+    public static String getNameRegExp() {
+        return NAME_REG_EXP;
     }
 
     @Nullable
@@ -130,9 +138,19 @@ public class ItemMarker implements Reloadable {
         }
     }
 
-    @NotNull
-    public static String getNameRegExp() {
-        return NAME_REG_EXP;
+    @Override
+    public @NotNull String genBody() {
+        HTMLTable table = new HTMLTable(2);
+        table.setTableTitle("Name", "Item");
+        for (Map.Entry<String, ItemStack> entry : stacks.entrySet()) {
+            table.insert(entry.getKey(), PlainTextComponentSerializer.plainText().serialize(Util.getItemStackName(entry.getValue())) + " [" + entry.getValue().getType().name() + "]");
+        }
+        return table.render();
+    }
+
+    @Override
+    public @NotNull String getTitle() {
+        return "Item Marker";
     }
 
     public enum OperationResult {

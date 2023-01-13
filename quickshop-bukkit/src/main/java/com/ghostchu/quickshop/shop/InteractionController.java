@@ -1,6 +1,8 @@
 package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
+import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,7 +15,7 @@ import java.nio.file.Files;
 import java.util.EnumMap;
 import java.util.Map;
 
-public class InteractionController implements Reloadable {
+public class InteractionController implements Reloadable, SubPasteItem {
 
     private final QuickShop plugin;
     private final Map<Interaction, InteractionBehavior> behaviorMap = new EnumMap<>(Interaction.class);
@@ -22,6 +24,7 @@ public class InteractionController implements Reloadable {
         this.plugin = plugin;
         loadInteractionConfig();
         plugin.getReloadManager().register(this);
+        plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
     }
 
     public void loadInteractionConfig() {
@@ -63,6 +66,21 @@ public class InteractionController implements Reloadable {
     public ReloadResult reloadModule() throws Exception {
         loadInteractionConfig();
         return Reloadable.super.reloadModule();
+    }
+
+    @Override
+    public @NotNull String genBody() {
+        HTMLTable table = new HTMLTable(2);
+        table.setTableTitle("Interaction", "Behavior");
+        for (Interaction interaction : Interaction.values()) {
+            table.insert(interaction.name(), getBehavior(interaction).name());
+        }
+        return table.render();
+    }
+
+    @Override
+    public @NotNull String getTitle() {
+        return "Interaction Controller";
     }
 
     public enum Interaction {

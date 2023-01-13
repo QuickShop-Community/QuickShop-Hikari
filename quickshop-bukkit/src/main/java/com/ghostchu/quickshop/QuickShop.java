@@ -53,6 +53,7 @@ import com.ghostchu.quickshop.util.envcheck.*;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.matcher.item.BukkitItemMatcherImpl;
 import com.ghostchu.quickshop.util.matcher.item.QuickShopItemMatcherImpl;
+import com.ghostchu.quickshop.util.paste.PasteManager;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.quickshop.util.reporter.error.RollbarErrorReporter;
 import com.ghostchu.quickshop.util.updater.NexusManager;
@@ -234,7 +235,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     private BungeeListener bungeeListener;
     private RankLimiter rankLimiter;
     @Getter
-    private EconomyLoader economyLoader = new EconomyLoader(this);
+    private final EconomyLoader economyLoader = new EconomyLoader(this);
+    @Getter
+    private final PasteManager pasteManager = new PasteManager();
 
     public QuickShop(QuickShopBukkit javaPlugin, Logger logger, Platform platform) {
         this.javaPlugin = javaPlugin;

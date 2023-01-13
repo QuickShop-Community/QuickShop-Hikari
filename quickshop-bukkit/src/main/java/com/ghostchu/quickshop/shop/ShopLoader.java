@@ -13,6 +13,7 @@ import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.google.common.reflect.TypeToken;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,7 +39,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * A class allow plugin load shops fast and simply.
  */
-public class ShopLoader {
+public class ShopLoader implements SubPasteItem {
 
     private final QuickShop plugin;
     /* This may contains broken shop, must use null check before load it. */
@@ -227,6 +228,16 @@ public class ShopLoader {
             Log.debug("Shop owner not exist on this server, did you have reset the playerdata?");
         }
         return false;
+    }
+
+    @Override
+    public @NotNull String genBody() {
+        return "<p>Errors: " + errors + "</p>";
+    }
+
+    @Override
+    public @NotNull String getTitle() {
+        return "Shop Loader";
     }
 
     @Getter

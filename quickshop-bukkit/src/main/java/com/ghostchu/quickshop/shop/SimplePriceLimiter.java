@@ -4,10 +4,14 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
+import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
+import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,15 +27,12 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-public class SimplePriceLimiter implements Reloadable, PriceLimiter {
+public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteItem {
     private final QuickShop plugin;
     private final Map<String, RuleSet> rules = new LinkedHashMap<>();
     private boolean wholeNumberOnly = false;
@@ -42,6 +43,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
         this.plugin = plugin;
         loadConfiguration();
         plugin.getReloadManager().register(this);
+        plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
     }
 
     public void loadConfiguration() {
@@ -190,6 +192,36 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter {
     public ReloadResult reloadModule() throws Exception {
         loadConfiguration();
         return Reloadable.super.reloadModule();
+    }
+
+    @Override
+    public @NotNull String genBody() {
+        StringJoiner joiner = new StringJoiner("<br/>");
+        joiner.add("<h5>Metadata</h5>");
+        HTMLTable meta = new HTMLTable(2, true);
+        meta.insert("Undefined Minimum", undefinedMin);
+        meta.insert("Undefined Maximum", undefinedMax);
+        meta.insert("Only WholeNumber", wholeNumberOnly);
+        meta.insert("Rules", rules.size());
+        joiner.add(meta.render());
+        joiner.add("<h5>Rules</h5>");
+        HTMLTable rules = new HTMLTable(5);
+        rules.setTableTitle("Rule Name", "Bypass Permission", "Items", "Currency", "Price Range");
+        for (Map.Entry<String, RuleSet> entry : this.rules.entrySet()) {
+            RuleSet rule = entry.getValue();
+            String currencies = CommonUtil.list2String(rule.getCurrency());
+            if (StringUtils.isEmpty(currencies)) {
+                currencies = "*";
+            }
+            rules.insert(entry.getKey(), rule.getBypassPermission(), rule.getItems().size(), currencies, rule.getMin() + " - " + rule.getMax());
+        }
+        joiner.add(rules.render());
+        return joiner.toString();
+    }
+
+    @Override
+    public @NotNull String getTitle() {
+        return "Price Limiter";
     }
 
     @Data
