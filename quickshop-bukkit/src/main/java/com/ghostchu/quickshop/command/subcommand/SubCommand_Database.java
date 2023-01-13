@@ -2,7 +2,9 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.database.DataTables;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
+import com.ghostchu.quickshop.util.Util;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +37,7 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
         switch (cmdArg[0]) {
             case "trim" -> handleTrim(sender, ArrayUtils.remove(cmdArg, 0));
             case "purgelogs" -> purgeLogs(sender, ArrayUtils.remove(cmdArg, 0));
+            case "purgeplayerscache" -> purgePlayersCache(sender, ArrayUtils.remove(cmdArg, 0));
             default -> plugin.text().of(sender, "bad-command-usage-detailed", "trim").send();
         }
     }
@@ -45,6 +48,16 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
             return List.of("trim");
         }
         return Collections.emptyList();
+    }
+
+    private void handleTrim(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
+        if (cmdArg.length < 1 || !"confirm".equalsIgnoreCase(cmdArg[0])) {
+            plugin.text().of(sender, "database.trim-warning").send();
+            return;
+        }
+        plugin.text().of(sender, "database.trim-start").send();
+        SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2) plugin.getDatabaseHelper();
+        databaseHelper.purgeIsolated().whenComplete((data, err) -> plugin.text().of(sender, "database.trim-complete", data).send());
     }
 //
 //    private void handleStatus(@NotNull CommandSender sender) {
@@ -69,16 +82,6 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
 //        }
 //        printer.printFooter();
 //    }
-
-    private void handleTrim(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1 || !"confirm".equalsIgnoreCase(cmdArg[0])) {
-            plugin.text().of(sender, "database.trim-warning").send();
-            return;
-        }
-        plugin.text().of(sender, "database.trim-start").send();
-        SimpleDatabaseHelperV2 databaseHelper = (SimpleDatabaseHelperV2) plugin.getDatabaseHelper();
-        databaseHelper.purgeIsolated().whenComplete((data, err) -> plugin.text().of(sender, "database.trim-complete", data).send());
-    }
 
     private void purgeLogs(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
         // TODO: Only purge before x days
@@ -115,5 +118,22 @@ public class SubCommand_Database implements CommandHandler<CommandSender> {
         } catch (NumberFormatException e) {
             plugin.text().of(sender, "not-a-number", cmdArg[0]).send();
         }
+    }
+
+    private void purgePlayersCache(CommandSender sender, String[] cmdArgs) {
+        plugin.text().of(sender, "database.purge-players-cache").send();
+        Util.asyncThreadRun(() -> {
+            DataTables.PLAYERS
+                    .createDelete()
+                    .build()
+                    .executeAsync((lines) -> {
+                        plugin.getPlayerFinder().getNameCache().invalidateAll();
+                        plugin.text().of(sender, "database.purge-players-completed", lines).send();
+                    }, (error, sqlAction) -> {
+                        plugin.logger().error("Failed to purge players caches!", error);
+                        plugin.text().of(sender, "database.purge-players-error").send();
+                    });
+
+        });
     }
 }
