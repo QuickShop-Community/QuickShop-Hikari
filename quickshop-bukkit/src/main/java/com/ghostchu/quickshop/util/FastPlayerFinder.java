@@ -4,6 +4,7 @@ import com.earth2me.essentials.Essentials;
 import com.earth2me.essentials.User;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
+import com.ghostchu.quickshop.api.shop.PlayerFinder;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.GrabConcurrentTask;
 import com.ghostchu.quickshop.common.util.JsonUtil;
@@ -26,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Supplier;
 
-public class FastPlayerFinder {
+public class FastPlayerFinder implements PlayerFinder {
     private final Cache<UUID, Optional<String>> nameCache = CacheBuilder.newBuilder()
             .expireAfterAccess(3, TimeUnit.DAYS)
             .maximumSize(2500)
@@ -60,6 +61,7 @@ public class FastPlayerFinder {
         }
     }
 
+    @Override
     @Nullable
     public String uuid2Name(@NotNull UUID uuid) {
         try (PerfMonitor perf = new PerfMonitor("Username Lookup - " + uuid)) {
@@ -78,6 +80,7 @@ public class FastPlayerFinder {
         }
     }
 
+    @Override
     @NotNull
     public UUID name2Uuid(@NotNull String name) {
         try (PerfMonitor perf = new PerfMonitor("UniqueID Lookup - " + name)) {
@@ -103,10 +106,12 @@ public class FastPlayerFinder {
         }
     }
 
+    @Override
     public void cache(@NotNull UUID uuid, @NotNull String name) {
         this.nameCache.put(uuid, Optional.of(name));
     }
 
+    @Override
     public boolean isCached(@NotNull UUID uuid) {
         Optional<String> value = this.nameCache.getIfPresent(uuid);
         return value != null && value.isPresent();

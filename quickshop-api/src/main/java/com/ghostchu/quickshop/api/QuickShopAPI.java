@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
 import com.ghostchu.quickshop.api.shop.ItemMatcher;
+import com.ghostchu.quickshop.api.shop.PlayerFinder;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.api.shop.ShopManager;
 import org.bukkit.Bukkit;
@@ -128,6 +129,8 @@ public interface QuickShopAPI {
     boolean isLimit();
 
     RankLimiter getRankLimiter();
+
+    PlayerFinder getPlayerFinder();
 
     /**
      * Check if fee required for changing shop price

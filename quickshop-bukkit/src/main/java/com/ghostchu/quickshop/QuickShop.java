@@ -18,10 +18,7 @@ import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperManager;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
-import com.ghostchu.quickshop.api.shop.ItemMatcher;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
-import com.ghostchu.quickshop.api.shop.ShopManager;
+import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.bstats.Metrics;
 import com.ghostchu.quickshop.bstats.MetricsManager;
@@ -223,7 +220,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     private ItemMarker itemMarker;
     private Map<String, String> translationMapping;
     @Getter
-    private FastPlayerFinder playerFinder;
+    private PlayerFinder playerFinder;
     @Getter
     private ShopItemBlackList shopItemBlackList;
     @Getter
