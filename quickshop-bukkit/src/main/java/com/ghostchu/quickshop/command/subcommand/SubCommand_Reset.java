@@ -11,7 +11,7 @@ import java.util.List;
 public class SubCommand_Reset implements CommandHandler<CommandSender> {
 
     private final QuickShop plugin;
-    private final List<String> tabCompleteList = List.of("lang", "config", "messages");
+    private final List<String> tabCompleteList = List.of("config");
 
     public SubCommand_Reset(QuickShop plugin) {
         this.plugin = plugin;
@@ -26,17 +26,6 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
         }
 
         switch (cmdArg[0]) {
-            case "lang" -> {
-                File cache = new File(plugin.getDataFolder(), "cache");
-                File item = new File(plugin.getDataFolder(), "itemi18n.yml");
-                File ench = new File(plugin.getDataFolder(), "enchi18n.yml");
-                File potion = new File(plugin.getDataFolder(), "potioni18n.yml");
-                cache.delete();
-                item.delete();
-                ench.delete();
-                potion.delete();
-                plugin.text().of(sender, "complete").send();
-            }
             case "config" -> {
                 File config = new File(plugin.getDataFolder(), "config.yml");
                 config.delete();
