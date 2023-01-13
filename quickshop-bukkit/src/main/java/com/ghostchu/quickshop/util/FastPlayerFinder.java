@@ -126,6 +126,9 @@ public class FastPlayerFinder {
 
         @Override
         public UUID get() {
+            if (!PackageUtil.parsePackageProperly("bukkitFindUUIDTask").asBoolean(true)) {
+                return null;
+            }
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
             return offlinePlayer.getUniqueId();
         }
@@ -140,6 +143,9 @@ public class FastPlayerFinder {
 
         @Override
         public String get() {
+            if (!PackageUtil.parsePackageProperly("bukkitFindNameTask").asBoolean(true)) {
+                return null;
+            }
             OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
             return player.getName();
         }
@@ -156,6 +162,9 @@ public class FastPlayerFinder {
         @Override
         public UUID get() {
             try {
+                if (!PackageUtil.parsePackageProperly("essentialsXFindUUIDTask").asBoolean(true)) {
+                    return null;
+                }
                 Plugin essPlugin = Bukkit.getPluginManager().getPlugin("Essentials");
                 if (essPlugin == null || !essPlugin.isEnabled()) return null;
                 Essentials ess = (Essentials) essPlugin;
@@ -178,6 +187,9 @@ public class FastPlayerFinder {
         @Override
         public String get() {
             try {
+                if (!PackageUtil.parsePackageProperly("essentialsXFindNameTask").asBoolean(true)) {
+                    return null;
+                }
                 Plugin essPlugin = Bukkit.getPluginManager().getPlugin("Essentials");
                 if (essPlugin == null || !essPlugin.isEnabled()) return null;
                 Essentials ess = (Essentials) essPlugin;
@@ -202,6 +214,9 @@ public class FastPlayerFinder {
 
         @Override
         public String get() {
+            if (!PackageUtil.parsePackageProperly("databaseFindNameTask").asBoolean(true)) {
+                return null;
+            }
             if (this.db == null) {
                 return null;
             }
@@ -231,6 +246,9 @@ public class FastPlayerFinder {
 
         @Override
         public UUID get() {
+            if (!PackageUtil.parsePackageProperly("databaseFindUUIDTask").asBoolean(true)) {
+                return null;
+            }
             if (this.db == null) {
                 return null;
             }
