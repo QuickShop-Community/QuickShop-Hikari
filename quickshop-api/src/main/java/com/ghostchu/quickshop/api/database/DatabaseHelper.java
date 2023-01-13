@@ -82,6 +82,14 @@ public interface DatabaseHelper {
      */
     CompletableFuture<@Nullable String> getPlayerName(@NotNull UUID uuid);
 
+
+    /**
+     * Async gets the player last use username from database
+     *
+     * @param uuid The player UUID
+     */
+    CompletableFuture<@Nullable UUID> getPlayerUUID(@NotNull String name);
+
     /**
      * Insert a history record into logs table
      *

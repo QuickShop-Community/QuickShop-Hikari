@@ -68,7 +68,7 @@ public class FastPlayerFinder {
                 return cachedName.get();
             }
             perf.setContext("cache miss");
-            GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindNameTask(uuid), new DatabaseFindTask(plugin.getDatabaseHelper(), uuid), new EssentialsXFindNameTask(uuid));
+            GrabConcurrentTask<String> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindNameTask(uuid), new DatabaseFindNameTask(plugin.getDatabaseHelper(), uuid), new EssentialsXFindNameTask(uuid));
             String name = grabConcurrentTask.invokeAll(3, TimeUnit.SECONDS, Objects::nonNull);
             this.nameCache.put(uuid, Optional.ofNullable(name));
             return name;
@@ -88,7 +88,8 @@ public class FastPlayerFinder {
                     }
                 }
             }
-            GrabConcurrentTask<UUID> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindUUIDTask(name), new EssentialsXFindUUIDTask(name));
+            perf.setContext("cache miss");
+            GrabConcurrentTask<UUID> grabConcurrentTask = new GrabConcurrentTask<>(new BukkitFindUUIDTask(name), new EssentialsXFindUUIDTask(name), new DatabaseFindUUIDTask(plugin.getDatabaseHelper(), name));
             // This cannot fail.
             UUID uuid = grabConcurrentTask.invokeAll(1, TimeUnit.DAYS, Objects::nonNull);
             if (uuid == null) {
@@ -190,11 +191,11 @@ public class FastPlayerFinder {
     }
 
 
-    static class DatabaseFindTask implements Supplier<String> {
+    static class DatabaseFindNameTask implements Supplier<String> {
         private final DatabaseHelper db;
         private final UUID uuid;
 
-        public DatabaseFindTask(@Nullable DatabaseHelper db, @NotNull UUID uuid) {
+        public DatabaseFindNameTask(@Nullable DatabaseHelper db, @NotNull UUID uuid) {
             this.db = db;
             this.uuid = uuid;
         }
@@ -214,6 +215,35 @@ public class FastPlayerFinder {
                 return null;
             } catch (TimeoutException e) {
                 Log.debug("Warning, timeout when query the database for username looking up, slow connection?");
+                return null;
+            }
+        }
+    }
+
+    static class DatabaseFindUUIDTask implements Supplier<UUID> {
+        private final DatabaseHelper db;
+        private final String name;
+
+        public DatabaseFindUUIDTask(@Nullable DatabaseHelper db, @NotNull String name) {
+            this.db = db;
+            this.name = name;
+        }
+
+        @Override
+        public UUID get() {
+            if (this.db == null) {
+                return null;
+            }
+            try {
+                return db.getPlayerUUID(name).get(30, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return null;
+            } catch (ExecutionException e) {
+                Log.debug("Error: a exception created while query the database for unique id looking up: " + e.getMessage());
+                return null;
+            } catch (TimeoutException e) {
+                Log.debug("Warning, timeout when query the database for unique id looking up, slow connection?");
                 return null;
             }
         }

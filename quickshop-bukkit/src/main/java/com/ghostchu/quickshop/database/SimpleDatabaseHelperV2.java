@@ -295,6 +295,23 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @Override
+    public CompletableFuture<@Nullable UUID> getPlayerUUID(@NotNull String name) {
+        return DataTables.PLAYERS.createQuery()
+                .addCondition("cachedName", name)
+                .selectColumns("uuid")
+                .setLimit(1)
+                .build()
+                .executeFuture(sqlQuery -> {
+                            ResultSet set = sqlQuery.getResultSet();
+                            if (set.next()) {
+                                return UUID.fromString(set.getString("uuid"));
+                            }
+                            return null;
+                        }
+                );
+    }
+
+    @Override
     public @NotNull CompletableFuture<@NotNull Integer> insertHistoryRecord(@NotNull Object rec) {
         return DataTables.LOG_OTHERS.createInsert()
                 .setColumnNames("type", "data")
