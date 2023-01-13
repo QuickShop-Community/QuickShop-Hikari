@@ -310,6 +310,30 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 MsgUtil.send(shop, shop.getOwner(), msg);
             }
         });
+    }
+
+    private boolean shopIsNotValid(@Nullable Player p, @NotNull Info info, @NotNull Shop shop) {
+        if (plugin.getEconomy() == null) {
+            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
+            return true;
+        }
+        if (!Util.canBeShop(info.getLocation().getBlock())) {
+            plugin.text().of(p, "chest-was-removed").send();
+            return true;
+        }
+        if (info.hasChanged(shop)) {
+            plugin.text().of(p, "shop-has-changed").send();
+            return true;
+        }
+        return false;
+    }
+
+    @Deprecated
+    public void actionSelling(
+            @NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info, @NotNull Shop shop,
+            int amount) {
+        Util.ensureThread(false);
+        actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
     }    @Override
     public void actionCreate(@NotNull Player p, Info info, @NotNull String message) {
         Util.ensureThread(false);
@@ -546,20 +570,62 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         this.shops.clear();
     }
 
-    private boolean shopIsNotValid(@Nullable Player p, @NotNull Info info, @NotNull Shop shop) {
-        if (plugin.getEconomy() == null) {
-            MsgUtil.sendDirectMessage(p, Component.text("Error: Economy system not loaded, type /qs main command to get details.").color(NamedTextColor.RED));
-            return true;
-        }
-        if (!Util.canBeShop(info.getLocation().getBlock())) {
-            plugin.text().of(p, "chest-was-removed").send();
-            return true;
-        }
-        if (info.hasChanged(shop)) {
-            plugin.text().of(p, "shop-has-changed").send();
-            return true;
-        }
-        return false;
+    private void notifyBought(@NotNull UUID seller, @NotNull Shop shop, int amount, int stock, double tax, double total) {
+        Player player = Bukkit.getPlayer(seller);
+        plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner()).whenCompleteAsync((locale, err) -> {
+            String langCode = MsgUtil.getDefaultGameLanguageCode();
+            if (locale != null) {
+                langCode = locale;
+            }
+            Component msg;
+            if (plugin.getConfig().getBoolean("show-tax")) {
+                msg = plugin.text().of("player-bought-from-your-store-tax",
+                                player != null ? player.getName() : seller.toString(),
+                                amount * shop.getItem().getAmount(),
+                                MsgUtil.getTranslateText(shop.getItem()),
+                                this.formatter.format(total - tax, shop),
+                                this.formatter.format(tax, shop)).forLocale(langCode)
+                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+            } else {
+                msg = plugin.text().of("player-bought-from-your-store",
+                                player != null ? player.getName() : seller.toString(),
+                                amount * shop.getItem().getAmount(),
+                                MsgUtil.getTranslateText(shop.getItem()),
+                                this.formatter.format(total - tax, shop)).forLocale(langCode)
+                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+            }
+
+            if (sendStockMessageToStaff) {
+                for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
+                    MsgUtil.send(shop, recv, msg);
+                }
+            } else {
+                MsgUtil.send(shop, shop.getOwner(), msg);
+            }
+            // Transfers the item from A to B
+            if (stock == amount) {
+                if (shop.getShopName() == null) {
+                    msg = plugin.text().of("shop-out-of-stock",
+                                    shop.getLocation().getBlockX(),
+                                    shop.getLocation().getBlockY(),
+                                    shop.getLocation().getBlockZ(),
+                                    MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
+                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                } else {
+                    msg = plugin.text().of("shop-out-of-stock-name", shop.getShopName(),
+                                    MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
+                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                }
+                if (sendStockMessageToStaff) {
+                    for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
+                        MsgUtil.send(shop, recv, msg);
+                    }
+                } else {
+                    MsgUtil.send(shop, shop.getOwner(), msg);
+                }
+            }
+        });
+
     }    /**
      * Create a shop use Shop and Info object.
      *
@@ -1014,13 +1080,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         return getTax(shop, p.getUniqueId());
     }
 
-    @Deprecated
-    public void actionSelling(
-            @NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info, @NotNull Shop shop,
-            int amount) {
-        Util.ensureThread(false);
-        actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
-    }    @Override
+    @Override
     public double getTax(@NotNull Shop shop, @NotNull UUID p) {
         Util.ensureThread(false);
         double tax = globalTax;
@@ -1052,63 +1112,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         return taxEvent.getTax();
     }
 
-    private void notifyBought(@NotNull UUID seller, @NotNull Shop shop, int amount, int stock, double tax, double total) {
-        Player player = Bukkit.getPlayer(seller);
-        plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner()).whenCompleteAsync((locale, err) -> {
-            String langCode = MsgUtil.getDefaultGameLanguageCode();
-            if (locale != null) {
-                langCode = locale;
-            }
-            Component msg;
-            if (plugin.getConfig().getBoolean("show-tax")) {
-                msg = plugin.text().of("player-bought-from-your-store-tax",
-                                player != null ? player.getName() : seller.toString(),
-                                amount * shop.getItem().getAmount(),
-                                MsgUtil.getTranslateText(shop.getItem()),
-                                this.formatter.format(total - tax, shop),
-                                this.formatter.format(tax, shop)).forLocale(langCode)
-                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
-            } else {
-                msg = plugin.text().of("player-bought-from-your-store",
-                                player != null ? player.getName() : seller.toString(),
-                                amount * shop.getItem().getAmount(),
-                                MsgUtil.getTranslateText(shop.getItem()),
-                                this.formatter.format(total - tax, shop)).forLocale(langCode)
-                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
-            }
-
-            if (sendStockMessageToStaff) {
-                for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
-                    MsgUtil.send(shop, recv, msg);
-                }
-            } else {
-                MsgUtil.send(shop, shop.getOwner(), msg);
-            }
-            // Transfers the item from A to B
-            if (stock == amount) {
-                if (shop.getShopName() == null) {
-                    msg = plugin.text().of("shop-out-of-stock",
-                                    shop.getLocation().getBlockX(),
-                                    shop.getLocation().getBlockY(),
-                                    shop.getLocation().getBlockZ(),
-                                    MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
-                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
-                } else {
-                    msg = plugin.text().of("shop-out-of-stock-name", shop.getShopName(),
-                                    MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
-                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
-                }
-                if (sendStockMessageToStaff) {
-                    for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
-                        MsgUtil.send(shop, recv, msg);
-                    }
-                } else {
-                    MsgUtil.send(shop, shop.getOwner(), msg);
-                }
-            }
-        });
-
-    }    @Override
+    @Override
     public void handleChat(@NotNull Player p, @NotNull String msg) {
         if (!plugin.getShopManager().getInteractiveManager().containsKey(p.getUniqueId())) {
             return;
@@ -1425,9 +1429,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
         signBlockState.update(true);
     }
-
-
-
 
 
     private int buyingShopAllCalc(@NotNull AbstractEconomy eco, @NotNull Shop shop, @NotNull Player p) {
