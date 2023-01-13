@@ -20,6 +20,7 @@ import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.economyformatter.EconomyFormatter;
 import com.ghostchu.quickshop.util.holder.Result;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -328,13 +329,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         return false;
     }
 
-    @Deprecated
-    public void actionSelling(
-            @NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info, @NotNull Shop shop,
-            int amount) {
-        Util.ensureThread(false);
-        actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
-    }    @Override
+    @Override
     public void actionCreate(@NotNull Player p, Info info, @NotNull String message) {
         Util.ensureThread(false);
         if (plugin.getEconomy() == null) {
@@ -570,63 +565,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         this.shops.clear();
     }
 
-    private void notifyBought(@NotNull UUID seller, @NotNull Shop shop, int amount, int stock, double tax, double total) {
-        Player player = Bukkit.getPlayer(seller);
-        plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner()).whenCompleteAsync((locale, err) -> {
-            String langCode = MsgUtil.getDefaultGameLanguageCode();
-            if (locale != null) {
-                langCode = locale;
-            }
-            Component msg;
-            if (plugin.getConfig().getBoolean("show-tax")) {
-                msg = plugin.text().of("player-bought-from-your-store-tax",
-                                player != null ? player.getName() : seller.toString(),
-                                amount * shop.getItem().getAmount(),
-                                MsgUtil.getTranslateText(shop.getItem()),
-                                this.formatter.format(total - tax, shop),
-                                this.formatter.format(tax, shop)).forLocale(langCode)
-                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
-            } else {
-                msg = plugin.text().of("player-bought-from-your-store",
-                                player != null ? player.getName() : seller.toString(),
-                                amount * shop.getItem().getAmount(),
-                                MsgUtil.getTranslateText(shop.getItem()),
-                                this.formatter.format(total - tax, shop)).forLocale(langCode)
-                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
-            }
-
-            if (sendStockMessageToStaff) {
-                for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
-                    MsgUtil.send(shop, recv, msg);
-                }
-            } else {
-                MsgUtil.send(shop, shop.getOwner(), msg);
-            }
-            // Transfers the item from A to B
-            if (stock == amount) {
-                if (shop.getShopName() == null) {
-                    msg = plugin.text().of("shop-out-of-stock",
-                                    shop.getLocation().getBlockX(),
-                                    shop.getLocation().getBlockY(),
-                                    shop.getLocation().getBlockZ(),
-                                    MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
-                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
-                } else {
-                    msg = plugin.text().of("shop-out-of-stock-name", shop.getShopName(),
-                                    MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
-                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
-                }
-                if (sendStockMessageToStaff) {
-                    for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
-                        MsgUtil.send(shop, recv, msg);
-                    }
-                } else {
-                    MsgUtil.send(shop, shop.getOwner(), msg);
-                }
-            }
-        });
-
-    }    /**
+    /**
      * Create a shop use Shop and Info object.
      *
      * @param shop                  The shop object
@@ -839,7 +778,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     /**
-     * Returns all shops in the whole database, include unloaded.
+     * Returns all shops in the memory, include unloaded.
      *
      * <p>Make sure you have caching this, because this need a while to get all shops
      *
@@ -847,13 +786,15 @@ public class SimpleShopManager implements ShopManager, Reloadable {
      */
     @Override
     public @NotNull List<Shop> getAllShops() {
-        final List<Shop> shopsCollected = new ArrayList<>();
-        for (final Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
-            for (final Map<Location, Shop> shopData : shopMapData.values()) {
-                shopsCollected.addAll(shopData.values());
+        try (PerfMonitor ignored = new PerfMonitor("Getting all shops")) {
+            final List<Shop> shopsCollected = new ArrayList<>();
+            for (final Map<ShopChunk, Map<Location, Shop>> shopMapData : getShops().values()) {
+                for (final Map<Location, Shop> shopData : shopMapData.values()) {
+                    shopsCollected.addAll(shopData.values());
+                }
             }
+            return shopsCollected;
         }
-        return shopsCollected;
     }
 
     /**
@@ -1405,9 +1346,71 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         return this.interactiveManager;
     }
 
+    @Deprecated
+    public void actionSelling(
+            @NotNull Player p, @NotNull AbstractEconomy eco, @NotNull SimpleInfo info, @NotNull Shop shop,
+            int amount) {
+        Util.ensureThread(false);
+        actionSelling(p.getUniqueId(), new BukkitInventoryWrapper(p.getInventory()), eco, info, shop, amount);
+    }
 
+    private void notifyBought(@NotNull UUID seller, @NotNull Shop shop, int amount, int stock, double tax, double total) {
+        Player player = Bukkit.getPlayer(seller);
+        plugin.getDatabaseHelper().getPlayerLocale(shop.getOwner()).whenCompleteAsync((locale, err) -> {
+            String langCode = MsgUtil.getDefaultGameLanguageCode();
+            if (locale != null) {
+                langCode = locale;
+            }
+            Component msg;
+            if (plugin.getConfig().getBoolean("show-tax")) {
+                msg = plugin.text().of("player-bought-from-your-store-tax",
+                                player != null ? player.getName() : seller.toString(),
+                                amount * shop.getItem().getAmount(),
+                                MsgUtil.getTranslateText(shop.getItem()),
+                                this.formatter.format(total - tax, shop),
+                                this.formatter.format(tax, shop)).forLocale(langCode)
+                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+            } else {
+                msg = plugin.text().of("player-bought-from-your-store",
+                                player != null ? player.getName() : seller.toString(),
+                                amount * shop.getItem().getAmount(),
+                                MsgUtil.getTranslateText(shop.getItem()),
+                                this.formatter.format(total - tax, shop)).forLocale(langCode)
+                        .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+            }
 
+            if (sendStockMessageToStaff) {
+                for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
+                    MsgUtil.send(shop, recv, msg);
+                }
+            } else {
+                MsgUtil.send(shop, shop.getOwner(), msg);
+            }
+            // Transfers the item from A to B
+            if (stock == amount) {
+                if (shop.getShopName() == null) {
+                    msg = plugin.text().of("shop-out-of-stock",
+                                    shop.getLocation().getBlockX(),
+                                    shop.getLocation().getBlockY(),
+                                    shop.getLocation().getBlockZ(),
+                                    MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
+                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                } else {
+                    msg = plugin.text().of("shop-out-of-stock-name", shop.getShopName(),
+                                    MsgUtil.getTranslateText(shop.getItem())).forLocale(langCode)
+                            .hoverEvent(plugin.getPlatform().getItemStackHoverEvent(shop.getItem()));
+                }
+                if (sendStockMessageToStaff) {
+                    for (UUID recv : shop.playersCanAuthorize(BuiltInShopPermission.RECEIVE_ALERT)) {
+                        MsgUtil.send(shop, recv, msg);
+                    }
+                } else {
+                    MsgUtil.send(shop, shop.getOwner(), msg);
+                }
+            }
+        });
 
+    }
 
     private void processWaterLoggedSign(@NotNull Block container, @NotNull Block signBlock) {
         boolean signIsWatered = signBlock.getType() == Material.WATER;
