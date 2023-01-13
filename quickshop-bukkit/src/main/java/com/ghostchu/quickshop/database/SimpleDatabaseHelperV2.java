@@ -665,12 +665,13 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
         }
 
         public void upgrade() throws SQLException {
-            if (parent.getDatabaseVersion() < 1) {
+            int currentDatabaseVersion = parent.getDatabaseVersion();
+            if (currentDatabaseVersion < 1) {
                 // QuickShop v4/v5 upgrade
                 // Call updater
-                parent.setDatabaseVersion(1);
+                currentDatabaseVersion = 1;
             }
-            if (parent.getDatabaseVersion() == 1) {
+            if (currentDatabaseVersion == 1) {
                 // QuickShop-Hikari 1.1.0.0
                 try {
                     manager.alterTable(prefix + "shops")
@@ -680,9 +681,9 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                     parent.plugin.logger().warn("Failed to add name column to shops table! SQL: {}", e.getMessage());
                 }
                 parent.plugin.logger().info("[DatabaseHelper] Migrated to 1.1.0.0 data structure, version 2");
-                parent.setDatabaseVersion(2);
+                currentDatabaseVersion = 2;
             }
-            if (parent.getDatabaseVersion() == 2) {
+            if (currentDatabaseVersion == 2) {
                 // QuickShop-Hikari 2.0.0.0
                 try {
                     manager.alterTable(prefix + "shops")
@@ -691,12 +692,12 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 } catch (SQLException e) {
                     parent.plugin.logger().warn("Failed to add name column to shops table! SQL: {}", e.getMessage());
                 }
-                parent.setDatabaseVersion(3);
+                currentDatabaseVersion = 3;
             }
-            if (parent.getDatabaseVersion() == 3) {
+            if (currentDatabaseVersion == 3) {
                 try {
                     new DatabaseV2Migrate(this).doV2Migrate();
-                    parent.setDatabaseVersion(4);
+                    currentDatabaseVersion = 4;
                 } catch (InvocationTargetException | NoSuchMethodException | InstantiationException |
                          IllegalAccessException | ExecutionException e) {
                     e.printStackTrace();
@@ -704,24 +705,25 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                     Thread.currentThread().interrupt();
                 }
             }
-            if (parent.getDatabaseVersion() < 9) {
+            if (currentDatabaseVersion < 9) {
                 logger.info("Data upgrading: Performing purge isolated data...");
                 parent.purgeIsolated();
                 logger.info("Data upgrading: All completed!");
-                parent.setDatabaseVersion(9);
+                currentDatabaseVersion = 9;
             }
-            if (parent.getDatabaseVersion() == 9) {
+            if (currentDatabaseVersion == 9) {
                 logger.info("Data upgrading: Performing database structure upgrade (benefit)...");
                 parent.upgradeBenefit();
                 logger.info("Data upgrading: All completed!");
-                parent.setDatabaseVersion(10);
+                currentDatabaseVersion = 10;
             }
-            if (parent.getDatabaseVersion() == 10) {
+            if (currentDatabaseVersion == 10) {
                 logger.info("Data upgrading: Performing database structure upgrade (players)...");
                 parent.upgradePlayers();
                 logger.info("Data upgrading: All completed!");
-                parent.setDatabaseVersion(11);
+                currentDatabaseVersion = 11;
             }
+            parent.setDatabaseVersion(currentDatabaseVersion);
         }
 
         private boolean silentTableMoving(@NotNull String originTableName, @NotNull String newTableName) {
