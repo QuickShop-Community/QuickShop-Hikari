@@ -143,6 +143,10 @@
                                         <pattern>de.themoep.minedown.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.minedown.</shadedPattern>
                                     </relocation>
+                                    <relocation>
+                                        <pattern>com.vdurmont.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.com.vdurmont.</shadedPattern>
+                                    </relocation>
 
 
                                     <!--                                    <relocation>-->
@@ -485,7 +489,12 @@
                 <version>2.10.1</version>
                 <scope>provided</scope>
             </dependency>
-
+            <dependency>
+                <groupId>com.vdurmont</groupId>
+                <artifactId>semver4j</artifactId>
+                <version>3.1.0</version>
+                <scope>provided</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <!-- GLOBAL DEPENDENCY -->
@@ -497,6 +506,10 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>semver4j</artifactId>
         </dependency>
     </dependencies>
 

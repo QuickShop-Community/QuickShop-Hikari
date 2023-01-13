@@ -9,6 +9,7 @@ import com.ghostchu.quickshop.platform.spigot.v1_18_2.Spigot1182Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_19_1.Spigot1191Platform;
 import com.ghostchu.quickshop.platform.spigot.v1_19_2.Spigot1193Platform;
 import com.ghostchu.quickshop.util.PackageUtil;
+import com.vdurmont.semver4j.Semver;
 import io.papermc.lib.PaperLib;
 import kong.unirest.Unirest;
 import net.kyori.adventure.Adventure;
@@ -138,6 +139,15 @@ public class QuickShopBukkit extends JavaPlugin {
     @NotNull
     public String getVersion() {
         return getDescription().getVersion();
+    }
+
+    @NotNull
+    public Semver getSemVersion() {
+        try {
+            return new Semver(getDescription().getVersion());
+        } catch (Exception e) {
+            return new Semver("0.0.0.0");
+        }
     }
 
     static class UnirestLibLoader {

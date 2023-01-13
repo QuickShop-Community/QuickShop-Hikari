@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.shop.ItemMatcher;
 import com.ghostchu.quickshop.api.shop.PlayerFinder;
 import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
 import com.ghostchu.quickshop.api.shop.ShopManager;
+import com.vdurmont.semver4j.Semver;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -154,5 +155,5 @@ public interface QuickShopAPI {
      */
     void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key);
 
-
+    Semver getSemVersion();
 }

@@ -60,6 +60,7 @@ import com.ghostchu.quickshop.watcher.*;
 import com.ghostchu.simplereloadlib.ReloadManager;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
+import com.vdurmont.semver4j.Semver;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -526,6 +527,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         if (this.platform != null) {
             this.platform.updateTranslationMappingSection(translationMapping);
         }
+    }
+
+    @Override
+    public Semver getSemVersion() {
+        return javaPlugin.getSemVersion();
     }
 
     /**

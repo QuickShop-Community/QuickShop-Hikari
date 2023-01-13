@@ -372,5 +372,10 @@
             <version>2.19.7</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>semver4j</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
