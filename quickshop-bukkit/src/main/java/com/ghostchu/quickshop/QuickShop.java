@@ -1085,6 +1085,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 return false;
             }
             parent.logger().info("Selected economy bridge: {}", abstractEconomy.getName());
+            parent.economy = abstractEconomy;
             return true;
         }
 
