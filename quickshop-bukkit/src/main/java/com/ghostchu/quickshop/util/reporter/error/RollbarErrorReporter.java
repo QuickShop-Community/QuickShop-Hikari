@@ -2,14 +2,13 @@ package com.ghostchu.quickshop.util.reporter.error;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.GameVersion;
-import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.google.common.collect.Lists;
 import com.rollbar.notifier.Rollbar;
 import com.rollbar.notifier.config.Config;
 import com.rollbar.notifier.config.ConfigBuilder;
-import lombok.Data;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.InvalidPluginException;
@@ -20,7 +19,6 @@ import java.io.IOException;
 import java.net.ProtocolException;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Filter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -40,7 +38,6 @@ public class RollbarErrorReporter {
     private final QuickShop plugin;
     private final QuickShopExceptionFilter quickShopExceptionFilter;
     private final GlobalExceptionFilter serverExceptionFilter;
-    private final LinkedBlockingQueue<ErrorBundle> reportQueue = new LinkedBlockingQueue<>();
     private boolean disable;
     private boolean tempDisable;
     @Getter
@@ -65,23 +62,6 @@ public class RollbarErrorReporter {
 
         Log.debug("Rollbar error reporter success loaded.");
         enabled = true;
-
-        Thread asyncErrorReportThread = new Thread(() -> {
-            ErrorBundle errorBundle;
-            while (enabled) {
-                try {
-                    errorBundle = reportQueue.take();
-                    Log.debug("Sending error: " + errorBundle.getThrowable().getMessage()
-                            + " with context: " + CommonUtil.array2String(errorBundle.getContext()));
-                    sendError0(errorBundle.getThrowable(), errorBundle.getContext());
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
-        });
-
-        asyncErrorReportThread.setDaemon(true);
-        asyncErrorReportThread.start();
     }
 
     private void sendError0(@NotNull Throwable throwable, @NotNull String... context) {
@@ -234,7 +214,7 @@ public class RollbarErrorReporter {
      * @param context   BreadCrumb
      */
     public void sendError(@NotNull Throwable throwable, @NotNull String... context) {
-        this.reportQueue.offer(new ErrorBundle(throwable, context));
+        QuickExecutor.getCommonExecutor().submit(() -> sendError0(throwable, context));
     }
 
     /**
@@ -312,17 +292,6 @@ public class RollbarErrorReporter {
         try {
             rollbar.close(false);
         } catch (Exception ignored) {
-        }
-    }
-
-    @Data
-    static class ErrorBundle {
-        private final Throwable throwable;
-        private final String[] context;
-
-        public ErrorBundle(Throwable throwable, String[] context) {
-            this.throwable = throwable;
-            this.context = context;
         }
     }
 
