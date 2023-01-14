@@ -12,21 +12,6 @@ public class CachePerformanceItem implements SubPasteItem {
     private final QuickShop plugin = QuickShop.getInstance();
 
     @NotNull
-    private String buildPAPICacheContent() {
-        if (plugin.getPlaceHolderAPI() == null || plugin.getQuickShopPAPI() == null) {
-            return "<p>PlaceHolderAPI feature disabled.</p>";
-        }
-        if (!plugin.getQuickShopPAPI().isRegistered()) {
-            return "<p>PlaceHolderAPI feature not registered yet.</p>";
-        }
-        if (plugin.getQuickShopPAPI().getPapiCache() == null) {
-            return "<p>PlaceHolderAPI Cache disabled.</p>";
-        }
-        CacheStats stats = plugin.getQuickShopPAPI().getPapiCache().getStats();
-        return renderTable(stats);
-    }
-
-    @NotNull
     private String buildShopCacheContent() {
         if (plugin.getShopCache() == null) {
             return "<p>Shop Cache disabled.</p>";
@@ -39,8 +24,6 @@ public class CachePerformanceItem implements SubPasteItem {
     public @NotNull String genBody() {
         return "<h5>Shop Cache</h5>" +
                 buildShopCacheContent() +
-                "<h5>PlaceHolderAPI Cache</h5>" +
-                buildPAPICacheContent() +
                 "<h5>Player Lookup Cache</h5>" +
                 buildPlayerLookupCache();
     }

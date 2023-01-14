@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.papi.impl.MetadataPAPI;
 import com.ghostchu.quickshop.papi.impl.PurchasesPAPI;
 import com.ghostchu.quickshop.papi.impl.ShopManagerPAPI;
 import com.ghostchu.quickshop.papi.impl.TransactionAmountPAPI;
+import com.ghostchu.quickshop.util.paste.GuavaCacheRender;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import org.bukkit.OfflinePlayer;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 import java.util.UUID;
 
 public class PAPIManager implements SubPasteItem {
@@ -69,12 +71,17 @@ public class PAPIManager implements SubPasteItem {
 
     @Override
     public @NotNull String genBody() {
+        StringJoiner joiner = new StringJoiner("<br/>");
+        joiner.add("<h5>Registered Placeholder Handler</h5>");
         HTMLTable table = new HTMLTable(2);
         table.setTableTitle("Prefix", "Handler");
         for (PAPISubHandler handler : handlers) {
             table.insert(handler.getPrefix(), handler.getClass().getName());
         }
-        return table.render();
+        joiner.add(table.render());
+        joiner.add("<h5>Caching</h5>");
+        joiner.add(GuavaCacheRender.renderTable(cache.getStats()));
+        return joiner.toString();
     }
 
     @Override
