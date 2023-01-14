@@ -650,7 +650,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
      * Load 3rdParty plugin support module.
      */
     private void load3rdParty() {
-        if (getConfig().getBoolean("plugin.PlaceHolderAPI")) {
+        if (getConfig().getBoolean("plugin.PlaceHolderAPI.enable")) {
             this.placeHolderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
             if (this.placeHolderAPI != null && placeHolderAPI.isEnabled()) {
                 this.quickShopPAPI = new QuickShopPAPI(this);

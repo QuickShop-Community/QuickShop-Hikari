@@ -12,6 +12,7 @@ import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.function.BiFunction;
@@ -19,7 +20,7 @@ import java.util.function.BiFunction;
 public class PAPICache implements Reloadable {
     private QuickShop plugin;
     private long expiredTime;
-    private Cache<String, String> performCaches;
+    private Cache<String, Optional<String>> performCaches;
 
     public PAPICache() {
         init();
@@ -35,13 +36,13 @@ public class PAPICache implements Reloadable {
                 .build();
     }
 
-    @Nullable
-    public String getCached(@NotNull UUID player, @NotNull String args, @NotNull BiFunction<UUID, String, String> loader) {
+    @NotNull
+    public Optional<String> getCached(@NotNull UUID player, @NotNull String args, @NotNull BiFunction<UUID, String, String> loader) {
         try {
-            return performCaches.get(compileUniqueKey(player, args), () -> loader.apply(player, args));
+            return performCaches.get(compileUniqueKey(player, args), () -> Optional.ofNullable(loader.apply(player, args)));
         } catch (ExecutionException ex) {
             ex.printStackTrace();
-            return null;
+            return Optional.empty();
         }
     }
 
@@ -80,7 +81,10 @@ public class PAPICache implements Reloadable {
 
     @Nullable
     public String readCache(@NotNull UUID player, @NotNull String queryString) {
-        return performCaches.getIfPresent(compileUniqueKey(player, queryString));
+        Optional<String> cache = performCaches.getIfPresent(compileUniqueKey(player, queryString));
+        //noinspection OptionalAssignedToNull
+        if (cache == null || cache.isEmpty()) return null;
+        return cache.orElse(null);
     }
 
     @Override
@@ -90,7 +94,7 @@ public class PAPICache implements Reloadable {
     }
 
     public void writeCache(@NotNull UUID player, @NotNull String queryString, @NotNull String queryValue) {
-        performCaches.put(compileUniqueKey(player, queryString), queryValue);
+        performCaches.put(compileUniqueKey(player, queryString), Optional.of(queryValue));
     }
 
     @Data
@@ -103,4 +107,6 @@ public class PAPICache implements Reloadable {
             this.queryString = queryString;
         }
     }
+
+
 }

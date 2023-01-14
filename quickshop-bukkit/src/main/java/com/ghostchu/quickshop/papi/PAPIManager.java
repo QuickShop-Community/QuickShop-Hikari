@@ -24,6 +24,7 @@ public class PAPIManager implements SubPasteItem {
 
     public PAPIManager(@NotNull QuickShop plugin) {
         this.plugin = plugin;
+        plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
         init();
     }
 
@@ -66,7 +67,7 @@ public class PAPIManager implements SubPasteItem {
                 }
             }
             return null;
-        });
+        }).orElse(null);
     }
 
     @Override
