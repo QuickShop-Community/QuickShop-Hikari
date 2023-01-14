@@ -615,7 +615,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         /* Delay the Economy system load, give a chance to let economy system register. */
         /* And we have a listener to listen the ServiceRegisterEvent :) */
         Log.debug("Scheduled economy system loading.");
-        Bukkit.getScheduler().runTaskLater(javaPlugin, () -> economyLoader.load(), 1);
+        Bukkit.getScheduler().runTaskLater(javaPlugin, economyLoader::load, 1);
         registerTasks();
         Log.debug("DisplayItem selected: " + AbstractDisplayItem.getNowUsing().name());
         registerCommunicationChannels();
