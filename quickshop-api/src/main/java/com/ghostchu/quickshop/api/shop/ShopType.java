@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.api.shop;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The shop trading type *SELLING* or *BUYING*
@@ -14,6 +15,15 @@ public enum ShopType {
     ShopType(int id) {
         this.id = id;
     }
+
+    public static @Nullable ShopType fromString(@NotNull String string) {
+        for (ShopType type : ShopType.values()) {
+            if (type.name().equalsIgnoreCase(string))
+                return type;
+        }
+        return null;
+    }
+
 
     public static @NotNull ShopType fromID(int id) {
         for (ShopType type : ShopType.values()) {

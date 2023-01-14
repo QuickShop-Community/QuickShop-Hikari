@@ -90,13 +90,13 @@ public class MetricQuery {
     }
 
     @NotNull
-    public List<ShopMetricRecord> queryServerPurchaseRecords(@NotNull Date startTime, long limit, boolean descending) {
+    public List<ShopMetricRecord> queryServerPurchaseRecords(@NotNull Date startTime, int limit, boolean descending) {
         List<ShopMetricRecord> list = new ArrayList<>();
         try (SQLQuery query = databaseHelper.getManager().createQuery()
                 .inTable(databaseHelper.getPrefix() + "log_purchase")
                 .addTimeCondition("time", startTime, null)
                 .selectColumns()
-                .setLimit(1000)
+                .setLimit(limit)
                 .orderBy("id", !descending).build().execute()) {
             ResultSet set = query.getResultSet();
             while (set.next()) {

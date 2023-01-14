@@ -2,7 +2,6 @@ package com.ghostchu.quickshop.papi;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -10,14 +9,12 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheStats;
 import lombok.Data;
-import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.function.BiFunction;
 
 public class PAPICache implements Reloadable {
     private QuickShop plugin;
@@ -38,122 +35,13 @@ public class PAPICache implements Reloadable {
                 .build();
     }
 
-    public String getCached(@NotNull UUID player, @NotNull String[] args) {
+    @Nullable
+    public String getCached(@NotNull UUID player, @NotNull String args, @NotNull BiFunction<UUID, String, String> loader) {
         try {
-            return performCaches.get(compileUniqueKey(player, args), () -> getValue(player, args));
+            return performCaches.get(compileUniqueKey(player, args), () -> loader.apply(player, args));
         } catch (ExecutionException ex) {
+            ex.printStackTrace();
             return null;
-        }
-    }
-
-    @NotNull
-    private String compileUniqueKey(@NotNull UUID player, @NotNull String[] args) {
-        return compileUniqueKey(player, String.join("_", args));
-    }
-
-    private String getValue(@NotNull UUID player, String[] original) {
-        // Make a copy with not-present values being null.
-        String[] args = Arrays.copyOf(original, 3);
-
-        // Invalid placeholder (%qs_%). Shouldn't happen at all, but you never know...
-        if (StringUtils.isEmpty(args[0])) {
-            return null;
-        }
-
-        switch (args[0].toLowerCase(Locale.ROOT)) {
-            // %qs_shops-total[_world]%
-            case "shops-total" -> {
-                // %qs_shops-total%
-                if (StringUtils.isEmpty(args[1])) {
-                    return String.valueOf(plugin.getShopManager().getAllShops().size());
-                }
-
-                // %qs_shops-total_<world>%
-                return String.valueOf(getShopsInWorld(args[1], false));
-            }
-
-            // %qs_shops-loaded[_world]%
-            case "shops-loaded" -> {
-                //%qs_shops-loaded%
-                if (StringUtils.isEmpty(args[1])) {
-                    return String.valueOf(plugin.getShopManager().getLoadedShops().size());
-                }
-
-                // %qs_shops-loaded_<world>%
-                return String.valueOf(getShopsInWorld(args[1], true));
-            }
-
-            // %qs_default-currency%
-            case "default-currency" -> {
-                return plugin.getCurrency();
-            }
-
-            case "player" -> {
-                // Invalid placeholder (%qs_player_%)
-                if (StringUtils.isEmpty(args[1])) {
-                    return null;
-                }
-
-                switch (args[1].toLowerCase(Locale.ROOT)) {
-                    // %qs_player_shops-total[_uuid]%
-                    case "shops-total" -> {
-                        // %qs_player_shops-total%
-                        if (StringUtils.isEmpty(args[2])) {
-                            return String.valueOf(plugin.getShopManager().getPlayerAllShops(player));
-                        }
-
-                        // Not valid UUID provided
-                        if (!CommonUtil.isUUID(args[2])) {
-                            return null;
-                        }
-
-                        // %qs_player_shop-total_<uuid>%
-                        return String.valueOf(plugin.getShopManager().getPlayerAllShops(UUID.fromString(args[2])));
-                    }
-
-                    // %qs_player_shops-loaded[_uuid]%
-                    case "shops-loaded" -> {
-                        // %qs_shops-loaded%
-                        if (StringUtils.isEmpty(args[2])) {
-                            return String.valueOf(getLoadedPlayerShops(player));
-                        }
-
-                        // Not valid UUID provided
-                        if (!CommonUtil.isUUID(args[2])) {
-                            return null;
-                        }
-
-                        // %qs_shops-loaded_<uuid>%
-                        return String.valueOf(getLoadedPlayerShops(UUID.fromString(args[2])));
-                    }
-
-                    // %qs_player_shops-inventory-unavailable[_uuid]%
-                    case "shops-inventory-unavailable" -> {
-                        // %qs_player_shops-inventory-unavailable%
-                        if (StringUtils.isEmpty(args[2])) {
-                            return String.valueOf(getPlayerShopsInventoryUnavailable(player));
-                        }
-
-                        // Not valid UUID provided
-                        if (!CommonUtil.isUUID(args[2])) {
-                            return null;
-                        }
-
-                        // %qs_player_shops-inventory-unavailable[_uuid]%
-                        return String.valueOf(getPlayerShopsInventoryUnavailable(UUID.fromString(args[2])));
-                    }
-
-                    // Unknown QS player placeholder
-                    default -> {
-                        return null;
-                    }
-                }
-            }
-
-            // Unknown QS placeholder
-            default -> {
-                return null;
-            }
         }
     }
 

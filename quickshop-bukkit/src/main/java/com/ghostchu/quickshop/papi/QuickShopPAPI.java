@@ -1,17 +1,17 @@
 package com.ghostchu.quickshop.papi;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.util.logger.Log;
-import lombok.Getter;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class QuickShopPAPI extends PlaceholderExpansion {
+    private final PAPIManager manager;
 
-    @Getter
-    private final PAPICache papiCache = new PAPICache();
+    public QuickShopPAPI(@NotNull QuickShop plugin) {
+        manager = new PAPIManager(plugin);
+    }
 
     @Override
     public @NotNull String getIdentifier() {
@@ -39,18 +39,13 @@ public class QuickShopPAPI extends PlaceholderExpansion {
         return true;
     }
 
+    @NotNull
+    public PAPIManager getManager() {
+        return manager;
+    }
+
     @Override
     public @Nullable String onRequest(@NotNull OfflinePlayer player, @NotNull String params) {
-        String cached = papiCache.readCache(player.getUniqueId(), params);
-        if (cached != null) {
-            Log.debug("Processing cached placeholder: " + params);
-            return cached;
-        }
-        String[] args = params.split("_");
-        if (args.length < 1) {
-            return null;
-        }
-
-        return papiCache.getCached(player.getUniqueId(), args);
+        return manager.handle(player, params);
     }
 }

@@ -653,7 +653,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         if (getConfig().getBoolean("plugin.PlaceHolderAPI")) {
             this.placeHolderAPI = Bukkit.getPluginManager().getPlugin("PlaceholderAPI");
             if (this.placeHolderAPI != null && placeHolderAPI.isEnabled()) {
-                this.quickShopPAPI = new QuickShopPAPI();
+                this.quickShopPAPI = new QuickShopPAPI(this);
                 this.quickShopPAPI.register();
                 logger.info("Successfully loaded PlaceHolderAPI support!");
             }
