@@ -567,7 +567,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         loadErrorReporter();
         loadItemMatcher();
         this.itemMarker = new ItemMarker(this);
-        this.shopItemBlackList = new ShopItemBlackList(this);
+        this.shopItemBlackList = new SimpleShopItemBlackList(this);
         Util.initialize();
         load3rdParty();
         //Load the database
