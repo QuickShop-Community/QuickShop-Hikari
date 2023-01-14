@@ -740,7 +740,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     }
                 }
                 registerShop(shop);
-                new ShopCreateSuccessEvent(shop, p.getUniqueId()).callEvent();
+
             }
         }
     }
@@ -1153,6 +1153,8 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             shop.setShopId(id);
             Log.debug("DEBUG: Creating shop map");
             plugin.getDatabaseHelper().createShopMap(id, shop.getLocation());
+            Log.debug("DEBUG: Creating shop successfully");
+            new ShopCreateSuccessEvent(shop, shop.getOwner()).callEvent();
         });
     }
 
