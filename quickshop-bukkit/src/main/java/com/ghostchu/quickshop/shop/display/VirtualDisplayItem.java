@@ -18,7 +18,6 @@ import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.event.ShopDisplayItemSpawnEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
-import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.ghostchu.quickshop.util.Util;
@@ -246,7 +245,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
                 return;
             }
             String stringClassLoader = PROTOCOL_MANAGER.getClass().getClassLoader().toString();
-            if(stringClassLoader.contains("pluginEnabled=true")&&!stringClassLoader.contains("plugin=ProtocolLib")) {
+            if (stringClassLoader.contains("pluginEnabled=true") && !stringClassLoader.contains("plugin=ProtocolLib")) {
                 PLUGIN.logger().warn("Warning! ProtocolLib seems provided by another plugin, This seems to be a wrong packaging problem, " +
                         "QuickShop can't ensure the ProtocolLib is working correctly! Info: {}", stringClassLoader);
             }
@@ -325,7 +324,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
 
         public static Throwable testFakeItem() {
             try {
-                createFakeItemSpawnPacket(0, new Location(Bukkit.getWorlds().get(0), 0, 0, 0));
+                createFakeItemSpawnPacket(0, new Location(Bukkit.getServer().getWorlds().get(0), 0, 0, 0));
                 createFakeItemMetaPacket(0, new ItemStack(Material.values()[0]));
                 createFakeItemVelocityPacket(0);
                 createFakeItemDestroyPacket(0);
@@ -381,6 +380,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
             PacketContainer fakeItemMetaPacket = PROTOCOL_MANAGER.createPacket(PacketType.Play.Server.ENTITY_METADATA);
             //Entity ID
             fakeItemMetaPacket.getIntegers().write(0, entityID);
+
             //List<DataWatcher$Item> Type are more complex
             //Create a DataWatcher
             WrappedDataWatcher wpw = new WrappedDataWatcher();
@@ -390,16 +390,29 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
                 wpw.setObject(2, WrappedDataWatcher.Registry.getChatComponentSerializer(true), Optional.of(WrappedChatComponent.fromJson(itemName).getHandle()));
                 wpw.setObject(new WrappedDataWatcher.WrappedDataWatcherObject(3, WrappedDataWatcher.Registry.get(Boolean.class)), true);
             }
+
             //Must in the certain slot:https://wiki.vg/Entity_metadata#Item
-            if (VERSION.ordinal() < GameVersion.v1_19_R1.ordinal()) {
-                // for 1.18 and 1.18.2
+            //Is 1.17-?
+            if (VERSION.ordinal() < GameVersion.v1_17_R1.ordinal()) {
+//                if (version == GameVersion.v1_13_R1 || version == GameVersion.v1_13_R2) {
+//                    //For 1.13 is 6
+//                    wpw.setObject(6, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
+//                } else {
+                //1.14-1.16 is 7
+                wpw.setObject(7, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
+                // }
+            } else {
+                //1.17+ is 8
                 wpw.setObject(8, WrappedDataWatcher.Registry.getItemStackSerializer(false), itemStack);
             }
+            //Add it
             //For 1.19.2+, we need to use DataValue instead of WatchableObject
             if (VERSION.ordinal() > GameVersion.v1_19_R1.ordinal()) {
                 //Check for new version protocolLib
-                if (!CommonUtil.isClassAvailable("com.comphenix.protocol.wrappers.WrappedDataValue")) {
-                    throw new RuntimeException("Unable to initialize packet, ProtocolLib update needed");
+                try {
+                    Class.forName("com.comphenix.protocol.wrappers.WrappedDataValue");
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException("Unable to initialize packet, ProtocolLib update needed", e);
                 }
                 //Convert List<WrappedWatchableObject> to List<WrappedDataValue>
                 List<WrappedWatchableObject> wrappedWatchableObjects = wpw.getWatchableObjects();
