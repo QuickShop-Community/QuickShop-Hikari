@@ -97,7 +97,7 @@
                             <configuration>
                                 <finalName>${name}-${version}</finalName>
                                 <!--                                <outputDirectory>${rootDir}/build-artifacts</outputDirectory>-->
-                                <createDependencyReducedPom>false</createDependencyReducedPom>
+                                <createDependencyReducedPom>true</createDependencyReducedPom>
                                 <minimizeJar>false</minimizeJar>
                                 <createSourcesJar>false</createSourcesJar>
                                 <createTestSourcesJar>false</createTestSourcesJar>
@@ -130,31 +130,14 @@
                                         </shadedPattern>
                                     </relocation>
                                     <relocation>
-                                        <pattern>co.aikar.taskchain.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.co.aikar.taskchain.
-                                        </shadedPattern>
-                                    </relocation>
-                                    <relocation>
                                         <pattern>com.github.PikaMug.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.github.PikaMug.LocaleLib.
                                         </shadedPattern>
                                     </relocation>
                                     <relocation>
-                                        <pattern>de.themoep.minedown.</pattern>
-                                        <shadedPattern>com.ghostchu.quickshop.shade.de.themoep.minedown.</shadedPattern>
-                                    </relocation>
-                                    <relocation>
                                         <pattern>com.vdurmont.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.com.vdurmont.</shadedPattern>
                                     </relocation>
-
-
-                                    <!--                                    <relocation>-->
-                                    <!--                                        <pattern>net.kyori.adventure.text.minimessage.</pattern>-->
-                                    <!--                                        <shadedPattern>com.ghostchu.quickshop.shade.net.kyori.adventure.text.minimessage.-->
-                                    <!--                                        </shadedPattern>-->
-                                    <!--                                    </relocation>-->
-
                                 </relocations>
                                 <transformers>
                                     <transformer
@@ -189,6 +172,7 @@
                     <configuration>
                         <encoding>UTF-8</encoding>
                         <excludePackageNames>com.ghostchu.quickshop.nonquickshopstuff.*</excludePackageNames>
+                        <release>${java.version}</release>
                     </configuration>
                     <executions>
                         <execution>
@@ -199,6 +183,7 @@
                             <configuration>
                                 <failOnError>false</failOnError>
                                 <additionalJOption>-Xdoclint:none</additionalJOption>
+                                <detectOfflineLinks>false</detectOfflineLinks>
                             </configuration>
                         </execution>
                     </executions>

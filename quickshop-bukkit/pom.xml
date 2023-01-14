@@ -75,14 +75,12 @@
             <resource>
                 <directory>../crowdin</directory>
                 <filtering>true</filtering>
-                <!--                <excludes>-->
-                <!--                    <exclude>lang/**/messages.json</exclude>-->
-                <!--                </excludes>-->
             </resource>
-            <resource>
-                <directory>src/main/resources/3rd-party-licenses</directory>
-                <filtering>false</filtering>
-            </resource>
+            <!--            <resource>-->
+            <!--                <directory>src/main/resources/3rd-party-licenses</directory>-->
+            <!--                <targetPath>3rd-party-licenses</targetPath>-->
+            <!--                <filtering>false</filtering>-->
+            <!--            </resource>-->
         </resources>
     </build>
     <dependencies>
@@ -177,28 +175,6 @@
                 <exclusion>
                     <artifactId>*</artifactId>
                     <groupId>*</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- Documentation of MockBukkit: https://github.com/seeseemelk/MockBukkit -->
-        <dependency>
-            <groupId>com.github.seeseemelk</groupId>
-            <artifactId>MockBukkit-v1.19</artifactId>
-            <version>2.143.0</version>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>spigot-api</artifactId>
-                    <groupId>org.spigotmc</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>annotations</artifactId>
-                    <groupId>org.jetbrains</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>junit-jupiter</artifactId>
-                    <groupId>org.junit.jupiter</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -325,6 +301,12 @@
             <groupId>com.dumptruckman.minecraft</groupId>
             <artifactId>JsonConfiguration</artifactId>
             <version>1.1</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>json-smart</artifactId>
+                    <groupId>net.minidev</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>net.minidev</groupId>
@@ -371,11 +353,49 @@
             <artifactId>EssentialsX</artifactId>
             <version>2.19.7</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>paperlib</artifactId>
+                    <groupId>io.papermc</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>snakeyaml</artifactId>
+                    <groupId>org.yaml</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>error_prone_annotations</artifactId>
+                    <groupId>com.google.errorprone</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>checker-qual</artifactId>
+                    <groupId>org.checkerframework</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.vdurmont</groupId>
             <artifactId>semver4j</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bukkit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-minimessage</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-gson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-plain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-text-serializer-legacy</artifactId>
         </dependency>
     </dependencies>
 </project>
