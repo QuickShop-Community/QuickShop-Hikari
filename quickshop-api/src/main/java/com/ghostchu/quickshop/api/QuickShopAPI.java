@@ -4,10 +4,7 @@ import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.api.database.DatabaseHelper;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapperRegistry;
 import com.ghostchu.quickshop.api.localization.text.TextManager;
-import com.ghostchu.quickshop.api.shop.ItemMatcher;
-import com.ghostchu.quickshop.api.shop.PlayerFinder;
-import com.ghostchu.quickshop.api.shop.ShopControlPanelManager;
-import com.ghostchu.quickshop.api.shop.ShopManager;
+import com.ghostchu.quickshop.api.shop.*;
 import com.vdurmont.semver4j.Semver;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -156,4 +153,6 @@ public interface QuickShopAPI {
     void registerLocalizedTranslationKeyMapping(@NotNull String translationKey, @NotNull String key);
 
     Semver getSemVersion();
+
+    ShopItemBlackList getShopItemBlackList();
 }

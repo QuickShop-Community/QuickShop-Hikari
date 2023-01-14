@@ -37,7 +37,7 @@ public class SubCommand_Item implements CommandHandler<Player> {
                 plugin.text().of(sender, "command.no-trade-item").send();
                 return;
             }
-            if (Util.isBlacklisted(itemStack) && !plugin.perm().hasPermission(sender, "quickshop.bypass." + itemStack.getType().name())) {
+            if (plugin.getShopItemBlackList().isBlacklisted(itemStack) && !plugin.perm().hasPermission(sender, "quickshop.bypass." + itemStack.getType().name())) {
                 plugin.text().of(sender, "blacklisted-item").send();
                 return;
             }

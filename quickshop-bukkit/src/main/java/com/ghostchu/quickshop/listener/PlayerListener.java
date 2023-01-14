@@ -269,7 +269,7 @@ public class PlayerListener extends AbstractQSListener {
             return false;
         }
         // Blacklist check
-        if (Util.isBlacklisted(stack)
+        if (plugin.getShopItemBlackList().isBlacklisted(stack)
                 && !plugin.perm()
                 .hasPermission(player, "quickshop.bypass." + stack.getType().name())) {
             plugin.text().of(player, "blacklisted-item").send();

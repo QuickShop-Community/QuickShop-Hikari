@@ -598,7 +598,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             return;
         }
         // Check if item has been blacklisted
-        if (Util.isBlacklisted(shop.getItem())
+        if (plugin.getShopItemBlackList().isBlacklisted(shop.getItem())
                 && !plugin.perm()
                 .hasPermission(p, "quickshop.bypass." + shop.getItem().getType().name().toLowerCase(Locale.ROOT))) {
             plugin.text().of(p, "blacklisted-item").send();

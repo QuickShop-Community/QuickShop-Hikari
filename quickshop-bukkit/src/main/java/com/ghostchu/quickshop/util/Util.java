@@ -756,7 +756,9 @@ public class Util {
     /**
      * @param stack The ItemStack to check if it is blacklisted
      * @return true if the ItemStack is black listed. False if not.
+     * @deprecated Use QuickShopAPI#getShopItemBlackList() instead
      */
+    @Deprecated(forRemoval = true)
     public static boolean isBlacklisted(@NotNull ItemStack stack) {
         if (plugin == null) {
             throw new IllegalStateException("Plugin not fully started yet");
