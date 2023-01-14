@@ -740,6 +740,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     }
                 }
                 registerShop(shop);
+                new ShopCreateSuccessEvent(shop, p.getUniqueId()).callEvent();
             }
         }
     }

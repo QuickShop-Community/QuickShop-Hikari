@@ -569,6 +569,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         this.itemMarker = new ItemMarker(this);
         this.shopItemBlackList = new SimpleShopItemBlackList(this);
         Util.initialize();
+        loadVirtualDisplayItem();
         //Load the database
         try (PerfMonitor ignored = new PerfMonitor("Initialize database")) {
             initDatabase();
@@ -582,7 +583,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         logger.info("Registering commands...");
         this.permissionChecker = new PermissionChecker(this);
         loadCommandHandler();
-        loadVirtualDisplayItem();
         this.shopManager = new SimpleShopManager(this);
         // Limit
         //this.registerLimitRanks();
