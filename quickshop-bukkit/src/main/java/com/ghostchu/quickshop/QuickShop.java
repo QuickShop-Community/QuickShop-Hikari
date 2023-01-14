@@ -569,7 +569,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         this.itemMarker = new ItemMarker(this);
         this.shopItemBlackList = new SimpleShopItemBlackList(this);
         Util.initialize();
-        load3rdParty();
         //Load the database
         try (PerfMonitor ignored = new PerfMonitor("Initialize database")) {
             initDatabase();
@@ -583,6 +582,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         logger.info("Registering commands...");
         this.permissionChecker = new PermissionChecker(this);
         loadCommandHandler();
+        loadVirtualDisplayItem();
         this.shopManager = new SimpleShopManager(this);
         // Limit
         //this.registerLimitRanks();
@@ -620,7 +620,32 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         Log.debug("DisplayItem selected: " + AbstractDisplayItem.getNowUsing().name());
         registerCommunicationChannels();
         new QSConfigurationReloadEvent(javaPlugin).callEvent();
+        load3rdParty();
         logger.info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
+    }
+
+    private void loadVirtualDisplayItem() {
+        if (this.display) {
+            //VirtualItem support
+            if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+                logger.info("Using Virtual Item display, loading ProtocolLib support...");
+                Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
+                if (protocolLibPlugin != null && protocolLibPlugin.isEnabled()) {
+                    logger.info("Successfully loaded ProtocolLib support!");
+                    if (getConfig().getBoolean("shop.per-player-shop-sign")) {
+                        signHooker = new SignHooker(this);
+                        logger.info("Successfully registered per-player shop sign!");
+                    } else {
+                        signHooker = null;
+                    }
+                } else {
+                    logger.warn("Failed to load ProtocolLib support, fallback to real item display and per-player shop info sign will automatically disable.");
+                    signHooker = null;
+                    getConfig().set("shop.display-type", 0);
+                    javaPlugin.saveConfig();
+                }
+            }
+        }
     }
 
     private void loadErrorReporter() {
@@ -656,28 +681,6 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 this.quickShopPAPI = new QuickShopPAPI(this);
                 this.quickShopPAPI.register();
                 logger.info("Successfully loaded PlaceHolderAPI support!");
-            }
-        }
-
-        if (this.display) {
-            //VirtualItem support
-            if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
-                logger.info("Using Virtual Item display, loading ProtocolLib support...");
-                Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
-                if (protocolLibPlugin != null && protocolLibPlugin.isEnabled()) {
-                    logger.info("Successfully loaded ProtocolLib support!");
-                    if (getConfig().getBoolean("shop.per-player-shop-sign")) {
-                        signHooker = new SignHooker(this);
-                        logger.info("Successfully registered per-player shop sign!");
-                    } else {
-                        signHooker = null;
-                    }
-                } else {
-                    logger.warn("Failed to load ProtocolLib support, fallback to real item display and per-player shop info sign will automatically disable.");
-                    signHooker = null;
-                    getConfig().set("shop.display-type", 0);
-                    javaPlugin.saveConfig();
-                }
             }
         }
     }
