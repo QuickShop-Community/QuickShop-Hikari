@@ -28,7 +28,7 @@ public class TransactionAmountPAPI implements PAPISubHandler {
 
     @Override
     public @NotNull String getPrefix() {
-        return "qs_metrics_recent_transactionamount";
+        return "metrics_recent_transactionamount";
     }
 
     @Override

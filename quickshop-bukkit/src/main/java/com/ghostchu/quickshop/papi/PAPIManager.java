@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.papi.impl.MetadataPAPI;
 import com.ghostchu.quickshop.papi.impl.PurchasesPAPI;
 import com.ghostchu.quickshop.papi.impl.ShopManagerPAPI;
 import com.ghostchu.quickshop.papi.impl.TransactionAmountPAPI;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.GuavaCacheRender;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
@@ -62,10 +63,13 @@ public class PAPIManager implements SubPasteItem {
         UUID playerUniqueId = player.getUniqueId();
         return cache.getCached(playerUniqueId, params, (uuid, parms) -> {
             for (PAPISubHandler handler : handlers) {
+                Log.debug("Comparing with " + handler.getPrefix() + " and " + params);
                 if (params.startsWith(handler.getPrefix())) {
+                    Log.debug("Match! Handling...");
                     return handler.handle(player, params);
                 }
             }
+            Log.debug("No PAPI handler hit");
             return null;
         }).orElse(null);
     }

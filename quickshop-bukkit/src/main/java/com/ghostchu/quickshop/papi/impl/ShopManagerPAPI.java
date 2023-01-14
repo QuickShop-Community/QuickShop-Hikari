@@ -22,7 +22,7 @@ public class ShopManagerPAPI implements PAPISubHandler {
 
     @Override
     public @NotNull String getPrefix() {
-        return "qs_shopmanager";
+        return "shopmanager";
     }
 
     @Override

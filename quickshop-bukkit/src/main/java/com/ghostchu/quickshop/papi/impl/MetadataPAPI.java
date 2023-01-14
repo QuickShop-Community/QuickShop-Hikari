@@ -16,7 +16,7 @@ public class MetadataPAPI implements PAPISubHandler {
 
     @Override
     public @NotNull String getPrefix() {
-        return "qs_metadata";
+        return "metadata";
     }
 
     @Override
