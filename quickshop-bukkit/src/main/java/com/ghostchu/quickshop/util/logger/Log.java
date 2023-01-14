@@ -218,6 +218,15 @@ public class Log {
         transaction(level, message, Caller.create());
     }
 
+    public enum Type {
+        DEBUG,
+        CRON,
+        TRANSACTION,
+        TIMING,
+        PERFORMANCE,
+        PERMISSION
+    }
+
     @Getter
     @EqualsAndHashCode
     public static class Record {
@@ -307,16 +316,6 @@ public class Log {
             int codeLine = frame.getLineNumber();
             return new Caller(threadName, className, methodName, codeLine);
         }
-    }
-
-
-    public enum Type {
-        DEBUG,
-        CRON,
-        TRANSACTION,
-        TIMING,
-        PERFORMANCE,
-        PERMISSION
     }
 
 }

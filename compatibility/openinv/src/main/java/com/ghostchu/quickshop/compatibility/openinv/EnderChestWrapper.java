@@ -52,6 +52,21 @@ public class EnderChestWrapper implements InventoryWrapper {
         player.getEnderChest().clear();
     }
 
+    @Override
+    public @NotNull ItemStack[] createSnapshot() {
+        return player.getEnderChest().getContents();
+    }
+
+    /**
+     * Gets the Inventory Wrapper Manager
+     *
+     * @return Wrapper Manager
+     */
+    @Override
+    public @NotNull InventoryWrapperManager getWrapperManager() {
+        return plugin.getManager();
+    }
+
     /**
      * Gets the block or entity belonging to the open inventory
      *
@@ -81,21 +96,6 @@ public class EnderChestWrapper implements InventoryWrapper {
     @Override
     public @Nullable Location getLocation() {
         return null;
-    }
-
-    /**
-     * Gets the Inventory Wrapper Manager
-     *
-     * @return Wrapper Manager
-     */
-    @Override
-    public @NotNull InventoryWrapperManager getWrapperManager() {
-        return plugin.getManager();
-    }
-
-    @Override
-    public @NotNull ItemStack[] createSnapshot() {
-        return player.getEnderChest().getContents();
     }
 
     @Override

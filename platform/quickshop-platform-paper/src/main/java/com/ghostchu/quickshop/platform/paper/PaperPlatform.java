@@ -168,6 +168,11 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
+    public void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components) {
+        player.sendSignChange(sign.getLocation(), components);
+    }
+
+    @Override
     public void setDisplayName(@NotNull ItemMeta meta, @Nullable Component component) {
         meta.displayName(component);
     }
@@ -207,10 +212,5 @@ public class PaperPlatform implements Platform {
     @Override
     public @NotNull Logger getSlf4jLogger(@NotNull Plugin parent) {
         return parent.getSLF4JLogger();
-    }
-
-    @Override
-    public void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components) {
-        player.sendSignChange(sign.getLocation(), components);
     }
 }

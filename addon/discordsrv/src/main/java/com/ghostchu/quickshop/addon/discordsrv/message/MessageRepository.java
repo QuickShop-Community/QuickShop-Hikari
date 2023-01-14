@@ -25,9 +25,9 @@ import java.util.concurrent.TimeoutException;
 
 public class MessageRepository {
     private static final String ADDON_TRANSLATION_KEY_PREFIX = "addon.discord.discord-messages.";
+    private final static String ZERO_WIDTH_SPACE = "\u200E";
     private final QuickShop plugin;
     private final EmbedMessageParser parser = new EmbedMessageParser();
-    private final static String ZERO_WIDTH_SPACE = "\u200E";
 
     public MessageRepository(QuickShop plugin) {
         this.plugin = plugin;
@@ -38,69 +38,10 @@ public class MessageRepository {
         return generateFromTemplate("sold-to-your-shop", langUser, placeHolders);
     }
 
-    @AutoRegisterMessage(key = "bought-from-your-shop")
-    public MessageEmbed boughtFromYourShop(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
-        return generateFromTemplate("bought-from-your-shop", langUser, placeHolders);
-    }
-
-    @AutoRegisterMessage(key = "out-of-space")
-    public MessageEmbed outOfSpace(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
-        return generateFromTemplate("out-of-space", langUser, placeHolders);
-    }
-
-    @AutoRegisterMessage(key = "out-of-stock")
-    public MessageEmbed outOfStock(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
-        return generateFromTemplate("out-of-stock", langUser, placeHolders);
-    }
-
-
-    @AutoRegisterMessage(key = "shop-transfer-to-you")
-    public MessageEmbed shopTransferToYou(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
-        return generateFromTemplate("shop-transfer-to-you", langUser, placeHolders);
-    }
-
-
-    @AutoRegisterMessage(key = "shop-price-changed")
-    public MessageEmbed shopPriceChanged(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
-        return generateFromTemplate("shop-price-changed", langUser, placeHolders);
-    }
-
-    @AutoRegisterMessage(key = "shop-permission-changed")
-    public MessageEmbed shopPermissionChanged(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
-        return generateFromTemplate("shop-permission-changed", langUser, placeHolders);
-    }
-
-    @AutoRegisterMessage(key = "mod-shop-created")
-    public MessageEmbed modShopCreated(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
-        return generateFromTemplate("mod-shop-created", langUser, placeHolders);
-    }
-
-    @AutoRegisterMessage(key = "mod-shop-transfer")
-    public MessageEmbed modShopTransfer(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
-        return generateFromTemplate("mod-shop-transfer", langUser, placeHolders);
-    }
-
-    @AutoRegisterMessage(key = "mod-remove-shop")
-    public MessageEmbed modShopRemoved(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
-        return generateFromTemplate("mod-remove-shop", langUser, placeHolders);
-    }
-
-    @AutoRegisterMessage(key = "mod-shop-price-changed")
-    public MessageEmbed modShopPriceChanged(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
-        return generateFromTemplate("mod-shop-price-changed", langUser, placeHolders);
-    }
-
-    @AutoRegisterMessage(key = "mod-shop-purchase")
-    public MessageEmbed modShopPurchase(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
-        return generateFromTemplate("mod-shop-purchase", langUser, placeHolders);
-    }
-
-
     @NotNull
     private MessageEmbed generateFromTemplate(@NotNull String key, @NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
         return applyPlaceHolders(parser.parse(textOfString(langUser, key)), placeHolders);
     }
-
 
     @NotNull
     private MessageEmbed applyPlaceHolders(@NotNull MessageEmbed embed, @NotNull Map<String, String> placeholders) {
@@ -141,21 +82,9 @@ public class MessageRepository {
         return builder.build();
     }
 
-    @Nullable
-    private MessageEmbed.AuthorInfo applyPlaceHolders(@Nullable MessageEmbed.AuthorInfo info, @NotNull Map<String, String> placeholders) {
-        if (info == null) {
-            return null;
-        }
-        String iconUrl = info.getIconUrl();
-        String name = info.getName();
-        String url = info.getUrl();
-        String proxyUrl = info.getProxyIconUrl();
-        // apply
-        iconUrl = applyPlaceHolders(iconUrl, placeholders);
-        name = applyPlaceHolders(name, placeholders);
-        url = applyPlaceHolders(url, placeholders);
-        proxyUrl = applyPlaceHolders(proxyUrl, placeholders);
-        return new MessageEmbed.AuthorInfo(name, url, iconUrl, proxyUrl);
+    @NotNull
+    private String textOfString(@Nullable UUID langUser, @NotNull String key) {
+        return PlainTextComponentSerializer.plainText().serialize(plugin.text().of(ADDON_TRANSLATION_KEY_PREFIX + key).forLocale(getPlayerLocale(langUser).getLocale()));
     }
 
     @Nullable
@@ -171,6 +100,23 @@ public class MessageRepository {
             string = string.replace("%%" + entry.getKey() + "%%", value);
         }
         return string;
+    }
+
+    @Nullable
+    private MessageEmbed.AuthorInfo applyPlaceHolders(@Nullable MessageEmbed.AuthorInfo info, @NotNull Map<String, String> placeholders) {
+        if (info == null) {
+            return null;
+        }
+        String iconUrl = info.getIconUrl();
+        String name = info.getName();
+        String url = info.getUrl();
+        String proxyUrl = info.getProxyIconUrl();
+        // apply
+        iconUrl = applyPlaceHolders(iconUrl, placeholders);
+        name = applyPlaceHolders(name, placeholders);
+        url = applyPlaceHolders(url, placeholders);
+        proxyUrl = applyPlaceHolders(proxyUrl, placeholders);
+        return new MessageEmbed.AuthorInfo(name, url, iconUrl, proxyUrl);
     }
 
     @NotNull
@@ -194,8 +140,58 @@ public class MessageRepository {
         return locale;
     }
 
-    @NotNull
-    private String textOfString(@Nullable UUID langUser, @NotNull String key) {
-        return PlainTextComponentSerializer.plainText().serialize(plugin.text().of(ADDON_TRANSLATION_KEY_PREFIX + key).forLocale(getPlayerLocale(langUser).getLocale()));
+    @AutoRegisterMessage(key = "bought-from-your-shop")
+    public MessageEmbed boughtFromYourShop(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("bought-from-your-shop", langUser, placeHolders);
+    }
+
+    @AutoRegisterMessage(key = "out-of-space")
+    public MessageEmbed outOfSpace(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("out-of-space", langUser, placeHolders);
+    }
+
+    @AutoRegisterMessage(key = "out-of-stock")
+    public MessageEmbed outOfStock(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("out-of-stock", langUser, placeHolders);
+    }
+
+    @AutoRegisterMessage(key = "shop-transfer-to-you")
+    public MessageEmbed shopTransferToYou(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("shop-transfer-to-you", langUser, placeHolders);
+    }
+
+    @AutoRegisterMessage(key = "shop-price-changed")
+    public MessageEmbed shopPriceChanged(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("shop-price-changed", langUser, placeHolders);
+    }
+
+    @AutoRegisterMessage(key = "shop-permission-changed")
+    public MessageEmbed shopPermissionChanged(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("shop-permission-changed", langUser, placeHolders);
+    }
+
+    @AutoRegisterMessage(key = "mod-shop-created")
+    public MessageEmbed modShopCreated(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("mod-shop-created", langUser, placeHolders);
+    }
+
+    @AutoRegisterMessage(key = "mod-shop-transfer")
+    public MessageEmbed modShopTransfer(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("mod-shop-transfer", langUser, placeHolders);
+    }
+
+    @AutoRegisterMessage(key = "mod-remove-shop")
+    public MessageEmbed modShopRemoved(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("mod-remove-shop", langUser, placeHolders);
+    }
+
+    @AutoRegisterMessage(key = "mod-shop-price-changed")
+    public MessageEmbed modShopPriceChanged(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("mod-shop-price-changed", langUser, placeHolders);
+    }
+
+    @AutoRegisterMessage(key = "mod-shop-purchase")
+    public MessageEmbed modShopPurchase(@NotNull UUID langUser, @NotNull Map<String, String> placeHolders) {
+        return generateFromTemplate("mod-shop-purchase", langUser, placeHolders);
     }
 }

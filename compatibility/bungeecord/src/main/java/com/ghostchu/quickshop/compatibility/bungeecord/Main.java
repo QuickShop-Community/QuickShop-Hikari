@@ -61,13 +61,6 @@ public final class Main extends Plugin implements Listener {
         }
     }
 
-    private void forwardMessage(ProxiedPlayer player, String message) {
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF(SUB_CHANNEL_FORWARD);
-        out.writeUTF(message);
-        player.sendData(QUICKSHOP_BUNGEE_CHANNEL, message.getBytes());
-    }
-
     @EventHandler(priority = EventPriority.LOWEST)
     public void onChat(ChatEvent event) {
         if (event.getSender() instanceof ProxiedPlayer player) {
@@ -77,6 +70,13 @@ public final class Main extends Plugin implements Listener {
                 event.setCancelled(true);
             }
         }
+    }
+
+    private void forwardMessage(ProxiedPlayer player, String message) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF(SUB_CHANNEL_FORWARD);
+        out.writeUTF(message);
+        player.sendData(QUICKSHOP_BUNGEE_CHANNEL, message.getBytes());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

@@ -100,7 +100,6 @@ public interface EconomyTransaction {
     void setAllowLoan(boolean allowLoan);
 
 
-
     interface TransactionCallback {
         /**
          * Calling while Transaction commit

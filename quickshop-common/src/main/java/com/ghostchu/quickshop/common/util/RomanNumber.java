@@ -7,9 +7,6 @@ import java.util.TreeMap;
  */
 public class RomanNumber {
 
-    private RomanNumber() {
-    }
-
     private static final TreeMap<Integer, String> MAP = new TreeMap<>();
 
     static {
@@ -26,6 +23,9 @@ public class RomanNumber {
         MAP.put(5, "V");
         MAP.put(4, "IV");
         MAP.put(1, "I");
+    }
+
+    private RomanNumber() {
     }
 
     public static String toRoman(Integer number) {

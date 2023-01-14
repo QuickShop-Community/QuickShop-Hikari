@@ -51,17 +51,6 @@ public class InteractionController implements Reloadable, SubPasteItem {
         }
     }
 
-    /**
-     * Getting the behavior of the interaction
-     *
-     * @param interaction the interaction
-     * @return the behavior
-     */
-    @NotNull
-    public InteractionBehavior getBehavior(@NotNull Interaction interaction) {
-        return behaviorMap.getOrDefault(interaction, InteractionBehavior.NONE);
-    }
-
     @Override
     public ReloadResult reloadModule() throws Exception {
         loadInteractionConfig();
@@ -76,6 +65,17 @@ public class InteractionController implements Reloadable, SubPasteItem {
             table.insert(interaction.name(), getBehavior(interaction).name());
         }
         return table.render();
+    }
+
+    /**
+     * Getting the behavior of the interaction
+     *
+     * @param interaction the interaction
+     * @return the behavior
+     */
+    @NotNull
+    public InteractionBehavior getBehavior(@NotNull Interaction interaction) {
+        return behaviorMap.getOrDefault(interaction, InteractionBehavior.NONE);
     }
 
     @Override

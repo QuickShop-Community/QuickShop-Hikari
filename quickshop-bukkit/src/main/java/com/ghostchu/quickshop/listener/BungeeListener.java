@@ -43,14 +43,6 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
         notifyForCancel(event.getPlayer());
     }
 
-    public void notifyForForward(Player player) {
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF(CHAT_FORWARD_SUB_CHANNEL_COMMAND);
-        out.writeUTF(CHAT_COMMAND_REQUEST);
-        out.writeUTF(player.getUniqueId().toString());
-        player.sendPluginMessage(plugin.getJavaPlugin(), CHAT_FORWARD_SUB_CHANNEL_COMMAND, out.toByteArray());
-    }
-
     public void notifyForCancel(Player player) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF(CHAT_FORWARD_SUB_CHANNEL_COMMAND);
@@ -59,6 +51,13 @@ public class BungeeListener extends AbstractQSListener implements PluginMessageL
         player.sendPluginMessage(plugin.getJavaPlugin(), CHAT_FORWARD_SUB_CHANNEL_COMMAND, out.toByteArray());
     }
 
+    public void notifyForForward(Player player) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF(CHAT_FORWARD_SUB_CHANNEL_COMMAND);
+        out.writeUTF(CHAT_COMMAND_REQUEST);
+        out.writeUTF(player.getUniqueId().toString());
+        player.sendPluginMessage(plugin.getJavaPlugin(), CHAT_FORWARD_SUB_CHANNEL_COMMAND, out.toByteArray());
+    }
 
     @Override
     public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte @NotNull [] bytes) {

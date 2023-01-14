@@ -31,6 +31,19 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     private MessageManager manager;
     private JDAWrapper jdaWrapper;
 
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onPurchase(ShopSuccessPurchaseEvent event) {
+        if (event.getShop().isUnlimited() && plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
+            return;
+        }
+        Util.asyncThreadRun(() -> {
+            notifyShopPurchase(event);
+            notifyModShopPurchase(event);
+            notifyShopOutOfStock(event);
+            notifyShopOutOfSpace(event);
+        });
+    }
+
     @Override
     public void onEnable() {
         saveDefaultConfig();
@@ -45,6 +58,22 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
 
     }
 
+    private void notifyShopPurchase(ShopSuccessPurchaseEvent event) {
+        if (!isFeatureEnabled("notify-shop-purchase")) {
+            getLogger().info("Feature not enabled!!");
+            return;
+        }
+        // Send to owner
+        MessageEmbed embed = factory.shopPurchasedSelf(event);
+        jdaWrapper.sendMessage(event.getShop().getOwner(), embed);
+        // Send to permission users
+        for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
+            if (event.getShop().playerAuthorize(uuid, this, "discordalert")) {
+                jdaWrapper.sendMessage(uuid, factory.shopPurchasedSelf(event));
+            }
+        }
+    }
+
     @Override
     public void saveDefaultConfig() {
         super.saveDefaultConfig();
@@ -56,124 +85,16 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
         }
     }
 
+    private void notifyModShopPurchase(ShopSuccessPurchaseEvent event) {
+        if (!isFeatureEnabled("mod-notify-shop-purchase")) {
+            return;
+        }
+        sendModeratorChannelMessage(factory.modShopPurchase(event));
+    }
+
     @Override
     public void onDisable() {
         HandlerList.unregisterAll((Plugin) this);
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onPurchase(ShopSuccessPurchaseEvent event) {
-        if (event.getShop().isUnlimited() && plugin.getConfig().getBoolean("shop.ignore-unlimited-shop-messages")) {
-            return;
-        }
-        Util.asyncThreadRun(() -> {
-            notifyShopPurchase(event);
-            notifyModShopPurchase(event);
-            notifyShopOutOfStock(event);
-            notifyShopOutOfSpace(event);
-        });
-    }
-
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onShopTransfer(ShopOwnershipTransferEvent event) {
-        Util.asyncThreadRun(() -> {
-            notifyShopTransfer(event);
-            notifyModShopTransfer(event);
-        });
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onShopDelete(ShopDeleteEvent event) {
-        Util.asyncThreadRun(() -> notifyModShopRemoved(event));
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onShopPriceChanged(ShopPriceChangeEvent event) {
-        Util.asyncThreadRun(() -> {
-            notifyShopPriceChanged(event);
-            notifyModShopPriceChanged(event);
-        });
-    }
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onShopCreated(ShopCreateEvent event) {
-        Util.asyncThreadRun(() -> notifyModShopCreated(event));
-    }
-
-
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
-    public void onShopPermissionChanged(ShopPlayerGroupSetEvent event) {
-        Util.asyncThreadRun(() -> notifyShopPermissionChanged(event));
-    }
-
-    private void notifyShopPermissionChanged(ShopPlayerGroupSetEvent event) {
-        if (!isFeatureEnabled("notify-shop-permission-changed")) {
-            return;
-        }
-        jdaWrapper.sendMessage(event.getShop().getOwner(), factory.shopPermissionChanged(event));
-        // Send to permission users
-        for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
-            if (event.getShop().playerAuthorize(uuid, this, "discordalert")) {
-                jdaWrapper.sendMessage(uuid, factory.shopPermissionChanged(event));
-            }
-        }
-    }
-
-    private void notifyShopPriceChanged(ShopPriceChangeEvent event) {
-        if (!isFeatureEnabled("notify-shop-price-changed")) {
-            return;
-        }
-        jdaWrapper.sendMessage(event.getShop().getOwner(), factory.priceChanged(event));
-        // Send to permission users
-        for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
-            if (event.getShop().playerAuthorize(uuid, this, "discordalert")) {
-                jdaWrapper.sendMessage(uuid, factory.priceChanged(event));
-            }
-        }
-    }
-
-    private void notifyModShopPriceChanged(ShopPriceChangeEvent event) {
-        if (!isFeatureEnabled("mod-notify-shop-price-changed")) {
-            return;
-        }
-        sendModeratorChannelMessage(factory.modPriceChanged(event));
-    }
-
-    private void sendModeratorChannelMessage(@NotNull MessageEmbed embed) {
-        String channelId = getConfig().getString("moderator-channel", "000000000000000000");
-        if ("000000000000000000".equals(channelId)) {
-            return;
-        }
-        jdaWrapper.sendChannelMessage(channelId, embed);
-    }
-
-    private void notifyModShopRemoved(ShopDeleteEvent event) {
-        if (!isFeatureEnabled("mod-notify-shop-removed")) {
-            return;
-        }
-        sendModeratorChannelMessage(factory.modShopRemoved(event));
-    }
-
-    private void notifyShopTransfer(ShopOwnershipTransferEvent event) {
-        if (!isFeatureEnabled("notify-shop-transfer")) {
-            return;
-        }
-        jdaWrapper.sendMessage(event.getShop().getOwner(), factory.shopTransferToYou(event));
-    }
-
-    private void notifyModShopTransfer(ShopOwnershipTransferEvent event) {
-        if (!isFeatureEnabled("mod-notify-shop-transfer")) {
-            return;
-        }
-        sendModeratorChannelMessage(factory.modShopTransfer(event));
-    }
-
-    private void notifyModShopCreated(ShopCreateEvent event) {
-        if (!isFeatureEnabled("mod-notify-shop-created")) {
-            return;
-        }
-        sendModeratorChannelMessage(factory.modShopCreated(event));
     }
 
     private void notifyShopOutOfStock(ShopSuccessPurchaseEvent event) {
@@ -197,22 +118,6 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
 
     }
 
-    private void notifyShopPurchase(ShopSuccessPurchaseEvent event) {
-        if (!isFeatureEnabled("notify-shop-purchase")) {
-            getLogger().info("Feature not enabled!!");
-            return;
-        }
-        // Send to owner
-        MessageEmbed embed = factory.shopPurchasedSelf(event);
-        jdaWrapper.sendMessage(event.getShop().getOwner(), embed);
-        // Send to permission users
-        for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
-            if (event.getShop().playerAuthorize(uuid, this, "discordalert")) {
-                jdaWrapper.sendMessage(uuid, factory.shopPurchasedSelf(event));
-            }
-        }
-    }
-
     private void notifyShopOutOfSpace(ShopSuccessPurchaseEvent event) {
         if (!isFeatureEnabled("notify-shop-out-of-space")) {
             return;
@@ -234,16 +139,108 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
 
     }
 
-
     public boolean isFeatureEnabled(@NotNull String featureName) {
         return getConfig().getBoolean("features." + featureName, true);
     }
 
-    private void notifyModShopPurchase(ShopSuccessPurchaseEvent event) {
-        if (!isFeatureEnabled("mod-notify-shop-purchase")) {
+    private void sendModeratorChannelMessage(@NotNull MessageEmbed embed) {
+        String channelId = getConfig().getString("moderator-channel", "000000000000000000");
+        if ("000000000000000000".equals(channelId)) {
             return;
         }
-        sendModeratorChannelMessage(factory.modShopPurchase(event));
+        jdaWrapper.sendChannelMessage(channelId, embed);
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onShopTransfer(ShopOwnershipTransferEvent event) {
+        Util.asyncThreadRun(() -> {
+            notifyShopTransfer(event);
+            notifyModShopTransfer(event);
+        });
+    }
+
+    private void notifyShopTransfer(ShopOwnershipTransferEvent event) {
+        if (!isFeatureEnabled("notify-shop-transfer")) {
+            return;
+        }
+        jdaWrapper.sendMessage(event.getShop().getOwner(), factory.shopTransferToYou(event));
+    }
+
+    private void notifyModShopTransfer(ShopOwnershipTransferEvent event) {
+        if (!isFeatureEnabled("mod-notify-shop-transfer")) {
+            return;
+        }
+        sendModeratorChannelMessage(factory.modShopTransfer(event));
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onShopDelete(ShopDeleteEvent event) {
+        Util.asyncThreadRun(() -> notifyModShopRemoved(event));
+    }
+
+    private void notifyModShopRemoved(ShopDeleteEvent event) {
+        if (!isFeatureEnabled("mod-notify-shop-removed")) {
+            return;
+        }
+        sendModeratorChannelMessage(factory.modShopRemoved(event));
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onShopPriceChanged(ShopPriceChangeEvent event) {
+        Util.asyncThreadRun(() -> {
+            notifyShopPriceChanged(event);
+            notifyModShopPriceChanged(event);
+        });
+    }
+
+    private void notifyShopPriceChanged(ShopPriceChangeEvent event) {
+        if (!isFeatureEnabled("notify-shop-price-changed")) {
+            return;
+        }
+        jdaWrapper.sendMessage(event.getShop().getOwner(), factory.priceChanged(event));
+        // Send to permission users
+        for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
+            if (event.getShop().playerAuthorize(uuid, this, "discordalert")) {
+                jdaWrapper.sendMessage(uuid, factory.priceChanged(event));
+            }
+        }
+    }
+
+    private void notifyModShopPriceChanged(ShopPriceChangeEvent event) {
+        if (!isFeatureEnabled("mod-notify-shop-price-changed")) {
+            return;
+        }
+        sendModeratorChannelMessage(factory.modPriceChanged(event));
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onShopCreated(ShopCreateEvent event) {
+        Util.asyncThreadRun(() -> notifyModShopCreated(event));
+    }
+
+    private void notifyModShopCreated(ShopCreateEvent event) {
+        if (!isFeatureEnabled("mod-notify-shop-created")) {
+            return;
+        }
+        sendModeratorChannelMessage(factory.modShopCreated(event));
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    public void onShopPermissionChanged(ShopPlayerGroupSetEvent event) {
+        Util.asyncThreadRun(() -> notifyShopPermissionChanged(event));
+    }
+
+    private void notifyShopPermissionChanged(ShopPlayerGroupSetEvent event) {
+        if (!isFeatureEnabled("notify-shop-permission-changed")) {
+            return;
+        }
+        jdaWrapper.sendMessage(event.getShop().getOwner(), factory.shopPermissionChanged(event));
+        // Send to permission users
+        for (UUID uuid : event.getShop().getPermissionAudiences().keySet()) {
+            if (event.getShop().playerAuthorize(uuid, this, "discordalert")) {
+                jdaWrapper.sendMessage(uuid, factory.shopPermissionChanged(event));
+            }
+        }
     }
 
     private void sendModeratorChannelMessage(@NotNull String msg) {
@@ -270,4 +267,6 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
     public JDAWrapper getJdaWrapper() {
         return jdaWrapper;
     }
+
+
 }

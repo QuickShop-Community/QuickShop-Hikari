@@ -57,17 +57,6 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
 
     }
 
-    private void queryBenefit(Player sender, Shop shop, String[] cmdArg) {
-        plugin.text().of(sender, "benefit-query", shop.getShopBenefit().getRegistry().size()).send();
-        Util.asyncThreadRun(() -> {
-            for (Map.Entry<UUID, Double> entry : shop.getShopBenefit().getRegistry().entrySet()) {
-                String v = MsgUtil.decimalFormat(entry.getValue() * 100);
-                plugin.text().of(sender, "benefit-query-list", plugin.getPlayerFinder().uuid2Name(entry.getKey()), entry.getKey(), v + "%").send();
-            }
-        });
-
-    }
-
     private void addBenefit(Player sender, Shop shop, String[] cmdArg) {
         if (cmdArg.length < 3) {
             plugin.text().of(sender, "command-incorrect", "/qs benefit <add/remove> <player> <percentage>").send();
@@ -129,6 +118,17 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
         benefit.removeBenefit(uuid);
         shop.setShopBenefit(benefit);
         plugin.text().of(sender, "benefit-removed", MsgUtil.formatPlayerProfile(new Profile(uuid, cmdArg[1]), sender)).send();
+
+    }
+
+    private void queryBenefit(Player sender, Shop shop, String[] cmdArg) {
+        plugin.text().of(sender, "benefit-query", shop.getShopBenefit().getRegistry().size()).send();
+        Util.asyncThreadRun(() -> {
+            for (Map.Entry<UUID, Double> entry : shop.getShopBenefit().getRegistry().entrySet()) {
+                String v = MsgUtil.decimalFormat(entry.getValue() * 100);
+                plugin.text().of(sender, "benefit-query-list", plugin.getPlayerFinder().uuid2Name(entry.getKey()), entry.getKey(), v + "%").send();
+            }
+        });
 
     }
 

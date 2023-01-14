@@ -27,20 +27,6 @@ public final class Main extends CompatibilityModule implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onShopItemChanging(ShopItemChangeEvent event) {
-        if (isSoulBoundItem(event.getShop().getItem())) {
-            event.setCancelled(true, getDisallowedMessage(event.getShop().getOwner()));
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onShopPurchase(ShopPurchaseEvent event) {
-        if (isSoulBoundItem(event.getShop().getItem())) {
-            event.setCancelled(true, getDisallowedMessage(event.getShop().getOwner()));
-        }
-    }
-
     private boolean isSoulBoundItem(ItemStack stack) {
         if (stack == null) {
             return false;
@@ -53,5 +39,19 @@ public final class Main extends CompatibilityModule implements Listener {
 
     private Component getDisallowedMessage(UUID sender) {
         return QuickShop.getInstance().text().of(sender, "compatibility.elitemobs.soulbound-disallowed").forLocale();
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onShopItemChanging(ShopItemChangeEvent event) {
+        if (isSoulBoundItem(event.getShop().getItem())) {
+            event.setCancelled(true, getDisallowedMessage(event.getShop().getOwner()));
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onShopPurchase(ShopPurchaseEvent event) {
+        if (isSoulBoundItem(event.getShop().getItem())) {
+            event.setCancelled(true, getDisallowedMessage(event.getShop().getOwner()));
+        }
     }
 }

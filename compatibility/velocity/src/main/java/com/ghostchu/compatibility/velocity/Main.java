@@ -29,7 +29,6 @@ public final class Main {
     private static final String SUB_CHANNEL_COMMAND = "command";
     private static final String CHAT_COMMAND_REQUEST = "request";
     private static final String CHAT_COMMAND_CANCEL = "cancel";
-    private final Set<UUID> pendingForward = Collections.synchronizedSet(new HashSet<>());
     private static final List<ProtocolVersion> NO_SIGN_VERSIONS = List.of(
             LEGACY,
             MINECRAFT_1_7_2,
@@ -67,7 +66,7 @@ public final class Main {
             MINECRAFT_1_18_2,
             MINECRAFT_1_19
     );
-
+    private final Set<UUID> pendingForward = Collections.synchronizedSet(new HashSet<>());
     @Inject
     private ProxyServer proxy;
 
@@ -106,15 +105,6 @@ public final class Main {
         }
     }
 
-    private void forwardMessage(Player player, String message) {
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF(SUB_CHANNEL_FORWARD);
-        out.writeUTF(message);
-        player.getCurrentServer().ifPresent(server ->
-            server.sendPluginMessage(QUICKSHOP_BUNGEE_CHANNEL, message.getBytes())
-        );
-    }
-
     @Subscribe(order = PostOrder.FIRST)
     public void onChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
@@ -127,6 +117,15 @@ public final class Main {
                 event.setResult(PlayerChatEvent.ChatResult.denied());
             }
         }
+    }
+
+    private void forwardMessage(Player player, String message) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF(SUB_CHANNEL_FORWARD);
+        out.writeUTF(message);
+        player.getCurrentServer().ifPresent(server ->
+                server.sendPluginMessage(QUICKSHOP_BUNGEE_CHANNEL, message.getBytes())
+        );
     }
 
     @Subscribe(order = PostOrder.FIRST)

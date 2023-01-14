@@ -16,13 +16,19 @@ import java.util.logging.Level;
 
 public final class Main extends JavaPlugin implements Listener {
     static Main instance;
-    private QuickShop plugin;
     private final DiscountStatusManager discountStatusManager = new DiscountStatusManager();
+    private QuickShop plugin;
     private DiscountCodeManager codeManager;
 
     @Override
     public void onLoad() {
         instance = this;
+    }
+
+    @Override
+    public void onDisable() {
+
+        HandlerList.unregisterAll((Plugin) this);
     }
 
     @Override
@@ -62,11 +68,5 @@ public final class Main extends JavaPlugin implements Listener {
 
     public DiscountCodeManager getCodeManager() {
         return codeManager;
-    }
-
-    @Override
-    public void onDisable() {
-
-        HandlerList.unregisterAll((Plugin) this);
     }
 }

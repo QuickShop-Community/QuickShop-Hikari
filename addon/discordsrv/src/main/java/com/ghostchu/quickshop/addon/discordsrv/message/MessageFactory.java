@@ -37,6 +37,68 @@ public class MessageFactory {
         return messageManager.getEmbedMessage("mod-shop-created", shop.getOwner(), placeHolders);
     }
 
+    private @NotNull Map<String, String> applyPlaceHolders(@NotNull Shop shop, @NotNull Map<String, String> map) {
+        return applyPlaceHolders(shop, map, null);
+    }
+
+    private @NotNull Map<String, String> applyPlaceHolders(@NotNull Shop shop, @NotNull Map<String, String> map, @Nullable UUID langUser) {
+        map.put("shop.name", ChatColor.stripColor(shop.getShopName()));
+        map.put("shop.owner.name", wrap(shop.ownerName(getPlayerLocale(langUser))));
+        map.put("shop.location.world", shop.getLocation().getWorld().getName());
+        map.put("shop.location.x", String.valueOf(shop.getLocation().getBlockX()));
+        map.put("shop.location.y", String.valueOf(shop.getLocation().getBlockY()));
+        map.put("shop.location.z", String.valueOf(shop.getLocation().getBlockY()));
+        map.put("shop.location.id", String.valueOf(shop.getShopId()));
+        map.put("shop.item.name", wrap(Util.getItemStackName(shop.getItem())));
+        map.put("shop.item.amount", String.valueOf(shop.getItem().getAmount()));
+        map.put("shop.item.material", shop.getItem().getType().name());
+        map.put("shop.owner.currency", shop.getCurrency());
+        //map.put("shop.remaining-space", String.valueOf(shop.getRemainingSpace()));
+        //map.put("shop.remaining-stock", String.valueOf(shop.getRemainingStock()));
+        map.put("shop.stacking-amount", String.valueOf(shop.getShopStackingAmount()));
+        map.put("shop.unlimited", String.valueOf(shop.isUnlimited()));
+        if (shop.getShopName() != null) {
+            map.put("shop.display-name", shop.getShopName());
+        } else {
+            // world, x, y, z
+            map.put("shop.display-name", String.format("%s %s, %s, %s", shop.getLocation().getWorld().getName(), shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ()));
+        }
+        map.put("shop.type", shop.getShopType().name());
+        return map;
+    }
+
+    private String wrap(@NotNull Component component) {
+        return wrap(component, Collections.emptyMap());
+    }
+
+    @NotNull
+    private ProxiedLocale getPlayerLocale(UUID uuid) {
+        Util.ensureThread(true);
+        ProxiedLocale locale;
+        if (uuid != null) {
+            Player player = Bukkit.getPlayer(uuid);
+            if (player != null) {
+                locale = plugin.getTextManager().findRelativeLanguages(uuid);
+            } else {
+                try {
+                    locale = new ProxiedLocale(plugin.getDatabaseHelper().getPlayerLocale(uuid).get(10, TimeUnit.SECONDS), MsgUtil.getDefaultGameLanguageCode());
+                } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                    locale = MsgUtil.getDefaultGameLanguageLocale();
+                }
+            }
+        } else {
+            locale = MsgUtil.getDefaultGameLanguageLocale();
+        }
+        return locale;
+    }
+
+    private String wrap(@NotNull Component component, @NotNull Map<String, String> placeholders) {
+        for (Map.Entry<String, String> entry : placeholders.entrySet()) {
+            component = component.replaceText(b -> b.matchLiteral("%%" + entry.getKey() + "%%").replacement(entry.getValue()));
+        }
+        return PlainTextComponentSerializer.plainText().serialize(component);
+    }
+
     @NotNull
     public MessageEmbed modShopRemoved(@NotNull ShopDeleteEvent event) {
         Shop shop = event.getShop();
@@ -55,6 +117,41 @@ public class MessageFactory {
         } else {
             return messageManager.getEmbedMessage("sold-to-your-shop", shop.getOwner(), placeHolders);
         }
+    }
+
+    @NotNull
+    private Map<String, String> applyPlaceHoldersForPurchaseEvent(@NotNull Map<String, String> placeHolders, @Nullable UUID langUser, @NotNull ShopSuccessPurchaseEvent event) {
+        Shop shop = event.getShop();
+        placeHolders.put("purchase.uuid", event.getPurchaser().toString());
+        placeHolders.put("purchase.name", getPlayerName(event.getPurchaser()));
+        //noinspection DataFlowIssue
+        placeHolders.put("purchase.world", shop.getLocation().getWorld().getName());
+        placeHolders.put("purchase.amount", String.valueOf(event.getAmount()));
+        placeHolders.put("purchase.balance", String.valueOf(event.getBalanceWithoutTax()));
+        placeHolders.put("purchase.balance-formatted", purgeColors(plugin.getEconomy().format(event.getBalanceWithoutTax(), shop.getLocation().getWorld(), shop.getCurrency())));
+        placeHolders.put("purchase.taxes", String.valueOf(event.getTax()));
+        placeHolders.put("purchase.taxes-formatted", purgeColors(plugin.getEconomy().format(event.getTax(), shop.getLocation().getWorld(), shop.getCurrency())));
+        return placeHolders;
+    }
+
+    private String getPlayerName(UUID uuid) {
+        String name = uuid.toString();
+        Player bukkitPlayer = Bukkit.getPlayer(uuid);
+        if (bukkitPlayer != null) {
+            name = bukkitPlayer.getName();
+        } else {
+            String playerName = plugin.getPlayerFinder().uuid2Name(uuid);
+            if (playerName != null) {
+                name = playerName;
+            }
+        }
+        return name;
+    }
+
+    @NotNull
+    private String purgeColors(@NotNull String text) {
+        String purged = org.bukkit.ChatColor.stripColor(text);
+        return ChatColor.stripColor(purged);
     }
 
     @NotNull
@@ -135,102 +232,5 @@ public class MessageFactory {
         }
         placeHolders.put("change-permission.perms-list", builder.toString());
         return messageManager.getEmbedMessage("shop-permission-changed", shop.getOwner(), placeHolders);
-    }
-
-    @NotNull
-    private Map<String, String> applyPlaceHoldersForPurchaseEvent(@NotNull Map<String, String> placeHolders, @Nullable UUID langUser, @NotNull ShopSuccessPurchaseEvent event) {
-        Shop shop = event.getShop();
-        placeHolders.put("purchase.uuid", event.getPurchaser().toString());
-        placeHolders.put("purchase.name", getPlayerName(event.getPurchaser()));
-        //noinspection DataFlowIssue
-        placeHolders.put("purchase.world", shop.getLocation().getWorld().getName());
-        placeHolders.put("purchase.amount", String.valueOf(event.getAmount()));
-        placeHolders.put("purchase.balance", String.valueOf(event.getBalanceWithoutTax()));
-        placeHolders.put("purchase.balance-formatted", purgeColors(plugin.getEconomy().format(event.getBalanceWithoutTax(), shop.getLocation().getWorld(), shop.getCurrency())));
-        placeHolders.put("purchase.taxes", String.valueOf(event.getTax()));
-        placeHolders.put("purchase.taxes-formatted", purgeColors(plugin.getEconomy().format(event.getTax(), shop.getLocation().getWorld(), shop.getCurrency())));
-        return placeHolders;
-    }
-
-    @NotNull
-    private String purgeColors(@NotNull String text) {
-        String purged = org.bukkit.ChatColor.stripColor(text);
-        return ChatColor.stripColor(purged);
-    }
-
-    private String wrap(@NotNull Component component) {
-        return wrap(component, Collections.emptyMap());
-    }
-
-    private String wrap(@NotNull Component component, @NotNull Map<String, String> placeholders) {
-        for (Map.Entry<String, String> entry : placeholders.entrySet()) {
-            component = component.replaceText(b -> b.matchLiteral("%%" + entry.getKey() + "%%").replacement(entry.getValue()));
-        }
-        return PlainTextComponentSerializer.plainText().serialize(component);
-    }
-
-    private String getPlayerName(UUID uuid) {
-        String name = uuid.toString();
-        Player bukkitPlayer = Bukkit.getPlayer(uuid);
-        if (bukkitPlayer != null) {
-            name = bukkitPlayer.getName();
-        } else {
-            String playerName = plugin.getPlayerFinder().uuid2Name(uuid);
-            if (playerName != null) {
-                name = playerName;
-            }
-        }
-        return name;
-    }
-
-    @NotNull
-    private ProxiedLocale getPlayerLocale(UUID uuid) {
-        Util.ensureThread(true);
-        ProxiedLocale locale;
-        if (uuid != null) {
-            Player player = Bukkit.getPlayer(uuid);
-            if (player != null) {
-                locale = plugin.getTextManager().findRelativeLanguages(uuid);
-            } else {
-                try {
-                    locale = new ProxiedLocale(plugin.getDatabaseHelper().getPlayerLocale(uuid).get(10, TimeUnit.SECONDS), MsgUtil.getDefaultGameLanguageCode());
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    locale = MsgUtil.getDefaultGameLanguageLocale();
-                }
-            }
-        } else {
-            locale = MsgUtil.getDefaultGameLanguageLocale();
-        }
-        return locale;
-    }
-
-    private @NotNull Map<String, String> applyPlaceHolders(@NotNull Shop shop, @NotNull Map<String, String> map) {
-        return applyPlaceHolders(shop, map, null);
-    }
-
-    private @NotNull Map<String, String> applyPlaceHolders(@NotNull Shop shop, @NotNull Map<String, String> map, @Nullable UUID langUser) {
-        map.put("shop.name", ChatColor.stripColor(shop.getShopName()));
-        map.put("shop.owner.name", wrap(shop.ownerName(getPlayerLocale(langUser))));
-        map.put("shop.location.world", shop.getLocation().getWorld().getName());
-        map.put("shop.location.x", String.valueOf(shop.getLocation().getBlockX()));
-        map.put("shop.location.y", String.valueOf(shop.getLocation().getBlockY()));
-        map.put("shop.location.z", String.valueOf(shop.getLocation().getBlockY()));
-        map.put("shop.location.id", String.valueOf(shop.getShopId()));
-        map.put("shop.item.name", wrap(Util.getItemStackName(shop.getItem())));
-        map.put("shop.item.amount", String.valueOf(shop.getItem().getAmount()));
-        map.put("shop.item.material", shop.getItem().getType().name());
-        map.put("shop.owner.currency", shop.getCurrency());
-        //map.put("shop.remaining-space", String.valueOf(shop.getRemainingSpace()));
-        //map.put("shop.remaining-stock", String.valueOf(shop.getRemainingStock()));
-        map.put("shop.stacking-amount", String.valueOf(shop.getShopStackingAmount()));
-        map.put("shop.unlimited", String.valueOf(shop.isUnlimited()));
-        if (shop.getShopName() != null) {
-            map.put("shop.display-name", shop.getShopName());
-        } else {
-            // world, x, y, z
-            map.put("shop.display-name", String.format("%s %s, %s, %s", shop.getLocation().getWorld().getName(), shop.getLocation().getBlockX(), shop.getLocation().getBlockY(), shop.getLocation().getBlockZ()));
-        }
-        map.put("shop.type", shop.getShopType().name());
-        return map;
     }
 }

@@ -27,23 +27,18 @@ public class LanguageFilesManager {
         }
     }
 
-    public void fillMissing(@NotNull FileConfiguration fallback) {
-        for (FileConfiguration value : this.locale2ContentMapping.values()) {
-            mergeMissing(value, fallback);
-        }
-    }
-
-
-    public void destroy(@NotNull String locale) {
-        this.locale2ContentMapping.remove(locale);
-    }
-
     private void merge(@NotNull FileConfiguration alreadyRegistered, @NotNull FileConfiguration newConfiguration) {
         for (String key : newConfiguration.getKeys(true)) {
             if (newConfiguration.isConfigurationSection(key)) {
                 continue;
             }
             alreadyRegistered.set(key, newConfiguration.get(key));
+        }
+    }
+
+    public void fillMissing(@NotNull FileConfiguration fallback) {
+        for (FileConfiguration value : this.locale2ContentMapping.values()) {
+            mergeMissing(value, fallback);
         }
     }
 
@@ -57,6 +52,10 @@ public class LanguageFilesManager {
             }
             alreadyRegistered.set(key, newConfiguration.get(key));
         }
+    }
+
+    public void destroy(@NotNull String locale) {
+        this.locale2ContentMapping.remove(locale);
     }
 
     /**

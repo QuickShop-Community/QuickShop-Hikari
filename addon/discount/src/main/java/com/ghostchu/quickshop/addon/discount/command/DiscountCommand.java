@@ -51,20 +51,160 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
         }
     }
 
-    private void list(CommandSender sender, String[] passThroughArgs) {
+    private void install(CommandSender sender, String[] passThroughArgs) {
         if (!(sender instanceof Player p)) {
             quickshop.text().of(sender, "command-type-mismatch", "Player").send();
             return;
         }
-        if (!p.hasPermission("quickshop.discount.list")) {
-            quickshop.text().of(sender, "no-permission").send();
+        if (passThroughArgs.length < 1) {
+            quickshop.text().of(sender, "command-incorrect", "/qs discount install <code>").send();
             return;
         }
-        ChatSheetPrinter printer = new ChatSheetPrinter(sender);
-        printer.printHeader();
-        printer.printLine(quickshop.text().of(sender, "addon.discount.discount-code-list").forLocale());
-        main.getCodeManager().getCodes().stream().filter(code -> code.getOwner().equals(((Player) sender).getUniqueId())).forEach(code -> printer.printLine(Component.text(code.getCode()).color(NamedTextColor.AQUA)));
-        printer.printFooter();
+        String codeStr = passThroughArgs[0];
+        DiscountCode code = main.getCodeManager().getCode(codeStr);
+        if (code == null) {
+            quickshop.text().of(sender, "addon.discount.invalid-discount-code").send();
+            return;
+        }
+        main.getStatusManager().set(p.getUniqueId(), code);
+        quickshop.text().of(sender, "addon.discount.discount-code-installed", code.getCode()).send();
+    }
+
+    private void uninstall(CommandSender sender, String[] passThroughArgs) {
+        if (!(sender instanceof Player p)) {
+            quickshop.text().of(sender, "command-type-mismatch", "Player").send();
+            return;
+        }
+        main.getStatusManager().unset(p.getUniqueId());
+        quickshop.text().of(sender, "addon.discount.discount-code-uninstalled").send();
+    }
+
+    private void create(CommandSender sender, String[] passThroughArgs) {
+        if (!(sender instanceof Player p)) {
+            quickshop.text().of(sender, "command-type-mismatch", "Player").send();
+            return;
+        }
+        if (passThroughArgs.length < 1) {
+            quickshop.text().of(sender, "command-incorrect", "/qs discount create <code> <code-type> <rate> [max-usage] [threshold] [expired-time]").send();
+            return;
+        }
+        // code, code-type, rate, max-usage, threshold, expired-time
+        if (passThroughArgs.length < 3) {
+            quickshop.text().of(sender, "command-incorrect", "/qs discount create <code> <code-type> <rate> [max-usage] [threshold] [expired-time]").send();
+            return;
+        }
+        String code = passThroughArgs[0];
+        String codeTypeStr = passThroughArgs[1];
+        CodeType codeType = null;
+        for (CodeType value : CodeType.values()) {
+            if (value.name().equalsIgnoreCase(codeTypeStr)) {
+                codeType = value;
+                break;
+            }
+        }
+        if (codeType == null) {
+            quickshop.text().of(sender, "addon.discount.invalid-code-type", codeTypeStr).send();
+            return;
+        }
+        int maxUsages = -1;
+        double threshold = -1;
+        long expiredOn = -1;
+        if (passThroughArgs.length >= 4) {
+            try {
+                maxUsages = Integer.parseInt(passThroughArgs[3]);
+            } catch (NumberFormatException e) {
+                quickshop.text().of(sender, "not-a-number", passThroughArgs[3]).send();
+                return;
+            }
+        }
+        if (passThroughArgs.length >= 5) {
+            try {
+                threshold = Double.parseDouble(passThroughArgs[4]);
+            } catch (NumberFormatException e) {
+                quickshop.text().of(sender, "not-a-number", passThroughArgs[4]).send();
+                return;
+            }
+        }
+        if (passThroughArgs.length >= 6 && !"-1".equalsIgnoreCase(passThroughArgs[5])) {
+            Date date = CommonUtil.parseTime(passThroughArgs[5]);
+            if (date == null) {
+                quickshop.text().of(sender, "not-a-valid-time", passThroughArgs[5]).send();
+                return;
+            }
+            expiredOn = date.getTime();
+        }
+        CodeCreationResponse response = main.getCodeManager().createDiscountCode(p, p.getUniqueId(), code, codeType, passThroughArgs[2], maxUsages, threshold, expiredOn);
+        switch (response) {
+            case PERMISSION_DENIED -> quickshop.text().of(sender, "no-permission").send();
+            case INVALID_RATE -> quickshop.text().of(sender, "addon.discount.invalid-discount-rate").send();
+            case REGEX_FAILURE ->
+                    quickshop.text().of(sender, "addon.discount.invalid-discount-code-regex", DiscountCodeManager.NAME_REG_EXP).send();
+            case INVALID_USAGE -> quickshop.text().of(sender, "addon.discount.invalid-usage-restriction").send();
+            case INVALID_THRESHOLD ->
+                    quickshop.text().of(sender, "addon.discount.invalid-threshold-restriction").send();
+            case INVALID_EXPIRE_TIME -> quickshop.text().of(sender, "addon.discount.invalid-expire-time").send();
+            case CODE_EXISTS -> quickshop.text().of(sender, "addon.discount.discount-code-already-exists").send();
+            case SUCCESS -> quickshop.text().of(sender, "addon.discount.discount-code-created-successfully",
+                    code,
+                    CommonUtil.prettifyText(codeType.name()),
+                    "/qs discount install " + code,
+                    "/qs discount config " + code + " addshop").send();
+        }
+    }
+
+    private void remove(CommandSender sender, String[] passThroughArgs) {
+        if (passThroughArgs.length < 1) {
+            quickshop.text().of(sender, "command-incorrect", "/qs discount remove <code>").send();
+            return;
+        }
+        String codeStr = passThroughArgs[0];
+        DiscountCode code = main.getCodeManager().getCode(codeStr);
+        if (code == null) {
+            quickshop.text().of(sender, "addon.discount.invalid-discount-code").send();
+            return;
+        }
+        if (sender instanceof Player p) {
+            if (!code.getOwner().equals(p.getUniqueId()) && !quickshop.perm().hasPermission(sender, "quickshopaddon.discount.remove.bypass")) {
+                quickshop.text().of(sender, "no-permission").send();
+                return;
+            }
+        } else {
+            if (!quickshop.perm().hasPermission(sender, "quickshopaddon.discount.remove.bypass")) {
+                quickshop.text().of(sender, "no-permission").send();
+                return;
+            }
+        }
+        main.getCodeManager().removeCode(code);
+        quickshop.text().of(sender, "addon.discount.discount-code-removed", code.getCode()).send();
+    }
+
+    private void info(CommandSender sender, String[] passThroughArgs) {
+        if (!(sender instanceof Player p)) {
+            quickshop.text().of(sender, "command-type-mismatch", "Player").send();
+            return;
+        }
+        DiscountCode code = main.getStatusManager().get(p.getUniqueId(), main.getCodeManager());
+        if (code == null) {
+            quickshop.text().of(sender, "addon.discount.discount-code-query-nothing").send();
+            return;
+        }
+        String name = "Unknown";
+        String lookupName = quickshop.getPlayerFinder().uuid2Name(code.getOwner());
+        if (lookupName != null) {
+            name = lookupName;
+        }
+        Component appliedTo = quickshop.text().of(sender, "addon.discount.code-type." + code.getCodeType().name()).forLocale();
+        String remainsUsage;
+        int remains = code.getRemainsUsage(((Player) sender).getUniqueId());
+        if (remains == -1) {
+            remainsUsage = "Inf.";
+        } else {
+            remainsUsage = String.valueOf(remains);
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String expiredOn = sdf.format(new Date(code.getExpiredTime()));
+        quickshop.text().of(sender, "addon.discount.discount-code-details", code.getCode(), name, appliedTo, remainsUsage, expiredOn, code.getThreshold(), code.getRate().format(sender, quickshop.text())).send();
     }
 
     private void config(CommandSender sender, String[] passThroughArgs) {
@@ -144,163 +284,21 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
         }
     }
 
-    private void info(CommandSender sender, String[] passThroughArgs) {
+    private void list(CommandSender sender, String[] passThroughArgs) {
         if (!(sender instanceof Player p)) {
             quickshop.text().of(sender, "command-type-mismatch", "Player").send();
             return;
         }
-        DiscountCode code = main.getStatusManager().get(p.getUniqueId(), main.getCodeManager());
-        if (code == null) {
-            quickshop.text().of(sender, "addon.discount.discount-code-query-nothing").send();
+        if (!p.hasPermission("quickshop.discount.list")) {
+            quickshop.text().of(sender, "no-permission").send();
             return;
         }
-        String name = "Unknown";
-        String lookupName = quickshop.getPlayerFinder().uuid2Name(code.getOwner());
-        if (lookupName != null) {
-            name = lookupName;
-        }
-        Component appliedTo = quickshop.text().of(sender, "addon.discount.code-type." + code.getCodeType().name()).forLocale();
-        String remainsUsage;
-        int remains = code.getRemainsUsage(((Player) sender).getUniqueId());
-        if (remains == -1) {
-            remainsUsage = "Inf.";
-        } else {
-            remainsUsage = String.valueOf(remains);
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-        String expiredOn = sdf.format(new Date(code.getExpiredTime()));
-        quickshop.text().of(sender, "addon.discount.discount-code-details", code.getCode(), name, appliedTo, remainsUsage, expiredOn, code.getThreshold(), code.getRate().format(sender, quickshop.text())).send();
+        ChatSheetPrinter printer = new ChatSheetPrinter(sender);
+        printer.printHeader();
+        printer.printLine(quickshop.text().of(sender, "addon.discount.discount-code-list").forLocale());
+        main.getCodeManager().getCodes().stream().filter(code -> code.getOwner().equals(((Player) sender).getUniqueId())).forEach(code -> printer.printLine(Component.text(code.getCode()).color(NamedTextColor.AQUA)));
+        printer.printFooter();
     }
-
-
-    private void create(CommandSender sender, String[] passThroughArgs) {
-        if (!(sender instanceof Player p)) {
-            quickshop.text().of(sender, "command-type-mismatch", "Player").send();
-            return;
-        }
-        if (passThroughArgs.length < 1) {
-            quickshop.text().of(sender, "command-incorrect", "/qs discount create <code> <code-type> <rate> [max-usage] [threshold] [expired-time]").send();
-            return;
-        }
-        // code, code-type, rate, max-usage, threshold, expired-time
-        if (passThroughArgs.length < 3) {
-            quickshop.text().of(sender, "command-incorrect", "/qs discount create <code> <code-type> <rate> [max-usage] [threshold] [expired-time]").send();
-            return;
-        }
-        String code = passThroughArgs[0];
-        String codeTypeStr = passThroughArgs[1];
-        CodeType codeType = null;
-        for (CodeType value : CodeType.values()) {
-            if (value.name().equalsIgnoreCase(codeTypeStr)) {
-                codeType = value;
-                break;
-            }
-        }
-        if (codeType == null) {
-            quickshop.text().of(sender, "addon.discount.invalid-code-type", codeTypeStr).send();
-            return;
-        }
-        int maxUsages = -1;
-        double threshold = -1;
-        long expiredOn = -1;
-        if (passThroughArgs.length >= 4) {
-            try {
-                maxUsages = Integer.parseInt(passThroughArgs[3]);
-            } catch (NumberFormatException e) {
-                quickshop.text().of(sender, "not-a-number", passThroughArgs[3]).send();
-                return;
-            }
-        }
-        if (passThroughArgs.length >= 5) {
-            try {
-                threshold = Double.parseDouble(passThroughArgs[4]);
-            } catch (NumberFormatException e) {
-                quickshop.text().of(sender, "not-a-number", passThroughArgs[4]).send();
-                return;
-            }
-        }
-        if (passThroughArgs.length >= 6 && !"-1".equalsIgnoreCase(passThroughArgs[5])) {
-            Date date = CommonUtil.parseTime(passThroughArgs[5]);
-            if (date == null) {
-                quickshop.text().of(sender, "not-a-valid-time", passThroughArgs[5]).send();
-                return;
-            }
-            expiredOn = date.getTime();
-        }
-        CodeCreationResponse response = main.getCodeManager().createDiscountCode(p, p.getUniqueId(), code, codeType, passThroughArgs[2], maxUsages, threshold, expiredOn);
-        switch (response) {
-            case PERMISSION_DENIED -> quickshop.text().of(sender, "no-permission").send();
-            case INVALID_RATE -> quickshop.text().of(sender, "addon.discount.invalid-discount-rate").send();
-            case REGEX_FAILURE ->
-                    quickshop.text().of(sender, "addon.discount.invalid-discount-code-regex", DiscountCodeManager.NAME_REG_EXP).send();
-            case INVALID_USAGE -> quickshop.text().of(sender, "addon.discount.invalid-usage-restriction").send();
-            case INVALID_THRESHOLD ->
-                    quickshop.text().of(sender, "addon.discount.invalid-threshold-restriction").send();
-            case INVALID_EXPIRE_TIME -> quickshop.text().of(sender, "addon.discount.invalid-expire-time").send();
-            case CODE_EXISTS -> quickshop.text().of(sender, "addon.discount.discount-code-already-exists").send();
-            case SUCCESS -> quickshop.text().of(sender, "addon.discount.discount-code-created-successfully",
-                    code,
-                    CommonUtil.prettifyText(codeType.name()),
-                    "/qs discount install " + code,
-                    "/qs discount config " + code + " addshop").send();
-        }
-    }
-
-    private void uninstall(CommandSender sender, String[] passThroughArgs) {
-        if (!(sender instanceof Player p)) {
-            quickshop.text().of(sender, "command-type-mismatch", "Player").send();
-            return;
-        }
-        main.getStatusManager().unset(p.getUniqueId());
-        quickshop.text().of(sender, "addon.discount.discount-code-uninstalled").send();
-    }
-
-    private void install(CommandSender sender, String[] passThroughArgs) {
-        if (!(sender instanceof Player p)) {
-            quickshop.text().of(sender, "command-type-mismatch", "Player").send();
-            return;
-        }
-        if (passThroughArgs.length < 1) {
-            quickshop.text().of(sender, "command-incorrect", "/qs discount install <code>").send();
-            return;
-        }
-        String codeStr = passThroughArgs[0];
-        DiscountCode code = main.getCodeManager().getCode(codeStr);
-        if (code == null) {
-            quickshop.text().of(sender, "addon.discount.invalid-discount-code").send();
-            return;
-        }
-        main.getStatusManager().set(p.getUniqueId(), code);
-        quickshop.text().of(sender, "addon.discount.discount-code-installed", code.getCode()).send();
-    }
-
-    private void remove(CommandSender sender, String[] passThroughArgs) {
-        if (passThroughArgs.length < 1) {
-            quickshop.text().of(sender, "command-incorrect", "/qs discount remove <code>").send();
-            return;
-        }
-        String codeStr = passThroughArgs[0];
-        DiscountCode code = main.getCodeManager().getCode(codeStr);
-        if (code == null) {
-            quickshop.text().of(sender, "addon.discount.invalid-discount-code").send();
-            return;
-        }
-        if (sender instanceof Player p) {
-            if (!code.getOwner().equals(p.getUniqueId()) && !quickshop.perm().hasPermission(sender, "quickshopaddon.discount.remove.bypass")) {
-                quickshop.text().of(sender, "no-permission").send();
-                return;
-            }
-        } else {
-            if (!quickshop.perm().hasPermission(sender, "quickshopaddon.discount.remove.bypass")) {
-                quickshop.text().of(sender, "no-permission").send();
-                return;
-            }
-        }
-        main.getCodeManager().removeCode(code);
-        quickshop.text().of(sender, "addon.discount.discount-code-removed", code.getCode()).send();
-    }
-
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {

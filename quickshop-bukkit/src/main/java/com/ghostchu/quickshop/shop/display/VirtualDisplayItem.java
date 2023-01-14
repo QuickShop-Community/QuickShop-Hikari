@@ -112,6 +112,12 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     }
 
     @Override
+    public ReloadResult reloadModule() {
+        init();
+        return new ReloadResult(ReloadStatus.SUCCESS, "OK", null);
+    }
+
+    @Override
     public void remove() {
         if (isDisplay) {
             sendPacketToAll(fakeItemDestroyPacket);
@@ -173,12 +179,6 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
         fakeItemVelocityPacket = PacketFactory.createFakeItemVelocityPacket(entityID);
         fakeItemDestroyPacket = PacketFactory.createFakeItemDestroyPacket(entityID);
         initialized = true;
-    }
-
-    @Override
-    public ReloadResult reloadModule() {
-        init();
-        return new ReloadResult(ReloadStatus.SUCCESS, "OK", null);
     }
 
     //Due to the delay task in ChunkListener

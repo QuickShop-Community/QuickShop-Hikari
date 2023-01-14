@@ -29,12 +29,6 @@ public class DiscountCodeManager {
         cleanExpiredCodes();
     }
 
-    public void cleanExpiredCodes() {
-        if (codes.removeIf(DiscountCode::isExpired)) {
-            saveDatabase();
-        }
-    }
-
     private void initDatabase() throws IOException {
         if (!this.file.exists()) {
             this.file.createNewFile();
@@ -45,6 +39,12 @@ public class DiscountCodeManager {
                 .map(DiscountCode::fromString)
                 .filter(Objects::isNull)
                 .toList());
+    }
+
+    public void cleanExpiredCodes() {
+        if (codes.removeIf(DiscountCode::isExpired)) {
+            saveDatabase();
+        }
     }
 
     public void saveDatabase() {

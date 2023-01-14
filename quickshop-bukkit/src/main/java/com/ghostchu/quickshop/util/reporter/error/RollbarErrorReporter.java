@@ -295,6 +295,12 @@ public class RollbarErrorReporter {
         }
     }
 
+    enum PossiblyLevel {
+        CONFIRM,
+        MAYBE,
+        IMPOSSIBLE
+    }
+
     class GlobalExceptionFilter implements Filter {
 
         @Nullable
@@ -394,11 +400,5 @@ public class RollbarErrorReporter {
             return preFilter == null || preFilter.isLoggable(rec);
         }
 
-    }
-
-    enum PossiblyLevel {
-        CONFIRM,
-        MAYBE,
-        IMPOSSIBLE
     }
 }

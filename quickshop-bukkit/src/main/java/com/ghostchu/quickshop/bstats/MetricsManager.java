@@ -3,8 +3,8 @@ package com.ghostchu.quickshop.bstats;
 import com.ghostchu.quickshop.QuickShop;
 
 public class MetricsManager {
-    private Metrics metrics;
     private final QuickShop plugin;
+    private Metrics metrics;
     private boolean isMetricsEnabled;
 
     public MetricsManager(QuickShop plugin) {

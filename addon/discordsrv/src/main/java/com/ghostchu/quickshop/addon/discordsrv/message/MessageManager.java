@@ -30,81 +30,6 @@ public class MessageManager {
         scanClass(obj);
     }
 
-    @NotNull
-    private MessageEmbed failSafeEmbedMessage(@NotNull String key) {
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setTitle(":question: Unknown embed message");
-        builder.setDescription("Sorry! We can't find the process message `" + key + "`, please report this to the server administrators!");
-        builder.setColor(Color.GRAY);
-        builder.setFooter("Handle - failedSafeEmbedMessage - failsafe - default");
-        builder.setThumbnail(null);
-        builder.setImage(null);
-        builder.setAuthor(null);
-        return builder.build();
-    }
-
-    @NotNull
-    private String failSafeMessage(@NotNull String key) {
-        return "**Unknown embed message**: " + "Sorry! We can't process the embed message `" + key + "`, please report this to the server administrators!";
-    }
-
-
-    @NotNull
-    public MessageEmbed getEmbedMessage(@NotNull String key, @Nullable UUID receiver, @NotNull Map<String, String> placeholders) {
-        Map.Entry<Object, Method> method = embedMessageRegistry.get(key);
-        if (method == null) {
-            plugin.getLogger().warning("Cannot find embed message: " + key);
-            return failSafeEmbedMessage(key);
-        }
-        try {
-            Object returns = method.getValue().invoke(method.getKey(), receiver, placeholders);
-            if (!(returns instanceof MessageEmbed embed)) {
-                plugin.getLogger().log(Level.WARNING, "Cannot handle embed message: " + key + " Mismatched type!");
-                return failSafeEmbedMessage(key);
-            }
-            return embed;
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            plugin.getLogger().log(Level.WARNING, "Cannot handle embed message: " + key, e);
-            return failSafeEmbedMessage(key);
-        }
-    }
-
-    @NotNull
-    public String getRegularMessage(@NotNull String key, @Nullable UUID receiver, @NotNull Map<String, String> placeholders) {
-        Map.Entry<Object, Method> method = regularMessageRegistry.get(key);
-        if (method == null) {
-            plugin.getLogger().warning("Cannot find message: " + key);
-            return failSafeMessage(key);
-        }
-        try {
-            Object returns = method.getValue().invoke(method.getKey(), receiver, placeholders);
-            if (!(returns instanceof String msg)) {
-                plugin.getLogger().log(Level.WARNING, "Cannot handle message: " + key + " Mismatched type!");
-                return failSafeMessage(key);
-            }
-            return msg;
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            plugin.getLogger().log(Level.WARNING, "Cannot handle message: " + key, e);
-            return failSafeMessage(key);
-        }
-    }
-
-    public boolean hasEmbedMessage(@NotNull String key) {
-        return embedMessageRegistry.containsKey(key);
-    }
-
-    public boolean hasRegularMessage(@NotNull String key) {
-        return regularMessageRegistry.containsKey(key);
-    }
-
-    public void unregisterEmbedMessage(@NotNull String key) {
-        embedMessageRegistry.remove(key);
-    }
-
-    public void unregisterRegularMessage(@NotNull String key) {
-        regularMessageRegistry.remove(key);
-    }
-
     private void scanClass(@Nullable Object obj) {
         if (obj == null) {
             return;
@@ -129,5 +54,79 @@ public class MessageManager {
                 plugin.getLogger().log(Level.WARNING, "Failed to register message: " + annotation.key(), e);
             }
         }
+    }
+
+    @NotNull
+    public MessageEmbed getEmbedMessage(@NotNull String key, @Nullable UUID receiver, @NotNull Map<String, String> placeholders) {
+        Map.Entry<Object, Method> method = embedMessageRegistry.get(key);
+        if (method == null) {
+            plugin.getLogger().warning("Cannot find embed message: " + key);
+            return failSafeEmbedMessage(key);
+        }
+        try {
+            Object returns = method.getValue().invoke(method.getKey(), receiver, placeholders);
+            if (!(returns instanceof MessageEmbed embed)) {
+                plugin.getLogger().log(Level.WARNING, "Cannot handle embed message: " + key + " Mismatched type!");
+                return failSafeEmbedMessage(key);
+            }
+            return embed;
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            plugin.getLogger().log(Level.WARNING, "Cannot handle embed message: " + key, e);
+            return failSafeEmbedMessage(key);
+        }
+    }
+
+    @NotNull
+    private MessageEmbed failSafeEmbedMessage(@NotNull String key) {
+        EmbedBuilder builder = new EmbedBuilder();
+        builder.setTitle(":question: Unknown embed message");
+        builder.setDescription("Sorry! We can't find the process message `" + key + "`, please report this to the server administrators!");
+        builder.setColor(Color.GRAY);
+        builder.setFooter("Handle - failedSafeEmbedMessage - failsafe - default");
+        builder.setThumbnail(null);
+        builder.setImage(null);
+        builder.setAuthor(null);
+        return builder.build();
+    }
+
+    @NotNull
+    public String getRegularMessage(@NotNull String key, @Nullable UUID receiver, @NotNull Map<String, String> placeholders) {
+        Map.Entry<Object, Method> method = regularMessageRegistry.get(key);
+        if (method == null) {
+            plugin.getLogger().warning("Cannot find message: " + key);
+            return failSafeMessage(key);
+        }
+        try {
+            Object returns = method.getValue().invoke(method.getKey(), receiver, placeholders);
+            if (!(returns instanceof String msg)) {
+                plugin.getLogger().log(Level.WARNING, "Cannot handle message: " + key + " Mismatched type!");
+                return failSafeMessage(key);
+            }
+            return msg;
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            plugin.getLogger().log(Level.WARNING, "Cannot handle message: " + key, e);
+            return failSafeMessage(key);
+        }
+    }
+
+    @NotNull
+    private String failSafeMessage(@NotNull String key) {
+        return "**Unknown embed message**: " + "Sorry! We can't process the embed message `" + key + "`, please report this to the server administrators!";
+    }
+
+    public boolean hasEmbedMessage(@NotNull String key) {
+        return embedMessageRegistry.containsKey(key);
+    }
+
+    public boolean hasRegularMessage(@NotNull String key) {
+        return regularMessageRegistry.containsKey(key);
+    }
+
+    public void unregisterEmbedMessage(@NotNull String key) {
+        embedMessageRegistry.remove(key);
+    }
+
+    public void unregisterRegularMessage(@NotNull String key) {
+        regularMessageRegistry.remove(key);
     }
 }

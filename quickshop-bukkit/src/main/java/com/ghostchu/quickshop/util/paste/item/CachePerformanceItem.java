@@ -11,6 +11,14 @@ import java.text.NumberFormat;
 public class CachePerformanceItem implements SubPasteItem {
     private final QuickShop plugin = QuickShop.getInstance();
 
+    @Override
+    public @NotNull String genBody() {
+        return "<h5>Shop Cache</h5>" +
+                buildShopCacheContent() +
+                "<h5>Player Lookup Cache</h5>" +
+                buildPlayerLookupCache();
+    }
+
     @NotNull
     private String buildShopCacheContent() {
         if (plugin.getShopCache() == null) {
@@ -20,27 +28,19 @@ public class CachePerformanceItem implements SubPasteItem {
         return renderTable(stats);
     }
 
-    @Override
-    public @NotNull String genBody() {
-        return "<h5>Shop Cache</h5>" +
-                buildShopCacheContent() +
-                "<h5>Player Lookup Cache</h5>" +
-                buildPlayerLookupCache();
-    }
-
     private String buildPlayerLookupCache() {
         CacheStats stats = ((FastPlayerFinder) plugin.getPlayerFinder()).getNameCache().stats();
         return renderTable(stats);
     }
 
-    @Override
-    public @NotNull String getTitle() {
-        return "Cache Performance";
-    }
-
     @NotNull
     private String renderTable(@NotNull CacheStats stats) {
         return GuavaCacheRender.renderTable(stats);
+    }
+
+    @Override
+    public @NotNull String getTitle() {
+        return "Cache Performance";
     }
 
     @NotNull

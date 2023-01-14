@@ -205,13 +205,13 @@ public abstract class AbstractSpigotPlatform implements Platform {
         this.translationMapping = mapping;
     }
 
-    private String postProcessingTranslationKey(String key) {
-        return this.translationMapping.getOrDefault(key, key);
-    }
-
     @Override
     @NotNull
     public org.slf4j.Logger getSlf4jLogger(@NotNull Plugin parent) {
         return QuickSLF4JLogger.initializeLoggerService(parent.getLogger());
+    }
+
+    private String postProcessingTranslationKey(String key) {
+        return this.translationMapping.getOrDefault(key, key);
     }
 }

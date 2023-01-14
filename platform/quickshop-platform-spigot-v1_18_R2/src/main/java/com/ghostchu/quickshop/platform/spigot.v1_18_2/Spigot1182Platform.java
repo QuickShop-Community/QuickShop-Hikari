@@ -51,6 +51,13 @@ public class Spigot1182Platform extends AbstractSpigotPlatform implements Platfo
     }
 
     @Override
+    public void registerCommand(@NotNull String prefix, @NotNull Command command) {
+        ((CraftServer) Bukkit.getServer()).getCommandMap().register(prefix, command);
+        command.register(((CraftServer) Bukkit.getServer()).getCommandMap());
+        ((CraftServer) Bukkit.getServer()).syncCommands();
+    }
+
+    @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
         if (material.isBlock()) {
             return CraftMagicNumbers.getBlock(material).getDescriptionId();
@@ -82,12 +89,5 @@ public class Spigot1182Platform extends AbstractSpigotPlatform implements Platfo
     @Override
     public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
         return postProcessingTranslationKey(localeManager.queryEnchantments(Map.of(enchantment, 1)).getOrDefault(enchantment, "Unknown"));
-    }
-
-    @Override
-    public void registerCommand(@NotNull String prefix, @NotNull Command command) {
-        ((CraftServer) Bukkit.getServer()).getCommandMap().register(prefix, command);
-        command.register(((CraftServer) Bukkit.getServer()).getCommandMap());
-        ((CraftServer) Bukkit.getServer()).syncCommands();
     }
 }

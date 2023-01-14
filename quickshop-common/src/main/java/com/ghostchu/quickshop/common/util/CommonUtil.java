@@ -37,6 +37,14 @@ public class CommonUtil {
     }
 
     @Nullable
+    public static Date parseTime(@NotNull String time) {
+        if (NumberUtils.isCreatable(time)) {
+            return new Date(Long.parseLong(time) * 1000L);
+        }
+        return zuluTime2Date(time);
+    }
+
+    @Nullable
     public static Date zuluTime2Date(@NotNull String zuluString) {
         String pattern = DateFormatUtils.ISO_8601_EXTENDED_DATETIME_TIME_ZONE_FORMAT.getPattern();
         try {
@@ -44,14 +52,6 @@ public class CommonUtil {
         } catch (ParseException e) {
             return null;
         }
-    }
-
-    @Nullable
-    public static Date parseTime(@NotNull String time) {
-        if (NumberUtils.isCreatable(time)) {
-            return new Date(Long.parseLong(time) * 1000L);
-        }
-        return zuluTime2Date(time);
     }
 
     /**

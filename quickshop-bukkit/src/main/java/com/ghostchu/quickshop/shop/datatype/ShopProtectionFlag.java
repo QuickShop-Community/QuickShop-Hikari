@@ -20,11 +20,11 @@ public class ShopProtectionFlag {
         this.itemStackString = itemStackString;
     }
 
-    public static String getDefaultMark() {
-        return MARK;
-    }
-
     public static String getMark() {
         return getDefaultMark();
+    }
+
+    public static String getDefaultMark() {
+        return MARK;
     }
 }

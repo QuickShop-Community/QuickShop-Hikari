@@ -10,10 +10,10 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ReflectFactory {
 
+    private static String nmsVersion;
+
     private ReflectFactory() {
     }
-
-    private static String nmsVersion;
 
     @NotNull
     public static String getNMSVersion() {

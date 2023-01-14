@@ -54,13 +54,6 @@ public class RemoveItemOperation implements Operation {
         return true;
     }
 
-
-    @Override
-    public boolean rollback() {
-        rollback = true;
-        return inv.restoreSnapshot(snapshot);
-    }
-
     @Override
     public boolean isCommitted() {
         return this.committed;
@@ -69,5 +62,11 @@ public class RemoveItemOperation implements Operation {
     @Override
     public boolean isRollback() {
         return this.rollback;
+    }
+
+    @Override
+    public boolean rollback() {
+        rollback = true;
+        return inv.restoreSnapshot(snapshot);
     }
 }

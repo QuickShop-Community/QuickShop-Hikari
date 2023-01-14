@@ -89,6 +89,7 @@ public final class Main extends CompatibilityModule implements Listener {
             }
         }
     }
+
     @Override
     public void init() {
         onlyOwnerCanCreateShop = getConfig().getBoolean("owner-create-only");
