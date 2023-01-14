@@ -80,6 +80,7 @@ public class ShopManagerPAPI implements PAPISubHandler {
             case "buying" -> allShops.stream().filter(shop -> shop.getShopType() == ShopType.BUYING).count();
             case "loaded" -> shopManager.getLoadedShops().size();
             case "unloaded" -> allShops.size() - shopManager.getLoadedShops().size();
+            default -> null;
         });
     }
 
@@ -95,6 +96,7 @@ public class ShopManagerPAPI implements PAPISubHandler {
             case "buying" -> belongToPlayers.stream().filter(shop -> shop.getShopType() == ShopType.BUYING).count();
             case "loaded" -> shopManager.getLoadedShops().size();
             case "unloaded" -> belongToPlayers.stream().filter(shop -> !shop.isLoaded()).count();
+            default -> null;
         });
     }
 }
