@@ -1253,11 +1253,11 @@ addon:
     discount-code-config-expire: "<green>Successfully changed your code expire time."
     discount-code-config-applied: "<green>Config the discount code successfully!"
     discount-code-created-successfully: |
-      <green>Your discount code <yellow>{0}</yellow> has been successfully created!
-      <gold>Scope: <aqua>{1}</aqua></gold>.
-      <gold>Share with others: <color:#bcef26>{2}</color:#bcef26></gold>.
-      <yellow>For <gray>Specific Shops</gray> scope only: To add shops to your discount code allow list, please looking an quickshop and execute <aqua>{3}</aqua> command.
-      <yellow>You can use <aqua>/qs discount config {0}</aqua> to edit your discount code anytime.
+      <green>你的優惠代碼 <yellow>{0}</yellow> 已成功建立！
+      <gold>範圍：<aqua>{1}</aqua></gold>.
+      <gold>與他人分享：<color:#bcef26>{2}</color:#bcef26></gold>
+      <yellow>只適用於 <gray>特定商店</gray> 範圍：將商店新增到你的優惠代碼允許列表，請注視著商店並執行指令 <aqua>{3}</aqua>。
+      <yellow>你可以隨時使用 <aqua>/qs discount config {0}</aqua> 編輯你的優惠代碼。
     discount-code-under-threshold: "<red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>."
     percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
     fixed-off: "<bold><color:#bcef26>-{0}</color:#bcef26></bold>"
