@@ -1256,7 +1256,7 @@ addon:
       <green>您的优惠码 <yellow>{0}</yellow> 已成功创建！
       <gold>范围：<aqua>{1}</aqua></gold>.
       <gold>与他人分享：<color:#bcef26>{2}</color:#bcef26></gold>
-      <yellow>只适用于 <gray>特定商店</gray> 范围：将商店添加到您的优惠码允许列表 请看着一个商店并执行 <aqua>{3}</aqua> 命令。
+      <yellow>只适用于 <gray>特定商店</gray> 范围：将商店添加到您的优惠码允许列表，请看着一个商店并执行 <aqua>{3}</aqua> 命令。
       <yellow>您可以随时使用 <aqua>/qs discount config {0}</aqua> 编辑您的优惠码。
     discount-code-under-threshold: "<red>由于总价值低于优惠码阈值，所以优惠未适用于您的交易 <yellow>{0}</yellow>."
     percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
