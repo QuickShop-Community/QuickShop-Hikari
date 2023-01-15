@@ -1,3 +1,3 @@
 example1:
   example2:
-    test: "This is a test file for testing the REST response of Crowdin distribution feature, please ignore this file!"
+    test: "請忽略該檔案，你是一個一個一個測試 Crowdin 分配功能 REST 回應的測試檔案！"
