@@ -1183,14 +1183,14 @@ addon:
             }
         }
     field:
-      player: "Player"
-      item: "Item"
-      amount: "Amount"
-      balance: "Balance"
-      balance-after-tax: "Balance (after tax)"
-      account: "Your account balance"
-      taxes: "Taxes"
-      cost: "Cost"
+      player: "玩家"
+      item: "物品"
+      amount: "數量"
+      balance: "餘額"
+      balance-after-tax: "餘額（稅後）"
+      account: "你的帳戶餘額"
+      taxes: "稅金"
+      cost: "花費"
   discount:
     commands:
       discount:
@@ -1227,12 +1227,12 @@ addon:
     discount-code-already-exists: "<red>Sorry, the name of your discount code already in use."
     invalid-discount-code-regex: "<red>The discount code must matches the regex: <yellow>{0}</yellow>"
     invalid-discount-code: "<red>This discount code are invalid."
-    discount-code-added: "<green>Your discount code <yellow>{0}</yellow> has been added into shop <aqua>{1}</aqua>"
-    discount-code-removed: "<green>Your discount code <yellow>{0}</yellow> has been removed from shop <aqua>{1}</aqua>"
-    invalid-code-type: "<red>The code type <yellow>{0}</yellow> are invalid."
-    invalid-usage-restriction: "<red>The usage restriction <yellow>{0}</yellow> are invalid."
-    invalid-threshold-restriction: "<red>The threshold restriction <yellow>{0}</yellow> are invalid."
-    invalid-effect-scope: "<red>The scope <yellow>{0}</yellow> are invalid."
+    discount-code-added: "<green>你的優惠代碼 <yellow>{0}</yellow> 已新增到商店 <aqua>{1}</aqua>"
+    discount-code-removed: "<green>你的優惠代碼 <yellow>{0}</yellow> 已從商店 <aqua>{1}</aqua> 移除"
+    invalid-code-type: "<red>該優惠代碼類型 <yellow>{0}</yellow> 無效。"
+    invalid-usage-restriction: "<red>使用限制 <yellow>{0}</yellow> 無效。"
+    invalid-threshold-restriction: "<red>門檻限制 <yellow>{0}</yellow> 無效。"
+    invalid-effect-scope: "<red>範圍 <yellow>{0}</yellow> 無效。"
     invalid-expire-time: "<red>You can't specify a time in the past."
     invalid-discount-rate: "<red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage."
     discount-code-expired: "<red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!"
@@ -1261,29 +1261,29 @@ addon:
     discount-code-under-threshold: "<red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>."
     percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
     fixed-off: "<bold><color:#bcef26>-{0}</color:#bcef26></bold>"
-    discount-code-list: "<gold>Listing your discount codes:</gold>"
+    discount-code-list: "<gold>正在列出你的優惠代碼：</gold>"
     discount-code-applied-in-purchase: "<color:#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!"
     scope:
       this-shop: "{0}"
-      your-shops-owned: "all your shops (owned)"
-      your-shops-managed: "all your shops (managed)"
-      server: "whole server"
+      your-shops-owned: "所有你的商店（已擁有）"
+      your-shops-managed: "所有你的商店（已管理）"
+      server: "整個伺服器"
     code-type:
-      SERVER_ALL_SHOPS: "All shops on this server"
-      PLAYER_ALL_SHOPS: "All shops that created by code owner"
-      SPECIFIC_SHOPS: "Specific shops"
+      SERVER_ALL_SHOPS: "所有這個伺服器的商店"
+      PLAYER_ALL_SHOPS: "由優惠代碼擁有者建立的所有商店"
+      SPECIFIC_SHOPS: "指定商店"
     discount-code-details: |
-      <gold>Code: <yellow>{0}</yellow>
-      <gold>Creator: <yellow>{1}</yellow>
-      <gold>Applied to: <yellow>{2}</yellow>
-      <gold>Remaining usage: <yellow>{3}</yellow>
-      <gold>Expired on: <yellow>{4}</yellow>
-      <gold>Threshold: <yellow>{5}</yellow>
-      <gold>Discount: <yellow>{6}</yellow>
+      <gold>優惠代碼：<yellow>{0}</yellow>
+      <gold>建立者：<yellow>{1}</yellow>
+      <gold>套用於：<yellow>{2}</yellow>
+      <gold>剩餘使用量：<yellow>{3}</yellow>
+      <gold>過期時間：<yellow>{4}</yellow>
+      <gold>門檻：<yellow>{5}</yellow>
+      <gold>折扣：<yellow>{6}</yellow>
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
-    description: "Item: {0}\nOwner: {1}\nType: {2} {3}\nPrice: {4}\nLocation: {5} {6}, {7}, {8}\nSpace: {9}\nStock: {10}"
+    description: "物品：{0}\n擁有者：{1}\n類型：{2} {3}\n價格：{4}\n座標：{5} {6}, {7}, {8}\n空間：{9}\n庫存：{10}"
   limited:
     command-description: "<yellow>Set a limit that restrict the purchase that player can make in period."
     reach-the-quota-limit: "<red>You have reach the purchase limit in this shop ({0}/{1})."
@@ -1293,7 +1293,7 @@ suite:
     quota-setup: "<green>The purchase restriction now apply to this shop!"
     quota-remove: "<green>The purchase restriction now removed from this shop!"
     subtitles:
-      title: "<green>Purchase Success"
+      title: "<green>購買成功"
       subtitle: "<aqua>You can purchase <yellow>{0}</yellow> more in this shop"
   list:
     command-description: "<yellow>List all shops owned by yourself or another player."
