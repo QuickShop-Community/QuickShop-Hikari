@@ -21,4 +21,9 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
       - name: Build with Maven
-        run: mvn test -T 16 -f pom.xml -P github
+        run: mvn package --batch-mode --update-snapshots -T 16 -f pom.xml -P github
+      - uses: actions/upload-artifact@v3
+        with:
+          name: quickshop-snapshots
+          path: |
+            **/target/*.jar
