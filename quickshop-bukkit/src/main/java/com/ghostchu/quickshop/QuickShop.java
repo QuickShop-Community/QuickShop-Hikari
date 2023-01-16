@@ -350,7 +350,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         } catch (IllegalArgumentException resourceNotFoundException) {
             logger.error("Failed to save config.yml from jar, The binary file of QuickShop may be corrupted. Please re-download from our website.");
         }
-        reloadConfig();
+        javaPlugin.reloadConfig();
         if (getConfig().getInt("config-version", 0) == 0) {
             getConfig().set("config-version", 1);
         }
