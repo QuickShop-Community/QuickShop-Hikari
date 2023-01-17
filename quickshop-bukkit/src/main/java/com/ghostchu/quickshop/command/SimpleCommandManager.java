@@ -26,16 +26,16 @@ import org.jetbrains.annotations.Unmodifiable;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Data
 @SuppressWarnings("unchecked")
 public class SimpleCommandManager implements CommandManager, TabCompleter, CommandExecutor, SubPasteItem {
     private static final String[] EMPTY_ARGS = new String[0];
-    private final List<CommandContainer> cmds = Collections.synchronizedList(new ArrayList<>()); //Because we open to allow register, so this should be thread-safe
+    private final List<CommandContainer> cmds = new CopyOnWriteArrayList<>(); //Because we open to allow register, so this should be thread-safe
     private final QuickShop plugin;
     private final CommandContainer rootContainer;
 
