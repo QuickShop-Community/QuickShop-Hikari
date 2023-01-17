@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
+import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
@@ -14,13 +15,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
-public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloadable {
+import java.util.StringJoiner;
+
+public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloadable, SubPasteItem {
     private final QuickShop plugin;
     private int range;
 
     public DisplayAutoDespawnWatcher(@NotNull QuickShop plugin) {
         this.plugin = plugin;
         plugin.getReloadManager().register(this);
+        plugin.getPasteManager().register(plugin.getJavaPlugin(), this);
         init();
     }
 
@@ -69,4 +73,23 @@ public class DisplayAutoDespawnWatcher extends BukkitRunnable implements Reloada
         }
     }
 
+    @Override
+    public synchronized void cancel() throws IllegalStateException {
+        super.cancel();
+        plugin.getReloadManager().unregister(this);
+        plugin.getPasteManager().unregister(plugin.getJavaPlugin(), this);
+    }
+
+    @Override
+    public @NotNull String genBody() {
+        StringJoiner joiner = new StringJoiner("<br/>");
+        joiner.add("<b>Warning: DisplayAutoDespawnWatcher has been enabled, this may cause lag. This feature is not recommended</b>");
+        joiner.add("<p>Range: " + range + "</p>");
+        return joiner.toString();
+    }
+
+    @Override
+    public @NotNull String getTitle() {
+        return "Display Auto Despawn Watcher";
+    }
 }
