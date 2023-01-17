@@ -535,11 +535,11 @@ argument-cannot-be: "<red>參數 <aqua>{0}</aqua> 不能為 <yellow>{1}</yellow>
 argument-must-between: "<red>參數 <aqua>{0}</aqua> 值必須在 <yellow>{1}</yellow> 和 <yellow>{2}</yellow> 之間"
 invalid-percentage: "<red>百分比無效，你必須在百分比的數字後加上「%」。"
 not-a-valid-time: |
-  <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
-  <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
-  <aqua>-<aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>(Zulu Time)</grey>
-  <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch Time in seconds)</grey>
-invalid-past-time: "<red>You can't specify a time in the past."
+  <red>字符串 <yellow>{0}</yellow> 不是一個有效的時間戳記，請輸入 <aqua>Zulu 時間（ISO 8601）</aqua> 或 <aqua>Unix Epoch 時間</aqua>。
+  <gold>有效時間戳記的範例（適用於 GMT 2022 年 12 月 17 日 星期六 10:31:37 ）</gold>
+  <aqua>-<aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>（Zulu Time）</grey>
+  <aqua>-<aqua> <yellow>1671273097</yellow> <grey>（Unix Epoch時間以秒計）</grey>
+invalid-past-time: "<red>你無法指定過去的時間。"
 debug:
   arguments-invalid: "<red>提供參數 <yellow>{0}</yellow> 無效。"
   sign-located: "<green>告示牌有效：<yellow>{0}</yellow>。"
@@ -576,11 +576,11 @@ database:
   trim-start: "<green>已開始修整資料庫，請稍後……"
   trim-exception: "<red>資料庫修整失敗，在資料庫修整期間發生異常，請檢查伺服器控制台。"
   generated-at: "<yellow>生成於：<gold>{0}</gold>"
-  purge-date: "<red>You must given a date."
-  purge-warning: "<yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`"
-  purge-task-created: "<green>Task created! Database are silent purging history records in background."
-  purge-done-with-line: "<green>Purge task completed, total <gold>{0}</gold> lines purged from database."
-  purge-done-with-error: "<red>Purge task failed, check the server console for details."
+  purge-date: "<red>你必須給出一個日期。"
+  purge-warning: "<yellow>該操作將清除儲存在資料庫中的歷史記錄，包括商店建立/修改/刪除、購買、交易和系統日誌。刪除這些資料可以釋出硬碟空間，但所有歷史資料都會遺失，依賴計量的其他插件將停止運行。若要繼續執行該操作，請執行指令 `/qs database purgelogs <before-days> 以確認`"
+  purge-task-created: "<green>已建立任務！資料庫將在背景清除歷史記錄"
+  purge-done-with-line: "<green>已完成清除任務，總共 <gold>{0}</gold> 行已從資料庫中清除。"
+  purge-done-with-error: "<red>清除任務失敗，請檢查伺服器控制台獲得詳細資訊。"
   suggestion:
     trim: "<yellow>該資料庫需要修整孤立資料，執行指令<aqua>/qs database trim</aqua> 以修整資料庫。"
 always-counting-removal-early-warning: "<red>已計劃刪除始終計數功能，你不應再使用它，並且它將來會停止運作。"
@@ -600,10 +600,10 @@ transfer-accepted-toside: "<green>你已接受 <aqua>{0}</aqua> 的轉移請求�
 transfer-rejected-fromside: "<red>玩家 <aqua>{0}</aqua> 已拒絕你的商店轉移請求。"
 transfer-rejected-toside: "<red>你已拒絕 <aqua>{0}</aqua> 的轉移請求。"
 transfer-no-pending-operation: "<red>你還沒有待處理的轉移請求。"
-transfer-no-self: "<red>You can't transfer your shops to yourself."
-benefit-overflow: "<red>The sum of all benefits cannot be greater than or equal to 100%."
-benefit-exists: "<red>Target player already in benefits list on this shop."
-benefit-removed: "<red>Target player has been removed from shop benefits."
+transfer-no-self: "<red>你無法將你的商店轉移給自己。"
+benefit-overflow: "<red>所有利益的總和不能大於或等於100%。"
+benefit-exists: "<red>目標玩家已經在該商店的利益分配列表中。"
+benefit-removed: "<red>目標玩家已經從商店的利益分配中移除。"
 benefit-added: "<green>Player <aqua>{0}</aqua> has been added into shop benefits!"
 benefit-updated: "<green>Player <aqua>{0}</aqua>'s benefits has been updated!"
 benefit-query: "<green>This shop have <yellow>{0}</yellow> players in benefits list!"
@@ -1233,7 +1233,7 @@ addon:
     invalid-usage-restriction: "<red>使用限制 <yellow>{0}</yellow> 無效。"
     invalid-threshold-restriction: "<red>門檻限制 <yellow>{0}</yellow> 無效。"
     invalid-effect-scope: "<red>範圍 <yellow>{0}</yellow> 無效。"
-    invalid-expire-time: "<red>You can't specify a time in the past."
+    invalid-expire-time: "<red>你無法指定過去的時間。"
     invalid-discount-rate: "<red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage."
     discount-code-expired: "<red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!"
     discount-code-installed: "<green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/qs discount uninstall {0}</aqua>."
