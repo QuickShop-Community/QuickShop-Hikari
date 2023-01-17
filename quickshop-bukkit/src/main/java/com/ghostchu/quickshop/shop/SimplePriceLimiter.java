@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.api.shop.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.util.ItemExpression;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
@@ -12,7 +13,6 @@ import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.Reloadable;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -38,6 +38,7 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
     private boolean wholeNumberOnly = false;
     private double undefinedMin = 0.0d;
     private double undefinedMax = Double.MAX_VALUE;
+    ;
 
     public SimplePriceLimiter(@NotNull QuickShop plugin) {
         this.plugin = plugin;
@@ -119,17 +120,11 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
         double min = section.getDouble("min", 0d);
         double max = section.getDouble("max", Double.MAX_VALUE);
         for (String item : section.getStringList("items")) {
-            if (item.startsWith("@")) {
-                String reference = item.substring(1);
-                ItemStack stack = plugin.getItemMarker().get(reference);
-                items.add(itemStack -> plugin.getItemMatcher().matches(stack, itemStack));
+            Optional<Function<ItemStack, Boolean>> func = new ItemExpression(plugin, item).getFunction();
+            if (func.isPresent()) {
+                items.add(func.get());
             } else {
-                Material mat = Material.matchMaterial(item);
-                if (mat == null) {
-                    plugin.logger().warn("Failed to read rule {}'s a ItemRule option, invalid item {}! Skipping...", ruleName, item);
-                    continue;
-                }
-                items.add(itemStack -> itemStack.getType() == mat);
+                plugin.logger().warn("Failed to parse item expression: {}", item);
             }
         }
         List<Pattern> currency = new ArrayList<>();
@@ -143,7 +138,6 @@ public class SimplePriceLimiter implements Reloadable, PriceLimiter, SubPasteIte
         }
         return new RuleSet(items, bypassPermission, currency, min, max);
     }
-
     /**
      * Check the price restriction rules
      *
