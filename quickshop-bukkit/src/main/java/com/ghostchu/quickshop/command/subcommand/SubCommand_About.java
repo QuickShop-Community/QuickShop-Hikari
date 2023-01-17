@@ -3,18 +3,32 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import com.google.gson.annotations.SerializedName;
+import com.google.gson.reflect.TypeToken;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 public class SubCommand_About implements CommandHandler<CommandSender> {
     private final QuickShop plugin;
     private final LegacyComponentSerializer serializer;
+    private KofiFetchCache fetchCache;
 
     public SubCommand_About(QuickShop plugin) {
         this.plugin = plugin;
@@ -64,31 +78,61 @@ public class SubCommand_About implements CommandHandler<CommandSender> {
                         + CommonUtil.list2String(plugin.getJavaPlugin().getDescription().getAuthors())));
         MsgUtil.sendDirectMessage(sender, serializer.deserialize(ChatColor.GOLD + "Powered by Community"));
         MsgUtil.sendDirectMessage(sender, serializer.deserialize(ChatColor.RED + "Made with ❤"));
-//        Util.asyncThreadRun(() -> {
-//            try {
-//                HttpResponse<String> resp = Unirest.get("https://quickshop-kofi-proxy.ghostchu.workers.dev/").asString();
-//                if (resp.isSuccess()) {
-//                    MsgUtil.sendDirectMessage(sender, serializer.deserialize(ChatColor.GOLD + "Special thanks to those who support to QuickShop-Hikari on Ko-fi :)"));
-//                    List<KoFiDTO> dto = JsonUtil.getGson().fromJson(resp.getBody(), new TypeToken<List<KoFiDTO>>() {
-//                    }.getType());
-//                    Component message = Component.empty();
-//                    boolean first = true;
-//                    for (KoFiDTO record : dto) {
-//                        if(!first){
-//                            message = message.append(Component.text(", ", NamedTextColor.GOLD));
-//                        }
-//                        message = message.append(Component.text(record.getName(), NamedTextColor.GOLD));
-//                        first = false;
-//                    }
-//                }else{
-//                    Log.debug("Failed to retrieve Ko-fi list: " + resp.getStatus());
-//                }
-//            } catch (Exception err) {
-//                Log.debug("Failed to retrieve Ko-fi list: " + err.getMessage());
-//            }
-//        });
+        Util.asyncThreadRun(() -> {
+            try {
+                String json = fetchKofi();
+                if (json != null) {
+                    MsgUtil.sendDirectMessage(sender, serializer.deserialize(ChatColor.LIGHT_PURPLE + "Special thanks to those who support to QuickShop-Hikari on Ko-fi :)"));
+                    List<KoFiDTO> dto = JsonUtil.getGson().fromJson(json, new TypeToken<List<KoFiDTO>>() {
+                    }.getType());
+                    Component message = Component.empty();
+                    boolean first = true;
+                    for (KoFiDTO record : dto) {
+                        if (!first) {
+                            message = message.append(Component.text(", ", NamedTextColor.GRAY));
+                        }
+                        message = message.append(Component.text(record.getName(), NamedTextColor.GOLD));
+                        first = false;
+                    }
+                    MsgUtil.sendDirectMessage(sender, message);
+                }
+            } catch (Exception err) {
+                Log.debug("Failed to retrieve Ko-fi list: " + err.getMessage());
+            }
+        });
+    }
 
+    @Nullable
+    private String fetchKofi() {
+        if (this.fetchCache != null && Instant.now().isBefore(this.fetchCache.getInstant())) {
+            return this.fetchCache.getJson();
+        }
+        HttpResponse<String> resp = Unirest.get("https://quickshop-kofi-proxy.ghostchu.workers.dev/").asString();
+        if (resp.isSuccess()) {
+            this.fetchCache = new KofiFetchCache(Instant.now().plus(12, ChronoUnit.HOURS), resp.getBody());
+            return this.fetchCache.getJson();
+        } else {
+            Log.debug("Failed to retrieve Ko-fi list: " + resp.getStatus());
+            return null;
+        }
+    }
 
+    static class KofiFetchCache {
+        private final Instant instant;
+        private final String json;
+
+        KofiFetchCache(@NotNull Instant instant, @NotNull String json) {
+            this.instant = instant;
+            this.json = json;
+        }
+
+        public Instant getInstant() {
+            return instant;
+        }
+
+        public String getJson() {
+            return json;
+        }
     }
 
     @NoArgsConstructor
