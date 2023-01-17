@@ -6,6 +6,8 @@ undefined: # This option not control by enable option, always enabled
 enable: false
 rules: # Rules set
   example: # Rules name, used for identifier and permission node (quickshop.price.restriction.bypass.<name>)
+    #items section SUPPORT Item Expression!
+    #https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/item-expression
     items: # Items in the rule (https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html), or the reference the item lookup table by adding @ before the name
       - STONE_SWORD
       - STONE_PICKAXE

@@ -3,12 +3,7 @@
 #Do not touch this if you don't know what you're doing!
 config-version: 1013
 
-#Set the default language code the plugin should use, it will apply to:
-#Item Name
-#Enchantment Name,
-#Potion Effect Name
-#The text on the shop info sign (If NBTApi not installed)
-#And other default language related text.
+#Set the default language code the plugin should use
 #Set it to default will use your system language.
 #You can find the valid language code in your client language settings, like en_us
 game-language: default
@@ -19,7 +14,7 @@ game-language: default
 #The language files will automatically update thorough Crowdin OTA system, you can translate it there:
 #https://crowdin.com/project/quickshop-hikari
 #If you want custom the language file, use language override system:
-#https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-translation-override-system
+#https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/localization
 enabled-languages:
   - '*'
 
@@ -70,7 +65,7 @@ currency: ""
 
 logging:
   #Enable logging?
-  #The log file is located at "plugins\QuickShop\qs.log".
+  #The log file is located at "plugins/QuickShop/qs.log".
   enable: true
   #Should QuickShop log shop trading/creations?
   log-actions: true
@@ -465,6 +460,8 @@ shop:
 #Anyone with the quickshop.bypass.<itemID> permission can bypass it.
 #Add the reference the item lookup table by adding @ before the name.
 #For referenced item, the permission quickshop.bypass.reference will be used.
+#SUPPORT Item Expression!
+#https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/modules/item-expression
 blacklist:
   - Bedrock
 
