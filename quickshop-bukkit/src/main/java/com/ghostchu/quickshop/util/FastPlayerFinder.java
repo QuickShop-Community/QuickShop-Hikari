@@ -135,7 +135,9 @@ public class FastPlayerFinder implements PlayerFinder {
                 return null;
             }
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(name);
-            return offlinePlayer.getUniqueId();
+            UUID uuid = offlinePlayer.getUniqueId();
+            Log.debug("Lookup result: " + uuid);
+            return uuid;
         }
     }
 
@@ -152,7 +154,9 @@ public class FastPlayerFinder implements PlayerFinder {
                 return null;
             }
             OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
-            return player.getName();
+            String name = player.getName();
+            Log.debug("Lookup result: " + name);
+            return name;
         }
     }
 
@@ -175,7 +179,9 @@ public class FastPlayerFinder implements PlayerFinder {
                 Essentials ess = (Essentials) essPlugin;
                 User user = ess.getUser(name);
                 if (user == null) return null;
-                return user.getUUID();
+                UUID uuid = user.getUUID();
+                Log.debug("Lookup result: " + uuid);
+                return uuid;
             } catch (Throwable th) {
                 return null;
             }
@@ -200,7 +206,9 @@ public class FastPlayerFinder implements PlayerFinder {
                 Essentials ess = (Essentials) essPlugin;
                 User user = ess.getUser(uuid);
                 if (user == null) return null;
-                return user.getName();
+                String name = user.getName();
+                Log.debug("Lookup result: " + name);
+                return name;
             } catch (Throwable th) {
                 return null;
             }
@@ -226,7 +234,9 @@ public class FastPlayerFinder implements PlayerFinder {
                 return null;
             }
             try {
-                return db.getPlayerName(uuid).get(30, TimeUnit.SECONDS);
+                String name = db.getPlayerName(uuid).get(30, TimeUnit.SECONDS);
+                Log.debug("Lookup result: " + name);
+                return name;
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 return null;
@@ -256,9 +266,11 @@ public class FastPlayerFinder implements PlayerFinder {
             }
             if (this.db == null) {
                 return null;
-            }
+            }/**/
             try {
-                return db.getPlayerUUID(name).get(30, TimeUnit.SECONDS);
+                UUID uuid = db.getPlayerUUID(name).get(30, TimeUnit.SECONDS);
+                Log.debug("Lookup result: " + uuid);
+                return uuid;
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 return null;
