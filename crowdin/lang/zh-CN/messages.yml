@@ -535,10 +535,10 @@ argument-cannot-be: "<red>参数 <aqua>{0}</aqua> 不能为 <yellow>{1}</yellow>
 argument-must-between: "<red>参数 <aqua>{0}</aqua> 值必须在 <yellow>{1}</yellow> 和 <yellow>{2}</yellow> 之间"
 invalid-percentage: "<red>百分比无效，您必须在百分比的数字后添加'%'"
 not-a-valid-time: |
-  <red>字符串 <yellow>{0}</yellow> 不是一个有效的时间戳, 请输入 <aqua>Zulu 时间 (ISO 8601)</aqua> 或 <aqua>Unix Epoch时间</aqua>秒。
-  <gold>有效时间戳示例(适用于 Sat, 20 December 2022 10:31:37 GMT)</gold>
+  <red>字符串 <yellow>{0}</yellow> 不是一个有效的时间戳, 请输入 <aqua>Zulu 时间 (ISO 8601)</aqua> 或 <aqua>Unix Epoch 时间</aqua>。
+  <gold>有效时间戳示例(适用于 Sat, 17 December 2022 10:31:37 GMT)</gold>
   <aqua>-<aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>(Zulu Time)</grey>
-  <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch时间以秒计)</grey>
+  <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch 时间以秒计)</grey>
 invalid-past-time: "<red>不能指定过去的时间。"
 debug:
   arguments-invalid: "<red>提供的参数 <yellow>{0}</yellow> 无效。"
@@ -602,8 +602,8 @@ transfer-rejected-toside: "<red>您拒绝了 <aqua>{0}</aqua> 的商店转移请
 transfer-no-pending-operation: "<red>您没有待处理的商店转移请求。"
 transfer-no-self: "<red>您不能将商店转移给自己"
 benefit-overflow: "<red>所有利益的总和不能大于或等于100%"
-benefit-exists: "<red>目标玩家已经在该商店的利益分配列表中"
-benefit-removed: "<red>该玩家已被从商店的利益分配中移除"
+benefit-exists: "<red>目标玩家已经在该商店的利益分配列表中。"
+benefit-removed: "<red>目标玩家已被从商店的利益分配中移除。"
 benefit-added: "<green>玩家<aqua>{0}</aqua>已被添加到商店的利益分配中"
 benefit-updated: "<green>玩家 <aqua>{0}</aqua>的利益分配已更新！"
 benefit-query: "<green>该商店在利益分配列表中有 <yellow>{0}</yellow> 名玩家！"
