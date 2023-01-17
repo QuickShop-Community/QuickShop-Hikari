@@ -165,7 +165,7 @@ inventory-unavailable: '<red>該商店的 InventoryWrapper 外觀不存在或不
 file-test: 這是個測試的文字檔案，我們使用它來測試 messages.json 是否損壞，你可以在這裡填入任何喜歡的彩蛋。 :)
 unknown-player: <red>找不到相對應的玩家，請檢查你輸入的玩家名稱是否正確。
 player-offline: "<red>目標玩家離線。"
-player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
+player-profile-format: "<aqua>{0}</aqua><gold>（<yellow>{1}</yellow>）</gold>"
 language:
   qa-issues: '<yellow>品質認證問題：<aqua>{0}%'
   code: '<yellow>代碼：<gold>{0}'
@@ -273,10 +273,10 @@ nearby-shop-this-way: <green>商店距離你 {0} 格遠。
 owner-bypass-check: <yellow>繞過所有檢查並完成交易（因為你是商店店主！）
 april-rick-and-roll-easter-egg: |
   <green>---------------------------------------------------</green>
-  <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
-  <yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>
-  <aqua>Claim it by watch the video tutorial below!</aqua>
-  <hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
+  <rainbow><bold>限時活動 -- QuickShop-Hikari</bold></rainbow>
+  <yellow>獲得你的 <gold>高級</gold> 粒子效果並在所有安裝 QuickShop 的伺服器上使用！</yellow>
+  <aqua>點擊下面的連結以觀看領取教學影片！</aqua>
+  <hover:show_text:'<gold>點擊以在瀏覽器中打開。</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
   <green>---------------------------------------------------</green>
 signs:
   item-right: ''
@@ -428,7 +428,7 @@ command:
     permission: <yellow>商店權限管理
     lookup: <yellow>管理物品索引表
     database: <yellow>查看和維護 QuickShop 資料庫
-    benefit: <yellow>Settings of divide benefits between shop owner and other players
+    benefit: <yellow>設定商店擁有者和其他玩家之間的利益分配
   bulk-size-not-set: '<red>用法：/qs size <amount>'
   no-type-given: '<red>用法：/qs find <item>'
   feature-not-enabled: 該功能沒有在配置檔案中啟用
@@ -531,9 +531,9 @@ lookup-item-test-not-found: "<gold>測試：<yellow>在你手中的物品並未�
 lookup-item-test-found: "<gold>測試：<green>你手中的物品在索引表中被命名為 <aqua>{0}</aqua>"
 lookup-item-removed: "<green>物品 <aqua>{0}</aqua>已成功自物品索引表中刪除"
 internal-error: "<red>發生了內部錯誤！請聯繫管理員。"
-argument-cannot-be: "<red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>."
-argument-must-between: "<red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>"
-invalid-percentage: "<red>Percentage invalid, you must add '%' after the number of percentage."
+argument-cannot-be: "<red>參數 <aqua>{0}</aqua> 不能為 <yellow>{1}</yellow>。"
+argument-must-between: "<red>參數 <aqua>{0}</aqua> 值必須在 <yellow>{1}</yellow> 和 <yellow>{2}</yellow> 之間"
+invalid-percentage: "<red>百分比無效，你必須在百分比的數字後加上「%」。"
 not-a-valid-time: |
   <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
   <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
