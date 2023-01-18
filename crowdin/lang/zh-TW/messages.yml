@@ -604,10 +604,10 @@ transfer-no-self: "<red>你無法將你的商店轉移給自己。"
 benefit-overflow: "<red>所有利益的總和不能大於或等於100%。"
 benefit-exists: "<red>目標玩家已經在該商店的利益分配列表中。"
 benefit-removed: "<red>目標玩家已經從商店的利益分配中移除。"
-benefit-added: "<green>Player <aqua>{0}</aqua> has been added into shop benefits!"
-benefit-updated: "<green>Player <aqua>{0}</aqua>'s benefits has been updated!"
-benefit-query: "<green>This shop have <yellow>{0}</yellow> players in benefits list!"
-benefit-query-list: "<yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>"
+benefit-added: "<green>玩家 <aqua>{0}</aqua> 已被新增到商店的利益分配中！"
+benefit-updated: "<green>玩家 <aqua>{0}</aqua> 的利益分配已更新！"
+benefit-query: "<green>該商店在利益分配列表中有 <yellow>{0}</yellow> 名玩家！"
+benefit-query-list: "<yellow> - </yellow><white>玩家 <gold>{0}</gold>，利益分配 <gold>{1}%</gold></white>"
 addon:
   towny:
     commands:
@@ -652,8 +652,8 @@ addon:
     trade-flag-test-failed: "<red>你沒有在該 WorldGuard 保護區與商店交易的權限。"
   discord:
     __to_translators: "To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop's style {LANG_INDEX}, do not translate anything inside double '%' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don't need translate this string, it's a comment)"
-    __to_users: "Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings."
-    __to_message_designer: "Design your Discord message with GUI: https://glitchii.github.io/embedbuilder/, then copy the JSON code and paste it into the translation and here we go!"
+    __to_users: "和 QuickShop 的文字系統一樣，Discord 插件也會自動偵測使用者語言並使用該語言傳送Discord 訊息， 它遵守 QuickShop-Hikar i的語言系統設定。"
+    __to_message_designer: "使用 GUI 設計你的 Discord 訊息：https://glitchiii.github.io/embedbuilder/，然後複製 JSON 代碼並貼到語言檔案中，然後在這裡開始！"
     discord-enabled: "<aqua>Successfully <green>enabled</green> your QuickShop discord messages, now you can receive the shop messages from Discord."
     discord-disabled: "<aqua>Successfully <red>disabled</red> your QuickShop discord messages, now you won't receive the shop messages from Discord anymore."
     discord-not-integrated: "<red>You hadn't link your Discord yet! Please link your Discord account first!"
