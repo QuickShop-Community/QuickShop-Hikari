@@ -657,7 +657,7 @@ addon:
     discord-enabled: "<aqua>成功 <green>启用</green> 您的商店 Discord 通知消息，现在您可以从 Discord 接收商店消息。"
     discord-disabled: "<aqua>成功 <red>禁用</red> 您的商店 Discord 通知消息，现在您将不再收到来自 Discord 的商店消息。"
     discord-not-integrated: "<red>您尚未链接您的 Discord 账户！请先链接您的 Discord 账户！"
-    feature-enabled-for-user: "<aqua>您已启用 <green></green> <gold>{0}</gold> 通知。"
+    feature-enabled-for-user: "<aqua>您已 <green>启用</green> <gold>{0}</gold> 通知。"
     feature-disabled-for-user: "<aqua>您已禁用 <red></red> <gold>{0}</gold> 通知。"
     link-help: "<yellow>此服务器使用 <gold>{0}</gold> 处理 Discord 驱动，请使用 <green>{0}</green> 链接您的 Discord 账户。"
     commands:
@@ -1305,4 +1305,4 @@ suite:
     message: "<red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上"
 compatibility:
   elitemobs:
-    soulbound-disallowed: "你不能交易拥有 EliteMobs 灵魂绑定附魔的物品"
+    soulbound-disallowed: "你不能交易拥有 EliteMobs 灵魂绑定附魔的物品。"
