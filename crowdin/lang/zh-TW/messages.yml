@@ -1201,21 +1201,21 @@ addon:
           code: "<code>"
         create:
           rate: |
-            Command Hint:
-            Argument: <rate>
-            Description: The actual percentage or money you will earn
-            Input `30%` = price * 0.3
-            Input `50` = price - 50
+            指令提示：
+            參數： <rate>
+            描述：你將會得到的實際百分比或金錢
+            輸入 `30%` = 價格 * 0.3
+            輸入 `50` = 價格 - 50
           max-usage: |
-            Command Hint:
-            Argument: [max-usage]
-            Description: The times that code can be used
-            `-1` for unlimited.
+            指令提示：
+            參數： [max-usage]
+            描述：可以對無限代碼使用
+            `-1` 為無限
           threshold: |
-            Command Hint:
-            Argument: [threshold]
-            Description: The minimum price that code can be applied
-            `-1` for unlimited
+            指令提示：
+            參數： [threshold]
+            說明：代碼可以應用的最低價格
+            “-1”表示無限
           expired: |
             Command Hint
             Argument: [expired]
