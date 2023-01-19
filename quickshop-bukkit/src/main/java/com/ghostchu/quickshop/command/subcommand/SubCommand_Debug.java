@@ -4,6 +4,8 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.performance.BulkExecutor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -18,8 +20,10 @@ import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
@@ -41,6 +45,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "handlerlist" -> handleHandlerList(sender, ArrayUtils.remove(cmdArg, 0));
             case "signs" -> handleSigns(sender);
             case "database" -> handleDatabase(sender, ArrayUtils.remove(cmdArg, 0));
+            case "updateplayersigns" -> handleSignsUpdate(sender, ArrayUtils.remove(cmdArg, 0));
             default -> plugin.text().of(sender, "debug.arguments-invalid", cmdArg[0]).send();
         }
     }
@@ -66,7 +71,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
     private void handleHandlerList(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendDirectMessage(sender, Component.text("You must enter an Bukkit Event class"));
+            MsgUtil.sendDirectMessage(sender, "You must enter an Bukkit Event class");
             return;
         }
         printHandlerList(sender, cmdArg[1]);
@@ -94,6 +99,31 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             return;
         }
         plugin.text().of(sender, "debug.operation-invalid", cmdArg[0]).send();
+    }
+
+    private void handleSignsUpdate(CommandSender sender, String[] cmdArg) {
+        if (cmdArg.length < 1) {
+            MsgUtil.sendDirectMessage(sender, "You must enter a player username");
+            return;
+        }
+        final int tasksInStack = 15;
+        MsgUtil.sendDirectMessage(sender, "Creating an async execute task...");
+        Util.asyncThreadRun(() -> {
+            UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[0]);
+            MsgUtil.sendDirectMessage(sender, "Player selected: " + uuid);
+            List<Shop> shops = plugin.getShopManager().getPlayerAllShops(uuid);
+            MsgUtil.sendDirectMessage(sender, "Player shops: " + shops.size());
+            MsgUtil.sendDirectMessage(sender, "Max shops update per tick: " + tasksInStack);
+            BulkExecutor bulkExecutor = new BulkExecutor(tasksInStack, (exec) -> {
+                long usedTime = exec.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
+                MsgUtil.sendDirectMessage(sender, "Task completed! Used " + usedTime + " ms.");
+            });
+            MsgUtil.sendDirectMessage(sender, "Scheduled " + shops.size() + " shops to update, this may need a while and your server performance will impacted.");
+            shops.forEach(shop -> bulkExecutor.addTask(shop::setSignText));
+            bulkExecutor.runTaskTimer(plugin.getJavaPlugin(), 1, 1);
+
+        });
+
     }
 
     public void printHandlerList(@NotNull CommandSender sender, String event) {
