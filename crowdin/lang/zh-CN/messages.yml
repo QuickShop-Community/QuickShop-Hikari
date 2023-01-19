@@ -1194,7 +1194,7 @@ addon:
   discount:
     commands:
       discount:
-        description: "<yellow>应用折扣代码或管理您的优惠代码"
+        description: "<yellow>应用优惠代码或管理您的优惠代码"
     tab-complete:
       discount:
         general:
@@ -1219,12 +1219,12 @@ addon:
           expired: |
             命令提示
             参数： [expired]
-            说明：代码过期时间。无限期
-            “-1”。
-            接受祖鲁时间和 UNIX 时间戳（以秒为单位）。
-            祖鲁语示例：2022-12-17T10：31：37Z
+            说明：代码过期时间。
+            `-1`无限。
+            接受 Zulu 时间和 UNIX 时间戳（以秒为单位）。
+            Zulu 示例：2022-12-17T10:31:37Z
             UNIX 示例：1671273097
-    discount-code-already-exists: "<red>抱歉，您的优惠码名称已被使用"
+    discount-code-already-exists: "<red>抱歉，您的优惠码名称已被使用。"
     invalid-discount-code-regex: "<red>优惠码必须匹配正则表达式： <yellow>{0}</yellow>"
     invalid-discount-code: "<red>优惠码无效。"
     discount-code-added: "<green>您的优惠码 <yellow>{0}</yellow> 已被添加到商店 <aqua>{1}</aqua>"
@@ -1237,7 +1237,7 @@ addon:
     invalid-discount-rate: "<red>折扣率 <yellow>{0}</yellow> 无效，它可以是固定数字或百分比。"
     discount-code-expired: "<red>哎呀！您的优惠码 <yellow>{0}</yellow> 已过期！"
     discount-code-installed: "<green>您已安装优惠码 <gold>{0}</gold>, 优惠码将自动应用于本次会话期间所有可用的交易。 要卸载优惠码，请执行 <aqua>/qs discount uninstall {0}</aqua>。"
-    discount-code-uninstalled: "<green>您已卸载您的优惠码"
+    discount-code-uninstalled: "<green>您已卸载您的优惠码。"
     discount-code-query-nothing: "<red>您尚未安装优惠码！"
     discount-code-query: "<green>您正在使用优惠码： <yellow>{0}</yellow>。"
     discount-code-applicable: "<color:#bcef26>您的优惠码 <yellow><bold>{0}</bold></yellow> 在这家商店中适用 <bold></bold>！"
@@ -1297,7 +1297,7 @@ suite:
       subtitle: "<aqua>您还可以在这个商店交易 <yellow>{0}</yellow> 个物品"
   list:
     command-description: "<yellow>列出自己或其他玩家拥有的所有商店"
-    table-prefix: "<yellow>您在该服务器中拥有 <aqua>{0}</aqua> 个商店"
+    table-prefix: "<yellow>您在该服务器中拥有 <aqua>{0}</aqua> 个商店。"
     entry-syntax: "<aqua>- <yellow>{0}"
     entry-syntax-fallback-name: "<yellow>物品:{0} X:{1}, Y:{2}, Z:{3}, 世界: {4}"
     hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."

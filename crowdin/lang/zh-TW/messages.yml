@@ -260,7 +260,7 @@ taxaccount-set: <green>已經設定 <yellow>{0} <green>為該商店的稅金帳�
 support-disable-reason:
   hot-reload: <yellow>我們不支援重新加載指令，請您重啟再試。
   outdated: <yellow>該版本的 Quickshop 已經過時，在請求技術支援前，請更新至最新版本！
-  bad-hosts: '<yellow>該伺服器的 HOSTS 被修改。Quickshop 需要特定的功能去正確地連接 Mojang API。請你在要求提供技術支援前，請先修改HOSTS，如果你使用 Windows 作業系統，請在 C:\windows\system32\drivers\etc\hosts 位置進行修改檔案。如果你使用 Linux 作業系統，請在 /etc/hosts 位置進行修改檔案。'
+  bad-hosts: '<yellow>該伺服器的 HOSTS 已被修改。Quickshop 需要特定的功能去正確地連接 Mojang API，請你在請求提供技術支援前先修改 HOSTS。如果你使用 Windows 作業系統，請在 <newline>C:\windows\system32\drivers\etc\hosts 位置進行修改檔案。如果你使用 Linux 作業系統，請在 <newline>/etc/hosts 位置進行修改檔案。'
   privacy: <yellow>該伺服器在破解版（離線版）環境底下運行。如果你正在使用代理伺服器下的 bukkit 伺服器及在代理伺服器設置 online-mode=true，請你將代理伺服器的相關配置正確設定。
   modified: <yellow>檔案完整度檢查失敗：該版本的 QuickShop 並非官方正式版本，亦已經被其他人修改過。
   consolespamfix-installed: <yellow>已安裝 ConsoleSpamFix，任何錯誤詳細訊息已被隱藏。如果要得到技術支援，請先關閉該功能。
@@ -1194,7 +1194,7 @@ addon:
   discount:
     commands:
       discount:
-        description: "<yellow>Apply a discount code or manage your discount codes."
+        description: "<yellow>套用優惠代碼或管理你的優惠代碼。"
     tab-complete:
       discount:
         general:
@@ -1214,19 +1214,19 @@ addon:
           threshold: |
             指令提示：
             參數： [threshold]
-            說明：代碼可以應用的最低價格
+            說明：代碼可以套用的最低價格
             “-1”表示無限
           expired: |
-            Command Hint
-            Argument: [expired]
-            Description: The code expired time.
-            `-1` for unlimited duration.
-            Accept both Zulu time and UNIX timestamp in seconds.
-            Zulu Example: 2022-12-17T10:31:37Z
-            UNIX Example: 1671273097
-    discount-code-already-exists: "<red>Sorry, the name of your discount code already in use."
-    invalid-discount-code-regex: "<red>The discount code must matches the regex: <yellow>{0}</yellow>"
-    invalid-discount-code: "<red>This discount code are invalid."
+            指令提示
+            參數： [expired]
+            描述：代碼過期時間。
+            `-1`無限。
+            接受 Zulu 時間和 UNIX 時間標記（以秒為單位）。
+            Zulu 範例：2022-12-17T10:31:37Z
+            UNIX 範例：1671273097
+    discount-code-already-exists: "<red>抱歉，你的優惠代碼名稱已被使用。"
+    invalid-discount-code-regex: "<red>優惠代碼必須匹配正則表達式： <yellow>{0}</yellow>"
+    invalid-discount-code: "<red>該優惠代碼無效。"
     discount-code-added: "<green>你的優惠代碼 <yellow>{0}</yellow> 已新增到商店 <aqua>{1}</aqua>"
     discount-code-removed: "<green>你的優惠代碼 <yellow>{0}</yellow> 已從商店 <aqua>{1}</aqua> 移除"
     invalid-code-type: "<red>該優惠代碼類型 <yellow>{0}</yellow> 無效。"
@@ -1234,14 +1234,14 @@ addon:
     invalid-threshold-restriction: "<red>門檻限制 <yellow>{0}</yellow> 無效。"
     invalid-effect-scope: "<red>範圍 <yellow>{0}</yellow> 無效。"
     invalid-expire-time: "<red>你無法指定過去的時間。"
-    invalid-discount-rate: "<red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage."
-    discount-code-expired: "<red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!"
-    discount-code-installed: "<green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/qs discount uninstall {0}</aqua>."
-    discount-code-uninstalled: "<green>You have uninstalled your discount code."
-    discount-code-query-nothing: "<red>You hadn't install a discount code yet!"
-    discount-code-query: "<green>You are using discount code: <yellow>{0}</yellow>."
-    discount-code-applicable: "<color:#bcef26>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>applicable</bold> in this shop!"
-    discount-code-applicable-with-threshold: "<color:#bcef26>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>applicable</bold> in this shop, but only your purchase cost over <yellow>{1}</yellow> in single transaction."
+    invalid-discount-rate: "<red>折扣率 <yellow>{0}</yellow> 無效，它可以是固定數字或百分比。"
+    discount-code-expired: "<red>金嗨（閩南語）！你的優惠代碼 <yellow>{0}</yellow> 已過期！"
+    discount-code-installed: "<green>你已安裝優惠代碼 <gold>{0}</gold>，優惠代碼將自動套用於本次會話期間所有可用的交易。如果要將優惠代碼解除安裝，請執行 <aqua>/qs discount uninstall {0}</aqua>。"
+    discount-code-uninstalled: "<green>你已將你的優惠代碼解除安裝。"
+    discount-code-query-nothing: "<red>你還沒安裝優惠代碼！"
+    discount-code-query: "<green>你正在使用優惠代碼：<yellow>{0}</yellow>。"
+    discount-code-applicable: "<color:#bcef26>你的優惠代碼 <yellow><bold>{0}</bold></yellow> 在這間商店中 <bold>可套用</bold>！"
+    discount-code-applicable-with-threshold: "<color:#bcef26>你的優惠代碼 <yellow><bold>{0}</bold></yellow> 在這間商店 <bold>可套用</bold>，但僅在單筆交易中你的購買成本超過 <yellow>{1}</yellow> 。"
     discount-code-not-applicable: "<red>Your discount code <yellow><bold>{0}</bold></yellow> are <bold>not applicable</bold> in this shop!"
     discount-code-reach-the-limit: "<red>You have reach the usage limit of discount code <yellow><bold>{0}</bold></yellow>, discount are not applied."
     discount-code-no-permission: "<red>You didn't have permission to use any discount code in this shop!"
@@ -1297,7 +1297,7 @@ suite:
       subtitle: "<aqua>You can purchase <yellow>{0}</yellow> more in this shop"
   list:
     command-description: "<yellow>List all shops owned by yourself or another player."
-    table-prefix: "<yellow>You owned total <aqua>{0}</aqua> shops on this server."
+    table-prefix: "<yellow>你在該伺服器中擁有 <aqua>{0}</aqua> 個商店。"
     entry-syntax: "<aqua>- <yellow>{0}"
     entry-syntax-fallback-name: "<yellow>物品：{0} X:{1}, Y:{2}, Z:{3}, 世界： {4}"
     hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."
