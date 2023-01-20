@@ -71,13 +71,13 @@ buying-more-than-selling: '<red>警告: 你收购的物品价格比出售的要�
 purchase-failed: '<red>支付失败：内部错误，请联系服务器管理员'
 denied-put-in-item: <red>您不能将此物品放入您的商店！
 shop-has-changed: <red>在你点击此商店之后此商店被修改了，为了避免恶意修改，您的操作已被取消！
-flush-finished: <green>成功获取所有商店记录
+flush-finished: <green>成功地清除所有最近的商店记录 。
 no-price-given: <red>请输入一个有效的价格。
 shop-already-owned: <red>这已经是一个商店了。
 backup-success: <green>备份成功
 not-looking-at-shop: <red>无法找到商店，您需要注视着你想要操作的商店。
 you-cant-afford-a-new-shop: <red>你需要 {0} 才能创建一个商店。
-success-created-shop: <red>商店已创建
+success-created-shop: <green>已成功地创建商店。
 shop-creation-cancelled: <red>商店创建已取消。
 shop-owner-self-trade: <yellow>你正在和自己的商店进行交易，所以你的金钱可能并不会变化。
 purchase-out-of-space: <red>这个商店空间已不足，请联系商店所有者或助手清空商店
@@ -89,7 +89,7 @@ reloading-status:
 player-bought-from-your-store-tax: <green>{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3} (扣税{4})
 not-enough-space: <red>背包空间不足，剩余 {0}
 shop-name-success: <green>成功地将商店名称设置为 <yellow>{0}<green>
-shop-staff-added: <green>成功将 {0} 添加到你的商店助手列表中。
+shop-staff-added: <green>已成功地添加助手 <yellow>{0}<green> 到你的商店。
 shops-recovering: 正在从备份中恢复商店...
 menu:
   sell-tax: <green>你支付了<yellow>{0}<green>的税。
@@ -1287,9 +1287,9 @@ suite:
   limited:
     command-description: "<yellow>限制玩家在时间段内的交易。"
     reach-the-quota-limit: "<red>您已达到该商店的交易限制（{0}/{1}）。"
-    quota-reset-countdown: "<yellow>该商店的交易限制将在 {0} 重置"
+    quota-reset-countdown: "<yellow>该商店的交易限制将在 {0} 重置。"
     quota-reset-player-successfully: "<green>已成功重置该商店中玩家 {0} 的交易限制"
-    quota-reset-everybody-successfully: "<green>已成功重置该商店中所有人的交易限制"
+    quota-reset-everybody-successfully: "<green>已成功重置该商店中所有人的交易限制。"
     quota-setup: "<green>该商店的交易限制已设置成功！"
     quota-remove: "<green>该商店的交易限制已成功重置！"
     subtitles:
