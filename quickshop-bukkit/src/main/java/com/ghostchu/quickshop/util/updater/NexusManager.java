@@ -96,7 +96,7 @@ public class NexusManager implements SubPasteItem {
     public @NotNull String genBody() {
         HTMLTable table = new HTMLTable(3);
         table.setTableTitle("Last Update", "Latest Version", "Release Version");
-        table.insert(Instant.ofEpochMilli(cachedMetadata.getLastUpdate()).toString(), cachedMetadata.getLatestVersion(), cachedMetadata.getReleaseVersion());
+        table.insert(Instant.ofEpochSecond(cachedMetadata.getLastUpdate()).toString(), cachedMetadata.getLatestVersion(), cachedMetadata.getReleaseVersion());
         return table.render();
     }
 
