@@ -53,6 +53,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.ref.WeakReference;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -102,7 +103,7 @@ public class ContainerShop implements Shop, Reloadable {
     @EqualsAndHashCode.Exclude
     private InventoryPreview inventoryPreview = null;
     @EqualsAndHashCode.Exclude
-    private ContainerShop attachedShop;
+    private WeakReference<ContainerShop> attachedShopReference;
     @EqualsAndHashCode.Exclude
     private boolean isDisplayItemChanged = false;
     @EqualsAndHashCode.Exclude
@@ -357,8 +358,8 @@ public class ContainerShop implements Shop, Reloadable {
         }
         //Update sign
         this.setSignText(plugin.text().findRelativeLanguages(buyer));
-        if (attachedShop != null) {
-            attachedShop.setSignText(plugin.text().findRelativeLanguages(buyer));
+        if (getAttachedShop() != null) {
+            getAttachedShop().setSignText(plugin.text().findRelativeLanguages(buyer));
         }
     }
 
@@ -380,14 +381,14 @@ public class ContainerShop implements Shop, Reloadable {
                 if (displayItem != null) {
                     displayItem.remove();
                 }
-                if (attachedShop != null) {
-                    attachedShop.refresh();
+                if (getAttachedShop() != null) {
+                    getAttachedShop().refresh();
                 }
                 return;
             }
         }
 
-        if (this.displayItem == null) {
+        if (this.displayItem == null && plugin.isDisplayEnabled()) {
             Log.debug("Warning: DisplayItem is null, this shouldn't happened...");
             StackTraceElement traceElements = Thread.currentThread().getStackTrace()[2];
             Log.debug("Call from: " + traceElements.getClassName() + "#" + traceElements.getMethodName() + "%" + traceElements.getLineNumber());
@@ -525,8 +526,12 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     @Override
+    @Nullable
     public ContainerShop getAttachedShop() {
-        return attachedShop;
+        if (this.attachedShopReference == null) {
+            return null;
+        }
+        return this.attachedShopReference.get();
     }
 
     /**
@@ -1090,6 +1095,7 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public boolean isDoubleShop() {
         Util.ensureThread(false);
+        ContainerShop attachedShop = getAttachedShop();
         if (attachedShop == null) {
             return false;
         }
@@ -1132,6 +1138,7 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public boolean isRealDouble() {
         Util.ensureThread(false);
+        ContainerShop attachedShop = getAttachedShop();
         if (attachedShop == null) {
             return false;
         }
@@ -1451,6 +1458,7 @@ public class ContainerShop implements Shop, Reloadable {
                 isDisplayItemChanged = false;
             }
             //Update attachedShop DisplayItem
+            ContainerShop attachedShop = getAttachedShop();
             if (attachedShop != null && attachedShop.isDisplayItemChanged) {
                 attachedShop.refresh();
             }
@@ -1559,6 +1567,7 @@ public class ContainerShop implements Shop, Reloadable {
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transactionTake.getLastError());
             }
             this.setSignText(plugin.getTextManager().findRelativeLanguages(seller));
+            ContainerShop attachedShop = getAttachedShop();
             if (attachedShop != null) {
                 attachedShop.setSignText(plugin.getTextManager().findRelativeLanguages(seller));
             }
@@ -1726,6 +1735,7 @@ public class ContainerShop implements Shop, Reloadable {
         Util.ensureThread(false);
         Block attachedChest = Util
                 .getSecondHalf(this.getLocation().getBlock());
+        ContainerShop attachedShop = getAttachedShop();
         Shop preValue = attachedShop;
         //Prevent chain chunk loading
         if (attachedChest == null || !Util.isLoaded(attachedChest.getLocation())) {
@@ -1754,6 +1764,48 @@ public class ContainerShop implements Shop, Reloadable {
     public void setShopBenefit(@NotNull Benefit benefit) {
         this.benefit = benefit;
         setDirty();
+    }
+
+    /**
+     * This function calculates which block of a double chest is the left block,
+     * relative to the direction the chest is facing. Left shops don't spawn items since
+     * they merge items with the right shop.
+     * It also updates the isLeftShop status of this class to reflect the changes.
+     */
+    private void updateLeftShop() {
+        //TODO: Rewrite centering item feature, currently implement is buggy and mess
+        ContainerShop attachedShop = getAttachedShop();
+        if (attachedShop == null) {
+            return;
+        }
+        boolean previousValue = isLeftShop;
+
+        switch (((Chest) getLocation().getBlock().getBlockData()).getFacing()) {
+            case WEST ->
+                // left block has a smaller z value
+                    isLeftShop = getLocation().getZ() < attachedShop.getLocation().getZ();
+            case EAST ->
+                // left block has a greater z value
+                    isLeftShop = getLocation().getZ() > attachedShop.getLocation().getZ();
+            case NORTH ->
+                // left block has greater x value
+                    isLeftShop = getLocation().getX() > attachedShop.getLocation().getX();
+            case SOUTH ->
+                // left block has a smaller x value
+                    isLeftShop = getLocation().getX() < attachedShop.getLocation().getX();
+            default -> isLeftShop = false;
+        }
+        if (isLeftShop != previousValue) {
+            notifyDisplayItemChange();
+        }
+    }
+
+    private void notifyDisplayItemChange() {
+        isDisplayItemChanged = true;
+        ContainerShop attachedShop = getAttachedShop();
+        if (attachedShop != null && !attachedShop.isDisplayItemChanged) {
+            attachedShop.notifyDisplayItemChange();
+        }
     }
 
     /**
@@ -1852,13 +1904,6 @@ public class ContainerShop implements Shop, Reloadable {
         }
     }
 
-    private void notifyDisplayItemChange() {
-        isDisplayItemChanged = true;
-        if (attachedShop != null && !attachedShop.isDisplayItemChanged) {
-            attachedShop.notifyDisplayItemChange();
-        }
-    }
-
     @Override
     public ReloadResult reloadModule() throws Exception {
         if (!plugin.isAllowStack()) {
@@ -1888,38 +1933,5 @@ public class ContainerShop implements Shop, Reloadable {
                 " Owner: " + LegacyComponentSerializer.legacySection().serialize(this.ownerName(false, MsgUtil.getDefaultGameLanguageLocale())) + " - " + getOwner() +
                 ", Unlimited: " + isUnlimited() +
                 " Price: " + getPrice();
-    }
-
-    /**
-     * This function calculates which block of a double chest is the left block,
-     * relative to the direction the chest is facing. Left shops don't spawn items since
-     * they merge items with the right shop.
-     * It also updates the isLeftShop status of this class to reflect the changes.
-     */
-    private void updateLeftShop() {
-        //TODO: Rewrite centering item feature, currently implement is buggy and mess
-        if (attachedShop == null) {
-            return;
-        }
-        boolean previousValue = isLeftShop;
-
-        switch (((Chest) getLocation().getBlock().getBlockData()).getFacing()) {
-            case WEST ->
-                // left block has a smaller z value
-                    isLeftShop = getLocation().getZ() < attachedShop.getLocation().getZ();
-            case EAST ->
-                // left block has a greater z value
-                    isLeftShop = getLocation().getZ() > attachedShop.getLocation().getZ();
-            case NORTH ->
-                // left block has greater x value
-                    isLeftShop = getLocation().getX() > attachedShop.getLocation().getX();
-            case SOUTH ->
-                // left block has a smaller x value
-                    isLeftShop = getLocation().getX() < attachedShop.getLocation().getX();
-            default -> isLeftShop = false;
-        }
-        if (isLeftShop != previousValue) {
-            notifyDisplayItemChange();
-        }
     }
 }
