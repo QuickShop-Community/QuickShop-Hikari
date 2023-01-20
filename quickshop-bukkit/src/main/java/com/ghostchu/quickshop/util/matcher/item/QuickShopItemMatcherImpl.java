@@ -133,7 +133,6 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
             Log.debug("ShopId compare -> Origin: " + shopIdOrigin + "  Given: " + plugin.getPlatform().getItemShopId(givenStack));
             String shopIdTester = plugin.getPlatform().getItemShopId(givenStack);
             if (shopIdOrigin.equals(shopIdTester)) {
-                Log.debug("ShopId compare -> Pass!");
                 return true;
             }
         }
@@ -143,35 +142,25 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         givenStack = givenStack.clone();
         givenStack.setAmount(1);
         if (workType == 1) {
-            Log.debug("isSimilar -> Pass!");
             return requireStack.isSimilar(givenStack);
         }
         if (workType == 2) {
-            Log.debug("equals -> Pass!");
             return requireStack.equals(givenStack);
         }
 
         if (!typeMatches(requireStack, givenStack)) {
-            Log.debug("type matches -> Fail!");
             return false;
         }
 
         if (requireStack.isSimilar(givenStack)) {
-            Log.debug("isSimilar -> Pass!");
             return true;
         }
 
         if (requireStack.hasItemMeta() && givenStack.hasItemMeta()) {
-            boolean result = itemMetaMatcher.matches(requireStack, givenStack);
-            Log.debug("ItemMeta matches -> " + result);
-            return result;
+            return itemMetaMatcher.matches(requireStack, givenStack);
         }
 
-        boolean meta = !requireStack.hasItemMeta() && !givenStack.hasItemMeta();
-        if (!meta) {
-            Log.debug("meta matches -> Fail!");
-        }
-        return meta;
+        return !requireStack.hasItemMeta() && !givenStack.hasItemMeta();
     }
 
     private boolean typeMatches(ItemStack requireStack, ItemStack givenStack) {
