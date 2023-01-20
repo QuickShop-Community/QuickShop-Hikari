@@ -513,7 +513,12 @@ public class ContainerShop implements Shop, Reloadable {
             plugin.getShopManager().removeShop(this);
             Location loc = getLocation();
             try {
-                plugin.getDatabaseHelper().removeShopMap(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+                plugin.getDatabaseHelper().removeShopMap(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
+                        .whenComplete((lines, err) -> {
+                            if (err != null) {
+                                plugin.logger().warn("Failed to remove shop from database", err);
+                            }
+                        });
             } catch (Exception e) {
                 e.printStackTrace();
                 plugin.logger().warn("Failed to remove the shop mapping from database.");
