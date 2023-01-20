@@ -1258,11 +1258,11 @@ addon:
       <gold>與他人分享：<color:#bcef26>{2}</color:#bcef26></gold>
       <yellow>只適用於 <gray>特定商店</gray> 範圍：將商店新增到你的優惠代碼允許列表，請注視著商店並執行指令 <aqua>{3}</aqua>。
       <yellow>你可以隨時使用 <aqua>/qs discount config {0}</aqua> 編輯你的優惠代碼。
-    discount-code-under-threshold: "<red>The discount not applied to your purchase because the total value under the discount code threshold <yellow>{0}</yellow>."
+    discount-code-under-threshold: "<red>由於總價值低於優惠代碼門檻，所以優惠未適用於你的交易 <yellow>{0}</yellow>。"
     percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
     fixed-off: "<bold><color:#bcef26>-{0}</color:#bcef26></bold>"
     discount-code-list: "<gold>正在列出你的優惠代碼：</gold>"
-    discount-code-applied-in-purchase: "<color:#bcef26>Your discount code <yellow>{0}</yellow> has been applied to this purchase and you saved <gold>{1}</gold>!"
+    discount-code-applied-in-purchase: "<color:#bcef26>你的優惠代碼 <yellow>{0}</yellow> 已經套用到此交易，並且為你節省了 <gold>{1}</gold>！"
     scope:
       this-shop: "{0}"
       your-shops-owned: "所有你的商店（已擁有）"
@@ -1285,7 +1285,7 @@ suite:
     title: "{0} - {1} - {2}"
     description: "物品：{0}\n擁有者：{1}\n類型：{2} {3}\n價格：{4}\n座標：{5} {6}, {7}, {8}\n空間：{9}\n庫存：{10}"
   limited:
-    command-description: "<yellow>Set a limit that restrict the purchase that player can make in period."
+    command-description: "<yellow>限制玩家在時間段內的交易。"
     reach-the-quota-limit: "<red>You have reach the purchase limit in this shop ({0}/{1})."
     quota-reset-countdown: "<yellow>The quota in this shop will reset in {0}."
     quota-reset-player-successfully: "<green>The quota for player {0} in this shop has been reset successfully."
