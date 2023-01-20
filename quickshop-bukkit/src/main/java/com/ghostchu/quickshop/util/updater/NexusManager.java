@@ -19,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 import org.xml.sax.SAXException;
 
 import java.io.StringReader;
-import java.time.Instant;
 import java.util.Optional;
 import java.util.logging.Level;
 
@@ -96,7 +95,7 @@ public class NexusManager implements SubPasteItem {
     public @NotNull String genBody() {
         HTMLTable table = new HTMLTable(3);
         table.setTableTitle("Last Update", "Latest Version", "Release Version");
-        table.insert(Instant.ofEpochSecond(cachedMetadata.getLastUpdate()).toString(), cachedMetadata.getLatestVersion(), cachedMetadata.getReleaseVersion());
+        table.insert(cachedMetadata.getLastUpdate(), cachedMetadata.getLatestVersion(), cachedMetadata.getReleaseVersion());
         return table.render();
     }
 
