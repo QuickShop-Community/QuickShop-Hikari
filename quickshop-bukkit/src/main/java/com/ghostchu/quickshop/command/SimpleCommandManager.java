@@ -163,6 +163,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                         .build());
         registerCmd(
                 CommandContainer.builder()
+                        .prefix("silenttoggledisplay")
+                        .hidden(true)
+                        .permission("quickshop.toggledisplay")
+                        .executor(new SubCommand_SilentToggleDisplay(plugin))
+                        .build());
+        registerCmd(
+                CommandContainer.builder()
                         .prefix("clean")
                         .permission("quickshop.clean")
                         .executor(new SubCommand_Clean(plugin))
@@ -327,6 +334,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 .permission("quickshop.benefit")
                 .executor(new SubCommand_Benefit(plugin))
                 .build());
+
     }
 
     /**

@@ -11,7 +11,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -109,7 +108,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
         if (!shop.isUnlimited()) {
             // Refill
             if (plugin.perm().hasPermission(sender, "quickshop.refill")) {
-                Component text = plugin.text().of(sender, "controlpanel.refill", Component.text(shop.getPrice())).forLocale();
+                Component text = plugin.text().of(sender, "controlpanel.refill", shop.getPrice()).forLocale();
                 Component hoverText = plugin.text().of(sender, "controlpanel.refill-hover").forLocale();
                 String clickCommand = "/qs refill ";
                 components.add(text
@@ -118,7 +117,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
             }
             // Empty
             if (plugin.perm().hasPermission(sender, "quickshop.empty")) {
-                Component text = plugin.text().of(sender, "controlpanel.empty", Component.text(shop.getPrice())).forLocale();
+                Component text = plugin.text().of(sender, "controlpanel.empty", shop.getPrice()).forLocale();
                 Component hoverText = plugin.text().of(sender, "controlpanel.empty-hover").forLocale();
                 String clickCommand = MsgUtil.fillArgs("/qs silentempty {0}", shop.getRuntimeRandomUniqueId().toString());
                 components.add(text
@@ -126,9 +125,24 @@ public class SimpleShopControlPanel implements ShopControlPanel {
                         .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand)));
             }
         }
+
+        // ToggleDisplay
+        if ((plugin.perm().hasPermission(sender, "quickshop.other.toggledisplay")
+                || shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.TOGGLE_DISPLAY))
+                && plugin.isDisplayEnabled()) {
+            Component text = plugin.text().of(sender, "controlpanel.toggledisplay", MsgUtil.bool2String(shop.isDisableDisplay())).forLocale();
+            Component hoverText = plugin.text().of(sender, "controlpanel.toggledisplay-hover").forLocale();
+            String clickCommand = MsgUtil.fillArgs("/qs silenttoggledisplay {0}", shop.getRuntimeRandomUniqueId().toString());
+            components.add(text
+                    .hoverEvent(HoverEvent.showText(hoverText))
+                    .clickEvent(ClickEvent.clickEvent(ClickEvent.Action.RUN_COMMAND, clickCommand)));
+        }
+
+        // --------------------- FUNCTION BUTTON ---------------------
+
         // Remove
-        if (plugin.perm().hasPermission(sender, "quickshop.other.destroy") || shop.playerAuthorize(((OfflinePlayer) sender).getUniqueId(), BuiltInShopPermission.DELETE)) {
-            Component text = plugin.text().of(sender, "controlpanel.remove", Component.text(shop.getPrice())).forLocale();
+        if (plugin.perm().hasPermission(sender, "quickshop.other.destroy") || shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.DELETE)) {
+            Component text = plugin.text().of(sender, "controlpanel.remove", shop.getPrice()).forLocale();
             Component hoverText = plugin.text().of(sender, "controlpanel.remove-hover").forLocale();
             String clickCommand = MsgUtil.fillArgs("/qs silentremove {0}", shop.getRuntimeRandomUniqueId().toString());
             components.add(text
