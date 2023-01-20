@@ -30,7 +30,7 @@ public class PAPICache implements Reloadable {
 
     private void init() {
         this.plugin = QuickShop.getInstance();
-        this.expiredTime = 15 * 60 * 1000;
+        this.expiredTime = plugin.getConfig().getLong("plugin.PlaceHolderAPI.cache", 900000);
         this.performCaches = CacheBuilder.newBuilder()
                 .expireAfterWrite(expiredTime, java.util.concurrent.TimeUnit.MILLISECONDS)
                 .recordStats()
