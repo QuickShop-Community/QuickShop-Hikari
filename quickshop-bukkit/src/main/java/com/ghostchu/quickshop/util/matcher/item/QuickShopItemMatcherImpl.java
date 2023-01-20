@@ -67,6 +67,43 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
     }
 
     /**
+     * Tests ItemStacks is matches
+     * BEWARE: Different order of itemstacks you might will got different results
+     *
+     * @param requireStack The original ItemStack
+     * @param givenStack   The ItemStack will test matches with original itemstack.
+     * @return The result of tests
+     */
+    public boolean matches(@Nullable ItemStack[] requireStack, @Nullable ItemStack[] givenStack) {
+        if (requireStack == null && givenStack == null) {
+            return true;
+        }
+
+        if (requireStack == null || givenStack == null) {
+            return false;
+        }
+
+        if (requireStack.length != givenStack.length) {
+            return false;
+        }
+        //For performance, we just check really equals in each index,check isn't contain or match will cost n^n time in most
+        for (int i = 0; i < requireStack.length; i++) {
+            if ((requireStack[i] != null) && (givenStack[i] != null) &&
+                    (requireStack[i].getAmount() != givenStack[i].getAmount())) {
+                Log.debug("Fail: Amount mismatch!");
+                return false;
+            }
+
+            if (!matches(requireStack[i], givenStack[i])) {
+                Log.debug("Fail: Item comparing mismatch!!");
+                return false;
+            }
+        }
+        Log.debug("Pass: Everything looks great!");
+        return true;
+    }
+
+    /**
      * Compares two items to each other. Returns true if they match. Rewrite it to use more faster
      * hashCode.
      *
@@ -96,6 +133,7 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
             Log.debug("ShopId compare -> Origin: " + shopIdOrigin + "  Given: " + plugin.getPlatform().getItemShopId(givenStack));
             String shopIdTester = plugin.getPlatform().getItemShopId(givenStack);
             if (shopIdOrigin.equals(shopIdTester)) {
+                Log.debug("ShopId compare -> Pass!");
                 return true;
             }
         }
@@ -105,59 +143,35 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         givenStack = givenStack.clone();
         givenStack.setAmount(1);
         if (workType == 1) {
+            Log.debug("isSimilar -> Pass!");
             return requireStack.isSimilar(givenStack);
         }
         if (workType == 2) {
+            Log.debug("equals -> Pass!");
             return requireStack.equals(givenStack);
         }
 
         if (!typeMatches(requireStack, givenStack)) {
+            Log.debug("type matches -> Fail!");
             return false;
         }
 
         if (requireStack.isSimilar(givenStack)) {
+            Log.debug("isSimilar -> Pass!");
             return true;
         }
 
         if (requireStack.hasItemMeta() && givenStack.hasItemMeta()) {
-            return itemMetaMatcher.matches(requireStack, givenStack);
+            boolean result = itemMetaMatcher.matches(requireStack, givenStack);
+            Log.debug("ItemMeta matches -> " + result);
+            return result;
         }
 
-        return !requireStack.hasItemMeta() && !givenStack.hasItemMeta();
-    }
-
-    /**
-     * Tests ItemStacks is matches
-     * BEWARE: Different order of itemstacks you might will got different results
-     *
-     * @param requireStack The original ItemStack
-     * @param givenStack   The ItemStack will test matches with original itemstack.
-     * @return The result of tests
-     */
-    public boolean matches(@Nullable ItemStack[] requireStack, @Nullable ItemStack[] givenStack) {
-        if (requireStack == null && givenStack == null) {
-            return true;
+        boolean meta = !requireStack.hasItemMeta() && !givenStack.hasItemMeta();
+        if (!meta) {
+            Log.debug("meta matches -> Fail!");
         }
-
-        if (requireStack == null || givenStack == null) {
-            return false;
-        }
-
-        if (requireStack.length != givenStack.length) {
-            return false;
-        }
-        //For performance, we just check really equals in each index,check isn't contain or match will cost n^n time in most
-        for (int i = 0; i < requireStack.length; i++) {
-            if ((requireStack[i] != null) && (givenStack[i] != null) &&
-                    (requireStack[i].getAmount() != givenStack[i].getAmount())) {
-                return false;
-            }
-
-            if (!matches(requireStack[i], givenStack[i])) {
-                return false;
-            }
-        }
-        return true;
+        return meta;
     }
 
     private boolean typeMatches(ItemStack requireStack, ItemStack givenStack) {
@@ -492,11 +506,11 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
             if (meta1 != null && meta2 != null) {
                 for (Matcher matcher : matcherList) {
                     boolean result = matcher.match(meta1, meta2);
-                    Log.debug("Matcher: " + matcher.getClass().getName() + " Result: " + result);
                     if (!result) {
                         return false;
                     }
                 }
+                return true;
             }
             return meta1 == null && meta2 == null;
         }
@@ -504,7 +518,6 @@ public class QuickShopItemMatcherImpl implements ItemMatcher, Reloadable {
         private boolean rootMatches(ItemMeta meta1, ItemMeta meta2) {
             return (meta1.hashCode() == meta2.hashCode());
         }
-
 
         interface Matcher {
             /**
