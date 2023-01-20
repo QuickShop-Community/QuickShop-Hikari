@@ -60,7 +60,7 @@ refill-success: <green>補貨成功
 failed-to-paste: <red>無法將資料上傳至 Pastebin，請檢查你的連線後再重試。（請查看控制台以獲得詳細資訊）
 shop-out-of-stock-name: <dark_purple>你在 {0} 出售 {1} 的商店已售罄一空！
 shop-name-invalid: <red>商店的名稱 <yellow>{0}</yellow> 無效。請嘗試使用另一個名稱！
-how-many-buy-stack: <green>在聊天室中輸入你想 <aqua>購買<green> 的數量，每份中有 <yellow>{0}<green> 個物品，你目前可以買 <yellow>{1}<green> 份。輸入 <aqua>{2}<green> 來購買所有物品。
+how-many-buy-stack: <yellow>在聊天室中輸入你想 <aqua>購買</aqua> 的數量，每份中有 <green>{0}</green> 個物品，你目前可以買 <green>{1}</green> 份。輸入 <aqua>{2}</aqua> 來購買所有物品。
 exceeded-maximum: <red>該值超出了 Java 中的最大值。
 unlimited-shop-owner-keeped: '<yellow>注意：該商店店主還是屬於無限商店店主類型，你需要自己重新設定新的商店店主。'
 no-enough-money-to-keep-shops: <red>你的金錢不夠繳稅！所以你所有的商店已被刪除……
@@ -76,7 +76,7 @@ no-price-given: <red>請提供一個有效的價格。
 shop-already-owned: <red>這已是一個商店了。
 backup-success: <green>備份成功。
 not-looking-at-shop: <red>無法找到商店！<yellow>你需要先注視著其中一個容器。
-you-cant-afford-a-new-shop: <red>需要花費 {0} 元才能建立商店。
+you-cant-afford-a-new-shop: <red>需要花費 <green>{0}<red> 元才能建立商店。
 success-created-shop: <green>已成功地建立商店。
 shop-creation-cancelled: <red>已取消建立商店。
 shop-owner-self-trade: <yellow>你正在跟自己開的商店進行交易。<gray>所以你的餘額不會改變。
@@ -84,50 +84,50 @@ purchase-out-of-space: <red>該商店空間不足！請聯繫商店店主或商�
 reloading-status:
   success: <green>插件成功地重新載入且沒有發生任何錯誤。
   scheduled: <green>重新載入完成！<gray>（<yellow>一些更改需要一段時間後作用<gray>）
-  require-restart: <green>重新載入完成。<yellow>（一些更改需要重新啟動伺服器後作用）
+  require-restart: <green>重新載入完成。<gray>（<yellow>一些更改需要重新啟動伺服器後作用<gray>）
   failed: <red>無法重新載入，請檢查伺服器控制台
 player-bought-from-your-store-tax: <green>{0} 從你的商店購買了 {1} 個 {2}，你總共賺了 {3} 元 （{4} 元的稅） 。
 not-enough-space: <red>你只剩下 <yellow>{0}<red> 格空間可以裝東西！
 shop-name-success: <green>成功地將商店名稱設定為 <yellow>{0}<green>。
-shop-staff-added: <green>已成功地新增助手 <yellow>{0}<green> 到你的商店。
+shop-staff-added: <green>已成功地新增員工 <yellow>{0}<green> 到你的商店。
 shops-recovering: 正在嘗試從備份檔案中還原所有商店……
 menu:
-  sell-tax: <green>你付了 <yellow>{0} <green>元的稅。
+  sell-tax: <green>你付了 <yellow>{0}</yellow> 元的稅。
   owner: '<green>店主：{0}'
-  preview: <aqua>[物品預覽]
+  preview: <gray>[<aqua>物品預覽<gray>]
   enchants: <dark_purple>附魔
   sell-tax-self: <green>因為你是商店主人，所以不需要繳稅。
   shop-information: '<green>商店資訊：'
   item: '<green>商品：<yellow>{0}'
-  price-per: <green>價格 ： <yellow>1 個 {0} {1} 元
+  price-per: <green>每個 <yellow>{0}<green> 價格 <yellow>{1} 元
   item-name-and-price: <green>共 <yellow>{2} <green>元的 <yellow>{0} <green>個 <yellow>{1}
   item-name-and-price-tax: '<yellow>{0} 個 {1}<green> 為 </green> {2} <gray>（{3} 元的稅）</gray>'
   successful-purchase: '<green>已成功地購買：'
-  price-per-stack: <green>價格 ： <yellow>{2} 個 {0} {1} 元
+  price-per-stack: <green>每 <yellow>{2}<green> 個 <yellow>{0}<green> 組價格 <yellow>{1} 元
   stored-enchants: <dark_purple>附魔
   item-holochat-error: <red>[錯誤]
-  this-shop-is-selling: <green>該商店正在<aqua>出售</aqua>物品。
+  this-shop-is-selling: <green>該商店正在 <aqua>出售</aqua> 物品。
   shop-stack: '<green>每份物品的數量：<yellow>{0}'
   space: '<green>空間：<yellow>{0}'
   effects: <green>藥水效果
-  damage-percent-remaining: <green>耐久度 ： <yellow>剩餘 {0}%。
+  damage-percent-remaining: <green>剩餘 <yellow>{0}% <green>點耐久度。
   item-holochat-data-too-large: <red>[錯誤] 物品 NBT 太長無法顯示
   stock: '<green>庫存：<yellow>{0} 個'
-  this-shop-is-buying: <green>該商店是<light_purple>收購物品<green>的商店。
+  this-shop-is-buying: <green>該商店正在 <light_purple>出售<green> 物品。
   successfully-sold: '<green>成功地出售：'
   total-value-of-chest: '<green>儲物箱中的物品價值：<yellow>{0} 元'
-currency-not-exists: <red>找不到你要設置的貨幣，可能拼寫錯誤或該貨幣在這個世界上無法使用。
+currency-not-exists: <red>找不到你想要設定的貨幣，可能是拼寫錯誤或該貨幣在這個世界無法使用。
 no-nearby-shop: <red>找不到符合 {0} 的商店。
 translation-author: '翻譯人員：Ghost_chu、Andre_601、flandretw'
 integrations-check-failed-trade: <red>集成模組 {0} 拒絕了與商店交易的操作。
-shop-transaction-failed: <red><red>抱歉，由於系統發生錯誤，你的購買已被取消，款項已返回原本的地方。如果問題持續發生，請聯絡伺服器管理員。
+shop-transaction-failed: <red>抱歉，由於系統發生錯誤，你的購買已被取消，款項已返回原本的地方。如果問題持續發生，請聯絡伺服器管理員。
 success-change-owner-to-server: <green>成功地將商店店主轉交給伺服器。
 shop-name-not-found: <red>商店名稱：<yellow>{0}</yellow> 並不存在。
 shop-name-too-long: <red>商店的名稱太長了（最大長度 {0}），請再想想別的吧！
 metric:
   header-player: '<yellow>{0} 的 {1} {2} 交易：'
   action-hover: <yellow>{0}
-  price-hover: <yellow>總共 {0}, 包括 {1} 稅款.
+  price-hover: <yellow>總共 {0} 元，包括 {1} 元的稅。
   unknown: <gray>（未知）
   undefined: <gray>（無名）
   no-results: <red>找不到交易紀錄
@@ -139,18 +139,18 @@ metric:
     PURCHASE_SELLING_SHOP: <yellow>玩家從商店購買了一些物品。
     PURCHASE: <yellow>從商店購買了物品
   query-argument: '查詢參數：{0}'
-  amount-hover: <yellow>{0}個
+  amount-hover: <yellow>{0} 個
   header-shop: '<yellow>{0} 商店的 {1} {2} 交易：'
   player-hover: '<yellow>{0}<newline><gold>UUID：<gray>{1}'
-  looking-up: <yellow>正在進行指標搜尋，請稍後...
+  looking-up: <yellow>正在進行指標搜尋，請稍候……
   tax-hover: <yellow>{0} 稅款
   header-global: '<yellow>伺服器{0} {1} 交易：'
   na: <gray>N/A
   transaction-count: <yellow>{0} 總共
   shop-hover: '<yellow>{0}<newline><gold>位置：<gray>{1} {2} {3}，世界：{4}<newline><gold>擁有人：<gray>{5}<newline><gold>商店類型：<gray>{6}<newline><gold>物品：<gray>{7}<newline><gold>價格：<gray>{8}'
   time-hover: '<yellow>時間：{0}'
-  amount-stack-hover: <yellow>{0}x 組
-permission-denied-3rd-party: <red>權限被拒絕 ： 第三方插件 [{0}]。
+  amount-stack-hover: <yellow>{0} 組
+permission-denied-3rd-party: <red>權限被第三方插件 {0} 拒絕。
 you-dont-have-that-many-items: <red>你的身上只有 {0} 個 {1}。
 complete: <green>完成！
 translate-not-completed-yet-url: '{0} 的翻譯完成度為 {1}，你想幫助我們改進翻譯嗎？前往 Crowdin：{2}'
@@ -286,7 +286,7 @@ signs:
   stack-price: '{0} {1} 個 {2} 元'
   status-unavailable: <red>
   out-of-stock: 無庫存
-  stack-buying: 收購 {0}
+  stack-buying: 收購 {0} 組
   freeze: 已停用交易
   price: '每個 {0} 元'
   buying: 收購 {0} 個
@@ -326,13 +326,13 @@ controlpanel:
   remove: <red><bold>[刪除商店]
   mode-buying-hover: <yellow>點擊商店修改為出售模式。
   empty: '<green>清空：移除所有商品 <yellow>[<light_purple><bold>OK<yellow>]'
-  stack-hover: <yellow>點擊設置每份的物品數量。設置為 1 以恢復為普通單物品商店。
+  stack-hover: <yellow>點擊設定每份的物品數量。設定為 1 以恢復為普通單物品商店。
   alwayscounting-hover: <yellow>點擊以切換是否持續計算容器物品。
   alwayscounting: '<green>持續計算數量：{0} <yellow>[<light_purple><bold>修改<yellow>]'
   setowner: '<green>店主：<aqua>{0} <yellow>[<light_purple><bold>修改</bold></light_purple>]'
   freeze: '<yellow>凍結模式：<aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
   price: '<green>價格：<aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
-  currency-hover: <yellow>點擊設置或移除目前正在使用的商店貨幣
+  currency-hover: <yellow>點擊設定或移除目前正在使用的商店貨幣
   lock: '<yellow>商店上鎖：<aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
   mode-selling: '<green>商店模式：<aqua>出售 <yellow>[<light_purple><bold>修改<yellow>]'
   currency: '<green>使用貨幣：<aqua>{0} <yellow>[<light_purple><bold>設定<yellow>]'
@@ -396,14 +396,14 @@ command:
     ban: <yellow>解除封禁商店中的玩家
     empty: <yellow>清空商店空間
     alwayscounting: <yellow>設定商店是否會持續計數容器物品（即使是無限商店）
-    setowner: <yellow>為商店設置新的店主。
+    setowner: <yellow>修改新的商店擁有者。
     reload: <yellow>重新載入 QuickShop
     freeze: <yellow>停用或啟用商店交易
     price: <yellow>修改 收購/出售 的價格
     find: <yellow>在附近搜尋具有指定物品類型的商店
     create: <yellow>在目標儲物箱建立新商店
     lock: <yellow>切換商店上鎖狀態
-    currency: <yellow>設置或移除目前商店的貨幣設定
+    currency: <yellow>設定或移除目前商店的貨幣設定
     removeworld: <yellow>刪除指定世界的商店
     info: <yellow>顯示 QuickShop 統計資料
     owner: <yellow>修改新的商店擁有者。
@@ -453,7 +453,7 @@ command:
   format: <green>/{0} {1} <yellow>- {2}
   transfer-success: <green>將<yellow> {0} <green>商店轉移到<yellow> {1}
   now-buying: <green>商店正在 <light_purple>收購 <yellow>{0}
-  now-selling: <green>商店現在 <aqua>出售 <yellow>{0}
+  now-selling: <green>商店現在 <aqua>出售 </aqua>{0}
   cleaned: <green>已刪除 <yellow>{0} <green>個商店。
   trade-item-now: <green>現在開始交易 <yellow>{0} 個 {1}
   no-world-given: <red>請指定世界名稱
@@ -473,7 +473,7 @@ chest-was-removed: <red>儲物箱已被移除。
 you-cant-afford-to-buy: <red>商品價格是 {0} 元，但是你只有 {1} 元。
 shops-removed-in-world: <yellow>世界 <aqua>{1} <yellow>總共有 <aqua>{0} <yellow>個商店被刪除。
 display-turn-off: <green>成功地關閉商店懸浮物顯示。
-client-language-unsupported: <yellow>QuickShop 不支援你的客戶端語言，我們現在還原為 {0}。
+client-language-unsupported: <yellow>QuickShop 不支援你的客戶端語言，我們現在還原為 {0}……
 language-version: '63'
 not-managed-shop: <red>你沒有管理該商店的權限
 shop-cannot-trade-when-freezing: <red>你不能與這間商店交易，因為它已被凍結。
@@ -511,17 +511,17 @@ player-no-group: "<yellow>玩家 {0} 在這個商店不屬於任何身分組"
 player-in-group: "<green>玩家 {0} 在這個商店屬於 <aqua>{1}</aqua> 身分組"
 permission-required: "<red>你需要權限 {0} 來在這個商店執行該操作。"
 no-permission-detailed: "<red>你需要權限 <yellow>{0}</yellow> 來在這個商店執行該操作。"
-paste-uploading: "<aqua>請稍等，正在將複製內容上傳到黏貼板"
+paste-uploading: "<aqua>請稍候，正在將複製內容上傳到 pastebin……"
 paste-created: "<green>已建立剪貼簿，點擊以在瀏覽器中打開：<yellow>{0}</yellow><newline><red>警告：<gray>永遠別將剪貼簿傳送給你不信任的人。"
 paste-created-local: "<green>已建立剪貼簿並且已儲存在你的硬碟路徑：{0}<newline><red>警告：<gray>永遠別將剪貼簿傳送給你不信任的人。"
 paste-created-local-failed: "<red>儲存黏貼板至硬碟失敗，請檢查一下你的硬碟"
 paste-451: "<gray><b>小提示：</b>你目前所在的地區貌似不讓你連結到 CloudFlare Workers 服務，因此剪貼簿功能可能沒辦法正常載入。<newline><gray>如果接下來的操作失敗了，你可以試試加上 --file 變數來將剪貼簿儲存在硬碟上：<dark_gray>/qs paste --file</dark_gray>"
-paste-upload-failed: "<red>失敗將黏貼板傳送至 {0} 自動嘗試其他的提供服務..."
-paste-upload-failed-local: "<red>上傳黏貼板失敗，嘗試在硬碟上產生黏貼板..."
+paste-upload-failed: "<red>上傳 Paste 到 {0} 失敗，正在嘗試其他的提供服務……"
+paste-upload-failed-local: "<red>上傳 Paste 失敗，正在嘗試在硬碟上產生 Paste……"
 command-incorrect: "<red>指令用法錯誤，輸入/qs help 來尋求幫助。用法：{0}。"
-successfully-set-player-group: "<green>成功地將玩家 {0} 的身分組設置為 <aqua>{1}</aqua>。"
+successfully-set-player-group: "<green>成功地將玩家 {0} 的身分組設定為 <aqua>{1}</aqua>。"
 successfully-unset-player-group: "<green>成功地移除該商店中的玩家身分組。"
-successfully-set-player-permission: "<green>成功地將玩家 {0} 在 <aqua>{2}</aqua> 商店的身分組設置為 <aqua>{1}</aqua>。"
+successfully-set-player-permission: "<green>成功地將玩家 {0} 在 <aqua>{2}</aqua> 商店的身分組設定為 <aqua>{1}</aqua>。"
 lookup-item-created: "<green>物品 <aqua>{0}</aqua> 已經在索引表上被建立，你可以在設定中引用該物品了。"
 lookup-item-exists: "<red>物品 <yellow>{0}</yellow> 已經存在索引表中，刪除它或取另外一個名字"
 lookup-item-not-found: "<red>物品名稱：<yellow>{0}</yellow> 並不存在。"
@@ -573,7 +573,7 @@ database:
   auto-trim: "<green>該伺服器已啟用自動修整，所以無需手動修整。"
   trim-complete: "<green>資料庫修整已完成，<yellow>{0}</yellow> 已修整孤立資料。"
   auto-trim-started: "<green>已開始自動修整，請稍候……"
-  trim-start: "<green>已開始修整資料庫，請稍後……"
+  trim-start: "<green>已開始修整資料庫，請稍候……"
   trim-exception: "<red>資料庫修整失敗，在資料庫修整期間發生異常，請檢查伺服器控制台。"
   generated-at: "<yellow>生成於：<gold>{0}</gold>"
   purge-date: "<red>你必須給出一個日期。"
@@ -584,7 +584,7 @@ database:
   suggestion:
     trim: "<yellow>該資料庫需要修整孤立資料，執行指令<aqua>/qs database trim</aqua> 以修整資料庫。"
 always-counting-removal-early-warning: "<red>已計劃刪除始終計數功能，你不應再使用它，並且它將來會停止運作。"
-exporting-database: "<green>正在匯出資料庫，請稍後……"
+exporting-database: "<green>正在匯出資料庫，請稍候……"
 exporting-failed: "<red>匯出資料庫失敗，請檢查伺服器控制台。"
 exported-database: "<green>匯出資料庫至 <yellow>{0}</yellow>。"
 importing-not-found: "<red>找不到檔案 <yellow>{0}</yellow>，請檢查檔案路徑是否正確。"
@@ -611,24 +611,24 @@ benefit-query-list: "<yellow> - </yellow><white>玩家 <gold>{0}</gold>，利益
 addon:
   towny:
     commands:
-      town: "<yellow>將商店設置或取消設置為城鎮商店"
-      nation: "<yellow>將商店設置或取消設置為國家商店"
-    make-shop-owned-by-town: "<green>你已將商店設為 <yellow>{0}</yellow> 鎮擁有。"
+      town: "<yellow>將商店設定或取消設置為城鎮（town）商店"
+      nation: "<yellow>將商店設定或取消設置為國家（Nation）商店"
+    make-shop-owned-by-town: "<green>你已將商店設為 <yellow>{0}</yellow> 鎮（town）擁有。"
     make-shop-no-longer-owned-by-town: "<green>你已重置商店所有權，它現在轉移回原來的商店主人。"
-    make-shop-owned-by-nation: "<green>你已將商店設為 <yellow>{0}</yellow> 國擁有。"
+    make-shop-owned-by-nation: "<green>你已將商店設為 <yellow>{0}</yellow> 國（Nation）擁有。"
     make-shop-no-longer-owned-by-nation: "<green>你已重置商店所有權，它現在轉移回原來的商店主人。"
-    shop-owning-changing-notice: "<grey>該商店現在由城鎮 / 國家擁有，原始商店擁有者已自動新增到管理員列表中，使用指令 /qs permission 修改或新增任何新的擁有者 / 員工"
-    target-shop-already-is-town-shop: "<red>目標商店已歸城鎮所有。"
-    target-shop-already-is-nation-shop: "<red>目標商店已歸國家所有。"
-    target-shop-not-in-town-region: "<red>目標商店不在城鎮內。"
-    target-shop-not-in-nation-region: "<red>目標商店不在國內。"
-    item-not-allowed: "<red>該商店的商品不允許城鎮 / 國家商店使用，請再選一個！"
-    operation-disabled-due-shop-status: "<red>該商店操作已被停用，因為這已經是一個城鎮 / 國家商店。"
-    plot-type-disallowed: "<red>你不能在這種類型的畫布上建立城鎮 / 國家商店。"
+    shop-owning-changing-notice: "<grey>該商店現在由城鎮（town） / 國家（Nation）擁有，原始商店擁有者已自動新增到管理員列表中，使用指令 /qs permission 修改或新增任何新的擁有者 / 員工"
+    target-shop-already-is-town-shop: "<red>目標商店已歸城鎮（town）所有。"
+    target-shop-already-is-nation-shop: "<red>目標商店已歸國家（Nation）所有。"
+    target-shop-not-in-town-region: "<red>目標商店不在城鎮（town）內。"
+    target-shop-not-in-nation-region: "<red>目標商店不在國內（Nation）。"
+    item-not-allowed: "<red>該商店的商品不允許城鎮（town） / 國家（Nation）商店使用，請再選一個！"
+    operation-disabled-due-shop-status: "<red>該商店操作已被停用，因為這已經是一個城鎮（town） / （Nation）國家商店。"
+    plot-type-disallowed: "<red>你不能在這種類型的畫布上建立城鎮（town） / 國家（Nation）商店。"
     flags:
-      own: "<red>你只能在擁有的商店類型城鎮土地上建立商店。"
-      modify: "<red>你沒有在這個城鎮土地上建造的權限。"
-      shop-type: "<red>你必須在城鎮土地上建立商店。"
+      own: "<red>你只能在擁有的商店類型城鎮（town）土地上建立商店。"
+      modify: "<red>你沒有在這個城鎮（town）土地上建造的權限。"
+      shop-type: "<red>你必須在城鎮（town）土地上建立商店。"
   residence:
     creation-flag-denied: "<red>你沒有在該領地建立商店的權限。"
     trade-flag-denied: "<red>你沒有在該領地購買的權限。"
