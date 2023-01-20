@@ -5,7 +5,7 @@ disabled-in-this-world: <red>O QuickShop está desativado neste mundo
 how-much-to-trade-for: <green>Digite no chat, por quanto você deseja vender <yellow>{1}x {0}<green>.
 client-language-changed: <green>O plugin detectou sua linguagem, agora estamos usando a linguagem {0} com você.
 shops-backingup: Criando backup de lojas no banco de dados...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Olá, tradutor! Se você está editando isto no GitHub ou através do código-fonte, você deve ir em https://crowdin.com/project/quickshop-hikari.
 unlimited-shop-owner-changed: <yellow>Este proprietário de loja ilimitado foi alterado para {0}.
 bad-command-usage-detailed: '<red>Argumentos de comando inválidos! Aceita os seguintes parâmetros: <gray>{0}'
 thats-not-a-number: <red>Numero inválido
@@ -35,18 +35,18 @@ quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Nome: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Proprietário: <aqua>{0}'
+    - '<yellow>Tipo: <aqua>{0}'
+    - '<yellow>Preço: <aqua>{0}'
     - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Localização: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Nome: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
+    - '<yellow>Proprietário: <aqua>{owner}'
+    - '<yellow>Tipo: <aqua>{type}'
+    - '<yellow>Preço: <aqua>{price}'
     - '<yellow>Item: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Localização: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -86,7 +86,7 @@ reloading-status:
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Recarregar falhou, verifique o console do servidor
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} comprou {1} {2} de sua loja e você ganhou {3} ({4} de impostos).
 not-enough-space: <red>Você só tem espaço para mais {0}!
 shop-name-success: <green>Defina o nome da loja com sucesso para <yellow>{0}<green>.
 shop-staff-added: <green>Adicionado com sucesso {0} como membro da equipe da sua loja.

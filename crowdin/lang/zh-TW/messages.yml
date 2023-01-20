@@ -1248,10 +1248,10 @@ addon:
     discount-code-has-been-expired: "<red>你的優惠代碼已過期！"
     discount-code-config-shop-added: "<green>成功將該商店新增到你的優惠代碼允許列表。"
     discount-code-config-shop-add-failure: "<red>該商店已存在於你的優惠代碼允許列表。"
-    discount-code-config-shop-removed: "<green>Successfully to remove this shop from your discount code allow list."
-    discount-code-config-shop-remove-failure: "<red>This shop not exists in your discount code allow list."
-    discount-code-config-expire: "<green>Successfully changed your code expire time."
-    discount-code-config-applied: "<green>Config the discount code successfully!"
+    discount-code-config-shop-removed: "<green>成功將該商店從你的優惠代碼允許列表中刪除。"
+    discount-code-config-shop-remove-failure: "<red>該商店不存在於你的優惠代碼允許列表。"
+    discount-code-config-expire: "<green>成功地修改了優惠代碼過期時間。"
+    discount-code-config-applied: "<green>成功地配置優惠代碼！"
     discount-code-created-successfully: |
       <green>你的優惠代碼 <yellow>{0}</yellow> 已成功建立！
       <gold>範圍：<aqua>{1}</aqua></gold>.
