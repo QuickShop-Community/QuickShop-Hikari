@@ -1258,7 +1258,7 @@ addon:
       <gold>与他人分享：<color:#bcef26>{2}</color:#bcef26></gold>
       <yellow>只适用于 <gray>特定商店</gray> 范围：将商店添加到您的优惠码允许列表，请看着一个商店并执行 <aqua>{3}</aqua> 命令。
       <yellow>您可以随时使用 <aqua>/qs discount config {0}</aqua> 编辑您的优惠码。
-    discount-code-under-threshold: "<red>由于总价值低于优惠码阈值，所以优惠未适用于您的交易 <yellow>{0}</yellow>."
+    discount-code-under-threshold: "<red>由于总价值低于优惠码阈值，所以优惠未适用于您的交易 <yellow>{0}</yellow>。"
     percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
     fixed-off: "<bold><color:#bcef26>-{0}</color:#bcef26></bold>"
     discount-code-list: "<gold>列出您的优惠码：<gold>"
@@ -1285,7 +1285,7 @@ suite:
     title: "{0} - {1} - {2}"
     description: "物品: {0}\n所有者: {1}\n类型: {2} {3}\n价格: {4}\n位置: {5} {6}, {7}, {8}\n空间: {9}\n库存: {10}"
   limited:
-    command-description: "<yellow>限制玩家在时间段内的交易限制"
+    command-description: "<yellow>限制玩家在时间段内的交易。"
     reach-the-quota-limit: "<red>您已达到该商店的交易限制（{0}/{1}）。"
     quota-reset-countdown: "<yellow>该商店的交易限制将在 {0} 重置"
     quota-reset-player-successfully: "<green>已成功重置该商店中玩家 {0} 的交易限制"
