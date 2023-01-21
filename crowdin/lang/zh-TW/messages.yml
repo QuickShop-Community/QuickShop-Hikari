@@ -173,7 +173,7 @@ language:
   translate-progress: '<yellow>翻譯進度：<aqua>{0}%'
   name: '<yellow>名稱：<gold>{0}'
   help-us: <green>[幫助我們提升翻譯品質]
-warn-to-paste: '<yellow>正在收集資料並上傳到 Pastebin，這可能需要一點時間。<red><bold>警告：<red>資料上傳後，該連結會公開一週！所以可能會洩漏伺服器中的設定或其他資料。請確保傳送該連結的人是 <bold>伺服器員工或開發者<red>。'
+warn-to-paste: '<yellow>正在收集資料並上傳到 Pastebin，這可能需要一點時間…… <newline><red><bold>警告：</bold>資料上傳後，該連結會公開一週！所以可能會洩漏伺服器中的設定或其他資料。請確保傳送該連結的人是 <bold>伺服器員工或開發者。'
 how-many-sell-stack: <green>在聊天室中輸入你想 <aqua>售出<green> 的數量，每份中有 <yellow>{0}<green> 個物品，你目前可以售出 <yellow>{1}<green> 份。輸入 <aqua>{2}<green> 來售出所有物品。
 updatenotify:
   buttontitle: '[現在更新]'
@@ -321,14 +321,14 @@ booleanformat:
   success: <green>✔
   failed: <red>✘
 controlpanel:
-  stack: '<green>一次交易數量：<aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  stack: '<green>每次交易數量：<aqua>{0} <yellow>[<light_purple><bold>修改</bold></light_purple>]'
   price-hover: <yellow>點擊修改商品價格。
   remove: <red><bold>[刪除商店]
   mode-buying-hover: <yellow>點擊商店修改為出售模式。
-  empty: '<green>清空：移除所有商品 <yellow>[<light_purple><bold>OK<yellow>]'
+  empty: '<green>清空：移除所有商品 <yellow>[<light_purple><bold>好</bold></light_purple>]'
   stack-hover: <yellow>點擊設定每份的物品數量。設定為 1 以恢復為普通單物品商店。
   alwayscounting-hover: <yellow>點擊以切換是否持續計算容器物品。
-  alwayscounting: '<green>持續計算數量：{0} <yellow>[<light_purple><bold>修改<yellow>]'
+  alwayscounting: '<green>持續計算數量：{0} <yellow>[<light_purple><bold>修改</bold></light_purple>]'
   setowner: '<green>店主：<aqua>{0} <yellow>[<light_purple><bold>修改</bold></light_purple>]'
   freeze: '<yellow>凍結模式：<aqua>{0} <yellow>[<light_purple><bold>切換<yellow>]'
   price: '<green>價格：<aqua>{0} <yellow>[<light_purple><bold>修改<yellow>]'
