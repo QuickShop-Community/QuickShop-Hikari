@@ -60,7 +60,7 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
             saveDefaultConfig();
         } catch (IllegalArgumentException ignored) {
         }
-        this.api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
+        this.api = QuickShopAPI.getInstance();
         getLogger().info("Loading up...");
     }
 
@@ -78,7 +78,7 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
             saveDefaultConfig();
         } catch (IllegalArgumentException ignored) {
         }
-        this.api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
+        this.api = QuickShopAPI.getInstance();
         Bukkit.getPluginManager().registerEvents(this, this);
         init();
         getLogger().info("Enabling...");

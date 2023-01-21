@@ -111,7 +111,7 @@ public final class Main extends CompatibilityModule implements Listener {
     @Override
     public void init() {
         performConfigurationUpgrade();
-        api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
+        api = QuickShopAPI.getInstance();
         createFlags = TownyFlags.deserialize(getConfig().getStringList("create"));
         tradeFlags = TownyFlags.deserialize(getConfig().getStringList("trade"));
         whiteList = getConfig().getBoolean("whitelist-mode");
