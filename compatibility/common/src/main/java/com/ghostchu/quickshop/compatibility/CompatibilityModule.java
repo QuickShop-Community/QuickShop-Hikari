@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.compatibility;
 
+import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.event.QSConfigurationReloadEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -60,7 +61,7 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
             saveDefaultConfig();
         } catch (IllegalArgumentException ignored) {
         }
-        this.api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
+        this.api = QuickShop.getInstance();
         getLogger().info("Loading up...");
     }
 
@@ -78,7 +79,7 @@ public abstract class CompatibilityModule extends JavaPlugin implements Listener
             saveDefaultConfig();
         } catch (IllegalArgumentException ignored) {
         }
-        this.api = (QuickShopAPI) Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
+        this.api = QuickShop.getInstance();
         Bukkit.getPluginManager().registerEvents(this, this);
         init();
         getLogger().info("Enabling...");
