@@ -6,6 +6,9 @@ depend:
   - QuickShop-Hikari
 authors: [ Ghost_chu ]
 permissions:
-  quickshopaddon.list.use:
-    description: Allow player to use /qs list
+  quickshopaddon.list.self:
+    description: Allow player to use /qs list to query self
+    default: true
+  quickshopaddon.list.other:
+    description: Allow player to use /qs list <player> to query other
     default: op

@@ -4,7 +4,9 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
+import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -69,7 +71,9 @@ public class SubCommand_List implements CommandHandler<Player> {
             } else {
                 shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-selling").forLocale();
             }
-            printer.printLine(quickshop.text().of(sender, "addon.list.entry", counter, shopName, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getShopStackingAmount(), shopTypeComponent).forLocale());
+            Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopName, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
+            component = component.clickEvent(ClickEvent.runCommand("/qs silentpreview " + shop.getRuntimeRandomUniqueId()));
+            printer.printLine(component);
             counter++;
         }
         printer.printFooter();
