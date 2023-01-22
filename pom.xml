@@ -183,7 +183,7 @@
                             <configuration>
                                 <failOnError>false</failOnError>
                                 <additionalJOption>-Xdoclint:none</additionalJOption>
-                                <detectOfflineLinks>false</detectOfflineLinks>
+                                <!-- <detectOfflineLinks>false</detectOfflineLinks> -->
                             </configuration>
                         </execution>
                     </executions>
