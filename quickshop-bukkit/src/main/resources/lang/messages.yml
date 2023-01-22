@@ -1285,6 +1285,11 @@ addon:
       <gold>Expired on: <yellow>{4}</yellow>
       <gold>Threshold: <yellow>{5}</yellow>
       <gold>Discount: <yellow>{6}</yellow>
+  list:
+    commands:
+      list: "<yellow>Listing all shops owned by your or specific player"
+    table-prefix: "<yellow><green>{0}</green>'s shops <gray>(Total {1})</gray>: "
+    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <gold>{7}</gold> for <light_purple>x{8}</light_purple>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"

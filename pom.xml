@@ -547,6 +547,7 @@
         <module>addon/discordsrv</module>
         <module>addon/plan</module>
         <module>addon/discount</module>
+        <module>addon/list</module>
     </modules>
 
 </project>
