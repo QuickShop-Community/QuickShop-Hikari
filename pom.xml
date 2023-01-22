@@ -549,6 +549,7 @@
         <module>addon/discount</module>
         <module>addon/list</module>
         <module>addon/shopitemonly</module>
+        <module>addon/limited</module>
     </modules>
 
 </project>

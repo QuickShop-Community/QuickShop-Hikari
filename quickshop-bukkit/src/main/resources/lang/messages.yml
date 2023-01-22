@@ -1292,6 +1292,17 @@ addon:
     entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <gold>{7}</gold> for <light_purple>x{8}</light_purple>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
   shopitemonly:
     message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+  limited:
+    commands:
+      limit: "<yellow>Set a limit that restrict the purchase that player can make in period"
+    titles:
+      title: "<green>Purchase Success"
+      subtitle: "<aqua>You can also purchase <gold>{0}</gold> more in this shop"
+    reach-the-limit: "<red>You have reached the limit in this shop. You can also purchase <green>{0}</green> items, but you trying purchase <yellow>{1}</yellow> items."
+    success-reset: "<green>Reset the restriction of this shop successfully"
+    success-remove: "<green>Successfully remove the all restriction of this shop"
+    success-setup: "<green>Restriction settings for this shop were saved successfully"
+    trade-limit-reached-cancel-reason: "<green>Reached the restriction of this shop"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
