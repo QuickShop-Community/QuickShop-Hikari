@@ -1289,7 +1289,7 @@ addon:
     commands:
       list: "<yellow>Listing all shops owned by your or specific player"
     table-prefix: "<yellow><green>{0}</green>'s shops <gray>(Total {1})</gray>: "
-    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple>\n<green>{8}'><yellow>{0}. <aqua>{1}</aqua></hover>"
+    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
   shopitemonly:
     message: "<red>你不能將非商店交易物品放入商店容器中，所有非商店交易的物品都會被直接丟到地上。"
   limited:
