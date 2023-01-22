@@ -69,7 +69,7 @@ public class SubCommand_List implements CommandHandler<Player> {
             } else {
                 shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-selling").forLocale();
             }
-            printer.printLine(quickshop.text().of(sender, "addon.list.entry", counter, shopName, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), shop.getPrice(), shop.getShopStackingAmount(), shopTypeComponent).forLocale());
+            printer.printLine(quickshop.text().of(sender, "addon.list.entry", counter, shopName, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getShopStackingAmount(), shopTypeComponent).forLocale());
             counter++;
         }
     }
