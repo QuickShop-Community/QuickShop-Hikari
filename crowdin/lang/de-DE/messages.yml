@@ -351,7 +351,7 @@ controlpanel:
   infomation: '<green>Shop Kontrollpanel:'
   mode-selling-hover: <yellow>Klicke, um den Shop in den KAUF-Modus zu ändern.
   empty-hover: <yellow>Klicke hier um den Shop zu leeren.
-  toggledisplay: '<yellow>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
+  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
 timeunit:
   behind: hinter
   week: <red>{0} Woche
@@ -581,6 +581,9 @@ database:
   purge-task-created: "<green>Aufgabe erstellt! Datenbank wird die Verlaufs-Einträge leise im Hintergrund entfernen."
   purge-done-with-line: "<green>Lösch-Auftrag beendet. Total <gold>{0}</gold> Linien von Datenbank gelöscht."
   purge-done-with-error: "<red>Lösch-Auftrag fehlgeschlagen. Überprüfe die Server-Konsole für Details."
+  purge-players-cache: "<yellow>Please wait, purging players caches..."
+  purge-players-completed: "<green>Successfully purged {0} players caches from both memory and database.<newline><aqua>Note: You server performance may impact by this operation."
+  purge-players-error: "<red>Failed to purge players caches, please check the server console."
   suggestion:
     trim: "<yellow>Diese Datenbank benötigt eine Bereinigung von isolierten Daten. Führe <aqua>/qs database trim</aqua> aus um die Datenbank zu bereinigen."
 always-counting-removal-early-warning: "<red>Die 'Immer zählen' Funktion ist für eine zukünftige entfernung geplant. Du solltest sie nicht mehr verwenden, da sie in naher Zukunft aufhören wird, zu funktionieren."
@@ -660,6 +663,8 @@ addon:
     feature-enabled-for-user: "<aqua>Sie haben <green>aktiviert</green> <gold>{0}</gold> Benachrichtigung."
     feature-disabled-for-user: "<aqua>Sie haben <red>deaktiviert</red> <gold>{0}</gold> Benachrichtigung."
     link-help: "<yellow>Dieser Server benutzt <gold>{0}</gold> für Discord Treiber, bitte benutze <green>{0}</green> um deinen Discord Account zu verknüpfen."
+    save-notifaction-exception: "<red>An error occurred while saving your Discord notifaction settings, please contact the server administrator."
+    feature-status-changed: "<green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}</gold>"
     commands:
       discord:
         description: "<yellow>Verwalte deine QuickShop Discord Einstellungen"
