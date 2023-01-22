@@ -72,5 +72,6 @@ public class SubCommand_List implements CommandHandler<Player> {
             printer.printLine(quickshop.text().of(sender, "addon.list.entry", counter, shopName, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getShopStackingAmount(), shopTypeComponent).forLocale());
             counter++;
         }
+        printer.printFooter();
     }
 }
