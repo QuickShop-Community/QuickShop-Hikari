@@ -77,10 +77,10 @@ public class SubCommand_Limit implements CommandHandler<Player> {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+        if (cmdArg.length < 2) {
             return List.of("set", "unset", "reset", "period");
         }
-        if (cmdArg.length < 2) {
+        if (cmdArg.length < 3) {
             switch (cmdArg[0]) {
                 case "set" -> {
                     return List.of("<max>");
