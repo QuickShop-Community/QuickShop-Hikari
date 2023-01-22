@@ -548,6 +548,7 @@
         <module>addon/plan</module>
         <module>addon/discount</module>
         <module>addon/list</module>
+        <module>addon/shopitemonly</module>
     </modules>
 
 </project>
