@@ -351,7 +351,7 @@ controlpanel:
   infomation: '<green>商店控制面板：'
   mode-selling-hover: <yellow>點擊商店修改為收購模式。
   empty-hover: <yellow>點擊清除商店內庫存。
-  toggledisplay: '<yellow>商店懸浮物品顯示：<aqua>{0} <yellow>[<light_purple><bold>切換</bold></light_purple>]'
+  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
 timeunit:
   behind: 後面
   week: <red>{0} 星期
@@ -581,6 +581,9 @@ database:
   purge-task-created: "<green>已建立任務！資料庫將在背景清除歷史記錄。"
   purge-done-with-line: "<green>已完成清除任務，總共 <gold>{0}</gold> 行已從資料庫中清除。"
   purge-done-with-error: "<red>清除任務失敗，請檢查伺服器控制台獲得詳細資訊。"
+  purge-players-cache: "<yellow>Please wait, purging players caches..."
+  purge-players-completed: "<green>Successfully purged {0} players caches from both memory and database.<newline><aqua>Note: You server performance may impact by this operation."
+  purge-players-error: "<red>Failed to purge players caches, please check the server console."
   suggestion:
     trim: "<yellow>該資料庫需要修整孤立資料，執行指令<aqua>/qs database trim</aqua> 以修整資料庫。"
 always-counting-removal-early-warning: "<red>已計劃刪除始終計數功能，你不應再使用它，並且它將來會停止運作。"
@@ -660,6 +663,8 @@ addon:
     feature-enabled-for-user: "<aqua>你 <green>已啟用 </green> <gold>{0}</gold> 通知。"
     feature-disabled-for-user: "<aqua>你已 <red>停用</red> <gold>{0}</gold> 通知。"
     link-help: "<yellow>該伺服器使用 <gold>{0}</gold> 處理 Discord 驅動程式，請使用 <green>{0}</green> 連結你的 Discord 帳號。"
+    save-notifaction-exception: "<red>An error occurred while saving your Discord notifaction settings, please contact the server administrator."
+    feature-status-changed: "<green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}</gold>"
     commands:
       discord:
         description: "<yellow>管理你的 QuickShop Discord 設定"
