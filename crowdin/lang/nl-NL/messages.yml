@@ -351,7 +351,7 @@ controlpanel:
   infomation: '<green>Shop Control Panel:'
   mode-selling-hover: <yellow>Klik om de winkel te wijzigen in de KOPIE modus.
   empty-hover: <yellow>Klik om de inventaris van de winkel te wissen.
-  toggledisplay: '<yellow>DisplayItem: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
+  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
 timeunit:
   behind: behind
   week: <red>{0} week
@@ -581,6 +581,9 @@ database:
   purge-task-created: "<green>Task created! Database are silent purging history records in background."
   purge-done-with-line: "<green>Purge task completed, total <gold>{0}</gold> lines purged from database."
   purge-done-with-error: "<red>Purge task failed, check the server console for details."
+  purge-players-cache: "<yellow>Please wait, purging players caches..."
+  purge-players-completed: "<green>Successfully purged {0} players caches from both memory and database.<newline><aqua>Note: You server performance may impact by this operation."
+  purge-players-error: "<red>Failed to purge players caches, please check the server console."
   suggestion:
     trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."
@@ -660,6 +663,8 @@ addon:
     feature-enabled-for-user: "<aqua>You have <green>enabled</green> <gold>{0}</gold> notification."
     feature-disabled-for-user: "<aqua>You have <red>disabled</red> <gold>{0}</gold> notification."
     link-help: "<yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account."
+    save-notifaction-exception: "<red>An error occurred while saving your Discord notifaction settings, please contact the server administrator."
+    feature-status-changed: "<green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}</gold>"
     commands:
       discord:
         description: "<yellow>Managing your QuickShop Discord settings"
