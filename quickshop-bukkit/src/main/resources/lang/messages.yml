@@ -1302,7 +1302,7 @@ addon:
     success-reset: "<green>Reset the restriction of this shop successfully"
     success-remove: "<green>Successfully remove the all restriction of this shop"
     success-setup: "<green>Restriction settings for this shop were saved successfully"
-    trade-limit-reached-cancel-reason: "<green>Reached the restriction of this shop"
+    trade-limit-reached-cancel-reason: "<red>Reached the restriction of this shop"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
