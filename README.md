@@ -208,6 +208,7 @@ QuickShop-Hikari offers an API for you to use features such as retrieving active
 ### Maven
 
 ```xml
+
 <repositories>
     <repository>
         <id>codemc</id>
@@ -216,14 +217,14 @@ QuickShop-Hikari offers an API for you to use features such as retrieving active
 </repositories>
 
 <dependencies>
-    <!-- QuickShop Main Module -->
-    <dependency>
-        <groupId>com.ghostchu</groupId>
-        <artifactId>quickshop-bukkit</artifactId>
-        <version>VERSION HERE</version>
-        <scope>provided</scope>
-        <classifier>shaded</classifier>
-    </dependency>
+<!-- QuickShop Main Module -->
+<dependency>
+    <groupId>com.ghostchu</groupId>
+    <artifactId>quickshop-bukkit</artifactId>
+    <version>VERSION HERE</version>
+    <scope>provided</scope>
+    <classifier>shaded</classifier>
+</dependency>
 </dependencies>
 ```
 
@@ -243,22 +244,13 @@ dependencies {
 
 ```java
 public class MyPlugin extends JavaPlugin {
-    private QuickShopAPI api = null;
 
     @Override
     public void onEnable() {
-        // Remember to add QuickShop-Hikari as (soft) depend.
-        Plugin plugin = Bukkit.getPluginManager().getPlugin("QuickShop-Hikari");
-        
-        if (plugin != null && plugin.isEnabled()) {
-            api = (QuickShopAPI) plugin;
-        }
-        
-        // Check if api is not null and use it in such a case
+        QuickShopAPI api = QuickShopAPI.getInstance();
+        QuickShop instance = QuickShopAPI.getPluginInstance();
+        QuickShop anotherWayToGetInstance = QuickShop.getInstance();
     }
 
-    public QuickShopAPI getQuickShopAPI() {
-        return api;
-    }
 }
 ```
