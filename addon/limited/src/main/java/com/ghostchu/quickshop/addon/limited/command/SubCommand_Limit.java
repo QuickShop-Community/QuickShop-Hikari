@@ -86,7 +86,10 @@ public class SubCommand_Limit implements CommandHandler<Player> {
                     return List.of("<max>");
                 }
                 case "period" -> {
-                    return Arrays.stream(CalendarEvent.CalendarTriggerType.values()).map(Enum::name).toList();
+                    return Arrays.stream(CalendarEvent.CalendarTriggerType.values())
+                            .filter(e -> !e.equals(CalendarEvent.CalendarTriggerType.SECOND))
+                            .filter(e -> !e.equals(CalendarEvent.CalendarTriggerType.NOTHING_CHANGED))
+                            .map(Enum::name).toList();
                 }
             }
         }
