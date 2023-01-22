@@ -73,7 +73,7 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
-        plugin.getCommandManager().registerCmd(CommandContainer.builder().permission("quickshop.addon.discord.command.discord").description((locale) -> plugin.text().of("addon.discord.commands.discord.description").forLocale(locale)).prefix("discord").executor(new SubCommand_Discord(plugin, this)).build());
+        plugin.getCommandManager().registerCmd(CommandContainer.builder().permission("quickshopaddon.discord.command").description((locale) -> plugin.text().of("addon.discord.commands.discord.description").forLocale(locale)).prefix("discord").executor(new SubCommand_Discord(plugin, this)).build());
     }
 
     public MessageFactory getFactory() {
