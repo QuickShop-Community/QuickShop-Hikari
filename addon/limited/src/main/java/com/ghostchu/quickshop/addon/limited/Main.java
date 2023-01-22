@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.event.ShopSuccessPurchaseEvent;
 import com.ghostchu.quickshop.api.localization.text.Text;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -86,7 +87,11 @@ public final class Main extends JavaPlugin implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void scheduleEvent(CalendarEvent event) {
-        plugin.getShopManager().getAllShops().forEach(shop -> {
+        if (event.getCalendarTriggerType() == CalendarEvent.CalendarTriggerType.SECOND
+                || event.getCalendarTriggerType() == CalendarEvent.CalendarTriggerType.NOTHING_CHANGED) {
+            return;
+        }
+        Util.asyncThreadRun(() -> plugin.getShopManager().getAllShops().forEach(shop -> {
             ConfigurationSection manager = shop.getExtra(this);
             int limit = manager.getInt("limit");
             if (limit < 1) {
@@ -106,6 +111,7 @@ public final class Main extends JavaPlugin implements Listener {
                 manager.set("period", null);
                 shop.setExtra(this, manager);
             }
-        });
+        }));
+
     }
 }
