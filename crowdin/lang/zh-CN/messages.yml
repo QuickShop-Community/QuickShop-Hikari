@@ -351,7 +351,7 @@ controlpanel:
   infomation: '<green>商店控制面板'
   mode-selling-hover: <yellow>点击可将商店切换为 收购 模式。
   empty-hover: <yellow>点击清除商店库存
-  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
+  toggledisplay: '<green>悬浮物显示: <aqua>{0} <yellow>[<light_purple><bold>切换</bold></light_purple>]'
 timeunit:
   behind: 后面
   week: <red>{0} 周
@@ -581,9 +581,9 @@ database:
   purge-task-created: "<green>任务已创建! 数据库在后台静默清除历史记录"
   purge-done-with-line: "<green>清除任务已完成，总共 <gold>{0}</gold> 行已从数据库中清除。"
   purge-done-with-error: "<red>清除任务失败，请检查服务器控制台获取详细信息。"
-  purge-players-cache: "<yellow>Please wait, purging players caches..."
-  purge-players-completed: "<green>Successfully purged {0} players caches from both memory and database.<newline><aqua>Note: You server performance may impact by this operation."
-  purge-players-error: "<red>Failed to purge players caches, please check the server console."
+  purge-players-cache: "<yellow>请稍候，正在清理玩家缓存..."
+  purge-players-completed: "<green>成功地从内存和数据库清除了 {0} 个玩家缓存。<newline><aqua>注意：此操作可能会影响服务器性能。"
+  purge-players-error: "<red>清除玩家缓存失败，请检查服务器控制台。"
   suggestion:
     trim: "<yellow>此数据库需要进行清理，执行命令 <aqua>/qs database trim</aqua> 来清理数据库。"
 always-counting-removal-early-warning: "<red>总是计数功能将移除，您不应该再使用它，并将在将来停止工作。"
@@ -629,7 +629,7 @@ addon:
     operation-disabled-due-shop-status: "<red>这个商店已被禁用，因为它已经是一个城镇/国家商店。"
     plot-type-disallowed: "<red>您不能在这种类型的地皮上创建城镇/国家商店。"
     flags:
-      own: "<red>You can only create shops at your owned shop type towny plot."
+      own: "<red>您只能在您拥有的商店类型牵引地创建商店。"
       modify: "<red>您没有在该Towny区域的建造权限"
       shop-type: "<red>您只能在Towny区域中创建商店"
   residence:
@@ -663,8 +663,8 @@ addon:
     feature-enabled-for-user: "<aqua>您已 <green>启用</green> <gold>{0}</gold> 通知。"
     feature-disabled-for-user: "<aqua>您已禁用 <red></red> <gold>{0}</gold> 通知。"
     link-help: "<yellow>此服务器使用 <gold>{0}</gold> 处理 Discord 驱动，请使用 <green>{0}</green> 链接您的 Discord 账户。"
-    save-notifaction-exception: "<red>An error occurred while saving your Discord notifaction settings, please contact the server administrator."
-    feature-status-changed: "<green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}</gold>"
+    save-notifaction-exception: "<red>保存您的 Discord 通知设置时发生错误，请与服务器管理员联系。"
+    feature-status-changed: "<green>成功设置通知 <aqua>{0}</aqua> 状态为 <gold>{1}</gold>"
     commands:
       discord:
         description: "<yellow>管理QuickShop的Discord设置"
@@ -1287,22 +1287,22 @@ addon:
       <gold>折扣： <yellow>{6}</yellow>
   list:
     commands:
-      list: "<yellow>Listing all shops owned by your or specific player"
-    table-prefix: "<yellow><green>{0}</green>'s shops <gray>(Total {1})</gray>: "
-    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
+      list: "<yellow>列出自己或其他玩家拥有的所有商店"
+    table-prefix: "<yellow><green>{0}</green>的商店 <gray>(总计 {1})</gray>: "
+    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>价格 <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
   shopitemonly:
     message: "<red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上"
   limited:
     commands:
-      limit: "<yellow>Set a limit that restrict the purchase that player can make in period"
+      limit: "<yellow>限制玩家在时间段内的交易。"
     titles:
       title: "<green>交易成功"
-      subtitle: "<aqua>You can also purchase <gold>{0}</gold> more in this shop"
-    reach-the-limit: "<red>You have reached the limit in this shop. You can also purchase <green>{0}</green> items, but you trying purchase <yellow>{1}</yellow> items."
-    success-reset: "<green>Reset the restriction of this shop successfully"
-    success-remove: "<green>Successfully remove the all restriction of this shop"
-    success-setup: "<green>Restriction settings for this shop were saved successfully"
-    trade-limit-reached-cancel-reason: "<red>Reached the restriction of this shop"
+      subtitle: "<aqua>您还可以在这个商店交易 <gold>{0}</gold> 个物品"
+    reach-the-limit: "<red>您与这个商店已达到交易限制。您还可以交易 <green>{0}</green> 个物品，但您正在尝试交易 <yellow>{1}</yellow> 物品。"
+    success-reset: "<green>成功重置这个商店的限制"
+    success-remove: "<green>成功删除此商店的所有限制"
+    success-setup: "<green>该商店的限制设置已成功保存"
+    trade-limit-reached-cancel-reason: "<red>达到了这个商店的交易限制"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
@@ -1323,7 +1323,7 @@ suite:
     table-prefix: "<yellow>您在该服务器中拥有 <aqua>{0}</aqua> 个商店。"
     entry-syntax: "<aqua>- <yellow>{0}"
     entry-syntax-fallback-name: "<yellow>物品:{0} X:{1}, Y:{2}, Z:{3}, 世界: {4}"
-    hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."
+    hover-text: "<yellow>{0}\n<gray>{1} {2}、 {3}、 {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} 物品"
   shopitemonly:
     message: "<red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上"
 compatibility:
