@@ -7,6 +7,8 @@ import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.Util;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -65,13 +67,14 @@ public class SubCommand_List implements CommandHandler<Player> {
             if (StringUtils.isEmpty(shopName)) {
                 shopName = combineLocation;
             }
+            Component shopNameComponent = LegacyComponentSerializer.legacySection().deserialize(shopName).append(Component.textOfChildren(Component.text(" (").append(Util.getItemStackName(shop.getItem())).append(Component.text(")"))).color(NamedTextColor.GRAY));
             Component shopTypeComponent;
             if (shop.isBuying()) {
                 shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-buying").forLocale();
             } else {
                 shopTypeComponent = quickshop.text().of(sender, "menu.this-shop-is-selling").forLocale();
             }
-            Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopName, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
+            Component component = quickshop.text().of(sender, "addon.list.entry", counter, shopNameComponent, location.getWorld().getName(), location.getBlockX(), location.getBlockY(), location.getBlockZ(), quickshop.getEconomy().format(shop.getPrice(), shop.getLocation().getWorld(), shop.getCurrency()), shop.getShopStackingAmount(), Util.getItemStackName(shop.getItem()), shopTypeComponent).forLocale();
             component = component.clickEvent(ClickEvent.runCommand("/qs silentpreview " + shop.getRuntimeRandomUniqueId()));
             printer.printLine(component);
             counter++;
