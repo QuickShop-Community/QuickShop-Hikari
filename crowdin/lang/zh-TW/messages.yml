@@ -27,7 +27,7 @@ blacklisted-item: <red>由於這是黑名單的物品，所以你不能賣。
 command-type-mismatch: <red>該指令只能由 <aqua>{0} <red>執行。
 server-crash-warning: '<red>警告：如果你更換或刪除 QuickShop 插件 Jar 檔案後，執行指令 /qs reload 可能導致伺服器崩潰。'
 you-cant-afford-to-change-price: <red>你需要花費 {0} 元來修改商品價格。
-safe-mode: <red>QuickShop 現在處於安全模式，你無法打開該商店容器，請與伺服器管理員聯絡以修復錯誤！
+safe-mode: <red>QuickShop 現在處於安全模式，你無法打開該商店容器，請聯絡伺服器管理員以修復錯誤！
 forbidden-vanilla-behavior: <red>該操作不符合原版行為，因此被禁止。
 shop-out-of-space-name: <dark_purple>你的商店 {0} 已滿！
 paste-disabled: '<red>原始碼儲存功能被停用！你將無法請求技術支援。<newline>原因：{0}'
@@ -57,7 +57,7 @@ currency-unset: <green>已成功地刪除商店貨幣。現在使用預設設定
 you-cant-create-shop-in-there: <red>你沒有在這個地方建立商店的權限。
 no-pending-action: <red>你沒有待處理的操作
 refill-success: <green>補貨成功
-failed-to-paste: <red>無法將資料上傳至 Pastebin，請檢查你的連線後再重試。（請查看控制台以獲得詳細資訊）
+failed-to-paste: <red>將資料上傳至 Pastebin 失敗，請檢查你的連線後再重試。（請查看控制台以獲得詳細資訊）
 shop-out-of-stock-name: <dark_purple>你在 {0} 出售 {1} 的商店已售罄一空！
 shop-name-invalid: <red>商店的名稱 <yellow>{0}</yellow> 無效。請嘗試使用另一個名稱！
 how-many-buy-stack: <yellow>在聊天室中輸入你想 <aqua>購買</aqua> 的數量，每份中有 <green>{0}</green> 個物品，你目前可以買 <green>{1}</green> 份。輸入 <aqua>{2}</aqua> 來購買所有物品。
@@ -68,7 +68,7 @@ no-enough-money-to-keep-shops: <red>你的金錢不夠繳稅！所以你所有�
 not-a-integer: <red>輸入一定是數字，但你輸入了 {0}。
 translation-country: '語言：繁體中文 Chinese Traditional（zh_TW）'
 buying-more-than-selling: '<red>警告：你收購的物品比出售的物品多！'
-purchase-failed: '<red>交易失敗：發生錯誤，請聯繫伺服器管理員。'
+purchase-failed: '<red>交易失敗：發生錯誤，請向伺服器管理員報告該問題。'
 denied-put-in-item: <red>你不能將此物品放入你的商店！
 shop-has-changed: <red>你嘗試交易的商店在點擊後已有變動！
 flush-finished: <green>成功地清除所有最近的商店記錄。
@@ -85,7 +85,7 @@ reloading-status:
   success: <green>插件成功地重新載入且沒有發生任何錯誤。
   scheduled: <green>重新載入完成！<gray>（<yellow>一些更改需要一段時間後作用<gray>）
   require-restart: <green>重新載入完成。<gray>（<yellow>一些更改需要重新啟動伺服器後作用<gray>）
-  failed: <red>無法重新載入，請檢查伺服器控制台
+  failed: <red>重新載入失敗，請檢查伺服器控制台錯誤
 player-bought-from-your-store-tax: <green>{0} 從你的商店購買了 {1} 個 {2}，你總共賺了 {3} 元 （{4} 元的稅） 。
 not-enough-space: <red>你只剩下 <yellow>{0}<red> 格空間可以裝東西！
 shop-name-success: <green>成功地將商店名稱設定為 <yellow>{0}<green>。
@@ -314,7 +314,7 @@ language-info-panel:
   progress: '進度：'
   translate-on-crowdin: '[在 Crowdin 上翻譯]'
 item-not-exist: <red>物品<yellow> {0}<red>不存在，請檢查你的拼寫。
-shop-creation-failed: <red>商店建立失敗，請與伺服器管理員聯絡。
+shop-creation-failed: <red>商店建立失敗，請聯絡伺服器管理員。
 inventory-space-full: <red>你的物品欄只有 <green>{1}</green> 個空位，請你先清空一下物品欄後再試！
 no-creative-break: <red>你不能在創造模式中破壞其他玩家的商店，請使用生存模式或使用超級工具 {0} 來破壞。
 booleanformat:
@@ -514,7 +514,7 @@ no-permission-detailed: "<red>你需要權限 <yellow>{0}</yellow> 來在這個�
 paste-uploading: "<aqua>請稍候，正在將複製內容上傳到 pastebin……"
 paste-created: "<green>已建立 Paste，點擊以在瀏覽器中打開：<yellow>{0}</yellow><newline><red>警告：<gray>永遠別將 Paste 傳送給你不信任的人。"
 paste-created-local: "<green>已建立 Paste 並且已儲存在你的硬碟路徑：{0}<newline><red>警告：<gray>永遠別將 Paste 傳送給你不信任的人。"
-paste-created-local-failed: "<red>儲存黏貼板至硬碟失敗，請檢查一下你的硬碟"
+paste-created-local-failed: "<red>儲存 Paste 到硬碟失敗，請檢查你的硬碟。"
 paste-451: "<gray><bold>小提示：</bold>你目前所在的地區貌似不讓你連結到 CloudFlare Workers 服務，因此 Paste 功能可能沒辦法正常載入。<newline><gray>如果接下來的操作失敗了，你可以試試加上 --file 變數來將 Paste 儲存在硬碟上：<dark_gray>/qs paste --file</dark_gray>"
 paste-upload-failed: "<red>上傳 Paste 到 {0} 失敗，正在嘗試其他的提供服務……"
 paste-upload-failed-local: "<red>上傳 Paste 失敗，正在嘗試在硬碟上產生 Paste……"
@@ -530,7 +530,7 @@ lookup-item-name-regex: "<red>物品名稱必須符合這個正規表示式：<a
 lookup-item-test-not-found: "<gold>測試：<yellow>在你手中的物品並未上傳到物品索引表。"
 lookup-item-test-found: "<gold>測試：<green>你手中的物品在索引表中被命名為 <aqua>{0}</aqua>。"
 lookup-item-removed: "<green>物品 <aqua>{0}</aqua>已成功地自物品索引表中刪除。"
-internal-error: "<red>發生內部錯誤，請聯絡管理員。"
+internal-error: "<red>發生內部錯誤，請聯絡伺服器管理員。"
 argument-cannot-be: "<red>參數 <aqua>{0}</aqua> 不能為 <yellow>{1}</yellow>。"
 argument-must-between: "<red>參數 <aqua>{0}</aqua> 值必須在 <yellow>{1}</yellow> 和 <yellow>{2}</yellow> 之間"
 invalid-percentage: "<red>百分比無效，你必須在百分比的數字後加上「%」。"
@@ -583,7 +583,7 @@ database:
   purge-done-with-error: "<red>清除任務失敗，請檢查伺服器控制台獲得詳細資訊。"
   purge-players-cache: "<yellow>Please wait, purging players caches..."
   purge-players-completed: "<green>Successfully purged {0} players caches from both memory and database.<newline><aqua>Note: You server performance may impact by this operation."
-  purge-players-error: "<red>Failed to purge players caches, please check the server console."
+  purge-players-error: "<red>清除玩家快取失敗，請檢查伺服器控制台。"
   suggestion:
     trim: "<yellow>該資料庫需要修整孤立資料，執行指令<aqua>/qs database trim</aqua> 以修整資料庫。"
 always-counting-removal-early-warning: "<red>已計劃刪除始終計數功能，你不應再使用它，並且它將來會停止運作。"
