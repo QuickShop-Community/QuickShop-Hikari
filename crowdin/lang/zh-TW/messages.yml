@@ -351,7 +351,7 @@ controlpanel:
   infomation: '<green>商店控制面板：'
   mode-selling-hover: <yellow>點擊商店修改為收購模式。
   empty-hover: <yellow>點擊清除商店內庫存。
-  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
+  toggledisplay: '<green>懸浮物品顯示：<aqua>{0} <yellow>[<light_purple><bold>切換</bold></light_purple>]'
 timeunit:
   behind: 後面
   week: <red>{0} 星期
