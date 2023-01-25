@@ -581,8 +581,8 @@ database:
   purge-task-created: "<green>已建立任務！資料庫將在背景清除歷史記錄。"
   purge-done-with-line: "<green>已完成清除任務，總共 <gold>{0}</gold> 行已從資料庫中清除。"
   purge-done-with-error: "<red>清除任務失敗，請檢查伺服器控制台獲得詳細資訊。"
-  purge-players-cache: "<yellow>Please wait, purging players caches..."
-  purge-players-completed: "<green>Successfully purged {0} players caches from both memory and database.<newline><aqua>Note: You server performance may impact by this operation."
+  purge-players-cache: "<yellow>請稍候，正在清理玩家快取"
+  purge-players-completed: "<green>成功地從記憶體和資料庫清除了 {0} 個玩家的快取。<newline><aqua>注意：該操作可能會影響伺服器效能。"
   purge-players-error: "<red>清除玩家快取失敗，請檢查伺服器控制台。"
   suggestion:
     trim: "<yellow>該資料庫需要修整孤立資料，執行指令<aqua>/qs database trim</aqua> 以修整資料庫。"
@@ -663,8 +663,8 @@ addon:
     feature-enabled-for-user: "<aqua>你 <green>已啟用 </green> <gold>{0}</gold> 通知。"
     feature-disabled-for-user: "<aqua>你已 <red>停用</red> <gold>{0}</gold> 通知。"
     link-help: "<yellow>該伺服器使用 <gold>{0}</gold> 處理 Discord 驅動程式，請使用 <green>{0}</green> 連結你的 Discord 帳號。"
-    save-notifaction-exception: "<red>An error occurred while saving your Discord notifaction settings, please contact the server administrator."
-    feature-status-changed: "<green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}</gold>"
+    save-notifaction-exception: "<red>儲存你的 Discord 通知設定時發生錯誤，請聯絡伺服器管理員。"
+    feature-status-changed: "<green>成功地設定通知 <aqua>{0}</aqua> 狀態為 <gold>{1}</gold>"
     commands:
       discord:
         description: "<yellow>管理你的 QuickShop Discord 設定"
@@ -1287,14 +1287,14 @@ addon:
       <gold>折扣：<yellow>{6}</yellow>
   list:
     commands:
-      list: "<yellow>Listing all shops owned by your or specific player"
-    table-prefix: "<yellow><green>{0}</green>'s shops <gray>(Total {1})</gray>: "
-    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
+      list: "<yellow>列出你或指定玩家擁有的所有商店"
+    table-prefix: "<yellow><green>{0}</green>的商店 <gray>（總共 {1})</gray>："
+    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>價格 <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
   shopitemonly:
     message: "<red>你不能將非商店交易物品放入商店容器中，所有非商店交易的物品都會被直接丟到地上。"
   limited:
     commands:
-      limit: "<yellow>Set a limit that restrict the purchase that player can make in period"
+      limit: "<yellow>限制玩家在時間段內的交易"
     titles:
       title: "<green>購買成功"
       subtitle: "<aqua>You can also purchase <gold>{0}</gold> more in this shop"
