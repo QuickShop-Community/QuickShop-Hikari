@@ -1298,7 +1298,7 @@ addon:
     titles:
       title: "<green>交易成功"
       subtitle: "<aqua>您还可以在这个商店交易 <gold>{0}</gold> 个物品"
-    reach-the-limit: "<red>您与这个商店已达到交易限制。您还可以交易 <green>{0}</green> 个物品，但您正在尝试交易 <yellow>{1}</yellow> 物品。"
+    reach-the-limit: "<red>您与这个商店已达到交易限制。您还可以交易 <green>{0}</green> 个物品，但您正在尝试交易 <yellow>{1}</yellow> 个物品。"
     success-reset: "<green>成功重置这个商店的限制"
     success-remove: "<green>成功删除此商店的所有限制"
     success-setup: "<green>该商店的限制设置已成功保存"
