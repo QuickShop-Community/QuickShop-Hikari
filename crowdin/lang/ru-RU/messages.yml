@@ -351,7 +351,7 @@ controlpanel:
   infomation: '<green>Панель управления магазином:'
   mode-selling-hover: <yellow>Нажмите, чтобы изменить режим магазина на ПОКУПКИ.
   empty-hover: <yellow>Нажмите, чтобы опустошить инвентарь магазина.
-  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
+  toggledisplay: '<green>Отображение предмета: <aqua>{0}<yellow>[<light_purple><bold>Переключить</bold></light_purple>]'
 timeunit:
   behind: назад
   week: <red>{0} неделя
@@ -428,7 +428,7 @@ command:
     permission: <yellow>Управление разрешениями магазина
     lookup: <yellow>Управление справочной таблицей предметов
     database: <yellow>Просмотр и обслуживание базы данных QuickShop
-    benefit: <yellow>Settings of divide benefits between shop owner and other players
+    benefit: <yellow>Настройки разделения выгоды между владельцем магазина и другими игроками
   bulk-size-not-set: '<red>Используйте: /qs size <amount>'
   no-type-given: '<red>Используйте: /qs find <item>'
   feature-not-enabled: Функция не включена в конфигурации.
@@ -532,7 +532,7 @@ lookup-item-test-found: "<gold>Тест: <green>предмет в вашей р�
 lookup-item-removed: "<green>Предмет <aqua>{0}</aqua> успешно удален из справочной таблицы."
 internal-error: "<red>Произошла внутренняя ошибка, пожалуйста, свяжитесь с администратором сервера."
 argument-cannot-be: "<red>Аргумент <aqua>{0}</aqua> не может быть <yellow>{1}</yellow>."
-argument-must-between: "<red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>"
+argument-must-between: "<red>Значение <aqua>{0}</aqua> должно быть между <yellow>{1}</yellow> и <yellow>{2}</yellow>"
 invalid-percentage: "<red>Недопустимый процент, вы должны добавить '%' после числа процентов."
 not-a-valid-time: |
   <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
@@ -1188,8 +1188,8 @@ addon:
             }
         }
     field:
-      player: "Player"
-      item: "Item"
+      player: "Игрок"
+      item: "Предмет"
       amount: "Amount"
       balance: "Balance"
       balance-after-tax: "Balance (after tax)"
@@ -1306,7 +1306,7 @@ addon:
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
-    description: "Item: {0}\nOwner: {1}\nType: {2} {3}\nPrice: {4}\nLocation: {5} {6}, {7}, {8}\nSpace: {9}\nStock: {10}"
+    description: "Предмет: {0}\nВладелец: {1}\nТип: {2} {3}\nЦена: {4}\nМесто: {5} {6}, {7}, {8}\nМесто: {9}\nВ наличии: {10}"
   limited:
     command-description: "<yellow>Set a limit that restrict the purchase that player can make in period."
     reach-the-quota-limit: "<red>Вы достигли лимита покупок в этом магазине ({0}/{1})."
@@ -1320,7 +1320,7 @@ suite:
       subtitle: "<aqua>Вы можете купить <yellow>{0}</yellow> в этом магазине"
   list:
     command-description: "<yellow>List all shops owned by yourself or another player."
-    table-prefix: "<yellow>You owned total <aqua>{0}</aqua> shops on this server."
+    table-prefix: "<yellow>Вы владели <aqua>{0}</aqua> магазинами на этом сервере."
     entry-syntax: "<aqua>- <yellow>{0}"
     entry-syntax-fallback-name: "<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}"
     hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."
