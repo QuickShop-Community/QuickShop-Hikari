@@ -769,6 +769,9 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
                     components[i] = LegacyComponentSerializer.legacySection().deserialize((String) obj);
                     continue;
                 }
+                if (Text.class.equals(clazz)) {
+                    components[i] = ((Text) obj).forLocale();
+                }
                 components[i] = LegacyComponentSerializer.legacySection().deserialize(obj.toString());
             } catch (Exception exception) {
                 Log.debug("Failed to process the object: " + obj);
