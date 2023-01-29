@@ -50,27 +50,11 @@
             <artifactId>spigot-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-bukkit</artifactId>
-            <version>${parent.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.plotsquared</groupId>
-            <artifactId>PlotSquared-Core</artifactId>
-            <version>6.10.5</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.plotsquared</groupId>
             <artifactId>PlotSquared-Bukkit</artifactId>
             <version>6.10.5</version>
             <scope>provided</scope>
             <exclusions>
-                <exclusion>
-                    <artifactId>PlotSquared-Core</artifactId>
-                    <groupId>*</groupId>
-                </exclusion>
                 <exclusion>
                     <artifactId>SquirrelID</artifactId>
                     <groupId>com.github.EngineHub</groupId>
@@ -93,7 +77,7 @@
             <groupId>com.ghostchu.quickshop.compatibility</groupId>
             <artifactId>common</artifactId>
             <version>${parent.version}</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

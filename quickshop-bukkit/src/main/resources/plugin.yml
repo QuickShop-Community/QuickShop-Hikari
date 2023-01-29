@@ -30,6 +30,7 @@ libraries:
   - org.dom4j:dom4j:2.1.3
   - org.slf4j:slf4j-jdk14:2.0.6
   - com.vdurmont:semver4j:3.1.0
+  - com.ghostchu.crowdin:crowdinota:1.0.3
 #  - org.slf4j:slf4j-nop:1.7.35
 authors:
   - Ghost_chu

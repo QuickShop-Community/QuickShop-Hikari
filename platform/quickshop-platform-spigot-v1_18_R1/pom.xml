@@ -87,12 +87,6 @@
     <dependencies>
         <dependency>
             <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-platform-interface</artifactId>
-            <version>${parent.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-platform-spigot-abstract</artifactId>
             <version>${parent.version}</version>
             <scope>compile</scope>
@@ -103,10 +97,6 @@
             <version>1.18.1-R0.1-SNAPSHOT</version>
             <classifier>remapped-mojang</classifier>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
             <groupId>de.tr7zw</groupId>
