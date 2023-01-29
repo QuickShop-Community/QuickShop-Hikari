@@ -28,20 +28,9 @@
             <artifactId>spigot-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.kyori</groupId>
-            <artifactId>adventure-platform-bukkit</artifactId>
-            <scope>provided</scope>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>semver4j</artifactId>
+            <version>3.1.0</version>
         </dependency>
-        <dependency>
-            <groupId>cc.carm.lib</groupId>
-            <artifactId>easysql-hikaricp</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>simplereloadlib</artifactId>
-            <scope>provided</scope>
-        </dependency>
-
     </dependencies>
 </project>

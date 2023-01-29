@@ -50,12 +50,6 @@
             <artifactId>spigot-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.ghostchu</groupId>
-            <artifactId>quickshop-bukkit</artifactId>
-            <version>${parent.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.github.jikoo.OpenInv</groupId>
             <artifactId>openinvapi</artifactId>
             <version>4.2.2</version>
@@ -65,7 +59,7 @@
             <groupId>com.ghostchu.quickshop.compatibility</groupId>
             <artifactId>common</artifactId>
             <version>${parent.version}</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
