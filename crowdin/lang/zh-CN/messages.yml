@@ -71,13 +71,13 @@ buying-more-than-selling: '<red>警告: 你收购的物品价格比出售的要�
 purchase-failed: '<red>支付失败：内部错误，请联系服务器管理员'
 denied-put-in-item: <red>您不能将此物品放入您的商店！
 shop-has-changed: <red>在你点击此商店之后此商店被修改了，为了避免恶意修改，您的操作已被取消！
-flush-finished: <green>成功获取所有商店记录
+flush-finished: <green>成功地清除所有最近的商店记录 。
 no-price-given: <red>请输入一个有效的价格。
 shop-already-owned: <red>这已经是一个商店了。
 backup-success: <green>备份成功
 not-looking-at-shop: <red>无法找到商店，您需要注视着你想要操作的商店。
 you-cant-afford-a-new-shop: <red>你需要 {0} 才能创建一个商店。
-success-created-shop: <red>商店已创建
+success-created-shop: <green>已成功地创建商店。
 shop-creation-cancelled: <red>商店创建已取消。
 shop-owner-self-trade: <yellow>你正在和自己的商店进行交易，所以你的金钱可能并不会变化。
 purchase-out-of-space: <red>这个商店空间已不足，请联系商店所有者或助手清空商店
@@ -89,7 +89,7 @@ reloading-status:
 player-bought-from-your-store-tax: <green>{0} 从你的商店里购买了 {1} {2}，你因此赚得了 {3} (扣税{4})
 not-enough-space: <red>背包空间不足，剩余 {0}
 shop-name-success: <green>成功地将商店名称设置为 <yellow>{0}<green>
-shop-staff-added: <green>成功将 {0} 添加到你的商店助手列表中。
+shop-staff-added: <green>已成功地添加助手 <yellow>{0}<green> 到你的商店。
 shops-recovering: 正在从备份中恢复商店...
 menu:
   sell-tax: <green>你支付了<yellow>{0}<green>的税。
@@ -351,7 +351,7 @@ controlpanel:
   infomation: '<green>商店控制面板'
   mode-selling-hover: <yellow>点击可将商店切换为 收购 模式。
   empty-hover: <yellow>点击清除商店库存
-  toggledisplay: '<yellow>悬浮物显示: <aqua>{0} <yellow>[<light_purple><bold>切换<yellow>]'
+  toggledisplay: '<green>悬浮物显示: <aqua>{0} <yellow>[<light_purple><bold>切换</bold></light_purple>]'
 timeunit:
   behind: 后面
   week: <red>{0} 周
@@ -535,10 +535,10 @@ argument-cannot-be: "<red>参数 <aqua>{0}</aqua> 不能为 <yellow>{1}</yellow>
 argument-must-between: "<red>参数 <aqua>{0}</aqua> 值必须在 <yellow>{1}</yellow> 和 <yellow>{2}</yellow> 之间"
 invalid-percentage: "<red>百分比无效，您必须在百分比的数字后添加'%'"
 not-a-valid-time: |
-  <red>字符串 <yellow>{0}</yellow> 不是一个有效的时间戳, 请输入 <aqua>Zulu 时间 (ISO 8601)</aqua> 或 <aqua>Unix Epoch时间</aqua>秒。
-  <gold>有效时间戳示例(适用于 Sat, 20 December 2022 10:31:37 GMT)</gold>
+  <red>字符串 <yellow>{0}</yellow> 不是一个有效的时间戳, 请输入 <aqua>Zulu 时间 (ISO 8601)</aqua> 或 <aqua>Unix Epoch 时间</aqua>。
+  <gold>有效时间戳示例(适用于 Sat, 17 December 2022 10:31:37 GMT)</gold>
   <aqua>-<aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>(Zulu Time)</grey>
-  <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch时间以秒计)</grey>
+  <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch 时间以秒计)</grey>
 invalid-past-time: "<red>不能指定过去的时间。"
 debug:
   arguments-invalid: "<red>提供的参数 <yellow>{0}</yellow> 无效。"
@@ -581,6 +581,9 @@ database:
   purge-task-created: "<green>任务已创建! 数据库在后台静默清除历史记录"
   purge-done-with-line: "<green>清除任务已完成，总共 <gold>{0}</gold> 行已从数据库中清除。"
   purge-done-with-error: "<red>清除任务失败，请检查服务器控制台获取详细信息。"
+  purge-players-cache: "<yellow>请稍候，正在清理玩家缓存..."
+  purge-players-completed: "<green>成功地从内存和数据库清除了 {0} 个玩家缓存。<newline><aqua>注意：此操作可能会影响服务器性能。"
+  purge-players-error: "<red>清除玩家缓存失败，请检查服务器控制台。"
   suggestion:
     trim: "<yellow>此数据库需要进行清理，执行命令 <aqua>/qs database trim</aqua> 来清理数据库。"
 always-counting-removal-early-warning: "<red>总是计数功能将移除，您不应该再使用它，并将在将来停止工作。"
@@ -602,10 +605,10 @@ transfer-rejected-toside: "<red>您拒绝了 <aqua>{0}</aqua> 的商店转移请
 transfer-no-pending-operation: "<red>您没有待处理的商店转移请求。"
 transfer-no-self: "<red>您不能将商店转移给自己"
 benefit-overflow: "<red>所有利益的总和不能大于或等于100%"
-benefit-exists: "<red>目标玩家已经在该商店的利益分配列表中"
-benefit-removed: "<red>该玩家已被从商店的利益分配中移除"
-benefit-added: "<green>玩家<aqua>{0}</aqua>已被添加到商店的利益分配中"
-benefit-updated: "<green>玩家 <aqua>{0}</aqua>的利益分配已更新！"
+benefit-exists: "<red>目标玩家已经在该商店的利益分配列表中。"
+benefit-removed: "<red>目标玩家已被从商店的利益分配中移除。"
+benefit-added: "<green>玩家 <aqua>{0}</aqua> 已被添加到商店的利益分配中！"
+benefit-updated: "<green>玩家 <aqua>{0}</aqua> 的利益分配已更新！"
 benefit-query: "<green>该商店在利益分配列表中有 <yellow>{0}</yellow> 名玩家！"
 benefit-query-list: "<yellow> - </yellow><white>玩家 <gold>{0}</gold>，利益分配 <gold>{1}%</gold></white>"
 addon:
@@ -626,7 +629,7 @@ addon:
     operation-disabled-due-shop-status: "<red>这个商店已被禁用，因为它已经是一个城镇/国家商店。"
     plot-type-disallowed: "<red>您不能在这种类型的地皮上创建城镇/国家商店。"
     flags:
-      own: "<red>You can only create shops at your owned shop type towny plot."
+      own: "<red>您只能在您拥有的商店类型牵引地创建商店。"
       modify: "<red>您没有在该Towny区域的建造权限"
       shop-type: "<red>您只能在Towny区域中创建商店"
   residence:
@@ -652,14 +655,27 @@ addon:
     trade-flag-test-failed: "<red>您没有在该WorldGuard区域与商店交易的权限。"
   discord:
     __to_translators: "To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop's style {LANG_INDEX}, do not translate anything inside double '%' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don't need translate this string, it's a comment)"
-    __to_users: "和QuickShop的文字系统一样，Discord插件也会自动检测用户语言并使用该语言发送Discord消息， 它遵循QuickShop-Hikari的语言系统设置"
-    __to_message_designer: "使用GUI设计您的Discord消息：https://glitchiii.github.io/embedbuilder，然后复制JSON代码并粘贴到语言文件中，然后在这里开始！"
+    __to_users: "和QuickShop的文字系统一样，Discord插件也会自动检测用户语言并使用该语言发送Discord消息， 它遵循QuickShop-Hikari的语言系统设置。"
+    __to_message_designer: "使用GUI设计您的Discord消息：https://glitchiii.github.io/embedbuilder/，然后复制JSON代码并粘贴到语言文件中，然后在这里开始！"
     discord-enabled: "<aqua>成功 <green>启用</green> 您的商店 Discord 通知消息，现在您可以从 Discord 接收商店消息。"
     discord-disabled: "<aqua>成功 <red>禁用</red> 您的商店 Discord 通知消息，现在您将不再收到来自 Discord 的商店消息。"
     discord-not-integrated: "<red>您尚未链接您的 Discord 账户！请先链接您的 Discord 账户！"
-    feature-enabled-for-user: "<aqua>您已启用 <green></green> <gold>{0}</gold> 通知。"
+    feature-enabled-for-user: "<aqua>您已 <green>启用</green> <gold>{0}</gold> 通知。"
     feature-disabled-for-user: "<aqua>您已禁用 <red></red> <gold>{0}</gold> 通知。"
     link-help: "<yellow>此服务器使用 <gold>{0}</gold> 处理 Discord 驱动，请使用 <green>{0}</green> 链接您的 Discord 账户。"
+    save-notifaction-exception: "<red>保存您的 Discord 通知设置时发生错误，请与服务器管理员联系。"
+    feature-status-changed: "<green>成功设置通知 <aqua>{0}</aqua> 状态为 <gold>{1}</gold>"
+    message-type-mapping:
+      notify-shop-permission-changed: "shop permission settings changed notifaction"
+      notify-shop-price-changed: "shop price changed Notifaction"
+      notify-shop-transfer: "shop transfer notifaction"
+      notify-shop-out-of-stock: "shop out-of-stock notifaction"
+      notify-shop-out-of-space: "shop out-of-space notifaction"
+      notify-shop-purchase: "shop purchases notifaction"
+      mod-notify-shop-purchase: "shop purchases notifaction for moderators"
+      mod-notify-shop-price-changed: "shop price changed notifaction for moderators"
+      mod-notify-shop-removed: "shop removed notifaction for moderators"
+      mod-notify-shop-transfer: "shop transfer notifaction for moderators"
     commands:
       discord:
         description: "<yellow>管理QuickShop的Discord设置"
@@ -1194,7 +1210,7 @@ addon:
   discount:
     commands:
       discount:
-        description: "<yellow>应用折扣代码或管理您的优惠代码"
+        description: "<yellow>应用优惠代码或管理您的优惠代码"
     tab-complete:
       discount:
         general:
@@ -1210,21 +1226,21 @@ addon:
             命令提示：
             参数： [max-usage]
             描述：可以对无限代码使用
-            `-1` 为无限时间
+            `-1` 为无限
           threshold: |
             命令提示：
             参数： [threshold]
             说明：代码可以应用的最低价格
-            “-1”表示无限制
+            “-1”表示无限
           expired: |
             命令提示
             参数： [expired]
-            说明：代码过期时间。无限期
-            “-1”。
-            接受祖鲁时间和 UNIX 时间戳（以秒为单位）。
-            祖鲁语示例：2022-12-17T10：31：37Z
+            说明：代码过期时间。
+            `-1`无限。
+            接受 Zulu 时间和 UNIX 时间戳（以秒为单位）。
+            Zulu 示例：2022-12-17T10:31:37Z
             UNIX 示例：1671273097
-    discount-code-already-exists: "<red>抱歉，您的优惠码名称已被使用"
+    discount-code-already-exists: "<red>抱歉，您的优惠码名称已被使用。"
     invalid-discount-code-regex: "<red>优惠码必须匹配正则表达式： <yellow>{0}</yellow>"
     invalid-discount-code: "<red>优惠码无效。"
     discount-code-added: "<green>您的优惠码 <yellow>{0}</yellow> 已被添加到商店 <aqua>{1}</aqua>"
@@ -1237,28 +1253,28 @@ addon:
     invalid-discount-rate: "<red>折扣率 <yellow>{0}</yellow> 无效，它可以是固定数字或百分比。"
     discount-code-expired: "<red>哎呀！您的优惠码 <yellow>{0}</yellow> 已过期！"
     discount-code-installed: "<green>您已安装优惠码 <gold>{0}</gold>, 优惠码将自动应用于本次会话期间所有可用的交易。 要卸载优惠码，请执行 <aqua>/qs discount uninstall {0}</aqua>。"
-    discount-code-uninstalled: "<green>您已卸载您的优惠码"
+    discount-code-uninstalled: "<green>您已卸载您的优惠码。"
     discount-code-query-nothing: "<red>您尚未安装优惠码！"
     discount-code-query: "<green>您正在使用优惠码： <yellow>{0}</yellow>。"
     discount-code-applicable: "<color:#bcef26>您的优惠码 <yellow><bold>{0}</bold></yellow> 在这家商店中适用 <bold></bold>！"
     discount-code-applicable-with-threshold: "<color:#bcef26>您的优惠码 <yellow><bold>{0}</bold></yellow> <bold>适用于此商店的</bold> ，但仅在单笔交易中您的购买成本超过 <yellow>{1}</yellow> 。"
-    discount-code-not-applicable: "<red>您的优惠码 <yellow><bold>{0}</bold></yellow> <bold>不适用于<bold> 这家商店！"
+    discount-code-not-applicable: "<red>您的优惠码 <yellow><bold>{0}</bold></yellow> <bold>不适用于</bold> 这家商店！"
     discount-code-reach-the-limit: "<red>您已达到优惠码的使用限制 <yellow><bold>{0}</bold></yellow>，则不应用折扣。"
     discount-code-no-permission: "<red>您没有权限在此商店使用任何优惠码！"
     discount-code-has-been-expired: "<red>您的折扣已过期！"
-    discount-code-config-shop-added: "<green>成功地将该商店添加到您的优惠码允许列表"
+    discount-code-config-shop-added: "<green>成功地将该商店添加到您的优惠码允许列表。"
     discount-code-config-shop-add-failure: "<red>该商店已存在于您的优惠码允许列表"
-    discount-code-config-shop-removed: "<green>成功地将该商店从您的优惠码允许列表中删除"
-    discount-code-config-shop-remove-failure: "<red>该商店不存在于您的优惠码允许列表"
-    discount-code-config-expire: "<green>成功更改了优惠码过期时间"
-    discount-code-config-applied: "<green>成功配置优惠码！"
+    discount-code-config-shop-removed: "<green>成功地将该商店从您的优惠码允许列表中删除。"
+    discount-code-config-shop-remove-failure: "<red>该商店不存在于您的优惠码允许列表。"
+    discount-code-config-expire: "<green>成功地更改了优惠码过期时间。"
+    discount-code-config-applied: "<green>成功地配置优惠码！"
     discount-code-created-successfully: |
       <green>您的优惠码 <yellow>{0}</yellow> 已成功创建！
-      <gold>范围： <aqua>{1}</aqua></gold>.
-      <gold>与他人分享： <color:#bcef26>{2}</color:#bcef26></gold>
-      <yellow>只适用于 <gray>特定商店</gray> 范围：将商店添加到您的优惠码允许列表 请看着一个商店并执行 <aqua>{3}</aqua> 命令。
+      <gold>范围：<aqua>{1}</aqua></gold>.
+      <gold>与他人分享：<color:#bcef26>{2}</color:#bcef26></gold>
+      <yellow>只适用于 <gray>特定商店</gray> 范围：将商店添加到您的优惠码允许列表，请看着一个商店并执行 <aqua>{3}</aqua> 命令。
       <yellow>您可以随时使用 <aqua>/qs discount config {0}</aqua> 编辑您的优惠码。
-    discount-code-under-threshold: "<red>由于总价值低于优惠码阈值，所以优惠未适用于您的交易 <yellow>{0}</yellow>."
+    discount-code-under-threshold: "<red>由于总价值低于优惠码阈值，所以优惠未适用于您的交易 <yellow>{0}</yellow>。"
     percentage-off: "<bold><color:#bcef26>-{0}%</color:#bcef26></bold>"
     fixed-off: "<bold><color:#bcef26>-{0}</color:#bcef26></bold>"
     discount-code-list: "<gold>列出您的优惠码：<gold>"
@@ -1280,16 +1296,34 @@ addon:
       <gold>过期时间： <yellow>{4}</yellow>
       <gold>阈值： <yellow>{5}</yellow>
       <gold>折扣： <yellow>{6}</yellow>
+  list:
+    commands:
+      list: "<yellow>列出自己或其他玩家拥有的所有商店"
+    table-prefix: "<yellow><green>{0}</green>的商店 <gray>(总计 {1})</gray>: "
+    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>价格 <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
+  shopitemonly:
+    message: "<red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上"
+  limited:
+    commands:
+      limit: "<yellow>限制玩家在时间段内的交易。"
+    titles:
+      title: "<green>交易成功"
+      subtitle: "<aqua>您还可以在这个商店交易 <gold>{0}</gold> 个物品"
+    reach-the-limit: "<red>您与这个商店已达到交易限制。您还可以交易 <green>{0}</green> 个物品，但您正在尝试交易 <yellow>{1}</yellow> 个物品。"
+    success-reset: "<green>成功重置这个商店的限制"
+    success-remove: "<green>成功删除此商店的所有限制"
+    success-setup: "<green>该商店的限制设置已成功保存"
+    trade-limit-reached-cancel-reason: "<red>达到了这个商店的交易限制"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
     description: "物品: {0}\n所有者: {1}\n类型: {2} {3}\n价格: {4}\n位置: {5} {6}, {7}, {8}\n空间: {9}\n库存: {10}"
   limited:
-    command-description: "<yellow>限制玩家在时间段内的交易限制"
+    command-description: "<yellow>限制玩家在时间段内的交易。"
     reach-the-quota-limit: "<red>您已达到该商店的交易限制（{0}/{1}）。"
-    quota-reset-countdown: "<yellow>该商店的交易限制将在 {0} 重置"
+    quota-reset-countdown: "<yellow>该商店的交易限制将在 {0} 重置。"
     quota-reset-player-successfully: "<green>已成功重置该商店中玩家 {0} 的交易限制"
-    quota-reset-everybody-successfully: "<green>已成功重置该商店中所有人的交易限制"
+    quota-reset-everybody-successfully: "<green>已成功重置该商店中所有人的交易限制。"
     quota-setup: "<green>该商店的交易限制已设置成功！"
     quota-remove: "<green>该商店的交易限制已成功重置！"
     subtitles:
@@ -1297,12 +1331,12 @@ suite:
       subtitle: "<aqua>您还可以在这个商店交易 <yellow>{0}</yellow> 个物品"
   list:
     command-description: "<yellow>列出自己或其他玩家拥有的所有商店"
-    table-prefix: "<yellow>您在该服务器中拥有 <aqua>{0}</aqua> 个商店"
+    table-prefix: "<yellow>您在该服务器中拥有 <aqua>{0}</aqua> 个商店。"
     entry-syntax: "<aqua>- <yellow>{0}"
     entry-syntax-fallback-name: "<yellow>物品:{0} X:{1}, Y:{2}, Z:{3}, 世界: {4}"
-    hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."
+    hover-text: "<yellow>{0}\n<gray>{1} {2}、 {3}、 {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} 物品"
   shopitemonly:
     message: "<red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上"
 compatibility:
   elitemobs:
-    soulbound-disallowed: "你不能交易拥有 EliteMobs 灵魂绑定附魔的物品"
+    soulbound-disallowed: "你不能交易拥有 EliteMobs 灵魂绑定附魔的物品。"
