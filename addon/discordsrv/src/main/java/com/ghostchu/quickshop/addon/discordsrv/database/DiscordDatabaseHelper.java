@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.addon.discordsrv.bean.NotifactionSettings;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
+import com.ghostchu.quickshop.util.logger.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -41,7 +42,25 @@ public class DiscordDatabaseHelper {
         } else {
             settings.settings().put(feature, status);
         }
-        return DiscordTables.DISCORD_PLAYERS.createReplace().setColumnNames("player", "notifaction").setParams(uuid.toString(), JsonUtil.getGson().toJson(settings)).returnGeneratedKey().execute();
+        try (ResultSet set = DiscordTables.DISCORD_PLAYERS.createQuery()
+                .setLimit(1)
+                .addCondition("player", uuid.toString())
+                .build().execute().getResultSet()) {
+            if (set.next()) {
+                return DiscordTables.DISCORD_PLAYERS.createUpdate()
+                        .setLimit(1)
+                        .addCondition("player", uuid.toString())
+                        .setColumnValues("notifaction", JsonUtil.getGson().toJson(settings))
+                        .build().execute();
+            } else {
+                return DiscordTables.DISCORD_PLAYERS.createInsert()
+                        .setColumnNames("player", "notifaction")
+                        .setParams(uuid.toString(), JsonUtil.getGson().toJson(settings))
+                        .returnGeneratedKey()
+                        .execute();
+            }
+        }
+
     }
 
     @NotNull
@@ -50,12 +69,14 @@ public class DiscordDatabaseHelper {
         try (SQLQuery query = DiscordTables.DISCORD_PLAYERS.createQuery().selectColumns("notifaction").addCondition("player", player.toString()).setLimit(1).build().execute(); ResultSet set = query.getResultSet()) {
             if (set.next()) {
                 String json = set.getString("notifaction");
+                Log.debug("Json data: " + json);
                 if (StringUtils.isNotEmpty(json)) {
                     if (MsgUtil.isJson(json)) {
                         return JsonUtil.getGson().fromJson(json, NotifactionSettings.class);
                     }
                 }
             }
+            Log.debug("Generating default value...");
             Map<NotifactionFeature, Boolean> booleanMap = new HashMap<>();
             for (NotifactionFeature feature : NotifactionFeature.values()) {
                 booleanMap.put(feature, plugin.isServerNotifactionFeatureEnabled(feature));
@@ -71,6 +92,7 @@ public class DiscordDatabaseHelper {
         if (!defValue) return false; // If server disabled it, do not send it
         try {
             NotifactionSettings settings = getPlayerNotifactionSetting(uuid);
+            Log.debug("Notifaction Settings: " + settings);
             return settings.settings().getOrDefault(feature, defValue);
         } catch (SQLException e) {
             return defValue;
