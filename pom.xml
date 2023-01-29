@@ -391,24 +391,6 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-compress</artifactId>
-                <version>1.22</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>3.12.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-text</artifactId>
-                <version>1.10.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
                 <groupId>com.rollbar</groupId>
                 <version>1.9.0</version>
                 <artifactId>rollbar-java</artifactId>
@@ -417,41 +399,6 @@
                     <exclusion>
                         <groupId>org.slf4j</groupId>
                         <artifactId>slf4j-api</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>commons-codec</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>1.15</version>
-                <scope>provided</scope>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-nop -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-nop</artifactId>
-                <version>1.7.35</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>cc.carm.lib</groupId>
-                <artifactId>easysql-hikaricp</artifactId>
-                <version>0.4.6</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.konghq</groupId>
-                <artifactId>unirest-java</artifactId>
-                <version>3.14.1</version>
-                <scope>provided</scope>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>commons-codec</artifactId>
-                        <groupId>commons-codec</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>gson</artifactId>
-                        <groupId>com.google.code.gson</groupId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -467,74 +414,24 @@
                 <version>23.1.0</version>
                 <scope>provided</scope>
             </dependency>
-            <dependency>
-                <groupId>com.ghostchu</groupId>
-                <artifactId>simplereloadlib</artifactId>
-                <version>1.1.2</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.github.juliomarcopineda</groupId>
-                <artifactId>jdbc-stream</artifactId>
-                <version>0.1.1</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>one.util</groupId>
-                <artifactId>streamex</artifactId>
-                <version>0.8.1</version>
-                <scope>provided</scope>
-            </dependency>
-            <!--Logging framework implements slf4j which is required by hikari-->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-jdk14</artifactId>
-                <version>2.0.6</version>
-                <scope>provided</scope>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-            <dependency>
-                <groupId>com.google.code.gson</groupId>
-                <artifactId>gson</artifactId>
-                <version>2.10.1</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>com.vdurmont</groupId>
-                <artifactId>semver4j</artifactId>
-                <version>3.1.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>net.kyori</groupId>
-                <artifactId>adventure-platform-bukkit</artifactId>
-                <version>4.2.0</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>net.kyori</groupId>
-                <artifactId>adventure-text-minimessage</artifactId>
-                <version>4.12.0</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>net.kyori</groupId>
-                <artifactId>adventure-text-serializer-plain</artifactId>
-                <version>4.12.0</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>net.kyori</groupId>
-                <artifactId>adventure-text-serializer-legacy</artifactId>
-                <version>4.12.0</version>
-                <scope>compile</scope>
-            </dependency>
-            <dependency>
-                <groupId>net.kyori</groupId>
-                <artifactId>adventure-text-serializer-gson</artifactId>
-                <version>4.12.0</version>
-                <scope>compile</scope>
-            </dependency>
+            <!--            <dependency>-->
+            <!--                <groupId>com.github.juliomarcopineda</groupId>-->
+            <!--                <artifactId>jdbc-stream</artifactId>-->
+            <!--                <version>0.1.1</version>-->
+            <!--                <scope>provided</scope>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>one.util</groupId>-->
+            <!--                <artifactId>streamex</artifactId>-->
+            <!--                <version>0.8.1</version>-->
+            <!--                <scope>provided</scope>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.vdurmont</groupId>-->
+            <!--                <artifactId>semver4j</artifactId>-->
+            <!--                <version>3.1.0</version>-->
+            <!--                <scope>provided</scope>-->
+            <!--            </dependency>-->
         </dependencies>
     </dependencyManagement>
     <!-- GLOBAL DEPENDENCY -->
@@ -546,10 +443,6 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.vdurmont</groupId>
-            <artifactId>semver4j</artifactId>
         </dependency>
     </dependencies>
 

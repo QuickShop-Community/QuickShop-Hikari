@@ -70,10 +70,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>cc.carm.lib</groupId>
-            <artifactId>easysql-hikaricp</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.discordsrv</groupId>
             <artifactId>discordsrv</artifactId>
             <version>1.26.0</version>
