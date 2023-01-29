@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.discordsrv.Main;
 import com.ghostchu.quickshop.addon.discordsrv.bean.NotifactionFeature;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -36,14 +37,16 @@ public class SubCommand_Discord implements CommandHandler<Player> {
             return;
         }
         boolean ops = cmdArg[1].equalsIgnoreCase("enable");
-        try {
-            Integer i = plugin.getDatabaseHelper().setNotifactionFeatureEnabled(sender.getUniqueId(), feature, ops);
-            Log.debug("Execute Discord Notifaction with id " + i + " affected");
-            qs.text().of(sender, "addon.discord.feature-status-changed", feature.getConfigNode(), ops).send();
-        } catch (SQLException e) {
-            qs.text().of(sender, "addon.discord.save-notifaction-exception").send();
-            plugin.getLogger().log(Level.WARNING, "Cannot save the player Discord notification feature status", e);
-        }
+        Util.asyncThreadRun(() -> {
+            try {
+                Integer i = plugin.getDatabaseHelper().setNotifactionFeatureEnabled(sender.getUniqueId(), feature, ops);
+                Log.debug("Execute Discord Notifaction with id " + i + " affected");
+                qs.text().of(sender, "addon.discord.feature-status-changed", feature.getConfigNode(), ops).send();
+            } catch (SQLException e) {
+                qs.text().of(sender, "addon.discord.save-notifaction-exception").send();
+                plugin.getLogger().log(Level.WARNING, "Cannot save the player Discord notification feature status", e);
+            }
+        });
     }
 
     @Nullable

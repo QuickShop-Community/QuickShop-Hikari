@@ -61,8 +61,6 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
         manager.register(new MessageRepository(plugin));
         factory = new MessageFactory(plugin, manager);
         this.jdaWrapper = new DiscordSRVWrapper();
-        Bukkit.getPluginManager().registerEvents(this, this);
-        Bukkit.getPluginManager().registerEvents(new QuickShopEventListener(this), this);
         plugin.getShopPermissionManager().registerPermission(BuiltInShopPermissionGroup.STAFF.getNamespacedNode(), this, "discordalert");
         plugin.getShopPermissionManager().registerPermission(BuiltInShopPermissionGroup.ADMINISTRATOR.getNamespacedNode(), this, "discordalert");
         try {
@@ -74,6 +72,8 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
             return;
         }
         plugin.getCommandManager().registerCmd(CommandContainer.builder().permission("quickshopaddon.discord.use").description((locale) -> plugin.text().of("addon.discord.commands.discord.description").forLocale(locale)).prefix("discord").executor(new SubCommand_Discord(plugin, this)).build());
+        Bukkit.getPluginManager().registerEvents(this, this);
+        Bukkit.getPluginManager().registerEvents(new QuickShopEventListener(this), this);
     }
 
     public MessageFactory getFactory() {
