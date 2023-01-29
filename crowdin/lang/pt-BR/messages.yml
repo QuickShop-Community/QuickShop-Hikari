@@ -5,7 +5,7 @@ disabled-in-this-world: <red>O QuickShop está desativado neste mundo
 how-much-to-trade-for: <green>Digite no chat, por quanto você deseja vender <yellow>{1}x {0}<green>.
 client-language-changed: <green>O plugin detectou sua linguagem, agora estamos usando a linguagem {0} com você.
 shops-backingup: Criando backup de lojas no banco de dados...
-_comment: Hi translator! If you're editing this on GitHub or through the source code should you go to https://crowdin.com/project/quickshop-hikari instead.
+_comment: Olá, tradutor! Se você está editando isto no GitHub ou através do código-fonte, você deve ir em https://crowdin.com/project/quickshop-hikari.
 unlimited-shop-owner-changed: <yellow>Este proprietário de loja ilimitado foi alterado para {0}.
 bad-command-usage-detailed: '<red>Argumentos de comando inválidos! Aceita os seguintes parâmetros: <gray>{0}'
 thats-not-a-number: <red>Numero inválido
@@ -35,18 +35,18 @@ quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Nome: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Proprietário: <aqua>{0}'
+    - '<yellow>Tipo: <aqua>{0}'
+    - '<yellow>Preço: <aqua>{0}'
     - '<yellow>Item: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Localização: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Nome: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
+    - '<yellow>Proprietário: <aqua>{owner}'
+    - '<yellow>Tipo: <aqua>{type}'
+    - '<yellow>Preço: <aqua>{price}'
     - '<yellow>Item: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Localização: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -86,7 +86,7 @@ reloading-status:
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Recarregar falhou, verifique o console do servidor
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} comprou {1} {2} de sua loja e você ganhou {3} ({4} de impostos).
 not-enough-space: <red>Você só tem espaço para mais {0}!
 shop-name-success: <green>Defina o nome da loja com sucesso para <yellow>{0}<green>.
 shop-staff-added: <green>Adicionado com sucesso {0} como membro da equipe da sua loja.
@@ -101,7 +101,7 @@ menu:
   item: '<green>Item: <yellow>{0}'
   price-per: <green>Preço de <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>por <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
+  item-name-and-price-tax: '<yellow>{0} {1} <green>para</green> {2} <gray>(<green>{3}</green> em impostos)</gray>'
   successful-purchase: '<green>Comprado com sucesso:'
   price-per-stack: <green>Preço de <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Encantamentos armazenados
@@ -273,10 +273,10 @@ nearby-shop-this-way: <green>A loja está a {0} blocos de você.
 owner-bypass-check: <yellow>Ignorado todas as verificações, operação bem sucedida! (Agora <newline>você é o dono da loja!)
 april-rick-and-roll-easter-egg: |
   <green>---------------------------------------------------</green>
-  <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
-  <yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>
-  <aqua>Claim it by watch the video tutorial below!</aqua>
-  <hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
+  <rainbow><bold>EVENTO POR TEMPO LIMITADO -- QuickShop-Hikari</bold></rainbow>
+  <yellow>Obtenha o <gold>PRÊMIO</gold>de efeito de partícula em todos os servidores QuickShop!</yellow>
+  <aqua>Reivindique-o assistindo ao tutorial em vídeo abaixo!</aqua>
+  <hover:show_text:'<gold>Clique para abrir a página de reivindicação de recompensas em seu navegador.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
   <green>---------------------------------------------------</green>
 signs:
   item-right: ''
@@ -351,7 +351,7 @@ controlpanel:
   infomation: '<green>Painel de Controle da Loja:'
   mode-selling-hover: <yellow>Clique para trocar a loja para o modo de COMPRA.
   empty-hover: <yellow>Clique para limpar o inventário da loja.
-  toggledisplay: '<yellow>ExibirItem: <aqua>{0} <yellow>[<light_purple><bold>Ativar/Desativar<yellow>]'
+  toggledisplay: '<green>Item de Exibição: <aqua>{0} <yellow>[<light_purple><bold>Ativar/Desativar<yellow>]'
 timeunit:
   behind: atras de
   week: <red>{0} semana
@@ -428,7 +428,7 @@ command:
     permission: <yellow>Gerenciamento de permissões da loja
     lookup: <yellow>Gerenciar tabela de itens pesquisáveis
     database: <yellow>Ver e manter o banco de dados da Loja Rápida
-    benefit: <yellow>Settings of divide benefits between shop owner and other players
+    benefit: <yellow>Configurações de divisão de benefícios entre o dono da loja e outros jogadores
   bulk-size-not-set: '<red>Use: /qs find <amount>'
   no-type-given: '<red>Use: /qs find <item>'
   feature-not-enabled: Esse recurso não está ativado no arquivo de configuração.
@@ -531,15 +531,15 @@ lookup-item-test-not-found: "<gold>Teste: <yellow>O item da mão não está regi
 lookup-item-test-found: "<gold>Teste: <green>O item da mão foi registrado como nome <aqua>{0}</aqua> na tabela de pesquisa."
 lookup-item-removed: "<green>O item especificado <aqua>{0}</aqua> foi removido com sucesso da tabela de pesquisa."
 internal-error: "<red>Um erro interno ocorreu, entre em contato com o administrador do servidor."
-argument-cannot-be: "<red>The argument <aqua>{0}</aqua> cannot be <yellow>{1}</yellow>."
-argument-must-between: "<red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>"
-invalid-percentage: "<red>Percentage invalid, you must add '%' after the number of percentage."
+argument-cannot-be: "<red>O argumento <aqua>{0}</aqua> não pode ser <yellow>{1}</yellow>."
+argument-must-between: "<red>O valor do argumento <aqua>{0}</aqua> deve ser entre <yellow>{1}</yellow> e <yellow>{2}</yellow>"
+invalid-percentage: "<red>Porcentagem inválida, você deve adicionar '%' após o número de porcentagem."
 not-a-valid-time: |
-  <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
-  <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
+  <red>A string não <yellow>{0}</yellow> um carimbo de data/hora válido, insira um <aqua>Zulu Time (ISO 8601)</aqua> ou <aqua>Unix Epoch Time em segundos</aqua>.
+  <gold>Exemplo de carimbo de data/hora válido: (para Sat, 17 Dec 2022 10:31:37 GMT)</gold>
   <aqua>-<aqua> <yellow>2022-12-17T10:31:37Z</yellow> <grey>(Zulu Time)</grey>
-  <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch Time in seconds)</grey>
-invalid-past-time: "<red>You can't specify a time in the past."
+  <aqua>-<aqua> <yellow>1671273097</yellow> <grey>(Unix Epoch Time em segundos)</grey>
+invalid-past-time: "<red>Você não pode especificar um horário no passado."
 debug:
   arguments-invalid: "<red>Provided arguments <yellow>{0}</yellow> invalid."
   sign-located: "<green>Sign valid: <yellow>{0}</yellow>."
@@ -575,12 +575,15 @@ database:
   auto-trim-started: "<green>Auto trim has been started, please wait..."
   trim-start: "<green>Database trim started, please wait..."
   trim-exception: "<red>Database trim failed, an exception raised during database trimming, check the server console."
-  generated-at: "<yellow>Generated at: <gold>{0}</gold>"
-  purge-date: "<red>You must given a date."
+  generated-at: "<yellow>Gerado em: <gold>{0}</gold>"
+  purge-date: "<red>Você deve informar uma data."
   purge-warning: "<yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`"
   purge-task-created: "<green>Task created! Database are silent purging history records in background."
   purge-done-with-line: "<green>Purge task completed, total <gold>{0}</gold> lines purged from database."
   purge-done-with-error: "<red>Purge task failed, check the server console for details."
+  purge-players-cache: "<yellow>Please wait, purging players caches..."
+  purge-players-completed: "<green>Successfully purged {0} players caches from both memory and database.<newline><aqua>Note: You server performance may impact by this operation."
+  purge-players-error: "<red>Failed to purge players caches, please check the server console."
   suggestion:
     trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."
@@ -660,6 +663,19 @@ addon:
     feature-enabled-for-user: "<aqua>You have <green>enabled</green> <gold>{0}</gold> notification."
     feature-disabled-for-user: "<aqua>You have <red>disabled</red> <gold>{0}</gold> notification."
     link-help: "<yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account."
+    save-notifaction-exception: "<red>An error occurred while saving your Discord notifaction settings, please contact the server administrator."
+    feature-status-changed: "<green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}</gold>"
+    message-type-mapping:
+      notify-shop-permission-changed: "shop permission settings changed notifaction"
+      notify-shop-price-changed: "shop price changed Notifaction"
+      notify-shop-transfer: "shop transfer notifaction"
+      notify-shop-out-of-stock: "shop out-of-stock notifaction"
+      notify-shop-out-of-space: "shop out-of-space notifaction"
+      notify-shop-purchase: "shop purchases notifaction"
+      mod-notify-shop-purchase: "shop purchases notifaction for moderators"
+      mod-notify-shop-price-changed: "shop price changed notifaction for moderators"
+      mod-notify-shop-removed: "shop removed notifaction for moderators"
+      mod-notify-shop-transfer: "shop transfer notifaction for moderators"
     commands:
       discord:
         description: "<yellow>Managing your QuickShop Discord settings"
@@ -1233,7 +1249,7 @@ addon:
     invalid-usage-restriction: "<red>The usage restriction <yellow>{0}</yellow> are invalid."
     invalid-threshold-restriction: "<red>The threshold restriction <yellow>{0}</yellow> are invalid."
     invalid-effect-scope: "<red>The scope <yellow>{0}</yellow> are invalid."
-    invalid-expire-time: "<red>You can't specify a time in the past."
+    invalid-expire-time: "<red>Você não pode especificar um horário no passado."
     invalid-discount-rate: "<red>The discount rate <yellow>{0}</yellow> are invalid, it can be a fixed number or percentage."
     discount-code-expired: "<red>Ouch! Your discount code <yellow>{0}</yellow> has been expired!"
     discount-code-installed: "<green>You have installed discount code <gold>{0}</gold>, the discount code will be automatically applied to the available purchase in all the following purchases during this session. To uninstall discount code, execute <aqua>/qs discount uninstall {0}</aqua>."
@@ -1280,6 +1296,24 @@ addon:
       <gold>Expired on: <yellow>{4}</yellow>
       <gold>Threshold: <yellow>{5}</yellow>
       <gold>Discount: <yellow>{6}</yellow>
+  list:
+    commands:
+      list: "<yellow>Listing all shops owned by your or specific player"
+    table-prefix: "<yellow><green>{0}</green>'s shops <gray>(Total {1})</gray>: "
+    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
+  shopitemonly:
+    message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+  limited:
+    commands:
+      limit: "<yellow>Set a limit that restrict the purchase that player can make in period"
+    titles:
+      title: "<green>Purchase Success"
+      subtitle: "<aqua>You can also purchase <gold>{0}</gold> more in this shop"
+    reach-the-limit: "<red>You have reached the limit in this shop. You can also purchase <green>{0}</green> items, but you trying purchase <yellow>{1}</yellow> items."
+    success-reset: "<green>Reset the restriction of this shop successfully"
+    success-remove: "<green>Successfully remove the all restriction of this shop"
+    success-setup: "<green>Restriction settings for this shop were saved successfully"
+    trade-limit-reached-cancel-reason: "<red>Reached the restriction of this shop"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
