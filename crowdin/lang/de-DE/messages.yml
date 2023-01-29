@@ -665,17 +665,6 @@ addon:
     link-help: "<yellow>Dieser Server benutzt <gold>{0}</gold> für Discord Treiber, bitte benutze <green>{0}</green> um deinen Discord Account zu verknüpfen."
     save-notifaction-exception: "<red>Ein Fehler ist beim Speichern deiner Discord Benachrichtigungseinstellungen aufgetreten. Bitte kontaktiere den Server Administrator."
     feature-status-changed: "<green>Benachrichtigungsstatus für <aqua>{0}</aqua> erfolgreich zu <gold>{1}</gold> gesetzt"
-    message-type-mapping:
-      notify-shop-permission-changed: "shop permission settings changed notifaction"
-      notify-shop-price-changed: "shop price changed Notifaction"
-      notify-shop-transfer: "shop transfer notifaction"
-      notify-shop-out-of-stock: "shop out-of-stock notifaction"
-      notify-shop-out-of-space: "shop out-of-space notifaction"
-      notify-shop-purchase: "shop purchases notifaction"
-      mod-notify-shop-purchase: "shop purchases notifaction for moderators"
-      mod-notify-shop-price-changed: "shop price changed notifaction for moderators"
-      mod-notify-shop-removed: "shop removed notifaction for moderators"
-      mod-notify-shop-transfer: "shop transfer notifaction for moderators"
     commands:
       discord:
         description: "<yellow>Verwalte deine QuickShop Discord Einstellungen"
