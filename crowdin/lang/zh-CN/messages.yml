@@ -665,17 +665,6 @@ addon:
     link-help: "<yellow>此服务器使用 <gold>{0}</gold> 处理 Discord 驱动，请使用 <green>{0}</green> 链接您的 Discord 账户。"
     save-notifaction-exception: "<red>保存您的 Discord 通知设置时发生错误，请与服务器管理员联系。"
     feature-status-changed: "<green>成功设置通知 <aqua>{0}</aqua> 状态为 <gold>{1}</gold>"
-    message-type-mapping:
-      notify-shop-permission-changed: "shop permission settings changed notifaction"
-      notify-shop-price-changed: "shop price changed Notifaction"
-      notify-shop-transfer: "shop transfer notifaction"
-      notify-shop-out-of-stock: "shop out-of-stock notifaction"
-      notify-shop-out-of-space: "shop out-of-space notifaction"
-      notify-shop-purchase: "shop purchases notifaction"
-      mod-notify-shop-purchase: "shop purchases notifaction for moderators"
-      mod-notify-shop-price-changed: "shop price changed notifaction for moderators"
-      mod-notify-shop-removed: "shop removed notifaction for moderators"
-      mod-notify-shop-transfer: "shop transfer notifaction for moderators"
     commands:
       discord:
         description: "<yellow>管理QuickShop的Discord设置"
@@ -719,7 +708,7 @@ addon:
                },
                {
                  "name": "数量",
-                 "value": "%%purchase.amount%% (个%%shop.stacking-amount%%)",
+                 "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
@@ -739,8 +728,8 @@ addon:
         {
         "embed":
           {
-              "title": ":outbox_tray: 有人从商店卖出了物品",
-              "description": "该玩家 %%purchase.name%% 在你的商店卖出了 %%purchase.amount%% 个 %%shop.item.name%%.",
+              "title": ":outbox_tray: 有人在商店购买了物品",
+              "description": "该玩家 %%purchase.name%% 在你的商店购买了 %%purchase.amount%% 个 %%shop.item.name%%.",
               "color": 52084,
               "author": {
                   "name": "QuickShop-Hikari",

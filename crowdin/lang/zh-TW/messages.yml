@@ -665,17 +665,6 @@ addon:
     link-help: "<yellow>該伺服器使用 <gold>{0}</gold> 處理 Discord 驅動程式，請使用 <green>{0}</green> 連結你的 Discord 帳號。"
     save-notifaction-exception: "<red>儲存你的 Discord 通知設定時發生錯誤，請聯絡伺服器管理員。"
     feature-status-changed: "<green>成功地設定通知 <aqua>{0}</aqua> 狀態為 <gold>{1}</gold>"
-    message-type-mapping:
-      notify-shop-permission-changed: "shop permission settings changed notifaction"
-      notify-shop-price-changed: "shop price changed Notifaction"
-      notify-shop-transfer: "shop transfer notifaction"
-      notify-shop-out-of-stock: "shop out-of-stock notifaction"
-      notify-shop-out-of-space: "shop out-of-space notifaction"
-      notify-shop-purchase: "shop purchases notifaction"
-      mod-notify-shop-purchase: "shop purchases notifaction for moderators"
-      mod-notify-shop-price-changed: "shop price changed notifaction for moderators"
-      mod-notify-shop-removed: "shop removed notifaction for moderators"
-      mod-notify-shop-transfer: "shop transfer notifaction for moderators"
     commands:
       discord:
         description: "<yellow>管理你的 QuickShop Discord 設定"
