@@ -271,7 +271,6 @@ unknown-owner: Không xác định
 restricted-prices: '<red>Giá hạn chế cho {0}: Tối thiểu {1}, tối đa {2}'
 nearby-shop-this-way: <green>Shop cách {0} blocks từ vị trí của bạn.
 owner-bypass-check: <yellow>Bỏ qua tất cả các kiểm tra. Giao dịch thành công! (Bây giờ bạn là chủ cửa hàng!)
-paste-warning-plugin-find: "<red><bold>Warning:</bold>Detected your have installed <aqua>{0}</aqua> on your server which it hidden errors from your server console, it may misleading the troubleshooting, please uninstall it before continue create paste."
 april-rick-and-roll-easter-egg: |
   <green>---------------------------------------------------</green>
   <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
