@@ -22,6 +22,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
+import java.util.logging.Level;
+
 public class QuickShopBukkit extends JavaPlugin {
     private Platform platform;
     private Logger logger;
@@ -35,16 +37,22 @@ public class QuickShopBukkit extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        getLogger().info("QuickShop-" + getFork() + " - Bootloader");
-        getLogger().info("Bootloader preparing for startup, please stand by...");
-        getLogger().info("Initializing libraries...");
-        loadLibraries();
-        getLogger().info("Initializing platform...");
-        loadPlatform();
-        getLogger().info("Boot QuickShop instance...");
-        initQuickShop();
-        // SLF4J now should available
-        logger.info("QuickShop-" + getFork() + " - Booting...");
+        try {
+            getLogger().info("QuickShop-" + getFork() + " - Bootloader");
+            getLogger().info("Bootloader preparing for startup, please stand by...");
+            getLogger().info("Initializing libraries...");
+            loadLibraries();
+            getLogger().info("Initializing platform...");
+            loadPlatform();
+            getLogger().info("Boot QuickShop instance...");
+            initQuickShop();
+            // SLF4J now should available
+            logger.info("QuickShop-" + getFork() + " - Booting...");
+        } catch (Throwable e) {
+            getLogger().log(Level.SEVERE, "Failed to startup the QuickShop-Hikari due unexpected exception!", e);
+            Bukkit.getPluginManager().disablePlugin(this);
+            throw new IllegalStateException("Boot failure", e);
+        }
     }
 
     @Override
