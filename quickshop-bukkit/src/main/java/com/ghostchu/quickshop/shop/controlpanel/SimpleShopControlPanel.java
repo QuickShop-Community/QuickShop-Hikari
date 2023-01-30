@@ -130,7 +130,7 @@ public class SimpleShopControlPanel implements ShopControlPanel {
         if ((plugin.perm().hasPermission(sender, "quickshop.other.toggledisplay")
                 || shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.TOGGLE_DISPLAY))
                 && plugin.isDisplayEnabled()) {
-            Component text = plugin.text().of(sender, "controlpanel.toggledisplay", MsgUtil.bool2String(shop.isDisableDisplay())).forLocale();
+            Component text = plugin.text().of(sender, "controlpanel.toggledisplay", MsgUtil.bool2String(!shop.isDisableDisplay())).forLocale();
             Component hoverText = plugin.text().of(sender, "controlpanel.toggledisplay-hover").forLocale();
             String clickCommand = MsgUtil.fillArgs("/qs silenttoggledisplay {0}", shop.getRuntimeRandomUniqueId().toString());
             components.add(text
