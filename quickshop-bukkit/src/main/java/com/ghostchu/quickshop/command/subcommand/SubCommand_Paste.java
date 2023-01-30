@@ -27,7 +27,8 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
 
     private static final List<String> warningPluginList = List.of(
             "ConsoleSpamFix",
-            "ConsoleFilter"
+            "ConsoleFilter",
+            "LogFilter"
     );
     private final QuickShop plugin;
 
