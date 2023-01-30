@@ -271,7 +271,6 @@ unknown-owner: Nieznany
 restricted-prices: '<red>Ograniczona cena dla {0}: min. {1}, maks. {2}'
 nearby-shop-this-way: <green>Sklep jest {0} bloków od ciebie.
 owner-bypass-check: <yellow>Pominięto wszystkie sprawdzania. Handel zakończony sukcesem! (Jesteś teraz właścicielem sklepu!)
-paste-warning-plugin-find: "<red><bold>Warning:</bold>Detected your have installed <aqua>{0}</aqua> on your server which it hidden errors from your server console, it may misleading the troubleshooting, please uninstall it before continue create paste."
 april-rick-and-roll-easter-egg: |
   <green>---------------------------------------------------</green>
   <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>

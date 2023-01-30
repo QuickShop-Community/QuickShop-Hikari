@@ -271,7 +271,6 @@ unknown-owner: 未知所有者
 restricted-prices: '<red>物品 {0} 的价格限制为 {1}（包含）到{2}（包含）'
 nearby-shop-this-way: <green>商店距离你 {0} 格远
 owner-bypass-check: <yellow>已绕过所有检查并完成交易（因为你是商店所有者）！
-paste-warning-plugin-find: "<red><bold>Warning:</bold>Detected your have installed <aqua>{0}</aqua> on your server which it hidden errors from your server console, it may misleading the troubleshooting, please uninstall it before continue create paste."
 april-rick-and-roll-easter-egg: |
   <green>---------------------------------------------------</green>
   <rainbow><bold>限时活动 -- QuickShop-Hikari</bold></rainbow>
