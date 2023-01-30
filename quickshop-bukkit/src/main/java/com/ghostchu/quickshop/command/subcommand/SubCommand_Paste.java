@@ -19,11 +19,17 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
 public class SubCommand_Paste implements CommandHandler<CommandSender> {
 
+    private static final List<String> warningPluginList = List.of(
+            "ConsoleSpamFix",
+            "ConsoleFilter",
+            "LogFilter"
+    );
     private final QuickShop plugin;
 
     public SubCommand_Paste(QuickShop plugin) {
@@ -34,18 +40,19 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         // do actions
         Util.asyncThreadRun(() -> {
-            if (Bukkit.getPluginManager().getPlugin("ConsoleSpamFix") != null) {
-                if (cmdArg.length < 1) {
-                    sender.sendMessage("Warning: ConsoleSpamFix is installed! Please disable it before reporting any errors!");
-                    return;
-                } else {
-                    if (Arrays.stream(cmdArg).noneMatch(str -> str.contains("--force"))) {
-                        sender.sendMessage("Warning: ConsoleSpamFix is installed! Please disable it before reporting any errors!");
+            for (String s : warningPluginList) {
+                if (Bukkit.getPluginManager().getPlugin(s) != null) {
+                    if (cmdArg.length < 1) {
+                        plugin.text().of(sender, "paste-warning-plugin-find", s).send();
                         return;
+                    } else {
+                        if (Arrays.stream(cmdArg).noneMatch(str -> str.contains("--force"))) {
+                            plugin.text().of(sender, "paste-warning-plugin-find", s).send();
+                            return;
+                        }
                     }
                 }
             }
-
             if (Arrays.stream(cmdArg).anyMatch(str -> str.contains("file"))) {
                 pasteToLocalFile(sender);
                 return;

@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>4.0.0.0</version>
+        <version>4.1.0.0</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -22,10 +22,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-            </plugin>
+
         </plugins>
         <resources>
             <resource>

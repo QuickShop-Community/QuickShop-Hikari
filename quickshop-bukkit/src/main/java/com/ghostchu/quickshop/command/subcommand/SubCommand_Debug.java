@@ -74,7 +74,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             MsgUtil.sendDirectMessage(sender, "You must enter an Bukkit Event class");
             return;
         }
-        printHandlerList(sender, cmdArg[1]);
+        printHandlerList(sender, cmdArg[0]);
     }
 
     private void handleSigns(@NotNull CommandSender sender) {

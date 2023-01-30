@@ -351,7 +351,7 @@ controlpanel:
   infomation: '<green>Shop Kontrollpanel:'
   mode-selling-hover: <yellow>Klicke, um den Shop in den KAUF-Modus zu ändern.
   empty-hover: <yellow>Klicke hier um den Shop zu leeren.
-  toggledisplay: '<yellow>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
+  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Ändern</bold></light_purple>]'
 timeunit:
   behind: hinter
   week: <red>{0} Woche
@@ -581,6 +581,9 @@ database:
   purge-task-created: "<green>Aufgabe erstellt! Datenbank wird die Verlaufs-Einträge leise im Hintergrund entfernen."
   purge-done-with-line: "<green>Lösch-Auftrag beendet. Total <gold>{0}</gold> Linien von Datenbank gelöscht."
   purge-done-with-error: "<red>Lösch-Auftrag fehlgeschlagen. Überprüfe die Server-Konsole für Details."
+  purge-players-cache: "<yellow>Bitte warten. Leere Spieler-Caches..."
+  purge-players-completed: "<green>{0} Spieler-Caches erfolgreich aus dem Speicher und der Datenbank entfernt.<newline><aqua>Hinweis: Deine Serverleistung könnte durch diese Vorgang beeinträchtigt werden."
+  purge-players-error: "<red>Konnte Spieler-Caches nicht leeren, bitte überprüfe die Serverkonsole."
   suggestion:
     trim: "<yellow>Diese Datenbank benötigt eine Bereinigung von isolierten Daten. Führe <aqua>/qs database trim</aqua> aus um die Datenbank zu bereinigen."
 always-counting-removal-early-warning: "<red>Die 'Immer zählen' Funktion ist für eine zukünftige entfernung geplant. Du solltest sie nicht mehr verwenden, da sie in naher Zukunft aufhören wird, zu funktionieren."
@@ -660,6 +663,8 @@ addon:
     feature-enabled-for-user: "<aqua>Sie haben <green>aktiviert</green> <gold>{0}</gold> Benachrichtigung."
     feature-disabled-for-user: "<aqua>Sie haben <red>deaktiviert</red> <gold>{0}</gold> Benachrichtigung."
     link-help: "<yellow>Dieser Server benutzt <gold>{0}</gold> für Discord Treiber, bitte benutze <green>{0}</green> um deinen Discord Account zu verknüpfen."
+    save-notifaction-exception: "<red>Ein Fehler ist beim Speichern deiner Discord Benachrichtigungseinstellungen aufgetreten. Bitte kontaktiere den Server Administrator."
+    feature-status-changed: "<green>Benachrichtigungsstatus für <aqua>{0}</aqua> erfolgreich zu <gold>{1}</gold> gesetzt"
     commands:
       discord:
         description: "<yellow>Verwalte deine QuickShop Discord Einstellungen"
@@ -1280,6 +1285,24 @@ addon:
       <gold>Läuft ab: <yellow>{4}</yellow>
       <gold>Schwellenwert: <yellow>{5}</yellow>
       <gold>Rabatt: <yellow>{6}</yellow>
+  list:
+    commands:
+      list: "<yellow>Zeigt alle Shops welche dir oder einem bestimmten Spieler gehören"
+    table-prefix: "<yellow><green>{0}</green>'s Shops <gray>(Gesamt: {1})</gray>: "
+    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3}, {4}, {5}</gray>\n<aqua>Preis <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
+  shopitemonly:
+    message: "<red>Du kannst keine Nicht-Shop items in den Shop-Container legen. Alle Nicht-Shop items werden an deiner Position fallen gelassen."
+  limited:
+    commands:
+      limit: "<yellow>Setze ein Limit welches die käufe welcher der Spieler pro Zeitraum machen kann einschränkt"
+    titles:
+      title: "<green>Kauf erfolgreich"
+      subtitle: "<aqua>Du kannst auch <gold>{0}</gold> weitere in diesem Shop kaufen"
+    reach-the-limit: "<red>Du hast das Limit in diesem Shop erreicht. Du kannst auch <green>{0}</green> Items kaufen, aber du versuchst <yellow>{1}</yellow> Items zu kaufen."
+    success-reset: "<green>Einschränkungen dieses Shops erfolgreich zurückgesetzt"
+    success-remove: "<green>All Einschränkungen in diesem Shop wurden erfolgreich entfernt"
+    success-setup: "<green>Einschränkungseinstellungen für diesen Shop wurden erfolgreich gespeichert"
+    trade-limit-reached-cancel-reason: "<red>Einschränkung dieses Shops erreicht"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"

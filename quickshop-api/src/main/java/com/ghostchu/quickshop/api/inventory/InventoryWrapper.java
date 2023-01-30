@@ -1,5 +1,6 @@
 package com.ghostchu.quickshop.api.inventory;
 
+import com.ghostchu.quickshop.api.QuickShopAPI;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.InventoryHolder;
@@ -134,7 +135,8 @@ public interface InventoryWrapper extends Iterable<ItemStack> {
             ItemStack itemStackToRemove = itemStacks[i];
             while (iterator.hasNext()) {
                 ItemStack itemStack = iterator.next();
-                if (itemStack != null && itemStack.isSimilar(itemStackToRemove)) {
+                // TODO: Need lots of verification, it cause mismatch between items under non-Bukkit item matcher
+                if (itemStack != null && QuickShopAPI.getInstance().getItemMatcher().matches(itemStackToRemove, itemStack)) {
                     int couldRemove = itemStack.getAmount();
                     int actuallyRemove = Math.min(itemStackToRemove.getAmount(), couldRemove);
                     itemStack.setAmount(itemStack.getAmount() - actuallyRemove);

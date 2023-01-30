@@ -351,7 +351,7 @@ controlpanel:
   infomation: '<green>Панель управления магазином:'
   mode-selling-hover: <yellow>Нажмите, чтобы изменить режим магазина на ПОКУПКИ.
   empty-hover: <yellow>Нажмите, чтобы опустошить инвентарь магазина.
-  toggledisplay: '<yellow>Отображать предмет: <aqua>{0} <yellow>[<light_purple><bold>Переключить<yellow>]'
+  toggledisplay: '<green>Отображение предмета: <aqua>{0}<yellow>[<light_purple><bold>Переключить</bold></light_purple>]'
 timeunit:
   behind: назад
   week: <red>{0} неделя
@@ -428,7 +428,7 @@ command:
     permission: <yellow>Управление разрешениями магазина
     lookup: <yellow>Управление справочной таблицей предметов
     database: <yellow>Просмотр и обслуживание базы данных QuickShop
-    benefit: <yellow>Settings of divide benefits between shop owner and other players
+    benefit: <yellow>Настройки разделения выгоды между владельцем магазина и другими игроками
   bulk-size-not-set: '<red>Используйте: /qs size <amount>'
   no-type-given: '<red>Используйте: /qs find <item>'
   feature-not-enabled: Функция не включена в конфигурации.
@@ -532,7 +532,7 @@ lookup-item-test-found: "<gold>Тест: <green>предмет в вашей р�
 lookup-item-removed: "<green>Предмет <aqua>{0}</aqua> успешно удален из справочной таблицы."
 internal-error: "<red>Произошла внутренняя ошибка, пожалуйста, свяжитесь с администратором сервера."
 argument-cannot-be: "<red>Аргумент <aqua>{0}</aqua> не может быть <yellow>{1}</yellow>."
-argument-must-between: "<red>The argument <aqua>{0}</aqua> value must between <yellow>{1}</yellow> and <yellow>{2}</yellow>"
+argument-must-between: "<red>Значение <aqua>{0}</aqua> должно быть между <yellow>{1}</yellow> и <yellow>{2}</yellow>"
 invalid-percentage: "<red>Недопустимый процент, вы должны добавить '%' после числа процентов."
 not-a-valid-time: |
   <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
@@ -576,17 +576,20 @@ database:
   trim-start: "<green>Database trim started, please wait..."
   trim-exception: "<red>Database trim failed, an exception raised during database trimming, check the server console."
   generated-at: "<yellow>Generated at: <gold>{0}</gold>"
-  purge-date: "<red>You must given a date."
+  purge-date: "<red>Вы должны указать дату."
   purge-warning: "<yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`"
   purge-task-created: "<green>Task created! Database are silent purging history records in background."
   purge-done-with-line: "<green>Purge task completed, total <gold>{0}</gold> lines purged from database."
   purge-done-with-error: "<red>Purge task failed, check the server console for details."
+  purge-players-cache: "<yellow>Please wait, purging players caches..."
+  purge-players-completed: "<green>Successfully purged {0} players caches from both memory and database.<newline><aqua>Note: You server performance may impact by this operation."
+  purge-players-error: "<red>Failed to purge players caches, please check the server console."
   suggestion:
     trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."
-exporting-database: "<green>Exporting database, please wait..."
+exporting-database: "<green>Экспорт базы данных, пожалуйста, подождите..."
 exporting-failed: "<red>Failed to export database, please check the server console."
-exported-database: "<green>Database exported to <yellow>{0}</yellow>."
+exported-database: "<green>База данных была экспортирована в <yellow>{0}</yellow>."
 importing-not-found: "<red>The <yellow>{0}</yellow> file not found, please check the file path."
 importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/qs recovery confirm</aqua> to continue."
 importing-database: "<green>Importing database from backup, please wait..."
@@ -620,15 +623,15 @@ addon:
     shop-owning-changing-notice: "<grey>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission"
     target-shop-already-is-town-shop: "<red>The target shop is already owned by a town."
     target-shop-already-is-nation-shop: "<red>The target shop is already owned by a nation."
-    target-shop-not-in-town-region: "<red>The target shop is not in the town."
+    target-shop-not-in-town-region: "<red>Выбранного магазина нет в городе."
     target-shop-not-in-nation-region: "<red>The target shop is not in the nation."
     item-not-allowed: "<red>This shop's item are not allowed used by town/nation shop, pick another one!"
     operation-disabled-due-shop-status: "<red>This shop operation has been disabled due this already is a town/nation shop."
-    plot-type-disallowed: "<red>You can't create town/nation shop on this type of plot."
+    plot-type-disallowed: "<red>Вы не можете создать городской/национальный магазин на этом типе участка."
     flags:
-      own: "<red>You can only create shops at your owned shop type towny plot."
+      own: "<red>Вы можете создавать магазины только на принадлежащем Вам участках города с типом магазин."
       modify: "<red>You didn't have build permission on this towny plot."
-      shop-type: "<red>You must create shop on a shop type towny plot."
+      shop-type: "<red>Вы должны создать магазин на городском участке с типом магазин."
   residence:
     creation-flag-denied: "<red>You don't have permission to create shops in this residence."
     trade-flag-denied: "<red>You don't have permission to purchase in this residence."
@@ -640,10 +643,10 @@ addon:
     world-not-enabled: "<red>You are not allowed to create or purchase in this world."
     creation-denied: "<red>You don't have permission to create shops in this Land area."
   plotsquared:
-    no-plot-whitelist-creation: "<red>You cannot create shop outside of Plot."
-    no-plot-whitelist-trade: "<red>You cannot purchase shop outside of Plot."
-    creation-denied: "<red>You don't have permission to create shops in this Plot."
-    trade-denied: "<red>You don't have permission to purchase shops in this Plot."
+    no-plot-whitelist-creation: "<red>Вы не можете создать магазин вне участка."
+    no-plot-whitelist-trade: "<red>Вы не можете приобрести магазин за вне участка."
+    creation-denied: "<red>У вас нет прав на создание магазинов на этом участке."
+    trade-denied: "<red>У вас нет прав для приобретения магазинов на этом участке."
   superiorskyblock:
     owner-create-only: "<red>Only island owner can create shop there."
     owner-member-create-only: "<red>Only island owner or member can create shop there."
@@ -660,6 +663,8 @@ addon:
     feature-enabled-for-user: "<aqua>You have <green>enabled</green> <gold>{0}</gold> notification."
     feature-disabled-for-user: "<aqua>You have <red>disabled</red> <gold>{0}</gold> notification."
     link-help: "<yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account."
+    save-notifaction-exception: "<red>An error occurred while saving your Discord notifaction settings, please contact the server administrator."
+    feature-status-changed: "<green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}</gold>"
     commands:
       discord:
         description: "<yellow>Managing your QuickShop Discord settings"
@@ -1183,8 +1188,8 @@ addon:
             }
         }
     field:
-      player: "Player"
-      item: "Item"
+      player: "Игрок"
+      item: "Предмет"
       amount: "Amount"
       balance: "Balance"
       balance-after-tax: "Balance (after tax)"
@@ -1280,10 +1285,28 @@ addon:
       <gold>Expired on: <yellow>{4}</yellow>
       <gold>Threshold: <yellow>{5}</yellow>
       <gold>Discount: <yellow>{6}</yellow>
+  list:
+    commands:
+      list: "<yellow>Listing all shops owned by your or specific player"
+    table-prefix: "<yellow><green>{0}</green>'s shops <gray>(Total {1})</gray>: "
+    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
+  shopitemonly:
+    message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+  limited:
+    commands:
+      limit: "<yellow>Set a limit that restrict the purchase that player can make in period"
+    titles:
+      title: "<green>Успешная покупка"
+      subtitle: "<aqua>You can also purchase <gold>{0}</gold> more in this shop"
+    reach-the-limit: "<red>You have reached the limit in this shop. You can also purchase <green>{0}</green> items, but you trying purchase <yellow>{1}</yellow> items."
+    success-reset: "<green>Reset the restriction of this shop successfully"
+    success-remove: "<green>Successfully remove the all restriction of this shop"
+    success-setup: "<green>Restriction settings for this shop were saved successfully"
+    trade-limit-reached-cancel-reason: "<red>Reached the restriction of this shop"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
-    description: "Item: {0}\nOwner: {1}\nType: {2} {3}\nPrice: {4}\nLocation: {5} {6}, {7}, {8}\nSpace: {9}\nStock: {10}"
+    description: "Предмет: {0}\nВладелец: {1}\nТип: {2} {3}\nЦена: {4}\nМесто: {5} {6}, {7}, {8}\nМесто: {9}\nВ наличии: {10}"
   limited:
     command-description: "<yellow>Set a limit that restrict the purchase that player can make in period."
     reach-the-quota-limit: "<red>Вы достигли лимита покупок в этом магазине ({0}/{1})."
@@ -1297,7 +1320,7 @@ suite:
       subtitle: "<aqua>Вы можете купить <yellow>{0}</yellow> в этом магазине"
   list:
     command-description: "<yellow>List all shops owned by yourself or another player."
-    table-prefix: "<yellow>You owned total <aqua>{0}</aqua> shops on this server."
+    table-prefix: "<yellow>Вы владели <aqua>{0}</aqua> магазинами на этом сервере."
     entry-syntax: "<aqua>- <yellow>{0}"
     entry-syntax-fallback-name: "<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}"
     hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."

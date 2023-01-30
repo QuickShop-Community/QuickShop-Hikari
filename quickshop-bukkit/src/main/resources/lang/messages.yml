@@ -271,6 +271,7 @@ unknown-owner: Unknown
 restricted-prices: '<red>Restricted price for {0}: Min {1}, max {2}'
 nearby-shop-this-way: <green>Shop is {0} block(s) away from you.
 owner-bypass-check: <yellow>Bypassed all checks. Trade successful! (You are now the shop owner!)
+paste-warning-plugin-find: "<red><bold>Warning:</bold>Detected your have installed <aqua>{0}</aqua> on your server which it hidden errors from your server console, it may misleading the troubleshooting, please uninstall it before continue create paste."
 april-rick-and-roll-easter-egg: |
   <green>---------------------------------------------------</green>
   <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
@@ -663,6 +664,8 @@ addon:
     feature-enabled-for-user: "<aqua>You have <green>enabled</green> <gold>{0}</gold> notification."
     feature-disabled-for-user: "<aqua>You have <red>disabled</red> <gold>{0}</gold> notification."
     link-help: "<yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account."
+    save-notifaction-exception: "<red>An error occurred while saving your Discord notifaction settings, please contact the server administrator."
+    feature-status-changed: "<green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}</gold>"
     commands:
       discord:
         description: "<yellow>Managing your QuickShop Discord settings"
@@ -1283,6 +1286,24 @@ addon:
       <gold>Expired on: <yellow>{4}</yellow>
       <gold>Threshold: <yellow>{5}</yellow>
       <gold>Discount: <yellow>{6}</yellow>
+  list:
+    commands:
+      list: "<yellow>Listing all shops owned by your or specific player"
+    table-prefix: "<yellow><green>{0}</green>'s shops <gray>(Total {1})</gray>: "
+    entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
+  shopitemonly:
+    message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+  limited:
+    commands:
+      limit: "<yellow>Set a limit that restrict the purchase that player can make in period"
+    titles:
+      title: "<green>Purchase Success"
+      subtitle: "<aqua>You can also purchase <gold>{0}</gold> more in this shop"
+    reach-the-limit: "<red>You have reached the limit in this shop. You can also purchase <green>{0}</green> items, but you trying purchase <yellow>{1}</yellow> items."
+    success-reset: "<green>Reset the restriction of this shop successfully"
+    success-remove: "<green>Successfully remove the all restriction of this shop"
+    success-setup: "<green>Restriction settings for this shop were saved successfully"
+    trade-limit-reached-cancel-reason: "<red>Reached the restriction of this shop"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"

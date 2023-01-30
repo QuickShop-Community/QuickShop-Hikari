@@ -1,0 +1,11 @@
+name: qssuite-limited
+version: '${project.version}'
+main: com.ghostchu.quickshop.addon.${project.artifactId}.Main
+api-version: 1.18
+depend:
+  - QuickShop-Hikari
+authors: [ Ghost_chu ]
+permissions:
+  quickshopaddon.limit.use:
+    description: Allow player to use /qs limit
+    default: op

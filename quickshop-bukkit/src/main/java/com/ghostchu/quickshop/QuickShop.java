@@ -274,18 +274,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
      */
     public final void onLoad() {
         instance = this;
-        logger.info("Registering Bukkit Service: {}", QuickShopProvider.class.getName());
-        Bukkit.getServicesManager().register(QuickShopProvider.class, new QuickShopProvider() {
-            @Override
-            public @NotNull QuickShopAPI getApiInstance() {
-                return instance;
-            }
-
-            @Override
-            public @NotNull Plugin getInstance() {
-                return javaPlugin;
-            }
-        }, javaPlugin, ServicePriority.High);
+        registerService();
         // Reset the BootError status to normal.
         this.bootError = null;
         Util.setPlugin(this);
@@ -308,6 +297,21 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         logger.info("Initializing NexusManager...");
         this.nexusManager = new NexusManager(this);
         logger.info("QuickShop " + javaPlugin.getFork() + " - Early boot step - Complete");
+    }
+
+    private void registerService() {
+        logger.info("Registering Bukkit Service: {}", QuickShopProvider.class.getName());
+        Bukkit.getServicesManager().register(QuickShopProvider.class, new QuickShopProvider() {
+            @Override
+            public @NotNull QuickShopAPI getApiInstance() {
+                return instance;
+            }
+
+            @Override
+            public @NotNull Plugin getInstance() {
+                return javaPlugin;
+            }
+        }, javaPlugin, ServicePriority.High);
     }
 
     private boolean runtimeCheck(@NotNull EnvCheckEntry.Stage stage) {
@@ -550,6 +554,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     public final void onEnable() {
         Timer enableTimer = new Timer(true);
         logger.info("QuickShop " + javaPlugin.getFork());
+        registerService();
         this.audience = BukkitAudiences.create(javaPlugin);
         /* Check the running envs is support or not. */
         logger.info("Starting plugin self-test, please wait...");
