@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>4.1.0.0</version>
+    <version>4.1.0.1</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -106,6 +106,8 @@
                                 <artifactSet>
                                     <includes>
                                         <include>com.ghostchu:quickshop*:*</include>
+                                        <include>com.ghostchu.quickshop.compatibility:*:*</include>
+                                        <include>com.ghostchu.quickshop.addon:*:*</include>
                                         <include>net.kyori:*:*</include>
                                         <include>com.github.PikaMug:LocaleLib:*</include>
                                         <include>com.dumptruckman.minecraft:JsonConfiguration:*</include>
