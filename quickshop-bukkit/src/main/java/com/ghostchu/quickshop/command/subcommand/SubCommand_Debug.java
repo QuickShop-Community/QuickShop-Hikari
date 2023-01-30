@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.performance.BulkExecutor;
@@ -14,6 +15,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.util.BlockIterator;
@@ -21,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -46,9 +49,60 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "signs" -> handleSigns(sender);
             case "database" -> handleDatabase(sender, ArrayUtils.remove(cmdArg, 0));
             case "updateplayersigns" -> handleSignsUpdate(sender, ArrayUtils.remove(cmdArg, 0));
+            case "shopsreload" -> handleShopsReload(sender, ArrayUtils.remove(cmdArg, 0));
+            case "shopsloaderreload" -> handleShopsLoaderReload(sender, ArrayUtils.remove(cmdArg, 0));
+            case "display" -> handleDisplay(sender, ArrayUtils.remove(cmdArg, 0));
+            case "shopdebug" -> handleShopDebug(sender, ArrayUtils.remove(cmdArg, 0));
+            case "shoploading" -> handleShopLoading(sender, ArrayUtils.remove(cmdArg, 0));
             default -> plugin.text().of(sender, "debug.arguments-invalid", cmdArg[0]).send();
         }
     }
+
+    private void handleShopLoading(CommandSender sender, String[] remove) {
+        Shop shop = getLookingShop(sender);
+        if (shop != null) {
+            if (shop.isLoaded()) {
+                sender.sendMessage("Unloading...");
+                shop.onUnload();
+            } else {
+                sender.sendMessage("Loading...");
+                shop.onLoad();
+            }
+        }
+    }
+
+    private void handleShopDebug(CommandSender sender, String[] remove) {
+        if (sender instanceof Player) {
+            Shop shop = getLookingShop(((Player) sender).getPlayer());
+            if (shop != null) {
+                sender.sendMessage(shop.toString());
+            }
+        }
+    }
+
+    private void handleDisplay(CommandSender sender, String[] remove) {
+        sender.sendMessage("Display: " + plugin.isDisplayEnabled());
+        sender.sendMessage("DisplayItemType: " + AbstractDisplayItem.getNowUsing().name());
+    }
+
+    private void handleShopsLoaderReload(CommandSender sender, String[] remove) {
+        sender.sendMessage("Unloading shops...");
+        plugin.getShopManager().getLoadedShops().forEach(Shop::onUnload);
+        sender.sendMessage("Remove shops from memory...");
+        plugin.getShopManager().getAllShops().forEach(shop -> shop.delete(true));
+        sender.sendMessage("Force shoploader reloading everything...");
+        plugin.getShopLoader().loadShops();
+        sender.sendMessage("Reloading complete!");
+    }
+
+    private void handleShopsReload(CommandSender sender, String[] remove) {
+        sender.sendMessage("Reloading shops...");
+        List<Shop> shops = new ArrayList<>(plugin.getShopManager().getLoadedShops());
+        shops.forEach(Shop::onUnload);
+        shops.forEach(Shop::onLoad);
+        sender.sendMessage("Reloading complete!");
+    }
+
 
     public void switchDebug(@NotNull CommandSender sender) {
         final boolean debug = plugin.getConfig().getBoolean("dev-mode");

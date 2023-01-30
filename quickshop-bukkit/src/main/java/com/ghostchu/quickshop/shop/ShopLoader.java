@@ -148,6 +148,8 @@ public class ShopLoader implements SubPasteItem {
                 // Load to World
                 if (!Util.canBeShop(shopLocation.getBlock())) {
                     plugin.getShopManager().removeShop(shop); // Remove from Mem
+                } else {
+                    shop.onLoad(); // Patch the shops won't load around the spawn
                 }
             } else {
                 chunkNotLoaded.incrementAndGet();
