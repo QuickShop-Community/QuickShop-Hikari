@@ -271,6 +271,7 @@ unknown-owner: Bilinmiyor
 restricted-prices: '<red>{0} için sınırlandırılmış fiyat: Min {1}, Maks {2}'
 nearby-shop-this-way: <green>Market sizden {0} blok uzakta.
 owner-bypass-check: <yellow>Bütün kontroller atlandı. Ticaret başarılı! (Market sahibisin!)
+paste-warning-plugin-find: "<red><bold>Warning:</bold>Detected your have installed <aqua>{0}</aqua> on your server which it hidden errors from your server console, it may misleading the troubleshooting, please uninstall it before continue create paste."
 april-rick-and-roll-easter-egg: |
   <green>---------------------------------------------------</green>
   <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
