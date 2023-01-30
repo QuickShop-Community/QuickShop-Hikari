@@ -271,7 +271,6 @@ unknown-owner: Tuntematon
 restricted-prices: '<red>Rajattu hinta tuotteelle {0}: vähintään {1}, enintään {2}'
 nearby-shop-this-way: <green>Kauppa on {0} kuution päässä sinusta.
 owner-bypass-check: <yellow>Ohitit kaikki tarkastukset. Vaihto onnistui! (Olet nyt kaupan omistaja!)
-paste-warning-plugin-find: "<red><bold>Warning:</bold>Detected your have installed <aqua>{0}</aqua> on your server which it hidden errors from your server console, it may misleading the troubleshooting, please uninstall it before continue create paste."
 april-rick-and-roll-easter-egg: |
   <green>---------------------------------------------------</green>
   <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
