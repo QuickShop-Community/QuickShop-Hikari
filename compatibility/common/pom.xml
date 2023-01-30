@@ -51,7 +51,7 @@
             <groupId>com.ghostchu</groupId>
             <artifactId>quickshop-bukkit</artifactId>
             <version>${parent.version}</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
