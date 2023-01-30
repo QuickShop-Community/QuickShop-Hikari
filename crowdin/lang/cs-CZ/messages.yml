@@ -271,6 +271,7 @@ unknown-owner: Nezname
 restricted-prices: '<aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <red>Omezená cena za {0}: Min {1}, max {2}'
 nearby-shop-this-way: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Shop je od vás {0} bloků.
 owner-bypass-check: <aqua>▪<dark_gray>▏ <aqua>System <dark_gray>› <gray>Prošel všechny kontroly. Obchod byl úspěšný! (Nyní jste vlastníkem obchodu!)
+paste-warning-plugin-find: "<red><bold>Warning:</bold>Detected your have installed <aqua>{0}</aqua> on your server which it hidden errors from your server console, it may misleading the troubleshooting, please uninstall it before continue create paste."
 april-rick-and-roll-easter-egg: |
   <green>---------------------------------------------------</green>
   <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
