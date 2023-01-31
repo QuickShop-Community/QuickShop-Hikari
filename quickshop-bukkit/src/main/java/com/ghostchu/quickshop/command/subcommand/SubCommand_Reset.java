@@ -30,7 +30,7 @@ public class SubCommand_Reset implements CommandHandler<CommandSender> {
                 File config = new File(plugin.getDataFolder(), "config.yml");
                 config.delete();
                 plugin.getJavaPlugin().saveDefaultConfig();
-                plugin.reloadConfig();
+                plugin.getJavaPlugin().reloadConfig();
                 plugin.getReloadManager().reload();
                 plugin.text().of(sender, "complete").send();
             }
