@@ -554,6 +554,23 @@ debug:
   sql-completed: "<green>Aktion abgeschlossen! {0} Zeilen betroffen."
   sql-exception: "<red>Ein Fehler ist beim ausführen der SQL-Abfrage aufgetreten. Überprüfe die Konsole für Details!"
   sql-disabled: "<red>Aus Sicherheitsgründen sind SQL-Abfragen in diesem Server deaktiviert. Wenn du diese Funktion wirklich nutzen willst, kannst den folgenden Argument in deinen Start-Parametern aktivieren: <aqua>{0}</aqua> mit Wert `true`."
+  force-shop-reload: "<yellow>Forcing reload all loaded shops..."
+  force-shop-reload-complete: "<green>Forced <aqua>{0}</aqua> shops to be reloaded."
+  force-shop-loader-reload: "<yellow>Forcing shop-loader reloading..."
+  force-shop-loader-reload-unloading-shops: "<yellow>Unloading <aqua>{0}</aqua> loaded shops..."
+  force-shop-loader-reload-unloading-shops-from-memory: "<yellow>Removing <aqua>{0}</aqua> shops from memory..."
+  force-shop-loader-reload-reloading-shop-loader: "<yellow>Re-calling shop-loader for reloading all shops from database..."
+  force-shop-loader-reload-complete: "<green>Shop-loader has been reloaded all shops!"
+  toggle-shop-loaded-status: "<aqua>Toggle this shop loaded status to <gold>{0}</gold>"
+  shop-internal-data: "<yellow>The internal data of this shop: <reset>{0}</reset>"
+  handler-list-not-valid-bukkit-event-class: "<red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class."
+  update-player-shops-signs-no-username-given: "<red>You must provide a valid player username."
+  update-player-shops-signs-create-async-task: "<yellow>Creating async tasks for force updating signs..."
+  update-player-shops-player-selected: "<yellow>Player selected: <gold>{0}</gold>"
+  update-player-shops-player-shops: "<yellow>Total <gold>{0}</gold> shops waiting for updates."
+  update-player-shops-per-tick-threshold: "<yellow>Max shops can be update per tick: <gold>{0}</gold>"
+  update-player-shops-complete: "<green>Task completed, Used <yellow>{0}ms</yellow> for updating."
+  update-player-shops-task-started: "<gold>The tasks has been started, please wait for it to complete."
 database:
   scanning: "<green>Scanne die isolierten Daten in der QuickShop Datenbank. Die Datenbankauslastung kann eventuell den Scanvorgang ehöhen. Dies kann eine Weile dauern..."
   scanning-async: "<yellow>Scanne die isolierten Daten in der QuickShop Datenbank auf einem Asyncronen Auftrags-Thread. Die Datenbankauslastung kann eventuell den Scanvorgang ehöhen. Dies kann eine Weile dauern. Wenn es schiefgeht, versuch es später erneut."
@@ -603,7 +620,7 @@ transfer-accepted-toside: "<green>Du hast <aqua>{0}</aqua>'s Tranfer-Anfrage akz
 transfer-rejected-fromside: "<red>Spieler <aqua>{0}</aqua> hat deine Shop-Übertragungsanfrage abgelehnt."
 transfer-rejected-toside: "<red>Du hast <aqua>{0}</aqua>'s Shop-Übertragungsanfrage abgelehnt."
 transfer-no-pending-operation: "<red>Du hast keine ausstehenden Transfer-Anfragen."
-transfer-no-self: "<red>Du kannst deine Shops nicht an dich selbst überweisen."
+transfer-no-self: "<red>Du kannst deine Shops nicht an dich selbst übertragen."
 benefit-overflow: "<red>Die Summe aller Vorteile kann nicht grösser oder gleich 100% sein."
 benefit-exists: "<red>Spieler ist bereits in der Vorteilsliste dieses Shops."
 benefit-removed: "<red>Spieler wurde von Shop-Vorteilen entfernt."
@@ -660,9 +677,9 @@ addon:
     discord-enabled: "<aqua>QuickShop Discord Nachrichten wurden erfolgreich <green>aktiviert</green>. Du wirst nun Shop Nachrichten über Discord erhalten."
     discord-disabled: "<aqua>QuickShop Discord Nachrichten wurden erfolgreich <red>deaktiviert</red>. Du wirst keine weiteren Shop Nachrichten per Discord erhalten."
     discord-not-integrated: "<red>Du hast deinen Discord Account noch nicht verlinkt! Bitte verlinke es zuerst!"
-    feature-enabled-for-user: "<aqua>Sie haben <green>aktiviert</green> <gold>{0}</gold> Benachrichtigung."
-    feature-disabled-for-user: "<aqua>Sie haben <red>deaktiviert</red> <gold>{0}</gold> Benachrichtigung."
-    link-help: "<yellow>Dieser Server benutzt <gold>{0}</gold> für Discord Treiber, bitte benutze <green>{0}</green> um deinen Discord Account zu verknüpfen."
+    feature-enabled-for-user: "<aqua>Du hast die <gold>{0}</gold> Benachrichtigungen <green>aktiviert</green>."
+    feature-disabled-for-user: "<aqua>Du hast die <gold>{0}</gold> Benachrichtigungen <red>deaktiviert</red>."
+    link-help: "<yellow>Dieser Server benutzt <gold>{0}</gold> für Discord-funktionalität. Bitte verwende <green>{0}</green> um deinen Discord Account zu verbinden."
     save-notifaction-exception: "<red>Ein Fehler ist beim Speichern deiner Discord Benachrichtigungseinstellungen aufgetreten. Bitte kontaktiere den Server Administrator."
     feature-status-changed: "<green>Benachrichtigungsstatus für <aqua>{0}</aqua> erfolgreich zu <gold>{1}</gold> gesetzt"
     commands:
@@ -947,7 +964,7 @@ addon:
         {
             "embed": {
                 "title": ":recycle: Ein Shop wurde von diesem Server entfernt",
-                "description": Ein Shop wurde von diesem Server entfernt.",
+                "description": "Ein Shop wurde von diesem Server entfernt.",
                 "color": 6061450,
                 "author": {
                     "name": "QuickShop-Hikari",

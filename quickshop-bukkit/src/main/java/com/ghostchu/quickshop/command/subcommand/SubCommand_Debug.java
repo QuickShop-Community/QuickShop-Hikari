@@ -3,7 +3,6 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.performance.BulkExecutor;
@@ -12,21 +11,14 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredListener;
-import org.bukkit.util.BlockIterator;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
@@ -49,58 +41,56 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "signs" -> handleSigns(sender);
             case "database" -> handleDatabase(sender, ArrayUtils.remove(cmdArg, 0));
             case "updateplayersigns" -> handleSignsUpdate(sender, ArrayUtils.remove(cmdArg, 0));
-            case "shopsreload" -> handleShopsReload(sender, ArrayUtils.remove(cmdArg, 0));
-            case "shopsloaderreload" -> handleShopsLoaderReload(sender, ArrayUtils.remove(cmdArg, 0));
-            case "display" -> handleDisplay(sender, ArrayUtils.remove(cmdArg, 0));
-            case "shopdebug" -> handleShopDebug(sender, ArrayUtils.remove(cmdArg, 0));
-            case "shoploading" -> handleShopLoading(sender, ArrayUtils.remove(cmdArg, 0));
+            case "force-shops-reload" -> handleShopsReload(sender, ArrayUtils.remove(cmdArg, 0));
+            case "force-shoploader-reload" -> handleShopsLoaderReload(sender, ArrayUtils.remove(cmdArg, 0));
+            case "check-shop-status" -> handleShopDebug(sender, ArrayUtils.remove(cmdArg, 0));
+            case "toggle-shop-load-status" -> handleShopLoading(sender, ArrayUtils.remove(cmdArg, 0));
             default -> plugin.text().of(sender, "debug.arguments-invalid", cmdArg[0]).send();
         }
     }
 
     private void handleShopLoading(CommandSender sender, String[] remove) {
         Shop shop = getLookingShop(sender);
-        if (shop != null) {
-            if (shop.isLoaded()) {
-                sender.sendMessage("Unloading...");
-                shop.onUnload();
-            } else {
-                sender.sendMessage("Loading...");
-                shop.onLoad();
-            }
+        if (shop == null) {
+            plugin.text().of(sender, "not-looking-at-shop").send();
+            return;
         }
+        if (shop.isLoaded()) {
+            shop.onUnload();
+        } else {
+            shop.onLoad();
+        }
+        plugin.text().of(sender, "debug.toggle-shop-loaded-status", shop.isLoaded());
     }
 
     private void handleShopDebug(CommandSender sender, String[] remove) {
-        if (sender instanceof Player) {
-            Shop shop = getLookingShop(((Player) sender).getPlayer());
-            if (shop != null) {
-                sender.sendMessage(shop.toString());
-            }
+        Shop shop = getLookingShop(sender);
+        if (shop == null) {
+            plugin.text().of(sender, "not-looking-at-shop").send();
+            return;
         }
-    }
-
-    private void handleDisplay(CommandSender sender, String[] remove) {
-        sender.sendMessage("Display: " + plugin.isDisplayEnabled());
-        sender.sendMessage("DisplayItemType: " + AbstractDisplayItem.getNowUsing().name());
+        plugin.text().of(sender, "debug.shop-internal-data", shop.toString());
     }
 
     private void handleShopsLoaderReload(CommandSender sender, String[] remove) {
-        sender.sendMessage("Unloading shops...");
+        plugin.text().of(sender, "debug.force-shop-loader-reload").send();
+        Set<Shop> loadedShops = plugin.getShopManager().getLoadedShops();
+        plugin.text().of(sender, "debug.force-shop-loader-reload-unloading-shops", loadedShops.size()).send();
         plugin.getShopManager().getLoadedShops().forEach(Shop::onUnload);
-        sender.sendMessage("Remove shops from memory...");
+        List<Shop> allShops = plugin.getShopManager().getAllShops();
+        plugin.text().of(sender, "debug.force-shop-loader-reload-unloading-shops-from-memory", allShops.size()).send();
         plugin.getShopManager().getAllShops().forEach(shop -> shop.delete(true));
-        sender.sendMessage("Force shoploader reloading everything...");
+        plugin.text().of(sender, "debug.force-shop-loader-reload-reloading-shop-loader").send();
         plugin.getShopLoader().loadShops();
-        sender.sendMessage("Reloading complete!");
+        plugin.text().of(sender, "debug.force-shop-loader-reload-complete").send();
     }
 
     private void handleShopsReload(CommandSender sender, String[] remove) {
-        sender.sendMessage("Reloading shops...");
+        plugin.text().of(sender, "debug.force-shop-reload").send();
         List<Shop> shops = new ArrayList<>(plugin.getShopManager().getLoadedShops());
         shops.forEach(Shop::onUnload);
         shops.forEach(Shop::onLoad);
-        sender.sendMessage("Reloading complete!");
+        plugin.text().of(sender, "debug.force-shop-reload-complete", shops.size()).send();
     }
 
 
@@ -126,25 +116,19 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     private void handleHandlerList(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
         if (cmdArg.length < 1) {
             MsgUtil.sendDirectMessage(sender, "You must enter an Bukkit Event class");
+            plugin.text().of(sender, "debug.handler-list-not-valid-bukkit-event-class", "null");
             return;
         }
         printHandlerList(sender, cmdArg[0]);
     }
 
     private void handleSigns(@NotNull CommandSender sender) {
-        final BlockIterator bIt = new BlockIterator((LivingEntity) sender, 10);
-        if (!bIt.hasNext()) {
+        Shop shop = getLookingShop(sender);
+        if (shop == null) {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
-        while (bIt.hasNext()) {
-            final Block b = bIt.next();
-            final Shop shop = plugin.getShopManager().getShop(b.getLocation());
-            if (shop != null) {
-                shop.getSigns().forEach(sign -> plugin.text().of(sender, "debug.sign-located", sign.getLocation()).send());
-                break;
-            }
-        }
+        shop.getSigns().forEach(sign -> plugin.text().of(sender, "debug.sign-located", sign.getLocation()).send());
     }
 
     private void handleDatabase(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
@@ -157,27 +141,25 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
     private void handleSignsUpdate(CommandSender sender, String[] cmdArg) {
         if (cmdArg.length < 1) {
-            MsgUtil.sendDirectMessage(sender, "You must enter a player username");
+            plugin.text().of(sender, "debug.update-player-shops-signs-no-username-given").send();
             return;
         }
         final int tasksInStack = 15;
-        MsgUtil.sendDirectMessage(sender, "Creating an async execute task...");
+        plugin.text().of(sender, "debug.update-player-shops-signs-create-async-task").send();
         Util.asyncThreadRun(() -> {
             UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[0]);
-            MsgUtil.sendDirectMessage(sender, "Player selected: " + uuid);
+            plugin.text().of(sender, "debug.update-player-shops-player-selected", uuid).send();
             List<Shop> shops = plugin.getShopManager().getPlayerAllShops(uuid);
-            MsgUtil.sendDirectMessage(sender, "Player shops: " + shops.size());
-            MsgUtil.sendDirectMessage(sender, "Max shops update per tick: " + tasksInStack);
+            plugin.text().of(sender, "debug.update-player-shops-player-shops", shops.size()).send();
+            plugin.text().of(sender, "debug.update-player-shops-per-tick-threshold", tasksInStack);
             BulkExecutor bulkExecutor = new BulkExecutor(tasksInStack, (exec) -> {
                 long usedTime = exec.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
-                MsgUtil.sendDirectMessage(sender, "Task completed! Used " + usedTime + " ms.");
+                plugin.text().of(sender, "debug.update-player-shops-complete", usedTime);
             });
-            MsgUtil.sendDirectMessage(sender, "Scheduled " + shops.size() + " shops to update, this may need a while and your server performance will impacted.");
+            plugin.text().of(sender, "debug.update-player-shops-task-started", shops.size()).send();
             shops.forEach(shop -> bulkExecutor.addTask(shop::setSignText));
             bulkExecutor.runTaskTimer(plugin.getJavaPlugin(), 1, 1);
-
         });
-
     }
 
     public void printHandlerList(@NotNull CommandSender sender, String event) {
