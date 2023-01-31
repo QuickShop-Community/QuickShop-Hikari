@@ -118,7 +118,7 @@ public class HikariConverter {
         // End everything
         plugin.getConfig().set("config-version", 1000); // Apollo first version
         plugin.getJavaPlugin().saveConfig();
-        plugin.reloadConfig();
+        plugin.getJavaPlugin().reloadConfig();
         logger.info("Awesome! Seems you data already get ready for Hikari!");
     }
 

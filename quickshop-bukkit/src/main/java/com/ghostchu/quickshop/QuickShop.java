@@ -396,8 +396,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     /**
      * Reloads QuickShops config
      */
-    public void reloadConfig() {
-        javaPlugin.reloadConfig();
+    public void reloadConfigSubModule() {
         // Load quick variables
         this.display = this.getConfig().getBoolean("shop.display-items");
         this.priceChangeRequiresFee = this.getConfig().getBoolean("shop.price-change-requires-fee");

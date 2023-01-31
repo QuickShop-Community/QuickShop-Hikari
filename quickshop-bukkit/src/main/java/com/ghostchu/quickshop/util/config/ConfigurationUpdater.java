@@ -34,7 +34,7 @@ public class ConfigurationUpdater {
     private void brokenConfigurationFix() {
         try (InputStreamReader buildInConfigReader = new InputStreamReader(new BufferedInputStream(Objects.requireNonNull(plugin.getJavaPlugin().getResource("config.yml"))), StandardCharsets.UTF_8)) {
             if (new ConfigurationFixer(plugin, new File(plugin.getDataFolder(), "config.yml"), plugin.getConfig(), YamlConfiguration.loadConfiguration(buildInConfigReader)).fix()) {
-                plugin.reloadConfig();
+                plugin.getJavaPlugin().reloadConfig();
             }
         } catch (Exception e) {
             plugin.logger().warn("Failed to fix config.yml, plugin may not working properly.", e);
@@ -78,7 +78,7 @@ public class ConfigurationUpdater {
         }
         plugin.logger().info("[ConfigUpdater] Saving configuration changes...");
         plugin.getJavaPlugin().saveConfig();
-        plugin.reloadConfig();
+        plugin.getJavaPlugin().reloadConfig();
         //Delete old example configuration files
         try {
             cleanupOldConfigs();
@@ -100,7 +100,7 @@ public class ConfigurationUpdater {
             new HikariConverter(plugin).upgrade();
             plugin.logger().info("Save changes & Reloading configurations...");
             plugin.getJavaPlugin().saveConfig();
-            plugin.reloadConfig();
+            plugin.getJavaPlugin().reloadConfig();
             if (plugin.getReloadManager() != null) {
                 plugin.getReloadManager().reload();
             }
