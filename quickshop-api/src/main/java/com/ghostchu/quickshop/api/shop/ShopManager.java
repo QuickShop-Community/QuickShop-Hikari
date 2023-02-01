@@ -177,6 +177,7 @@ public interface ShopManager {
      */
     @Nullable Shop getShop(@NotNull Location loc, boolean skipShopableChecking);
 
+
     @Nullable Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId);
 
     @Nullable Shop getShopFromRuntimeRandomUniqueId(@NotNull UUID runtimeRandomUniqueId, boolean includeInvalid);
