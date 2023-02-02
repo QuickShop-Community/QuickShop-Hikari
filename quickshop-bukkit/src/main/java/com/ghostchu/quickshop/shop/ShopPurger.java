@@ -8,13 +8,14 @@ import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
-import com.ghostchu.quickshop.util.performance.BulkExecutor;
+import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,11 +89,10 @@ public class ShopPurger {
             }
             pendingRemovalShops.add(shop);
         }
-        BulkExecutor executor = new BulkExecutor(pendingRemovalShops.size(), (callback) -> {
-            plugin.logger().info("[Shop Purger] Total shop {} has been purged.", pendingRemovalShops.size());
-            executing = false;
-        });
-        pendingRemovalShops.forEach(shop -> {
+
+        BatchBukkitExecutor<Shop> purgeExecutor = new BatchBukkitExecutor<>();
+        purgeExecutor.addTasks(pendingRemovalShops);
+        purgeExecutor.startHandle(plugin.getJavaPlugin(), (shop) -> {
             shop.delete(false);
             if (returnCreationFee) {
                 SimpleEconomyTransaction transaction =
@@ -105,7 +105,11 @@ public class ShopPurger {
                                 .build();
                 transaction.failSafeCommit();
             }
+        }, () -> {
+            long usedTime = purgeExecutor.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
+            plugin.logger().info("[Shop Purger] Total shop {} has been purged, used {}ms",
+                    pendingRemovalShops.size(),
+                    usedTime);
         });
-        executor.runTaskTimerAsynchronously(plugin.getJavaPlugin(), 1L, 1L);
     }
 }
