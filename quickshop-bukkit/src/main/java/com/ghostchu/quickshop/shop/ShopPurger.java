@@ -8,6 +8,7 @@ import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.performance.BulkExecutor;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -87,30 +88,24 @@ public class ShopPurger {
             }
             pendingRemovalShops.add(shop);
         }
-        if (!pendingRemovalShops.isEmpty()) {
-            plugin.logger().info("[Shop Purger] Found {} need to removed, will remove in the next tick.", pendingRemovalShops.size());
-            Bukkit.getScheduler().runTaskLater(plugin.getJavaPlugin(), () -> {
-                for (Shop shop : pendingRemovalShops) {
-                    shop.delete(false);
-                    if (returnCreationFee) {
-                        SimpleEconomyTransaction transaction =
-                                SimpleEconomyTransaction.builder()
-                                        .amount(plugin.getConfig().getDouble("shop.cost"))
-                                        .core(plugin.getEconomy())
-                                        .currency(shop.getCurrency())
-                                        .world(shop.getLocation().getWorld())
-                                        .to(shop.getOwner())
-                                        .build();
-                        transaction.failSafeCommit();
-                    }
-                    plugin.logger().info("[Shop Purger] Shop {} has been purged.", shop);
-                }
-                plugin.logger().info("[Shop Purger] Task completed, {} shops was purged", pendingRemovalShops.size());
-                executing = false;
-            }, 1L);
-        } else {
-            plugin.logger().info("[Shop Purger] Task completed, No shops need to purge.");
+        BulkExecutor executor = new BulkExecutor(pendingRemovalShops.size(), (callback) -> {
+            plugin.logger().info("[Shop Purger] Total shop {} has been purged.", pendingRemovalShops.size());
             executing = false;
-        }
+        });
+        pendingRemovalShops.forEach(shop -> {
+            shop.delete(false);
+            if (returnCreationFee) {
+                SimpleEconomyTransaction transaction =
+                        SimpleEconomyTransaction.builder()
+                                .amount(plugin.getConfig().getDouble("shop.cost"))
+                                .core(plugin.getEconomy())
+                                .currency(shop.getCurrency())
+                                .world(shop.getLocation().getWorld())
+                                .to(shop.getOwner())
+                                .build();
+                transaction.failSafeCommit();
+            }
+        });
+        executor.runTaskTimerAsynchronously(plugin.getJavaPlugin(), 1L, 1L);
     }
 }
