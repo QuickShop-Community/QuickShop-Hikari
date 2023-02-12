@@ -1,12 +1,12 @@
-break-shop-use-supertool: <yellow>Вы сломали магазин с помощью супер-инструмента.
+break-shop-use-supertool: <yellow>Вы можете сломать магазин с помощью супер-инструмента.
 fee-charged-for-price-change: <green>Вы заплатили <red>{0}<green> за изменение цены.
 not-allowed-to-create: <red>Вы не можете создать магазин здесь.
 disabled-in-this-world: <red>QuickShop отключен в этом мире
-how-much-to-trade-for: <green>Введите в чат за сколько вы хотите продавать <yellow>{1}x {0}</yellow>.
+how-much-to-trade-for: <green>Введите в чат, за сколько вы хотите продавать <yellow>{1}x {0}</yellow>.
 client-language-changed: <green>QuickShop обнаружил, что вы изменили язык. Теперь для вас используется {0} язык.
 shops-backingup: Создание резервной копии магазина из базы данных...
 _comment: Привет, переводчик! Если ты редактируешь это через GitHub или через исходный код, тебе стоит делать это здесь https://crowdin.com/project/quickshop-hikari instead.
-unlimited-shop-owner-changed: '<yellow>Владелец бездонного магазина был изменен на: {0}.'
+unlimited-shop-owner-changed: '<yellow>Владелец бесконечного магазина был изменен на: {0}.'
 bad-command-usage-detailed: '<red>Неправильные аргументы для команды! Принимаются только эти параметры: <gray>{0}'
 thats-not-a-number: <red>Неверное число
 shop-name-disallowed: <red>Название магазина <yellow>{0}</yellow> запрещено. Выберите другое!
@@ -18,12 +18,12 @@ tabcomplete:
   amount: '[количество]'
   item: '[товар]'
   price: '[цена]'
-  name: '[name]'
+  name: '[название]'
   range: '[диапазон]'
   currency: '[название валюты]'
-  percentage: '[percentage%]'
+  percentage: '[процент%]'
 taxaccount-unset: <green>Налоговый счет магазина теперь соблюдает глобальные настройки сервера.
-blacklisted-item: <red>Вы не можете продавать этот предмет, потому что он находится в черном списке
+blacklisted-item: <red>Этот предмет нельзя продать, поскольку он находится в черном списке
 command-type-mismatch: <red>Эта команда может быть выполнена только <aqua>{0}</aqua>.
 server-crash-warning: '<red>ВНИМАНИЕ: Использование команды /qs reload для замены/удаления файла QuickShop.jar может привести к сбою сервера.'
 you-cant-afford-to-change-price: <red>Для изменения цены в вашем магазине требуется {0}.
