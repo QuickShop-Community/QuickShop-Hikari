@@ -69,7 +69,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
-        plugin.text().of(sender, "debug.shop-internal-data", shop.toString());
+        plugin.text().of(sender, "debug.shop-internal-data", shop.toString()).send();
     }
 
     private void handleShopsLoaderReload(CommandSender sender, String[] remove) {
