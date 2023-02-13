@@ -13,11 +13,19 @@ import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import io.papermc.lib.PaperLib;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 public final class EnvironmentChecker {
     private static final String CHECK_PASSED_RETURNS = "Check passed";
@@ -172,6 +180,33 @@ public final class EnvironmentChecker {
     public ResultContainer rereMakeTest() {
         if (Bukkit.getPluginManager().isPluginEnabled("QuickShop")) {
             return new ResultContainer(CheckResult.WARNING, "WARNING: Multiple QuickShop installed, uninstall one of them.");
+        }
+        return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
+    }
+
+    @EnvCheckEntry(name = "Legal Compliance Check", priority = 12, stage = EnvCheckEntry.Stage.ON_ENABLE)
+    public ResultContainer neteaseRegionTest() {
+        HttpResponse<String> resp = Unirest.get("https://cloudflare.com/cdn-cgi/trace")
+                .connectTimeout(1000 * 10)
+                .socketTimeout(1000 * 10)
+                .asString();
+        if (!resp.isSuccess()) {
+            return new ResultContainer(CheckResult.PASSED, "Failed to check NetEase region.");
+        }
+        String cloudflareResponse = resp.getBody();
+        String[] exploded = cloudflareResponse.split("\n");
+        for (String s : exploded) {
+            if (s.startsWith("loc=")) {
+                String[] kv = s.split("=");
+                if (kv.length != 2) {
+                    continue;
+                }
+                String key = kv[0];
+                String value = kv[1];
+                if (key.equalsIgnoreCase("loc") && value.equalsIgnoreCase("CN")) {
+                    return new ResultContainer(CheckResult.DISABLE_PLUGIN, "自 Hikari-4.1.0.3 开始，由于潜在的法律法规风险，我们暂时停止向处于中国大陆的服务器提供服务，有关更多信息，请参考：https://ghost-chu.github.io/QuickShop-Hikari-Documents/docs/about/netease");
+                }
+            }
         }
         return new ResultContainer(CheckResult.PASSED, CHECK_PASSED_RETURNS);
     }
