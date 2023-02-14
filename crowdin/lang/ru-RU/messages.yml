@@ -1,12 +1,12 @@
-break-shop-use-supertool: <yellow>Вы сломали магазин с помощью супер-инструмента.
+break-shop-use-supertool: <yellow>Вы можете сломать магазин с помощью супер-инструмента.
 fee-charged-for-price-change: <green>Вы заплатили <red>{0}<green> за изменение цены.
 not-allowed-to-create: <red>Вы не можете создать магазин здесь.
 disabled-in-this-world: <red>QuickShop отключен в этом мире
-how-much-to-trade-for: <green>Введите в чат за сколько вы хотите продавать <yellow>{1}x {0}</yellow>.
+how-much-to-trade-for: <green>Введите в чат, за сколько вы хотите продавать <yellow>{1}x {0}</yellow>.
 client-language-changed: <green>QuickShop обнаружил, что вы изменили язык. Теперь для вас используется {0} язык.
 shops-backingup: Создание резервной копии магазина из базы данных...
 _comment: Привет, переводчик! Если ты редактируешь это через GitHub или через исходный код, тебе стоит делать это здесь https://crowdin.com/project/quickshop-hikari instead.
-unlimited-shop-owner-changed: '<yellow>Владелец бездонного магазина был изменен на: {0}.'
+unlimited-shop-owner-changed: '<yellow>Владелец бесконечного магазина был изменен на: {0}.'
 bad-command-usage-detailed: '<red>Неправильные аргументы для команды! Принимаются только эти параметры: <gray>{0}'
 thats-not-a-number: <red>Неверное число
 shop-name-disallowed: <red>Название магазина <yellow>{0}</yellow> запрещено. Выберите другое!
@@ -18,12 +18,12 @@ tabcomplete:
   amount: '[количество]'
   item: '[товар]'
   price: '[цена]'
-  name: '[name]'
+  name: '[название]'
   range: '[диапазон]'
   currency: '[название валюты]'
-  percentage: '[percentage%]'
+  percentage: '[процент%]'
 taxaccount-unset: <green>Налоговый счет магазина теперь соблюдает глобальные настройки сервера.
-blacklisted-item: <red>Вы не можете продавать этот предмет, потому что он находится в черном списке
+blacklisted-item: <red>Этот предмет нельзя продать, поскольку он находится в черном списке
 command-type-mismatch: <red>Эта команда может быть выполнена только <aqua>{0}</aqua>.
 server-crash-warning: '<red>ВНИМАНИЕ: Использование команды /qs reload для замены/удаления файла QuickShop.jar может привести к сбою сервера.'
 you-cant-afford-to-change-price: <red>Для изменения цены в вашем магазине требуется {0}.
@@ -570,7 +570,7 @@ debug:
   update-player-shops-player-shops: "<yellow>Total <gold>{0}</gold> shops waiting for updates."
   update-player-shops-per-tick-threshold: "<yellow>Max shops can be update per tick: <gold>{0}</gold>"
   update-player-shops-complete: "<green>Task completed, Used <yellow>{0}ms</yellow> for updating."
-  update-player-shops-task-started: "<gold>The tasks has been started, please wait for it to complete."
+  update-player-shops-task-started: "<gold>Задачи запущены, пожалуйста, дождитесь их завершения."
 database:
   scanning: "<green>Scanning the isolated data in QuickShop databases, the database load may increase in scan progress, this might need a while..."
   scanning-async: "<yellow>Scanning the isolated data in QuickShop databases on async task thread, the database load may increase in scan progress, this might need a while, try again later."
@@ -592,7 +592,7 @@ database:
   auto-trim-started: "<green>Auto trim has been started, please wait..."
   trim-start: "<green>Database trim started, please wait..."
   trim-exception: "<red>Database trim failed, an exception raised during database trimming, check the server console."
-  generated-at: "<yellow>Generated at: <gold>{0}</gold>"
+  generated-at: "<yellow>Сгенерировано в: <gold>{0}</gold>"
   purge-date: "<red>Вы должны указать дату."
   purge-warning: "<yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`"
   purge-task-created: "<green>Task created! Database are silent purging history records in background."

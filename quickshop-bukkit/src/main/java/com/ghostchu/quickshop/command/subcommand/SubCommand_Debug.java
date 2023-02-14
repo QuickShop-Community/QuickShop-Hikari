@@ -5,7 +5,7 @@ import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
-import com.ghostchu.quickshop.util.performance.BulkExecutor;
+import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -69,7 +69,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
-        plugin.text().of(sender, "debug.shop-internal-data", shop.toString());
+        plugin.text().of(sender, "debug.shop-internal-data", shop.toString()).send();
     }
 
     private void handleShopsLoaderReload(CommandSender sender, String[] remove) {
@@ -144,21 +144,20 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             plugin.text().of(sender, "debug.update-player-shops-signs-no-username-given").send();
             return;
         }
-        final int tasksInStack = 15;
         plugin.text().of(sender, "debug.update-player-shops-signs-create-async-task").send();
         Util.asyncThreadRun(() -> {
             UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[0]);
             plugin.text().of(sender, "debug.update-player-shops-player-selected", uuid).send();
             List<Shop> shops = plugin.getShopManager().getPlayerAllShops(uuid);
             plugin.text().of(sender, "debug.update-player-shops-player-shops", shops.size()).send();
-            plugin.text().of(sender, "debug.update-player-shops-per-tick-threshold", tasksInStack);
-            BulkExecutor bulkExecutor = new BulkExecutor(tasksInStack, (exec) -> {
-                long usedTime = exec.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
+
+            BatchBukkitExecutor<Shop> updateExecutor = new BatchBukkitExecutor<>();
+            updateExecutor.addTasks(shops);
+            updateExecutor.startHandle(plugin.getJavaPlugin(), Shop::setSignText, () -> {
+                long usedTime = updateExecutor.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
                 plugin.text().of(sender, "debug.update-player-shops-complete", usedTime);
             });
             plugin.text().of(sender, "debug.update-player-shops-task-started", shops.size()).send();
-            shops.forEach(shop -> bulkExecutor.addTask(shop::setSignText));
-            bulkExecutor.runTaskTimer(plugin.getJavaPlugin(), 1, 1);
         });
     }
 

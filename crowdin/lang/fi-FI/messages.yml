@@ -1,7 +1,7 @@
 break-shop-use-supertool: <yellow>Rikot kauppoja käyttäen tyokalua.
 fee-charged-for-price-change: <green>Maksoit {0} vaihtaaksesi kaupan hinnan.
 not-allowed-to-create: <red>Et luultavasti voi luoda kauppaa tänne.
-disabled-in-this-world: <red>QuickShop is disabled in this world
+disabled-in-this-world: <red>QuickShop on poistettu käytöstä tässä maailmassa
 how-much-to-trade-for: <green>Kirjoita chattiin, mihin hintaan haluat vaihtaa <yellow>{1}x {0}<green>.
 client-language-changed: <green>QuickShop detected your client language setting has been changed, we're now using {0} locale for you.
 shops-backingup: Luodaan Kauppa-varmuuskopio tietokannasta...
@@ -29,24 +29,24 @@ server-crash-warning: '<red>Palvelin voi kaatua /qs reload komennon jälkeen jos
 you-cant-afford-to-change-price: <red>Hinnan vaihtaminen maksaa {0}.
 safe-mode: <red>QuickShop now in safe-mode, you cannot open this shop container, please contact with server administrator to fix the errors.
 forbidden-vanilla-behavior: <red>Toimenpide on kielletty, koska se ei ole yhdenmukainen vanilla käyttäytymisen kanssa
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>Kauppasi {0} on täynnä!
 paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Nimi: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
+    - '<yellow>Omistaja: <aqua>{0}'
     - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Hinta: <aqua>{0}'
     - '<yellow>Tuote: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Sijainti: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Nimi: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
+    - '<yellow>Omistaja: <aqua>{owner}'
     - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
+    - '<yellow>Hinta: <aqua>{price}'
     - '<yellow>Tuote: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Sijainti: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -127,15 +127,15 @@ shop-name-too-long: <red>This shop name is too long (max length {0}), please pic
 metric:
   header-player: '<yellow>{0}''s {1} {2} transactions:'
   action-hover: <yellow>{0}
-  price-hover: <yellow>Total {0}, including {1} taxes.
-  unknown: <gray>(unknown)
-  undefined: <gray>(noname)
+  price-hover: <yellow>Yhteensä {0}, sisältäen {1} veroa.
+  unknown: <gray>(tuntematon)
+  undefined: <gray>(ei nimeä)
   no-results: <red>No transactions found.
   action-description:
     DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
     PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
+    CREATE: <yellow>Pelaaja loi kaupan.
     PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
     PURCHASE: <yellow>Purchased item with a shop
   query-argument: 'Query Argument: {0}'
