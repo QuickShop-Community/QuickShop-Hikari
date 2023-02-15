@@ -564,7 +564,7 @@ debug:
   toggle-shop-loaded-status: "<aqua>Toggle this shop loaded status to <gold>{0}</gold>"
   shop-internal-data: "<yellow>The internal data of this shop: <reset>{0}</reset>"
   handler-list-not-valid-bukkit-event-class: "<red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class."
-  update-player-shops-signs-no-username-given: "<red>You must provide a valid player username."
+  update-player-shops-signs-no-username-given: "<red>Вы должны ввести правильное имя пользователя."
   update-player-shops-signs-create-async-task: "<yellow>Creating async tasks for force updating signs..."
   update-player-shops-player-selected: "<yellow>Player selected: <gold>{0}</gold>"
   update-player-shops-player-shops: "<yellow>Total <gold>{0}</gold> shops waiting for updates."
