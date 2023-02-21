@@ -146,10 +146,10 @@ metric:
   tax-hover: <yellow>{0} skatter
   header-global: '<yellow>Servern {0}s {1} transaktioner:'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
-  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}'
-  time-hover: '<yellow>Time: {0}'
-  amount-stack-hover: <yellow>{0}x stack
+  transaction-count: <yellow>{0} totalt
+  shop-hover: '<yellow>{0}<newline><gold>Position: <gray>{1} {2} {3}, Värld: {4}<newline><gold>Ägare: <gray>{5}<newline><gold>Affärstyp: <gray>{6}<newline><gold>Föremål: <gray>{7}<newline><gold>Pris: <gray>{8}'
+  time-hover: '<yellow>Tid: {0}'
+  amount-stack-hover: <yellow>{0}st stack
 permission-denied-3rd-party: '<red>Tillstånd nekat: tredje parts plugin [{0}].'
 you-dont-have-that-many-items: <red>Du har endast {0} {1}.
 complete: <green>Färdig!
