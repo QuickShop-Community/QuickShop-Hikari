@@ -23,6 +23,7 @@ public class SubCommand_Export implements CommandHandler<ConsoleCommandSender> {
     public synchronized void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         plugin.text().of(sender, "exporting-database").send();
         File file = new File(QuickShop.getInstance().getDataFolder(), "export-" + System.currentTimeMillis() + ".zip");
+
         DatabaseIOUtil databaseIOUtil = new DatabaseIOUtil((SimpleDatabaseHelperV2) plugin.getDatabaseHelper());
         Util.asyncThreadRun(() -> {
             try {
