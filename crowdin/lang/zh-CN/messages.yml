@@ -691,7 +691,7 @@ addon:
          "embed":
            {
              "title": ":inbox_tray: 有人向你的商店出售物品",
-             "description": "该玩家 %%purchase.name%% 出售 %%purchase.amount%%个 %%shop.item.name%% 到你的商店.",
+             "description": "该玩家 %%purchase.name%% 出售 %%purchase.amount%% 个 %%shop.item.name%% 到你的商店.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -704,7 +704,7 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord通知消息",
+               "text": "QuickShop-Hikari Discord消息通知",
                "icon_url": ""
              },
              "fields": [
@@ -759,7 +759,7 @@ addon:
                   "url": ""
               },
               "footer": {
-                  "text": "QuickShop-Hikari Discord通知消息",
+                  "text": "QuickShop-Hikari Discord消息通知",
                   "icon_url": ""
               },
               "fields": [
@@ -963,7 +963,7 @@ addon:
       mod-remove-shop: |
         {
           "embed": {
-            "title": ":classical_building: 商店在服务器中已被删除",
+            "title": ":recycle: 商店在服务器中已被删除",
             "description": "玩家在服务器中删除了一个商店.",
             "color": 6061450,
             "author": {
