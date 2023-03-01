@@ -3,8 +3,8 @@ package com.ghostchu.quickshop.addon.discordsrv.database;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.addon.discordsrv.Main;
-import com.ghostchu.quickshop.addon.discordsrv.bean.NotifactionFeature;
-import com.ghostchu.quickshop.addon.discordsrv.bean.NotifactionSettings;
+import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationFeature;
+import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationSettings;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -34,13 +34,13 @@ public class DiscordDatabaseHelper {
 
     }
 
-    public @NotNull Integer setNotifactionFeatureEnabled(@NotNull UUID uuid, @NotNull NotifactionFeature feature, @Nullable Boolean status) throws SQLException {
+    public @NotNull Integer setNotifactionFeatureEnabled(@NotNull UUID uuid, @NotNull NotificationFeature feature, @Nullable Boolean status) throws SQLException {
         Util.ensureThread(true);
-        NotifactionSettings settings = getPlayerNotifactionSetting(uuid);
+        NotificationSettings settings = getPlayerNotifactionSetting(uuid);
         if (status == null) {
-            settings.settings().remove(feature);
+            settings.getSettings().remove(feature);
         } else {
-            settings.settings().put(feature, status);
+            settings.getSettings().put(feature, status);
         }
         try (ResultSet set = DiscordTables.DISCORD_PLAYERS.createQuery()
                 .setLimit(1)
@@ -64,7 +64,7 @@ public class DiscordDatabaseHelper {
     }
 
     @NotNull
-    public NotifactionSettings getPlayerNotifactionSetting(@NotNull UUID player) throws SQLException {
+    public NotificationSettings getPlayerNotifactionSetting(@NotNull UUID player) throws SQLException {
         Util.ensureThread(true);
         try (SQLQuery query = DiscordTables.DISCORD_PLAYERS.createQuery().selectColumns("notifaction").addCondition("player", player.toString()).setLimit(1).build().execute(); ResultSet set = query.getResultSet()) {
             if (set.next()) {
@@ -72,28 +72,28 @@ public class DiscordDatabaseHelper {
                 Log.debug("Json data: " + json);
                 if (StringUtils.isNotEmpty(json)) {
                     if (MsgUtil.isJson(json)) {
-                        return JsonUtil.getGson().fromJson(json, NotifactionSettings.class);
+                        return JsonUtil.getGson().fromJson(json, NotificationSettings.class);
                     }
                 }
             }
             Log.debug("Generating default value...");
-            Map<NotifactionFeature, Boolean> booleanMap = new HashMap<>();
-            for (NotifactionFeature feature : NotifactionFeature.values()) {
-                booleanMap.put(feature, plugin.isServerNotifactionFeatureEnabled(feature));
+            Map<NotificationFeature, Boolean> booleanMap = new HashMap<>();
+            for (NotificationFeature feature : NotificationFeature.values()) {
+                booleanMap.put(feature, plugin.isServerNotificationFeatureEnabled(feature));
             }
-            return new NotifactionSettings(booleanMap);
+            return new NotificationSettings(booleanMap);
         }
     }
 
     @SuppressWarnings("ConstantValue")
-    public boolean isNotifactionFeatureEnabled(@NotNull UUID uuid, @NotNull NotifactionFeature feature) {
+    public boolean isNotifactionFeatureEnabled(@NotNull UUID uuid, @NotNull NotificationFeature feature) {
         Util.ensureThread(true);
-        boolean defValue = plugin.isServerNotifactionFeatureEnabled(feature);
+        boolean defValue = plugin.isServerNotificationFeatureEnabled(feature);
         if (!defValue) return false; // If server disabled it, do not send it
         try {
-            NotifactionSettings settings = getPlayerNotifactionSetting(uuid);
+            NotificationSettings settings = getPlayerNotifactionSetting(uuid);
             Log.debug("Notifaction Settings: " + settings);
-            return settings.settings().getOrDefault(feature, defValue);
+            return settings.getSettings().getOrDefault(feature, defValue);
         } catch (SQLException e) {
             return defValue;
         }
