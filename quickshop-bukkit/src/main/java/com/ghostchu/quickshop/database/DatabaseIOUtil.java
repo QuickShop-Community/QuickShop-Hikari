@@ -48,11 +48,11 @@ public class DatabaseIOUtil {
     public void importTables(@NotNull File zipFile) throws SQLException, ClassNotFoundException {
         // Import from CSV
         for (DataTables table : DataTables.values()) {
-            Log.debug("Purging table " + table.name());
+            Log.debug("Purging table " + table.getName());
             table.purgeTable();
-            Log.debug("Importing table " + table.name() + " from " + zipFile.getAbsolutePath());
+            Log.debug("Importing table " + table.getName() + " from " + zipFile.getAbsolutePath());
             helper.importFromCSV(zipFile, table);
-            Log.debug("Imported table " + table.name() + " from " + zipFile.getAbsolutePath());
+            Log.debug("Imported table " + table.getName() + " from " + zipFile.getAbsolutePath());
         }
     }
 }
