@@ -29,6 +29,12 @@ delete-shop-on-plot-unclaimed: true
 #Workaround for username issue
 workaround-for-account-name: false
 
+#Workaround for uuid conversion issue
+#0=standard
+#1=essentials
+#2=gringotts-towny
+uuid-conversion: 0
+
 #Which checks does a player need to pass to create a shop?
 #You can use multiple checks at the same time.
 #Priority: UP > DOWN

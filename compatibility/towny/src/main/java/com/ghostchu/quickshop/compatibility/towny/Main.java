@@ -9,6 +9,10 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.ghostchu.quickshop.compatibility.towny.command.NationCommand;
 import com.ghostchu.quickshop.compatibility.towny.command.TownCommand;
+import com.ghostchu.quickshop.compatibility.towny.compat.UuidConversion;
+import com.ghostchu.quickshop.compatibility.towny.compat.essentials.EssentialsConversion;
+import com.ghostchu.quickshop.compatibility.towny.compat.general.GeneralConversion;
+import com.ghostchu.quickshop.compatibility.towny.compat.gringotts.towny.GringottsTownyConversion;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.palmergames.bukkit.towny.TownyAPI;
@@ -31,7 +35,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,15 +48,8 @@ public final class Main extends CompatibilityModule implements Listener {
     private boolean whiteList;
     @Getter
     private TownyMaterialPriceLimiter priceLimiter;
-
-    @NotNull
-    public static String processTownyAccount(String accountName) {
-        String providerName = QuickShop.getInstance().getEconomy().getProviderName();
-        if (JavaPlugin.getPlugin(Main.class).getConfig().getBoolean("workaround-for-account-name") || "Essentials".equals(providerName)) {
-            return EssStringUtil.safeString(accountName);
-        }
-        return accountName;
-    }
+    @Getter
+    private UuidConversion uuidConversion;
 
     @EventHandler(ignoreCancelled = true)
     public void onCreation(ShopCreateEvent event) {
@@ -128,6 +124,11 @@ public final class Main extends CompatibilityModule implements Listener {
                 .description((locale) -> api.getTextManager().of("addon.towny.commands.nation").forLocale(locale))
                 .executor(new NationCommand(this))
                 .build());
+        uuidConversion = switch (getConfig().getInt("uuid-conversion", 0)) {
+            case 1 -> new EssentialsConversion();
+            case 2 -> new GringottsTownyConversion();
+            default -> new GeneralConversion();
+        };
         reflectChanges();
     }
 
