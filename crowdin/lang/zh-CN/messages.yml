@@ -1311,7 +1311,7 @@ addon:
     message: "<red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上"
   limited:
     commands:
-      limit: "<yellow>限制玩家在时间段内的交易。"
+      limit: "<yellow>限制玩家在时间段内的交易"
     titles:
       title: "<green>交易成功"
       subtitle: "<aqua>您还可以在这个商店交易 <gold>{0}</gold> 个物品"
