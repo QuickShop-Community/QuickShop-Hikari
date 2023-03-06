@@ -15,6 +15,8 @@ import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -328,12 +330,8 @@ public class Util {
                     config = yaml.dump(root);
                     Log.debug("Updated, we will try load as hacked ItemStack: " + config);
                 } else {
-                    plugin.logger()
-                            .warn(
-                                    "Cannot load ItemStack {} because it saved from higher Minecraft server version, the action will fail and you will receive a exception, PLEASE DON'T REPORT TO QUICKSHOP!", config);
-                    plugin.logger()
-                            .warn(
-                                    "You can try force load this ItemStack by our hacked ItemStack read util (shop.force-load-downgrade-items), but beware, the data may corrupt if you load on this lower Minecraft server version, Please backup your world and database before enable!");
+                    plugin.logger().warn("Cannot load ItemStack {} because it saved from higher Minecraft server version, the action will fail and you will receive a exception, PLEASE DON'T REPORT TO QUICKSHOP!", config);
+                    plugin.logger().warn("You can try force load this ItemStack by our hacked ItemStack read util (shop.force-load-downgrade-items), but beware, the data may corrupt if you load on this lower Minecraft server version, Please backup your world and database before enable!");
                 }
             }
             yamlConfiguration.loadFromString(config);
@@ -369,9 +367,7 @@ public class Util {
      * @return Equals or not.
      */
     private static boolean equalsBlockStateLocation(@NotNull Location b1, @NotNull Location b2) {
-        return (b1.getBlockX() == b2.getBlockX())
-                && (b1.getBlockY() == b2.getBlockY())
-                && (b1.getBlockZ() == b2.getBlockZ());
+        return (b1.getBlockX() == b2.getBlockX()) && (b1.getBlockY() == b2.getBlockY()) && (b1.getBlockZ() == b2.getBlockZ());
     }
 
     /**
@@ -448,7 +444,14 @@ public class Util {
     @NotNull
     public static Component getItemStackName(@NotNull ItemStack itemStack) {
         Component result = getItemCustomName(itemStack);
-        return isEmptyComponent(result) ? plugin.getPlatform().getTranslation(itemStack.getType()) : result;
+        Component postHandled = isEmptyComponent(result) ? plugin.getPlatform().getTranslation(itemStack.getType()) : result;
+        String value = plugin.getConfig().getString("itemstack-parse-color", "null");
+        if (value.equalsIgnoreCase("null")) return postHandled;
+        TextColor color = NamedTextColor.NAMES.value(value);
+        if (color == null) {
+            color = TextColor.fromHexString(value);
+        }
+        return postHandled.color(color);
     }
 
     @Nullable
@@ -476,9 +479,7 @@ public class Util {
                 }
             }
         }
-        if (itemStack.hasItemMeta()
-                && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName()
-                && !QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
+        if (itemStack.hasItemMeta() && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName() && !QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
             return plugin.getPlatform().getDisplayName(itemStack.getItemMeta());
         }
         return null;

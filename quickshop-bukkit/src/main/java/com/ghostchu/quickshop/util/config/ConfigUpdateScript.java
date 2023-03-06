@@ -53,6 +53,11 @@ public class ConfigUpdateScript {
         getConfig().set("shop.async-owner-name-fetch", false);
     }
 
+    @UpdateScript(version = 1014)
+    public void appendColorForItemStackComponent() {
+        getConfig().set("itemstack-parse-color", "null");
+    }
+
     @UpdateScript(version = 1004)
     public void configurableDatabaseProperties() {
         getConfig().set("database.queue", null);

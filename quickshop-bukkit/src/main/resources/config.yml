@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1013
+config-version: 1014
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -623,3 +623,8 @@ custom-translation-key: [ ]
 # Turn off this will stop recording transactions for metrics.
 transaction-metric:
   enable: true
+# The color that append to itemstack component
+# It can be a HEX color string or NamedTextColor name.
+# HEX: #FF0000
+# NamedTextColor: AQUA
+itemstack-parse-color: null
