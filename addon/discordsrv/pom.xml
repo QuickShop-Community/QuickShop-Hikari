@@ -70,13 +70,8 @@
             <groupId>com.discordsrv</groupId>
             <artifactId>discordsrv</artifactId>
             <version>1.26.1</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>JDA</artifactId>
-                    <groupId>net.dv8tion</groupId>
-                </exclusion>
-            </exclusions>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/DiscordSRV-Build-1.26.1.jar</systemPath>
         </dependency>
     </dependencies>
 </project>
