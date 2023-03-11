@@ -15,8 +15,6 @@ import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
@@ -456,23 +454,7 @@ public class Util {
     @NotNull
     public static Component getItemStackName(@NotNull ItemStack itemStack) {
         Component result = getItemCustomName(itemStack);
-        Component postHandled = isEmptyComponent(result) ? plugin.getPlatform().getTranslation(itemStack.getType()) : result;
-        String value = plugin.getConfig().getString("itemstack-parse-color", "null");
-        if (value.equalsIgnoreCase("null")) return postHandled;
-        TextColor color = NamedTextColor.NAMES.value(value);
-        if (color == null) {
-            color = TextColor.fromHexString(value);
-        }
-        if (color == null) {
-            color = TextColor.fromCSSHexString(value);
-        }
-        if (color == null) {
-            try {
-                color = TextColor.color(Integer.parseInt(value));
-            } catch (NumberFormatException ignored) {
-            }
-        }
-        return postHandled.color(color);
+        return isEmptyComponent(result) ? plugin.getPlatform().getTranslation(itemStack.getType()) : result;
     }
 
     @Nullable
