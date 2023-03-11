@@ -69,7 +69,7 @@
         <dependency>
             <groupId>com.discordsrv</groupId>
             <artifactId>discordsrv</artifactId>
-            <version>1.26.0</version>
+            <version>1.26.1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

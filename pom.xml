@@ -78,7 +78,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.10.1</version>
+                    <version>3.11.0</version>
                     <configuration>
                         <source>${java.version}</source>
                         <target>${java.version}</target>
@@ -384,7 +384,7 @@
             <dependency>
                 <groupId>org.spigotmc</groupId>
                 <artifactId>spigot-api</artifactId>
-                <version>1.19.2-R0.1-SNAPSHOT</version>
+                <version>1.19.3-R0.1-SNAPSHOT</version>
                 <scope>provided</scope>
                 <exclusions>
                     <exclusion>
@@ -414,7 +414,7 @@
             <dependency>
                 <groupId>org.jetbrains</groupId>
                 <artifactId>annotations</artifactId>
-                <version>24.0.0</version>
+                <version>24.0.1</version>
                 <scope>provided</scope>
             </dependency>
         </dependencies>
