@@ -18,7 +18,13 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Tag;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -55,8 +61,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -450,6 +462,15 @@ public class Util {
         TextColor color = NamedTextColor.NAMES.value(value);
         if (color == null) {
             color = TextColor.fromHexString(value);
+        }
+        if (color == null) {
+            color = TextColor.fromCSSHexString(value);
+        }
+        if (color == null) {
+            try {
+                color = TextColor.color(Integer.parseInt(value));
+            } catch (NumberFormatException ignored) {
+            }
         }
         return postHandled.color(color);
     }
