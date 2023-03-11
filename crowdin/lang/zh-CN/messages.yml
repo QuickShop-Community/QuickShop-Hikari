@@ -9,7 +9,7 @@ _comment: 嗨 翻译者！如果您正在Github上或直接编辑源文件的方
 unlimited-shop-owner-changed: <yellow>这个系统商店的店主已更改为 {0}。
 bad-command-usage-detailed: '<red>错误的命令参数! 尝试以下参数: <gray>{0}'
 thats-not-a-number: <red>输入的内容不是数字
-shop-name-disallowed: <red>商店名称<yellow>{0} <red>不被允许。请换一个名称后再试！
+shop-name-disallowed: <red>商店名称<yellow>{0} <yellow>不被允许。请换一个名称后再试！
 console-only-danger: <red>这是一个危险的命令，只有控制台才能执行它。
 not-a-number: <red>您只能输入一个数字，但您的输入是 {0}。
 not-looking-at-valid-shop-block: <red>无法找到创建商店的方块，您需要注视着一个商店方块
