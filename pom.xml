@@ -65,10 +65,10 @@
     </ciManagement>
 
     <pluginRepositories>
-        <pluginRepository>
-            <id>apache.snapshots</id>
-            <url>https://repository.apache.org/snapshots/</url>
-        </pluginRepository>
+        <!--        <pluginRepository>-->
+        <!--            <id>apache.snapshots</id>-->
+        <!--            <url>https://repository.apache.org/snapshots/</url>-->
+        <!--        </pluginRepository>-->
     </pluginRepositories>
 
 
@@ -337,11 +337,6 @@
             <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
         <repository>
-            <id>Sonatype-public</id>
-            <name>SnakeYAML repository</name>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-        <repository>
             <id>md_5-snapshots</id>
             <url>https://repo.md-5.net/content/repositories/snapshots/</url>
         </repository>
@@ -352,10 +347,6 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
-        </repository>
-        <repository>
-            <id>sonatype-oss</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
         <repository>
             <id>papermc</id>
@@ -462,7 +453,7 @@
         <module>compatibility/advancedregionmarket</module>
         <module>compatibility/bentobox</module>
         <module>compatibility/superiorskyblock</module>
-        <module>compatibility/griefprevention</module>
+        <!--        <module>compatibility/griefprevention</module>-->
         <module>compatibility/towny</module>
         <module>compatibility/plotsquared</module>
         <module>compatibility/lands</module>
