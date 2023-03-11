@@ -2,7 +2,7 @@ package com.ghostchu.quickshop.addon.discordsrv.bean;
 
 import org.jetbrains.annotations.NotNull;
 
-public enum NotifactionFeature {
+public enum NotificationFeature {
     USER_SHOP_PERMISSION_CHANGED("notify-shop-permission-changed", "user.shop.permission_changed", true),
     USER_SHOP_PRICE_CHANGED("notify-shop-price-changed", "user.shop.price_changed", true),
     USER_SHOP_TRANSFER("notify-shop-transfer", "user.shop.transfer", true),
@@ -17,7 +17,7 @@ public enum NotifactionFeature {
     private final String configNode;
     private final boolean playerToggleable;
 
-    NotifactionFeature(String configNode, String databaseNode, boolean playerToggleable) {
+    NotificationFeature(String configNode, String databaseNode, boolean playerToggleable) {
         this.configNode = configNode;
         this.databaseNode = databaseNode;
         this.playerToggleable = playerToggleable;

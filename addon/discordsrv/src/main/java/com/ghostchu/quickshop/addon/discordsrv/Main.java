@@ -1,7 +1,7 @@
 package com.ghostchu.quickshop.addon.discordsrv;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.addon.discordsrv.bean.NotifactionFeature;
+import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationFeature;
 import com.ghostchu.quickshop.addon.discordsrv.command.SubCommand_Discord;
 import com.ghostchu.quickshop.addon.discordsrv.database.DiscordDatabaseHelper;
 import com.ghostchu.quickshop.addon.discordsrv.listener.QuickShopEventListener;
@@ -84,7 +84,12 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
         return jdaWrapper;
     }
 
-    public boolean isServerNotifactionFeatureEnabled(@NotNull NotifactionFeature feature) {
+    @Deprecated
+    public boolean isServerNotifactionFeatureEnabled(@NotNull NotificationFeature feature) {
+        return isServerNotificationFeatureEnabled(feature);
+    }
+
+    public boolean isServerNotificationFeatureEnabled(@NotNull NotificationFeature feature) {
         return getConfig().getBoolean("features." + feature.getConfigNode(), true);
     }
 

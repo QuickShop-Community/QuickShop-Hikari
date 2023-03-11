@@ -36,7 +36,11 @@ import lombok.EqualsAndHashCode;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -56,7 +60,15 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.ref.WeakReference;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -922,19 +934,8 @@ public class ContainerShop implements Shop, Reloadable {
         if (plugin.getConfig().getBoolean("shop.force-use-item-original-name") || !this.getItem().hasItemMeta() || !this.getItem().getItemMeta().hasDisplayName()) {
             Component left = plugin.text().of("signs.item-left").forLocale();
             Component right = plugin.text().of("signs.item-right").forLocale();
-            Component itemName = Util.getItemCustomName(getItem());
-            Component itemComponents;
-            if (itemName == null) {
-                // We can't insert translatable components into a sign.
-                if (PaperLib.isPaper()) {
-                    itemComponents = plugin.getPlatform().getTranslation(getItem().getType());
-                } else {
-                    itemComponents = Component.text(CommonUtil.prettifyText(getItem().getType().name()));
-                }
-            } else {
-                itemComponents = itemName;
-            }
-            lines.add(left.append(itemComponents).append(right));
+            Component itemName = Util.getItemStackName(getItem());
+            lines.add(left.append(itemName).append(right));
         } else {
             lines.add(plugin.text().of("signs.item-left").forLocale().append(Util.getItemStackName(getItem()).append(plugin.text().of("signs.item-right").forLocale())));
         }

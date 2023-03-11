@@ -1,7 +1,7 @@
 break-shop-use-supertool: <yellow>Du kan förstöra butiken med SuperVerktyget.
 fee-charged-for-price-change: <green>Du betalade <red>{0}<green> för att ändra priset.
 not-allowed-to-create: <red>Du får inte skapa en butik här.
-disabled-in-this-world: <red>QuickShop is disabled in this world
+disabled-in-this-world: <red>QuickShop är inaktiverat i denna värld
 how-much-to-trade-for: <green>Ange i chatten, hur mycket du vill sälja <yellow>{1}x {0}<green> för.
 client-language-changed: <green>QuickShop upptäckte att ditt klientspråk har ändrats, vi använder nu {0} språk för dig.
 shops-backingup: Skapar butik-backup från databasen...
@@ -29,24 +29,24 @@ server-crash-warning: '<red>Server kan krascha efter körning av /qs reload om d
 you-cant-afford-to-change-price: <red>Det kostar {0} att ändra priset i din butik.
 safe-mode: <red>QuickShop är nu i säkert läge, du kan inte öppna den här butiksbehållaren, kontakta serveradministratören för att åtgärda felen.
 forbidden-vanilla-behavior: <red>Operationen är förbjuden på grund av att den inte är konsekvent med vanilla-beteendet
-shop-out-of-space-name: <dark_purple>Your shop {0} is full!
+shop-out-of-space-name: <dark_purple>Din affär {0} är full!
 paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Namn: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Ägare: <aqua>{0}'
+    - '<yellow>Typ: <aqua>{0}'
+    - '<yellow>Pris: <aqua>{0}'
     - '<yellow>Föremål: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Plats: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Namn: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
+    - '<yellow>Ägare: <aqua>{owner}'
+    - '<yellow>Typ: <aqua>{type}'
+    - '<yellow>Pris: <aqua>{price}'
     - '<yellow>Föremål: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Plats: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -58,7 +58,7 @@ you-cant-create-shop-in-there: <red>Du har inte behörighet att skapa en butik p
 no-pending-action: <red>Du har inga väntande transaktioner
 refill-success: <green>Påfyllningen lyckades
 failed-to-paste: <red>Misslyckades att ladda upp data till Pastebin. Kontrollera din internetanslutning och försök igen. (Se konsolen för detaljer)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+shop-out-of-stock-name: <dark_purple>Din affär {0} har fått slut på {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Ange i chatten, hur många paket du vill <aqua>KÖPA<green>. Det finns <yellow>{0}<green> föremål i varje paket och du kan köpa <yellow>{1}<green> paket. Ange <aqua>{2}<green> i chatten för att köpa alla.
 exceeded-maximum: <red>Värdet överskred det maximala värdet i Java.
@@ -86,7 +86,7 @@ reloading-status:
   scheduled: <green>Omladdning slutförd. &(Vissa ändringar kräver att servern startar om för att påverka)
   require-restart: <green>Omladdning slutförd. &(Vissa ändringar kräver att servern startar om för att påverka)
   failed: <red>Reload misslyckades, kontrollera serverkonsolen
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} köpte {1} {2} från din butik och du tjänade {3} ({4} i skatt).
 not-enough-space: <red>Du har bara plats för {0} mer!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Framgångsrikt lagt till {0} som personal för din butik.
@@ -101,7 +101,7 @@ menu:
   item: '<green>Föremål: <yellow>{0}'
   price-per: <green>Pris per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>för <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
+  item-name-and-price-tax: '<yellow>{0} {1}<green>för</green> {2} <gray>(<green>{3}</green> i skatt)</gray>'
   successful-purchase: '<green>Framgångsrikt köpt:'
   price-per-stack: <green>Pris per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Lagrade förtrollningar
@@ -123,33 +123,33 @@ integrations-check-failed-trade: <red>Integration {0} nekade butiksbytet
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Framgångsrikt ändrat butiksägaren till Server.
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>Detta butiksnamn är för långt (max längd {0}), var snäll och välj en annan!
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>{0}s {1} {2} transaktioner:'
   action-hover: <yellow>{0}
-  price-hover: <yellow>Total {0}, including {1} taxes.
-  unknown: <gray>(unknown)
+  price-hover: <yellow>Totalt {0}, inklusive {1} skatter.
+  unknown: <gray>(okänd)
   undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  no-results: <red>Inga transaktioner hittades.
   action-description:
     DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
-    PURCHASE: <yellow>Purchased item with a shop
+    PURCHASE_BUYING_SHOP: <yellow>Spelaren sålde några föremål till en köpande butik.
+    CREATE: <yellow>Spelaren skapade en affär.
+    PURCHASE_SELLING_SHOP: <yellow>Spelaren köpte några föremål från en säljande butik
+    PURCHASE: <yellow>Köpte föremål från en butik
   query-argument: 'Query Argument: {0}'
-  amount-hover: <yellow>{0}x
-  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
+  amount-hover: <yellow>{0}st
+  header-shop: '<yellow>Affären {0}s {1} {2} transaktioner:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
-  looking-up: <yellow>Performing metric lookup, Please wait...
-  tax-hover: <yellow>{0} taxes
-  header-global: '<yellow>The server {0} {1} transactions:'
+  looking-up: <yellow>Utför metrisk uppslagning, var god vänta...
+  tax-hover: <yellow>{0} skatter
+  header-global: '<yellow>Servern {0}s {1} transaktioner:'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
-  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}'
-  time-hover: '<yellow>Time: {0}'
-  amount-stack-hover: <yellow>{0}x stack
+  transaction-count: <yellow>{0} totalt
+  shop-hover: '<yellow>{0}<newline><gold>Position: <gray>{1} {2} {3}, Värld: {4}<newline><gold>Ägare: <gray>{5}<newline><gold>Affärstyp: <gray>{6}<newline><gold>Föremål: <gray>{7}<newline><gold>Pris: <gray>{8}'
+  time-hover: '<yellow>Tid: {0}'
+  amount-stack-hover: <yellow>{0}st stack
 permission-denied-3rd-party: '<red>Tillstånd nekat: tredje parts plugin [{0}].'
 you-dont-have-that-many-items: <red>Du har endast {0} {1}.
 complete: <green>Färdig!

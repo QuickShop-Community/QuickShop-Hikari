@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>4.1.0.3</version>
+        <version>4.1.0.4</version>
     </parent>
 
     <artifactId>quickshop-bukkit</artifactId>
@@ -36,6 +36,12 @@
             <!--            </resource>-->
         </resources>
     </build>
+    <repositories>
+        <repository>
+            <id>minebench-repo</id>
+            <url>https://repo.minebench.de/</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -168,7 +174,7 @@
         <dependency>
             <groupId>com.konghq</groupId>
             <artifactId>unirest-java</artifactId>
-            <version>3.14.1</version>
+            <version>3.14.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -243,5 +249,6 @@
             <version>1.0.3</version>
             <scope>provided</scope>
         </dependency>
+
     </dependencies>
 </project>

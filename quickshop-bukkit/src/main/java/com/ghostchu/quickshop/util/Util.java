@@ -16,7 +16,13 @@ import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Tag;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -53,8 +59,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -328,12 +340,8 @@ public class Util {
                     config = yaml.dump(root);
                     Log.debug("Updated, we will try load as hacked ItemStack: " + config);
                 } else {
-                    plugin.logger()
-                            .warn(
-                                    "Cannot load ItemStack {} because it saved from higher Minecraft server version, the action will fail and you will receive a exception, PLEASE DON'T REPORT TO QUICKSHOP!", config);
-                    plugin.logger()
-                            .warn(
-                                    "You can try force load this ItemStack by our hacked ItemStack read util (shop.force-load-downgrade-items), but beware, the data may corrupt if you load on this lower Minecraft server version, Please backup your world and database before enable!");
+                    plugin.logger().warn("Cannot load ItemStack {} because it saved from higher Minecraft server version, the action will fail and you will receive a exception, PLEASE DON'T REPORT TO QUICKSHOP!", config);
+                    plugin.logger().warn("You can try force load this ItemStack by our hacked ItemStack read util (shop.force-load-downgrade-items), but beware, the data may corrupt if you load on this lower Minecraft server version, Please backup your world and database before enable!");
                 }
             }
             yamlConfiguration.loadFromString(config);
@@ -369,9 +377,7 @@ public class Util {
      * @return Equals or not.
      */
     private static boolean equalsBlockStateLocation(@NotNull Location b1, @NotNull Location b2) {
-        return (b1.getBlockX() == b2.getBlockX())
-                && (b1.getBlockY() == b2.getBlockY())
-                && (b1.getBlockZ() == b2.getBlockZ());
+        return (b1.getBlockX() == b2.getBlockX()) && (b1.getBlockY() == b2.getBlockY()) && (b1.getBlockZ() == b2.getBlockZ());
     }
 
     /**
@@ -476,9 +482,7 @@ public class Util {
                 }
             }
         }
-        if (itemStack.hasItemMeta()
-                && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName()
-                && !QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
+        if (itemStack.hasItemMeta() && Objects.requireNonNull(itemStack.getItemMeta()).hasDisplayName() && !QuickShop.getInstance().getConfig().getBoolean("shop.force-use-item-original-name")) {
             return plugin.getPlatform().getDisplayName(itemStack.getItemMeta());
         }
         return null;

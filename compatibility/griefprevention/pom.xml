@@ -7,7 +7,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>4.1.0.3</version>
+        <version>4.1.0.4</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>com.ghostchu.quickshop.compatibility</groupId>
@@ -41,6 +41,12 @@
         </resources>
     </build>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -62,7 +68,7 @@
         <dependency>
             <groupId>com.github.TechFortress</groupId>
             <artifactId>GriefPrevention</artifactId>
-            <version>16.18</version>
+            <version>16.18.1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

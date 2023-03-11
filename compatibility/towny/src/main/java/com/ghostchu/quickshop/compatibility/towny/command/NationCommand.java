@@ -1,6 +1,5 @@
 package com.ghostchu.quickshop.compatibility.towny.command;
 
-import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
@@ -70,8 +69,7 @@ public class NationCommand implements CommandHandler<Player> {
             return;
         }
 
-        String vaultAccountName = Main.processTownyAccount(town.getAccount().getName());
-        UUID uuid = QuickShop.getInstance().getPlayerFinder().name2Uuid(vaultAccountName);
+        UUID uuid = plugin.getUuidConversion().convertTownyAccount(nation);
         // Check if item and type are allowed
         if (plugin.getConfig().getBoolean("bank-mode.enable")) {
             Double price = plugin.getPriceLimiter().getPrice(shop.getItem().getType(), shop.isSelling());

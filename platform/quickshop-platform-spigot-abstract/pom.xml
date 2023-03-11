@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>4.1.0.3</version>
+        <version>4.1.0.4</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -86,7 +86,7 @@
         <dependency>
             <groupId>com.github.PikaMug</groupId>
             <artifactId>LocaleLib</artifactId>
-            <version>3.1</version>
+            <version>3.2</version>
         </dependency>
     </dependencies>
 </project>

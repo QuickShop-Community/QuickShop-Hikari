@@ -2,7 +2,7 @@ package com.ghostchu.quickshop.addon.discordsrv.command;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.discordsrv.Main;
-import com.ghostchu.quickshop.addon.discordsrv.bean.NotifactionFeature;
+import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationFeature;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -32,7 +32,7 @@ public class SubCommand_Discord implements CommandHandler<Player> {
             qs.text().of(sender, "command-incorrect", "/qs discord <features> <enable/disable>").send();
             return;
         }
-        NotifactionFeature feature = getFeatureByName(cmdArg[0]);
+        NotificationFeature feature = getFeatureByName(cmdArg[0]);
         if (feature == null) {
             qs.text().of(sender, "command-incorrect", "/qs discord <features> <enable/disable>").send();
             return;
@@ -52,9 +52,9 @@ public class SubCommand_Discord implements CommandHandler<Player> {
     }
 
     @Nullable
-    private NotifactionFeature getFeatureByName(String name) {
-        for (NotifactionFeature value : NotifactionFeature.values()) {
-            NotifactionFeature selected = null;
+    private NotificationFeature getFeatureByName(String name) {
+        for (NotificationFeature value : NotificationFeature.values()) {
+            NotificationFeature selected = null;
             if (value.name().equalsIgnoreCase(name))
                 selected = value;
             else if (value.getConfigNode().equalsIgnoreCase(name))
@@ -71,9 +71,9 @@ public class SubCommand_Discord implements CommandHandler<Player> {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
         if (cmdArg.length == 1) {
-            return Arrays.stream(NotifactionFeature.values())
-                    .filter(NotifactionFeature::isPlayerToggleable)
-                    .map(NotifactionFeature::getConfigNode)
+            return Arrays.stream(NotificationFeature.values())
+                    .filter(NotificationFeature::isPlayerToggleable)
+                    .map(NotificationFeature::getConfigNode)
                     .toList();
         }
         if (cmdArg.length == 2) {

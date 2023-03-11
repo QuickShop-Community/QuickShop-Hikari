@@ -9,7 +9,7 @@ _comment: 嗨 翻译者！如果您正在Github上或直接编辑源文件的方
 unlimited-shop-owner-changed: <yellow>这个系统商店的店主已更改为 {0}。
 bad-command-usage-detailed: '<red>错误的命令参数! 尝试以下参数: <gray>{0}'
 thats-not-a-number: <red>输入的内容不是数字
-shop-name-disallowed: <red>商店名称<yellow>{0} <red>不被允许。请换一个名称后再试！
+shop-name-disallowed: <red>商店名称<yellow>{0} <yellow>不被允许。请换一个名称后再试！
 console-only-danger: <red>这是一个危险的命令，只有控制台才能执行它。
 not-a-number: <red>您只能输入一个数字，但您的输入是 {0}。
 not-looking-at-valid-shop-block: <red>无法找到创建商店的方块，您需要注视着一个商店方块
@@ -554,23 +554,23 @@ debug:
   sql-completed: "<green>已完成，共{0} 行受到影响。"
   sql-exception: "<red>执行 SQL 查询时发生错误，请检查控制台获取详细信息！"
   sql-disabled: "<red>出于安全原因，SQL 查询在这个服务器上被禁用。如果你真的需要这个功能， 您可以添加以下参数到启动参数： <aqua>{0}</aqua> 并设置为 `true` 来启用它。"
-  force-shop-reload: "<yellow>Forcing reload all loaded shops..."
-  force-shop-reload-complete: "<green>Forced <aqua>{0}</aqua> shops to be reloaded."
-  force-shop-loader-reload: "<yellow>Forcing shop-loader reloading..."
-  force-shop-loader-reload-unloading-shops: "<yellow>Unloading <aqua>{0}</aqua> loaded shops..."
-  force-shop-loader-reload-unloading-shops-from-memory: "<yellow>Removing <aqua>{0}</aqua> shops from memory..."
-  force-shop-loader-reload-reloading-shop-loader: "<yellow>Re-calling shop-loader for reloading all shops from database..."
-  force-shop-loader-reload-complete: "<green>Shop-loader has been reloaded all shops!"
-  toggle-shop-loaded-status: "<aqua>Toggle this shop loaded status to <gold>{0}</gold>"
-  shop-internal-data: "<yellow>The internal data of this shop: <reset>{0}</reset>"
-  handler-list-not-valid-bukkit-event-class: "<red>The provided class <yellow>{0}</yellow> is not a valid Bukkit event class."
-  update-player-shops-signs-no-username-given: "<red>You must provide a valid player username."
-  update-player-shops-signs-create-async-task: "<yellow>Creating async tasks for force updating signs..."
-  update-player-shops-player-selected: "<yellow>Player selected: <gold>{0}</gold>"
-  update-player-shops-player-shops: "<yellow>Total <gold>{0}</gold> shops waiting for updates."
-  update-player-shops-per-tick-threshold: "<yellow>Max shops can be update per tick: <gold>{0}</gold>"
-  update-player-shops-complete: "<green>Task completed, Used <yellow>{0}ms</yellow> for updating."
-  update-player-shops-task-started: "<gold>The tasks has been started, please wait for it to complete."
+  force-shop-reload: "<yellow>正在强制重载已加载的商店……"
+  force-shop-reload-complete: "<green>已强制重载 <aqua>{0}</aqua> 个商店。"
+  force-shop-loader-reload: "<yellow>正在强制商店加载器重载……"
+  force-shop-loader-reload-unloading-shops: "<yellow>正在取消 <aqua>{0}</aqua> 个已加载的商店……"
+  force-shop-loader-reload-unloading-shops-from-memory: "<yellow>正在从内存中移除 <aqua>{0}</aqua> 个商店……"
+  force-shop-loader-reload-reloading-shop-loader: "<yellow>正在重新调用商店加载器以从数据库重载所有商店……"
+  force-shop-loader-reload-complete: "<green>商店加载器已重新加载所有的商店！"
+  toggle-shop-loaded-status: "<aqua>切换商店加载状态为 <gold>{0}</gold>"
+  shop-internal-data: "<yellow>此商店内部数据：<reset>{0}</reset>"
+  handler-list-not-valid-bukkit-event-class: "<red>所提供的 class <yellow>{0}</yellow> 不是有效的 Bukkit event class。"
+  update-player-shops-signs-no-username-given: "<red>你必须提供有效的玩家名称。"
+  update-player-shops-signs-create-async-task: "<yellow>正在为强制更新告示牌创建异步任务……"
+  update-player-shops-player-selected: "<yellow>已选择玩家：<gold>{0}</gold>"
+  update-player-shops-player-shops: "<yellow>共有 <gold>{0}</gold> 个商店等待更新。"
+  update-player-shops-per-tick-threshold: "<yellow>最大商店可以每（tick）更新：<gold>{0}</gold>"
+  update-player-shops-complete: "<green>任务已完成，已使用 <yellow>{0} 毫秒</yellow>更新。"
+  update-player-shops-task-started: "<gold>任务已开始，请等待完成。"
 database:
   scanning: "<green>正在 QuickShop 数据库中扫描孤立的数据，扫描过程中数据库负载可能会增加，这可能需要一段时间..."
   scanning-async: "<yellow>正在异步任务线程上扫描 QuickShop 数据库中孤立的数据，扫描过程中数据库负载可能会增加，这可能需要一段时间，请稍后再试。"
@@ -691,7 +691,7 @@ addon:
          "embed":
            {
              "title": ":inbox_tray: 有人向你的商店出售物品",
-             "description": "该玩家 %%purchase.name%% 出售 %%purchase.amount%%个 %%shop.item.name%% 到你的商店.",
+             "description": "该玩家 %%purchase.name%% 出售 %%purchase.amount%% 个 %%shop.item.name%% 到你的商店.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -704,7 +704,7 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord通知消息",
+               "text": "QuickShop-Hikari Discord消息通知",
                "icon_url": ""
              },
              "fields": [
@@ -759,7 +759,7 @@ addon:
                   "url": ""
               },
               "footer": {
-                  "text": "QuickShop-Hikari Discord通知消息",
+                  "text": "QuickShop-Hikari Discord消息通知",
                   "icon_url": ""
               },
               "fields": [
@@ -963,7 +963,7 @@ addon:
       mod-remove-shop: |
         {
           "embed": {
-            "title": ":classical_building: 商店在服务器中已被删除",
+            "title": ":recycle: 商店在服务器中已被删除",
             "description": "玩家在服务器中删除了一个商店.",
             "color": 6061450,
             "author": {
@@ -1311,7 +1311,7 @@ addon:
     message: "<red>您不能将非商店交易物品放入商店容器中，所有非商店交易的物品都会被扔到地上"
   limited:
     commands:
-      limit: "<yellow>限制玩家在时间段内的交易。"
+      limit: "<yellow>限制玩家在时间段内的交易"
     titles:
       title: "<green>交易成功"
       subtitle: "<aqua>您还可以在这个商店交易 <gold>{0}</gold> 个物品"
