@@ -453,7 +453,7 @@
         <module>compatibility/advancedregionmarket</module>
         <module>compatibility/bentobox</module>
         <module>compatibility/superiorskyblock</module>
-        <!--        <module>compatibility/griefprevention</module>-->
+        <module>compatibility/griefprevention</module>
         <module>compatibility/towny</module>
         <module>compatibility/plotsquared</module>
         <module>compatibility/lands</module>
