@@ -46,29 +46,29 @@ public class SubCommand_Lookup implements CommandHandler<Player> {
             plugin.text().of(sender, "command-incorrect", "/qs lookup <create/remove/test> <name>").send();
             return;
         }
+        String itemRefName = parser.getArgs().get(1);
         switch (parser.getArgs().get(0).toLowerCase(Locale.ROOT)) {
             case "create" -> {
                 if (sender.getInventory().getItemInMainHand().getType().isAir()) {
                     plugin.text().of(sender, "no-anythings-in-your-hand").send();
                     return;
                 }
-                ItemMarker.OperationResult result = plugin.getItemMarker().save(parser.getArgs().get(1), item);
+
+                ItemMarker.OperationResult result = plugin.getItemMarker().save(itemRefName, item);
                 switch (result) {
-                    case SUCCESS -> plugin.text().of(sender, "lookup-item-created", parser.getArgs().get(1)).send();
+                    case SUCCESS -> plugin.text().of(sender, "lookup-item-created", itemRefName).send();
                     case REGEXP_FAILURE ->
                             plugin.text().of(sender, "lookup-item-name-regex", ItemMarker.getNameRegExp(), parser.getArgs().get(1)).send();
-                    case NAME_CONFLICT ->
-                            plugin.text().of(sender, "lookup-item-exists", parser.getArgs().get(1)).send();
-                    default -> plugin.text().of(sender, "internal-error", parser.getArgs().get(1)).send();
+                    case NAME_CONFLICT -> plugin.text().of(sender, "lookup-item-exists", itemRefName).send();
+                    default -> plugin.text().of(sender, "internal-error", itemRefName).send();
                 }
             }
             case "remove" -> {
-                ItemMarker.OperationResult result = plugin.getItemMarker().remove(parser.getArgs().get(1));
+                ItemMarker.OperationResult result = plugin.getItemMarker().remove(itemRefName);
                 switch (result) {
-                    case SUCCESS -> plugin.text().of(sender, "lookup-item-removed", parser.getArgs().get(1)).send();
-                    case NOT_EXISTS ->
-                            plugin.text().of(sender, "lookup-item-not-found", parser.getArgs().get(1)).send();
-                    default -> plugin.text().of(sender, "internal-error", parser.getArgs().get(1)).send();
+                    case SUCCESS -> plugin.text().of(sender, "lookup-item-removed", itemRefName).send();
+                    case NOT_EXISTS -> plugin.text().of(sender, "lookup-item-not-found", itemRefName).send();
+                    default -> plugin.text().of(sender, "internal-error", itemRefName).send();
                 }
             }
             default -> plugin.text().of(sender, "command-incorrect", "/qs lookup <create/remove/test> <name>").send();

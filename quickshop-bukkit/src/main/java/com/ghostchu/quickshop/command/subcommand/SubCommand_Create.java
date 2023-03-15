@@ -42,9 +42,10 @@ public class SubCommand_Create implements CommandHandler<Player> {
                 return;
             }
         } else {
-            Material material = matchMaterial(parser.getArgs().get(1));
+            String matName = parser.getArgs().get(1);
+            Material material = matchMaterial(matName);
             if (material == null) {
-                plugin.text().of(sender, "item-not-exist", parser.getArgs().get(1)).send();
+                plugin.text().of(sender, "item-not-exist", matName).send();
                 return;
             }
             if (parser.getArgs().size() > 2 && plugin.perm().hasPermission(sender, "quickshop.create.stack") && plugin.isAllowStack()) {

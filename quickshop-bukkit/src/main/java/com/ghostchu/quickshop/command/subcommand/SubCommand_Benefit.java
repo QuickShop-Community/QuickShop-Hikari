@@ -63,15 +63,16 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             plugin.text().of(sender, "command-incorrect", "/qs benefit <add/remove> <player> <percentage>").send();
             return;
         }
-        UUID uuid = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(1));
+        String player = parser.getArgs().get(1);
+        UUID uuid = plugin.getPlayerFinder().name2Uuid(player);
         if (uuid == null) {
-            plugin.text().of(sender, "unknown-player", parser.getArgs().get(1)).send();
+            plugin.text().of(sender, "unknown-player", player).send();
             return;
         }
         if (!PackageUtil.parsePackageProperly("allowOffline").asBoolean()) {
             Player p = Bukkit.getPlayer(uuid);
             if (p == null || !p.isOnline()) {
-                plugin.text().of(sender, "player-offline", parser.getArgs().get(1)).send();
+                plugin.text().of(sender, "player-offline", player).send();
                 return;
             }
         }
@@ -94,7 +95,7 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             Benefit benefit = shop.getShopBenefit();
             benefit.addBenefit(uuid, percent / 100d);
             shop.setShopBenefit(benefit);
-            plugin.text().of(sender, "benefit-added", MsgUtil.formatPlayerProfile(new Profile(uuid, parser.getArgs().get(1)), sender)).send();
+            plugin.text().of(sender, "benefit-added", MsgUtil.formatPlayerProfile(new Profile(uuid, player), sender)).send();
         } catch (NumberFormatException e) {
             plugin.text().of(sender, "not-a-number", percentageStr).send();
         } catch (Benefit.BenefitOverflowException e) {
@@ -109,16 +110,17 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             plugin.text().of(sender, "command-incorrect", "/qs benefit <add/remove/query> <player> <percentage>").send();
             return;
         }
-        UUID uuid = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(1));
+        String player = parser.getArgs().get(1);
+        UUID uuid = plugin.getPlayerFinder().name2Uuid(player);
         if (uuid == null) {
-            plugin.text().of(sender, "unknown-player", parser.getArgs().get(1)).send();
+            plugin.text().of(sender, "unknown-player", player).send();
             return;
         }
 
         Benefit benefit = shop.getShopBenefit();
         benefit.removeBenefit(uuid);
         shop.setShopBenefit(benefit);
-        plugin.text().of(sender, "benefit-removed", MsgUtil.formatPlayerProfile(new Profile(uuid, parser.getArgs().get(1)), sender)).send();
+        plugin.text().of(sender, "benefit-removed", MsgUtil.formatPlayerProfile(new Profile(uuid, player), sender)).send();
 
     }
 
