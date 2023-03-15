@@ -3,7 +3,12 @@ package com.ghostchu.quickshop.database;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.action.PreparedSQLUpdateAction;
 import cc.carm.lib.easysql.api.action.PreparedSQLUpdateBatchAction;
-import cc.carm.lib.easysql.api.builder.*;
+import cc.carm.lib.easysql.api.builder.DeleteBuilder;
+import cc.carm.lib.easysql.api.builder.InsertBuilder;
+import cc.carm.lib.easysql.api.builder.ReplaceBuilder;
+import cc.carm.lib.easysql.api.builder.TableCreateBuilder;
+import cc.carm.lib.easysql.api.builder.TableQueryBuilder;
+import cc.carm.lib.easysql.api.builder.UpdateBuilder;
 import cc.carm.lib.easysql.api.enums.IndexType;
 import cc.carm.lib.easysql.api.function.SQLHandler;
 import com.ghostchu.quickshop.util.Util;
@@ -123,6 +128,13 @@ public enum DataTables {
 
         // TRANSACTION ERROR MESSAGES (NULL means successfully transacted)
         table.addColumn("error", "MEDIUMTEXT");
+    }),
+
+    TAGS("tags", (table) -> {
+        table.addColumn("tagger", "VARCHAR(36) NOT NULL"); // tagger
+        table.addColumn("shop", "INT UNSIGNED NOT NULL"); // shop id
+        table.addColumn("tag", "VARCHAR(255) NOT NULL");
+        table.setIndex(IndexType.PRIMARY_KEY, null, "tagger", "shop", "tag");
     }),
 
     /**
