@@ -2,10 +2,22 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.api.event.QSHandleChatEvent;
+import com.ghostchu.quickshop.api.event.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.ShopCreateSuccessEvent;
+import com.ghostchu.quickshop.api.event.ShopInfoPanelEvent;
+import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.ShopSuccessPurchaseEvent;
+import com.ghostchu.quickshop.api.event.ShopTaxEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
-import com.ghostchu.quickshop.api.shop.*;
+import com.ghostchu.quickshop.api.shop.Info;
+import com.ghostchu.quickshop.api.shop.PriceLimiter;
+import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopChunk;
+import com.ghostchu.quickshop.api.shop.ShopManager;
+import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -36,7 +48,13 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -56,7 +74,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -1587,6 +1614,38 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             plugin.text().of(p, "shop-purchase-cancelled").send();
             plugin.logger().warn("Shop data broken? Loc: {}", shop.getLocation());
         }
+    }
+
+    @NotNull
+    public List<Shop> queryTaggedShops(@NotNull UUID tagger, @NotNull String tag) {
+        Util.ensureThread(true);
+        return plugin.getDatabaseHelper().listShopsTaggedBy(tagger, tag).stream().map(this::getShop).toList();
+    }
+
+    public CompletableFuture<@Nullable Integer> clearShopTags(@NotNull UUID tagger, @NotNull Shop shop) {
+        Util.ensureThread(true);
+        return plugin.getDatabaseHelper().removeShopAllTag(tagger, shop.getShopId());
+    }
+
+    public CompletableFuture<@Nullable Integer> clearTagFromShops(@NotNull UUID tagger, @NotNull String tag) {
+        Util.ensureThread(true);
+        return plugin.getDatabaseHelper().removeTagFromShops(tagger, tag);
+    }
+
+    public CompletableFuture<@Nullable Integer> removeTag(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag) {
+        Util.ensureThread(true);
+        return plugin.getDatabaseHelper().removeShopTag(tagger, shop.getShopId(), tag);
+    }
+
+    public CompletableFuture<@Nullable Integer> tagShop(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag) {
+        Util.ensureThread(true);
+        return plugin.getDatabaseHelper().tagShop(tagger, shop.getShopId(), tag);
+    }
+
+    @NotNull
+    public List<String> listTags(@NotNull UUID tagger) {
+        Util.ensureThread(true);
+        return plugin.getDatabaseHelper().listTags(tagger);
     }
 
     private void processCreationFail(@NotNull Shop shop, @NotNull UUID owner, @NotNull Throwable e2) {

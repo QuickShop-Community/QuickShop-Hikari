@@ -412,6 +412,20 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
     }
 
     @Override
+    public @NotNull List<String> listTags(@NotNull UUID tagger) {
+        List<String> tags = new ArrayList<>();
+        try (SQLQuery query = DataTables.TAGS.createQuery()
+                .addCondition("tagger", tagger.toString())
+                .build().execute()) {
+            ResultSet set = query.getResultSet();
+            tags.add(set.getString("tag"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tags;
+    }
+
+    @Override
     public CompletableFuture<@Nullable Integer> removeShopTag(@NotNull UUID tagger, @NotNull Long shopId, @NotNull String tag) {
         return DataTables.TAGS.createDelete()
                 .addCondition("tagger", tagger.toString())
