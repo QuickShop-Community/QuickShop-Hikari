@@ -76,10 +76,8 @@ public class CommandParser {
         if (c == ' ') {
             if (hangUp) {
                 buffer.append(c);
-                return false;
-            } else {
-                return true;
             }
+            return true;
         }
         buffer.append(c);
         return false;
