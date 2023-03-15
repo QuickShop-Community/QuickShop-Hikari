@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -18,8 +19,8 @@ public class SubCommand_Amount implements CommandHandler<Player> {
     }
 
     @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() < 1) {
             plugin.text().of(sender, "command.wrong-args").send();
             return;
         }
@@ -29,14 +30,14 @@ public class SubCommand_Amount implements CommandHandler<Player> {
             return;
         }
 
-        plugin.getShopManager().handleChat(sender, cmdArg[0]);
+        plugin.getShopManager().handleChat(sender, parser.getArgs().get(0));
     }
 
     @NotNull
     @Override
     public List<String> onTabComplete(
-            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.amount").forLocale())) : Collections.emptyList();
+            @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        return parser.getArgs().size() == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.amount").forLocale())) : Collections.emptyList();
     }
 
 }

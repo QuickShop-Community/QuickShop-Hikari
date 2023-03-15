@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.util.MsgUtil;
 import net.kyori.adventure.text.Component;
 import org.bukkit.command.CommandSender;
@@ -21,7 +22,7 @@ public class SubCommand_Help implements CommandHandler<CommandSender> {
 
     @Override
     public void onCommand(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         sendHelp(sender, commandLabel);
     }
 

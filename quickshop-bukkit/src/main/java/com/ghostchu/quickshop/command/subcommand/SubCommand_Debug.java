@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -9,7 +10,6 @@ import com.ghostchu.quickshop.util.performance.BatchBukkitExecutor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
@@ -18,7 +18,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class SubCommand_Debug implements CommandHandler<CommandSender> {
 
@@ -29,27 +33,28 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     }
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() < 1) {
             switchDebug(sender);
             return;
         }
-
-        switch (cmdArg[0]) {
+        List<String> subParams = new ArrayList<>(parser.getArgs());
+        subParams.remove(0);
+        switch (parser.getArgs().get(0)) {
             case "debug", "dev", "devmode" -> switchDebug(sender);
-            case "handlerlist" -> handleHandlerList(sender, ArrayUtils.remove(cmdArg, 0));
+            case "handlerlist" -> handleHandlerList(sender, subParams);
             case "signs" -> handleSigns(sender);
-            case "database" -> handleDatabase(sender, ArrayUtils.remove(cmdArg, 0));
-            case "updateplayersigns" -> handleSignsUpdate(sender, ArrayUtils.remove(cmdArg, 0));
-            case "force-shops-reload" -> handleShopsReload(sender, ArrayUtils.remove(cmdArg, 0));
-            case "force-shoploader-reload" -> handleShopsLoaderReload(sender, ArrayUtils.remove(cmdArg, 0));
-            case "check-shop-status" -> handleShopDebug(sender, ArrayUtils.remove(cmdArg, 0));
-            case "toggle-shop-load-status" -> handleShopLoading(sender, ArrayUtils.remove(cmdArg, 0));
-            default -> plugin.text().of(sender, "debug.arguments-invalid", cmdArg[0]).send();
+            case "database" -> handleDatabase(sender, subParams);
+            case "updateplayersigns" -> handleSignsUpdate(sender, subParams);
+            case "force-shops-reload" -> handleShopsReload(sender, subParams);
+            case "force-shoploader-reload" -> handleShopsLoaderReload(sender, subParams);
+            case "check-shop-status" -> handleShopDebug(sender, subParams);
+            case "toggle-shop-load-status" -> handleShopLoading(sender, subParams);
+            default -> plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
         }
     }
 
-    private void handleShopLoading(CommandSender sender, String[] remove) {
+    private void handleShopLoading(CommandSender sender, List<String> remove) {
         Shop shop = getLookingShop(sender);
         if (shop == null) {
             plugin.text().of(sender, "not-looking-at-shop").send();
@@ -63,7 +68,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         plugin.text().of(sender, "debug.toggle-shop-loaded-status", shop.isLoaded());
     }
 
-    private void handleShopDebug(CommandSender sender, String[] remove) {
+    private void handleShopDebug(CommandSender sender, List<String> remove) {
         Shop shop = getLookingShop(sender);
         if (shop == null) {
             plugin.text().of(sender, "not-looking-at-shop").send();
@@ -72,7 +77,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         plugin.text().of(sender, "debug.shop-internal-data", shop.toString()).send();
     }
 
-    private void handleShopsLoaderReload(CommandSender sender, String[] remove) {
+    private void handleShopsLoaderReload(CommandSender sender, List<String> remove) {
         plugin.text().of(sender, "debug.force-shop-loader-reload").send();
         Set<Shop> loadedShops = plugin.getShopManager().getLoadedShops();
         plugin.text().of(sender, "debug.force-shop-loader-reload-unloading-shops", loadedShops.size()).send();
@@ -85,7 +90,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         plugin.text().of(sender, "debug.force-shop-loader-reload-complete").send();
     }
 
-    private void handleShopsReload(CommandSender sender, String[] remove) {
+    private void handleShopsReload(CommandSender sender, List<String> remove) {
         plugin.text().of(sender, "debug.force-shop-reload").send();
         List<Shop> shops = new ArrayList<>(plugin.getShopManager().getLoadedShops());
         shops.forEach(Shop::onUnload);
@@ -113,13 +118,13 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         plugin.text().of(sender, "command.now-debuging").send();
     }
 
-    private void handleHandlerList(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+    private void handleHandlerList(@NotNull CommandSender sender, List<String> remove) {
+        if (remove.size() < 1) {
             MsgUtil.sendDirectMessage(sender, "You must enter an Bukkit Event class");
             plugin.text().of(sender, "debug.handler-list-not-valid-bukkit-event-class", "null");
             return;
         }
-        printHandlerList(sender, cmdArg[0]);
+        printHandlerList(sender, remove.get(0));
     }
 
     private void handleSigns(@NotNull CommandSender sender) {
@@ -131,22 +136,22 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
         shop.getSigns().forEach(sign -> plugin.text().of(sender, "debug.sign-located", sign.getLocation()).send());
     }
 
-    private void handleDatabase(@NotNull CommandSender sender, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+    private void handleDatabase(@NotNull CommandSender sender, @NotNull List<String> remove) {
+        if (remove.size() < 1) {
             plugin.text().of("debug.operation-missing");
             return;
         }
-        plugin.text().of(sender, "debug.operation-invalid", cmdArg[0]).send();
+        plugin.text().of(sender, "debug.operation-invalid", remove.get(0)).send();
     }
 
-    private void handleSignsUpdate(CommandSender sender, String[] cmdArg) {
-        if (cmdArg.length < 1) {
+    private void handleSignsUpdate(CommandSender sender, List<String> remove) {
+        if (remove.size() < 1) {
             plugin.text().of(sender, "debug.update-player-shops-signs-no-username-given").send();
             return;
         }
         plugin.text().of(sender, "debug.update-player-shops-signs-create-async-task").send();
         Util.asyncThreadRun(() -> {
-            UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[0]);
+            UUID uuid = plugin.getPlayerFinder().name2Uuid(remove.get(0));
             plugin.text().of(sender, "debug.update-player-shops-player-selected", uuid).send();
             List<Shop> shops = plugin.getShopManager().getPlayerAllShops(uuid);
             plugin.text().of(sender, "debug.update-player-shops-player-shops", shops.size()).send();
@@ -186,7 +191,7 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
     @NotNull
     @Override
     public List<String> onTabComplete(
-            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         return Collections.emptyList();
     }
 

@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
@@ -27,13 +28,13 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
     }
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length == 1) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() == 1) {
             //copy it first
             List<Shop> tempList = new ArrayList<>(plugin.getShopManager().getAllShops());
             OfflinePlayer shopOwner = null;
             for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-                if (player.getName() != null && player.getName().equalsIgnoreCase(cmdArg[0])) {
+                if (player.getName() != null && player.getName().equalsIgnoreCase(parser.getArgs().get(0))) {
                     shopOwner = player;
                     break;
                 }
@@ -80,7 +81,7 @@ public class SubCommand_RemoveAll implements CommandHandler<CommandSender> {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length <= 1 ? getPlayerList() : Collections.emptyList();
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        return parser.getArgs().size() <= 1 ? getPlayerList() : Collections.emptyList();
     }
 }

@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.event.ShopNamingEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -25,7 +26,7 @@ public class SubCommand_Name implements CommandHandler<Player> {
     }
 
     @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         final Shop shop = getLookingShop(sender);
         if (shop == null) {
             plugin.text().of(sender, "not-looking-at-shop").send();
@@ -36,13 +37,13 @@ public class SubCommand_Name implements CommandHandler<Player> {
             plugin.text().of(sender, "not-managed-shop").send();
         }
 
-        if (cmdArg.length < 1) {
+        if (parser.getArgs().size() < 1) {
             shop.setShopName(null);
             plugin.text().of(sender, "shop-name-unset").send();
             return;
         }
 
-        String shopName = cmdArg[0];
+        String shopName = parser.getArgs().get(0);
         // Translate the all chat colors
         shopName = ChatColor.translateAlternateColorCodes('&', shopName);
         // Then strip all of them, Shop name reference is disallow any color
@@ -93,8 +94,8 @@ public class SubCommand_Name implements CommandHandler<Player> {
 
     @NotNull
     @Override
-    public List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.name").forLocale())) : Collections.emptyList();
+    public List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        return parser.getArgs().size() == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.name").forLocale())) : Collections.emptyList();
     }
 
 }

@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -16,7 +17,11 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class SubCommand_Find implements CommandHandler<Player> {
 
@@ -27,8 +32,8 @@ public class SubCommand_Find implements CommandHandler<Player> {
     }
 
     @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length == 0) {
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() == 0) {
             plugin.text().of(sender, "command.no-type-given").send();
             return;
         }
@@ -37,17 +42,17 @@ public class SubCommand_Find implements CommandHandler<Player> {
         final Vector playerVector = loc.toVector();
 
         //Combing command args
-        final StringBuilder sb = new StringBuilder(cmdArg[0]);
-        for (int i = 1; i < cmdArg.length; i++) {
-            sb.append("_").append(cmdArg[i]);
+        final StringBuilder sb = new StringBuilder(parser.getArgs().get(0));
+        for (int i = 1; i < parser.getArgs().size(); i++) {
+            sb.append("_").append(parser.getArgs().get(i));
         }
 
 
         final String lookFor = sb.toString().toLowerCase();
 
-        final StringBuilder originLookForSb = new StringBuilder(cmdArg[0]);
-        for (int i = 1; i < cmdArg.length; i++) {
-            originLookForSb.append(" ").append(cmdArg[i]);
+        final StringBuilder originLookForSb = new StringBuilder(parser.getArgs().get(0));
+        for (int i = 1; i < parser.getArgs().size(); i++) {
+            originLookForSb.append(" ").append(parser.getArgs().get(i));
         }
         final String originLookFor = originLookForSb.toString();
         final double maxDistance = plugin.getConfig().getInt("shop.finding.distance");

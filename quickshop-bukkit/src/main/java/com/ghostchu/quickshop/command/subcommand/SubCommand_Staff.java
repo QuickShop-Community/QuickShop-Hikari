@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
@@ -29,7 +30,7 @@ public class SubCommand_Staff implements CommandHandler<Player> {
     }
 
     @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         BlockIterator bIt = new BlockIterator(sender, 10);
         while (bIt.hasNext()) {
             final Block b = bIt.next();
@@ -39,9 +40,9 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                     && !plugin.perm().hasPermission(sender, "quickshop.other.staff"))) {
                 continue;
             }
-            switch (cmdArg.length) {
+            switch (parser.getArgs().size()) {
                 case 1 -> {
-                    switch (cmdArg[0]) {
+                    switch (parser.getArgs().get(0)) {
                         case "clear" -> {
                             shop.playersCanAuthorize(BuiltInShopPermissionGroup.STAFF).forEach(staff -> shop.setPlayerGroup(staff, BuiltInShopPermissionGroup.EVERYONE));
                             plugin.text().of(sender, "shop-staff-cleared").send();
@@ -70,11 +71,11 @@ public class SubCommand_Staff implements CommandHandler<Player> {
                     }
                 }
                 case 2 -> {
-                    String name = cmdArg[1];
+                    String name = parser.getArgs().get(1);
                     Util.asyncThreadRun(() -> {
-                        UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[1]);
+                        UUID uuid = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(1));
                         Util.mainThreadRun(() -> {
-                            switch (cmdArg[0]) {
+                            switch (parser.getArgs().get(0)) {
                                 case "add" -> {
                                     shop.setPlayerGroup(uuid, BuiltInShopPermissionGroup.STAFF);
                                     plugin.text().of(sender, "shop-staff-added", name).send();
@@ -106,13 +107,13 @@ public class SubCommand_Staff implements CommandHandler<Player> {
     @NotNull
     @Override
     public List<String> onTabComplete(
-            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+            @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
 
-        if (cmdArg.length == 1) {
+        if (parser.getArgs().size() == 1) {
             return tabCompleteList;
-        } else if (cmdArg.length == 2) {
-            String prefix = cmdArg[0].toLowerCase();
-            if ("add".equals(prefix) || "del".equals(cmdArg[0])) {
+        } else if (parser.getArgs().size() == 2) {
+            String prefix = parser.getArgs().get(0).toLowerCase();
+            if ("add".equals(prefix) || "del".equals(parser.getArgs().get(0))) {
                 return Util.getPlayerList();
             }
         }

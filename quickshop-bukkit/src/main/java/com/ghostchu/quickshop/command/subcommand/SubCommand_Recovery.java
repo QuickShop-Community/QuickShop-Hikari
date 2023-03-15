@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.database.DatabaseIOUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
@@ -22,14 +23,14 @@ public class SubCommand_Recovery implements CommandHandler<ConsoleCommandSender>
     }
 
     @Override
-    public void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull ConsoleCommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         File file = new File(plugin.getDataFolder(), "recovery.zip");
         if (!file.exists()) {
             plugin.text().of(sender, "importing-not-found", "recovery.zip").send();
             return;
         }
 
-        if (cmdArg.length < 1 || !"confirm".equalsIgnoreCase(cmdArg[0])) {
+        if (parser.getArgs().size() < 1 || !"confirm".equalsIgnoreCase(parser.getArgs().get(0))) {
             plugin.text().of(sender, "importing-early-warning").send();
             return;
         }

@@ -4,7 +4,13 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.command.subcommand.*;
-import com.ghostchu.quickshop.command.subcommand.silent.*;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentBuy;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentEmpty;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentPreview;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentRemove;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentSell;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentToggleDisplay;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentUnlimited;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -372,7 +378,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
 
         if (cmdArg.length == 0) {
             //Handle main command
-            rootContainer.getExecutor().onCommand(capture(sender), commandLabel, EMPTY_ARGS);
+            rootContainer.getExecutor().onCommand_Internal(capture(sender), commandLabel, EMPTY_ARGS);
         } else {
             //Handle subcommand
             String[] passThroughArgs = new String[cmdArg.length - 1];
@@ -401,11 +407,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 }
                 Log.debug("Execute container: " + container.getPrefix() + " - " + cmdArg[0]);
                 try (PerfMonitor ignored = new PerfMonitor("Execute command " + container.getPrefix() + " " + CommonUtil.array2String(passThroughArgs), Duration.of(2, ChronoUnit.SECONDS))) {
-                    container.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);
+                    container.getExecutor().onCommand_Internal(capture(sender), commandLabel, passThroughArgs);
                 }
                 return true;
             }
-            rootContainer.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);
+            rootContainer.getExecutor().onCommand_Internal(capture(sender), commandLabel, passThroughArgs);
         }
         return true;
     }
@@ -480,7 +486,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
             ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
         }
         if (cmdArg.length <= 1) {
-            return getRootContainer().getExecutor().onTabComplete(capture(sender), commandLabel, cmdArg);
+            return getRootContainer().getExecutor().onTabComplete_Internal(capture(sender), commandLabel, cmdArg);
         } else {
             // Tab-complete subcommand args
             String[] passThroughArgs = new String[cmdArg.length - 1];
@@ -503,7 +509,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 if (Util.isDevMode()) {
                     Log.debug("Tab-complete container: " + container.getPrefix());
                 }
-                return container.getExecutor().onTabComplete(capture(sender), commandLabel, passThroughArgs);
+                return container.getExecutor().onTabComplete_Internal(capture(sender), commandLabel, passThroughArgs);
 
             }
             return Collections.emptyList();

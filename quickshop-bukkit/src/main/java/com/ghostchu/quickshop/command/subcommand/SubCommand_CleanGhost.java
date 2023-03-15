@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -22,13 +23,13 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
     }
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() < 1) {
             MsgUtil.sendDirectMessage(sender, Component.text("This command will purge all shops that: have corrupted data / are created in disallowed or unloaded worlds / trade with blacklisted items! Please make sure you have a backup of your shops data! Use /qs cleanghost to confirm the purge.").color(NamedTextColor.YELLOW));
             return;
         }
 
-        if (!"confirm".equalsIgnoreCase(cmdArg[0])) {
+        if (!"confirm".equalsIgnoreCase(parser.getArgs().get(0))) {
             MsgUtil.sendDirectMessage(sender, Component.text("This command will purge all shops that: have corrupted data / are created in disallowed or unloaded worlds / trade with blacklisted items! Please make sure you have a backup of your shops data! Use /qs cleanghost to confirm the purge.").color(NamedTextColor.YELLOW));
             return;
         }

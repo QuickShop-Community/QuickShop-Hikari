@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.command.subcommand.silent;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -16,7 +17,7 @@ public class SubCommand_SilentBuy extends SubCommand_SilentBase {
     }
 
     @Override
-    protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull String[] cmdArg) {
+    protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull CommandParser parser) {
         if (!shop.playerAuthorize(sender.getUniqueId(), BuiltInShopPermission.SET_SHOPTYPE)
                 && !plugin.perm().hasPermission(sender, "quickshop.create.admin")) {
             plugin.text().of(sender, "not-permission").send();

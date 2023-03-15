@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -18,7 +19,7 @@ public class SubCommand_Buy implements CommandHandler<Player> {
     }
 
     @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         final Shop shop = getLookingShop(sender);
         if (shop != null) {
             if (!plugin.perm().hasPermission(sender, "quickshop.create.buy")) {

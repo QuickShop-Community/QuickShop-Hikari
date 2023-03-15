@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.command.subcommand;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.command.CommandSender;
@@ -21,17 +22,17 @@ public class SubCommand_ROOT implements CommandHandler<CommandSender> {
     }
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        new SubCommand_Help(plugin).onCommand(sender, commandLabel, cmdArg);
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        new SubCommand_Help(plugin).onCommand(sender, commandLabel, parser);
     }
 
     @NotNull
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] strings) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         final List<String> candidate = new ArrayList<>();
 
         for (CommandContainer container : plugin.getCommandManager().getRegisteredCommands()) {
-            if (!container.getPrefix().startsWith(strings[0])) {
+            if (!container.getPrefix().startsWith(parser.getArgs().get(0))) {
                 continue;
             }
 

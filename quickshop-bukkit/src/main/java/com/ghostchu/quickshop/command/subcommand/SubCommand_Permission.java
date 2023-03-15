@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermissionGroup;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
@@ -11,7 +12,11 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
 public class SubCommand_Permission implements CommandHandler<Player> {
     private final QuickShop plugin;
@@ -28,27 +33,27 @@ public class SubCommand_Permission implements CommandHandler<Player> {
      * @param cmdArg       The arguments (/qs create stone will receive stone)
      */
     @Override
-    public void onCommand(Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         Shop shop = getLookingShop(sender);
         if (shop == null) {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
         String type = null;
-        if (cmdArg.length > 0) {
-            type = cmdArg[0].toLowerCase(Locale.ROOT);
+        if (parser.getArgs().size() > 0) {
+            type = parser.getArgs().get(0).toLowerCase(Locale.ROOT);
         }
         String operation = null;
-        if (cmdArg.length > 1) {
-            operation = cmdArg[1].toLowerCase(Locale.ROOT);
+        if (parser.getArgs().size() > 1) {
+            operation = parser.getArgs().get(1).toLowerCase(Locale.ROOT);
         }
         String target = null;
-        if (cmdArg.length > 2) {
-            target = cmdArg[2];
+        if (parser.getArgs().size() > 2) {
+            target = parser.getArgs().get(2);
         }
         String group = null;
-        if (cmdArg.length > 3) {
-            group = cmdArg[3];
+        if (parser.getArgs().size() > 3) {
+            group = parser.getArgs().get(3);
         }
         ChatSheetPrinter sheet = new ChatSheetPrinter(sender);
         if (type == null) {
@@ -124,24 +129,24 @@ public class SubCommand_Permission implements CommandHandler<Player> {
      * @return Candidate list
      */
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length == 1) {
+    public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() == 1) {
             return List.of("user", "group");
         }
-        if (cmdArg.length == 2) {
-            if ("user".equalsIgnoreCase(cmdArg[0])) {
+        if (parser.getArgs().size() == 2) {
+            if ("user".equalsIgnoreCase(parser.getArgs().get(0))) {
                 return List.of("set", "unset");
-            } else if ("group".equalsIgnoreCase(cmdArg[0])) {
+            } else if ("group".equalsIgnoreCase(parser.getArgs().get(0))) {
                 return List.of("list");
             }
         }
-        if (cmdArg.length == 3) {
-            if ("user".equalsIgnoreCase(cmdArg[0])) {
+        if (parser.getArgs().size() == 3) {
+            if ("user".equalsIgnoreCase(parser.getArgs().get(0))) {
                 return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
             }
         }
-        if (cmdArg.length == 4) {
-            if ("user".equalsIgnoreCase(cmdArg[0])) {
+        if (parser.getArgs().size() == 4) {
+            if ("user".equalsIgnoreCase(parser.getArgs().get(0))) {
                 return plugin.getShopPermissionManager().getGroups();
             }
         }
