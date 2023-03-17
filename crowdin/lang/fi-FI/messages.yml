@@ -58,7 +58,7 @@ you-cant-create-shop-in-there: <red>Sinulla ei ole oikeutta luoda kauppaa tälle
 no-pending-action: <red>Sinulla ei ole mitään odottavia toimintapyyntöjä
 refill-success: <green>Uudelleentäyttö onnistui
 failed-to-paste: <red>Tiedon lataaminen Pastebiniin epäonnistui. Tarkista internet yhteytesi ja yritä uudelleen. (Katso konsolista lisätietoja)
-shop-out-of-stock-name: <dark_purple>Your shop {0} has run out of {1}!
+shop-out-of-stock-name: <dark_purple>Kaupastasi {0} on loppunut {1}!
 shop-name-invalid: <red>The shop name <yellow>{0} <red>is invalid. Pick another one!
 how-many-buy-stack: <yellow>Enter in chat, how many bulks you wish to <aqua>BUY<green>. There are <yellow>{0}<green> items in each bulk and you can buy <yellow>{1}<green> bulks. Enter <aqua>{2}<green> in chat to buy all.
 exceeded-maximum: <red>Arvo ylitti Javan enimmäisarvon.
@@ -86,7 +86,7 @@ reloading-status:
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Reload failed, check the server console
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} osti {1} {2} kaupastasi ja sait siitä {3} ({4} verot).
 not-enough-space: <red>Sinulla on tilaa vain {0} lisää!
 shop-name-success: <green>Successfully set the shop name to <yellow>{0}<green>.
 shop-staff-added: <green>Onnistuneesti lisätty {0} kauppasi henkilökuntaan.
