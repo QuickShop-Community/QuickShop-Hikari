@@ -75,7 +75,7 @@
             <groupId>cc.carm.lib</groupId>
             <artifactId>easysql-hikaricp</artifactId>
             <scope>compile</scope>
-            <version>0.4.6</version>
+            <version>0.4.7</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
