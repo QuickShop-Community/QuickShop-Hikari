@@ -32,18 +32,18 @@ forbidden-vanilla-behavior: <red>Toimenpide on kielletty, koska se ei ole yhdenm
 shop-out-of-space-name: <dark_purple>Kauppasi {0} on täynnä!
 paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
 quick-fill:
-  entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
+  entry-own: ' <yellow>- <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Nimi: <aqua>{0}'
     - '<yellow>Omistaja: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
+    - '<yellow>Tyyppi: <aqua>{0}'
     - '<yellow>Hinta: <aqua>{0}'
     - '<yellow>Tuote: <aqua>{0}'
     - '<yellow>Sijainti: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Nimi: <aqua>{name}'
     - '<yellow>Omistaja: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
+    - '<yellow>Tyyppi: <aqua>{type}'
     - '<yellow>Hinta: <aqua>{price}'
     - '<yellow>Tuote: <aqua>{item}'
     - '<yellow>Sijainti: <aqua>{location}'
@@ -101,7 +101,7 @@ menu:
   item: '<green>Tuote: <yellow>{0}'
   price-per: <green>Hinta per <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>hintaan <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
+  item-name-and-price-tax: '<yellow>{0} {1} <green></green> {2} <gray>(<green>{3}</green> veroissa)</gray>'
   successful-purchase: '<green>Onnistuneesti ostettu:'
   price-per-stack: <green>Hinta per <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Varastoidut Lumoukset
@@ -123,40 +123,40 @@ integrations-check-failed-trade: <red>Intergraatio {0} kielsi kaupankäynnin
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
 success-change-owner-to-server: <green>Onnistuneesti vaihdettu kaupan omistaja palvelimeen.
 shop-name-not-found: <red>The shop named <yellow>{0} <red>not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>Kaupan nimi on liian pitkä (maksimipituus {0}), valitse toinen!
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>{0}''s {1} {2} Tapahtumat:'
   action-hover: <yellow>{0}
   price-hover: <yellow>Yhteensä {0}, sisältäen {1} veroa.
   unknown: <gray>(tuntematon)
   undefined: <gray>(ei nimeä)
-  no-results: <red>No transactions found.
+  no-results: Tapahtumia ei löytynyt
   action-description:
     DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
+    PURCHASE_BUYING_SHOP: <yellow>Pelaaja myi joitakin tuotteita ostavaan kauppaan.
     CREATE: <yellow>Pelaaja loi kaupan.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
-    PURCHASE: <yellow>Purchased item with a shop
-  query-argument: 'Query Argument: {0}'
+    PURCHASE_SELLING_SHOP: <yellow>Pelaaja osti joitakin esineitä myyvästä kaupasta
+    PURCHASE: <yellow>Ostettu esine kaupasta
+  query-argument: 'Kyselyn Argumentti: {0}'
   amount-hover: <yellow>{0}x
-  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
+  header-shop: '<yellow>Kaupan {0} {1} {2} tapahtumat:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
-  looking-up: <yellow>Performing metric lookup, Please wait...
-  tax-hover: <yellow>{0} taxes
-  header-global: '<yellow>The server {0} {1} transactions:'
+  looking-up: <yellow>Suoritat metrijärjestelmän haun, odota...
+  tax-hover: <yellow>{0} verot
+  header-global: '<yellow>{0}''s {1} Tapahtumat:'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
-  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}'
-  time-hover: '<yellow>Time: {0}'
-  amount-stack-hover: <yellow>{0}x stack
+  transaction-count: <yellow>{0} yhteensä
+  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, Maailma: {4}<newline><gold>Omistaja: <gray>{5}<newline><gold>Kaupan tyyppi: <gray>{6}<newline><gold>Esine: <gray>{7}<newline><gold>Hinta: <gray>{8}'
+  time-hover: '<yellow>Aika: {0}'
+  amount-stack-hover: <yellow>{0} yhteensä
 permission-denied-3rd-party: '<red>Oikeus kielletty: kolmannen osapuolen lisäosa [{0}].'
 you-dont-have-that-many-items: <red>Sinulla on vain {0} {1}.
 complete: <green>Valmis!
 translate-not-completed-yet-url: 'Kielen {0} käännös ei ole vielä valmis {1} toimesta. Haluatko auttaa meitä parantamaan käännöstä? Selaile: {2}'
 success-removed-shop: <green>Kauppa poistettu.
 currency-set: <green>Kaupan valuutta asetettu onnistuneesti {0}.
-shop-purged-start: <green>Shop purge started, check the console for details.
+shop-purged-start: <green>Kaupan tyhjennys aloitettu, tarkista konsolista lisätietoja.
 economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
 nothing-to-flush: <green>Sinulle ei ole uusia kauppaviestejä.
 no-price-change: <red>Tuo ei vaihtaisi kaupan hintaa!
@@ -186,14 +186,14 @@ updatenotify:
     qualityverifyed: '[Laatu]'
     master: '[Master]'
     unstable: '[Epävakaa]'
-    paper: '[+Paper Optimized]'
+    paper: '[+Paper Optimoitu]'
     stable: '[Vakaa]'
     spigotmc: '[SpigotMC]'
     papermc: '[PaperMC]'
     bukkitdev: '[BukkitDev]'
     polymart: '[Polymart]'
     modrinth: '[Modrinth]'
-    basic: '[Basic]'
+    basic: '[Perus]'
   list:
     - '{0} julkaistiin. Käytät yhä {1}!'
     - Pam! Uusi päivtys {0} tulossa. Päivitä!
@@ -213,7 +213,7 @@ updatenotify:
     - Mitä mieltä olet? {0} on julkaistu! Päivitä!
     - Tohtori, QuickShop sai uuden päivityksen {0}! Sinun pitäisi päivittää~
     - Ko~ko~da~yo~ QuickShop on saanut uuden päivityksen {0}~
-    - Paimon want told you the QuickShop have new update {0}!
+    - Paimon haluaa kertoa sinulle, että QuickShopilla on uusi päivitys {0}!
   remote-disable-warning: '<red>Tämä QuickShopin version on merkitty etäpalvelimella poistettavaksi versioksi. Se tarkoittaa, että tällä versiolla saattaa olla vakavia ongelmia. Lisätietoja saat meidän SpigotMC sivuilta: {0}. Tämä varoitus ilmestyy joka kerta kunnes vaihdat pluginin vakaaseen versioon. Tämä varoitus ei vaikuta palvelimesi toimintaan.'
 purchase-out-of-stock: <red>This shop run out of the stock, Contact shop owner or staffs to refill the stock.
 nearby-shop-entry: '<green>- Info:{0} <green>Hinta:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>matka: <aqua>{5} <green>kuutio(ta)'
@@ -224,21 +224,21 @@ shop-name-unset: <red>This shop's name now removed
 shop-nolonger-freezed: <green>Poistit kaupan jäädytyksen. Se on nyt normaalissa tilassa!
 no-permission-build: <red>Et voi rakentaa kauppaa tähän.
 tableformat:
-  left_half_line: <dark_purple>+--------------------
-  right_half_line: <dark_purple>--------------------+
-  full_line: <dark_purple>+---------------------------------------------------+
+  left_half_line: <dark_purple>+----------------
+  right_half_line: <dark_purple>+----------------
+  full_line: <dark_purple>+---------------------------------------------------------------+
   left_begin: '<dark_purple>| '
 quickshop-gui-preview: QuickShop GUI Tavaran Esikatselu
 translate-not-completed-yet-click: Kielen {0} käännös ei ole vielä valmis {1} toimesta. Haluatko auttaa meitä parantamaan käännöstä? Klikkaa tästä!
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <red>{0} osti {1} {2} kaupastasi ja sait siitä {3}.
 reached-maximum-can-create: <red>Olet jo luonut jo {0}/{1}, eli maksimi määrän kauppoja!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
-translation-version: 'Support Version: Hikari'
+reached-maximum-create-limit: <red>Olet saavuttanut maksimimäärän kauppoja, joita voit luoda
+translation-version: 'Tukiversio: Hikari'
 no-double-chests: <red>Et voi luoda tupla-arkkukauppaa.
 price-too-cheap: <red>Hinnan pitää olla korkeampi kuin <yellow>${0}
 shop-not-exist: <red>Siellä ei ole kauppaa.
-bad-command-usage: <red>Bad command arguments!
+bad-command-usage: <red>Huonot komentoargumentit!
 clean-warning: <yellow>Tämä komento poista <red>kaikki <yellow>kaupat jotka ovat korruptoituneita, ovat luotu ei-sallituissa maailmoissa, ostavat/myyvät ei-sallittuja tavaroita tai <red><bold>OVAT OLEMASSA EI-LADATUISSA MAAILMASSA<yellow>. Tarkista, että otat ensin varmuuskopion kauppojen datasta jonka jälkeen suorita <aqua>/qs cleanghost confirm <yellow>jatkaaksesi.
 shop-purchase-cancelled: <red>Kaupasta ostaminen peruttu.
 bypassing-lock: <red>Ohitetaan QuickShop lukitus!
@@ -256,7 +256,7 @@ how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL<gre
 shop-freezed-at-location: <yellow>Kauppasi {0} {1} jäätyi!
 translation-contributors: 'Avustajat: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601'
 empty-success: <green>Kaupan tyhjennys onnistui
-taxaccount-set: <green>This shop's tax account has been set to <yellow>{0}
+taxaccount-set: <green>Tämän kaupan verotiliksi on määritetty <yellow>{0}
 support-disable-reason:
   hot-reload: <yellow>Unsupported hot reloaded, restart the server and check again.
   outdated: <yellow>This version of QuickShop already outdated, up-to-date before requesting support!
@@ -272,12 +272,12 @@ restricted-prices: '<red>Rajattu hinta tuotteelle {0}: vähintään {1}, enintä
 nearby-shop-this-way: <green>Kauppa on {0} kuution päässä sinusta.
 owner-bypass-check: <yellow>Ohitit kaikki tarkastukset. Vaihto onnistui! (Olet nyt kaupan omistaja!)
 april-rick-and-roll-easter-egg: |
-  <green>---------------------------------------------------</green>
-  <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
-  <yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>
-  <aqua>Claim it by watch the video tutorial below!</aqua>
-  <hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
-  <green>---------------------------------------------------</green>
+  <green>-------------------------------------------------------</green>
+  <rainbow><bold>RAJOITETTU AIKANA -- QuickShop-Hikari</bold></rainbow>
+  <yellow>Hanki <gold>PREMIUM</gold> partikkeliefekti kaikkiin QuickShop-palvelimiin!</yellow>
+  <aqua>Lunasta se katsomalla videon tutoriaali alla!</aqua>
+  <hover:show_text:'<gold>Klikkaa avataksesi palkintoja lunastaaksesi sivun selaimessasi.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
+  <green>-------------------------------------------------------</green>
 signs:
   item-right: ''
   out-of-space: Arkku Täynnä
