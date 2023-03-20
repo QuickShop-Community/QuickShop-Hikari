@@ -18,6 +18,8 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.collect.ImmutableList;
 import lombok.Data;
 import org.bukkit.Sound;
@@ -40,14 +42,18 @@ import java.util.logging.Level;
 
 @Data
 @SuppressWarnings("unchecked")
-public class SimpleCommandManager implements CommandManager, TabCompleter, CommandExecutor, SubPasteItem {
+public class SimpleCommandManager implements CommandManager, TabCompleter, CommandExecutor, SubPasteItem, Reloadable {
     private static final String[] EMPTY_ARGS = new String[0];
     private final List<CommandContainer> cmds = new CopyOnWriteArrayList<>(); //Because we open to allow register, so this should be thread-safe
     private final QuickShop plugin;
     private final CommandContainer rootContainer;
 
+    private boolean playSoundOnTabComplete;
+    private boolean playSoundOnCommand;
+
     public SimpleCommandManager(QuickShop plugin) {
         this.plugin = plugin;
+        this.plugin.getReloadManager().register(this);
         this.rootContainer = CommandContainer.builder()
                 .prefix("")
                 .permission(null)
@@ -356,6 +362,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         return ImmutableList.copyOf(this.getCmds());
     }
 
+    private void init(){
+        this.playSoundOnCommand = plugin.getConfig().getBoolean("effect.sound.oncommand");
+        this.playSoundOnTabComplete = plugin.getConfig().getBoolean("effect.sound.ontabcomplete");
+    }
+
     @Override
     public boolean onCommand(
             @NotNull CommandSender sender,
@@ -372,7 +383,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 return true;
             }
         }
-        if (sender instanceof Player player && plugin.getConfig().getBoolean("effect.sound.oncommand")) {
+        if (sender instanceof Player player && playSoundOnCommand) {
             ((Player) sender)
                     .playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
         }
@@ -483,7 +494,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         if (plugin.getBootError() != null) {
             return Collections.emptyList();
         }
-        if (sender instanceof Player player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+        if (sender instanceof Player player && playSoundOnTabComplete) {
             ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
         }
         if (cmdArg.length <= 1) {
@@ -585,5 +596,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     private enum PermissionType {
         REQUIRE,
         SELECTIVE
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return Reloadable.super.reloadModule();
     }
 }
