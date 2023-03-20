@@ -3,11 +3,7 @@ package com.ghostchu.quickshop.api.command;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CommandParser {
     private final String raw;
@@ -47,7 +43,7 @@ public class CommandParser {
             it.remove();
             List<String> registered = colonArgs.getOrDefault(spilt[0], new ArrayList<>());
             registered.add(spilt[1]);
-            colonArgs.put(spilt[0], registered);
+            colonArgs.put(spilt[0].toLowerCase(Locale.ROOT), registered);
         }
     }
 

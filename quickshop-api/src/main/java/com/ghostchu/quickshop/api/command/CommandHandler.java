@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * The command handler that processing sub commands under QS main command
@@ -42,16 +43,25 @@ public interface CommandHandler<T extends CommandSender> {
         throw new IllegalStateException("Sender is not player");
     }
 
+    default @NotNull CompletableFuture<@NotNull List<Shop>> getTaggedShops(T sender, @NotNull String tag) {
+        if (sender instanceof Player player) {
+            UUID tagger = player.getUniqueId();
+            return QuickShopAPI.getInstance().getShopManager().queryTaggedShops(tagger, tag);
+        }
+        throw new IllegalStateException("Sender is not player");
+    }
+
     /**
      * Getting the shops by ids
+     *
      * @param ids The shop ids
      * @return The shops
      */
     @Nullable
-    default Map<Long, Shop> getShopsByIds(List<Long> ids){
+    default Map<Long, Shop> getShopsByIds(@NotNull List<Long> ids) {
         Map<Long, Shop> shops = new HashMap<>();
         for (Long id : ids) {
-           shops.put(id, QuickShopAPI.getInstance().getShopManager().getShop(id));
+            shops.put(id, QuickShopAPI.getInstance().getShopManager().getShop(id));
         }
         return shops;
     }
@@ -62,9 +72,9 @@ public interface CommandHandler<T extends CommandSender> {
             joiner.add(s);
         }
         CommandParser parser = new CommandParser(joiner.toString());
-        try{
+        try {
             onCommand(sender, commandLabel, parser);
-        }catch (NotImplementedException e){
+        } catch (NotImplementedException e) {
             onCommand(sender, commandLabel, parser.getArgs().toArray(new String[0]));
         }
     }
@@ -76,8 +86,9 @@ public interface CommandHandler<T extends CommandSender> {
      * @param commandLabel The command prefix (/qs = qs, /shop = shop)
      * @param parser       The command parser which include arguments and colon arguments
      */
-    default void onCommand(T sender, @NotNull String commandLabel, @NotNull CommandParser parser){
+    default void onCommand(T sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
     }
+
     /**
      * Calling while command executed by specified sender
      *
@@ -87,7 +98,7 @@ public interface CommandHandler<T extends CommandSender> {
      * @deprecated This method is deprecated, please use {@link #onCommand(T, String, CommandParser)} instead.
      */
     @Deprecated(since = "4.2.0.0")
-    default void onCommand(T sender, @NotNull String commandLabel, @NotNull String[] cmdArgs){
+    default void onCommand(T sender, @NotNull String commandLabel, @NotNull String[] cmdArgs) {
         throw new NotImplementedException("This method is deprecated, please use onCommand(T sender, @NotNull String commandLabel, @NotNull CommandParser parser) instead.");
     }
 
@@ -113,6 +124,7 @@ public interface CommandHandler<T extends CommandSender> {
     default List<String> onTabComplete(@NotNull T sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         return Collections.emptyList();
     }
+
     /**
      * Calling while sender trying to tab-complete
      *

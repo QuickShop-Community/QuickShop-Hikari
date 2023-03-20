@@ -21,6 +21,7 @@ import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.RomanNumber;
 import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
@@ -42,6 +43,8 @@ import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.papermc.lib.PaperLib;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -74,16 +77,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -1617,31 +1611,43 @@ public class SimpleShopManager implements ShopManager, Reloadable {
     }
 
     @NotNull
-    public List<Shop> queryTaggedShops(@NotNull UUID tagger, @NotNull String tag) {
+    @Override
+    public CompletableFuture<@NotNull List<Shop>> queryTaggedShops(@NotNull UUID tagger, @NotNull String tag) {
         Util.ensureThread(true);
-        return plugin.getDatabaseHelper().listShopsTaggedBy(tagger, tag).stream().map(this::getShop).toList();
+        return CompletableFuture.supplyAsync(() -> plugin.getDatabaseHelper().listShopsTaggedBy(tagger, tag)
+                        .stream()
+                        .map(this::getShop).toList()
+                , QuickExecutor.getDatabaseExecutor());
+
     }
 
+    @Override
     public CompletableFuture<@Nullable Integer> clearShopTags(@NotNull UUID tagger, @NotNull Shop shop) {
-        Util.ensureThread(true);
         return plugin.getDatabaseHelper().removeShopAllTag(tagger, shop.getShopId());
     }
 
+    @Override
     public CompletableFuture<@Nullable Integer> clearTagFromShops(@NotNull UUID tagger, @NotNull String tag) {
-        Util.ensureThread(true);
+        tag = tag.trim().toLowerCase(Locale.ROOT);
+        tag = tag.replace(" ", "_");
         return plugin.getDatabaseHelper().removeTagFromShops(tagger, tag);
     }
 
+    @Override
     public CompletableFuture<@Nullable Integer> removeTag(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag) {
-        Util.ensureThread(true);
+        tag = tag.trim().toLowerCase(Locale.ROOT);
+        tag = tag.replace(" ", "_");
         return plugin.getDatabaseHelper().removeShopTag(tagger, shop.getShopId(), tag);
     }
 
+    @Override
     public CompletableFuture<@Nullable Integer> tagShop(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag) {
-        Util.ensureThread(true);
+        tag = tag.trim().toLowerCase(Locale.ROOT);
+        tag = tag.replace(" ", "_");
         return plugin.getDatabaseHelper().tagShop(tagger, shop.getShopId(), tag);
     }
 
+    @Override
     @NotNull
     public List<String> listTags(@NotNull UUID tagger) {
         Util.ensureThread(true);
@@ -1839,6 +1845,59 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 return this.next(); // Skip to the next one (Empty iterator?)
             }
             return shops.next();
+        }
+    }
+
+    static class TagParser {
+        private final List<String> tags;
+        private final ShopManager shopManager;
+        private final UUID tagger;
+        private final Map<String, List<Shop>> singleCaching = new HashMap<>();
+
+        public TagParser(UUID tagger, ShopManager shopManager, List<String> tags) {
+            Util.ensureThread(true);
+            this.shopManager = shopManager;
+            this.tags = tags;
+            this.tagger = tagger;
+        }
+        
+        public List<Shop> parseTags(){
+            List<Shop> finalShop = new ArrayList<>();
+            for (String tag : tags) {
+               ParseResult result =  parseSingleTag(tag);
+               if(result.getBehavior() == Behavior.INCLUDE){
+                   finalShop.addAll(result.getShops());
+               }else if (result.getBehavior() == Behavior.EXCLUDE){
+                     finalShop.removeAll(result.getShops());
+               }
+            }
+            return finalShop;
+        }
+
+        public ParseResult parseSingleTag(String tag) throws IllegalArgumentException {
+            Util.ensureThread(true);
+            Behavior behavior = Behavior.INCLUDE;
+            if (tag.startsWith("-")) {
+                behavior = Behavior.EXCLUDE;
+            }
+            String tagName = tag.substring(1);
+            if (tagName.isEmpty()) {
+                throw new IllegalArgumentException("Tag name can't be empty");
+            }
+            List<Shop> shops = singleCaching.computeIfAbsent(tag, (t)->shopManager.queryTaggedShops(tagger, t).join());
+            return new ParseResult(behavior, shops);
+        }
+
+        @AllArgsConstructor
+        @Data
+        static class ParseResult {
+            private final Behavior behavior;
+            private final List<Shop> shops;
+        }
+
+        enum Behavior {
+            INCLUDE,
+            EXCLUDE
         }
     }
 }
