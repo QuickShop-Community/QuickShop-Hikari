@@ -1280,6 +1280,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 && !plugin.perm().hasPermission(p, "quickshop.other.use")) {
             return;
         }
+        if(Util.fireCancellableEvent(new ShopInfoPanelEvent(shop, p.getUniqueId()))){
+            Log.debug("ShopInfoPanelEvent cancelled by some plugin");
+            return;
+        }
         ProxiedLocale locale = plugin.text().findRelativeLanguages(p.getLocale());
         // Potentially faster with an array?
         ItemStack items = shop.getItem();
@@ -1356,7 +1360,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
         chatSheetPrinter.printFooter();
-        new ShopInfoPanelEvent(shop, p.getUniqueId()).callEvent();
+
     }
 
     @Override

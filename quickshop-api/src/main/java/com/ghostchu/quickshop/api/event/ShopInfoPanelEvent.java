@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.api.event;
 
 import com.ghostchu.quickshop.api.shop.Shop;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +12,7 @@ import java.util.UUID;
 /**
  * Calling when purchaser prepared to purchase a shop (click the shop)
  */
-public class ShopInfoPanelEvent extends AbstractQSEvent {
+public class ShopInfoPanelEvent extends AbstractQSEvent implements QSCancellable {
 
     @NotNull
     private final Shop shop;
@@ -21,6 +22,8 @@ public class ShopInfoPanelEvent extends AbstractQSEvent {
     @Nullable
     private final Player player;
 
+    private boolean cancelled;
+    private Component cancelReason;
 
     /**
      * Builds a new shop info panel event
@@ -59,5 +62,21 @@ public class ShopInfoPanelEvent extends AbstractQSEvent {
      */
     public @NotNull Shop getShop() {
         return this.shop;
+    }
+
+    @Override
+    public @Nullable Component getCancelReason() {
+        return this.cancelReason;
+    }
+
+    @Override
+    public void setCancelled(boolean cancel, @Nullable Component reason) {
+        this.cancelled = cancel;
+        this.cancelReason = reason;
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
     }
 }
