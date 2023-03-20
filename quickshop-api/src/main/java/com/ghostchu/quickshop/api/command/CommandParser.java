@@ -29,7 +29,7 @@ public class CommandParser {
     }
 
     private void parse() {
-        parseEscape();
+        parseEverySingleArgument();
         parseColon();
     }
 
@@ -40,6 +40,8 @@ public class CommandParser {
             if (!waiting.contains(":")) continue;
             String[] spilt = waiting.split(":", 2);
             if (spilt.length < 2) continue;
+            if (spilt[0].isEmpty() || spilt[1].isEmpty()) continue;
+            if (spilt[0].endsWith("\\")) continue;
             it.remove();
             List<String> registered = colonArgs.getOrDefault(spilt[0], new ArrayList<>());
             registered.add(spilt[1]);
@@ -47,7 +49,7 @@ public class CommandParser {
         }
     }
 
-    private void parseEscape() {
+    private void parseEverySingleArgument() {
         for (char c : raw.toCharArray()) {
             boolean commitBuffer = parseChar(c);
             if (commitBuffer) {
