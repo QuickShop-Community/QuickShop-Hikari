@@ -35,7 +35,6 @@ public class SubCommand_Benefit implements CommandHandler<Player> {
             plugin.text().of(sender, "command-incorrect", "/qs benefit <add/remove/query> <player> <percentage>").send();
             return;
         }
-
         Shop shop = getLookingShop(sender);
         if (shop == null) {
             plugin.text().of(sender, "not-looking-at-shop").send();

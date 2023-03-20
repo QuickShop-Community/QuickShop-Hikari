@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.api.command;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
+import com.ghostchu.quickshop.api.QuickShopInstanceHolder;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.apache.commons.lang3.NotImplementedException;
 import org.bukkit.block.Block;
@@ -12,11 +13,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The command handler that processing sub commands under QS main command
  *
- * @param <T> The required sender class you want, must is the sub type of {@link CommandSender}
+ * @param <T> The required sender class you want, must is the subtype of {@link CommandSender}
  */
 public interface CommandHandler<T extends CommandSender> {
 
@@ -87,6 +89,7 @@ public interface CommandHandler<T extends CommandSender> {
      * @param parser       The command parser which include arguments and colon arguments
      */
     default void onCommand(T sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        throw new NotImplementedException("This method should be correctly implemented.");
     }
 
     /**
@@ -109,7 +112,11 @@ public interface CommandHandler<T extends CommandSender> {
             joiner.add(s);
         }
         CommandParser parser = new CommandParser(joiner.toString());
-        return onTabComplete(sender, commandLabel, parser);
+        try {
+            return onTabComplete(sender, commandLabel, parser);
+        } catch (NotImplementedException e) {
+            return onTabComplete(sender, commandLabel, parser.getArgs().toArray(new String[0]));
+        }
     }
 
     /**
@@ -122,7 +129,7 @@ public interface CommandHandler<T extends CommandSender> {
      */
     @Nullable
     default List<String> onTabComplete(@NotNull T sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        return Collections.emptyList();
+        throw new NotImplementedException("This method should be correctly implemented.");
     }
 
     /**
