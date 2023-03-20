@@ -641,8 +641,8 @@ tag-query-no-tag: "<red>This shop have no tags."
 tag-query-shops: "<green>This tag contains <yellow>{0}</yellow> shops:"
 tag-query-shops-listing: "<yellow> - <aqua>{0}</aqua>"
 batch-operations-based-on-tags-no-failure: "<green>Successfully batch processed <yellow>{0}</yellow> shops."
-batch-operations-based-on-tags-have-failure: "<yellow>Total <green>{0}</green> shops in batch processing successfully completed, but <red>{1}</red> requests not completed."
-batch-operations-based-on-tags-have-failure-with-reason: "<yellow>Total <green>{0}</green> shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}</gold>"
+batch-operations-based-on-tags-have-failure: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed."
+batch-operations-based-on-tags-have-failure-with-reason: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}</gold>"
 batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: "<gray>The error messages will send to you above this message in the chat."
 addon:
   towny:
