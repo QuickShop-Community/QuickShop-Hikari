@@ -101,11 +101,11 @@ public class ConfigUpdateScript {
         if (!locales.exists()) {
             return;
         }
-        for (File file : locales.listFiles()) {
-            if (!file.isDirectory()) {
+        for (File localeDirectory : locales.listFiles()) {
+            if (!localeDirectory.isDirectory()) {
                 continue;
             }
-            File jsonFile = new File(file, "messages.json");
+            File jsonFile = new File(localeDirectory, localeDirectory.getName() + ".json");
             if (!jsonFile.exists()) {
                 continue;
             }
@@ -114,6 +114,12 @@ public class ConfigUpdateScript {
                 yamlFile.createNewFile();
                 YamlConfiguration yamlConfiguration = new YamlConfiguration();
                 JsonConfiguration jsonConfiguration = JsonConfiguration.loadConfiguration(jsonFile);
+                if(jsonConfiguration.equals(new JsonConfiguration())){
+                    continue;
+                }
+                if(jsonConfiguration.getKeys(true).isEmpty()){
+                    continue;
+                }
                 jsonConfiguration.getKeys(true).forEach(key -> yamlConfiguration.set(key, translate(jsonConfiguration.get(key))));
                 try {
                     Files.copy(jsonFile.toPath(), new File(jsonFile.getParent(), jsonFile.getName() + ".bak").toPath());
