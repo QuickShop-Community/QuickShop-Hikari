@@ -86,7 +86,7 @@ public interface CommandHandler<T extends CommandSender> {
      * @param cmdArgs      The command arguments
      * @deprecated This method is deprecated, please use {@link #onCommand(T, String, CommandParser)} instead.
      */
-    @Deprecated(forRemoval = true, since = "4.2.0.0")
+    @Deprecated(since = "4.2.0.0")
     default void onCommand(T sender, @NotNull String commandLabel, @NotNull String[] cmdArgs){
         throw new NotImplementedException("This method is deprecated, please use onCommand(T sender, @NotNull String commandLabel, @NotNull CommandParser parser) instead.");
     }
@@ -122,7 +122,7 @@ public interface CommandHandler<T extends CommandSender> {
      * @return Candidate list
      * @deprecated This method is deprecated, please use {@link #onTabComplete(T, String, CommandParser)} instead.
      */
-    @Deprecated(forRemoval = true, since = "4.2.0.0")
+    @Deprecated(since = "4.2.0.0")
     default List<String> onTabComplete(@NotNull T sender, @NotNull String commandLabel, @NotNull String[] cmdArgs) {
         throw new NotImplementedException("This method is deprecated, please use onTabComplete(T sender, @NotNull String commandLabel, @NotNull CommandParser parser) instead.");
     }

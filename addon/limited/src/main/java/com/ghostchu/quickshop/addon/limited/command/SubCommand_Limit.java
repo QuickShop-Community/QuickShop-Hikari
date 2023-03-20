@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.addon.limited.command;
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.limited.Main;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.event.CalendarEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,8 +24,8 @@ public class SubCommand_Limit implements CommandHandler<Player> {
     }
 
     @Override
-    public void onCommand(Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+    public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() < 1) {
             quickshop.text().of(sender, "command.wrong-args").send();
             return;
         }
@@ -34,10 +35,10 @@ public class SubCommand_Limit implements CommandHandler<Player> {
             return;
         }
         ConfigurationSection manager = shop.getExtra(Main.instance);
-        switch (cmdArg[0]) {
+        switch (parser.getArgs().get(0)) {
             case "set" -> {
                 try {
-                    int limitAmount = Integer.parseInt(cmdArg[1]);
+                    int limitAmount = Integer.parseInt(parser.getArgs().get(1));
                     if (limitAmount > 0) {
                         manager.set("limit", limitAmount);
                         quickshop.text().of(sender, "addon.limited.success-setup").send();
@@ -48,7 +49,7 @@ public class SubCommand_Limit implements CommandHandler<Player> {
                     }
                     shop.setExtra(Main.instance, manager);
                 } catch (NumberFormatException e) {
-                    quickshop.text().of(sender, "not-a-integer", cmdArg[1]).send();
+                    quickshop.text().of(sender, "not-a-integer", parser.getArgs().get(1)).send();
                 }
             }
             case "unset" -> {
@@ -64,12 +65,12 @@ public class SubCommand_Limit implements CommandHandler<Player> {
             }
             case "period" -> {
                 try {
-                    CalendarEvent.CalendarTriggerType type = CalendarEvent.CalendarTriggerType.valueOf(cmdArg[1].toUpperCase(Locale.ROOT));
+                    CalendarEvent.CalendarTriggerType type = CalendarEvent.CalendarTriggerType.valueOf(parser.getArgs().get(1).toUpperCase(Locale.ROOT));
                     manager.set("period", type.name());
                     quickshop.text().of(sender, "addon.limited.success-setup").send();
                     shop.setExtra(Main.instance, manager);
                 } catch (IllegalArgumentException ignored) {
-                    quickshop.text().of(sender, "command.wrong-args", cmdArg[1]).send();
+                    quickshop.text().of(sender, "command.wrong-args",parser.getArgs().get(1)).send();
                 }
             }
         }

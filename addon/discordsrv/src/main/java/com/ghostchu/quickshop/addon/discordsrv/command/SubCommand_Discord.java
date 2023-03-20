@@ -4,6 +4,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.discordsrv.Main;
 import com.ghostchu.quickshop.addon.discordsrv.bean.NotificationFeature;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.Component;
@@ -27,17 +28,17 @@ public class SubCommand_Discord implements CommandHandler<Player> {
     }
 
     @Override
-    public void onCommand(Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 2) {
+    public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() < 2) {
             qs.text().of(sender, "command-incorrect", "/qs discord <features> <enable/disable>").send();
             return;
         }
-        NotificationFeature feature = getFeatureByName(cmdArg[0]);
+        NotificationFeature feature = getFeatureByName(parser.getArgs().get(0));
         if (feature == null) {
             qs.text().of(sender, "command-incorrect", "/qs discord <features> <enable/disable>").send();
             return;
         }
-        boolean ops = cmdArg[1].equalsIgnoreCase("enable");
+        boolean ops = parser.getArgs().get(1).equalsIgnoreCase("enable");
         Util.asyncThreadRun(() -> {
             try {
                 Integer i = plugin.getDatabaseHelper().setNotifactionFeatureEnabled(sender.getUniqueId(), feature, ops);
@@ -69,14 +70,14 @@ public class SubCommand_Discord implements CommandHandler<Player> {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length == 1) {
+    public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() == 1) {
             return Arrays.stream(NotificationFeature.values())
                     .filter(NotificationFeature::isPlayerToggleable)
                     .map(NotificationFeature::getConfigNode)
                     .toList();
         }
-        if (cmdArg.length == 2) {
+        if (parser.getArgs().size() == 2) {
             return List.of("enable", "disable");
         }
         return Collections.emptyList();
