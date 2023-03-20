@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>4.1.0.4</version>
+    <version>4.1.1.0</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -395,7 +395,7 @@
             </dependency>
             <dependency>
                 <groupId>com.rollbar</groupId>
-                <version>1.9.0</version>
+                <version>1.10.0</version>
                 <artifactId>rollbar-java</artifactId>
                 <scope>provided</scope>
                 <exclusions>
@@ -440,6 +440,7 @@
         <module>platform/quickshop-platform-spigot-v1_18_R2</module>
         <module>platform/quickshop-platform-spigot-v1_19_R1</module>
         <module>platform/quickshop-platform-spigot-v1_19_R2</module>
+        <module>platform/quickshop-platform-spigot-v1_19_R3</module>
         <module>platform/quickshop-platform-paper</module>
         <module>quickshop-bukkit</module>
         <module>compatibility/common</module>

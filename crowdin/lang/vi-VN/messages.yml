@@ -54,7 +54,7 @@ quick-fill:
 average-price-nearby: '<green>Giá trung bình lân cận: <yellow>{0}'
 digits-reach-the-limit: <red>Bạn đã đạt đến giới hạn của số thập phân trong giá.
 currency-unset: <green>Đã xóa thành công đơn vị tiền tệ của cửa hàng. Sử dụng mặt định.
-you-cant-create-shop-in-there: <red>You don't have permission to create a shop at this location.
+you-cant-create-shop-in-there: <red>Bạn không có quyền tạo cửa hàng tại ví trị này.
 no-pending-action: <red>You do not have any pending actions
 refill-success: <green>Nạp tiền thành công
 failed-to-paste: <red>Không thể tải dữ liệu lên Pastebin. Kiểm tra kết nối internet của bạn và thử lại. (Xem bảng điều khiển để biết chi tiết)
@@ -86,7 +86,7 @@ reloading-status:
   scheduled: <green>Reload completed. <gray>(Some changes required a while to affect)
   require-restart: <green>Reload completed. <yellow>(Some changes require server restart to affect)
   failed: <red>Tải lại không thành công, hãy kiểm tra bảng điều khiển máy chủ
-player-bought-from-your-store-tax: <green>{0} purchased {1} {2} from your shop and you earned {3} ({4} in taxes).
+player-bought-from-your-store-tax: <green>{0} đã mua {1} {2} từ cửa hàng của bạn và bạn nhận được {3} ({4} tiền thuế).
 not-enough-space: <red>You only have room for {0} more!
 shop-name-success: <green>Đặt tên cửa hàng thành công thành <yellow>{0}<green>.
 shop-staff-added: <green>Successfully added {0} as a staff member for your shop.
@@ -101,7 +101,7 @@ menu:
   item: '<green>Vật phẩm: <yellow>{0}'
   price-per: <green>Giá mỗi <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>cho <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
+  item-name-and-price-tax: '<yellow>{0} {1} <green>cho</green> {2} <gray>(<green>{3}</green> tiền thuế)</gray>'
   successful-purchase: '<green>Mua thành công:'
   price-per-stack: <green>Giá mỗi <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Phù phép được lưu trữ
@@ -144,19 +144,19 @@ metric:
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
   looking-up: <yellow>Thực hiện tra cứu số liệu, Vui lòng đợi...
   tax-hover: thuế <yellow>{0}
-  header-global: '<yellow>The server {0} {1} transactions:'
+  header-global: '<yellow>Máy chủ {0} {1} giao dịch:'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
-  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}'
-  time-hover: '<yellow>Time: {0}'
+  transaction-count: <yellow>{0} tất cả
+  shop-hover: '<yellow>{0}<newline><gold>Ví trí: <gray>{1}{2}{3}, Thế giới: {4}<newline><gold>Chủ: <gray>{5}<newline><gold>Loại cửa hàng: <gray>{6}<newline><gold>Vật phẩm: <gray>{7}<newline><gold>Giá: <gray>{8}'
+  time-hover: '<yellow>Thời gian: {0}'
   amount-stack-hover: <yellow>{0}x stack
 permission-denied-3rd-party: '<red>Permission denied: 3rd Party Plugin [{0}].'
 you-dont-have-that-many-items: <red>Bạn chỉ còn {0} {1}.
 complete: <green>Hoàn thành!
-translate-not-completed-yet-url: 'The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}'
+translate-not-completed-yet-url: 'Bản dịch của ngôn ngữ {0} chưa hoàn thành bởi {1}. Nếu bạn muốn giúp chúng tôi cải thiện bạn dịch này không? Bấm vào: {2}'
 success-removed-shop: <green>Shop đã bị xoá.
 currency-set: <green>Đơn vị tiền tệ được đặt thành công thành {0}
-shop-purged-start: <green>Shop purge started, check the console for details.
+shop-purged-start: <green>Thanh lọc cửa hàng bắt đầu, kiểm tra bảng điều khiển để biết chi tiết.
 economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
 nothing-to-flush: <green>Bạn không có tin nhắn từ của hàng.
 no-price-change: <red>Điều này sẽ không được thay đổi giá!
@@ -176,8 +176,8 @@ language:
 warn-to-paste: '<yellow>Collecting data and uploading it to Pastebin, this may take a while. <red><bold>Warning:<red> The data is kept public for one week! It may leak your server configuration and other sensitive information. Make sure you only send it to <bold>trusted staff/developers.'
 how-many-sell-stack: <yellow>Nhập vào khung chat số lượng bạn muốn<light_purple> BÁN<yellow>. Có<green> {0} <yellow>vật phẩm trong mỗi số lượng lớn và bạn có thể bán <green>{1}<yellow> hàng loạt. Nhập <green>{2} <yellow>vào trò chuyện để bán tất cả.
 updatenotify:
-  buttontitle: '[Update Now]'
-  onekeybuttontitle: '[OneKey Update]'
+  buttontitle: '[Cập nhật bây giờ]'
+  onekeybuttontitle: '[Cập nhật OneKey]'
   label:
     github: '[GitHub]'
     ore: '[Ore]'
@@ -195,24 +195,24 @@ updatenotify:
     modrinth: '[Modrinth]'
     basic: '[Basic]'
   list:
-    - '{0} was released. You are still using {1}!'
-    - Boom! New update {0} incoming. Update!
-    - Surprise! {0} came out. You are on {1}
-    - Looks like you need to update. {0} was released!
-    - Ooops! {0} was now released. You are on {1}!
-    - I swear, QS has been updated to {0}. Why have you not updated yet?
-    - Fixing and re... Sorry, but {0} was released!
-    - Err! Nope. This is not an error. {0} has been released!
-    - OMG! {0} came out! Why are you still using {1}?
-    - 'Todays News: QuickShop has been updated to {0}!'
-    - Plugin k.i.a. You should update to {0}!
-    - Update {0} ignited. Save update!
-    - There is an update available Commander. {0} has just came out!
-    - Look my style---{0} updated. You're still using {1}
-    - Ahhhhhhh! New update {0}! Update!
-    - What do you think? {0} has been released! Update!
-    - Doctor, QuickShop has a new update {0}! You should update~
-    - Ko~ko~da~yo~ QuickShop has a new update {0} ~
+    - '{0} đã được phát hành. Bạn vẫn đang sử dụng {1}!'
+    - Đùng! Cập nhật mới {0} đã đến. Cập nhật ngay!
+    - Bất ngờ chưa! {0} vừa mới ra mắt. Bạn vẫn đang sử dụng {1}
+    - Có vẻ như bạn cần cập nhật. {0} đã được phát hành!
+    - Ooops! {0} vửa mới ra mắt. Bạn vẫn đang sử dụng {1}!
+    - Tôi thề, QS đã được cập nhật lên bản {0}. Tại sao bạn chưa cập nhật?
+    - Sửa lỗi và lại... Xin lỗi, nhưng {0} đã được phát hành!
+    - Err! Nope. Đây không phải là lỗi. {0} đã được phát hành!
+    - CHÚA ƠI! {0} đã ra mắt! Tại sao bạn vẫn đang sử dụng {1}?
+    - 'Tin tức hôm nay: QuickShop đã được cập nhật lên {0}!'
+    - Plugin k.i.a. Bạn nên cập nhật lên {0}!
+    - Cập nhật {0} được kích hoạt. Lưu cập nhật!
+    - Có một bản cập nhật mới có sẵn. {0} vừa mới ra mắt!
+    - Nhìn phong cách của tôi---{0} cập nhật. Bạn vẫn đang sử dụng {1}
+    - Ahhhhhhhh! Cập nhật mới {0}! Cập nhật!
+    - Bạn nghĩ gì? {0} đã được phát hành! Cập nhật ngay!
+    - Bác sĩ, QuickShop có bản cập nhật mới {0}! Bạn nên cập nhật ~
+    - Ko~ko~da~yo~ QuickShop có bản cập nhật mới {0} ~
     - Paimon muốn cho bạn biết QuickShop có bản cập nhật mới {0}!
   remote-disable-warning: '<red>Phiên bản QuickShop này bị máy chủ vô hiệu hóa, có nghĩa là phiên bản này có thể có vấn đề nghiêm trọng, hãy lấy thông tin chi tiết từ trang SpigotMC của chúng tôi: {0}. Cảnh báo này sẽ tiếp tục xuất hiện cho đến khi bạn chuyển sang phiên bản ổn định, nhưng nó sẽ không ảnh hưởng đến hiệu suất máy chủ của bạn.'
 purchase-out-of-stock: <red>This shop run out of the stock, Contact shop owner or staffs to refill the stock.
@@ -256,7 +256,7 @@ how-many-sell: <green>Nhập vào khung chat số lượng bạn muốn <aqua>B�
 shop-freezed-at-location: <yellow>Cửa hàng của bạn {0} tại {1} đã bị đóng băng!
 translation-contributors: 'Người đóng góp: huyhhuy'
 empty-success: <green>Cửa hàng trống
-taxaccount-set: <green>This shop's tax account has been set to <yellow>{0}
+taxaccount-set: <green>Tài khoản thuế của cửa hàng này đã được đặt thành <yellow>{0}
 support-disable-reason:
   hot-reload: <yellow>Tải lại không được hỗ trợ, hãy khởi động lại máy chủ và kiểm tra lại.
   outdated: <yellow>Phiên bản QuickShop này đã lỗi thời, hãy cập nhật trước khi yêu cầu hỗ trợ!
@@ -273,10 +273,10 @@ nearby-shop-this-way: <green>Shop cách {0} blocks từ vị trí của bạn.
 owner-bypass-check: <yellow>Bỏ qua tất cả các kiểm tra. Giao dịch thành công! (Bây giờ bạn là chủ cửa hàng!)
 april-rick-and-roll-easter-egg: |
   <green>---------------------------------------------------</green>
-  <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
-  <yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>
-  <aqua>Claim it by watch the video tutorial below!</aqua>
-  <hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
+  <rainbow><bold>SỰ KIỆN GIỚI HẠN -- QuickShop-Hikari</bold></rainbow>
+  <yellow>Hãy nhận <gold>PREMIUM</gold> hiệu ứng hạt trên tất cả các máy chủ QuickShop!</yellow>
+  <aqua>Bằng cách xem video hướng dẫn bên dưới!</aqua>
+  <hover:show_text:'<gold>Nhấp để mở trang nhận phần thưởng trong trình duyệt của bạn.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
   <green>---------------------------------------------------</green>
 signs:
   item-right: ''
@@ -300,7 +300,7 @@ negative-amount: <red>Bạn không thể giao dịch lượng số âm
 display-turn-on: <green>Successfully turn on the shop display.
 shop-staff-deleted: <green>Successfully removed {0} as a staff member for your shop.
 nearby-shop-header: '<green>Shop <aqua>{0}<green>đã được tìm thấy gần đây:'
-backup-failed: Cannot backup the database. Check the console for details.
+backup-failed: Không thể sao lưu cơ sở dữ liệu. Kiểm tra bảng điều khiển để biết chi tiết.
 shop-staff-cleared: <green>Đã xóa thành công tất cả nhân viên khỏi cửa hàng của bạn.
 price-too-high: <red>The shop price is too high! You cannot create one with a price higher than {0}.
 plugin-cancelled: '<red>Thao tác bị hủy, Lý do: {0}'
@@ -309,10 +309,10 @@ shop-out-of-stock: <dark_purple>Shop của bạn ở toạ độ {0}, {1}, {2} �
 how-many-buy: <green>Nhập vào khung chat số lượng bạn muốn <aqua>MUA<green>. Bạn có thể mua <aqua>{0}<green>. Nhập <aqua>{1}<green> để mua tất cả.
 language-info-panel:
   help: 'Liên lạc'
-  code: 'Code: '
-  name: 'Language: '
+  code: 'Mã: '
+  name: 'Ngôn ngữ: '
   progress: 'Tiến trình:'
-  translate-on-crowdin: '[Translate on Crowdin]'
+  translate-on-crowdin: '[Dịch trên Crowdin]'
 item-not-exist: <red>Vật phẩm <yellow>{0} <red>không tồn tại, vui lòng kiểm tra chính tả của bạn.
 shop-creation-failed: <red>Không tạo được cửa hàng, vui lòng liên hệ với quản trị viên máy chủ.
 inventory-space-full: <red>Your inventory space remains can only put <green>{1}x <red>items into it, try empty the your inventory!
@@ -346,17 +346,17 @@ controlpanel:
   toggledisplay-hover: <yellow>Toggle the shop's displayitem status
   refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
   freeze-hover: <yellow>Chuyển đổi trạng thái đóng băng của cửa hàng.
-  lock-hover: <yellow>Enable/Disable the shop's lock protection.
+  lock-hover: <yellow>Bật/Tắt tính năng bảo vệ khóa của cửa hàng.
   item-hover: <yellow>Nhấp để đổi item của shop
   infomation: '<green>Cửa sổ điều chỉnh Shop:'
   mode-selling-hover: <yellow>Nhấp để đổi shop thành chế độ MUA.
   empty-hover: <yellow>Nhấp để xóa kho đồ của cửa hàng.
-  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
+  toggledisplay: '<green>Vật phẩm hiện thỉ: <aqua>{0} <yellow>[<light_purple><bold>Cài đặt</bold></light_purple>]'
 timeunit:
-  behind: behind
-  week: <red>{0} week
-  weeks: <red>{0} weeks
-  year: <red>{0} year
+  behind: sau
+  week: <red>{0} tuần
+  weeks: <red>{0} tuần
+  year: <red>{0} năm
   before: trước
   scheduled: đã lên kế hoạch
   years: <red>{0} năm
@@ -428,7 +428,7 @@ command:
     permission: <yellow>quản lý quyền của Shop
     lookup: <yellow>Quản lý bảng mục có thể tra cứu
     database: <yellow>View and maintain QuickShop database
-    benefit: <yellow>Settings of divide benefits between shop owner and other players
+    benefit: <yellow>Cài đặt phân chia lợi nhuận giữa chủ cửa hàng và những người chơi khác
   bulk-size-not-set: '<red>Sử dụng lệnh: /qs find <số lượng>'
   no-type-given: '<red>Sử dụng lệnh: /qs find <item>'
   feature-not-enabled: Tính năng này không được kích hoạt trong tệp cấu hình.
@@ -488,17 +488,17 @@ permission:
     show-information: "<yellow>Quyền cho phép người dùng xem thông tin cửa hàng. (Mở bảng thông tin cửa hàng)"
     preview-shop: "<yellow>Quyền cho phép người dùng xem trước cửa hàng. (Xem trước vật phẩm)"
     search: "<yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)"
-    delete: "<yellow>Permission to allow users who have this to delete the shop."
+    delete: "<yellow>Quyền cho phép người chơi có quyền xóa cửa hàng này."
     receive-alert: "<yellow>Permission to allow users who have this to receive alert message (e.g out-of-stock or new trade)."
-    access-inventory: "<yellow>Permission to allow users who have this to access the shop inventory."
-    ownership-transfer: "<yellow>Permission to allow users who have this to transfer the shop ownership."
+    access-inventory: "<yellow>Quyền cho phép người chơi có quyền này truy cập vào kho của cửa hàng."
+    ownership-transfer: "<yellow>Quyền cho phép người chơi có quyền này chuyển quyền sở hữu cửa hàng."
     management-permission: "<yellow>Permission to allow users who have this to manage the groups permissions and edit user's group."
-    toggle-display: "<yellow>Permission to allow users who have this to toggle the shop display item."
+    toggle-display: "<yellow>Quyền cho phép người chơi có thể thay đổi vật phẩm hiển thị của cửa hàng."
     set-shoptype: "<yellow>Permission to allow users who have this to set the shop type (switch buying or selling)."
-    set-price: "<yellow>Permission to allow users who have this to set the shop price."
-    set-item: "<yellow>Permission to allow users who have this to set the shop item."
-    set-stack-amount: "<yellow>Permission to allow users who have this to set the shop stack amount."
-    set-currency: "<yellow>Permission to allow users who have this to set the shop currency."
+    set-price: "<yellow>Quyền cho phép người chơi có đặt giá cửa hàng."
+    set-item: "<yellow>Quyền cho phép người chơi có thể đặt vật phẩm trong cửa hàng."
+    set-stack-amount: "<yellow>Quyền cho phép người dùng có thể đặt số lượng cửa hàng."
+    set-currency: "<yellow>Quyền cho phép người chơi có thể đặt đơn vị tiền tệ của cửa hàng."
     set-name: "<yellow>Permission to allow users who have this to set the shop name."
   group:
     everyone: "<yellow>Default group for all users excepted shop owner."
