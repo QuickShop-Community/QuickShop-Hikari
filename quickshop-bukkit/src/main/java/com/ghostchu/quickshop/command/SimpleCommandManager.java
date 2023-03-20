@@ -36,6 +36,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
 
 @Data
 @SuppressWarnings("unchecked")
@@ -533,11 +534,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         cmds.removeIf(container::equals);
         cmds.add(container);
         cmds.sort(Comparator.comparing(CommandContainer::getPrefix));
+        Log.debug(Level.INFO, "Registered subcommand: " + container.getPrefix() + " - " + container.getExecutor().getClass().getName(), Log.Caller.create());
     }
 
     @Override
     public void unregisterCmd(@NotNull String prefix) {
         cmds.removeIf(commandContainer -> commandContainer.getPrefix().equalsIgnoreCase(prefix));
+        Log.debug(Level.INFO, "Unregistered subcommand: " + prefix, Log.Caller.create());
     }
 
     /**
@@ -553,9 +556,9 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     @Override
     public @NotNull String genBody() {
         HTMLTable table = new HTMLTable(2);
-        table.setTableTitle("Prefix", "Permissions", "Selective Permissions", "Executor Type");
+        table.setTableTitle("Prefix", "Permissions", "Selective Permissions", "Executor Type", "Binding");
         for (CommandContainer cmd : this.cmds) {
-            table.insert(cmd.getPrefix(), CommonUtil.list2String(cmd.getPermissions()), CommonUtil.list2String(cmd.getSelectivePermissions()), cmd.getExecutorType());
+            table.insert(cmd.getPrefix(), CommonUtil.list2String(cmd.getPermissions()), CommonUtil.list2String(cmd.getSelectivePermissions()), cmd.getExecutorType(), cmd.getExecutor().getClass().getName());
         }
         return table.render();
     }
