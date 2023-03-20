@@ -641,8 +641,8 @@ tag-query-no-tag: "<red>该商店没有标签"
 tag-query-shops: "<green>此标签包含 <yellow>{0}</yellow> 商店："
 tag-query-shops-listing: "<yellow> - <aqua>{0}</aqua>"
 batch-operations-based-on-tags-no-failure: "<green>成功批量处理 <yellow>{0}</yellow> 个商店"
-batch-operations-based-on-tags-have-failure: "<yellow>Total <green>{0}</green> shops in batch processing successfully completed, but <red>{1}</red> requests not completed."
-batch-operations-based-on-tags-have-failure-with-reason: "<yellow>Total <green>{0}</green> shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}</gold>"
+batch-operations-based-on-tags-have-failure: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed."
+batch-operations-based-on-tags-have-failure-with-reason: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}</gold>"
 batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: "<gray>错误消息将在聊天中的此消息上方发送给您。"
 addon:
   towny:
