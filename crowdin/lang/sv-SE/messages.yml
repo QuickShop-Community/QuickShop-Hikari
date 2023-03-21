@@ -239,7 +239,10 @@ no-double-chests: <red>Du kan inte skapa den dubbla kistbutiken.
 price-too-cheap: <red>Priset måste vara högre än <yellow>${0}
 shop-not-exist: <red>Det finns ingen butik.
 bad-command-usage: <red>Bad command arguments!
-clean-warning: <yellow>Detta kommando kommer att rensa <yellow>butiker som är skadade eller skapade i otillåtna världar eller säljer/köper otillåtna föremål eller <red><bold>EXISTERAR I OLADDADE VÄRLDAR<yellow>. Se till att du har full säkerhetskopiering av dina butikers data och använd <aqua>/qs cleanghost confirm <yellow>för att fortsätta.
+cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
+cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
+cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
 shop-purchase-cancelled: <red>Butiksköp avbrutet.
 bypassing-lock: <red>Ignorerar ett butikslås!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
