@@ -239,7 +239,10 @@ no-double-chests: <red>Nem tudsz csinálni egy duplaláda boltot.
 price-too-cheap: <red>Az árnak minimum <yellow>${0} <red>-nak/nek kell lennie!
 shop-not-exist: <red>Itt nincs egy üzlet sem.
 bad-command-usage: <red>Bad command arguments!
-clean-warning: <yellow>This command will purge <red>all <yellow>shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD<yellow>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm <yellow>to continue.
+cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
+cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
+cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
 shop-purchase-cancelled: <red>Boltból vétel visszavonva.
 bypassing-lock: <red>A <green>gyorsbolt<red> zárva van
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
