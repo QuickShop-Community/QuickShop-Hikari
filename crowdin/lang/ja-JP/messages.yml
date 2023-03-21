@@ -239,7 +239,10 @@ no-double-chests: <red>ラージチェストのショップを作成すること
 price-too-cheap: <red>価格は<yellow>${0}<red>以上である必要があります。
 shop-not-exist: <red>そこにショップはありませんでした。
 bad-command-usage: <red>Bad command arguments!
-clean-warning: <yellow>このコマンドは、ショップが破損、許可されていないワールドで作成、許可されていないアイテムを販売/買取、または<red>ロードされていないワールドに存在している場合<yellow>、全てのショップをパージします。ショップデータの完全なバックアップを作成してから、<aqua>/qs cleanghost confirm <yellow>で続行してください。
+cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
+cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
+cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
 shop-purchase-cancelled: <red>ショップでの購入がキャンセルされました。
 bypassing-lock: <red>QuickShopロックをバイパスします！
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
