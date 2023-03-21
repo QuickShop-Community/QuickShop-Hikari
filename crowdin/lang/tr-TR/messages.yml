@@ -239,7 +239,10 @@ no-double-chests: <red>Çifte sandık ile market oluşturamazsınız.
 price-too-cheap: <red>Fiyat <yellow>${0}<red>'dan büyük olmalıdır.
 shop-not-exist: <red>Orada market yok.
 bad-command-usage: <red>Kötü komut argümanları!
-clean-warning: <yellow>Bu komut, mağaza bozulursa, izin verilmeyen dünyalarda oluşturulduysa, izin verilmeyen öğeleri satıyorsa/satın alıyorsa veya YÜKLENMEMİŞ BİR DÜNYADA <red>& lVAR OLARAK <red><bold>Varsa <yellow>shops'u temizler. Önce mağaza verilerinizin tam bir yedeğini oluşturduğunuzdan emin olun ve devam etmek için <aqua>/qs cleanghost onayını <yellow>to kullanın.
+cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
+cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
+cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
 shop-purchase-cancelled: <red>Market alımı iptal edildi.
 bypassing-lock: <red>Bir QuickShop kilidi atlanıyor!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
