@@ -47,8 +47,9 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
             if (shop == null) {
                 return; // WTF
             }
-            if (!Util.canBeShop(shop.getLocation().getBlock())) {
-                plugin.text().of(sender, "cleanghost-deleting", shop.getShopId(), "invalid shop block").send();
+            //noinspection ConstantConditions
+            if (shop.getOwner() == null) {
+                plugin.text().of(sender, "cleanghost-deleting", shop.getShopId(), "invalid owner data").send();
                 shop.delete();
                 deletionCounter.incrementAndGet();
                 plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender), "/qs cleanghost command", shop.saveToInfoStorage()));
@@ -68,9 +69,8 @@ public class SubCommand_CleanGhost implements CommandHandler<CommandSender> {
                 plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender), "/qs cleanghost command", shop.saveToInfoStorage()));
                 return;
             }
-            //noinspection ConstantConditions
-            if (shop.getOwner() == null) {
-                plugin.text().of(sender, "cleanghost-deleting", shop.getShopId(), "invalid owner data").send();
+            if (!Util.canBeShop(shop.getLocation().getBlock())) {
+                plugin.text().of(sender, "cleanghost-deleting", shop.getShopId(), "invalid shop block").send();
                 shop.delete();
                 deletionCounter.incrementAndGet();
                 plugin.logEvent(new ShopRemoveLog(Util.getSenderUniqueId(sender), "/qs cleanghost command", shop.saveToInfoStorage()));
