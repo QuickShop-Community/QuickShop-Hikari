@@ -239,7 +239,10 @@ no-double-chests: <red>你没有权限创建大箱子商店。
 price-too-cheap: <red>价格必须大于<yellow>${0}
 shop-not-exist: <red>这里没有商店
 bad-command-usage: <red>错误的命令参数！
-clean-warning: <yellow>这个命令将清理<red>所有<yellow>在不允许创建商店的世界的、出售/购买不允许的物品的，以及 <red><bold>所有在服务器没有加载的世界的商店， 请在确保您的商店数据备份完整后使用 <aqua>/qs cleanghost confirm <yellow>来继续。
+cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
+cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
+cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
 shop-purchase-cancelled: <red>您取消了交易操作。
 bypassing-lock: <red>你绕过了QuickShop的锁！
 bungee-cross-server-msg: '<yellow>QuickShop跨服信息: <green>{0}'

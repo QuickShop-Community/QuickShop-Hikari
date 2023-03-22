@@ -239,7 +239,10 @@ no-double-chests: <red>Você não pode criar a loja com baú duplo.
 price-too-cheap: <red>O preço precisa ser maior do que <yellow>${0}
 shop-not-exist: <red>Não há uma loja.
 bad-command-usage: <red>Argumentos inválidos de comando!
-clean-warning: <yellow>Este comando irá limpar <red>hamar o <yellow>shops se a loja estiver danificada ou corrompida, foi criada em mundos não permitidos, está vendendo/comprando itens não permitidos ou <red><bold>EXISTE EM UM MUNDO DESCARREGADO. Certifique-se de criar um backup completo dos dados da loja primeiro e usar a limpeza <aqua>/qs cleanghost confirm <yellow>para continuar.
+cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
+cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
+cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
 shop-purchase-cancelled: <red>Compra da loja cancelada.
 bypassing-lock: <red>Ignorarando um bloqueio da loja!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'

@@ -239,7 +239,10 @@ no-double-chests: <red>당신은 큰상자(일반 상자를 두개붙인)를 이
 price-too-cheap: <red>가격은 반드시 <yellow>${0} 원 <red>보다 높아야만 합니다.
 shop-not-exist: <red>그곳에는 상점이 없습니다.
 bad-command-usage: <red>Bad command arguments!
-clean-warning: <yellow>이 명령어는 <red>손상된 상점과 허용되지 않는 아이템을 판매/구매중인 상점과 <red><bold>로드되지 않은 월드의 모든 샵을 삭제합니다 <yellow>상점 데이터를 전체 백업하고 <aqua>/qs cleanhost를 사용하여 <yellow>계속 진행하십시오.
+cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
+cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
+cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
 shop-purchase-cancelled: <red>구입이 취소되었습니다.
 bypassing-lock: <green> QuickShop의 잠금을 무시합니다!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
