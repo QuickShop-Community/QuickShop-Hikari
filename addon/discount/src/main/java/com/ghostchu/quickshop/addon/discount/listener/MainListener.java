@@ -6,6 +6,7 @@ import com.ghostchu.quickshop.addon.discount.Main;
 import com.ghostchu.quickshop.api.event.ShopInfoPanelEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -37,18 +38,20 @@ public class MainListener implements Listener {
             return;
         }
         String code = codeInstalled.getCode();
-        switch (codeInstalled.applicableShop(purchaser, shop)) {
-            case APPLICABLE -> quickshop.text().of(purchaser, "addon.discount.discount-code-applicable", code).send();
-            case APPLICABLE_WITH_THRESHOLD ->
-                    quickshop.text().of(purchaser, "addon.discount.discount-code-applicable", code, quickshop.getEconomy().format(codeInstalled.getThreshold(), shop.getLocation().getWorld(), shop.getCurrency())).send();
-            case NOT_APPLICABLE ->
-                    quickshop.text().of(purchaser, "addon.discount.discount-code-not-applicable", code).send();
-            case REACHED_THE_LIMIT ->
-                    quickshop.text().of(purchaser, "addon.discount.discount-code-reach-the-limit", code).send();
-            case NO_PERMISSION ->
-                    quickshop.text().of(purchaser, "addon.discount.discount-code-no-permission", code).send();
-            case EXPIRED -> quickshop.text().of(purchaser, "addon.discount.discount-code-expired", code).send();
-        }
+        Util.mainThreadRun(()->{
+            switch (codeInstalled.applicableShop(purchaser, shop)) {
+                case APPLICABLE -> quickshop.text().of(purchaser, "addon.discount.discount-code-applicable", code).send();
+                case APPLICABLE_WITH_THRESHOLD ->
+                        quickshop.text().of(purchaser, "addon.discount.discount-code-applicable", code, quickshop.getEconomy().format(codeInstalled.getThreshold(), shop.getLocation().getWorld(), shop.getCurrency())).send();
+                case NOT_APPLICABLE ->
+                        quickshop.text().of(purchaser, "addon.discount.discount-code-not-applicable", code).send();
+                case REACHED_THE_LIMIT ->
+                        quickshop.text().of(purchaser, "addon.discount.discount-code-reach-the-limit", code).send();
+                case NO_PERMISSION ->
+                        quickshop.text().of(purchaser, "addon.discount.discount-code-no-permission", code).send();
+                case EXPIRED -> quickshop.text().of(purchaser, "addon.discount.discount-code-expired", code).send();
+            }
+        });
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
