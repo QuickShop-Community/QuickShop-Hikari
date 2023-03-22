@@ -95,6 +95,11 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
+    public @NotNull Component getTranslation(@NotNull ItemStack itemStack) {
+        return Component.translatable(getTranslationKey(itemStack));
+    }
+
+    @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
         String key;
         try {
@@ -146,6 +151,17 @@ public class PaperPlatform implements Platform {
             key = enchantment.translationKey();
         } catch (Exception error) {
             key = enchantment.getKey().getNamespace() + "." + enchantment.getKey().getKey();
+        }
+        return postProcessingTranslationKey(key);
+    }
+
+    @Override
+    public @NotNull String getTranslationKey(@NotNull ItemStack stack) {
+        String key;
+        try {
+            key = stack.translationKey();
+        } catch (Exception error) {
+            key = stack.getTranslationKey();
         }
         return postProcessingTranslationKey(key);
     }

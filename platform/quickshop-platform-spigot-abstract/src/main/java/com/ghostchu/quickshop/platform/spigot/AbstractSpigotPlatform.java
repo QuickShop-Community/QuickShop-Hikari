@@ -108,6 +108,11 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
+    public @NotNull Component getTranslation(@NotNull ItemStack itemStack) {
+        return Component.translatable(getTranslationKey(itemStack));
+    }
+
+    @Override
     public @NotNull String getTranslationKey(@NotNull Material material) {
         return postProcessingTranslationKey(localeManager.queryMaterial(material));
     }
