@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.addon.list.command;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
 import com.ghostchu.quickshop.util.Util;
@@ -25,12 +26,12 @@ public class SubCommand_List implements CommandHandler<Player> {
     }
 
     @Override
-    public void onCommand(Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+    public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() < 1) {
             lookupSelf(sender);
             return;
         }
-        lookupOther(sender, cmdArg[0]);
+        lookupOther(sender, parser.getArgs().get(0));
     }
 
     private void lookupSelf(Player sender) {

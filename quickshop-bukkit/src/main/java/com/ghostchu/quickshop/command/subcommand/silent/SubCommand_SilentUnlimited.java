@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.command.subcommand.silent;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.shop.SimpleShopManager;
 import com.ghostchu.quickshop.util.MsgUtil;
@@ -18,7 +19,7 @@ public class SubCommand_SilentUnlimited extends SubCommand_SilentBase {
     }
 
     @Override
-    protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull String[] cmdArg) {
+    protected void doSilentCommand(Player sender, @NotNull Shop shop, @NotNull CommandParser parser) {
         shop.setUnlimited(!shop.isUnlimited());
         shop.setSignText(plugin.text().findRelativeLanguages(sender));
         MsgUtil.sendControlPanelInfo(sender, shop);

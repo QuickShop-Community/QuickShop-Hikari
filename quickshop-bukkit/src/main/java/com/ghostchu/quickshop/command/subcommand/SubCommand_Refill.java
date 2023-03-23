@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -20,8 +21,8 @@ public class SubCommand_Refill implements CommandHandler<Player> {
     }
 
     @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() < 1) {
             plugin.text().of(sender, "command.no-amount-given").send();
             return;
         }
@@ -31,10 +32,10 @@ public class SubCommand_Refill implements CommandHandler<Player> {
             plugin.text().of(sender, "not-looking-at-shop").send();
             return;
         }
-        if (StringUtils.isNumeric(cmdArg[0])) {
-            add = Integer.parseInt(cmdArg[0]);
+        if (StringUtils.isNumeric(parser.getArgs().get(0))) {
+            add = Integer.parseInt(parser.getArgs().get(0));
         } else {
-            if (cmdArg[0].equals(plugin.getConfig().getString("shop.word-for-trade-all-items"))) {
+            if (parser.getArgs().get(0).equals(plugin.getConfig().getString("shop.word-for-trade-all-items"))) {
                 add = shop.getRemainingSpace();
             } else {
                 plugin.text().of(sender, "thats-not-a-number").send();
@@ -48,8 +49,8 @@ public class SubCommand_Refill implements CommandHandler<Player> {
 
     @NotNull
     @Override
-    public List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.amount").forLocale())) : Collections.emptyList();
+    public List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        return parser.getArgs().size() == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.amount").forLocale())) : Collections.emptyList();
     }
 
 }

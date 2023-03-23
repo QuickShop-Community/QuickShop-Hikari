@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.util.Util;
@@ -32,13 +33,13 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
 
 
     @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() < 1) {
             plugin.text().of(sender, "command.wrong-args").send();
             return;
         }
-        if (cmdArg.length == 1) {
-            switch (cmdArg[0]) {
+        if (parser.getArgs().size() == 1) {
+            switch (parser.getArgs().get(0)) {
                 case "accept", "allow", "yes" -> {
                     PendingTransferTask task = taskCache.getIfPresent(sender.getUniqueId());
                     taskCache.invalidate(sender.getUniqueId());
@@ -58,8 +59,8 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                     task.cancel(true);
                 }
                 default -> {
-                    String name = cmdArg[0];
-                    UUID uuid = plugin.getPlayerFinder().name2Uuid(cmdArg[0]);
+                    String name = parser.getArgs().get(0);
+                    UUID uuid = plugin.getPlayerFinder().name2Uuid(name);
                     if (uuid == null) {
                         plugin.text().of(sender, "unknown-player").send();
                         return;
@@ -83,13 +84,13 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
                 }
             }
         }
-        if (cmdArg.length == 2) {
+        if (parser.getArgs().size() == 2) {
             if (!plugin.perm().hasPermission(sender, "quickshop.transfer.other")) {
                 plugin.text().of(sender, "no-permission").send();
                 return;
             }
-            UUID fromPlayer = plugin.getPlayerFinder().name2Uuid(cmdArg[0]);
-            UUID targetPlayer = plugin.getPlayerFinder().name2Uuid(cmdArg[1]);
+            UUID fromPlayer = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(0));
+            UUID targetPlayer = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(1));
             if (fromPlayer == null) {
                 plugin.text().of(sender, "unknown-player", "fromPlayer").send();
                 return;
@@ -101,16 +102,16 @@ public class SubCommand_Transfer implements CommandHandler<Player> {
             List<Shop> shopList = plugin.getShopManager().getPlayerAllShops(fromPlayer);
             PendingTransferTask task = new PendingTransferTask(fromPlayer, targetPlayer, shopList);
             task.commit(false);
-            plugin.text().of(sender, "command.transfer-success-other", shopList.size(), cmdArg[0], cmdArg[1]).send();
+            plugin.text().of(sender, "command.transfer-success-other", shopList.size(), parser.getArgs().get(0), parser.getArgs().get(1)).send();
         }
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         List<String> list = Util.getPlayerList();
         list.add("accept");
         list.add("deny");
-        return cmdArg.length <= 2 ? list : Collections.emptyList();
+        return parser.getArgs().size() <= 2 ? list : Collections.emptyList();
     }
 
     @Data

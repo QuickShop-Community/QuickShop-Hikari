@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * The manager that managing shops
@@ -348,6 +349,18 @@ public interface ShopManager {
      */
     @NotNull
     ShopManager.InteractiveManager getInteractiveManager();
+
+    @NotNull CompletableFuture<@NotNull List<Shop>> queryTaggedShops(@NotNull UUID tagger, @NotNull String tag);
+
+    CompletableFuture<@Nullable Integer> clearShopTags(@NotNull UUID tagger, @NotNull Shop shop);
+
+    CompletableFuture<@Nullable Integer> clearTagFromShops(@NotNull UUID tagger, @NotNull String tag);
+
+    CompletableFuture<@Nullable Integer> removeTag(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag);
+
+    CompletableFuture<@Nullable Integer> tagShop(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag);
+
+    @NotNull List<String> listTags(@NotNull UUID tagger);
 
     /**
      * An getActions() alternative.

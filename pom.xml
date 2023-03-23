@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>4.1.1.0</version>
+    <version>4.2.0.0</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -466,6 +466,8 @@
         <module>addon/list</module>
         <module>addon/shopitemonly</module>
         <module>addon/limited</module>
+        <module>addon/dynmap</module>
+        <module>addon/bluemap</module>
     </modules>
 
 </project>

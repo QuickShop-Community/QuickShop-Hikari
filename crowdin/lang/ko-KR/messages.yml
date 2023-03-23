@@ -166,6 +166,9 @@ file-test: 이것은텍스트파일일까요? 한국어 일까yo? :)
 unknown-player: <red>대상 플레이어가 없습니다. 유저이름을 확인해주세요.
 player-offline: "<red>The target player currently is offline."
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
+shop-type:
+  selling: "SELLING"
+  buying: "BUYING"
 language:
   qa-issues: '<yellow>품질 보증문제: <aqua>{0}%'
   code: '<yellow>코드: <gold>{0}'
@@ -239,7 +242,10 @@ no-double-chests: <red>당신은 큰상자(일반 상자를 두개붙인)를 이
 price-too-cheap: <red>가격은 반드시 <yellow>${0} 원 <red>보다 높아야만 합니다.
 shop-not-exist: <red>그곳에는 상점이 없습니다.
 bad-command-usage: <red>Bad command arguments!
-clean-warning: <yellow>이 명령어는 <red>손상된 상점과 허용되지 않는 아이템을 판매/구매중인 상점과 <red><bold>로드되지 않은 월드의 모든 샵을 삭제합니다 <yellow>상점 데이터를 전체 백업하고 <aqua>/qs cleanhost를 사용하여 <yellow>계속 진행하십시오.
+cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
+cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
+cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
 shop-purchase-cancelled: <red>구입이 취소되었습니다.
 bypassing-lock: <green> QuickShop의 잠금을 무시합니다!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
@@ -429,6 +435,7 @@ command:
     lookup: <yellow>Manage lookup-able items table
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
+    tag: <yellow>Add, remove or query tags of a shop
   bulk-size-not-set: '<red>사용법: /qs size <amount>'
   no-type-given: '<red>사용법: /qs find <아이템 이름>'
   feature-not-enabled: 이옵션은 컨피그에서 비활성 상태입니다
@@ -628,6 +635,21 @@ benefit-added: "<green>Player <aqua>{0}</aqua> has been added into shop benefits
 benefit-updated: "<green>Player <aqua>{0}</aqua>'s benefits has been updated!"
 benefit-query: "<green>This shop have <yellow>{0}</yellow> players in benefits list!"
 benefit-query-list: "<yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>"
+tag-added: "<green>Successfully added <aqua>#{0}</aqua> to this shop!"
+tag-add-duplicate: "<red>The tag <aqua>#{0}</aqua> already exists at this shop!"
+tag-removed: "<green>Successfully removed <aqua>#{0}</aqua> from this shop!"
+tag-remove-not-exists: "The tag <aqua>#{0}</aqua> not exists at this shop!"
+tag-cleared: "<green>Successfully cleared all tags from this shop!"
+tag-shops-cleared: "<green>Successfully cleared <aqua>#{0}</aqua> from all your tagged shops!"
+tag-query: "<green>This shop have <yellow>{0}</yellow> tags:"
+tag-query-listing: "<yellow> - <aqua>#{0}</aqua>"
+tag-query-no-tag: "<red>This shop have no tags."
+tag-query-shops: "<green>This tag contains <yellow>{0}</yellow> shops:"
+tag-query-shops-listing: "<yellow> - <aqua>{0}</aqua>"
+batch-operations-based-on-tags-no-failure: "<green>Successfully batch processed <yellow>{0}</yellow> shops."
+batch-operations-based-on-tags-have-failure: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed."
+batch-operations-based-on-tags-have-failure-with-reason: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}</gold>"
+batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: "<gray>The error messages will send to you above this message in the chat."
 addon:
   towny:
     commands:
@@ -1320,6 +1342,28 @@ addon:
     success-remove: "<green>Successfully remove the all restriction of this shop"
     success-setup: "<green>Restriction settings for this shop were saved successfully"
     trade-limit-reached-cancel-reason: "<red>Reached the restriction of this shop"
+  dynmap:
+    markerset-title: "QuickShop-Hikari Shops"
+    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    marker-description: |
+      Name: {0}
+      Owner: {1}
+      Item: {2}
+      Price: {3} for x{4} item(s)
+      Type: {5}
+      Unlimited: {6}
+      Location: {7}
+  bluemap:
+    markerset-title: "QuickShop-Hikari Shops"
+    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    marker-description: |
+      Name: {0}
+      Owner: {1}
+      Item: {2}
+      Price: {3} for x{4} item(s)
+      Type: {5}
+      Unlimited: {6}
+      Location: {7}
 suite:
   dynmap:
     title: "{0} - {1} - {2}"

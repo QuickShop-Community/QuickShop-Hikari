@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.ShopAction;
 import com.ghostchu.quickshop.shop.SimpleInfo;
 import com.ghostchu.quickshop.util.Util;
@@ -28,27 +29,28 @@ public class SubCommand_Create implements CommandHandler<Player> {
     }
 
     @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         BlockIterator bIt = new BlockIterator(sender, 10);
         ItemStack item;
-        if (cmdArg.length < 1) {
+        if (parser.getArgs().size() < 1) {
             plugin.text().of(sender, "command.wrong-args").send();
             return;
-        } else if (cmdArg.length == 1) {
+        } else if (parser.getArgs().size() == 1) {
             item = sender.getInventory().getItemInMainHand();
             if (item.getType().isAir()) {
                 plugin.text().of(sender, "no-anythings-in-your-hand").send();
                 return;
             }
         } else {
-            Material material = matchMaterial(cmdArg[1]);
+            String matName = parser.getArgs().get(1);
+            Material material = matchMaterial(matName);
             if (material == null) {
-                plugin.text().of(sender, "item-not-exist", cmdArg[1]).send();
+                plugin.text().of(sender, "item-not-exist", matName).send();
                 return;
             }
-            if (cmdArg.length > 2 && plugin.perm().hasPermission(sender, "quickshop.create.stack") && plugin.isAllowStack()) {
+            if (parser.getArgs().size() > 2 && plugin.perm().hasPermission(sender, "quickshop.create.stack") && plugin.isAllowStack()) {
                 try {
-                    int amount = Integer.parseInt(cmdArg[2]);
+                    int amount = Integer.parseInt(parser.getArgs().get(2));
                     if (amount < 1) {
                         amount = 1;
                     }
@@ -62,7 +64,7 @@ public class SubCommand_Create implements CommandHandler<Player> {
         }
         Log.debug("Pending task for material: " + item);
 
-        String price = cmdArg[0];
+        String price = parser.getArgs().get(0);
 
         while (bIt.hasNext()) {
             final Block b = bIt.next();
@@ -96,15 +98,15 @@ public class SubCommand_Create implements CommandHandler<Player> {
     @NotNull
     @Override
     public List<String> onTabComplete(
-            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length == 1) {
+            @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() == 1) {
             return Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.price").forLocale()));
         }
         if (sender.getInventory().getItemInMainHand().getType().isAir()) {
-            if (cmdArg.length == 2) {
+            if (parser.getArgs().size() == 2) {
                 return Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.item").forLocale()));
             }
-            if (cmdArg.length == 3) {
+            if (parser.getArgs().size() == 3) {
                 return Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.amount").forLocale()));
             }
         }

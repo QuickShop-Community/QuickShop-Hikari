@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.PriceLimiter;
 import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.PriceLimiterStatus;
@@ -27,16 +28,16 @@ public class SubCommand_Size implements CommandHandler<Player> {
     }
 
     @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() < 1) {
             plugin.text().of(sender, "command.bulk-size-not-set").send();
             return;
         }
         int amount;
         try {
-            amount = Integer.parseInt(cmdArg[0]);
+            amount = Integer.parseInt(parser.getArgs().get(0));
         } catch (NumberFormatException e) {
-            plugin.text().of(sender, "not-a-integer", cmdArg[0]).send();
+            plugin.text().of(sender, "not-a-integer", parser.getArgs().get(0)).send();
             return;
         }
         final Shop shop = getLookingShop(sender);
@@ -74,7 +75,7 @@ public class SubCommand_Size implements CommandHandler<Player> {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.amount").forLocale())) : Collections.emptyList();
+    public @Nullable List<String> onTabComplete(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        return parser.getArgs().size() == 1 ? Collections.singletonList(LegacyComponentSerializer.legacySection().serialize(plugin.text().of(sender, "tabcomplete.amount").forLocale())) : Collections.emptyList();
     }
 }

@@ -69,6 +69,8 @@ public interface Platform {
 
     @NotNull
     Component getTranslation(@NotNull Enchantment enchantment);
+    @NotNull
+    Component getTranslation(@NotNull ItemStack itemStack);
 
     @NotNull
     String getTranslationKey(@NotNull Material material);
@@ -81,6 +83,9 @@ public interface Platform {
 
     @NotNull
     String getTranslationKey(@NotNull Enchantment enchantment);
+
+    @NotNull
+    String getTranslationKey(@NotNull ItemStack stack);
 
     @NotNull
     MiniMessage miniMessage();

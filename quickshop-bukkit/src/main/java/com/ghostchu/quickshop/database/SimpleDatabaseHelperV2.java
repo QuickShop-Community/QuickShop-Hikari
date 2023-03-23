@@ -35,9 +35,21 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -116,7 +128,8 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             List<Long> shop2ShopMapIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.SHOP_MAP, "shop");
             List<Long> shop2LogPurchaseIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.LOG_PURCHASE, "shop");
             List<Long> shop2LogChangesIds = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.LOG_CHANGES, "shop");
-            List<Long> shopAllIds = CommonUtil.linkLists(shop2LogChangesIds, shop2LogPurchaseIds);
+            List<Long> shop2Tags = listAllANotExistsInB(DataTables.SHOPS, "id", DataTables.TAGS, "shop");
+            List<Long> shopAllIds = CommonUtil.linkLists(shop2LogChangesIds, shop2LogPurchaseIds, shop2Tags);
             List<Long> shopIsolatedFinal = new ArrayList<>(shop2ShopMapIds);
             shopIsolatedFinal.retainAll(shopAllIds);
             shopIsolatedFinal.forEach(isolatedShopId -> {
@@ -381,6 +394,67 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             e.printStackTrace();
         }
         return shopRecords;
+    }
+
+    @Override
+    public @NotNull List<Long> listShopsTaggedBy(@NotNull UUID tagger, @NotNull String tag) {
+        List<Long> shopIds = new ArrayList<>();
+        try (SQLQuery query = DataTables.TAGS.createQuery()
+                .addCondition("tagger", tagger.toString())
+                .addCondition("tag", tag)
+                .build().execute()) {
+            ResultSet set = query.getResultSet();
+            shopIds.add(set.getLong("shop"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return shopIds;
+    }
+
+    @Override
+    public @NotNull List<String> listTags(@NotNull UUID tagger) {
+        List<String> tags = new ArrayList<>();
+        try (SQLQuery query = DataTables.TAGS.createQuery()
+                .addCondition("tagger", tagger.toString())
+                .build().execute()) {
+            ResultSet set = query.getResultSet();
+            tags.add(set.getString("tag"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tags;
+    }
+
+    @Override
+    public CompletableFuture<@Nullable Integer> removeShopTag(@NotNull UUID tagger, @NotNull Long shopId, @NotNull String tag) {
+        return DataTables.TAGS.createDelete()
+                .addCondition("tagger", tagger.toString())
+                .addCondition("shop", shopId)
+                .addCondition("tag", tag).build().executeFuture(i -> i);
+    }
+
+    @Override
+    public CompletableFuture<@Nullable Integer> removeShopAllTag(@NotNull UUID tagger, @NotNull Long shopId) {
+        return DataTables.TAGS.createDelete()
+                .addCondition("tagger", tagger.toString())
+                .addCondition("shop", shopId)
+                .build().executeFuture(i -> i);
+    }
+
+    @Override
+    public CompletableFuture<@Nullable Integer> removeTagFromShops(@NotNull UUID tagger, @NotNull String tag) {
+        return DataTables.TAGS.createDelete()
+                .addCondition("tagger", tagger.toString())
+                .addCondition("tag", tag)
+                .build().executeFuture(i -> i);
+    }
+
+    @Override
+    public @NotNull CompletableFuture<@Nullable Integer> tagShop(@NotNull UUID tagger, @NotNull Long shopId, @NotNull String tag) {
+        return DataTables.TAGS.createInsert()
+                .setColumnNames("tagger", "shop", "tag")
+                .setParams(tagger.toString(), shopId, tag)
+                .executeFuture(i -> i);
     }
 
     @Override

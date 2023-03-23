@@ -4,7 +4,13 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.command.CommandManager;
 import com.ghostchu.quickshop.command.subcommand.*;
-import com.ghostchu.quickshop.command.subcommand.silent.*;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentBuy;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentEmpty;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentPreview;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentRemove;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentSell;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentToggleDisplay;
+import com.ghostchu.quickshop.command.subcommand.silent.SubCommand_SilentUnlimited;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
@@ -12,6 +18,8 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
 import com.ghostchu.quickshop.util.paste.util.HTMLTable;
 import com.ghostchu.quickshop.util.performance.PerfMonitor;
+import com.ghostchu.simplereloadlib.ReloadResult;
+import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.collect.ImmutableList;
 import lombok.Data;
 import org.bukkit.Sound;
@@ -30,17 +38,22 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
 
 @Data
 @SuppressWarnings("unchecked")
-public class SimpleCommandManager implements CommandManager, TabCompleter, CommandExecutor, SubPasteItem {
+public class SimpleCommandManager implements CommandManager, TabCompleter, CommandExecutor, SubPasteItem, Reloadable {
     private static final String[] EMPTY_ARGS = new String[0];
     private final List<CommandContainer> cmds = new CopyOnWriteArrayList<>(); //Because we open to allow register, so this should be thread-safe
     private final QuickShop plugin;
     private final CommandContainer rootContainer;
 
+    private boolean playSoundOnTabComplete;
+    private boolean playSoundOnCommand;
+
     public SimpleCommandManager(QuickShop plugin) {
         this.plugin = plugin;
+        this.plugin.getReloadManager().register(this);
         this.rootContainer = CommandContainer.builder()
                 .prefix("")
                 .permission(null)
@@ -349,6 +362,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         return ImmutableList.copyOf(this.getCmds());
     }
 
+    private void init(){
+        this.playSoundOnCommand = plugin.getConfig().getBoolean("effect.sound.oncommand");
+        this.playSoundOnTabComplete = plugin.getConfig().getBoolean("effect.sound.ontabcomplete");
+    }
+
     @Override
     public boolean onCommand(
             @NotNull CommandSender sender,
@@ -365,14 +383,14 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 return true;
             }
         }
-        if (sender instanceof Player player && plugin.getConfig().getBoolean("effect.sound.oncommand")) {
+        if (sender instanceof Player player && playSoundOnCommand) {
             ((Player) sender)
                     .playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 80.0F, 1.0F);
         }
 
         if (cmdArg.length == 0) {
             //Handle main command
-            rootContainer.getExecutor().onCommand(capture(sender), commandLabel, EMPTY_ARGS);
+            rootContainer.getExecutor().onCommand_Internal(capture(sender), commandLabel, EMPTY_ARGS);
         } else {
             //Handle subcommand
             String[] passThroughArgs = new String[cmdArg.length - 1];
@@ -401,11 +419,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 }
                 Log.debug("Execute container: " + container.getPrefix() + " - " + cmdArg[0]);
                 try (PerfMonitor ignored = new PerfMonitor("Execute command " + container.getPrefix() + " " + CommonUtil.array2String(passThroughArgs), Duration.of(2, ChronoUnit.SECONDS))) {
-                    container.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);
+                    container.getExecutor().onCommand_Internal(capture(sender), commandLabel, passThroughArgs);
                 }
                 return true;
             }
-            rootContainer.getExecutor().onCommand(capture(sender), commandLabel, passThroughArgs);
+            rootContainer.getExecutor().onCommand_Internal(capture(sender), commandLabel, passThroughArgs);
         }
         return true;
     }
@@ -476,11 +494,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         if (plugin.getBootError() != null) {
             return Collections.emptyList();
         }
-        if (sender instanceof Player player && plugin.getConfig().getBoolean("effect.sound.ontabcomplete")) {
+        if (sender instanceof Player player && playSoundOnTabComplete) {
             ((Player) sender).playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 80.0F, 1.0F);
         }
         if (cmdArg.length <= 1) {
-            return getRootContainer().getExecutor().onTabComplete(capture(sender), commandLabel, cmdArg);
+            return getRootContainer().getExecutor().onTabComplete_Internal(capture(sender), commandLabel, cmdArg);
         } else {
             // Tab-complete subcommand args
             String[] passThroughArgs = new String[cmdArg.length - 1];
@@ -503,7 +521,7 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
                 if (Util.isDevMode()) {
                     Log.debug("Tab-complete container: " + container.getPrefix());
                 }
-                return container.getExecutor().onTabComplete(capture(sender), commandLabel, passThroughArgs);
+                return container.getExecutor().onTabComplete_Internal(capture(sender), commandLabel, passThroughArgs);
 
             }
             return Collections.emptyList();
@@ -527,11 +545,13 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
         cmds.removeIf(container::equals);
         cmds.add(container);
         cmds.sort(Comparator.comparing(CommandContainer::getPrefix));
+        Log.debug(Level.INFO, "Registered subcommand: " + container.getPrefix() + " - " + container.getExecutor().getClass().getName(), Log.Caller.create());
     }
 
     @Override
     public void unregisterCmd(@NotNull String prefix) {
         cmds.removeIf(commandContainer -> commandContainer.getPrefix().equalsIgnoreCase(prefix));
+        Log.debug(Level.INFO, "Unregistered subcommand: " + prefix, Log.Caller.create());
     }
 
     /**
@@ -547,9 +567,9 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     @Override
     public @NotNull String genBody() {
         HTMLTable table = new HTMLTable(2);
-        table.setTableTitle("Prefix", "Permissions", "Selective Permissions", "Executor Type");
+        table.setTableTitle("Prefix", "Permissions", "Selective Permissions", "Executor Type", "Binding");
         for (CommandContainer cmd : this.cmds) {
-            table.insert(cmd.getPrefix(), CommonUtil.list2String(cmd.getPermissions()), CommonUtil.list2String(cmd.getSelectivePermissions()), cmd.getExecutorType());
+            table.insert(cmd.getPrefix(), CommonUtil.list2String(cmd.getPermissions()), CommonUtil.list2String(cmd.getSelectivePermissions()), cmd.getExecutorType(), cmd.getExecutor().getClass().getName());
         }
         return table.render();
     }
@@ -576,5 +596,11 @@ public class SimpleCommandManager implements CommandManager, TabCompleter, Comma
     private enum PermissionType {
         REQUIRE,
         SELECTIVE
+    }
+
+    @Override
+    public ReloadResult reloadModule() throws Exception {
+        init();
+        return Reloadable.super.reloadModule();
     }
 }

@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.database.HikariUtil;
 import com.ghostchu.quickshop.database.SimpleDatabaseHelperV1;
+import com.ghostchu.quickshop.database.SimpleDatabaseHelperV2;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.util.logger.Log;
 import lombok.Builder;
@@ -210,6 +211,7 @@ public class HikariDatabaseConverter implements HikariConverterInterface {
             new SimpleDatabaseHelperV1(plugin, liveDatabaseManager, config.getPrefix());
             instance.getLogger().info("Migrating old data to new database...");
             pushShops(units, config.getPrefix(), liveDatabaseManager);
+            new SimpleDatabaseHelperV2(plugin, liveDatabaseManager, config.getPrefix());
         }
         instance.getLogger().info("Database migration completed!");
     }

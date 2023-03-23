@@ -166,6 +166,9 @@ file-test: Dies ist eine Text Testdatei. Wir verwenden sie um zu testen ob die m
 unknown-player: <red>Dieser Spieler existiert nicht. Bitte überprüfe, ob der Name korrekt geschrieben wurde.
 player-offline: "<red>Der ausgewählte Spieler ist zurzeit Offline."
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
+shop-type:
+  selling: "SELLING"
+  buying: "BUYING"
 language:
   qa-issues: '<yellow>Qualitätssicherungs-Probleme: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -239,7 +242,10 @@ no-double-chests: <red>Du kannst keinen Doppeltruhen-Shop erstellen.
 price-too-cheap: <red>Preis muss höher als <yellow>${0}<red> sein
 shop-not-exist: <red>Dieser Shop existiert nicht.
 bad-command-usage: <red>Schlechte Befehlsargumente!
-clean-warning: <yellow>Dieser Befehl wird <red>alle <yellow>Shops entfernen, welche korrupt sind, sich in einer nicht erlaubten Welt befinden, nicht erlaubte Items verkaufen/kaufen oder <red><bold>IN NICHT GELADENEN WELTEN EXISTIEREN<yellow>. Stelle sicher, dass du ein komplettes Backup deiner Shopdaten erstellst und verwende <aqua>/qs cleanghost confirm <yellow> um fortzufahren.
+cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
+cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
+cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
 shop-purchase-cancelled: <red>Shop-Kauf abgebrochen.
 bypassing-lock: <red>Umgehe eine QuickShop Sicherung!
 bungee-cross-server-msg: 'QuickShop CSM: <green>{0}'
@@ -429,6 +435,7 @@ command:
     lookup: <yellow>Tabelle der nachschlagbaren Gegenstände verwalten
     database: <yellow>Zeige und verwalte die QuickShop Datenbank
     benefit: <yellow>Einstellungen zum aufteilen von Vorteilen zwischen Schobeigentümer und anderen Spielern
+    tag: <yellow>Shop-Tags hinzufügen, entfernen oder abfragen
   bulk-size-not-set: '<red>Verwendung: /qs size <Anzahl>'
   no-type-given: '<red>Verwendung: /qs find <item>'
   feature-not-enabled: Dieses Feature ist nicht in der Config Datei aktiviert.
@@ -628,6 +635,21 @@ benefit-added: "<green>Spieler <aqua>{0}</aqua> wurde zu Shop-Vorteilen hinzugef
 benefit-updated: "<green>Spieler <aqua>{0}</aqua>'s Vorteile wurden aktualisiert!"
 benefit-query: "<green>Dieser Shop hat <yellow>{0}</yellow> Spieler in der Vorteilsliste!"
 benefit-query-list: "<yellow> - </yellow><white>Spieler <gold>{0}</gold>. Vorteil: <gold>{1}%</gold>/white>"
+tag-added: "<green><aqua>#{0}</aqua> erfolgreich als Tag zu diesem Shop hinzugefügt!"
+tag-add-duplicate: "<red>Der Tag <aqua>#{0}</aqua> existiert bereits für diesen Shop!"
+tag-removed: "<green>Tag <aqua>#{0}</aqua> efolgreich von diesem Shop entfernt!"
+tag-remove-not-exists: "<red>Der Tag <aqua>#{0}</aqua> existiert für diesen Shop nicht!"
+tag-cleared: "<green>Alle Tags erfolgreich von diesem Shop entfernt!"
+tag-shops-cleared: "<green><aqua>#{0}</aqua> wurde erfolgreich von all deinen getaggten Shops entfernt!"
+tag-query: "<green>Dieser Shop hat <yellow>{0}</yellow> Tags:"
+tag-query-listing: "<yellow> - <aqua>#{0}</aqua>"
+tag-query-no-tag: "<red>Dieser Shop hat keine Tags."
+tag-query-shops: "<green>Dieser Tag hat <yellow>{0}</yellow> Shops:"
+tag-query-shops-listing: "<yellow> - <aqua>{0}</aqua>"
+batch-operations-based-on-tags-no-failure: "<green><yellow>{0}</yellow> Shops erfolgreich verarbeitet."
+batch-operations-based-on-tags-have-failure: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed."
+batch-operations-based-on-tags-have-failure-with-reason: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}</gold>"
+batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: "<gray>Die Fehlermeldungen wurden dir vor dieser Nachricht im Chat gesendet."
 addon:
   towny:
     commands:
@@ -1320,6 +1342,28 @@ addon:
     success-remove: "<green>All Einschränkungen in diesem Shop wurden erfolgreich entfernt"
     success-setup: "<green>Einschränkungseinstellungen für diesen Shop wurden erfolgreich gespeichert"
     trade-limit-reached-cancel-reason: "<red>Einschränkung dieses Shops erreicht"
+  dynmap:
+    markerset-title: "QuickShop-Hikari Shops"
+    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    marker-description: |
+      Name: {0}
+      Owner: {1}
+      Item: {2}
+      Price: {3} for x{4} item(s)
+      Type: {5}
+      Unlimited: {6}
+      Location: {7}
+  bluemap:
+    markerset-title: "QuickShop-Hikari Shops"
+    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    marker-description: |
+      Name: {0}
+      Owner: {1}
+      Item: {2}
+      Price: {3} for x{4} item(s)
+      Type: {5}
+      Unlimited: {6}
+      Location: {7}
 suite:
   dynmap:
     title: "{0} - {1} - {2}"

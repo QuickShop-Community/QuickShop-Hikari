@@ -2,13 +2,26 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.event.*;
+import com.ghostchu.quickshop.api.event.QSHandleChatEvent;
+import com.ghostchu.quickshop.api.event.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.ShopCreateSuccessEvent;
+import com.ghostchu.quickshop.api.event.ShopInfoPanelEvent;
+import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
+import com.ghostchu.quickshop.api.event.ShopSuccessPurchaseEvent;
+import com.ghostchu.quickshop.api.event.ShopTaxEvent;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
-import com.ghostchu.quickshop.api.shop.*;
+import com.ghostchu.quickshop.api.shop.Info;
+import com.ghostchu.quickshop.api.shop.PriceLimiter;
+import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
+import com.ghostchu.quickshop.api.shop.Shop;
+import com.ghostchu.quickshop.api.shop.ShopChunk;
+import com.ghostchu.quickshop.api.shop.ShopManager;
+import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.CommonUtil;
+import com.ghostchu.quickshop.common.util.QuickExecutor;
 import com.ghostchu.quickshop.common.util.RomanNumber;
 import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
@@ -30,13 +43,21 @@ import com.google.common.collect.MapMaker;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import io.papermc.lib.PaperLib;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -1259,6 +1280,10 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 && !plugin.perm().hasPermission(p, "quickshop.other.use")) {
             return;
         }
+        if(Util.fireCancellableEvent(new ShopInfoPanelEvent(shop, p.getUniqueId()))){
+            Log.debug("ShopInfoPanelEvent cancelled by some plugin");
+            return;
+        }
         ProxiedLocale locale = plugin.text().findRelativeLanguages(p.getLocale());
         // Potentially faster with an array?
         ItemStack items = shop.getItem();
@@ -1335,7 +1360,7 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             }
         }
         chatSheetPrinter.printFooter();
-        new ShopInfoPanelEvent(shop, p.getUniqueId()).callEvent();
+
     }
 
     @Override
@@ -1589,6 +1614,50 @@ public class SimpleShopManager implements ShopManager, Reloadable {
         }
     }
 
+    @NotNull
+    @Override
+    public CompletableFuture<@NotNull List<Shop>> queryTaggedShops(@NotNull UUID tagger, @NotNull String tag) {
+        Util.ensureThread(true);
+        return CompletableFuture.supplyAsync(() -> plugin.getDatabaseHelper().listShopsTaggedBy(tagger, tag)
+                        .stream()
+                        .map(this::getShop).toList()
+                , QuickExecutor.getDatabaseExecutor());
+
+    }
+
+    @Override
+    public CompletableFuture<@Nullable Integer> clearShopTags(@NotNull UUID tagger, @NotNull Shop shop) {
+        return plugin.getDatabaseHelper().removeShopAllTag(tagger, shop.getShopId());
+    }
+
+    @Override
+    public CompletableFuture<@Nullable Integer> clearTagFromShops(@NotNull UUID tagger, @NotNull String tag) {
+        tag = tag.trim().toLowerCase(Locale.ROOT);
+        tag = tag.replace(" ", "_");
+        return plugin.getDatabaseHelper().removeTagFromShops(tagger, tag);
+    }
+
+    @Override
+    public CompletableFuture<@Nullable Integer> removeTag(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag) {
+        tag = tag.trim().toLowerCase(Locale.ROOT);
+        tag = tag.replace(" ", "_");
+        return plugin.getDatabaseHelper().removeShopTag(tagger, shop.getShopId(), tag);
+    }
+
+    @Override
+    public CompletableFuture<@Nullable Integer> tagShop(@NotNull UUID tagger, @NotNull Shop shop, @NotNull String tag) {
+        tag = tag.trim().toLowerCase(Locale.ROOT);
+        tag = tag.replace(" ", "_");
+        return plugin.getDatabaseHelper().tagShop(tagger, shop.getShopId(), tag);
+    }
+
+    @Override
+    @NotNull
+    public List<String> listTags(@NotNull UUID tagger) {
+        Util.ensureThread(true);
+        return plugin.getDatabaseHelper().listTags(tagger);
+    }
+
     private void processCreationFail(@NotNull Shop shop, @NotNull UUID owner, @NotNull Throwable e2) {
         plugin.logger().error("Shop create failed, auto fix failed, the changes may won't commit to database.", e2);
         Player player = Bukkit.getPlayer(owner);
@@ -1780,6 +1849,59 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                 return this.next(); // Skip to the next one (Empty iterator?)
             }
             return shops.next();
+        }
+    }
+
+    static class TagParser {
+        private final List<String> tags;
+        private final ShopManager shopManager;
+        private final UUID tagger;
+        private final Map<String, List<Shop>> singleCaching = new HashMap<>();
+
+        public TagParser(UUID tagger, ShopManager shopManager, List<String> tags) {
+            Util.ensureThread(true);
+            this.shopManager = shopManager;
+            this.tags = tags;
+            this.tagger = tagger;
+        }
+        
+        public List<Shop> parseTags(){
+            List<Shop> finalShop = new ArrayList<>();
+            for (String tag : tags) {
+               ParseResult result =  parseSingleTag(tag);
+               if(result.getBehavior() == Behavior.INCLUDE){
+                   finalShop.addAll(result.getShops());
+               }else if (result.getBehavior() == Behavior.EXCLUDE){
+                     finalShop.removeAll(result.getShops());
+               }
+            }
+            return finalShop;
+        }
+
+        public ParseResult parseSingleTag(String tag) throws IllegalArgumentException {
+            Util.ensureThread(true);
+            Behavior behavior = Behavior.INCLUDE;
+            if (tag.startsWith("-")) {
+                behavior = Behavior.EXCLUDE;
+            }
+            String tagName = tag.substring(1);
+            if (tagName.isEmpty()) {
+                throw new IllegalArgumentException("Tag name can't be empty");
+            }
+            List<Shop> shops = singleCaching.computeIfAbsent(tag, (t)->shopManager.queryTaggedShops(tagger, t).join());
+            return new ParseResult(behavior, shops);
+        }
+
+        @AllArgsConstructor
+        @Data
+        static class ParseResult {
+            private final Behavior behavior;
+            private final List<Shop> shops;
+        }
+
+        enum Behavior {
+            INCLUDE,
+            EXCLUDE
         }
     }
 }

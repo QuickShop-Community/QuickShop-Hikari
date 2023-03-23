@@ -7,6 +7,7 @@ import com.ghostchu.quickshop.addon.discount.Main;
 import com.ghostchu.quickshop.addon.discount.type.CodeCreationResponse;
 import com.ghostchu.quickshop.addon.discount.type.CodeType;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.util.ChatSheetPrinter;
@@ -31,14 +32,14 @@ public class DiscountCommand implements CommandHandler<CommandSender> {
     }
 
     @Override
-    public void onCommand(CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+    public void onCommand(CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() < 1) {
             quickshop.text().of(sender, "command-incorrect", "/qs discount <install/uninstall/create/remove/list/config/query>").send();
             return;
         }
-        String[] passThroughArgs = new String[cmdArg.length - 1];
-        System.arraycopy(cmdArg, 1, passThroughArgs, 0, passThroughArgs.length);
-        switch (cmdArg[0]) {
+        String[] passThroughArgs = new String[parser.getArgs().size() - 1];
+        System.arraycopy(parser.getArgs().toArray(new String[0]), 1, passThroughArgs, 0, passThroughArgs.length);
+        switch (parser.getArgs().get(0)) {
             case "install" -> install(sender, passThroughArgs);
             case "uninstall" -> uninstall(sender, passThroughArgs);
             case "create" -> create(sender, passThroughArgs);

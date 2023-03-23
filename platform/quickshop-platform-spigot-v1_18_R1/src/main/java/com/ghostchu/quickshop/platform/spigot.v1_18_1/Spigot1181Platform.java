@@ -90,4 +90,9 @@ public class Spigot1181Platform extends AbstractSpigotPlatform implements Platfo
     public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
         return postProcessingTranslationKey(localeManager.queryEnchantments(Map.of(enchantment, 1)).getOrDefault(enchantment, "Unknown"));
     }
+
+    @Override
+    public @NotNull String getTranslationKey(@NotNull ItemStack stack) {
+        return getTranslationKey(stack.getType());
+    }
 }

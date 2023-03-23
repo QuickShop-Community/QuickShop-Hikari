@@ -454,7 +454,7 @@ public class Util {
     @NotNull
     public static Component getItemStackName(@NotNull ItemStack itemStack) {
         Component result = getItemCustomName(itemStack);
-        return isEmptyComponent(result) ? plugin.getPlatform().getTranslation(itemStack.getType()) : result;
+        return isEmptyComponent(result) ? plugin.getPlatform().getTranslation(itemStack) : result;
     }
 
     @Nullable

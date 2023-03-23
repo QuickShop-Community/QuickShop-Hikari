@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -18,7 +19,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -37,23 +37,23 @@ public class SubCommand_Paste implements CommandHandler<CommandSender> {
     }
 
     @Override
-    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
+    public void onCommand(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         // do actions
         Util.asyncThreadRun(() -> {
             for (String s : warningPluginList) {
                 if (Bukkit.getPluginManager().getPlugin(s) != null) {
-                    if (cmdArg.length < 1) {
+                    if (parser.getArgs().size() < 1) {
                         plugin.text().of(sender, "paste-warning-plugin-find", s).send();
                         return;
                     } else {
-                        if (Arrays.stream(cmdArg).noneMatch(str -> str.contains("--force"))) {
+                        if (parser.getArgs().stream().noneMatch(str -> str.contains("--force"))) {
                             plugin.text().of(sender, "paste-warning-plugin-find", s).send();
                             return;
                         }
                     }
                 }
             }
-            if (Arrays.stream(cmdArg).anyMatch(str -> str.contains("file"))) {
+            if (parser.getArgs().stream().anyMatch(str -> str.contains("file"))) {
                 pasteToLocalFile(sender);
                 return;
             }

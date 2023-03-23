@@ -62,12 +62,10 @@ public class PlayerListener extends AbstractQSListener {
             return;
         }
         // ----Adventure dupe click workaround start----
-        if (event.getPlayer().getGameMode() == GameMode.ADVENTURE) {
-            if (cooldownMap.getIfPresent(event.getPlayer().getUniqueId()) != null) {
-                return;
-            }
-            cooldownMap.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
+        if (cooldownMap.getIfPresent(event.getPlayer().getUniqueId()) != null) {
+            return;
         }
+        cooldownMap.put(event.getPlayer().getUniqueId(), System.currentTimeMillis());
         // ----Adventure dupe click workaround end----
         Block focused = event.getPlayer().getTargetBlockExact(5);
         if (focused != null) {

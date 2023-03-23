@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class BatchBukkitExecutor<T> {
@@ -44,26 +45,22 @@ public class BatchBukkitExecutor<T> {
         this.tasks.addAll(tasks);
     }
 
-    public void startHandle(Plugin plugin, Consumer<T> consumer) {
-        startHandle(plugin, consumer, () -> {
-        });
-    }
-
-
-    public void startHandle(Plugin plugin, Consumer<T> consumer, Runnable callback) {
+    public CompletableFuture<Void> startHandle(Plugin plugin, Consumer<T> consumer) {
         if (started) throw new IllegalStateException("This batch task has been handled");
         started = true;
         startTime = Instant.now();
-        new BatchBukkitTask<>(tasks, consumer, maxTickMsUsage, callback).runTaskTimer(plugin, 1L, 1L);
+        CompletableFuture<Void> future = new CompletableFuture<>();
+        new BatchBukkitTask<>(tasks, consumer, maxTickMsUsage, future).runTaskTimer(plugin, 1L, 1L);
+        return future;
     }
 
     static class BatchBukkitTask<T> extends BukkitRunnable {
         public final Queue<T> tasks;
         public final Consumer<T> consumer;
         public final int maxTickMsUsage;
-        private final Runnable callback;
+        private final CompletableFuture<Void> callback;
 
-        public BatchBukkitTask(Queue<T> tasks, Consumer<T> consumer, int maxTickMsUsage, Runnable callback) {
+        public BatchBukkitTask(Queue<T> tasks, Consumer<T> consumer, int maxTickMsUsage, CompletableFuture<Void> callback) {
             this.tasks = tasks;
             this.consumer = consumer;
             this.maxTickMsUsage = maxTickMsUsage;
@@ -72,14 +69,22 @@ public class BatchBukkitExecutor<T> {
 
         @Override
         public void run() {
-            while (!tasks.isEmpty()) {
+            if (!tasks.isEmpty()) {
                 long startAt = System.currentTimeMillis();
                 do {
                     consumer.accept(tasks.poll());
                 } while (System.currentTimeMillis() - startAt < maxTickMsUsage && !tasks.isEmpty());
+                if (tasks.isEmpty()) {
+                    finish();
+                }
+                return;
             }
+            finish();
+        }
+
+        private void finish() {
             this.cancel();
-            callback.run();
+            callback.complete(null);
         }
     }
 

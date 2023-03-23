@@ -105,7 +105,7 @@ public class ShopPurger {
                                 .build();
                 transaction.failSafeCommit();
             }
-        }, () -> {
+        }).whenComplete((a, b) -> {
             long usedTime = purgeExecutor.getStartTime().until(Instant.now(), java.time.temporal.ChronoUnit.MILLIS);
             plugin.logger().info("[Shop Purger] Total shop {} has been purged, used {}ms",
                     pendingRemovalShops.size(),

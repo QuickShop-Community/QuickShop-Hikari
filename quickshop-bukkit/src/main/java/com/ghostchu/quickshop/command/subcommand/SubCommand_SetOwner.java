@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.command.subcommand;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
+import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.event.ShopOwnershipTransferEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
@@ -23,8 +24,8 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
     }
 
     @Override
-    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        if (cmdArg.length < 1) {
+    public void onCommand(@NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        if (parser.getArgs().size() < 1) {
             plugin.text().of(sender, "command.no-owner-given").send();
             return;
         }
@@ -41,7 +42,7 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
             return;
         }
 
-        UUID newShopOwner = plugin.getPlayerFinder().name2Uuid(cmdArg[0]);
+        UUID newShopOwner = plugin.getPlayerFinder().name2Uuid(parser.getArgs().get(0));
         if (newShopOwner == null) {
             plugin.text().of(sender, "unknown-player").send();
             return;
@@ -51,14 +52,14 @@ public class SubCommand_SetOwner implements CommandHandler<Player> {
             return;
         }
         shop.setOwner(newShopOwner);
-        plugin.text().of(sender, "command.new-owner", cmdArg[0]).send();
+        plugin.text().of(sender, "command.new-owner", parser.getArgs().get(0)).send();
     }
 
     @NotNull
     @Override
     public List<String> onTabComplete(
-            @NotNull Player sender, @NotNull String commandLabel, @NotNull String[] cmdArg) {
-        return cmdArg.length <= 1 ? getPlayerList() : Collections.emptyList();
+            @NotNull Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
+        return parser.getArgs().size() <= 1 ? getPlayerList() : Collections.emptyList();
     }
 
 }

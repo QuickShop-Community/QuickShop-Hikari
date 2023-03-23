@@ -21,7 +21,7 @@ tabcomplete:
   name: '[name]'
   range: '[zakres]'
   currency: '[nazwa waluty]'
-  percentage: '[percentage%]'
+  percentage: '[procent%]'
 taxaccount-unset: <green>Konto podatkowe tego sklepu jest teraz zgodne z ustawieniami globalnymi serwera.
 blacklisted-item: <red>Nie możesz sprzedać tego przedmiotu, ponieważ znajduje się na czarnej liście
 command-type-mismatch: <red>Ta komenda może być wykonana tylko przez <aqua>{0}.
@@ -35,18 +35,18 @@ quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Nazwa: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Właściciel: <aqua>{0}'
+    - '<yellow>Typ: <aqua>{0}'
+    - '<yellow>Cena: <aqua>{0}'
     - '<yellow>Przedmiot: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Lokalizacja: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Nazwa: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
+    - '<yellow>Właściciel: <aqua>{owner}'
+    - '<yellow>Typ: <aqua>{type}'
+    - '<yellow>Cena: <aqua>{price}'
     - '<yellow>Przedmiot: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Lokalizacja: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -101,7 +101,7 @@ menu:
   item: '<green>Przedmiot: <yellow>{0}'
   price-per: <green>Cena za <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>za <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
+  item-name-and-price-tax: '<yellow>{0} {1} <green>za</green> {2} <gray>(<green>{3}</green> w podatkach)</gray>'
   successful-purchase: '<green>Zakupiono:'
   price-per-stack: <green>Cena za <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Przechowywane Enchanty
@@ -166,6 +166,9 @@ file-test: To jest testowy plik tekstowy. Używamy go do testowania jeśli messa
 unknown-player: <red>Docelowy gracz nie istnieje, sprawdź wpisaną nazwę użytkownika.
 player-offline: "<red>Wybrany gracz jest obecnie offline."
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
+shop-type:
+  selling: "SELLING"
+  buying: "BUYING"
 language:
   qa-issues: '<yellow>Problemy z zapewnieniem jakości: <aqua>{0}'
   code: '<yellow>Kod: <gold>{0}'
@@ -239,7 +242,10 @@ no-double-chests: <red>Nie możesz stworzyć sklepu z podwójną skrzynią.
 price-too-cheap: <red>Cena musi być większa niż <yellow>${0}
 shop-not-exist: <red>Sklep nie istnieje.
 bad-command-usage: <red>Błędne argumenty poleceń!
-clean-warning: <yellow>Ta komenda wyczyści <red>wszystkie <yellow>sklepy, jeśli sklep jest uszkodzony, został utworzony w niedozwolonych światach, sprzedaje/skupuje niedozwolone przedmioty lub <red><bold>ISTNIEJE W NIEZAŁADOWANYM ŚWIECIE<yellow>. Upewnij się, że najpierw utwórzyłeś pełną kopię zapasową danych Twojego sklepu i użyj <aqua>/qs cleanghost confirm <yellow>aby kontynuować.
+cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
+cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
+cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
+cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
 shop-purchase-cancelled: <red>Zakup w sklepie został anulowany.
 bypassing-lock: <red>Omijanie blokady QuickShop!
 bungee-cross-server-msg: '<yellow>Szybki sklep CSM: <green>{0}'
@@ -429,6 +435,7 @@ command:
     lookup: <yellow>Zarządzaj tabelą elementów do wyszukiwania
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
+    tag: <yellow>Add, remove or query tags of a shop
   bulk-size-not-set: '<red>Użycie: /qs size <amount>'
   no-type-given: '<red>Użycie: /qs find <item>'
   feature-not-enabled: Ta funkcja nie jest włączona w pliku konfiguracyjnym.
@@ -628,6 +635,21 @@ benefit-added: "<green>Player <aqua>{0}</aqua> has been added into shop benefits
 benefit-updated: "<green>Player <aqua>{0}</aqua>'s benefits has been updated!"
 benefit-query: "<green>This shop have <yellow>{0}</yellow> players in benefits list!"
 benefit-query-list: "<yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>"
+tag-added: "<green>Successfully added <aqua>#{0}</aqua> to this shop!"
+tag-add-duplicate: "<red>The tag <aqua>#{0}</aqua> already exists at this shop!"
+tag-removed: "<green>Successfully removed <aqua>#{0}</aqua> from this shop!"
+tag-remove-not-exists: "The tag <aqua>#{0}</aqua> not exists at this shop!"
+tag-cleared: "<green>Successfully cleared all tags from this shop!"
+tag-shops-cleared: "<green>Successfully cleared <aqua>#{0}</aqua> from all your tagged shops!"
+tag-query: "<green>This shop have <yellow>{0}</yellow> tags:"
+tag-query-listing: "<yellow> - <aqua>#{0}</aqua>"
+tag-query-no-tag: "<red>This shop have no tags."
+tag-query-shops: "<green>This tag contains <yellow>{0}</yellow> shops:"
+tag-query-shops-listing: "<yellow> - <aqua>{0}</aqua>"
+batch-operations-based-on-tags-no-failure: "<green>Successfully batch processed <yellow>{0}</yellow> shops."
+batch-operations-based-on-tags-have-failure: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed."
+batch-operations-based-on-tags-have-failure-with-reason: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}</gold>"
+batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: "<gray>The error messages will send to you above this message in the chat."
 addon:
   towny:
     commands:
@@ -1320,6 +1342,28 @@ addon:
     success-remove: "<green>Successfully remove the all restriction of this shop"
     success-setup: "<green>Restriction settings for this shop were saved successfully"
     trade-limit-reached-cancel-reason: "<red>Reached the restriction of this shop"
+  dynmap:
+    markerset-title: "QuickShop-Hikari Shops"
+    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    marker-description: |
+      Name: {0}
+      Owner: {1}
+      Item: {2}
+      Price: {3} for x{4} item(s)
+      Type: {5}
+      Unlimited: {6}
+      Location: {7}
+  bluemap:
+    markerset-title: "QuickShop-Hikari Shops"
+    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    marker-description: |
+      Name: {0}
+      Owner: {1}
+      Item: {2}
+      Price: {3} for x{4} item(s)
+      Type: {5}
+      Unlimited: {6}
+      Location: {7}
 suite:
   dynmap:
     title: "{0} - {1} - {2}"

@@ -104,6 +104,18 @@ public interface DatabaseHelper {
 
     @NotNull List<ShopRecord> listShops(boolean deleteIfCorrupt);
 
+    @NotNull List<Long> listShopsTaggedBy(@NotNull UUID tagger, @NotNull String tag);
+
+    @NotNull List<String> listTags(@NotNull UUID tagger);
+
+    CompletableFuture<@Nullable Integer> removeShopTag(@NotNull UUID tagger, @NotNull Long shopId, @NotNull String tag);
+
+    CompletableFuture<@Nullable Integer> removeShopAllTag(@NotNull UUID tagger, @NotNull Long shopId);
+
+    CompletableFuture<@Nullable Integer> removeTagFromShops(@NotNull UUID tagger, @NotNull String tag);
+
+    CompletableFuture<@Nullable Integer> tagShop(@NotNull UUID tagger, @NotNull Long shopId, @NotNull String tag);
+
     /**
      * Locate a shop record from database by shop record id
      *
