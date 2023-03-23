@@ -166,6 +166,9 @@ file-test: 这是个测试文件，我们可以用它来测试 messages.json 文
 unknown-player: <red>目标玩家不存在，请检查你输入的玩家名字。
 player-offline: "<red>目标玩家目前处于离线状态。"
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
+shop-type:
+  selling: "SELLING"
+  buying: "BUYING"
 language:
   qa-issues: '<yellow>质量问题：<aqua>{0}%'
   code: '<yellow>代码： <gold>{0}'
@@ -1339,6 +1342,28 @@ addon:
     success-remove: "<green>成功删除此商店的所有限制"
     success-setup: "<green>该商店的限制设置已成功保存"
     trade-limit-reached-cancel-reason: "<red>达到了这个商店的交易限制"
+  dynmap:
+    markerset-title: "QuickShop-Hikari Shops"
+    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    marker-description: |
+      Name: {0}
+      Owner: {1}
+      Item: {2}
+      Price: {3} for x{4} item(s)
+      Type: {5}
+      Unlimited: {6}
+      Location: {7}
+  bluemap:
+    markerset-title: "QuickShop-Hikari Shops"
+    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    marker-description: |
+      Name: {0}
+      Owner: {1}
+      Item: {2}
+      Price: {3} for x{4} item(s)
+      Type: {5}
+      Unlimited: {6}
+      Location: {7}
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
