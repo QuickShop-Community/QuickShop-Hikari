@@ -467,6 +467,7 @@
         <module>addon/shopitemonly</module>
         <module>addon/limited</module>
         <module>addon/dynmap</module>
+        <module>addon/bluemap</module>
     </modules>
 
 </project>
