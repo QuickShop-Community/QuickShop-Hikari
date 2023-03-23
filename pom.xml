@@ -466,6 +466,7 @@
         <module>addon/list</module>
         <module>addon/shopitemonly</module>
         <module>addon/limited</module>
+        <module>addon/dynmap</module>
     </modules>
 
 </project>

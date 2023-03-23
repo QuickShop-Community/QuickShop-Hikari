@@ -1,0 +1,7 @@
+name: qsaddon-${project.artifactId}
+version: '${project.version}'
+main: com.ghostchu.quickshop.addon.${project.artifactId}.Main
+api-version: 1.18
+depend:
+  - dynmap
+authors: [ Ghost_chu ]
