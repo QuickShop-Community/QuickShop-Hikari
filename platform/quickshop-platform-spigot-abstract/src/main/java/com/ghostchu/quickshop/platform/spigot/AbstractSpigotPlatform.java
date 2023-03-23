@@ -2,10 +2,12 @@ package com.ghostchu.quickshop.platform.spigot;
 
 import com.ghostchu.quickshop.common.util.QuickSLF4JLogger;
 import com.ghostchu.quickshop.platform.Platform;
+import de.tr7zw.nbtapi.NBTTileEntity;
 import me.pikamug.localelib.LocaleManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -38,6 +40,9 @@ public abstract class AbstractSpigotPlatform implements Platform {
     public AbstractSpigotPlatform(@NotNull Plugin instance) {
         this.plugin = instance;
         //TODO use method to replace
+        if (Bukkit.getPluginManager().getPlugin("NBTAPI") == null) {
+            throw new IllegalStateException("Must install NBT-API if you're running on Spigot server");
+        }
         //this.translationMapping = mapping;
     }
 
@@ -150,16 +155,7 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     @Override
     public void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components) {
-        player.sendSignChange(sign.getLocation(), components.stream().map(com -> LegacyComponentSerializer.legacySection().serialize(com)).toArray(String[]::new));
-    }
-
-    @Override
-    public void setDisplayName(@NotNull ItemMeta meta, @Nullable Component component) {
-        if (component == null) {
-            meta.setDisplayName(null);
-        } else {
-            meta.setDisplayName(LegacyComponentSerializer.legacySection().serialize(component));
-        }
+        //player.sendSignChange(sign.getLocation(), components.stream().map(com -> LegacyComponentSerializer.legacySection().serialize(com)).toArray(String[]::new));
     }
 
     @Override
@@ -187,7 +183,8 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     @Override
     public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
-        sign.setLine(line, LegacyComponentSerializer.legacySection().serialize(component));
+        NBTTileEntity nbt = new NBTTileEntity(sign);
+        nbt.setString("Text" + (line + 1), GsonComponentSerializer.gson().serialize(component));
     }
 
     @Override
@@ -198,11 +195,6 @@ public abstract class AbstractSpigotPlatform implements Platform {
         ItemMeta meta = stack.getItemMeta();
         meta.setLore(components.stream().map(LegacyComponentSerializer.legacySection()::serialize).collect(Collectors.toList()));
         stack.setItemMeta(meta);
-    }
-
-    @Override
-    public void setLore(@NotNull ItemMeta meta, @NotNull Collection<Component> components) {
-        meta.setLore(components.stream().map(LegacyComponentSerializer.legacySection()::serialize).collect(Collectors.toList()));
     }
 
     @Override

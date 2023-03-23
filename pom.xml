@@ -108,7 +108,7 @@
                                         <include>com.ghostchu:quickshop*:*</include>
                                         <include>com.ghostchu.quickshop.compatibility:*:*</include>
                                         <include>com.ghostchu.quickshop.addon:*:*</include>
-                                        <include>net.kyori:*:*</include>
+<!--                                        <include>net.kyori:*:*</include>-->
                                         <include>com.github.PikaMug:LocaleLib:*</include>
                                         <include>com.dumptruckman.minecraft:JsonConfiguration:*</include>
                                         <include>de.tr7zw:item-nbt-api:*</include>
