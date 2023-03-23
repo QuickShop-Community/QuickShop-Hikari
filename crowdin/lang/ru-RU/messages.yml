@@ -540,7 +540,7 @@ lookup-item-removed: "<green>Предмет <aqua>{0}</aqua> успешно уд
 internal-error: "<red>Произошла внутренняя ошибка. Пожалуйста, свяжитесь с администрацией сервера."
 argument-cannot-be: "<red>Аргумент <aqua>{0}</aqua> не может быть <yellow>{1}</yellow>."
 argument-must-between: "<red>Значение <aqua>{0}</aqua> должно быть между <yellow>{1}</yellow> и <yellow>{2}</yellow>"
-invalid-percentage: "<red>Недопустимый процент, вы должны добавить '%' после числа процентов."
+invalid-percentage: "<red>Неправильное значение - вы должны добавить '%' после числа процентов."
 not-a-valid-time: |
   <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
   <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
@@ -628,13 +628,13 @@ transfer-rejected-fromside: "<red>Player <aqua>{0}</aqua> rejected your shop tra
 transfer-rejected-toside: "<red>You rejected <aqua>{0}</aqua>'s shop transfer request."
 transfer-no-pending-operation: "<red>You don't have pending transfer request yet."
 transfer-no-self: "<red>You can't transfer your shops to yourself."
-benefit-overflow: "<red>The sum of all benefits cannot be greater than or equal to 100%."
-benefit-exists: "<red>Target player already in benefits list on this shop."
-benefit-removed: "<red>Target player has been removed from shop benefits."
-benefit-added: "<green>Player <aqua>{0}</aqua> has been added into shop benefits!"
-benefit-updated: "<green>Player <aqua>{0}</aqua>'s benefits has been updated!"
-benefit-query: "<green>This shop have <yellow>{0}</yellow> players in benefits list!"
-benefit-query-list: "<yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>"
+benefit-overflow: "<red>Сумма всех выплат не может быть больше или равна 100%."
+benefit-exists: "<red>Игроку уже выплачивается процент с магазина."
+benefit-removed: "<red>Этот игрок был удален из выплат магазина."
+benefit-added: "<green>Игрок <aqua>{0}</aqua> был добавлен в выплаты магазина!"
+benefit-updated: "<green>Выплаты с магазина игроку <aqua>{0}</aqua> были обновлены!"
+benefit-query: "<green>У этого магазина <yellow>{0}</yellow> игроков, получающих выплаты!"
+benefit-query-list: "<yellow> - </yellow><white>Игрок <gold>{0}</gold>, Выплата <gold>{1}%</gold></white>"
 tag-added: "<green>Successfully added <aqua>#{0}</aqua> to this shop!"
 tag-add-duplicate: "<red>The tag <aqua>#{0}</aqua> already exists at this shop!"
 tag-removed: "<green>Successfully removed <aqua>#{0}</aqua> from this shop!"
@@ -1330,7 +1330,7 @@ addon:
     table-prefix: "<yellow><green>{0}</green>'s shops <gray>(Total {1})</gray>: "
     entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
   shopitemonly:
-    message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+    message: "<red>Вы не можете поместить в контейнер магазина предметы, которые не являются его товаром. Эти предметы будут выложены."
   limited:
     commands:
       limit: "<yellow>Set a limit that restrict the purchase that player can make in period"
@@ -1346,47 +1346,47 @@ addon:
     markerset-title: "QuickShop-Hikari Shops"
     marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Название: {0}
+      Владелец: {1}
+      Предмет: {2}
+      Цена: {3} за x{4} предмет(а/ов)
+      Тип: {5}
+      Неограничен: {6}
+      Локация: {7}
   bluemap:
     markerset-title: "QuickShop-Hikari Shops"
     marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Название: {0}
+      Владелец: {1}
+      Предмет: {2}
+      Цена: {3} за x{4} предмет(а/ов)
+      Тип: {5}
+      Неограничен: {6}
+      Локация: {7}
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
     description: "Предмет: {0}\nВладелец: {1}\nТип: {2} {3}\nЦена: {4}\nЛокация: {5} {6}, {7}, {8}\nМесто: {9}\nВ наличии: {10}"
   limited:
-    command-description: "<yellow>Set a limit that restrict the purchase that player can make in period."
+    command-description: "<yellow>Установить лимит на количество покупок за определенный период."
     reach-the-quota-limit: "<red>Вы достигли лимита покупок в этом магазине ({0}/{1})."
-    quota-reset-countdown: "<yellow>The quota in this shop will reset in {0}."
-    quota-reset-player-successfully: "<green>The quota for player {0} in this shop has been reset successfully."
-    quota-reset-everybody-successfully: "<green>The quota for everyone in this shop has been reset successfully."
-    quota-setup: "<green>The purchase restriction now apply to this shop!"
-    quota-remove: "<green>Ограничение на покупку теперь снято с этого магазина!"
+    quota-reset-countdown: "<yellow>Квота в этом магазине сбросится через {0}."
+    quota-reset-player-successfully: "<green>Квота для игрока {0} в этом магазине успешно сброшена."
+    quota-reset-everybody-successfully: "<green>Квота для всех в этом магазине успешно сброшена."
+    quota-setup: "<green>Ограничение на покупку наложено на этот магазин!"
+    quota-remove: "<green>Ограничение на покупку снято с этого магазина!"
     subtitles:
       title: "<green>Успешная покупка"
       subtitle: "<aqua>Вы можете купить <yellow>{0}</yellow> в этом магазине"
   list:
-    command-description: "<yellow>List all shops owned by yourself or another player."
-    table-prefix: "<yellow>Вы владели <aqua>{0}</aqua> магазинами на этом сервере."
+    command-description: "<yellow>Выводит список магазинов, принадлежащих вам или другому игроку."
+    table-prefix: "<yellow>Вы владеете <aqua>{0}</aqua> магазинами на этом сервере."
     entry-syntax: "<aqua>- <yellow>{0}"
-    entry-syntax-fallback-name: "<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}"
-    hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."
+    entry-syntax-fallback-name: "<yellow>Предмет:{0} X:{1}, Y:{2}, Z:{3}, Мир: {4}"
+    hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} предметов в каждом стеке."
   shopitemonly:
-    message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+    message: "<red>Вы не можете поместить в контейнер магазина предметы, которые не являются его товаром. Эти предметы будут выложены."
 compatibility:
   elitemobs:
     soulbound-disallowed: "You can't trade item which have EliteMobs Soulbound enchantment."
