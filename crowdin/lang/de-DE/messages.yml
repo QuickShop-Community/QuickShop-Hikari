@@ -167,8 +167,8 @@ unknown-player: <red>Dieser Spieler existiert nicht. Bitte überprüfe, ob der N
 player-offline: "<red>Der ausgewählte Spieler ist zurzeit Offline."
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 shop-type:
-  selling: "SELLING"
-  buying: "BUYING"
+  selling: "VERKAUFEN"
+  buying: "KAUFEN"
 language:
   qa-issues: '<yellow>Qualitätssicherungs-Probleme: <aqua>{0}%'
   code: '<yellow>Code: <gold>{0}'
@@ -1344,26 +1344,26 @@ addon:
     trade-limit-reached-cancel-reason: "<red>Einschränkung dieses Shops erreicht"
   dynmap:
     markerset-title: "QuickShop-Hikari Shops"
-    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    marker-name: "{0} @ {2} @ {3} für x{4} @ {5}"
     marker-description: |
       Name: {0}
-      Owner: {1}
+      Besitzer: {1}
       Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Preis: {3} für x{4} Item(s)
+      Typ: {5}
+      Unbegrenzt: {6}
+      Ort: {7}
   bluemap:
     markerset-title: "QuickShop-Hikari Shops"
-    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    marker-name: "{0} @ {2} @ {3} für x{4} @ {5}"
     marker-description: |
       Name: {0}
-      Owner: {1}
+      Besitzer: {1}
       Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Preis: {3} für x{4} Item(s)
+      Typ: {5}
+      Unbegrenzt: {6}
+      Ort: {7}
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
