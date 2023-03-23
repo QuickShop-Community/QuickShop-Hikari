@@ -103,10 +103,10 @@ public class PaperPlatform implements Platform {
     public @NotNull String getTranslationKey(@NotNull Material material) {
         String key;
         try {
-            return material.translationKey();
+            key = material.getTranslationKey();
         } catch (Exception error) {
             try {
-                key = material.getTranslationKey();
+                key = material.translationKey();
             } catch (Exception error2) {
                 if (!material.isBlock()) {
                     key = "item." + material.getKey().getNamespace() + "." + material.getKey().getKey();
@@ -122,10 +122,10 @@ public class PaperPlatform implements Platform {
     public @NotNull String getTranslationKey(@NotNull EntityType type) {
         String key;
         try {
-            key = type.translationKey();
+            key = type.getTranslationKey();
         } catch (Exception error) {
             try {
-                key = type.getTranslationKey();
+                key = type.translationKey();
             } catch (Exception error2) {
                 key = "entity." + type.getKey().getNamespace() + "." + type.getKey().getKey();
             }
@@ -159,9 +159,9 @@ public class PaperPlatform implements Platform {
     public @NotNull String getTranslationKey(@NotNull ItemStack stack) {
         String key;
         try {
-            key = stack.translationKey();
-        } catch (Exception error) {
             key = stack.getTranslationKey();
+        } catch (Exception error) {
+            key = stack.translationKey();
         }
         return postProcessingTranslationKey(key);
     }
