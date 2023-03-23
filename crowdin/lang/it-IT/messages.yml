@@ -166,6 +166,9 @@ file-test: Questo è un file di testo di prova. Lo usiamo per verificare se il f
 unknown-player: <red>Il giocatore di destinazione non esiste, per favore controlla il nome utente digitato.
 player-offline: "<red>Il giocatore scelto è attualmente offline."
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
+shop-type:
+  selling: "SELLING"
+  buying: "BUYING"
 language:
   qa-issues: '<yellow>Problemi di garanzia della qualità: <aqua>{0}%'
   code: '<yellow>Codice: <gold>{0}'
@@ -1339,6 +1342,28 @@ addon:
     success-remove: "<green>Successfully remove the all restriction of this shop"
     success-setup: "<green>Restriction settings for this shop were saved successfully"
     trade-limit-reached-cancel-reason: "<red>Reached the restriction of this shop"
+  dynmap:
+    markerset-title: "QuickShop-Hikari Shops"
+    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    marker-description: |
+      Name: {0}
+      Owner: {1}
+      Item: {2}
+      Price: {3} for x{4} item(s)
+      Type: {5}
+      Unlimited: {6}
+      Location: {7}
+  bluemap:
+    markerset-title: "QuickShop-Hikari Shops"
+    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    marker-description: |
+      Name: {0}
+      Owner: {1}
+      Item: {2}
+      Price: {3} for x{4} item(s)
+      Type: {5}
+      Unlimited: {6}
+      Location: {7}
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
