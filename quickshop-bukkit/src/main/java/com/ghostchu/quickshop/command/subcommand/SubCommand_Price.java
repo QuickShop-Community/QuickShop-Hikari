@@ -10,6 +10,7 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -81,7 +82,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
 
         switch (checkResult.getStatus()) {
             case PRICE_RESTRICTED -> {
-                plugin.text().of(sender, "restricted-prices", MsgUtil.getTranslateText(shop.getItem()),
+                plugin.text().of(sender, "restricted-prices", Util.getItemStackName(shop.getItem()),
                         Component.text(checkResult.getMin()),
                         Component.text(checkResult.getMax())).send();
                 return;

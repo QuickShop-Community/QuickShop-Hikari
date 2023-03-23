@@ -6,6 +6,7 @@ import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopType;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.Util;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +32,7 @@ public class SubCommand_SilentSell extends SubCommand_SilentBase {
         shop.setSignText(plugin.text().findRelativeLanguages(sender));
         MsgUtil.sendControlPanelInfo(sender, shop);
         plugin.text().of(sender,
-                "command.now-selling", MsgUtil.getTranslateText(shop.getItem())).send();
+                "command.now-selling", Util.getItemStackName(shop.getItem())).send();
 
     }
 }
