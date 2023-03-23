@@ -30,7 +30,7 @@ public class MetricDataUtil {
             DecimalFormat df = new DecimalFormat("#.00");
             return df.format(record.getTotal());
         }
-        return plugin.getEconomy().format(record.getTotal(), shop.getLocation().getWorld(), shop.getCurrency());
+        return plugin.getShopManager().format(record.getTotal(), shop);
     }
 
     @NotNull

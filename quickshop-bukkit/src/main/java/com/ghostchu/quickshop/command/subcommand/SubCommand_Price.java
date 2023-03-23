@@ -110,7 +110,7 @@ public class SubCommand_Price implements CommandHandler<Player> {
                     .currency(plugin.getCurrency())
                     .build();
             if (!transaction.checkBalance()) {
-                plugin.text().of(sender, "you-cant-afford-to-change-price", LegacyComponentSerializer.legacySection().deserialize(plugin.getEconomy().format(fee, shop.getLocation().getWorld(), shop.getCurrency()))).send();
+                plugin.text().of(sender, "you-cant-afford-to-change-price", plugin.getShopManager().format(fee, shop)).send();
                 return;
             }
             if (!transaction.failSafeCommit()) {
@@ -119,12 +119,12 @@ public class SubCommand_Price implements CommandHandler<Player> {
             }
         }
         plugin.text().of(sender,
-                "fee-charged-for-price-change", LegacyComponentSerializer.legacySection().deserialize(plugin.getEconomy().format(fee, shop.getLocation().getWorld(), plugin.getCurrency()))).send();
+                "fee-charged-for-price-change", plugin.getShopManager().format(fee, shop)).send();
         // Update the shop
         shop.setPrice(price);
         shop.setSignText(plugin.text().findRelativeLanguages(sender));
         plugin.text().of(sender,
-                "price-is-now", LegacyComponentSerializer.legacySection().deserialize(plugin.getEconomy().format(shop.getPrice(), Objects.requireNonNull(shop.getLocation().getWorld()), shop.getCurrency()))).send();
+                "price-is-now", plugin.getShopManager().format(shop.getPrice(),shop)).send();
         // Chest shops can be double shops.
         if (!(shop instanceof final ContainerShop cs)) {
             return;

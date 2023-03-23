@@ -128,9 +128,9 @@ public class MessageFactory {
         placeHolders.put("purchase.world", shop.getLocation().getWorld().getName());
         placeHolders.put("purchase.amount", String.valueOf(event.getAmount()));
         placeHolders.put("purchase.balance", String.valueOf(event.getBalanceWithoutTax()));
-        placeHolders.put("purchase.balance-formatted", purgeColors(plugin.getEconomy().format(event.getBalanceWithoutTax(), shop.getLocation().getWorld(), shop.getCurrency())));
+        placeHolders.put("purchase.balance-formatted", purgeColors(plugin.getShopManager().format(event.getBalanceWithoutTax(), shop)));
         placeHolders.put("purchase.taxes", String.valueOf(event.getTax()));
-        placeHolders.put("purchase.taxes-formatted", purgeColors(plugin.getEconomy().format(event.getTax(), shop.getLocation().getWorld(), shop.getCurrency())));
+        placeHolders.put("purchase.taxes-formatted", purgeColors(plugin.getShopManager().format(event.getTax(), shop)));
         return placeHolders;
     }
 
