@@ -44,11 +44,20 @@ public final class Main extends JavaPlugin implements Listener {
         saveDefaultConfig();
         plugin = QuickShop.getInstance();
         getLogger().info("Registering the per shop permissions...");
-        blueMapAPI = BlueMapAPI.getInstance().orElseThrow();
-        Bukkit.getPluginManager().registerEvents(this, this);
-        Bukkit.getScheduler().runTaskLater(this, this::updateAllMarkers, 80);
+        Bukkit.getScheduler().runTaskAsynchronously(this,()->{
+            while(BlueMapAPI.getInstance().isEmpty()){
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            getLogger().info("Found Pl3xMap loaded! Hooking!");
+            blueMapAPI = BlueMapAPI.getInstance().orElseThrow();
+            Bukkit.getPluginManager().registerEvents(this, this);
+            Bukkit.getScheduler().runTaskLater(this, this::updateAllMarkers, 80);
+        });
     }
-
 
     @EventHandler(ignoreCancelled = true)
     public void onEvent(WorldLoadEvent event){
@@ -127,7 +136,7 @@ public final class Main extends JavaPlugin implements Listener {
         }
         for (BlueMapMap map : bWorld.get().getMaps()) {
             MarkerSet markerSet = map.getMarkerSets().computeIfAbsent("quickshop-hikari-shops",(key)-> createMarkerSet());
-            String markerName = plain(text().of("addon.dynmap.marker-name",
+            String markerName = plain(text().of("addon.bluemap.marker-name",
                     shopName,
                     plain(shop.ownerName()),
                     plain(Util.getItemStackName(shop.getItem())),
@@ -137,7 +146,7 @@ public final class Main extends JavaPlugin implements Listener {
                     shop.isUnlimited(),
                     posStr
             ).forLocale());
-            String desc = plain(text().of("addon.dynmap.marker-description",
+            String desc = plain(text().of("addon.bluemap.marker-description",
                     shopName,
                     plain(shop.ownerName()),
                     plain(Util.getItemStackName(shop.getItem())),
@@ -154,6 +163,7 @@ public final class Main extends JavaPlugin implements Listener {
                             shop.getLocation().getZ())
                     .maxDistance(1000)
                     .detail(desc)
+                    .styleClasses()
                     .build();
             markerSet.getMarkers().put("quickshop-hikari-shop"+shop.getShopId(), marker);
         }
