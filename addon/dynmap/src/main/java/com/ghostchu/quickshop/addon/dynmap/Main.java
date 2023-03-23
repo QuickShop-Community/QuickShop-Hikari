@@ -41,7 +41,6 @@ public final class Main extends JavaPlugin implements Listener {
     public void onEnable() {
         saveDefaultConfig();
         plugin = QuickShop.getInstance();
-        getLogger().info("Registering the per shop permissions...");
         this.dynmapAPI = (DynmapAPI) Bukkit.getPluginManager().getPlugin("dynmap");
         this.markerAPI = this.dynmapAPI.getMarkerAPI();
         Bukkit.getPluginManager().registerEvents(this, this);
