@@ -21,7 +21,7 @@ tabcomplete:
   name: '[name]'
   range: '[zakres]'
   currency: '[nazwa waluty]'
-  percentage: '[percentage%]'
+  percentage: '[procent%]'
 taxaccount-unset: <green>Konto podatkowe tego sklepu jest teraz zgodne z ustawieniami globalnymi serwera.
 blacklisted-item: <red>Nie możesz sprzedać tego przedmiotu, ponieważ znajduje się na czarnej liście
 command-type-mismatch: <red>Ta komenda może być wykonana tylko przez <aqua>{0}.
@@ -35,18 +35,18 @@ quick-fill:
   entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Nazwa: <aqua>{0}'
-    - '<yellow>Owner: <aqua>{0}'
-    - '<yellow>Type: <aqua>{0}'
-    - '<yellow>Price: <aqua>{0}'
+    - '<yellow>Właściciel: <aqua>{0}'
+    - '<yellow>Typ: <aqua>{0}'
+    - '<yellow>Cena: <aqua>{0}'
     - '<yellow>Przedmiot: <aqua>{0}'
-    - '<yellow>Location: <aqua>{0}'
+    - '<yellow>Lokalizacja: <aqua>{0}'
   hover-arg-filled:
     - '<yellow>Nazwa: <aqua>{name}'
-    - '<yellow>Owner: <aqua>{owner}'
-    - '<yellow>Type: <aqua>{type}'
-    - '<yellow>Price: <aqua>{price}'
+    - '<yellow>Właściciel: <aqua>{owner}'
+    - '<yellow>Typ: <aqua>{type}'
+    - '<yellow>Cena: <aqua>{price}'
     - '<yellow>Przedmiot: <aqua>{item}'
-    - '<yellow>Location: <aqua>{location}'
+    - '<yellow>Lokalizacja: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
   entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
@@ -101,7 +101,7 @@ menu:
   item: '<green>Przedmiot: <yellow>{0}'
   price-per: <green>Cena za <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>za <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>for</green> {2} <gray>(<green>{3}</green> in taxes)</gray>'
+  item-name-and-price-tax: '<yellow>{0} {1} <green>za</green> {2} <gray>(<green>{3}</green> w podatkach)</gray>'
   successful-purchase: '<green>Zakupiono:'
   price-per-stack: <green>Cena za <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Przechowywane Enchanty
