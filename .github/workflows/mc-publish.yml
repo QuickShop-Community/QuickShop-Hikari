@@ -35,6 +35,8 @@ jobs:
             hXiIvTyT | recommends | *
             nfGCP9fk | recommends | *
             UmLGoGij | recommends | *
+            swbUV1cr | recommends | *
+            fRQREgAc | recommends | *
 
           github-discussion: Announcements
           github-token: ${{ secrets.GITHUB_TOKEN }}
