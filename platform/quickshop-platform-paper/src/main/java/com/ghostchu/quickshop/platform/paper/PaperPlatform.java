@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 
 import java.util.*;
 
+@SuppressWarnings("removal")
 public class PaperPlatform implements Platform {
 
     private Map<String, String> translationMapping;
@@ -189,11 +190,6 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public void setDisplayName(@NotNull ItemMeta meta, @Nullable Component component) {
-        meta.displayName(component);
-    }
-
-    @Override
     public void setDisplayName(@NotNull ItemStack stack, @Nullable Component component) {
         ItemMeta meta = stack.getItemMeta();
         meta.displayName(component);
@@ -215,10 +211,6 @@ public class PaperPlatform implements Platform {
         stack.lore(new ArrayList<>(components));
     }
 
-    @Override
-    public void setLore(@NotNull ItemMeta meta, @NotNull Collection<Component> components) {
-        meta.lore(new ArrayList<>(components));
-    }
 
     @Override
     public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {
