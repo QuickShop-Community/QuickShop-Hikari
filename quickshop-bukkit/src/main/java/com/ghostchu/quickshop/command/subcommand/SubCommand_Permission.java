@@ -30,7 +30,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
      *
      * @param sender       The command sender but will automatically convert to specified instance
      * @param commandLabel The command prefix (/qs = qs, /shop = shop)
-     * @param cmdArg       The arguments (/qs create stone will receive stone)
+     * @param parser       The arguments (/qs create stone will receive stone)
      */
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
@@ -125,7 +125,7 @@ public class SubCommand_Permission implements CommandHandler<Player> {
      *
      * @param sender       The command sender but will automatically convert to specified instance
      * @param commandLabel The command prefix (/qs = qs, /shop = shop)
-     * @param cmdArg       The arguments (/qs create stone [TAB] will receive stone)
+     * @param parser       The arguments (/qs create stone [TAB] will receive stone)
      * @return Candidate list
      */
     @Override
