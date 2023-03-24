@@ -2,7 +2,7 @@ package com.ghostchu.quickshop.platform.spigot;
 
 import com.ghostchu.quickshop.common.util.QuickSLF4JLogger;
 import com.ghostchu.quickshop.platform.Platform;
-import de.tr7zw.nbtapi.NBTTileEntity;
+import de.tr7zw.nbtapi.NBT;
 import me.pikamug.localelib.LocaleManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -183,8 +183,9 @@ public abstract class AbstractSpigotPlatform implements Platform {
 
     @Override
     public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
-        NBTTileEntity nbt = new NBTTileEntity(sign);
-        nbt.setString("Text" + (line + 1), GsonComponentSerializer.gson().serialize(component));
+        NBT.modify(sign, nbt -> {
+            nbt.setString("Text" + (line + 1), GsonComponentSerializer.gson().serialize(component));
+        });
     }
 
     @Override

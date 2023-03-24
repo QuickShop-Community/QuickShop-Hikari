@@ -1756,7 +1756,9 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             this.actions.keySet().forEach(uuid -> {
                 Player player = Bukkit.getPlayer(uuid);
                 if (player != null) {
-                    plugin.getBungeeListener().notifyForCancel(player);
+                    if(plugin.getBungeeListener() != null) {
+                        plugin.getBungeeListener().notifyForCancel(player);
+                    }
                 }
             });
             this.actions.clear();
