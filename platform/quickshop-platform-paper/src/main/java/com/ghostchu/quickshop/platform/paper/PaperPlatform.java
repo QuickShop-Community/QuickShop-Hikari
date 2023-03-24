@@ -210,7 +210,7 @@ public class PaperPlatform implements Platform {
     @Override
     public void setLines(@NotNull Sign sign, @NotNull List<Component> component) {
         for (int i = 0; i < Math.min(component.size(), 4); i++) {
-            sign.line((i+1), component.get(i));
+            sign.line(i, component.get(i));
         }
         sign.update(true,false);
     }
