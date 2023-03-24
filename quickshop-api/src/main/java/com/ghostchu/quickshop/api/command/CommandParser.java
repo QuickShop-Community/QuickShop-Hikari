@@ -1,7 +1,5 @@
 package com.ghostchu.quickshop.api.command;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -18,9 +16,9 @@ public class CommandParser {
      * Parse a command string.
      * @param raw raw command string - e.g. benefit add a b c d -tag:1 -tag:2 -foo:bar
      */
-    public CommandParser(@NotNull String raw) {
-        this.raw = raw.trim();
-        parse();
+    public CommandParser(@NotNull String raw, boolean trimTail) {
+        this.raw = raw;
+        parse(trimTail);
     }
 
     /**
@@ -28,7 +26,7 @@ public class CommandParser {
      * @return the all arguments. (benefit, a, b, c, d)
      */
     public List<String> getArgs() {
-        return ImmutableList.copyOf(args);
+        return args;
     }
 
     /**
@@ -38,7 +36,7 @@ public class CommandParser {
      */
     @NotNull
     public Map<String, List<String>> getColonArgs() {
-        return ImmutableMap.copyOf(colonArgs);
+        return colonArgs;
     }
 
     /**
@@ -50,8 +48,8 @@ public class CommandParser {
         return raw;
     }
 
-    private void parse() {
-        explode();
+    private void parse(boolean trimTail) {
+        explode(trimTail);
         parseColon();
     }
 
@@ -72,8 +70,21 @@ public class CommandParser {
         }
     }
 
-    private void explode() {
-        String[] args = raw.split(" ");
-        this.args.addAll(Arrays.asList(args));
+    private void explode(boolean trimTail) {
+        StringBuilder buffer = new StringBuilder();
+        for(char c: raw.toCharArray()){
+            if(c == ' '){
+                String newArg = buffer.toString();
+                buffer = new StringBuilder();
+                this.args.add(newArg);
+            }else{
+                buffer.append(c);
+            }
+        }
+        if(buffer.isEmpty() && !trimTail){
+            this.args.add(buffer.toString());
+        }else if(!buffer.isEmpty()){
+            this.args.add(buffer.toString());
+        }
     }
 }
