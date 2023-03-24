@@ -303,7 +303,7 @@ public class PlayerListener extends AbstractQSListener {
             return false;
         }
         plugin.getShopManager().getInteractiveManager().put(player.getUniqueId(), info);
-        plugin.text().of(player, "how-much-to-trade-for", MsgUtil.getTranslateText(stack),
+        plugin.text().of(player, "how-much-to-trade-for", Util.getItemStackName(stack),
                 plugin.isAllowStack() &&
                         plugin.perm().hasPermission(player, "quickshop.create.stacks")
                         ? stack.getAmount() : 1).send();
@@ -467,7 +467,7 @@ public class PlayerListener extends AbstractQSListener {
             if (shopHaveSpaces == 0) {
                 // when typed 'all' but the shop doesn't have any empty space
                 plugin.text().of(p, "shop-has-no-space", shopHaveSpaces,
-                        MsgUtil.getTranslateText(shop.getItem())).send();
+                        Util.getItemStackName(shop.getItem())).send();
                 return 0;
             }
             if (ownerCanAfford == 0
@@ -483,7 +483,7 @@ public class PlayerListener extends AbstractQSListener {
                 return 0;
             }
             // when typed 'all' but player doesn't have any items to sell
-            plugin.text().of(p, "you-dont-have-that-many-items", amount, MsgUtil.getTranslateText(shop.getItem())).send();
+            plugin.text().of(p, "you-dont-have-that-many-items", amount, Util.getItemStackName(shop.getItem())).send();
             return 0;
         }
         return amount;
@@ -526,7 +526,7 @@ public class PlayerListener extends AbstractQSListener {
                 // but also the shop's stock is 0
                 plugin.text().of(p, "shop-stock-too-low",
                         shop.getRemainingStock(),
-                        MsgUtil.getTranslateText(shop.getItem())).send();
+                        Util.getItemStackName(shop.getItem())).send();
                 return 0;
             } else {
                 // when if player's inventory is full

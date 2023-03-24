@@ -26,11 +26,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface Platform {
-    @NotNull
-    Component getDisplayName(@NotNull ItemStack stack);
+    @NotNull Component getDisplayName(@NotNull ItemStack stack);
 
-    @Nullable
-    Component getDisplayName(@NotNull ItemMeta meta);
+    @Nullable Component getDisplayName(@NotNull ItemMeta meta);
 
     @Nullable
     default String getItemShopId(@NotNull ItemStack stack) {
@@ -45,50 +43,37 @@ public interface Platform {
         return shopId;
     }
 
-    @NotNull
-    HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack);
+    @NotNull HoverEvent<HoverEvent.ShowItem> getItemStackHoverEvent(@NotNull ItemStack stack);
 
-    @NotNull
-    Component getLine(@NotNull Sign sign, int line);
+    @NotNull Component getLine(@NotNull Sign sign, int line);
 
     @Nullable List<Component> getLore(@NotNull ItemStack stack);
 
     @Nullable List<Component> getLore(@NotNull ItemMeta meta);
 
-    @NotNull
-    String getMinecraftVersion();
+    @NotNull String getMinecraftVersion();
 
-    @NotNull
-    Component getTranslation(@NotNull Material material);
+    @NotNull Component getTranslation(@NotNull Material material);
 
-    @NotNull
-    Component getTranslation(@NotNull EntityType entity);
+    @NotNull Component getTranslation(@NotNull EntityType entity);
 
-    @NotNull
-    Component getTranslation(@NotNull PotionEffectType potionEffectType);
+    @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType);
 
-    @NotNull
-    Component getTranslation(@NotNull Enchantment enchantment);
-    @NotNull
-    Component getTranslation(@NotNull ItemStack itemStack);
+    @NotNull Component getTranslation(@NotNull Enchantment enchantment);
 
-    @NotNull
-    String getTranslationKey(@NotNull Material material);
+    @NotNull Component getTranslation(@NotNull ItemStack itemStack);
 
-    @NotNull
-    String getTranslationKey(@NotNull EntityType entity);
+    @NotNull String getTranslationKey(@NotNull Material material);
 
-    @NotNull
-    String getTranslationKey(@NotNull PotionEffectType potionEffectType);
+    @NotNull String getTranslationKey(@NotNull EntityType entity);
 
-    @NotNull
-    String getTranslationKey(@NotNull Enchantment enchantment);
+    @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType);
 
-    @NotNull
-    String getTranslationKey(@NotNull ItemStack stack);
+    @NotNull String getTranslationKey(@NotNull Enchantment enchantment);
 
-    @NotNull
-    MiniMessage miniMessage();
+    @NotNull String getTranslationKey(@NotNull ItemStack stack);
+
+    @NotNull MiniMessage miniMessage();
 
     void registerCommand(@NotNull String prefix, @NotNull Command command);
 
@@ -96,20 +81,16 @@ public interface Platform {
 
     void sendSignTextChange(@NotNull Player player, @NotNull Sign sign, boolean glowing, @NotNull List<Component> components);
 
-    void setDisplayName(@NotNull ItemMeta meta, @Nullable Component component);
-
     void setDisplayName(@NotNull ItemStack stack, @Nullable Component component);
 
     void setDisplayName(@NotNull Item stack, @Nullable Component component);
 
     void setLine(@NotNull Sign sign, int line, @NotNull Component component);
+    void setLines(@NotNull Sign sign, @NotNull List<Component> component);
 
     void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components);
 
-    void setLore(@NotNull ItemMeta meta, @NotNull Collection<Component> components);
-
     void updateTranslationMappingSection(@NotNull Map<String, String> mapping);
 
-    @NotNull
-    Logger getSlf4jLogger(@NotNull Plugin parent);
+    @NotNull Logger getSlf4jLogger(@NotNull Plugin parent);
 }

@@ -1,7 +1,6 @@
 package com.ghostchu.quickshop.api.command;
 
 import com.ghostchu.quickshop.api.QuickShopAPI;
-import com.ghostchu.quickshop.api.QuickShopInstanceHolder;
 import com.ghostchu.quickshop.api.shop.Shop;
 import org.apache.commons.lang3.NotImplementedException;
 import org.bukkit.block.Block;
@@ -13,7 +12,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The command handler that processing sub commands under QS main command
@@ -73,11 +71,15 @@ public interface CommandHandler<T extends CommandSender> {
         for (String s : cmdArg) {
             joiner.add(s);
         }
-        CommandParser parser = new CommandParser(joiner.toString());
+        CommandParser parser = new CommandParser(joiner.toString(),true);
         try {
             onCommand(sender, commandLabel, parser);
         } catch (NotImplementedException e) {
-            onCommand(sender, commandLabel, parser.getArgs().toArray(new String[0]));
+            try {
+                onCommand(sender, commandLabel, parser.getArgs().toArray(new String[0]));
+            } catch (NotImplementedException ignored) {
+
+            }
         }
     }
 
@@ -111,11 +113,16 @@ public interface CommandHandler<T extends CommandSender> {
         for (String s : cmdArg) {
             joiner.add(s);
         }
-        CommandParser parser = new CommandParser(joiner.toString());
+        CommandParser parser = new CommandParser(joiner.toString(),false);
+        System.out.println("Tab-complete: Raw:["+parser.getRaw()+"], Args:["+ Arrays.toString(parser.getArgs().toArray()) +"]");
         try {
             return onTabComplete(sender, commandLabel, parser);
         } catch (NotImplementedException e) {
-            return onTabComplete(sender, commandLabel, parser.getArgs().toArray(new String[0]));
+            try {
+                return onTabComplete(sender, commandLabel, parser.getArgs().toArray(new String[0]));
+            } catch (NotImplementedException ignored) {
+                return Collections.emptyList();
+            }
         }
     }
 

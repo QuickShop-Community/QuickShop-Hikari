@@ -6,7 +6,7 @@
 
     <groupId>com.ghostchu</groupId>
     <artifactId>quickshop-hikari</artifactId>
-    <version>4.2.0.0</version>
+    <version>4.2.0.1</version>
     <packaging>pom</packaging>
     <name>quickshop-hikari</name>
     <description>Another QuickShop fork</description>
@@ -108,9 +108,10 @@
                                         <include>com.ghostchu:quickshop*:*</include>
                                         <include>com.ghostchu.quickshop.compatibility:*:*</include>
                                         <include>com.ghostchu.quickshop.addon:*:*</include>
-                                        <include>net.kyori:*:*</include>
+<!--                                        <include>net.kyori:*:*</include>-->
                                         <include>com.github.PikaMug:LocaleLib:*</include>
                                         <include>com.dumptruckman.minecraft:JsonConfiguration:*</include>
+                                        <include>de.tr7zw:item-nbt-api:*</include>
                                         <include>net.minidev:json-smart:*</include>
                                         <include>de.themoep:minedown-adventure:*</include>
                                         <include>io.papermc:paperlib:*</include>
@@ -171,6 +172,14 @@
                                     <relocation>
                                         <pattern>io.papermc.lib.</pattern>
                                         <shadedPattern>com.ghostchu.quickshop.shade.io.papermc.lib.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>io.papermc.lib.</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.io.papermc.lib.</shadedPattern>
+                                    </relocation>
+                                    <relocation>
+                                        <pattern>de.tr7zw.changeme.nbtapi</pattern>
+                                        <shadedPattern>com.ghostchu.quickshop.shade.de.tr7zw.changeme.nbtapi</shadedPattern>
                                     </relocation>
                                 </relocations>
                                 <transformers>

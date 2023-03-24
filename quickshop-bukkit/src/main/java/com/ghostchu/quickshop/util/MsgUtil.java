@@ -223,12 +223,13 @@ public class MsgUtil {
     }
 
     @NotNull
+    @Deprecated(since = "4.2.0.0")
     public static Component getTranslateText(@NotNull ItemStack stack) {
-        if (PLUGIN.getConfig().getBoolean("shop.force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
-            return PLUGIN.getPlatform().getTranslation(stack.getType());
-        } else {
+        //if (PLUGIN.getConfig().getBoolean("shop.force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
+        //    return PLUGIN.getPlatform().getTranslation(stack.getType());
+        //} else {
             return Util.getItemStackName(stack);
-        }
+        //}
     }
 
     public static boolean isJson(String str) {

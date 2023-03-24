@@ -14,7 +14,7 @@ softdepend:
 api-version: 1.18
 # TODO: https://github.com/PaperMC/Paper/pull/7177
 libraries:
-  - org.apache.commons:commons-compress:1.22
+  - org.apache.commons:commons-compress:1.23.0
   - org.apache.commons:commons-lang3:3.12.0
   - org.apache.commons:commons-text:1.10.0
   - com.rollbar:rollbar-java:1.9.0
@@ -32,6 +32,11 @@ libraries:
   - com.vdurmont:semver4j:3.1.0
   - com.ghostchu.crowdin:crowdinota:1.0.3
   - com.google.code.gson:gson:2.10.1
+  - net.kyori:adventure-platform-bukkit:4.3.0
+  - net.kyori:adventure-text-minimessage:4.13.0
+  - net.kyori:adventure-text-serializer-gson:4.13.0
+  - net.kyori:adventure-text-serializer-plain:4.13.0
+  - net.kyori:adventure-text-serializer-legacy:4.13.0
   #  - org.slf4j:slf4j-nop:1.7.35
 authors:
   - Ghost_chu

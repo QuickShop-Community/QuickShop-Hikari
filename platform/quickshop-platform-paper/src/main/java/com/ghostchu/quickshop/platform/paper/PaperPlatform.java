@@ -23,6 +23,7 @@ import org.slf4j.Logger;
 
 import java.util.*;
 
+@SuppressWarnings("removal")
 public class PaperPlatform implements Platform {
 
     private Map<String, String> translationMapping;
@@ -103,7 +104,7 @@ public class PaperPlatform implements Platform {
     public @NotNull String getTranslationKey(@NotNull Material material) {
         String key;
         try {
-            return material.translationKey();
+            key = material.translationKey();
         } catch (Exception error) {
             try {
                 key = material.getTranslationKey();
@@ -159,9 +160,9 @@ public class PaperPlatform implements Platform {
     public @NotNull String getTranslationKey(@NotNull ItemStack stack) {
         String key;
         try {
-            key = stack.translationKey();
-        } catch (Exception error) {
             key = stack.getTranslationKey();
+        } catch (Exception error) {
+            key = stack.translationKey();
         }
         return postProcessingTranslationKey(key);
     }
@@ -189,11 +190,6 @@ public class PaperPlatform implements Platform {
     }
 
     @Override
-    public void setDisplayName(@NotNull ItemMeta meta, @Nullable Component component) {
-        meta.displayName(component);
-    }
-
-    @Override
     public void setDisplayName(@NotNull ItemStack stack, @Nullable Component component) {
         ItemMeta meta = stack.getItemMeta();
         meta.displayName(component);
@@ -208,6 +204,15 @@ public class PaperPlatform implements Platform {
     @Override
     public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
         sign.line(line, component);
+        sign.update(true,false);
+    }
+
+    @Override
+    public void setLines(@NotNull Sign sign, @NotNull List<Component> component) {
+        for (int i = 0; i < Math.min(component.size(), 4); i++) {
+            sign.line(i, component.get(i));
+        }
+        sign.update(true,false);
     }
 
     @Override
@@ -215,10 +220,6 @@ public class PaperPlatform implements Platform {
         stack.lore(new ArrayList<>(components));
     }
 
-    @Override
-    public void setLore(@NotNull ItemMeta meta, @NotNull Collection<Component> components) {
-        meta.lore(new ArrayList<>(components));
-    }
 
     @Override
     public void updateTranslationMappingSection(@NotNull Map<String, String> mapping) {

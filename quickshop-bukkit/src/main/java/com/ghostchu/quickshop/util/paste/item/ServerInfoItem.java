@@ -19,6 +19,7 @@ public class ServerInfoItem implements SubPasteItem {
     private final String mcVersion;
     private final String worldContainer;
     private String moddedServerType;
+    private String platform;
 
     public ServerInfoItem() {
         QuickShop plugin = QuickShop.getInstance();
@@ -44,6 +45,7 @@ public class ServerInfoItem implements SubPasteItem {
         this.bukkitVersion = Bukkit.getServer().getVersion();
         this.mcVersion = plugin.getPlatform().getMinecraftVersion();
         this.worldContainer = Bukkit.getWorldContainer().getPath();
+        this.platform = plugin.getPlatform().getClass().getName();
     }
 
     @Override
@@ -69,6 +71,7 @@ public class ServerInfoItem implements SubPasteItem {
         table.insert("Bukkit Version", bukkitVersion);
         table.insert("MC Version", mcVersion);
         table.insert("World Container", worldContainer);
+        table.insert("Platform", platform);
         return table.render();
     }
 }

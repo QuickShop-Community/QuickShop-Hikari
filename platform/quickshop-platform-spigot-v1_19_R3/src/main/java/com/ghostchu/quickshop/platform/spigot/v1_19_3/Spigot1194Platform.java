@@ -20,6 +20,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionEffectTypeWrapper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -82,6 +83,9 @@ public class Spigot1194Platform extends AbstractSpigotPlatform implements Platfo
 
     @Override
     public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
+        if(potionEffectType instanceof PotionEffectTypeWrapper wrapper){
+            potionEffectType = wrapper.getType();
+        }
         CraftPotionEffectType craftPotionEffectType = (CraftPotionEffectType) potionEffectType;
         return postProcessingTranslationKey(craftPotionEffectType.getHandle().getDescriptionId());
     }
