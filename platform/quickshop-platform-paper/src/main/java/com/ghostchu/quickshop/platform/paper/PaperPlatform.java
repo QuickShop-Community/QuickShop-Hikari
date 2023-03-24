@@ -104,10 +104,10 @@ public class PaperPlatform implements Platform {
     public @NotNull String getTranslationKey(@NotNull Material material) {
         String key;
         try {
-            key = material.getTranslationKey();
+            key = material.translationKey();
         } catch (Exception error) {
             try {
-                key = material.translationKey();
+                key = material.getTranslationKey();
             } catch (Exception error2) {
                 if (!material.isBlock()) {
                     key = "item." + material.getKey().getNamespace() + "." + material.getKey().getKey();
@@ -123,10 +123,10 @@ public class PaperPlatform implements Platform {
     public @NotNull String getTranslationKey(@NotNull EntityType type) {
         String key;
         try {
-            key = type.getTranslationKey();
+            key = type.translationKey();
         } catch (Exception error) {
             try {
-                key = type.translationKey();
+                key = type.getTranslationKey();
             } catch (Exception error2) {
                 key = "entity." + type.getKey().getNamespace() + "." + type.getKey().getKey();
             }
@@ -204,6 +204,15 @@ public class PaperPlatform implements Platform {
     @Override
     public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
         sign.line(line, component);
+        sign.update(true,false);
+    }
+
+    @Override
+    public void setLines(@NotNull Sign sign, @NotNull List<Component> component) {
+        for (int i = 0; i < Math.min(component.size(), 4); i++) {
+            sign.line((i+1), component.get(i));
+        }
+        sign.update(true,false);
     }
 
     @Override

@@ -189,6 +189,15 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
+    public void setLines(@NotNull Sign sign, @NotNull List<Component> component) {
+        NBT.modify(sign, nbt -> {
+            for (int i = 0; i < Math.min(component.size(),4); i++) {
+                nbt.setString("Text" + (i + 1), GsonComponentSerializer.gson().serialize(component.get(i)));
+            }
+        });
+    }
+
+    @Override
     public void setLore(@NotNull ItemStack stack, @NotNull Collection<Component> components) {
         if (!stack.hasItemMeta()) {
             return;
