@@ -5,7 +5,7 @@ disabled-in-this-world: <red>QuickShop отключен в этом мире
 how-much-to-trade-for: <green>Введите в чат, за сколько вы хотите продавать <yellow>{1}x {0}</yellow>.
 client-language-changed: <green>QuickShop обнаружил, что вы изменили язык. Теперь для вас используется {0} язык.
 shops-backingup: Создание резервной копии магазина из базы данных...
-_comment: Привет, переводчик! Если ты редактируешь это через GitHub или через исходный код, тебе стоит делать это здесь https://crowdin.com/project/quickshop-hikari instead.
+_comment: Привет, переводчик! Если ты редактируешь это через GitHub или исходный код, тебе стоит делать это здесь https://crowdin.com/project/quickshop-hikari.
 unlimited-shop-owner-changed: '<yellow>Владелец бесконечного магазина был изменен на: {0}.'
 bad-command-usage-detailed: '<red>Неправильные аргументы для команды! Принимаются только эти параметры: <gray>{0}'
 thats-not-a-number: <red>Неверное число
@@ -28,11 +28,11 @@ command-type-mismatch: <red>Эта команда может быть выпол
 server-crash-warning: '<red>ВНИМАНИЕ: Использование команды /qs reload для замены/удаления файла QuickShop.jar может привести к сбою сервера.'
 you-cant-afford-to-change-price: <red>Для изменения цены в вашем магазине требуется {0}.
 safe-mode: <red>QuickShop сейчас находится в безопасном режиме, вы не можете открыть этот магазин. Пожалуйста, свяжитесь с администратором сервера, чтобы исправить ошибку.
-forbidden-vanilla-behavior: <red>Операция отклонена, она не соответствует ванильному поведению
+forbidden-vanilla-behavior: <red>Операция отклонена - она не соответствует ванильному поведению
 shop-out-of-space-name: <dark_purple>Ваш магазин {0} полон!
-paste-disabled: '<red>Paste functionality has been disabled! You cannot request technical support. <newline>Reason: {0}'
+paste-disabled: '<red>Функция вставки отключена! Вы не можете запросить техническую поддержку.<newline>Причина: {0}'
 quick-fill:
-  entry-own: ' <yellow>- <red>[own] <aqua>{0} <light_purple>{1}'
+  entry-own: ' <yellow>- <red>[собственный] <aqua>{0} <light_purple>{1}'
   hover:
     - '<yellow>Название: <aqua>{0}'
     - '<yellow>Владелец: <aqua>{0}'
@@ -49,31 +49,31 @@ quick-fill:
     - '<yellow>Локация: <aqua>{location}'
   header: '<yellow>You have multiple shops with name "<green>{0}<yellow>", choose one to continue:'
   entry-normal: ' <yellow>- <aqua>{0} <light_purple>{1}'
-  entry-cooperation: ' <yellow>- <red>[co] <aqua>{0} <light_purple>{1}'
+  entry-cooperation: ' <yellow>- <red>[совместный] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(Админ) <light_purple>{0} <dark_gray>ошибка при проверке разрешения. Если это не ожидаемое поведение попробуйте добавить <light_purple>{1} <gray>в чёрный список. <gray>Гайд по настройке: https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
 average-price-nearby: '<green>Средняя цена: <yellow>{0}'
 digits-reach-the-limit: <red>Вы достигли пределов десятичных знаков в цене.
-currency-unset: <green>Магазин успешно удален. Использование настроек теперь по умолчанию.
+currency-unset: <green>Валюта магазина сброшена. Будет использована по умолчанию.
 you-cant-create-shop-in-there: <red>У вас нет прав на создание магазины в текущем месте.
 no-pending-action: <red>У вас нет ожидающих действий
 refill-success: <green>Пополнение успешно
 failed-to-paste: <red>Не удалось загрузить данные в Pastebin. Проверьте подключение к Интернету и повторите попытку. (Подробнее в консоли)
 shop-out-of-stock-name: <dark_purple>В вашем магазине {0} кончилось {1}!
-shop-name-invalid: <red>Название магазина <yellow>{0}</yellow> недоступно. Выберите другое!
+shop-name-invalid: <red>Название магазина <yellow>{0}</yellow> недействительно. Выберите другое!
 how-many-buy-stack: <yellow>Введите в чат, сколько партий вы хотите <aqua>КУПИТЬ<green>. Всего <yellow>{0}<green> предметов в каждой партии и вы можете купить <yellow>{1}<green> партий. Введите <aqua>{2}<green> в чате, чтобы купить все.
 exceeded-maximum: <red>Значение превысило максимальное значение в Java.
-unlimited-shop-owner-keeped: '<yellow>Внимание: Владелец магазина все еще владеет неограниченным магазином, вам нужно установить нового владельца магазина самостоятельно.'
+unlimited-shop-owner-keeped: '<yellow>Внимание: Владелец магазина всё ещё владеет бесконечным магазином - вам нужно установить нового владельца самостоятельно.'
 no-enough-money-to-keep-shops: <red>У вас нет средств для аренды магазинов! Все магазины были удалены...
-3rd-plugin-build-check-failed: <red>Сторонний плагин <bold>{0}</bold> запретил проверку прав доступа, вы имеете разрешение на это действие?
+3rd-plugin-build-check-failed: <red>Сторонний плагин <bold>{0}</bold> запретил проверку прав доступа - вы имеете разрешение на это действие?
 not-a-integer: <red>Вы должны ввести целое число, но вы ввели {0}.
 translation-country: 'Языковой регион: Русский (ru_RU)'
 buying-more-than-selling: '<red>ВНИМАНИЕ: Вы покупаете товары дороже, чем продаёте!'
 purchase-failed: '<red>Покупка не удалась: внутренняя ошибка. Пожалуйста, свяжитесь с администратором сервера.'
-denied-put-in-item: <red>Вы не можете поместить этот товар в ваш магазин!
+denied-put-in-item: <red>Вы не можете поместить этот товар в свой магазин!
 shop-has-changed: <red>Магазин, который вы пытались использовать, был изменен!
 flush-finished: <green>Сообщения успешно очищены.
-no-price-given: <red>Пожалуйста укажите корректную цену.
-shop-already-owned: <red>Вы уже создали магазин.
+no-price-given: <red>Пожалуйста, укажите корректную цену.
+shop-already-owned: <red>Вы уже создали этот магазин.
 backup-success: <green>Резервное копирование успешно.
 not-looking-at-shop: <red>Не удалось найти магазин, возможно не зарегистрирован.
 you-cant-afford-a-new-shop: <red>Создание магазина стоит {0}.
@@ -86,7 +86,7 @@ reloading-status:
   scheduled: <green>Перезагрузка завершена. <gray>(Для вступления в силу некоторых изменений потребуется время)
   require-restart: <green>Перезагрузка завершена. <yellow>(Для изменения интерфейса потребуется перезапуск сервера)
   failed: <red>Перезагрузка не удалась, проверьте консоль сервера
-player-bought-from-your-store-tax: <green>{0} купил{1} {2}в вашем магазине и вы заработали {3} ({4} налог).
+player-bought-from-your-store-tax: <green>{0} купил {1} {2} в вашем магазине, вы заработали {3} (налог {4}).
 not-enough-space: <red>В вашем инвентаре осталось место только для {0} предметов!
 shop-name-success: <green>Название магазина успешно изменено на <yellow>{0}<green>.
 shop-staff-added: <green>{0} успешно добавлен в качестве сотрудника вашего магазина.
@@ -101,7 +101,7 @@ menu:
   item: '<green>Товар: <yellow>{0}'
   price-per: <green>Цена за <yellow>{0} <green>- <yellow>{1}
   item-name-and-price: <yellow>{0} {1} <green>за <yellow>{2}
-  item-name-and-price-tax: '<yellow>{0} {1} <green>за</green> {2} <gray>(<green>{3}</green> в виде налогов)</gray>'
+  item-name-and-price-tax: '<yellow>{0} {1} <green>за</green> {2} <gray>(налог <green>{3}</green>)</gray>'
   successful-purchase: '<green>Успешно куплено:'
   price-per-stack: <green>Цена за <yellow>{2}x {0} - {1}
   stored-enchants: <dark_purple>Хранимые чары
@@ -116,14 +116,14 @@ menu:
   this-shop-is-buying: <green>Этот магазин <light_purple>ПОКУПАЕТ<green> предметы.
   successfully-sold: '<green>Успешно продано:'
   total-value-of-chest: '<green>Общая цена сундука: <yellow>{0}'
-currency-not-exists: <red>Не удается найти валюту, которую вы хотите установить. Возможно, вы ошиблись или эта валюта недоступна в этом мире.
+currency-not-exists: <red>Не удается найти валюту, которую вы хотите установить. Возможно, вы ошиблись, или эта валюта недоступна в данном мире.
 no-nearby-shop: <red>Нет близлежащих магазинов, соответствующих {0}.
-translation-author: 'Переводчик: Ghost_chu, Andre_601, kyrtion, limbiz86, Cap_Scarlett'
+translation-author: 'Переводчики: kyrtion, limbiz86, Cap_Scarlett, imDaniX'
 integrations-check-failed-trade: <red>Интеграция {0} не позволяет провести сделку
 shop-transaction-failed: <red>Извините, но при обработке вашей покупки произошла внутренняя ошибка. Покупка была отменена. Пожалуйста, свяжитесь с администраторами сервера, если эта ошибка повторяется.
-success-change-owner-to-server: <green>Владелец магазина успешно установлен на Сервер.
+success-change-owner-to-server: <green>Теперь сам сервер владеет этим магазином.
 shop-name-not-found: <red>Магазин с названием <yellow>{0}</yellow> не существует.
-shop-name-too-long: <red>Это имя магазина слишком длинное (максимальная длинна {0}), пожалуйста выберете другое!
+shop-name-too-long: <red>Это имя магазина слишком длинное (максимальная длина {0}) - пожалуйста, выберете другое!
 metric:
   header-player: '<yellow>Транзакции игрока {0} {1} {2}:'
   action-hover: <yellow>{0}
@@ -142,7 +142,7 @@ metric:
   amount-hover: <yellow>{0}х
   header-shop: '<yellow>Транзакции магазина {0} {1} {2}:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
-  looking-up: <yellow>Высчитывается статистика, пожалуйста, подождите...
+  looking-up: <yellow>Высчитывается статистика. Пожалуйста, подождите...
   tax-hover: <yellow>{0} налогов
   header-global: '<yellow>Сервер {0} {1} транзакций:'
   na: <gray>Н/Д
@@ -150,20 +150,20 @@ metric:
   shop-hover: '<yellow>{0}<newline><gold>Позиция: <gray>{1} {2} {3}, Мир: {4}<newline><gold>Владелец: <gray>{5}<newline><gold>Тип магазина: <gray>{6}<newline><gold>Предмет: <gray>{7}<newline><gold>Цена: <gray>{8}'
   time-hover: '<yellow>Время: {0}'
   amount-stack-hover: <yellow>{0}x стаков
-permission-denied-3rd-party: '<red>Доступ запрещен: сторонний плагин [{0}].'
-you-dont-have-that-many-items: <red>У вас только {0} {1}.
+permission-denied-3rd-party: <red>Доступ запрещен сторонним плагином {0}.
+you-dont-have-that-many-items: <red>У вас всего {0} {1}.
 complete: <green>Выполнено!
-translate-not-completed-yet-url: 'Перевод языка {0} еще не завершен пользователем {1}. Вы хотите помочь нам улучшить перевод? Ссылка: {2}'
+translate-not-completed-yet-url: 'Перевод языка {0} ещё не завершен пользователями {1}. Хотите помочь улучшить перевод? Перейдите по ссылке: {2}'
 success-removed-shop: <green>Магазин удален.
 currency-set: <green>Валюта магазина успешна установлена на {0}.
-shop-purged-start: <green>Начато очистки магазина, проверьте консоль для получения подробностей.
-economy-transaction-failed: <red>Извините, при обработке транзакции произошла внутренняя ошибка. Транзакция была отменена. Пожалуйста, свяжитесь с администраторами сервера, если эта ошибка повторяется.
+shop-purged-start: <green>Начата очистка магазина, проверьте консоль для получения подробностей.
+economy-transaction-failed: <red>Извините, при обработке транзакции произошла внутренняя ошибка. Транзакция и все экономические изменения отменены. Если ошибка повторяется, пожалуйста, свяжитесь с администрацией сервера.
 nothing-to-flush: <green>У вас нет новых сообщений в магазине.
-no-price-change: <red>Указанная вами цена идентичная предыдущей!
+no-price-change: <red>Указанная вами цена идентична предыдущей!
 edition-confilct: QuickShop-Hikari и QuickShop-Remake могут конфликтовать. Удалите один из этих плагинов.
-inventory-unavailable: '<red>Не существует или неверный InventoryWrapper. Вы используете аддон для повторной привязки инвентаря магазина?<newline> Информация: InventoryWrapper ={0}, WrapperProvider={1}, SymbolLink={2}. Пожалуйста, свяжитесь с администраторами сервера.'
-file-test: Это тестовый файл. Мы используем его для тестирования, если файл messages.json поломан. Вы тут можете заполнить любым пасхальными яйцами, которые вам нравятся :) Как же так, ректор Кудрявцев?
-unknown-player: <red>Такой игрок не существует, пожалуйста, проверьте имя, которое вы ввели.
+inventory-unavailable: '<red>Несуществующий или неверный InventoryWrapper. Вы используете аддон для повторной привязки инвентаря магазина?<newline> Информация: InventoryWrapper={0}, WrapperProvider={1}, SymbolLink={2}. Пожалуйста, свяжитесь с администрацией сервера.'
+file-test: Это тестовый текстовый файл. Мы используем его для проверки повреждения файла messages.json. Сюда вы можете написать что угодно :) Как же так, ректор Кудрявцев?; Всполох - плохой перевод для Блейза.
+unknown-player: <red>Такого игрока не существует. Пожалуйста, проверьте введенное вами имя игрока.
 player-offline: "<red>Этот игрок сейчас офлайн."
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 shop-type:
@@ -173,14 +173,14 @@ language:
   qa-issues: '<yellow>Вопросы обеспечения качества: <aqua>{0}%'
   code: '<yellow>Код: <gold>{0}'
   approval-progress: '<yellow>Прогресс утверждения: <aqua>{0}%'
-  translate-progress: '<yellow>Процесс перевода: <aqua>{0}%'
-  name: '<yellow>Имя: <gold>{0}'
+  translate-progress: '<yellow>Прогресс перевода: <aqua>{0}%'
+  name: '<yellow>Название: <gold>{0}'
   help-us: <green>[Помогите нам улучшить качество перевода]
 warn-to-paste: '<yellow>Сбор данных и загрузка их в Pastebin, это может занять некоторое время. <red><bold>Предупреждение:<red> Данные хранятся в течение одной недели! Это может привести к утечке конфигурации вашего сервера и другой конфиденциальной информации. Убедитесь, что вы отправляете его только доверенным персоналу/разработчикам.'
 how-many-sell-stack: <yellow>Введите в чат, сколько массу вы хотите <aqua>ПРОДАТЬ&а. <yellow>{0} товар в каждой массой и вы можете продать за <yellow>{1}<green>. Введите <aqua>{2}<green> в чате, чтобы купить все.
 updatenotify:
   buttontitle: '[Обновить]'
-  onekeybuttontitle: '[Обновить за один клик]'
+  onekeybuttontitle: '[Обновить в один клик]'
   label:
     github: '[GitHub]'
     ore: '[Ore]'
@@ -198,15 +198,15 @@ updatenotify:
     modrinth: '[Modrinth]'
     basic: '[Basic]'
   list:
-    - '{0} уже вышел. Но вы ещё пользуетесь старой версией {1}!'
-    - Бум! Новое обновление {0} появились. Обновитесь!
-    - Сюрприз! {0} вышел. Вы используете {1}
-    - Похоже, вы должны обновиться. {0} был выпущен!
-    - Упс! {0} вышел, а вы используете {1}!
-    - Хватит, QS был обновлен до {0}. Почему вы еще не обновились?
-    - Исправление и ре... Извините, но {0} был выпущен!
-    - Ошибка! Нет. Это не ошибка. {0} был выпущен!
-    - О боже мой! {0} уже вышел! Почему вы используете {1}?
+    - 'Вышла версия {0}. Вы всё ещё используете устаревшую {1}!'
+    - Вжух! Вышла новая версия {0}. Обновитесь!
+    - Сюрприз! Вышла версия {0}. Вы используете {1}
+    - Пора бы обновиться. Вышла версия {0}!
+    - Опа! Версия {0} уже вышла. Вы используете {1}!
+    - Клянусь, QS был обновлен до {0}. Почему вы ещё не обновились?
+    - Исправления и пере... Извините, но версия {0} была выпущен!
+    - Ба! Нет, не баг. Версия {0} уже вышла!
+    - Боже мой! Версия {0} уже вышла! Почему вы используете {1}?
     - 'Новости: Появились новое обновление QuickShop на {0}!'
     - Плагин ослабляет. Вы должны обновить до {0}!
     - Обновление {0} запущено. Сохранено обновление!
@@ -218,8 +218,8 @@ updatenotify:
     - Ко~ко~да~ё~ QuickShop появились новое обновление {0} ~
     - Paimon хочет сообщить, что QuickShop имеет новое обновление {0}!
   remote-disable-warning: '<red>Текущая версия QuickShop отмечена как отключенная удалённым сервером, означая, что эта версия может иметь серьезные проблемы, получить подробную информацию с нашей страницы плагина SpigotMC: {0}. Это предупреждение будет отображаться до тех пор, пока вы не переключитесь на стабильную версию, но это не повлияет на перфорирование вашего сервера.'
-purchase-out-of-stock: <red>В этом магазине закончился запас, свяжитесь с владельцем магазина или сотрудниками для пополнения.
-nearby-shop-entry: '<green>- Информация:{0} <green>Цена:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>расстояние: <aqua>{5} <green>блок(ов)'
+purchase-out-of-stock: <red>В этом магазине закончился товар. Попросите его владельца или сотрудников пополнить его.
+nearby-shop-entry: '<green>- Информация:{0} <green>Цена:<aqua>{1} <green>x:<aqua>{2} <green>y:<aqua>{3} <green>z:<aqua>{4} <green>Расстояние: <aqua>{5} <green>блок(а/ов)'
 chest-title: Магазин QuickShop
 console-only: <red>Эта команда может быть выполнена только консолью.
 failed-to-put-sign: <red>Недостаточно места вокруг магазина для размещения информации на табличке.
@@ -232,9 +232,9 @@ tableformat:
   full_line: <dark_purple>+---------------------------------------------------+
   left_begin: '<dark_purple>| '
 quickshop-gui-preview: Просмотр GUI товара
-translate-not-completed-yet-click: Перевод языка {0} еще не завершен пользователем {1}. Вы хотите помочь нам улучшить перевод? Нажмите здесь!
+translate-not-completed-yet-click: Перевод языка {0} ещё не завершен пользователями {1}. Хотите помочь улучшить перевод? Нажмите сюда!
 taxaccount-invalid: <red>Текущий аккаунт налогового счета неизвестен, пожалуйста, введите правильное имя игрока или uuid(с тире).
-player-bought-from-your-store: <red>{0} купил {1} {2} и вы заработали {3}.
+player-bought-from-your-store: <green>{0} купил {1} {2} из вашего магазины, вы заработали {3}.
 reached-maximum-can-create: <red>Вы уже создали максимум {0}/{1} магазинов!
 reached-maximum-create-limit: <red>Вы достигли максимального количества созданных магазинов
 translation-version: 'Поддерживаемая версия: Hikari'
@@ -247,12 +247,12 @@ cleanghost-starting: <green>Starting to check for ghost shops (missing container
 cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
 cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
 shop-purchase-cancelled: <red>Покупка в магазине отменена.
-bypassing-lock: Обход блокировки магазина!
+bypassing-lock: <red>Обход блокировки магазина!
 bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
 saved-to-path: Резервная копия сохранена в {0}.
 shop-now-freezed: <green>Вы заморозили магазин. Теперь никто не может торговать с этим магазином!
 price-is-now: <green>Новая цена магазина <yellow>{0}
-shops-arent-locked: <red>Помните, магазины НЕ защищены от кражи! Если вы хотите остановить воров, заприватьте его другим плагином!
+shops-arent-locked: <red>Помните - магазины НЕ защищены от кражи! Если вы хотите остановить воров, заприватьте его другим плагином!
 that-is-locked: <red>Этот магазин заперт.
 shop-has-no-space: <red>Магазин можно пополнять ещё {0} {1}.
 safe-mode-admin: '<red><bold>Внимание: <red>QuickShop на этом сервере работает в безопасном режиме, никакие функции не работают, пожалуйста, введите команду <yellow>/qs <red> для проверки ошибок.'
@@ -270,8 +270,8 @@ support-disable-reason:
   privacy: <yellow>Этот сервер запущен в оффлайн режиме. Если вы запускаете сервер под прокси и в режиме онлайн, правильно настройте связанные с прокси настройки.
   modified: <yellow>Ошибка проверки целостности файлов. Эта сборка QuickShop была изменена третьими лицами.
   consolespamfix-installed: <yellow>ConsoleSpamFix установлен. Он скроет ошибки плагина. Отключите его временно, если захотите обратиться в поддержку.
-  authlib-injector-detected: <yellow>Этот сервер работает с сторонней библиотекой Auth-, такой как AuthLib-Injector.
-  unsupported-server-software: <yellow>Неподдерживаемое серверное программное обеспечение. Любые модифицированные программные средства не поддерживаются, включая MCPC, Cauldron, CatServer, Mohis, Magma, Fukkit, Cardboard, и т. д.
+  authlib-injector-detected: <yellow>Этот сервер работает со сторонней библиотекой авторизации, вроде AuthLib-Injector.
+  unsupported-server-software: <yellow>Неподдерживаемое серверное программное обеспечение. Любые модифицированные программные средства не поддерживаются, включая MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard, и т. д.
 supertool-is-disabled: <red>Супер-инструмент отключен, вы не можете сломать чужой магазин.
 unknown-owner: Неизвестно
 restricted-prices: '<red>Цена ограничена {0}: от {1} до {2}'
@@ -305,13 +305,13 @@ signs:
 negative-amount: <red>Вы не можете обменивать отрицательное число предметов
 display-turn-on: <green>Отображение товара успешно включено.
 shop-staff-deleted: <green>Сотрудник {0} успешно удален из вашего магазина.
-nearby-shop-header: '<green>Ближайший магазин, соответствующий <aqua>{0}&а:'
+nearby-shop-header: '<green>Ближайший магазин, соответствующий <aqua>{0}</aqua>:'
 backup-failed: Не удается сделать резервную копию базы данных. Проверьте консоль для деталей.
 shop-staff-cleared: <green>Все сотрудники успешно удалены из вашего магазина.
 price-too-high: <red>Цена слишком высока! Вы не можете создать магазин с ценой выше {0}.
 plugin-cancelled: '<red>Операция отменена. Причина: {0}'
 player-sold-to-your-store: <green>{0} продал {1}x {2} в ваш магазин.
-shop-out-of-stock: <dark_purple>Ваш магазин в {0}, {1}, {2} больше нет товара {3}!
+shop-out-of-stock: <dark_purple>В вашем магазине на {0}, {1}, {2} не осталось {3}!
 how-many-buy: <green>Введите в чат, сколько вы хотите <aqua>КУПИТЬ<green>. Вы можете купить <yellow>{0}<green>. Введите <aqua>{1}<green> чтобы купить их все.
 language-info-panel:
   help: 'Помогите нам: '
@@ -351,12 +351,12 @@ controlpanel:
   remove-hover: <yellow>Нажмите, чтобы удалить магазин.
   toggledisplay-hover: <yellow>Переключает состояние отображения товара над магазином
   refill: '<green>Пополнение: добавить предметов <yellow>[<light_purple><bold>OK<yellow>]'
-  freeze-hover: <yellow>Переключает состояние заморозки магазина.
-  lock-hover: <yellow>Включает/отключает запрет магазина.
+  freeze-hover: <yellow>Переключить состояние заморозки магазина.
+  lock-hover: <yellow>Переключить состояние блокировки магазина.
   item-hover: <yellow>Нажмите, чтобы изменить товар
   infomation: '<green>Панель управления магазином:'
   mode-selling-hover: <yellow>Нажмите, чтобы изменить режим магазина на ПОКУПКИ.
-  empty-hover: <yellow>Нажмите, чтобы опустошить инвентарь магазина.
+  empty-hover: <yellow>Нажмите, чтобы очистить инвентарь магазина.
   toggledisplay: '<green>Отображение предмета: <aqua>{0}<yellow>[<light_purple><bold>Переключить</bold></light_purple>]'
 timeunit:
   behind: назад
@@ -397,26 +397,26 @@ command:
     language: <yellow>Изменяет используемый язык
     purge: <green>Запускает задачи очистки магазина в фоновом режиме
     paste: <yellow>Загружает данные сервера на Pastebin
-    title: <green>QuickShop справка
-    remove: <yellow>Удаляет магазин на который вы смотрите
-    ban: <yellow>Запретить игроку посещать магазин
+    title: <green>Справка по QuickShop
+    remove: <yellow>Удаляет магазин, на который вы смотрите
+    ban: <yellow>Запрещает игроку использовать магазин
     empty: <yellow>Удаляет все товары из магазина
     alwayscounting: <yellow>Установите, чтобы магазин всегда считал количество предметов в магазине
-    setowner: <yellow>Устанавливает владельца магазина.
-    reload: <yellow>Перезагружает конфигурацию
-    freeze: <yellow>Отключить или включить торговлю магазином
+    setowner: <yellow>Меняет владельца магазина
+    reload: <yellow>Перезагружает конфигурацию config.yml
+    freeze: <yellow>Переключает торговлю магазином
     price: <yellow>Изменяет цену покупки/продажи магазина
-    find: <yellow>Находит ближайший магазин определенного типа.
-    create: <yellow>Создает новый магазин из сундука на который вы смотрите
+    find: <yellow>Ищет ближайший магазин определенного типа
+    create: <yellow>Создает новый магазин из сундука, на который вы смотрите
     lock: <yellow>Переключает состояние блокировки магазина
-    currency: <yellow>Установить или сбросить настройки валюты магазина
+    currency: <yellow>Устанавливает или сбрасывает настройки валюты магазина
     removeworld: <yellow>Удаляет ВСЕ магазины в указанном мире
     info: <yellow>Показывает статистику плагина
-    owner: <yellow>Изменяет владельца магазина.
+    owner: <yellow>Меняет владельца магазина.
     amount: <yellow>Устанавливает заданное количество товара (при возникновении проблем с чатом)
     item: <yellow>Изменяет товар магазина
     debug: <yellow>Включает режим разработчика
-    unlimited: <yellow>Дает магазину неограниченный товар.
+    unlimited: <yellow>Дает магазину неограниченный товар
     sell: <yellow>Изменяет режим магазина на <aqua>ПРОДАТЬ<yellow>
     fetchmessage: <yellow>Показывает непрочитанные сообщения магазина
     staff: <yellow>Управляет персоналов вашего магазина
@@ -424,7 +424,7 @@ command:
     refill: <yellow>Добавляет заданное число товаров в магазин
     help: <yellow>Показывает справку плагина
     removeall: <yellow>Удаляет ВСЕ магазины указанного игрока
-    unban: <yellow>Разрешает игроку посещать магазин
+    unban: <yellow>Разрешает игроку использовать магазин
     transfer: <yellow>Переносит ВСЕ чьи-то магазины в другие
     size: <yellow>Изменяет заданного количество объем массы магазина
     supercreate: <yellow>Создает магазин проходя всех проверок защиты
@@ -436,19 +436,19 @@ command:
     database: <yellow>Просмотр и обслуживание базы данных QuickShop
     benefit: <yellow>Настройки разделения выгоды между владельцем магазина и другими игроками
     tag: <yellow>Add, remove or query tags of a shop
-  bulk-size-not-set: '<red>Используйте: /qs size <amount>'
-  no-type-given: '<red>Используйте: /qs find <item>'
+  bulk-size-not-set: '<red>Используйте: /qs size <количество>'
+  no-type-given: '<red>Используйте: /qs find <предмет>'
   feature-not-enabled: Функция не включена в конфигурации.
-  now-debuging: <green>Успешно включено режим разработчика. Перезагружаю...
-  no-amount-given: '<red>Количество не указано. Используйте: <green>/qs refill <amount><red>'
-  no-owner-given: <red>Нет владельца
+  now-debuging: <green>Режим разработчика успешно включен. Перезагружаем QuickShop...
+  no-amount-given: '<red>Количество не указано. Используйте: <green>/qs refill <количество><red>'
+  no-owner-given: <red>Владелец не указан
   disabled: '<red>Данная команда недоступна: <yellow>{0}'
   bulk-size-now: <green>Сейчас обменивает с объемом <yellow>{0}x {1}
   toggle-always-counting:
-    counting: <green>Shop is now always counting container even is unlimited
+    counting: <green>Магазин теперь всегда учитывает содержимое контейнера, даже когда тот неограничен
     not-counting: <green>Теперь магазин неограничен
-  cleaning: <green>Удаление магазинов без каких-либо товара...
-  now-nolonger-debuging: <green>Успешно выключен режим разработчика. Перезагружаю...
+  cleaning: <green>Удаление магазинов без каких-либо товаров...
+  now-nolonger-debuging: <green>Режим разработчика успешно отключен. Перезагружаю QuickShop...
   toggle-unlimited:
     limited: <green>Магазин теперь ограничен
     unlimited: <green>Магазин теперь неограничен
@@ -459,28 +459,28 @@ command:
   new-owner: '<green>Новый владелец: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
   transfer-success: <green>Перемещено <yellow>{0} <green>магазин(ов) в <yellow>{1}
-  now-buying: <green>В этом магазине теперь <light_purple>ПОКУПАЕТ<green> <yellow>{0}
-  now-selling: <green>В этом магазине теперь <aqua>ПРОДАЕТ <yellow>{0}
-  cleaned: <green>Удалено <yellow>{0}<green> магазинов.
+  now-buying: <green>Магазин теперь <light_purple>ПОКУПАЕТ</light_purple> {0}
+  now-selling: <green>Магазин теперь <aqua>ПРОДАЕТ</aqua> {0}
+  cleaned: <green>Удалено <yellow>{0}</yellow> магазинов.
   trade-item-now: <green>Сейчас обменивает <yellow>{0}x {1}
   no-world-given: <red>Пожалуйста, укажите название мира
   format-disabled: <red>/{0} {1} <gray>- {2}
   invalid-bulk-amount: <red>Данное значение {0} больше чем максимальный объем стака или меньше единицы
 currency-not-support: <red>Плагин экономики не поддерживает функцию мульти-экономики.
 trading-in-creative-mode-is-disabled: <red>Вы не можете торговать в творческом режиме.
-the-owner-cant-afford-to-buy-from-you: <red>Это стоит {0}, но у владелец только {1}
+the-owner-cant-afford-to-buy-from-you: <red>Предмет стоит {0}, но у владельца только {1}
 you-cant-afford-shop-naming: <red>У вас недостаточно денег. Дать название магазину стоит {0}.
-inventory-error: '<red>Failed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.'
-integrations-check-failed-create: <red>Интеграция {0} отказалась от создание магазина
-shop-out-of-space: <dark_purple>Магазин переполнен {0}, {1}, {2}.
-admin-shop: Администратор
-no-anythings-in-your-hand: <red>У вас ничего нет в руках.
-no-permission: <red>У вас нет прав.
+inventory-error: '<red>Ошибка при обработке InventoryWrapper. Вы используете аддон для повторной привязки инвентаря магазина?<newline> Информация: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Пожалуйста, свяжитесь с администрацией сервера.'
+integrations-check-failed-create: <red>Интеграция {0} запретила создание магазина
+shop-out-of-space: <dark_purple>Ваш магазин на {0}, {1}, {2} переполнен!
+admin-shop: АдминШоп
+no-anythings-in-your-hand: <red>В вашей руке ничего нет.
+no-permission: <red>У вас нет прав на это действие.
 chest-was-removed: <red>Сундук удален.
-you-cant-afford-to-buy: <red>Это стоит {0}, но у вас на балансе {1}
-shops-removed-in-world: <yellow>Всего <aqua>{0}<yellow> магазинов было удалено в мире <aqua>{1}<yellow>.
+you-cant-afford-to-buy: <red>Это стоит {0}, но у вас осталось лишь {1}
+shops-removed-in-world: <yellow><aqua>{0}</aqua> магазинов было удалено в мире <aqua>{1}</aqua>.
 display-turn-off: <green>Отображение товара успешно выключено.
-client-language-unsupported: <yellow>QuickShop не поддерживает ваш язык клиента, теперь мы возвращаемся на {0} язык.
+client-language-unsupported: <yellow>QuickShop не поддерживает язык вашего клиента. Возвращаем {0}...
 language-version: '63'
 not-managed-shop: <red>Вы не владелец или сотрудник этого магазина
 shop-cannot-trade-when-freezing: <red>Вы не можете торговать с этим магазином, потому что он заморожен.
@@ -493,7 +493,7 @@ permission:
   item:
     purchase: "<yellow>Разрешить покупку и продажу магазина."
     show-information: "<yellow>Разрешить пользователям просматривать информацию о магазине. (Открыть информационную панель магазина)"
-    preview-shop: "<yellow>Разрешить пользователям предпросмотр магазина."
+    preview-shop: "<yellow>Разрешить пользователям предпросмотр магазина. (предпросмотр предметов)"
     search: "<yellow>Разрешить пользователям поиск в данном магазине. (Без разрешения магазин будет скрыт из результатов поиска)"
     delete: "<yellow>Разрешить пользователям удалять магазины."
     receive-alert: "<yellow>Разрешить пользователям получать оповещения (например, \"нет товара в наличии\" или \"новая сделка\")."
@@ -511,21 +511,21 @@ permission:
     everyone: "<yellow>Группа по умолчанию для всех пользователей, исключая владельца магазина."
     staff: "<yellow>Системная группа для сотрудников магазина."
     administrator: "<red>Системная группа для администраторов, пользователи этой группы будут иметь права почти одинаковые с владельцем магазина."
-invalid-group: "<red>Неверное имя группы."
-invalid-permission: "<red>Недостаточно прав."
+invalid-group: "<red>Неверное название группы."
+invalid-permission: "<red>Неверное право."
 invalid-operation: "<red>Недопустимая операция, разрешена только {0}."
 player-no-group: "<yellow>Игрок {0} не состоит в группе этого магазина."
 player-in-group: "<green>Игрок {0} находится в группе <aqua>{1}</aqua> в этом магазине."
 permission-required: "<red>У вас нет разрешения {0} в этом магазине, чтобы это сделать."
 no-permission-detailed: "<red>У вас нет разрешения <yellow>{0}</yellow>, чтобы сделать это."
-paste-uploading: "<aqua>Пожалуйста, подождите... Идет загрузка......"
+paste-uploading: "<aqua>Пожалуйста, подождите... Идет загрузка на pastebin......"
 paste-created: "<green>Копия создана, нажмите, чтобы открыть в браузере: <yellow>{0}</yellow><newline><red>Предупреждение: <gray>Никогда не отправляйте тем, кому не доверяете."
 paste-created-local: "<green>Копия сохранена на ваш диск в: {0}<newline><red>Предупреждение: <gray>Никогда не отправляйте это тем, кому вы не доверяете."
 paste-created-local-failed: "<red>Не удалось сохранить на ваш диск. Пожалуйста, проверьте свой диск."
 paste-451: "<gray><b>ПОДСКАЗКА: </b> Ваша страна или регион заблокировали сервис CloudFlare Workers и QuickShop Paste может быть загружен некорректно.<newline><gray>Если последующая операция не удается, попробуйте добавить дополнительный параметр --file для генерации локальной копии: <dark_gray>/qs paste --file</dark_gray>"
 paste-upload-failed: "<red>Не удалось загрузить пасту в {0}, пробую другие сервисы..."
 paste-upload-failed-local: "<red>Не удалось выгрузить пасту, пытаюсь сгенерировать ее локально..."
-command-incorrect: "<red>Неправильное использование команд, введите /qs help для большей информации. Правильное использование: {0}."
+command-incorrect: "<red>Неправильное использование команды, введите /qs help для справки. Использование: {0}."
 successfully-set-player-group: "<green>Игрок {0} помещен в группу <aqua>{1}</aqua>."
 successfully-unset-player-group: "<green>Группа успешно удалена из этого магазина."
 successfully-set-player-permission: "<green>Игроку {0} разрешено <aqua>{1}</aqua> в магазине <aqua>{2}</aqua>."
@@ -537,10 +537,10 @@ lookup-item-name-regex: "<red>Имя должно соответствовать
 lookup-item-test-not-found: "<gold>Тест: <yellow>предмет в вашей руке не зарегистрирован в справочной таблице."
 lookup-item-test-found: "<gold>Тест: <green>предмет в вашей руке был зарегистрирован в качестве имени <aqua>{0}</aqua> в справочной таблице."
 lookup-item-removed: "<green>Предмет <aqua>{0}</aqua> успешно удален из справочной таблицы."
-internal-error: "<red>Произошла внутренняя ошибка, пожалуйста, свяжитесь с администратором сервера."
+internal-error: "<red>Произошла внутренняя ошибка. Пожалуйста, свяжитесь с администрацией сервера."
 argument-cannot-be: "<red>Аргумент <aqua>{0}</aqua> не может быть <yellow>{1}</yellow>."
 argument-must-between: "<red>Значение <aqua>{0}</aqua> должно быть между <yellow>{1}</yellow> и <yellow>{2}</yellow>"
-invalid-percentage: "<red>Недопустимый процент, вы должны добавить '%' после числа процентов."
+invalid-percentage: "<red>Неправильное значение - вы должны добавить '%' после числа процентов."
 not-a-valid-time: |
   <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
   <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
@@ -557,7 +557,7 @@ debug:
   warning-sql-confirm: "<yellow>To confirm this dangerous operation, please type <aqua>/qs debug database sql confirm {0}</aqua> in 60 seconds."
   warning-sql-confirm-hover: "<yellow>Нажмите для подтверждения этой опасной операции."
   sql-confirm-not-found: "<yellow>Didn't found the operation that you given, it may invalid or expired."
-  sql-executing: "<yellow>Executing SQL statement: <aqua>{0}</aqua>"
+  sql-executing: "<yellow>Выполнение SQL запроса: <aqua>{0}</aqua>"
   sql-completed: "<green>Completed, {0} rows affected."
   sql-exception: "<red>An error occurred while executing the SQL query, check the Console for details!"
   sql-disabled: "<red>For security reason, SQL queries are disabled in this server, If you really need this feature, you can add the following flag to startup arguments: <aqua>{0}</aqua> with `true` value to enable it."
@@ -584,15 +584,15 @@ database:
   already-scanning: "<red>Сканирование начато. Подожди завершения."
   trim-warning: "<yellow><red><bold>Warning: </red>Backup your database before continue database trim to avoid the data loss. Once you get ready, execute <aqua>/qs database trim confirm</aqua> to continue."
   status: "<yellow>Статус: {0}"
-  status-good: "<green>Хорошее"
+  status-good: "<green>Хорошо"
   status-bad: "<yellow>Требуется обслуживание"
-  isolated: "<yellow>Isolated Data:"
+  isolated: "<yellow>Изолированные данные:"
   isolated-data-ids: "<yellow><aqua>└</aqua> Data Records: <gold>{0}</gold>"
   isolated-shop-ids: "<yellow><aqua>└</aqua> Shop Indexes: <gold>{0}</gold>"
   isolated-logs: "<yellow><aqua>└</aqua> Logs: <gold>{0}</gold>"
   isolated-external-caches: "<yellow><aqua>└</aqua> External Caches: <gold>{0}</gold>"
-  last-purge-time: "<yellow>Last time of trim at {0}"
-  report-time: "<yellow>Last time of scan at {0}"
+  last-purge-time: "<yellow>Последнее время сокращения {0}"
+  report-time: "<yellow>Последнее время сканирования {0}"
   auto-scan-alert: "<yellow>The QuickShop database on this server require a maintenance. Found <gold>{0}</gold> isolated data wait for trimming."
   auto-trim: "<green>Auto trim has been enabled on this server, no manually trim required."
   trim-complete: "<green>Database trim completed, <yellow>{0}</yellow> isolated trimmed."
@@ -601,24 +601,24 @@ database:
   trim-exception: "<red>Database trim failed, an exception raised during database trimming, check the server console."
   generated-at: "<yellow>Сгенерировано в: <gold>{0}</gold>"
   purge-date: "<red>Вы должны указать дату."
-  purge-warning: "<yellow>This operation will purge the history that stored in your database including shop creates/changes/deletes, purchases, transactions and system logs. Delete those data can free the disk space but all history metric will lost, and other plugins that depend on metrics will stop working. To continue execute this operation, execute `/qs database purgelogs <before-days> confirm`"
-  purge-task-created: "<green>Task created! Database are silent purging history records in background."
-  purge-done-with-line: "<green>Purge task completed, total <gold>{0}</gold> lines purged from database."
-  purge-done-with-error: "<red>Purge task failed, check the server console for details."
+  purge-warning: "<yellow>Эта операция сотрет всю историю, хранящуюся в базе данных, включая создание/изменение/удаление магазинов, покупки товаров, транзакции, а также системные логи. Удаление этих данных поможет освободить место на диске, но вся статистика будет стерта, и плагины, зависящие от неё, перестанут работать. Чтобы продолжить выполнение операции, введите `/qs database purgelogs <кол-во_дней> confirm`"
+  purge-task-created: "<green>Задача создана! База данных очищает историю записей в фоновом режиме."
+  purge-done-with-line: "<green>Задача очистки выполнена. Из базы данных удалено <gold>{0}</gold> строк."
+  purge-done-with-error: "<red>Очистка не удалась, проверьте консоль сервера."
   purge-players-cache: "<yellow>Please wait, purging players caches..."
   purge-players-completed: "<green>Successfully purged {0} players caches from both memory and database.<newline><aqua>Note: You server performance may impact by this operation."
   purge-players-error: "<red>Failed to purge players caches, please check the server console."
   suggestion:
     trim: "<yellow>This database require a isolated data trim, execute command <aqua>/qs database trim</aqua> to trim the database."
 always-counting-removal-early-warning: "<red>Always Counting feature is scheduled for removal, you shouldn't use it anymore and will stop work in future."
-exporting-database: "<green>Экспорт базы данных, пожалуйста, подождите..."
-exporting-failed: "<red>Failed to export database, please check the server console."
+exporting-database: "<green>Экспорт базы данных. Пожалуйста, подождите..."
+exporting-failed: "<red>Не удалось экспортировать базу данных. Пожалуйста, проверьте консоль сервера."
 exported-database: "<green>База данных была экспортирована в <yellow>{0}</yellow>."
 importing-not-found: "<red>The <yellow>{0}</yellow> file not found, please check the file path."
 importing-early-warning: "<yellow><red><bold>Warning: </bold></red>The backup will be imported to the current database, any exists data will be purged and permanently lost if you don't have a backup.<newline><red>Are you sure to continue the import progress?</red><yellow>Type <aqua>/qs recovery confirm</aqua> to continue."
-importing-database: "<green>Importing database from backup, please wait..."
-importing-failed: "<red>Failed to import database, please check the server console."
-imported-database: "<green>Database imported from <yellow>{0}</yellow>."
+importing-database: "<green>Импорт базы данных из резервной копии. Пожалуйста, подождите..."
+importing-failed: "<red>Не удалось импортировать базу данных. Пожалуйста, проверьте консоль сервера."
+imported-database: "<green>База данных была импортирована из <yellow>{0}</yellow>."
 transfer-sent: "<green>Shops transfer request sent to <yellow>{0}</yellow>."
 transfer-request: "<yellow>Player <aqua>{0}</aqua> requested to transfer their shops to you. Did you want accept the transfer?"
 transfer-ask: "<gold>Type <red>/qs transfer accept</red> to accept.</gold><newline><gold>Type <red>/qs transfer deny</red> to deny.</gold><newline><gold>Request will expire after <red>{0}</red> seconds."
@@ -628,13 +628,13 @@ transfer-rejected-fromside: "<red>Player <aqua>{0}</aqua> rejected your shop tra
 transfer-rejected-toside: "<red>You rejected <aqua>{0}</aqua>'s shop transfer request."
 transfer-no-pending-operation: "<red>You don't have pending transfer request yet."
 transfer-no-self: "<red>You can't transfer your shops to yourself."
-benefit-overflow: "<red>The sum of all benefits cannot be greater than or equal to 100%."
-benefit-exists: "<red>Target player already in benefits list on this shop."
-benefit-removed: "<red>Target player has been removed from shop benefits."
-benefit-added: "<green>Player <aqua>{0}</aqua> has been added into shop benefits!"
-benefit-updated: "<green>Player <aqua>{0}</aqua>'s benefits has been updated!"
-benefit-query: "<green>This shop have <yellow>{0}</yellow> players in benefits list!"
-benefit-query-list: "<yellow> - </yellow><white>Player <gold>{0}</gold>, Benefit <gold>{1}%</gold></white>"
+benefit-overflow: "<red>Сумма всех выплат не может быть больше или равна 100%."
+benefit-exists: "<red>Игроку уже выплачивается процент с магазина."
+benefit-removed: "<red>Этот игрок был удален из выплат магазина."
+benefit-added: "<green>Игрок <aqua>{0}</aqua> был добавлен в выплаты магазина!"
+benefit-updated: "<green>Выплаты с магазина игроку <aqua>{0}</aqua> были обновлены!"
+benefit-query: "<green>У этого магазина <yellow>{0}</yellow> игроков, получающих выплаты!"
+benefit-query-list: "<yellow> - </yellow><white>Игрок <gold>{0}</gold>, Выплата <gold>{1}%</gold></white>"
 tag-added: "<green>Successfully added <aqua>#{0}</aqua> to this shop!"
 tag-add-duplicate: "<red>The tag <aqua>#{0}</aqua> already exists at this shop!"
 tag-removed: "<green>Successfully removed <aqua>#{0}</aqua> from this shop!"
@@ -653,55 +653,55 @@ batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: "<
 addon:
   towny:
     commands:
-      town: "<yellow>Set or unset a shop to a Town shop"
-      nation: "<yellow>Set or unset a shop to a Nation shop"
-    make-shop-owned-by-town: "<green>You have made the shop owned by town <yellow>{0}</yellow>."
-    make-shop-no-longer-owned-by-town: "<green>You have reset shop ownership, it now transfer back to original shop owner."
-    make-shop-owned-by-nation: "<green>You have made the shop owned by nation <yellow>{0}</yellow>."
-    make-shop-no-longer-owned-by-nation: "<green>You have reset shop ownership, it now transfer back to original shop owner."
-    shop-owning-changing-notice: "<grey>This shop now owned by a town/nation, original shop owner has been automatically added into administrator list, modify or add any new owner / staff by using command /qs permission"
-    target-shop-already-is-town-shop: "<red>The target shop is already owned by a town."
-    target-shop-already-is-nation-shop: "<red>The target shop is already owned by a nation."
-    target-shop-not-in-town-region: "<red>Выбранного магазина нет в городе."
-    target-shop-not-in-nation-region: "<red>The target shop is not in the nation."
-    item-not-allowed: "<red>This shop's item are not allowed used by town/nation shop, pick another one!"
-    operation-disabled-due-shop-status: "<red>This shop operation has been disabled due this already is a town/nation shop."
+      town: "<yellow>Установка или отмена привязки магазина к городу"
+      nation: "<yellow>Установка или отмена привязки магазина к стране"
+    make-shop-owned-by-town: "<green>Вы установили город <yellow>{0}</yellow> в качестве владельца магазина."
+    make-shop-no-longer-owned-by-town: "<green>Вы сбросили право собственности на магазин. Оно вернулось первоначальному владельцу магазина."
+    make-shop-owned-by-nation: "<green>Вы установили страну <yellow>{0}</yellow> в качестве владельца магазина."
+    make-shop-no-longer-owned-by-nation: "<green>Вы сбросили право собственности на магазин. Оно вернулось первоначальному владельцу магазина."
+    shop-owning-changing-notice: "<grey>Этот магазин теперь принадлежит городу/стране. Изначальный владелец магазина добавлен в список его администраторов. Вы можете добавить новых владельцев или персонал командой /qs permission"
+    target-shop-already-is-town-shop: "<red>Этот магазин уже принадлежит городу."
+    target-shop-already-is-nation-shop: "<red>Этот магазин уже принадлежит стране."
+    target-shop-not-in-town-region: "<red>Этот магазин не находится в городе."
+    target-shop-not-in-nation-region: "<red>Этот магазин не находится в стране."
+    item-not-allowed: "<red>Товар из этого магазина запрещен в этом городе/этой стране, выберите другой!"
+    operation-disabled-due-shop-status: "<red>Эта операция над магазином была отключена, потому что магазин уже является городским/национальным."
     plot-type-disallowed: "<red>Вы не можете создать городской/национальный магазин на этом типе участка."
     flags:
       own: "<red>Вы можете создавать магазины только на принадлежащем Вам участках города с типом магазин."
-      modify: "<red>You didn't have build permission on this towny plot."
-      shop-type: "<red>Вы должны создать магазин на городском участке с типом магазин."
+      modify: "<red>У вас нет прав на строительство на этом городском участке."
+      shop-type: "<red>Вы можете создать магазин в городе только на участке для магазинов."
   residence:
-    creation-flag-denied: "<red>You don't have permission to create shops in this residence."
-    trade-flag-denied: "<red>You don't have permission to purchase in this residence."
-    you-cannot-create-shop-in-wildness: "<red>You can't create shop in wildness."
+    creation-flag-denied: "<red>У вас нет прав создавать магазины в этой резиденции."
+    trade-flag-denied: "<red>У вас нет прав покупать товары в этой резиденции."
+    you-cannot-create-shop-in-wildness: "<red>Вы не можете создать магазин в дикой природе."
   griefprevention:
-    creation-denied: "<red>You don't have permission to create shops in this claim."
-    trade-denied: "<red>You don't have permission to purchase shops in this claim."
+    creation-denied: "<red>У вас нет прав на создание магазинов в этом привате."
+    trade-denied: "<red>У вас нет прав покупать товары в этом привате."
   lands:
-    world-not-enabled: "<red>You are not allowed to create or purchase in this world."
-    creation-denied: "<red>You don't have permission to create shops in this Land area."
+    world-not-enabled: "<red>Вы не можете создавать магазины или покупать товары в этом мире."
+    creation-denied: "<red>У вас нет прав на создание магазинов на этой территории Land."
   plotsquared:
     no-plot-whitelist-creation: "<red>Вы не можете создать магазин вне участка."
     no-plot-whitelist-trade: "<red>Вы не можете приобрести магазин за вне участка."
     creation-denied: "<red>У вас нет прав на создание магазинов на этом участке."
     trade-denied: "<red>У вас нет прав для приобретения магазинов на этом участке."
   superiorskyblock:
-    owner-create-only: "<red>Only island owner can create shop there."
-    owner-member-create-only: "<red>Only island owner or member can create shop there."
+    owner-create-only: "<red>Только владелец острова может создать магазин здесь."
+    owner-member-create-only: "<red>Только владелец или участник острова может создать магазин здесь."
   worldguard:
-    creation-flag-test-failed: "<red>You don't have permission create shop in this WorldGuard area."
-    trade-flag-test-failed: "<red>You don't have permission trade shop in this WorldGuard area."
+    creation-flag-test-failed: "<red>У вас нет прав на создание магазинов на этой территории WorldGuard."
+    trade-flag-test-failed: "<red>У вас нет прав на торговлю на этой территории WorldGuard."
   discord:
     __to_translators: "To translators: `addon.discord.discord-messages` use a special variable in strings, %%LANG_KEY%% instead of QuickShop's style {LANG_INDEX}, do not translate anything inside double '%' section. BUT for any other section texts, it respect the normal QuickShop Text System syntax ({0},{1} etc.) This may be difficult to understand because two different variable forms are used in the same program at the same time, but trust me, it is reasonable. (you don't need translate this string, it's a comment)"
-    __to_users: "Like the QuickShop Text System, Discord addon will also auto-detect user language and use user's language to send Discord message, it following the QuickShop-Hikari's language system settings."
-    __to_message_designer: "Design your Discord message with GUI: https://glitchii.github.io/embedbuilder/, then copy the JSON code and paste it into the translation and here we go!"
-    discord-enabled: "<aqua>Successfully <green>enabled</green> your QuickShop discord messages, now you can receive the shop messages from Discord."
-    discord-disabled: "<aqua>Successfully <red>disabled</red> your QuickShop discord messages, now you won't receive the shop messages from Discord anymore."
-    discord-not-integrated: "<red>You hadn't link your Discord yet! Please link your Discord account first!"
+    __to_users: "Как и текстовая система QuickShop, аддон Discord будет автоматически определять и использовать язык пользователя для отправки сообщений, следуя настройкам языковой системы QuickShop-Hikari."
+    __to_message_designer: "Настройте своё Discord сообщение через интерфейс: https://glitchii.github.io/embedbuilder/, затем скопируйте получившийся JSON и просто вставьте его в перевод!"
+    discord-enabled: "<aqua>Сообщения для Discord от QuickShop были <green>включены</green> - теперь вы будете получать уведомления о взаимодействии с вашими магазинами."
+    discord-disabled: "<aqua>Сообщения для Discord от QuickShop были <red>отключены</red> - вы больше не будете получать уведомления о взаимодействии с вашими магазинами."
+    discord-not-integrated: "<red>Вы ещё не привязали свой Discord! Пожалуйста, сначала привяжите свой аккаунт!"
     feature-enabled-for-user: "<aqua>You have <green>enabled</green> <gold>{0}</gold> notification."
     feature-disabled-for-user: "<aqua>You have <red>disabled</red> <gold>{0}</gold> notification."
-    link-help: "<yellow>This server using <gold>{0}</gold> for Discord driver, please use <green>{0}</green> to link your Discord account."
+    link-help: "<yellow>Этот сервер использует <gold>{0}</gold> для работы с Discord. Пожалуйста, используйте <green>{0}</green> для привязки своего аккаунта."
     save-notifaction-exception: "<red>An error occurred while saving your Discord notifaction settings, please contact the server administrator."
     feature-status-changed: "<green>Successfully set the notifaction <aqua>{0}</aqua> status to <gold>{1}</gold>"
     commands:
@@ -712,8 +712,8 @@ addon:
         {
          "embed":
            {
-             "title": ":inbox_tray: Somebody sold items to your shop",
-             "description": "The player %%purchase.name%% sold x%%purchase.amount%% %%shop.item.name%% to your shop.",
+             "title": ":inbox_tray: Кто-то продал предметы в ваш магазин",
+             "description": "Игрок %%purchase.name%% продал x%%purchase.amount%% %%shop.item.name%% в ваш магазин.",
              "color": 52084,
              "author": {
                "name": "QuickShop-Hikari",
@@ -726,37 +726,37 @@ addon:
                "url": ""
              },
              "footer": {
-               "text": "QuickShop-Hikari Discord Notification",
+               "text": "Уведомление QuickShop-Hikari Discord",
                "icon_url": ""
              },
              "fields": [
                {
-                 "name": "Shop",
+                 "name": "Магазин",
                  "value": "%%shop.display-name%%",
                  "inline": false
                },
                {
-                 "name": "Purchaser",
+                 "name": "Покупатель",
                  "value": "%%purchase.name%%",
                  "inline": true
                },
                {
-                 "name": "Item",
+                 "name": "Предмет",
                  "value": "%%shop.item.name%%",
                  "inline": true
                },
                {
-                 "name": "Amount",
+                 "name": "Количество",
                  "value": "%%purchase.amount%% (x%%shop.stacking-amount%%)",
                  "inline": true
                },
                {
-                 "name": "Your paid",
+                 "name": "Заработок",
                  "value": "%%purchase.balance-formatted%%",
                  "inline": true
                },
                {
-                 "name": "Taxes",
+                 "name": "Налог",
                  "value": "%%purchase.taxes-formatted%%",
                  "inline": true
                }
@@ -1229,12 +1229,12 @@ addon:
     field:
       player: "Игрок"
       item: "Предмет"
-      amount: "Amount"
-      balance: "Balance"
-      balance-after-tax: "Balance (after tax)"
-      account: "Your account balance"
-      taxes: "Taxes"
-      cost: "Cost"
+      amount: "Количество"
+      balance: "Баланс"
+      balance-after-tax: "Баланс (после налогов)"
+      account: "Баланс вашего счета"
+      taxes: "Налоги"
+      cost: "Стоимость"
   discount:
     commands:
       discount:
@@ -1330,7 +1330,7 @@ addon:
     table-prefix: "<yellow><green>{0}</green>'s shops <gray>(Total {1})</gray>: "
     entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
   shopitemonly:
-    message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+    message: "<red>Вы не можете поместить в контейнер магазина предметы, которые не являются его товаром. Эти предметы будут выложены."
   limited:
     commands:
       limit: "<yellow>Set a limit that restrict the purchase that player can make in period"
@@ -1346,47 +1346,47 @@ addon:
     markerset-title: "QuickShop-Hikari Shops"
     marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Название: {0}
+      Владелец: {1}
+      Предмет: {2}
+      Цена: {3} за x{4} предмет(а/ов)
+      Тип: {5}
+      Неограничен: {6}
+      Локация: {7}
   bluemap:
     markerset-title: "QuickShop-Hikari Shops"
     marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      Название: {0}
+      Владелец: {1}
+      Предмет: {2}
+      Цена: {3} за x{4} предмет(а/ов)
+      Тип: {5}
+      Неограничен: {6}
+      Локация: {7}
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
-    description: "Предмет: {0}\nВладелец: {1}\nТип: {2} {3}\nЦена: {4}\nМесто: {5} {6}, {7}, {8}\nМесто: {9}\nВ наличии: {10}"
+    description: "Предмет: {0}\nВладелец: {1}\nТип: {2} {3}\nЦена: {4}\nЛокация: {5} {6}, {7}, {8}\nМесто: {9}\nВ наличии: {10}"
   limited:
-    command-description: "<yellow>Set a limit that restrict the purchase that player can make in period."
+    command-description: "<yellow>Установить лимит на количество покупок за определенный период."
     reach-the-quota-limit: "<red>Вы достигли лимита покупок в этом магазине ({0}/{1})."
-    quota-reset-countdown: "<yellow>The quota in this shop will reset in {0}."
-    quota-reset-player-successfully: "<green>The quota for player {0} in this shop has been reset successfully."
-    quota-reset-everybody-successfully: "<green>The quota for everyone in this shop has been reset successfully."
-    quota-setup: "<green>The purchase restriction now apply to this shop!"
-    quota-remove: "<green>Ограничение на покупку теперь снято с этого магазина!"
+    quota-reset-countdown: "<yellow>Квота в этом магазине сбросится через {0}."
+    quota-reset-player-successfully: "<green>Квота для игрока {0} в этом магазине успешно сброшена."
+    quota-reset-everybody-successfully: "<green>Квота для всех в этом магазине успешно сброшена."
+    quota-setup: "<green>Ограничение на покупку наложено на этот магазин!"
+    quota-remove: "<green>Ограничение на покупку снято с этого магазина!"
     subtitles:
       title: "<green>Успешная покупка"
       subtitle: "<aqua>Вы можете купить <yellow>{0}</yellow> в этом магазине"
   list:
-    command-description: "<yellow>List all shops owned by yourself or another player."
-    table-prefix: "<yellow>Вы владели <aqua>{0}</aqua> магазинами на этом сервере."
+    command-description: "<yellow>Выводит список магазинов, принадлежащих вам или другому игроку."
+    table-prefix: "<yellow>Вы владеете <aqua>{0}</aqua> магазинами на этом сервере."
     entry-syntax: "<aqua>- <yellow>{0}"
-    entry-syntax-fallback-name: "<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}"
-    hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."
+    entry-syntax-fallback-name: "<yellow>Предмет:{0} X:{1}, Y:{2}, Z:{3}, Мир: {4}"
+    hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} предметов в каждом стеке."
   shopitemonly:
-    message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+    message: "<red>Вы не можете поместить в контейнер магазина предметы, которые не являются его товаром. Эти предметы будут выложены."
 compatibility:
   elitemobs:
     soulbound-disallowed: "You can't trade item which have EliteMobs Soulbound enchantment."
