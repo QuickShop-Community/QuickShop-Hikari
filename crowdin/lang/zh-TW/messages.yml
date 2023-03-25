@@ -3,7 +3,7 @@ fee-charged-for-price-change: <green>你花費了 <red>{0}</red> 修改商店定
 not-allowed-to-create: <red>你無法在此建立商店。
 disabled-in-this-world: <red>該世界已停用 QuickShop
 how-much-to-trade-for: <green>請在聊天室中輸入你想買賣 <yellow>{1} 個 {0} <green>的價格。
-client-language-changed: <green>QuickShop 偵測到你的客戶端語言已切換，我們現在為你切換為 {0}。
+client-language-changed: <green>QuickShop 偵測到你的用戶端語言已切換，我們現在為你切換為 {0}。
 shops-backingup: 正在把商店資料備份到資料庫……
 _comment: 你好翻譯者！假若你正在從 Github 或其他代管平台編輯，你應該前往 https://crowdin.com/project/quickshop-hikari 進行翻譯。
 unlimited-shop-owner-changed: <yellow>該無限商店的店主已經修改成 {0}。
@@ -480,7 +480,7 @@ chest-was-removed: <red>儲物箱已被移除。
 you-cant-afford-to-buy: <red>商品價格是 {0} ，但是你只有 {1}。
 shops-removed-in-world: <yellow>世界 <aqua>{1} <yellow>總共有 <aqua>{0} <yellow>個商店被刪除。
 display-turn-off: <green>成功地關閉商店懸浮物顯示。
-client-language-unsupported: <yellow>QuickShop 不支援你的客戶端語言，我們現在還原為 {0}……
+client-language-unsupported: <yellow>QuickShop 不支援你的用戶端語言，我們現在將它還原為 {0}。
 language-version: '63'
 not-managed-shop: <red>你沒有管理該商店的權限
 shop-cannot-trade-when-freezing: <red>你不能與這間商店交易，因為它已被凍結。
