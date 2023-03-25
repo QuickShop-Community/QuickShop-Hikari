@@ -167,8 +167,8 @@ unknown-player: <red>目标玩家不存在，请检查你输入的玩家名字�
 player-offline: "<red>目标玩家目前处于离线状态。"
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 shop-type:
-  selling: "SELLING"
-  buying: "BUYING"
+  selling: "出售"
+  buying: "收购"
 language:
   qa-issues: '<yellow>质量问题：<aqua>{0}%'
   code: '<yellow>代码： <gold>{0}'
@@ -242,10 +242,10 @@ no-double-chests: <red>你没有权限创建大箱子商店。
 price-too-cheap: <red>价格必须大于<yellow>${0}
 shop-not-exist: <red>这里没有商店
 bad-command-usage: <red>错误的命令参数！
-cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
-cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
-cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
-cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
+cleanghost-warning: <yellow>这个命令将清理<red>所有</red>在不允许创建商店的世界的、出售/购买不允许的物品的，以及 <red><bold>所有在服务器没有加载的世界</bold></red>的商店， 请在确保您的商店数据备份完整后使用 <aqua>/qs cleanghost confirm </aqua>来继续。
+cleanghost-starting: <green>开始检查幽灵商店(缺少容器方块)。所有不存在的商店将被移除...
+cleanghost-deleting: <yellow>发现一个损坏的商店 <aqua>{0}</aqua> 因为 {1}, 标记它删除...
+cleanghost-deleted: <green>总计 <yellow>{0}</yellow> 家商店已被删除。
 shop-purchase-cancelled: <red>您取消了交易操作。
 bypassing-lock: <red>你绕过了QuickShop的锁！
 bungee-cross-server-msg: '<yellow>QuickShop跨服信息: <green>{0}'
@@ -647,8 +647,8 @@ tag-query-no-tag: "<red>该商店没有标签"
 tag-query-shops: "<green>此标签包含 <yellow>{0}</yellow> 商店："
 tag-query-shops-listing: "<yellow> - <aqua>{0}</aqua>"
 batch-operations-based-on-tags-no-failure: "<green>成功批量处理 <yellow>{0}</yellow> 个商店"
-batch-operations-based-on-tags-have-failure: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed."
-batch-operations-based-on-tags-have-failure-with-reason: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}</gold>"
+batch-operations-based-on-tags-have-failure: "<yellow>总 <yellow>{0}</yellow> 商店在批处理中成功完成，但是 <red>{1}</red> 请求未完成。"
+batch-operations-based-on-tags-have-failure-with-reason: "<yellow>总 <yellow>{0}</yellow> 商店在批处理中成功完成，但是 <red>{1}</red> 请求未完成。原因： <gold>{2}</gold>"
 batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: "<gray>错误消息将在聊天中的此消息上方发送给您。"
 addon:
   towny:
@@ -1343,27 +1343,27 @@ addon:
     success-setup: "<green>该商店的限制设置已成功保存"
     trade-limit-reached-cancel-reason: "<red>达到了这个商店的交易限制"
   dynmap:
-    markerset-title: "QuickShop-Hikari Shops"
-    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    markerset-title: "QuickShop-Hikari 商店"
+    marker-name: "{0} @ {2} @ {3} x{4} @ {5}"
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      名称: {0}
+      所有者: {1}
+      物品: {2}
+      价格: {3} 个{4} 物品
+      类型: {5}
+      无限模式: {6}
+      位置: {7}
   bluemap:
-    markerset-title: "QuickShop-Hikari Shops"
-    marker-name: "{0} @ {2} @ {3} for x{4} @ {5}"
+    markerset-title: "QuickShop-Hikari 商店"
+    marker-name: "{0} @ {2} @ {3} x{4} @ {5}"
     marker-description: |
-      Name: {0}
-      Owner: {1}
-      Item: {2}
-      Price: {3} for x{4} item(s)
-      Type: {5}
-      Unlimited: {6}
-      Location: {7}
+      名称: {0}
+      所有者: {1}
+      物品: {2}
+      价格: {3} 个{4} 物品
+      类型: {5}
+      无限模式: {6}
+      位置: {7}
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
