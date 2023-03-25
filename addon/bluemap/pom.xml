@@ -71,7 +71,7 @@
         <dependency>
             <groupId>com.github.BlueMap-Minecraft</groupId>
             <artifactId>BlueMapAPI</artifactId>
-            <version>v2.4.0</version>
+            <version>2.5.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
