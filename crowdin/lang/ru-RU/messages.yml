@@ -767,8 +767,8 @@ addon:
         {
            "embed":
              {
-               "title": ":outbox_tray: Somebody bought items from shop",
-               "description": "The player %%purchase.name%% bought x%%purchase.amount%% %%shop.item.name%% from your shop.",
+               "title": ":outbox_tray: Кто-то купил предметы из вашего магазина",
+               "description": "Игрок %%purchase.name%% купил x%%purchase.amount%% %%shop.item.name%% из вашего магазина.",
                "color": 52084,
                "author": {
                    "name": "QuickShop-Hikari",
@@ -781,37 +781,37 @@ addon:
                    "url": ""
                },
                "footer": {
-                   "text": "QuickShop-Hikari Discord Notification",
+                   "text": "Уведомление QuickShop-Hikari Discord",
                    "icon_url": ""
                },
                "fields": [
                    {
-                       "name": "Shop",
+                       "name": "Магазин",
                        "value": "%%shop.display-name%%",
                        "inline": false
                    },
                    {
-                       "name": "Purchaser",
+                       "name": "Покупатель",
                        "value": "%%purchase.name%%",
                        "inline": true
                    },
                    {
-                       "name": "Item",
+                       "name": "Предмет",
                        "value": "%%shop.item.name%%",
                        "inline": true
                    },
                    {
-                       "name": "Amount",
+                       "name": "Количество",
                        "value": "%%purchase.amount%%(x%%shop.stacking-amount%%)",
                        "inline": true
                    },
                    {
-                       "name": "Your earn",
+                       "name": "Ваш заработок",
                        "value": "%%purchase.balance-formatted%%",
                        "inline": true
                    },
                    {
-                       "name": "Taxes",
+                       "name": "Налоги",
                        "value": "%%purchase.taxes-formatted%%",
                        "inline": true
                    }
