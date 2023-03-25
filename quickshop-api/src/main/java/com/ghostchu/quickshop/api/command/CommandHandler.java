@@ -114,7 +114,6 @@ public interface CommandHandler<T extends CommandSender> {
             joiner.add(s);
         }
         CommandParser parser = new CommandParser(joiner.toString(),false);
-        System.out.println("Tab-complete: Raw:["+parser.getRaw()+"], Args:["+ Arrays.toString(parser.getArgs().toArray()) +"]");
         try {
             return onTabComplete(sender, commandLabel, parser);
         } catch (NotImplementedException e) {
