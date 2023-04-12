@@ -50,4 +50,8 @@ public class ChatSheetPrinter {
         MsgUtil.sendDirectMessage(p, QuickShop.getInstance().text().of(p, "tableformat.left_begin").forLocale()
                 .append(component));
     }
+
+    public CommandSender getSender() {
+        return p;
+    }
 }

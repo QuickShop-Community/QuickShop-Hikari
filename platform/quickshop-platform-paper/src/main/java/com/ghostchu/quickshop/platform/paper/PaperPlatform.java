@@ -105,10 +105,10 @@ public class PaperPlatform implements Platform {
         String key;
         try {
             key = material.translationKey();
-        } catch (Error error) {
+        } catch (Throwable error) {
             try {
                 key = material.getTranslationKey();
-            } catch (Error error2) {
+            } catch (Throwable error2) {
                 if (!material.isBlock()) {
                     key = "item." + material.getKey().getNamespace() + "." + material.getKey().getKey();
                 } else {
@@ -124,10 +124,10 @@ public class PaperPlatform implements Platform {
         String key;
         try {
             key = type.translationKey();
-        } catch (Error error) {
+        } catch (Throwable error) {
             try {
                 key = type.getTranslationKey();
-            } catch (Error error2) {
+            } catch (Throwable error2) {
                 key = "entity." + type.getKey().getNamespace() + "." + type.getKey().getKey();
             }
         }
@@ -139,7 +139,7 @@ public class PaperPlatform implements Platform {
         String key;
         try {
             key = potionEffectType.translationKey();
-        } catch (Error error) {
+        } catch (Throwable error) {
             key = "effect." + potionEffectType.getKey().getNamespace() + "." + potionEffectType.getKey().getKey();
         }
         return postProcessingTranslationKey(key);
@@ -150,7 +150,7 @@ public class PaperPlatform implements Platform {
         String key;
         try {
             key = enchantment.translationKey();
-        } catch (Error error) {
+        } catch (Throwable error) {
             key = enchantment.getKey().getNamespace() + "." + enchantment.getKey().getKey();
         }
         return postProcessingTranslationKey(key);
@@ -161,7 +161,7 @@ public class PaperPlatform implements Platform {
         String key;
         try {
             key = stack.getTranslationKey();
-        } catch (Error error) {
+        } catch (Throwable error) {
             key = stack.translationKey();
         }
         return postProcessingTranslationKey(key);

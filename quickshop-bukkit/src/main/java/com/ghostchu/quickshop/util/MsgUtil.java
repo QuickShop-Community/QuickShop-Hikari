@@ -18,6 +18,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
@@ -228,7 +229,7 @@ public class MsgUtil {
         //if (PLUGIN.getConfig().getBoolean("shop.force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
         //    return PLUGIN.getPlatform().getTranslation(stack.getType());
         //} else {
-            return Util.getItemStackName(stack);
+        return Util.getItemStackName(stack);
         //}
     }
 
@@ -300,8 +301,24 @@ public class MsgUtil {
         for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
             //Use boxed object to avoid NPE
             Integer level = entries.getValue();
-            chatSheetPrinter.printLine(Component.empty().color(NamedTextColor.YELLOW).append(PLUGIN.getPlatform().getTranslation(entries.getKey()).append(LegacyComponentSerializer.legacySection().deserialize(" " + RomanNumber.toRoman(level == null ? 1 : level)))));
+            Component component;
+            try {
+                component = PLUGIN.getPlatform().getTranslation(entries.getKey());
+            } catch (Throwable error) {
+                component = Component.text(CommonUtil.prettifyText(entries.getKey().getKey().getKey()))
+                        .hoverEvent(getHandleFailedHoverEvent(chatSheetPrinter.getSender(), null));
+            }
+            chatSheetPrinter.printLine(Component.empty().color(NamedTextColor.YELLOW).append(component).append(Component.text(" " + RomanNumber.toRoman(level == null ? 1 : level))));
         }
+    }
+
+    @NotNull
+    public static HoverEvent<Component> getHandleFailedHoverEvent(@Nullable CommandSender sender, @Nullable HoverEvent<Component> oldHoverEvent) {
+        HoverEvent<Component> hoverEvent = HoverEvent.showText(PLUGIN.text().of(sender, "display-fallback").forLocale());
+        if (oldHoverEvent != null) {
+            hoverEvent = hoverEvent.value(hoverEvent.value().append(hoverEvent.value()));
+        }
+        return hoverEvent;
     }
 
     /**
