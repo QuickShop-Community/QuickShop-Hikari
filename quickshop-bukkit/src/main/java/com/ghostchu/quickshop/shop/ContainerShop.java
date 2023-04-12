@@ -334,9 +334,6 @@ public class ContainerShop implements Shop, Reloadable {
         }
         //Update sign
         this.setSignText(plugin.text().findRelativeLanguages(buyer));
-        if (getAttachedShop() != null) {
-            getAttachedShop().setSignText(plugin.text().findRelativeLanguages(buyer));
-        }
     }
 
     @Override
@@ -1040,31 +1037,6 @@ public class ContainerShop implements Shop, Reloadable {
     }
 
     /**
-     * Returns true if this shop is a double chest, and the other half is selling/buying the same as
-     * this is buying/selling.
-     *
-     * @return true if this shop is a double chest, and the other half is selling/buying the same as
-     * this is buying/selling.
-     */
-    @Override
-    public boolean isDoubleShop() {
-        Util.ensureThread(false);
-        ContainerShop attachedShop = getAttachedShop();
-        if (attachedShop == null) {
-            return false;
-        }
-        if (attachedShop.matches(this.getItem())) {
-            // They're both trading the same item
-            // They're both buying or both selling => Not a double shop,
-            // just two shops.
-            // One is buying, one is selling.
-            return this.getShopType() != attachedShop.getShopType();
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Check if this shop is free shop
      *
      * @return Free Shop
@@ -1079,20 +1051,6 @@ public class ContainerShop implements Shop, Reloadable {
         return this.isLoaded;
     }
 
-    /**
-     * Checks to see if it is a real double without updating anything.
-     *
-     * @return If the chest is a real double chest, as in it is a double and it has the same item.
-     */
-    @Override
-    public boolean isRealDouble() {
-        Util.ensureThread(false);
-        ContainerShop attachedShop = getAttachedShop();
-        if (attachedShop == null) {
-            return false;
-        }
-        return attachedShop.matches(this.getItem());
-    }
 
     @Override
     public boolean isSelling() {
@@ -1480,10 +1438,6 @@ public class ContainerShop implements Shop, Reloadable {
                 throw new IllegalStateException("Failed to commit transaction! Economy Error Response:" + transactionTake.getLastError());
             }
             this.setSignText(plugin.getTextManager().findRelativeLanguages(seller));
-            ContainerShop attachedShop = getAttachedShop();
-            if (attachedShop != null) {
-                attachedShop.setSignText(plugin.getTextManager().findRelativeLanguages(seller));
-            }
         }
     }
 
@@ -1715,19 +1669,6 @@ public class ContainerShop implements Shop, Reloadable {
      */
     public @NotNull Material getMaterial() {
         return this.item.getType();
-    }
-
-    /**
-     * Different with isDoubleShop, this method only check the shop is created on the double chest.
-     *
-     * @return true if create on double chest.
-     */
-    public boolean isDoubleChestShop() {
-        Util.ensureThread(false);
-        if (Util.isDoubleChest(this.getLocation().getBlock().getBlockData())) {
-            return getAttachedShop() != null;
-        }
-        return false;
     }
 
     private @NotNull InventoryWrapper locateInventory(@Nullable String symbolLink) {

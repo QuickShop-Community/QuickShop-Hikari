@@ -2,22 +2,10 @@ package com.ghostchu.quickshop.shop;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.economy.AbstractEconomy;
-import com.ghostchu.quickshop.api.event.QSHandleChatEvent;
-import com.ghostchu.quickshop.api.event.ShopCreateEvent;
-import com.ghostchu.quickshop.api.event.ShopCreateSuccessEvent;
-import com.ghostchu.quickshop.api.event.ShopInfoPanelEvent;
-import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
-import com.ghostchu.quickshop.api.event.ShopSuccessPurchaseEvent;
-import com.ghostchu.quickshop.api.event.ShopTaxEvent;
+import com.ghostchu.quickshop.api.event.*;
 import com.ghostchu.quickshop.api.inventory.InventoryWrapper;
 import com.ghostchu.quickshop.api.localization.text.ProxiedLocale;
-import com.ghostchu.quickshop.api.shop.Info;
-import com.ghostchu.quickshop.api.shop.PriceLimiter;
-import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
-import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.api.shop.ShopChunk;
-import com.ghostchu.quickshop.api.shop.ShopManager;
-import com.ghostchu.quickshop.api.shop.ShopType;
+import com.ghostchu.quickshop.api.shop.*;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.common.util.CalculateUtil;
 import com.ghostchu.quickshop.common.util.CommonUtil;
@@ -51,13 +39,7 @@ import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Chunk;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -739,21 +721,6 @@ public class SimpleShopManager implements ShopManager, Reloadable {
                     plugin.text().of(p, "shops-arent-locked").send();
                 }
 
-                // Figures out which way we should put the sign on and
-                // sets its text.
-                if (shop.isDoubleShop()) {
-                    Shop nextTo = shop.getAttachedShop();
-                    if (Objects.requireNonNull(nextTo).getPrice() > shop.getPrice() && (shop.isBuying() == nextTo.isSelling()) && shop.matches(nextTo.getItem())) { // different type compare
-                        plugin.text().of(p, "buying-more-than-selling").send();
-                    }
-                }
-
-                // If this is one of two double chests, update its partner too
-                if (shop.isRealDouble()) {
-                    shop.getAttachedShop().refresh();
-                }
-                // One last refresh to ensure the item shows up
-                shop.refresh();
                 // Shop info sign check
                 if (signBlock != null && autoSign) {
                     if (signBlock.getType().isAir() || signBlock.getType() == Material.WATER) {

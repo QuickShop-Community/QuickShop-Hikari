@@ -8,7 +8,6 @@ import com.ghostchu.quickshop.api.shop.PriceLimiterCheckResult;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
-import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -125,31 +124,6 @@ public class SubCommand_Price implements CommandHandler<Player> {
         shop.setSignText(plugin.text().findRelativeLanguages(sender));
         plugin.text().of(sender,
                 "price-is-now", plugin.getShopManager().format(shop.getPrice(),shop)).send();
-        // Chest shops can be double shops.
-        if (!(shop instanceof final ContainerShop cs)) {
-            return;
-        }
-
-        if (!cs.isDoubleShop()) {
-            return;
-        }
-
-        final Shop nextTo = cs.getAttachedShop();
-
-        if (nextTo == null) {
-            // TODO: 24/11/2019 Send message about that issue.
-            return;
-        }
-
-        if (cs.isSelling()) {
-            if (cs.getPrice() < nextTo.getPrice()) {
-                plugin.text().of(sender, "buying-more-than-selling").send();
-            }
-        }
-        // Buying
-        else if (cs.getPrice() > nextTo.getPrice()) {
-            plugin.text().of(sender, "buying-more-than-selling").send();
-        }
     }
 
     @NotNull

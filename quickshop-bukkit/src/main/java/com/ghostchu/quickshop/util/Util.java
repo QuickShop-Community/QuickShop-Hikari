@@ -15,7 +15,6 @@ import io.papermc.lib.PaperLib;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -498,7 +497,7 @@ public class Util {
         if (entry.getValue() == 1 && entry.getKey().getMaxLevel() == 1) {
             return name;
         } else {
-            return name.append(LegacyComponentSerializer.legacySection().deserialize(" " + RomanNumber.toRoman(entry.getValue())));
+            return name.append(Component.text(" " + RomanNumber.toRoman(entry.getValue())));
         }
     }
 

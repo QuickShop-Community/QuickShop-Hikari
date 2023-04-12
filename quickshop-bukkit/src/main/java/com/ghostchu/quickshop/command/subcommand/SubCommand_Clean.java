@@ -4,7 +4,6 @@ import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.api.shop.Shop;
-import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
@@ -33,11 +32,7 @@ public class SubCommand_Clean implements CommandHandler<CommandSender> {
             try {
                 if (Util.isLoaded(shop.getLocation())
                         && shop.isSelling()
-                        && shop.getRemainingStock() == 0
-                        && shop instanceof ContainerShop cs) {
-                    if (cs.isDoubleShop()) {
-                        continue;
-                    }
+                        && shop.getRemainingStock() == 0) {
                     pendingRemoval.add(
                             shop); // Is selling, but has no stock, and is a chest shop, but is not a double shop.
                     // Can be deleted safely.

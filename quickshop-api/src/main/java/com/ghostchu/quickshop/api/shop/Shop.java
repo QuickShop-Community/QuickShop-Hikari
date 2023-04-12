@@ -422,13 +422,6 @@ public interface Shop {
     void setDisableDisplay(boolean disabled);
 
     /**
-     * Returns the Shop is a double shop
-     *
-     * @return if the shop is a double shop
-     */
-    boolean isDoubleShop();
-
-    /**
      * Check if this shop is free shop
      *
      * @return Free Shop
@@ -441,13 +434,6 @@ public interface Shop {
      * @return Loaded
      */
     boolean isLoaded();
-
-    /**
-     * Returns the current cached isRealDouble state of the Shop
-     *
-     * @return if the shop is a RealDouble
-     */
-    boolean isRealDouble();
 
     /**
      * Get shop is or not in selling mode

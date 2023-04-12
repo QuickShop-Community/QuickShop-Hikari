@@ -18,7 +18,6 @@ import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.event.ShopDisplayItemSpawnEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
-import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.shop.SimpleShopChunk;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -101,13 +100,6 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
 
     @Override
     public boolean isSpawned() {
-        if (shop.isLeftShop()) {
-            Shop aShop = shop.getAttachedShop();
-            if (aShop instanceof ContainerShop) {
-                return (Objects.requireNonNull(((ContainerShop) aShop).getDisplayItem())).isSpawned();
-            }
-
-        }
         return isSpawned;
     }
 
@@ -146,7 +138,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     @Override
     public void spawn() {
         Util.ensureThread(false);
-        if (shop.isLeftShop() || isSpawned || shop.isDeleted() || !shop.isLoaded()) {
+        if (isSpawned || shop.isDeleted() || !shop.isLoaded()) {
             return;
         }
         if (new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM).callCancellableEvent()) {
@@ -276,7 +268,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
 
                         CHUNKS_MAPPING.computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList) -> {
                             for (VirtualDisplayItem target : targetList) {
-                                if (!target.shop.isLoaded() || !target.isSpawned() || target.shop.isLeftShop()) {
+                                if (!target.shop.isLoaded() || !target.isSpawned()) {
                                     continue;
                                 }
                                 target.packetSenders.add(player.getUniqueId());

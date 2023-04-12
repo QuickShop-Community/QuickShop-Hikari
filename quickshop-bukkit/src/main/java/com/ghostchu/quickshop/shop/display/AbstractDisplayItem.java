@@ -148,10 +148,6 @@ public abstract class AbstractDisplayItem implements Reloadable {
         }
         String defaultMark = ShopProtectionFlag.getDefaultMark();
         String shopLocation = shop.getLocation().toString();
-        String attachedShopLocation = "null";
-        if (shop.isRealDouble()) {
-            attachedShopLocation = shop.getAttachedShop().getLocation().toString();
-        }
         for (String lore : iMeta.getLore()) {
             try {
                 if (!MsgUtil.isJson(lore)) {
@@ -164,8 +160,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
                 if (!ShopProtectionFlag.getMark().equals(defaultMark)) {
                     continue;
                 }
-                if (shopProtectionFlag.getShopLocation().equals(shopLocation)
-                        || shopProtectionFlag.getShopLocation().equals(attachedShopLocation)) {
+                if (shopProtectionFlag.getShopLocation().equals(shopLocation)) {
                     return true;
                 }
             } catch (JsonSyntaxException e) {
@@ -264,18 +259,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
      * @return The Location that the item *should* be displaying at.
      */
     public @Nullable Location getDisplayLocation() {
-        //TODO: Rewrite centering item feature, currently implement is buggy and mess
         Util.ensureThread(false);
-        if (shop.isRealDouble()) {
-            if (shop.isLeftShop()) {
-                // Shop is left shop, so location is null.
-                return null;
-            }
-            double avgX = (shop.getLocation().getX() + shop.getAttachedShop().getLocation().getX()) / 2;
-            double avgZ = (shop.getLocation().getZ() + shop.getAttachedShop().getLocation().getZ()) / 2;
-            Location newloc = new Location(shop.getLocation().getWorld(), avgX, shop.getLocation().getY(), avgZ, shop.getLocation().getYaw(), shop.getLocation().getPitch());
-            return newloc.add(0.5, 1.2, 0.5);
-        }
         return this.shop.getLocation().clone().add(0.5, 1.2, 0.5);
     }
 
