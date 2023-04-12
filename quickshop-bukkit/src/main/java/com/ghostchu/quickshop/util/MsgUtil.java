@@ -286,7 +286,12 @@ public class MsgUtil {
             enchs = stor.getStoredEnchants();
             if (!enchs.isEmpty()) {
                 chatSheetPrinter.printCenterLine(PLUGIN.text().of(p, "menu.stored-enchants").forLocale());
-                printEnchantment(chatSheetPrinter, enchs);
+                try {
+                    printEnchantment(chatSheetPrinter, enchs);
+                } catch (Exception e) {
+                    chatSheetPrinter.printLine(Component.text("Server Internal Error, contact server administrator.").color(NamedTextColor.RED));
+                    e.printStackTrace();
+                }
             }
         }
     }
