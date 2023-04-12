@@ -541,6 +541,7 @@ internal-error: "<red>Um erro interno ocorreu, entre em contato com o administra
 argument-cannot-be: "<red>O argumento <aqua>{0}</aqua> não pode ser <yellow>{1}</yellow>."
 argument-must-between: "<red>O valor do argumento <aqua>{0}</aqua> deve ser entre <yellow>{1}</yellow> e <yellow>{2}</yellow>"
 invalid-percentage: "<red>Porcentagem inválida, você deve adicionar '%' após o número de porcentagem."
+display-fallback: "<red>Due to an internal failure, a fallback message is being displayed.\nThe value of this item may not be localized or processed correctly.\nPlease contact the server administrator."
 not-a-valid-time: |
   <red>A string não <yellow>{0}</yellow> um carimbo de data/hora válido, insira um <aqua>Zulu Time (ISO 8601)</aqua> ou <aqua>Unix Epoch Time em segundos</aqua>.
   <gold>Exemplo de carimbo de data/hora válido: (para Sat, 17 Dec 2022 10:31:37 GMT)</gold>

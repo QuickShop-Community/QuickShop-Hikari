@@ -541,6 +541,7 @@ internal-error: "<red>發生內部錯誤，請聯絡伺服器管理員。"
 argument-cannot-be: "<red>參數 <aqua>{0}</aqua> 不能為 <yellow>{1}</yellow>。"
 argument-must-between: "<red>參數 <aqua>{0}</aqua> 值必須在 <yellow>{1}</yellow> 和 <yellow>{2}</yellow> 之間"
 invalid-percentage: "<red>百分比無效，你必須在百分比的數字後加上「%」。"
+display-fallback: "<red>Due to an internal failure, a fallback message is being displayed.\nThe value of this item may not be localized or processed correctly.\nPlease contact the server administrator."
 not-a-valid-time: |
   <red>字符串 <yellow>{0}</yellow> 不是一個有效的時間戳記，請輸入 <aqua>Zulu 時間（ISO 8601）</aqua> 或 <aqua>Unix Epoch 時間</aqua>。
   <gold>有效時間戳記的範例（適用於 GMT 2022 年 12 月 17 日 星期六 10:31:37 ）</gold>
