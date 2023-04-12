@@ -541,6 +541,7 @@ internal-error: "<red>发生了一个内部错误，请联系服务器管理员�
 argument-cannot-be: "<red>参数 <aqua>{0}</aqua> 不能为 <yellow>{1}</yellow>."
 argument-must-between: "<red>参数 <aqua>{0}</aqua> 值必须在 <yellow>{1}</yellow> 和 <yellow>{2}</yellow> 之间"
 invalid-percentage: "<red>百分比无效，您必须在百分比的数字后添加'%'"
+display-fallback: "<red>Due to an internal failure, a fallback message is being displayed.\nThe value of this item may not be localized or processed correctly.\nPlease contact the server administrator."
 not-a-valid-time: |
   <red>字符串 <yellow>{0}</yellow> 不是一个有效的时间戳, 请输入 <aqua>Zulu 时间 (ISO 8601)</aqua> 或 <aqua>Unix Epoch 时间</aqua>。
   <gold>有效时间戳示例(适用于 Sat, 17 December 2022 10:31:37 GMT)</gold>
