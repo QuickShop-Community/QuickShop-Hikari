@@ -307,6 +307,7 @@ public class MsgUtil {
             } catch (Throwable error) {
                 component = Component.text(CommonUtil.prettifyText(entries.getKey().getKey().getKey()))
                         .hoverEvent(getHandleFailedHoverEvent(chatSheetPrinter.getSender(), null));
+                error.printStackTrace();
             }
             chatSheetPrinter.printLine(Component.empty().color(NamedTextColor.YELLOW).append(component).append(Component.text(" " + RomanNumber.toRoman(level == null ? 1 : level))));
         }
