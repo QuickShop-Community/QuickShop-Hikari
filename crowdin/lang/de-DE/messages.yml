@@ -242,10 +242,10 @@ no-double-chests: <red>Du kannst keinen Doppeltruhen-Shop erstellen.
 price-too-cheap: <red>Preis muss höher als <yellow>${0}<red> sein
 shop-not-exist: <red>Dieser Shop existiert nicht.
 bad-command-usage: <red>Schlechte Befehlsargumente!
-cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
-cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
-cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
-cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
+cleanghost-warning: <yellow>Dieser Befehlt entfernt <red>alle</red> Shops welche beschädigt sind, in nicht erlaubten Welten erstellt wurden, nicht erlaubte Items (ver)kaufen oder <red><bold>IN UNGELADENEN WELTEN EXISTIEREN</bold></red>. Erstell ein komplettes Backup deiner Shopdaten und fahre dann mit <aqua>/qs cleanghost confirm</aqua> fort.
+cleanghost-starting: <green>Beginne mit der suche nach Geistershops (Fehlende Containerblöcke). Alle nicht-existierenden Shops werden entfernt...
+cleanghost-deleting: <yellow>Ein beschädigter Shop <aqua>{0}</aqua> wurde gefunden aufgrund von {1}. Zum löschen markiert...
+cleanghost-deleted: <green><yellow>{0}</yellow> Shops wurden insgesammt gelöscht.
 shop-purchase-cancelled: <red>Shop-Kauf abgebrochen.
 bypassing-lock: <red>Umgehe eine QuickShop Sicherung!
 bungee-cross-server-msg: 'QuickShop CSM: <green>{0}'
@@ -541,7 +541,7 @@ internal-error: "<red>Ein interner Fehler ist aufgetreten. Bitte kontaktiere den
 argument-cannot-be: "<red>Das Argument <aqua>{0}</aqua> kann nicht <yellow>{1}</yellow> sein."
 argument-must-between: "<red>Der Wert von <aqua>{0}</aqua> muss zwischen <yellow>{1}</yellow> und <yellow>{2}</yellow> sein"
 invalid-percentage: "<red>Prozentsatz ungültig, du musst '%' nach der Nummer hinzufügen."
-display-fallback: "<red>Due to an internal failure, a fallback message is being displayed.\nThe value of this item may not be localized or processed correctly.\nPlease contact the server administrator."
+display-fallback: "<red>Aufgrund eines internen Fehlers wird eine Fallback-Nachricht angezeigt.\nDer Wert dieses Items wird eventuell nicht lokalisiert oder richtig verarbeitet.\nBitte kontaktiere den Server Administrator."
 not-a-valid-time: |
   <red>Der Text <yellow>{0}</yellow> ist kein gültiger Zeitstempel. Bitte gib eine <aqua>Zulu-Zeit (ISO 8601)</aqua> oder <aqua>Unix-Epoch-Zeit in Sekunden</aqua> ein.
   <gold>Gültiges Zeitstempel Beispiel: (Für Samstag, 17. Dez. 2022 10:31:37 GMT):</gold>
@@ -648,8 +648,8 @@ tag-query-no-tag: "<red>Dieser Shop hat keine Tags."
 tag-query-shops: "<green>Dieser Tag hat <yellow>{0}</yellow> Shops:"
 tag-query-shops-listing: "<yellow> - <aqua>{0}</aqua>"
 batch-operations-based-on-tags-no-failure: "<green><yellow>{0}</yellow> Shops erfolgreich verarbeitet."
-batch-operations-based-on-tags-have-failure: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed."
-batch-operations-based-on-tags-have-failure-with-reason: "<yellow>Total <yellow>{0}</yellow> shops in batch processing successfully completed, but <red>{1}</red> requests not completed. Reason: <gold>{2}</gold>"
+batch-operations-based-on-tags-have-failure: "<yellow>{0} Shops wurden erfolgreich in der Massenverarbeitung abgeschlossen, aber <red>{1}</red> konnten nicht abgeschlossen werden."
+batch-operations-based-on-tags-have-failure-with-reason: "<yellow>{0} Shops wurden erfolgreich in der Massenverarbeitung abgeschlossen, aber <red>{1}</red> konnten nicht abgeschlossen werden.\nGrund: <gold>{2}</gold>"
 batch-operations-based-on-tags-have-failure-error-messages-may-appears-above: "<gray>Die Fehlermeldungen wurden dir vor dieser Nachricht im Chat gesendet."
 addon:
   towny:
@@ -1366,8 +1366,8 @@ addon:
       Unbegrenzt: {6}
       Ort: {7}
   chestprotect:
-    protection-exists: "<red>This region already protected by ChestProtect and you don't have permission to create shops at here."
-    shops-exsts: "<red>The region that you want to protect contains other player's shops and you don't have permission to access them."
+    protection-exists: "<red>Diese Region wird durch ChestProtect geschützt und du hast keine Berechtigung einen Shop hier zu erstellen."
+    shops-exsts: "<red>Die Region welche du schützen möchtest enthält Shops anderer Spieler, und du hast nicht die Berechtigung auf diese zugreifen zu können."
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
