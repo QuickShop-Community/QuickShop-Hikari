@@ -37,7 +37,6 @@ import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -1310,19 +1309,33 @@ public class SimpleShopManager implements ShopManager, Reloadable {
             PotionData potionData = potionMeta.getBasePotionData();
             PotionEffectType potionEffectType = potionData.getType().getEffectType();
             if (potionEffectType != null) {
+                Component translation;
+                try {
+                    translation = plugin.getPlatform().getTranslation(potionEffectType);
+                } catch (Throwable th) {
+                    translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffectType.getName()));
+                    plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffectType.getKey(), th);
+                }
                 chatSheetPrinter.printLine(plugin.text().of(p, "menu.effects").forLocale());
                 //Because the bukkit API limit, we can't get the actual effect level
                 chatSheetPrinter.printLine(Component.empty()
                         .color(NamedTextColor.YELLOW)
-                        .append(plugin.getPlatform().getTranslation(potionEffectType))
+                        .append(translation)
                 );
             }
             if (potionMeta.hasCustomEffects()) {
                 for (PotionEffect potionEffect : potionMeta.getCustomEffects()) {
                     int level = potionEffect.getAmplifier();
+                    Component translation;
+                    try {
+                        translation = plugin.getPlatform().getTranslation(potionEffect.getType());
+                    } catch (Throwable th) {
+                        translation = MsgUtil.setHandleFailedHover(p, Component.text(potionEffect.getType().getName()));
+                        plugin.logger().warn("Failed to handle translation for PotionEffect {}", potionEffect.getType().getKey(), th);
+                    }
                     chatSheetPrinter.printLine(Component.empty()
                             .color(NamedTextColor.YELLOW)
-                            .append(plugin.getPlatform().getTranslation(potionEffect.getType())).append(LegacyComponentSerializer.legacySection().deserialize(" " + (level <= 10 ? RomanNumber.toRoman(level) : level))));
+                            .append(translation).append(Component.text(" " + (level <= 10 ? RomanNumber.toRoman(level) : level))));
                 }
             }
         }

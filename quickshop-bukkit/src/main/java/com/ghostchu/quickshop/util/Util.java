@@ -437,8 +437,15 @@ public class Util {
     @NotNull
     public static Component getItemStackName(@NotNull ItemStack itemStack) {
         Component result = getItemCustomName(itemStack);
-        result = isEmptyComponent(result) ? plugin.getPlatform().getTranslation(itemStack) : result;
-        Log.debug("Debugging item stack name component: " + result);
+        if (isEmptyComponent(result)) {
+            try {
+                result = plugin.getPlatform().getTranslation(itemStack);
+            } catch (Throwable th) {
+                result = MsgUtil.setHandleFailedHover(null, Component.text(itemStack.getType().getKey().toString()));
+                plugin.logger().warn("Failed to handle translation for ItemStack {}", Util.serialize(itemStack), th);
+                th.printStackTrace();
+            }
+        }
         return result;
     }
 
@@ -493,7 +500,13 @@ public class Util {
             throw new IllegalArgumentException("Item does not have an enchantment!");
         }
         Entry<Enchantment, Integer> entry = meta.getStoredEnchants().entrySet().iterator().next();
-        Component name = plugin.getPlatform().getTranslation(entry.getKey());
+        Component name;
+        try {
+            name = plugin.getPlatform().getTranslation(entry.getKey());
+        } catch (Throwable throwable) {
+            name = MsgUtil.setHandleFailedHover(null, Component.text(CommonUtil.prettifyText(entry.getKey().getKey().getKey())));
+            plugin.logger().warn("Failed to handle translation for Enchantment {}", entry.getKey().getKey(), throwable);
+        }
         if (entry.getValue() == 1 && entry.getKey().getMaxLevel() == 1) {
             return name;
         } else {

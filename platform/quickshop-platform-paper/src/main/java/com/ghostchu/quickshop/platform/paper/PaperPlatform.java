@@ -106,15 +106,7 @@ public class PaperPlatform implements Platform {
         try {
             key = material.translationKey();
         } catch (Throwable error) {
-            try {
-                key = material.getTranslationKey();
-            } catch (Throwable error2) {
-                if (!material.isBlock()) {
-                    key = "item." + material.getKey().getNamespace() + "." + material.getKey().getKey();
-                } else {
-                    key = "block." + material.getKey().getNamespace() + "." + material.getKey().getKey();
-                }
-            }
+            key = material.getTranslationKey();
         }
         return postProcessingTranslationKey(key);
     }
@@ -125,34 +117,20 @@ public class PaperPlatform implements Platform {
         try {
             key = type.translationKey();
         } catch (Throwable error) {
-            try {
-                key = type.getTranslationKey();
-            } catch (Throwable error2) {
-                key = "entity." + type.getKey().getNamespace() + "." + type.getKey().getKey();
-            }
+            key = type.getTranslationKey();
         }
         return postProcessingTranslationKey(key);
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) {
-        String key;
-        try {
-            key = potionEffectType.translationKey();
-        } catch (Throwable error) {
-            key = "effect." + potionEffectType.getKey().getNamespace() + "." + potionEffectType.getKey().getKey();
-        }
+        String key = potionEffectType.translationKey();
         return postProcessingTranslationKey(key);
     }
 
     @Override
     public @NotNull String getTranslationKey(@NotNull Enchantment enchantment) {
-        String key;
-        try {
-            key = enchantment.translationKey();
-        } catch (Throwable error) {
-            key = enchantment.getKey().getNamespace() + "." + enchantment.getKey().getKey();
-        }
+        String key = enchantment.translationKey();
         return postProcessingTranslationKey(key);
     }
 
@@ -204,7 +182,7 @@ public class PaperPlatform implements Platform {
     @Override
     public void setLine(@NotNull Sign sign, int line, @NotNull Component component) {
         sign.line(line, component);
-        sign.update(true,false);
+        sign.update(true, false);
     }
 
     @Override
@@ -212,7 +190,7 @@ public class PaperPlatform implements Platform {
         for (int i = 0; i < Math.min(component.size(), 4); i++) {
             sign.line(i, component.get(i));
         }
-        sign.update(true,false);
+        sign.update(true, false);
     }
 
     @Override

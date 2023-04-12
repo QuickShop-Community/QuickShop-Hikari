@@ -287,12 +287,7 @@ public class MsgUtil {
             enchs = stor.getStoredEnchants();
             if (!enchs.isEmpty()) {
                 chatSheetPrinter.printCenterLine(PLUGIN.text().of(p, "menu.stored-enchants").forLocale());
-                try {
-                    printEnchantment(chatSheetPrinter, enchs);
-                } catch (Exception e) {
-                    chatSheetPrinter.printLine(QuickShop.getInstance().text().of(p, "internal-error").forLocale());
-                    e.printStackTrace();
-                }
+                printEnchantment(chatSheetPrinter, enchs);
             }
         }
     }
@@ -303,24 +298,29 @@ public class MsgUtil {
             Integer level = entries.getValue();
             Component component;
             try {
-                component = PLUGIN.getPlatform().getTranslation(entries.getKey());
+                component = Component.empty().color(NamedTextColor.YELLOW).append(PLUGIN.getPlatform().getTranslation(entries.getKey()));
             } catch (Throwable error) {
-                component = Component.text(CommonUtil.prettifyText(entries.getKey().getKey().getKey()))
-                        .hoverEvent(getHandleFailedHoverEvent(chatSheetPrinter.getSender(), null));
-                error.printStackTrace();
+                component = MsgUtil.setHandleFailedHover(null, Component.text(CommonUtil.prettifyText(entries.getKey().getKey().toString())));
+                QuickShop.getInstance().logger().warn("Failed to handle translation for Enchantment {}", entries.getKey().getKey(), error);
             }
-            chatSheetPrinter.printLine(Component.empty().color(NamedTextColor.YELLOW).append(component).append(Component.text(" " + RomanNumber.toRoman(level == null ? 1 : level))));
+            chatSheetPrinter.printLine(component.append(Component.text(" " + RomanNumber.toRoman(level == null ? 1 : level))));
         }
     }
 
     @NotNull
-    public static HoverEvent<Component> getHandleFailedHoverEvent(@Nullable CommandSender sender, @Nullable HoverEvent<Component> oldHoverEvent) {
+    private static HoverEvent<Component> getHandleFailedHoverEvent(@Nullable CommandSender sender, @Nullable HoverEvent<Component> oldHoverEvent) {
         HoverEvent<Component> hoverEvent = HoverEvent.showText(PLUGIN.text().of(sender, "display-fallback").forLocale());
         if (oldHoverEvent != null) {
-            hoverEvent = hoverEvent.value(hoverEvent.value().append(hoverEvent.value()));
+            hoverEvent = hoverEvent.value(hoverEvent.value().appendNewline().append(hoverEvent.value()));
         }
         return hoverEvent;
     }
+
+    @NotNull
+    public static Component setHandleFailedHover(@Nullable CommandSender sender, @NotNull Component component) {
+        return component.hoverEvent(getHandleFailedHoverEvent(sender, null));
+    }
+
 
     /**
      * @param shop The shop purchased

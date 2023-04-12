@@ -53,25 +53,25 @@ public interface Platform {
 
     @NotNull String getMinecraftVersion();
 
-    @NotNull Component getTranslation(@NotNull Material material);
+    @NotNull Component getTranslation(@NotNull Material material) throws Throwable;
 
-    @NotNull Component getTranslation(@NotNull EntityType entity);
+    @NotNull Component getTranslation(@NotNull EntityType entity) throws Throwable;
 
-    @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType);
+    @NotNull Component getTranslation(@NotNull PotionEffectType potionEffectType) throws Throwable;
 
-    @NotNull Component getTranslation(@NotNull Enchantment enchantment);
+    @NotNull Component getTranslation(@NotNull Enchantment enchantment) throws Throwable;
 
-    @NotNull Component getTranslation(@NotNull ItemStack itemStack);
+    @NotNull Component getTranslation(@NotNull ItemStack itemStack) throws Throwable;
 
-    @NotNull String getTranslationKey(@NotNull Material material);
+    @NotNull String getTranslationKey(@NotNull Material material) throws Throwable;
 
-    @NotNull String getTranslationKey(@NotNull EntityType entity);
+    @NotNull String getTranslationKey(@NotNull EntityType entity) throws Throwable;
 
-    @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType);
+    @NotNull String getTranslationKey(@NotNull PotionEffectType potionEffectType) throws Throwable;
 
-    @NotNull String getTranslationKey(@NotNull Enchantment enchantment);
+    @NotNull String getTranslationKey(@NotNull Enchantment enchantment) throws Throwable;
 
-    @NotNull String getTranslationKey(@NotNull ItemStack stack);
+    @NotNull String getTranslationKey(@NotNull ItemStack stack) throws Throwable;
 
     @NotNull MiniMessage miniMessage();
 
