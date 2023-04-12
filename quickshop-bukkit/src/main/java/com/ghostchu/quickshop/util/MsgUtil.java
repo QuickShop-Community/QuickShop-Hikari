@@ -289,7 +289,7 @@ public class MsgUtil {
                 try {
                     printEnchantment(chatSheetPrinter, enchs);
                 } catch (Exception e) {
-                    chatSheetPrinter.printLine(Component.text("Server Internal Error, contact server administrator.").color(NamedTextColor.RED));
+                    chatSheetPrinter.printLine(QuickShop.getInstance().text().of(p, "internal-error").forLocale());
                     e.printStackTrace();
                 }
             }
