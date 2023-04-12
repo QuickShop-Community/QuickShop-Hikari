@@ -541,6 +541,7 @@ internal-error: "<red>Ein interner Fehler ist aufgetreten. Bitte kontaktiere den
 argument-cannot-be: "<red>Das Argument <aqua>{0}</aqua> kann nicht <yellow>{1}</yellow> sein."
 argument-must-between: "<red>Der Wert von <aqua>{0}</aqua> muss zwischen <yellow>{1}</yellow> und <yellow>{2}</yellow> sein"
 invalid-percentage: "<red>Prozentsatz ungültig, du musst '%' nach der Nummer hinzufügen."
+display-fallback: "<red>Due to an internal failure, a fallback message is being displayed.\nThe value of this item may not be localized or processed correctly.\nPlease contact the server administrator."
 not-a-valid-time: |
   <red>Der Text <yellow>{0}</yellow> ist kein gültiger Zeitstempel. Bitte gib eine <aqua>Zulu-Zeit (ISO 8601)</aqua> oder <aqua>Unix-Epoch-Zeit in Sekunden</aqua> ein.
   <gold>Gültiges Zeitstempel Beispiel: (Für Samstag, 17. Dez. 2022 10:31:37 GMT):</gold>
