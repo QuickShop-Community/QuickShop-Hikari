@@ -1364,6 +1364,9 @@ addon:
       Type: {5}
       Unlimited: {6}
       Location: {7}
+  chestprotect:
+    protection-exists: "<red>This region already protected by ChestProtect and you don't have permission to create shops at here."
+    shops-exsts: "<red>The region that you want to protect contains other player's shops and you don't have permission to access them."
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
