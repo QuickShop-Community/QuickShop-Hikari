@@ -504,7 +504,7 @@ public class Util {
         try {
             name = plugin.getPlatform().getTranslation(entry.getKey());
         } catch (Throwable throwable) {
-            name = MsgUtil.setHandleFailedHover(null, Component.text(CommonUtil.prettifyText(entry.getKey().getKey().getKey())));
+            name = MsgUtil.setHandleFailedHover(null, Component.text(entry.getKey().getKey().getKey()));
             plugin.logger().warn("Failed to handle translation for Enchantment {}", entry.getKey().getKey(), throwable);
         }
         if (entry.getValue() == 1 && entry.getKey().getMaxLevel() == 1) {

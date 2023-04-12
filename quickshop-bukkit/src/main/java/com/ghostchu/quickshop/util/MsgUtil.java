@@ -21,6 +21,7 @@ import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -300,7 +301,7 @@ public class MsgUtil {
             try {
                 component = Component.empty().color(NamedTextColor.YELLOW).append(PLUGIN.getPlatform().getTranslation(entries.getKey()));
             } catch (Throwable error) {
-                component = MsgUtil.setHandleFailedHover(null, Component.text(CommonUtil.prettifyText(entries.getKey().getKey().toString())));
+                component = MsgUtil.setHandleFailedHover(null, Component.text(entries.getKey().getKey().toString()));
                 QuickShop.getInstance().logger().warn("Failed to handle translation for Enchantment {}", entries.getKey().getKey(), error);
             }
             chatSheetPrinter.printLine(component.append(Component.text(" " + RomanNumber.toRoman(level == null ? 1 : level))));
@@ -318,7 +319,11 @@ public class MsgUtil {
 
     @NotNull
     public static Component setHandleFailedHover(@Nullable CommandSender sender, @NotNull Component component) {
-        return component.hoverEvent(getHandleFailedHoverEvent(sender, null));
+        return Component.empty().append(component.hoverEvent(
+                        getHandleFailedHoverEvent(sender, null))
+                .decorate(TextDecoration.UNDERLINED)
+                .color(NamedTextColor.RED)
+        );
     }
 
 
