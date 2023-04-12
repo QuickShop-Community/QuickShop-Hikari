@@ -167,8 +167,8 @@ unknown-player: <red>Такого игрока не существует. Пож
 player-offline: "<red>Этот игрок сейчас офлайн."
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 shop-type:
-  selling: "SELLING"
-  buying: "BUYING"
+  selling: "ПРОДАЖА"
+  buying: "ПОКУПКА"
 language:
   qa-issues: '<yellow>Вопросы обеспечения качества: <aqua>{0}%'
   code: '<yellow>Код: <gold>{0}'
