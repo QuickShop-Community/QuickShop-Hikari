@@ -54,9 +54,9 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     private final Set<UUID> packetSenders = new ConcurrentSkipListSet<>();
     //cache chunk x and z
     private SimpleShopChunk chunkLocation;
-    private volatile boolean isDisplay;
     //If packet initialized
     private volatile boolean initialized = false;
+    private volatile boolean isSpawned = false;
     //packets
     private PacketContainer fakeItemSpawnPacket;
     private PacketContainer fakeItemMetaPacket;
@@ -108,7 +108,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
             }
 
         }
-        return isDisplay;
+        return isSpawned;
     }
 
     @Override
@@ -119,10 +119,10 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
 
     @Override
     public void remove() {
-        if (isDisplay) {
+        if (isSpawned()) {
             sendPacketToAll(fakeItemDestroyPacket);
             unload();
-            isDisplay = false;
+            isSpawned = false;
         }
     }
 
@@ -146,7 +146,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     @Override
     public void spawn() {
         Util.ensureThread(false);
-        if (shop.isLeftShop() || isDisplay || shop.isDeleted() || !shop.isLoaded()) {
+        if (shop.isLeftShop() || isSpawned || shop.isDeleted() || !shop.isLoaded()) {
             return;
         }
         if (new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM).callCancellableEvent()) {
@@ -170,7 +170,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
         }*/
 
         sendFakeItemToAll();
-        isDisplay = true;
+        isSpawned = true;
     }
 
     private void initFakeDropItemPacket() {
@@ -276,7 +276,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
 
                         CHUNKS_MAPPING.computeIfPresent(new SimpleShopChunk(player.getWorld().getName(), x, z), (chunkLoc, targetList) -> {
                             for (VirtualDisplayItem target : targetList) {
-                                if (!target.shop.isLoaded() || !target.isDisplay || target.shop.isLeftShop()) {
+                                if (!target.shop.isLoaded() || !target.isSpawned() || target.shop.isLeftShop()) {
                                     continue;
                                 }
                                 target.packetSenders.add(player.getUniqueId());
