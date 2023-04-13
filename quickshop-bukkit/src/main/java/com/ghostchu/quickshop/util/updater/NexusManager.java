@@ -93,6 +93,9 @@ public class NexusManager implements SubPasteItem {
 
     @Override
     public @NotNull String genBody() {
+        if (cachedMetadata == null) {
+            return "<p>No metadata found.</p>";
+        }
         HTMLTable table = new HTMLTable(3);
         table.setTableTitle("Last Update", "Latest Version", "Release Version");
         table.insert(cachedMetadata.getLastUpdate(), cachedMetadata.getLatestVersion(), cachedMetadata.getReleaseVersion());
