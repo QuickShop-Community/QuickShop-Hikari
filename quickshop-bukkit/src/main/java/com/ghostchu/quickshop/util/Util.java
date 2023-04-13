@@ -678,6 +678,7 @@ public class Util {
     public static void initialize() {
         plugin = QuickShop.getInstance();
         try {
+            plugin.getReloadManager().unregister(Util.class.getDeclaredMethod("initialize"));
             plugin.getReloadManager().register(Util.class.getDeclaredMethod("initialize"));
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
