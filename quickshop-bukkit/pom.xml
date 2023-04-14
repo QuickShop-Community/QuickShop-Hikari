@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.ghostchu</groupId>
         <artifactId>quickshop-hikari</artifactId>
-        <version>4.2.1.0</version>
+        <version>4.2.1.1</version>
     </parent>
 
     <artifactId>quickshop-bukkit</artifactId>
