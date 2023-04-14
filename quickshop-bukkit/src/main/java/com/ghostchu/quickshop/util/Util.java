@@ -443,7 +443,6 @@ public class Util {
             } catch (Throwable th) {
                 result = MsgUtil.setHandleFailedHover(null, Component.text(itemStack.getType().getKey().toString()));
                 plugin.logger().warn("Failed to handle translation for ItemStack {}", Util.serialize(itemStack), th);
-                th.printStackTrace();
             }
         }
         return result;
@@ -681,7 +680,7 @@ public class Util {
             plugin.getReloadManager().unregister(Util.class.getDeclaredMethod("initialize"));
             plugin.getReloadManager().register(Util.class.getDeclaredMethod("initialize"));
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            plugin.logger().error("Failed to register Util initialize method to reload manager.", e);
         }
         SHOPABLES.clear();
         CUSTOM_STACKSIZE.clear();

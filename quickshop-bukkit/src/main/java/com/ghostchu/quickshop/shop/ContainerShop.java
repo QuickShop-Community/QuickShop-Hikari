@@ -492,8 +492,7 @@ public class ContainerShop implements Shop, Reloadable {
                             }
                         });
             } catch (Exception e) {
-                e.printStackTrace();
-                plugin.logger().warn("Failed to remove the shop mapping from database.");
+                plugin.logger().warn("Failed to remove the shop mapping from database.", e);
             }
         }
     }

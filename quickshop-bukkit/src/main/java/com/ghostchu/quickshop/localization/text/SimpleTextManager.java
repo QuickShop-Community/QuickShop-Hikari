@@ -204,8 +204,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         try {
             jarFile = Util.getPluginJarFile(plugin.getJavaPlugin());
         } catch (FileNotFoundException e) {
-            plugin.logger().warn("Failed to load bundled translation: {}", e.getMessage());
-            e.printStackTrace();
+            plugin.logger().warn("Failed to load bundled translation", e);
             return new HashMap<>();
         }
         try (ZipFile zipFile = new ZipFile(jarFile, "UTF-8")) {
@@ -236,8 +235,7 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
             });
             return availableLang;
         } catch (IOException e) {
-            plugin.logger().warn("Failed to load bundled translation, jar invalid: {}", e.getMessage());
-            e.printStackTrace();
+            plugin.logger().warn("Failed to load bundled translation, jar invalid", e);
             return new HashMap<>();
         }
 

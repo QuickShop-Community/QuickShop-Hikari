@@ -138,7 +138,7 @@ public class SimpleShopPermissionManager implements ShopPermissionManager, Reloa
                 Files.move(file.toPath(), file.toPath().resolveSibling(file.getName() + ".corrupted." + UUID.randomUUID().toString().replace("-", "")));
                 loadConfiguration();
             } catch (IOException e) {
-                e.printStackTrace();
+                plugin.logger().error("Failed to move corrupted group configuration file", e);
             }
         }
         yamlConfiguration.getKeys(true).forEach(group -> {

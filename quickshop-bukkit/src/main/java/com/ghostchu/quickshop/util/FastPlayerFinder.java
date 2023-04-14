@@ -75,7 +75,7 @@ public class FastPlayerFinder implements PlayerFinder {
             this.nameCache.put(uuid, Optional.ofNullable(name));
             return name;
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            plugin.logger().warn("Interrupted when looking up username for " + uuid, e);
             return null;
         }
     }
@@ -101,7 +101,7 @@ public class FastPlayerFinder implements PlayerFinder {
             this.nameCache.put(uuid, Optional.of(name));
             return uuid;
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            plugin.logger().warn("Interrupted when looking up UUID for " + name, e);
             return CommonUtil.getNilUniqueId();
         }
     }

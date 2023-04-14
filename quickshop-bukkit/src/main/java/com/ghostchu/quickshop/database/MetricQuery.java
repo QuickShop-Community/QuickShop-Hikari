@@ -65,7 +65,7 @@ public class MetricQuery {
                 list.add(record);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            plugin.logger().warn("Querying transactions failed.", e);
             return list;
         }
         return list;
@@ -113,7 +113,7 @@ public class MetricQuery {
                 list.add(record);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            plugin.logger().warn("Querying transactions failed.", e);
             return list;
         }
         return list;
