@@ -11,6 +11,7 @@ import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.logging.container.ShopRemoveLog;
 import com.ghostchu.simplereloadlib.ReloadResult;
 import com.ghostchu.simplereloadlib.ReloadStatus;
+import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -25,6 +26,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -72,7 +74,8 @@ public class BlockListener extends AbstractProtectionListener {
                     return;
                 }
                 e.setCancelled(true);
-                plugin.text().of(p, "no-creative-break", plugin.getPlatform().getTranslation(Material.GOLDEN_AXE)).send();
+                Component component = Util.getItemStackName(new ItemStack(Material.GOLDEN_AXE, 1));
+                plugin.text().of(p, "no-creative-break", component).send();
                 return;
             }
 
@@ -108,7 +111,8 @@ public class BlockListener extends AbstractProtectionListener {
                     return;
                 }
                 e.setCancelled(true);
-                plugin.text().of(p, "no-creative-break", plugin.getPlatform().getTranslation(Material.GOLDEN_AXE)).send();
+                Component component = Util.getItemStackName(new ItemStack(Material.GOLDEN_AXE, 1));
+                plugin.text().of(p, "no-creative-break", component).send();
                 return;
             }
             //Allow Shop owner break the shop sign(for sign replacement)

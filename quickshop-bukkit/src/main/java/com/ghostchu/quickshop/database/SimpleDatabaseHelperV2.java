@@ -35,21 +35,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.sql.*;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -165,7 +153,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 isolatedIds.add(id);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            plugin.logger().warn("Failed to list all " + aTable.getName() + " not exists in " + bTable.getName() + "!", e);
         }
         return isolatedIds;
     }
@@ -391,7 +379,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                 shopRecords.add(new ShopRecord(dataRecord, infoRecord));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            plugin.logger().error("Failed to list shops", e);
         }
         return shopRecords;
     }
@@ -406,7 +394,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             ResultSet set = query.getResultSet();
             shopIds.add(set.getLong("shop"));
         } catch (SQLException e) {
-            e.printStackTrace();
+            plugin.logger().error("Failed to list shops tagged by " + tagger + " with tag " + tag, e);
         }
         return shopIds;
     }
@@ -420,7 +408,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
             ResultSet set = query.getResultSet();
             tags.add(set.getString("tag"));
         } catch (SQLException e) {
-            e.printStackTrace();
+            plugin.logger().error("Failed to list tags by " + tagger, e);
         }
         return tags;
     }
@@ -627,7 +615,7 @@ public class SimpleDatabaseHelperV2 implements DatabaseHelper {
                         .build().execute();
                 return linesAffected;
             } catch (SQLException e) {
-                e.printStackTrace();
+                plugin.logger().warn("Failed to purge logs records", e);
                 return -1;
             }
         });

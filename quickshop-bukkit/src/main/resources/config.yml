@@ -1,7 +1,7 @@
 # QuickShop-Hikari Plugin Configuration
 
 #Do not touch this if you don't know what you're doing!
-config-version: 1013
+config-version: 1014
 
 #Set the default language code the plugin should use
 #Set it to default will use your system language.
@@ -249,10 +249,6 @@ shop:
   #Should we place display items on the chests?
   #This may cause duped items, especially for modded servers if you're using Real DisplayItem!
   display-items: true
-
-  #Should we put display on the center of double-chest shop?
-  #WARNING: This may cause performance issue.
-  display-center: false
 
   #QuickShop will check if the display item is in a valid position every specified amount of ticks.
   #Set to 0 to disable it.

@@ -42,7 +42,7 @@ public class PAPICache implements Reloadable {
         try (PerfMonitor ignored = new PerfMonitor("PlaceHolder API Handling")) {
             return performCaches.get(compileUniqueKey(player, args), () -> Optional.ofNullable(loader.apply(player, args)));
         } catch (ExecutionException ex) {
-            ex.printStackTrace();
+            plugin.logger().warn("Failed to get cache for " + player + " " + args, ex);
             return Optional.empty();
         }
     }

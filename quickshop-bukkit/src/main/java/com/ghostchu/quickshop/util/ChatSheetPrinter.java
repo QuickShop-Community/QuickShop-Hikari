@@ -47,7 +47,10 @@ public class ChatSheetPrinter {
         if (Util.isEmptyComponent(component)) {
             return;
         }
-        MsgUtil.sendDirectMessage(p, QuickShop.getInstance().text().of(p, "tableformat.left_begin").forLocale()
-                .append(component));
+        MsgUtil.sendDirectMessage(p, QuickShop.getInstance().text().of(p, "tableformat.left_begin").forLocale().append(component));
+    }
+
+    public CommandSender getSender() {
+        return p;
     }
 }

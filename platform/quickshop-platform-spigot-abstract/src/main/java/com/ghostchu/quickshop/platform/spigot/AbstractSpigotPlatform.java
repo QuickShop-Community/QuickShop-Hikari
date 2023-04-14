@@ -113,7 +113,7 @@ public abstract class AbstractSpigotPlatform implements Platform {
     }
 
     @Override
-    public @NotNull Component getTranslation(@NotNull ItemStack itemStack) {
+    public @NotNull Component getTranslation(@NotNull ItemStack itemStack) throws Throwable {
         return Component.translatable(getTranslationKey(itemStack));
     }
 

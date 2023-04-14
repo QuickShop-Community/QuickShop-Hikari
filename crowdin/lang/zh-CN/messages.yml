@@ -22,12 +22,12 @@ tabcomplete:
   range: '[范围]'
   currency: '[货币名称]'
   percentage: '[百分比%]'
-taxaccount-unset: <green>该商店的税务帐户现在变为服务器的全局设置。
+taxaccount-unset: <green>该商店的税务账户现在变为服务器的全局设置。
 blacklisted-item: <red>这件物品已经被拉黑，你不能出售它
 command-type-mismatch: <red>此命令只能由 <aqua>{0} 执行。
 server-crash-warning: '<red>如果服务器运行时替换/删除QuickShop插件 Jar 文件，执行 /qs reload后服务器可能会崩溃。'
 you-cant-afford-to-change-price: <red>你需要 {0} 才能修改商店的价格。
-safe-mode: <red>QuickShop 现在处于安全模式，您不能打开这个商店容器，请与服务器管理员联系以修复错误。
+safe-mode: <red>QuickShop 现在处于安全模式，您不能打开这个商店方块，请与服务器管理员联系以修复错误。
 forbidden-vanilla-behavior: <red>该操作有悖于原版行为，因此已被禁止
 shop-out-of-space-name: <dark_purple>您名为 {0} 的商店已满！
 paste-disabled: '<red>Paste功能已被禁用！你不能请求技术支持。 <newline>原因： {0}'
@@ -47,7 +47,7 @@ quick-fill:
     - '<yellow>价格:<aqua>{price}'
     - '<yellow>物品:<aqua>{item}'
     - '<yellow>位置:<aqua>{location}'
-  header: '<yellow>您有多个名称为“<green>{0}<yellow>”的商店，选择其中一个继续：'
+  header: '<yellow>您有多个名称为“<green>{0}</green>”的商店，选择其中一个继续：'
   entry-normal: ' <yellow>- <red>{0} <aqua>{1} <light_purple>'
   entry-cooperation: ' <yellow>- <red>[所有者] <aqua>{0} <light_purple>{1}'
 3rd-plugin-build-check-failed-admin: '<gray>(管理员信息) <light_purple>{0} <dark_gray>拒绝了权限检查。如果不例外，请尝试添加 <light_purple>{1} <gray>进监听器黑名单。<gray>配置指南：https://github.com/Ghost-chu/QuickShop-Hikari/wiki/Use-protection-listener-filter'
@@ -541,6 +541,7 @@ internal-error: "<red>发生了一个内部错误，请联系服务器管理员�
 argument-cannot-be: "<red>参数 <aqua>{0}</aqua> 不能为 <yellow>{1}</yellow>."
 argument-must-between: "<red>参数 <aqua>{0}</aqua> 值必须在 <yellow>{1}</yellow> 和 <yellow>{2}</yellow> 之间"
 invalid-percentage: "<red>百分比无效，您必须在百分比的数字后添加'%'"
+display-fallback: "<red>Due to an internal failure, a fallback message is being displayed.\nThe value of this item may not be localized or processed correctly.\nPlease contact the server administrator."
 not-a-valid-time: |
   <red>字符串 <yellow>{0}</yellow> 不是一个有效的时间戳, 请输入 <aqua>Zulu 时间 (ISO 8601)</aqua> 或 <aqua>Unix Epoch 时间</aqua>。
   <gold>有效时间戳示例(适用于 Sat, 17 December 2022 10:31:37 GMT)</gold>
@@ -1364,6 +1365,9 @@ addon:
       类型: {5}
       无限模式: {6}
       位置: {7}
+  chestprotect:
+    protection-exists: "<red>This region already protected by ChestProtect and you don't have permission to create shops at here."
+    shops-exsts: "<red>The region that you want to protect contains other player's shops and you don't have permission to access them."
 suite:
   dynmap:
     title: "{0} - {1} - {2}"

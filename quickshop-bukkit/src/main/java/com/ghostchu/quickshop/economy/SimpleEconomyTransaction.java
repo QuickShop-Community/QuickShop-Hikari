@@ -418,7 +418,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
                 } catch (Exception exception) {
                     if (continueWhenFailed) {
                         operations.add(operation);
-                        exception.printStackTrace();
+                        plugin.logger().warn("Failed to rollback transaction: {}; Operation: {}; Transaction: {}; Skipping...", core.getLastError(), operation, this);
                     } else {
                         plugin.logger().warn("Failed to rollback transaction: {}; Operation: {}; Transaction: {}", core.getLastError(), operation, this);
                         break;
@@ -444,7 +444,7 @@ public class SimpleEconomyTransaction implements EconomyTransaction {
             processingStack.push(operation);
             return true;
         } catch (Exception exception) {
-            exception.printStackTrace();
+            plugin.logger().warn("Failed to execute operation: {}; Operation: {}; Transaction: {}", core.getLastError(), operation, this);
             this.lastError = "Failed to execute operation: " + core.getLastError() + "; Operation: " + operation;
             return false;
         }

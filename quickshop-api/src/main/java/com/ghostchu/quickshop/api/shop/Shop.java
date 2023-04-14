@@ -103,13 +103,6 @@ public interface Shop {
     void delete(boolean memoryOnly);
 
     /**
-     * Returns the attached shop object if any, otherwise null.
-     *
-     * @return Shop or null
-     */
-    Shop getAttachedShop();
-
-    /**
      * Gets the currency that shop use
      *
      * @return The currency name
@@ -135,7 +128,7 @@ public interface Shop {
      * Getting ConfigurationSection (extra data) instance of your plugin namespace)
      *
      * @param plugin The plugin and plugin name will used for namespace
-     * @return ExtraSection, save it through Shop#setExtra. If you don't save it, it may randomly loose or save
+     * @return ExtraSection, save it through Shop#setExtra. If you don't save it, it may randomly lose or save
      */
     @NotNull
     ConfigurationSection getExtra(@NotNull Plugin plugin);
@@ -429,13 +422,6 @@ public interface Shop {
     void setDisableDisplay(boolean disabled);
 
     /**
-     * Returns the Shop is a double shop
-     *
-     * @return if the shop is a double shop
-     */
-    boolean isDoubleShop();
-
-    /**
      * Check if this shop is free shop
      *
      * @return Free Shop
@@ -443,25 +429,11 @@ public interface Shop {
     boolean isFreeShop();
 
     /**
-     * Returns the current cached isLeftShop state of the Shop
-     *
-     * @return if the shop is a left shop
-     */
-    boolean isLeftShop();
-
-    /**
      * Get this container shop is loaded or unloaded.
      *
      * @return Loaded
      */
     boolean isLoaded();
-
-    /**
-     * Returns the current cached isRealDouble state of the Shop
-     *
-     * @return if the shop is a RealDouble
-     */
-    boolean isRealDouble();
 
     /**
      * Get shop is or not in selling mode
@@ -610,14 +582,15 @@ public interface Shop {
     /**
      * Refresh shop sign and display item
      */
-    void refresh();
+    @Deprecated(forRemoval = true)
+    default void refresh() {
+    }
 
     /**
      * Remove x ItemStack from the shop inventory
      *
      * @param paramItemStack Want removed ItemStack
      * @param paramInt       Want remove how many
-     * @throws Exception Possible exception thrown if anything wrong.
      */
     void remove(@NotNull ItemStack paramItemStack, int paramInt);
 
@@ -705,12 +678,6 @@ public interface Shop {
      */
     @NotNull
     CompletableFuture<Void> update();
-
-    /**
-     * Updates the attachedShop variable to reflect the currently attached shop, if any.
-     * Also updates the left shop status.
-     */
-    void updateAttachedShop();
 
     /**
      * Gets the benefit in this shop

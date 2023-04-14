@@ -44,7 +44,7 @@ public class HikariConverter {
             try {
                 errors.addAll(converter.checkReady());
             } catch (Exception e) {
-                e.printStackTrace();
+                plugin.logger().error("Something went wrong when checking ready: " + e.getMessage() + ", converter: " + converter.getClass().getSimpleName(), e);
                 errors.add(Component.text("Something went wrong: " + e.getMessage()));
             }
         }

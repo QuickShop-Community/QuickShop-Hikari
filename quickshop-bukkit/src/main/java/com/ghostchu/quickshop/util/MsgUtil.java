@@ -18,8 +18,10 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.gson.GsonComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang3.StringUtils;
@@ -228,7 +230,7 @@ public class MsgUtil {
         //if (PLUGIN.getConfig().getBoolean("shop.force-use-item-original-name") || !stack.hasItemMeta() || !stack.getItemMeta().hasDisplayName()) {
         //    return PLUGIN.getPlatform().getTranslation(stack.getType());
         //} else {
-            return Util.getItemStackName(stack);
+        return Util.getItemStackName(stack);
         //}
     }
 
@@ -295,9 +297,35 @@ public class MsgUtil {
         for (Entry<Enchantment, Integer> entries : enchs.entrySet()) {
             //Use boxed object to avoid NPE
             Integer level = entries.getValue();
-            chatSheetPrinter.printLine(Component.empty().color(NamedTextColor.YELLOW).append(PLUGIN.getPlatform().getTranslation(entries.getKey()).append(LegacyComponentSerializer.legacySection().deserialize(" " + RomanNumber.toRoman(level == null ? 1 : level)))));
+            Component component;
+            try {
+                component = Component.empty().color(NamedTextColor.YELLOW).append(PLUGIN.getPlatform().getTranslation(entries.getKey()));
+            } catch (Throwable error) {
+                component = MsgUtil.setHandleFailedHover(null, Component.text(entries.getKey().getKey().toString()));
+                QuickShop.getInstance().logger().warn("Failed to handle translation for Enchantment {}", entries.getKey().getKey(), error);
+            }
+            chatSheetPrinter.printLine(component.append(Component.text(" " + RomanNumber.toRoman(level == null ? 1 : level))));
         }
     }
+
+    @NotNull
+    private static HoverEvent<Component> getHandleFailedHoverEvent(@Nullable CommandSender sender, @Nullable HoverEvent<Component> oldHoverEvent) {
+        HoverEvent<Component> hoverEvent = HoverEvent.showText(PLUGIN.text().of(sender, "display-fallback").forLocale());
+        if (oldHoverEvent != null) {
+            hoverEvent = hoverEvent.value(hoverEvent.value().appendNewline().append(hoverEvent.value()));
+        }
+        return hoverEvent;
+    }
+
+    @NotNull
+    public static Component setHandleFailedHover(@Nullable CommandSender sender, @NotNull Component component) {
+        return Component.empty().append(component.hoverEvent(
+                        getHandleFailedHoverEvent(sender, null))
+                .decorate(TextDecoration.UNDERLINED)
+                .color(NamedTextColor.RED)
+        );
+    }
+
 
     /**
      * @param shop The shop purchased

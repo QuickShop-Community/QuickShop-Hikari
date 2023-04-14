@@ -226,7 +226,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
                 } catch (Exception exception) {
                     if (continueWhenFailed) {
                         operations.add(operation);
-                        exception.printStackTrace();
+                        plugin.logger().warn("Failed to rollback transaction: Operation: {}; Transaction: {}; Skipping...", operation, this);
                     } else {
                         plugin.logger().warn("Failed to rollback transaction: Operation: {}; Transaction: {}", operation, this);
                         break;
@@ -242,7 +242,7 @@ public class SimpleInventoryTransaction implements InventoryTransaction {
             processingStack.push(operation); // Item is special, economy fail won't do anything but item does.
             return operation.commit();
         } catch (Exception exception) {
-            exception.printStackTrace();
+            plugin.logger().warn("Failed to execute operation: " + operation, exception);
             this.lastError = "Failed to execute operation: " + operation;
             return false;
         }

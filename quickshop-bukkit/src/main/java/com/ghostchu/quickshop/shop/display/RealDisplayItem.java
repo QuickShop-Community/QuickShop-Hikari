@@ -5,7 +5,6 @@ import com.ghostchu.quickshop.api.event.ShopDisplayItemSafeGuardEvent;
 import com.ghostchu.quickshop.api.event.ShopDisplayItemSpawnEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
-import com.ghostchu.quickshop.shop.ContainerShop;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -44,9 +43,6 @@ public class RealDisplayItem extends AbstractDisplayItem {
     public boolean checkDisplayIsMoved() {
         Util.ensureThread(false);
         if (this.item == null) {
-            return false;
-        }
-        if (shop.isLeftShop()) {
             return false;
         }
         /* We give 0.6 block to allow item drop on the chest, not floating on the air. */
@@ -94,9 +90,6 @@ public class RealDisplayItem extends AbstractDisplayItem {
                 continue;
             }
             if (eItem.getUniqueId().equals(Objects.requireNonNull(this.item).getUniqueId())) {
-                if (shop.isLeftShop()) {
-                    return;
-                }
                 Log.debug("Fixing moved Item displayItem " + eItem.getUniqueId() + " at " + eItem.getLocation());
                 PaperLib.teleportAsync(entity, Objects.requireNonNull(getDisplayLocation()), PlayerTeleportEvent.TeleportCause.UNKNOWN);
                 return;
@@ -120,17 +113,6 @@ public class RealDisplayItem extends AbstractDisplayItem {
         if (this.item == null) {
             return false;
         }
-        // If it's a left shop, check the attached shop's item instead.
-        if (shop.isLeftShop()) {
-            Shop attachedShop = shop.getAttachedShop();
-            if (attachedShop instanceof ContainerShop shop) {
-                if (shop.getDisplayItem() == null) {
-                    return false;
-                }
-                return shop.getDisplayItem().isSpawned();
-            }
-
-        }
         return this.item.isValid();
     }
 
@@ -150,9 +132,6 @@ public class RealDisplayItem extends AbstractDisplayItem {
     @Override
     public boolean removeDupe() {
         Util.ensureThread(false);
-        if (shop.isLeftShop()) {
-            return false;
-        }
         if (this.item == null) {
             Log.debug("Warning: Trying to removeDupe for a null display shop.");
             return false;
@@ -161,14 +140,6 @@ public class RealDisplayItem extends AbstractDisplayItem {
         boolean removed = false;
 
         List<Entity> elist = new ArrayList<>(item.getNearbyEntities(1.5, 1.5, 1.5));
-        if (shop.isRealDouble()) {
-            elist.addAll(item.getWorld()
-                    .getNearbyEntities(Objects.requireNonNull(getDoubleShopDisplayLocations(true)), 1.5,
-                            1.5, 1.5));
-            elist.addAll(item.getWorld()
-                    .getNearbyEntities(Objects.requireNonNull(getDoubleShopDisplayLocations(false)),
-                            1.5, 1.5, 1.5));
-        }
 
         for (Entity entity : elist) {
             if (entity.getType() != EntityType.DROPPED_ITEM) {
@@ -225,10 +196,6 @@ public class RealDisplayItem extends AbstractDisplayItem {
     @Override
     public void spawn() {
         Util.ensureThread(false);
-
-        if (shop.isLeftShop()) {
-            return;
-        }
         if (shop.isDeleted() || !shop.isLoaded()) {
             return;
         }
@@ -262,22 +229,14 @@ public class RealDisplayItem extends AbstractDisplayItem {
     }
 
     /**
-     * Gets either the item spawn location of this item's chest, or the attached chest.
+     * Gets either the item spawn location of this item's chest.
      * Used for checking for duplicates.
      *
-     * @param thisItem Whether to check this item's spawn location or the attached chest's.
      * @return The display location of the item.
      */
-    public @Nullable Location getDoubleShopDisplayLocations(boolean thisItem) {
+    public @Nullable Location getDoubleShopDisplayLocations() {
         Util.ensureThread(false);
-        if (!shop.isRealDouble()) {
-            return null;
-        }
-        if (thisItem) {
-            return shop.getLocation().clone().add(0.5, 1.2, 0.5);
-        } else {
-            return shop.getAttachedShop().getLocation().clone().add(0.5, 1.2, 0.5);
-        }
+        return shop.getLocation().clone().add(0.5, 1.2, 0.5);
     }
 
 }

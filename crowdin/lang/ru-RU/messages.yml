@@ -167,8 +167,8 @@ unknown-player: <red>Такого игрока не существует. Пож
 player-offline: "<red>Этот игрок сейчас офлайн."
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 shop-type:
-  selling: "SELLING"
-  buying: "BUYING"
+  selling: "ПРОДАЖА"
+  buying: "ПОКУПКА"
 language:
   qa-issues: '<yellow>Вопросы обеспечения качества: <aqua>{0}%'
   code: '<yellow>Код: <gold>{0}'
@@ -541,6 +541,7 @@ internal-error: "<red>Произошла внутренняя ошибка. По
 argument-cannot-be: "<red>Аргумент <aqua>{0}</aqua> не может быть <yellow>{1}</yellow>."
 argument-must-between: "<red>Значение <aqua>{0}</aqua> должно быть между <yellow>{1}</yellow> и <yellow>{2}</yellow>"
 invalid-percentage: "<red>Неправильное значение - вы должны добавить '%' после числа процентов."
+display-fallback: "<red>Due to an internal failure, a fallback message is being displayed.\nThe value of this item may not be localized or processed correctly.\nPlease contact the server administrator."
 not-a-valid-time: |
   <red>The string <yellow>{0}</yellow> not a valid timestamp, please enter a <aqua>Zulu Time (ISO 8601)</aqua> or <aqua>Unix Epoch Time in seconds</aqua>.
   <gold>Valid timestamp example: (for Sat, 17 Dec 2022 10:31:37 GMT)</gold>
@@ -1364,6 +1365,9 @@ addon:
       Тип: {5}
       Неограничен: {6}
       Локация: {7}
+  chestprotect:
+    protection-exists: "<red>This region already protected by ChestProtect and you don't have permission to create shops at here."
+    shops-exsts: "<red>The region that you want to protect contains other player's shops and you don't have permission to access them."
 suite:
   dynmap:
     title: "{0} - {1} - {2}"

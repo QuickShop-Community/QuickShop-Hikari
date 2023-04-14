@@ -277,8 +277,8 @@ public class PasteGenerator {
         for (PasteItem pasteItem : pasteItems) {
             try {
                 builder.append(pasteItem.toHTML()).append("\n");
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Throwable e) {
+                QuickShop.getInstance().logger().warn("Cannot render the paste item {}, skipping...", pasteItem.getClass().getName(), e);
                 builder.append("<h3># ").append(pasteItem.getClass().getName()).append("</h3>")
                         .append("<br/>").append("Failed to render this paste item: <br/>").append(e.getMessage());
             }

@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Set;
+import java.util.logging.Level;
 
 public final class Main extends JavaPlugin implements Listener, SlashCommandProvider, Reloadable {
     private QuickShop plugin;
@@ -66,8 +67,7 @@ public final class Main extends JavaPlugin implements Listener, SlashCommandProv
         try {
             this.databaseHelper = new DiscordDatabaseHelper(this, plugin.getSqlManager(), plugin.getDbPrefix());
         } catch (SQLException e) {
-            e.printStackTrace();
-            getLogger().severe("Failed to connect to database, please check your database settings.");
+            getLogger().log(Level.SEVERE, "Failed to connect to database, please check your database settings.", e);
             Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
