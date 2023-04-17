@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.shop;
 import com.ghostchu.quickshop.api.shop.Info;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopAction;
+import com.ghostchu.quickshop.common.util.JsonUtil;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.Location;
@@ -24,6 +25,7 @@ public class SimpleInfo implements Info {
     private ShopAction action;
     private ItemStack item;
     private Shop shop;
+    private String shopData;
 
     public SimpleInfo(
             @NotNull Location loc,
@@ -56,7 +58,8 @@ public class SimpleInfo implements Info {
             this.item = item.clone();
         }
         if (shop != null) {
-            this.shop = new ContainerShop((ContainerShop) shop);
+            this.shop = shop;
+            this.shopData = JsonUtil.getGson().toJson(shop.saveToInfoStorage());
             this.dirty = shop.isDirty();
         } else {
             this.dirty = true;
@@ -109,25 +112,7 @@ public class SimpleInfo implements Info {
      */
     @Override
     public boolean hasChanged(@NotNull Shop shop) {
-        if (this.shop.isUnlimited() != shop.isUnlimited()) {
-            return true;
-        }
-        if (this.shop.getShopType() != shop.getShopType()) {
-            return true;
-        }
-        if (!this.shop.getOwner().equals(shop.getOwner())) {
-            return true;
-        }
-        if (this.shop.getPrice() != shop.getPrice()) {
-            return true;
-        }
-        if (!this.shop.getLocation().equals(shop.getLocation())) {
-            return true;
-        }
-        if (this.dirty != shop.isDirty()) {
-            return false;
-        }
-        return !this.shop.matches(shop.getItem());
+        return this.shopData.equals(JsonUtil.getGson().toJson(shop.saveToInfoStorage()));
     }
 
     @Override

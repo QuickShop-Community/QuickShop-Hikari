@@ -13,8 +13,6 @@ import com.ghostchu.simplereloadlib.ReloadStatus;
 import com.ghostchu.simplereloadlib.Reloadable;
 import com.google.common.collect.Lists;
 import com.google.gson.JsonSyntaxException;
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -31,9 +29,6 @@ import org.jetbrains.annotations.Nullable;
 public abstract class AbstractDisplayItem implements Reloadable {
 
     protected static final QuickShop PLUGIN = QuickShop.getInstance();
-    @Setter
-    @Getter
-    private static volatile boolean isNotSupportVirtualItem = false;
     protected final ItemStack originalItemStack;
     protected final Shop shop;
     @Nullable
@@ -54,15 +49,7 @@ public abstract class AbstractDisplayItem implements Reloadable {
      */
     @NotNull
     public static DisplayType getNowUsing() {
-        DisplayType displayType = DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
-        //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
-        if (isNotSupportVirtualItem && displayType == DisplayType.VIRTUALITEM) {
-            PLUGIN.getConfig().set("shop.display-type", 0);
-            PLUGIN.getJavaPlugin().saveConfig();
-            PLUGIN.logger().warn("Falling back to RealDisplayItem because {} type is unsupported.", displayType.name());
-            return DisplayType.REALITEM;
-        }
-        return displayType;
+        return DisplayType.fromID(PLUGIN.getConfig().getInt("shop.display-type"));
     }
 
     /**
@@ -332,4 +319,13 @@ public abstract class AbstractDisplayItem implements Reloadable {
      */
     public abstract void spawn();
 
+    /**
+     * Gets the shop that display holding
+     *
+     * @return The shop that display holding
+     */
+    @NotNull
+    public Shop getShop() {
+        return shop;
+    }
 }

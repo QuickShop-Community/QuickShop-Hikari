@@ -46,8 +46,18 @@ public class SubCommand_Debug implements CommandHandler<CommandSender> {
             case "force-shoploader-reload" -> handleShopsLoaderReload(sender, subParams);
             case "check-shop-status" -> handleShopDebug(sender, subParams);
             case "toggle-shop-load-status" -> handleShopLoading(sender, subParams);
+            case "check-shop-debug" -> handleShopInfo(sender, subParams);
             default -> plugin.text().of(sender, "debug.arguments-invalid", parser.getArgs().get(0)).send();
         }
+    }
+
+    private void handleShopInfo(CommandSender sender, List<String> subParams) {
+        Shop shop = getLookingShop(sender);
+        if (shop == null) {
+            plugin.text().of(sender, "not-looking-at-shop").send();
+            return;
+        }
+        MsgUtil.sendDirectMessage(sender, shop.toString());
     }
 
     private void handleShopLoading(CommandSender sender, List<String> remove) {

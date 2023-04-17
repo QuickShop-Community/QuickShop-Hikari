@@ -43,7 +43,7 @@ import com.ghostchu.quickshop.shop.*;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanel;
 import com.ghostchu.quickshop.shop.controlpanel.SimpleShopControlPanelManager;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
-import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
+import com.ghostchu.quickshop.shop.display.virtual.VirtualDisplayItemManager;
 import com.ghostchu.quickshop.shop.inventory.BukkitInventoryWrapperManager;
 import com.ghostchu.quickshop.shop.signhooker.SignHooker;
 import com.ghostchu.quickshop.util.*;
@@ -238,6 +238,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
     @Getter
     private BungeeListener bungeeListener;
     private RankLimiter rankLimiter;
+    @Nullable
+    @Getter
+    private VirtualDisplayItemManager virtualDisplayItemManager;
 
     public QuickShop(QuickShopBukkit javaPlugin, Logger logger, Platform platform) {
         this.javaPlugin = javaPlugin;
@@ -626,7 +629,11 @@ public class QuickShop implements QuickShopAPI, Reloadable {
         registerCommunicationChannels();
         new QSConfigurationReloadEvent(javaPlugin).callEvent();
         load3rdParty();
+        try (PerfMonitor ignored = new PerfMonitor("Self Test")) {
+            runtimeCheck(EnvCheckEntry.Stage.AFTER_ON_ENABLE);
+        }
         logger.info("QuickShop Loaded! " + enableTimer.stopAndGetTimePassed() + " ms.");
+
     }
 
     private void loadErrorReporter() {
@@ -660,6 +667,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
                 Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
                 if (protocolLibPlugin != null && protocolLibPlugin.isEnabled()) {
                     logger.info("Successfully loaded ProtocolLib support!");
+                    virtualDisplayItemManager = new VirtualDisplayItemManager(this);
                     if (getConfig().getBoolean("shop.per-player-shop-sign")) {
                         signHooker = new SignHooker(this);
                         logger.info("Successfully registered per-player shop sign!");
@@ -957,9 +965,9 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             logger.info("Cleaning up shop manager...");
             shopManager.clear();
         }
-        if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+        if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM && virtualDisplayItemManager != null) {
             logger.info("Cleaning up display manager...");
-            VirtualDisplayItem.VirtualDisplayItemManager.unload();
+            virtualDisplayItemManager.unload();
         }
         if (logWatcher != null) {
             logger.info("Stopping log watcher...");

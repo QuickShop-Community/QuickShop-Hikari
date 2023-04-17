@@ -22,7 +22,6 @@ import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.RealDisplayItem;
-import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -99,8 +98,6 @@ public class ContainerShop implements Shop, Reloadable {
     @EqualsAndHashCode.Exclude
     private InventoryPreview inventoryPreview = null;
     @EqualsAndHashCode.Exclude
-    private boolean isDisplayItemChanged = false;
-    @EqualsAndHashCode.Exclude
     private boolean dirty;
     @EqualsAndHashCode.Exclude
     private boolean updating = false;
@@ -120,35 +117,33 @@ public class ContainerShop implements Shop, Reloadable {
     @NotNull
     private Benefit benefit;
 
-    ContainerShop(@NotNull ContainerShop s) {
-        Util.ensureThread(false);
-        this.shopId = s.shopId;
-        this.shopType = s.shopType;
-        this.item = s.item.clone();
-        this.originalItem = s.originalItem.clone();
-        this.location = s.location.clone();
-        this.plugin = s.plugin;
-        this.unlimited = s.unlimited;
-        this.owner = s.owner;
-        this.price = s.price;
-        this.isLoaded = s.isLoaded;
-        this.isDeleted = s.isDeleted;
-        this.createBackup = s.createBackup;
-        this.extra = s.extra;
-        this.dirty = true;
-        this.inventoryPreview = null;
-        this.currency = s.currency;
-        this.disableDisplay = s.disableDisplay;
-        this.taxAccount = s.taxAccount;
-        this.inventoryWrapper = s.inventoryWrapper;
-        this.inventoryWrapperProvider = s.inventoryWrapperProvider;
-        this.symbolLink = s.symbolLink;
-        this.shopName = s.shopName;
-        this.playerGroup = s.playerGroup;
-        this.benefit = s.benefit;
-
-        checkDisplay();
-    }
+//    ContainerShop(@NotNull ContainerShop s) {
+//        Util.ensureThread(false);
+//        this.shopId = s.shopId;
+//        this.shopType = s.shopType;
+//        this.item = s.item.clone();
+//        this.originalItem = s.originalItem.clone();
+//        this.location = s.location.clone();
+//        this.plugin = s.plugin;
+//        this.unlimited = s.unlimited;
+//        this.owner = s.owner;
+//        this.price = s.price;
+//        this.isLoaded = s.isLoaded;
+//        this.isDeleted = s.isDeleted;
+//        this.createBackup = s.createBackup;
+//        this.extra = s.extra;
+//        this.dirty = true;
+//        this.inventoryPreview = null;
+//        this.currency = s.currency;
+//        this.disableDisplay = s.disableDisplay;
+//        this.taxAccount = s.taxAccount;
+//        this.inventoryWrapper = s.inventoryWrapper;
+//        this.inventoryWrapperProvider = s.inventoryWrapperProvider;
+//        this.symbolLink = s.symbolLink;
+//        this.shopName = s.shopName;
+//        this.playerGroup = s.playerGroup;
+//        this.benefit = s.benefit;
+//    }
 
 
     /**
@@ -339,26 +334,28 @@ public class ContainerShop implements Shop, Reloadable {
     @Override
     public void checkDisplay() {
         Util.ensureThread(false);
-
         boolean displayStatus = plugin.isDisplayEnabled() && !isDisableDisplay() && this.isLoaded() && !this.isDeleted();
-
         if (!displayStatus) {
             if (this.displayItem != null) {
                 this.displayItem.remove();
-                this.displayItem = null;
             }
             return;
         }
-
-        if (displayItem == null) {
+        if (this.displayItem == null) {
             try {
                 DisplayProvider provider = ServiceInjector.getInjectedService(DisplayProvider.class, null);
                 if (provider != null) {
                     this.displayItem = provider.provide(this);
                 } else {
                     this.displayItem = switch (AbstractDisplayItem.getNowUsing()) {
-                        case REALITEM -> new RealDisplayItem(this);
-                        default -> new VirtualDisplayItem(this);
+                        case VIRTUALITEM -> {
+                            if (plugin.getVirtualDisplayItemManager() != null) {
+                                yield plugin.getVirtualDisplayItemManager().createVirtualDisplayItem(this);
+                            } else {
+                                yield new RealDisplayItem(this);
+                            }
+                        }
+                        default -> new RealDisplayItem(this);
                     };
                 }
             } catch (Error anyError) {
@@ -366,11 +363,9 @@ public class ContainerShop implements Shop, Reloadable {
                 return;
             }
         }
-
-
         if (!this.displayItem.isSpawned()) {
             /* Not spawned yet. */
-            displayItem.spawn();
+            this.displayItem.spawn();
         } else {
             /* If not spawned, we didn't need check these, only check them when we need. */
             if (this.displayItem.checkDisplayNeedRegen()) {

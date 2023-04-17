@@ -64,6 +64,7 @@ jobs:
             1.19.1
             1.19.2
             1.19.3
+            1.19.4
           java: |
             17
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
