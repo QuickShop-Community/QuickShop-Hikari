@@ -6,8 +6,6 @@ import com.ghostchu.quickshop.api.GameVersion;
 import com.ghostchu.quickshop.api.shop.display.DisplayType;
 import com.ghostchu.quickshop.common.util.CommonUtil;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
-import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
-import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.ReflectFactory;
 import com.ghostchu.quickshop.util.Util;
@@ -17,13 +15,7 @@ import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public final class EnvironmentChecker {
     private static final String CHECK_PASSED_RETURNS = "Check passed";
@@ -299,7 +291,7 @@ public final class EnvironmentChecker {
         return success;
     }
 
-    @EnvCheckEntry(name = "Virtual DisplayItem Support Test", priority = 7)
+    @EnvCheckEntry(name = "Virtual DisplayItem Support Test", priority = 7, stage = EnvCheckEntry.Stage.AFTER_ON_ENABLE)
     public ResultContainer virtualDisplaySupportTest() {
         String nmsVersion = ReflectFactory.getNMSVersion();
         GameVersion gameVersion = GameVersion.get(nmsVersion);
@@ -308,18 +300,29 @@ public final class EnvironmentChecker {
             throwable = new IllegalStateException("Version not supports Virtual DisplayItem.");
         } else {
             if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
-                throwable = VirtualDisplayItem.PacketFactory.testFakeItem();
+                if (plugin.getVirtualDisplayItemManager() != null) {
+                    throwable = plugin.getVirtualDisplayItemManager().getPacketFactory().testFakeItem();
+                } else {
+                    throwable = new IllegalStateException("VirtualDisplayItemManager is null.");
+                }
             } else {
-                AbstractDisplayItem.setNotSupportVirtualItem(true);
-                return new ResultContainer(CheckResult.WARNING, "ProtocolLib is not installed, virtual DisplayItem seems will not work on your server.");
+                throwable = new IllegalStateException("ProtocolLib is not installed, virtual DisplayItem seems will not work on your server.");
             }
         }
         if (throwable != null) {
-            Log.debug(throwable.getMessage());
-            MsgUtil.debugStackTrace(throwable.getStackTrace());
-            AbstractDisplayItem.setNotSupportVirtualItem(true);
+            if (plugin.getVirtualDisplayItemManager() != null) {
+                plugin.getVirtualDisplayItemManager().setTestPassed(false);
+            }
             //do not throw
             plugin.logger().error("Virtual DisplayItem Support Test: Failed to initialize VirtualDisplayItem", throwable);
+
+            //Falling back to RealDisplayItem when VirtualDisplayItem is unsupported
+            if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
+                plugin.getConfig().set("shop.display-type", 0);
+                plugin.getJavaPlugin().saveConfig();
+                plugin.logger().warn("Falling back to RealDisplayItem because {} type is unsupported.", DisplayType.VIRTUALITEM);
+
+            }
             return new ResultContainer(CheckResult.WARNING, "Virtual DisplayItem seems to not work on this Minecraft server, Make sure QuickShop, ProtocolLib and server builds are up to date.");
         } else {
             return new ResultContainer(CheckResult.PASSED, "Passed checks");

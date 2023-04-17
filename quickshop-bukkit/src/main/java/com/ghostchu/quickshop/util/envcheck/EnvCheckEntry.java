@@ -16,6 +16,7 @@ public @interface EnvCheckEntry {
     enum Stage {
         CONSTRUCTOR,
         ON_LOAD,
-        ON_ENABLE
+        ON_ENABLE,
+        AFTER_ON_ENABLE
     }
 }

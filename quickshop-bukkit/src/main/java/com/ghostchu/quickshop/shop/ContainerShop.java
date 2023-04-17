@@ -22,7 +22,6 @@ import com.ghostchu.quickshop.economy.SimpleEconomyTransaction;
 import com.ghostchu.quickshop.shop.datatype.ShopSignPersistentDataType;
 import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.RealDisplayItem;
-import com.ghostchu.quickshop.shop.display.VirtualDisplayItem;
 import com.ghostchu.quickshop.util.MsgUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
@@ -357,7 +356,7 @@ public class ContainerShop implements Shop, Reloadable {
                 } else {
                     this.displayItem = switch (AbstractDisplayItem.getNowUsing()) {
                         case REALITEM -> new RealDisplayItem(this);
-                        default -> new VirtualDisplayItem(this);
+                        default -> plugin.getVirtualDisplayItemManager().createVirtualDisplayItem(this);
                     };
                 }
             } catch (Error anyError) {
