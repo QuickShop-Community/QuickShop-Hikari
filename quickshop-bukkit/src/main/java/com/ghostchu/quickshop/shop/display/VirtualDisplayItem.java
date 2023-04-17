@@ -54,8 +54,8 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     //cache chunk x and z
     private SimpleShopChunk chunkLocation;
     //If packet initialized
-    private volatile boolean initialized = false;
-    private volatile boolean isSpawned = false;
+    private final AtomicBoolean initialized = new AtomicBoolean(false);
+    private final AtomicBoolean isSpawned = new AtomicBoolean(false);
     //packets
     private PacketContainer fakeItemSpawnPacket;
     private PacketContainer fakeItemMetaPacket;
@@ -100,7 +100,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
 
     @Override
     public boolean isSpawned() {
-        return isSpawned;
+        return isSpawned.get();
     }
 
     @Override
@@ -114,7 +114,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
         if (isSpawned()) {
             sendPacketToAll(fakeItemDestroyPacket);
             unload();
-            isSpawned = false;
+            isSpawned.set(false);
         }
     }
 
@@ -138,7 +138,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     @Override
     public void spawn() {
         Util.ensureThread(false);
-        if (isSpawned || shop.isDeleted() || !shop.isLoaded()) {
+        if (isSpawned.get() || shop.isDeleted() || !shop.isLoaded()) {
             return;
         }
         if (new ShopDisplayItemSpawnEvent(shop, originalItemStack, DisplayType.VIRTUALITEM).callCancellableEvent()) {
@@ -148,7 +148,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
         }
 
         //lazy initialize
-        if (!initialized) {
+        if (!initialized.get()) {
             initFakeDropItemPacket();
         }
 
@@ -162,7 +162,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
         }*/
 
         sendFakeItemToAll();
-        isSpawned = true;
+        isSpawned.set(true);
     }
 
     private void initFakeDropItemPacket() {
@@ -170,7 +170,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
         fakeItemMetaPacket = PacketFactory.createFakeItemMetaPacket(entityID, getOriginalItemStack().clone());
         fakeItemVelocityPacket = PacketFactory.createFakeItemVelocityPacket(entityID);
         fakeItemDestroyPacket = PacketFactory.createFakeItemDestroyPacket(entityID);
-        initialized = true;
+        initialized.set(true);
     }
 
     //Due to the delay task in ChunkListener
@@ -196,6 +196,10 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
         sendPacket(player, fakeItemSpawnPacket);
         sendPacket(player, fakeItemMetaPacket);
         sendPacket(player, fakeItemVelocityPacket);
+    }
+
+    public void sendDestroyItem(@NotNull Player player) {
+        sendPacket(player, fakeItemDestroyPacket);
     }
 
     private void sendPacket(@NotNull Player player, @NotNull PacketContainer packet) {
@@ -272,6 +276,7 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
                                     continue;
                                 }
                                 target.packetSenders.add(player.getUniqueId());
+                                target.sendDestroyItem(player);
                                 target.sendFakeItem(player);
                             }
                             return targetList;

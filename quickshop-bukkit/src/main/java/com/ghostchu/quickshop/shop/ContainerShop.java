@@ -345,7 +345,6 @@ public class ContainerShop implements Shop, Reloadable {
         if (!displayStatus) {
             if (this.displayItem != null) {
                 this.displayItem.remove();
-                this.displayItem = null;
             }
             return;
         }
