@@ -112,7 +112,7 @@ public class SimpleInfo implements Info {
      */
     @Override
     public boolean hasChanged(@NotNull Shop shop) {
-        return this.shopData.equals(JsonUtil.getGson().toJson(shop.saveToInfoStorage()));
+        return !this.shopData.equals(JsonUtil.getGson().toJson(shop.saveToInfoStorage()));
     }
 
     @Override
