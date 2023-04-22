@@ -235,34 +235,34 @@ quickshop-gui-preview: '"Parduotuvės plugino" GUI elementų apžiūra'
 translate-not-completed-yet-click: Kalbos vertimas iš {0} dar nebaigtas {1}. Ar norite padėti mums tobulinti vertimą? Spauskite čia!
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
 player-bought-from-your-store: <green>{0} Kažkas nusipirko{1}{2} iš jūsų parduotuvės ir jūs gavote{3}.
-reached-maximum-can-create: <red>You already created a maximum of {0}/{1} shops!
-reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
-translation-version: 'Support Version: Hikari'
-no-double-chests: <red>You cannot create a double chest shop.
-price-too-cheap: <red>Price must be greater than <yellow>${0}
-shop-not-exist: <red>There is no shop.
-bad-command-usage: <red>Bad command arguments!
-cleanghost-warning: <yellow>This command will purge <red>all</red> shops if the shop is corrupted, was created in not allowed worlds, is selling/buying not allowed items or <red><bold>EXISTS IN A UNLOADED WORLD</bold></red>. Make sure to create a full backup of your shop data first and use <aqua>/qs cleanghost confirm</aqua> to continue.
-cleanghost-starting: <green>Starting to check for ghost shops (missing container blocks). All non-existing shops will be removed...
-cleanghost-deleting: <yellow>Found a corrupted shop <aqua>{0}</aqua> because {1}, mark it to delete...
-cleanghost-deleted: <green>Total <yellow>{0}</yellow> shops have been deleted.
-shop-purchase-cancelled: <red>Shop purchase cancelled.
-bypassing-lock: <red>Bypassing a QuickShop lock!
-bungee-cross-server-msg: '<yellow>QuickShop CSM: <green>{0}'
-saved-to-path: The Backup was saved to {0}.
-shop-now-freezed: <green>You have frozen the shop. Nobody can trade with this shop now!
-price-is-now: <green>The new price of the shop is <yellow>{0}
-shops-arent-locked: <red>Remember, shops are NOT protected from theft! If you want to stop thieves, lock it with LWC, Lockette, or similar!
-that-is-locked: <red>This shop is locked.
-shop-has-no-space: <red>The shop only has room for {0} more {1}.
+reached-maximum-can-create: <red>Jūs jau sukūrėte maksimumalų kiekį {0}/{1} parduotuvių!
+reached-maximum-create-limit: <red>Pasiekėte parduotuvių sukūrimo limitą
+translation-version: 'Palaikymo versija: Hikari'
+no-double-chests: <red>Jūs negalite sukurti double chest parduotuvės.
+price-too-cheap: <red>Kaina turi būti didesnė nei <yellow>${0}
+shop-not-exist: <red>Čia parduotuvės nėra.
+bad-command-usage: <red>Blogi komandų/os argumentai!
+cleanghost-warning: <yellow>Ši komanda išvalys <red>visas</red> parduotuves, jei parduotuvė yra sugadinta, buvo sukurta neleistinuose pasauliuose, parduoda / perka neleidžiamas prekes arba <red><bold>EGZISTUOJA NEPAKRAUTAME PASAULYJE</bold></red>. Pirmiausia būtinai sukurkite visą parduotuvės duomenų atsarginę kopiją ir naudokite <aqua>/qs cleanghost, kad patvirtinti</aqua> ir galėtumėte tęsti.
+cleanghost-starting: <green>Pradedama tikrinti, ar nėra vaiduoklių parduotuvių. Visos neegzistuojančios parduotuvės bus pašalintos...
+cleanghost-deleting: <yellow>Radome sugadintą parduotuvę <aqua>{0}</aqua> nes {1}, pažymėkite jį, kad ištrintumėte...
+cleanghost-deleted: <green>Bendrai <yellow>{0}</yellow> parduotuvės buvo ištrintos.
+shop-purchase-cancelled: <red>Pirkimas buvo atšauktas.
+bypassing-lock: <red>Apeinama "Parduotuvės plugino" užraktą!
+bungee-cross-server-msg: '<yellow>"Parduotuvės plugino" CSM: <green>{0}'
+saved-to-path: Atsarginė kopija buvo išsaugota {0}.
+shop-now-freezed: <green>Jūs uždarėte laikinai parduotuvę. Niekas negali prekiauti su šia parduotuve dabar!
+price-is-now: <green>Nauja parduotuvės kaina – <yellow>{0}
+shops-arent-locked: <red>Atminkite, kad parduotuvės NĖRA apsaugotos nuo vagysčių! Jei norite sustabdyti vagis, užrakinkite jį naudojant LWC, Lockette ar panašiai!
+that-is-locked: <red>Ši parduotuvė užrakinta.
+shop-has-no-space: <red>Parduotuvėje turi vietos tik {0} Daugiau {1}.
 safe-mode-admin: '<red><bold>WARNING: </bold>The QuickShop on this server now running under safe-mode, no features will working, please type <yellow>/qs </yellow> command to check any errors.'
-shop-stock-too-low: <red>The shop only has {0} {1} left!
+shop-stock-too-low: <red>Parduotuvėje turi tik {0} {1} likutį!
 world-not-exists: <red>The world <yellow>{0}<red> doesn't exist
 how-many-sell: <green>Enter in chat, how much you wish to <light_purple>SELL<green>. You can sell <yellow>{0}<green>. Enter <aqua>{1}<green> in chat, to sell all.
-shop-freezed-at-location: <yellow>Your shop {0} at {1} got frozen!
-translation-contributors: 'Contributors: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken and Andre_601'
+shop-freezed-at-location: <yellow>Jūsų parduotuvė {0} prie {1} buvo uždaryta!
+translation-contributors: 'Autoriai: Timtower, Netherfoam, KaiNoMood, Mgazul, JackTheChicken ir Andre_601'
 empty-success: <green>Emptying shop successful
-taxaccount-set: <green>This shop's tax account has been set to <yellow>{0}
+taxaccount-set: <green>Šios parduotuvės mokesčių sąskaita nustatyta į <yellow>{0}
 support-disable-reason:
   hot-reload: <yellow>Unsupported hot reloaded, restart the server and check again.
   outdated: <yellow>This version of QuickShop is already outdated. Update before requesting support!
@@ -273,26 +273,26 @@ support-disable-reason:
   authlib-injector-detected: <yellow>This server running under 3rd-party authlib provider like authlib-injector.
   unsupported-server-software: <yellow>Unsupported server software, Any modded hybrid server software is unsupported including MCPC, Cauldron, CatServer, Mohist, Magma, Fukkit, Cardboard etc.
 supertool-is-disabled: <red>Supertool is disabled. Cannot break any shops.
-unknown-owner: Unknown
-restricted-prices: '<red>Restricted price for {0}: Min {1}, max {2}'
-nearby-shop-this-way: <green>Shop is {0} block(s) away from you.
-owner-bypass-check: <yellow>Bypassed all checks. Trade successful! (You are now the shop owner!)
+unknown-owner: Nežinomas/a
+restricted-prices: '<red>Ribota kaina nuo {0}: Min {1}. max {2}'
+nearby-shop-this-way: <green>Parduotuvė yra {0} blokais toliau nuo jūsų.
+owner-bypass-check: <yellow>Praėjote visus patikrtinimus. Mainai sėkmingai pavyko! (Nuo šiol jūs esate šios parduotuvės savininkas)
 april-rick-and-roll-easter-egg: |
   <green>---------------------------------------------------</green>
-  <rainbow><bold>LIMITED TIME EVENT -- QuickShop-Hikari</bold></rainbow>
-  <yellow>Get your <gold>PREMIUM</gold> particle effect on all QuickShop server!</yellow>
-  <aqua>Claim it by watch the video tutorial below!</aqua>
-  <hover:show_text:'<gold>Click to open rewards claim page in your browser.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
+  <rainbow><bold>RIBOTO LAIKO PASIŪLYMAS -- QuickShop-Hikari</bold></rainbow>
+  <yellow>Gaukite savo <gold>PREMIUM</gold> dalelių poveikis visam "QuickShop" serveriui!</yellow>
+  <aqua>Pareikškite tai žiūrėdami toliau pateiktą vaizdo įrašo pamoką!</aqua>
+  <hover:show_text:'<gold>Spustelėkite, kad atidarytumėte premijų paraiškos puslapį naršyklėje.</gold><click:open_url:'https://youtu.be/dQw4w9WgXcQ'>https://youtu.be/dQw4w9WgXcQ</click></hover>
   <green>---------------------------------------------------</green>
 signs:
   item-right: ''
-  out-of-space: Out of Space
-  unlimited: Unlimited
-  stack-selling: Selling {0}
-  stack-price: '{0} per {1}x {2}'
+  out-of-space: Nepakanka vietos
+  unlimited: Nesibaigiantis
+  stack-selling: Parduodama {0}
+  stack-price: '{0} už {1}x {2}'
   status-unavailable: <red>
-  out-of-stock: Out of Stock
-  stack-buying: Buying {0}
+  out-of-stock: Išparduota
+  stack-buying: Superkama {0}
   freeze: Trading disabled
   price: '{0} vienas'
   buying: Pirkti{0}
@@ -398,21 +398,21 @@ command:
     purge: <yellow>Start the shop purge task in background
     paste: <yellow>Įkelia serverio duomenis į Pastebin
     title: <green>"Pplugino pagalba
-    remove: <yellow>Removes the shop you're looking at
-    ban: <yellow>Ban a player from the shop
-    empty: <yellow>Removes all items from a shop
+    remove: <yellow>Pašalinti parduotuvę, į kurią žiūrite
+    ban: <yellow>Uždrauskite žaidėjui pirkti iš šios parduotuvės
+    empty: <yellow>Pašalinti visas prekes iš parduotuvės
     alwayscounting: <yellow>Set if shop always counting container even is unlimited
-    setowner: <yellow>Changes the ownership of a shop.
-    reload: <yellow>Reloads the config.yml of QuickShop
-    freeze: <yellow>Disable or Enable shop trading
-    price: <yellow>Changes the buy/sell price of a shop
-    find: <yellow>Locates the nearest shop of a specific type.
+    setowner: <yellow>Pakeisti parduotuvės savininką.
+    reload: <yellow>Iš naujo įkeliama "Parduotuvės plugino" config.yml
+    freeze: <yellow>Išjungti arba Įjungti parduotuve
+    price: <yellow>Keičia parduotuvės pirkimo/pardavimo kainą
+    find: <yellow>Randa artimiausią konkretaus tipo parduotuvę.
     create: <yellow>Creates a new shop from the targeted chest
     lock: <yellow>Switch the shop's lock status
     currency: <yellow>Set or remove the currency setting of the shop
     removeworld: <yellow>Remove ALL shops in a specified world
     info: <yellow>Show QuickShop statistics
-    owner: <yellow>Changes the ownership of a shop.
+    owner: <yellow>Pakeisti parduotuvės savininką.
     amount: <yellow>To set item amount (Useful when having chat issues)
     item: <yellow>Change shop item of a shop
     debug: <yellow>Enables Developer mode
@@ -1331,7 +1331,7 @@ addon:
     table-prefix: "<yellow><green>{0}</green>'s shops <gray>(Total {1})</gray>: "
     entry: "<hover:show_text:'<yellow>{1}</yellow>\n<gray>{2} {3},{4},{5}</gray>\n<aqua>Price <yellow>{6}</yellow> - <light_purple>x{7}</light_purple> <yellow>{8}</yellow>\n<green>{9}'><yellow>{0}. <aqua>{1}</aqua></hover>"
   shopitemonly:
-    message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+    message: "<red>Negalite įdėti draudžiamų prekių į parduotuve, visos ne parduotuvei skirtos prekės bus išmestos jūsų esamoje vietoje."
   limited:
     commands:
       limit: "<yellow>Set a limit that restrict the purchase that player can make in period"
@@ -1387,10 +1387,10 @@ suite:
     command-description: "<yellow>List all shops owned by yourself or another player."
     table-prefix: "<yellow>You owned total <aqua>{0}</aqua> shops on this server."
     entry-syntax: "<aqua>- <yellow>{0}"
-    entry-syntax-fallback-name: "<yellow>Item:{0} X:{1}, Y:{2}, Z:{3}, World: {4}"
-    hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} items each stack."
+    entry-syntax-fallback-name: "<yellow>Prekė:{0} X:{1}, Y:{2}, Z:{3} Pasaulis: {4}"
+    hover-text: "<yellow>{0}\n<gray>{1} {2}, {3}, {4}\n<aqua>{5} - <yellow>{6}\n<yellow>{7} Daiktai viename stacke."
   shopitemonly:
-    message: "<red>You can't put non-shop items into shop container, all non-shop items will dropped at your location."
+    message: "<red>Negalite įdėti draudžiamų prekių į parduotuve, visos ne parduotuvei skirtos prekės bus išmestos jūsų esamoje vietoje."
 compatibility:
   elitemobs:
-    soulbound-disallowed: "You can't trade item which have EliteMobs Soulbound enchantment."
+    soulbound-disallowed: "Negalite prekiauti prekėmis, kurios dropinamos su \"EliteMobs plugino\" enchantais."
