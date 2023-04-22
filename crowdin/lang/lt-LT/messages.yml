@@ -218,23 +218,23 @@ updatenotify:
     - Ko~ko~da~yo~ "Parduotuvių pluginas" turi naują atnaujinimą {0} ~
     - Paimon nori pasakyti, kad "Parduotuvių pluginas" turi naują atnaujinimą {0}!
   remote-disable-warning: '<red>This version of QuickShop is marked as disabled by the remote server, which means this version may have serious problem, get details from our SpigotMC page: {0}. This warning will continue to appear until you switch to a stable version, but it will not affect your server''s performance.'
-purchase-out-of-stock: <red>This shop has run out of stock. Contact the shop owner or staff to get it refilled.
-nearby-shop-entry: '<green>- Info: {0} <green>Price: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Distance: <aqua>{5} <green>block(s)'
-chest-title: QuickShop Store
+purchase-out-of-stock: <red>Šioje parduotuvėje baigėsi atsargos. Susisiekite su parduotuvės savininku arba darbuotojais, kad atsargos būtų papildytos.
+nearby-shop-entry: '<green>-Informacija: {0} <green>Kaina: <aqua>{1} <green>X: <aqua>{2} <green>Y: <aqua>{3} <green>Z: <aqua>{4} <green>Nuotolis: <aqua>{5} <green>blokas (-ai)'
+chest-title: '"Parduotuvės plugino" parduotuvė'
 console-only: <red>This command can only be executed by Console.
-failed-to-put-sign: <red>Not enough space around the shop to place the info sign.
+failed-to-put-sign: <red>Nepakanka vietos aplink, kad būtų galima pastatyti informacine lentele.
 shop-name-unset: <red>This shop's name now removed
-shop-nolonger-freezed: <green>You unfroze the shop. It's back to normal now!
-no-permission-build: <red>You cannot build a shop here.
+shop-nolonger-freezed: <green>Jūs atidarėte parduotuve vėl. Dabar ji veikia standartiškai!
+no-permission-build: <red>Jūs čia negalite statyti parduotuvės.
 tableformat:
   left_half_line: <dark_purple>+--------------------
   right_half_line: <dark_purple>--------------------+
   full_line: <dark_purple>+---------------------------------------------------+
   left_begin: '<dark_purple>| '
-quickshop-gui-preview: QuickShop GUI Item Preview
-translate-not-completed-yet-click: The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Click here!
+quickshop-gui-preview: '"Parduotuvės plugino" GUI elementų apžiūra'
+translate-not-completed-yet-click: Kalbos vertimas iš {0} dar nebaigtas {1}. Ar norite padėti mums tobulinti vertimą? Spauskite čia!
 taxaccount-invalid: <red>Target account not invalid, please enter a valid player name or uuid(with dashes).
-player-bought-from-your-store: <green>{0} purchased {1} {2} from your shop, and you earned {3}.
+player-bought-from-your-store: <green>{0} Kažkas nusipirko{1}{2} iš jūsų parduotuvės ir jūs gavote{3}.
 reached-maximum-can-create: <red>You already created a maximum of {0}/{1} shops!
 reached-maximum-create-limit: <red>You have reached the maximum number of shops you can create
 translation-version: 'Support Version: Hikari'
