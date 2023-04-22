@@ -393,11 +393,11 @@ command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
     buy: <yellow>Changes a shop to <light_purple>BUY<yellow> mode
-    about: <yellow>Shows QuickShop info
-    language: <yellow>Change the currently used language
+    about: <yellow>Rodyti "Parduotuvės Pluginas" informacija
+    language: <yellow>Pakeisti šiuo metu naudojama kalbą
     purge: <yellow>Start the shop purge task in background
-    paste: <yellow>Uploads server data to Pastebin
-    title: <green>QuickShop help
+    paste: <yellow>Įkelia serverio duomenis į Pastebin
+    title: <green>"Pplugino pagalba
     remove: <yellow>Removes the shop you're looking at
     ban: <yellow>Ban a player from the shop
     empty: <yellow>Removes all items from a shop
