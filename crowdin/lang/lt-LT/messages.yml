@@ -407,32 +407,32 @@ command:
     freeze: <yellow>Išjungti arba Įjungti parduotuve
     price: <yellow>Keičia parduotuvės pirkimo/pardavimo kainą
     find: <yellow>Randa artimiausią konkretaus tipo parduotuvę.
-    create: <yellow>Creates a new shop from the targeted chest
-    lock: <yellow>Switch the shop's lock status
-    currency: <yellow>Set or remove the currency setting of the shop
-    removeworld: <yellow>Remove ALL shops in a specified world
-    info: <yellow>Show QuickShop statistics
+    create: <yellow>Sukuria naują parduotuvę nuo nutaikytos parduotuvės
+    lock: <yellow>Parduotuvės užrakto statuso pakeitimas
+    currency: <yellow>Parduotuvės valiutos nustatymas arba pašalinimas
+    removeworld: <yellow>Pašalinkite VISAS parduotuves nurodytame pasaulyje
+    info: <yellow>Rodyti "Parduotuvių plugino" statistiką
     owner: <yellow>Pakeisti parduotuvės savininką.
     amount: <yellow>To set item amount (Useful when having chat issues)
-    item: <yellow>Change shop item of a shop
-    debug: <yellow>Enables Developer mode
-    unlimited: <yellow>Gives a shop unlimited stock.
+    item: <yellow>Pakeisti parduotuvės parduodama daiktą
+    debug: <yellow>Įjungti kūrėjo režimą
+    unlimited: <yellow>Suteikia parduotuvei neribotas atsargas.
     sell: <yellow>Changes a shop to <aqua>SELL<yellow> mode
-    fetchmessage: <yellow>Show unread shop messages
-    staff: <yellow>Manage your shop staff
-    clean: <yellow>Removes all (loaded) shops without any stock
-    refill: <yellow>Adds a given number of items to a shop
+    fetchmessage: <yellow>Rodyti neskaitytas su parduotuve susijusias žinutes
+    staff: <yellow>Valdyti savo parduotuvės administratorius
+    clean: <yellow>Pašalina visas (esamas) parduotuves kurios neturi jokių atsargų
+    refill: <yellow>Prideda nurodytą daiktų skaičių parduotuvėje
     help: <yellow>Shows QuickShop help
-    removeall: <yellow>Remove ALL shops of a specified player
-    unban: <yellow>Unban a player from the shop
+    removeall: <yellow>Pašalinkite VISAS parduotuves nurodytame specifiniame pasaulyje
+    unban: <yellow>Atbockuoti (unbaninti) žaidėją iš parduotuvės
     transfer: <yellow>Transfer someone's ALL shops to other
     size: <yellow>Change per bulk amount of a shop
-    supercreate: <yellow>Create a shop while bypassing all protection checks
+    supercreate: <yellow>Sukurkite parduotuvę apeidami visus apsaugos patikrinimus
     taxaccount: <yellow>Set the tax account that shop using
     name: <yellow>Naming a shop to specific name
     toggledisplay: <yellow>Toggle the shop display item status
-    permission: <yellow>Shop permission management
-    lookup: <yellow>Manage lookup-able items table
+    permission: <yellow>Parduotuvės leidimų valdymas
+    lookup: <yellow>Peržiūrėti matomų daiktų lentele
     database: <yellow>View and maintain QuickShop database
     benefit: <yellow>Settings of divide benefits between shop owner and other players
     tag: <yellow>Add, remove or query tags of a shop
