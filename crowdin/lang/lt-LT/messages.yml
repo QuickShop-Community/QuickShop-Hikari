@@ -111,50 +111,50 @@ menu:
   space: '<green>Vieta:<yellow>{0}'
   effects: <green>efektai
   damage-percent-remaining: <yellow>{0}% <green>Liko.
-  item-holochat-data-too-large: <red>[Error] Item NBT is too large to display
-  stock: '<green>Stock: <yellow>{0}'
-  this-shop-is-buying: <green>This shop is <light_purple>BUYING<green> items.
-  successfully-sold: '<green>Successfully sold:'
-  total-value-of-chest: '<green>Total value of chest: <yellow>{0}'
-currency-not-exists: <red>Cannot find the currency that you want to set. Maybe the spelling is wrong or that currency isn't available in this world.
-no-nearby-shop: <red>No nearby shops matching {0}.
+  item-holochat-data-too-large: <red>[Error] Daiktų kiekis per didelis, kad būtų atvaizduotas
+  stock: '<green>Atsargos: <yellow>{0}'
+  this-shop-is-buying: <green>Ši parduotuvė <light_purple>SUPERKA<green> daiktus.
+  successfully-sold: '<green>Sėkmingai parduota:'
+  total-value-of-chest: '<green>Galutinė chesto vertė:<yellow>{0}'
+currency-not-exists: <red>Nepavyksta rasti valiutos, kurią norite nustatyti. Galbūt rašyba neteisinga arba šios valiutos nėra.
+no-nearby-shop: <red>Nėra netoliese esančių parduotuvių {0}.
 translation-author: 'Translator: Ghost_chu, Andre_601'
-integrations-check-failed-trade: <red>Integration {0} denied the Shop trading
+integrations-check-failed-trade: <red>Integracija {0} paneigė Parduotuvės siūloma trade
 shop-transaction-failed: <red>Sorry, but an internal error occurred while processing your purchase. The purchase has been cancelled and any operation has been rollback. Please contact the server administrators if it keeping occurred.
-success-change-owner-to-server: <green>Successfully set the shop owner to Server.
+success-change-owner-to-server: <green> Sėkmingai nustatėte parduotuvės savininką.
 shop-name-not-found: <red>The shop named <yellow>{0}</yellow> not exists.
-shop-name-too-long: <red>This shop name is too long (max length {0}), please pick another one!
+shop-name-too-long: <red>Parduotuvės pavadinimas per ilgas (Maksimalus ilgis {0}), prašome susikurti kitoki!
 metric:
-  header-player: '<yellow>{0}''s {1} {2} transactions:'
+  header-player: '<yellow>{0} eurų. {1} {2} Pervedimo operacijos:'
   action-hover: <yellow>{0}
-  price-hover: <yellow>Total {0}, including {1} taxes.
-  unknown: <gray>(unknown)
+  price-hover: <yellow>Išviso{0}, įskaitant{1} atskaičius mokesčius.
+  unknown: <gray>(nežinomas)
   undefined: <gray>(noname)
-  no-results: <red>No transactions found.
+  no-results: <red>Jokių mokesčių nėra.
   action-description:
     DELETE: <yellow>Player deleted a shop. And refunded the shop creation fee to owner if possible.
     ONGOING_FEE: <yellow>Player paid the ongoing fee because the payment period.
-    PURCHASE_BUYING_SHOP: <yellow>Player sold some items to a buying shop.
-    CREATE: <yellow>Player created a shop.
-    PURCHASE_SELLING_SHOP: <yellow>Player bought some items from a selling shop
-    PURCHASE: <yellow>Purchased item with a shop
-  query-argument: 'Query Argument: {0}'
+    PURCHASE_BUYING_SHOP: <yellow>Žaidėjas nusipirko daiktų iš supirkimo parduotuvės.
+    CREATE: <yellow>Žaidėjas sukurė parduotuvę.
+    PURCHASE_SELLING_SHOP: <yellow>Žaidėjas nusipirko daiktų iš parduodamos parduotuvės
+    PURCHASE: <yellow>Įsigyta prekė parduotuvėje
+  query-argument: 'Užklausos argumentas: {0}'
   amount-hover: <yellow>{0}x
-  header-shop: '<yellow>The shop {0}''s {1} {2} transactions:'
+  header-shop: '<yellow>Parduotuvės {0} eurų. {1} {2} Pervedimo operacijos:'
   player-hover: '<yellow>{0}<newline><gold>UUID: <gray>{1}'
-  looking-up: <yellow>Performing metric lookup, Please wait...
-  tax-hover: <yellow>{0} taxes
-  header-global: '<yellow>The server {0} {1} transactions:'
+  looking-up: <yellow>Atliekama metrikos paiešką, palaukite...
+  tax-hover: <yellow>{0} Mokesčiai
+  header-global: '<yellow>Serverio {0} {1} Pervedimo operacijos:'
   na: <gray>N/A
-  transaction-count: <yellow>{0} total
-  shop-hover: '<yellow>{0}<newline><gold>Pos: <gray>{1} {2} {3}, World: {4}<newline><gold>Owner: <gray>{5}<newline><gold>Shop Type: <gray>{6}<newline><gold>Item: <gray>{7}<newline><gold>Price: <gray>{8}'
-  time-hover: '<yellow>Time: {0}'
-  amount-stack-hover: <yellow>{0}x stack
-permission-denied-3rd-party: <red>Permission denied by 3rd-party Plugin {0}.
-you-dont-have-that-many-items: <red>You only have {0} {1}.
-complete: <green>Complete!
-translate-not-completed-yet-url: 'The translation of the language {0} was not completed yet by {1}. Do you want to help us improving the translation? Browse: {2}'
-success-removed-shop: <green>Shop removed.
+  transaction-count: <yellow>{0} Išviso
+  shop-hover: '<yellow>{0}<newline><gold>Vieta: <gray>{1} {2} {3} Pasaulis: {4}<newline><gold>Savininkas: <gray>{5}<newline><gold>Parduotuvės tipas: <gray>{6}<newline><gold>Daiktas: <gray>{7}<newline><gold>Kaina: <gray>{8}'
+  time-hover: '<yellow>Laikas: {0}'
+  amount-stack-hover: <yellow>{0}x Stackas
+permission-denied-3rd-party: <red>Leidimas neleidžiamas naudojant 3rd-party pluginą {0}.
+you-dont-have-that-many-items: <red>Jūs turite tik {0} {1}.
+complete: <green>Užbaigta!
+translate-not-completed-yet-url: 'Kalbos vertimas {0} dar pilnai nebaigtas {1}. Ar norite padėti mums tobulinti vertimą? Nuoroda: {2}'
+success-removed-shop: <green>Parduotuvė pašalinta.
 currency-set: <green>Parduotuvės valiuta sėkmingai nustatyta į {0}.
 shop-purged-start: <green>Prasidėjo parduotuvės valymas, patikrinkite konsolę, kad gautumėte išsamesne informacija.
 economy-transaction-failed: <red>Sorry, but an internal error occurred while processing your transaction. The transaction has been cancelled and any economy operation has been rollback. Please contact the server administrators if it keeping occurred.
@@ -294,7 +294,7 @@ signs:
   out-of-stock: Out of Stock
   stack-buying: Buying {0}
   freeze: Trading disabled
-  price: '{0} each'
+  price: '{0} vienas'
   buying: Pirkti{0}
   header: '{1}{0}'
   header-available: '<green>{0}'
@@ -328,67 +328,67 @@ booleanformat:
   failed: <red>✘
 controlpanel:
   stack: '<green>Per bulk amount: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  price-hover: <yellow>Click to set a new price for the item.
-  remove: <red><bold>[Remove Shop]
-  mode-buying-hover: <yellow>Click to change the shop to SELL mode.
+  price-hover: <yellow>Spustelėkite, kad nustatytumėte naują prekės kainą.
+  remove: <red><bold>[Pašalinti parduotuvę]
+  mode-buying-hover: <yellow>Spustelėkite, kad pakeistumėte parduotuvės nuostatas į pardavimo režimą.
   empty: '<green>Empty: Remove all items <yellow>[<light_purple><bold>OK<yellow>]'
   stack-hover: <yellow>Click to set the amount of item per bulk. Set to 1 for normal behaviour.
-  alwayscounting-hover: <yellow>Click to toggle if the shop should always count the container's content.
+  alwayscounting-hover: <yellow>Paspausk, jei norite, kad parduotuvė skaičiuotu prekių kieki esanti jūsų parduotuvėje.
   alwayscounting: '<green>Always counting: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   setowner: '<green>Owner: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
   freeze: '<yellow>Freeze mode: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   price: '<green>Price: <aqua>{0} <yellow>[<light_purple><bold>Change<yellow>]'
-  currency-hover: <yellow>Click to set or remove the currency that this shop is using
+  currency-hover: <yellow>Spustelėkite, kad nustatytumėte arba pašalintumėte šios parduotuvės naudojamą valiutą
   lock: '<yellow>Shop lock: <aqua>{0} <yellow>[<light_purple><bold>Toggle<yellow>]'
   mode-selling: '<green>Shop mode: <aqua>Selling <yellow>[<light_purple><bold>Change<yellow>]'
   currency: '<green>Currency: <aqua>{0} <yellow>[<light_purple><bold>Set<yellow>]'
-  setowner-hover: <yellow>Click to switch owner.
+  setowner-hover: <yellow>Spustelėkite, kad pakeistumėte savininką.
   mode-buying: '<green>Shop mode: <aqua>Buying <yellow>[<light_purple><bold>Change<yellow>]'
   item: '<green>Shop Item: {0} <yellow>[<light_purple><bold>Change<yellow>]'
   unlimited: '<green>Unlimited: {0} <yellow>[<light_purple><bold>Change<yellow>]'
-  unlimited-hover: <yellow>Click to toggle if the shop is unlimited.
-  refill-hover: <yellow>Click to refill the shop.
-  remove-hover: <yellow>Click to remove this shop.
+  unlimited-hover: <yellow>Spustelėkite, jei jūsų parduotuvė neturi jokių limitų.
+  refill-hover: <yellow>Spustelėkite norėdami papildyti parduotuvę.
+  remove-hover: <yellow>Spustelėkite, kad pašalintumėte šią parduotuvę.
   toggledisplay-hover: <yellow>Toggle the shop's displayitem status
   refill: '<green>Refill: Refill the items <yellow>[<light_purple><bold>OK<yellow>]'
-  freeze-hover: <yellow>Toggle the shop's freeze status.
-  lock-hover: <yellow>Enable/Disable the shop's lock protection.
+  freeze-hover: <yellow>Perjunkti parduotuve į "laikinai uždarytą" statusą.
+  lock-hover: <yellow>Įjunkite / išjunkite parduotuvės užraktą.
   item-hover: <yellow>Click to change shop Item
-  infomation: '<green>Shop Control panel:'
-  mode-selling-hover: <yellow>Click to change the shop to BUY mode.
-  empty-hover: <yellow>Click to clear the inventory of the shop.
-  toggledisplay: '<green>Display-Item: <aqua>{0} <yellow>[<light_purple><bold>Toggle</bold></light_purple>]'
+  infomation: '<green> Pardotuvės kontrolės lentelė:'
+  mode-selling-hover: <yellow>Spustelėkite, kad pakeistumėte parduotuvės nuostatas į supirkimo režimą.
+  empty-hover: <yellow>Spustelėkite, kad išvalytumėte parduotuvėje esančius daiktus.
+  toggledisplay: '<green>Rodomas-daiktas:<aqua>{0}<yellow>[<light_purple><bold>Perjungti</bold></light_purple>]'
 timeunit:
-  behind: behind
-  week: <red>{0} week
-  weeks: <red>{0} weeks
-  year: <red>{0} year
-  before: before
-  scheduled: scheduled
-  years: <red>{0} years
-  scheduled-in: scheduled in {0}
-  second: <red>{0} second
-  std-past-format: '{5}{4}{3}{2}{1}{0}ago'
-  std-time-format: "HH:mm:ss"
-  seconds: <red>{0} seconds
-  hour: <red>{0} hour
-  scheduled-at: scheduled at {0}
-  after: after
-  day: <red>{0} day
-  recent: recent
-  between: between
-  hours: <red>{0} hours
-  months: <red>{0} months
-  longtimeago: long time ago
-  between-format: between {0} and {1}
-  minutes: <red>{0} minutes
-  justnow: just now
+  behind: už
+  week: <red>{0} savaitė
+  weeks: <red>{0} Savaitės
+  year: <red>{0} metai
+  before: prieš
+  scheduled: suplanuota
+  years: <red>{0} Metai
+  scheduled-in: suplanuota po {0}
+  second: <red>{0} sekundė
+  std-past-format: '{5}{4}{3}{2}{1}{0} prieš'
+  std-time-format: "Valandos:Minutes:Sekundes"
+  seconds: <red>{0} Sekundžių
+  hour: <red>{0} valanda
+  scheduled-at: numatyta {0}
+  after: po
+  day: <red>{0} diena
+  recent: neseniai
+  between: tarp
+  hours: <red>{0} Valandas
+  months: <red>{0} Mėnesiai
+  longtimeago: prieš daug laiko
+  between-format: tarp {0} ir {1}
+  minutes: <red>{0} Minučių
+  justnow: tikką
   minute: <red>{0} minute
-  std-format: MM/dd/yyyy HH:mm:ss
-  future-plain-text: future
-  month: <red>{0} month
-  future: in {0}
-  days: <red>{0} days
+  std-format: Mėnesiai/dienos/metai Valandos:minutės:sekundės
+  future-plain-text: ateitis
+  month: <red>{0} mėnuo
+  future: po {0}
+  days: <red>{0} Dienų
 command:
   reloading: '<green>Configuration reloaded. <yellow>Some changes may require reboot to affect. <newline><gray>(Notice: Reloading behavior has been changed after 4.0.9.10, we now only reload configuration but not whole plugin to ensure the server won''t crashed.)'
   description:
