@@ -473,7 +473,7 @@ you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to 
 inventory-error: '<red>Failed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.'
 integrations-check-failed-create: <red>Integration {0} denied the shop-creation
 shop-out-of-space: <dark_purple>Your shop at {0}, {1}, {2} is full!
-admin-shop: AdminShop
+admin-shop: SavininkoParduotuve
 no-anythings-in-your-hand: <red>There is nothing in your hand.
 no-permission: <red>You do not have permission to do that.
 chest-was-removed: <red>The chest was removed.
