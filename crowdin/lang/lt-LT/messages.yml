@@ -438,61 +438,61 @@ command:
     tag: <yellow>Add, remove or query tags of a shop
   bulk-size-not-set: '<red>Usage: /qs size <amount>'
   no-type-given: '<red>Usage: /qs find <item>'
-  feature-not-enabled: This feature is not enabled in the config file.
-  now-debuging: <green>Successfully enabled developer mode. Reloading QuickShop...
+  feature-not-enabled: Ši funkcija neįjungta config faile.
+  now-debuging: <green>Sėkmingai įjungtas kūrėjo režimas. "ParduotuviųPluginas" įkeliamas iš naujo...
   no-amount-given: <red>No amount provided. Use <green>/qs refill <amount><red>
-  no-owner-given: <red>No owner provided
-  disabled: '<red>This command is disabled: <yellow>{0}'
+  no-owner-given: <red>Savininkas nėra nustatytas
+  disabled: '<red>Ši komanda yra išjungta:<yellow>{0}'
   bulk-size-now: <green>Now trading <yellow>{0}x {1}
   toggle-always-counting:
-    counting: <green>Shop is now always counting the container's content, even when set to unlimited
+    counting: <green>Parduotuvė dabar visada skaičiuoja parduotuvės turinį, net jei parduotuvė nustatyta kaip neribota
     not-counting: <green>Shop is now respect if shop is unlimited
-  cleaning: <green>Removing shops without any stock...
-  now-nolonger-debuging: <green>Successfully disabled Developer mode. Reloading QuickShop...
+  cleaning: <green>Pašalinamos parduotuves neturinčios jokių atsargų...
+  now-nolonger-debuging: <green>Sėkmingai išjungtas kūrėjo režimas. "ParduotuviųPluginas" įkeliamas iš naujo...
   toggle-unlimited:
-    limited: <green>Shop is now limited
-    unlimited: <green>Shop is now unlimited
+    limited: <green>Parduotuvė dabar turi limitavimo režimą
+    unlimited: <green>Parduotuve dabar neturi atsargų limito
   transfer-success-other: <green>Transferred <yellow>{0} {1}<green>'s shop(s) to <yellow>{2}
   no-trade-item: <green>Please hold a trade item to change in main hand
   wrong-args: <red>Invalid argument. Use <bold>/qs help <red>to see a list of commands.
-  some-shops-removed: <yellow>{0} <green>shop(s) removed
-  new-owner: '<green>New owner: <yellow>{0}'
+  some-shops-removed: <yellow>{0} <green>parduotuvė (-ės) pašalinta (-os)
+  new-owner: '<green>Naujas savininkas: <yellow>{0}'
   format: <green>/{0} {1} <yellow>- {2}
   transfer-success: <green>Transferred <yellow>{0} <green>shop(s) to <yellow>{1}
   now-buying: <green>Now <light_purple>BUYING <yellow>{0}
   now-selling: <green>Now <aqua>SELLING <yellow>{0}
   cleaned: <green>Removed <yellow>{0}<green> shops.
   trade-item-now: <green>Now trading <yellow>{0}x {1}
-  no-world-given: <red>Please specify a world name
+  no-world-given: <red>Nurodykite pasaulio varda
   format-disabled: <red>/{0} {1} <gray>- {2}
   invalid-bulk-amount: <red>The given value {0} is larger than max stack size or lower than one
-currency-not-support: <red>The economy plugin doesn't support the multi-economy feature.
-trading-in-creative-mode-is-disabled: <red>You cannot trade with this shop while in creative mode.
-the-owner-cant-afford-to-buy-from-you: <red>This item is worth {0}, but the shop-owner only has {1}
+currency-not-support: <red>Ekonomikos pluginas nepalaiko multi-ekonomikos funkcijos.
+trading-in-creative-mode-is-disabled: <red>Negalite mainytis su šia parduotuve esant kūrybiniam režimui.
+the-owner-cant-afford-to-buy-from-you: <red>Šio daikto vertė yra {0}, tačiau parduotuvės savininkas turi tik {1}
 you-cant-afford-shop-naming: <red>You can't afford shop naming, it costs {0} to naming.
 inventory-error: '<red>Failed to processing the InventoryWrapper. Did you using addon to re-binding the shop Inventory? Information: Exception={0}, InventoryWrapper={1}, WrapperType={2}, WrapperProvider={3}, SymbolLink={4}. Please contact the server administrators.'
-integrations-check-failed-create: <red>Integration {0} denied the shop-creation
-shop-out-of-space: <dark_purple>Your shop at {0}, {1}, {2} is full!
+integrations-check-failed-create: <red>Integracija {0} atmetė parduotuvės kūrimo procesą
+shop-out-of-space: <dark_purple>Jūsų parduotuvė esanti {0}, {1}, {2} yra pilna!
 admin-shop: SavininkoParduotuve
-no-anythings-in-your-hand: <red>There is nothing in your hand.
-no-permission: <red>You do not have permission to do that.
-chest-was-removed: <red>The chest was removed.
-you-cant-afford-to-buy: <red>It costs {0}, but you only have {1}
+no-anythings-in-your-hand: <red>Sistema jūsų rankoje nieko nerado.
+no-permission: <red>Jūs neturite leidimo daryti šiuos veiksmus.
+chest-was-removed: <red> Chestas buvo pašalintas.
+you-cant-afford-to-buy: <red>Tai kainuoja {0}, bet jūs turite tik {1}
 shops-removed-in-world: <yellow>A total of <aqua>{0}<yellow> shops have been deleted in world <aqua>{1}<yellow>.
 display-turn-off: <green>Successfully turn off the shop display.
 client-language-unsupported: <yellow>QuickShop doesn't support your client language, falling back to {0} locale...
 language-version: '63'
 not-managed-shop: <red>You are not the owner nor moderator of this Shop
-shop-cannot-trade-when-freezing: <red>You cannot trade with this shop because it is frozen.
+shop-cannot-trade-when-freezing: <red>Jūs negalite mainytis su šia parduotuve, nes ji yra laikinai uždaryta.
 invalid-container: <red>Invalid container, You can only create the shop on block who have inventory.
 permission:
-  header: "<green>Shop Permission Details"
+  header: "<green>Parduotuvės suteiktų leidimų detalės"
   header-player: "<green>Shop Permission Details for {0}"
-  header-group: "<green>Shop Permission Details for group {0}"
+  header-group: "<green>Parduotuvės suteiktų leidimų informacija priskirtai grupei {0}"
   table: "<gold><b>{0}</b>:</gold> <gray>{1}</gray>"
   item:
     purchase: "<yellow>Permission to allow users who have this to purchase the shop. (including buying and selling)"
-    show-information: "<yellow>Permission to allow users who have this to see the shop information. (open shop info panel)"
+    show-information: "<yellow>Leidimas leisti naudotojams, kuriem duotas leidimas, matyti parduotuvės informaciją. (atidaryti parduotuvės control panel)"
     preview-shop: "<yellow>Permission to allow users who have this to preview the shop. (preview item)"
     search: "<yellow>Permission to allow users who have this to search the target shop. (remove permission will hide shop from search result)"
     delete: "<yellow>Permission to allow users who have this to delete the shop."
