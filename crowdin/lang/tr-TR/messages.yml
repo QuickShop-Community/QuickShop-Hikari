@@ -167,8 +167,8 @@ unknown-player: <red>Hedef oyuncu mevcut değil, lütfen yazdığınız kullanı
 player-offline: "<red>The target player currently is offline."
 player-profile-format: "<aqua>{0}</aqua><gold>(<yellow>{1}</yellow>)</gold>"
 shop-type:
-  selling: "SELLING"
-  buying: "BUYING"
+  selling: "Satış"
+  buying: "Satın alım"
 language:
   qa-issues: '<yellow>Kalite güven sorunları: <aqua>{0}%'
   code: '<yellow>Kod: <gold>{0}'
