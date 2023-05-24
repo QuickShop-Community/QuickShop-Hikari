@@ -27,7 +27,7 @@ blacklisted-item: <red>This item cannot be sold as it is on the blacklist
 command-type-mismatch: <red>This command can only be executed by <aqua>{0}</aqua>.
 server-crash-warning: '<red>WARNING: Using the /qs reload command to replace/delete the QuickShop Jar file may crash the server while it is running.'
 you-cant-afford-to-change-price: <red>It costs {0} to change the price in your shop.
-safe-mode: <red>QuickShop is in safe mode. You cannot open this shop container, please contact the Server Administrator to fix this issue.
+safe-mode: <red>Quickshop is in safe mode. You cannot open this shop container, please contact the Server Administrator to fix this issue.
 forbidden-vanilla-behavior: <red>This operation is not allowed due to it not being consistent with vanilla behaviours
 shop-out-of-space-name: <dark_purple>Your shop {0} is full!
 paste-disabled: '<red>Paste function has been disabled! You cannot request technical support.<newline>Reason: {0}'

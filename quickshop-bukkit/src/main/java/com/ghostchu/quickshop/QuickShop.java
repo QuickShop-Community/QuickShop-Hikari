@@ -665,7 +665,7 @@ public class QuickShop implements QuickShopAPI, Reloadable {
             if (AbstractDisplayItem.getNowUsing() == DisplayType.VIRTUALITEM) {
                 logger.info("Using Virtual Item display, loading ProtocolLib support...");
                 Plugin protocolLibPlugin = Bukkit.getPluginManager().getPlugin("ProtocolLib");
-                if (protocolLibPlugin != null && protocolLibPlugin.isEnabled()) {
+                if (protocolLibPlugin != null && (!PackageUtil.parsePackageProperly("ignoreProtocolLibEnableStatus").asBoolean(false) || protocolLibPlugin.isEnabled())) {
                     logger.info("Successfully loaded ProtocolLib support!");
                     virtualDisplayItemManager = new VirtualDisplayItemManager(this);
                     if (getConfig().getBoolean("shop.per-player-shop-sign")) {
