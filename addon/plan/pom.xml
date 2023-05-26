@@ -18,7 +18,7 @@
 
     <description>Showcase the metrics about QuickShop-Hikari on your Plan page</description>
     <properties>
-        <java.version>16</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

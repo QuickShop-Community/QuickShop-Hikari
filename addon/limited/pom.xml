@@ -18,7 +18,7 @@
 
     <description>Limit the player max amount of item can purchase in your specific shop</description>
     <properties>
-        <java.version>16</java.version>
+        <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
