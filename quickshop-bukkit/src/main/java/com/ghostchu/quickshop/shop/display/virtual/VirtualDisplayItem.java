@@ -1,6 +1,7 @@
 package com.ghostchu.quickshop.shop.display.virtual;
 
 import com.comphenix.protocol.events.PacketContainer;
+import com.ghostchu.quickshop.api.event.DisplayApplicableCheckEvent;
 import com.ghostchu.quickshop.api.event.ShopDisplayItemSpawnEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
 import com.ghostchu.quickshop.api.shop.ShopChunk;
@@ -85,6 +86,13 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     @Override
     public boolean isSpawned() {
         return isSpawned;
+    }
+
+    @Override
+    public boolean isApplicableForPlayer(Player player) {
+        DisplayApplicableCheckEvent event = new DisplayApplicableCheckEvent(shop, player.getUniqueId());
+        event.setApplicable(true);
+        return !event.callCancellableEvent();
     }
 
     @Override
