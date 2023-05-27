@@ -3,7 +3,9 @@ version: '${project.version}'
 main: com.ghostchu.quickshop.compatibility.${project.artifactId}.Main
 api-version: 1.18
 depend:
-  - ClearLag
   - QuickShop-Hikari
+softdepend:
+  - Geyser
+  - Floodgate
 authors: [ Ghost_chu ]
 description: Compatibility module for ClearLagg
