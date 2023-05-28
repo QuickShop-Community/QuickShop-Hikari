@@ -469,7 +469,6 @@
         <module>compatibility/lands</module>
         <module>compatibility/residence</module>
         <module>compatibility/elitemobs</module>
-        <module>compatibility/bedrocknodisplay</module>
 <!--        <module>compatibility/chestprotect</module>-->
         <module>addon/discordsrv</module>
         <module>addon/plan</module>
@@ -479,6 +478,7 @@
         <module>addon/limited</module>
         <module>addon/dynmap</module>
         <module>addon/bluemap</module>
+        <module>addon/displaycontrol</module>
     </modules>
 
 </project>
