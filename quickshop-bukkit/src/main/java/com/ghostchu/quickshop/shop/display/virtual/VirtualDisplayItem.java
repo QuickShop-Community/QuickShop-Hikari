@@ -158,8 +158,10 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
             //Let nearby player can saw fake item
             Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
             for (Entity entity : entityCollection) {
-                if (entity instanceof Player) {
-                    packetSenders.add(entity.getUniqueId());
+                if (entity instanceof Player player) {
+                    if (isApplicableForPlayer(player)) { // TODO: Refactor with better way
+                        packetSenders.add(entity.getUniqueId());
+                    }
                 }
             }
         }

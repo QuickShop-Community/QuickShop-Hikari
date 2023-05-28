@@ -5,6 +5,7 @@ import com.ghostchu.quickshop.addon.displaycontrol.command.SubCommand_DisplayCon
 import com.ghostchu.quickshop.addon.displaycontrol.database.DisplayControlDatabaseHelper;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.event.DisplayApplicableCheckEvent;
+import com.ghostchu.quickshop.util.logger.Log;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -85,6 +86,7 @@ public final class Main extends JavaPlugin implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void displaySending(DisplayApplicableCheckEvent event) {
         if (displayDisabledPlayers.contains(event.getPlayer())) {
+            Log.debug("Display disabled for player " + event.getPlayer());
             event.setApplicable(false);
         }
     }
