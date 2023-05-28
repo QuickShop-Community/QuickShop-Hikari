@@ -26,11 +26,11 @@ public class SubCommand_DisplayControl implements CommandHandler<Player> {
 
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
-        if (parser.getArgs().size() < 2) {
+        if (parser.getArgs().size() < 1) {
             qs.text().of(sender, "command-incorrect", "/qs displaycontrol <enable/disable>").send();
             return;
         }
-        boolean ops = parser.getArgs().get(1).equalsIgnoreCase("enable");
+        boolean ops = parser.getArgs().get(0).equalsIgnoreCase("enable");
         Util.asyncThreadRun(() -> {
             try {
                 Integer i = plugin.getDatabaseHelper().setDisplayStatusForPlayer(sender.getUniqueId(), ops);
