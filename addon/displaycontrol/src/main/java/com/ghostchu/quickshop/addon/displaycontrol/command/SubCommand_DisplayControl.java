@@ -30,12 +30,12 @@ public class SubCommand_DisplayControl implements CommandHandler<Player> {
             qs.text().of(sender, "command-incorrect", "/qs displaycontrol <enable/disable>").send();
             return;
         }
-        boolean ops = parser.getArgs().get(0).equalsIgnoreCase("enable");
+        boolean disable = parser.getArgs().get(0).equalsIgnoreCase("disable");
         Util.asyncThreadRun(() -> {
             try {
-                Integer i = plugin.getDatabaseHelper().setDisplayStatusForPlayer(sender.getUniqueId(), ops);
+                Integer i = plugin.getDatabaseHelper().setDisplayDisableForPlayer(sender.getUniqueId(), disable);
                 Log.debug("Execute DisplayToggle with id " + i + " affected");
-                qs.text().of(sender, "addon.displaycontrol.toggle", !ops).send();
+                qs.text().of(sender, "addon.displaycontrol.toggle", disable).send();
             } catch (SQLException e) {
                 qs.text().of(sender, "addon.displaycontrol.toggle-exception").send();
                 plugin.getLogger().log(Level.WARNING, "Cannot save the player display status", e);

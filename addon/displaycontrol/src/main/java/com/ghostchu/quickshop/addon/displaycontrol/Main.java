@@ -66,7 +66,7 @@ public final class Main extends JavaPlugin implements Listener {
     public void playerLogin(AsyncPlayerPreLoginEvent event) {
         UUID uuid = event.getUniqueId();
         try {
-            @Nullable Boolean status = databaseHelper.getDisplayStatusForPlayer(uuid);
+            @Nullable Boolean status = databaseHelper.isDisplayDisableForPlayer(uuid);
             if (status == null || !status) {
                 displayDisabledPlayers.remove(uuid);
             } else {

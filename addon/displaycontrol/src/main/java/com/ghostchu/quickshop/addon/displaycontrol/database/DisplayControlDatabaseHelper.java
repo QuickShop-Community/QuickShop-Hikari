@@ -26,7 +26,7 @@ public class DisplayControlDatabaseHelper {
 
     }
 
-    public @NotNull Integer setDisplayStatusForPlayer(@NotNull UUID uuid, @Nullable Boolean status) throws SQLException {
+    public @NotNull Integer setDisplayDisableForPlayer(@NotNull UUID uuid, @Nullable Boolean status) throws SQLException {
         Util.ensureThread(true);
         try (SQLQuery query = DisplayControlTables.DISPLAY_CONTROL_PLAYERS.createQuery()
                 .setLimit(1)
@@ -51,7 +51,7 @@ public class DisplayControlDatabaseHelper {
     }
 
     @Nullable
-    public Boolean getDisplayStatusForPlayer(@NotNull UUID player) throws SQLException {
+    public Boolean isDisplayDisableForPlayer(@NotNull UUID player) throws SQLException {
         Util.ensureThread(true);
         try (SQLQuery query = DisplayControlTables.DISPLAY_CONTROL_PLAYERS
                 .createQuery()
