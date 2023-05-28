@@ -52,7 +52,11 @@ public class DisplayControlDatabaseHelper {
     @Nullable
     public Boolean getDisplayStatusForPlayer(@NotNull UUID player) throws SQLException {
         Util.ensureThread(true);
-        try (SQLQuery query = DisplayControlTables.DISPLAY_CONTROL_PLAYERS.createQuery().selectColumns("notifaction").addCondition("player", player.toString()).setLimit(1).build().execute(); ResultSet set = query.getResultSet()) {
+        try (SQLQuery query = DisplayControlTables.DISPLAY_CONTROL_PLAYERS
+                .createQuery()
+                .selectColumns("disableDisplay")
+                .addCondition("player", player.toString()).setLimit(1).build().execute();
+             ResultSet set = query.getResultSet()) {
             if (set.next()) {
                 return set.getBoolean("disableDisplay");
             }
