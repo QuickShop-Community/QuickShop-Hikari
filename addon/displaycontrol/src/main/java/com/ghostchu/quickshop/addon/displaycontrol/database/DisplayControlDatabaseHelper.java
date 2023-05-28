@@ -28,10 +28,11 @@ public class DisplayControlDatabaseHelper {
 
     public @NotNull Integer setDisplayStatusForPlayer(@NotNull UUID uuid, @Nullable Boolean status) throws SQLException {
         Util.ensureThread(true);
-        try (ResultSet set = DisplayControlTables.DISPLAY_CONTROL_PLAYERS.createQuery()
+        try (SQLQuery query = DisplayControlTables.DISPLAY_CONTROL_PLAYERS.createQuery()
                 .setLimit(1)
                 .addCondition("player", uuid.toString())
-                .build().execute().getResultSet()) {
+                .build().execute();
+             ResultSet set = query.getResultSet()) {
             if (set.next()) {
                 return DisplayControlTables.DISPLAY_CONTROL_PLAYERS.createUpdate()
                         .setLimit(1)
