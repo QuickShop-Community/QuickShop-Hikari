@@ -1369,10 +1369,10 @@ addon:
     protection-exists: "<red>Diese Region wird durch ChestProtect geschützt und du hast keine Berechtigung einen Shop hier zu erstellen."
     shops-exsts: "<red>Die Region welche du schützen möchtest enthält Shops anderer Spieler, und du hast nicht die Berechtigung auf diese zugreifen zu können."
   displaycontrol:
-    toggle: "<green>Successfully toggle your QuickShop display showcasing to <aqua>{0}</aqua>.\n<yellow>You may need re-join to take effect."
-    toggle-exception: "<red>Failed to toggle your display showcase settings due an internal error, please contact server administrator."
+    toggle: "<green>QuickShop Anzeige erfolgreich zu <aqua>{0}</aqua> geändert.\n<yellow>Du musst eventuell rejoinen damit es aktiv wird."
+    toggle-exception: "<red>Konnte deine Anzeigeeinstellungen nicht ändern aufgrund eines internen Fehlers. Bitte melde dies dem Serveradministrator."
     command:
-      displaycontrol: "<yellow>Toggle your QuickShop display showcasing"
+      displaycontrol: "<yellow>Ändere deine QuickShop Anzeige"
 suite:
   dynmap:
     title: "{0} - {1} - {2}"
