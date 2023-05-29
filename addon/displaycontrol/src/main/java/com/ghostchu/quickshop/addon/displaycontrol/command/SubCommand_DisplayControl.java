@@ -2,6 +2,7 @@ package com.ghostchu.quickshop.addon.displaycontrol.command;
 
 import com.ghostchu.quickshop.QuickShop;
 import com.ghostchu.quickshop.addon.displaycontrol.Main;
+import com.ghostchu.quickshop.addon.displaycontrol.bean.DisplayOption;
 import com.ghostchu.quickshop.api.command.CommandHandler;
 import com.ghostchu.quickshop.api.command.CommandParser;
 import com.ghostchu.quickshop.util.Util;
@@ -27,15 +28,23 @@ public class SubCommand_DisplayControl implements CommandHandler<Player> {
     @Override
     public void onCommand(Player sender, @NotNull String commandLabel, @NotNull CommandParser parser) {
         if (parser.getArgs().size() < 1) {
-            qs.text().of(sender, "command-incorrect", "/qs displaycontrol <enable/disable>").send();
+            qs.text().of(sender, "command-incorrect", "/qs displaycontrol <auto/enable/disable>").send();
             return;
         }
-        boolean disable = parser.getArgs().get(0).equalsIgnoreCase("disable");
+        DisplayOption option = DisplayOption.AUTO;
+        String userInput = parser.getArgs().get(0).trim();
+        if (userInput.equalsIgnoreCase("enable")) {
+            option = DisplayOption.ENABLED;
+        }
+        if (userInput.equalsIgnoreCase("disable")) {
+            option = DisplayOption.DISABLED;
+        }
+        DisplayOption optionFinCopy = option;
         Util.asyncThreadRun(() -> {
             try {
-                Integer i = plugin.getDatabaseHelper().setDisplayDisableForPlayer(sender.getUniqueId(), disable);
+                Integer i = plugin.getDatabaseHelper().setDisplayDisableForPlayer(sender.getUniqueId(), optionFinCopy);
                 Log.debug("Execute DisplayToggle with id " + i + " affected");
-                qs.text().of(sender, "addon.displaycontrol.toggle", disable).send();
+                qs.text().of(sender, "addon.displaycontrol.toggle", optionFinCopy.name()).send();
             } catch (SQLException e) {
                 qs.text().of(sender, "addon.displaycontrol.toggle-exception").send();
                 plugin.getLogger().log(Level.WARNING, "Cannot save the player display status", e);

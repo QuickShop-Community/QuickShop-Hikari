@@ -169,7 +169,6 @@ public class v1_18 implements VirtualDisplayPacketFactory {
                             target.sendDestroyItem(player);
                             target.sendFakeItem(player);
                         }
-
                     }
                     return targetList;
                 });

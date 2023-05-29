@@ -1,12 +1,19 @@
 package com.ghostchu.quickshop.addon.displaycontrol;
 
 import com.ghostchu.quickshop.QuickShop;
+import com.ghostchu.quickshop.addon.displaycontrol.bean.ClientType;
+import com.ghostchu.quickshop.addon.displaycontrol.bean.DisplayOption;
 import com.ghostchu.quickshop.addon.displaycontrol.command.SubCommand_DisplayControl;
 import com.ghostchu.quickshop.addon.displaycontrol.database.DisplayControlDatabaseHelper;
 import com.ghostchu.quickshop.api.command.CommandContainer;
 import com.ghostchu.quickshop.api.event.DisplayApplicableCheckEvent;
+import com.ghostchu.quickshop.util.PackageUtil;
+import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.google.common.io.ByteArrayDataInput;
+import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -15,17 +22,21 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.Nullable;
+import org.bukkit.plugin.messaging.PluginMessageListener;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
-import java.util.Set;
+import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
-public final class Main extends JavaPlugin implements Listener {
+public final class Main extends JavaPlugin implements Listener, PluginMessageListener {
+    private static final String BUNGEE_CHANNEL = "quickshopcompat:bcgeyser";
+    private static final String RESPONSE_PREFIX = "CLIENTTYPE";
     static Main instance;
-    private final Set<UUID> displayDisabledPlayers = new CopyOnWriteArraySet<>();
+    private final Map<UUID, ClientType> playerClientMapping = new ConcurrentHashMap<>();
+    private final Map<UUID, DisplayOption> playerDisplayStatus = new ConcurrentHashMap<>();
     private QuickShop plugin;
     private DisplayControlDatabaseHelper databaseHelper;
 
@@ -51,27 +62,26 @@ public final class Main extends JavaPlugin implements Listener {
             return;
         }
         Bukkit.getPluginManager().registerEvents(this, this);
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> displayDisabledPlayers.removeIf(uuid -> Bukkit.getPlayer(uuid) == null), 60 * 20 * 60, 60 * 20 * 60);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> this.playerClientMapping.entrySet().removeIf(e -> Bukkit.getPlayer(e.getKey()) == null), 60 * 20 * 60, 60 * 20 * 60);
         plugin.getCommandManager().registerCmd(CommandContainer.builder()
                 .prefix("displaycontrol")
                 .permission("quickshopaddon.displaycontrol.use")
                 .description((locale) -> plugin.text().of("addon.displaycontrol.command.displaycontrol").forLocale(locale))
                 .executor(new SubCommand_DisplayControl(plugin, this))
                 .build());
-
+        if (Util.checkIfBungee()) {
+            getLogger().info("Detected BungeeCord, register the BungeeCord client information forward module, you will need install Compat-BungeeCord-Geyser module to make this feature work.");
+            Bukkit.getMessenger().registerIncomingPluginChannel
+                    (this, BUNGEE_CHANNEL, this); // we register the incoming channel
+        }
     }
-
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void playerLogin(AsyncPlayerPreLoginEvent event) {
         UUID uuid = event.getUniqueId();
         try {
-            @Nullable Boolean status = databaseHelper.isDisplayDisableForPlayer(uuid);
-            if (status == null || !status) {
-                displayDisabledPlayers.remove(uuid);
-            } else {
-                displayDisabledPlayers.add(uuid);
-            }
+            DisplayOption displayOption = databaseHelper.getDisplayOption(uuid);
+            this.playerDisplayStatus.put(uuid, displayOption);
         } catch (SQLException e) {
             getLogger().log(Level.WARNING, "Failed to getting the player display status from database", e);
         }
@@ -80,18 +90,60 @@ public final class Main extends JavaPlugin implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void playerQuit(PlayerQuitEvent event) {
         //noinspection ConstantConditions
-        displayDisabledPlayers.remove(event.getPlayer().getUniqueId());
+        cleanup(event.getPlayer().getUniqueId());
+    }
+
+    private void cleanup(UUID uuid) {
+        this.playerDisplayStatus.remove(uuid);
+        this.playerClientMapping.remove(uuid);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void displaySending(DisplayApplicableCheckEvent event) {
-        if (displayDisabledPlayers.contains(event.getPlayer())) {
-            Log.debug("Display disabled for player " + event.getPlayer());
+        UUID uuid = event.getPlayer();
+        DisplayOption option = this.playerDisplayStatus.getOrDefault(uuid, DisplayOption.AUTO);
+        boolean bedrockClient = this.playerClientMapping.getOrDefault(uuid, ClientType.UNDISCOVERED).isBedrockType();
+        if (!option.isDisplayAvailable(bedrockClient)) {
             event.setApplicable(false);
         }
     }
 
     public DisplayControlDatabaseHelper getDatabaseHelper() {
         return databaseHelper;
+    }
+
+    @Override
+    public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, @NotNull byte[] message) {
+        if (!channel.equalsIgnoreCase(BUNGEE_CHANNEL)) return;
+        ByteArrayDataInput in = ByteStreams.newDataInput(message);
+        String prefix = in.readUTF();
+        //noinspection SwitchStatementWithTooFewBranches
+        switch (prefix) {
+            case RESPONSE_PREFIX -> handleBungeeBedrockPlayerCallback(in);
+            default -> getLogger().log(Level.WARNING, "Unrecognized type: " + prefix);
+        }
+    }
+
+    private void handleBungeeBedrockPlayerCallback(ByteArrayDataInput in) {
+        if (!PackageUtil.parsePackageProperly("acceptBungeeCordBedrockPlayerDiscoveryCallback").asBoolean(true)) {
+            return;
+        }
+        UUID uuid = UUID.fromString(in.readUTF());
+        int responseType = in.readShort();
+        ClientType clientType = ClientType.UNDISCOVERED;
+        if (responseType == 0) {
+            clientType = ClientType.JAVA_EDITION_PLAYER;
+        }
+        if (responseType == 1) {
+            clientType = ClientType.BEDROCK_EDITION_PLAYER_GEYSER;
+        }
+        if (responseType == 2) {
+            clientType = ClientType.BEDROCK_EDITION_PLAYER_FLOODGATE;
+        }
+        Log.debug("Player " + uuid + " client type check callback: " + clientType.name() + ", isBedrockClient: " + clientType.isBedrockType());
+        if (this.playerClientMapping.getOrDefault(uuid, ClientType.UNDISCOVERED).isWaitingDiscover()) {
+            Log.debug("[BUNGEE-CALLBACK] Discovered player " + uuid + " client type is: " + clientType.name());
+            this.playerClientMapping.put(uuid, clientType);
+        }
     }
 }

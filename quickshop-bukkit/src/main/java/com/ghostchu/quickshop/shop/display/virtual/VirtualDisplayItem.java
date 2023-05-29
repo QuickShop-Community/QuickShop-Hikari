@@ -92,7 +92,8 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
     public boolean isApplicableForPlayer(Player player) {
         DisplayApplicableCheckEvent event = new DisplayApplicableCheckEvent(shop, player.getUniqueId());
         event.setApplicable(true);
-        return !event.callCancellableEvent();
+        event.callEvent();
+        return event.isApplicable();
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.ghostchu.quickshop.addon.displaycontrol.database;
 import cc.carm.lib.easysql.api.SQLManager;
 import cc.carm.lib.easysql.api.SQLQuery;
 import com.ghostchu.quickshop.addon.displaycontrol.Main;
+import com.ghostchu.quickshop.addon.displaycontrol.bean.DisplayOption;
 import com.ghostchu.quickshop.util.Util;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +27,7 @@ public class DisplayControlDatabaseHelper {
 
     }
 
-    public @NotNull Integer setDisplayDisableForPlayer(@NotNull UUID uuid, @Nullable Boolean status) throws SQLException {
+    public @NotNull Integer setDisplayDisableForPlayer(@NotNull UUID uuid, DisplayOption status) throws SQLException {
         Util.ensureThread(true);
         try (SQLQuery query = DisplayControlTables.DISPLAY_CONTROL_PLAYERS.createQuery()
                 .setLimit(1)
@@ -37,12 +38,12 @@ public class DisplayControlDatabaseHelper {
                 return DisplayControlTables.DISPLAY_CONTROL_PLAYERS.createUpdate()
                         .setLimit(1)
                         .addCondition("player", uuid.toString())
-                        .setColumnValues("disableDisplay", status)
+                        .setColumnValues("displayOption", status.getId())
                         .build().execute();
             } else {
                 return DisplayControlTables.DISPLAY_CONTROL_PLAYERS.createInsert()
-                        .setColumnNames("player", "disableDisplay")
-                        .setParams(uuid.toString(), status)
+                        .setColumnNames("player", "displayOption")
+                        .setParams(uuid.toString(), status.getId())
                         .returnGeneratedKey()
                         .execute();
             }
@@ -51,17 +52,18 @@ public class DisplayControlDatabaseHelper {
     }
 
     @Nullable
-    public Boolean isDisplayDisableForPlayer(@NotNull UUID player) throws SQLException {
+    public DisplayOption getDisplayOption(@NotNull UUID player) throws SQLException {
         Util.ensureThread(true);
         try (SQLQuery query = DisplayControlTables.DISPLAY_CONTROL_PLAYERS
                 .createQuery()
-                .selectColumns("disableDisplay")
+                .selectColumns("displayOption")
                 .addCondition("player", player.toString()).setLimit(1).build().execute();
              ResultSet set = query.getResultSet()) {
             if (set.next()) {
-                return set.getBoolean("disableDisplay");
+                int optionId = set.getInt("displayOption");
+                return DisplayOption.fromId(optionId);
             }
-            return null;
+            return DisplayOption.AUTO;
         }
     }
 }

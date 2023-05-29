@@ -16,10 +16,10 @@ import java.sql.SQLException;
 
 public enum DisplayControlTables {
 
-    DISPLAY_CONTROL_PLAYERS("display_control_players", (table) -> {
+    DISPLAY_CONTROL_PLAYERS("display_control_player_settings", (table) -> {
         table.addAutoIncrementColumn("id", true); // SHOP DATA ID
         table.addColumn("player", "VARCHAR(36) NOT NULL"); // SHOP DATA OWNER (ALL-ZERO if this is server)
-        table.addColumn("disableDisplay", "BIT NOT NULL DEFAULT 0"); // NOTIFACTION SETTINGS, JSON ENCODE
+        table.addColumn("disableDisplay", "INT NOT NULL DEFAULT 0"); // DISPLAY SETTINGS, JSON ENCODE
         table.setIndex(IndexType.INDEX, "idx_qs_addon_display_control_players", "player");
     });
     private final @NotNull String name;
