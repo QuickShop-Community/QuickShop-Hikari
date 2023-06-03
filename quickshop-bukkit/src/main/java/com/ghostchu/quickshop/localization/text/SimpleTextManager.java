@@ -320,10 +320,13 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         meta.insert("Crowdin Language File Path", CROWDIN_LANGUAGE_FILE_PATH);
         meta.insert("Crowdin Distribution URL", crowdinHost);
         meta.insert("Available Languages", String.valueOf(availableLanguages.size()));
-        meta.insert("Post Processors", String.valueOf(postProcessors.size()));
         joiner.add(meta.render());
         joiner.add("<h5>Caching</h5>");
         joiner.add(GuavaCacheRender.renderTable(languagesCache.stats()));
+        joiner.add("<h5>Post Processors</h5>");
+        HTMLTable postProcessorsTable = new HTMLTable(1, true);
+        postProcessors.forEach(p -> postProcessorsTable.insert(p.getClass().getName()));
+        joiner.add(postProcessorsTable.render());
         return joiner.toString();
     }
 
