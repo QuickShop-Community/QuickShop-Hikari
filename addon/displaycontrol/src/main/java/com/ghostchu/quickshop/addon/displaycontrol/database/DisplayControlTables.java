@@ -16,11 +16,11 @@ import java.sql.SQLException;
 
 public enum DisplayControlTables {
 
-    DISPLAY_CONTROL_PLAYERS("display_control_player_settings", (table) -> {
+    DISPLAY_CONTROL_PLAYERS("display_control_psettings", (table) -> {
         table.addAutoIncrementColumn("id", true); // SHOP DATA ID
         table.addColumn("player", "VARCHAR(36) NOT NULL"); // SHOP DATA OWNER (ALL-ZERO if this is server)
-        table.addColumn("disableDisplay", "INT NOT NULL DEFAULT 0"); // DISPLAY SETTINGS, JSON ENCODE
-        table.setIndex(IndexType.INDEX, "idx_qs_addon_display_control_players", "player");
+        table.addColumn("displayOption", "INT NOT NULL DEFAULT 0"); // DISPLAY SETTINGS, JSON ENCODE
+        table.setIndex(IndexType.INDEX, "idx_qs_addon_display_control_psettings", "player");
     });
     private final @NotNull String name;
     private final @NotNull SQLHandler<TableCreateBuilder> tableHandler;

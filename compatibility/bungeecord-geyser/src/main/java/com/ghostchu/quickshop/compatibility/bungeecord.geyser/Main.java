@@ -61,6 +61,7 @@ public final class Main extends Plugin implements Listener {
             playerType++; // 2=Floodgate, FG based on Geyser so increase the number
         }
         out.writeShort(playerType);
+        getLogger().info("Player " + uuid + " client type was set to " + playerType + ".");
         event.getServer().getInfo().sendData(BUNGEE_CHANNEL, out.toByteArray());
     }
 }

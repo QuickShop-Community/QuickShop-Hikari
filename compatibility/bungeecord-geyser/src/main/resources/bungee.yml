@@ -1,6 +1,6 @@
 name: qscompat-${project.artifactId}
 version: '${project.version}'
-main: com.ghostchu.quickshop.compatibility.${project.artifactId}.Main
+main: com.ghostchu.quickshop.compatibility.bungeecord.geyser.Main
 api-version: 1.18
 depend:
   - ClearLag

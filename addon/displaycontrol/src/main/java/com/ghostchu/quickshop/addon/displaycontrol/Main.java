@@ -69,6 +69,7 @@ public final class Main extends JavaPlugin implements Listener, PluginMessageLis
                 .description((locale) -> plugin.text().of("addon.displaycontrol.command.displaycontrol").forLocale(locale))
                 .executor(new SubCommand_DisplayControl(plugin, this))
                 .build());
+        getLogger().info("BungeeCord: " + Util.checkIfBungee());
         if (Util.checkIfBungee()) {
             getLogger().info("Detected BungeeCord, register the BungeeCord client information forward module, you will need install Compat-BungeeCord-Geyser module to make this feature work.");
             Bukkit.getMessenger().registerIncomingPluginChannel

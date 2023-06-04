@@ -22,7 +22,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -991,13 +990,9 @@ public class Util {
     }
 
     public static boolean checkIfBungee() {
-        if (PackageUtil.parsePackageProperly("forceBungeeCord").asBoolean()) {
+        if (PackageUtil.parsePackageProperly("forceBungeeCord").asBoolean(false)) {
             return true;
         }
-        ConfigurationSection section = Bukkit.spigot().getConfig().getConfigurationSection("settings");
-        if (section == null) {
-            return false;
-        }
-        return section.getBoolean("settings.bungeecord");
+        return Bukkit.getServer().spigot().getConfig().getBoolean("settings.bungeecord");
     }
 }
