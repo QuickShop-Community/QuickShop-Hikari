@@ -10,22 +10,21 @@ import com.ghostchu.quickshop.api.shop.permission.BuiltInShopPermission;
 import com.ghostchu.quickshop.compatibility.CompatibilityModule;
 import com.google.common.eventbus.Subscribe;
 import com.plotsquared.core.PlotSquared;
-import com.plotsquared.core.configuration.caption.Caption;
-import com.plotsquared.core.configuration.caption.TranslatableCaption;
+import com.plotsquared.core.configuration.caption.*;
 import com.plotsquared.core.events.PlotDeleteEvent;
 import com.plotsquared.core.plot.Plot;
 import com.plotsquared.core.plot.flag.GlobalFlagContainer;
 import com.plotsquared.core.plot.flag.types.BooleanFlag;
 import com.sk89q.worldedit.regions.CuboidRegion;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public final class Main extends CompatibilityModule implements Listener {
     private boolean whiteList;
@@ -87,11 +86,24 @@ public final class Main extends CompatibilityModule implements Listener {
     public void onEnable() {
         // Plugin startup logic
         super.onEnable();
+        getLogger().info("Mapping localized captions...");
+        Map<Locale, CaptionMap> finalRegisterMap = new HashMap<>();
+        for (String availableLanguage : getApi().getTextManager().getAvailableLanguages()) {
+            Locale locale = new Locale(availableLanguage);
+            Component flagCreate = getApi().getTextManager().of(availableLanguage, "addon.plotsqured.flag.create").forLocale();
+            Component flagPurchase = getApi().getTextManager().of(availableLanguage, "addon.plotsqured.flag.trade").forLocale();
+            Map<TranslatableCaption, String> stringMapping = new HashMap<>();
+            stringMapping.put(TranslatableCaption.of("quickshop-hikari", "quickshop-create"), LegacyComponentSerializer.legacySection().serialize(flagCreate));
+            stringMapping.put(TranslatableCaption.of("quickshop-hikari", "quickshop-trade"), LegacyComponentSerializer.legacySection().serialize(flagPurchase));
+            finalRegisterMap.put(locale, new LocalizedCaptionMap(locale, stringMapping));
+        }
+        PlotSquared.get().registerCaptionMap("quickshop-hikari", new PerUserLocaleCaptionMap(finalRegisterMap));
         this.createFlag = new QuickshopCreateFlag();
         this.tradeFlag = new QuickshopTradeFlag();
         GlobalFlagContainer.getInstance().addAll(Arrays.asList(createFlag, tradeFlag));
         getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
         PlotSquared.get().getEventDispatcher().registerListener(this);
+
     }
 
     @Override
