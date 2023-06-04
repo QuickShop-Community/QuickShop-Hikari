@@ -89,8 +89,8 @@ public final class Main extends CompatibilityModule implements Listener {
         Map<Locale, CaptionMap> finalRegisterMap = new HashMap<>();
         for (String availableLanguage : getApi().getTextManager().getAvailableLanguages()) {
             Locale locale = new Locale(availableLanguage);
-            Component flagCreate = getApi().getTextManager().of("addon.plotsqured.flag.create").forLocale(availableLanguage);
-            Component flagPurchase = getApi().getTextManager().of("addon.plotsqured.flag.trade").forLocale(availableLanguage);
+            Component flagCreate = getApi().getTextManager().of("addon.plotsquared.flag.create").forLocale(availableLanguage);
+            Component flagPurchase = getApi().getTextManager().of("addon.plotsquared.flag.trade").forLocale(availableLanguage);
             Map<TranslatableCaption, String> stringMapping = new HashMap<>();
             stringMapping.put(TranslatableCaption.of("quickshop-hikari", "quickshop-create"), LegacyComponentSerializer.legacySection().serialize(flagCreate));
             stringMapping.put(TranslatableCaption.of("quickshop-hikari", "quickshop-trade"), LegacyComponentSerializer.legacySection().serialize(flagPurchase));
