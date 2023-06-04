@@ -324,7 +324,8 @@ public class SimpleTextManager implements TextManager, Reloadable, SubPasteItem 
         joiner.add("<h5>Caching</h5>");
         joiner.add(GuavaCacheRender.renderTable(languagesCache.stats()));
         joiner.add("<h5>Post Processors</h5>");
-        HTMLTable postProcessorsTable = new HTMLTable(1, true);
+        HTMLTable postProcessorsTable = new HTMLTable(1, false);
+        postProcessorsTable.setTableTitle("Registered Processors");
         postProcessors.forEach(p -> postProcessorsTable.insert(p.getClass().getName()));
         joiner.add(postProcessorsTable.render());
         return joiner.toString();
