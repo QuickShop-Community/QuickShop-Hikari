@@ -88,13 +88,12 @@ public final class Main extends CompatibilityModule implements Listener {
         getLogger().info("Mapping localized captions...");
         Map<Locale, CaptionMap> finalRegisterMap = new HashMap<>();
         for (String availableLanguage : getApi().getTextManager().getAvailableLanguages()) {
-            Locale locale = new Locale(availableLanguage);
             Component flagCreate = getApi().getTextManager().of("addon.plotsquared.flag.create").forLocale(availableLanguage);
             Component flagPurchase = getApi().getTextManager().of("addon.plotsquared.flag.trade").forLocale(availableLanguage);
             Map<TranslatableCaption, String> stringMapping = new HashMap<>();
             stringMapping.put(TranslatableCaption.of("quickshop-hikari", "quickshop-create"), LegacyComponentSerializer.legacySection().serialize(flagCreate));
             stringMapping.put(TranslatableCaption.of("quickshop-hikari", "quickshop-trade"), LegacyComponentSerializer.legacySection().serialize(flagPurchase));
-            finalRegisterMap.put(locale, new LocalizedCaptionMap(locale, stringMapping));
+            finalRegisterMap.put(Locale.forLanguageTag(availableLanguage.substring(0, 2)), new LocalizedCaptionMap(Locale.forLanguageTag(availableLanguage.substring(0, 2)), stringMapping));
         }
         PlotSquared.get().registerCaptionMap("quickshop-hikari", new PerUserLocaleCaptionMap(finalRegisterMap));
         this.createFlag = new QuickshopCreateFlag();
@@ -203,12 +202,12 @@ public final class Main extends CompatibilityModule implements Listener {
         }
 
         public QuickshopCreateFlag() {
-            super(true, TranslatableCaption.of("quickshop-create"));
+            super(true, TranslatableCaption.of("quickshop-hikari", "quickshop-create"));
         }
 
         @Override
         protected QuickshopCreateFlag flagOf(@NotNull Boolean aBoolean) {
-            return new QuickshopCreateFlag(aBoolean, TranslatableCaption.of("quickshop-create"));
+            return new QuickshopCreateFlag(aBoolean, TranslatableCaption.of("quickshop-hikari", "quickshop-create"));
         }
     }
 
@@ -219,12 +218,12 @@ public final class Main extends CompatibilityModule implements Listener {
         }
 
         public QuickshopTradeFlag() {
-            super(true, TranslatableCaption.of("quickshop-trade"));
+            super(true, TranslatableCaption.of("quickshop-hikari", "quickshop-trade"));
         }
 
         @Override
         protected QuickshopTradeFlag flagOf(@NotNull Boolean aBoolean) {
-            return new QuickshopTradeFlag(aBoolean, TranslatableCaption.of("quickshop-trade"));
+            return new QuickshopTradeFlag(aBoolean, TranslatableCaption.of("quickshop-hikari", "quickshop-trade"));
         }
     }
 
