@@ -1,8 +1,8 @@
 package com.ghostchu.quickshop.compatibility.plotsquared;
 
 import com.ghostchu.quickshop.QuickShop;
-import com.ghostchu.quickshop.api.QuickShopAPI;
 import com.ghostchu.quickshop.api.event.ShopAuthorizeCalculateEvent;
+import com.ghostchu.quickshop.api.event.ShopCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPreCreateEvent;
 import com.ghostchu.quickshop.api.event.ShopPurchaseEvent;
 import com.ghostchu.quickshop.api.shop.Shop;
@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class Main extends CompatibilityModule implements Listener {
-    private QuickShopAPI api;
     private boolean whiteList;
     private boolean deleteUntrusted;
     private QuickshopCreateFlag createFlag;
@@ -79,6 +78,9 @@ public final class Main extends CompatibilityModule implements Listener {
         // Plugin shutdown logic
         super.onDisable();
         PlotSquared.get().getEventDispatcher().unregisterListener(this);
+        GlobalFlagContainer.getInstance().removeFlag(createFlag);
+        GlobalFlagContainer.getInstance().removeFlag(tradeFlag);
+        getLogger().info(ChatColor.GREEN + getName() + " flags unregister successfully.");
     }
 
     @Override
@@ -126,6 +128,46 @@ public final class Main extends CompatibilityModule implements Listener {
             recordDeletion(event.getPlot().getOwner(), shop, "Untrusted -> " + event.getPlayer());
             shop.delete();
         });
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onShopCreation(ShopCreateEvent event) {
+        Location location = event.getShop().getLocation();
+        com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(
+                location.getWorld().getName(),
+                location.getBlockX(),
+                location.getBlockY(),
+                location.getBlockZ());
+        Plot plot = pLocation.getPlot();
+        if (plot == null) {
+            if (!whiteList) {
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.no-plot-whitelist-creation").forLocale());
+            }
+            return;
+        }
+        if (!plot.getFlag(createFlag)) {
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.create-denied").forLocale());
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onShopTrading(ShopPurchaseEvent event) {
+        Location location = event.getShop().getLocation();
+        com.plotsquared.core.location.Location pLocation = com.plotsquared.core.location.Location.at(
+                location.getWorld().getName(),
+                location.getBlockX(),
+                location.getBlockY(),
+                location.getBlockZ());
+        Plot plot = pLocation.getPlot();
+        if (plot == null) {
+            if (!whiteList) {
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.no-plot-whitelist-creation").forLocale());
+            }
+            return;
+        }
+        if (!plot.getFlag(tradeFlag)) {
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.trade-denied").forLocale());
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
