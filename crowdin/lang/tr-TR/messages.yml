@@ -687,6 +687,9 @@ addon:
     no-plot-whitelist-trade: "<red>You cannot purchase shop outside of Plot."
     creation-denied: "<red>Bu arsada market oluşturma izniniz yok."
     trade-denied: "<red>You don't have permission to purchase shops in this Plot."
+    flag:
+      create: "Create QuickShop-Hikari shops"
+      trade: "Purchase QuickShop-Hikari shops"
   superiorskyblock:
     owner-create-only: "<red>Sadece ada sahibi orada dükkan açabilir."
     owner-member-create-only: "<red>Sadece ada sahibi veya üyesi orada dükkan oluşturabilir."
