@@ -54,14 +54,17 @@ public final class Main extends Plugin implements Listener {
         out.writeUTF(RESPONSE_PREFIX);
         out.writeUTF(uuid.toString());
         int playerType = 0; // 0=Java
+        String playerTypeDbgString = "Java Edition";
         if (isGeyserPlayer) {
             playerType++; // 1=Geyser
+            playerTypeDbgString = "Geyser (Bedrock)";
         }
         if (isFloodgatePlayer) {
             playerType++; // 2=Floodgate, FG based on Geyser so increase the number
+            playerTypeDbgString = "Floodgate (Bedrock)";
         }
         out.writeShort(playerType);
-        getLogger().info("Player " + uuid + " client type was set to " + playerType + ".");
+        getLogger().info("Player " + event.getPlayer().getName() + " client: " + playerTypeDbgString + ", forwarding to backend Spigot server.");
         event.getServer().getInfo().sendData(BUNGEE_CHANNEL, out.toByteArray());
     }
 }
