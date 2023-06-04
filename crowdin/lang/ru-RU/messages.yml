@@ -687,6 +687,9 @@ addon:
     no-plot-whitelist-trade: "<red>Вы не можете приобрести магазин за вне участка."
     creation-denied: "<red>У вас нет прав на создание магазинов на этом участке."
     trade-denied: "<red>У вас нет прав для приобретения магазинов на этом участке."
+    flag:
+      create: "Create QuickShop-Hikari shops"
+      trade: "Purchase QuickShop-Hikari shops"
   superiorskyblock:
     owner-create-only: "<red>Только владелец острова может создать магазин здесь."
     owner-member-create-only: "<red>Только владелец или участник острова может создать магазин здесь."
