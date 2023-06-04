@@ -303,7 +303,7 @@ public final class EnvironmentChecker {
                 if (plugin.getVirtualDisplayItemManager() != null) {
                     throwable = plugin.getVirtualDisplayItemManager().getPacketFactory().testFakeItem();
                 } else {
-                    throwable = new IllegalStateException("VirtualDisplayItemManager is null.");
+                    throwable = new IllegalStateException("VirtualDisplayItemManager is null, did you have enabled VirtualDisplayItem in config.yml? Set shop.display-type: 2");
                 }
             } else {
                 throwable = new IllegalStateException("ProtocolLib is not installed, virtual DisplayItem seems will not work on your server.");
