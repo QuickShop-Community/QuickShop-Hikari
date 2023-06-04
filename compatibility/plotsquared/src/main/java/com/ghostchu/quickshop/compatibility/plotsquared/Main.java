@@ -151,12 +151,12 @@ public final class Main extends CompatibilityModule implements Listener {
         Plot plot = pLocation.getPlot();
         if (plot == null) {
             if (!whiteList) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.no-plot-whitelist-creation").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsquared.no-plot-whitelist-creation").forLocale());
             }
             return;
         }
         if (!plot.getFlag(createFlag)) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.create-denied").forLocale());
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsquared.create-denied").forLocale());
         }
     }
 
@@ -171,12 +171,12 @@ public final class Main extends CompatibilityModule implements Listener {
         Plot plot = pLocation.getPlot();
         if (plot == null) {
             if (!whiteList) {
-                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.no-plot-whitelist-creation").forLocale());
+                event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsquared.no-plot-whitelist-creation").forLocale());
             }
             return;
         }
         if (!plot.getFlag(tradeFlag)) {
-            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsqured.trade-denied").forLocale());
+            event.setCancelled(true, getApi().getTextManager().of(event.getPlayer(), "addon.plotsquared.trade-denied").forLocale());
         }
     }
 
