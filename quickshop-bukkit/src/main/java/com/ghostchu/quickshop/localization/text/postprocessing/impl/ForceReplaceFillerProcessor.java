@@ -14,12 +14,14 @@ public class ForceReplaceFillerProcessor implements PostProcessor {
     @Override
     public @NotNull Component process(@NotNull Component text, @Nullable CommandSender sender, Component... args) {
         String json = GsonComponentSerializer.gson().serialize(text);
-        for (Component arg : args) {
-            try {
-                json = MsgUtil.fillArgs(json, PlainTextComponentSerializer.plainText().serialize(arg));
-            } catch (Exception e) {
-                Log.debug("Failed to fill args: " + e.getMessage());
-            }
+        String[] plainArgs = new String[args.length];
+        for (int i = 0; i < args.length; i++) {
+            plainArgs[i] = PlainTextComponentSerializer.plainText().serialize(args[i]);
+        }
+        try {
+            json = MsgUtil.fillArgs(json, plainArgs);
+        } catch (Exception e) {
+            Log.debug("Failed to fill args: " + e.getMessage());
         }
         return GsonComponentSerializer.gson().deserialize(json);
     }
