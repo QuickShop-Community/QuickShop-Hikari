@@ -121,7 +121,15 @@ public final class Main extends CompatibilityModule implements Listener {
     private List<Shop> getShops(Plot plot) {
         List<Shop> shopsList = new ArrayList<>();
         for (CuboidRegion region : plot.getRegions()) {
-            shopsList.addAll(getShops(region.getWorld().getName(), region.getMinimumPoint().getX(), region.getMinimumPoint().getZ(), region.getMaximumPoint().getX(), region.getMaximumPoint().getZ()));
+            String worldName = plot.getWorldName();
+            if (region.getWorld() != null) {
+                worldName = region.getWorld().getName();
+            }
+            if (worldName == null) {
+                getLogger().warning("Failed to handle CuboidRegion " + region + " in plot " + plot.getId() + " because world is null, does the world exist? Skipping...");
+            } else {
+                shopsList.addAll(getShops(worldName, region.getMinimumPoint().getX(), region.getMinimumPoint().getZ(), region.getMaximumPoint().getX(), region.getMaximumPoint().getZ()));
+            }
         }
         return shopsList;
     }
@@ -189,7 +197,7 @@ public final class Main extends CompatibilityModule implements Listener {
             return;
         }
         if (plot.getOwners().contains(event.getAuthorizer())) {
-            if (event.getNamespace().equals(QuickShop.getInstance()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
+            if (event.getNamespace().equals(QuickShop.getInstance().getJavaPlugin()) && event.getPermission().equals(BuiltInShopPermission.DELETE.getRawNode())) {
                 event.setResult(true);
             }
         }
