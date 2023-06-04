@@ -18,7 +18,6 @@ import com.plotsquared.core.plot.flag.types.BooleanFlag;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -79,7 +78,7 @@ public final class Main extends CompatibilityModule implements Listener {
         PlotSquared.get().getEventDispatcher().unregisterListener(this);
         GlobalFlagContainer.getInstance().removeFlag(createFlag);
         GlobalFlagContainer.getInstance().removeFlag(tradeFlag);
-        getLogger().info(ChatColor.GREEN + getName() + " flags unregister successfully.");
+        getLogger().info("Flags unregister successfully.");
     }
 
     @Override
@@ -90,8 +89,8 @@ public final class Main extends CompatibilityModule implements Listener {
         Map<Locale, CaptionMap> finalRegisterMap = new HashMap<>();
         for (String availableLanguage : getApi().getTextManager().getAvailableLanguages()) {
             Locale locale = new Locale(availableLanguage);
-            Component flagCreate = getApi().getTextManager().of(availableLanguage, "addon.plotsqured.flag.create").forLocale();
-            Component flagPurchase = getApi().getTextManager().of(availableLanguage, "addon.plotsqured.flag.trade").forLocale();
+            Component flagCreate = getApi().getTextManager().of("addon.plotsqured.flag.create").forLocale(availableLanguage);
+            Component flagPurchase = getApi().getTextManager().of("addon.plotsqured.flag.trade").forLocale(availableLanguage);
             Map<TranslatableCaption, String> stringMapping = new HashMap<>();
             stringMapping.put(TranslatableCaption.of("quickshop-hikari", "quickshop-create"), LegacyComponentSerializer.legacySection().serialize(flagCreate));
             stringMapping.put(TranslatableCaption.of("quickshop-hikari", "quickshop-trade"), LegacyComponentSerializer.legacySection().serialize(flagPurchase));
@@ -101,7 +100,7 @@ public final class Main extends CompatibilityModule implements Listener {
         this.createFlag = new QuickshopCreateFlag();
         this.tradeFlag = new QuickshopTradeFlag();
         GlobalFlagContainer.getInstance().addAll(Arrays.asList(createFlag, tradeFlag));
-        getLogger().info(ChatColor.GREEN + getName() + " flags register successfully.");
+        getLogger().info("Flags register successfully.");
         PlotSquared.get().getEventDispatcher().registerListener(this);
 
     }
