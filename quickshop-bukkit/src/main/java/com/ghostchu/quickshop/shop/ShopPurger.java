@@ -64,30 +64,34 @@ public class ShopPurger {
         boolean skipOp = plugin.getConfig().getBoolean("purge.skip-op");
         boolean returnCreationFee = plugin.getConfig().getBoolean("purge.return-create-fee");
         for (Shop shop : plugin.getShopManager().getAllShops()) {
-            OfflinePlayer player = Bukkit.getOfflinePlayer(shop.getOwner());
-            if (!player.hasPlayedBefore()) {
-                Log.debug("Shop " + shop + " detection skipped: Owner never played before.");
-                continue;
+            try {
+                OfflinePlayer player = Bukkit.getOfflinePlayer(shop.getOwner());
+                if (!player.hasPlayedBefore()) {
+                    Log.debug("Shop " + shop + " detection skipped: Owner never played before.");
+                    continue;
+                }
+                long lastPlayed = player.getLastPlayed();
+                if (lastPlayed == 0) {
+                    continue;
+                }
+                if (player.isOnline()) {
+                    continue;
+                }
+                if (player.isOp() && skipOp) {
+                    continue;
+                }
+                boolean markDeletion = player.isBanned() && deleteBanned;
+                long noOfDaysBetween = ChronoUnit.DAYS.between(CommonUtil.getDateTimeFromTimestamp(lastPlayed), CommonUtil.getDateTimeFromTimestamp(System.currentTimeMillis()));
+                if (noOfDaysBetween > days) {
+                    markDeletion = true;
+                }
+                if (!markDeletion) {
+                    continue;
+                }
+                pendingRemovalShops.add(shop);
+            } catch (Exception e) {
+                plugin.logger().warn("Failed to purge shop " + shop.getShopId(), e);
             }
-            long lastPlayed = player.getLastPlayed();
-            if (lastPlayed == 0) {
-                continue;
-            }
-            if (player.isOnline()) {
-                continue;
-            }
-            if (player.isOp() && skipOp) {
-                continue;
-            }
-            boolean markDeletion = player.isBanned() && deleteBanned;
-            long noOfDaysBetween = ChronoUnit.DAYS.between(CommonUtil.getDateTimeFromTimestamp(lastPlayed), CommonUtil.getDateTimeFromTimestamp(System.currentTimeMillis()));
-            if (noOfDaysBetween > days) {
-                markDeletion = true;
-            }
-            if (!markDeletion) {
-                continue;
-            }
-            pendingRemovalShops.add(shop);
         }
 
         BatchBukkitExecutor<Shop> purgeExecutor = new BatchBukkitExecutor<>();
