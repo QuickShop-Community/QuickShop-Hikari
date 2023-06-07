@@ -16,13 +16,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadable {
@@ -157,12 +155,16 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
         manager.put(chunkLocation, this);
         if (Util.isLoaded(shop.getLocation())) {
             //Let nearby player can saw fake item
-            Collection<Entity> entityCollection = shop.getLocation().getWorld().getNearbyEntities(shop.getLocation(), Bukkit.getViewDistance() * 16, shop.getLocation().getWorld().getMaxHeight(), Bukkit.getViewDistance() * 16);
-            for (Entity entity : entityCollection) {
-                if (entity instanceof Player player) {
-                    if (isApplicableForPlayer(player)) { // TODO: Refactor with better way
-                        packetSenders.add(entity.getUniqueId());
-                    }
+            List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
+            onlinePlayers.removeIf(p -> !p.getWorld().equals(shop.getLocation().getWorld()));
+            for (Player onlinePlayer : onlinePlayers) {
+                Vector playerVector = onlinePlayer.getLocation().toVector();
+                double distance = shop.getLocation().toVector().distance(playerVector);
+                if (distance > Bukkit.getViewDistance() * 16) {
+                    continue;
+                }
+                if (isApplicableForPlayer(onlinePlayer)) { // TODO: Refactor with better way
+                    packetSenders.add(onlinePlayer.getUniqueId());
                 }
             }
         }
