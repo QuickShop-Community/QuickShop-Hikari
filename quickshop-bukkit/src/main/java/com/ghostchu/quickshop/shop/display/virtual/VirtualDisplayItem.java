@@ -11,12 +11,12 @@ import com.ghostchu.quickshop.shop.display.AbstractDisplayItem;
 import com.ghostchu.quickshop.shop.display.virtual.packetfactory.VirtualDisplayPacketFactory;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
+import com.ghostchu.quickshop.util.performance.PerfMonitor;
 import com.ghostchu.simplereloadlib.Reloadable;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -154,17 +154,19 @@ public class VirtualDisplayItem extends AbstractDisplayItem implements Reloadabl
         chunkLocation = new SimpleShopChunk(chunk.getWorld().getName(), chunk.getX(), chunk.getZ());
         manager.put(chunkLocation, this);
         if (Util.isLoaded(shop.getLocation())) {
-            //Let nearby player can saw fake item
-            List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
-            onlinePlayers.removeIf(p -> !p.getWorld().equals(shop.getLocation().getWorld()));
-            for (Player onlinePlayer : onlinePlayers) {
-                Vector playerVector = onlinePlayer.getLocation().toVector();
-                double distance = shop.getLocation().toVector().distance(playerVector);
-                if (distance > Bukkit.getViewDistance() * 16) {
-                    continue;
-                }
-                if (isApplicableForPlayer(onlinePlayer)) { // TODO: Refactor with better way
-                    packetSenders.add(onlinePlayer.getUniqueId());
+            try (PerfMonitor displayInit = new PerfMonitor("VirtualDisplayInit - Distance Check")) {
+                //Let nearby player can saw fake item
+                List<Player> onlinePlayers = new ArrayList<>(Bukkit.getOnlinePlayers());
+                onlinePlayers.removeIf(p -> !p.getWorld().equals(shop.getLocation().getWorld()));
+                for (Player onlinePlayer : onlinePlayers) {
+                    double distance = onlinePlayer.getLocation().distance(shop.getLocation());
+                    if (Math.abs(distance) > Bukkit.getViewDistance() * 16) {
+                        Log.debug("Skipped for player " + onlinePlayer.getName() + " because distance is " + distance);
+                        continue;
+                    }
+                    if (isApplicableForPlayer(onlinePlayer)) { // TODO: Refactor with better way
+                        packetSenders.add(onlinePlayer.getUniqueId());
+                    }
                 }
             }
         }

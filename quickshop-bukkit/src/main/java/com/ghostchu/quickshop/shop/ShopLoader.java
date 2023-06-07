@@ -148,13 +148,17 @@ public class ShopLoader implements SubPasteItem {
                 // Load to World
                 if (!Util.canBeShop(shopLocation.getBlock())) {
                     plugin.getShopManager().removeShop(shop); // Remove from Mem
+                    Log.timing("Single shop loading: removed due container missing", singleShopLoadingTimer);
                 } else {
                     shop.onLoad(); // Patch the shops won't load around the spawn
+                    Log.timing("Single shop loading: success", singleShopLoadingTimer);
                 }
             } else {
                 chunkNotLoaded.incrementAndGet();
+                Log.timing("Single shop loading: waiting for chunk", singleShopLoadingTimer);
             }
             successCounter.incrementAndGet();
+
         }
 
         plugin.logger().info("Done. Used {}ms to load {} shops into memory. ({} shops will be loaded after chunks loaded)", shopTotalTimer.stopAndGetTimePassed(), successCounter.get(), chunkNotLoaded.incrementAndGet());
