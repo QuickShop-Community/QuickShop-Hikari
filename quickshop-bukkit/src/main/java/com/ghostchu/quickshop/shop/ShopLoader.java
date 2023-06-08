@@ -11,6 +11,7 @@ import com.ghostchu.quickshop.common.util.JsonUtil;
 import com.ghostchu.quickshop.common.util.Timer;
 import com.ghostchu.quickshop.economy.SimpleBenefit;
 import com.ghostchu.quickshop.util.MsgUtil;
+import com.ghostchu.quickshop.util.PackageUtil;
 import com.ghostchu.quickshop.util.Util;
 import com.ghostchu.quickshop.util.logger.Log;
 import com.ghostchu.quickshop.util.paste.item.SubPasteItem;
@@ -232,6 +233,10 @@ public class ShopLoader implements SubPasteItem {
         String username = plugin.getPlayerFinder().uuid2Name(shop.getOwner());
         if (username == null) {
             Log.debug("Shop owner not exist on this server, did you have reset the playerdata?");
+            if (PackageUtil.parsePackageProperly("forceResolveUsername").asBoolean(false)) {
+                username = "Unknown_" + shop.getOwner().toString().substring(0, 8);
+                plugin.getDatabaseHelper().updatePlayerProfile(shop.getOwner(), "en_us", username);
+            }
         }
         return false;
     }
