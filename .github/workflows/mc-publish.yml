@@ -28,6 +28,8 @@ jobs:
         run: mvn -B package -T 1.5C --file pom.xml
       - uses: Kir-Antipov/mc-publish@v3.3
         with:
+          retry-attempts: 15
+          retry-delay: 15000
           modrinth-id: ijC5dDkD
           modrinth-featured: true
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
